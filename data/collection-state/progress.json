@@ -120,7 +120,10 @@
     "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json",
     "darkling-off-west-end-2026/guardian--unknown.json",
     "darkling-off-west-end-2026/voice-magazine--unknown.json",
-    "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json"
+    "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json",
+    "the-story-west-end-2026/the-spectator-uk--unknown.json",
+    "electra-persona-west-end-2026/vocaleyes--unknown.json",
+    "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -790,7 +793,12 @@
     "golden-boy-off-west-end-2026/thestage--unknown.json",
     "spandex-off-broadway-2026/nytimes--unknown.json",
     "oliver-west-end-2024/city-am--unknown.json",
-    "come-alive-the-greatest-showman-circus-spectacular-off-west-end-2024/thestage--paul-vale.json"
+    "come-alive-the-greatest-showman-circus-spectacular-off-west-end-2024/thestage--paul-vale.json",
+    "million-dollar-quartet-off-west-end-2026/enjoy--unknown.json",
+    "million-dollar-quartet-off-west-end-2026/theupcoming--unknown.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/buy-tickets-direct-from-the-theatre--unknown.json",
+    "night-city-off-west-end-2026/reviewsgate--william-russell.json",
+    "night-city-off-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -858,7 +866,8 @@
       "witness-for-the-prosecution-west-end-2022/everything-theatre--mary-pollard.json",
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/london-theatre--anya-ryan.json",
       "harry-potter-and-the-cursed-child-both-parts-west-end-2021/london-theatre--theo-bosanquet.json",
-      "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--unknown.json"
+      "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--unknown.json",
+      "drunk-romeo-and-juliet-off-broadway-2025/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -886,7 +895,8 @@
       "data/review-texts/the-book-of-mormon-west-end-2024/hollywood-reporter--unknown.json",
       "the-book-of-mormon-west-end-2024/hollywood-reporter--unknown.json",
       "data/review-texts/darkling-off-west-end-2026/voice-magazine--unknown.json",
-      "darkling-off-west-end-2026/voice-magazine--unknown.json"
+      "darkling-off-west-end-2026/voice-magazine--unknown.json",
+      "data/review-texts/spandex-off-broadway-2026/nytimes--unknown.json"
     ],
     "directCookies": [
       "aida-off-broadway-2027/times-uk--kevin-ng.json",
@@ -936,7 +946,8 @@
       "alvin-ailey-american-dance-theater-new-works-west-end-2026/guardian--sanjoy-roy.json",
       "darkling-off-west-end-2026/guardian--unknown.json",
       "darkling-off-west-end-2026/voice-magazine--unknown.json",
-      "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json"
+      "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json",
+      "electra-persona-west-end-2026/vocaleyes--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -956,7 +967,7 @@
     ]
   },
   "startTime": "2026-09-19T12:35:18.916Z",
-  "lastProcessed": "oh-mary-2024/british-theatre--unknown.json",
+  "lastProcessed": "oh-mary-2024/west-end-best-friend--unknown.json",
   "log": [
     {
       "t": "2026-09-19T12:46:11.402Z",
@@ -1377,6 +1388,58 @@
       "event": "bb-session",
       "session": "ae7d9031",
       "url": "https://www.whatsonstage.com/tags/operation-mincemeat/"
+    },
+    {
+      "t": "2026-09-20T04:49:00.099Z",
+      "event": "bb-session",
+      "session": "5ae9cc63",
+      "url": "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html"
+    },
+    {
+      "t": "2026-09-20T04:49:00.627Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-20T04:49:42.078Z",
+      "event": "bb-session",
+      "session": "0c87c8d3",
+      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
+    },
+    {
+      "t": "2026-09-20T04:49:42.610Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-20T04:51:06.628Z",
+      "event": "bb-session",
+      "session": "c0e420c3",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    },
+    {
+      "t": "2026-09-20T04:51:22.641Z",
+      "event": "bb-session",
+      "session": "b3648777",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    },
+    {
+      "t": "2026-09-20T04:51:52.530Z",
+      "event": "bb-session",
+      "session": "ecbc170d",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
+    },
+    {
+      "t": "2026-09-20T04:57:53.635Z",
+      "event": "bb-session",
+      "session": "d9bccfc0",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-20T04:58:04.736Z",
+      "event": "bb-session",
+      "session": "67dcb170",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
     }
   ],
   "recoveredAfterFailure": [

@@ -1,26 +1,38 @@
 {
-  "generatedAt": "2026-09-19T11:38:31.861Z",
+  "generatedAt": "2026-09-20T05:19:52.854Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "3cc481b2ccc5852aa3f3b4b7c86e82858ced0c6b",
+  "latestRunHeadSha": "93c23a3f59d8e55b555f3e7d0460e74687fad693",
   "state": "RED",
-  "consecutiveFailures": 1,
+  "consecutiveFailures": 14,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": "2026-09-19T10:29:23Z",
-  "redForHours": 1.1524613888888888,
+  "redSince": "2026-09-19T23:54:20Z",
+  "redForHours": 5.425792777777778,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-09-18T22:40:11Z",
-  "latestFailedRunId": "35437539033",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35437539033",
+  "lastSuccessAt": "2026-09-19T12:37:48Z",
+  "latestFailedRunId": "35489152808",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35489152808",
   "decidedRuns": 92,
   "failingJobs": [
     {
+      "name": "Unit Tests",
+      "steps": [
+        "Run unit tests (no-data-dependency)"
+      ]
+    },
+    {
+      "name": "Lint Workflows",
+      "steps": [
+        "Audit — no submitter PII in committed data/audit files"
+      ]
+    },
+    {
       "name": "Data Validation",
       "steps": [
-        "Audit outlet-registry gaps"
+        "Run data validation"
       ]
     },
     {
@@ -32,11 +44,17 @@
   ],
   "failingPaths": [
     {
-      "path": "scripts/audit-broadway-category-predicate.js",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]Process completed with exit code 1."
+      "path": "scripts/newsletter/lastfeatured-inweek.test.mjs",
+      "job": "Unit Tests",
+      "step": "Run unit tests (no-data-dependency)",
+      "evidence": "not ok 2211 - broadway edition renders an in-week off-Broadway opening even when a stale lastFeaturedIds entry claims it was already featured"
+    },
+    {
+      "path": "tests/unit/url-collision-canonical.test.mjs",
+      "job": "Unit Tests",
+      "step": "Run unit tests (no-data-dependency)",
+      "evidence": "not ok 7968 - named-only new write (no band) still beats an Unknown+unanchored collider"
     }
   ],
-  "topFailingJob": "Data Validation"
+  "topFailingJob": "Unit Tests"
 }
