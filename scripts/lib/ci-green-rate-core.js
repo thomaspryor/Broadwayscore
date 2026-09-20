@@ -18,7 +18,12 @@
  *   green      conclusion === 'success'
  *   red        conclusion in {failure, timed_out, startup_failure} — a completed
  *              run that did not pass. timed_out is red on purpose: a suite
- *              that never finished validating did not validate main.
+ *              that never finished validating did not validate main. NOTE:
+ *              this is STRICTER than test.yml's "Detect consecutive main
+ *              test failures" step and scripts/lib/main-red-streak.js, which
+ *              count only `failure` — so this rate can read lower than the
+ *              streak detectors on a day with timeouts. Deliberate: a rate
+ *              meant to end "it's fixed" claims must not launder timeouts.
  *   cancelled  conclusion === 'cancelled' — excluded from the rate. Cancels
  *              say nothing about the code (scripts/ci-health-check.sh measures
  *              the mid-setup-cancel rate separately).
@@ -210,12 +215,16 @@ function computeGreenRate(rows, opts = {}) {
 /**
  * The one line other tools grep for. Format is fixed:
  *   CI-GREEN-RATE: <rate>% over <N>d (green G / red R), min <M>% → PASS|FAIL
- * A no-data FAIL appends its reason in parentheses; nothing else varies.
+ * A no-data FAIL appends its reason in parentheses; a page-cap-truncated
+ * fetch appends "(truncated: …)" so a grep-only consumer never trusts a
+ * partial window as a full one. Nothing else varies.
  */
 function verdictLine(res) {
   const rate = res.rate === null ? 'n/a' : `${res.rate}%`;
-  const base = `CI-GREEN-RATE: ${rate} over ${res.days}d (green ${res.counts.green} / red ${res.counts.red}), min ${res.min}% → ${res.verdict}`;
-  return res.reason ? `${base} (${res.reason})` : base;
+  let line = `CI-GREEN-RATE: ${rate} over ${res.days}d (green ${res.counts.green} / red ${res.counts.red}), min ${res.min}% → ${res.verdict}`;
+  if (res.reason) line += ` (${res.reason})`;
+  if (res.truncated) line += ' (truncated: page cap hit, window incomplete)';
+  return line;
 }
 
 function formatReport(res) {

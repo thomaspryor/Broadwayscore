@@ -331,12 +331,14 @@ const SAFE_CHECK_FORMS = [
   // handful of green runs). Read-only: no fs writes anywhere in the file; the
   // only I/O is a one-shot, page-capped `gh api` GET (no polling), which is
   // exactly why it cannot ride the generic audit-/lint- basename form (its
-  // transitive scanner refuses any spawn). Flag shape is fixed — --days/--min
-  // are 1-3 digit integers, --json a literal — no free-form values. Exit 0
-  // ONLY on PASS (rate >= --min), 1 on FAIL, 2 on fetch error, and an empty
-  // window is a FAIL, so the exit code is a real pass/fail signal, never
-  // vacuous (contrast the bare `gh run list` shape refused above).
-  { re: /^node scripts\/ci-green-rate\.js(?: --days \d{1,3})?(?: --min \d{1,3})?(?: --json)?$/ },
+  // transitive scanner refuses any spawn). Flag shape is fixed and mirrors
+  // the CLI's own parseCliArgs ranges — --days 1-365 (any 1-3 digit value
+  // starting 1-9; the CLI rejects >365 with exit 2), --min 0-100, --json a
+  // literal — no free-form values. Exit 0 ONLY on PASS (rate >= --min), 1 on
+  // FAIL, 2 on fetch error, and an empty window is a FAIL, so the exit code
+  // is a real pass/fail signal, never vacuous (contrast the bare `gh run
+  // list` shape refused above).
+  { re: /^node scripts\/ci-green-rate\.js(?: --days [1-9]\d{0,2})?(?: --min (?:100|\d{1,2}))?(?: --json)?$/ },
 ];
 
 // Belt-and-braces mutation gate (plan-review pre-mortem root cause): the
@@ -902,6 +904,10 @@ module.exports = {
   // DO write under other flags, and auditing those against a zero-write
   // standard they were never held to would produce permanent false failures).
   AUDIT_LINT_GENERIC_FORM_ALLOWED,
+  // scripts/enrich-card-acceptance.js:93 destructures this for its re-prompt
+  // ("The complete list of accepted forms is: …"); it was never exported, so
+  // that prompt said "undefined" (found by the 2026-09-20 ci-green-rate review).
+  SAFE_CHECK_DESCRIPTION,
   isSafeCheckCommand,
   explainUnsafeCheckCommand,
   extractCheckPaths,

@@ -129,6 +129,47 @@ test('parseCliArgs: the acceptance-command shape, --k=v form, and rejects bad va
   assert.match(core.parseCliArgs(['--days']).error, /needs a value/);
 });
 
+test('verdictLine marks a page-cap-truncated window so a partial number is never read as a full one', () => {
+  const res = core.computeGreenRate([run(1, 'success')], { now: NOW });
+  assert.doesNotMatch(core.verdictLine(res), /truncated/);
+  res.truncated = true;
+  assert.match(core.verdictLine(res), /→ PASS \(truncated: page cap hit, window incomplete\)$/);
+});
+
+test('CLI main(): exit 0 on PASS, 1 on FAIL, 2 on gh failure — never PASS when the fetch fails', () => {
+  const cli = require('../ci-green-rate.js');
+  const page = (rows) => () => JSON.stringify(rows);
+  const quiet = { log: () => {}, error: () => {} };
+  const logs = [];
+  const green = [run(2, 'success'), run(1, 'success')];
+  assert.equal(cli.main(['--days', '7', '--min', '80'], { ...quiet, now: NOW, log: (l) => logs.push(l), exec: page(green) }), 0);
+  assert.match(logs.at(-1), /CI-GREEN-RATE: 100% over 7d \(green 2 \/ red 0\), min 80% → PASS$/m);
+  assert.equal(cli.main(['--days', '7'], { ...quiet, now: NOW, exec: page([run(1, 'failure')]) }), 1);
+  assert.equal(cli.main(['--days', '7'], { ...quiet, now: NOW, exec: page([]) }), 1, 'empty window is FAIL');
+  const errs = [];
+  const boom = () => { const e = new Error('HTTP 403'); e.stderr = 'API rate limit exceeded'; throw e; };
+  assert.equal(cli.main(['--days', '7'], { ...quiet, now: NOW, error: (l) => errs.push(l), exec: boom }), 2);
+  assert.match(errs.join('\n'), /rate-limited — not retrying/);
+  assert.doesNotMatch(errs.join('\n'), /PASS/);
+  assert.equal(cli.main(['--days', 'x'], { ...quiet, exec: boom }), 2, 'usage error never reaches gh');
+  assert.equal(cli.main(['--help'], { ...quiet, exec: boom }), 0, '--help never reaches gh');
+});
+
+test('CLI fetchRuns paginates until a short page, and flags the page cap as truncated', () => {
+  const cli = require('../ci-green-rate.js');
+  const full = Array.from({ length: 100 }, (_, i) => run(i + 1, 'success'));
+  const calls = [];
+  const exec = (_gh, args) => { calls.push(args[1]); return JSON.stringify(calls.length < 3 ? full : [run(200, 'success')]); };
+  const r = cli.fetchRuns({ workflow: 'test.yml', branch: 'main', days: 7, maxPages: 10, now: NOW }, exec);
+  assert.equal(calls.length, 3);
+  assert.equal(r.runs.length, 201);
+  assert.equal(r.truncated, false);
+  assert.match(calls[1], /&page=2&/);
+  const capped = cli.fetchRuns({ workflow: 'test.yml', branch: 'main', days: 7, maxPages: 2, now: NOW }, () => JSON.stringify(full));
+  assert.equal(capped.truncated, true);
+  assert.equal(capped.runs.length, 200);
+});
+
 test('formatReport ends with the verdict line and never says "fixed"', () => {
   const res = core.computeGreenRate([run(5, 'success'), run(4, 'failure'), run(3, 'success')], { now: NOW });
   const text = core.formatReport(res);

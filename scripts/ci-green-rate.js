@@ -52,13 +52,13 @@ function usage() {
  * checkout at REPO_ROOT (cwd is pinned so a caller's cwd cannot change the
  * repo). Returns { runs, truncated }.
  */
-function fetchRuns({ workflow, branch, days, maxPages, now }) {
+function fetchRuns({ workflow, branch, days, maxPages, now }, exec = execFileSync) {
   const sinceDate = core.windowStartDate(days, now);
   const runs = [];
   let truncated = false;
   for (let page = 1; page <= maxPages; page++) {
     const apiPath = core.buildRunsApiPath({ workflow, branch, page, sinceDate, perPage: core.DEFAULTS.perPage });
-    const stdout = execFileSync('gh', ['api', apiPath, '--jq', JQ], {
+    const stdout = exec('gh', ['api', apiPath, '--jq', JQ], {
       encoding: 'utf8',
       cwd: REPO_ROOT,
       maxBuffer: 16 * 1024 * 1024,
@@ -73,29 +73,38 @@ function fetchRuns({ workflow, branch, days, maxPages, now }) {
   return { runs, truncated };
 }
 
-function main(argv) {
+/**
+ * @param {string[]} argv
+ * @param {{exec?: typeof execFileSync, now?: number, log?: Function, error?: Function}} [deps]
+ *   injectable for tests (pattern: scripts/lib/card-arming-warning.js's deps)
+ * @returns {number} exit code
+ */
+function main(argv, deps = {}) {
+  const exec = deps.exec || execFileSync;
+  const log = deps.log || console.log;
+  const error = deps.error || console.error;
   // --help before ANY work (scripts/audit-help-flag-safety.js Rule B: a
   // script that spawns must never reach the spawn on a help request).
   if (hasHelpFlag(argv)) {
-    console.log(usage());
+    log(usage());
     return 0;
   }
   const opts = core.parseCliArgs(argv);
   if (opts.error) {
-    console.error(`ci-green-rate: ${opts.error}\n${usage()}`);
+    error(`ci-green-rate: ${opts.error}\n${usage()}`);
     return 2;
   }
 
-  const now = Date.now();
+  const now = Number.isFinite(deps.now) ? deps.now : Date.now();
   let fetched;
   try {
-    fetched = fetchRuns({ workflow: opts.workflow, branch: opts.branch, days: opts.days, maxPages: opts.maxPages, now });
+    fetched = fetchRuns({ workflow: opts.workflow, branch: opts.branch, days: opts.days, maxPages: opts.maxPages, now }, exec);
   } catch (err) {
     const stderr = String((err && err.stderr) || '').trim();
     const msg = `${err && err.message ? err.message : err}${stderr ? ` — ${stderr.slice(0, 300)}` : ''}`;
     const rateLimited = /rate limit|403/i.test(msg);
-    console.error(`ci-green-rate: gh api fetch failed${rateLimited ? ' (rate-limited — not retrying; check `gh api rate_limit`)' : ''}: ${msg}`);
-    console.error('CI-GREEN-RATE: n/a — fetch failed, no verdict');
+    error(`ci-green-rate: gh api fetch failed${rateLimited ? ' (rate-limited — not retrying; check `gh api rate_limit`)' : ''}: ${msg}`);
+    error('CI-GREEN-RATE: n/a — fetch failed, no verdict');
     return 2;
   }
 
@@ -103,11 +112,11 @@ function main(argv) {
   result.fetchedRuns = fetched.runs.length;
   result.truncated = fetched.truncated;
   if (fetched.truncated) {
-    console.error(`ci-green-rate: WARN page cap (--max-pages ${opts.maxPages} x ${core.DEFAULTS.perPage}) reached — window may be incomplete; raise --max-pages`);
+    error(`ci-green-rate: WARN page cap (--max-pages ${opts.maxPages} x ${core.DEFAULTS.perPage}) reached — window may be incomplete; raise --max-pages`);
   }
 
-  if (opts.json) console.log(JSON.stringify(result, null, 2));
-  else console.log(core.formatReport(result));
+  if (opts.json) log(JSON.stringify(result, null, 2));
+  else log(core.formatReport(result));
   return result.verdict === 'PASS' ? 0 : 1;
 }
 

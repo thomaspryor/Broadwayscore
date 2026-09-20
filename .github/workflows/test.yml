@@ -353,6 +353,14 @@ on:
       # above), but this wrapper needs its own entry or a solo edit to the gate
       # itself triggers zero CI, which is exactly the bug it exists to catch.
       - 'scripts/audit-test-yml-manifest-paths.js'
+      # scripts/ci-green-rate.js (2026-09-20): the machine PASS/FAIL verdict on
+      # main's Test Suite green rate — the only thing allowed to say whether
+      # "main is red" is over. Thin CLI outside scripts/lib/; its logic and the
+      # colocated scripts/lib/ci-green-rate-core.test.mjs (which require()s the
+      # CLI for exit-code tests) are globbed above, but a solo edit to the CLI
+      # would trigger zero CI without this entry (audit-test-yml-lib-deps.js
+      # flagged exactly that when the file was added).
+      - 'scripts/ci-green-rate.js'
       # scripts/lib/workflow-secret-scan.test.mjs (task #1855) requires this
       # top-level CLI wrapper directly (to test findGaps() end-to-end) — same
       # gap shape as scripts/audit-test-yml-lib-deps.js above, caught by that
