@@ -240,6 +240,56 @@ describe('review-file-writer Guard K (BWW cross-production wrongProduction, BRO-
     });
   });
 
+  test('BRO-3895: invalidation is not undone by an incoming payload that also echoes back wrongProductionAutoCleared', () => {
+    // Ship-check/Codex adversarial finding: `fields` is `input.fields` itself
+    // (mutated in place by Guard K), so invalidating INLINE mid-loop is
+    // insertion-order dependent — a payload that predefines `wrongProduction`
+    // (so Guard K's `!fields.wrongProduction` overwrite keeps its original key
+    // position) ahead of `wrongProductionAutoCleared` in the SAME object would
+    // have the generic merge loop re-add the just-deleted breadcrumb when it
+    // reaches that later key, undoing the invalidate before the loop even
+    // finishes. Requires an EXISTING file (the create-new-file path spreads
+    // `fields` directly and never calls invalidate at all — a brand-new file
+    // has no prior clear to protect, so that path is out of scope here). The
+    // fix invalidates ONCE, after the full loop, so no later key in the same
+    // payload can resurrect it.
+    withTempReviewTextsDir(SHOW_ID, (tmp) => {
+      const { createOrMergeReviewFile } = require('../../scripts/lib/review-file-writer');
+      const showDir = path.join(tmp, SHOW_ID);
+      const filepath = path.join(showDir, 'broadwayworld--alexander-cohen.json');
+      fs.writeFileSync(filepath, JSON.stringify({
+        showId: SHOW_ID,
+        outletId: 'broadwayworld',
+        criticName: 'Alexander Cohen',
+        url: 'https://www.broadwayworld.com/article/BWW-Review-THE-FEAR-OF-13-20190915',
+        source: 'bww-roundup',
+        excerpt: 'A real review excerpt about the show.',
+      }, null, 2));
+
+      const result = createOrMergeReviewFile(SHOW_ID, {
+        outletId: 'broadwayworld',
+        outlet: 'BroadwayWorld',
+        criticName: 'Alexander Cohen',
+        url: 'https://www.broadwayworld.com/article/BWW-Review-THE-FEAR-OF-13-20190915',
+        source: 'bww-roundup',
+        fields: {
+          wrongProduction: false,
+          publishDate: null,
+          excerpt: 'A real review excerpt about the show.',
+          wrongProductionAutoCleared: 'replayed: stale value echoed back by an import/scraper payload',
+          wrongProductionAutoClearedAt: '2026-09-01',
+        },
+      }, { reviewTextsDir: tmp });
+
+      assert.notEqual(result.action, 'skipped', `expected write, got skipped: ${result.reason}`);
+      assert.equal(result.filepath, filepath, 'must merge into the existing file, not create a new one');
+      const written = JSON.parse(fs.readFileSync(result.filepath, 'utf-8'));
+      assert.equal(written.wrongProduction, true, 'Guard K must still re-flag the out-of-window URL');
+      assert.equal(written.wrongProductionAutoCleared, undefined, 'echoed-back breadcrumb in the SAME payload must not survive the re-flag');
+      assert.equal(written.wrongProductionAutoClearedAt, undefined);
+    });
+  });
+
   test('does not fire for a non-BWW source, even with the same out-of-window URL', () => {
     withTempReviewTextsDir(SHOW_ID, (tmp) => {
       const { createOrMergeReviewFile } = require('../../scripts/lib/review-file-writer');
