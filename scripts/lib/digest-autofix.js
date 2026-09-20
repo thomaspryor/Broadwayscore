@@ -75,8 +75,10 @@ const { checkPark, computeContentHash } = require('./attempt-memory.js');
 // dispatch-watchdog-core.js's openHeadlessJobTasks already uses against the
 // same shared dispatch-ledger.jsonl — so this does NOT introduce a shared
 // cross-drain budget; that would be new infrastructure, out of scope here
-// (plan review, BRO-3412). Thresholds are the shared defaults; raising
-// DISPATCH_CAP is a separate, owner-gated decision this change does not make.
+// (plan review, BRO-3412). Spend threshold stays the shared default.
+// BRO-3438 (owner-approved 2026-09-15) raised the DIGEST's concurrency ceiling
+// from that shared default of 2 to 3 — at the CALLER, not here, so every other
+// drain importing these same defaults is unaffected.
 const {
   computeSpendCircuitBreaker, computeConcurrency,
   DEFAULT_CONCURRENCY_CAP, DEFAULT_SPEND_THRESHOLD_USD,
@@ -420,25 +422,19 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
 // the notes as the card's executable proof, so hostile row text could inject
 // its own safe-but-unrelated command (Codex finding, 2026-08-02). Neutralize
 // the three carriers before interpolating.
-function sanitizeRowText(s) {
-  return String(s || '')
-    .replace(/`/g, "'")
-    .replace(/^#+\s/gm, '')
-    .replace(/VERIFY\s*:/gi, 'VERIFY -');
-}
-
-// The b64url token must fit SAFE_CHECK_FORMS' 200-char cap AND decode back to
-// exactly what check-health-row-absent.js compares — so BOTH sides slice the
-// row name to the same bound (120 chars ≈ ≤160 b64 chars even for multi-byte).
-const ROW_NAME_MATCH_LIMIT = 120;
+// sanitizeRowText now lives in ./health-row-check-cmd.js — owner-alert-router.js
+// needs the identical treatment for the identical reason (BRO-3881).
 
 // Encodes one row's raw name into the check-health-row-absent.js safe-form
 // token — shared by the single-row and folded-row buildCardNotes branches so
 // they can never diverge on the encoding (round-tripped by the existing
 // "acceptance command passes the REAL safe-form gate" test).
-function rowAbsentCheckCmd(name) {
-  return `node scripts/check-health-row-absent.js --row-b64 ${Buffer.from(String(name).trim().slice(0, ROW_NAME_MATCH_LIMIT), 'utf8').toString('base64url')}`;
-}
+//
+// BRO-3881 moved it to its own leaf so scripts/lib/owner-alert-router.js — the
+// OTHER auto-filer, whose cards the digest also dispatches — can emit the same
+// command instead of the prose that got every one of its cards refused at
+// dispatch. See that module's header for the incident.
+const { rowAbsentCheckCmd, sanitizeRowText } = require('./health-row-check-cmd.js');
 
 // Card notes must pass notion-brain's card-quality gate for "Not started"
 // cards: ## Problem + ## Suggested approach + ## Acceptance criteria sections
@@ -829,6 +825,17 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
   for (const { dispatch: d, cardId, job, kind } of decisions) {
     if (kind === dispatchReconcile.DECISION_KINDS.ORPHAN) {
       newEntries.push({
+      // ts (BRO-3868 regression fix, 2026-09-20): stamp the outcome at the
+      // moment it is DECIDED, not only when a copy of it is serialized to
+      // disk. These rows are handed straight to attempt-memory's checkPark
+      // in memory (ledgerEntries.concat(newOutcomes)), and BRO-3868's new
+      // finite-ts guard drops any row it cannot place chronologically — so
+      // an unstamped row silently vanished from the very fail-streak it was
+      // created to record, and nothing ever parked. Verified: the park
+      // end-to-end test went red on main the moment that guard landed.
+      // appendLedger's own `{ ts: <now>, ...entry }` spread preserves this
+      // value, so the persisted ts now equals the in-memory one.
+      ts: now.toISOString(),
         // usd: 0 (BRO-3412) — no job ever spawned, so no cost was incurred.
         // Mirrors scripts/backlog-drain.js's reconcileOutcomes ORPHAN branch.
         event: 'card-fail', cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts, usd: 0,
@@ -845,6 +852,17 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
       // The retry chain ended at 'job-retried' and no successor spawned inside
       // the orphan bound: the resume child died before spawning, so it fails.
       newEntries.push({
+      // ts (BRO-3868 regression fix, 2026-09-20): stamp the outcome at the
+      // moment it is DECIDED, not only when a copy of it is serialized to
+      // disk. These rows are handed straight to attempt-memory's checkPark
+      // in memory (ledgerEntries.concat(newOutcomes)), and BRO-3868's new
+      // finite-ts guard drops any row it cannot place chronologically — so
+      // an unstamped row silently vanished from the very fail-streak it was
+      // created to record, and nothing ever parked. Verified: the park
+      // end-to-end test went red on main the moment that guard landed.
+      // appendLedger's own `{ ts: <now>, ...entry }` spread preserves this
+      // value, so the persisted ts now equals the in-memory one.
+      ts: now.toISOString(),
         // usd (BRO-3412): the timed-out attempt's own cost, same field
         // backlog-drain.js's RETRY_TIMEOUT branch records.
         event: 'card-fail', cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts, usd: Number(job.costUSD) || 0,
@@ -881,6 +899,17 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
     // depends on — out of scope for BRO-3412's "wiring, not new thresholds"
     // mandate. Tracked as a follow-up: BRO-3445.
     newEntries.push({
+      // ts (BRO-3868 regression fix, 2026-09-20): stamp the outcome at the
+      // moment it is DECIDED, not only when a copy of it is serialized to
+      // disk. These rows are handed straight to attempt-memory's checkPark
+      // in memory (ledgerEntries.concat(newOutcomes)), and BRO-3868's new
+      // finite-ts guard drops any row it cannot place chronologically — so
+      // an unstamped row silently vanished from the very fail-streak it was
+      // created to record, and nothing ever parked. Verified: the park
+      // end-to-end test went red on main the moment that guard landed.
+      // appendLedger's own `{ ts: <now>, ...entry }` spread preserves this
+      // value, so the persisted ts now equals the in-memory one.
+      ts: now.toISOString(),
       event: outcome,
       cardId,
       // usd (BRO-3412): what this dispatch actually cost, so
@@ -908,9 +937,13 @@ function runAutofix({
   plan, cap = DISPATCH_CAP, dryRun = false, log = () => {}, loadTasksFn = null,
   ledgerPath = DIGEST_LEDGER_PATH, dispatchLedgerEntriesFn = null, now = new Date(),
   dispatchFn = dispatchDetached,
-  // BRO-3412: same shared defaults scripts/backlog-drain.js's own drain uses
-  // (DEFAULT_CONCURRENCY_CAP=2, DEFAULT_SPEND_THRESHOLD_USD=12) — not new
-  // numbers, and DISPATCH_CAP (above, =3) is untouched.
+  // BRO-3412: shared defaults imported from scripts/backlog-drain.js
+  // (DEFAULT_CONCURRENCY_CAP=2, DEFAULT_SPEND_THRESHOLD_USD=12) rather than
+  // re-declared here. BRO-3438: the DEFAULT stays 2 so backlog-drain.js's own
+  // drain is untouched — the morning digest opts into a higher ceiling by
+  // PASSING concurrencyCap (send-morning-digest.js's DIGEST_CONCURRENCY_CAP),
+  // because per-dispatcher throughput policy belongs to the dispatcher, not to
+  // this shared library (second-opinion design finding, 2026-09-20).
   concurrencyCap = DEFAULT_CONCURRENCY_CAP,
   spendThresholdUSD = DEFAULT_SPEND_THRESHOLD_USD,
 } = {}) {
@@ -920,10 +953,16 @@ function runAutofix({
     // happen so the preview is honest about the new behavior. Does NOT model
     // the spend/concurrency guards below (BRO-3412): dry-run was already an
     // approximation (no real fileCard/dispatch calls either), so it can show
-    // up to `cap` simulated dispatches even where a live run would cap lower
-    // or halt entirely on a tripped breaker.
+    // up to this ceiling simulated dispatches even where a live run would cap
+    // lower (jobs already alive) or halt entirely on a tripped breaker.
+    //
+    // BRO-3438: the ceiling is min(cap, concurrencyCap), not `cap`. A live run
+    // can never exceed concurrency headroom, so a dry-run that ignores the
+    // concurrency cap entirely overstates the preview by exactly the gap
+    // between the two numbers — harmless while they were 3 and 2, misleading
+    // the moment a caller raises one without the other.
     for (const row of plan) if (row.state === 'needs-card') row.state = 'card-filed';
-    let budget = cap;
+    let budget = Math.max(0, Math.min(cap, concurrencyCap));
     for (const row of plan) if (row.state === 'queued' && budget > 0) { row.state = 'dispatched'; budget--; }
     return plan;
   }
@@ -1068,11 +1107,29 @@ function runAutofix({
 
   // 5. Dispatch the first `cap` queued rows, bounded by remaining
   //    concurrency headroom and halted entirely by the spend breaker.
-  //    NOTE: DEFAULT_CONCURRENCY_CAP (2) < DISPATCH_CAP (3) — even with zero
-  //    concurrent jobs, budget maxes at 2, not 3. DISPATCH_CAP is not dead:
-  //    it still bounds a run once concurrencyCap is raised (an owner call,
-  //    not this card's).
-  let budget = breaker.halt ? 0 : Math.min(cap, Math.max(0, concurrencyCap - concurrency.alive));
+  //    BRO-3438: the caller now picks concurrencyCap (send-morning-digest.js
+  //    passes DIGEST_CONCURRENCY_CAP=3, raised from the shared default of 2 on
+  //    owner approval 2026-09-15). DISPATCH_CAP (3) and that cap are equal on
+  //    purpose — an idle morning dispatches 3, and neither number is a dead
+  //    constant that silently caps the other. Raising throughput further is a
+  //    machine-pressure decision (swap, not disk — see the card), not a digit.
+  //
+  //    concurrency.alive is null on the guard-computation-failure path above.
+  //    `concurrencyCap - null` evaluates to concurrencyCap (a FULL budget), so
+  //    the only thing standing between a failed guard and an unbounded run is
+  //    breaker.halt happening to be true in the same catch. Fail closed here
+  //    explicitly instead of relying on that coincidence (second-opinion
+  //    blocker, 2026-09-20): a non-finite alive count means "assume no
+  //    headroom", which floors the budget at 0.
+  const aliveForBudget = Number.isFinite(concurrency.alive) ? concurrency.alive : concurrencyCap;
+  let budget = breaker.halt ? 0 : Math.min(cap, Math.max(0, concurrencyCap - aliveForBudget));
+  // The stagger below is "how many have I dispatched so far", which is
+  // (starting budget - remaining budget). It used to read (cap - budget), which
+  // is only the same thing while budget STARTS at cap — i.e. only while
+  // concurrencyCap >= cap. The moment concurrency headroom binds (2 alive jobs,
+  // say), every dispatch in the run inherits a phantom offset: at cap=3 with
+  // budget starting at 1, the first dispatch would sleep 90s instead of 45s.
+  const startBudget = budget;
   for (const row of plan) {
     if (row.state === 'in-progress' || row.state === 'card-failed' || row.state === 'acknowledged' || row.state === 'decision') continue;
     if (!row.taskId) {
@@ -1128,7 +1185,7 @@ function runAutofix({
       // one of these rows carries PARKED_SENTINEL — a second, independent
       // guard from autofixFiledIssueGuard. Without this every dispatch here
       // was spawned only to be refused inside the detached child.
-      dispatchFn(row.taskId, log, (cap - budget) * 45, model, { allowAutofixFiled: true, allowAutomationParked: true });
+      dispatchFn(row.taskId, log, (startBudget - budget) * 45, model, { allowAutofixFiled: true, allowAutomationParked: true });
       row.state = 'dispatched';
       row.attempt = attempt;
       if (model) row.model = model;

@@ -325,6 +325,17 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
   for (const { dispatch: d, cardId, job, kind } of decisions) {
     if (kind === dispatchReconcile.DECISION_KINDS.ORPHAN) {
       newEntries.push({
+      // ts (BRO-3868 regression fix, 2026-09-20): stamp the outcome at the
+      // moment it is DECIDED, not only when a copy of it is serialized to
+      // disk. These rows are handed straight to attempt-memory's checkPark
+      // in memory (ledgerEntries.concat(newOutcomes)), and BRO-3868's new
+      // finite-ts guard drops any row it cannot place chronologically — so
+      // an unstamped row silently vanished from the very fail-streak it was
+      // created to record, and nothing ever parked. Verified: the park
+      // end-to-end test went red on main the moment that guard landed.
+      // appendLedger's own `{ ts: <now>, ...entry }` spread preserves this
+      // value, so the persisted ts now equals the in-memory one.
+      ts: now.toISOString(),
         // usd: 0 (BRO-3454) — no job ever spawned, so no cost was incurred.
         // Mirrors digest-autofix.js's reconcileDigestOutcomes ORPHAN branch.
         event: 'card-fail', cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts, usd: 0,
@@ -336,6 +347,17 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
       // The retry chain ended at 'job-retried' and no successor spawned inside
       // the orphan bound: the resume child died before spawning, so it fails.
       newEntries.push({
+      // ts (BRO-3868 regression fix, 2026-09-20): stamp the outcome at the
+      // moment it is DECIDED, not only when a copy of it is serialized to
+      // disk. These rows are handed straight to attempt-memory's checkPark
+      // in memory (ledgerEntries.concat(newOutcomes)), and BRO-3868's new
+      // finite-ts guard drops any row it cannot place chronologically — so
+      // an unstamped row silently vanished from the very fail-streak it was
+      // created to record, and nothing ever parked. Verified: the park
+      // end-to-end test went red on main the moment that guard landed.
+      // appendLedger's own `{ ts: <now>, ...entry }` spread preserves this
+      // value, so the persisted ts now equals the in-memory one.
+      ts: now.toISOString(),
         // usd (BRO-3454): the timed-out attempt's own cost, same field
         // digest-autofix.js's RETRY_TIMEOUT branch records.
         event: 'card-fail', cardId, contentHash: d.contentHash, judgedDispatchTs: d.ts, usd: Number(job.costUSD) || 0,
@@ -359,6 +381,17 @@ function reconcileOutcomes(ledgerEntries, dispatchLedgerEntries, now = new Date(
     // this wiring-only card.
     const outcome = job.event === dispatchLedger.JOB_EVENTS.DONE ? 'card-pass' : 'card-fail';
     newEntries.push({
+      // ts (BRO-3868 regression fix, 2026-09-20): stamp the outcome at the
+      // moment it is DECIDED, not only when a copy of it is serialized to
+      // disk. These rows are handed straight to attempt-memory's checkPark
+      // in memory (ledgerEntries.concat(newOutcomes)), and BRO-3868's new
+      // finite-ts guard drops any row it cannot place chronologically — so
+      // an unstamped row silently vanished from the very fail-streak it was
+      // created to record, and nothing ever parked. Verified: the park
+      // end-to-end test went red on main the moment that guard landed.
+      // appendLedger's own `{ ts: <now>, ...entry }` spread preserves this
+      // value, so the persisted ts now equals the in-memory one.
+      ts: now.toISOString(),
       // usd (BRO-3454): what this dispatch actually cost, so
       // computeSpendCircuitBreaker (called from main() below) has something
       // to sum — this ledger never recorded cost before.

@@ -365,9 +365,23 @@ test('runAutofix dry-run: never spawns, caps dispatches at DISPATCH_CAP', () => 
   const plan = Array.from({ length: DISPATCH_CAP + 2 }, (_, i) => ({
     name: `N${i}`, message: 'm', title: `BSC Daily: N${i}`, state: 'queued', taskId: i + 1,
   }));
-  const out = runAutofix({ plan, dryRun: true });
+  // BRO-3438: dry-run's ceiling is min(cap, concurrencyCap) — a preview that
+  // ignored concurrency headroom claimed 3 dispatches on a path that could
+  // only ever make 2. Pass the digest's own ceiling so DISPATCH_CAP is the
+  // thing under test here, exactly as the name says.
+  const out = runAutofix({ plan, dryRun: true, concurrencyCap: DISPATCH_CAP });
   assert.equal(out.filter(r => r.state === 'dispatched').length, DISPATCH_CAP);
   assert.equal(out.filter(r => r.state === 'queued').length, 2);
+
+  // ...and with NO concurrencyCap passed, the preview must fall back to the
+  // shared default, not to `cap` (ship-check finding: passing the cap above
+  // left the default path uncovered, which is the path every caller that
+  // forgets the option takes).
+  const bare = Array.from({ length: DISPATCH_CAP + 2 }, (_, i) => ({
+    name: `M${i}`, message: 'm', title: `BSC Daily: M${i}`, state: 'queued', taskId: 100 + i,
+  }));
+  const bareOut = runAutofix({ plan: bare, dryRun: true });
+  assert.equal(bareOut.filter(r => r.state === 'dispatched').length, Math.min(DISPATCH_CAP, DEFAULT_CONCURRENCY_CAP));
 });
 
 // ── buildCardNotes: must satisfy BOTH downstream gates ──────────────────────
@@ -980,7 +994,7 @@ test('every repo-wide dispatchDetached call site passes allowAutofixFiled (BRO-2
       // Drop the `dispatchFn = dispatchDetached` bindings for the same reason.
       .replace(/dispatchFn\s*[=|]{1,2}[^;\n]*dispatchDetached[^;\n]*/g, '');
     // Match to the statement's closing `);` rather than the first `)` — a real
-    // call site contains nested parens (`(cap - budget) * 45`). The `+` before
+    // call site contains nested parens (`(startBudget - budget) * 45`). The `+` before
     // it also skips the bare "dispatchDetached()" form prose uses to name the
     // function in comments, which is not a call site.
     const calls = src.match(/(?:dispatchDetached|dispatchFn)\([\s\S]+?\);/g) || [];
@@ -1019,7 +1033,9 @@ test('runAutofix: passes allowAutofixFiled to the dispatcher for its own filed r
 // digest-autofix.js had neither guard its sibling scripts/backlog-drain.js
 // has — see that file's computeSpendCircuitBreaker/computeConcurrency. Wired
 // at the SAME shared default thresholds (DEFAULT_SPEND_THRESHOLD_USD=$12,
-// DEFAULT_CONCURRENCY_CAP=2), never new numbers, and DISPATCH_CAP is untouched.
+// DEFAULT_CONCURRENCY_CAP=2). BRO-3438 left those defaults alone and moved the
+// digest's own ceiling to its caller (send-morning-digest.js's
+// DIGEST_CONCURRENCY_CAP=3) — see the BRO-3438 block at the end of this file.
 
 test('runAutofix: spend circuit breaker tripped — dispatches ZERO rows even with dispatch-count budget and concurrency headroom available', () => {
   const ledgerPath = tmpLedgerPath();
@@ -1166,4 +1182,134 @@ test('readJsonlLedger keeps two distinct rows for the same card (real repeat fai
   appendRaw(ledgerPath, { event: 'card-fail', cardId: '1', contentHash, note: 'fail 2' });
   const rows = readJsonlLedger(ledgerPath);
   assert.equal(rows.length, 2, 'distinct real events (different ts, appendJsonlLedger stamps each) must never be deduped away');
+});
+
+// ── BRO-3438: digest throughput ceiling ─────────────────────────────────────
+// The morning digest dispatched exactly 2 auto-fix jobs a day — not because
+// DISPATCH_CAP (3) said so, but because the budget is
+// min(cap, concurrencyCap - alive) and concurrencyCap defaulted to
+// backlog-drain.js's shared DEFAULT_CONCURRENCY_CAP (2). Raising DISPATCH_CAP
+// alone would therefore have shipped as a NO-OP. These tests pin the three
+// things that made it a no-op, so a future edit can't quietly re-introduce any
+// of them.
+
+test('runAutofix: dispatch budget follows concurrencyCap, not the shared default — the digest can work 3 rows on an idle morning', () => {
+  const ledgerPath = tmpLedgerPath();
+  const dispatchCalls = [];
+  const plan = [1, 2, 3, 4].map(n => ({
+    name: `Row ${n}`, message: 'm', title: `BSC Daily: Row ${n}`, state: 'queued', taskId: 900 + n, conditionKey: `k:${n}`,
+  }));
+  runAutofix({
+    plan, dryRun: false,
+    loadTasksFn: () => plan.map(r => ({ id: r.taskId, status: 'pending', subject: r.title })),
+    ledgerPath,
+    dispatchLedgerEntriesFn: () => [], // zero jobs alive — concurrency is not the limiter
+    dispatchFn: (...args) => dispatchCalls.push(args),
+    concurrencyCap: 3,
+  });
+  assert.equal(dispatchCalls.length, 3,
+    'with concurrencyCap 3 and nothing alive the budget is 3 — if this reads 2, the caller-supplied cap is being ignored and the throughput raise is a no-op again');
+  assert.ok(DISPATCH_CAP >= 3,
+    'DISPATCH_CAP must not fall below the digest concurrency ceiling, or IT silently becomes the limiter instead');
+});
+
+test('runAutofix: stagger counts dispatches made, not cap-minus-budget — a bound concurrency ceiling must not inflate every sleep', () => {
+  const ledgerPath = tmpLedgerPath();
+  const dispatchCalls = [];
+  const plan = [1, 2].map(n => ({
+    name: `Row ${n}`, message: 'm', title: `BSC Daily: Row ${n}`, state: 'queued', taskId: 910 + n, conditionKey: `k:s${n}`,
+  }));
+  runAutofix({
+    plan, dryRun: false,
+    loadTasksFn: () => plan.map(r => ({ id: r.taskId, status: 'pending', subject: r.title })),
+    ledgerPath,
+    dispatchLedgerEntriesFn: () => [],
+    dispatchFn: (...args) => dispatchCalls.push(args),
+    cap: 8,             // deliberately far above the concurrency ceiling
+    concurrencyCap: 2,  // ...so the ceiling is what binds, the regression's trigger
+  });
+  assert.equal(dispatchCalls.length, 2);
+  // arg[2] is the stagger in seconds. Under the old `(cap - budget) * 45` these
+  // would have been (8-2)*45 = 270 and (8-1)*45 = 315 — five minutes of dead
+  // sleep bought by raising an unrelated constant.
+  assert.equal(dispatchCalls[0][2], 0, 'first dispatch of a run has nothing to collide with — no stagger');
+  assert.equal(dispatchCalls[1][2], 45, 'second dispatch is one 45s step behind the first, regardless of cap');
+});
+
+test('runAutofix --dry-run: preview ceiling is min(cap, concurrencyCap), never cap alone', () => {
+  const plan = [1, 2, 3, 4, 5].map(n => ({
+    name: `Row ${n}`, message: 'm', title: `BSC Daily: Row ${n}`, state: 'queued', taskId: 920 + n, conditionKey: `k:d${n}`,
+  }));
+  const out = runAutofix({ plan, dryRun: true, cap: 8, concurrencyCap: 3 });
+  assert.equal(out.filter(r => r.state === 'dispatched').length, 3,
+    'a dry-run that ignores concurrencyCap overstates the preview by exactly the gap between the two numbers');
+});
+
+test('runAutofix: a guard-computation failure dispatches ZERO rows (fail closed), and the budget never reads concurrency.alive raw', () => {
+  const ledgerPath = tmpLedgerPath();
+  const dispatchCalls = [];
+  const plan = [{ name: 'Row F', message: 'm', title: 'BSC Daily: Row F', state: 'queued', taskId: 931, conditionKey: 'k:f' }];
+  runAutofix({
+    plan, dryRun: false,
+    loadTasksFn: () => [{ id: 931, status: 'pending', subject: 'BSC Daily: Row F' }],
+    ledgerPath,
+    dispatchLedgerEntriesFn: () => { throw new Error('ledger unreadable'); },
+    dispatchFn: (...args) => dispatchCalls.push(args),
+    concurrencyCap: 3,
+  });
+  assert.equal(dispatchCalls.length, 0, 'guard computation failed — the run must dispatch nothing');
+
+  // The behavioural test above passes today only because the same catch that
+  // leaves concurrency.alive null ALSO leaves breaker.halt true. That is a
+  // coincidence of two independent guards, not a guarantee: `concurrencyCap -
+  // null` is `concurrencyCap`, i.e. a FULL budget. Pin the arithmetic itself so
+  // the fail-closed property survives any future change to the breaker.
+  const src = fs.readFileSync(path.join(__dirname, 'digest-autofix.js'), 'utf8');
+  assert.doesNotMatch(src, /concurrencyCap\s*-\s*concurrency\.alive/,
+    'budget must not subtract concurrency.alive directly — it is null on the guard-failure path, which silently yields a full budget');
+  assert.match(src, /Number\.isFinite\(concurrency\.alive\)/,
+    'budget must treat a non-finite alive count as "no headroom"');
+});
+
+test('send-morning-digest.js actually passes concurrencyCap to runAutofix — the whole point of BRO-3438', () => {
+  const src = fs.readFileSync(path.join(__dirname, '..', 'send-morning-digest.js'), 'utf8');
+  const call = (src.match(/runAutofix\(\{[\s\S]+?\}\);/) || [])[0];
+  assert.ok(call, 'send-morning-digest.js must contain a runAutofix({...}) call site');
+  assert.match(call, /concurrencyCap:/,
+    'the live digest must pass concurrencyCap — without it runAutofix falls back to backlog-drain.js\'s shared default of 2 and the raise is inert');
+  assert.match(src, /const DIGEST_CONCURRENCY_CAP = (\d+);/,
+    'the digest ceiling must be a named constant with the swap-pressure rationale beside it, not a bare literal');
+  const n = Number(src.match(/const DIGEST_CONCURRENCY_CAP = (\d+);/)[1]);
+  assert.ok(n > DEFAULT_CONCURRENCY_CAP, `DIGEST_CONCURRENCY_CAP (${n}) must exceed the shared default (${DEFAULT_CONCURRENCY_CAP}) or nothing changed`);
+  assert.ok(n <= DISPATCH_CAP, `DIGEST_CONCURRENCY_CAP (${n}) above DISPATCH_CAP (${DISPATCH_CAP}) would make DISPATCH_CAP the silent limiter — raise both together`);
+});
+
+// ── BRO-3868 regression: every reconciled outcome must carry its own ts ─────
+// The reconcilers hand their rows to attempt-memory's checkPark IN MEMORY
+// (ledgerEntries.concat(newOutcomes)) — only a copy is serialized to disk,
+// where appendLedger stamps a ts. BRO-3868 then added a finite-ts guard to
+// attemptOutcomesForCard, which silently DROPPED every one of those unstamped
+// in-memory rows, so a card's fail streak never accumulated and nothing ever
+// parked. That went red on main in tests/unit/linear-drain-parked.test.mjs
+// ("repeated real dispatches on unchanged content park on the 3rd tick").
+// Both reconcilers now stamp at decision time; this pins it.
+test('BRO-3868: reconcileDigestOutcomes stamps every row with a finite ts (checkPark drops rows without one)', () => {
+  const now = new Date('2026-09-20T12:00:00Z');
+  const contentHash = 'abc123';
+  const digestLedgerEntries = [
+    { ts: '2026-09-19T12:00:00Z', event: 'auto-dispatch', taskId: 'linear:BRO-1', cardId: 'linear:BRO-1', contentHash, jobId: null },
+  ];
+  const rows = reconcileDigestOutcomes(digestLedgerEntries, new Map(), [], now);
+  assert.ok(rows.length > 0, 'fixture must produce at least one reconciled outcome');
+  for (const r of rows) {
+    assert.ok(Number.isFinite(new Date(r.ts).getTime()),
+      `reconciled row has no usable ts, so attempt-memory will drop it and the card will never park: ${JSON.stringify(r)}`);
+  }
+  // And the rows must actually survive the guard they were being dropped by.
+  const { attemptOutcomesForCard } = require('./attempt-memory.js');
+  if (typeof attemptOutcomesForCard === 'function') {
+    const kept = attemptOutcomesForCard(digestLedgerEntries.concat(rows), 'linear:BRO-1');
+    assert.equal(kept.length, rows.filter(r => r.event === 'card-fail' || r.event === 'card-pass').length,
+      'every reconciled outcome must reach attempt-memory — this is the exact count that silently went to zero');
+  }
 });

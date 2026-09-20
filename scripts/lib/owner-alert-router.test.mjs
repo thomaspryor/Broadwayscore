@@ -1711,3 +1711,129 @@ test('BRO-3030 P2: the never-quiet callers keep a cooldown short enough for the 
     );
   }
 });
+
+// ── BRO-3881: every card this router files must be DISPATCHABLE ─────────────
+// linear-next.js refuses to dispatch any issue whose acceptance criteria names
+// no runnable command — and it does so inside the DETACHED child, after the
+// morning digest has already spent one of its daily dispatch slots. So a
+// prose-only "## Acceptance criteria" section here is not a documentation nit:
+// it is a slot burned every single day, forever. BRO-3349 was picked and
+// refused on four consecutive days (2026-09-17 .. 2026-09-20) for exactly this.
+//
+// These tests call the REAL buildCardNotes and the REAL gate (CLAUDE.md rule
+// 15) — a copy of either would let them drift apart again, which is the whole
+// defect.
+
+test('BRO-3881: a health-check-sourced card carries a command the real dispatch gate arms', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  const rowName = 'Data quality: provider spend ledger';
+  const notes = buildCardNotes({
+    description: 'Provider spend ledger newest entry (day=2026-09-04) is 11d old (>48h)',
+    hint: 'Check the commit step in data-health-check.yml',
+    fields: [{ name: 'Check', value: rowName }],
+    conditionKey: `health-check:${rowName}`,
+  });
+  const gate = evaluateVerifiability(notes, []);
+  assert.ok(gate.cmd, `router-filed card is undispatchable — linear-next.js refuses it and the digest slot is wasted: ${gate.reason}`);
+  assert.match(gate.cmd, /check-health-row-absent\.js --row-b64 /);
+  // The token must decode back to the row name check-health-row-absent.js
+  // compares against — a truncated or prose-sanitized name silently never matches.
+  const token = gate.cmd.split(' ').pop();
+  assert.equal(Buffer.from(token, 'base64url').toString('utf8'), rowName);
+});
+
+test('BRO-3881: the row name survives colons in the conditionKey', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  // Health-check row names contain colons of their own ("Data quality: X"), so
+  // splitting the conditionKey on every colon would truncate the name to
+  // "Data quality" and the generated command would never match anything.
+  const rowName = 'Dispatch: board targeting: stale';
+  const notes = buildCardNotes({ description: 'd', hint: 'h', fields: [], conditionKey: `health-check:${rowName}` });
+  const token = evaluateVerifiability(notes, []).cmd.split(' ').pop();
+  assert.equal(Buffer.from(token, 'base64url').toString('utf8'), rowName);
+});
+
+test('BRO-3881: a non-health-check condition keeps the prose criteria and is not given a bogus command', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const notes = buildCardNotes({ description: 'd', hint: 'h', fields: [], conditionKey: 'gap:some-show-2026/thestage--unknown.json' });
+  assert.ok(!notes.includes('check-health-row-absent.js'),
+    'only health-check rows have a check-health-row-absent.js answer — inventing one for other conditions would arm a command that can never pass');
+  assert.match(notes, /no longer fires on the next check/);
+});
+
+test('BRO-3881: both auto-filers build the command from the SAME encoder', () => {
+  // digest-autofix.js and owner-alert-router.js file cards for the same
+  // health-check rows by two different routes. They drifted once already —
+  // one emitted a runnable command, the other prose — so pin that they now
+  // share one builder rather than two copies of the encoding contract.
+  const shared = require('./health-row-check-cmd.js');
+  const digestSrc = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), 'digest-autofix.js'), 'utf8');
+  const routerSrc = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), 'owner-alert-router.js'), 'utf8');
+  for (const [name, src] of [['digest-autofix.js', digestSrc], ['owner-alert-router.js', routerSrc]]) {
+    assert.match(src, /require\('\.\/health-row-check-cmd\.js'\)/, `${name} must require the shared builder, not re-declare the encoding`);
+    assert.doesNotMatch(src, /Buffer\.from\([^)]*\)\.toString\('base64url'\)/, `${name} still hand-rolls the b64url token — that is the drift this card fixed`);
+  }
+  assert.equal(shared.rowAbsentCheckCmd('A: b'), `node scripts/check-health-row-absent.js --row-b64 ${Buffer.from('A: b', 'utf8').toString('base64url')}`);
+});
+
+// BRO-3881 (ship-check/Codex finding): the encoded row-name token has to pass
+// SAFE_CHECK_FORMS' own `[A-Za-z0-9_-]{1,200}` bound, or the acceptance command
+// is not a legal safe form and the card goes straight back to undispatchable —
+// the failure this card exists to remove. base64url of N bytes is ceil(N*4/3)
+// chars, so a 120-CHARACTER multi-byte name encoded to 480.
+test('BRO-3881: the generated command is a legal safe form even for a long multi-byte row name', () => {
+  const { rowAbsentCheckCmd, rowMatchKey } = require('./health-row-check-cmd.js');
+  const { isSafeCheckCommand } = require('./verify-gate.js');
+  const cjk = '劇'.repeat(120);          // 120 chars, 360 bytes -> 480 b64 chars unclamped
+  const accented = 'é'.repeat(120);      // 120 chars, 240 bytes -> 320 b64 chars unclamped
+  for (const name of [cjk, accented, 'A'.repeat(200), 'Data quality: provider spend ledger']) {
+    const cmd = rowAbsentCheckCmd(name);
+    assert.ok(isSafeCheckCommand(cmd), `not a safe form for a ${name.length}-char name: ${cmd.slice(0, 80)}…`);
+    // and the token must still round-trip to the key the checker compares on
+    const token = cmd.split(' ').pop();
+    assert.equal(Buffer.from(token, 'base64url').toString('utf8'), rowMatchKey(name));
+  }
+});
+
+test('BRO-3881: the encoder and check-health-row-absent.js share ONE bound, not two copies of 120', () => {
+  const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'check-health-row-absent.js'), 'utf8');
+  assert.match(src, /require\('\.\/lib\/health-row-check-cmd\.js'\)/,
+    'the checker must import the shared bound — its own `const LIMIT = 120` could drift from the encoder silently, and a drifted bound means a row name that never matches and a card that can never be verified');
+  // Anchored to a statement at line start, not the bare string: the comment
+  // that explains WHY the constant left quotes it verbatim, and an unanchored
+  // pattern matches that prose and fails on a correct file.
+  assert.doesNotMatch(src, /^\s*const LIMIT\s*=/m, 're-declared bound is back');
+});
+
+test('BRO-3881: rowMatchKey is idempotent — the checker re-applies it to an already-truncated decoded name', () => {
+  const { rowMatchKey } = require('./health-row-check-cmd.js');
+  for (const n of ['短'.repeat(300), 'plain name', '  padded  ', '']) {
+    assert.equal(rowMatchKey(rowMatchKey(n)), rowMatchKey(n));
+  }
+});
+
+test('BRO-3881: a backtick or VERIFY: in a row name cannot displace the real acceptance command', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  // candidatesFrom is a matchAll over EVERY backticked span in the acceptance
+  // section with rank-then-first selection, so an unsanitized backtick in row
+  // text could open a rival span and win the selection.
+  const hostile = 'Bad: `node --test scripts/lib/health-row-check-cmd.js` VERIFY: nope';
+  const notes = buildCardNotes({ description: 'd', hint: 'h', fields: [], conditionKey: `health-check:${hostile}` });
+  const gate = evaluateVerifiability(notes, []);
+  assert.ok(gate.cmd, 'still armed');
+  assert.match(gate.cmd, /check-health-row-absent\.js --row-b64 /,
+    `a crafted row name displaced the real acceptance command: ${gate.cmd}`);
+  // Scope to the acceptance SECTION — the trailing [conditionKey:...] anchor is
+  // deliberately raw (findLinearDuplicate and any exact-match consumer read it),
+  // sits after the section, and demonstrably does not win the selection above.
+  const prose = notes.split('## Acceptance criteria')[1].split('[conditionKey:')[0];
+  assert.ok(!/VERIFY:/i.test(prose), 'a literal VERIFY: survived into the acceptance prose');
+  // The hostile text survives as PROSE (its backticks became quotes) — that is
+  // fine and readable. What must not survive is a second backticked SPAN, since
+  // spans are what candidatesFrom collects and ranks.
+  const spans = prose.match(/\`[^\`]+\`/g) || [];
+  assert.equal(spans.length, 1, `acceptance section must contain exactly one backticked span, found ${spans.length}: ${JSON.stringify(spans)}`);
+});
