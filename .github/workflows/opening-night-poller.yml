@@ -1006,7 +1006,10 @@ jobs:
 
       - name: Notify on failure
         id: notify
-        if: failure()
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 100 reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # silently drop this critical alert.
+        if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
         with:
           title: 'Opening Night Poller Failed'

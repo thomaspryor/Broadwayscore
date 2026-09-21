@@ -425,7 +425,10 @@ jobs:
           push-retry-args: "8 main"
 
       - name: Notify on gather failure
-        if: failure()
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 55 reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # silently drop this critical alert.
+        if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
         with:
           title: 'Gather Reviews Failed (gather job)'

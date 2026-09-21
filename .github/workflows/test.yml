@@ -1136,6 +1136,13 @@ on:
       # needed. Registered explicitly in the unit-test node --test list below
       # (top-level scripts/*.test.mjs is not globbed).
       - 'scripts/send-opening-digest.test.mjs'
+      # BRO-3707: scans every .github/workflows/*.yml (already covered by the
+      # '.github/workflows/**' glob below) for severity:'critical' Notify-on-
+      # failure steps missing cancelled() coverage. Registered explicitly in
+      # the unit-test node --test list below (top-level scripts/*.test.mjs is
+      # not globbed); its scripts/lib/critical-workflow-notify-cancelled.js
+      # helper is already covered by the 'scripts/lib/**' glob above.
+      - 'scripts/critical-workflow-alert-conditions.test.mjs'
       # Genre classifier (non-theatrical routing, mirror of src/lib/genre.ts) +
       # its colocated parity/FP test, and the discovery writer that tags new
       # shows. Without these path entries a solo edit triggers ZERO CI.

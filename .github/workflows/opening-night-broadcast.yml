@@ -1442,7 +1442,12 @@ jobs:
       # gate flag set still pages normally.
       - name: Notify on failure
         id: notify
-        if: failure() && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 24 reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # silently drop this critical alert. The gate outputs stay a safe
+        # AND-guard on cancellation too: a cancelled gate step never sets its
+        # 'blocked' output, so the != 'true' checks still pass through.
+        if: (failure() || cancelled()) && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
         uses: ./.github/actions/notify-failure
         with:
           title: 'Opening Night Broadcast Failed'
