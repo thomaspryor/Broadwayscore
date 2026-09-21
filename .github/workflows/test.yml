@@ -2491,6 +2491,13 @@ on:
       - 'scripts/dispatch-watchdog.js'
       - 'scripts/tests/dispatch-watchdog-core.test.mjs'
       - 'scripts/tests/dispatch-outcome.test.mjs'
+      # BRO-3923: digest-autofix never files a "BSC Daily: Watchdog parked
+      # #<bare numeric>" tracker for the frozen Notion mirror. The guard lib
+      # (scripts/lib/digest-autofix-mirror-park-guard.js) is auto-covered by
+      # the scripts/lib/** glob above; its test lives in scripts/tests/ (not
+      # globbed, same gap shape as dispatch-watchdog-core.test.mjs above) so
+      # it's registered in tests/unit-test-manifest.txt AND path-listed here.
+      - 'scripts/tests/digest-autofix-mirror-park-guard.test.mjs'
       # The digest sibling was missed when the pair above was listed: grep for
       # "dispatch-outcome-digest" across .github/workflows/ returned NOTHING,
       # so neither the lib nor its test could trigger any workflow. The test is

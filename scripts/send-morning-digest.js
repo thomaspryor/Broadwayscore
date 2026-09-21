@@ -70,6 +70,7 @@ const { assessCyrusRelay } = require('./lib/cyrus-relay-health.js');
 const { assessRunnerHealth } = require('./lib/cyrus-runner-health.js');
 const { assessSupervisorStatus } = require('./lib/pr-supervisor-core.js');
 const { fetchInflowCounts, assessInflowRatio } = require('./lib/backlog-inflow-ratio.js');
+const { doneRatePerDay, fetchUnarmedUrgentHighCount, formatDrainThroughputLine, isHeartbeatFresh } = require('./lib/linear-drain-throughput.js');
 
 // Task #1220/BRO-230 (ship-check adversarial finding): health.errors can
 // NEVER carry the "Autofix: jobs actually succeeding" row in the normal case
@@ -442,7 +443,7 @@ function buildSubject({ health = null, autofixRows = null, awaitingOwner = null,
 // Sections render via the SAME exported block renderers the old email used —
 // identical visual output for the parts the owner kept, none of the loop
 // parts. `changes` is overnight-digest.js's pre-rendered HTML block (or null).
-function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, now = new Date() } = {}) {
+function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
   }).format(now);
@@ -571,6 +572,14 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
     const prefix = inflow.status === 'error' || inflow.status === 'watch' ? '⚠️ ' : '';
     blocks.push(`<p style="font-size:12px;color:${colour};margin:0 0 12px;">${prefix}${esc(inflow.message)}</p>`);
   }
+  // Linear drain throughput (BRO-3923 R6) — a STANDING line next to the
+  // inflow row above, same reasoning: Done/day, watchdog-eligible queue
+  // depth, and unarmed Urgent/High count are exactly the numbers that would
+  // have caught "the drain hasn't moved in weeks" before it took a hand
+  // audit (31 mis-filed trackers) to notice.
+  if (drainThroughputLine) {
+    blocks.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(drainThroughputLine)}</p>`);
+  }
   if (sections.needsYou) blocks.push(renderNamedDigestBlock('Needs your decision', sections.needsYou));
   // Waiting on your approval (BRO-282) — Linear issues carrying the
   // 'awaiting-owner' label (work finished, blocked on a plain-language yes,
@@ -644,7 +653,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
 // would not have caught that, which is exactly what happened (renderer unit
 // buttons per the 2026-08-02 owner mandate — autofix runs in main().)
 function composeDigestEmail({
-  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, now = new Date(),
+  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, now = new Date(),
   dispatchSecret = process.env.APPROVAL_HMAC_SECRET, dispatchConfigPath = DISPATCH_CONFIG_PATH,
 } = {}) {
   // Digest v3 (owner mandate 2026-08-02, his FIFTH escalation): no Fix-this
@@ -676,7 +685,7 @@ function composeDigestEmail({
   }
 
   const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, now });
-  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, now });
+  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, now });
   return { subject, html };
 }
 
@@ -943,6 +952,11 @@ async function main() {
   // because this walks four paginated counts, not one list; both are wrapped
   // locally rather than by changing listOpenIssues()'s shared retry defaults.
   let inflow = null;
+  // Captured alongside `inflow` (BRO-3923 R6) so the drain-throughput block
+  // just below can re-derive "Done/day" from the SAME completed/windowDays
+  // pair rather than issuing a second live completedAt query for a number
+  // this fetch already has.
+  let inflowCounts = null;
   try {
     const { graphql } = require('./lib/linear-client.js');
     const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms));
@@ -953,6 +967,7 @@ async function main() {
     // consumer of the Notion read-only flip report success while dead.
     const counts = await Promise.race([fetchInflowCounts({ graphql, now: new Date() }), timeout(20_000)]);
     inflow = assessInflowRatio(counts);
+    inflowCounts = counts;
   } catch (err) {
     const why = String(err.message).slice(0, 120);
     console.error(`[digest] WARN backlog inflow ratio failed: ${why}`);
@@ -966,6 +981,52 @@ async function main() {
       ratio: null,
       message: `Backlog inflow: could not be measured this morning (${why}). This row is not "no news" — nobody is watching the create-to-close rate until it comes back.`,
     };
+  }
+
+  // Linear drain throughput (BRO-3923 R6): "Done/day" is re-derived from
+  // inflowCounts above (no extra query — see linear-drain-throughput.js's
+  // header for why job-done/Notion-mirror sources were rejected). The
+  // watchdog's own eligible-queue count is read from its heartbeat file (the
+  // live 👑 OWNER watchdog tab already computes it every ~90s), and the
+  // unarmed Urgent/High count is the one NEW live query this block adds.
+  // Fail-soft, same shape as inflow above — a degraded read must not block
+  // the 7:30am send, and must not silently drop the line either.
+  let drainThroughputLine = null;
+  try {
+    const { graphql } = require('./lib/linear-client.js');
+    const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms));
+    const unarmed = await Promise.race([fetchUnarmedUrgentHighCount({ graphql }), timeout(20_000)]);
+
+    let eligible = null;
+    let eligibleOk = false;
+    try {
+      const { HEARTBEAT_PATH } = require('./dispatch-watchdog.js');
+      const hb = JSON.parse(fs.readFileSync(HEARTBEAT_PATH, 'utf8'));
+      if (hb && hb.linearSource && hb.linearSource.ok && isHeartbeatFresh(hb.ts) && Number.isFinite(hb.linearSource.eligible)) {
+        eligible = hb.linearSource.eligible;
+        eligibleOk = true;
+      }
+    } catch { /* heartbeat missing/stale/unreadable — renders as n/a below, not a thrown error */ }
+
+    drainThroughputLine = formatDrainThroughputLine({
+      donePerDay: inflowCounts
+        ? doneRatePerDay(inflowCounts.completed, inflowCounts.windowDays, {
+            // A truncated `completed` count is a FLOOR (backlog-inflow-ratio.js's
+            // fetchInflowCounts), not the real number — must render n/a, not an
+            // understated rate presented as exact (ship-check/Codex finding).
+            truncated: Array.isArray(inflowCounts.truncatedCounts) && inflowCounts.truncatedCounts.includes('completed'),
+          })
+        : null,
+      windowDays: inflowCounts ? inflowCounts.windowDays : null,
+      eligible,
+      eligibleOk,
+      unarmedCount: unarmed.ok ? unarmed.count : null,
+    });
+    console.log(`[digest] ${drainThroughputLine}`);
+  } catch (err) {
+    const why = String(err.message).slice(0, 120);
+    console.error(`[digest] WARN linear drain throughput failed: ${why}`);
+    drainThroughputLine = `Linear drain: could not be measured this morning (${why}).`;
   }
 
   const problemsNote = describeProblems(problems);
@@ -1097,7 +1158,7 @@ async function main() {
   } catch { /* optional */ }
 
   const now = new Date();
-  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, now });
+  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, now });
 
   // Card #670/#1641: pre-send content check. Never blocks the SEND itself
   // (the digest must always send — a broken invariant check must not turn
