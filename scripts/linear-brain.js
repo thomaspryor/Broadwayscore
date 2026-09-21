@@ -27,6 +27,7 @@ const linearClient = require('./lib/linear-client');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
 const { makeVerifyEvidence } = require('./lib/done-evidence-verify');
 const { makeVerifyCmdEvidence } = require('./lib/linear-cmd-execution');
+const { appendBypassRow } = require('./lib/linear-gate-bypass-ledger');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 const { TERMINAL_STATE_TYPES, newestComments } = require('./lib/linear-staleness-check');
 
@@ -37,7 +38,7 @@ Usage:
     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>]
   node scripts/linear-brain.js find "search term"
   node scripts/linear-brain.js update <BRO-N> [--state "<name>"] [--comment "<text>"] \\
-    [--force "<reason ≥10 chars>"] [--duplicate-of <BRO-N>]
+    [--force "<reason ≥10 chars>"] [--duplicate-of <BRO-N>] [--cancel-reason "<reason ≥20 chars>"]
 
   node scripts/linear-brain.js --probe [--timeout-ms N]
 
@@ -69,6 +70,12 @@ Usage:
           --duplicate-of is passed without a duplicate-type --state, rather
           than ignoring it. Kill switch: LINEAR_DUPLICATE_GATE_DISABLED=1
           (BRO-343).
+          Moving into a CANCELED-type state is REFUSED (exit 7) unless
+          --cancel-reason "<reason ≥20 chars>" is given — a card refused a
+          Done close can otherwise leave the open board via Cancel with zero
+          evidence ever checked. Kill switch: LINEAR_CANCEL_GATE_DISABLED=1
+          (BRO-3435). Every --force / *_GATE_DISABLED=1 bypass of the Done
+          gate is logged to data/audit/linear-gate-bypass.jsonl.
 `;
 
 function parseArgs(argv) {
@@ -254,6 +261,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       DUPLICATE_STATE_TYPE,
       checkLinearDuplicateTransition,
     } = require('./lib/linear-duplicate-gate');
+    const {
+      CANCELED_STATE_TYPE,
+      checkLinearCancelTransition,
+    } = require('./lib/linear-cancel-gate');
     try {
       const issue = await getIssueFn(identifier);
       if (!issue) {
@@ -301,6 +312,24 @@ async function main(argv = process.argv.slice(2), deps = {}) {
           args.force && typeof args.force === 'string' && args.force.length >= 10 ? args.force : null;
         if (args.force && !bypassReason) {
           console.error('⚠️  --force ignored by done-semantics gate: the reason must be a string of ≥10 characters.');
+        }
+        // BRO-3435: record every bypass, whether or not the gate would have
+        // refused anyway — the open question this exists to answer
+        // ("is --force the ROUTINE path for a whole class of work, e.g.
+        // data-repo closes the gate's own ancestry check can never verify?")
+        // needs USE counted, not just refusals dodged. Best-effort: a ledger
+        // write must never block or fail a real state transition.
+        const envDisabled = !bypassReason && process.env.LINEAR_DONE_GATE_DISABLED === '1';
+        if (bypassReason || envDisabled) {
+          try {
+            (deps.appendBypassRow || appendBypassRow)({
+              identifier: issue.identifier,
+              gate: 'done',
+              mechanism: bypassReason ? 'force' : 'env-disabled',
+              reason: bypassReason,
+              targetState: target.name,
+            });
+          } catch { /* diagnostic only — never block the transition */ }
         }
         if (!bypassReason && process.env.LINEAR_DONE_GATE_DISABLED !== '1') {
           const commentText = typeof args.comment === 'string' ? args.comment : '';
@@ -418,6 +447,42 @@ async function main(argv = process.argv.slice(2), deps = {}) {
           duplicateTwin = duplicateRelation.identifier;
         } else {
           duplicateTwin = dupGate.existingTarget;
+        }
+      }
+
+      // BRO-3435: a card refused a Done close by the completed-type gate
+      // above could otherwise leave the open board via Cancel with zero
+      // evidence ever checked — same practical outcome (off the board), and
+      // audit-done-evidence.js's nightly sweep only re-verifies Done cards,
+      // so a Canceled one is invisible to it too. Require a reason instead;
+      // see linear-cancel-gate.js's header for the full rationale and why
+      // this is deliberately narrower than the done-gate (no server-side
+      // precondition to mirror, so no partial-write ordering hazard).
+      if (isRealTransition && target.type === CANCELED_STATE_TYPE) {
+        const cancelGate = checkLinearCancelTransition({
+          targetStateType: target.type,
+          cancelReason: args['cancel-reason'],
+        });
+        const cancelGateDisabled = process.env.LINEAR_CANCEL_GATE_DISABLED === '1';
+        if (!cancelGate.allowed && cancelGateDisabled) {
+          console.error(`⚠️  LINEAR_CANCEL_GATE_DISABLED=1 — proceeding past ${cancelGate.verdict}.`);
+          try {
+            (deps.appendBypassRow || appendBypassRow)({
+              identifier: issue.identifier,
+              gate: 'cancel',
+              mechanism: 'env-disabled',
+              targetState: target.name,
+            });
+          } catch { /* diagnostic only — never block the transition */ }
+        }
+        if (!cancelGate.allowed && !cancelGateDisabled) {
+          console.error(`\n❌ REFUSED (${cancelGate.verdict}) — ${issue.identifier} not moved to ${target.name}\n`);
+          console.error(cancelGate.reason);
+          console.error(
+            `\n  node scripts/linear-brain.js update ${issue.identifier} ` +
+              `--state ${target.name} --cancel-reason "<at least 20 characters>"\n`
+          );
+          process.exit(7);
         }
       }
 
