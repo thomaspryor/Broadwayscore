@@ -61,30 +61,6 @@
     "queuedAt": "2026-09-20T17:21:59.186Z"
   },
   {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 72.7% of shows changed coverage state",
-    "description": "review-gap blast radius 72.7% (24/33 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: amaze-magic-off-broadway-2025, america-who-hurt-you-off-broadway-2026, an-american-daughter-off-broadway-2026, cats-the-jellicle-ball-2026, conflicted-off-broadway-2026, darkling-off-west-end-2026, death-note-the-musical-west-end-2026, death-of-a-salesman-2026, gimme-a-sign-off-broadway-2026, golden-boy-off-west-end-2026, how-the-other-half-loves-west-end-2026, in-honor-of-jean-michel-basquiat-off-broadway-2026, jesus-christ-superstar-west-end-2026, million-dollar-quartet-off-west-end-2026, my-sons-a-queer-but-what-can-you-do-west-end-2026, pre-existing-condition-off-broadway-2026, shifters-off-broadway-2026, the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026, the-cherry-orchard-park-avenue-armory-off-broadway-2026, the-hope-theory-off-broadway-2026, the-pass-off-broadway-2026, the-winters-tale-off-broadway-2026, thelma-and-louise-a-new-musical-off-west-end-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nPARTIAL write: the other 9 show(s) audited this run were NOT risky and were persisted normally. Only the 24 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-20T19:22:00.471Z"
-  },
-  {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "8/138 show(s) differ between internal state and what prod serves.\nscore-drift: 8\nDarkling: score-drift\nKimberly Akimbo: score-drift\nA Month in the Country: score-drift\nMuch Ado About Nothing: score-drift\nOh, Mary!: score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-20T19:22:12.227Z"
-  },
-  {
     "conditionKey": "corpus-drift:critic-outlets",
     "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
     "description": "check-corpus-drift.js audit \"critic-outlets\" (node scripts/audit-critic-outlets.js --strict) has been drifting. Latest output:\n\n  Tony Marinelli at broadwayscorecard (4% share) for sukkot-off-broadway-2026\n    Primary: theater-scene (96%), total: 25 reviews\n  Pete Hempstead at whatsonstage (3% share) for the-lost-boys-2026\n    Primary: theatermania (98%), total: 40 reviews\n  Susannah Clapp at guardian (9% share) for much-ado-about-nothing-globe-off-west-end-2026\n    Primary: observer (91%), total: 32 reviews\n  Susannah Clapp at guardian (9% share) for stranger-things-the-first-shadow-west-end-2023\n    Primary: observer (91%), total: 32 reviews\n  Susannah Clapp at guardian (9% share) for sylvia-off-west-end-2026\n    Primary: observer (91%), total: 32 reviews\n  Patrick Ryan at tennessean (3% share) for gypsy-2024\n    Primary: usatoday (97%), total: 31 reviews\n  David Kaufman at nydailynews (4% share) for proof-2000\n    Primary: theater-scene (96%), total: 23 reviews\n  Emlyn Travis at amny (3% share) for cabaret-2024\n    Primary: ew (97%), total: 29 reviews\n  Shania Russell at cbsnews (10% share) for gypsy-2024\n    Primary: ew (90%), total: 21 reviews\n  Shania Russell at cbsnews (10% share) for spamalot-2005\n    Primary: ew (90%), total: 21 reviews\n  Frank J. Avella at edge-new-york (5% share) for heisenberg-2016\n    Primary: the-contending (95%), total: 21 reviews\n  Scott Matthewman at musical-theatre-review (5% share) for teeth-n-smiles-west-end-2026\n    Primary: thereviewshub (95%), total: 19 reviews\n  Markos Papadatos at truehollywoodtalk (4% share) for the-lost-boys-2026\n    Primary: digital-journal (96%), total: 28 reviews\n\n--report-only/--strict: No files written\n\n(33 baselined, 5 new)\n\n⚠️  NEW flagged review(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/critic-outlets-baseline.json):\n  David Barbour at theatermania (0% share) for the-39-steps-2008\n  Michael Dale at talkinbroadway (3% share) for benevolent-off-broadway-2026\n  Michael Dale at talkinbroadway (3% share) for camping-off-broadway-2026\n  Shania Russell at cbsnews (10% share) for gypsy-2024\n  Shania Russell at cbsnews (10% share) for spamalot-2005\n\nInvestigate the attribution, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-critic-outlets.js --update-baseline",
@@ -138,35 +114,6 @@
     "queuedAt": "2026-09-20T21:31:16.867Z"
   },
   {
-    "conditionKey": "t1-coverage:new-gaps-24h",
-    "title": "T1 Coverage — new gaps past 24h",
-    "description": "1 T1/T2 outlet(s) still missing >24h after they became measurable.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "The Pass — broadwaynews (900h)",
-        "value": "gh workflow run gather-reviews.yml -f shows=\"the-pass-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
-      }
-    ],
-    "queuedAt": "2026-09-20T22:08:38.293Z"
-  },
-  {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.1% (379/498)\noff-broadway: 42.5% (136/320)\nwest-end: 76.2% (423/555)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (900h)\nA Midsummer Night's Dream — observer (900h)\nA Midsummer Night's Dream — standard (900h)\nABBA Voyage — independent (900h)\nAladdin — ew (900h)\n… 175 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (900h)\nBuena Vista Social Club — nydailynews (900h)\nHadestown — nydailynews (900h)\nMasquerade — nydailynews (900h)\nMaybe Happy Ending — nydailynews (900h)\n… 10 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-20T22:08:38.387Z"
-  },
-  {
     "conditionKey": "land:land/worktree-bro-3873-step4",
     "title": "Landing blocked: unit-tests-node red on land/worktree-bro-3873-step4",
     "description": "land.yml did not land land/worktree-bro-3873-step4: the unit-tests-node gate went red at 95004699f6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35545268098",
@@ -194,5 +141,58 @@
       }
     ],
     "queuedAt": "2026-09-20T23:59:07.531Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 45.5% of shows changed coverage state",
+    "description": "review-gap blast radius 45.5% (15/33 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: amaze-magic-off-broadway-2025, an-american-daughter-off-broadway-2026, buena-vista-social-club-2025, cats-the-jellicle-ball-2026, cats-west-end-2026, death-note-the-musical-west-end-2026, death-of-a-salesman-2026, how-the-other-half-loves-west-end-2026, jesus-christ-superstar-west-end-2026, macbeth-off-broadway-2026, shifters-off-broadway-2026, the-great-gatsby-2024, the-pass-off-broadway-2026, the-winters-tale-off-broadway-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nPARTIAL write: the other 22 show(s) audited this run were NOT risky and were persisted normally. Only the 15 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-21T00:49:24.600Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "16/138 show(s) differ between internal state and what prod serves.\nscore-drift: 16\nThe Cherry Orchard: score-drift\nThelma & Louise: A New Musical: score-drift\nDarkling: score-drift\nIn Honor of Jean-Michel Basquiat: score-drift\nThe Body of Mary: A Play in Three Acts (of God): score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-21T00:49:35.002Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h",
+    "description": "1 T1/T2 outlet(s) still missing >24h after they became measurable.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Oliver! — telegraph (25h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"oliver-west-end-2024\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-09-21T00:49:35.089Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.1% (379/498)\noff-broadway: 42.5% (136/320)\nwest-end: 76.2% (423/555)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (903h)\nA Midsummer Night's Dream — observer (903h)\nA Midsummer Night's Dream — standard (903h)\nABBA Voyage — independent (903h)\nAladdin — ew (903h)\n… 175 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (903h)\nBuena Vista Social Club — nydailynews (903h)\nHadestown — nydailynews (903h)\nMasquerade — nydailynews (903h)\nMaybe Happy Ending — nydailynews (903h)\n… 10 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-21T00:49:35.163Z"
   }
 ]
