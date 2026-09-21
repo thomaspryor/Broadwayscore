@@ -78,7 +78,7 @@ describe('bucketSlugCoverageHit', () => {
     assert.equal(bucketSlugCoverageHit(fixture, 'bloody-bloody-andrew-jackson-2010'), 'wrong-show-suspect');
   });
 
-  it('an already-promoted wrongShow file is not re-bucketed as wrong-show-suspect', () => {
+  it('an already-promoted wrongShow file is bucketed already-excluded, not re-flagged', () => {
     const fixture = {
       isNonReview: true,
       nonReviewType: 'review',
@@ -86,7 +86,61 @@ describe('bucketSlugCoverageHit', () => {
       url: 'https://variety.com/2010/film/reviews/the-recipe-1117943877/',
       fullText: LONG_TEXT,
     };
-    assert.equal(bucketSlugCoverageHit(fixture, 'x'), 'unaudited');
+    assert.equal(bucketSlugCoverageHit(fixture, 'x'), 'already-excluded');
+  });
+
+  it('a wrongProduction:true file is bucketed already-excluded, not unaudited', () => {
+    const fixture = {
+      isNonReview: true,
+      nonReviewType: 'review',
+      wrongProduction: true,
+      url: 'https://example.com/theatre-review-some-show',
+      fullText: LONG_TEXT,
+    };
+    assert.equal(bucketSlugCoverageHit(fixture, 'x'), 'already-excluded');
+  });
+
+  it('a contentVerification.wrongArticle:true file is bucketed already-excluded', () => {
+    const fixture = {
+      isNonReview: true,
+      nonReviewType: 'feature',
+      contentVerification: { wrongArticle: true },
+      url: 'https://example.com/theatre-review-some-show',
+      fullText: LONG_TEXT,
+    };
+    assert.equal(bucketSlugCoverageHit(fixture, 'x'), 'already-excluded');
+  });
+
+  it('a garbage_text rejectionReason file is bucketed already-excluded', () => {
+    const fixture = {
+      isNonReview: true,
+      nonReviewType: 'none',
+      rejectionReason: 'garbage_text',
+      url: 'https://example.com/theatre-review-some-show',
+      fullText: LONG_TEXT,
+    };
+    assert.equal(bucketSlugCoverageHit(fixture, 'x'), 'already-excluded');
+  });
+
+  it('an invalid contentTier file is bucketed already-excluded', () => {
+    const fixture = {
+      isNonReview: true,
+      nonReviewType: 'none',
+      contentTier: 'invalid',
+      url: 'https://example.com/theatre-review-some-show',
+      fullText: LONG_TEXT,
+    };
+    assert.equal(bucketSlugCoverageHit(fixture, 'x'), 'already-excluded');
+  });
+
+  it('a parked-domain chrome dump is bucketed already-excluded', () => {
+    const fixture = {
+      isNonReview: true,
+      nonReviewType: 'news',
+      url: 'https://example.com/theatre-review-some-show',
+      fullText: LONG_TEXT + ' The domain name theaternewsonline.com is for sale. ',
+    };
+    assert.equal(bucketSlugCoverageHit(fixture, 'x'), 'already-excluded');
   });
 
   it('buckets a confirmed essay-intro false positive as essay-intro-fp', () => {

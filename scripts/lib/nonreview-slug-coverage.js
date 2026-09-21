@@ -25,6 +25,18 @@
  * hand-verification first. What it does is make the corpus MEASURABLE and
  * bucketed, wired into CI (audit-nonreview-slug-coverage.js), so the count
  * is a tracked metric instead of a one-off manual sweep that nobody revisits.
+ *
+ * 'already-excluded' bucket (added during the 2026-09-21 re-verification):
+ * the original 'unaudited' bucket counted files that are ALREADY correctly
+ * excluded from reviews.json by a DIFFERENT, established mechanism —
+ * wrongShow, wrongProduction, contentVerification.wrongArticle, a
+ * garbage-text/invalid contentTier, or a dead-page chrome dump
+ * (detectStrongChromeDumpAnywhere, content-quality.js — parked domains,
+ * 404s, cookie/nav dumps). None of those need this ticket's attention; they
+ * were inflating "unaudited" to look nearly 4x its real size (measured
+ * 2026-09-21: 208 raw hits, only 53 not already covered by one of these).
+ * Checked BEFORE wrong-show-suspect/essay-intro-fp so a file already
+ * excluded by one mechanism doesn't also get counted by another.
  */
 
 'use strict';
@@ -32,6 +44,7 @@
 const { classifyReviewUrl } = require('./non-review-url-patterns');
 const { detectEssayIntroFalsePositive } = require('./essay-intro-nonreview-fp');
 const { isReviewTypeWrongShowGap } = require('./nonreview-contenttype-wrongshow');
+const { detectStrongChromeDumpAnywhere } = require('./content-quality');
 
 const MIN_WORD_COUNT = 400;
 
@@ -85,8 +98,29 @@ function isSlugCoverageCandidate(data) {
  * @param {string} [showId]
  * @returns {null | 'wrong-show-suspect' | 'essay-intro-fp' | 'unaudited'}
  */
+/**
+ * Is `data` already excluded from reviews.json by a mechanism OTHER than
+ * the bare isNonReview flag this ticket is about? These files don't need
+ * BRO-3862 attention — they're correctly gone already, just via a
+ * different field. See module header for the corpus-size rationale.
+ *
+ * @param {object} data
+ * @returns {boolean}
+ */
+function isAlreadyExcludedByOtherMechanism(data) {
+  if (data.wrongShow === true) return true;
+  if (data.wrongProduction === true) return true;
+  if (data.contentVerification && data.contentVerification.wrongArticle === true) return true;
+  if (data.rejectionReason === 'garbage_text') return true;
+  if (data.contentTier === 'invalid') return true;
+  const chrome = detectStrongChromeDumpAnywhere(data.fullText || '');
+  if (chrome && chrome.detected) return true;
+  return false;
+}
+
 function bucketSlugCoverageHit(data, showId) {
   if (!isSlugCoverageCandidate(data)) return null;
+  if (isAlreadyExcludedByOtherMechanism(data)) return 'already-excluded';
   if (isReviewTypeWrongShowGap(data)) return 'wrong-show-suspect';
   if (detectEssayIntroFalsePositive(data, showId)) return 'essay-intro-fp';
   return 'unaudited';
@@ -96,5 +130,6 @@ module.exports = {
   MIN_WORD_COUNT,
   hasReviewUrlSlug,
   isSlugCoverageCandidate,
+  isAlreadyExcludedByOtherMechanism,
   bucketSlugCoverageHit,
 };
