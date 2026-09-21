@@ -310,6 +310,15 @@ on:
       # scripts/lib/audit-push-retry-budgets.js (globbed above), but this
       # file itself needs its own entry.
       - 'scripts/audit-push-retry-budgets.js'
+      # BRO-3954: scripts/audit-review-type-wrong-show.js had NO entry here at
+      # all before this fix (same "unlisted scripts/ = ZERO CI" gap this
+      # comment block documents elsewhere) — a solo edit to it, including this
+      # ticket's own --verify-pushed wiring, would otherwise trigger zero CI.
+      - 'scripts/audit-review-type-wrong-show.js'
+      # BRO-3954: thin CLI wrapper for scripts/lib/apply-scripts-verify-pushed-
+      # scan.js (globbed above) — same thin-wrapper-outside-scripts/lib/ gap
+      # shape as audit-push-retry-budgets.js just above.
+      - 'scripts/audit-apply-scripts-verify-pushed.js'
       # scripts/ingest-dmarc-reports.js + its colocated test (BRO-525): the
       # DMARC parser and analyzer live in scripts/lib/ (globbed above), but the
       # ingest CLI and its test sit at the top level of scripts/, so a solo
