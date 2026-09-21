@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-09-20T22:46:45.330Z",
+    "lastUpdated": "2026-09-21T18:04:18.753Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -11270,6 +11270,17 @@
         "wmscradio"
       ],
       "domain": "wmscradio.com"
+    },
+    "chiswickcalendar": {
+      "displayName": "Chiswickcalendar",
+      "tier": 3,
+      "aliases": [
+        "chiswickcalendar"
+      ],
+      "domain": "chiswickcalendar.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-09-21T18:04:18.753Z"
     }
   },
   "_aliasIndex": {
