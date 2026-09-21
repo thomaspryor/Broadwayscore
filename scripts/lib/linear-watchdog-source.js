@@ -49,9 +49,11 @@
  *      populations stay disjoint, so this module keeps them disjoint at the
  *      source rather than relying on a refusal downstream.
  *
- * PRIORITY. buildOpenIssuesWithDescriptionsQuery does not select `priority`,
- * so this module builds its own query (same reason linear-recheck-source.js
- * builds buildRecheckCandidatesQuery rather than widening a shared one).
+ * PRIORITY. This module builds its own query (same reason
+ * linear-recheck-source.js builds buildRecheckCandidatesQuery rather than
+ * widening a shared one; buildOpenIssuesWithDescriptionsQuery has since
+ * grown a `priority` field too — BRO-3913 — so enrich-card-acceptance.js can
+ * sweep in the same P0/P1-first order this module drains).
  * Linear's numeric priority is authoritative when set (1 = Urgent → P0,
  * 2 = High → P1); a "P0:"/"P1:" title prefix is the fallback for the many
  * hand-filed cards that encode priority in the title and leave the field at
@@ -109,7 +111,7 @@ function isLinearTaskId(taskId) {
 
 /**
  * Own query: identical filter to buildOpenIssuesWithDescriptionsQuery (team +
- * non-terminal state) plus the `priority` field it does not select.
+ * non-terminal state) with a configurable page size; both select `priority`.
  */
 function buildWatchdogBacklogQuery(pageLimit = DEFAULT_PAGE_LIMIT) {
   const limit = Number.isInteger(pageLimit) && pageLimit > 0 ? pageLimit : DEFAULT_PAGE_LIMIT;

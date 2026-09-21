@@ -287,10 +287,23 @@ async function fetchPostHog(range) {
     country: [`coalesce(properties.$geoip_country_name, '(unknown)')`, ''],
     landing: [`coalesce(session.$entry_pathname, '(none)')`,
       `AND coalesce(session.$entry_referring_domain, '') NOT LIKE '%broadwayscorecard.com%'`],
+    // Referrer × landing page, for non-search referrers only: this is what
+    // ties "Reddit sent 300 visits" to the show page the post was about.
+    referralLanding: [`concat(session.$entry_referring_domain, ' → ', coalesce(session.$entry_pathname, '(none)'))`,
+      `AND coalesce(session.$entry_referring_domain, '') != ''
+       AND session.$entry_referring_domain NOT LIKE '%broadwayscorecard.com%'
+       AND session.$entry_referring_domain NOT LIKE '%google.%'
+       AND session.$entry_referring_domain NOT LIKE '%bing.com%'
+       AND session.$entry_referring_domain NOT LIKE '%yahoo.%'
+       AND session.$entry_referring_domain NOT LIKE '%duckduckgo.%'
+       AND session.$entry_referring_domain NOT LIKE '%ecosia.%'`],
   };
+  // Kill switch for the highest-cardinality query (referrer × path) without a
+  // code change: the report degrades to "referrer data unavailable" sections.
+  if (process.env.TRAFFIC_SKIP_REFERRAL_LANDING === '1') delete specs.referralLanding;
   const out = { errors: {} };
   // Sequential on purpose: each query joins sessions + persons over the whole
-  // window; five in parallel is how HogQL query timeouts happen.
+  // window; six in parallel is how HogQL query timeouts happen.
   for (const [name, [expr, where]] of Object.entries(specs)) {
     try { out[name] = await withRetry(() => phDaily(expr, range, where)); }
     catch (e) { out[name] = []; out.errors[name] = e.message; }
@@ -320,8 +333,8 @@ function normalizeCampaign(key) {
 }
 
 /** One report section: weekly matrix + spike table. Returns md plus the spikes for the summary. */
-function sectionFor({ tool, title, rows, metric, weeks, currentWeek, opts = {} }) {
-  if (!rows || !rows.length) return { md: `### ${title}\n_No data_\n\n`, spikes: [], series: {}, tool, metric };
+function sectionFor({ id, tool, title, rows, metric, weeks, currentWeek, opts = {} }) {
+  if (!rows || !rows.length) return { id, md: `### ${title}\n_No data_\n\n`, spikes: [], series: {}, tool, metric };
   const series = seriesFor(rows, opts.normalizeKey ? rows.map((r) => ({ ...r, key: opts.normalizeKey(r.key) })) : null, metric);
   const spikes = detectSpikes(series, weeks, { currentWeek, ...opts });
   const minAbs = opts.minAbs || 30;
@@ -335,7 +348,7 @@ function sectionFor({ tool, title, rows, metric, weeks, currentWeek, opts = {} }
   } else {
     md += '_No spikes detected._\n';
   }
-  return { md, spikes: spikes.map((s) => ({ ...s, tool, dimension: title, metric })), series, tool, metric };
+  return { id, md, spikes: spikes.map((s) => ({ ...s, tool, dimension: title, metric })), series, tool, metric };
 }
 
 /** Last full week vs the average of the 4 full weeks before it, per key. */
@@ -351,6 +364,78 @@ function recentChange(series, weeks, currentWeek) {
   }).sort((a, b) => b.last - a.last);
 }
 
+function sumWeeks(bw, ws) { return ws.reduce((t, w) => t + (bw[w] || 0), 0); }
+
+/**
+ * Rising / falling sources: the typical (median) week of the last 4 full
+ * weeks vs the typical week of the 4 before. Rising = at least +pct% and at
+ * least minWeekly in a typical week now (or brand new at that level);
+ * falling = at least -pct% from at least minWeekly before. Ranked by the size
+ * of the change. Exported for tests.
+ */
+function trendsFor(series, weeks, currentWeek, { minWeekly = 20, pct = 40 } = {}) {
+  const full = weeks.filter((w) => w !== currentWeek);
+  if (full.length < 8) return { rising: [], falling: [], recentWeeks: [], priorWeeks: [] };
+  const recentWeeks = full.slice(-4);
+  const priorWeeks = full.slice(-8, -4);
+  // Medians of the 4 weeks, not means: one big week ([200,0,0,0]) must not read
+  // as "rising", and one dead week must not read as "falling" (Codex review).
+  const rows = Object.entries(series).map(([key, bw]) => {
+    const r = median(recentWeeks.map((w) => bw[w] || 0));
+    const p = median(priorWeeks.map((w) => bw[w] || 0));
+    return { key, recentPerWeek: Math.round(r), priorPerWeek: Math.round(p), pct: p > 0 ? Math.round(((r - p) / p) * 100) : null };
+  });
+  const rising = rows
+    .filter((x) => x.recentPerWeek >= minWeekly && (x.pct === null || x.pct >= pct))
+    .sort((a, b) => (b.recentPerWeek - b.priorPerWeek) - (a.recentPerWeek - a.priorPerWeek));
+  const falling = rows
+    .filter((x) => x.priorPerWeek >= minWeekly && x.pct !== null && x.pct <= -pct)
+    .sort((a, b) => (b.priorPerWeek - b.recentPerWeek) - (a.priorPerWeek - a.recentPerWeek));
+  return { rising, falling, recentWeeks, priorWeeks };
+}
+
+/**
+ * Sources that did not exist in the first half of the window and have at
+ * least minTotal visits in the second half — the "new site linking to me"
+ * list. Deliberately low threshold: a blog that sent 6 visits is worth a look.
+ * Exported for tests.
+ */
+function newSources(series, weeks, currentWeek, { minTotal = 5 } = {}) {
+  const full = weeks.filter((w) => w !== currentWeek);
+  const half = Math.floor(full.length / 2);
+  const early = full.slice(0, half);
+  const late = full.slice(half);
+  return Object.entries(series)
+    .map(([key, bw]) => ({ key, early: sumWeeks(bw, early), late: sumWeeks(bw, late), lateWeeks: late, firstWeek: full.find((w) => bw[w]) || null, current: bw[currentWeek] || 0 }))
+    .filter((x) => x.early === 0 && x.late >= minTotal)
+    .sort((a, b) => b.late - a.late);
+}
+
+// Search engines and our own domain are not "sites linking to us".
+const NOT_A_LINKING_SITE = /google\.|bing\.com|yahoo\.|duckduckgo|ecosia|brave\.com|kagi\.com|yandex|baidu|startpage|qwant|broadwayscorecard\.com|^\$direct$|^\(none\)$/i;
+
+/** referralLanding rows are keyed "domain → path"; index them week → domain → {path: sessions}. */
+function indexReferralLanding(rows) {
+  const byWeek = {};
+  const byDomain = {};
+  for (const r of rows || []) {
+    const cut = r.key.indexOf(' → '); // domains never contain the arrow; paths might
+    if (cut === -1) continue;
+    const domain = r.key.slice(0, cut);
+    const pathname = r.key.slice(cut + 3) || '(none)';
+    if (!domain || NOT_A_LINKING_SITE.test(domain)) continue; // same policy as the new-sites list
+    const w = weekStart(r.date);
+    ((byWeek[w] = byWeek[w] || {})[domain] = byWeek[w][domain] || {})[pathname] = (byWeek[w][domain][pathname] || 0) + r.sessions;
+    (byDomain[domain] = byDomain[domain] || {})[pathname] = (byDomain[domain][pathname] || 0) + r.sessions;
+  }
+  return { byWeek, byDomain };
+}
+
+function topPages(pathCounts, n = 3) {
+  const short = (p) => (p.length > 60 ? p.slice(0, 57) + '…' : p);
+  return Object.entries(pathCounts || {}).sort((a, b) => b[1] - a[1]).slice(0, n).map(([p, c]) => `${short(p)} (${c})`).join(', ');
+}
+
 function plainSpike(s) {
   const when = `week of ${fmtDate(s.week)}`;
   const after = s.next === null ? '' : s.next === 0 ? ', then nothing the week after' : `, then ${s.next} the week after`;
@@ -360,22 +445,24 @@ function plainSpike(s) {
 
 function buildReport({ ga, ph, startDate, endDate, weeks, currentWeek }) {
   const sections = { ph: [], ga: [] };
-  const S = (tool, title, rows, metric, opts) => sectionFor({ tool, title, rows, metric, weeks, currentWeek, opts });
+  const S = (id, tool, title, rows, metric, opts) => sectionFor({ id, tool, title, rows, metric, weeks, currentWeek, opts });
   if (!ph.skipped) {
-    sections.ph.push(S('PostHog', 'Channel type', ph.channelType, 'sessions'));
-    sections.ph.push(S('PostHog', 'Referring domain', ph.referringDomain, 'sessions', { topN: 20, minAbs: 20 }));
-    sections.ph.push(S('PostHog', 'UTM source / medium', ph.utmSource, 'sessions', { minAbs: 10, ratio: 2.5 }));
-    sections.ph.push(S('PostHog', 'Country', ph.country, 'sessions', { topN: 15 }));
-    sections.ph.push(S('PostHog', 'Landing page (external arrivals)', ph.landing, 'sessions', { topN: 20, minAbs: 25 }));
+    sections.ph.push(S('ph.channel', 'PostHog', 'Channel type', ph.channelType, 'sessions'));
+    sections.ph.push(S('ph.referrer', 'PostHog', 'Referring domain', ph.referringDomain, 'sessions', { topN: 20, minAbs: 20 }));
+    sections.ph.push(S('ph.utm', 'PostHog', 'UTM source / medium', ph.utmSource, 'sessions', { minAbs: 10, ratio: 2.5 }));
+    sections.ph.push(S('ph.country', 'PostHog', 'Country', ph.country, 'sessions', { topN: 15 }));
+    sections.ph.push(S('ph.landing', 'PostHog', 'Landing page (external arrivals)', ph.landing, 'sessions', { topN: 20, minAbs: 25 }));
   }
   if (!ga.skipped) {
-    sections.ga.push(S('GA4', 'Channel group', ga.channel, 'engagedSessions'));
-    sections.ga.push(S('GA4', 'Channel group (raw sessions, includes bots)', ga.channel, 'sessions'));
-    sections.ga.push(S('GA4', 'Source / medium', ga.sourceMedium, 'engagedSessions', { topN: 20, minAbs: 20 }));
-    sections.ga.push(S('GA4', 'Campaign', ga.campaign, 'sessions', { minAbs: 10, ratio: 2.5, normalizeKey: normalizeCampaign }));
-    sections.ga.push(S('GA4', 'Country', ga.country, 'engagedSessions', { topN: 15 }));
-    sections.ga.push(S('GA4', 'Landing page', ga.landing, 'engagedSessions', { topN: 20, minAbs: 25 }));
+    sections.ga.push(S('ga.channel', 'GA4', 'Channel group', ga.channel, 'engagedSessions'));
+    sections.ga.push(S('ga.channelRaw', 'GA4', 'Channel group (raw sessions, includes bots)', ga.channel, 'sessions'));
+    sections.ga.push(S('ga.sourceMedium', 'GA4', 'Source / medium', ga.sourceMedium, 'engagedSessions', { topN: 20, minAbs: 20 }));
+    sections.ga.push(S('ga.campaign', 'GA4', 'Campaign', ga.campaign, 'sessions', { minAbs: 10, ratio: 2.5, normalizeKey: normalizeCampaign }));
+    sections.ga.push(S('ga.country', 'GA4', 'Country', ga.country, 'engagedSessions', { topN: 15 }));
+    sections.ga.push(S('ga.landing', 'GA4', 'Landing page', ga.landing, 'engagedSessions', { topN: 20, minAbs: 25 }));
   }
+  const allSections = [...sections.ph, ...sections.ga];
+  const bySec = (id) => allSections.find((x) => x.id === id);
 
   let md = `# Traffic sources — ${fmtDate(startDate)} to ${fmtDate(endDate)}\n\n`;
 
@@ -403,12 +490,93 @@ function buildReport({ ga, ph, startDate, endDate, weeks, currentWeek }) {
     if (seen.has(id)) return false;
     seen.add(id); return true;
   });
+  const refIdx = indexReferralLanding(ph.skipped ? [] : ph.referralLanding);
   if (headline.length) {
     md += `Biggest jumps in the window, across both tools (each is a source that did at least 3x its usual weekly volume, or appeared from nothing):\n\n`;
-    for (const s of headline.slice(0, 12)) md += `- ${plainSpike(s)}\n`;
+    for (const s of headline.slice(0, 12)) {
+      let line = plainSpike(s);
+      const pages = s.dimension === 'Referring domain' && refIdx.byWeek[s.week] && refIdx.byWeek[s.week][s.key];
+      if (pages) line = line.replace(/\.$/, '') + `, landing on ${topPages(pages)}.`;
+      md += `- ${line}\n`;
+    }
     md += `\n`;
   } else {
     md += `No source spiked in the window.\n\n`;
+  }
+
+  // ---- Rising / falling over the last month ----
+  md += `## Rising and falling\n\n`;
+  const trendSeries = [];
+  for (const [id, label] of [
+    ['ph.referrer', 'referrer'],
+    ['ph.channel', 'channel'],
+    ['ph.utm', 'campaign source'],
+    ['ph.landing', 'landing page'],
+    ['ga.sourceMedium', 'GA4 source, engaged sessions'],
+  ]) {
+    const sec = bySec(id);
+    if (sec && Object.keys(sec.series).length) trendSeries.push({ label, ...trendsFor(sec.series, weeks, currentWeek) });
+  }
+  const fullWeekCount = weeks.filter((w) => w !== currentWeek).length;
+  const anyTrend = trendSeries.some((t) => t.rising.length || t.falling.length);
+  if (fullWeekCount < 8) {
+    md += `Needs 8 full weeks to compare; this report has ${fullWeekCount}.\n\n`;
+  } else if (!trendSeries.length) {
+    md += `_PostHog and GA4 source data unavailable._\n\n`;
+  } else if (!anyTrend) {
+    md += `Nothing moved more than 40% between the last 4 full weeks and the 4 before.\n\n`;
+  } else {
+    const t0 = trendSeries[0];
+    md += `Typical week over the last 4 full weeks (from ${fmtDate(t0.recentWeeks[0])}) vs the typical week of the 4 before (from ${fmtDate(t0.priorWeeks[0])}). Medians, so one big week does not count as a trend. Rising needs 20+ visits in a typical week now; falling needs 20+ before.\n\n`;
+    const fmtT = (t, x) => `**${mdCell(x.key)}** (${t.label}): ${x.recentPerWeek}/week now vs ${x.priorPerWeek}/week before` + (x.pct === null ? ' (new).' : ` (${x.pct > 0 ? '+' : ''}${x.pct}%).`);
+    const rising = trendSeries.flatMap((t) => t.rising.slice(0, 4).map((x) => fmtT(t, x))).slice(0, 10);
+    const falling = trendSeries.flatMap((t) => t.falling.slice(0, 4).map((x) => fmtT(t, x))).slice(0, 10);
+    md += `**Rising**\n\n` + (rising.length ? rising.map((l) => `- ${l}`).join('\n') : '- nothing rising') + `\n\n`;
+    md += `**Falling**\n\n` + (falling.length ? falling.map((l) => `- ${l}`).join('\n') : '- nothing falling') + `\n\n`;
+  }
+
+  // ---- New sites linking to you ----
+  md += `## New sites linking to you\n\n`;
+  const refSec = bySec('ph.referrer');
+  if (refSec && Object.keys(refSec.series).length) {
+    const fresh = newSources(refSec.series, weeks, currentWeek, { minTotal: 5 }).filter((x) => !NOT_A_LINKING_SITE.test(x.key));
+    if (fresh.length) {
+      md += `Referrers first seen in the second half of this window with 5+ visits since (a site may be older and only just got clicked, but it is new to these numbers). Worth a look: who are they and what did they link?\n\n`;
+      for (const x of fresh.slice(0, 15)) {
+        // Landing counts come from the SAME weeks as the visit count (second
+        // half of the window, current week excluded), so the two agree.
+        const pages = {};
+        for (const w of x.lateWeeks) for (const [pth, c] of Object.entries((refIdx.byWeek[w] || {})[x.key] || {})) pages[pth] = (pages[pth] || 0) + c;
+        md += `- **${mdCell(x.key)}**: ${x.late} visits since ${fmtDate(x.firstWeek)}` + (x.current ? ` (+${x.current} so far this week)` : '') + (Object.keys(pages).length ? `, landing on ${topPages(pages)}` : '') + `.\n`;
+      }
+      md += `\n`;
+    } else {
+      md += `No new referring site in the window.\n\n`;
+    }
+  } else {
+    md += `_PostHog referrer data unavailable._\n\n`;
+  }
+
+  // ---- Where social and referral traffic lands ----
+  md += `## Where referral traffic lands\n\n`;
+  if (Object.keys(refIdx.byDomain).length) {
+    const full = weeks.filter((w) => w !== currentWeek);
+    const recent = full.slice(-4); // fewer than 4 on a short --days window; the label says how many
+    const totals = {};
+    for (const w of recent) for (const [d, pages] of Object.entries(refIdx.byWeek[w] || {})) {
+      totals[d] = totals[d] || { sessions: 0, pages: {} };
+      for (const [pth, c] of Object.entries(pages)) { totals[d].sessions += c; totals[d].pages[pth] = (totals[d].pages[pth] || 0) + c; }
+    }
+    const top = Object.entries(totals).sort((a, b) => b[1].sessions - a[1].sessions).slice(0, 10);
+    if (top.length) {
+      md += `Last ${recent.length} full week${recent.length === 1 ? '' : 's'}: everything that is not a search engine (social, forums, AI assistants, email clients) and the pages their visitors arrived on. This shows which page a site's readers came to, not which post or thread sent them; a post that worked shows up as one site sending visitors to one show page.\n\n`;
+      md += fmtTable(['Referrer', `Visits (${recent.length} wks)`, 'Where they landed'], top.map(([d, t]) => [d, t.sessions, topPages(t.pages)]));
+      md += `\n`;
+    } else {
+      md += `No non-search referral traffic in the last 4 full weeks.\n\n`;
+    }
+  } else {
+    md += `_PostHog referrer data unavailable._\n\n`;
   }
 
   const channelSec = sections.ph[0] || sections.ga[0];
@@ -426,6 +594,7 @@ function buildReport({ ga, ph, startDate, endDate, weeks, currentWeek }) {
   md += `- **PostHog** is the trustworthy count: it uses the Real Users lens (owner and the Singapore/China/Vietnam/Hong Kong bot geos excluded) and counts each visit once, by the referrer and page it arrived through.\n`;
   md += `- **GA4** counts are inflated by bots in Direct; the GA4 tables use "engaged sessions" (visits that stayed 10s+, viewed 2+ pages or converted), which drops most of that. One table shows raw sessions so the bot share is visible.\n`;
   md += `- "Usual per week" is the median of the earlier full weeks; "times usual" is this week divided by that.\n`;
+  md += `- "Rising and falling" compares a typical week of the last 4 full weeks with a typical week of the 4 before (medians), so it catches steady drift without being fooled by one big week. "New sites" lists any referrer first seen mid-window with 5+ visits.\n`;
   md += `- Vercel Web Analytics has no query API, so it is not included; check its dashboard by hand if a spike needs a third opinion.\n`;
   md += `- GA4 days are in the property's timezone and PostHog days in the project's, so week edges can differ by a few hours.\n\n`;
 
@@ -480,7 +649,7 @@ async function main() {
   }
 }
 
-module.exports = { weekStart, median, bucketWeekly, detectSpikes, allWeeks, recentChange, buildReport, mdCell, normalizeCampaign, withRetry, isTransientPostHogError };
+module.exports = { weekStart, median, bucketWeekly, detectSpikes, allWeeks, recentChange, trendsFor, newSources, indexReferralLanding, buildReport, mdCell, normalizeCampaign, withRetry, isTransientPostHogError };
 
 if (require.main === module) {
   main().catch((e) => { console.error(e); process.exit(1); });

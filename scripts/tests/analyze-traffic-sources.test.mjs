@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { weekStart, median, bucketWeekly, detectSpikes, allWeeks, recentChange, buildReport, mdCell, normalizeCampaign, withRetry, isTransientPostHogError } = require('../analyze-traffic-sources.js');
+const { weekStart, median, bucketWeekly, detectSpikes, allWeeks, recentChange, trendsFor, newSources, indexReferralLanding, buildReport, mdCell, normalizeCampaign, withRetry, isTransientPostHogError } = require('../analyze-traffic-sources.js');
 
 test('weekStart maps any day to its ISO Monday, for both GA4 and ISO date formats', () => {
   assert.equal(weekStart('20260915'), '2026-09-14'); // Tue → Mon
@@ -164,4 +164,75 @@ test('withRetry retries a transient PostHog error once and rethrows non-transien
   assert.equal(isTransientPostHogError(new Error('PostHog API 401: nope')), false);
   assert.equal(isTransientPostHogError(new Error('PostHog API 400: Timeout exceeded: estimated query execution time too long')), false);
   assert.equal(isTransientPostHogError(new TypeError('fetch failed')), true);
+});
+
+const W9 = ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'w8', 'cur'];
+
+test('trendsFor compares the last 4 full weeks with the 4 before and applies the floors', () => {
+  const series = {
+    reddit: { w1: 50, w2: 50, w3: 50, w4: 50, w5: 20, w6: 20, w7: 20, w8: 20, cur: 3 },   // falling -60%
+    email: { w1: 20, w2: 20, w3: 20, w4: 20, w5: 40, w6: 40, w7: 40, w8: 40, cur: 9 },    // rising +100%
+    tiny: { w1: 2, w2: 2, w3: 2, w4: 2, w5: 8, w6: 8, w7: 8, w8: 8 },                     // +300% but under the floor
+    fresh: { w5: 30, w6: 30, w7: 30, w8: 30 },                                             // new at 30/week
+  };
+  const { rising, falling } = trendsFor(series, W9, 'cur');
+  assert.deepEqual(rising.map((x) => [x.key, x.recentPerWeek, x.priorPerWeek, x.pct]), [['fresh', 30, 0, null], ['email', 40, 20, 100]]);
+  // One big week is not a trend: [200,0,0,0] has a median of 0.
+  const oneHit = trendsFor({ burst: { w1: 20, w2: 20, w3: 20, w4: 20, w5: 200, w6: 0, w7: 0, w8: 0 } }, W9, 'cur');
+  assert.deepEqual(oneHit.rising, []);
+  assert.deepEqual(oneHit.falling.map((x) => [x.key, x.recentPerWeek, x.pct]), [['burst', 0, -100]]);
+  assert.deepEqual(falling.map((x) => [x.key, x.pct]), [['reddit', -60]]);
+  assert.deepEqual(trendsFor(series, W9.slice(0, 5), 'cur').rising, []); // fewer than 8 full weeks
+});
+
+test('newSources lists referrers absent from the first half of the window with 5+ visits since', () => {
+  const series = {
+    'blog.example': { w6: 3, w7: 4, cur: 20 },   // 7 in the second half, current week ignored
+    'old.example': { w1: 1, w7: 50 },            // existed early
+    'weak.example': { w8: 4 },                   // under 5
+  };
+  const fresh = newSources(series, W9, 'cur');
+  assert.deepEqual(fresh.map((x) => [x.key, x.late, x.firstWeek]), [['blog.example', 7, 'w6']]);
+});
+
+test('indexReferralLanding ties referrers to landing pages per week and overall', () => {
+  const idx = indexReferralLanding([
+    { date: '2026-07-20', key: 'www.reddit.com → /show/trainspotting-the-musical-west-end', sessions: 300 },
+    { date: '2026-07-22', key: 'www.reddit.com → /show/trainspotting-the-musical-west-end', sessions: 25 },
+    { date: '2026-07-22', key: 'www.reddit.com → /', sessions: 10 },
+    { date: '2026-08-03', key: 'blog.example → /west-end', sessions: 6 },
+    { date: '2026-08-03', key: 'broken-row-without-arrow', sessions: 6 },
+  ]);
+  assert.equal(idx.byWeek['2026-07-20']['www.reddit.com']['/show/trainspotting-the-musical-west-end'], 325);
+  assert.equal(idx.byDomain['www.reddit.com']['/'], 10);
+  assert.equal(idx.byDomain['blog.example']['/west-end'], 6);
+  assert.ok(!idx.byDomain['broken-row-without-arrow']);
+  // Search engines never count as referral landings, same policy as "new sites".
+  const searchIdx = indexReferralLanding([{ date: '2026-08-03', key: 'search.brave.com → /', sessions: 9 }, { date: '2026-08-03', key: 'x.com → /a → /b', sessions: 2 }]);
+  assert.ok(!searchIdx.byDomain['search.brave.com']);
+  assert.equal(searchIdx.byDomain['x.com']['/a → /b'], 2); // path keeps a later arrow
+});
+
+test('buildReport renders rising/falling, new sites and referral landing sections with landing pages on referrer spikes', () => {
+  const weeks = allWeeks('2026-06-15', '2026-09-15');
+  const cur = '2026-09-14';
+  const full = weeks.filter((w) => w !== cur);
+  const rows = (key, perWeek, extra = {}) => full.map((w) => ({ date: w, key, sessions: perWeek(w, full.indexOf(w)), users: 1, ...extra }));
+  const referringDomain = [
+    ...rows('www.google.com', () => 1000),
+    ...rows('www.reddit.com', (w, i) => (i === 2 ? 325 : i < 9 ? 50 : 20)),
+    ...rows('blog.example', (w, i) => (i >= 10 ? 4 : 0)).filter((r) => r.sessions),
+  ];
+  const referralLanding = [
+    ...rows('www.reddit.com → /show/trainspotting-the-musical-west-end', (w, i) => (i === 2 ? 300 : 5)),
+    ...rows('www.reddit.com → /', () => 5),
+    ...rows('blog.example → /west-end', (w, i) => (i >= 10 ? 4 : 0)).filter((r) => r.sessions),
+  ];
+  const ph = { errors: {}, channelType: [], utmSource: [], country: [], landing: [], referringDomain, referralLanding };
+  const { md } = buildReport({ ga: { skipped: 'x' }, ph, startDate: '2026-06-15', endDate: '2026-09-15', weeks, currentWeek: cur });
+  assert.match(md, /\*\*www\.reddit\.com\*\* \(PostHog referring domain\): 325 sessions[^\n]*landing on \/show\/trainspotting-the-musical-west-end \(300\)/);
+  assert.match(md, /## Rising and falling[\s\S]*\*\*Falling\*\*[\s\S]*\*\*www\.reddit\.com\*\* \(referrer\): 20\/week now vs 50\/week before \(-60%\)/);
+  assert.match(md, /## New sites linking to you[\s\S]*\*\*blog\.example\*\*: 12 visits since Aug 24, landing on \/west-end \(12\)/);
+  assert.match(md, /## Where referral traffic lands[\s\S]*\| www\.reddit\.com \| 40 \|/);
+  assert.ok(md.indexOf('## Rising and falling') < md.indexOf('## PostHog (Real Users lens)')); // in the emailed summary
 });
