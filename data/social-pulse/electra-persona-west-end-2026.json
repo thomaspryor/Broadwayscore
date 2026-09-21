@@ -3,14 +3,16 @@
   "showId": "electra-persona-west-end-2026",
   "showTitle": "Electra / Persona",
   "market": "West End",
-  "fetchedAt": "2026-09-14T11:59:07.641Z",
+  "fetchedAt": "2026-09-21T12:14:39.967Z",
   "tier": "Hidden",
-  "volume": 0,
-  "effectiveVolume": 0,
+  "volume": 1,
+  "effectiveVolume": 0.1,
   "relevanceRates": {
-    "byPlatform": {},
-    "overall": null,
-    "classified": 0
+    "byPlatform": {
+      "bluesky": 1
+    },
+    "overall": 1,
+    "classified": 1
   },
   "positivePct": null,
   "opinionSample": 0,
@@ -21,29 +23,29 @@
     "tiktok": 0,
     "instagram": 0,
     "reddit": 0,
-    "bluesky": 0
+    "bluesky": 1
   },
   "topQuotes": [],
   "counters": {
     "reddit": 0,
-    "bluesky": 0,
+    "bluesky": 1,
     "x": 0,
     "wikipedia": null
   },
   "wikipediaTitle": null,
   "baseline": {
-    "mean": 0,
-    "weeksOfHistory": 3
+    "mean": 0.25,
+    "weeksOfHistory": 4
   },
   "rawCounts": {
     "reddit": 0,
-    "bluesky": 0
+    "bluesky": 1
   },
   "errors": [],
   "rank": {
-    "position": 33,
-    "total": 42,
-    "text": "33/42 West End"
+    "position": 26,
+    "total": 44,
+    "text": "26/44 West End"
   },
-  "compositeScore": 0
+  "compositeScore": 0.05
 }

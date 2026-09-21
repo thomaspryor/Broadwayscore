@@ -3,47 +3,57 @@
   "showId": "paddington-the-musical-west-end-2025",
   "showTitle": "Paddington The Musical",
   "market": "West End",
-  "fetchedAt": "2026-09-14T12:06:09.558Z",
+  "fetchedAt": "2026-09-21T12:23:13.726Z",
   "tier": "Hidden",
-  "volume": 2,
-  "effectiveVolume": 0.2,
+  "volume": 5,
+  "effectiveVolume": 1.7,
   "relevanceRates": {
-    "byPlatform": {},
-    "overall": null,
-    "classified": 0
+    "byPlatform": {
+      "reddit": 1,
+      "bluesky": 1
+    },
+    "overall": 1,
+    "classified": 2
   },
-  "positivePct": null,
-  "opinionSample": 0,
-  "weekOverWeekPct": -33,
-  "baselineMultiple": 0.7,
+  "positivePct": 0,
+  "opinionSample": 2,
+  "weekOverWeekPct": 150,
+  "baselineMultiple": 1.81,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
-    "reddit": 0,
-    "bluesky": 0
+    "reddit": 1,
+    "bluesky": 1
   },
-  "topQuotes": [],
+  "topQuotes": [
+    {
+      "text": "Casting With Paddington The Musical coming towards the end of its first year run, and with what’s expected to be a…",
+      "platform": "reddit",
+      "author": "u/Adept-Difference-184",
+      "url": "https://www.reddit.com/r/westend/comments/1wlkmud/casting/"
+    }
+  ],
   "counters": {
-    "reddit": 0,
-    "bluesky": 0,
-    "x": 2,
-    "wikipedia": 2077
+    "reddit": 1,
+    "bluesky": 1,
+    "x": 3,
+    "wikipedia": 1900
   },
   "wikipediaTitle": "Paddington: The Musical",
   "baseline": {
-    "mean": 2.765625,
+    "mean": 3.044921875,
     "weeksOfHistory": 8
   },
   "rawCounts": {
-    "reddit": 0,
-    "bluesky": 0
+    "reddit": 1,
+    "bluesky": 1
   },
   "errors": [],
   "rank": {
-    "position": 24,
-    "total": 42,
-    "text": "24/42 West End"
+    "position": 11,
+    "total": 44,
+    "text": "11/44 West End"
   },
-  "compositeScore": 0.1
+  "compositeScore": 0.85
 }
