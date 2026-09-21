@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-21T11:01:17.706Z",
-  "processed": 38,
-  "failed": 82,
-  "successRate": "31.7%",
+  "updatedAt": "2026-09-21T11:29:47.228Z",
+  "processed": 61,
+  "failed": 239,
+  "successRate": "20.3%",
   "tierBreakdown": {
-    "playwright": 18,
+    "playwright": 33,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 8,
     "directCookies": 1,
-    "scrapingbee": 14,
-    "brightdata": 3,
+    "scrapingbee": 17,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 4
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 11,
   "recentActivity": [
     {
       "t": "2026-09-21T10:29:09.653Z",
@@ -42,6 +42,73 @@
       "event": "bb-session",
       "session": "22bf5c15",
       "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-09-21T11:02:16.025Z",
+      "event": "bb-session",
+      "session": "6945699c",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-09-21T11:02:16.527Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-21T11:05:04.438Z",
+      "event": "bb-session",
+      "session": "93ab2100",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-21T11:05:04.974Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-21T11:14:16.176Z",
+      "event": "bb-session",
+      "session": "69f2f175",
+      "url": "https://www.thetimes.com/culture/books/article/beatrix-potter-author-archives-ta"
+    },
+    {
+      "t": "2026-09-21T11:14:16.687Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-21T11:16:55.740Z",
+      "event": "bb-session",
+      "session": "4b3bf1ff",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-21T11:17:05.252Z",
+      "event": "bb-session",
+      "session": "5a94742e",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-21T11:18:31.549Z",
+      "event": "bb-session",
+      "session": "61fe43a0",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-21T11:18:32.045Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-21T11:19:06.013Z",
+      "event": "bb-session",
+      "session": "73c467b3",
+      "url": "https://www.wsj.com/articles/schmigadoon-review-musical-comedy-as-youve-never-se"
+    },
+    {
+      "t": "2026-09-21T11:19:06.513Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
