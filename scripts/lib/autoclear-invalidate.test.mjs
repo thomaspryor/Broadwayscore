@@ -148,3 +148,21 @@ test('computeTemplateLiteralOpenLines does not desync on a stray backtick inside
   assert.equal(openLines.has(2), false);
   assert.deepEqual(scanFileForInvalidateViolations(content, 'scripts/example.js'), []);
 });
+
+test('computeTemplateLiteralOpenLines still counts a closing backtick on a line that LOOKS like a comment but is inside an open template', () => {
+  // A line starting with `//` that is actually STRING CONTENT (the template
+  // opened on an earlier line and hasn't closed yet) must still have its
+  // backtick counted, or the template never closes and every later real
+  // write is hidden behind a false "still inside a template" (second Codex
+  // adversarial finding on the first fix for this exact function).
+  const content = [
+    'const help = `usage',
+    '// example`;',
+    'data.wrongShow = true;',
+    'invalidateWrongShowAutoClear(data);',
+  ].join('\n');
+  const openLines = computeTemplateLiteralOpenLines(content);
+  assert.equal(openLines.has(2), true, 'line 2 is inside the template opened on line 1');
+  assert.equal(openLines.has(3), false, 'the template closed on line 2 — line 3 is real code');
+  assert.deepEqual(scanFileForInvalidateViolations(content, 'scripts/example.js'), []);
+});
