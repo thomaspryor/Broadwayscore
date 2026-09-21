@@ -797,6 +797,15 @@ function planSweep(entries, tasks, opts) {
     if (!isTaskOpen(task)) continue;          // card already closed
     if (open.has(id)) continue;               // a newer launch superseded this
     if (ownerParked.has(id) || wdParked.has(id)) continue;
+    // BRO-3437: a job dispatched against the retired Notion mirror (any
+    // bare-numeric id) has no live card the owner can act on — parking it
+    // writes a watchdog-park ledger row for work nobody is tracking.
+    // board-targeting-audit.js measured this writer at 100% retired-board
+    // ids over 7 days, most recently <1h old. retryable/toPark (the 'dead'
+    // loop above) and p01Queue already carry this same gate; this loop was
+    // the gap — jobBlocked folds every job-lifecycle ledger row regardless
+    // of which board originally dispatched it.
+    if (!isLiveBoardTaskId(id)) continue;
     jobBlocked.push({ taskId: id, subject: task.subject, jobId: job.jobId, reason: job.reason || null });
   }
   jobBlocked.sort((a, b) => compareTaskIds(a.taskId, b.taskId));
@@ -944,6 +953,17 @@ function planSweep(entries, tasks, opts) {
     // after REDISPATCH_REARM_MS regardless, so this is a bounded no-op, not
     // a lost claim.
     if (task.fromArchive) continue;
+    // BRO-3437: a claim against the retired Notion mirror (bare-numeric id)
+    // can never be re-armed by the owner through Linear — no card exists
+    // there to act on. BRO-3390/3878 already stopped FRESH claims like this
+    // from being created (p01Queue/retryable are Linear-only), but a claim
+    // already sitting in the ledger from before those fixes still aged past
+    // CLAIM_LABEL_GRACE_MS and got promoted to noLaunchPark below, writing a
+    // watchdog-park row and paging the owner about a card Linear has never
+    // heard of. board-targeting-audit.js measured `watchdog-park` at 100%
+    // retired-board ids over 7 days, most recently <1h old — this loop (and
+    // jobBlocked above) were the two remaining sources.
+    if (!isLiveBoardTaskId(id)) continue;
     // BRO-3429 ship-check: once noLaunchPark (below) has actually parked this
     // id, it belongs to the "Needs you: parked" section, not this one — an id
     // in both would double-count in needsYou and print two contradictory
@@ -1101,7 +1121,13 @@ function planSweep(entries, tasks, opts) {
   // BRO-3924 (R3): alreadyPasses cards count toward needsYou too — same
   // treatment as recheckFailures, a human decision (close the card) this
   // sweep surfaces but never acts on itself.
-  const needsYou = toPark.length + wdParked.size + recheckFailures.length +
+  //
+  // BRO-3437: wdParked is still the full exclusion set (a legacy bare-id park
+  // row must keep suppressing its id), but only live-board parks are owner
+  // work — a retired-board park never clears (nothing relaunches those ids),
+  // so counting it kept "N need you" inflated by cards no surface can show.
+  const wdParkedLive = [...wdParked].filter(isLiveBoardTaskId).length;
+  const needsYou = toPark.length + wdParkedLive + recheckFailures.length +
     (outage.outage ? 1 : 0) + (failureRate.leaking ? 1 : 0) + awaitingClaim.length +
     unlandedDone.length + jobBlocked.length + alreadyPasses.length;
 
@@ -1116,7 +1142,7 @@ function planSweep(entries, tasks, opts) {
     recheckFailures,
     alreadyPasses,
     needsYou,
-    parkedTotal: wdParked.size + toPark.length + noLaunchPark.length + jobBlocked.length,
+    parkedTotal: wdParkedLive + toPark.length + noLaunchPark.length + jobBlocked.length,
   };
 }
 
