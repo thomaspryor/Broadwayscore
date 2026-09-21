@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-09-18",
+  "asOf": "2026-09-19",
   "shadow": false,
   "checks": [
     {
@@ -36,33 +36,33 @@
       "key": "affiliate:click-flow-collapse",
       "label": "Site ticket-click flow",
       "verdict": "pass",
-      "reason": "449/472 = 95% of peak, above the 20% floor"
+      "reason": "445/472 = 94% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:impact-click-collapse",
       "label": "Impact click ingestion",
       "verdict": "pass",
-      "reason": "555/555 = 100% of peak, above the 20% floor"
+      "reason": "556/556 = 100% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:handoff-break",
       "label": "Click → Impact handoff",
       "verdict": "pass",
-      "reason": "Impact/PostHog click ratio 238% over 3d"
+      "reason": "Impact/PostHog click ratio 257% over 3d"
     },
     {
       "key": "affiliate:bot-divergence",
       "label": "Bot click divergence",
-      "verdict": "pass",
-      "reason": "Impact/PostHog click ratio 2.4x over 3d"
+      "verdict": "warn",
+      "reason": "Impact recorded 275 clicks vs only 107 real PostHog TodayTix clicks over 3d (2.6x, ceiling 2.5x) — likely bots hitting the pxf.io tracking links; dilutes EPC and risks Impact compliance review if sustained"
     },
     {
       "key": "affiliate:payout-anomaly",
       "label": "Payout economics",
       "verdict": "pass",
-      "reason": "take-rate 2.85%, 0 zero-payout"
+      "reason": "take-rate 2.81%, 0 zero-payout"
     }
   ],
-  "failingCount": 0,
-  "updatedAt": "2026-09-20T11:51:57.265Z"
+  "failingCount": 1,
+  "updatedAt": "2026-09-21T13:23:40.129Z"
 }
