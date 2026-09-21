@@ -91,13 +91,17 @@ test('isCandidateConfirmed: exact match surfaces the Lortel title as matchedTitl
   assert.equal(r.matchedTitle, 'Birthright');
 });
 
-test('isCandidateConfirmed: fuzzy jaccard match still surfaces matchedTitle', () => {
+test('isCandidateConfirmed: a fuzzy jaccard match confirms but does NOT surface matchedTitle', () => {
+  // 0.6 jaccard is similar-enough-to-corroborate-existence, not
+  // similar-enough-to-safely-rename ("LOVE LOSS HOPE LAUGHTER" vs "Love
+  // Loss Hope" both clear 0.6 but are different shows) — see
+  // preferCorroboratingTitle's docstring.
   const r = isCandidateConfirmed(
     { title: 'Girls Chance Music', venue: 'Vineyard Theatre' },
     { playbillEntries: PLAYBILL, lortelEntries: [] },
   );
   assert.equal(r.confirmed, true);
-  assert.equal(r.matchedTitle, '||: GIRLS :||: CHANCE :||: MUSIC :||');
+  assert.equal(r.matchedTitle, undefined);
 });
 
 test('isCandidateConfirmed: no match means matchedTitle is absent', () => {
@@ -132,5 +136,14 @@ test('preferCorroboratingTitle: never swaps when BOTH sources are shouted — no
 test('preferCorroboratingTitle: no corroborating title means no swap', () => {
   const r = preferCorroboratingTitle('MILES FOR MARY', undefined);
   assert.equal(r.title, 'MILES FOR MARY');
+  assert.equal(r.swapped, false);
+});
+
+test('preferCorroboratingTitle: never overrides a verified KEEP_SHOUTED exemption', () => {
+  // "THIS IS NOT ABOUT ME." is a verified-correct exemption (Soho Theatre's
+  // own <title> tag). A corroborating listing's own casing must not
+  // silently override work that already checked the real source.
+  const r = preferCorroboratingTitle('THIS IS NOT ABOUT ME.', 'This is not about me');
+  assert.equal(r.title, 'THIS IS NOT ABOUT ME.');
   assert.equal(r.swapped, false);
 });

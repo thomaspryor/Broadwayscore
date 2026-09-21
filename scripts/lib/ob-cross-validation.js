@@ -21,7 +21,7 @@
 
 const { normalizeTitle, titleTokens, jaccard } = require('./title-match');
 const { isKnownOffBroadwayVenue, OFF_BROADWAY_VENUES } = require('./venue-classification');
-const { isShoutedTitle } = require('./title-display-case');
+const { isShoutedTitle, isExemptFromTitleCase } = require('./title-display-case');
 
 const JACCARD_FUZZY_MATCH_THRESHOLD = 0.6;
 
@@ -70,19 +70,28 @@ function isCandidateConfirmed(candidate, sources, options = {}) {
   // like "Girls Chance Music" matching Playbill's "||: GIRLS :||: CHANCE :||: MUSIC :||"
   // (the `|` chars aren't separators in normalizeTitle so the strings differ
   // after normalization, but the token sets agree).
+  //
+  // Deliberately NO matchedTitle on a fuzzy match (BRO-3920 adversarial
+  // review finding): 0.6 jaccard is similar-enough-to-corroborate-existence,
+  // not similar-enough-to-safely-RENAME. "LOVE LOSS HOPE LAUGHTER" and
+  // "Love Loss Hope" both pass 0.6 but are different shows; swapping the
+  // candidate's title to the matched entry's on fuzzy evidence risks
+  // attaching a different show's name to this candidate's venue/source URL.
+  // Only an exact normalized match (Pass 1) is safe to treat as "same title,
+  // different casing".
   if (wantTokens.size > 0) {
     for (const e of playbill) {
       if (!e || !e.title) continue;
       const sim = jaccard(wantTokens, titleTokens(e.title));
       if (sim >= JACCARD_FUZZY_MATCH_THRESHOLD) {
-        return { confirmed: true, source: 'playbill', reason: `matched playbill entry "${e.title}" (jaccard=${sim.toFixed(2)})`, matchedTitle: e.title };
+        return { confirmed: true, source: 'playbill', reason: `matched playbill entry "${e.title}" (jaccard=${sim.toFixed(2)})` };
       }
     }
     for (const e of lortel) {
       if (!e || !e.title) continue;
       const sim = jaccard(wantTokens, titleTokens(e.title));
       if (sim >= JACCARD_FUZZY_MATCH_THRESHOLD) {
-        return { confirmed: true, source: 'lortel', reason: `matched lortel entry "${e.title}" (jaccard=${sim.toFixed(2)})`, matchedTitle: e.title };
+        return { confirmed: true, source: 'lortel', reason: `matched lortel entry "${e.title}" (jaccard=${sim.toFixed(2)})` };
       }
     }
   }
@@ -226,14 +235,23 @@ function decideCriticListingPromotion(candidate, options = {}) {
  * Only swaps when the venue-page title is shouted AND the corroborating
  * title is not — never when both agree (nothing to fix) and never when both
  * are shouted (no evidence either is more correct; stays flagged by
- * validate-data.js's isShoutedTitle gate instead of guessing).
+ * validate-data.js's isShoutedTitle gate instead of guessing). Also never
+ * swaps a title that's already a verified exemption (KEEP_SHOUTED_IDS/
+ * TITLES) — that ALL-CAPS was already checked against the source and
+ * confirmed correct, so a corroborating listing's own (possibly wrong)
+ * casing must not silently override it.
  *
  * @param {string} candidateTitle - the venue-page-scraped title
  * @param {string|undefined} matchedTitle - isCandidateConfirmed()'s matchedTitle
  * @returns {{title: string, swapped: boolean}}
  */
 function preferCorroboratingTitle(candidateTitle, matchedTitle) {
-  if (matchedTitle && isShoutedTitle(candidateTitle) && !isShoutedTitle(matchedTitle)) {
+  if (
+    matchedTitle
+    && isShoutedTitle(candidateTitle)
+    && !isShoutedTitle(matchedTitle)
+    && !isExemptFromTitleCase(undefined, candidateTitle)
+  ) {
     return { title: matchedTitle, swapped: true };
   }
   return { title: candidateTitle, swapped: false };
