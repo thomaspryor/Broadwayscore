@@ -253,30 +253,9 @@ function applyPatch(filePath, oldString, newString) {
   fs.writeFileSync(filePath, patched, 'utf8');
 }
 
+const { revertFile: revertFileAt } = require('./lib/friction-revert-file.js');
 function revertFile(filePath) {
-  // Same bug class as BRO-2364/BRO-3595: `git checkout HEAD -- <path>` errors
-  // ("did not match any file(s) known to git") whenever HEAD has no version
-  // of filePath — a patch applied to a file this run itself created earlier
-  // (never committed) would otherwise fail here and be swallowed by the bare
-  // `catch {}` below, leaving the broken patched content on disk instead of
-  // reverted. Check HEAD first; if absent, unstage + delete instead.
-  let headHasFile = true;
-  try {
-    execSync(`git cat-file -e "HEAD:${filePath}"`, { cwd: ROOT, stdio: 'pipe' });
-  } catch {
-    headHasFile = false;
-  }
-  try {
-    if (headHasFile) {
-      // Restore both index (staging) and working tree from HEAD
-      execSync(`git checkout HEAD -- "${filePath}"`, { cwd: ROOT, stdio: 'pipe' });
-    } else {
-      execSync(`git reset -q -- "${filePath}"`, { cwd: ROOT, stdio: 'pipe' });
-      fs.rmSync(path.join(ROOT, filePath), { force: true });
-    }
-  } catch {
-    // best effort
-  }
+  revertFileAt(filePath, ROOT);
 }
 
 function runValidation() {
