@@ -20,6 +20,10 @@ permissions:
   contents: write
   actions: write
 
+concurrency:
+  group: retry-wrong-urls
+  cancel-in-progress: false
+
 jobs:
   retry:
     runs-on: ubuntu-latest

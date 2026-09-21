@@ -118,7 +118,7 @@ Structural workflow linting runs in `test.yml` (`lint-workflows` job). Shellchec
 |----------|----------------------|----------------------|-------|
 | `rebuild-reviews.yml` | ✅ | ✅ | **PRIMARY sync** - daily + manual trigger. Pre-rebuild flag-setters (flag-wrong-production-by-date, cleanup-phantom-outlets, etc.) write review-texts, pushed via push-review-texts (line 375). LLM enrichment moved to `enrich-reviews.yml` 2026-04-30. |
 | `enrich-reviews.yml` | ✅ | ❌ | LLM enrichment of review-text flags (isNonReview, wrongProduction, wrongShow, criticName backfill). Every 6h. |
-| `review-refresh.yml` | ✅ | ✅ | Weekly extraction + rebuild |
+| `review-refresh.yml` | ✅ | ✅ | Daily extraction + rebuild |
 | `gather-reviews.yml` | ✅ | ✅ | Parallel-safe, rebuilds inline, **dispatches deploy** |
 | `collect-review-texts.yml` | ✅ | ✅ | Parallel-safe, rebuilds inline after commit |
 | `fetch-guardian-reviews.yml` | ✅ | ✅ | Single-threaded, rebuilds inline |
@@ -264,7 +264,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
   - Uses retry loop (5 attempts) with random backoff for git push conflicts
 
 ## `review-refresh.yml`
-- **Runs:** Weekly on Mondays at 9 AM UTC
+- **Runs:** Daily at 9 AM UTC (cron `0 9 * * *`; this entry previously said "Weekly on Mondays" — stale, corrected BRO-3500)
 - **Does:** Checks all open shows for new reviews, extracts from aggregator archives, **rebuilds reviews.json**, triggers collection if needed
 - **Script:** `scripts/check-show-freshness.js`
 - **Key steps:** Extract reviews → **flag-wrong-production-by-date** → Rebuild reviews.json → Commit → Trigger collection for shows with gaps

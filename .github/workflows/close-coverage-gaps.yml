@@ -35,6 +35,16 @@ on:
 permissions:
   contents: write
 
+# Per-run group (not shared): the `gather-gaps` job matrix-partitions gap
+# shows into disjoint parallel_jobs shards. A shared group would queue a
+# second manual invocation behind the first rather than let them run, which
+# is fine for this rare orchestration workflow but not needed — this makes
+# "one run's own jobs never race each other" explicit without adding an
+# unnecessary queue for concurrent era runs. See docs/workflow-concurrency-audit.md.
+concurrency:
+  group: close-coverage-gaps-${{ github.run_id }}
+  cancel-in-progress: false
+
 jobs:
   # Job 1: Audit coverage, identify gap shows, partition into batches
   prepare:

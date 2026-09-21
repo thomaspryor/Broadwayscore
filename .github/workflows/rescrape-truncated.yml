@@ -41,6 +41,15 @@ on:
 # Uses Archive.org first (often has full pre-paywall snapshots).
 # ~2,479 truncated reviews across all domains.
 
+# Per-run group (not shared): matrix partitions eligible reviews into
+# disjoint parallel_jobs shards, and self-chains the next round with a NEW
+# run_id after rebuild. A shared group would only queue a second concurrent
+# manual dispatch, never affect the chain or the matrix.
+# See docs/workflow-concurrency-audit.md.
+concurrency:
+  group: rescrape-truncated-${{ github.run_id }}
+  cancel-in-progress: false
+
 jobs:
   prepare:
     runs-on: ubuntu-latest
