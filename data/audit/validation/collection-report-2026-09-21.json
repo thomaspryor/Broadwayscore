@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-21T00:05:46.686Z",
+  "runDate": "2026-09-21T00:39:34.903Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,13 +11,13 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 57,
+    "processed": 59,
     "failed": 90,
     "skipped": 0,
-    "successRate": "38.8%"
+    "successRate": "39.6%"
   },
   "tierBreakdown": {
-    "playwright": 37,
+    "playwright": 39,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -27,8 +27,8 @@
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -41,13 +41,13 @@
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 59,
+    "totalFailed": 58,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 59,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 58,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -107,7 +107,9 @@
     "darkling-off-west-end-2026/guardian--unknown.json",
     "thelma-and-louise-a-new-musical-off-west-end-2026/south-london--unknown.json",
     "thelma-and-louise-a-new-musical-off-west-end-2026/west-end-best-friend--cara-brazier.json",
-    "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json"
+    "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "cat-cohen-broad-strokes-off-broadway-2026/nysr--unknown.json",
+    "shifters-off-broadway-2026/nysr--unknown.json"
   ],
   "failed": [
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/variety--unknown.json",
@@ -239,7 +241,9 @@
       "darkling-off-west-end-2026/guardian--unknown.json",
       "thelma-and-louise-a-new-musical-off-west-end-2026/south-london--unknown.json",
       "thelma-and-louise-a-new-musical-off-west-end-2026/west-end-best-friend--cara-brazier.json",
-      "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json"
+      "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json",
+      "cat-cohen-broad-strokes-off-broadway-2026/nysr--unknown.json",
+      "shifters-off-broadway-2026/nysr--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -270,11 +274,5 @@
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
-      "oldUrl": "https://www.timeout.com/newyork/theater/wolf-hall-and-bring-up-the-bodies",
-      "newUrl": "https://www.timeout.com/newyork/theater/wolf-hall-parts-one-two"
-    }
-  ]
+  "urlDiscoveries": []
 }
