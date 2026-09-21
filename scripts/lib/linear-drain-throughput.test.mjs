@@ -130,6 +130,17 @@ test('fetchUnarmedUrgentHighCount: no issues connection at all is also a reporte
   assert.match(r.reason, /malformed-response/);
 });
 
+// codex re-review finding: nodes present but pageInfo entirely absent must
+// not read as "scan complete, 0 unarmed" — a genuinely-finished page always
+// carries a real pageInfo object.
+test('fetchUnarmedUrgentHighCount: nodes present but pageInfo missing entirely is a reported failure, not a false zero', async () => {
+  const graphql = async () => ({ issues: { nodes: [] } });
+  const r = await fetchUnarmedUrgentHighCount({ graphql });
+  assert.equal(r.ok, false);
+  assert.equal(r.count, null);
+  assert.match(r.reason, /malformed-response/);
+});
+
 // ---------------------------------------------------------------- isHeartbeatFresh
 
 test('isHeartbeatFresh: a recent timestamp is fresh', () => {
