@@ -10,6 +10,7 @@
  */
 
 const { JSDOM } = require('jsdom');
+const { assertTableSchema, TableSchemaError, findColumnIndex } = require('./table-schema-assertion');
 
 const USER_AGENT = 'BroadwayScorecardBot/1.0 (broadway-scorecard project; precursor-awards-scraper)';
 
@@ -148,6 +149,30 @@ function parseCategoryPage(html, opts = {}) {
     let currentWinnerSeen = false;
 
   const rows = Array.from(yearTable.querySelectorAll('tr'));
+  if (rows.length === 0) continue;
+
+  // Resolve the Year column by header label rather than assuming cells[0]
+  // (BRO-3596 — same column-drift class as BRO-2375: a table that inserts a
+  // column ahead of Year would otherwise silently read a non-year cell as
+  // the year on every row, dropping the whole table with no signal).
+  const headerCells = Array.from(rows[0].children)
+    .filter((c) => c.tagName === 'TH' || c.tagName === 'TD')
+    .map((c) => (c.textContent || '').trim());
+  let yearIdx;
+  try {
+    assertTableSchema([headerCells], { minCells: 2 });
+    yearIdx = findColumnIndex(headerCells, 'Year');
+    if (yearIdx === -1) {
+      throw new TableSchemaError(`Year column not found by label in header: ${JSON.stringify(headerCells)}`);
+    }
+  } catch (err) {
+    if (err instanceof TableSchemaError) {
+      console.warn(`precursor-category-parser: skipping table — ${err.message}`);
+      continue;
+    }
+    throw err;
+  }
+
   for (const row of rows) {
     const cells = Array.from(row.children).filter((el) => el.tagName === 'TD' || el.tagName === 'TH');
     if (cells.length === 0) continue;
@@ -155,19 +180,20 @@ function parseCategoryPage(html, opts = {}) {
     const rowBgHighlight = bgIsHighlight(row.getAttribute('style')) ||
       Array.from(cells).some((c) => bgIsHighlight(c.getAttribute('style')));
 
-    // Year detection: first cell text starts with a 4-digit year.
+    // Year detection: the year-column cell text starts with a 4-digit year.
     // If the cell has rowspan, the next N rows belong to the same year.
-    let firstCell = cells[0];
-    let nomineeCells = cells.slice(1);
-    const yearFromCell = parseFourDigitYear(firstCell.textContent || '');
+    let firstCell = cells[yearIdx];
+    let nomineeCells = firstCell ? cells.filter((_, i) => i !== yearIdx) : cells.slice(1);
+    const yearFromCell = firstCell ? parseFourDigitYear(firstCell.textContent || '') : null;
     if (yearFromCell) {
       currentYear = yearFromCell;
       const rs = parseInt(firstCell.getAttribute('rowspan') || '1', 10);
       rowsLeftForYear = rs > 1 ? rs : 1;
       currentWinnerSeen = false;
     } else if (rowsLeftForYear > 0 && currentYear) {
-      // Continuation row for the rowspan'd year. The "first cell" here is
-      // actually a nominee cell.
+      // Continuation row for the rowspan'd year. The year cell is absent
+      // from this row's DOM entirely (rowspan), so every cell here is a
+      // nominee cell.
       nomineeCells = cells;
     } else {
       continue;

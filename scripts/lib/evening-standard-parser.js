@@ -29,6 +29,7 @@
 
 const https = require('https');
 const { JSDOM } = require('jsdom');
+const { assertTableSchema, TableSchemaError, findColumnIndex } = require('./table-schema-assertion');
 
 const ES_BASE_URL = 'https://en.wikipedia.org/wiki/Evening_Standard_Theatre_Award_for_';
 const FIRST_CEREMONY_YEAR = 1955; // 1st ceremony was in 1955
@@ -123,10 +124,37 @@ function extractCategoryEntries(html, category, minYear = 1990) {
   }
 
   for (const table of tables) {
-    const rows = table.querySelectorAll('tbody > tr');
+    const rowsArr = Array.from(table.querySelectorAll('tbody > tr'));
+    if (rowsArr.length === 0) continue;
+
+    // Resolve the SHOW column by header label rather than trusting the
+    // hardcoded SHOW_COL_BY_CATEGORY position alone (BRO-3596 — same
+    // column-drift class as BRO-2375: if Wikipedia reorders a category's
+    // data columns, a bare fixed index silently reads the wrong cell as the
+    // winner). Column 0 of the header is always Ceremony/Year (see file
+    // docstring); the label search operates in the same "data columns only"
+    // basis as showCol/winnerCells below (header cells minus column 0).
+    const headerCells = Array.from(rowsArr[0].children)
+      .filter((c) => c.tagName === 'TH' || c.tagName === 'TD')
+      .map((c) => (c.textContent || '').trim());
+    try {
+      assertTableSchema([headerCells], { minCells: 2 });
+    } catch (err) {
+      if (err instanceof TableSchemaError) {
+        console.warn(`evening-standard-parser: skipping table for "${category}" — ${err.message}`);
+        continue;
+      }
+      throw err;
+    }
+    const dataHeaderCells = headerCells.slice(1);
+    const labelIdx = ['Play', 'Musical', 'Work', 'Show']
+      .map((l) => findColumnIndex(dataHeaderCells, l))
+      .find((i) => i !== -1);
+    const resolvedShowCol = labelIdx !== undefined ? labelIdx : showCol;
+
     let currentYear = null;
     let isFirstDataRowAfterHeader = false;
-    for (const row of rows) {
+    for (const row of rowsArr) {
       const cells = Array.from(row.children).filter((c) => c.tagName === 'TH' || c.tagName === 'TD');
       if (cells.length === 0) continue;
 
@@ -149,7 +177,7 @@ function extractCategoryEntries(html, category, minYear = 1990) {
       if (yearFromHeader != null && cells.length >= 2) {
         currentYear = yearFromHeader;
         const winnerCells = cells.slice(1);
-        const showCell = winnerCells[showCol] || winnerCells[0];
+        const showCell = winnerCells[resolvedShowCol] || winnerCells[0];
         if (showCell && currentYear >= minYear) {
           const name = extractWinner(showCell);
           if (name && !/^no award$/i.test(name)) {
@@ -171,7 +199,7 @@ function extractCategoryEntries(html, category, minYear = 1990) {
         isFirstDataRowAfterHeader = false;
         continue;
       }
-      const showCell = cells[showCol];
+      const showCell = cells[resolvedShowCol];
       if (!showCell) continue;
       const name = extractWinner(showCell);
       if (!name || /^no award$/i.test(name)) {

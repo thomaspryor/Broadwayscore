@@ -50,6 +50,7 @@ const {
   RATE_LIMIT_MS,
   PRECURSORS_DIR,
 } = require('./precursor-wikipedia');
+const { assertTableSchema, TableSchemaError } = require('./table-schema-assertion');
 
 /** Pull category name from the first cell of a row.
  *  Pattern is `'''[[Ceremony Award for X|X]]'''` OR `'''[X]'''`. */
@@ -219,6 +220,55 @@ function parseWinnersNomineesCell(cellText) {
   return { winner, nominees: unique, winnerPersonName, winnerEntries };
 }
 
+/**
+ * Parse one wikitext table (as returned by extractTables) into
+ * `{ [category]: { year, winner, winnerPersonName?, nominees } }`.
+ *
+ * Unlike the HTML-table parsers in this codebase, this format has no header
+ * row to resolve columns by label from — each row is a strict two-cell
+ * `Category | Nominees` pair (category name always the row's first pipe
+ * cell, by the MediaWiki template convention these pages use). The
+ * equivalent of a schema guard here (BRO-3596) is asserting that the
+ * table's rows actually reach that 2-cell shape BEFORE reading cells[0] as
+ * the category slot — a table whose rows never split into 2+ cells (e.g. a
+ * markup change that collapses the row onto one cell) would otherwise
+ * silently yield zero categories, indistinguishable from "no data this
+ * year" at the caller (runYearPageScraper's minCategoriesPerYear drift
+ * check only fires when catCount > 0).
+ *
+ * @throws {TableSchemaError} if the table has no row reaching 2+ cells
+ */
+function parseYearPageTable(table, { year, categoryPrefixRe }) {
+  const dataRows = splitRows(table)
+    .map((row) => row.replace(/^\s*\n?/, ''))
+    .filter((trimmed) => (trimmed.startsWith('|') || trimmed.startsWith('!')) && !/^\s*!/.test(trimmed));
+
+  if (dataRows.length > 0) {
+    const firstCells = dataRows[0].split(/\n\s*\|\s*/);
+    assertTableSchema([firstCells], { minCells: 2 });
+  }
+
+  const categories = {};
+  for (const trimmed of dataRows) {
+    const cells = trimmed.split(/\n\s*\|\s*/);
+    if (cells.length < 2) continue;
+    const firstCell = cells[0].replace(/^\|\s*/, '');
+    const restCell = cells.slice(1).join('\n| ');
+    const category = extractCategory(firstCell);
+    if (!category || !categoryPrefixRe.test(category)) continue;
+    const { winner, nominees, winnerPersonName, winnerEntries } = parseWinnersNomineesCell(restCell);
+    if (nominees.length === 0) continue;
+    categories[category] = {
+      year,
+      winner,
+      nominees,
+      ...(winnerPersonName ? { winnerPersonName } : {}),
+      ...(winnerEntries && winnerEntries.length > 1 ? { winnerEntries } : {}),
+    };
+  }
+  return categories;
+}
+
 /** Scrape one Wikipedia year page. Returns `{ [category]: { year, winner, winnerPersonName?, nominees } }`. */
 async function scrapeYear({ year, pageTitleFn, sectionHeadings, categoryPrefixRe }) {
   const title = pageTitleFn(year);
@@ -244,26 +294,18 @@ async function scrapeYear({ year, pageTitleFn, sectionHeadings, categoryPrefixRe
   const categories = {};
   let rowCount = 0;
   for (const table of tables) {
-    const rows = splitRows(table);
-    for (const row of rows) {
-      const trimmed = row.replace(/^\s*\n?/, '');
-      if (!trimmed.startsWith('|') && !trimmed.startsWith('!')) continue;
-      if (/^\s*!/.test(trimmed)) continue;
-      const cells = trimmed.split(/\n\s*\|\s*/);
-      if (cells.length < 2) continue;
-      const firstCell = cells[0].replace(/^\|\s*/, '');
-      const restCell = cells.slice(1).join('\n| ');
-      const category = extractCategory(firstCell);
-      if (!category || !categoryPrefixRe.test(category)) continue;
-      const { winner, nominees, winnerPersonName, winnerEntries } = parseWinnersNomineesCell(restCell);
-      if (nominees.length === 0) continue;
-      categories[category] = {
-        year,
-        winner,
-        nominees,
-        ...(winnerPersonName ? { winnerPersonName } : {}),
-        ...(winnerEntries && winnerEntries.length > 1 ? { winnerEntries } : {}),
-      };
+    let tableCategories;
+    try {
+      tableCategories = parseYearPageTable(table, { year, categoryPrefixRe });
+    } catch (err) {
+      if (err instanceof TableSchemaError) {
+        console.log(`::warning::${title}: table schema check failed — ${err.message}`);
+        continue;
+      }
+      throw err;
+    }
+    for (const [category, entry] of Object.entries(tableCategories)) {
+      categories[category] = entry;
       rowCount++;
     }
   }
@@ -396,6 +438,7 @@ module.exports = {
   // exported for testing
   extractCategory,
   parseWinnersNomineesCell,
+  parseYearPageTable,
   mergeYearIntoBaseline,
   scrapeYear,
 };

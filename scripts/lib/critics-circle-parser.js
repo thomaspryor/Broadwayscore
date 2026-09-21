@@ -30,6 +30,7 @@
 
 const https = require('https');
 const { JSDOM } = require('jsdom');
+const { assertTableSchema, TableSchemaError, findColumnIndex } = require('./table-schema-assertion');
 
 const CC_URL = 'https://en.wikipedia.org/wiki/Critics%27_Circle_Theatre_Award';
 
@@ -118,13 +119,37 @@ function extractCategoryEntries(html, category, minYear = 1990) {
 
   const entries = [];
   for (const table of tables) {
-    const rows = table.querySelectorAll('tbody > tr');
+    const rows = Array.from(table.querySelectorAll('tbody > tr'));
+    if (rows.length === 0) continue;
+
+    // Resolve the Year column by header label rather than assuming cells[0]
+    // (BRO-3596 — the same column-drift class as BRO-2375: a decade table
+    // that inserts/reorders a column ahead of Year would otherwise silently
+    // drop every row in that table with no signal at all).
+    const headerCells = Array.from(rows[0].children)
+      .filter((c) => c.tagName === 'TH' || c.tagName === 'TD')
+      .map((c) => (c.textContent || '').trim());
+    try {
+      assertTableSchema([headerCells], { minCells: 2 });
+    } catch (err) {
+      if (err instanceof TableSchemaError) {
+        console.warn(`critics-circle-parser: skipping table for "${category}" — ${err.message}`);
+        continue;
+      }
+      throw err;
+    }
+    const yearIdx = findColumnIndex(headerCells, 'Year');
+    if (yearIdx === -1) {
+      console.warn(`critics-circle-parser: skipping table for "${category}" — Year column not found by label in header: ${JSON.stringify(headerCells)}`);
+      continue;
+    }
+
     for (const row of rows) {
       // Wikipedia uses <th> for the year and <td> for data cells. Collect
       // all cells in DOM order so column indices match the visible table.
       const cells = Array.from(row.children).filter((c) => c.tagName === 'TH' || c.tagName === 'TD');
       if (cells.length < 2) continue;
-      const yearText = cells[0]?.textContent?.trim() || '';
+      const yearText = cells[yearIdx]?.textContent?.trim() || '';
       const yearMatch = yearText.match(/(\d{4})/);
       if (!yearMatch) continue; // header row (no year)
       const year = parseInt(yearMatch[1], 10);
