@@ -92,7 +92,14 @@ test('update: a routine Todo -> In Progress transition does NOT print the conclu
 
 test('update: moving BETWEEN terminal states (Done -> Canceled) does NOT print the reopen warning (not actually reopening)', () => {
   const res = runUpdate({
-    argv: ['update', 'BRO-9459', '--state', 'Canceled'],
+    // --cancel-reason satisfies the canceled-state reason gate (BRO-3435,
+    // scripts/lib/linear-cancel-gate.js, exit 7): Done -> Canceled IS a real
+    // transition INTO a canceled-type state, so the gate fires on it by design
+    // and this test would otherwise exit 7 instead of 0. Same shape as the
+    // Done -> Duplicate case below, which feeds the duplicate gate a
+    // pre-existing relation for the same reason. The subject here is the
+    // reopen warning, not either gate.
+    argv: ['update', 'BRO-9459', '--state', 'Canceled', '--cancel-reason', 'superseded by the consolidated follow-up card'],
     state: { id: 'state-done', name: 'Done', type: 'completed' },
   });
   assert.equal(res.status, 0, `stderr:\n${res.stderr}`);
