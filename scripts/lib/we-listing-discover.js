@@ -112,8 +112,12 @@ const WE_SLUG_MIN_LENGTH = 5;
 // colliding compound, leave the bare West End match intact.
 // Checked and found to have NO practical non-West-End collision at all
 // (left matchable, no exclusion needed): adelphi, aldwych, dominion,
-// dorfman, duchess, gielgud, novello, olivier, sondheim, wyndhams/
-// wyndham's.
+// dorfman, duchess, fortune, gielgud, novello, olivier, sondheim, wyndhams/
+// wyndham's. "fortune" was missed by the first pass of this audit (only 22
+// of the 23 remaining short entries were checked) — the only non-West-End
+// "Fortune Theatre" is in Dunedin, New Zealand, which closed in 2018 and is
+// not a source this matcher ever sees slugs from (LBO/WET are UK-only), so
+// it carries no real collision risk.
 const WE_SLUG_GENERIC_EXCLUDE = new Set(['playhouse', 'cambridge', 'lyric', 'coliseum', 'queens']);
 const VENUE_SLUG_ENTRIES = [...WEST_END_VENUES]
   .map(v => ({ venue: v, slug: v.replace(/[.']/g, '').replace(/\s+/g, '-') }))
