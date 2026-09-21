@@ -144,6 +144,13 @@ jobs:
           SERP_CENSUS_NAIVE_PAGES: ${{ vars.SERP_CENSUS_NAIVE_PAGES || '' }}
           SERP_GAP_CENSUS_DISABLED: ${{ vars.SERP_GAP_CENSUS_DISABLED || '' }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          # BRO-3717: this step's routeAlert() calls (review-gap:blast-radius-refused
+          # and friends) are disposition='digest', which decideDigestEscalation() can
+          # silently promote to 'auto' -> dispatchCard() -> createLinearIssue(),
+          # which hard-needs this key. Without it, health-check.js's "Alert Router:
+          # dispatch deadman" check sees the failed attempt (see owner-alert-router.js
+          # dispatchCard()'s GITHUB_ACTIONS+LINEAR_API_KEY annotation).
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: |
           # Default window widened to 3y + include-closed so the cron grinds the
           # whole back-catalogue, not just the last 21d. Checkpointing + the soft
@@ -272,6 +279,11 @@ jobs:
       # Runs after --recover so newly-ingested reviews are reflected in this tick.
       - name: Rebuild T1 coverage ledger
         if: always()
+        # BRO-3717: same script/binary as the --scoreboard/--digest steps below,
+        # which need LINEAR_API_KEY for their routeAlert() digest->auto escalation
+        # path (see that comment on the "Run gap audit" step's env: block above).
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/audit-opening-night-coverage.js --write-ledger
 
       # B3 scoreboard (coverage % per market + oldest gap). Shipped as a --scoreboard
@@ -284,6 +296,10 @@ jobs:
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # BRO-3717: routeAlert(conditionKey:'t1-coverage:scoreboard', disposition:
+          # 'digest') can be promoted to 'auto' by decideDigestEscalation() -> needs
+          # LINEAR_API_KEY to file the Linear issue.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/audit-opening-night-coverage.js --scoreboard --alert
 
       # B4 deployed-JSON coverage diff. Every other audit in this job compares
@@ -297,6 +313,10 @@ jobs:
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # BRO-3717: routeAlert(conditionKey:'deployed-coverage:stale', disposition:
+          # 'digest') can be promoted to 'auto' by decideDigestEscalation() -> needs
+          # LINEAR_API_KEY to file the Linear issue.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/audit-deployed-coverage.js --days=21 --alert
 
       # T1 coverage digest (S2-T7). Reads the ledger just rebuilt above; ACTION-emails
@@ -312,6 +332,10 @@ jobs:
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # BRO-3717: routeAlert(conditionKey:'t1-coverage:new-gaps-24h', disposition:
+          # 'digest') can be promoted to 'auto' by decideDigestEscalation() -> needs
+          # LINEAR_API_KEY to file the Linear issue.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/audit-opening-night-coverage.js --digest --alert
 
       # T1 coverage scoreboard (B3, v2 reconciler Sprint B): coverage % per market +
@@ -321,6 +345,12 @@ jobs:
       # "Rebuild T1 coverage ledger" step above, so it must run after that step.
       - name: T1 coverage scoreboard
         if: always()
+        # BRO-3717: same routeAlert() escalation path as the "T1 coverage scoreboard
+        # (daily digest line)" step above (this step is a near-duplicate of that one
+        # -- see task tracker for a separate follow-up to consolidate them; not
+        # touched here to keep this fix a minimal, additive secret-wiring change).
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/audit-opening-night-coverage.js --scoreboard --alert
 
       # Auto-clear shadow report (S3-T4): refresh the evidence verdict from the
