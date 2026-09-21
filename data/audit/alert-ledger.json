@@ -1487,12 +1487,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-09-20T15:13:43.537Z",
-      "lastNotifiedAt": "2026-09-13T15:26:03.760Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-09-21T17:36:41.780Z",
+      "lastNotifiedAt": "2026-09-21T17:36:41.780Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": "BRO-2864",
-      "silentRefires": 7
+      "linearIdentifier": "BRO-2864"
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1609,13 +1609,13 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-09-20T15:13:43.532Z",
+      "lastSeen": "2026-09-21T17:36:41.776Z",
       "lastNotifiedAt": "2026-09-16T15:54:33.667Z",
       "lastSurfacedAt": null,
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-3656",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -1643,7 +1643,7 @@
       "resolvedAt": "2026-09-15T16:01:30.219Z"
     },
     "cron-health:Scrape WestEndTheatre": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Scrape WestEndTheatre",
@@ -1652,7 +1652,8 @@
       "lastNotifiedAt": "2026-09-06T14:44:20.046Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-21T17:36:44.669Z"
     },
     "opening-night-slug-mismatch-paranormal-activity-2026": {
       "status": "open",
@@ -2410,7 +2411,7 @@
       "linearIdentifier": "BRO-2837"
     },
     "cron-health-chronic:Scrape WestEndTheatre": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Scrape WestEndTheatre",
       "firstSeen": "2026-09-07T17:00:27.922Z",
@@ -2420,7 +2421,8 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-2931",
-      "silentRefires": 6
+      "silentRefires": 6,
+      "resolvedAt": "2026-09-21T17:36:44.671Z"
     },
     "opening-night-placeholder-synopsis-kimberly-akimbo-off-west-end-2026": {
       "status": "open",
@@ -2592,17 +2594,17 @@
       "silentRefires": 14
     },
     "cron-health:Audit Aggregator Review Gap": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Audit Aggregator Review Gap",
       "firstSeen": "2026-09-09T15:43:50.702Z",
-      "lastSeen": "2026-09-09T15:43:50.702Z",
-      "lastNotifiedAt": "2026-09-09T15:43:50.702Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-21T17:36:41.697Z",
+      "lastNotifiedAt": "2026-09-21T17:36:41.697Z",
+      "lastSurfacedAt": "2026-09-21T17:36:41.697Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-09-15T16:01:30.215Z"
+      "linearIdentifier": null
     },
     "opening-night-cv-wrongproduction-unhandled-jane-eyre-off-west-end-2026": {
       "status": "open",
