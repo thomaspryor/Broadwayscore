@@ -1009,7 +1009,14 @@ async function main() {
     } catch { /* heartbeat missing/stale/unreadable — renders as n/a below, not a thrown error */ }
 
     drainThroughputLine = formatDrainThroughputLine({
-      donePerDay: inflowCounts ? doneRatePerDay(inflowCounts.completed, inflowCounts.windowDays) : null,
+      donePerDay: inflowCounts
+        ? doneRatePerDay(inflowCounts.completed, inflowCounts.windowDays, {
+            // A truncated `completed` count is a FLOOR (backlog-inflow-ratio.js's
+            // fetchInflowCounts), not the real number — must render n/a, not an
+            // understated rate presented as exact (ship-check/Codex finding).
+            truncated: Array.isArray(inflowCounts.truncatedCounts) && inflowCounts.truncatedCounts.includes('completed'),
+          })
+        : null,
       windowDays: inflowCounts ? inflowCounts.windowDays : null,
       eligible,
       eligibleOk,

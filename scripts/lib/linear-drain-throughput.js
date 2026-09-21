@@ -37,6 +37,15 @@ const { buildOpenIssuesWithDescriptionsQuery } = require('./linear-dispatch.js')
 
 const DEFAULT_MAX_PAGES = 30; // 100/page = 3,000 issues; the open board measured ~1,000 (BRO-3390 header).
 
+// Same reasoning as backlog-inflow-ratio.js's own DIGEST_GRAPHQL_OPTS: this
+// runs inside the 7:30am digest's fail-soft block, so a degraded Linear API
+// should return quickly rather than exhausting linear-client's own default
+// (5 attempts, up to 60s backoff each). Note this bounds each REQUEST, not
+// the whole paginated walk — the caller's own Promise.race timeout is what
+// bounds the walk (same limitation backlog-inflow-ratio.js accepts: a raced
+// timeout rejects the wait but cannot cancel an in-flight request).
+const DIGEST_GRAPHQL_OPTS = { maxAttempts: 2, timeoutMs: 6_000, baseMs: 250 };
+
 // Same bar dispatch-watchdog.js's own HEALTH_STALE_MS uses to decide the
 // watchdog itself is dead and page the owner (that constant isn't exported,
 // so this is a deliberate duplicate of the VALUE, not an import — if the
@@ -53,8 +62,16 @@ function isHeartbeatFresh(ts, { nowMs = Date.now(), staleMs = HEARTBEAT_STALE_MS
   return nowMs - t < staleMs;
 }
 
-/** PURE. Done cards per local day, from an already-fetched completed count over `windowDays`. */
-function doneRatePerDay(completed, windowDays) {
+/**
+ * PURE. Done cards per local day, from an already-fetched completed count
+ * over `windowDays`. `truncated:true` (backlog-inflow-ratio.js's
+ * fetchInflowCounts sets this when its own completed-count page walk hit
+ * MAX_PAGES with more pages outstanding — a FLOOR, not the real count) must
+ * suppress the rate rather than silently present an undercount as an exact
+ * measurement (ship-check/Codex finding, BRO-3923).
+ */
+function doneRatePerDay(completed, windowDays, { truncated = false } = {}) {
+  if (truncated) return null;
   if (!Number.isFinite(completed) || !Number.isFinite(windowDays) || windowDays <= 0) return null;
   return Math.round((completed / windowDays) * 10) / 10;
 }
@@ -83,7 +100,7 @@ function countUnarmedUrgentHigh(issues) {
  *
  * @returns {Promise<{ok:boolean, reason:string|null, count:number|null}>}
  */
-async function fetchUnarmedUrgentHighCount({ graphql, teamKey = 'BRO', maxPages = DEFAULT_MAX_PAGES } = {}) {
+async function fetchUnarmedUrgentHighCount({ graphql, teamKey = 'BRO', maxPages = DEFAULT_MAX_PAGES, graphqlOpts = DIGEST_GRAPHQL_OPTS } = {}) {
   if (!graphql || typeof graphql !== 'function') {
     return { ok: false, reason: 'no-linear-client', count: null };
   }
@@ -92,10 +109,17 @@ async function fetchUnarmedUrgentHighCount({ graphql, teamKey = 'BRO', maxPages 
   let after = null;
   try {
     for (let page = 0; page < maxPages; page++) {
-      const data = await graphql(query, { teamKey, after });
-      const nodes = (data && data.issues && data.issues.nodes) || [];
-      const pageInfo = (data && data.issues && data.issues.pageInfo) || { hasNextPage: false };
-      issues.push(...nodes);
+      const data = await graphql(query, { teamKey, after }, graphqlOpts);
+      const conn = data && data.issues;
+      // A malformed/shape-shifted response must be a reported failure, not a
+      // silent "zero unarmed issues" (ship-check/Codex finding, BRO-3923) —
+      // same validation backlog-inflow-ratio.js's countMatching already
+      // applies to this exact client.
+      if (!conn || !Array.isArray(conn.nodes)) {
+        return { ok: false, reason: 'malformed-response: missing issues.nodes', count: null };
+      }
+      const pageInfo = conn.pageInfo || { hasNextPage: false };
+      issues.push(...conn.nodes);
       if (!pageInfo.hasNextPage) return { ok: true, reason: null, count: countUnarmedUrgentHigh(issues) };
       after = pageInfo.endCursor;
       if (page === maxPages - 1) {
@@ -121,11 +145,18 @@ function formatDrainThroughputLine({ donePerDay = null, windowDays = 7, eligible
   const eligibleText = eligibleOk && Number.isFinite(eligible) ? String(eligible) : 'n/a';
   const unarmedText = Number.isFinite(unarmedCount) ? String(unarmedCount) : 'n/a';
   const days = Number.isFinite(windowDays) ? windowDays : 7;
-  return `Linear drain: ${doneText} Done (${days}d avg) · ${eligibleText} watchdog-eligible in queue · ${unarmedText} Urgent/High unarmed (no verify command)`;
+  // "armed and eligible", not "about to run" (ship-check/Codex finding,
+  // BRO-3923): this is linearSource.eligible straight off the heartbeat —
+  // isWatchdogEligible alone, before budgets/concurrency/kill-switch/outage
+  // holds (dispatch-watchdog-core.js's dispatchCapDecision etc.) are applied.
+  // A globally-paused watchdog can still report a healthy eligible count
+  // here; the wording says "eligible", never "queued to run" or "in queue".
+  return `Linear drain: ${doneText} Done (${days}d avg) · ${eligibleText} Linear P0/P1 armed+eligible · ${unarmedText} Urgent/High unarmed (no verify command)`;
 }
 
 module.exports = {
   DEFAULT_MAX_PAGES,
+  DIGEST_GRAPHQL_OPTS,
   HEARTBEAT_STALE_MS,
   isHeartbeatFresh,
   doneRatePerDay,

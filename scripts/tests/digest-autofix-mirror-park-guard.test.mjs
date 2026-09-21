@@ -16,6 +16,19 @@ test('isWatchdogParkedMirrorTracker: false for a linear: parked title (live boar
   assert.equal(isWatchdogParkedMirrorTracker('Watchdog parked #linear:BRO-91 — dispatch guard refuses by construction'), false);
 });
 
+// BRO-3923 ship-check finding: prefer the stable conditionKey over the title
+// text — a later wording/punctuation edit to the pageOwner() title must not
+// silently reopen the filing hole.
+test('isWatchdogParkedMirrorTracker: conditionKey wins even if the title text has drifted', () => {
+  assert.equal(isWatchdogParkedMirrorTracker('A totally reworded parked message', 'watchdog-park:1234'), true);
+  assert.equal(isWatchdogParkedMirrorTracker('A totally reworded parked message', 'watchdog-park:linear:BRO-91'), false);
+});
+
+test('isWatchdogParkedMirrorTracker: falls back to the title when conditionKey is absent (health.errors/warns rows)', () => {
+  assert.equal(isWatchdogParkedMirrorTracker('Watchdog parked #1234 after 3 dead dispatch attempts', null), true);
+  assert.equal(isWatchdogParkedMirrorTracker('Watchdog parked #linear:BRO-91 — dispatch guard refuses by construction', undefined), false);
+});
+
 test('isWatchdogParkedMirrorTracker: false for unrelated titles and non-string input', () => {
   assert.equal(isWatchdogParkedMirrorTracker('Some unrelated health-check row'), false);
   assert.equal(isWatchdogParkedMirrorTracker(''), false);
@@ -33,6 +46,16 @@ test('planAutofix: never plans a card for a bare-numeric "Watchdog parked" queue
   }];
   const plan = planAutofix({ health: {}, tasks: [], queued });
   assert.deepEqual(plan, [], 'the frozen-mirror row must never reach planAutofix output at all');
+});
+
+test('planAutofix: never plans a card when only the conditionKey (not the title text) identifies the mirror', () => {
+  const queued = [{
+    title: 'Watchdog card, wording since changed',
+    description: 'irrelevant',
+    conditionKey: 'watchdog-park:5678',
+  }];
+  const plan = planAutofix({ health: {}, tasks: [], queued });
+  assert.deepEqual(plan, []);
 });
 
 test('planAutofix: a linear: "Watchdog parked" queued row still plans a card normally', () => {

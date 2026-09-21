@@ -354,7 +354,7 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     ...(Array.isArray(health?.warns) ? health.warns : []),
     ...extraIssues,
     ...normalizeQueuedRows(queued),
-  ].filter(r => r && r.name && !isWatchdogParkedMirrorTracker(r.name));
+  ].filter(r => r && r.name && !isWatchdogParkedMirrorTracker(r.name, r.conditionKey));
 
   // Every "<condition> on <show>" row's ANCHOR is the plan row at the
   // position of its first occurrence in this batch — a later same-condition

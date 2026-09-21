@@ -27,6 +27,13 @@ test('doneRatePerDay: null on missing/invalid input — never a silently wrong n
   assert.equal(doneRatePerDay(undefined, undefined), null);
 });
 
+// ship-check/Codex finding: a truncated completed-count walk is a FLOOR, not
+// the real number — must render n/a, never an understated rate as exact.
+test('doneRatePerDay: truncated:true forces null even with a real-looking count', () => {
+  assert.equal(doneRatePerDay(14, 7, { truncated: true }), null);
+  assert.equal(doneRatePerDay(14, 7, { truncated: false }), 2);
+});
+
 // ---------------------------------------------------------------- countUnarmedUrgentHigh
 
 function issue({ priority = 1, stateType = 'unstarted', description = 'no plan here', title = 'P0: fix the thing' } = {}) {
@@ -105,6 +112,24 @@ test('fetchUnarmedUrgentHighCount: a graphql rejection is caught and reported, n
   assert.match(r.reason, /linear-fetch-failed: rate limited/);
 });
 
+// ship-check/Codex finding: a response with no GraphQL error but a
+// malformed/missing issues.nodes must fail loud, not silently report 0
+// unarmed issues.
+test('fetchUnarmedUrgentHighCount: a malformed response (missing nodes) is a reported failure, not a false zero', async () => {
+  const graphql = async () => ({ issues: {} });
+  const r = await fetchUnarmedUrgentHighCount({ graphql });
+  assert.equal(r.ok, false);
+  assert.equal(r.count, null);
+  assert.match(r.reason, /malformed-response/);
+});
+
+test('fetchUnarmedUrgentHighCount: no issues connection at all is also a reported failure', async () => {
+  const graphql = async () => ({});
+  const r = await fetchUnarmedUrgentHighCount({ graphql });
+  assert.equal(r.ok, false);
+  assert.match(r.reason, /malformed-response/);
+});
+
 // ---------------------------------------------------------------- isHeartbeatFresh
 
 test('isHeartbeatFresh: a recent timestamp is fresh', () => {
@@ -127,17 +152,17 @@ test('isHeartbeatFresh: missing/unparseable timestamp is not fresh', () => {
 
 test('formatDrainThroughputLine: renders all three numbers when everything is known', () => {
   const line = formatDrainThroughputLine({ donePerDay: 2, windowDays: 7, eligible: 12, eligibleOk: true, unarmedCount: 3 });
-  assert.equal(line, 'Linear drain: 2/day Done (7d avg) · 12 watchdog-eligible in queue · 3 Urgent/High unarmed (no verify command)');
+  assert.equal(line, 'Linear drain: 2/day Done (7d avg) · 12 Linear P0/P1 armed+eligible · 3 Urgent/High unarmed (no verify command)');
 });
 
 test('formatDrainThroughputLine: partial failure renders n/a per field, never drops the line', () => {
   const line = formatDrainThroughputLine({ donePerDay: null, windowDays: 7, eligible: null, eligibleOk: false, unarmedCount: null });
   assert.ok(line.includes('n/a Done'));
-  assert.ok(line.includes('n/a watchdog-eligible'));
+  assert.ok(line.includes('n/a Linear P0/P1'));
   assert.ok(line.includes('n/a Urgent/High unarmed'));
 });
 
 test('formatDrainThroughputLine: a stale/not-ok heartbeat renders eligible as n/a even if a number is present', () => {
   const line = formatDrainThroughputLine({ donePerDay: 1, windowDays: 7, eligible: 999, eligibleOk: false, unarmedCount: 0 });
-  assert.ok(line.includes('n/a watchdog-eligible'), 'eligibleOk:false must suppress the stale number, not display it');
+  assert.ok(line.includes('n/a Linear P0/P1'), 'eligibleOk:false must suppress the stale number, not display it');
 });

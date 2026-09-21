@@ -32,14 +32,25 @@
 
 const { isRetiredBoardTaskId } = require('./task-id-namespace.js');
 
-// The literal shape every pageOwner() "Watchdog parked" title starts with
-// (dispatch-watchdog.js's 3 call sites) — "Watchdog parked #<taskId> ...".
+// Every pageOwner() "Watchdog parked" call carries a stable
+// `watchdog-park:<taskId>` conditionKey (dispatch-watchdog.js's 3 call
+// sites) — normalizeQueuedRows() in digest-autofix.js already threads
+// q.conditionKey onto the row, so this is the PREFERRED match: a structured
+// key can't be broken by a later wording/punctuation edit to the title the
+// way a text-prefix match can (ship-check/Codex finding, BRO-3923).
+const WATCHDOG_PARK_CONDITION_KEY_RE = /^watchdog-park:(\S+)$/;
+
+// Fallback for rows with no conditionKey (health.errors/warns/extraIssues
+// never carry one) — the literal shape every pageOwner() title starts with:
+// "Watchdog parked #<taskId> ...".
 const WATCHDOG_PARKED_TITLE_RE = /^Watchdog parked #(\S+)/;
 
-/** PURE. Would filing/reattaching a Linear tracker for this title target the frozen Notion mirror? */
-function isWatchdogParkedMirrorTracker(title) {
+/** PURE. Would filing/reattaching a Linear tracker for this row target the frozen Notion mirror? */
+function isWatchdogParkedMirrorTracker(title, conditionKey) {
+  const ckMatch = WATCHDOG_PARK_CONDITION_KEY_RE.exec(String(conditionKey || '').trim());
+  if (ckMatch) return isRetiredBoardTaskId(ckMatch[1]);
   const m = WATCHDOG_PARKED_TITLE_RE.exec(String(title || '').trim());
   return !!m && isRetiredBoardTaskId(m[1]);
 }
 
-module.exports = { isWatchdogParkedMirrorTracker, WATCHDOG_PARKED_TITLE_RE };
+module.exports = { isWatchdogParkedMirrorTracker, WATCHDOG_PARK_CONDITION_KEY_RE, WATCHDOG_PARKED_TITLE_RE };
