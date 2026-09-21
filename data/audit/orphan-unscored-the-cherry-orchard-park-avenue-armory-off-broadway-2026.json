@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
   "openingDate": "2026-09-17",
-  "detectedAt": "2026-09-21T16:54:25.319Z",
+  "detectedAt": "2026-09-21T17:24:06.975Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -11,6 +11,23 @@
       "criticName": "Unknown",
       "url": "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026",
       "fullTextLen": 1056,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
+    {
+      "file": "nytg--unknown.json",
+      "outletId": "nytg",
+      "criticName": "Unknown",
+      "url": "https://www.newyorktheatreguide.com/show/47487-the-cherry-orchard",
+      "fullTextLen": 2043,
       "dispatchActionable": true,
       "skipReason": null,
       "rescoreBlockedReason": null,
@@ -40,8 +57,8 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 3,
+  "dispatchableOrphanCount": 2,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
   "lastDispatch": "suppressed-cooldown",
