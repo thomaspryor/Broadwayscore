@@ -115,3 +115,36 @@ test('scanFileForInvalidateViolations ignores writes inside a multi-line USAGE t
   ].join('\n');
   assert.deepEqual(scanFileForInvalidateViolations(content, 'scripts/example.js'), []);
 });
+
+test('scanFileForInvalidateViolations passes the shared-call-after-branches pattern (verify-existing-reviews.js shape)', () => {
+  // Two mutually-exclusive branches each set the flag; ONE shared invalidate
+  // call after the if/else covers both (BRO-3895's own pattern). Regression
+  // test for the Codex adversarial ship-check finding that a naive
+  // per-hit-bounded window broke this exact real-world shape.
+  const content = [
+    'function f(data, isFilmTv) {',
+    '  if (isFilmTv) {',
+    '    data.wrongShow = true;',
+    '  } else {',
+    '    data.wrongShow = true;',
+    '  }',
+    '  invalidateWrongShowAutoClear(data);',
+    '  save(data);',
+    '}',
+  ].join('\n');
+  assert.deepEqual(scanFileForInvalidateViolations(content, 'scripts/example.js'), []);
+});
+
+test('computeTemplateLiteralOpenLines does not desync on a stray backtick inside a comment', () => {
+  const content = [
+    "// this is like a `pseudo-code snippet, not a real template",
+    'data.wrongShow = true;',
+    'invalidateWrongShowAutoClear(data);',
+  ].join('\n');
+  // Without skipping comment lines, the odd backtick above would flip
+  // inTemplate=true for the rest of the file, hiding the real write below
+  // behind a false "inside an open template" (Codex adversarial finding).
+  const openLines = computeTemplateLiteralOpenLines(content);
+  assert.equal(openLines.has(2), false);
+  assert.deepEqual(scanFileForInvalidateViolations(content, 'scripts/example.js'), []);
+});

@@ -63,20 +63,25 @@ const EXEMPT_FILES = new Set([
 // mechanism the line-window scan can't see, but the OTHER flag on the same
 // file still needs the normal per-site check.
 const EXEMPT_FLAG_SITES = new Set([
-  // audit-cross-show-url-collisions.js centralizes wrongShow invalidation
-  // inside its single atomicWriteJSON() write helper (`if (data.wrongShow
-  // === true) invalidateWrongShowAutoClear(data);`, BRO-3225's own comment:
-  // "centralized here (rather than at each of this file's ~13
-  // wrongShow=true assignment sites) so it covers all of them at once").
-  // Every one of the 13 wrongShow=true sites in this file calls
-  // atomicWriteJSON, so all are already covered — confirmed by direct read
-  // (BRO-3908 audit, 2026-09-20); an earlier pass of this same audit added
-  // redundant inline calls at each site before finding the centralized one
-  // and reverting them. wrongProduction has NO equivalent centralization in
-  // this file (atomicWriteJSON only checks wrongShow) — its 2 sites (lines
-  // 148, 992) get their own per-site invalidateWrongProductionAutoClear
-  // call and are NOT exempt.
+  // audit-cross-show-url-collisions.js centralizes BOTH invalidations inside
+  // its single atomicWriteJSON() write helper (`if (data.wrongShow === true)
+  // invalidateWrongShowAutoClear(data);` / same for wrongProduction),
+  // checked against each flag's FINAL state after the stale-flag-withholding
+  // pass earlier in that function. All 13 wrongShow=true sites and both
+  // wrongProduction=true sites in this file call atomicWriteJSON, so all are
+  // covered. This centralization is load-bearing, not optional: a Codex
+  // adversarial ship-check review (BRO-3908, 2026-09-20) caught that an
+  // earlier pass of this same fix called invalidateWrongProductionAutoClear
+  // INLINE right after each `data.wrongProduction = true` site — which ran
+  // BEFORE the withholding pass could decide whether the flag write even
+  // survives. If withholding then deleted the flag, the inline call had
+  // already deleted the record's legitimate wrongProductionAutoCleared
+  // breadcrumb for a flag that never actually got written, stripping real
+  // clearance evidence from a record that ends up unflagged. The centralized
+  // check (same pattern BRO-3225 already used for wrongShow) avoids the race
+  // by only invalidating once the final written state is known.
   'scripts/audit-cross-show-url-collisions.js::wrongShow',
+  'scripts/audit-cross-show-url-collisions.js::wrongProduction',
 ]);
 
 function isExempt(relPath, flag) {

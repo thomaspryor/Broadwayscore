@@ -59,6 +59,17 @@ function computeTemplateLiteralOpenLines(content) {
   for (let i = 0; i < lines.length; i++) {
     if (inTemplate) openAtStart.add(i + 1);
     const line = lines[i];
+    // A `//` comment (e.g. "// like a `pseudo-code` snippet") can carry an
+    // odd number of backticks without ever opening a real template literal —
+    // counting through it would desync `inTemplate` for the rest of the
+    // file, hiding every later real write behind a false "inside a
+    // template" (Codex adversarial ship-check finding, BRO-3908). Skipping
+    // whole `//`-comment lines here isn't perfect (a `/* */` block comment
+    // with a stray backtick has the same problem, and a `//` comment on the
+    // SAME line as real code after an opened template is not specially
+    // handled) — same accepted-limitation class as isInsideStringLiteral's
+    // documented KNOWN GAP above, not a claim of full tokenization.
+    if (isCommentLine(line)) continue;
     for (let j = 0; j < line.length; j++) {
       const c = line[j];
       if (c === '\\') { j++; continue; }
@@ -113,6 +124,23 @@ const INVALIDATE_WINDOW_LINES = 40;
  * 1-indexed line number? Comment lines inside the window are excluded so a
  * doc-comment mention (e.g. this file's own docstring) can't paper over a
  * real gap.
+ *
+ * KNOWN GAP (Codex adversarial ship-check finding, BRO-3908): a pure
+ * line-window can't distinguish "this write site's OWN call" from "a
+ * DIFFERENT write site's call that happens to sit nearby" — e.g. two
+ * sequential, mutually-exclusive `if`/`else if` branches each ~15-30 lines
+ * apart (classify-wrong-production.js:615/646) could, in principle, mask a
+ * regression that deletes one branch's own call while the sibling's call
+ * stays in range. A tighter, per-hit-bounded window was tried and reverted:
+ * it broke the OTHER legitimate pattern this corpus uses just as often —
+ * multiple mutually-exclusive branches sharing ONE invalidate call placed
+ * after all of them (verify-existing-reviews.js:220-232, the same
+ * "flag-during-branches, invalidate-once-after" shape as BRO-3895's own
+ * fix) — which a bounded window incorrectly flagged as missing for the
+ * earlier branch. Distinguishing "shared call after a branch group" from
+ * "sibling call for an unrelated site" needs real control-flow parsing, not
+ * text proximity; accepted as a scanner limitation, same class as
+ * isInsideStringLiteral's documented KNOWN GAP in the sibling lint.
  */
 function hasNearbyInvalidateCall(content, lineNumber, fnName, windowLines = INVALIDATE_WINDOW_LINES) {
   const lines = content.split('\n');

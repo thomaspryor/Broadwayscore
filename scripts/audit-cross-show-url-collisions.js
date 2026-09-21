@@ -96,6 +96,16 @@ function atomicWriteJSON(filePath, data) {
   // FINAL state, so a flag this run withheld does NOT wrongly invalidate a
   // stamp for a flag that never actually gets written.
   if (data.wrongShow === true) invalidateWrongShowAutoClear(data);
+  // BRO-3908: same centralization for wrongProduction, same reason — an
+  // earlier pass of this fix called invalidateWrongProductionAutoClear
+  // inline right after each `data.wrongProduction = true` site, which ran
+  // BEFORE the withholding pass above could decide. If withholding then
+  // deleted the flag, the inline call had already deleted this record's
+  // legitimate wrongProductionAutoCleared breadcrumb for a flag that never
+  // actually got written (ship-check/Codex adversarial finding) — stripping
+  // real clearance evidence from a record that ends up unflagged. Checking
+  // FINAL state here avoids the race.
+  if (data.wrongProduction === true) invalidateWrongProductionAutoClear(data);
   const tmp = filePath + '.tmp';
   fs.writeFileSync(tmp, JSON.stringify(data, null, 2) + '\n');
   fs.renameSync(tmp, filePath);
@@ -146,7 +156,6 @@ for (const showId of showDirs) {
 
     if (APPLY) {
       data.wrongProduction = true;
-      invalidateWrongProductionAutoClear(data);
       data.wrongProductionNote = `File showId "${data.showId}" doesn't match directory "${showId}" — placed in wrong production directory`;
       atomicWriteJSON(filePath, data);
       showIdMismatchFlagged++;
@@ -991,7 +1000,6 @@ if (APPLY) {
         if (data.wrongShow || data.wrongProduction) continue;
         if (shouldSkipCrossShowUrlFlag(data)) continue; // same cross-show-URL class: honor CV verdict + manual-clear
         data.wrongProduction = true;
-        invalidateWrongProductionAutoClear(data);
         data.wrongProductionNote = `Cross-show URL collision (catch-all revival): no date/signal available, defaulting to most recent production ${winner.showId}`;
         atomicWriteJSON(filePath, data);
         catchAllFlagged++;
