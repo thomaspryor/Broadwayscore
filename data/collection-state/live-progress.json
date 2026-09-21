@@ -1,37 +1,20 @@
 {
-  "updatedAt": "2026-09-21T23:06:40.464Z",
-  "processed": 62,
-  "failed": 226,
-  "successRate": "21.5%",
+  "updatedAt": "2026-09-21T23:34:56.578Z",
+  "processed": 78,
+  "failed": 400,
+  "successRate": "16.3%",
   "tierBreakdown": {
-    "playwright": 39,
+    "playwright": 46,
     "amp": 0,
-    "browserbase": 3,
-    "directCookies": 1,
-    "scrapingbee": 13,
+    "browserbase": 8,
+    "directCookies": 2,
+    "scrapingbee": 19,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 10
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-09-21T19:15:40.530Z",
-      "event": "bb-session",
-      "session": "bcb2a1fd",
-      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
-    },
-    {
-      "t": "2026-09-21T19:15:40.945Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-21T22:38:53.944Z",
-      "event": "bb-session",
-      "session": "03330897",
-      "url": "https://www.wsj.com/articles/the-cherry-orchard-review-chekhov-speaks-korean-506"
-    },
     {
       "t": "2026-09-21T22:38:54.531Z",
       "event": "bb-cookie-inject",
@@ -53,6 +36,94 @@
       "t": "2026-09-21T23:03:40.489Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-21T23:09:21.183Z",
+      "event": "bb-session",
+      "session": "14e0da3e",
+      "url": "https://www.thetimes.com/culture/books/article/beatrix-potter-author-archives-ta"
+    },
+    {
+      "t": "2026-09-21T23:09:21.764Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-21T23:12:31.080Z",
+      "event": "bb-session",
+      "session": "beda86ec",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-21T23:12:31.547Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-21T23:22:00.753Z",
+      "event": "bb-session",
+      "session": "5f3f9333",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-21T23:22:01.306Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-21T23:25:42.473Z",
+      "event": "bb-session",
+      "session": "1887efc9",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-09-21T23:25:43.014Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-21T23:28:28.509Z",
+      "event": "bb-session",
+      "session": "7ac0e337",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/titanique-review-celine-d"
+    },
+    {
+      "t": "2026-09-21T23:28:29.133Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-21T23:31:29.482Z",
+      "event": "bb-session",
+      "session": "c3c5e911",
+      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
+    },
+    {
+      "t": "2026-09-21T23:31:29.975Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-09-21T23:34:03.801Z",
+      "event": "bb-session",
+      "session": "08f72de0",
+      "url": "https://www.talkinbroadway.com/page/regional/cincy/cincy616.html"
+    },
+    {
+      "t": "2026-09-21T23:34:04.313Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-21T23:34:26.974Z",
+      "event": "bb-session",
+      "session": "64c38062",
+      "url": "https://www.talkinbroadway.com/page/regional/cincy/cincy616.html"
+    },
+    {
+      "t": "2026-09-21T23:34:27.445Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
