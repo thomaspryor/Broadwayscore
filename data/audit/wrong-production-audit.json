@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-21T11:56:55.890Z",
+  "timestamp": "2026-09-21T13:53:21.537Z",
   "stats": {
-    "totalReviews": 43834,
-    "alreadyFlagged": 18107,
-    "dateGuardCatches": 248,
+    "totalReviews": 43836,
+    "alreadyFlagged": 18106,
+    "dateGuardCatches": 249,
     "directorMismatch": 1048,
-    "tvFilmSignals": 1299,
+    "tvFilmSignals": 1300,
     "londonSignals": 1135,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3832
+    "noPublishDate": 3833
   },
   "findings": [
     {
@@ -8018,6 +8018,20 @@
     },
     {
       "showId": "disruption-off-broadway-2026",
+      "file": "the-interested-bystander--cary-wong.json",
+      "score": 74,
+      "publishDate": null,
+      "url": "https://www.interestedbystander.com/2026/08/theater-reviews-in-late-summer-new.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "disruption-off-broadway-2026",
       "file": "thestage--dave-fargnoli.json",
       "score": 78,
       "publishDate": "July 14th, 2023",
@@ -8586,7 +8600,7 @@
     {
       "showId": "equus-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
-      "score": 83,
+      "score": 84,
       "publishDate": "2026-05-19",
       "url": "https://www.londontheatre.co.uk/reviews/equus-review-menier-chocolate-factory",
       "findings": [
@@ -14961,7 +14975,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
-      "score": 80,
+      "score": 79,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
       "findings": [
@@ -15237,7 +15251,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "plays-international--jeremy-malies.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2025-12-15",
       "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
       "findings": [
@@ -16174,7 +16188,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
@@ -19702,7 +19716,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 78,
+      "score": 76,
       "publishDate": "2026-06-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-shakespeares-globe-review",
       "findings": [
@@ -19748,7 +19762,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 89,
+      "score": 90,
       "publishDate": "2026-06-23",
       "url": "https://www.standard.co.uk/culture/theatre/much-ado-about-nothing-shakespeare-globe-2026-b1287248.html",
       "findings": [
@@ -20285,6 +20299,17 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "nytg--gillian-russo.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 512d before show (2025-04-22 vs 2026-09-16)"
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "file": "nytg--unknown.json",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -35281,7 +35306,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "all-that-dazzles-uk--sam-woodward.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-09-04",
       "url": "https://www.allthatdazzles.co.uk/post/review-a-month-in-the-country-donmar-warehouse",
       "findings": [
@@ -35336,7 +35361,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 74,
       "publishDate": "2026-09-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/a-month-in-the-country-donmar-warehouse-review",
       "findings": [
@@ -36696,7 +36721,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-06-28",
       "url": "https://www.londontheatre1.com/reviews/archduke-royal-court/",
       "findings": [
@@ -36794,7 +36819,7 @@
     {
       "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 77,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
       "findings": [
@@ -38063,7 +38088,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-05-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-care-young-vic",
       "findings": [
@@ -39392,7 +39417,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
-      "score": 79,
+      "score": 81,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
       "findings": [
@@ -39406,7 +39431,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2026-08-13",
       "url": "https://playsinternational.org.uk/death-note-the-musical-barbican/",
       "findings": [
@@ -41767,7 +41792,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
@@ -45341,7 +45366,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 78,
+      "score": 76,
       "publishDate": "2026-09-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
       "findings": [
@@ -45756,7 +45781,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "artsdesk--demetrios-matheou.json",
-      "score": 81,
+      "score": 82,
       "publishDate": null,
       "url": "http://theartsdesk.com/theatre/mass-donmar-warehouse-review-purgatorial-cat-and-mouse",
       "findings": [
@@ -45770,7 +45795,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2026-04-30",
       "url": "https://www.theguardian.com/stage/2026/apr/30/mass-review-donmar-warehouse-london",
       "findings": [
@@ -45784,7 +45809,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 61,
+      "score": 62,
       "publishDate": "2026-04-30",
       "url": "https://www.londontheatre.co.uk/reviews/mass-review-donmar-warehouse",
       "findings": [
@@ -45882,7 +45907,7 @@
     {
       "showId": "matilda-the-musical-west-end-2021",
       "file": "london-theatre--peter-brown.json",
-      "score": 92,
+      "score": 91,
       "publishDate": "November 24th, 2011",
       "url": "https://www.londontheatre.co.uk/reviews/matilda-the-musical-review",
       "findings": [
@@ -46231,7 +46256,7 @@
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
       "file": "london-box-office--stuart-king.json",
-      "score": 74,
+      "score": 77,
       "publishDate": "2024-09-18",
       "url": "https://www.londonboxoffice.co.uk/news/post/moulin-rouge-review",
       "findings": [
