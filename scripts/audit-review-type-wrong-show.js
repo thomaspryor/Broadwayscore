@@ -34,7 +34,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { isReviewTypeWrongShowGap } = require('./lib/nonreview-contenttype-wrongshow');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { safeWriteReview, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 
 const USAGE = `audit-review-type-wrong-show.js — promote isNonReview:true/nonReviewType:'review' files to wrongShow (BRO-3862)
 
@@ -96,6 +96,7 @@ function listShowDirs(dir, showFilter) {
 function applyPromote(data, showId, file) {
   const now = new Date().toISOString();
   data.wrongShow = true;
+  invalidateWrongShowAutoClear(data);
   data.isValid = false;
   data.rejectionReason = 'wrong_show';
   data.wrongShowReason = `nonReviewType='review' promoted: classify-non-reviews.js (${data.nonReviewClassifiedBy || 'gemini'}) identified this content as a genuine review, but not of ${showId} — content mismatch, not a URL-shape match (audit-review-type-wrong-show.js, BRO-3862).`;

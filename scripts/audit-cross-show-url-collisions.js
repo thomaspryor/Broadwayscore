@@ -13,7 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
+const { invalidateWrongShowAutoClear, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Overridable via env so tests can point at a temp fixture dir/file instead
@@ -96,6 +96,16 @@ function atomicWriteJSON(filePath, data) {
   // FINAL state, so a flag this run withheld does NOT wrongly invalidate a
   // stamp for a flag that never actually gets written.
   if (data.wrongShow === true) invalidateWrongShowAutoClear(data);
+  // BRO-3908: same centralization for wrongProduction, same reason — an
+  // earlier pass of this fix called invalidateWrongProductionAutoClear
+  // inline right after each `data.wrongProduction = true` site, which ran
+  // BEFORE the withholding pass above could decide. If withholding then
+  // deleted the flag, the inline call had already deleted this record's
+  // legitimate wrongProductionAutoCleared breadcrumb for a flag that never
+  // actually got written (ship-check/Codex adversarial finding) — stripping
+  // real clearance evidence from a record that ends up unflagged. Checking
+  // FINAL state here avoids the race.
+  if (data.wrongProduction === true) invalidateWrongProductionAutoClear(data);
   const tmp = filePath + '.tmp';
   fs.writeFileSync(tmp, JSON.stringify(data, null, 2) + '\n');
   fs.renameSync(tmp, filePath);

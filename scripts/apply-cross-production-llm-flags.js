@@ -34,7 +34,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -90,6 +90,7 @@ for (const r of applicable) {
   }
 
   data.wrongProduction = true;
+  invalidateWrongProductionAutoClear(data);
   data.wrongProductionReason = 'cross-production-llm-verified';
   data.wrongProductionNote = `LLM (Opus) verified this review belongs to ${r.targetShowId}, not ${r.showId}. ${r.reasoning || ''}`.trim();
   data.wrongProductionTarget = r.targetShowId;

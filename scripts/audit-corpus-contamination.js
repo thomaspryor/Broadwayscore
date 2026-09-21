@@ -59,6 +59,7 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { isSerpUrlWrongProductionForOpeningNight } = require('./lib/opening-night-discovery');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 const CANONICAL_REPO = '/Users/tompryor/Broadwayscore';
 
@@ -192,6 +193,7 @@ function applyFlag(target, note) {
     );
   }
   review.wrongProduction = true;
+  invalidateWrongProductionAutoClear(review);
   review.wrongProductionNote = note || `Audit (BRO-2271): SERP-discovered URL year mismatch, manually verified as wrong production`;
   fs.writeFileSync(full, JSON.stringify(review, null, 2) + '\n');
   return full;

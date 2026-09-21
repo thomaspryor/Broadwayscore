@@ -42,7 +42,7 @@ const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { parseDate } = require('./lib/date-utils');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
 const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
 
@@ -153,6 +153,7 @@ function run() {
 
       if (!DRY_RUN) {
         data.wrongProduction = true;
+        invalidateWrongProductionAutoClear(data);
         data.wrongProductionReason = 'audit-2026-06-21-prior-production-contamination';
         // Preserve an existing note (e.g. a date-guard / CV note); only add ours when absent.
         if (!data.wrongProductionNote) {

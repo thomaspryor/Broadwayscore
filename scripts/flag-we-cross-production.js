@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -103,6 +104,7 @@ for (const dir of dirs) {
 
       // Flag it
       data.wrongProduction = true;
+      invalidateWrongProductionAutoClear(data);
       data.wrongProductionNote = 'US-only outlet review filed in West End directory — Broadway production review';
 
       if (!dryRun) {

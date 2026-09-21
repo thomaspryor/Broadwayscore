@@ -57,7 +57,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
 const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { wrongShowCleared } = require('./lib/review-guards');
-const { invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
+const { invalidateWrongShowAutoClear, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 
 const BASE = 'data/review-texts';
@@ -219,6 +219,7 @@ async function processVerify(items) {
 
           if (result.wrongProduction) {
             data.wrongProduction = true;
+            invalidateWrongProductionAutoClear(data);
             data.wrongProductionReason = `Retroactive LLM verify: ${result.reasoning || reason}`;
           } else if (!wrongShowCleared(data)) {
             if (result.isFilmTv) {

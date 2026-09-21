@@ -26,6 +26,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 const APPLY = process.argv.includes('--apply');
 
@@ -162,6 +163,7 @@ let written = 0;
 for (const r of restore) {
   const d = r.cur;
   d.wrongProduction = true;
+  invalidateWrongProductionAutoClear(d);
   delete d.wrongProductionAutoCleared;
   delete d.wrongProductionAutoClearedAt;
   d.wrongProductionRestoredBy = 'repair-noteless-wrongprod-autoclear';

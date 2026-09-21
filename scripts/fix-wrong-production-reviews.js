@@ -12,6 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const AUDIT_REPORT_PATH = path.join(__dirname, '..', 'data', 'audit', 'wrong-production-reviews.json');
@@ -88,6 +89,7 @@ function main() {
 
       // Add the flag and metadata
       content.wrongProduction = true;
+      invalidateWrongProductionAutoClear(content);
       content.wrongProductionReason = review.indicators_found.join(', ');
       content.wrongProductionConfidence = review.confidence;
       if (review.isDateMismatch) {

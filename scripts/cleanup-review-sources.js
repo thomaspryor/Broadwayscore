@@ -17,6 +17,7 @@ const path = require('path');
 const { normalizeOutlet, normalizeCritic, mergeReviews } = require('./lib/review-normalization');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -229,6 +230,7 @@ function pass2_flagProfiles(reviews) {
       log(`  ✓ Profile URL: ${r.showId}/${r.file}: ${url.substring(0, 60)}`);
       backupFile(r.filePath);
       r.data.wrongShow = true;
+      invalidateWrongShowAutoClear(r.data);
       r.data.wrongShowReason = 'URL is a BWW critic profile page, not a review';
       r.data.url = null;
       atomicWriteJSON(r.filePath, r.data);
@@ -261,6 +263,7 @@ function pass3_flagTour(reviews) {
       log(`  ✓ Tour review: ${r.showId}/${r.file}: /${city}/article/...`);
       backupFile(r.filePath);
       r.data.wrongProduction = true;
+      invalidateWrongProductionAutoClear(r.data);
       r.data.wrongProductionReason = `BWW regional/tour review (${city})`;
       atomicWriteJSON(r.filePath, r.data);
       stats.pass3_tourFlagged++;
@@ -277,6 +280,7 @@ function pass3_flagTour(reviews) {
       log(`  ✓ Tour review: ${r.showId}/${r.file}: .../${city}/article/...`);
       backupFile(r.filePath);
       r.data.wrongProduction = true;
+      invalidateWrongProductionAutoClear(r.data);
       r.data.wrongProductionReason = `BWW regional/tour review (${city})`;
       atomicWriteJSON(r.filePath, r.data);
       stats.pass3_tourFlagged++;

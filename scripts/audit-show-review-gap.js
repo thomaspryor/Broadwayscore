@@ -60,7 +60,7 @@ const {
   _buildDomainMap,
 } = require('./lib/outlet-canonicalize');
 const { isIncludableForRebuild } = require('./lib/review-guards');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { execErrorDetail } = require('./lib/exec-error-detail');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -1489,6 +1489,7 @@ function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null) {
     // into Tender's Times slot).
     if (recovered && filledDateOutsideWindow(after.publishDate, openingDate)) {
       after.wrongProduction = true;
+      invalidateWrongProductionAutoClear(after);
       after.wrongProductionNote = `auto-flag: filled text dated ${after.publishDate}, outside the production window around opening ${openingDate} (post-fill recovery guard)`;
       safeWriteReview(fp, after, { force: true });
       recovered = false;

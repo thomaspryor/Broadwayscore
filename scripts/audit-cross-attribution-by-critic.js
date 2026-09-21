@@ -30,6 +30,7 @@ const path = require('path');
 const { wrongShowCleared } = require('./lib/review-guards');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 
 const args = process.argv.slice(2);
 function arg(name, fallback = null) {
@@ -514,6 +515,7 @@ if (APPLY) {
       const data = JSON.parse(fs.readFileSync(f.filePath, 'utf8'));
       if (data.wrongShow || data.wrongProduction || wrongShowCleared(data)) continue; // already flagged or manually cleared
       data.wrongShow = true;
+      invalidateWrongShowAutoClear(data);
       data.wrongShowReason = `Cross-attribution: content matches ${f.detectedShowId} (score ${f.score} vs filed ${f.filedScore}, margin ${f.margin}x)`;
       data.crossAttributionAudit = {
         detectedShowId: f.detectedShowId,

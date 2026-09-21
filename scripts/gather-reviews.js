@@ -100,7 +100,7 @@ const {
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { computeReplacementPreserve, AGGREGATOR_FIELDS } = require('./lib/wrongprod-replacement-preserve');
 const { applyUrlChangeInvariant } = require('./lib/url-change-invariant');
-const { safeWriteReview, preserveFlaggedFields } = require('./lib/review-write-guard');
+const { safeWriteReview, preserveFlaggedFields, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 /**
  * Write a BWW/LBO aggregator-excerpt stub to disk.
@@ -3391,6 +3391,7 @@ function createReviewFile(showId, reviewData, options = {}) {
               return 'crossShow';
             }
             existingData.wrongProduction = true;
+            invalidateWrongProductionAutoClear(existingData);
             existingData.wrongProductionNote = `Same URL correctly belongs in ${showId}`;
             fs.writeFileSync(existingPath, JSON.stringify(existingData, null, 2) + '\n');
             console.log(`    ⟳ Flagged ${existing.showId}/${existing.file} as wrongProduction — URL belongs in ${showId}`);
@@ -3881,6 +3882,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             console.log(`    ⚠️  WARNING: Review published ${Math.round(daysBefore)} days before show's earliest date (${earliest}).`);
             console.log(`       Likely from a prior production. Flagging as wrongProduction.`);
             review.wrongProduction = true;
+            invalidateWrongProductionAutoClear(review);
             review.wrongProductionNote = `Auto-flagged: published ${Math.round(daysBefore)} days before show earliest date ${earliest}`;
           }
         }
@@ -3900,6 +3902,7 @@ function createReviewFile(showId, reviewData, options = {}) {
       if (reason) {
         console.log(`    ⚠️  ${reason}`);
         review.wrongProduction = true;
+        invalidateWrongProductionAutoClear(review);
         review.wrongProductionNote = reason;
       }
     } catch (e) {}
@@ -3936,6 +3939,7 @@ function createReviewFile(showId, reviewData, options = {}) {
       if (reason) {
         console.log(`    ⚠️  ${reason} (BWW RR cross-production)`);
         review.wrongProduction = true;
+        invalidateWrongProductionAutoClear(review);
         review.wrongProductionNote = `${reason} (BWW RR cross-production)`;
       }
     } catch (e) {}

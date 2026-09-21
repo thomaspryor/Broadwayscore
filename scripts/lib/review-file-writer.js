@@ -1046,6 +1046,17 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     sources: [input.source],
     ...fields,
   };
+  // BRO-3908 (Codex adversarial ship-check finding): `fields` is caller-owned
+  // and can echo back a stale wrongProductionAutoCleared breadcrumb (e.g. an
+  // import/replay payload) alongside the wrongProduction:true classifyMarketRouting/
+  // Guard J/Guard K can set on it (see the merge-path comment below) — this
+  // brand-new-file create path spreads `fields` directly into `newReview` and
+  // never goes through _mergeIntoExisting's deferred invalidate, so it never
+  // got the fix either. A NEW file can carry the exact self-contradictory
+  // shape just as easily as a merged one.
+  if (newReview.wrongProduction === true) {
+    invalidateWrongProductionAutoClear(newReview);
+  }
 
   // Apply misattribution flag to new files only (not merges — see Guard G note)
   if (_misattributionDetected) {
