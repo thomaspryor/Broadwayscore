@@ -3812,19 +3812,20 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-3952",
-      "resolvedAt": "2026-09-21T02:56:24.163Z"
+      "silentRefires": 1,
+      "resolvedAt": "2026-09-21T03:04:56.099Z"
     },
-    "test-yml:red:Unit Tests:4241349f": {
+    "land:land/BRO-3707": {
       "status": "open",
-      "disposition": "auto",
-      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"BRO-2462: a claim-outage (wedged launcher) is NOT a policy pause — pausedByPolicy stays false even though holds is non-empty\"",
-      "firstSeen": "2026-09-21T03:10:19.522Z",
-      "lastSeen": "2026-09-21T03:10:19.522Z",
-      "lastNotifiedAt": "2026-09-21T03:10:19.522Z",
-      "lastSurfacedAt": null,
+      "disposition": "digest",
+      "title": "Landing blocked: push red on land/BRO-3707",
+      "firstSeen": "2026-09-21T03:13:41.808Z",
+      "lastSeen": "2026-09-21T03:13:41.808Z",
+      "lastNotifiedAt": "2026-09-21T03:13:41.808Z",
+      "lastSurfacedAt": "2026-09-21T03:13:41.808Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-3955"
+      "linearIdentifier": null
     }
   }
 }
