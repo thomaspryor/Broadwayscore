@@ -62,7 +62,10 @@
     "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
     "the-cherry-orchard-park-avenue-armory-off-broadway-2026/nytimes--helen-shaw.json",
     "in-honor-of-jean-michel-basquiat-off-broadway-2026/broadwayworld--fred-mason.json",
-    "garry-starr-classic-penguins-off-broadway-2026/one-minute-critic--unknown.json"
+    "garry-starr-classic-penguins-off-broadway-2026/one-minute-critic--unknown.json",
+    "the-cherry-orchard-park-avenue-armory-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-cherry-orchard-park-avenue-armory-off-broadway-2026/grabyourgroupandgo--linda-taft-mackinnon.json",
+    "pre-existing-condition-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
   ],
   "failed": [
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/variety--unknown.json",
@@ -71,7 +74,6 @@
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/timeout-london--unknown.json",
     "the-cherry-orchard-park-avenue-armory-off-broadway-2026/theatermania--unknown.json",
     "the-cherry-orchard-park-avenue-armory-off-broadway-2026/thereviewshub--unknown.json",
-    "the-cherry-orchard-park-avenue-armory-off-broadway-2026/wsj--charles-isherwood.json",
     "the-hope-theory-off-broadway-2026/wsj--unknown.json",
     "america-who-hurt-you-off-broadway-2026/playbill--unknown.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json",
@@ -155,7 +157,6 @@
     "million-dollar-quartet-off-west-end-2026/londontheatredirect--unknown.json",
     "million-dollar-quartet-off-west-end-2026/telegraph--charles-spencer.json",
     "million-dollar-quartet-off-west-end-2026/theupcoming--unknown.json",
-    "the-cherry-orchard-park-avenue-armory-off-broadway-2026/grabyourgroupandgo--linda-taft-mackinnon.json",
     "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json",
     "pre-existing-condition-off-broadway-2026/nytimes--unknown.json",
     "pre-existing-condition-off-broadway-2026/guardian--unknown.json",
@@ -163,7 +164,6 @@
     "pre-existing-condition-off-broadway-2026/new-york-sun--elysa-gardner.json",
     "pre-existing-condition-off-broadway-2026/airmail--air-mail.json",
     "pre-existing-condition-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "pre-existing-condition-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/nytimes--laura-collins-hughes.json",
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/new-york-sun--ar-hoffman.json",
@@ -181,7 +181,10 @@
     "garry-starr-classic-penguins-off-broadway-2026/theatermania--unknown.json",
     "the-ford-hill-project-off-broadway-2026/theatermania--pete-hempstead.json",
     "garry-starr-classic-penguins-off-broadway-2026/theater-scene--deb-miller.json",
-    "the-ford-hill-project-off-broadway-2026/abouttheartists--unknown.json"
+    "the-ford-hill-project-off-broadway-2026/abouttheartists--unknown.json",
+    "the-ford-hill-project-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
+    "the-ford-hill-project-off-broadway-2026/theater-scene--victor-gluck.json",
+    "the-holes-off-broadway-2026/standard--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -225,7 +228,9 @@
       "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json",
       "cat-cohen-broad-strokes-off-broadway-2026/nysr--unknown.json",
       "shifters-off-broadway-2026/nysr--unknown.json",
-      "garry-starr-classic-penguins-off-broadway-2026/one-minute-critic--unknown.json"
+      "garry-starr-classic-penguins-off-broadway-2026/one-minute-critic--unknown.json",
+      "the-cherry-orchard-park-avenue-armory-off-broadway-2026/grabyourgroupandgo--linda-taft-mackinnon.json",
+      "pre-existing-condition-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
     ],
     "amp": [],
     "browserbase": [
@@ -263,7 +268,7 @@
     ]
   },
   "startTime": "2026-09-20T15:26:23.664Z",
-  "lastProcessed": "the-ford-hill-project-off-broadway-2026/abouttheartists--unknown.json",
+  "lastProcessed": "the-holes-off-broadway-2026/standard--unknown.json",
   "log": [
     {
       "t": "2026-09-20T21:01:43.542Z",
@@ -392,10 +397,53 @@
       "event": "bb-session",
       "session": "a965bc86",
       "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-21T03:03:29.142Z",
+      "event": "bb-session",
+      "session": "5020b394",
+      "url": "https://www.wsj.com/articles/the-cherry-orchard-review-chekhov-speaks-korean-506"
+    },
+    {
+      "t": "2026-09-21T03:03:30.108Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-21T03:04:07.651Z",
+      "event": "bb-session",
+      "session": "25e197cc",
+      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
+    },
+    {
+      "t": "2026-09-21T03:04:08.621Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-21T03:05:32.735Z",
+      "event": "bb-session",
+      "session": "f170146b",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
+    },
+    {
+      "t": "2026-09-21T03:08:50.096Z",
+      "event": "bb-session",
+      "session": "2f4935a7",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-21T03:09:05.053Z",
+      "event": "bb-session",
+      "session": "6100b9ed",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
     }
   ],
   "recoveredAfterFailure": [
     "darkling-off-west-end-2026/voice-magazine--unknown.json",
-    "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json"
+    "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
+    "the-cherry-orchard-park-avenue-armory-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-cherry-orchard-park-avenue-armory-off-broadway-2026/grabyourgroupandgo--linda-taft-mackinnon.json",
+    "pre-existing-condition-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
   ]
 }
