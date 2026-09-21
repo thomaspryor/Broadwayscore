@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
   "openingDate": "2026-09-17",
-  "detectedAt": "2026-09-21T12:03:16.305Z",
+  "detectedAt": "2026-09-21T13:53:14.319Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "nytg--unknown.json",
-      "outletId": "nytg",
-      "criticName": "Unknown",
-      "url": "https://www.newyorktheatreguide.com/show/47487-the-cherry-orchard",
-      "fullTextLen": 2043,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
-    },
     {
       "file": "wsj--charles-isherwood.json",
       "outletId": "wsj",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
