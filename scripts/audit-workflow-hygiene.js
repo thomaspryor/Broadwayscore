@@ -146,24 +146,26 @@
  *     A `secrets.X != ''` PRESENCE TEST is deliberately not a violation — it
  *     decides whether to skip and never passes the value to a process.
  *
- * (n) BARE-AUDIT-DIR-GLOB (advisory, BRO-3990): a `git add`/`git-add-
- *     existing.sh` line staging a bare `data/audit/` DIRECTORY pathspec (no
- *     basename) rather than an explicit file list — `git add data/audit/`,
- *     `git add data/audit/pipeline-health/`, etc. Detector is the pure
- *     findBareAuditDirectoryGlobs() in scripts/lib/audit-workflow-hygiene-
- *     rules.js. scripts/lib/api-fallback-writer-drift.js's static scanner
- *     matches apiFallbackSafe registry claims against the LITERAL basename
- *     string after `git add` on the same command — a directory pathspec with
- *     no basename never contains that string, so a NEW single-writer
- *     data/audit/*.json file swept up by one of these bare adds is invisible
- *     to the scanner in both directions. That silent gap is exactly what
- *     BRO-2722 found in llm-ensemble-score.yml (progress-watch-state.json
- *     staged this way, never registered, poisoning push-with-retry.sh's Git
- *     Data API fallback on every scheduled run). ADVISORY ONLY — printed,
- *     never counted toward the blocking `total` — since ~20 existing
- *     workflows already use this idiom intentionally and retroactively
- *     failing all of them would need a blanket exemption pass for a risk
- *     that's real but not urgent per-file; see findBareAuditDirectoryGlobs's
+ * (n) AUDIT-DIR-GLOB (advisory, BRO-3990): a `git add`/`git-add-existing.sh`
+ *     line staging a `data/audit/` pathspec with no FIXED basename — either a
+ *     bare directory (`git add data/audit/`, `git add
+ *     data/audit/pipeline-health/`) or a wildcard basename (`git add
+ *     data/audit/*.json`) — rather than an explicit file list. Detector is
+ *     the pure findBareAuditDirectoryGlobs() in scripts/lib/audit-workflow-
+ *     hygiene-rules.js. scripts/lib/api-fallback-writer-drift.js's static
+ *     scanner matches apiFallbackSafe registry claims against the LITERAL
+ *     basename string after `git add` on the same command — neither a
+ *     directory pathspec nor a `*`-glob ever contains that literal string, so
+ *     a NEW single-writer data/audit/*.json file swept up by one of these is
+ *     invisible to the scanner in both directions. That silent gap is exactly
+ *     what BRO-2722 found in llm-ensemble-score.yml (progress-watch-
+ *     state.json staged via the bare-directory shape, never registered,
+ *     poisoning push-with-retry.sh's Git Data API fallback on every scheduled
+ *     run). ADVISORY ONLY — printed, never counted toward the blocking
+ *     `total` — since both idioms are already used intentionally across ~30
+ *     workflows combined and retroactively failing all of them would need a
+ *     blanket exemption pass for a risk that's real but not urgent per-file;
+ *     see findBareAuditDirectoryGlobs's
  *     own doc comment for the full reasoning.
  *
  * Exemption annotations (add inside the workflow YAML — anywhere in the file):
@@ -848,11 +850,11 @@ async function main() {
     }
   }
 
-  // ── Rule (n): bare data/audit/ directory globs (advisory — never counts toward `total`) ─
+  // ── Rule (n): no-fixed-basename data/audit/ pathspecs (advisory — never counts toward `total`) ─
   if (bareAuditGlobFindings.length > 0) {
     const glob = bareAuditGlobFindings.reduce((n, { hits }) => n + hits.length, 0);
     console.log(
-      `ℹ️  Bare data/audit/ directory globs: ${glob} line(s) across ${bareAuditGlobFindings.length} workflow(s) — invisible to scripts/lib/api-fallback-writer-drift.js's static scanner (BRO-2722/BRO-3990 bug class). See rule (n) doc comment.`,
+      `ℹ️  data/audit/ pathspecs with no fixed basename (bare directory or *-glob): ${glob} line(s) across ${bareAuditGlobFindings.length} workflow(s) — invisible to scripts/lib/api-fallback-writer-drift.js's static scanner (BRO-2722/BRO-3990 bug class). See rule (n) doc comment.`,
     );
     for (const { file, hits } of bareAuditGlobFindings) {
       console.log(`   • ${file}`);

@@ -533,43 +533,70 @@ function extractSingleQuotedEvalBodies(raw) {
   return results;
 }
 
-// A `data/audit/` pathspec token with a trailing slash and no basename after
-// it — `data/audit/`, `data/audit/triage/`, `data/audit/pipeline-health/`.
-// The zero-or-more `[\w.-]+/` components each require their OWN trailing
-// slash, so a real file (`data/audit/foo.json`, no trailing slash) or an
-// extension glob (`data/audit/*.json` — `*` isn't in the component char
-// class) never matches; only a genuine directory pathspec does. Matched
-// wherever the token is delimited by whitespace/quotes/shell operators or
-// string end, so it fires equally inside `git add data/audit/ || true` and
-// `git add data/audit/ data/collection-state/ || true`.
-const BARE_AUDIT_DIR_GLOB_RE = /\bdata\/audit\/(?:[\w.-]+\/)*(?=\s|["'`]|$|[|&;>])/g;
+// Every `data/audit/...` token on a `git add`/`git-add-existing.sh` line,
+// delimited by whitespace or a trailing quote char. \S* (not \S+) lets the
+// bare `data/audit/` case match with zero trailing characters.
+const AUDIT_PATH_TOKEN_RE = /\bdata\/audit\/\S*/g;
+const AUDIT_PREFIX_LEN = 'data/audit/'.length;
 
 /**
- * Rule (n) (BRO-3990): a `git add`/`git-add-existing.sh` line staging a bare
- * `data/audit/` DIRECTORY pathspec (no basename) rather than an explicit
- * file list.
+ * Classify one extracted `data/audit/...` token: does it name a concrete
+ * file `findWritingWorkflows()` in api-fallback-writer-drift.js could match
+ * on, or one of the two shapes that scanner's literal-basename regex can
+ * never see?
+ *   - 'directory'         — no basename at all: `data/audit/`,
+ *                            `data/audit/pipeline-health/` (ends in `/`,
+ *                            after stripping a trailing quote char)
+ *   - 'wildcard-basename'  — the last path segment contains `*`:
+ *                            `data/audit/*.json`,
+ *                            `data/audit/opening-night-latency-*.json`. The
+ *                            scanner's regex is a literal substring match
+ *                            against a specific REGISTERED basename — a `*`
+ *                            in the staged pathspec can never literally equal
+ *                            that registered basename string, so this is
+ *                            invisible via a different mechanism than the
+ *                            no-basename case but with the identical result.
+ *   - null                 — a concrete basename (`data/audit/foo.json`) —
+ *                            fine, visible to the scanner.
+ */
+function classifyAuditToken(token) {
+  const stripped = token.replace(/["'`]+$/, '');
+  const basename = stripped.slice(AUDIT_PREFIX_LEN);
+  if (basename === '' || basename.endsWith('/')) return 'directory';
+  const lastSegment = basename.split('/').pop();
+  if (lastSegment.includes('*')) return 'wildcard-basename';
+  return null;
+}
+
+/**
+ * Rule (n) (BRO-3990): a `git add`/`git-add-existing.sh` line staging a
+ * `data/audit/` pathspec with no fixed basename — either a bare directory
+ * (no basename at all) or a wildcard basename (`*.json`) — rather than an
+ * explicit file list.
  *
  * WHY THIS MATTERS: scripts/lib/api-fallback-writer-drift.js's
  * findWritingWorkflows() — the static scanner that verifies every
  * `apiFallbackSafe` registry claim still matches a real single writer —
  * matches on the LITERAL basename string appearing after `git add`/
- * `git-add-existing.sh` on the same command. A directory pathspec with no
- * basename never contains that string, so any NEW single-writer
- * `data/audit/*.json` file swept up by one of these bare-directory adds is
- * invisible to the scanner in BOTH directions: it can't be flagged as an
- * unregistered writer (nothing to match against), and if a human forgets to
- * register it in core-data-merge-registry.js, nothing catches the gap. That
- * silent gap is exactly what BRO-2722 found in llm-ensemble-score.yml
+ * `git-add-existing.sh` on the same command. Neither a directory pathspec
+ * nor a `*`-glob ever contains that literal string, so any NEW single-writer
+ * `data/audit/*.json` file swept up by one of these is invisible to the
+ * scanner in BOTH directions: it can't be flagged as an unregistered writer
+ * (nothing to match against), and if a human forgets to register it in
+ * core-data-merge-registry.js, nothing catches the gap. That silent gap is
+ * exactly what BRO-2722 found in llm-ensemble-score.yml
  * (data/audit/progress-watch-state.json staged via a bare `data/audit/`
- * glob, never registered, poisoning push-with-retry.sh's Git Data API
- * fallback on every scheduled run) — this rule generalizes that one fix into
- * a standing lint so the NEXT script that writes a new data/audit/*.json
- * file under one of the ~20 workflows using this staging idiom doesn't
- * silently repeat it.
+ * directory glob, never registered, poisoning push-with-retry.sh's Git Data
+ * API fallback on every scheduled run) — this rule generalizes that one fix
+ * into a standing lint (both shapes — a second-opinion review of the
+ * directory-only first draft found the `*.json` extension-glob shape has the
+ * identical blind spot via a different mechanism, 16 live occurrences at
+ * introduction) so the NEXT script that writes a new data/audit/*.json file
+ * under one of these workflows doesn't silently repeat it.
  *
  * ADVISORY ONLY (like rule (f)'s never-run coverage) — NOT counted toward
- * the CLI's blocking `total`. The bare-directory idiom is already used
- * intentionally across ~20 workflows (many multi-file, several genuinely
+ * the CLI's blocking `total`. Both idioms are already used intentionally
+ * across ~30 workflows combined (many multi-file, several genuinely
  * disposable audit output), so retroactively failing all of them would
  * require an exemption comment on every one just to keep CI green, for a
  * risk that is real but not urgent on any SINGLE existing file. Surfacing it
@@ -577,18 +604,29 @@ const BARE_AUDIT_DIR_GLOB_RE = /\bdata\/audit\/(?:[\w.-]+\/)*(?=\s|["'`]|$|[|&;>
  * workflows or adds a new data/audit/ writer — is the useful middle ground;
  * flip to blocking later if repeat incidents show the warning gets ignored.
  *
+ * Known gap (mirrors rule (g)'s own line-continuation note above): this scans
+ * one physical `run:` line at a time (via runLineMatches). A pathspec staged
+ * on its OWN backslash-continuation line — `git add \` on one line, `\n
+ * data/audit/` on the next — never contains the `git add`/`git-add-
+ * existing.sh` trigger text itself, so it's never treated as a candidate
+ * line. No live workflow hits this today (checked at introduction, BRO-3990)
+ * — the one continuation-style `git add \` in this repo
+ * (weekly-video-reviews.yml) lists concrete basenames only — but a future
+ * bare-directory add written this way would slip past this rule silently.
+ *
  * Pure and exported so tests/unit can assert against the real matcher.
- * Returns [{ lineNum, text, paths }].
+ * Returns [{ lineNum, text, paths: [{ path, kind }] }].
  */
 function findBareAuditDirectoryGlobs(raw) {
   const candidateLines = runLineMatches(raw, /\b(?:git add|git-add-existing\.sh)\b/);
   const violations = [];
   for (const { lineNum, text } of candidateLines) {
     const paths = [];
-    BARE_AUDIT_DIR_GLOB_RE.lastIndex = 0;
+    AUDIT_PATH_TOKEN_RE.lastIndex = 0;
     let m;
-    while ((m = BARE_AUDIT_DIR_GLOB_RE.exec(text))) {
-      paths.push(m[0]);
+    while ((m = AUDIT_PATH_TOKEN_RE.exec(text))) {
+      const kind = classifyAuditToken(m[0]);
+      if (kind) paths.push({ path: m[0].replace(/["'`]+$/, ''), kind });
     }
     if (paths.length > 0) violations.push({ lineNum, text, paths });
   }

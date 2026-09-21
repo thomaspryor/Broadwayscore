@@ -226,7 +226,7 @@ jobs:
 `;
     const violations = findBareAuditDirectoryGlobs(raw);
     assert.strictEqual(violations.length, 1);
-    assert.deepStrictEqual(violations[0].paths, ['data/audit/']);
+    assert.deepStrictEqual(violations[0].paths, [{ path: 'data/audit/', kind: 'directory' }]);
   });
 
   test('bare `data/audit/<subdir>/` (no basename) is flagged the same way', () => {
@@ -239,7 +239,9 @@ jobs:
 `;
     const violations = findBareAuditDirectoryGlobs(raw);
     assert.strictEqual(violations.length, 1);
-    assert.deepStrictEqual(violations[0].paths, ['data/audit/pipeline-health/']);
+    assert.deepStrictEqual(violations[0].paths, [
+      { path: 'data/audit/pipeline-health/', kind: 'directory' },
+    ]);
   });
 
   test('git-add-existing.sh with a trailing bare directory arg is flagged (BRO-2722 residual shape)', () => {
@@ -253,19 +255,32 @@ jobs:
 `;
     const violations = findBareAuditDirectoryGlobs(raw);
     assert.strictEqual(violations.length, 1);
-    assert.deepStrictEqual(violations[0].paths, ['data/audit/']);
+    assert.deepStrictEqual(violations[0].paths, [{ path: 'data/audit/', kind: 'directory' }]);
   });
 
-  test('explicit basenames — including an extension glob and a wildcard-prefix basename — are NOT flagged', () => {
+  test('an extension glob and a wildcard-prefix basename are flagged as wildcard-basename (second-opinion finding: same blind spot as the bare-directory shape, via a different mechanism)', () => {
     const raw = `
 jobs:
   commit:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          git add data/audit/progress-watch-state.json
-          git add data/audit/*.json
-          git add data/audit/opening-night-latency-*.json
+      - run: git add data/audit/*.json data/audit/opening-night-latency-*.json
+`;
+    const violations = findBareAuditDirectoryGlobs(raw);
+    assert.strictEqual(violations.length, 1);
+    assert.deepStrictEqual(violations[0].paths, [
+      { path: 'data/audit/*.json', kind: 'wildcard-basename' },
+      { path: 'data/audit/opening-night-latency-*.json', kind: 'wildcard-basename' },
+    ]);
+  });
+
+  test('an explicit concrete basename is NOT flagged', () => {
+    const raw = `
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - run: git add data/audit/progress-watch-state.json
 `;
     const violations = findBareAuditDirectoryGlobs(raw);
     assert.deepStrictEqual(violations, []);
@@ -281,7 +296,40 @@ jobs:
 `;
     const violations = findBareAuditDirectoryGlobs(raw);
     assert.strictEqual(violations.length, 1);
-    assert.deepStrictEqual(violations[0].paths, ['data/audit/']);
+    assert.deepStrictEqual(violations[0].paths, [{ path: 'data/audit/', kind: 'directory' }]);
+  });
+
+  test('a quoted bare directory pathspec is still flagged with the quote stripped', () => {
+    const raw = `
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - run: git add "data/audit/" || true
+`;
+    const violations = findBareAuditDirectoryGlobs(raw);
+    assert.strictEqual(violations.length, 1);
+    assert.deepStrictEqual(violations[0].paths, [{ path: 'data/audit/', kind: 'directory' }]);
+  });
+
+  test('KNOWN GAP: a bare directory arg on its OWN backslash-continuation line is not detected — matches rule (g)\'s documented continuation gap, no live occurrence at introduction (grep confirmed)', () => {
+    const raw = `
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          bash scripts/lib/git-add-existing.sh \\
+            data/audit/progress-watch-state.json \\
+            data/audit/
+`;
+    // findBareAuditDirectoryGlobs (like runLineMatches generally) scans one
+    // physical line at a time; a pathspec on a continuation line by itself
+    // never contains the `git add`/`git-add-existing.sh` trigger text, so it's
+    // never a candidate line. Documented rather than fixed — same known-gap
+    // posture as rule (g)'s own line-continuation note above.
+    const violations = findBareAuditDirectoryGlobs(raw);
+    assert.deepStrictEqual(violations, []);
   });
 
   test('a comment mentioning `git add data/audit/` is not flagged (not a real run: line)', () => {
