@@ -146,6 +146,26 @@
  *     A `secrets.X != ''` PRESENCE TEST is deliberately not a violation — it
  *     decides whether to skip and never passes the value to a process.
  *
+ * (n) BARE-AUDIT-DIR-GLOB (advisory, BRO-3990): a `git add`/`git-add-
+ *     existing.sh` line staging a bare `data/audit/` DIRECTORY pathspec (no
+ *     basename) rather than an explicit file list — `git add data/audit/`,
+ *     `git add data/audit/pipeline-health/`, etc. Detector is the pure
+ *     findBareAuditDirectoryGlobs() in scripts/lib/audit-workflow-hygiene-
+ *     rules.js. scripts/lib/api-fallback-writer-drift.js's static scanner
+ *     matches apiFallbackSafe registry claims against the LITERAL basename
+ *     string after `git add` on the same command — a directory pathspec with
+ *     no basename never contains that string, so a NEW single-writer
+ *     data/audit/*.json file swept up by one of these bare adds is invisible
+ *     to the scanner in both directions. That silent gap is exactly what
+ *     BRO-2722 found in llm-ensemble-score.yml (progress-watch-state.json
+ *     staged this way, never registered, poisoning push-with-retry.sh's Git
+ *     Data API fallback on every scheduled run). ADVISORY ONLY — printed,
+ *     never counted toward the blocking `total` — since ~20 existing
+ *     workflows already use this idiom intentionally and retroactively
+ *     failing all of them would need a blanket exemption pass for a risk
+ *     that's real but not urgent per-file; see findBareAuditDirectoryGlobs's
+ *     own doc comment for the full reasoning.
+ *
  * Exemption annotations (add inside the workflow YAML — anywhere in the file):
  *   # hygiene-notify-ok: <reason>          — skip notify-failure check for this workflow
  *   # hygiene-playwright-ok: <reason>      — skip playwright check for this workflow
@@ -158,6 +178,7 @@
  *   # hygiene-quote-apostrophe-ok: <reason> — skip single-quote-apostrophe check for this workflow
  *   # paid-provider-ok: <reason>          — skip paid-provider-on-push check for this workflow
  *   # hygiene-cache-runid-ok: <reason>    — skip run-id-keyed actions/cache check for this file
+ *   # hygiene-audit-glob-ok: <reason>     — skip bare-audit-dir-glob check for this workflow
  *
  * No external deps. Parsed with plain regex, consistent with
  * audit-workflow-concurrency.js and audit-cron-health-coverage.js.
@@ -175,6 +196,7 @@ const {
   findDeadCommitSteps,
   findPipefailDeadExitCodeEcho,
   extractSingleQuotedEvalBodies,
+  findBareAuditDirectoryGlobs,
 } = require('./lib/audit-workflow-hygiene-rules');
 const { scanWorkflow: scanPaidProviders } = require('./lib/paid-provider-push-scan');
 const { execFileSync } = require('child_process');
@@ -693,6 +715,10 @@ async function main() {
     console.log(`ℹ️  Rule (g) core-data-push check skipped: ${err.message}`);
   }
 
+  // Rule (n) is advisory — collected separately from `violations` so it never
+  // feeds the blocking `total` below (see its doc comment for why).
+  const bareAuditGlobFindings = [];
+
   for (const file of files) {
     const raw = fs.readFileSync(path.join(WORKFLOW_DIR, file), 'utf8');
 
@@ -781,6 +807,14 @@ async function main() {
       }
     }
 
+    // ── Rule (n): bare `data/audit/` directory glob in git add (advisory) ─────
+    if (!raw.includes('hygiene-audit-glob-ok:')) {
+      const hits = findBareAuditDirectoryGlobs(raw);
+      if (hits.length > 0) {
+        bareAuditGlobFindings.push({ file, hits });
+      }
+    }
+
     // Rule (l): no paid-provider spend in a push-triggered workflow (BRO-2984).
     // Honors its own `# paid-provider-ok:` marker internally (scanWorkflow
     // returns zero violations when present), so no extra guard is needed here.
@@ -811,6 +845,18 @@ async function main() {
     );
     if (neverRun.offenders.length > 0) {
       for (const f of neverRun.offenders) console.log(`   • ${f}`);
+    }
+  }
+
+  // ── Rule (n): bare data/audit/ directory globs (advisory — never counts toward `total`) ─
+  if (bareAuditGlobFindings.length > 0) {
+    const glob = bareAuditGlobFindings.reduce((n, { hits }) => n + hits.length, 0);
+    console.log(
+      `ℹ️  Bare data/audit/ directory globs: ${glob} line(s) across ${bareAuditGlobFindings.length} workflow(s) — invisible to scripts/lib/api-fallback-writer-drift.js's static scanner (BRO-2722/BRO-3990 bug class). See rule (n) doc comment.`,
+    );
+    for (const { file, hits } of bareAuditGlobFindings) {
+      console.log(`   • ${file}`);
+      for (const h of hits) console.log(`       line ${h.lineNum}: ${h.text.trim()}`);
     }
   }
 

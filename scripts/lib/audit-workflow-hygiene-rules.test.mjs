@@ -37,6 +37,7 @@ const {
   findMissingGitIdentityCommits,
   findCoreFileWritesWithoutPush,
   findPipefailDeadExitCodeEcho,
+  findBareAuditDirectoryGlobs,
 } = require('./audit-workflow-hygiene-rules.js');
 
 const CORE_FILES = ['shows.json', 'reviews.json'];
@@ -207,6 +208,94 @@ jobs:
         run: echo "just a log line, no pipefail here"
 `;
     const violations = findPipefailDeadExitCodeEcho(raw);
+    assert.deepStrictEqual(violations, []);
+  });
+});
+
+describe('findBareAuditDirectoryGlobs (rule n, BRO-3990)', () => {
+  test('bare `git add data/audit/` with no basename is flagged', () => {
+    const raw = `
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit
+        run: |
+          git add data/audit/
+          git commit -m 'data: audit'
+`;
+    const violations = findBareAuditDirectoryGlobs(raw);
+    assert.strictEqual(violations.length, 1);
+    assert.deepStrictEqual(violations[0].paths, ['data/audit/']);
+  });
+
+  test('bare `data/audit/<subdir>/` (no basename) is flagged the same way', () => {
+    const raw = `
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - run: git add data/audit/pipeline-health/
+`;
+    const violations = findBareAuditDirectoryGlobs(raw);
+    assert.strictEqual(violations.length, 1);
+    assert.deepStrictEqual(violations[0].paths, ['data/audit/pipeline-health/']);
+  });
+
+  test('git-add-existing.sh with a trailing bare directory arg is flagged (BRO-2722 residual shape)', () => {
+    const raw = `
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          bash scripts/lib/git-add-existing.sh data/audit/progress-watch-state.json data/audit/
+`;
+    const violations = findBareAuditDirectoryGlobs(raw);
+    assert.strictEqual(violations.length, 1);
+    assert.deepStrictEqual(violations[0].paths, ['data/audit/']);
+  });
+
+  test('explicit basenames — including an extension glob and a wildcard-prefix basename — are NOT flagged', () => {
+    const raw = `
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          git add data/audit/progress-watch-state.json
+          git add data/audit/*.json
+          git add data/audit/opening-night-latency-*.json
+`;
+    const violations = findBareAuditDirectoryGlobs(raw);
+    assert.deepStrictEqual(violations, []);
+  });
+
+  test('trailing shell operators (2>/dev/null || true) after the bare dir do not hide the match', () => {
+    const raw = `
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - run: git add data/audit/ 2>/dev/null || true
+`;
+    const violations = findBareAuditDirectoryGlobs(raw);
+    assert.strictEqual(violations.length, 1);
+    assert.deepStrictEqual(violations[0].paths, ['data/audit/']);
+  });
+
+  test('a comment mentioning `git add data/audit/` is not flagged (not a real run: line)', () => {
+    const raw = `
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit
+        run: |
+          # historically this did: git add data/audit/
+          git add data/audit/progress-watch-state.json
+`;
+    const violations = findBareAuditDirectoryGlobs(raw);
     assert.deepStrictEqual(violations, []);
   });
 });

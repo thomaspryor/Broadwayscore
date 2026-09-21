@@ -533,6 +533,68 @@ function extractSingleQuotedEvalBodies(raw) {
   return results;
 }
 
+// A `data/audit/` pathspec token with a trailing slash and no basename after
+// it — `data/audit/`, `data/audit/triage/`, `data/audit/pipeline-health/`.
+// The zero-or-more `[\w.-]+/` components each require their OWN trailing
+// slash, so a real file (`data/audit/foo.json`, no trailing slash) or an
+// extension glob (`data/audit/*.json` — `*` isn't in the component char
+// class) never matches; only a genuine directory pathspec does. Matched
+// wherever the token is delimited by whitespace/quotes/shell operators or
+// string end, so it fires equally inside `git add data/audit/ || true` and
+// `git add data/audit/ data/collection-state/ || true`.
+const BARE_AUDIT_DIR_GLOB_RE = /\bdata\/audit\/(?:[\w.-]+\/)*(?=\s|["'`]|$|[|&;>])/g;
+
+/**
+ * Rule (n) (BRO-3990): a `git add`/`git-add-existing.sh` line staging a bare
+ * `data/audit/` DIRECTORY pathspec (no basename) rather than an explicit
+ * file list.
+ *
+ * WHY THIS MATTERS: scripts/lib/api-fallback-writer-drift.js's
+ * findWritingWorkflows() — the static scanner that verifies every
+ * `apiFallbackSafe` registry claim still matches a real single writer —
+ * matches on the LITERAL basename string appearing after `git add`/
+ * `git-add-existing.sh` on the same command. A directory pathspec with no
+ * basename never contains that string, so any NEW single-writer
+ * `data/audit/*.json` file swept up by one of these bare-directory adds is
+ * invisible to the scanner in BOTH directions: it can't be flagged as an
+ * unregistered writer (nothing to match against), and if a human forgets to
+ * register it in core-data-merge-registry.js, nothing catches the gap. That
+ * silent gap is exactly what BRO-2722 found in llm-ensemble-score.yml
+ * (data/audit/progress-watch-state.json staged via a bare `data/audit/`
+ * glob, never registered, poisoning push-with-retry.sh's Git Data API
+ * fallback on every scheduled run) — this rule generalizes that one fix into
+ * a standing lint so the NEXT script that writes a new data/audit/*.json
+ * file under one of the ~20 workflows using this staging idiom doesn't
+ * silently repeat it.
+ *
+ * ADVISORY ONLY (like rule (f)'s never-run coverage) — NOT counted toward
+ * the CLI's blocking `total`. The bare-directory idiom is already used
+ * intentionally across ~20 workflows (many multi-file, several genuinely
+ * disposable audit output), so retroactively failing all of them would
+ * require an exemption comment on every one just to keep CI green, for a
+ * risk that is real but not urgent on any SINGLE existing file. Surfacing it
+ * as a printed warning — reviewed the next time someone touches one of these
+ * workflows or adds a new data/audit/ writer — is the useful middle ground;
+ * flip to blocking later if repeat incidents show the warning gets ignored.
+ *
+ * Pure and exported so tests/unit can assert against the real matcher.
+ * Returns [{ lineNum, text, paths }].
+ */
+function findBareAuditDirectoryGlobs(raw) {
+  const candidateLines = runLineMatches(raw, /\b(?:git add|git-add-existing\.sh)\b/);
+  const violations = [];
+  for (const { lineNum, text } of candidateLines) {
+    const paths = [];
+    BARE_AUDIT_DIR_GLOB_RE.lastIndex = 0;
+    let m;
+    while ((m = BARE_AUDIT_DIR_GLOB_RE.exec(text))) {
+      paths.push(m[0]);
+    }
+    if (paths.length > 0) violations.push({ lineNum, text, paths });
+  }
+  return violations;
+}
+
 module.exports = {
   indentOf,
   RUN_LINE_RE,
@@ -544,4 +606,5 @@ module.exports = {
   extractRunBlocks,
   findPipefailDeadExitCodeEcho,
   extractSingleQuotedEvalBodies,
+  findBareAuditDirectoryGlobs,
 };
