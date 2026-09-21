@@ -70,3 +70,4 @@ function resolveLandAlert(branch, { resolve = null } = {}) {
 module.exports = { CONDITION_PREFIX, DEFAULT_COOLDOWN_HOURS, conditionKeyFor, buildLandAlert, sendLandAlert, resolveLandAlert };
 // land.yml live case (i): docs-only line, landed through land.yml itself.
 // land.yml live case (i), 2026-09-20: pushed under the new-failures-vs-base gate (BRO-3873).
+// land.yml live case (c1), 2026-09-21: docs-only line landed through scripts/merge-worktree-to-main.sh → land/** (BRO-3873 step 4).
