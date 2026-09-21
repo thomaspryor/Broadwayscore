@@ -252,7 +252,7 @@
   {
     "conditionKey": "land:land/BRO-3707",
     "title": "Landing blocked: push red on land/BRO-3707",
-    "description": "land.yml did not land land/BRO-3707: the push gate went red at 9cfbf1849a. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/BRO-3707 @ 9cfbf1849a (origin/land/BRO-3707) → origin/main @ 704f56518d [land] attempt 1/3: rebased onto 704f56518d, 16 file(s) changed — running checks [land] verified-base: main moved b13e1066fa → 704f56518d across 19 file(s), substantive — running the full gauntlet [land] linked 17 gitignored path(s) into the worktree (node_modules/core data) [land] checks: colocated-tests=ok, node  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35553838652",
+    "description": "land.yml did not land land/BRO-3707: the push gate went red at 9cfbf1849a. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/BRO-3707 @ 9cfbf1849a (origin/land/BRO-3707) → origin/main @ 3e05a8ea28 [land] attempt 1/3: rebased onto 3e05a8ea28, 16 file(s) changed — running checks [land] verified-base: main moved 8149f3a381 → 3e05a8ea28 across 32 file(s), substantive — running the full gauntlet [land] linked 17 gitignored path(s) into the worktree (node_modules/core data) [land] checks: colocated-tests=ok, node  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35555575035",
     "severity": "error",
     "url": null,
     "decision": false,
@@ -273,9 +273,9 @@
       },
       {
         "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35553838652"
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35555575035"
       }
     ],
-    "queuedAt": "2026-09-21T02:45:13.595Z"
+    "queuedAt": "2026-09-21T03:13:41.808Z"
   }
 ]
