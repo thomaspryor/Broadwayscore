@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "golden-boy-off-west-end-2026",
   "openingDate": "2026-09-15",
-  "detectedAt": "2026-09-21T17:24:06.975Z",
+  "detectedAt": "2026-09-21T17:45:55.876Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -13,6 +13,23 @@
       "fullTextLen": 4136,
       "dispatchActionable": false,
       "skipReason": "no_scorable_text",
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "monstagigz--neil.json",
+      "outletId": "monstagigz",
+      "criticName": "Neil",
+      "url": "https://monstagigz.com/2026/09/20/theatre-review-golden-boy-starring-josh-oconnor-at-almeida-theatre/comment-page-1/",
+      "fullTextLen": 3560,
+      "dispatchActionable": true,
+      "skipReason": null,
       "rescoreBlockedReason": null,
       "humanReviewScore": null,
       "adjudicatedScore": null,
@@ -40,10 +57,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 3,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
