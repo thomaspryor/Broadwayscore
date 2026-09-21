@@ -1085,3 +1085,26 @@ test('guardrail 2b: judges the CORRECTED command, so a path correction cannot sm
   assert.match(r.detail, /test-f-satisfied/);
   assert.equal(calls.length, 0, 'the corrected-and-vacuous command must never reach the card');
 });
+
+// BRO-3913: --identifiers on the normal Linear leg — explicit allow-list,
+// caller's order preserved (priority-first sweeps), unknown/armed ids dropped.
+test('selectRefusedLinearIdentifiers honours an identifiers allow-list in the caller order', () => {
+  const armed = '## Acceptance criteria\nVERIFY: node --test scripts/enrich-card-acceptance.test.mjs\n';
+  const open = [
+    { identifier: 'BRO-10', description: 'no criteria here' },
+    { identifier: 'BRO-20', description: armed },
+    { identifier: 'BRO-30', description: '' },
+    { identifier: 'BRO-40', description: 'still nothing' },
+  ];
+  // Sanity: the fixture's "armed" card really is armed by the real gate.
+  assert.equal(evaluateVerifiability(armed).armed, true);
+  // Default: id-ascending, armed card excluded.
+  assert.deepEqual(selectRefusedLinearIdentifiers(open), ['BRO-10', 'BRO-30', 'BRO-40']);
+  // Allow-list: caller order wins, armed + unknown + duplicate ids are dropped.
+  assert.deepEqual(
+    selectRefusedLinearIdentifiers(open, { identifiers: ['BRO-40', 'BRO-20', 'BRO-999', 'BRO-10', 'BRO-40'] }),
+    ['BRO-40', 'BRO-10'],
+  );
+  // Empty allow-list means "no restriction", not "nothing".
+  assert.deepEqual(selectRefusedLinearIdentifiers(open, { identifiers: [] }), ['BRO-10', 'BRO-30', 'BRO-40']);
+});

@@ -148,6 +148,7 @@ Usage:
   node scripts/enrich-card-acceptance.js [--limit N] [--dry-run] [--source notion|linear|both]
   node scripts/enrich-card-acceptance.js --cards id1,id2
   node scripts/enrich-card-acceptance.js --from-report
+  node scripts/enrich-card-acceptance.js --source linear [--identifiers BRO-1,BRO-2]
   node scripts/enrich-card-acceptance.js --source linear --rearm [--identifiers BRO-1,BRO-2] [--allow-human-written]
 
   --limit N       max cards to enrich PER SOURCE this run (default ${DEFAULT_LIMIT})
@@ -165,8 +166,12 @@ Usage:
                   is posted as a COMMENT, never a description rewrite (per
                   BRO-2796). Refuses any card lacking the enricher's own
                   'auto-enriched' label unless --allow-human-written is given.
-  --identifiers   comma-separated BRO-N identifiers to restrict --rearm to
-                  (still requires each to be armed+vacuous)
+  --identifiers   comma-separated BRO-N identifiers to restrict the Linear
+                  leg to, processed in the order given (BRO-3913: pass the
+                  Urgent/High list first — the watchdog never drains
+                  Medium/Low, so id-order sweeps arm cards nobody dispatches).
+                  With --rearm: restricts the rearm sweep instead (each must
+                  still be armed+vacuous).
   --allow-human-written  with --rearm, also rewrite cards whose acceptance
                   section has no 'auto-enriched' marker (looks human-written)
   --help/-h       show this message, do nothing else
@@ -724,11 +729,24 @@ function linearIssueNumber(identifier) {
   return m ? parseInt(m[1], 10) : Infinity;
 }
 
-function selectRefusedLinearIdentifiers(openIssuesWithDesc) {
-  return (openIssuesWithDesc || [])
+//
+// BRO-3913: `identifiers` (optional) restricts the sweep to an explicit
+// allow-list AND returns them in the CALLER'S order, not issue-number order.
+// The watchdog only ever drains P0/P1 (linear-watchdog-source.js priorityOf),
+// so an id-ordered sweep spends its Haiku calls and Linear writes arming
+// Medium/Low cards nothing will dispatch while 70+ unarmed Urgent/High cards
+// wait behind them. The caller (or a wrapper) decides the priority order; this
+// function only honours it. Unknown or already-armed identifiers are dropped.
+function selectRefusedLinearIdentifiers(openIssuesWithDesc, { identifiers = null } = {}) {
+  const refused = (openIssuesWithDesc || [])
     .filter(iss => iss && !evaluateVerifiability(iss.description || '').armed)
-    .map(iss => iss.identifier)
-    .sort((a, b) => linearIssueNumber(a) - linearIssueNumber(b));
+    .map(iss => iss.identifier);
+  if (Array.isArray(identifiers) && identifiers.length) {
+    const refusedSet = new Set(refused);
+    const seen = new Set();
+    return identifiers.filter(id => refusedSet.has(id) && !seen.has(id) && seen.add(id));
+  }
+  return refused.sort((a, b) => linearIssueNumber(a) - linearIssueNumber(b));
 }
 
 // Pure — extracts the category a Linear issue inherited from its Notion
@@ -1327,7 +1345,10 @@ async function runLinearLeg(args, { dryRun, limit }) {
     return [];
   }
 
-  const refusedIdentifiers = selectRefusedLinearIdentifiers(openIssues).slice(0, limit);
+  const identifiers = typeof args.identifiers === 'string'
+    ? args.identifiers.split(',').map(x => x.trim()).filter(Boolean)
+    : null;
+  const refusedIdentifiers = selectRefusedLinearIdentifiers(openIssues, { identifiers }).slice(0, limit);
   console.error(`[enrich-card-acceptance] linear: ${refusedIdentifiers.length} refused issue(s) to process (mode=${dryRun ? 'dry-run' : 'LIVE'}, model=${MODEL})`);
   if (!refusedIdentifiers.length) return [];
 
