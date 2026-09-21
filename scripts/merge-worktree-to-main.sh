@@ -268,6 +268,16 @@ pop_stash_safely() {
     while IFS= read -r f; do
       [ -n "$f" ] || continue
       case "$f" in
+        # *.jsonl append-only ledgers are NEVER auto-resolved here, even under
+        # cloud-memory/data/audit/public/data/admin — same policy as
+        # scripts/lib/sync-audit-checkout.sh (BRO-2364), which refuses
+        # snapshot cleanup on any ledger staged as deleted/renamed rather than
+        # risk truncating rows a union-merge could otherwise preserve
+        # (ship-check/Codex adversarial finding, BRO-3595: this loop's
+        # HEAD-missing-path fallback below would otherwise `rm -f` a ledger
+        # whose content only exists on $BRANCH's commit, discarding it
+        # instead of leaving it for manual/union resolution).
+        *.jsonl) unsafe+="$f"$'\n' ;;
         cloud-memory/*|data/audit/*|public/data/admin/*) ;;
         *) unsafe+="$f"$'\n' ;;
       esac
