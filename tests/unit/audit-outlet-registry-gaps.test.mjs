@@ -17,14 +17,28 @@
  * tests/unit/domain-filters-bro2774.test.mjs, for the same rationale). This
  * pins both the domain block AND the audit-exclusion outcome it feeds so a
  * future refactor of either can't silently reopen this exact gap.
+ *
+ * A second, independent outletId (theatremonkey.com) surfaced as a NEW gap
+ * in the same run while this fix was being verified against the live
+ * corpus — a real, long-standing West End seat-guide/review site that had
+ * simply never been registered. Registered in data/outlet-registry.json
+ * (tier 3) rather than blocked, since it is a genuine outlet. Pinned below
+ * so deleting the registry entry (which would silently reopen this gap,
+ * per ship-check adversarial review) fails a test.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = resolve(__dirname, '..', '..');
 const require = createRequire(import.meta.url);
 const { isBlockedDomain, isBlockedReviewUrl } = require('../../scripts/lib/domain-filters.js');
 const { isExcludedFromOutletRegistryAudit } = require('../../scripts/lib/outlet-registry-audit-exclusions.js');
+const registry = JSON.parse(readFileSync(resolve(ROOT, 'data', 'outlet-registry.json'), 'utf8'));
 
 const JUNK_URL = 'https://grabyourgroupandgo.com/event/the-cherry-orchard-radically-re-imagined-at-the-armory-who-will-go-i-wonder/';
 
@@ -52,4 +66,11 @@ test('BRO-3909: an unrelated real-outlet review is NOT excluded (sanity check ag
     score: 80,
   };
   assert.equal(isExcludedFromOutletRegistryAudit(review), false);
+});
+
+test('BRO-3909: theatremonkey is registered (tier 3, theatremonkey.com)', () => {
+  const entry = registry.outlets.theatremonkey;
+  assert.ok(entry, 'data/outlet-registry.json must have a "theatremonkey" entry');
+  assert.equal(entry.tier, 3);
+  assert.equal(entry.domain, 'theatremonkey.com');
 });
