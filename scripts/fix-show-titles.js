@@ -1,16 +1,24 @@
 #!/usr/bin/env node
 /**
- * Repair scrape-artifact show titles in shows.json (BRO-3863).
+ * Repair scrape-artifact show titles in shows.json (BRO-3863 / BRO-3920).
  *
- * Covers BOTH artifacts, in the order that composes correctly (see
- * scripts/lib/show-title-normalize.js):
- *   1. a venue/producing company the source appended as a disambiguator
- *      "The Cherry Orchard (Park Avenue Armory)" -> "The Cherry Orchard"
- *   2. a heading captured from CSS uppercase
- *      "AMERICA, WHO HURT YOU?" -> "America, Who Hurt You?"
+ * Auto-fixes ONE artifact:
+ *   - a venue/producing company the source appended as a disambiguator
+ *     "The Cherry Orchard (Park Avenue Armory)" -> "The Cherry Orchard"
+ *
+ * DETECTS but does not auto-fix a second artifact:
+ *   - a shouted heading ("AMERICA, WHO HURT YOU?") that isn't the source's
+ *     true casing. BRO-3920 retired the algorithmic title-caser that used to
+ *     "fix" these — it already shipped wrong titles by guessing from the
+ *     shouted string alone ("JUST FOR US" -> "Just for US"). These rows are
+ *     reported as DEFERRED: look up the source's structured metadata
+ *     (JSON-LD `name` / og:title, never a rendered heading) and correct the
+ *     title by hand, or add the id to KEEP_SHOUTED_IDS in
+ *     scripts/lib/title-display-case.js if the caps are genuinely branding.
  *
  * Report-only by default — rewriting a title is a visible, user-facing edit.
- * Pass --apply to write.
+ * Pass --apply to write (venue-suffix repairs only; DEFERRED rows are never
+ * written by this script).
  *
  * Writes go through scripts/lib/shows-write-guard.js, NOT a bare
  * writeFileSync. ~20 Claude sessions and a fleet of crons share this
@@ -125,7 +133,7 @@ function main() {
       console.log(`   -> "${c.to}"`);
     }
     if (deferred.length) {
-      console.log(`\n${deferred.length} title(s) DEFERRED for human casing (MANUAL_REVIEW_IDS in lib/title-display-case.js):`);
+      console.log(`\n${deferred.length} title(s) DEFERRED — shouted, never auto-fixed (BRO-3920). Look up the source's structured metadata (JSON-LD/og:title) and correct by hand, or add to KEEP_SHOUTED_IDS in lib/title-display-case.js if the caps are real branding:`);
       for (const d of deferred) console.log(`  ${d.id}  "${d.title}"`);
     }
     if (akaBackfills.length) {

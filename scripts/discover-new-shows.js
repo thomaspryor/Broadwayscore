@@ -2289,12 +2289,28 @@ async function discoverShows() {
   // afterwards, minting a duplicate row. Normalising first means every
   // downstream comparison sees the title the row will actually have
   // (adversarial review finding).
-  for (const show of discoveredShows) {
+  // BRO-3920 — a shouted title is no longer auto-corrected (guessing from
+  // the shouted string alone already shipped wrong titles), so it must not
+  // reach shows.json unlabeled either: validate-data.js's gate would only
+  // catch it AFTER this run has already written it, failing CI for the
+  // whole batch instead of just holding the one bad candidate. Quarantine
+  // here — same shape as the circuit-breaker "held" path below.
+  const heldForTitleReview = [];
+  discoveredShows = discoveredShows.filter(show => {
     const titleFix = normalizeShowTitle(show, { venueVocabulary: discoveryVenueVocabulary });
     if (titleFix.changed) {
       console.log(`  [TITLE] "${show.title}" -> "${titleFix.title}" (${titleFix.steps.map(st => st.kind).join(' + ')})`);
       show.title = titleFix.title;
     }
+    if (titleFix.manualReview) {
+      console.log(`  [TITLE] ⏸️  "${show.title}" held — looks shouted, needs a human to check the source's structured metadata (see scripts/lib/title-display-case.js)`);
+      heldForTitleReview.push({ title: show.title, venue: show.venue, source: show._discoverySource || show.source || null });
+      return false;
+    }
+    return true;
+  });
+  if (heldForTitleReview.length) {
+    console.log(`${heldForTitleReview.length} candidate(s) held this run for shouted-title review — not promoted, not written.`);
   }
 
   for (const show of discoveredShows) {
