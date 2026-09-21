@@ -47,7 +47,22 @@ function makeIssue(description, commentBodies = []) {
 // `verify` stubs the origin/main evidence check (done-evidence-verify.js):
 // 'ok' = the cited commit is on origin/main, 'not-on-main' = definitively
 // not, anything else = could not be determined. No test ever shells out.
-function runUpdate({ argv, description, comments = [], updateShouldBeCalled, verify }) {
+//
+// `verifyCmd` stubs the recorded-command executor (linear-cmd-execution.js's
+// makeVerifyCmdEvidence, BRO-3885). WITHOUT it this file's acceptance-criteria
+// case fell through to the REAL executor, which clones/fetches origin/main and
+// runs `node --test ...` for real inside a 15s spawnSync cap — ~29s on a loaded
+// machine, so the test failed by timeout whenever the box was busy (it blocked
+// BRO-3435's land on 2026-09-21). That is also what the paragraph above already
+// promised: no test here shells out. What the CLI must prove at THIS seam is
+// that it passes the recorded command through to the executor, which the
+// VERIFY_CMD_CALLED assertion below covers; that the executor itself really
+// runs a command is scripts/lib/linear-cmd-execution.test.mjs's job.
+// 'pass' (default) = the command ran and passed, 'fail' = it ran and failed.
+function runUpdate({ argv, description, comments = [], updateShouldBeCalled, verify, verifyCmd = 'pass' }) {
+  const cmdVerifier = verifyCmd === 'fail'
+    ? "(cmd) => { console.error('VERIFY_CMD_CALLED:' + cmd); return { allowed: false, verdict: 'verify-cmd-failed', reason: 'stub: command failed' }; }"
+    : "(cmd) => { console.error('VERIFY_CMD_CALLED:' + cmd); return { allowed: true, reason: 'stub: command passed' }; }";
   const verifier = verify === 'ok'
     ? "() => ({ verified: true, reason: 'stub: on origin/main' })"
     : verify === 'not-on-main'
@@ -58,8 +73,14 @@ function runUpdate({ argv, description, comments = [], updateShouldBeCalled, ver
     const issue = ${JSON.stringify(makeIssue(description, comments))};
     main(${JSON.stringify(argv)}, {
       verifyEvidence: ${verifier},
+      verifyCmdEvidence: ${cmdVerifier},
       getIssue: async () => issue,
       getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
+      // BRO-3435, ship-check finding 2026-09-21: without this stub, a
+      // --force / LINEAR_DONE_GATE_DISABLED=1 case below falls through to
+      // the REAL appendBypassRow and writes a live row to
+      // data/audit/linear-gate-bypass.jsonl on every CI run of this file.
+      appendBypassRow: () => {},
       updateIssue: async () => {
         ${updateShouldBeCalled ? "console.error('UPDATE_ISSUE_CALLED');" : "throw new Error('updateIssue must not be called — the gate refused before any write');"}
       },
@@ -93,6 +114,23 @@ test('allowed: a safe-form verify command in the acceptance criteria', () => {
   assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}`);
   assert.match(res.stderr, /UPDATE_ISSUE_CALLED/);
   assert.doesNotMatch(res.stderr, /REFUSED/);
+  // The CLI must hand the RECORDED command to the executor seam — a gate that
+  // allowed the move without consulting it would still pass the two asserts
+  // above.
+  assert.match(res.stderr, /VERIFY_CMD_CALLED:node --test tests\/unit\/done-semantics-gate\.test\.mjs/);
+});
+
+test('refused: the recorded acceptance command is executed and FAILS', () => {
+  const res = runUpdate({
+    argv: ['update', 'BRO-9457', '--state', 'Done'],
+    description: '## Acceptance criteria\n- `node --test tests/unit/done-semantics-gate.test.mjs` passes',
+    updateShouldBeCalled: false,
+    verifyCmd: 'fail',
+  });
+  assert.equal(res.status, 5, `expected exit 5, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /VERIFY_CMD_CALLED:/);
+  assert.match(res.stderr, /REFUSED \(verify-cmd-failed\)/);
+  assert.doesNotMatch(res.stderr, /UPDATE_ISSUE_CALLED/);
 });
 
 test('allowed: a PR-EVIDENCE marker recording merged+deployed+checked', () => {
@@ -194,6 +232,7 @@ test('LINEAR_DONE_GATE_DISABLED=1 bypasses the gate for automation', () => {
     main(['update', 'BRO-9457', '--state', 'Done'], {
       getIssue: async () => issue,
       getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
+      appendBypassRow: () => {},
       updateIssue: async () => { console.error('UPDATE_ISSUE_CALLED'); },
       createComment: async () => {},
     });

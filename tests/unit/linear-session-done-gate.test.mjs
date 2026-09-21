@@ -133,9 +133,41 @@ test('allowed: a safe-form verify command in the issue description', async () =>
       issue: { description: '## Acceptance criteria\n- `node --test tests/unit/done-semantics-gate.test.mjs` passes' },
       updateShouldBeCalled: true,
     });
-    await cmdReport({ issue: 'BRO-9458', status: 'done', summary: 'did the work' });
+    // deps.verifyCmdEvidence, not the real linear-cmd-execution.js executor:
+    // unstubbed, this one case clones/fetches origin/main and runs `node --test
+    // ...` for REAL (~36s on a loaded machine, and it is the same shell-out that
+    // blew tests/unit/linear-brain-done-gate.test.mjs's 15s cap and blocked
+    // BRO-3435's land on 2026-09-21). What this file proves is the WIRING — that
+    // cmdReport hands the recorded command to the executor seam — which the
+    // captured `cmds` assertion below states directly; the executor's own real
+    // behavior is scripts/lib/linear-cmd-execution.test.mjs's job.
+    const cmds = [];
+    await cmdReport(
+      { issue: 'BRO-9458', status: 'done', summary: 'did the work' },
+      { verifyCmdEvidence: (cmd) => { cmds.push(cmd); return { allowed: true, reason: 'stub: command passed' }; } }
+    );
+    assert.deepEqual(cmds, ['node --test tests/unit/done-semantics-gate.test.mjs']);
     assert.match(h.getLogs(), /"doneGateRefused":false/);
     assert.match(h.getLogs(), /"stateName":"Done"/);
+  });
+});
+
+test('refused: the recorded acceptance command is executed and FAILS', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({
+      issue: { description: '## Acceptance criteria\n- `node --test tests/unit/done-semantics-gate.test.mjs` passes' },
+      updateShouldBeCalled: false,
+    });
+    await assert.rejects(
+      () => cmdReport(
+        { issue: 'BRO-9458', status: 'done', summary: 'did the work' },
+        { verifyCmdEvidence: () => ({ allowed: false, verdict: 'verify-cmd-failed', reason: 'stub: command failed' }) }
+      ),
+      /EXIT/
+    );
+    assert.equal(h.getExitCode(), 5);
+    assert.match(h.getErrors(), /REFUSED \(verify-cmd-failed\)/);
+    assert.match(h.getLogs(), /"doneGateRefused":true/);
   });
 });
 
@@ -193,8 +225,30 @@ test('not gated: report --status=in-review never consults the gate even with zer
 test('--force with a reason ≥10 chars bypasses the gate', async () => {
   await withStubbedExit(async (h) => {
     mockFetch({ issue: { description: 'Fixed the thing, looks good.' }, updateShouldBeCalled: true });
-    await cmdReport({ issue: 'BRO-9458', status: 'done', summary: 'did the work', force: 'owner said ship it now' });
+    // deps.appendBypassRow stubbed everywhere a bypass can fire in this file
+    // (ship-check finding, 2026-09-21) — without it this test writes a REAL
+    // row to data/audit/linear-gate-bypass.jsonl on every CI run.
+    await cmdReport(
+      { issue: 'BRO-9458', status: 'done', summary: 'did the work', force: 'owner said ship it now' },
+      { appendBypassRow: () => {} }
+    );
     assert.match(h.getLogs(), /"doneGateRefused":false/);
+  });
+});
+
+test('the --force bypass on report --status=done logs a "force" row via linear-session.js\'s OWN ledger wiring (ship-check finding, 2026-09-21: linear-brain.js\'s wiring alone undercounted the path sessions actually use)', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({ issue: { description: 'Fixed the thing, looks good.' }, updateShouldBeCalled: true });
+    const rows = [];
+    await cmdReport(
+      { issue: 'BRO-9458', status: 'done', summary: 'did the work', force: 'owner said ship it now, no time to verify' },
+      { appendBypassRow: (row) => rows.push(row) }
+    );
+    assert.equal(rows.length, 1);
+    assert.equal(rows[0].gate, 'done');
+    assert.equal(rows[0].mechanism, 'force');
+    assert.equal(rows[0].reason, 'owner said ship it now, no time to verify');
+    assert.equal(rows[0].identifier, 'BRO-9458');
   });
 });
 
@@ -203,7 +257,10 @@ test('LINEAR_DONE_GATE_DISABLED=1 bypasses the gate for automation', async () =>
     process.env.LINEAR_DONE_GATE_DISABLED = '1';
     try {
       mockFetch({ issue: { description: 'Fixed the thing, looks good.' }, updateShouldBeCalled: true });
-      await cmdReport({ issue: 'BRO-9458', status: 'done', summary: 'did the work' });
+      await cmdReport(
+        { issue: 'BRO-9458', status: 'done', summary: 'did the work' },
+        { appendBypassRow: () => {} }
+      );
       assert.match(h.getLogs(), /"doneGateRefused":false/);
     } finally {
       delete process.env.LINEAR_DONE_GATE_DISABLED;
