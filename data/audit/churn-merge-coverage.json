@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-21T16:18:30.482Z",
+    "generatedAt": "2026-09-21T16:40:13.882Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -28,7 +28,7 @@
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 32
+      "churn": 31
     }
   ],
   "exempt": [
@@ -150,7 +150,7 @@
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 49
+      "churn": 48
     },
     {
       "path": "public/data/shows/how-the-other-half-loves-west-end-2026.json",
@@ -192,32 +192,32 @@
   "covered": [
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 258,
+      "churn": 259,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 244,
+      "churn": 247,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 233,
+      "churn": 234,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 233,
+      "churn": 234,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 233,
+      "churn": 234,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 230,
+      "churn": 232,
       "mergeAttr": "union"
     },
     {
@@ -307,7 +307,7 @@
     },
     {
       "path": "tests/unit-test-manifest.txt",
-      "churn": 33,
+      "churn": 31,
       "mergeAttr": "union"
     }
   ]
