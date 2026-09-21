@@ -75,7 +75,7 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
-const { runSafeChecks, checksEnv, prepareCheckWorkdir, resolveInstallRoot, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
+const { runSafeChecks, checksEnv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
 const { checkLanded } = require('./landing-verify.js');
 
 const MAX_ATTEMPTS = 3;
@@ -211,12 +211,12 @@ function makeVerifiedBaseChecks({ verifiedBase, checks = defaultChecks, git = nu
       return checks(o);
     }
     if (prepare && repoDir) {
-      // BRO-3907: repoDir is `git rev-parse --show-toplevel` from wherever
-      // this ran (land.js's cwdRepo()) — for a session running from a git
-      // worktree (CLAUDE.md's mandatory layout for every code edit), that is
-      // the worktree itself, which has no node_modules of its own. See
-      // resolveInstallRoot()'s header in autonomous-checks.js.
-      const linked = prepare(cwd, resolveInstallRoot(repoDir));
+      // repoDir may be a node_modules-less git worktree (BRO-3907) — prepare
+      // (prepareCheckWorkdir by default) resolves the real install root
+      // itself now, so every caller gets the fix without having to remember
+      // to resolve first. See resolveInstallRoot()'s header in
+      // autonomous-checks.js.
+      const linked = prepare(cwd, repoDir);
       if (linked.length) log(`[land] linked ${linked.length} gitignored path(s) into the worktree (node_modules/core data)`);
     }
     log(`[land] verified-base: ${decision.reason} — reusing the upstream verdict, gauntlet skipped`);
@@ -232,9 +232,11 @@ function defaultChecks({ cwd, changedFiles, baseSha, repoDir, log = () => {} }) 
   // up front, unconditionally: runSafeChecks only prepares when its own plan
   // is non-empty, but the merged-tree floor below and the repo's pre-push
   // hook (which runs from this worktree on push) need them regardless.
-  // resolveInstallRoot: see the comment on the other prepare() call above —
-  // same fix, same reason (repoDir may itself be a node_modules-less worktree).
-  const linked = prepareCheckWorkdir(cwd, resolveInstallRoot(repoDir));
+  // repoDir may itself be a node_modules-less git worktree (BRO-3907) —
+  // prepareCheckWorkdir (called here, and again internally by runSafeChecks
+  // below via prepareFrom) resolves the real install root itself, so passing
+  // the same repoDir to both is safe and never silently drops the fix.
+  const linked = prepareCheckWorkdir(cwd, repoDir);
   if (linked.length) log(`[land] linked ${linked.length} gitignored path(s) into the worktree (node_modules/core data)`);
   const results = runSafeChecks({
     cwd,

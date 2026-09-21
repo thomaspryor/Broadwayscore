@@ -5,7 +5,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { verifyForSignature, findStepRunCommandInWorkflow, JOB_PROXY_COMMANDS } = require('./red-signature-verify-cmd.js');
+const { verifyForSignature, findStepRunCommandInWorkflow, jobExistsInWorkflow, JOB_PROXY_COMMANDS } = require('./red-signature-verify-cmd.js');
 const { explainUnsafeCheckCommand } = require('./autonomous-triage-core.js');
 
 // Small, self-contained fixture with the same shape as .github/workflows/
@@ -30,6 +30,10 @@ jobs:
         run: node scripts/audit-workflow-concurrency.js
       - name: Audit cast-changes.json
         run: node scripts/audit-cast-changes.js --gate
+      - name: Audit — quoted run value (double)
+        run: "node scripts/audit-workflow-concurrency.js"
+      - name: Audit — quoted run value (single)
+        run: 'node scripts/audit-workflow-concurrency.js'
       - name: Lint workflow files
         run: |
           echo "::group::actionlint"
@@ -89,6 +93,18 @@ test('resolves a Data Validation signature to its own safe-form step command', (
   assert.equal(v.note, null);
 });
 
+test('a double-quoted run: value strips the quotes before safe-form validation', () => {
+  const v = verifyForSignature({ job: 'Lint Workflows', step: 'Audit — quoted run value (double)' }, FIXTURE_YML);
+  assert.equal(v.line, 'VERIFY: node scripts/audit-workflow-concurrency.js');
+  assert.equal(v.note, null);
+});
+
+test('a single-quoted run: value strips the quotes before safe-form validation', () => {
+  const v = verifyForSignature({ job: 'Lint Workflows', step: 'Audit — quoted run value (single)' }, FIXTURE_YML);
+  assert.equal(v.line, 'VERIFY: node scripts/audit-workflow-concurrency.js');
+  assert.equal(v.note, null);
+});
+
 // ── unknown/unresolvable step -> job-level proxy ────────────────────────────
 
 test('a step name not present in the job falls back to the job-level proxy', () => {
@@ -136,6 +152,14 @@ test('empty/unreadable workflow text degrades to owner-judgment (never throws)',
 });
 
 // ── real file smoke test ────────────────────────────────────────────────────
+
+test('every JOB_PROXY_COMMANDS key is a real job name in the REAL test.yml (a rename must not silently orphan the proxy)', () => {
+  const dirname = path.dirname(new URL(import.meta.url).pathname);
+  const realYml = fs.readFileSync(path.join(dirname, '..', '..', '.github', 'workflows', 'test.yml'), 'utf8');
+  for (const job of Object.keys(JOB_PROXY_COMMANDS)) {
+    assert.ok(jobExistsInWorkflow(realYml, job), `JOB_PROXY_COMMANDS names job "${job}", which no longer exists in test.yml — every future red-signature card for it will silently degrade to owner-judgment`);
+  }
+});
 
 test('against the REAL test.yml: a known-stable step resolves to its own command', () => {
   const dirname = path.dirname(new URL(import.meta.url).pathname);

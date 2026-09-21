@@ -65,6 +65,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { CLAUDE_HAIKU, GPT4O_MINI, GEMINI_FLASH } = require('./lib/models');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 
@@ -852,6 +853,7 @@ function applyFlag(item, parsed) {
   if (shouldSkipWrongProductionAudit(data)) return false;
 
   data.wrongProduction = true;
+  invalidateWrongProductionAutoClear(data);
   const venuePart = parsed.venue ? ` at ${parsed.venue}` : '';
   const tourPart = parsed.tourLabel ? ` (${parsed.tourLabel})` : '';
   data.wrongProductionReason = `Touring/non-NYC audit (${PROVIDER})${tourPart}${venuePart}: ${parsed.reasoning}`;

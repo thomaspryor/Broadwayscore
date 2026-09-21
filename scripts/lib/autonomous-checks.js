@@ -260,11 +260,22 @@ function cardCheckArgv(checkableDone, isSafeCheckCommand) {
 // deeply the worktree is nested or named. Promoted here (not left duplicated
 // — CLAUDE.md rule 15) so land-branch.js's callers get the same fix instead
 // of a second, harder-to-find copy of the same one-liner.
+// Matches acceptance-check-core.js's own GIT_TIMEOUT_MS ("generous enough
+// for a cold fetch on a large repo") — this call isn't a fetch, but it can
+// still stall behind lock contention or a cold FS cache under this repo's
+// heavy parallel-worktree usage, and a too-short timeout here fails closed to
+// `repo` (the node_modules-less worktree), silently reintroducing the exact
+// bug this function exists to fix. Named separately rather than importing
+// acceptance-check-core.js's constant: that file is a leaf CALLER of this
+// one (require()s it via land-branch.js's chain), so importing back would
+// create a cycle.
+const GIT_COMMON_DIR_TIMEOUT_MS = 120000;
+
 function resolveInstallRoot(repo) {
   if (fs.existsSync(path.join(repo, 'node_modules'))) return repo;
   try {
     const common = execFileSync('git', ['rev-parse', '--path-format=absolute', '--git-common-dir'],
-      { cwd: repo, encoding: 'utf8', timeout: 30000 }).trim();
+      { cwd: repo, encoding: 'utf8', timeout: GIT_COMMON_DIR_TIMEOUT_MS }).trim();
     const mainRoot = path.dirname(common);
     if (mainRoot && fs.existsSync(path.join(mainRoot, 'node_modules'))) return mainRoot;
   } catch { /* not a worktree, or old git — fall through */ }
@@ -281,10 +292,16 @@ function resolveInstallRoot(repo) {
 // in git) is never touched, so this can't shadow the implementer's own work.
 // Everything it links is gitignored, so nothing it creates can reach a diff.
 //
-// `repoRoot` is resolved through resolveInstallRoot() by callers that might
-// hand it a nested worktree (land-branch.js) — this function itself stays a
-// dumb "link what's literally there" so its own tests (and acceptance-check-
-// core.js's already-resolved `repo`) don't have to fake up a git checkout.
+// `repoRoot` is run through resolveInstallRoot() HERE, once, for the
+// node_modules link only — every caller (land-branch.js's two call sites,
+// runSafeChecks' own prepareFrom below, and any future one) gets the fix
+// for free instead of each having to remember to resolve first (BRO-3907
+// ship-check finding: two call sites had already drifted — one resolved,
+// one didn't — after the fix first landed with the resolution done at each
+// call site instead of here). Core data is NOT run through it: a worktree's
+// own gitignored data/*.json (populated by setup-local-data.sh) is the
+// fresher copy for that worktree's own session, and should never be
+// silently swapped for the main checkout's.
 function prepareCheckWorkdir(workdir, repoRoot) {
   const linked = [];
   const link = (from, to) => {
@@ -299,7 +316,7 @@ function prepareCheckWorkdir(workdir, repoRoot) {
   // node_modules stays a symlink: 1.3GB is not copyable per card, and it is
   // already writable by anything running as this user in the main checkout,
   // so the symlink adds no blast radius.
-  link(path.join(repoRoot, 'node_modules'), path.join(workdir, 'node_modules'));
+  link(path.join(resolveInstallRoot(repoRoot), 'node_modules'), path.join(workdir, 'node_modules'));
 
   // Core data is COPIED, not linked. data/shows.json et al are symlinks into
   // the owner's PRIVATE data repo; linking them would hand implementer-written

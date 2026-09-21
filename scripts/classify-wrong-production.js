@@ -34,7 +34,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { safeWriteReview, safeRenameReview } = require('./lib/review-write-guard');
+const { safeWriteReview, safeRenameReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { CLAUDE_HAIKU, CLAUDE_OPUS, GEMINI_FLASH } = require('./lib/models');
 const { mergeWriteCheckpoint, deleteCheckpointIfCaughtUp } = require('./lib/classify-checkpoint');
 const { isSameTitleDifferentYearFalsePositive, hasStrongDifferentShowSignal, hasNamedDifferentDirectorSignal } = require('./lib/review-guards');
@@ -612,6 +612,7 @@ async function main() {
         if (fs.existsSync(targetPath)) {
           // Duplicate at target — flag source as wrongProduction
           reviewData.wrongProduction = true;
+          invalidateWrongProductionAutoClear(reviewData);
           reviewData.wrongProductionProvenance = 'content';
           reviewData.llmClassified = 'wrongProduction';
           reviewData.llmConfidence = result.confidence;
@@ -642,6 +643,7 @@ async function main() {
       } else {
         // No target — flag as wrongProduction
         reviewData.wrongProduction = true;
+        invalidateWrongProductionAutoClear(reviewData);
         reviewData.wrongProductionProvenance = 'content';
         reviewData.llmClassified = 'wrongProduction';
         reviewData.llmConfidence = result.confidence;

@@ -36,6 +36,7 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const { setExtractedScore } = require('./lib/score-routing');
 const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 // Lazy show lookup so the Guardian fetcher can reject a prior-production article
 // the API returns for a revival's stale slug (see updateReviewFile date guard).
@@ -300,6 +301,7 @@ function updateReviewFile(review, apiResult) {
     isArticleOutsideProductionWindow(show, apiResult.webPublicationDate)
   ) {
     data.wrongProduction = true;
+    invalidateWrongProductionAutoClear(data);
     data.wrongProductionReason = 'guardian-api-stale-slug';
     data.wrongProductionNote =
       `Guardian API returned an article published ${apiResult.webPublicationDate} — outside this production's window. ` +
