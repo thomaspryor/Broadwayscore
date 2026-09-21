@@ -210372,5 +210372,43 @@
     "costUsd": 0,
     "runId": "35633757920",
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-21T17:52:39.306Z",
+    "completedAt": "2026-09-21T17:53:37.264Z",
+    "totalReviews": 44268,
+    "processed": 7,
+    "skipped": 44253,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 66288,
+      "output": 3256,
+      "total": 179695
+    },
+    "costUsd": 0.27534325,
+    "runId": "35632037098",
+    "errorDetails": [
+      {
+        "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
+        "outletId": "theatreboard",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-21T17:53:39.196Z",
+    "completedAt": "2026-09-21T18:00:30.594Z",
+    "totalReviews": 178,
+    "processed": 178,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 459514,
+      "output": 42296,
+      "total": 501810
+    },
+    "costUsd": 1.3009872,
+    "runId": "35632037098",
+    "errorDetails": []
   }
 ]
