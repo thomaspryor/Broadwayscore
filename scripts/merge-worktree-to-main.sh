@@ -468,9 +468,30 @@ if [ "${MERGE_SKIP_POST_MERGE_TEST_GATE:-}" = "1" ]; then
   log "post-merge test floor: skipped (MERGE_SKIP_POST_MERGE_TEST_GATE=1)"
 else
   CHANGED_FOR_TEST_GATE=$(g diff --name-only "$ORIGIN_BASE_SHA" HEAD 2>/dev/null || true)
-  if [ -n "$(echo "$CHANGED_FOR_TEST_GATE" | tr -d '[:space:]')" ] && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/merge-post-merge-test-gate.js" ]; then
+  # Load the gate from $MAIN_DIR, not $SCRIPT_DIR (BRO-3962). $MAIN_DIR
+  # already holds the just-merged tree (the checkout+merge steps above ran
+  # `git -C "$MAIN_DIR"`), so its copy of the gate is the correct, current
+  # one to run — and, critically, it's the PERMANENT main worktree, never an
+  # ephemeral one some session's cleanup (or a stale-worktree janitor) can
+  # remove out from under a run in progress. $SCRIPT_DIR is wherever THIS
+  # copy of merge-worktree-to-main.sh itself is checked out — a session's own
+  # job worktree when run the normal, worktree-first way — so loading the
+  # gate from there means both "which checker code runs" and (via
+  # acceptance-check-core.js's __dirname-derived DEFAULT_REPO) "what does the
+  # baseline `git fetch` target" silently point at that ephemeral location.
+  # Falls back to $SCRIPT_DIR's copy only if $MAIN_DIR's is somehow missing
+  # (e.g. a very old $MAIN_DIR checkout predating this gate's introduction),
+  # so a repo that has never had this file behaves exactly as before.
+  GATE_JS="$MAIN_DIR/scripts/lib/merge-post-merge-test-gate.js"
+  [ -f "$GATE_JS" ] || GATE_JS="$SCRIPT_DIR/lib/merge-post-merge-test-gate.js"
+  if [ -n "$(echo "$CHANGED_FOR_TEST_GATE" | tr -d '[:space:]')" ] && command -v node >/dev/null 2>&1 && [ -f "$GATE_JS" ]; then
     log "post-merge test floor: checking scripts/lib/ colocated tests against the merged tree"
-    if ! echo "$CHANGED_FOR_TEST_GATE" | (cd "$MAIN_DIR" && MERGE_TEST_GATE_BASELINE_SHA="$ORIGIN_BASE_SHA" node "$SCRIPT_DIR/lib/merge-post-merge-test-gate.js"); then
+    # MERGE_TEST_GATE_REPO_DIR="$MAIN_DIR": belt-and-suspenders alongside the
+    # $MAIN_DIR script-loading fix above — pins the gate's baseline checkout
+    # to fetch against the stable main worktree explicitly, rather than
+    # relying solely on __dirname inference (see
+    # scripts/lib/merge-post-merge-test-gate.js's baselineCheckoutOptions()).
+    if ! echo "$CHANGED_FOR_TEST_GATE" | (cd "$MAIN_DIR" && MERGE_TEST_GATE_BASELINE_SHA="$ORIGIN_BASE_SHA" MERGE_TEST_GATE_REPO_DIR="$MAIN_DIR" node "$GATE_JS"); then
       restore_stash
       # BRO-2874, four field reproductions: this used to assert flatly that "the
       # MERGED tree has a NEW-since-origin/main colocated test failure" for ANY

@@ -182,6 +182,31 @@ echo "$OUT" | sed 's/^/    /'
 if [ "$RC" -eq 0 ]; then ok "kill switch suppresses the gate (exit 0) despite the failing contract test"; else bad "kill switch did not bypass the gate (got $RC)"; fi
 if echo "$OUT" | grep -q "MERGE_SKIP_POST_MERGE_TEST_GATE=1"; then ok "skip message names the kill switch"; else bad "no kill-switch skip message in output"; fi
 
+# BRO-3962 regression pin: run the script from a SEPARATE worktree (the
+# normal, worktree-first way every session actually invokes it), with a
+# deliberately BROKEN copy of the gate sitting in that worktree's own
+# scripts/lib/. Every case above runs from $d/main itself, where
+# $SCRIPT_DIR == $MAIN_DIR/scripts — that shape can never exercise this bug,
+# since the "wrong" and "right" gate file are the same file. Pre-fix, the
+# script resolved the gate via $SCRIPT_DIR (wherever merge-worktree-to-main.sh
+# itself is checked out) and would have loaded and run the worktree's broken
+# stub, refusing the merge outright. Post-fix, it loads $MAIN_DIR's own
+# (correct, passing) copy instead and never touches the worktree's stub.
+echo "── case 4: gate runs from a job worktree, ignoring a broken gate.js sitting there ──"
+setup worktree 1
+D="$TMP/worktree"
+git -C "$D/main" worktree add -q "$D/jobwt" feature
+printf '#!/usr/bin/env node\nprocess.exit(1); // if this ever runs, the fix regressed\n' > "$D/jobwt/scripts/lib/merge-post-merge-test-gate.js"
+OUT="$(cd "$D/jobwt" && bash scripts/merge-worktree-to-main.sh feature 2>&1)"; RC=$?
+echo "$OUT" | sed 's/^/    /'
+if [ "$RC" -eq 0 ]; then ok "script exited 0 — did not load the worktree's broken gate.js"; else bad "script exited $RC — likely loaded the broken worktree copy instead of \$MAIN_DIR's"; fi
+git -C "$D/main" fetch -q origin main
+if git -C "$D/main" show "origin/main:scripts/lib/dummy-helper.js" 2>/dev/null | grep -q "unrelated whitespace"; then
+  ok "feature's change landed on origin"
+else
+  bad "feature's change did not reach origin — the broken worktree gate.js likely blocked it"
+fi
+
 echo ""
 echo "passed: $PASS   failed: $FAIL"
 [ "$FAIL" -eq 0 ] || exit 1
