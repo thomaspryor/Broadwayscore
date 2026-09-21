@@ -63,13 +63,21 @@ function computeTemplateLiteralOpenLines(content) {
     // odd number of backticks without ever opening a real template literal —
     // counting through it would desync `inTemplate` for the rest of the
     // file, hiding every later real write behind a false "inside a
-    // template" (Codex adversarial ship-check finding, BRO-3908). Skipping
-    // whole `//`-comment lines here isn't perfect (a `/* */` block comment
-    // with a stray backtick has the same problem, and a `//` comment on the
-    // SAME line as real code after an opened template is not specially
-    // handled) — same accepted-limitation class as isInsideStringLiteral's
+    // template" (Codex adversarial ship-check finding, BRO-3908).
+    //
+    // Only skip the comment line while NOT already inside a template: if a
+    // template is currently open, a `//`-prefixed line is just STRING
+    // CONTENT (a real comment can't start partway through a string), and
+    // skipping it would let a backtick that actually CLOSES the template
+    // slip past uncounted — desyncing `inTemplate` the other direction and
+    // hiding every later real write behind a false "still inside a
+    // template" (second Codex adversarial finding, same session: the first
+    // fix for this function introduced exactly the mirror-image bug).
+    // Skipping whole `//`-comment lines outside a template isn't perfect
+    // either (a `/* */` block comment with a stray backtick has the same
+    // problem) — same accepted-limitation class as isInsideStringLiteral's
     // documented KNOWN GAP above, not a claim of full tokenization.
-    if (isCommentLine(line)) continue;
+    if (!inTemplate && isCommentLine(line)) continue;
     for (let j = 0; j < line.length; j++) {
       const c = line[j];
       if (c === '\\') { j++; continue; }
