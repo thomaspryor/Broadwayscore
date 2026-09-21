@@ -330,6 +330,10 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # `test -f docs/workflow-concurrency-audit.md`, so it has to be committed
 # rather than scratch/local like the rest of /docs/.
 !/docs/workflow-concurrency-audit.md
+# BRO-2721: ScrapingBee credit-usage triage record. Acceptance criteria is
+# literally `test -f docs/scraping-bee-usage.md`, so it has to be committed
+# rather than scratch/local like the rest of /docs/.
+!/docs/scraping-bee-usage.md
 /memory/
 /data/deep-research/
 /data/theater-research/
