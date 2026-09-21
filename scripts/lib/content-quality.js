@@ -198,6 +198,33 @@ function detectStrongWsjArchiveTruncationAnywhere(text) {
 // chrome-dump page, not a real review with a footer. Verified against the full
 // corpus (2026-06-05): 0 currently-scored real reviews newly flagged. See
 // memory/feedback_content_quality_regex_fps.md and the 404 origin note above.
+// Parked-domain / domain-for-sale pages (BRO-3862). A dead outlet's domain
+// lapses, a squatter picks it up, and the fetch returns a sales page with a
+// HTTP 200. The text is long enough to look like an article, so the gemini
+// non-review classifier labelled it `isNonReview: news/feature` — which reads
+// as "a real article that isn't a review", i.e. a reversible editorial call.
+// It therefore sat in the false-positive audit queue looking like a review we
+// might be wrongly excluding. theaternewsonline.com alone accounts for 20
+// files across 20 different shows this way; 88pulsapower (squatting a dead
+// theatre blog) another 4.
+//
+// Every pattern binds the word "domain" to a sale/parking phrase, or is a
+// parking-page call to action, so theatre prose about "the public domain"
+// cannot match. Verified over the whole corpus (44,179 review-text files,
+// 2026-09-20): 33 hits, 0 of them a scored review, 0 false positives.
+//
+// Scanned through detectStrongChromeDumpAnywhere below, so it inherits that
+// function's mandatory gate — callers only consult it for files that already
+// LACK substantial review content. A real review whose footer happened to
+// mention a domain sale is therefore never reachable by these patterns.
+const PARKED_DOMAIN_PATTERNS = [
+  /\bthe\s+domain\s+name\s+[\w.-]+\s+is\s+for\s+sale\b/i,
+  /\bthis\s+domain\s+(?:name\s+)?is\s+for\s+sale\b/i,
+  /\bbuy\s+this\s+domain\b/i,
+  /\bdomain\s+(?:name\s+)?is\s+(?:parked|for\s+sale)\b/i,
+  /\bget\s+a\s+price\s+in\s+less\s+than\s+24\s+hours\b/i,
+];
+
 const STRONG_CHROME_DUMP_PATTERNS = [
   // Cookie-consent / GDPR full sentences — never occur in review prose.
   /your\s+consent\s+will\s+be\s+valid/i,
@@ -240,7 +267,11 @@ const STRONG_CHROME_DUMP_PATTERNS = [
  */
 function detectStrongChromeDumpAnywhere(text) {
   const t = (typeof text === 'string') ? text : '';
-  for (const pattern of STRONG_CHROME_DUMP_PATTERNS) {
+  // PARKED_DOMAIN_PATTERNS ride this scan deliberately: they need exactly the
+  // same "only for text that lacks substantial review content" gate, and
+  // wiring them here means they reach every existing caller rather than
+  // needing a second call site nobody remembers to add.
+  for (const pattern of [...STRONG_CHROME_DUMP_PATTERNS, ...PARKED_DOMAIN_PATTERNS]) {
     const m = t.match(pattern);
     if (m) return { detected: true, match: m[0] };
   }
@@ -3321,6 +3352,7 @@ module.exports = {
   STRONG_ERROR_PAGE_PATTERNS,
   STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS,
   STRONG_CHROME_DUMP_PATTERNS,
+  PARKED_DOMAIN_PATTERNS,
   NEWSLETTER_PATTERNS,
   NAVIGATION_PATTERNS,
   WRONG_ARTICLE_PATTERNS,
