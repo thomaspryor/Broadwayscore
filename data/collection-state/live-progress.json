@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-09-21T18:06:54.623Z",
-  "processed": 66,
-  "failed": 337,
-  "successRate": "16.4%",
+  "updatedAt": "2026-09-21T19:25:07.357Z",
+  "processed": 19,
+  "failed": 131,
+  "successRate": "12.7%",
   "tierBreakdown": {
-    "playwright": 43,
-    "amp": 1,
+    "playwright": 10,
+    "amp": 0,
     "browserbase": 1,
-    "directCookies": 2,
-    "scrapingbee": 16,
+    "directCookies": 0,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 5
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-09-21T19:15:40.530Z",
+      "event": "bb-session",
+      "session": "bcb2a1fd",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-09-21T19:15:40.945Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
