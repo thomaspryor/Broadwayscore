@@ -56,7 +56,8 @@
     "darkling-off-west-end-2026/guardian--unknown.json",
     "thelma-and-louise-a-new-musical-off-west-end-2026/south-london--unknown.json",
     "thelma-and-louise-a-new-musical-off-west-end-2026/west-end-best-friend--cara-brazier.json",
-    "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json"
+    "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "darkling-off-west-end-2026/voice-magazine--unknown.json"
   ],
   "failed": [
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/variety--unknown.json",
@@ -142,13 +143,14 @@
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
     "darkling-off-west-end-2026/thestage--unknown.json",
-    "darkling-off-west-end-2026/voice-magazine--unknown.json",
     "thelma-and-louise-a-new-musical-off-west-end-2026/thestage--unknown.json",
     "golden-boy-off-west-end-2026/ntlive--powster.json",
     "golden-boy-off-west-end-2026/thestage--unknown.json",
     "golden-boy-off-west-end-2026/whatsonstage--unknown.json",
     "million-dollar-quartet-off-west-end-2026/enjoy--unknown.json",
-    "million-dollar-quartet-off-west-end-2026/londontheatredirect--unknown.json"
+    "million-dollar-quartet-off-west-end-2026/londontheatredirect--unknown.json",
+    "million-dollar-quartet-off-west-end-2026/telegraph--charles-spencer.json",
+    "million-dollar-quartet-off-west-end-2026/theupcoming--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -192,7 +194,10 @@
       "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/darkling-off-west-end-2026/voice-magazine--unknown.json",
+      "darkling-off-west-end-2026/voice-magazine--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "darkling-off-west-end-2026/broadwayworld--cindy-marcolina.json",
@@ -220,7 +225,7 @@
     ]
   },
   "startTime": "2026-09-20T15:26:23.664Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "million-dollar-quartet-off-west-end-2026/theupcoming--unknown.json",
   "log": [
     {
       "t": "2026-09-20T21:01:43.542Z",
@@ -279,6 +284,27 @@
       "event": "bb-session",
       "session": "df00984c",
       "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+    },
+    {
+      "t": "2026-09-21T00:23:20.374Z",
+      "event": "bb-session",
+      "session": "e9c7b396",
+      "url": "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre"
+    },
+    {
+      "t": "2026-09-21T00:28:54.153Z",
+      "event": "bb-session",
+      "session": "b8c6014b",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+    },
+    {
+      "t": "2026-09-21T00:29:05.908Z",
+      "event": "bb-session",
+      "session": "6a2d0c03",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
     }
+  ],
+  "recoveredAfterFailure": [
+    "darkling-off-west-end-2026/voice-magazine--unknown.json"
   ]
 }
