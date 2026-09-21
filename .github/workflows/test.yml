@@ -947,6 +947,15 @@ on:
       # of silently discarding the incoming branch's fix. Path-listed so a
       # solo edit to the .sh triggers CI.
       - 'scripts/lib/merge-worktree-to-main.conflict-resolution.test.sh'
+      # BRO-3595: pop_stash_safely()'s auto-gen-only takeover loop ran
+      # `git checkout HEAD -- "$f"` unconditionally and swallowed the error
+      # (`|| true`, no log line) when HEAD has no version of the path (a
+      # modify/delete conflict where local main deleted the file) — left the
+      # path unresolved in the index while `git stash drop` still ran, losing
+      # the content with zero trace. Same bug class as BRO-2364
+      # (scripts/lib/sync-audit-checkout.sh). Path-listed so a solo edit to
+      # the .sh triggers CI.
+      - 'scripts/lib/merge-worktree-to-main.stash-pop-head-missing-path.test.sh'
       # Task #1511: the push-retry loop's `git merge origin/$DEFAULT_BRANCH
       # --no-edit` on retry redirected its own stderr/stdout to /dev/null
       # before die("could not merge remote changes on retry") — zero
@@ -4882,6 +4891,25 @@ jobs:
         # script does NOT wedge and completes normally.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/merge-worktree-to-main.conflict-resolution.test.sh
+
+      - name: Run merge-worktree-to-main stash-pop-head-missing-path regression test (BRO-3595)
+        # BRO-3595: same bug class as BRO-2364 (scripts/lib/sync-audit-checkout.sh)
+        # — pop_stash_safely()'s auto-gen-only takeover loop ran `git checkout
+        # HEAD -- "$f"` unconditionally for every unmerged auto-gen path and
+        # swallowed the error with `|| true` (no log line) whenever HEAD has no
+        # version of that path. Verified empirically that this is NOT reachable
+        # via a brand-new file that exists only in the stash (git stash pop
+        # refuses outright with "needs merge" the instant any conflict already
+        # exists, before touching anything else) — the real trigger is a
+        # modify/delete conflict: the worktree branch modifies an auto-gen
+        # path, local main independently deletes it, so `git merge $BRANCH`
+        # conflicts DU on it and HEAD has no version to check out. The path was
+        # left unresolved in the index while `git stash drop` still ran,
+        # losing the content with zero trace. Asserts the resolved path has no
+        # unmerged index entry, the working-tree file is cleanly removed (not
+        # left half-conflicted), and the stash is dropped.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/merge-worktree-to-main.stash-pop-head-missing-path.test.sh
 
       - name: Run merge-worktree-to-main retry-merge-error regression test (task #1511)
         # Task #1511 (Notion 3bc637c5416f8183aa89fecafdc5cbc6): the push-retry

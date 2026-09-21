@@ -280,7 +280,26 @@ pop_stash_safely() {
     log "stash pop conflicted on auto-gen files only — taking committed version for those paths"
     while IFS= read -r f; do
       [ -n "$f" ] || continue
-      g checkout HEAD -- "$f" >/dev/null 2>&1 || true
+      if g cat-file -e "HEAD:$f" 2>/dev/null; then
+        g checkout HEAD -- "$f" >/dev/null 2>&1 \
+          || log "⚠ could not reset $f to HEAD during stash-pop auto-resolution"
+      else
+        # BRO-3595 (same class as BRO-2364/sync-audit-checkout.sh:397-424):
+        # HEAD has no such path — a newly-added auto-gen file (e.g. a brand-new
+        # data/audit/*.json snapshot, or a cloud-memory file the background
+        # daemon wrote independently after the stash was taken). `git checkout
+        # HEAD -- "$f"` errors ("did not match any file(s) known to git") here,
+        # which used to be swallowed by `|| true` with no log line, leaving the
+        # path unresolved in the index while `g stash drop` still ran and the
+        # content was gone for good. Nothing at HEAD to restore, so unstage and
+        # remove the working-tree copy instead.
+        if g reset -q -- "$f" >/dev/null 2>&1; then
+          rm -f -- "$MAIN_DIR/$f" \
+            || log "⚠ could not remove newly-added $f during stash-pop auto-resolution"
+        else
+          log "⚠ could not unstage newly-added $f during stash-pop auto-resolution — leaving it staged"
+        fi
+      fi
     done <<< "$unmerged"
     g stash drop >/dev/null 2>&1 || true
   fi
