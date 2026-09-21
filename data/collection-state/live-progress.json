@@ -1,135 +1,47 @@
 {
-  "updatedAt": "2026-09-21T04:31:58.324Z",
-  "processed": 66,
-  "failed": 117,
-  "successRate": "36.1%",
+  "updatedAt": "2026-09-21T11:01:17.706Z",
+  "processed": 38,
+  "failed": 82,
+  "successRate": "31.7%",
   "tierBreakdown": {
-    "playwright": 42,
+    "playwright": 18,
     "amp": 0,
     "browserbase": 3,
-    "directCookies": 0,
-    "scrapingbee": 13,
-    "brightdata": 4,
+    "directCookies": 1,
+    "scrapingbee": 14,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 1
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-09-21T01:42:59.660Z",
+      "t": "2026-09-21T10:29:09.653Z",
       "event": "bb-session",
-      "session": "e31316cc",
-      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
+      "session": "c96b242e",
+      "url": "https://www.nytimes.com/2026/09/18/theater/cherry-orchard-simon-stone-jeon-do-ye"
     },
     {
-      "t": "2026-09-21T01:43:00.433Z",
+      "t": "2026-09-21T10:29:10.131Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-09-21T01:44:26.920Z",
+      "t": "2026-09-21T10:29:31.072Z",
       "event": "bb-session",
-      "session": "3b105248",
-      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
-    },
-    {
-      "t": "2026-09-21T01:44:44.521Z",
-      "event": "bb-session",
-      "session": "41a352c7",
-      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
-    },
-    {
-      "t": "2026-09-21T01:45:27.901Z",
-      "event": "bb-session",
-      "session": "b942e9e4",
-      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
-    },
-    {
-      "t": "2026-09-21T01:51:03.468Z",
-      "event": "bb-session",
-      "session": "1cfeccd1",
-      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
-    },
-    {
-      "t": "2026-09-21T01:51:16.158Z",
-      "event": "bb-session",
-      "session": "a965bc86",
-      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
-    },
-    {
-      "t": "2026-09-21T03:03:29.142Z",
-      "event": "bb-session",
-      "session": "5020b394",
+      "session": "68f0e822",
       "url": "https://www.wsj.com/articles/the-cherry-orchard-review-chekhov-speaks-korean-506"
     },
     {
-      "t": "2026-09-21T03:03:30.108Z",
+      "t": "2026-09-21T10:29:31.565Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-09-21T03:04:07.651Z",
+      "t": "2026-09-21T10:44:19.171Z",
       "event": "bb-session",
-      "session": "25e197cc",
-      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
-    },
-    {
-      "t": "2026-09-21T03:04:08.621Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-21T03:05:32.735Z",
-      "event": "bb-session",
-      "session": "f170146b",
-      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
-    },
-    {
-      "t": "2026-09-21T03:08:50.096Z",
-      "event": "bb-session",
-      "session": "2f4935a7",
-      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
-    },
-    {
-      "t": "2026-09-21T03:09:05.053Z",
-      "event": "bb-session",
-      "session": "6100b9ed",
-      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
-    },
-    {
-      "t": "2026-09-21T04:26:06.114Z",
-      "event": "bb-session",
-      "session": "a30cf281",
-      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
-    },
-    {
-      "t": "2026-09-21T04:26:06.862Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-21T04:27:15.944Z",
-      "event": "bb-session",
-      "session": "1a9c5cdb",
-      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
-    },
-    {
-      "t": "2026-09-21T04:29:50.152Z",
-      "event": "bb-session",
-      "session": "0f66429e",
-      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
-    },
-    {
-      "t": "2026-09-21T04:30:02.472Z",
-      "event": "bb-session",
-      "session": "5bd8b777",
-      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
-    },
-    {
-      "t": "2026-09-21T04:31:13.984Z",
-      "event": "bb-session",
-      "session": "7d2d9ed6",
-      "url": "https://brooklyneagle.com/410665/limited-engagement-the-ford-hill-project-takes-"
+      "session": "22bf5c15",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
     }
   ]
 }
