@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
   "openingDate": "2026-09-17",
-  "detectedAt": "2026-09-21T20:40:38.662Z",
+  "detectedAt": "2026-09-21T21:40:27.390Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "culturesauce--unknown.json",
+      "outletId": "culturesauce",
+      "criticName": "Unknown",
+      "url": "https://culturesauce.com/the-cherry-orchard-chekhov-meets-parasite-in-simon-stones-brilliant-update-off-broadway-review/",
+      "fullTextLen": 5351,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "wsj--charles-isherwood.json",
       "outletId": "wsj",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
