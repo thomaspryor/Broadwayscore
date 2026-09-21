@@ -144,12 +144,13 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-21T02:22:14.665Z",
-      "lastNotifiedAt": "2026-09-21T02:22:14.665Z",
-      "lastSurfacedAt": "2026-09-21T02:22:14.665Z",
+      "lastSeen": "2026-09-21T02:27:10.611Z",
+      "lastNotifiedAt": "2026-09-21T02:10:27.915Z",
+      "lastSurfacedAt": "2026-09-21T02:10:27.915Z",
       "notifyCount": 90,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3737,7 +3738,7 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run unit tests — \"should have valid designation values\"",
       "firstSeen": "2026-09-20T20:06:05.167Z",
-      "lastSeen": "2026-09-21T02:22:14.659Z",
+      "lastSeen": "2026-09-21T02:27:10.609Z",
       "lastNotifiedAt": "2026-09-20T20:06:05.167Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -3796,7 +3797,19 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-3935",
-      "silentRefires": 4
+      "silentRefires": 3
+    },
+    "test-yml:red:Unit Tests:7640afde": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"allowed: a safe-form verify command in the issue description\"",
+      "firstSeen": "2026-09-21T02:27:06.064Z",
+      "lastSeen": "2026-09-21T02:27:06.064Z",
+      "lastNotifiedAt": "2026-09-21T02:27:06.064Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-3950"
     }
   }
 }
