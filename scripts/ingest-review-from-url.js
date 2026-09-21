@@ -43,6 +43,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchPage } = require('./lib/scraper');
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
@@ -75,8 +76,16 @@ const dryRun = hasFlag('dry-run');
 // exposes ("Override data/review-texts root (for tests)"). Flows to BOTH the
 // blocklist lookup below and the writer, so a test can exercise the real script
 // against a temp corpus instead of the live one.
-const reviewTextsDir = getArg('data-dir')
-  || path.join(__dirname, '..', 'data', 'review-texts');
+// Default via resolveReviewTextsDir(), NOT a bare join on __dirname: review-texts
+// is a separate private-repo clone that lives in the MAIN checkout, and it is not
+// a symlink. Run from a git worktree (which is how every code-touching session in
+// this repo runs, per CLAUDE.md), the bare join pointed at
+// .claude/worktrees/<branch>/data/review-texts — a path that does not exist, so
+// the script cheerfully mkdir -p'd a brand-new untracked directory, wrote the
+// review into it, printed "✅ Created", and the file was never part of any repo.
+// The review just silently disappeared. resolveReviewTextsDir() walks back to the
+// main worktree's real clone, and still honours REVIEW_TEXTS_DIR.
+const reviewTextsDir = getArg('data-dir') || resolveReviewTextsDir();
 const forceClearStale = hasFlag('force-clear-stale-flag');
 // Provisional onboarding: use --outlet verbatim as a slug WITHOUT fuzzy alias
 // resolution. For aggregator-cited outlets not yet in the registry (the ctvoice /

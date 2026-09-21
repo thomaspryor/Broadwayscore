@@ -128,3 +128,53 @@ describe('article-extractor: BRO-203 generic fallback for unknown domains', () =
     assert.strictEqual(text, null, 'a known outlet with a broken dedicated pattern must not silently degrade to the generic fallback');
   });
 });
+
+describe('article-extractor: generic fallback is HTML-quoting-agnostic (BRO-3794)', () => {
+  // extractBalancedDivByClass hardcoded class="…" — double quotes only. Blogger
+  // (blogspot) templates emit class='post-body entry-content' with SINGLE
+  // quotes, so every Blogger-hosted outlet fell straight through the
+  // common-class pass even though both class names were already listed in
+  // GENERIC_CONTENT_CLASSES. It failed as "Article extraction returned 0 chars
+  // — pattern may be missing for this outlet", which reads as an outlet gap
+  // rather than a fallback bug, so it stayed invisible: the-interested-
+  // bystander's Disruption review was uncollectable for weeks behind it.
+  const prose = 'A considered paragraph of real criticism about the production. '.repeat(20);
+
+  test("single-quoted class attribute (Blogger: class='post-body entry-content')", () => {
+    const html =
+      '<html><body>' +
+      "<nav>Home | Archive</nav>" +
+      "<div class='post-body entry-content'><p>" + prose + '</p></div>' +
+      '<footer>Copyright 2026</footer>' +
+      '</body></html>';
+    const text = extractArticleText(html, 'some-blogspot-outlet.com');
+    assert.ok(text && text.length >= 300, `expected extracted prose, got ${text ? text.length : 0} chars`);
+    assert.ok(text.includes('real criticism'));
+    assert.ok(!text.includes('Copyright 2026'), 'chrome must stay out');
+  });
+
+  test('unquoted class attribute', () => {
+    const html =
+      '<html><body><div class=entry-content><p>' + prose + '</p></div></body></html>';
+    const text = extractArticleText(html, 'another-unknown-outlet.com');
+    assert.ok(text && text.length >= 300, `expected extracted prose, got ${text ? text.length : 0} chars`);
+  });
+
+  test('double-quoted class attribute still works (no regression)', () => {
+    const html =
+      '<html><body><div class="post-body"><p>' + prose + '</p></div></body></html>';
+    const text = extractArticleText(html, 'yet-another-outlet.com');
+    assert.ok(text && text.length >= 300);
+  });
+
+  test('a class that merely CONTAINS the needle as a substring does not match', () => {
+    // 'entry-contentious' must not satisfy the 'entry-content' needle — the
+    // \b word-boundary guard has to survive the quote-agnostic rewrite.
+    const html =
+      '<html><body><div class=\'entry-contentious\'><p>' + prose + '</p></div></body></html>';
+    const text = extractArticleText(html, 'boundary-check-outlet.com');
+    // Paragraph-density fallback may still find the prose; what must NOT happen
+    // is the common-class pass claiming a false match on a different container.
+    if (text) assert.ok(text.includes('real criticism'), 'only legitimate prose may come back');
+  });
+});

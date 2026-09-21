@@ -105,8 +105,21 @@ const GENERIC_CONTENT_CLASSES = [
  * Returns the first match's raw inner HTML, or null.
  */
 function extractBalancedDivByClass(html, classNeedle) {
+  const needle = classNeedle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // Accept single-quoted, double-quoted AND unquoted class attributes.
+  // This used to hardcode class="…" — which silently skipped every
+  // Blogger/Blogspot-hosted outlet, because Blogger's templates emit
+  // class='post-body entry-content' with SINGLE quotes. Both of those class
+  // names are already in GENERIC_CONTENT_CLASSES, so the fallback looked
+  // wired up and returned 0 chars anyway; the-interested-bystander's
+  // Disruption review (BRO-3794) sat uncollectable behind exactly that, and
+  // the failure mode is invisible — "Article extraction returned 0 chars"
+  // reads as "outlet needs a pattern", not "the generic pass can't see it".
+  // Quoting style is an HTML-serialization detail, never a content signal.
   const openRe = new RegExp(
-    '<div[^>]*class="[^"]*\\b' + classNeedle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b[^"]*"[^>]*>',
+    '<div[^>]*\\bclass=(?:"[^"]*\\b' + needle + '\\b[^"]*"'
+      + "|'[^']*\\b" + needle + "\\b[^']*'"
+      + '|' + needle + '(?=[\\s>]))[^>]*>',
     'i'
   );
   const openM = html.match(openRe);
