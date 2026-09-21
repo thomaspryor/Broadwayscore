@@ -146,8 +146,13 @@ test('BRO-2462: a claim-outage (wedged launcher) is NOT a policy pause — pause
   const claimAgeMs = PACING_WINDOW_MS * 2;
   const tasks = new Map();
   const entries = [];
+  // BRO-3437: awaitingClaim gates on isLiveBoardTaskId() — a bare id like
+  // 'wedged-0' is silently excluded, collapsing awaitingClaim to 0 and
+  // claimOutage to false. Fixture on Linear-shaped ids, same fix already
+  // applied to scripts/tests/dispatch-watchdog-core.test.mjs's own claim-
+  // outage test ("#1564: a wedged launcher...").
   for (let i = 0; i < CLAIM_OUTAGE_MIN; i++) {
-    const taskId = `wedged-${i}`;
+    const taskId = `linear:BRO-${9000 + i}`;
     tasks.set(taskId, { id: taskId, status: 'pending', subject: `P1: wedged task ${i}`, description: 'P1 wedged' });
     entries.push({ event: WATCHDOG_EVENTS.REDISPATCH, taskId, ts: new Date(now - claimAgeMs).toISOString() });
   }
