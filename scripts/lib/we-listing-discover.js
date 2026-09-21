@@ -80,7 +80,46 @@ const WE_SLUG_MIN_LENGTH = 5;
 // real, distinct, NON-West-End venue. The false match minted a second,
 // garbage-titled show ("An Ideal Husband Hammersmith Review2") duplicating
 // the correctly-entered an-ideal-husband-west-end-2026.
-const WE_SLUG_GENERIC_EXCLUDE = new Set(['playhouse', 'cambridge', 'lyric']);
+//
+// BRO-3787: systematic audit of every remaining short (<=8 char slug)
+// WEST_END_VENUES entry for the same collision class. Each of these is a
+// real, distinct, currently-operating NON-West-End venue sharing the bare
+// name with a WEST_END_VENUES entry:
+//   - "apollo": O2 Apollo Manchester (Ardwick Green) — a major live-music/
+//     comedy venue still branded "Apollo" today, distinct from the West
+//     End's Apollo Theatre (Shaftesbury Avenue).
+//   - "coliseum": Oldham Coliseum Theatre, a long-running Greater
+//     Manchester repertory theatre — distinct from the West End's London
+//     Coliseum (which also has its own longer "london coliseum" entry,
+//     unaffected by this exclusion).
+//   - "garrick": Lichfield Garrick Theatre (Staffordshire) — its slug
+//     ("lichfield-garrick") satisfies the hyphen-boundary check the same
+//     way "lyric-hammersmith" did for BRO-3716.
+//   - "lyceum": Royal Lyceum Theatre, Edinburgh — commonly just "the
+//     Lyceum," Scotland's leading producing theatre, unrelated to the West
+//     End's Lyceum (Theatre Royal Drury Lane's neighbour).
+//   - "old vic" (slug "old-vic"): Bristol Old Vic — independent since 1963,
+//     commonly called "the Old Vic" in coverage. "the-old-vic" (the WEST_
+//     END_VENUES entry's other, more specific form) is NOT excluded, so a
+//     genuine West End Old Vic slug using that longer form still matches.
+//   - "phoenix": Exeter Phoenix, a current multi-arts venue — distinct from
+//     the West End's Phoenix Theatre (Charing Cross Road).
+//   - "queen's" (slug "queens"): Queen's Theatre, Hornchurch — a real,
+//     currently-operating regional producing theatre in East London/South
+//     Essex. Especially load-bearing now that the West End's own "Queen's"
+//     was renamed Sondheim Theatre in 2019, making Hornchurch the more
+//     likely real-world referent of a bare "queens" slug match.
+//   - "savoy": Savoy Theatre, Monmouth (Wales) — a real, currently-
+//     operating venue, distinct from the West End's Savoy Theatre (Strand).
+// Checked and found to have NO practical non-West-End collision (left
+// matchable): adelphi, aldwych, dominion, dorfman, duchess, gielgud,
+// novello, olivier, sondheim, wyndhams/wyndham's. "national" was already
+// partially handled via WE_SLUG_FALSE_POSITIVE_RE below (National Theatre
+// Wales/Scotland, Welsh National Opera) and needed no further exclusion.
+const WE_SLUG_GENERIC_EXCLUDE = new Set([
+  'playhouse', 'cambridge', 'lyric',
+  'apollo', 'coliseum', 'garrick', 'lyceum', 'old-vic', 'phoenix', 'queens', 'savoy',
+]);
 const VENUE_SLUG_ENTRIES = [...WEST_END_VENUES]
   .map(v => ({ venue: v, slug: v.replace(/[.']/g, '').replace(/\s+/g, '-') }))
   .filter(e => e.slug.length >= WE_SLUG_MIN_LENGTH && !WE_SLUG_GENERIC_EXCLUDE.has(e.slug))
