@@ -145,12 +145,13 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-21T19:14:35.173Z",
+      "lastSeen": "2026-09-21T19:59:41.689Z",
       "lastNotifiedAt": "2026-09-21T19:14:35.173Z",
       "lastSurfacedAt": "2026-09-21T19:14:35.173Z",
       "notifyCount": 97,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -1980,7 +1981,7 @@
       "resolvedAt": "2026-09-15T16:01:30.228Z"
     },
     "time-bomb-tests:unit:scripts/lib/bww-archive-category-guard.test.mjs::BRO-2549 ACCEPTANCE: a poisoned cache entry under 14 days old is purged, not served": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: scripts/lib/bww-archive-category-guard.test.mjs — BRO-2549 ACCEPTANCE: a poisoned cache entry under 14 days old is purged, not served",
       "firstSeen": "2026-08-31T20:41:27.376Z",
@@ -1989,10 +1990,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2673"
+      "linearIdentifier": "BRO-2673",
+      "resolvedAt": "2026-09-21T20:01:42.749Z"
     },
     "time-bomb-tests:unit:scripts/lib/bww-archive-category-guard.test.mjs::BRO-2549: a punctuation-formatting false positive is rescued, not purged (matches the audit's policy)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: scripts/lib/bww-archive-category-guard.test.mjs — BRO-2549: a punctuation-formatting false positive is rescued, not purged (matches the audit's policy)",
       "firstSeen": "2026-08-31T20:41:30.095Z",
@@ -2001,10 +2003,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2674"
+      "linearIdentifier": "BRO-2674",
+      "resolvedAt": "2026-09-21T20:01:42.752Z"
     },
     "time-bomb-tests:unit:scripts/lib/bww-archive-category-guard.test.mjs::BRO-2549: a valid cache entry under 14 days old is served": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: scripts/lib/bww-archive-category-guard.test.mjs — BRO-2549: a valid cache entry under 14 days old is served",
       "firstSeen": "2026-08-31T20:41:33.977Z",
@@ -2013,10 +2016,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2675"
+      "linearIdentifier": "BRO-2675",
+      "resolvedAt": "2026-09-21T20:01:42.754Z"
     },
     "time-bomb-tests:unit:scripts/lib/cmux-launch.test.mjs::cmuxIdleSec/noteLaunchAttempt: real marker round-trip, and Infinity when absent": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: scripts/lib/cmux-launch.test.mjs — cmuxIdleSec/noteLaunchAttempt: real marker round-trip, and Infinity when absent",
       "firstSeen": "2026-08-31T20:41:37.061Z",
@@ -2025,10 +2029,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2676"
+      "linearIdentifier": "BRO-2676",
+      "resolvedAt": "2026-09-21T20:01:42.757Z"
     },
     "time-bomb-tests:unit:tests/unit/session-start-disk-check.test.mjs::pruneDue: atomic mkdir claim — true once, false until the window elapses": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/session-start-disk-check.test.mjs — pruneDue: atomic mkdir claim — true once, false until the window elapses",
       "firstSeen": "2026-08-31T20:41:40.088Z",
@@ -2037,10 +2042,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2677"
+      "linearIdentifier": "BRO-2677",
+      "resolvedAt": "2026-09-21T20:01:42.759Z"
     },
     "time-bomb-tests:unit:tests/unit/session-start-disk-check.test.mjs::pruneDue: two \"concurrent\" claimants in the same window — only the first wins (atomicity, not just a race that usually resolves fine)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/session-start-disk-check.test.mjs — pruneDue: two \"concurrent\" claimants in the same window — only the first wins (atomicity, not just a race that usually resolves fine)",
       "firstSeen": "2026-08-31T20:41:42.259Z",
@@ -2049,10 +2055,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2678"
+      "linearIdentifier": "BRO-2678",
+      "resolvedAt": "2026-09-21T20:01:42.762Z"
     },
     "time-bomb-tests:unit:tests/unit/session-start-disk-check.test.mjs::pruneJobLogs: deletes only log files older than maxAgeMs, from a real temp dir": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/session-start-disk-check.test.mjs — pruneJobLogs: deletes only log files older than maxAgeMs, from a real temp dir",
       "firstSeen": "2026-08-31T20:41:44.634Z",
@@ -2061,10 +2068,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2679"
+      "linearIdentifier": "BRO-2679",
+      "resolvedAt": "2026-09-21T20:01:42.764Z"
     },
     "time-bomb-tests:unit:tests/unit/session-start-disk-check.test.mjs::pruneJobLogsIfDue: bounded age retention actually runs when due, and skips when on cooldown (prevents unbounded growth from silently refilling the disk)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/session-start-disk-check.test.mjs — pruneJobLogsIfDue: bounded age retention actually runs when due, and skips when on cooldown (prevents unbounded growth from silently refilling the disk)",
       "firstSeen": "2026-08-31T20:41:46.928Z",
@@ -2073,7 +2081,8 @@
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2680"
+      "linearIdentifier": "BRO-2680",
+      "resolvedAt": "2026-09-21T20:01:42.766Z"
     },
     "cron-health:Update Social Pulse": {
       "status": "resolved",
@@ -2905,7 +2914,7 @@
       "silentRefires": 1
     },
     "time-bomb-tests:unit:tests/unit/coverageExpectation-drift.test.mjs::outlet-registry.json carries no coverageExpectation drift on the previously flagged outlets": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/coverageExpectation-drift.test.mjs — outlet-registry.json carries no coverageExpectation drift on the previously flagged outlets",
       "firstSeen": "2026-09-14T19:54:28.552Z",
@@ -2914,7 +2923,8 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-3365"
+      "linearIdentifier": "BRO-3365",
+      "resolvedAt": "2026-09-21T20:01:42.768Z"
     },
     "opening-night-stale-upcoming-tag-pre-existing-condition-off-broadway-2026": {
       "status": "open",
@@ -3790,18 +3800,16 @@
       "resolvedAt": "2026-09-21T12:00:59.616Z"
     },
     "test-yml:red:Unit Tests:0858c92a": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
-      "lastSeen": "2026-09-21T02:22:14.663Z",
-      "lastNotifiedAt": "2026-09-21T01:14:39.220Z",
+      "lastSeen": "2026-09-21T19:59:41.370Z",
+      "lastNotifiedAt": "2026-09-21T19:59:41.370Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-3935",
-      "silentRefires": 4,
-      "resolvedAt": "2026-09-21T03:04:56.096Z"
+      "linearIdentifier": "BRO-3935"
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
       "status": "resolved",
@@ -4134,13 +4142,13 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run unit tests — \"disruption-off-broadway-2026: no unrecovered gap in the last CI-computed audit snapshot\"",
       "firstSeen": "2026-09-21T12:00:59.625Z",
-      "lastSeen": "2026-09-21T19:14:29.031Z",
+      "lastSeen": "2026-09-21T19:59:41.686Z",
       "lastNotifiedAt": "2026-09-21T12:00:59.625Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-3977",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "geo-bots:Chile": {
       "status": "open",
@@ -4201,6 +4209,18 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "time-bomb-tests:unit:scripts/clear-stale-roundup-flags.test.mjs::--apply clears a stale flag (individual review on a whitelisted per-outlet URL) and leaves a genuine roundup page flagged": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: scripts/clear-stale-roundup-flags.test.mjs — --apply clears a stale flag (individual review on a whitelisted per-outlet URL) and leaves a genuine roundup page flagged",
+      "firstSeen": "2026-09-21T20:01:42.771Z",
+      "lastSeen": "2026-09-21T20:01:42.771Z",
+      "lastNotifiedAt": "2026-09-21T20:01:42.771Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-3992"
     }
   }
 }
