@@ -1,18 +1,19 @@
 {
-  "generatedAt": "2026-09-21T00:49:24.476Z",
+  "generatedAt": "2026-09-21T05:44:22.707Z",
   "windowDays": 1095,
-  "targets": 242,
-  "auditedThisRun": 22,
-  "carriedForward": 535,
+  "targets": 252,
+  "auditedThisRun": 10,
+  "carriedForward": 547,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 345,
-    "totalMissing": 1864,
+    "withGap": 309,
+    "missingCurrentRun": 433,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 1865,
-    "totalRecoverable": 25,
-    "totalRecovered": 7
+    "totalFlaggedMisses": 795,
+    "totalRecoverable": 6,
+    "totalRecovered": 7,
+    "priorProductionCitations": 2504
   },
   "results": [
     {
@@ -30424,12 +30425,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 34,
+        "count": 31,
         "byReason": {
-          "non-review-host": 28,
-          "aggregator-internal-nav": 2,
-          "non-review-path": 1,
-          "merch-store": 3
+          "aggregator-internal-nav": 1,
+          "non-review-host": 26,
+          "merch-store": 3,
+          "static-asset": 1
         }
       },
       "dedupedVariants": [],
@@ -30457,7 +30458,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-09-20T22:08:24.514Z"
+      "computedAt": "2026-09-21T05:44:22.707Z"
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -31041,7 +31042,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-21T00:49:24.476Z"
+      "computedAt": "2026-09-21T05:44:22.707Z"
     },
     {
       "showId": "crazy-mama-off-broadway-2026",
@@ -52839,14 +52840,13 @@
         "https://theatreandtonic.co.uk/blog/golden-boy-at-almeida-theatre-review",
         "https://almeida.co.uk/whats-on/golden-boy/",
         "https://lovelondonloveculture.com/2026/09/19/review-round-up-golden-boy-almeida-theatre/",
-        "https://playsinternational.org.uk/golden-boy-at-almeida-theatre/",
-        "https://liamodell.com/2026/09/16/golden-boy-review-almeida-theatre-josh-oconnor-hayley-squires-sam-yates/",
+        "https://www.broadwayworld.com/westend/article/Review-GOLDEN-BOY-starring-Josh-OConnor-Almeida-Theatre-20260916",
         "https://www.timeout.com/london/theatre/golden-boy",
+        "https://liamodell.com/2026/09/16/golden-boy-review-almeida-theatre-josh-oconnor-hayley-squires-sam-yates/",
         "https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays",
         "https://www.thenerve.news/p/review-theatre-golden-boy-josh-oconnor-almeida-sam-yates-boxing-dorian-lynskey",
-        "https://www.broadwayworld.com/westend/article/Review-GOLDEN-BOY-starring-Josh-OConnor-Almeida-Theatre-20260916",
-        "https://www.nationaltheatre.org.uk/whats-on/golden-boy-2026/",
         "https://www.standard.co.uk/culture/theatre/golden-boy-almeida-theatre-review-b1297258.html",
+        "https://www.nationaltheatre.org.uk/whats-on/golden-boy-2026/",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/golden-boy-josh-o-connor-review-almeida-b3051019.html",
         "https://www.telegraph.co.uk/theatre/what-to-see/golden-boy-almeida-theatre-review-john-oconnor/",
         "https://playsinternational.org.uk/golden-boy-almeida-theatre/"
@@ -52999,24 +52999,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.timeout.com/london/theatre/golden-boy",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/theatre/golden-boy"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://www.broadwayworld.com/westend/article/Review-GOLDEN-BOY-starring-Josh-OConnor-Almeida-Theatre-20260916",
           "host": "broadwayworld.com",
           "knownOutletId": "broadwayworld",
@@ -53038,6 +53020,24 @@
           ],
           "weRefStars": 2,
           "weRefStarsSource": "theatre-reviews",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/golden-boy",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout-london--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/london/theatre/golden-boy"
+            }
+          ],
           "serpCensus": true
         },
         {
@@ -53158,7 +53158,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -53174,16 +53174,16 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 20,
+        "resultCount": 19,
         "error": null
       },
       "candidatesRejected": {
-        "count": 367,
+        "count": 368,
         "byReason": {
-          "non-review-host": 27,
           "aggregator-internal-nav": 226,
           "not-http-url": 109,
           "aggregator-section-root": 4,
+          "non-review-host": 28,
           "event-listing": 1
         }
       },
@@ -53379,18 +53379,18 @@
             "url": "https://almeida.co.uk/whats-on/golden-boy/"
           },
           {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/golden-boy"
-          },
-          {
             "outletId": "broadwayworld",
             "outlet": "broadwayworld",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.broadwayworld.com/westend/article/Review-GOLDEN-BOY-starring-Josh-OConnor-Almeida-Theatre-20260916"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/golden-boy"
           },
           {
             "outletId": "nationaltheatre.org.uk",
@@ -53461,12 +53461,6 @@
             "outletId": "theatreandtonic.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
-          },
-          {
-            "url": "https://playsinternational.org.uk/golden-boy-at-almeida-theatre/",
-            "outletId": "playsinternational.org.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-20T22:08:24.514Z"
           },
           {
             "url": "https://liamodell.com/2026/09/16/golden-boy-review-almeida-theatre-josh-oconnor-hayley-squires-sam-yates/",
@@ -53609,18 +53603,18 @@
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/golden-boy",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-20T07:18:46.455Z"
-          },
-          {
             "url": "https://www.broadwayworld.com/westend/article/Review-GOLDEN-BOY-starring-Josh-OConnor-Almeida-Theatre-20260916",
             "outletId": "broadwayworld",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-17T20:52:39.992Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/golden-boy",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
             "url": "https://www.nationaltheatre.org.uk/whats-on/golden-boy-2026/",
@@ -53633,7 +53627,7 @@
         "liveCount": 16,
         "candidateCount": 33
       },
-      "computedAt": "2026-09-20T22:08:24.514Z"
+      "computedAt": "2026-09-21T05:44:22.707Z"
     },
     {
       "showId": "good-night-and-good-luck-2025",
@@ -71083,40 +71077,28 @@
         "https://culturesauce.com/jean-michel-basquiat-roger-guenveur-smith-off-broadway-review/",
         "https://www.theatermania.com/news/under-the-radar-review-basquiat-as-seen-through-the-eyes-of-a-friend-in-in-honor-of-jean-michel-basquiat_1818063/",
         "https://www.newyorktheatreguide.com/reviews/in-honor-of-jean-michel-basquiat-off-broadway-review-roger-guenveur-smith",
-        "https://www.timeout.com/newyork/theater/in-honor-of-jean-michel-basquiat-play-review-roger-guenveur-smith",
         "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-the-late-great-artist-jazzed-up/",
+        "https://www.timeout.com/newyork/theater/in-honor-of-jean-michel-basquiat-play-review-roger-guenveur-smith",
         "https://1minutecritic.com/honor-jean-michel-basquiat-review/",
         "https://www.theatermania.com/news/review-roger-guenveur-smiths-impressionistic-tribute-to-artist-jean-michel-basquiat_1853657/",
         "https://thefrontrowcenter.com/2026/09/in-honor-of-jean-michel-basquiat/",
         "https://www.newyorktheatreguide.com/show/46616-in-honor-of-jean-michel-basquiat",
-        "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-a-poetic-tribute/",
-        "https://1minutecritic.substack.com/p/honor-jean-michel-basquiat-review",
-        "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672",
-        "https://pagesonstages.com/2026/09/18/in-honor-of-jean-michel-basquiat/"
+        "https://pagesonstages.com/2026/09/18/in-honor-of-jean-michel-basquiat/",
+        "https://theaterscene.com/reviews/in-honor-of-jean-michel-basquiat/",
+        "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672"
       ],
-      "dirFiles": 13,
-      "dirClean": 10,
-      "inReviewsJson": 10,
+      "dirFiles": 14,
+      "dirClean": 11,
+      "inReviewsJson": 11,
       "missing": [
         {
           "url": "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672",
           "host": "ticketsales.com",
           "knownOutletId": null,
           "serpCensus": true
-        },
-        {
-          "url": "https://pagesonstages.com/2026/09/18/in-honor-of-jean-michel-basquiat/",
-          "host": "pagesonstages.com",
-          "knownOutletId": "pages-on-stages",
-          "serpCensus": true
         }
       ],
-      "dirOnly": [
-        {
-          "host": "theaterscene.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://www.theatermania.com/news/under-the-radar-review-basquiat-as-seen-through-the-eyes-of-a-friend-in-in-honor-of-jean-michel-basquiat_1818063/",
@@ -71149,8 +71131,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 5,
+            "results": 10,
+            "accepted": 6,
             "error": null
           },
           {
@@ -71160,7 +71142,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -71190,7 +71172,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -71200,32 +71182,24 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 12,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
         "count": 29,
         "byReason": {
-          "non-review-host": 26,
           "aggregator-internal-nav": 2,
+          "non-review-host": 26,
           "ticketing-reseller": 1
         }
       },
-      "dedupedVariants": [
-        {
-          "url": "https://1minutecritic.substack.com/p/honor-jean-michel-basquiat-review",
-          "host": "1minutecritic.substack.com",
-          "matchedUrl": "https://1minutecritic.com/honor-jean-michel-basquiat-review/",
-          "outletId": "one-minute-critic",
-          "reason": "same outlet \"one-minute-critic\" already held at 1minutecritic.com; 1minutecritic.substack.com is a registered alias of it"
-        }
-      ],
+      "dedupedVariants": [],
       "ingestResults": [
         {
           "url": "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672",
@@ -71238,18 +71212,6 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  provisional outlet \"ticketsales\" (not in registry) — onboard to outlet-registry.json after revie"
-        },
-        {
-          "url": "https://pagesonstages.com/2026/09/18/in-honor-of-jean-michel-basquiat/",
-          "host": "pagesonstages.com",
-          "outletId": "pages-on-stages",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -71262,13 +71224,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672"
-          },
-          {
-            "outletId": "pages-on-stages",
-            "outlet": "pages-on-stages",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://pagesonstages.com/2026/09/18/in-honor-of-jean-michel-basquiat/"
           },
           {
             "outletId": "theatermania",
@@ -71299,14 +71254,14 @@
             "firstSeenAt": "2026-09-19T06:54:18.824Z"
           },
           {
-            "url": "https://www.timeout.com/newyork/theater/in-honor-of-jean-michel-basquiat-play-review-roger-guenveur-smith",
-            "outletId": "timeout.com",
+            "url": "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-the-late-great-artist-jazzed-up/",
+            "outletId": "nystagereview.com",
             "state": "live",
             "firstSeenAt": "2026-09-19T06:54:18.824Z"
           },
           {
-            "url": "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-the-late-great-artist-jazzed-up/",
-            "outletId": "nystagereview.com",
+            "url": "https://www.timeout.com/newyork/theater/in-honor-of-jean-michel-basquiat-play-review-roger-guenveur-smith",
+            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-09-19T06:54:18.824Z"
           },
@@ -71335,16 +71290,16 @@
             "firstSeenAt": "2026-09-19T06:54:18.824Z"
           },
           {
-            "url": "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-a-poetic-tribute/",
-            "outletId": "nystagereview.com",
+            "url": "https://pagesonstages.com/2026/09/18/in-honor-of-jean-michel-basquiat/",
+            "outletId": "pagesonstages.com",
             "state": "live",
-            "firstSeenAt": "2026-09-19T15:05:46.101Z"
+            "firstSeenAt": "2026-09-20T22:08:24.514Z"
           },
           {
-            "url": "https://1minutecritic.substack.com/p/honor-jean-michel-basquiat-review",
-            "outletId": "1minutecritic.substack.com",
+            "url": "https://theaterscene.com/reviews/in-honor-of-jean-michel-basquiat/",
+            "outletId": "theaterscene.com",
             "state": "live",
-            "firstSeenAt": "2026-09-19T06:54:18.824Z"
+            "firstSeenAt": "2026-09-21T05:44:22.707Z"
           },
           {
             "url": "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672",
@@ -71354,13 +71309,6 @@
             "firstSeenAt": "2026-09-19T06:54:18.824Z"
           },
           {
-            "url": "https://pagesonstages.com/2026/09/18/in-honor-of-jean-michel-basquiat/",
-            "outletId": "pages-on-stages",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-20T22:08:24.514Z"
-          },
-          {
             "url": "https://www.theatermania.com/news/under-the-radar-review-basquiat-as-seen-through-the-eyes-of-a-friend-in-in-honor-of-jean-michel-basquiat_1818063/",
             "outletId": "theatermania",
             "state": "GAP",
@@ -71368,10 +71316,10 @@
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
           }
         ],
-        "liveCount": 9,
+        "liveCount": 10,
         "candidateCount": 12
       },
-      "computedAt": "2026-09-20T22:08:24.514Z"
+      "computedAt": "2026-09-21T05:44:22.707Z"
     },
     {
       "showId": "in-the-print-off-west-end-2026",
@@ -87628,10 +87576,10 @@
       "candidatesRejected": {
         "count": 2096,
         "byReason": {
-          "non-review-host": 131,
           "aggregator-internal-nav": 1531,
           "not-http-url": 386,
           "aggregator-section-root": 32,
+          "non-review-host": 131,
           "roundup-page": 16
         }
       },
@@ -88815,7 +88763,7 @@
         "liveCount": 0,
         "candidateCount": 33
       },
-      "computedAt": "2026-09-19T01:53:26.201Z"
+      "computedAt": "2026-09-21T05:44:22.707Z"
     },
     {
       "showId": "madama-butterfly-off-broadway-2024",
@@ -103715,35 +103663,35 @@
         "https://www.londontheatre.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-west-end-review-garrick-theatre",
         "https://www.thetimes.co.uk/article/my-sons-a-queer-but-what-can-you-do-review-charming-but-slender-confessional-snbkftqmz",
         "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-turbine_54370.html",
+        "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
         "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
-        "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
+        "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
         "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963",
+        "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
         "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
         "https://www.jacktheladmag.com/theatre-reviews/my-sons-a-queer-but-what-can-you-do",
         "https://theatreweekly.com/interview-rob-madge-on-my-sons-a-queer-but-what-can-you-do/",
-        "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
         "https://musicaltheatrereview.com/music-review-rob-madge-my-sons-a-queer-but-what-can-you-do-cast-album/",
-        "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-returns-for-final-west-end-run-at-the-apollo-theatre/",
-        "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
         "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
+        "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-returns-for-final-west-end-run-at-the-apollo-theatre/",
         "https://www.burnhamdramaturgy.com/non-place/review-my-sons-a-queer-but-what-can-you-do",
         "https://www.show-score.com/uk/london/west-end-shows/my-son-s-a-queer-but-what-can-you-do-west-end",
         "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do"
       ],
-      "dirFiles": 29,
+      "dirFiles": 30,
       "dirClean": 6,
       "inReviewsJson": 6,
       "missing": [
         {
-          "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
-          "host": "westendtheatre.com",
-          "knownOutletId": "westendtheatre",
-          "serpCensus": true
-        },
-        {
           "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
           "host": "westendwilma.com",
           "knownOutletId": "west-end-wilma",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
+          "host": "westendtheatre.com",
+          "knownOutletId": "westendtheatre",
           "serpCensus": true
         },
         {
@@ -103839,9 +103787,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
+          "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -103849,9 +103797,14 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theatreandtonic--unknown.json",
+              "file": "all-that-dazzles-uk--all-that-dazzles.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review"
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
+            },
+            {
+              "file": "all-that-dazzles-uk--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
             }
           ],
           "serpCensus": true
@@ -103875,6 +103828,24 @@
           "serpCensus": true
         },
         {
+          "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatreandtonic--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
           "host": "newyorktheatreguide.com",
           "knownOutletId": "nytg",
@@ -103886,6 +103857,11 @@
           "dirFlags": [
             {
               "file": "nytg--gillian-russo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review"
+            },
+            {
+              "file": "nytg--unknown.json",
               "flag": "wrongProduction",
               "urlInDir": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review"
             }
@@ -103947,47 +103923,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-returns-for-final-west-end-run-at-the-apollo-theatre/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-weekly--greg-stewart.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-announces-victoria-scone-and-jamie-windust-as-final-queer-hero-thursday-guests/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "all-that-dazzles-uk--all-that-dazzles.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
-            },
-            {
-              "file": "all-that-dazzles-uk--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
           "host": "londontheatredirect.com",
           "knownOutletId": "londontheatredirect",
@@ -104001,6 +103936,24 @@
               "file": "londontheatredirect--london-theatre-direct-limited.json",
               "flag": "clean",
               "urlInDir": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-returns-for-final-west-end-run-at-the-apollo-theatre/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-weekly--greg-stewart.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-announces-victoria-scone-and-jamie-windust-as-final-queer-hero-thursday-guests/"
             }
           ],
           "serpCensus": true
@@ -104074,7 +104027,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -104084,7 +104037,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -104094,7 +104047,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 5,
             "error": null
           },
           {
@@ -104104,7 +104057,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -104114,7 +104067,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -104136,12 +104089,12 @@
       "candidatesRejected": {
         "count": 217,
         "byReason": {
-          "non-review-host": 41,
           "aggregator-internal-nav": 161,
           "not-http-url": 6,
           "aggregator-section-root": 4,
-          "non-review-path": 3,
+          "non-review-host": 41,
           "roundup-page": 1,
+          "non-review-path": 3,
           "ticketing-listing": 1
         }
       },
@@ -104154,18 +104107,6 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
-          "host": "westendtheatre.com",
-          "outletId": "westendtheatre",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Refusing to ingest — https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-"
-        },
-        {
           "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
           "host": "westendwilma.com",
           "outletId": "west-end-wilma",
@@ -104176,6 +104117,18 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
+        {
+          "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
+          "host": "westendtheatre.com",
+          "outletId": "westendtheatre",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Refusing to ingest — https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-"
         },
         {
           "url": "https://www.burnhamdramaturgy.com/non-place/review-my-sons-a-queer-but-what-can-you-do",
@@ -104207,18 +104160,18 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "westendtheatre",
-            "outlet": "westendtheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/"
-          },
-          {
             "outletId": "west-end-wilma",
             "outlet": "west-end-wilma",
             "critic": "Unknown",
             "stars": null,
             "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/"
+          },
+          {
+            "outletId": "westendtheatre",
+            "outlet": "westendtheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/"
           },
           {
             "outletId": "burnhamdramaturgy.com",
@@ -104256,11 +104209,11 @@
             "url": "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-turbine_54370.html"
           },
           {
-            "outletId": "theatreandtonic",
-            "outlet": "theatreandtonic",
+            "outletId": "all-that-dazzles-uk",
+            "outlet": "all-that-dazzles-uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review"
+            "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
           },
           {
             "outletId": "i-paper",
@@ -104268,6 +104221,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963"
+          },
+          {
+            "outletId": "theatreandtonic",
+            "outlet": "theatreandtonic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review"
           },
           {
             "outletId": "nytg",
@@ -104298,25 +104258,18 @@
             "url": "https://musicaltheatrereview.com/music-review-rob-madge-my-sons-a-queer-but-what-can-you-do-cast-album/"
           },
           {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-returns-for-final-west-end-run-at-the-apollo-theatre/"
-          },
-          {
-            "outletId": "all-that-dazzles-uk",
-            "outlet": "all-that-dazzles-uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
-          },
-          {
             "outletId": "londontheatredirect",
             "outlet": "londontheatredirect",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-returns-for-final-west-end-run-at-the-apollo-theatre/"
           },
           {
             "outletId": "thestage",
@@ -104353,15 +104306,15 @@
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
           },
           {
-            "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
-            "outletId": "westendtheatre",
+            "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
+            "outletId": "west-end-wilma",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-19T21:19:05.506Z"
           },
           {
-            "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
-            "outletId": "west-end-wilma",
+            "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
+            "outletId": "westendtheatre",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-19T21:19:05.506Z"
@@ -104402,8 +104355,8 @@
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
-            "outletId": "theatreandtonic",
+            "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
+            "outletId": "all-that-dazzles-uk",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-19T21:19:05.506Z"
@@ -104411,6 +104364,13 @@
           {
             "url": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963",
             "outletId": "i-paper",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
+            "outletId": "theatreandtonic",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-19T21:19:05.506Z"
@@ -104444,25 +104404,18 @@
             "firstSeenAt": "2026-09-19T21:19:05.506Z"
           },
           {
-            "url": "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-returns-for-final-west-end-run-at-the-apollo-theatre/",
-            "outletId": "theatre-weekly",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-20T15:35:03.611Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
-            "outletId": "all-that-dazzles-uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-19T21:19:05.506Z"
-          },
-          {
             "url": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
             "outletId": "londontheatredirect",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
+            "url": "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-returns-for-final-west-end-run-at-the-apollo-theatre/",
+            "outletId": "theatre-weekly",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-20T15:35:03.611Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do",
@@ -104475,7 +104428,7 @@
         "liveCount": 4,
         "candidateCount": 20
       },
-      "computedAt": "2026-09-20T22:08:24.514Z"
+      "computedAt": "2026-09-21T05:44:22.707Z"
     },
     {
       "showId": "mystic-pizza-regional-2025",
@@ -136130,33 +136083,203 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html",
+        "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/",
+        "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197749"
+      ],
+      "dirFiles": 4,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--darryn-king.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html"
+            },
+            {
+              "file": "nytimes--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/",
+          "host": "picturethispost.com",
+          "knownOutletId": "picture-this-post",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "picture-this-post--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197749",
+          "host": "tixr.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "tixr--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197747"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Spandex\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Spandex\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Spandex\" review asylum",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Spandex Asylum NYC review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Spandex Asylum NYC review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Spandex Asylum NYC review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 30,
+        "byReason": {
+          "aggregator-internal-nav": 4,
+          "non-review-host": 23,
+          "merch-store": 2,
+          "venue-production-page": 1
+        }
       },
       "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html"
+          },
+          {
+            "outletId": "picture-this-post",
+            "outlet": "picture-this-post",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/"
+          },
+          {
+            "outletId": "tixr.com",
+            "outlet": "tixr.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197749"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-21T05:44:22.707Z"
+          },
+          {
+            "url": "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/",
+            "outletId": "picture-this-post",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-21T05:44:22.707Z"
+          },
+          {
+            "url": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197749",
+            "outletId": "tixr.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-21T05:44:22.707Z"
+          }
+        ],
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 3
       },
-      "computedAt": "2026-09-20T22:08:24.514Z"
+      "computedAt": "2026-09-21T05:44:22.707Z"
     },
     {
       "showId": "spare-parts-off-broadway-2026",
@@ -152181,7 +152304,6 @@
         "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway",
         "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann",
         "https://playbill.com/article/reviews-critics-sound-off-on-paper-mill-playhouses-the-great-gatsby",
-        "https://playbill.com/article/reviews-critics-weigh-in-on-immersive-the-great-gatsby-off-broadway",
         "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425",
         "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211",
         "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-in-Londons-West-End-20250424",
@@ -152228,11 +152350,6 @@
         "https://www.nytimes.com/2023/10/26/theater/great-gatsby-musical-review.html",
         "https://www.theatermania.com/news/review-the-great-gatsby-reflects-the-excesses-of-the-roaring-twenties-in-all-the-wrong-ways_1719309/",
         "https://www.theaterpizzazz.com/the-great-gatsby-at-paper-mill-playhouse/",
-        "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party",
-        "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review",
-        "https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
-        "https://www.theatermania.com/news/review-the-great-gatsby-is-a-trip-back-to-the-roaring-20s_1706563/",
-        "https://www.theatrely.com/post/immersive-great-gatsby-brings-the-roarin-20s-to-midtown-review",
         "https://www.nydailynews.com/2024/04/25/broadway-review-the-great-gatsby-brings-back-big-broadway-lacks-heart/",
         "https://nypost.com/2024/04/25/entertainment/great-gatsby-review-broadway-musical-messes-up-beloved-novel/",
         "https://mdtheatreguide.com/2026/02/theatre-review-the-great-gatsby-a-new-musical-at-the-hippodrome/",
@@ -152253,8 +152370,13 @@
         "https://captimes.com/entertainment/arts-and-theatre/the-party-drags-on-at-the-great-gatsby-in-overture-hall/article_2247e0bb-0560-4952-9ecf-7ad7573be9a4.html",
         "https://ourtheatrevoice.com/a-dazzling-great-gatsby/",
         "https://www.thestar.com/entertainment/stage/the-great-gatsby-musical-at-mirvish-is-a-sparkly-but-soulless-broadway-tour/article_88994544-e44d-4fef-ac44-bcd9f7be019b.html",
+        "https://apt613.ca/review-the-great-gatsby-roars-into-the-nac-until-sept-13/",
         "https://musicaltheatrereview.com/the-great-gatsby-a-new-musical-london-coliseum/",
-        "https://theatreandtonic.co.uk/blog/the-great-gatsby-at-london-coliseum-review"
+        "https://theatreandtonic.co.uk/blog/the-great-gatsby-at-london-coliseum-review",
+        "https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
+        "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party",
+        "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review",
+        "https://www.theatrely.com/post/immersive-great-gatsby-brings-the-roarin-20s-to-midtown-review"
       ],
       "dirFiles": 82,
       "dirClean": 38,
@@ -152275,6 +152397,13 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://www.baltimoresun.com/2026/02/06/great-gatsby-hippodrome-review/",
+          "host": "baltimoresun.com",
+          "knownOutletId": "baltimoresun",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://mdtheatreguide.com/2026/05/theatre-review-the-great-gatsby-a-new-musical-at-the-national-theatre/",
           "host": "mdtheatreguide.com",
           "knownOutletId": "maryland-theatre-guide",
@@ -152284,7 +152413,7 @@
         {
           "url": "https://www.cleveland.com/entertainment/2026/06/the-great-gatsby-review-lavish-musical-delivers-the-full-broadway-experience-at-playhouse-square.html",
           "host": "cleveland.com",
-          "knownOutletId": null,
+          "knownOutletId": "cleveland-plain-dealer",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -152298,7 +152427,7 @@
         {
           "url": "https://captimes.com/entertainment/arts-and-theatre/the-party-drags-on-at-the-great-gatsby-in-overture-hall/article_2247e0bb-0560-4952-9ecf-7ad7573be9a4.html",
           "host": "captimes.com",
-          "knownOutletId": null,
+          "knownOutletId": "the-cap-times",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -152313,6 +152442,13 @@
           "url": "https://www.thestar.com/entertainment/stage/the-great-gatsby-musical-at-mirvish-is-a-sparkly-but-soulless-broadway-tour/article_88994544-e44d-4fef-ac44-bcd9f7be019b.html",
           "host": "thestar.com",
           "knownOutletId": "toronto-star",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://apt613.ca/review-the-great-gatsby-roars-into-the-nac-until-sept-13/",
+          "host": "apt613.ca",
+          "knownOutletId": "apt-613",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -152632,44 +152768,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "dailybeast--tim-teeman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytg--gillian-russo.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://www.nydailynews.com/2024/04/25/broadway-review-the-great-gatsby-brings-back-big-broadway-lacks-heart/",
           "host": "nydailynews.com",
           "knownOutletId": "nydailynews",
@@ -152687,28 +152785,9 @@
           ]
         },
         {
-          "url": "https://www.baltimoresun.com/2026/02/06/great-gatsby-hippodrome-review/",
-          "host": "baltimoresun.com",
-          "knownOutletId": "baltimoresun",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "baltimoresun--mary-carole-mccauley.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.baltimoresun.com/2026/02/06/great-gatsby-hippodrome-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://www.houstonchronicle.com/entertainment/theater/article/the-great-gatsby-hobby-center-21955604.php",
           "host": "houstonchronicle.com",
-          "knownOutletId": null,
+          "knownOutletId": "houston-chronicle",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -152746,7 +152825,7 @@
         {
           "url": "https://chicago.suntimes.com/theater/2026/04/24/review-great-gatsby-musical-broadway-chicago-theater-things-to-do",
           "host": "suntimes.com",
-          "knownOutletId": "suntimes",
+          "knownOutletId": "chicago-sun-times",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -152754,7 +152833,7 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "suntimes--catey-sullivan.json",
+              "file": "chicago-sun-times--catey-sullivan.json",
               "flag": "wrongProduction",
               "urlInDir": "https://chicago.suntimes.com/theater/2026/04/24/review-great-gatsby-musical-broadway-chicago-theater-things-to-do"
             }
@@ -152765,7 +152844,7 @@
         {
           "url": "https://triblive.com/aande/theater-arts/review-musical-adaptation-of-the-great-gatsby-at-the-benedum-center-is-heavy-on-style/",
           "host": "triblive.com",
-          "knownOutletId": null,
+          "knownOutletId": "trib-live",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -152773,7 +152852,7 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "triblive--alexis-papalia.json",
+              "file": "trib-live--alexis-papalia.json",
               "flag": "wrongProduction",
               "urlInDir": "https://triblive.com/aande/theater-arts/review-musical-adaptation-of-the-great-gatsby-at-the-benedum-center-is-heavy-on-style/"
             }
@@ -152793,7 +152872,7 @@
           "dirFlags": [
             {
               "file": "minneapolis-star-tribune--rohan-preston.json",
-              "flag": "wrongProduction",
+              "flag": "clean",
               "urlInDir": "https://www.startribune.com/review-this-gatsby-aint-so-great-after-all/601852668"
             }
           ],
@@ -152803,7 +152882,7 @@
         {
           "url": "https://www.twincities.com/2026/06/03/theater-review-great-gatsby-turns-st-paul-native-f-scott-fitzgeralds-novel-into-a-romcom/",
           "host": "twincities.com",
-          "knownOutletId": null,
+          "knownOutletId": "pioneer-press",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -152880,6 +152959,44 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dailybeast--tim-teeman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytg--gillian-russo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "citedNoUrl": [],
@@ -152889,12 +153006,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 2032,
+        "count": 1859,
         "byReason": {
-          "non-review-host": 161,
-          "not-http-url": 342,
-          "aggregator-internal-nav": 1514,
-          "non-review-path": 15
+          "aggregator-internal-nav": 1333,
+          "not-http-url": 346,
+          "aggregator-section-root": 34,
+          "non-review-host": 146
         }
       },
       "dedupedVariants": [],
@@ -152906,10 +153023,6 @@
         {
           "url": "https://playbill.com/article/reviews-critics-sound-off-on-paper-mill-playhouses-the-great-gatsby",
           "publishDate": "2023-10-26"
-        },
-        {
-          "url": "https://playbill.com/article/reviews-critics-weigh-in-on-immersive-the-great-gatsby-off-broadway",
-          "publishDate": "2023-06-30"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211",
@@ -152938,6 +153051,12 @@
         {
           "url": "https://mdtheatreguide.com/2026/02/theatre-review-the-great-gatsby-a-new-musical-at-the-hippodrome/",
           "host": "mdtheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.baltimoresun.com/2026/02/06/great-gatsby-hippodrome-review/",
+          "host": "baltimoresun.com",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -152978,6 +153097,12 @@
           "reason": "prior-run"
         },
         {
+          "url": "https://apt613.ca/review-the-great-gatsby-roars-into-the-nac-until-sept-13/",
+          "host": "apt613.ca",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
           "url": "https://musicaltheatrereview.com/the-great-gatsby-a-new-musical-london-coliseum/",
           "host": "musicaltheatrereview.com",
           "priorRun": true,
@@ -153004,6 +153129,13 @@
             "url": "https://mdtheatreguide.com/2026/02/theatre-review-the-great-gatsby-a-new-musical-at-the-hippodrome/"
           },
           {
+            "outletId": "baltimoresun",
+            "outlet": "baltimoresun",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.baltimoresun.com/2026/02/06/great-gatsby-hippodrome-review/"
+          },
+          {
             "outletId": "maryland-theatre-guide",
             "outlet": "maryland-theatre-guide",
             "critic": "Unknown",
@@ -153011,8 +153143,8 @@
             "url": "https://mdtheatreguide.com/2026/05/theatre-review-the-great-gatsby-a-new-musical-at-the-national-theatre/"
           },
           {
-            "outletId": "cleveland.com",
-            "outlet": "cleveland.com",
+            "outletId": "cleveland-plain-dealer",
+            "outlet": "cleveland-plain-dealer",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.cleveland.com/entertainment/2026/06/the-great-gatsby-review-lavish-musical-delivers-the-full-broadway-experience-at-playhouse-square.html"
@@ -153025,8 +153157,8 @@
             "url": "https://revuewm.com/arts/review-spectacle-steals-the-show-in-the-great-gatsby"
           },
           {
-            "outletId": "captimes.com",
-            "outlet": "captimes.com",
+            "outletId": "the-cap-times",
+            "outlet": "the-cap-times",
             "critic": "Unknown",
             "stars": null,
             "url": "https://captimes.com/entertainment/arts-and-theatre/the-party-drags-on-at-the-great-gatsby-in-overture-hall/article_2247e0bb-0560-4952-9ecf-7ad7573be9a4.html"
@@ -153044,6 +153176,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thestar.com/entertainment/stage/the-great-gatsby-musical-at-mirvish-is-a-sparkly-but-soulless-broadway-tour/article_88994544-e44d-4fef-ac44-bcd9f7be019b.html"
+          },
+          {
+            "outletId": "apt-613",
+            "outlet": "apt-613",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://apt613.ca/review-the-great-gatsby-roars-into-the-nac-until-sept-13/"
           },
           {
             "outletId": "musical-theatre-review",
@@ -153144,20 +153283,6 @@
             "url": "https://www.theaterpizzazz.com/the-great-gatsby-at-paper-mill-playhouse/"
           },
           {
-            "outletId": "dailybeast",
-            "outlet": "dailybeast",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party"
-          },
-          {
-            "outletId": "nytg",
-            "outlet": "nytg",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review"
-          },
-          {
             "outletId": "nydailynews",
             "outlet": "nydailynews",
             "critic": "Unknown",
@@ -153165,15 +153290,8 @@
             "url": "https://www.nydailynews.com/2024/04/25/broadway-review-the-great-gatsby-brings-back-big-broadway-lacks-heart/"
           },
           {
-            "outletId": "baltimoresun",
-            "outlet": "baltimoresun",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.baltimoresun.com/2026/02/06/great-gatsby-hippodrome-review/"
-          },
-          {
-            "outletId": "houstonchronicle.com",
-            "outlet": "houstonchronicle.com",
+            "outletId": "houston-chronicle",
+            "outlet": "houston-chronicle",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.houstonchronicle.com/entertainment/theater/article/the-great-gatsby-hobby-center-21955604.php"
@@ -153186,15 +153304,15 @@
             "url": "https://chicagoreader.com/performing-arts/theater/theater-review/great-gatsby-broadway-in-chicago/"
           },
           {
-            "outletId": "suntimes",
-            "outlet": "suntimes",
+            "outletId": "chicago-sun-times",
+            "outlet": "chicago-sun-times",
             "critic": "Unknown",
             "stars": null,
             "url": "https://chicago.suntimes.com/theater/2026/04/24/review-great-gatsby-musical-broadway-chicago-theater-things-to-do"
           },
           {
-            "outletId": "triblive.com",
-            "outlet": "triblive.com",
+            "outletId": "trib-live",
+            "outlet": "trib-live",
             "critic": "Unknown",
             "stars": null,
             "url": "https://triblive.com/aande/theater-arts/review-musical-adaptation-of-the-great-gatsby-at-the-benedum-center-is-heavy-on-style/"
@@ -153207,8 +153325,8 @@
             "url": "https://www.startribune.com/review-this-gatsby-aint-so-great-after-all/601852668"
           },
           {
-            "outletId": "twincities.com",
-            "outlet": "twincities.com",
+            "outletId": "pioneer-press",
+            "outlet": "pioneer-press",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.twincities.com/2026/06/03/theater-review-great-gatsby-turns-st-paul-native-f-scott-fitzgeralds-novel-into-a-romcom/"
@@ -153233,6 +153351,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://theatreandtonic.co.uk/blog/the-great-gatsby-at-london-coliseum-review"
+          },
+          {
+            "outletId": "dailybeast",
+            "outlet": "dailybeast",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review"
           }
         ],
         "suppressedMissing": [],
@@ -153388,24 +153520,6 @@
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
           },
           {
-            "url": "https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-the-great-gatsby-is-a-trip-back-to-the-roaring-20s_1706563/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/immersive-great-gatsby-brings-the-roarin-20s-to-midtown-review",
-            "outletId": "theatrely.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
             "url": "https://nypost.com/2024/04/25/entertainment/great-gatsby-review-broadway-musical-messes-up-beloved-novel/",
             "outletId": "nypost.com",
             "state": "live",
@@ -153424,6 +153538,18 @@
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
           },
           {
+            "url": "https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T16:56:06.359Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/immersive-great-gatsby-brings-the-roarin-20s-to-midtown-review",
+            "outletId": "theatrely.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T16:56:06.359Z"
+          },
+          {
             "url": "https://1883magazine.com/great-gatsby-musical-review-london/",
             "outletId": "1883magazine",
             "state": "GAP",
@@ -153438,6 +153564,13 @@
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
           },
           {
+            "url": "https://www.baltimoresun.com/2026/02/06/great-gatsby-hippodrome-review/",
+            "outletId": "baltimoresun",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T16:56:06.359Z"
+          },
+          {
             "url": "https://mdtheatreguide.com/2026/05/theatre-review-the-great-gatsby-a-new-musical-at-the-national-theatre/",
             "outletId": "maryland-theatre-guide",
             "state": "GAP",
@@ -153446,7 +153579,7 @@
           },
           {
             "url": "https://www.cleveland.com/entertainment/2026/06/the-great-gatsby-review-lavish-musical-delivers-the-full-broadway-experience-at-playhouse-square.html",
-            "outletId": "cleveland.com",
+            "outletId": "cleveland-plain-dealer",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
@@ -153460,7 +153593,7 @@
           },
           {
             "url": "https://captimes.com/entertainment/arts-and-theatre/the-party-drags-on-at-the-great-gatsby-in-overture-hall/article_2247e0bb-0560-4952-9ecf-7ad7573be9a4.html",
-            "outletId": "captimes.com",
+            "outletId": "the-cap-times",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
@@ -153478,6 +153611,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
+          },
+          {
+            "url": "https://apt613.ca/review-the-great-gatsby-roars-into-the-nac-until-sept-13/",
+            "outletId": "apt-613",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-21T05:44:22.707Z"
           },
           {
             "url": "https://musicaltheatrereview.com/the-great-gatsby-a-new-musical-london-coliseum/",
@@ -153578,20 +153718,6 @@
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
           },
           {
-            "url": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party",
-            "outletId": "dailybeast",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review",
-            "outletId": "nytg",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
             "url": "https://www.nydailynews.com/2024/04/25/broadway-review-the-great-gatsby-brings-back-big-broadway-lacks-heart/",
             "outletId": "nydailynews",
             "state": "GAP",
@@ -153599,15 +153725,8 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.baltimoresun.com/2026/02/06/great-gatsby-hippodrome-review/",
-            "outletId": "baltimoresun",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-13T16:56:06.359Z"
-          },
-          {
             "url": "https://www.houstonchronicle.com/entertainment/theater/article/the-great-gatsby-hobby-center-21955604.php",
-            "outletId": "houstonchronicle.com",
+            "outletId": "houston-chronicle",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
@@ -153621,14 +153740,14 @@
           },
           {
             "url": "https://chicago.suntimes.com/theater/2026/04/24/review-great-gatsby-musical-broadway-chicago-theater-things-to-do",
-            "outletId": "suntimes",
+            "outletId": "chicago-sun-times",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
           },
           {
             "url": "https://triblive.com/aande/theater-arts/review-musical-adaptation-of-the-great-gatsby-at-the-benedum-center-is-heavy-on-style/",
-            "outletId": "triblive.com",
+            "outletId": "trib-live",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
@@ -153642,7 +153761,7 @@
           },
           {
             "url": "https://www.twincities.com/2026/06/03/theater-review-great-gatsby-turns-st-paul-native-f-scott-fitzgeralds-novel-into-a-romcom/",
-            "outletId": "twincities.com",
+            "outletId": "pioneer-press",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
@@ -153667,12 +153786,26 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-13T16:56:06.359Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party",
+            "outletId": "dailybeast",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T16:56:06.359Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-13T16:56:06.359Z"
           }
         ],
         "liveCount": 24,
-        "candidateCount": 56
+        "candidateCount": 57
       },
-      "computedAt": "2026-08-25T05:35:06.890Z"
+      "computedAt": "2026-09-21T05:44:22.707Z"
     },
     {
       "showId": "the-gruffalo-west-end-2026",
@@ -155294,9 +155427,9 @@
         "https://www.theatermania.com/news/review-in-the-hope-theory-helder-guimaraes-attempts-to-conjure-magic-from-his-immigration-story_1854157/",
         "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7",
         "https://www.show-score.com/off-broadway-shows/the-hope-theory",
-        "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
         "https://stageraw.com/the-hope-theory/",
-        "https://larchmontbuzz.com/theater/theater-review-the-hope-theory/"
+        "https://larchmontbuzz.com/theater/theater-review-the-hope-theory/",
+        "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway"
       ],
       "dirFiles": 7,
       "dirClean": 2,
@@ -155306,12 +155439,6 @@
           "url": "https://www.show-score.com/off-broadway-shows/the-hope-theory",
           "host": "show-score.com",
           "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
-          "host": "thetheatretimes.com",
-          "knownOutletId": "the-theatre-times",
           "serpCensus": true
         },
         {
@@ -155328,7 +155455,26 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytg--bridget-gross.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -155342,7 +155488,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 1,
             "error": null
           },
@@ -155362,7 +155508,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -155372,8 +155518,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -155383,7 +155529,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -155393,7 +155539,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
@@ -155403,10 +155549,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 29,
         "byReason": {
-          "non-review-host": 22,
-          "aggregator-internal-nav": 9
+          "aggregator-internal-nav": 8,
+          "non-review-host": 21
         }
       },
       "dedupedVariants": [],
@@ -155422,18 +155568,6 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "unknown-outlet-no-host"
-        },
-        {
-          "url": "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
-          "host": "thetheatretimes.com",
-          "outletId": "the-theatre-times",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
         },
         {
           "url": "https://stageraw.com/the-hope-theory/",
@@ -155457,7 +155591,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  provisional outlet \"larchmontbuzz\" (not in registry) — onboard to outlet-registry.json after rev"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=larchmontbuzz.com): Scrapingdog HTTP 400: Oops! Someth"
         }
       ],
       "ingestSkippedByCap": [],
@@ -155472,13 +155606,6 @@
             "url": "https://www.show-score.com/off-broadway-shows/the-hope-theory"
           },
           {
-            "outletId": "the-theatre-times",
-            "outlet": "the-theatre-times",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/"
-          },
-          {
             "outletId": "stageraw.com",
             "outlet": "stageraw.com",
             "critic": "Unknown",
@@ -155491,6 +155618,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://larchmontbuzz.com/theater/theater-review-the-hope-theory/"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway"
           }
         ],
         "suppressedMissing": [],
@@ -155515,13 +155649,6 @@
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
-            "url": "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
-            "outletId": "the-theatre-times",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-20T07:18:46.455Z"
-          },
-          {
             "url": "https://stageraw.com/the-hope-theory/",
             "outletId": "stageraw.com",
             "state": "GAP",
@@ -155534,12 +155661,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-20T22:08:24.514Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-21T05:44:22.707Z"
           }
         ],
         "liveCount": 2,
         "candidateCount": 6
       },
-      "computedAt": "2026-09-20T22:08:24.514Z"
+      "computedAt": "2026-09-21T05:44:22.707Z"
     },
     {
       "showId": "the-house-of-the-negro-insane-off-broadway-2026",
@@ -170791,10 +170925,11 @@
         "https://www.allthatdazzles.co.uk/post/review-thelma-louise-young-vic",
         "https://www.whatsonstage.com/news/thelma-louise-musical-at-the-young-vic-review_1731575/",
         "https://theatreandtonic.co.uk/blog/thelma-and-louise-at-the-young-vic-review",
+        "https://southlondon.co.uk/area/southwark/review-thelma-louise-the-young-vic/",
         "https://theatreweekly.com/review-thelma-louise-at-young-vic/",
-        "https://www.timeout.com/london/theatre/thelma-louise-review",
-        "https://pod.wave.co/podcast/mickeyjotheatre/thelma-louise-young-vic-theatre-london-review",
         "https://www.unmissabletheatre.co.uk/reviews/review-thelma-amp-louise-at-young-vic",
+        "https://pod.wave.co/podcast/mickeyjotheatre/thelma-louise-young-vic-theatre-london-review",
+        "https://www.timeout.com/london/theatre/thelma-louise-review",
         "https://stagedtheatre.co.uk/blogs/theatre-reviews/thelma-and-louise-the-young-vic",
         "https://musicaltheatrereview.com/thelma-louise-young-vic-theatre/",
         "https://www.standard.co.uk/culture/theatre/thelma-and-louise-at-the-young-vic-review-b1297374.html",
@@ -170832,10 +170967,6 @@
         },
         {
           "host": "musicalmanda.site",
-          "count": 1
-        },
-        {
-          "host": "southlondon.co.uk",
           "count": 1
         },
         {
@@ -170977,13 +171108,13 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 13,
+        "resultCount": 14,
         "error": null
       },
       "candidatesRejected": {
@@ -171045,16 +171176,22 @@
             "firstSeenAt": "2026-09-19T23:50:19.027Z"
           },
           {
+            "url": "https://southlondon.co.uk/area/southwark/review-thelma-louise-the-young-vic/",
+            "outletId": "southlondon.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-21T05:44:22.707Z"
+          },
+          {
             "url": "https://theatreweekly.com/review-thelma-louise-at-young-vic/",
             "outletId": "theatreweekly.com",
             "state": "live",
             "firstSeenAt": "2026-09-19T23:50:19.027Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/thelma-louise-review",
-            "outletId": "timeout.com",
+            "url": "https://www.unmissabletheatre.co.uk/reviews/review-thelma-amp-louise-at-young-vic",
+            "outletId": "unmissabletheatre.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-09-17T17:37:02.820Z"
+            "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
             "url": "https://pod.wave.co/podcast/mickeyjotheatre/thelma-louise-young-vic-theatre-london-review",
@@ -171063,10 +171200,10 @@
             "firstSeenAt": "2026-09-20T15:35:03.611Z"
           },
           {
-            "url": "https://www.unmissabletheatre.co.uk/reviews/review-thelma-amp-louise-at-young-vic",
-            "outletId": "unmissabletheatre.co.uk",
+            "url": "https://www.timeout.com/london/theatre/thelma-louise-review",
+            "outletId": "timeout.com",
             "state": "live",
-            "firstSeenAt": "2026-09-20T07:18:46.455Z"
+            "firstSeenAt": "2026-09-17T17:37:02.820Z"
           },
           {
             "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/thelma-and-louise-the-young-vic",
@@ -171100,10 +171237,10 @@
             "firstSeenAt": "2026-09-17T17:37:02.820Z"
           }
         ],
-        "liveCount": 14,
-        "candidateCount": 15
+        "liveCount": 15,
+        "candidateCount": 16
       },
-      "computedAt": "2026-09-20T22:08:24.514Z"
+      "computedAt": "2026-09-21T05:44:22.707Z"
     },
     {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
