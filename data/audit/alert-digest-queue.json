@@ -22,5 +22,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-21T14:37:05.671Z"
+  },
+  {
+    "conditionKey": "geo-bots:Chile",
+    "title": "New bot country detected: Chile",
+    "description": "Weekly geo audit found Chile matching the bot signature (46 sessions • 4.3% engagement • 2.9s • 1.09 pages/session; thresholds: ≥25 sessions, <15% engagement, <15s avg session, <1.1 pages/session). Add to data/audit/known-bot-geos.json + memory/analytics-real-users-segment.md + the 3 PostHog Real Users insights + the GA4 Real Users comparison.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-21T15:38:42.265Z"
   }
 ]
