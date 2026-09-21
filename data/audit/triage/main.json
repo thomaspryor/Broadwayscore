@@ -1,7 +1,7 @@
 {
   "system": "main",
   "status": "error",
-  "lastChecked": "2026-09-20T11:52:53.612Z",
+  "lastChecked": "2026-09-21T13:24:59.022Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,12 @@
     {
       "name": "Main: red streak",
       "status": "error",
-      "message": "main's Test Suite has had no confirmed-green run in 23.2h (19 failing runs) — first red commit 7ea5a09a6, job \"Data Validation, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
+      "message": "main's Test Suite has had no confirmed-green run in AT LEAST 12.1h (no green run found in the runs checked — actual gap may be longer) (30 failing runs) — first red commit 45d43b556, job \"Data Validation, Unit Tests, E2E Tests, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
+    },
+    {
+      "name": "Main: green rate",
+      "status": "warn",
+      "message": "rate 18.1% (green 67 / red 303, 380 runs, 10 cancelled), 7d trend from n/a, day 0 of 14 at ≥80% → FAIL"
     }
   ]
 }

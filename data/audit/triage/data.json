@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-09-20T11:52:53.614Z",
+  "lastChecked": "2026-09-21T13:24:59.024Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,17 +9,17 @@
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "warn",
-      "message": "6 discovered review(s) not reaching the composite score (3 T1). First: the-cherry-orchard-park-avenue-armory-off-broadway-2026 — wsj (unscored)"
+      "message": "5 discovered review(s) not reaching the composite score (3 T1). First: the-story-west-end-2026 — the-spectator-uk (unscored)"
     },
     {
       "name": "Data: uncollected live review strands",
       "status": "warn",
-      "message": "23 discovered review URL(s) across 18 live show(s) were never fetched. First: the-lost-boys-2026 (2 stranded)"
+      "message": "35 discovered review URL(s) across 27 live show(s) were never fetched. First: operation-mincemeat-west-end-2024 (3 stranded)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "error",
-      "message": "6 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Game of Thrones: The Mad King\" (wet-roundup — missing 40d) — 4 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+      "message": "6 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Game of Thrones: The Mad King\" (wet-roundup — missing 41d) — 5 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     }
   ]
 }
