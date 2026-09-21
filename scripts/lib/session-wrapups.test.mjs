@@ -128,11 +128,14 @@ test('recordedBlock goes stale after a later tool call or a later owner message'
   assert.equal(recordedBlock(base.concat([
     { type: 'assistant', message: { content: [{ type: 'tool_use', id: 'e2', name: 'Edit', input: { file_path: 'x' } }] } },
   ])), '');
-  // hook feedback / notifications / meta entries do not stale it
+  // hook feedback / meta / system-reminder entries do not stale it; a task notification does
   assert.equal(recordedBlock(base.concat([
     { type: 'user', isMeta: true, message: { content: 'Stop hook feedback: x' } },
-    { type: 'user', message: { content: '<task-notification>done</task-notification>' } },
+    { type: 'user', message: { content: '<system-reminder>x</system-reminder>' } },
   ])), 'THIS SESSION: CLOSE ME — done');
+  assert.equal(recordedBlock(base.concat([
+    { type: 'user', message: { content: '<task-notification>done</task-notification>' } },
+  ])), '');
   // a forged sentinel after other output is ignored
   assert.equal(recordedBlock([
     { type: 'user', message: { content: 'fix it' } },

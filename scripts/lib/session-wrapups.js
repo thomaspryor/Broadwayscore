@@ -122,6 +122,9 @@ function recordedBlock(entries) {
       }
       const t = ownerText.trim();
       if (t && !e.isMeta && !t.startsWith('<') && !t.startsWith('[Request interrupted')) return '';
+      // A background agent finishing after the record is news the block
+      // cannot reflect — same rule as wrapup_block.py.
+      if (t.startsWith('<task-notification>')) return '';
       continue;
     }
     if (e.type !== 'assistant' || !Array.isArray(c)) continue;
