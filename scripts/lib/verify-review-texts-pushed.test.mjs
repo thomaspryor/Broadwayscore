@@ -95,7 +95,7 @@ test('ok:false — written on disk but never even committed', () => {
   }
 });
 
-test('ok:true — key order / whitespace differences alone do not count as unpushed', () => {
+test('ok:true — whitespace/indentation differences alone do not count as unpushed', () => {
   const { root, cloneDir, filePath } = makeFixture();
   try {
     // origin/main has {"wrongShow":false}; write a reformatted-but-equivalent
@@ -103,6 +103,90 @@ test('ok:true — key order / whitespace differences alone do not count as unpus
     fs.writeFileSync(filePath, JSON.stringify({ wrongShow: false }, null, 4) + '\n\n');
     const result = verifyReviewTextsPushed([filePath], { reviewTextsDir: cloneDir });
     assert.equal(result.ok, true);
+  } finally {
+    cleanup(root);
+  }
+});
+
+test('ok:true — real key REORDER (not just whitespace) does not count as unpushed', () => {
+  // Codex ship-check finding: JSON.stringify(JSON.parse(x)) alone preserves key
+  // insertion order, so the original normalizeJson did NOT actually tolerate
+  // reordered keys despite claiming to — this is the test that would have
+  // caught it (the old test used a single-key object, which can't exercise
+  // ordering at all).
+  const { root, cloneDir, filePath } = makeFixture();
+  try {
+    fs.writeFileSync(filePath, JSON.stringify({ wrongShow: false, url: 'https://example.com/x', outlet: 'variety' }));
+    sh('git', ['add', '-A'], cloneDir);
+    sh('git', ['commit', '-m', 'multi-key seed'], cloneDir);
+    sh('git', ['push', 'origin', 'main'], cloneDir);
+
+    // Same values, DIFFERENT key order, never committed.
+    fs.writeFileSync(filePath, JSON.stringify({ outlet: 'variety', wrongShow: false, url: 'https://example.com/x' }));
+    const result = verifyReviewTextsPushed([filePath], { reviewTextsDir: cloneDir });
+    assert.equal(result.ok, true);
+  } finally {
+    cleanup(root);
+  }
+});
+
+test('opts.predicate: ok:true when origin/main satisfies the postcondition, even if local disk has been reverted', () => {
+  // Reproduces the Codex-found "lost edit passes verification" false success:
+  // a rebase (or anything else) can revert local disk back to the pre-fix
+  // content AFTER a real push already landed the fix on origin/main. A plain
+  // local-vs-remote diff would then compare two matching-but-WRONG copies and
+  // report ok:true for the wrong reason; the predicate checks origin/main's
+  // actual content against the real postcondition instead of trusting local
+  // disk as a proxy for it.
+  const { root, cloneDir, filePath } = makeFixture();
+  try {
+    fs.writeFileSync(filePath, JSON.stringify({ wrongShow: true }, null, 2) + '\n');
+    sh('git', ['add', '-A'], cloneDir);
+    sh('git', ['commit', '-m', 'promote wrongShow'], cloneDir);
+    sh('git', ['push', 'origin', 'main'], cloneDir);
+
+    // Local disk reverted back to the pre-fix state after the push landed.
+    fs.writeFileSync(filePath, JSON.stringify({ wrongShow: false }, null, 2) + '\n');
+
+    const result = verifyReviewTextsPushed([filePath], {
+      reviewTextsDir: cloneDir,
+      predicate: (data) => data.wrongShow === true,
+    });
+    assert.equal(result.ok, true);
+  } finally {
+    cleanup(root);
+  }
+});
+
+test('opts.predicate: ok:false — reproduces the exact false-success case a bare diff would miss', () => {
+  // Local disk and origin/main AGREE (both lack the fix) — a bare diff sees no
+  // difference and would report ok:true. The predicate catches it because it
+  // checks the real postcondition against origin/main, not "does local match
+  // remote".
+  const { root, cloneDir, filePath } = makeFixture();
+  try {
+    // origin/main still has the seeded {"wrongShow": false} — never promoted.
+    // Local disk also reads {"wrongShow": false} (e.g. a rebase silently
+    // dropped an earlier local write) — a bare diff would find them equal.
+    const result = verifyReviewTextsPushed([filePath], {
+      reviewTextsDir: cloneDir,
+      predicate: (data) => data.wrongShow === true,
+    });
+    assert.equal(result.ok, false);
+    assert.deepEqual(result.notPushed, ['some-show/outlet--critic.json']);
+  } finally {
+    cleanup(root);
+  }
+});
+
+test('opts.predicate: ok:false — file missing on origin/main at all', () => {
+  const { root, cloneDir, filePath } = makeFixture();
+  try {
+    const result = verifyReviewTextsPushed([path.join(cloneDir, 'some-show', 'nope.json')], {
+      reviewTextsDir: cloneDir,
+      predicate: () => true,
+    });
+    assert.equal(result.ok, false);
   } finally {
     cleanup(root);
   }
