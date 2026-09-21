@@ -60,9 +60,17 @@ function makeIssue(description, commentBodies = []) {
 // runs a command is scripts/lib/linear-cmd-execution.test.mjs's job.
 // 'pass' (default) = the command ran and passed, 'fail' = it ran and failed.
 function runUpdate({ argv, description, comments = [], updateShouldBeCalled, verify, verifyCmd = 'pass' }) {
+  // Shapes match linear-cmd-execution.js's real return (allowed/verdict/
+  // reason/notOnMain/sha), and 'own-verify-failed' is the verdict the real
+  // executor actually produces on a failing command (close-time-verify.js
+  // FAIL) — NOT 'verify-cmd-failed', which is only applyCmdExecution's
+  // fallback for a verdict-less result. A stub that invents wording
+  // production never prints lets a caption assertion pass on a string no
+  // operator will ever see; linear-session-done-gate.test.mjs's twin case
+  // deliberately omits `verdict` to cover that fallback branch instead.
   const cmdVerifier = verifyCmd === 'fail'
-    ? "(cmd) => { console.error('VERIFY_CMD_CALLED:' + cmd); return { allowed: false, verdict: 'verify-cmd-failed', reason: 'stub: command failed' }; }"
-    : "(cmd) => { console.error('VERIFY_CMD_CALLED:' + cmd); return { allowed: true, reason: 'stub: command passed' }; }";
+    ? "(cmd) => { console.error('VERIFY_CMD_CALLED:' + cmd); return { allowed: false, verdict: 'own-verify-failed', reason: 'stub: command failed', notOnMain: false, sha: 'stub000000' }; }"
+    : "(cmd) => { console.error('VERIFY_CMD_CALLED:' + cmd); return { allowed: true, verdict: 'own-verify-passed', reason: 'stub: command passed', notOnMain: false, sha: 'stub000000' }; }";
   const verifier = verify === 'ok'
     ? "() => ({ verified: true, reason: 'stub: on origin/main' })"
     : verify === 'not-on-main'
@@ -129,8 +137,45 @@ test('refused: the recorded acceptance command is executed and FAILS', () => {
   });
   assert.equal(res.status, 5, `expected exit 5, got ${res.status}. stderr:\n${res.stderr}`);
   assert.match(res.stderr, /VERIFY_CMD_CALLED:/);
-  assert.match(res.stderr, /REFUSED \(verify-cmd-failed\)/);
+  assert.match(res.stderr, /REFUSED \(own-verify-failed\)/);
   assert.doesNotMatch(res.stderr, /UPDATE_ISSUE_CALLED/);
+});
+
+// The CLI's `deps.verifyCmdEvidence || makeVerifyCmdEvidence(...)` fallback
+// (scripts/linear-brain.js) is the branch a real session takes, and every
+// other test here injects a stub, so nothing above proves that fallback is
+// not a rubber stamp — the literal BRO-3471 hole the executor exists to
+// close. Proven by mutation: replacing that fallback with a never-allow (or
+// always-allow) function leaves every other test in this file green, and
+// fails only this one. linear-brain.js destructures makeVerifyCmdEvidence at
+// require time, so patching the linear-cmd-execution.js export BEFORE
+// requiring linear-brain.js hands the CLI a spy — no clone, no fetch, no
+// nested test run.
+test('wiring: with NO verifyCmdEvidence dep, the CLI builds the executor from linear-cmd-execution.js and hands it the recorded command', () => {
+  const script = `
+    const cmdExec = require('./scripts/lib/linear-cmd-execution.js');
+    cmdExec.makeVerifyCmdEvidence = () => {
+      console.error('REAL_FACTORY_BUILT');
+      return (cmd) => {
+        console.error('REAL_FACTORY_CMD:' + cmd);
+        return { allowed: true, verdict: 'own-verify-passed', reason: 'spy', notOnMain: false, sha: 'spy0000000' };
+      };
+    };
+    const { main } = require('./scripts/linear-brain.js');
+    const issue = ${JSON.stringify(makeIssue('## Acceptance criteria\n- `node --test tests/unit/done-semantics-gate.test.mjs` passes'))};
+    main(['update', 'BRO-9457', '--state', 'Done'], {
+      getIssue: async () => issue,
+      getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
+      appendBypassRow: () => {},
+      updateIssue: async () => { console.error('UPDATE_ISSUE_CALLED'); },
+      createComment: async () => {},
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /REAL_FACTORY_BUILT/, 'the CLI must build its executor from linear-cmd-execution.js when no dep is injected');
+  assert.match(res.stderr, /REAL_FACTORY_CMD:node --test tests\/unit\/done-semantics-gate\.test\.mjs/);
+  assert.match(res.stderr, /UPDATE_ISSUE_CALLED/);
 });
 
 test('allowed: a PR-EVIDENCE marker recording merged+deployed+checked', () => {
