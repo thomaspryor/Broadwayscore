@@ -49,35 +49,49 @@ const THRESHOLDS_PATH = path.join(REPO, 'scripts', 'config', 'provider-spend-thr
 const STALE_HOURS_THRESHOLD = 48;
 const CONTINUITY_WINDOW_DAYS = 7;
 
+// "YYYY-MM-DD" only — guards both functions below against a corrupt/
+// hand-edited record (e.g. {day: "zzz"} or {day: null}) silently producing
+// Invalid Date/NaN math instead of being treated as absent (ship-check
+// finding, BRO-3227).
+const VALID_DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
+
 /**
  * Hours between `now` and the end (23:59:59.999 UTC) of the ledger's most
- * recent recorded day. Infinity for an empty ledger — no data is maximally
- * stale, never "fresh by default".
+ * recent VALIDLY-DAY-SHAPED recorded day. Infinity for an empty (or
+ * entirely malformed) ledger — no usable data is maximally stale, never
+ * "fresh by default".
  * @param {Array<{day: string}>} records
  * @param {Date} [now]
  * @returns {number}
  */
 function ledgerFreshnessHours(records, now = new Date()) {
-  if (!records || !records.length) return Infinity;
-  const lastDay = records.reduce((max, r) => (r && r.day > max ? r.day : max), records[0].day);
+  const days = (records || []).filter(Boolean).map((r) => r.day).filter((d) => VALID_DAY_RE.test(d));
+  if (!days.length) return Infinity;
+  const lastDay = days.reduce((max, d) => (d > max ? d : max), days[0]);
   const lastDayEnd = new Date(`${lastDay}T23:59:59.999Z`).getTime();
   return (now.getTime() - lastDayEnd) / 3600000;
 }
 
 /**
  * UTC calendar days ("YYYY-MM-DD"), ascending, in the trailing `days`-day
- * window ending yesterday (relative to `now`) that have no record. Only
- * COMPLETE days are checked — the day containing `now` itself is never
- * expected yet.
+ * window that have no record. The window ends TWO days before `now`, not
+ * one: "yesterday" relative to `now` is DAY (utcYesterday(now), the day
+ * THIS run's own reconciliation is about to write) — checking for it in the
+ * pre-write ledger would report it missing on every single healthy run,
+ * since nothing has written it yet at check time (ship-check/Codex P1
+ * finding, BRO-3227 — confirmed live: a --dry-run against the real ledger
+ * flagged the just-not-yet-written day as "missing" before this fix). The
+ * window this function validates is the `days` complete days a healthy
+ * ledger should ALREADY contain from prior runs, not the day in flight.
  * @param {Array<{day: string}>} records
  * @param {Date} [now]
  * @param {number} [days]
  * @returns {string[]}
  */
 function missingLedgerDays(records, now = new Date(), days = CONTINUITY_WINDOW_DAYS) {
-  const present = new Set((records || []).filter(Boolean).map((r) => r.day));
+  const present = new Set((records || []).filter(Boolean).map((r) => r.day).filter((d) => VALID_DAY_RE.test(d)));
   const missing = [];
-  for (let i = 1; i <= days; i++) {
+  for (let i = 2; i <= days + 1; i++) {
     const d = new Date(now.getTime() - i * 86400000).toISOString().slice(0, 10);
     if (!present.has(d)) missing.push(d);
   }
