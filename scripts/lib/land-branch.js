@@ -342,6 +342,12 @@ function defaultPushMain({ cwd, log = () => {} }) {
     stdio: ['ignore', 'inherit', 'pipe'],
     encoding: 'utf8',
     timeout: GIT_NET_TIMEOUT_MS + Number(process.env.PUSH_LOCK_TIMEOUT_SEC || 900) * 1000,
+    // No bypass marker on purpose (BRO-3425): outside CI this push is
+    // refused by scripts/hooks/pre-push like any other direct push to main
+    // (surfaced as failedCheck 'push' with the hook's message). Sessions
+    // land through land/** + land.yml; land.yml runs this lib under
+    // GITHUB_ACTIONS, which the hook allows. A local landing that wrote no
+    // landings.jsonl row would otherwise read as a bypass to the detector.
     env: { ...process.env, GIT_TERMINAL_PROMPT: '0' },
   });
 }
