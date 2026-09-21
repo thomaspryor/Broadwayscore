@@ -35,8 +35,9 @@ childProcess.execFileSync = () => {
   throw new Error('execFileSync must not be called by this test');
 };
 let computeResidualCounts;
+let currentRunUncollected;
 try {
-  ({ computeResidualCounts } = require('../../scripts/audit-show-review-gap.js'));
+  ({ computeResidualCounts, currentRunUncollected } = require('../../scripts/audit-show-review-gap.js'));
 } finally {
   childProcess.execFileSync = originalExecFileSync;
 }
@@ -120,4 +121,30 @@ test('computeResidualCounts: a genuine uncaptured URL alongside prior-run noise 
   const counts = computeResidualCounts(r, false);
   assert.equal(counts.uningested, 2);
   assert.equal(counts.residual, 2);
+});
+
+// currentRunUncollected feeds the BRO-3928 item-3 opening-window digest
+// (routeAlert(disposition:'digest') in main()). Codex adversarial review
+// finding: the first draft snapshotted this BEFORE --ingest-missing ran, so a
+// gap the SAME run just closed still reported as open.
+test('currentRunUncollected: prior-run citations are excluded, matching pre-send-check.mjs\'s "uncollected"', () => {
+  const r = { missing: priorMiss(5), citedNoUrl: [{ outletId: 'o', priorRun: true }] };
+  assert.equal(currentRunUncollected(r), 0);
+});
+
+test('currentRunUncollected: a URL this same run successfully ingested no longer counts as uncollected', () => {
+  const r = {
+    missing: [{ host: 'a.com', url: 'https://a.com/1' }, { host: 'b.com', url: 'https://b.com/1' }],
+    ingestResults: [{ url: 'https://a.com/1', ok: true }, { url: 'https://b.com/1', ok: false }],
+  };
+  assert.equal(currentRunUncollected(r), 1, 'only the URL that failed to ingest is still uncollected');
+});
+
+test('currentRunUncollected: an ingest attempt that failed or was skipped still counts as uncollected', () => {
+  const r = {
+    missing: [{ host: 'a.com', url: 'https://a.com/1' }],
+    citedNoUrl: [{ outletId: 'o1' }],
+    ingestResults: [],
+  };
+  assert.equal(currentRunUncollected(r), 2);
 });

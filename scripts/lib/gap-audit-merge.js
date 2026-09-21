@@ -379,7 +379,13 @@ function countsFor(results) {
     missingCurrentRun: rs.reduce((a, r) => a + currentRun(r.missing).length, 0),
     totalCitedNoUrl: rs.reduce((a, r) => a + currentRun(r.citedNoUrl).length, 0),
     totalFlaggedMisses: rs.reduce((a, r) => a + currentRun(r.flaggedMisses).length, 0),
-    totalRecoverable: rs.reduce((a, r) => a + (Array.isArray(r.flaggedMisses) ? r.flaggedMisses.filter(m => m && m.recoverable).length : 0), 0),
+    // priorRun-excluded to match totalFlaggedMisses: a prior-production
+    // flaggedMiss can carry `recoverable: true` (auditShow sets it from the
+    // file's own empty-body state, before priorRun tagging runs), but the
+    // ingest loop's recBlockedPred permanently blocks recovery on it — so
+    // counting it here would advertise a "recoverable" gap that never
+    // actually recovers (Codex adversarial review, BRO-3928).
+    totalRecoverable: rs.reduce((a, r) => a + currentRun(r.flaggedMisses).filter(m => m && m.recoverable).length, 0),
     totalRecovered: rs.reduce((a, r) => a + (Array.isArray(r.recoveryResults) ? r.recoveryResults.filter(x => x && x.recovered).length : 0), 0),
     // Informational only — never gates withGap/--fail-on-gap. Reported
     // separately in the run Summary so a revival's prior-production citations
