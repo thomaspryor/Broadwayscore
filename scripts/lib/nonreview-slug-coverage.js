@@ -44,7 +44,8 @@
 const { classifyReviewUrl } = require('./non-review-url-patterns');
 const { detectEssayIntroFalsePositive } = require('./essay-intro-nonreview-fp');
 const { isReviewTypeWrongShowGap } = require('./nonreview-contenttype-wrongshow');
-const { detectStrongChromeDumpAnywhere } = require('./content-quality');
+const { isGarbageContent, isEffectivelyWrongProductionOrShow } = require('./content-quality');
+const { isRejectedNonReview } = require('./review-guards');
 
 const MIN_WORD_COUNT = 400;
 
@@ -104,17 +105,42 @@ function isSlugCoverageCandidate(data) {
  * BRO-3862 attention — they're correctly gone already, just via a
  * different field. See module header for the corpus-size rationale.
  *
+ * Delegates to the SAME canonical predicates the rebuild/gate pipeline uses
+ * (CLAUDE.md: "includability predicates must be canonical") rather than
+ * re-deriving the logic here — a hand-rolled version drifted from
+ * production on its first pass (ship-check adversarial review, BRO-3862):
+ *   - isEffectivelyWrongProductionOrShow (content-quality.js) honors
+ *     wrongProductionManualClear/wrongProductionCleared/wrongProductionAuto
+ *     Cleared/allowEarlyDate/allowCrossMarket/humanReviewedWrongProduction
+ *     and wrongShowManualClear — a raw `data.wrongShow === true` check does
+ *     not, so it could mark a manually-cleared file "already-excluded" when
+ *     the rebuild would actually include it.
+ *   - isRejectedNonReview (review-guards.js) already gates wrongArticle on
+ *     confidence==='high' and honors the structural-star-score / independent-
+ *     excerpt exceptions to a garbage_text/not_a_review rejectionReason —
+ *     a raw `contentVerification.wrongArticle === true` or
+ *     `rejectionReason === 'garbage_text'` check does neither, so it could
+ *     mark a file "already-excluded" when the real pipeline would still
+ *     score it.
+ *   - isGarbageContent (content-quality.js) is the function that actually
+ *     SETS contentTier:'invalid' — it requires no substantial review
+ *     content AND the marker not being trailing footer junk before calling
+ *     a chrome/cookie/paywall pattern a genuine dump. Calling
+ *     detectStrongChromeDumpAnywhere directly (its docstring: "intended
+ *     ONLY for callers that have already established the text lacks
+ *     substantial review content") skips that precondition and can flag a
+ *     real review whose footer happens to say "manage cookie preferences".
+ *   Recomputed live from fullText rather than trusting the stored
+ *   contentTier field, which may be stale relative to the current pipeline.
+ *
  * @param {object} data
  * @returns {boolean}
  */
 function isAlreadyExcludedByOtherMechanism(data) {
-  if (data.wrongShow === true) return true;
-  if (data.wrongProduction === true) return true;
-  if (data.contentVerification && data.contentVerification.wrongArticle === true) return true;
-  if (data.rejectionReason === 'garbage_text') return true;
-  if (data.contentTier === 'invalid') return true;
-  const chrome = detectStrongChromeDumpAnywhere(data.fullText || '');
-  if (chrome && chrome.detected) return true;
+  const { effectivelyWrongProduction, effectivelyWrongShow } = isEffectivelyWrongProductionOrShow(data);
+  if (effectivelyWrongProduction || effectivelyWrongShow) return true;
+  if (isRejectedNonReview(data)) return true;
+  if (isGarbageContent(data.fullText || '').isGarbage) return true;
   return false;
 }
 
