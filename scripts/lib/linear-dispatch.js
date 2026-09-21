@@ -1012,6 +1012,12 @@ function reportedOutcomeGuard(issue, opts) {
 // marketingProjectGuard reads at real dispatch time; if a future funnel needs
 // to pre-filter Marketing issues out of this candidate list before ever
 // calling `--id`, add the field there when that caller exists, not before.
+//
+// `priority` IS selected (BRO-3913) because a consumer reads it:
+// enrich-card-acceptance.js's default Linear sweep orders refused issues
+// P0 → P1 → rest via linear-watchdog-source.js's priorityOf(), so it arms
+// what the dispatch watchdog will actually drain first. Scalar, nullable
+// (0/null = No priority) — every other consumer ignores it.
 function buildOpenIssuesWithDescriptionsQuery() {
   return `query($teamKey: String!, $after: String) {
     issues(
@@ -1023,6 +1029,7 @@ function buildOpenIssuesWithDescriptionsQuery() {
         identifier
         title
         description
+        priority
         url
         state { name type }
       }
