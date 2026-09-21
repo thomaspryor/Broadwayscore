@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
   "openingDate": "2026-09-17",
-  "detectedAt": "2026-09-21T13:53:14.319Z",
+  "detectedAt": "2026-09-21T15:24:43.421Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "abouttheartists--unknown.json",
+      "outletId": "abouttheartists",
+      "criticName": "Unknown",
+      "url": "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026",
+      "fullTextLen": 1056,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
     {
       "file": "wsj--charles-isherwood.json",
       "outletId": "wsj",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-09-21T15:24:43.421Z"
 }
