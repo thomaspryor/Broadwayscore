@@ -29,6 +29,7 @@ const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards')
 
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
 const { VALID_TIERS } = require('./lib/outlet-tiers');
+const { VALID_DESIGNATIONS, VALID_DESIGNATION_SET } = require('./lib/commercial-apply-gate');
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
 const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
 // Same critic-identity function the rebuild's manual-entry merge uses — a gate
@@ -3198,6 +3199,22 @@ function validateCommercialJson() {
 
   for (const showId of showKeys) {
     const show = data.shows[showId];
+
+    // Validate designation (BRO-3794). Every /biz consumer — the badge, the
+    // sort order, the legend — keys off this field, so an entry without one
+    // renders blank and reds the Test Suite via
+    // tests/unit/biz-data-functions.test.mjs. Before this check the ONLY thing
+    // catching it was that unit test, i.e. AFTER the bad row had already been
+    // committed to the data repo and pushed to main (torch-song-2018,
+    // 2026-09-20: deep research returned no designation and
+    // buildCommercialEntry silently wrote the entry without one). Validating
+    // here fails the write at the gate instead. Set imported from
+    // lib/commercial-apply-gate so the writer and the validator can never
+    // disagree about what a legal designation is.
+    if (!VALID_DESIGNATION_SET.has(show.designation)) {
+      error(`commercial.json: "${showId}" has ${show.designation === undefined ? 'no designation' : `invalid designation "${show.designation}"`} (must be one of: ${VALID_DESIGNATIONS.join(', ')}). Unknown-but-closed shows use "TBD".`);
+      issues++;
+    }
 
     // Validate productionType
     if (show.productionType !== undefined) {

@@ -11,6 +11,28 @@ const CONFIDENCE_ORDER = { high: 3, medium: 2, low: 1 };
 // hourly RSS-poll run. Such claims fall through to manual review instead.
 const RECOUPED_DATE_RE = /^\d{4}(-\d{2})?$/;
 
+// The canonical designation vocabulary, mirroring CommercialDesignation in
+// src/config/commercial.ts. Kept here (not only in the TS config) because the
+// whole write path is JS; tests/unit/commercial-apply-gate.test.mjs asserts the
+// two stay byte-identical so they can never drift apart silently.
+const VALID_DESIGNATIONS = [
+  'Miracle',
+  'Windfall',
+  'Easy Winner',
+  'Trickle',
+  'TBD',
+  'Fizzle',
+  'Flop',
+  'Nonprofit',
+  'Tour Stop',
+];
+const VALID_DESIGNATION_SET = new Set(VALID_DESIGNATIONS);
+
+// 'TBD' is the honest "we don't know yet" bucket — 17 existing commercial.json
+// entries already carry TBD alongside recouped:false. Never invent a
+// Fizzle/Flop split we have no recoupment percentage to support.
+const DEFAULT_DESIGNATION = 'TBD';
+
 // LLM verdicts frequently emit the literal strings "null"/"undefined"/"" instead
 // of JSON null. Left untouched, `entry.recoupedDate || null` keeps "null" (a
 // truthy string) and writes it into commercial.json, which then fails the
@@ -85,7 +107,20 @@ function buildCommercialEntry(entry, existing, opts = {}) {
   const recoupedDate = cleanNullish(entry.recoupedDate);
   const recoupedSource = cleanNullish(entry.recoupedSource);
   const notes = cleanNullish(entry.notes);
-  if (designation) result.designation = designation;
+  // Always emit a designation. Deep research routinely returns an entry with
+  // no designation field at all (torch-song-2018, 2026-09-20): the old
+  // `if (designation)` write then left the entry with NO designation, which
+  // every downstream consumer treats as a hard error — it reds main's Test
+  // Suite via tests/unit/biz-data-functions.test.mjs and renders as a blank
+  // badge on /biz. An unusable LLM value (a typo, a prose sentence, a
+  // designation we retired) is discarded the same way rather than written
+  // through. Precedence: fresh valid value > existing valid value > 'TBD'.
+  if (designation && VALID_DESIGNATION_SET.has(designation)) {
+    result.designation = designation;
+  } else if (!VALID_DESIGNATION_SET.has(result.designation)) {
+    const inherited = cleanNullish(existing?.designation);
+    result.designation = VALID_DESIGNATION_SET.has(inherited) ? inherited : DEFAULT_DESIGNATION;
+  }
   if (entry.capitalization != null) result.capitalization = entry.capitalization;
   if (capitalizationSource) result.capitalizationSource = capitalizationSource;
   if (entry.weeklyRunningCost != null) result.weeklyRunningCost = entry.weeklyRunningCost;
@@ -110,6 +145,9 @@ function buildCommercialEntry(entry, existing, opts = {}) {
 
 module.exports = {
   CONFIDENCE_ORDER,
+  VALID_DESIGNATIONS,
+  VALID_DESIGNATION_SET,
+  DEFAULT_DESIGNATION,
   cleanNullish,
   meetsConfidenceThreshold,
   hasRecoupedClaim,

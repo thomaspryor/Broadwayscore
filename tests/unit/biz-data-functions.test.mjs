@@ -144,6 +144,9 @@ describe('Trend calculation logic', () => {
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createRequire } from 'node:module';
+
+const { VALID_DESIGNATIONS } = createRequire(import.meta.url)('../../scripts/lib/commercial-apply-gate');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.join(__dirname, '../../data');
@@ -160,7 +163,11 @@ describe('Commercial data structure', () => {
 
   it('should have valid designation values', () => {
     const commercial = JSON.parse(fs.readFileSync(path.join(dataDir, 'commercial.json'), 'utf-8'));
-    const validDesignations = ['Miracle', 'Windfall', 'Trickle', 'Easy Winner', 'Fizzle', 'Flop', 'Nonprofit', 'TBD', 'Tour Stop'];
+    // Imported, not re-listed (CLAUDE.md §15): a hand-copied vocabulary here
+    // can silently diverge from what the writer emits and what validate-data.js
+    // enforces. scripts/lib/commercial-apply-gate.js is the one JS-side list,
+    // and commercial-apply-gate.test.mjs pins it to src/config/commercial.ts.
+    const validDesignations = VALID_DESIGNATIONS;
 
     for (const [slug, data] of Object.entries(commercial.shows)) {
       assert.ok(

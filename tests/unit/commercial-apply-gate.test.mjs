@@ -4,6 +4,7 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
+import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
@@ -213,7 +214,10 @@ describe('commercial-apply-gate', () => {
     it('handles missing existing entry gracefully', () => {
       const result = gate.buildCommercialEntry(scraperEntry, null, { isClaimAutoApply: true });
       assert.equal(result.recouped, true);
-      assert.equal(result.designation, undefined);
+      // BRO-3794: a designation is never omitted. With no fresh value and no
+      // existing entry to inherit from, the entry falls back to 'TBD' rather
+      // than landing in commercial.json with the field absent.
+      assert.equal(result.designation, 'TBD');
     });
 
     it('drops literal "null"/"undefined"/"" sentinel strings instead of writing them', () => {
@@ -230,7 +234,9 @@ describe('commercial-apply-gate', () => {
       const result = gate.buildCommercialEntry(dirty, null, { isClaimAutoApply: false });
       assert.equal(result.recoupedDate, undefined, 'string "null" date must be dropped');
       assert.equal(result.costMethodology, undefined, 'string "null" costMethodology must be dropped');
-      assert.equal(result.designation, undefined, 'string "undefined" designation must be dropped');
+      // The sentinel is still dropped — it just falls back to 'TBD' instead of
+      // leaving the field absent (BRO-3794).
+      assert.equal(result.designation, 'TBD', 'string "undefined" designation must not be written through');
       assert.equal(result.notes, undefined, 'whitespace-only notes must be dropped');
     });
   });
@@ -246,6 +252,90 @@ describe('commercial-apply-gate', () => {
       assert.equal(gate.cleanNullish('  trade-reported  '), 'trade-reported');
       assert.equal(gate.cleanNullish(0), 0);
       assert.equal(gate.cleanNullish(false), false);
+    });
+  });
+
+  describe('buildCommercialEntry — designation is never missing or invalid (BRO-3794)', () => {
+    // torch-song-2018 (2026-09-20): deep research returned an entry carrying
+    // capitalization/recouped/notes/sources but NO designation key. The old
+    // `if (designation)` write dropped it silently, the row landed in
+    // commercial.json, and main's Test Suite went red ~19h later via
+    // tests/unit/biz-data-functions.test.mjs — after the bad data had already
+    // been pushed to the data repo. Every path below must now yield a legal
+    // designation.
+    it('defaults to TBD when the research entry omits designation entirely', () => {
+      const researched = {
+        capitalization: 3_400_000,
+        capitalizationSource: 'NYT via WRAL, citing an SEC filing',
+        recouped: false,
+        notes: 'Closed after 13 weeks without recoupment',
+      };
+      const result = gate.buildCommercialEntry(researched, null, { isClaimAutoApply: false });
+      assert.equal(result.designation, 'TBD');
+      assert.equal(result.capitalization, 3_400_000, 'the rest of the entry is untouched');
+    });
+
+    it('discards an off-vocabulary designation rather than writing it through', () => {
+      const result = gate.buildCommercialEntry({ designation: 'Smash Hit' }, null, {});
+      assert.equal(result.designation, 'TBD', 'a designation /biz cannot render must never be written');
+    });
+
+    it('inherits the existing valid designation over the TBD fallback', () => {
+      const result = gate.buildCommercialEntry({ recouped: true }, { designation: 'Windfall' }, {});
+      assert.equal(result.designation, 'Windfall');
+    });
+
+    it('inherits the existing designation when the fresh value is garbage', () => {
+      const result = gate.buildCommercialEntry({ designation: 'null' }, { designation: 'Nonprofit' }, {});
+      assert.equal(result.designation, 'Nonprofit');
+    });
+
+    it('a fresh valid designation still wins over the existing one', () => {
+      const result = gate.buildCommercialEntry({ designation: 'Flop' }, { designation: 'TBD' }, {});
+      assert.equal(result.designation, 'Flop');
+    });
+
+    it('every designation it can emit is in the canonical vocabulary', () => {
+      const cases = [
+        [{}, null],
+        [{ designation: 'nonsense' }, null],
+        [{ designation: 'Miracle' }, null],
+        [{ recouped: true }, { designation: 'Easy Winner' }],
+        [{ designation: '  ' }, { designation: 'bogus' }],
+      ];
+      for (const [entry, existing] of cases) {
+        const result = gate.buildCommercialEntry(entry, existing, {});
+        assert.ok(
+          gate.VALID_DESIGNATION_SET.has(result.designation),
+          `emitted "${result.designation}" for ${JSON.stringify(entry)}`
+        );
+      }
+    });
+  });
+
+  describe('designation vocabulary stays in lockstep with src/config/commercial.ts', () => {
+    // The JS write path and the TS render path each need the list. If they
+    // drift, the writer can emit a value /biz cannot colour (or the validator
+    // can reject one /biz renders fine) — so pin them to each other instead of
+    // trusting two hand-maintained copies.
+    it('VALID_DESIGNATIONS matches the CommercialDesignation union exactly', () => {
+      const ts = readFileSync(
+        new URL('../../src/config/commercial.ts', import.meta.url),
+        'utf-8'
+      );
+      const union = ts.match(/export type CommercialDesignation =([\s\S]*?);/);
+      assert.ok(union, 'could not locate the CommercialDesignation union in src/config/commercial.ts');
+      const fromTs = [...union[1].matchAll(/'([^']+)'/g)].map(m => m[1]);
+      assert.ok(fromTs.length > 0, 'parsed zero designations out of the TS union');
+      assert.deepEqual(
+        [...gate.VALID_DESIGNATIONS].sort(),
+        [...fromTs].sort(),
+        'scripts/lib/commercial-apply-gate.js and src/config/commercial.ts disagree about the legal designations'
+      );
+    });
+
+    it('the TBD fallback is itself a legal designation', () => {
+      assert.ok(gate.VALID_DESIGNATION_SET.has(gate.DEFAULT_DESIGNATION));
     });
   });
 });
