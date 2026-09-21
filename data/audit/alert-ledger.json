@@ -3094,26 +3094,26 @@
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-09-21T09:41:19.079Z",
+      "lastSeen": "2026-09-21T11:55:00.156Z",
       "lastNotifiedAt": "2026-09-20T20:01:29.571Z",
       "lastSurfacedAt": "2026-09-20T20:01:29.571Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-21T09:41:19.084Z",
+      "lastSeen": "2026-09-21T11:55:00.161Z",
       "lastNotifiedAt": "2026-09-20T20:01:29.575Z",
       "lastSurfacedAt": "2026-09-20T20:01:29.575Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3360,18 +3360,16 @@
       "linearIdentifier": null
     },
     "corpus-drift:url-downgrade": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
       "firstSeen": "2026-09-17T11:13:02.794Z",
-      "lastSeen": "2026-09-17T17:32:07.194Z",
-      "lastNotifiedAt": "2026-09-17T11:13:02.794Z",
-      "lastSurfacedAt": "2026-09-17T11:13:02.794Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-21T11:55:00.163Z",
+      "lastNotifiedAt": "2026-09-21T11:55:00.163Z",
+      "lastSurfacedAt": "2026-09-21T11:55:00.163Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 6,
-      "resolvedAt": "2026-09-17T23:17:11.106Z"
+      "linearIdentifier": null
     },
     "opening-night-publish-date-pre-opening:missing:thelma-and-louise-a-new-musical-off-west-end-2026": {
       "status": "open",
@@ -3766,13 +3764,13 @@
       "disposition": "digest",
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-09-21T09:41:19.077Z",
+      "lastSeen": "2026-09-21T11:55:00.154Z",
       "lastNotifiedAt": "2026-09-20T21:49:42.154Z",
       "lastSurfacedAt": "2026-09-20T21:49:42.154Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "open",
@@ -4118,12 +4116,13 @@
       "disposition": "digest",
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-09-21T09:41:19.072Z",
+      "lastSeen": "2026-09-21T11:55:00.150Z",
       "lastNotifiedAt": "2026-09-21T09:41:19.072Z",
       "lastSurfacedAt": "2026-09-21T09:41:19.072Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     }
   }
 }
