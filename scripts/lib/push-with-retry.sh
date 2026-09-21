@@ -933,6 +933,33 @@ _head_is_descendant() {
   git merge-base --is-ancestor "$1" "$2" 2>/dev/null
 }
 
+# BRO-3899: does our outgoing range contain a merge commit? A plain `git
+# rebase` (no --rebase-merges) computes its replay range as "commits
+# reachable from HEAD, not in upstream, excluding merges" — so a merge
+# commit sitting in that range (e.g. the CALLER's own pre-existing `git
+# merge feature-branch --no-edit`, made just before invoking this script) is
+# silently DROPPED from history by the rebase. Confirmed live: local main
+# with a merge commit MC, origin advanced on an unrelated file, `git rebase
+# -X theirs origin/main` resolves with zero real conflicts ("Successfully
+# rebased") yet `git merge-base --is-ancestor MC HEAD` afterward is false —
+# MC's own object survives (reachable via reflog/`git log --all`) and its
+# file CONTENT is usually still faithfully replayed (via the non-merge
+# commits it merged in), which is exactly why this script's content-based
+# safety nets (verify_content_survived, check-post-rebase-survival.js) never
+# catch it: they diff file/tree content, not whether a specific commit
+# object remains an ancestor of HEAD. The push can report SUCCESS while
+# silently flattening the merge out of main's history — see
+# scripts/lib/push-with-retry-ancestry.test.mjs.
+#
+# Range is `origin/$PULL_BRANCH..head` — the SAME range `git rebase
+# <upstream>` itself computes (not RESTORE_BASE_HEAD, which in the exact
+# incident shape already equals the merge commit itself, making
+# RESTORE_BASE_HEAD..head the empty range A..A and this check a no-op).
+_range_has_merge_commit() {  # _range_has_merge_commit <head>
+  git rev-parse --verify --quiet "origin/$PULL_BRANCH" >/dev/null 2>&1 || return 1
+  [ -n "$(git rev-list --merges --max-count=1 "origin/$PULL_BRANCH..$1" 2>/dev/null || true)" ]
+}
+
 # The known-safe local commit to reset back to when this run needs to discard
 # its own (possibly polluted) resolution attempt and retry cleanly. Starts
 # equal to SCRIPT_ENTRY_HEAD but can ADVANCE — see sync_restore_base_head()
@@ -2035,7 +2062,17 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # survival-check failure log pinpoints the exact path that dropped a file
   # (rebase-clean vs rebase-resolved vs merge vs cherry-pick). Diagnostics only.
   RESOLUTION_PATH=none
-  if _rebase_with_captured_stderr; then
+  # BRO-3899: skip rebase entirely (not even attempted — deliberately NOT
+  # folded into the _REBASE_REFUSAL_REASON branch below, which is reset only
+  # INSIDE _rebase_with_captured_stderr and would otherwise read as a STALE
+  # reason from an earlier iteration's real refusal) when our outgoing range
+  # contains a merge commit a plain rebase would silently drop. Falls
+  # through to the merge fallback just below instead, which merges origin
+  # INTO current HEAD (keeping HEAD as first parent), correctly preserving
+  # the merge commit's ancestry by construction.
+  if _range_has_merge_commit "$PRE_REBASE_SHA"; then
+    echo "  Skipping rebase: outgoing range contains a merge commit that a plain \`git rebase\` (no --rebase-merges) would silently drop from history (BRO-3899). Going straight to the merge fallback, which preserves it via first-parent ancestry."
+  elif _rebase_with_captured_stderr; then
     rebase_ok=true
     RESOLUTION_PATH="rebase-clean(-X theirs)"
     restore_protected_fields
@@ -2102,6 +2139,13 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       git merge --abort 2>/dev/null || true
       # Last resort: reset to remote, then cherry-pick our commit(s) on top.
       # This guarantees we end up ahead of remote with our changes applied.
+      # BRO-3899 residual note: `git cherry-pick <range>` below has the same
+      # merge-commit blind spot as rebase (it errors on a merge commit
+      # without -m rather than silently dropping it, so this is a hard
+      # failure here, not a silent loss) — low risk in practice since the
+      # merge fallback just above runs first and should resolve almost every
+      # case before reaching this branch. Not guarded separately; revisit if
+      # this path is ever seen to fire on a merge-containing range.
       echo "  Trying reset + cherry-pick approach..."
       OUR_HEAD=$(git rev-parse HEAD 2>/dev/null || true)
       if [ -n "$OUR_HEAD" ]; then
