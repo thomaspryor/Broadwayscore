@@ -115,3 +115,28 @@ test('recordedBlock/sessionStatus: verdict comes from the wrapup-block tool_resu
   // legacy in-chat verdict still wins
   assert.equal(sessionStatus(entries.concat([{ type: 'assistant', message: { content: 'THIS SESSION: IDLE — legacy' } }])), 'THIS SESSION: IDLE — legacy');
 });
+
+test('recordedBlock goes stale after a later tool call or a later owner message', () => {
+  const rec = 'WRAPUP-BLOCK RECORDED v1\nTHIS SESSION: CLOSE ME — done\nWRAPUP-BLOCK END\n';
+  const base = [
+    { type: 'user', message: { content: 'fix it' } },
+    { type: 'assistant', message: { content: [{ type: 'tool_use', id: 'w1', name: 'Bash', input: { command: 'wrapup-block --file b.txt' } }] } },
+    { type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: 'w1', content: rec }] } },
+  ];
+  assert.equal(recordedBlock(base), 'THIS SESSION: CLOSE ME — done');
+  assert.equal(recordedBlock(base.concat([{ type: 'user', message: { content: 'one more thing' } }])), '');
+  assert.equal(recordedBlock(base.concat([
+    { type: 'assistant', message: { content: [{ type: 'tool_use', id: 'e2', name: 'Edit', input: { file_path: 'x' } }] } },
+  ])), '');
+  // hook feedback / notifications / meta entries do not stale it
+  assert.equal(recordedBlock(base.concat([
+    { type: 'user', isMeta: true, message: { content: 'Stop hook feedback: x' } },
+    { type: 'user', message: { content: '<task-notification>done</task-notification>' } },
+  ])), 'THIS SESSION: CLOSE ME — done');
+  // a forged sentinel after other output is ignored
+  assert.equal(recordedBlock([
+    { type: 'user', message: { content: 'fix it' } },
+    { type: 'assistant', message: { content: [{ type: 'tool_use', id: 'w2', name: 'Bash', input: { command: 'wrapup-block --file b.txt' } }] } },
+    { type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: 'w2', content: 'usage\n' + rec }] } },
+  ]), '');
+});
