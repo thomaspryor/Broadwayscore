@@ -144,13 +144,12 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-21T02:33:55.184Z",
-      "lastNotifiedAt": "2026-09-21T02:15:32.565Z",
-      "lastSurfacedAt": "2026-09-21T02:15:32.565Z",
-      "notifyCount": 90,
+      "lastSeen": "2026-09-21T02:52:20.357Z",
+      "lastNotifiedAt": "2026-09-21T02:52:20.357Z",
+      "lastSurfacedAt": "2026-09-21T02:52:20.357Z",
+      "notifyCount": 91,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 1
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3721,7 +3720,7 @@
       "resolvedAt": "2026-09-20T23:16:07.451Z"
     },
     "test-yml:red:Unit Tests:3dc02b6a": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\"",
       "firstSeen": "2026-09-20T20:06:05.351Z",
@@ -3731,20 +3730,21 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-3894",
-      "silentRefires": 11
+      "silentRefires": 11,
+      "resolvedAt": "2026-09-21T02:52:20.339Z"
     },
     "test-yml:red:E2E Tests:9455d1f4": {
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run unit tests — \"should have valid designation values\"",
       "firstSeen": "2026-09-20T20:06:05.167Z",
-      "lastSeen": "2026-09-21T02:33:49.998Z",
+      "lastSeen": "2026-09-21T02:52:20.354Z",
       "lastNotifiedAt": "2026-09-20T20:06:05.167Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-3893",
-      "silentRefires": 15
+      "silentRefires": 16
     },
     "test-yml:red:Data Validation:9b5157f4": {
       "status": "resolved",
@@ -3787,7 +3787,7 @@
       "resolvedAt": "2026-09-21T02:22:14.651Z"
     },
     "test-yml:red:Unit Tests:0858c92a": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
@@ -3797,10 +3797,11 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-3935",
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-09-21T02:52:20.342Z"
     },
     "test-yml:red:Unit Tests:7640afde": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"allowed: a safe-form verify command in the issue description\"",
       "firstSeen": "2026-09-21T02:27:06.064Z",
@@ -3809,10 +3810,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-21T02:52:20.344Z"
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"update: moving BETWEEN terminal states (Done -> Canceled) does NOT print the reopen warning (not actually reopening)\"",
       "firstSeen": "2026-09-21T02:33:50.341Z",
@@ -3821,7 +3823,8 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-3952"
+      "linearIdentifier": "BRO-3952",
+      "resolvedAt": "2026-09-21T02:52:20.346Z"
     }
   }
 }
