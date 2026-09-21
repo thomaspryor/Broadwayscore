@@ -166,10 +166,15 @@ function runWiringFixture(allowed) {
   const script = `
     const cmdExec = require('./scripts/lib/linear-cmd-execution.js');
     cmdExec.makeVerifyCmdEvidence = (opts) => {
-      // The CLI must hand the factory a logger, or the operator never sees
-      // the "[linear-cmd-execution] running ..." line while it blocks on a
-      // real checkout (linear-brain.js passes { log: console.error }).
-      console.error('REAL_FACTORY_BUILT:log=' + typeof (opts && opts.log));
+      // The CLI must hand the factory a WORKING logger, or the operator never
+      // sees the "[linear-cmd-execution] running ..." line while it blocks on
+      // a real checkout (linear-brain.js passes a console.error logger).
+      // Asserting typeof === 'function' is not enough: a CLI that passed a
+      // no-op logger would satisfy that and print nothing (ship-check
+      // finding, 2026-09-21 — mutation-proven, all 38 tests stayed green).
+      // Call it and assert the line actually reaches stderr. NOTE: this
+      // comment lives inside a template literal, so no backticks here.
+      if (opts && typeof opts.log === 'function') opts.log('LOG_PROBE');
       return (cmd) => {
         console.error('REAL_FACTORY_CMD:' + cmd);
         return ${spyResult};
@@ -180,6 +185,13 @@ function runWiringFixture(allowed) {
     main(['update', 'BRO-9457', '--state', 'Done'], {
       getIssue: async () => issue,
       getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
+      // Stubbed for the same reason runUpdate stubs it: unstubbed, the real
+      // makeVerifyEvidence shells out to git remote get-url origin and a
+      // shallow-repo read at build time, making this file git-state dependent
+      // and breaking its own "no test ever shells out" promise (ship-check
+      // finding, 2026-09-21). The subject here is the CMD executor seam.
+      // (No backticks in this comment — it is inside a template literal.)
+      verifyEvidence: () => ({ verified: null, reason: 'stub: unknown' }),
       appendBypassRow: () => {},
       updateIssue: async () => { console.error('UPDATE_ISSUE_CALLED'); },
       createComment: async () => {},
@@ -191,7 +203,7 @@ function runWiringFixture(allowed) {
 test('wiring: with NO verifyCmdEvidence dep, the CLI builds the executor from linear-cmd-execution.js and hands it the recorded command', () => {
   const res = runWiringFixture(true);
   assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}`);
-  assert.match(res.stderr, /REAL_FACTORY_BUILT:log=function/, 'the CLI must build its executor from linear-cmd-execution.js, with a logger, when no dep is injected');
+  assert.match(res.stderr, /LOG_PROBE/, 'the CLI must build its executor from linear-cmd-execution.js with a logger that actually reaches the operator');
   assert.match(res.stderr, /REAL_FACTORY_CMD:node --test tests\/unit\/done-semantics-gate\.test\.mjs/);
   assert.match(res.stderr, /UPDATE_ISSUE_CALLED/);
 });
