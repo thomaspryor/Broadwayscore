@@ -174,7 +174,9 @@ Usage:
                   Medium/Low, so an id-ordered sweep armed cards nobody
                   dispatches). A flag that yields no ids is refused (exit 2).
                   With --rearm: restricts the rearm sweep instead (each must
-                  still be armed+vacuous).
+                  still be armed+vacuous) and is a FILTER only — the rearm
+                  selector keeps ascending BRO-N order, not the list order.
+                  Both "--identifiers A,B" and "--identifiers=A,B" work.
   --allow-human-written  with --rearm, also rewrite cards whose acceptance
                   section has no 'auto-enriched' marker (looks human-written)
   --help/-h       show this message, do nothing else
@@ -185,6 +187,13 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     const t = argv[i];
     if (t.startsWith('--')) {
+      // `--key=value` (ship-check/Codex, BRO-3913): without this branch
+      // `--identifiers=BRO-1` became the unknown key "identifiers=BRO-1", so
+      // parseIdentifiersArg saw the flag as ABSENT and the run silently
+      // widened to the whole backlog — the exact case the empty-list refusal
+      // exists to stop.
+      const eq = t.indexOf('=');
+      if (eq > 2) { a[t.slice(2, eq)] = t.slice(eq + 1); continue; }
       const k = t.slice(2);
       const n = argv[i + 1];
       if (n === undefined || n.startsWith('--')) a[k] = true;
@@ -753,6 +762,16 @@ const PRIORITY_TIER_RANK = Object.freeze({ P0: 0, P1: 1 });
 function priorityTierRank(issue) {
   const tier = priorityOf(issue);
   return tier in PRIORITY_TIER_RANK ? PRIORITY_TIER_RANK[tier] : Object.keys(PRIORITY_TIER_RANK).length;
+}
+
+// PURE. The dispatch-side notion of "armed": description OR any comment
+// supplies a safe acceptance command (same call shape as linear-next.js's
+// verify gate and this file's --rearm commentGate). The sweep selector above
+// is description-only on purpose (the list query does not fetch comments);
+// this re-check runs on the per-issue getIssue() payload, which does.
+function isArmedIncludingComments(issue) {
+  if (!issue) return false;
+  return !!evaluateVerifiability(String(issue.description || ''), sortedCommentBodies(issue)).armed;
 }
 
 function selectRefusedLinearIdentifiers(openIssuesWithDesc, { identifiers = null } = {}) {
@@ -1440,6 +1459,15 @@ async function runLinearLeg(args, { dryRun, limit }) {
       console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${identifier} → skipped (${skipResult.detail})`);
       continue;
     }
+    if (isArmedIncludingComments(full)) {
+      const skipResult = {
+        id: full.id, name: full.title, action: 'skipped', source: 'linear',
+        detail: 'already armed via a comment (linear-next reads comments; a description rewrite would add a second, conflicting command)',
+      };
+      results.push(skipResult);
+      console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${identifier} → skipped (${skipResult.detail})`);
+      continue;
+    }
     const card = normalizeLinearIssue(full);
     const result = await enrichOneCard(card, { callLLM, writeCard, dryRun, force: !!args.force });
     result.source = 'linear';
@@ -1631,6 +1659,7 @@ module.exports = {
   parseEnrichResponse, mergeTags, spliceNotes, allFailed,
   logEnrichmentWrite, ENRICHMENT_LOG_PATH, MODEL, DEFAULT_LIMIT, USAGE,
   selectProvider, callLLM, callAnthropic, callOpenRouter, callGemini,
+  isArmedIncludingComments, parseArgs,
   OPENROUTER_MODEL, GEMINI_MODEL,
   // task #1830: Linear read/write path — exported for unit coverage without
   // a live Linear API call (writeBack/normalizeLinearIssue/selectRefused... are

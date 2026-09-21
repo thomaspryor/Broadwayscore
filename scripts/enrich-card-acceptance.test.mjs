@@ -1158,3 +1158,35 @@ test('parseIdentifiersArg: absent → null; list is split, trimmed, de-blanked, 
   assert.deepEqual(parseIdentifiersArg({ identifiers: true }), []);  // bare --identifiers (parseArgs yields true)
   assert.deepEqual(parseIdentifiersArg({ identifiers: ' , ' }), []);
 });
+
+// BRO-3913 ship-check (Codex): `--identifiers=BRO-1` used to parse as the
+// unknown key "identifiers=BRO-1", so the flag read as ABSENT and the sweep
+// silently widened to the whole backlog — bypassing the empty-list refusal.
+test('parseArgs accepts --key=value as well as --key value', () => {
+  const { parseArgs } = require('./enrich-card-acceptance.js');
+  assert.deepEqual(parseArgs(['--identifiers=BRO-1,BRO-2', '--dry-run']), { _: [], identifiers: 'BRO-1,BRO-2', 'dry-run': true });
+  assert.deepEqual(parseArgs(['--identifiers', 'BRO-1', '--limit=5']), { _: [], identifiers: 'BRO-1', limit: '5' });
+  // An explicit empty value is still an explicit (refusable) value, not "absent".
+  assert.deepEqual(parseArgs(['--identifiers=']), { _: [], identifiers: '' });
+});
+
+// BRO-3913 ship-check (Codex): a card armed through a COMMENT is dispatchable
+// (linear-next reads comments) but the description-only sweep still selected
+// it, and the write would have replaced the description with a second command.
+test('isArmedIncludingComments: comment-supplied command counts as armed, description-only selector still lists it', () => {
+  const { isArmedIncludingComments } = require('./enrich-card-acceptance.js');
+  const cmd = '## Acceptance criteria\nVERIFY: node --test scripts/enrich-card-acceptance.test.mjs\n';
+  const viaComment = {
+    identifier: 'BRO-1', description: 'no criteria in the body',
+    comments: { nodes: [{ body: cmd, createdAt: '2026-09-20T00:00:00.000Z' }] },
+  };
+  const viaDescription = { identifier: 'BRO-2', description: cmd, comments: { nodes: [] } };
+  const unarmed = { identifier: 'BRO-3', description: 'nothing', comments: { nodes: [{ body: 'just chatter', createdAt: '2026-09-20T00:00:00.000Z' }] } };
+  assert.equal(isArmedIncludingComments(viaComment), true);
+  assert.equal(isArmedIncludingComments(viaDescription), true);
+  assert.equal(isArmedIncludingComments(unarmed), false);
+  assert.equal(isArmedIncludingComments(null), false);
+  // The list-query selector cannot see comments, so BRO-1 is still selected
+  // there — the per-issue re-check in runLinearLeg is what skips it.
+  assert.deepEqual(selectRefusedLinearIdentifiers([viaComment, viaDescription, unarmed]), ['BRO-1', 'BRO-3']);
+});
