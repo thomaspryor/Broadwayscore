@@ -56,8 +56,14 @@ function findCriticalNotifySteps(workflowsDir, yamlLoad) {
   return found;
 }
 
-/** The condition itself must be reachable when the job is cancelled. */
+/**
+ * The condition itself must be reachable when the job is cancelled. A bare
+ * substring test on `cancelled()` would also match `!cancelled()`, which
+ * means the opposite of coverage — reject a negated occurrence explicitly
+ * rather than count it (BRO-3707 adversarial review finding).
+ */
 function coversCancellation(ifCondition) {
+  if (/!\s*cancelled\(\)/.test(ifCondition)) return false;
   return /\bcancelled\(\)/.test(ifCondition);
 }
 
