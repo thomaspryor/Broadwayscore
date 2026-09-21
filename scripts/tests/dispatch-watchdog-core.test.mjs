@@ -946,3 +946,127 @@ test('structuralGuardRefusal: still recognizes "it already looks dispatched" whe
   ].join('\n');
   assert.equal(core.structuralGuardRefusal(out), '[linear-next] REFUSING to dispatch BRO-3431: it already looks dispatched.');
 });
+
+// ── BRO-3924 R3: consuming BRO-3551's open-backlog sweep report ────────────
+
+test('BRO-3924 (R3): already-passing cards count toward needsYou and render in the narrative', () => {
+  const plan = core.planSweep([], new Map(), {
+    now: NOW, liveTitles: LIVE,
+    alreadyPasses: [{ id: 'BRO-9001', name: 'Fix the thing', verifyCmd: 'node --test x.test.mjs' }],
+  });
+  assert.equal(plan.needsYou, 1);
+  assert.match(core.renderNarrative(plan), /already passes its own acceptance command/);
+});
+
+test('BRO-3924 (R3): omitting alreadyPasses entirely is backward compatible (defaults to none)', () => {
+  const plan = core.planSweep([], new Map(), { now: NOW, liveTitles: LIVE });
+  assert.deepEqual(plan.alreadyPasses, []);
+  assert.equal(plan.needsYou, 0);
+});
+
+// ── BRO-3924 R5: spend circuit breaker ──────────────────────────────────────
+
+function headlessOpen(id, jobId, claimTs, spawnTs) {
+  return [
+    { ts: claimTs, event: core.WATCHDOG_EVENTS.REDISPATCH, taskId: id },
+    { ts: spawnTs, event: 'launch', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: spawnTs, event: 'job-spawned', jobId, taskId: id, workspaceRef: `headless:${id}` },
+  ];
+}
+
+test('BRO-3924 (R5): the threshold is derived from the shared default scaled by watchdogConcurrency, not the bare $12 backlog-drain default', () => {
+  const backlogDrain = require('../lib/backlog-drain.js');
+  const expected = Math.round(backlogDrain.DEFAULT_SPEND_THRESHOLD_USD * (core.CAPS.watchdogConcurrent / backlogDrain.DEFAULT_CONCURRENCY_CAP) * 100) / 100;
+  assert.equal(core.WATCHDOG_SPEND_THRESHOLD_USD, expected);
+  assert.ok(core.WATCHDOG_SPEND_THRESHOLD_USD > backlogDrain.DEFAULT_SPEND_THRESHOLD_USD, 'must be scaled UP, not reused bare, at 3x the concurrency');
+});
+
+test('BRO-3924 (R5): medianJobCostUSD falls back to the documented historical figure when there is no recent cost history', () => {
+  assert.equal(core.medianJobCostUSD([], NOW), core.FALLBACK_JOB_COST_USD);
+});
+
+test('BRO-3924 (R5): medianJobCostUSD ignores job-done rows older than the 7-day window', () => {
+  const entries = [
+    { ts: T(8 * 24 * 60), event: 'job-spawned', jobId: 'old', taskId: 'linear:BRO-1' },
+    { ts: T(8 * 24 * 60 - 1), event: 'job-done', jobId: 'old', taskId: 'linear:BRO-1', costUSD: 999 },
+  ];
+  assert.equal(core.medianJobCostUSD(entries, NOW), core.FALLBACK_JOB_COST_USD);
+});
+
+test('BRO-3924 (R5): in-flight claims with zero completions trip the spend breaker (in-flight reservation)', () => {
+  const entries = [];
+  for (let i = 0; i < core.CAPS.watchdogConcurrent; i++) {
+    entries.push(...headlessOpen(`linear:BRO-90${i}`, `job-90${i}`, T(5), T(4)));
+  }
+  const breaker = core.watchdogSpendBreaker(entries, NOW);
+  assert.equal(breaker.liveNow, core.CAPS.watchdogConcurrent);
+  assert.ok(breaker.reservedUSD > 0);
+  assert.equal(breaker.completions, 0);
+  assert.equal(breaker.halt, true);
+  assert.match(breaker.reason, /spend circuit breaker/);
+});
+
+test('BRO-3924 (R5): a single landed completion clears the halt even at high reserved spend', () => {
+  const entries = [];
+  for (let i = 0; i < core.CAPS.watchdogConcurrent; i++) {
+    entries.push(...headlessOpen(`linear:BRO-91${i}`, `job-91${i}`, T(10), T(9)));
+  }
+  // Finish exactly one of them — its job is no longer open, so liveNow drops
+  // by one, and its cost lands as a real 'card-pass' row.
+  entries.push({ ts: T(1), event: 'job-done', jobId: 'job-910', taskId: 'linear:BRO-910', costUSD: 5 });
+  const breaker = core.watchdogSpendBreaker(entries, NOW);
+  assert.equal(breaker.liveNow, core.CAPS.watchdogConcurrent - 1);
+  assert.equal(breaker.completions, 1);
+  assert.equal(breaker.halt, false, 'zero-completions is the halt condition — one landed job must clear it regardless of spend');
+});
+
+test('BRO-3924 (R5): a job-done from a prior local calendar day does not count toward today\'s spend', () => {
+  const id = 'linear:BRO-920';
+  const entries = [
+    { ts: T(24 * 60 + 10), event: core.WATCHDOG_EVENTS.REDISPATCH, taskId: id },
+    { ts: T(24 * 60 + 9), event: 'launch', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: T(24 * 60 + 9), event: 'job-spawned', jobId: 'job-920', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: T(24 * 60 + 1), event: 'job-done', jobId: 'job-920', taskId: id, costUSD: 999 },
+  ];
+  const breaker = core.watchdogSpendBreaker(entries, NOW);
+  assert.equal(breaker.liveNow, 0, 'the job already finished — nothing is in flight');
+  assert.equal(breaker.spentUSD, 0, 'a completed job from a prior local day must not count toward today\'s spend');
+});
+
+test('BRO-3924 (R5): watchdogSpendRows attributes each claim to its OWN job, not a stale earlier one for the same task', () => {
+  const id = 'linear:BRO-930';
+  const entries = [
+    ...headlessOpen(id, 'jobA', T(60), T(59)),
+    { ts: T(50), event: 'job-failed', jobId: 'jobA', taskId: id, costUSD: 2 },
+    ...headlessOpen(id, 'jobB', T(40), T(39)),
+    { ts: T(30), event: 'job-done', jobId: 'jobB', taskId: id, costUSD: 8 },
+  ];
+  const rows = core.watchdogSpendRows(entries, NOW);
+  assert.equal(rows.length, 2);
+  assert.deepEqual(rows.map(r => r.usd).sort((a, b) => a - b), [2, 8]);
+  assert.deepEqual(rows.map(r => r.event).sort(), ['card-fail', 'card-pass']);
+});
+
+test('BRO-3924 (R5): a card the watchdog never claimed contributes nothing to spend, even if its job completes today', () => {
+  const id = 'linear:BRO-940';
+  const entries = [
+    // No WATCHDOG_EVENTS.REDISPATCH row for this task — a manual/owner dispatch.
+    { ts: T(9), event: 'launch', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: T(9), event: 'job-spawned', jobId: 'job-940', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: T(1), event: 'job-done', jobId: 'job-940', taskId: id, costUSD: 500 },
+  ];
+  const breaker = core.watchdogSpendBreaker(entries, NOW);
+  assert.equal(breaker.spentUSD, 0);
+  assert.equal(breaker.liveNow, 0);
+});
+
+test('BRO-3924 (R5): the spend hold surfaces in globalHolds/pausedByPolicy/toDispatch exactly like the other caps', () => {
+  const entries = [];
+  for (let i = 0; i < core.CAPS.watchdogConcurrent; i++) {
+    entries.push(...headlessOpen(`linear:BRO-95${i}`, `job-95${i}`, T(5), T(4)));
+  }
+  const plan = core.planSweep(entries, new Map([lin('BRO-960', 'pending', 'P1 Now')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.budgets.pausedByPolicy, true);
+  assert.equal(plan.toDispatch.length, 0);
+  assert.ok(plan.budgets.holds.some(h => h.includes('spend circuit breaker')));
+});
