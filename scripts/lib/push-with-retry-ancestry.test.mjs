@@ -149,3 +149,114 @@ test('BRO-3899: a pre-existing local merge commit survives a rebase-driven confl
     fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
+
+// A `git` wrapper that fails EVERY `push` call (network sim, never reaches
+// real git for push) so the local retry loop exhausts and falls through to
+// the Git Data API fallback — but that fallback has no server to actually
+// call (push-via-git-api.sh needs GH_TOKEN/a real GitHub API), so this
+// exercises the fallback's own pre-flight disqualifier logic without
+// needing real API credentials: the merge-commit disqualifier added for
+// BRO-3899 fires BEFORE any network call, purely from the local git state.
+// Subcommand detection skips `-c key=val` pairs, matching the sibling
+// abort-preserves-head fixtures (git_push invokes `git -c ... push ...`).
+function makeAllPushesFailGitDir(tmp) {
+  const dir = path.join(tmp, 'fake-git-allpushfail-bin');
+  fs.mkdirSync(dir);
+  const realGit = execSync('command -v git').toString().trim();
+  fs.writeFileSync(path.join(dir, 'git'), `#!/usr/bin/env bash
+sub=""
+args=("$@")
+i=0
+while [ $i -lt \${#args[@]} ]; do
+  a="\${args[$i]}"
+  case "$a" in
+    -c|-C) i=$((i+2)); continue;;
+    -*) i=$((i+1)); continue;;
+    *) sub="$a"; break;;
+  esac
+done
+if [ "$sub" = "push" ]; then
+  exit 1
+fi
+exec "${realGit}" "$@"
+`);
+  fs.chmodSync(path.join(dir, 'git'), 0o755);
+  return dir;
+}
+
+test('BRO-3899: the Git Data API fallback is disqualified (not silently squashed) when a merge commit is in range', () => {
+  // push-via-git-api.sh squashes every outgoing commit into ONE API commit
+  // by plumbing (its own header: "squashing N outgoing commits into one API
+  // commit") — safe for ordinary multi-commit pushes, but it would silently
+  // collapse a merge commit to single-parent, discarding the branch it
+  // merged in. The fix adds a disqualifier so the fallback refuses to run
+  // (and the local exhaustion path's restore_head_if_moved leaves HEAD at
+  // the last known-good, merge-intact state) instead of squashing it away.
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-retry-3899-api-'));
+  const originDir = path.join(tmp, 'origin.git');
+  const seedDir = path.join(tmp, 'seed');
+  const runnerDir = path.join(tmp, 'runner');
+
+  try {
+    sh(`git init -q --bare "${originDir}"`, tmp);
+    sh(`git init -q "${seedDir}"`, tmp);
+    sh('git config user.email t@t.t', seedDir);
+    sh('git config user.name t', seedDir);
+    sh('git commit -q --allow-empty -m base', seedDir);
+    sh('git branch -M main', seedDir);
+    sh(`git push -q "${originDir}" main`, seedDir);
+
+    fs.mkdirSync(runnerDir);
+    sh('git init -q', runnerDir);
+    sh('git config user.email t@t.t', runnerDir);
+    sh('git config user.name t', runnerDir);
+    sh(`git remote add origin "${originDir}"`, runnerDir);
+    sh('git fetch -q origin main', runnerDir);
+    sh('git checkout -q -B main origin/main', runnerDir);
+
+    sh('git checkout -q -b feature', runnerDir);
+    fs.writeFileSync(path.join(runnerDir, 'feature.js'), 'const feature = 1;\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "feature commit"', runnerDir);
+    sh('git checkout -q main', runnerDir);
+    fs.writeFileSync(path.join(runnerDir, 'main-own.js'), 'const mainOwn = 1;\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "main own commit"', runnerDir);
+    sh(`git merge --no-edit -q feature -m "Merge branch 'feature'"`, runnerDir);
+    const mergeCommit = sh('git rev-parse HEAD', runnerDir).trim();
+    const mergeParents = sh(`git log -1 --format=%P ${mergeCommit}`, runnerDir).trim().split(' ');
+    assert.equal(mergeParents.length, 2, `sanity check: merge commit must have 2 parents, got ${mergeParents.length}`);
+
+    const fakeGitDir = makeAllPushesFailGitDir(tmp);
+
+    let stdout = '';
+    let code = 0;
+    try {
+      stdout = execSync(`bash "${SCRIPT}" 2 main`, {
+        cwd: runnerDir,
+        stdio: 'pipe',
+        env: {
+          ...process.env, ...GIT_ENV,
+          PATH: `${fakeGitDir}:${process.env.PATH}`,
+          PUSH_FAILURE_LOG: path.join(tmp, 'failures.jsonl'),
+        },
+      }).toString();
+    } catch (err) {
+      code = err.status ?? 1;
+      stdout = `${err.stdout || ''}${err.stderr || ''}`;
+    }
+
+    const finalHead = sh('git rev-parse HEAD', runnerDir).trim();
+
+    assert.notEqual(code, 0, `expected non-zero exit (every push fails, API fallback disqualified); got 0. Output:\n${stdout}`);
+    assert.match(stdout, /skipping Git Data API fallback.*merge commit.*BRO-3899|BRO-3899.*merge commit/,
+      `expected the new merge-commit API-fallback disqualifier to fire. Output:\n${stdout}`);
+    assert.equal(
+      sh(`git merge-base --is-ancestor ${mergeCommit} ${finalHead} && echo yes || echo no`, runnerDir).trim(),
+      'yes',
+      `merge commit ${mergeCommit} was dropped from local HEAD's ancestry after exhaustion (HEAD is ${finalHead}). Output:\n${stdout}`,
+    );
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});

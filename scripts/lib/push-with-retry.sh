@@ -2592,6 +2592,23 @@ if [ "$pushed" != "true" ] && [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ]; then
       echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file (without apiFallbackMerge coverage), shows.json/reviews.json, an unaudited data/audit/ path (not in API_FALLBACK_SAFE either), or the disqualifier check itself failed unexpectedly (rc=$_managed_check_rc, failing closed).${_API_DISQUALIFY_DETAIL:+ Offending path — $_API_DISQUALIFY_DETAIL.} See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for MANAGED files, scripts/lib/core-data-merge-registry.js's apiFallbackSafe entries for a hand-verified single-writer path, or its apiFallbackMerge entries for a genuinely multi-writer path with real reconciliation."
       _api_fallback_ok=false
     fi
+    # BRO-3899 (adversarial-review finding): push-via-git-api.sh SQUASHES every
+    # outgoing commit into a single API commit by plumbing (its own header
+    # calls this out: "squashing N outgoing commits into one API commit, message
+    # taken from HEAD's") — a documented, accepted tradeoff for ordinary
+    # multi-commit pushes, but fatal to a MERGE commit specifically: squashing
+    # collapses it to a single-parent commit, discarding the second-parent
+    # ancestry entirely. Unlike the local rebase path fixed above, there is no
+    # "fall through to a safer strategy" for the API fallback itself — it only
+    # has one strategy (squash-via-plumbing) — so a merge in range disqualifies
+    # the fallback outright and the caller falls back to the existing, safe
+    # local fetch+rebase+push path (now itself merge-aware). Checked against
+    # HEAD (current, post-reset), same range convention as the managed-file
+    # check just above.
+    if [ "$_api_fallback_ok" = "true" ] && _range_has_merge_commit "HEAD"; then
+      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff contains a merge commit, which push-via-git-api.sh would squash into a single-parent commit, discarding its ancestry (BRO-3899). Falling back to the local fetch+rebase+push path instead."
+      _api_fallback_ok=false
+    fi
   fi
 fi
 if [ "$_api_fallback_ok" = "true" ]; then
