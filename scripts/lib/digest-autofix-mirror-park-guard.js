@@ -14,10 +14,22 @@
  * stopped the watchdog from making FRESH claims against the mirror, but
  * claims already sitting in the shared dispatch ledger from before that fix
  * kept aging past CLAIM_LABEL_GRACE_MS and getting parked/paged regardless
- * — dispatch-watchdog-core.js's awaitingClaim/noLaunchPark deliberately
- * still surfaces those as owner-visible signal (BRO-3429, #1564 tests), so
- * the fix belongs here, at the point digest-autofix.js decides what to
- * FILE, not there.
+ * — at the time, dispatch-watchdog-core.js's awaitingClaim/noLaunchPark and
+ * jobBlocked deliberately still surfaced those as owner-visible signal
+ * (BRO-3429, #1564 tests), so the fix belonged here, at the point
+ * digest-autofix.js decides what to FILE, not there.
+ *
+ * BRO-3437 UPDATE: that classification-layer decision was reversed once
+ * board-targeting-audit.js caught `watchdog-park` itself still writing
+ * 100% retired-board ids — a parked bare-numeric id has no live Linear card
+ * for the owner to act on, so "surface it" and "page about it" were both
+ * pure noise, not signal. dispatch-watchdog-core.js's jobBlocked and
+ * awaitingClaim loops now gate on isLiveBoardTaskId() too, so no NEW
+ * watchdog-park row can ever name a retired-board id again. This guard
+ * stays in place as defense-in-depth for legacy rows already sitting in the
+ * ledger from before that fix landed — it costs nothing to keep and this
+ * module's job (stop digest-autofix.js from filing a tracker for one) is
+ * still correct even though its trigger condition should now be rare.
  *
  * Extracted as its own leaf (CLAUDE.md §15) rather than a regex dropped into
  * scripts/lib/autonomous-email-render.js's QUEUED_TELEMETRY_BLOCKLIST: that
