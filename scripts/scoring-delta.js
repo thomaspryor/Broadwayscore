@@ -998,6 +998,18 @@ function decideInclusion(review, show, guards) {
     if (!isStale) return { included: false, reason: 'isRoundupArticle' };
   }
   if (review.incompleteReason === 'wrong_content') return { included: false, reason: 'incompleteReason:wrong_content' };
+  // Mirror rebuild-all-reviews.js:3570 — the ACTUAL scoring-corpus enforcement
+  // for isNonReview (it does not delegate to isIncludableForRebuild, so it has
+  // to be replayed here explicitly too). BRO-3862: this branch was missing
+  // entirely, so every isNonReview-clear sweep (audit-exclusion-flags.js,
+  // audit-nonreview-slug-coverage.js hand-clears) replayed as "0 flips" —
+  // the exact class of change §12.7 requires this gate to catch.
+  const isNonReviewDemoted = typeof guards.isNonReviewDemotedByFreshCV === 'function'
+    ? guards.isNonReviewDemotedByFreshCV(review)
+    : false;
+  if ((review.isNonReview === true && !isNonReviewDemoted) || review.nonReviewFlag === true || review.nonReviewContent === true) {
+    return { included: false, reason: 'isNonReview' };
+  }
   if (review.contentTier === 'invalid') {
     // Mirror review-guards.js:3507-3514: a contentTier of 'invalid' set BECAUSE of
     // wrongProduction is stale once that flag clears, so production falls through
@@ -1288,6 +1300,11 @@ function main() {
         && (baseline.__crossMarketLib?.outletIsUkSideSelfHealRegion?.toString() || '') === (working.__crossMarketLib?.outletIsUkSideSelfHealRegion?.toString() || '')
         && String([...(baseline.__crossMarketLib?.UK_SELF_HEAL_REGIONS || [])].sort()) === String([...(working.__crossMarketLib?.UK_SELF_HEAL_REGIONS || [])].sort())
         && (baseline.cvBlocksUkWrongProductionAutoClear?.toString() || '') === (working.cvBlocksUkWrongProductionAutoClear?.toString() || '')
+        // BRO-3862: decideInclusion's isNonReview branch (added alongside this
+        // comparison — it was missing entirely before) calls this to demote a
+        // stale flag. Same blind-spot class as every other entry in this list:
+        // an edit to ONLY this predicate must not leave guardsIdentical true.
+        && (baseline.isNonReviewDemotedByFreshCV?.toString() || '') === (working.isNonReviewDemotedByFreshCV?.toString() || '')
         // Canonical inclusion predicate + pre-opening gate. isIncludableForRebuild
         // was NOT in this list before 2026-07-21, so edits to the canonical
         // predicate silently skipped Phase A ("decisions identical") — the
