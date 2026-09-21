@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-09-21T05:44:22.707Z",
+  "generatedAt": "2026-09-21T11:24:10.560Z",
   "windowDays": 1095,
-  "targets": 252,
-  "auditedThisRun": 10,
-  "carriedForward": 547,
+  "targets": 258,
+  "auditedThisRun": 6,
+  "carriedForward": 551,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 309,
-    "missingCurrentRun": 433,
+    "missingCurrentRun": 430,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 795,
+    "totalFlaggedMisses": 794,
     "totalRecoverable": 6,
     "totalRecovered": 7,
     "priorProductionCitations": 2504
@@ -4629,11 +4629,11 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://newyorktheater.me/2026/09/17/america-who-hurt-you-review/",
-        "https://1minutecritic.com/america-who-hurt-you-sarah-jones-review/",
         "https://nystagereview.com/2026/09/17/america-who-hurt-you-mental-state/",
-        "https://thefrontrowcenter.com/2026/09/america-who-hurt-you/",
+        "https://newyorktheater.me/2026/09/17/america-who-hurt-you-review/",
         "https://theaterpizzazz.com/sarah-jones-excels-in-america-who-hurt-you/",
+        "https://thefrontrowcenter.com/2026/09/america-who-hurt-you/",
+        "https://1minutecritic.com/america-who-hurt-you-sarah-jones-review/",
         "https://www.harlemworldmagazine.com/national-black-theatre-and-theatre-for-a-new-audience-present-america-who-hurt-you/"
       ],
       "dirFiles": 10,
@@ -4698,7 +4698,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -4708,7 +4708,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -4718,7 +4718,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -4728,7 +4728,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -4748,9 +4748,9 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 30,
+        "count": 29,
         "byReason": {
-          "non-review-host": 28,
+          "non-review-host": 27,
           "aggregator-internal-nav": 2
         }
       },
@@ -4782,10 +4782,10 @@
             "firstSeenAt": "2026-09-19T06:54:18.824Z"
           },
           {
-            "url": "https://1minutecritic.com/america-who-hurt-you-sarah-jones-review/",
-            "outletId": "1minutecritic.com",
+            "url": "https://theaterpizzazz.com/sarah-jones-excels-in-america-who-hurt-you/",
+            "outletId": "theaterpizzazz.com",
             "state": "live",
-            "firstSeenAt": "2026-09-19T06:54:18.824Z"
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
           },
           {
             "url": "https://thefrontrowcenter.com/2026/09/america-who-hurt-you/",
@@ -4794,10 +4794,10 @@
             "firstSeenAt": "2026-09-19T21:19:05.506Z"
           },
           {
-            "url": "https://theaterpizzazz.com/sarah-jones-excels-in-america-who-hurt-you/",
-            "outletId": "theaterpizzazz.com",
+            "url": "https://1minutecritic.com/america-who-hurt-you-sarah-jones-review/",
+            "outletId": "1minutecritic.com",
             "state": "live",
-            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+            "firstSeenAt": "2026-09-19T06:54:18.824Z"
           },
           {
             "url": "https://nystagereview.com/2026/09/17/america-who-hurt-you-mental-state/",
@@ -4817,7 +4817,7 @@
         "liveCount": 4,
         "candidateCount": 6
       },
-      "computedAt": "2026-09-20T22:08:24.514Z"
+      "computedAt": "2026-09-21T11:24:10.560Z"
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -23104,8 +23104,8 @@
         "https://www.londontheatre.co.uk/theatre-news/news/catarina-and-the-beauty-of-killing-fascists-to-have-uk-premiere-at-the-national",
         "https://www.timeout.com/london/theatre/catarina-and-the-beauty-of-killing-fascists"
       ],
-      "dirFiles": 0,
-      "dirClean": 0,
+      "dirFiles": 2,
+      "dirClean": 1,
       "inReviewsJson": 0,
       "missing": [
         {
@@ -23120,21 +23120,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "serpCensus": true
-        },
-        {
           "url": "https://thetheatretimes.com/catarina-and-the-beauty-of-killing-fascists-at-the-tampere-theatre-festival-do-we-defend-democracy-by-breaking-its-rules/",
           "host": "thetheatretimes.com",
           "knownOutletId": "the-theatre-times",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatremonkey.com/show/catarina-and-the-beauty-of-killing-fascists/",
-          "host": "theatremonkey.com",
-          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -23157,7 +23145,26 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--philip-oltermann.json",
+              "flag": "clean",
+              "urlInDir": "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -23260,9 +23267,8 @@
       "candidatesRejected": {
         "count": 28,
         "byReason": {
-          "non-review-host": 26,
-          "venue-production-page": 1,
-          "ticketing-reseller": 1
+          "non-review-host": 27,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -23292,18 +23298,6 @@
           "reason": "Refusing to ingest — https://www.thestage.co.uk/features/tiago-rodrigues-on-catarina-and-the-beauty-"
         },
         {
-          "url": "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre",
-          "host": "theguardian.com",
-          "outletId": "guardian",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
           "url": "https://thetheatretimes.com/catarina-and-the-beauty-of-killing-fascists-at-the-tampere-theatre-festival-do-we-defend-democracy-by-breaking-its-rules/",
           "host": "thetheatretimes.com",
           "outletId": "the-theatre-times",
@@ -23313,32 +23307,34 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=thetheatretimes.com): Scrapingdog HTTP 400: Oops! Some"
         },
         {
-          "url": "https://www.theatremonkey.com/show/catarina-and-the-beauty-of-killing-fascists/",
-          "host": "theatremonkey.com",
-          "outletId": "theatremonkey",
+          "url": "https://www.e-flux.com/notes/656073/catarina-and-the-beauty-of-killing-fascists",
+          "host": "e-flux.com",
+          "outletId": "e-flux",
           "provisional": true,
-          "ok": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.e-flux.com/notes/656073/catarina-and-the-beauty-of-killing-fascists",
-          "host": "e-flux.com",
-          "outletId": "e-flux"
+          "reason": "⚠️  provisional outlet \"e-flux\" (not in registry) — onboard to outlet-registry.json after review.\n  "
         },
         {
           "url": "https://www.londontheatre.co.uk/theatre-news/news/catarina-and-the-beauty-of-killing-fascists-to-have-uk-premiere-at-the-national",
           "host": "londontheatre.co.uk",
-          "outletId": "london-theatre"
-        },
+          "outletId": "london-theatre",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        }
+      ],
+      "ingestSkippedByCap": [
         {
           "url": "https://www.timeout.com/london/theatre/catarina-and-the-beauty-of-killing-fascists",
           "host": "timeout.com",
@@ -23363,25 +23359,11 @@
             "url": "https://www.thestage.co.uk/features/tiago-rodrigues-on-catarina-and-the-beauty-of-killing-fascists-national-theatre-london"
           },
           {
-            "outletId": "guardian",
-            "outlet": "guardian",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre"
-          },
-          {
             "outletId": "the-theatre-times",
             "outlet": "the-theatre-times",
             "critic": "Unknown",
             "stars": null,
             "url": "https://thetheatretimes.com/catarina-and-the-beauty-of-killing-fascists-at-the-tampere-theatre-festival-do-we-defend-democracy-by-breaking-its-rules/"
-          },
-          {
-            "outletId": "theatremonkey.com",
-            "outlet": "theatremonkey.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatremonkey.com/show/catarina-and-the-beauty-of-killing-fascists/"
           },
           {
             "outletId": "e-flux.com",
@@ -23403,10 +23385,23 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/theatre/catarina-and-the-beauty-of-killing-fascists"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.theatremonkey.com/show/catarina-and-the-beauty-of-killing-fascists/",
+            "outletId": "theatremonkey.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-21T00:49:24.476Z"
+          },
           {
             "url": "https://events.nationaltheatre.org.uk/events/95881",
             "outletId": "nationaltheatre.org.uk",
@@ -23422,22 +23417,8 @@
             "firstSeenAt": "2026-09-21T00:49:24.476Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre",
-            "outletId": "guardian",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-21T00:49:24.476Z"
-          },
-          {
             "url": "https://thetheatretimes.com/catarina-and-the-beauty-of-killing-fascists-at-the-tampere-theatre-festival-do-we-defend-democracy-by-breaking-its-rules/",
             "outletId": "the-theatre-times",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-21T00:49:24.476Z"
-          },
-          {
-            "url": "https://www.theatremonkey.com/show/catarina-and-the-beauty-of-killing-fascists/",
-            "outletId": "theatremonkey.com",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-09-21T00:49:24.476Z"
@@ -23462,12 +23443,19 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-09-21T00:49:24.476Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre",
+            "outletId": "guardian",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-21T00:49:24.476Z"
           }
         ],
-        "liveCount": 0,
+        "liveCount": 1,
         "candidateCount": 8
       },
-      "computedAt": "2026-09-21T00:49:24.476Z"
+      "computedAt": "2026-09-21T11:24:10.560Z"
     },
     {
       "showId": "catch-of-the-day-off-broadway-2026",
@@ -31042,7 +31030,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-21T05:44:22.707Z"
+      "computedAt": "2026-09-21T11:24:10.560Z"
     },
     {
       "showId": "crazy-mama-off-broadway-2026",
@@ -32761,28 +32749,27 @@
         "https://everything-theatre.co.uk/2026/09/review-darkling-bush-theatre/",
         "https://theatreandtonic.co.uk/blog/darkling-bush-theatre-review",
         "https://www.timeout.com/london/theatre/darkling-review",
-        "https://www.theguardian.com/stage/2026/sep/17/darkling-review-bush-theatre-london-linnea-berthelsen",
-        "https://www.thereviewshub.com/darkling-bush-theatre-london/",
-        "https://fringereview.co.uk/review/fringereview-uk/2026/darkling/",
-        "https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london",
-        "https://www.allthatdazzles.co.uk/post/review-darkling-bush-theatre",
         "https://viewfromthegods.co.uk/2026/09/17/darkling-bush-theatre/",
+        "https://www.thereviewshub.com/darkling-bush-theatre-london/",
+        "https://www.theguardian.com/stage/2026/sep/17/darkling-review-bush-theatre-london-linnea-berthelsen",
+        "https://khambayswordswordswords.blog/2026/09/18/darkling-at-the-bush-theatre-2026-review/",
+        "https://www.allthatdazzles.co.uk/post/review-darkling-bush-theatre",
+        "https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london",
         "https://redbuslondinium.uk/2026/09/15/review-darkling-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
         "https://www.bushtheatre.co.uk/event/darkling/",
-        "https://www.pinkprincetheatre.com/post/review-darkling-bush-theatre",
         "https://lovelondonloveculture.com/2026/09/16/review-darkling-bush-theatre/",
-        "https://khambayswordswordswords.blog/2026/09/18/darkling-at-the-bush-theatre-2026-review/",
-        "https://www.timeout.com/london/theatre/darkling",
+        "https://www.pinkprincetheatre.com/post/review-darkling-bush-theatre",
         "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre",
+        "https://readaboutstuff.com/2026/09/16/review-darkling-bush-theatre-london/",
         "https://susanelkin.co.uk/articles/darkling-susan-elkin-reviews/",
-        "https://morningstaronline.co.uk/article/theatre-review-darkling-bush-theatre-london",
         "https://liamodell.com/2026/09/16/darkling-review-bush-theatre-linnea-berthelsen-stranger-things-titas-halder-birmingham-oxford-manchester/",
+        "https://www.londontheatre1.com/reviews/darkling-bush-theatre/",
         "https://www.whatsonstage.com/news/darkling-with-linnea-berthelsen-at-bush-theatre-and-on-tour-review_1731568/",
-        "https://www.londontheatre1.com/reviews/darkling-bush-theatre/"
+        "https://morningstaronline.co.uk/article/theatre-review-darkling-bush-theatre-london"
       ],
-      "dirFiles": 32,
-      "dirClean": 20,
-      "inReviewsJson": 22,
+      "dirFiles": 33,
+      "dirClean": 22,
+      "inReviewsJson": 23,
       "missing": [
         {
           "url": "https://redbuslondinium.uk/2026/09/15/review-darkling-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
@@ -32794,12 +32781,6 @@
           "url": "https://lovelondonloveculture.com/2026/09/16/review-darkling-bush-theatre/",
           "host": "lovelondonloveculture.com",
           "knownOutletId": "lovelondonloveculture",
-          "serpCensus": true
-        },
-        {
-          "url": "https://susanelkin.co.uk/articles/darkling-susan-elkin-reviews/",
-          "host": "susanelkin.co.uk",
-          "knownOutletId": null,
           "serpCensus": true
         }
       ],
@@ -32823,49 +32804,9 @@
         {
           "host": "onceaweektheatre.com",
           "count": 1
-        },
-        {
-          "host": "readaboutstuff.com",
-          "count": 1
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.theguardian.com/stage/2026/sep/17/darkling-review-bush-theatre-london-linnea-berthelsen",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.theguardian.com/stage/2026/sep/17/darkling-review-bush-theatre-london-linnea-berthelsen"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://fringereview.co.uk/review/fringereview-uk/2026/darkling/",
-          "host": "fringereview.co.uk",
-          "knownOutletId": "fringereview",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "fringereview--simon-jenner.json",
-              "flag": "clean",
-              "urlInDir": "https://fringereview.co.uk/review/fringereview-uk/2026/darkling/"
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://www.bushtheatre.co.uk/event/darkling/",
           "host": "bushtheatre.co.uk",
@@ -32983,7 +32924,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -32999,13 +32940,13 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 22,
+        "resultCount": 21,
         "error": null
       },
       "candidatesRejected": {
-        "count": 12,
+        "count": 11,
         "byReason": {
-          "non-review-host": 9,
+          "non-review-host": 8,
           "roundup-page": 1,
           "ticketing-listing": 2
         }
@@ -33035,18 +32976,6 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/09/16/review-darkling-bush-theatre/ matc"
-        },
-        {
-          "url": "https://susanelkin.co.uk/articles/darkling-susan-elkin-reviews/",
-          "host": "susanelkin.co.uk",
-          "outletId": "susanelkin",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -33066,27 +32995,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://lovelondonloveculture.com/2026/09/16/review-darkling-bush-theatre/"
-          },
-          {
-            "outletId": "susanelkin.co.uk",
-            "outlet": "susanelkin.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://susanelkin.co.uk/articles/darkling-susan-elkin-reviews/"
-          },
-          {
-            "outletId": "guardian",
-            "outlet": "guardian",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theguardian.com/stage/2026/sep/17/darkling-review-bush-theatre-london-linnea-berthelsen"
-          },
-          {
-            "outletId": "fringereview",
-            "outlet": "fringereview",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/darkling/"
           },
           {
             "outletId": "bushtheatre.co.uk",
@@ -33130,32 +33038,20 @@
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
-            "url": "https://www.thereviewshub.com/darkling-bush-theatre-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-20T07:18:46.455Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-20T07:18:46.455Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-darkling-bush-theatre",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-20T07:18:46.455Z"
-          },
-          {
             "url": "https://viewfromthegods.co.uk/2026/09/17/darkling-bush-theatre/",
             "outletId": "viewfromthegods.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-20T15:35:03.611Z"
           },
           {
-            "url": "https://www.pinkprincetheatre.com/post/review-darkling-bush-theatre",
-            "outletId": "pinkprincetheatre.com",
+            "url": "https://www.thereviewshub.com/darkling-bush-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-20T07:18:46.455Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/sep/17/darkling-review-bush-theatre-london-linnea-berthelsen",
+            "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
@@ -33166,8 +33062,20 @@
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/darkling",
-            "outletId": "timeout.com",
+            "url": "https://www.allthatdazzles.co.uk/post/review-darkling-bush-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-20T07:18:46.455Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-20T07:18:46.455Z"
+          },
+          {
+            "url": "https://www.pinkprincetheatre.com/post/review-darkling-bush-theatre",
+            "outletId": "pinkprincetheatre.com",
             "state": "live",
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
@@ -33178,8 +33086,14 @@
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
-            "url": "https://morningstaronline.co.uk/article/theatre-review-darkling-bush-theatre-london",
-            "outletId": "morningstaronline.co.uk",
+            "url": "https://readaboutstuff.com/2026/09/16/review-darkling-bush-theatre-london/",
+            "outletId": "readaboutstuff.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-21T11:24:10.560Z"
+          },
+          {
+            "url": "https://susanelkin.co.uk/articles/darkling-susan-elkin-reviews/",
+            "outletId": "susanelkin.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-20T22:08:24.514Z"
           },
@@ -33192,6 +33106,12 @@
           {
             "url": "https://www.londontheatre1.com/reviews/darkling-bush-theatre/",
             "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-20T22:08:24.514Z"
+          },
+          {
+            "url": "https://morningstaronline.co.uk/article/theatre-review-darkling-bush-theatre-london",
+            "outletId": "morningstaronline.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-20T22:08:24.514Z"
           },
@@ -33210,27 +33130,6 @@
             "firstSeenAt": "2026-09-20T15:35:03.611Z"
           },
           {
-            "url": "https://susanelkin.co.uk/articles/darkling-susan-elkin-reviews/",
-            "outletId": "susanelkin.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-20T22:08:24.514Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/sep/17/darkling-review-bush-theatre-london-linnea-berthelsen",
-            "outletId": "guardian",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-20T07:18:46.455Z"
-          },
-          {
-            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/darkling/",
-            "outletId": "fringereview",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-20T22:08:24.514Z"
-          },
-          {
             "url": "https://www.bushtheatre.co.uk/event/darkling/",
             "outletId": "bushtheatre.co.uk",
             "state": "GAP",
@@ -33245,10 +33144,10 @@
             "firstSeenAt": "2026-09-20T22:08:24.514Z"
           }
         ],
-        "liveCount": 14,
+        "liveCount": 17,
         "candidateCount": 21
       },
-      "computedAt": "2026-09-20T22:08:24.514Z"
+      "computedAt": "2026-09-21T11:24:10.560Z"
     },
     {
       "showId": "data-off-broadway-2026",
@@ -49967,15 +49866,15 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://donyc.com/events/2026/9/20/bailey-swilley-s-gimme-a-sign-tickets",
-        "https://thecomedybureau.com/show/gimme-a-sign-in-nyc-2/2026-09-17/",
         "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign",
         "https://theweereview.com/review/bailey-swilley-gimme-a-sign/",
-        "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/"
+        "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/",
+        "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign",
+        "https://thecomedybureau.com/show/gimme-a-sign-in-nyc-2/2026-09-17/"
       ],
       "dirFiles": 5,
-      "dirClean": 1,
-      "inReviewsJson": 0,
+      "dirClean": 2,
+      "inReviewsJson": 1,
       "missing": [
         {
           "url": "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/",
@@ -49984,26 +49883,13 @@
           "serpCensus": true
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [
+      "dirOnly": [
         {
-          "url": "https://thecomedybureau.com/show/gimme-a-sign-in-nyc-2/2026-09-17/",
-          "host": "thecomedybureau.com",
-          "knownOutletId": "thecomedybureau",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thecomedybureau--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://thecomedybureau.com/show/gimme-a-sign-in-nyc-2/2026-09-17/"
-            }
-          ],
-          "serpCensus": true
-        },
+          "host": "donyc.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
         {
           "url": "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign",
           "host": "sohoplayhouse.com",
@@ -50039,6 +49925,24 @@
             }
           ],
           "serpCensus": true
+        },
+        {
+          "url": "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign",
+          "host": "ouchmagazine.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "ouchmagazine--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign"
+            }
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -50065,7 +49969,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -50095,7 +49999,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -50105,7 +50009,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
@@ -50115,13 +50019,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 43,
+        "count": 45,
         "byReason": {
-          "non-review-host": 32,
-          "aggregator-internal-nav": 7,
-          "non-review-path": 1,
+          "non-review-host": 37,
+          "aggregator-internal-nav": 5,
           "roundup-page": 1,
-          "venue-production-page": 2
+          "venue-production-page": 1,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -50151,13 +50055,6 @@
             "url": "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/"
           },
           {
-            "outletId": "thecomedybureau",
-            "outlet": "thecomedybureau",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thecomedybureau.com/show/gimme-a-sign-in-nyc-2/2026-09-17/"
-          },
-          {
             "outletId": "sohoplayhouse",
             "outlet": "sohoplayhouse",
             "critic": "Unknown",
@@ -50170,15 +50067,22 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://theweereview.com/review/bailey-swilley-gimme-a-sign/"
+          },
+          {
+            "outletId": "ouchmagazine.com",
+            "outlet": "ouchmagazine.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://donyc.com/events/2026/9/20/bailey-swilley-s-gimme-a-sign-tickets",
-            "outletId": "donyc.com",
+            "url": "https://thecomedybureau.com/show/gimme-a-sign-in-nyc-2/2026-09-17/",
+            "outletId": "thecomedybureau.com",
             "state": "live",
-            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+            "firstSeenAt": "2026-09-20T15:35:03.611Z"
           },
           {
             "url": "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/",
@@ -50186,13 +50090,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-19T21:19:05.506Z"
-          },
-          {
-            "url": "https://thecomedybureau.com/show/gimme-a-sign-in-nyc-2/2026-09-17/",
-            "outletId": "thecomedybureau",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-20T15:35:03.611Z"
           },
           {
             "url": "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign",
@@ -50207,12 +50104,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
+          },
+          {
+            "url": "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign",
+            "outletId": "ouchmagazine.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-21T11:24:10.560Z"
           }
         ],
         "liveCount": 1,
         "candidateCount": 5
       },
-      "computedAt": "2026-09-20T22:08:24.514Z"
+      "computedAt": "2026-09-21T11:24:10.560Z"
     },
     {
       "showId": "girl-interrupted-off-broadway-2026",
@@ -148235,21 +148139,22 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://exeuntnyc.com/reviews/review-the-body-of-mary-a-play-in-three-acts-of-god-at-the-gym-at-judson/",
         "https://www.theatermania.com/news/review-the-body-of-mary-a-play-in-three-acts-of-god_1853803/",
+        "https://exeuntnyc.com/reviews/review-the-body-of-mary-a-play-in-three-acts-of-god-at-the-gym-at-judson/",
         "https://nystagereview.com/2026/09/15/the-body-of-mary-a-play-in-three-acts-of-god-oh-mary-lets-laugh-about-mistreatment-of-women/",
         "https://thefrontrowcenter.com/2026/09/the-body-of-mary-a-play-in-three-acts-of-god/",
+        "https://www.abouttheartists.com/productions/208915-the-body-of-mary-a-play-in-three-acts-of-god-at-the-gym-at-judson-2026",
         "https://twi-ny.com/tag/the-body-of-mary-a-play-in-three-acts-of-god/",
         "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-broadway"
       ],
-      "dirFiles": 6,
-      "dirClean": 4,
-      "inReviewsJson": 4,
+      "dirFiles": 7,
+      "dirClean": 5,
+      "inReviewsJson": 5,
       "missing": [
         {
-          "url": "https://exeuntnyc.com/reviews/review-the-body-of-mary-a-play-in-three-acts-of-god-at-the-gym-at-judson/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine",
+          "url": "https://www.abouttheartists.com/productions/208915-the-body-of-mary-a-play-in-three-acts-of-god-at-the-gym-at-judson-2026",
+          "host": "abouttheartists.com",
+          "knownOutletId": "abouttheartists",
           "serpCensus": true
         }
       ],
@@ -148341,7 +148246,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -148357,23 +148262,22 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 6,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 25,
+        "count": 24,
         "byReason": {
-          "non-review-host": 18,
-          "aggregator-internal-nav": 6,
-          "venue-production-page": 1
+          "non-review-host": 19,
+          "aggregator-internal-nav": 5
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://exeuntnyc.com/reviews/review-the-body-of-mary-a-play-in-three-acts-of-god-at-the-gym-at-judson/",
-          "host": "exeuntnyc.com",
-          "outletId": "exeunt-magazine",
+          "url": "https://www.abouttheartists.com/productions/208915-the-body-of-mary-a-play-in-three-acts-of-god-at-the-gym-at-judson-2026",
+          "host": "abouttheartists.com",
+          "outletId": "abouttheartists",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -148388,11 +148292,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "exeunt-magazine",
-            "outlet": "exeunt-magazine",
+            "outletId": "abouttheartists",
+            "outlet": "abouttheartists",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://exeuntnyc.com/reviews/review-the-body-of-mary-a-play-in-three-acts-of-god-at-the-gym-at-judson/"
+            "url": "https://www.abouttheartists.com/productions/208915-the-body-of-mary-a-play-in-three-acts-of-god-at-the-gym-at-judson-2026"
           },
           {
             "outletId": "theatermania",
@@ -148412,6 +148316,12 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://exeuntnyc.com/reviews/review-the-body-of-mary-a-play-in-three-acts-of-god-at-the-gym-at-judson/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-20T22:08:24.514Z"
+          },
+          {
             "url": "https://nystagereview.com/2026/09/15/the-body-of-mary-a-play-in-three-acts-of-god-oh-mary-lets-laugh-about-mistreatment-of-women/",
             "outletId": "nystagereview.com",
             "state": "live",
@@ -148430,11 +148340,11 @@
             "firstSeenAt": "2026-09-20T15:35:03.611Z"
           },
           {
-            "url": "https://exeuntnyc.com/reviews/review-the-body-of-mary-a-play-in-three-acts-of-god-at-the-gym-at-judson/",
-            "outletId": "exeunt-magazine",
+            "url": "https://www.abouttheartists.com/productions/208915-the-body-of-mary-a-play-in-three-acts-of-god-at-the-gym-at-judson-2026",
+            "outletId": "abouttheartists",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-20T22:08:24.514Z"
+            "firstSeenAt": "2026-09-21T11:24:10.560Z"
           },
           {
             "url": "https://www.theatermania.com/news/review-the-body-of-mary-a-play-in-three-acts-of-god_1853803/",
@@ -148451,10 +148361,10 @@
             "firstSeenAt": "2026-09-20T22:08:24.514Z"
           }
         ],
-        "liveCount": 3,
-        "candidateCount": 6
+        "liveCount": 4,
+        "candidateCount": 7
       },
-      "computedAt": "2026-09-20T22:08:24.514Z"
+      "computedAt": "2026-09-21T11:24:10.560Z"
     },
     {
       "showId": "the-car-man-west-end-2026",
