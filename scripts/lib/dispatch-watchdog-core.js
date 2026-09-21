@@ -44,6 +44,15 @@ const {
 } = require('./dispatch-ledger.js');
 const { isExcludedCategory } = require('./autonomous-eligibility.js');
 const { isLiveBoardTaskId } = require('./task-id-namespace.js');
+// R5 (BRO-3924): the repo's ONE spend circuit breaker (already reused by
+// scripts/linear-drain-parked.js and scripts/lib/digest-autofix.js for their
+// own, much smaller-scale drains) — never a private watchdog-only dollar sum.
+const { computeSpendCircuitBreaker, DEFAULT_SPEND_THRESHOLD_USD, DEFAULT_CONCURRENCY_CAP } = require('./backlog-drain.js');
+// Precise per-claim → per-job correlation (same mechanics linear-drain-
+// parked.js's reconcileOutcomes and digest-autofix.js already reuse for the
+// identical "did MY dispatch turn into a job, and what did IT cost" question
+// — BRO-2542's shared reconcile loop, not a fourth hand-rolled fold).
+const dispatchReconcile = require('./dispatch-reconcile.js');
 
 const WATCHDOG_EVENTS = Object.freeze({
   REDISPATCH: 'watchdog-redispatch',
@@ -190,6 +199,196 @@ const CAPS = Object.freeze({
   perHour: Math.max(1, Math.ceil(PER_DAY_DEFAULT / PACING_HOURS)),
   globalAutoTabs: 12,
 });
+
+function round2(n) { return Math.round(n * 100) / 100; }
+
+// Subagent review (BRO-3924): a single corrupted/negative costUSD ledger row
+// would otherwise pass straight into spentUSD's sum and OFFSET legitimate
+// positive spend from other rows — a money guard silently suppressing its
+// own halt is the one direction it must never fail toward.
+function positiveUSD(v) {
+  const n = Number(v);
+  return Number.isFinite(n) && n > 0 ? n : 0;
+}
+
+function median(nums) {
+  if (!nums || !nums.length) return 0;
+  const sorted = [...nums].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+// R5 (BRO-3924): DEFAULT_SPEND_THRESHOLD_USD ($12) is sized for backlog-
+// drain.js's own DEFAULT_CONCURRENCY_CAP (2). Reused UNSCALED here it would
+// trip on ordinary steady state, not just genuine failure: at
+// CAPS.watchdogConcurrent (6) and a real trailing-median job cost, the
+// in-flight reservation alone (see watchdogSpendBreaker below) crosses $12
+// with as few as two concurrent claims — nowhere near "six at a time,
+// whenever one is done another starts" (CAPS's own header, BRO-3390).
+// Scaled by the SAME ratio of two already-existing constants rather than a
+// new invented number — the ticket forbids a new CAPS.usdPerDay field, and
+// this is not one: it is a derived read of the one shared default.
+const WATCHDOG_SPEND_THRESHOLD_USD = round2(DEFAULT_SPEND_THRESHOLD_USD * (CAPS.watchdogConcurrent / DEFAULT_CONCURRENCY_CAP));
+
+const SPEND_MEDIAN_WINDOW_MS = 7 * 24 * 3600 * 1000;
+// Cold-start fallback (no job-done row with a positive costUSD in the
+// trailing window — a quiet week, a fresh ledger, or a run of pure
+// failures): median() would return 0, which would zero out the in-flight
+// reservation below exactly when history can least rule out a crash loop —
+// the one case this guard exists for. Same $6.16 median this file's own
+// CAPS comment already cites (382 completed jobs since 2026-08-16), not a
+// new figure.
+const FALLBACK_JOB_COST_USD = 6.16;
+
+// Fleet-wide (every job-done row, not just watchdog-claimed ones): the
+// watchdog dispatches through the exact same bsc-next.js/linear-next.js
+// machinery as every other drain, so recent fleet-wide cost is the best
+// available estimate of what an in-flight watchdog claim will cost before
+// its OWN job-done lands — and watchdog-only job-done history is far
+// sparser, making a median over few points noisy. (Known imprecision, not
+// fixed here: this blends the cmux/Notion lane's cost distribution with the
+// headless/Linear lane's, which BRO-3404's header already notes differ in
+// reliability; the Notion lane is largely frozen so the skew is small.)
+function medianJobCostUSD(entries, now) {
+  const cutoff = now - SPEND_MEDIAN_WINDOW_MS;
+  const costs = [];
+  for (const job of foldJobs(entries).values()) {
+    // Codex/subagent review (BRO-3924): DONE-only sampling is backwards for
+    // the exact scenario this guard exists to catch — a crash loop produces
+    // job-failed rows (bsc-runner.js still records their real costUSD) and
+    // NO job-done rows, so a DONE-only median would fall back to the
+    // cold-start figure for the very claims that are actively spending,
+    // understating the reservation right when it matters most. Any
+    // TERMINAL_JOB_EVENTS outcome with a real cost counts.
+    if (!job || !TERMINAL_JOB_EVENTS.has(job.event)) continue;
+    const ts = Date.parse(job.ts || '');
+    if (!Number.isFinite(ts) || ts < cutoff) continue;
+    const usd = Number(job.costUSD);
+    if (Number.isFinite(usd) && usd > 0) costs.push(usd);
+  }
+  const m = median(costs);
+  return m > 0 ? m : FALLBACK_JOB_COST_USD;
+}
+
+// Generous grace window for classifyDispatches' orphan/retry-timeout
+// detection below — well past DISPATCH_TIMEOUT_MS (dispatch-watchdog.js's
+// 15-minute hard kill of a wedged child) plus its own verify overhead. This
+// is a STATELESS read (see watchdogSpendRows — nothing is ever written
+// back), so an over-generous window only means a genuinely-orphaned claim
+// takes longer to stop being re-evaluated as "might still spawn"; it can
+// never misclassify a still-legitimately-running job, because that case is
+// caught separately (TERMINAL_JOB_EVENTS check inside classifyDispatches).
+const SPEND_ORPHAN_TIMEOUT_H = 1;
+
+// R5: reconcile this watchdog's OWN claims (WATCHDOG_EVENTS.REDISPATCH rows)
+// into backlog-drain.js's spend vocabulary ({ts, event:'card-pass'|
+// 'card-fail', usd}) — the same fold scripts/linear-drain-parked.js's
+// reconcileOutcomes (linear-drain-parked.js:339-403) already does for its
+// own drain, reusing dispatch-reconcile.js's classifyDispatches instead of a
+// hand-rolled "any taskId this watchdog ever claimed" fold: the naive
+// version would attribute a LATER manual `--force` re-dispatch's cost to the
+// watchdog (or a stale historical claim's job to a wrong later one) purely
+// because the same taskId appears twice in ledger history. classifyDispatches
+// correlates each SPECIFIC claim to the SPECIFIC job spawned after it
+// (findMyJob's ts-ordered lookup + claimedJobIds' one-job-one-claim guard),
+// which is the correlation precision computeConcurrency's own docstring
+// already demands ("never counts a manually-run job someone else started").
+//
+// Deliberately STATELESS: `resolvingEvents` is an empty Set, so nothing is
+// ever treated as "already resolved" and every claim in history is
+// re-classified fresh on every call. This never writes anything back to the
+// ledger (no new event, no Linear comment, no state change — R3's same
+// constraint) at the cost of O(all-time claims) per call, which is already
+// this file's existing performance shape (watchdogClaimPending,
+// dispatchCapDecision and friends all walk the full entries array too).
+// Codex adversarial review (BRO-3924): classifyDispatches' findMyJob has NO
+// upper time bound — it takes the EARLIEST spawn at or after the claim's ts,
+// however far in the future. That is safe for linear-drain-parked.js's own
+// reconcileOutcomes because a resolved dispatch stops being re-offered to
+// findMyJob at all (isDispatchResolved checks its own PERSISTED
+// resolvingEvents). This reconciliation is deliberately stateless — nothing
+// is ever written back — so without a bound, a truly-abandoned watchdog
+// claim from weeks ago would be re-evaluated on every call forever and could
+// silently acquire a much-later, UNRELATED manual dispatch's job: its cost,
+// or worse, a spurious 'card-pass' that clears the "zero completions" halt
+// on a claim the watchdog itself never actually landed. Bounding the CLAIM
+// set to a recent window closes this without touching the shared helper:
+// only spend within the last local day can ever matter to today's breaker
+// (watchdogSpendBreaker filters to today below), so a claim outside this
+// window is simply never offered to classifyDispatches at all — not "found
+// and misattributed", just never considered. Wider than one day for margin
+// around the local-day boundary and SPEND_ORPHAN_TIMEOUT_H's own grace.
+const SPEND_CLAIM_LOOKBACK_MS = 48 * 3600 * 1000;
+
+function watchdogSpendRows(entries, now) {
+  const cutoff = now - SPEND_CLAIM_LOOKBACK_MS;
+  const isRecentClaim = e => e && e.event === WATCHDOG_EVENTS.REDISPATCH &&
+    Number.isFinite(Date.parse(e.ts || '')) && Date.parse(e.ts) >= cutoff;
+  const hasClaims = (entries || []).some(isRecentClaim);
+  if (!hasClaims) return [];
+  const decisions = dispatchReconcile.classifyDispatches({
+    ledgerEntries: entries,
+    dispatchLedgerEntries: entries,
+    isDispatchRow: isRecentClaim,
+    resolvingEvents: new Set(),
+    orphanTimeoutH: SPEND_ORPHAN_TIMEOUT_H,
+    cardIdOf: d => String(d.taskId),
+    taskIdOf: d => String(d.taskId),
+    now: new Date(now),
+  });
+  const rows = [];
+  for (const { cardId, job, kind } of decisions) {
+    // Orphan: no job ever spawned at all — no cost was incurred, same
+    // treatment linear-drain-parked.js's own ORPHAN branch gives it.
+    if (kind === dispatchReconcile.DECISION_KINDS.ORPHAN) continue;
+    if (kind === dispatchReconcile.DECISION_KINDS.RETRY_TIMEOUT) {
+      // Codex adversarial review: the resumed chain's own job may already
+      // have incurred real cost before it stalled — dropping this silently
+      // UNDERSTATED spend exactly where the money guard needs it most. Same
+      // field linear-drain-parked.js's own RETRY_TIMEOUT branch records.
+      rows.push({ ts: job.ts || null, taskId: cardId, event: 'card-fail', usd: positiveUSD(job.costUSD) });
+      continue;
+    }
+    rows.push({
+      ts: job.ts || null,
+      taskId: cardId,
+      event: job.event === JOB_EVENTS.DONE ? 'card-pass' : 'card-fail',
+      usd: positiveUSD(job.costUSD),
+    });
+  }
+  return rows;
+}
+
+// R5: the breaker itself. LOCAL calendar day boundary (localDay(), same
+// convention watchdogClaimsToday already uses for the day-budget cap) rather
+// than computeSpendCircuitBreaker's own rolling 24h windowH — one day
+// boundary definition across every cap in this file.
+//
+// IN-FLIGHT RESERVATION: costUSD only ever lands on a job's TERMINAL event
+// (job-done/job-failed), so a claim whose job is still running is invisible
+// to spentUSD by construction — a burst of CAPS.watchdogConcurrent (6)
+// claims that are all still running commits real, uncounted dollars with
+// zero completions ever recorded until the first one finishes. One synthetic
+// row, sized at (open watchdog-claimed launches) × (trailing fleet median
+// job cost), makes that committed-but-unconfirmed spend visible immediately.
+// It is a 'card-fail' row: spendCircuitBreakerStatus sums `usd` across EVERY
+// row regardless of event, but only counts 'card-pass'/'auto-approve' toward
+// `completions` — so the reservation contributes to spentUSD without ever
+// being mistaken for a completion that would wrongly clear the "zero
+// completions" halt condition.
+function watchdogSpendBreaker(entries, now, opts = {}) {
+  const today = localDay(now);
+  const terminalRows = watchdogSpendRows(entries, now).filter(r => r.ts && localDay(r.ts) === today);
+  const liveNow = watchdogLiveCount(entries);
+  const perJobUSD = medianJobCostUSD(entries, now);
+  const reservedUSD = liveNow > 0 ? round2(liveNow * perJobUSD) : 0;
+  const rows = reservedUSD > 0
+    ? [...terminalRows, { ts: new Date(now).toISOString(), taskId: 'watchdog-reservation', event: 'card-fail', usd: reservedUSD }]
+    : terminalRows;
+  const thresholdUSD = Number.isFinite(opts.thresholdUSD) ? opts.thresholdUSD : WATCHDOG_SPEND_THRESHOLD_USD;
+  const breaker = computeSpendCircuitBreaker(rows, { thresholdUSD, now });
+  return { ...breaker, liveNow, perJobUSD, reservedUSD };
+}
 
 // Tolerate cmux's activity-glyph prefix (braille spinners ⠂/✳ prepended in
 // list output — see cmux-workspaces.isDoneTitle) before the marker glyph;
@@ -526,6 +725,11 @@ function isTaskOpen(task) {
  *     cmux was unobservable (degraded mode: report-only, never dispatch)
  *   - recheckFailures: [{taskSubject, notionId, ts}] recent verifyCmd
  *     failures from the nightly acceptance-recheck ledger (surfaced, not run)
+ *   - alreadyPasses: [{id, name, verifyCmd, detail}] BRO-3551's open-backlog
+ *     sweep report — Linear cards whose OWN acceptance command already
+ *     passes on main (BRO-3924, R3). Surfaced under needsYou/renderNarrative
+ *     only; the exclusion from the dispatch queue itself already happened
+ *     upstream, in linear-watchdog-source.js's ineligibleReason.
  *   - dispatchEnabled: false = visibility only (kill-switch file)
  *   - unlandedJobDone: [{taskId, jobId, cwd, sha}] from
  *     headless-unlanded-detection.js's findUnlandedJobDoneEntries() — jobs
@@ -534,7 +738,7 @@ function isTaskOpen(task) {
  *     I/O), same injection pattern as liveTitles, so this stays pure.
  */
 function planSweep(entries, tasks, opts) {
-  const { now, liveTitles = null, recheckFailures = [], dispatchEnabled = true, unlandedJobDone = [] } = opts || {};
+  const { now, liveTitles = null, recheckFailures = [], alreadyPasses = [], dispatchEnabled = true, unlandedJobDone = [] } = opts || {};
   if (!Number.isFinite(now)) throw new Error('planSweep requires now (ms epoch)');
   const cmuxObserved = liveTitles instanceof Map && liveTitles.size > 0;
 
@@ -593,6 +797,15 @@ function planSweep(entries, tasks, opts) {
     if (!isTaskOpen(task)) continue;          // card already closed
     if (open.has(id)) continue;               // a newer launch superseded this
     if (ownerParked.has(id) || wdParked.has(id)) continue;
+    // BRO-3437: a job dispatched against the retired Notion mirror (any
+    // bare-numeric id) has no live card the owner can act on — parking it
+    // writes a watchdog-park ledger row for work nobody is tracking.
+    // board-targeting-audit.js measured this writer at 100% retired-board
+    // ids over 7 days, most recently <1h old. retryable/toPark (the 'dead'
+    // loop above) and p01Queue already carry this same gate; this loop was
+    // the gap — jobBlocked folds every job-lifecycle ledger row regardless
+    // of which board originally dispatched it.
+    if (!isLiveBoardTaskId(id)) continue;
     jobBlocked.push({ taskId: id, subject: task.subject, jobId: job.jobId, reason: job.reason || null });
   }
   jobBlocked.sort((a, b) => compareTaskIds(a.taskId, b.taskId));
@@ -740,6 +953,17 @@ function planSweep(entries, tasks, opts) {
     // after REDISPATCH_REARM_MS regardless, so this is a bounded no-op, not
     // a lost claim.
     if (task.fromArchive) continue;
+    // BRO-3437: a claim against the retired Notion mirror (bare-numeric id)
+    // can never be re-armed by the owner through Linear — no card exists
+    // there to act on. BRO-3390/3878 already stopped FRESH claims like this
+    // from being created (p01Queue/retryable are Linear-only), but a claim
+    // already sitting in the ledger from before those fixes still aged past
+    // CLAIM_LABEL_GRACE_MS and got promoted to noLaunchPark below, writing a
+    // watchdog-park row and paging the owner about a card Linear has never
+    // heard of. board-targeting-audit.js measured `watchdog-park` at 100%
+    // retired-board ids over 7 days, most recently <1h old — this loop (and
+    // jobBlocked above) were the two remaining sources.
+    if (!isLiveBoardTaskId(id)) continue;
     // BRO-3429 ship-check: once noLaunchPark (below) has actually parked this
     // id, it belongs to the "Needs you: parked" section, not this one — an id
     // in both would double-count in needsYou and print two contradictory
@@ -811,6 +1035,10 @@ function planSweep(entries, tasks, opts) {
   // which is a genuine "nothing launches anywhere" wedge) still stop
   // everything. holds stays the union so the narrative and every existing
   // consumer read exactly as before.
+  // R5 (BRO-3924): computed here, before the hold list, so its verdict can
+  // feed globalHolds/pausedByPolicy exactly like every other cap below.
+  const spendBreaker = watchdogSpendBreaker(entries, now);
+
   const globalHolds = [];
   const cmuxHolds = [];
   if (!dispatchEnabled) globalHolds.push('dispatch kill-switch set');
@@ -824,6 +1052,9 @@ function planSweep(entries, tasks, opts) {
   if (usedThisHour >= CAPS.perHour) globalHolds.push(`hourly pacing (${usedThisHour}/${CAPS.perHour} in the last 60m — spreading ${CAPS.perDay}/day instead of bursting)`);
   if (liveNow >= CAPS.watchdogConcurrent) globalHolds.push(`watchdog concurrency at cap (${liveNow}/${CAPS.watchdogConcurrent})`);
   if (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs) cmuxHolds.push(`global auto-tab ceiling (${autoTabs}/${CAPS.globalAutoTabs}) — cmux lane only; headless still dispatches`);
+  // R5: the shared breaker's own reason string, verbatim — no watchdog-
+  // specific wording invented here.
+  if (spendBreaker.halt) globalHolds.push(spendBreaker.reason);
   // Union — a NEW array, never an alias of globalHolds (an alias made every
   // cmux hold a global one again, which is the exact bug this split removes).
   // The narrative and every existing reader see the same list they always did;
@@ -844,7 +1075,8 @@ function planSweep(entries, tasks, opts) {
     usedToday >= CAPS.perDay ||
     usedThisHour >= CAPS.perHour ||
     liveNow >= CAPS.watchdogConcurrent ||
-    (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs);
+    (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs) ||
+    spendBreaker.halt;
 
   let budget = 0;
   if (!globalHolds.length) {
@@ -886,21 +1118,31 @@ function planSweep(entries, tasks, opts) {
   // start, and only the owner can unblock them. Leaving them out made the tab
   // title read "0 need you" while the P0/P1 count silently shrank by the same
   // number — the backlog looked drained (ship-check P1).
-  const needsYou = toPark.length + wdParked.size + recheckFailures.length +
+  // BRO-3924 (R3): alreadyPasses cards count toward needsYou too — same
+  // treatment as recheckFailures, a human decision (close the card) this
+  // sweep surfaces but never acts on itself.
+  //
+  // BRO-3437: wdParked is still the full exclusion set (a legacy bare-id park
+  // row must keep suppressing its id), but only live-board parks are owner
+  // work — a retired-board park never clears (nothing relaunches those ids),
+  // so counting it kept "N need you" inflated by cards no surface can show.
+  const wdParkedLive = [...wdParked].filter(isLiveBoardTaskId).length;
+  const needsYou = toPark.length + wdParkedLive + recheckFailures.length +
     (outage.outage ? 1 : 0) + (failureRate.leaking ? 1 : 0) + awaitingClaim.length +
-    unlandedDone.length + jobBlocked.length;
+    unlandedDone.length + jobBlocked.length + alreadyPasses.length;
 
   return {
     now, cmuxObserved,
     inFlight, retryable, toPark, p01Queue, toDispatch, awaitingClaim, noLaunchPark,
     unlandedDone, jobBlocked,
-    budgets: { usedToday, usedThisHour, liveNow, autoTabs, budget, holds, globalHolds, cmuxHolds, pausedByPolicy, caps: CAPS },
+    budgets: { usedToday, usedThisHour, liveNow, autoTabs, budget, holds, globalHolds, cmuxHolds, pausedByPolicy, caps: CAPS, spend: spendBreaker },
     outage,
     failureRate,
     crownSessionTabs: deadCrownTabs,
     recheckFailures,
+    alreadyPasses,
     needsYou,
-    parkedTotal: wdParked.size + toPark.length + noLaunchPark.length + jobBlocked.length,
+    parkedTotal: wdParkedLive + toPark.length + noLaunchPark.length + jobBlocked.length,
   };
 }
 
@@ -963,7 +1205,7 @@ function renderNarrative(plan) {
     }
     if (stillAwaitingLabel.length > 6) lines.push(`  • …and ${stillAwaitingLabel.length - 6} more`);
   }
-  if (plan.toPark.length || plan.noLaunchPark.length || plan.recheckFailures.length || plan.crownSessionTabs.length || plan.unlandedDone.length) {
+  if (plan.toPark.length || plan.noLaunchPark.length || plan.recheckFailures.length || plan.crownSessionTabs.length || plan.unlandedDone.length || plan.alreadyPasses.length) {
     lines.push('');
     lines.push('Needs you:');
     for (const p of plan.toPark) lines.push(`  • #${p.taskId} "${(p.subject || '').slice(0, 60)}" — ${p.reason === 'infra' ? `${p.deaths} infra dead-launches in a row (cmux itself looks wedged)` : `${p.deaths} dead attempts`}, parked (won't retry)`);
@@ -971,6 +1213,10 @@ function renderNarrative(plan) {
     for (const u of plan.unlandedDone) lines.push(`  • #${u.taskId} "${(u.subject || '').slice(0, 60)}" — session reported done but its work never reached origin/main (job ${u.jobId}, ${u.cwd}); check git log there and land it, or bsc-next.js --id ${u.taskId} --force to redispatch`);
     for (const r of plan.recheckFailures.slice(0, 8)) lines.push(`  • acceptance recheck FAILED: "${(r.taskSubject || r.notionId || '').slice(0, 60)}"`);
     for (const c of plan.crownSessionTabs) lines.push(`  • crowned session tab ${c.ref} ("${String(c.title).slice(0, 50)}") — check it's still alive`);
+    // BRO-3924 (R3): BRO-3551's sweep already re-ran each card's own
+    // acceptance command against main — a human can close these straight
+    // from the report, no re-verification needed.
+    for (const a of plan.alreadyPasses.slice(0, 8)) lines.push(`  • ${a.id} "${(a.name || '').slice(0, 56)}" — already passes its own acceptance command (\`${a.verifyCmd}\`); see data/audit/open-backlog-acceptance-sweep.json`);
   }
   lines.push('');
   lines.push(`Budget: ${plan.budgets.usedToday}/${plan.budgets.caps.perDay} dispatches today · ${plan.budgets.usedThisHour}/${plan.budgets.caps.perHour} this hour · ${plan.budgets.liveNow}/${plan.budgets.caps.watchdogConcurrent} watchdog sessions live`);
@@ -987,4 +1233,7 @@ module.exports = {
   PACING_WINDOW_MS, PACING_HOURS, watchdogClaimsInWindow,
   watchdogClaimsToday, watchdogLiveCount, watchdogParkedIds,
   lastTerminalEventForTask, planSweep, tabTitle, renderNarrative,
+  // R5 (BRO-3924): exported for direct unit testing, not just through planSweep.
+  median, medianJobCostUSD, watchdogSpendRows, watchdogSpendBreaker,
+  WATCHDOG_SPEND_THRESHOLD_USD, SPEND_MEDIAN_WINDOW_MS, FALLBACK_JOB_COST_USD,
 };
