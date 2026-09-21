@@ -51,11 +51,11 @@ test('counts describe the merged file, not just the run', () => {
     result('b-show'),
   ], '2026-08-01T00:00:00.000Z'));
   assert.strictEqual(prev.counts.withGap, 1);
-  assert.strictEqual(prev.counts.totalMissing, 1);
+  assert.strictEqual(prev.counts.missingCurrentRun, 1);
 
   const after = mergeGapAudit(prev, runOf([result('b-show', { citedNoUrl: [{ outletId: 'times-uk' }] })]));
   assert.strictEqual(after.counts.withGap, 2, 'a-show carries its gap forward into the file counts');
-  assert.strictEqual(after.counts.totalMissing, 1);
+  assert.strictEqual(after.counts.missingCurrentRun, 1);
   assert.strictEqual(after.counts.totalCitedNoUrl, 1);
 });
 
@@ -65,7 +65,7 @@ test('a re-audit that CLEARS a gap replaces the stale entry (no zombie gaps)', (
   const after = mergeGapAudit(prev, runOf([result('a-show')]));
   assert.strictEqual(after.results.length, 1);
   assert.strictEqual(after.counts.withGap, 0);
-  assert.strictEqual(after.counts.totalMissing, 0);
+  assert.strictEqual(after.counts.missingCurrentRun, 0);
 });
 
 test('carried-forward entries age out; this run’s entries never do', () => {
@@ -120,7 +120,7 @@ test('duplicate showIds collapse to one row (ship-check: append list inflated co
   ]));
   assert.strictEqual(dup.results.length, 1);
   assert.strictEqual(dup.results[0].missing.length, 1, 'last row for a showId wins');
-  assert.strictEqual(dup.counts.totalMissing, 1);
+  assert.strictEqual(dup.counts.missingCurrentRun, 1);
 
   // and a prior file that already contains duplicates gets de-duplicated too
   const dirtyPrev = { generatedAt: '2026-08-01T00:00:00.000Z', results: [result('b-show'), result('b-show')] };
@@ -203,9 +203,46 @@ test('riskStateMap/isRiskyGapChange: the SAME URL flipping from covered to missi
 test('countsFor tolerates missing arrays on legacy rows', () => {
   const c = countsFor([{ showId: 'x' }, { showId: 'y', missing: [{ host: 'h' }], flaggedMisses: [{ recoverable: true }] }]);
   assert.strictEqual(c.withGap, 1);
-  assert.strictEqual(c.totalMissing, 1);
+  assert.strictEqual(c.missingCurrentRun, 1);
   assert.strictEqual(c.totalRecoverable, 1);
   assert.strictEqual(c.totalRecovered, 0);
+});
+
+// BRO-3928: a prior-production citation (m.priorRun, stamped by the audit's
+// production-identity checks) is permanently ingest-blocked and must never
+// inflate the headline "missing" count — that's what made every revival with
+// a well-cited earlier run (Cats, Kimberly Akimbo, Golden Boy) read as
+// catastrophically incomplete.
+test('countsFor: prior-production citations are excluded from withGap/missingCurrentRun and reported separately', () => {
+  const c = countsFor([
+    result('revival-show', {
+      missing: [
+        { host: 'a.com', url: 'https://a.com/1', priorRun: true },
+        { host: 'b.com', url: 'https://b.com/1', priorRun: true },
+      ],
+    }),
+  ]);
+  assert.strictEqual(c.withGap, 0, 'a show whose ONLY citations are prior-production is not a gap');
+  assert.strictEqual(c.missingCurrentRun, 0);
+  assert.strictEqual(c.priorProductionCitations, 2);
+});
+
+test('countsFor: a show with BOTH a genuine current-run gap and prior-production citations reports both, separately', () => {
+  const c = countsFor([
+    result('mixed-show', {
+      missing: [
+        { host: 'a.com', url: 'https://a.com/1', priorRun: true },
+        { host: 'c.com', url: 'https://c.com/1' },
+      ],
+      citedNoUrl: [{ outletId: 'o1', priorRun: true }],
+      flaggedMisses: [{ host: 'd.com', url: 'https://d.com/1', priorRun: true }],
+    }),
+  ]);
+  assert.strictEqual(c.withGap, 1, 'the one current-run missing URL still counts as a gap');
+  assert.strictEqual(c.missingCurrentRun, 1);
+  assert.strictEqual(c.totalCitedNoUrl, 0);
+  assert.strictEqual(c.totalFlaggedMisses, 0);
+  assert.strictEqual(c.priorProductionCitations, 3);
 });
 
 // #906 follow-up: candidates are URL-level, not host-level. Two reviewed URLs

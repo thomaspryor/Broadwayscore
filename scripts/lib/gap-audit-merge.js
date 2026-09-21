@@ -356,17 +356,41 @@ function mergeGapAudit(prevAudit, runAudit, opts = {}) {
   };
 }
 
+// BRO-3928: a citation belonging to an earlier production of the same title
+// (`m.priorRun === true`, stamped by audit-show-review-gap.js's production-
+// identity checks — a prior-run BWW/Playbill roundup, a stale-year Show Score
+// URL, a WE reference row citing the earlier run) is PERMANENTLY ingest-
+// blocked by design (gap-ingest-policy.js) — it is never a gap in THIS
+// production. The audit already computed and tagged this correctly; these
+// headline counts just never read the tag, so a revival with a well-cited
+// prior production (Cats, Kimberly Akimbo, The Cherry Orchard, Golden Boy)
+// summed those old citations into `totalMissing`/`withGap` and read as
+// catastrophically incomplete. `currentRun` keeps only actionable entries;
+// prior-production citations are tallied separately, informational only —
+// they must never feed `withGap`/`missingCurrentRun`/`--fail-on-gap`.
+const currentRun = (arr) => (Array.isArray(arr) ? arr.filter((x) => !(x && x.priorRun)) : []);
+const priorRunOnly = (arr) => (Array.isArray(arr) ? arr.filter((x) => x && x.priorRun) : []);
+
 /** Recompute the summary counts over an arbitrary results array. */
 function countsFor(results) {
   const rs = results || [];
-  const len = (v) => (Array.isArray(v) ? v.length : 0);
   return {
-    withGap: rs.filter(r => len(r.missing) + len(r.flaggedMisses) + len(r.citedNoUrl) > 0).length,
-    totalMissing: rs.reduce((a, r) => a + len(r.missing), 0),
-    totalCitedNoUrl: rs.reduce((a, r) => a + len(r.citedNoUrl), 0),
-    totalFlaggedMisses: rs.reduce((a, r) => a + len(r.flaggedMisses), 0),
-    totalRecoverable: rs.reduce((a, r) => a + (Array.isArray(r.flaggedMisses) ? r.flaggedMisses.filter(m => m && m.recoverable).length : 0), 0),
+    withGap: rs.filter(r => currentRun(r.missing).length + currentRun(r.flaggedMisses).length + currentRun(r.citedNoUrl).length > 0).length,
+    missingCurrentRun: rs.reduce((a, r) => a + currentRun(r.missing).length, 0),
+    totalCitedNoUrl: rs.reduce((a, r) => a + currentRun(r.citedNoUrl).length, 0),
+    totalFlaggedMisses: rs.reduce((a, r) => a + currentRun(r.flaggedMisses).length, 0),
+    // priorRun-excluded to match totalFlaggedMisses: a prior-production
+    // flaggedMiss can carry `recoverable: true` (auditShow sets it from the
+    // file's own empty-body state, before priorRun tagging runs), but the
+    // ingest loop's recBlockedPred permanently blocks recovery on it — so
+    // counting it here would advertise a "recoverable" gap that never
+    // actually recovers (Codex adversarial review, BRO-3928).
+    totalRecoverable: rs.reduce((a, r) => a + currentRun(r.flaggedMisses).filter(m => m && m.recoverable).length, 0),
     totalRecovered: rs.reduce((a, r) => a + (Array.isArray(r.recoveryResults) ? r.recoveryResults.filter(x => x && x.recovered).length : 0), 0),
+    // Informational only — never gates withGap/--fail-on-gap. Reported
+    // separately in the run Summary so a revival's prior-production citations
+    // are visible without inflating the actionable number.
+    priorProductionCitations: rs.reduce((a, r) => a + priorRunOnly(r.missing).length + priorRunOnly(r.flaggedMisses).length + priorRunOnly(r.citedNoUrl).length, 0),
   };
 }
 
