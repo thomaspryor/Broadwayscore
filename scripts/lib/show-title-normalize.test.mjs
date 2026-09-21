@@ -16,31 +16,35 @@ test('applies the venue strip alone', () => {
   assert.deepEqual(r.steps.map(s => s.kind), ['venue-suffix']);
 });
 
-test('applies the case fix alone', () => {
+test('a shouted title is flagged, never guess-rewritten (BRO-3920)', () => {
   const r = normalizeShowTitle({ id: 'america-who-hurt-you', title: 'AMERICA, WHO HURT YOU?' });
-  assert.equal(r.title, 'America, Who Hurt You?');
-  assert.deepEqual(r.steps.map(s => s.kind), ['title-case']);
+  assert.equal(r.title, 'AMERICA, WHO HURT YOU?', 'must not invent a casing');
+  assert.equal(r.changed, false);
+  assert.equal(r.manualReview, true);
+  assert.deepEqual(r.steps, []);
 });
 
 test('ORDER: stripping the venue exposes a shouted title underneath', () => {
-  // The live corpus row. "Theaters" inside the parenthetical supplies the
-  // only lowercase letters in the string, so the de-shouter sees a mixed-case
-  // title and does nothing. Run it second and both repairs land.
+  // "Theaters" inside the parenthetical supplies the only lowercase letters
+  // in the string, so the detector sees a mixed-case title and does not
+  // fire. Strip the venue first and "SO MUCH TO SAY ABOUT NOTHING." is
+  // plainly shouted — flagged, not rewritten.
   const r = normalizeShowTitle({
-    id: 'this-is-not-about-me-59e59-theaters-off-broadway-2026',
-    title: 'THIS IS NOT ABOUT ME. (59E59 Theaters)',
+    id: 'so-much-to-say-about-nothing-59e59-theaters-off-broadway-2026',
+    title: 'SO MUCH TO SAY ABOUT NOTHING. (59E59 Theaters)',
     venue: '59E59 Theaters, Theater C',
   });
-  assert.equal(r.title, 'This Is Not About Me.');
-  assert.deepEqual(r.steps.map(s => s.kind), ['venue-suffix', 'title-case']);
+  assert.equal(r.title, 'SO MUCH TO SAY ABOUT NOTHING.');
+  assert.equal(r.manualReview, true);
+  assert.deepEqual(r.steps.map(s => s.kind), ['venue-suffix']);
 });
 
-test('the reverse order would be a no-op, which is why the order is fixed', () => {
-  const { toDisplayTitleCase } = require('./title-display-case.js');
+test('the reverse order would never detect the shout, which is why the order is fixed', () => {
+  const { isShoutedTitle } = require('./title-display-case.js');
   assert.equal(
-    toDisplayTitleCase('THIS IS NOT ABOUT ME. (59E59 Theaters)'),
-    'THIS IS NOT ABOUT ME. (59E59 Theaters)',
-    'de-shouting first does nothing — this pins WHY venue-strip runs first',
+    isShoutedTitle('SO MUCH TO SAY ABOUT NOTHING. (59E59 Theaters)'),
+    false,
+    'detection first does nothing — this pins WHY venue-strip runs first',
   );
 });
 
