@@ -63,6 +63,10 @@ const LOCK_DIR = path.join(STATE_DIR, 'dispatch-watchdog.lock');
 const OFF_FILE = path.join(STATE_DIR, 'dispatch-watchdog-off');
 const NO_DISPATCH_FILE = path.join(STATE_DIR, 'dispatch-watchdog-no-dispatch');
 const RECHECK_LEDGER = path.join(REPO, 'data', 'audit', 'autonomous-recheck-ledger.jsonl');
+// BRO-3924 (R3): BRO-3551's own report — same canonical-REPO reasoning as
+// RECHECK_LEDGER above (this file runs from worktrees but always reads the
+// canonical repo's audit data).
+const OPEN_BACKLOG_SWEEP_REPORT_PATH = path.join(REPO, 'data', 'audit', 'open-backlog-acceptance-sweep.json');
 
 const DASHBOARD_INTERVAL_MS = 90 * 1000;
 const HEARTBEAT_STALE_MS = 10 * 60 * 1000;      // ensure-tab resurrection bar
@@ -223,6 +227,34 @@ function recentRecheckFailures(now) {
   return out;
 }
 
+// Codex adversarial review (BRO-3924): without an age check, a report that
+// stops being regenerated (BRO-3551's own cron disabled, erroring, or just
+// never scheduled) would suppress a card as "already-passes" FOREVER off one
+// stale verdict — including past the point where main regresses and the
+// card's acceptance command no longer actually passes. Same window
+// RECHECK_WINDOW_MS already uses for recheckFailures below, so both
+// consumers of "how stale is too stale for an acceptance verdict" agree.
+const OPEN_BACKLOG_SWEEP_MAX_AGE_MS = RECHECK_WINDOW_MS;
+
+// BRO-3924 (R3): the watchdog consumes BRO-3551's own report as an
+// ineligible reason — it NEVER runs runVerify itself inside the 90s sweep.
+// Fail-soft (same doctrine as recentRecheckFailures above): a missing or
+// corrupt report degrades to "no already-passing cards known", never blocks
+// a sweep.
+function loadAlreadyPassesReport(now = Date.now(), reportPath = OPEN_BACKLOG_SWEEP_REPORT_PATH) {
+  try {
+    const raw = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+    const generatedMs = Date.parse(raw.generatedAt || '');
+    if (!Number.isFinite(generatedMs) || now - generatedMs > OPEN_BACKLOG_SWEEP_MAX_AGE_MS) {
+      return { alreadyDone: [], checkoutSha: null };
+    }
+    const alreadyDone = Array.isArray(raw.alreadyDone) ? raw.alreadyDone : [];
+    return { alreadyDone, checkoutSha: raw.checkoutSha || null };
+  } catch {
+    return { alreadyDone: [], checkoutSha: null };
+  }
+}
+
 // ── Linear as a second task source (BRO-3390) ──────────────────────────────
 //
 // loadTasksUnioned() reads ONLY ~/.claude/tasks/<list>/<digits>.json — the
@@ -242,26 +274,34 @@ function recentRecheckFailures(now) {
 // is safe anyway — linear-next.js re-checks state at dispatch time and refuses
 // anything that has since started or closed.
 const LINEAR_CACHE_TTL_MS = 10 * 60 * 1000;
-let linearTaskCache = { tasks: new Map(), started: new Map(), ts: 0, ok: false, reason: 'not-fetched', scanned: 0 };
+let linearTaskCache = { tasks: new Map(), started: new Map(), ts: 0, ok: false, reason: 'not-fetched', scanned: 0, alreadyPasses: [] };
 
 async function refreshLinearTasks() {
+  // BRO-3924 (R3): loaded independently of the Linear fetch below (it's a
+  // local file, not a network call) so a Linear outage never hides an
+  // already-known-passing card, and injected into fetchLinearWatchdogTasks
+  // as opts.alreadyPassesIds — the pure source module never touches the
+  // filesystem itself.
+  const report = loadAlreadyPassesReport();
+  const alreadyPassesIds = new Set(report.alreadyDone.map(r => r.id));
   try {
     const source = require('./lib/linear-watchdog-source.js');
     const client = require('./lib/linear-client.js');
-    const res = await source.fetchLinearWatchdogTasks(client, {});
+    const res = await source.fetchLinearWatchdogTasks(client, { alreadyPassesIds });
     if (res.ok) {
       linearTaskCache = {
         tasks: res.tasks, started: res.started || new Map(),
         ts: Date.now(), ok: true, reason: null, scanned: res.scanned,
+        alreadyPasses: report.alreadyDone,
       };
     } else {
       // Keep the previous cache (if still fresh) rather than blanking the
       // queue on one bad fetch; record why for the narrative.
-      linearTaskCache = { ...linearTaskCache, ok: false, reason: res.reason };
+      linearTaskCache = { ...linearTaskCache, ok: false, reason: res.reason, alreadyPasses: report.alreadyDone };
       console.error(`[watchdog] Linear source unavailable (${res.reason}) — Notion-sourced sweep continues`);
     }
   } catch (e) {
-    linearTaskCache = { ...linearTaskCache, ok: false, reason: `linear-source-error: ${e.message}` };
+    linearTaskCache = { ...linearTaskCache, ok: false, reason: `linear-source-error: ${e.message}`, alreadyPasses: report.alreadyDone };
     console.error(`[watchdog] Linear source error (${e.message}) — Notion-sourced sweep continues`);
   }
   return linearTaskCache;
@@ -283,6 +323,15 @@ function linearTasksForPlan(now = Date.now()) {
   if (!linearTaskCache.ts) return new Map();
   if (now - linearTaskCache.ts > LINEAR_CACHE_TTL_MS) return new Map();
   return linearTaskCache.tasks;
+}
+
+// BRO-3924 (R3): same staleness rule as linearTasksForPlan — a long Linear
+// outage degrades to "no already-passing cards known" rather than narrating
+// stale ones.
+function linearAlreadyPassesForPlan(now = Date.now()) {
+  if (!linearTaskCache.ts) return [];
+  if (now - linearTaskCache.ts > LINEAR_CACHE_TTL_MS) return [];
+  return linearTaskCache.alreadyPasses || [];
 }
 
 // BRO-3424 (ship-check catch, Codex): fetchLinearWatchdogTasks() deliberately
@@ -320,6 +369,7 @@ function buildPlan(now) {
     now,
     liveTitles: liveTitleMap(),
     recheckFailures: recentRecheckFailures(now),
+    alreadyPasses: linearAlreadyPassesForPlan(now),
     dispatchEnabled: dispatchEnabled(),
     unlandedJobDone: findUnlandedJobDoneEntries(entries, {
       sinceMs: now - UNLANDED_CHECK_WINDOW_MS,
@@ -594,9 +644,22 @@ function summarize(plan) {
     // exact escalation this ticket added invisible to anything reading the
     // machine-readable surface instead of the narrative (codex review catch).
     noLaunchPark: plan.noLaunchPark.map(p => p.taskId),
+    // BRO-3924 (R3): same "not silent" doctrine as awaitingClaim/noLaunchPark
+    // above — a card excluded from the queue for already passing must be
+    // visible on the machine-readable surface too, not just the narrative.
+    alreadyPasses: plan.alreadyPasses.map(a => a.id),
     parkedTotal: plan.parkedTotal,
     dispatchedToday: plan.budgets.usedToday,
     holds: plan.budgets.holds,
+    // BRO-3924 (R5): spend circuit-breaker status, so --status --json and the
+    // heartbeat both show whether dispatch is (or is about to be) held on
+    // money, not just claim-count caps.
+    spend: {
+      halt: plan.budgets.spend.halt,
+      spentUSD: plan.budgets.spend.spentUSD,
+      reservedUSD: plan.budgets.spend.reservedUSD,
+      thresholdUSD: plan.budgets.spend.thresholdUSD,
+    },
     // BRO-2462: `holds` mixes policy pauses with failure-detection signals
     // (see dispatch-watchdog-core.js) — surfaced separately so `--status
     // --json` lets a human see directly whether health()'s tab-count/
@@ -1008,4 +1071,7 @@ module.exports = {
   dispatchArgvFor, linearTasksForPlan, linearStartedTasksForPlan, LINEAR_CACHE_TTL_MS,
   // BRO-3429: same rationale — tested against the real function, not a copy.
   reArmHintFor,
+  // BRO-3924 (R3): exported (with an injectable path param) so the staleness
+  // check is tested against the real function, not a copy.
+  loadAlreadyPassesReport, OPEN_BACKLOG_SWEEP_REPORT_PATH, OPEN_BACKLOG_SWEEP_MAX_AGE_MS,
 };

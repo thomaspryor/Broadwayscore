@@ -252,5 +252,30 @@
       }
     ],
     "queuedAt": "2026-09-21T02:18:16.135Z"
+  },
+  {
+    "conditionKey": "land:BRO-3707",
+    "title": "Landing blocked: checks red on BRO-3707",
+    "description": "land.yml did not land BRO-3707: the checks gate went red. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35553822810",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "BRO-3707"
+      },
+      {
+        "name": "gate",
+        "value": "checks"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35553822810"
+      }
+    ],
+    "queuedAt": "2026-09-21T02:21:21.132Z"
   }
 ]
