@@ -139,5 +139,30 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-21T19:46:00.683Z"
+  },
+  {
+    "conditionKey": "feedback-outcomes:2026-09-21T21:28:44.316568+00:00",
+    "title": "Feedback: 1 submission(s), all handled automatically",
+    "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nBook of mormon — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Review of the guardian is positive not 45\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/905",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35663941001",
+    "decision": true,
+    "decisionPrompt": "Receipt only — every message in this run was handled automatically. Nothing to fix.",
+    "model": null,
+    "fields": [
+      {
+        "name": "Submissions",
+        "value": "1"
+      },
+      {
+        "name": "Need you",
+        "value": "0"
+      },
+      {
+        "name": "Pipeline status",
+        "value": "success"
+      }
+    ],
+    "queuedAt": "2026-09-21T22:43:16.996Z"
   }
 ]
