@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-21T19:33:54.182Z",
+  "generatedAt": "2026-09-21T23:21:31.277Z",
   "date": "2026-09-21",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 215225,
+  "entryCount": 216884,
   "shows": [
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
@@ -1382,7 +1382,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 20382677,
-        "scored-to-rebuilt": 3395409,
+        "scored-to-rebuilt": 2883287,
         "rebuilt-to-deployed": 543488110
       },
       "reviews_over_15min": 0,
@@ -2608,13 +2608,13 @@
     },
     {
       "showId": "paranormal-activity-boston-regional-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 79932,
+        "scored-to-rebuilt": 81269,
         "rebuilt-to-deployed": 1958099390
       },
       "reviews_over_15min": 0,
@@ -5116,13 +5116,13 @@
     },
     {
       "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1871685,
+        "scored-to-rebuilt": 2007127,
         "rebuilt-to-deployed": 1256474407
       },
       "reviews_over_15min": 0,
@@ -5705,13 +5705,13 @@
     },
     {
       "showId": "starstruck-regional-2026",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 2570635,
+        "scored-to-rebuilt": 2702187,
         "rebuilt-to-deployed": 1111053847
       },
       "reviews_over_15min": 0,
@@ -6020,7 +6020,7 @@
     },
     {
       "showId": "million-dollar-quartet-off-west-end-2026",
-      "reviewCount": 20,
+      "reviewCount": 19,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7778,7 +7778,7 @@
     },
     {
       "showId": "darkling-off-west-end-2026",
-      "reviewCount": 25,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7898,13 +7898,13 @@
     },
     {
       "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 1487989,
-        "scored-to-rebuilt": 540821,
+        "scored-to-rebuilt": 534509,
         "rebuilt-to-deployed": 95454843
       },
       "reviews_over_15min": 0,
@@ -8024,13 +8024,13 @@
     },
     {
       "showId": "everybodys-talking-about-jamie-west-end-2024",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 2879660,
+        "scored-to-rebuilt": 2877510,
         "rebuilt-to-deployed": 79873376
       },
       "reviews_over_15min": 0,
@@ -8107,6 +8107,36 @@
         "collected-to-scored": null,
         "scored-to-rebuilt": 1409822,
         "rebuilt-to-deployed": 4225809
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "working-girl-la-jolla-regional-2025",
+      "reviewCount": 7,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 2828749,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
