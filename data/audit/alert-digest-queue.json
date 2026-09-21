@@ -79,5 +79,17 @@
       }
     ],
     "queuedAt": "2026-09-21T17:35:43.084Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:cosi-fan-tutte-off-broadway-2026",
+    "title": "Auto-remediation gave up on cosi-fan-tutte-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"cosi-fan-tutte-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-21T19:33:53.695Z"
   }
 ]
