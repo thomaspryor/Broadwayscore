@@ -144,13 +144,12 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-21T01:47:20.194Z",
-      "lastNotifiedAt": "2026-09-20T23:16:07.510Z",
-      "lastSurfacedAt": "2026-09-20T23:16:07.510Z",
-      "notifyCount": 89,
+      "lastSeen": "2026-09-21T02:10:27.915Z",
+      "lastNotifiedAt": "2026-09-21T02:10:27.915Z",
+      "lastSurfacedAt": "2026-09-21T02:10:27.915Z",
+      "notifyCount": 90,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 7
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3680,7 +3679,7 @@
       "resolvedAt": "2026-09-20T23:16:07.404Z"
     },
     "test-yml:red:Data Validation:9e7c89b2": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Data Validation / Run self-contradictory-clear drain acceptance test (needs review-texts)",
       "firstSeen": "2026-09-20T19:22:49.517Z",
@@ -3690,7 +3689,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-3880",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-09-21T02:10:27.893Z"
     },
     "test-yml:red:E2E Tests:c2df710e": {
       "status": "open",
@@ -3737,16 +3737,16 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run unit tests — \"should have valid designation values\"",
       "firstSeen": "2026-09-20T20:06:05.167Z",
-      "lastSeen": "2026-09-21T01:47:20.188Z",
+      "lastSeen": "2026-09-21T02:10:27.913Z",
       "lastNotifiedAt": "2026-09-20T20:06:05.167Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-3893",
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "test-yml:red:Data Validation:9b5157f4": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Data Validation / Run self-contradictory-clear drain acceptance test (needs review-texts) — \"no zero-score-impact self-contradictory-clear remains undrained (BRO-185)\"",
       "firstSeen": "2026-09-20T20:35:44.080Z",
@@ -3756,7 +3756,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-3895",
-      "silentRefires": 4
+      "silentRefires": 4,
+      "resolvedAt": "2026-09-21T02:10:27.896Z"
     },
     "corpus-drift:aggregator-archive-integrity": {
       "status": "open",
@@ -3771,7 +3772,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Data Validation:4d6399a6": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Data Validation / Audit outlet-registry gaps",
       "firstSeen": "2026-09-20T23:43:30.380Z",
@@ -3781,20 +3782,21 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-3909",
-      "silentRefires": 6
+      "silentRefires": 6,
+      "resolvedAt": "2026-09-21T02:10:27.898Z"
     },
     "test-yml:red:Unit Tests:0858c92a": {
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
-      "lastSeen": "2026-09-21T01:47:20.192Z",
+      "lastSeen": "2026-09-21T02:10:27.907Z",
       "lastNotifiedAt": "2026-09-21T01:14:39.220Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-3935",
-      "silentRefires": 2
+      "silentRefires": 3
     }
   }
 }
