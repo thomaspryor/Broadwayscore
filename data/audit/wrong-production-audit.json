@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-21T00:49:04.284Z",
+  "timestamp": "2026-09-21T00:56:32.312Z",
   "stats": {
-    "totalReviews": 43824,
+    "totalReviews": 43827,
     "alreadyFlagged": 18098,
     "dateGuardCatches": 246,
     "directorMismatch": 1048,
     "tvFilmSignals": 1298,
-    "londonSignals": 1134,
+    "londonSignals": 1136,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
-    "noPublishDate": 3829
+    "noPublishDate": 3831
   },
   "findings": [
     {
@@ -38144,6 +38144,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "file": "guardian--philip-oltermann.json",
+      "publishDate": "2026-08-27",
+      "url": "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "file": "theatremonkey--unknown.json",
+      "publishDate": null,
+      "url": "https://www.theatremonkey.com/show/catarina-and-the-beauty-of-killing-fascists/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
