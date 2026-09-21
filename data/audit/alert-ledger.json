@@ -3110,26 +3110,24 @@
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-09-21T16:41:20.022Z",
-      "lastNotifiedAt": "2026-09-20T20:01:29.571Z",
-      "lastSurfacedAt": "2026-09-20T20:01:29.571Z",
-      "notifyCount": 5,
+      "lastSeen": "2026-09-21T23:59:40.142Z",
+      "lastNotifiedAt": "2026-09-21T23:59:40.142Z",
+      "lastSurfacedAt": "2026-09-21T23:59:40.142Z",
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 8
+      "linearIdentifier": null
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-21T16:41:20.027Z",
-      "lastNotifiedAt": "2026-09-20T20:01:29.575Z",
-      "lastSurfacedAt": "2026-09-20T20:01:29.575Z",
-      "notifyCount": 5,
+      "lastSeen": "2026-09-21T23:59:40.177Z",
+      "lastNotifiedAt": "2026-09-21T23:59:40.177Z",
+      "lastSurfacedAt": "2026-09-21T23:59:40.177Z",
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 8
+      "linearIdentifier": null
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3376,7 +3374,7 @@
       "linearIdentifier": null
     },
     "corpus-drift:url-downgrade": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
       "firstSeen": "2026-09-17T11:13:02.794Z",
@@ -3386,7 +3384,8 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 4,
+      "resolvedAt": "2026-09-21T23:59:40.180Z"
     },
     "opening-night-publish-date-pre-opening:missing:thelma-and-louise-a-new-musical-off-west-end-2026": {
       "status": "open",
@@ -3781,13 +3780,12 @@
       "disposition": "digest",
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-09-21T16:41:20.020Z",
-      "lastNotifiedAt": "2026-09-20T21:49:42.154Z",
-      "lastSurfacedAt": "2026-09-20T21:49:42.154Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-21T23:59:40.140Z",
+      "lastNotifiedAt": "2026-09-21T23:59:40.140Z",
+      "lastSurfacedAt": "2026-09-21T23:59:40.140Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 6
+      "linearIdentifier": null
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4132,13 +4130,13 @@
       "disposition": "digest",
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-09-21T16:41:20.016Z",
+      "lastSeen": "2026-09-21T23:59:40.136Z",
       "lastNotifiedAt": "2026-09-21T09:41:19.072Z",
       "lastSurfacedAt": "2026-09-21T09:41:19.072Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "open",
