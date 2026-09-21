@@ -142,3 +142,6 @@
 {"ts":"2026-09-21T03:59:31.691Z","conditionKey":"test-yml:red:Unit Tests:daa7008e","title":"main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"the checked-in baseline has zero new findings against the current repo (scripts/audit-venue-write-guard.js --strict passes)\"","ok":true,"error":null}
 {"ts":"2026-09-21T03:59:35.117Z","conditionKey":"test-yml:red:Lint Workflows:4bdc1e4f","title":"main test.yml red: Lint Workflows / Audit — venue-write guard coverage (card","ok":true,"error":null}
 {"ts":"2026-09-21T03:57:03.426Z","conditionKey":"test-yml:red:Data Validation:de9aa140","title":"main test.yml red: Data Validation / Run data validation","ok":true,"error":null}
+{"ts":"2026-09-21T05:44:22.826Z","conditionKey":"review-gap:blast-radius-refused","title":"Review-gap audit refused to write — 64.3% of shows changed coverage state","ok":false,"error":"LINEAR_API_KEY not set in .env or environment"}
+{"ts":"2026-09-21T05:44:31.624Z","conditionKey":"t1-coverage:scoreboard","title":"T1 Coverage Scoreboard","ok":false,"error":"LINEAR_API_KEY not set in .env or environment"}
+{"ts":"2026-09-21T05:44:33.741Z","conditionKey":"t1-coverage:scoreboard","title":"T1 Coverage Scoreboard","ok":false,"error":"LINEAR_API_KEY not set in .env or environment"}

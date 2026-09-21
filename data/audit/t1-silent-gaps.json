@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-21T00:49:26.431Z",
+  "generatedAt": "2026-09-21T05:44:25.038Z",
   "windowDays": 45,
   "showsScanned": 78,
   "gaps": [
@@ -17,9 +17,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-story-west-end-2026",
       "firstSeen": "2026-09-18T14:47:11.077Z",
-      "fileAgeHours": 58.03733361111111,
+      "fileAgeHours": 62.95359805555555,
       "gapSeenAt": "2026-09-20T16:50:34.106Z",
-      "nonTerminalAgeHours": 7.981201388888889
+      "nonTerminalAgeHours": 12.897480833333333
     },
     {
       "showId": "truly-howard-hughes-off-broadway-2026",
@@ -35,9 +35,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=truly-howard-hughes-off-broadway-2026",
       "firstSeen": "2026-09-09T14:56:32.660Z",
-      "fileAgeHours": 273.881415,
+      "fileAgeHours": 278.7976725,
       "gapSeenAt": "2026-09-20T07:18:48.420Z",
-      "nonTerminalAgeHours": 17.51055861111111
+      "nonTerminalAgeHours": 22.426838055555557
     },
     {
       "showId": "the-winters-tale-off-broadway-2026",
@@ -53,9 +53,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-winters-tale-off-broadway-2026",
       "firstSeen": "2026-08-13T10:48:31.706Z",
-      "fileAgeHours": 926.0150283333334,
+      "fileAgeHours": 930.9312869444444,
       "gapSeenAt": "2026-09-20T22:08:26.926Z",
-      "nonTerminalAgeHours": 2.6831958333333334
+      "nonTerminalAgeHours": 7.599475277777778
     },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
@@ -70,9 +70,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 102.80972777777778,
+      "fileAgeHours": 107.72598833333333,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 102.72883916666666
+      "nonTerminalAgeHours": 107.64511861111112
     },
     {
       "showId": "the-hope-theory-off-broadway-2026",
@@ -88,9 +88,27 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-hope-theory-off-broadway-2026",
       "firstSeen": "2026-09-18T10:20:54.798Z",
-      "fileAgeHours": 62.475431944444445,
+      "fileAgeHours": 67.39170916666667,
       "gapSeenAt": "2026-09-19T01:54:16.553Z",
-      "nonTerminalAgeHours": 46.91941055555556
+      "nonTerminalAgeHours": 51.83569
+    },
+    {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "title": "Million Dollar Quartet",
+      "openingDate": "2026-09-14",
+      "file": "broadwayworld--michael-major.json",
+      "outletId": "broadwayworld",
+      "tier": 2,
+      "type": "unscored",
+      "dispatchable": false,
+      "url": "https://www.broadwayworld.com/westend/article/Video-MILLION-DOLLAR-QUARTET-Trailer-Released-Ahead-of-2026-London-Return-20260909",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=million-dollar-quartet-off-west-end-2026",
+      "firstSeen": "2026-09-17T08:13:24.884Z",
+      "fileAgeHours": 93.51670305555555,
+      "gapSeenAt": "2026-09-21T05:44:25.037Z",
+      "nonTerminalAgeHours": 0
     }
   ],
   "contradictions": []
