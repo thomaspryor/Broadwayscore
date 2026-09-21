@@ -144,9 +144,9 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-21T02:27:10.611Z",
-      "lastNotifiedAt": "2026-09-21T02:10:27.915Z",
-      "lastSurfacedAt": "2026-09-21T02:10:27.915Z",
+      "lastSeen": "2026-09-21T02:33:55.184Z",
+      "lastNotifiedAt": "2026-09-21T02:15:32.565Z",
+      "lastSurfacedAt": "2026-09-21T02:15:32.565Z",
       "notifyCount": 90,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
@@ -3738,7 +3738,7 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run unit tests — \"should have valid designation values\"",
       "firstSeen": "2026-09-20T20:06:05.167Z",
-      "lastSeen": "2026-09-21T02:27:10.609Z",
+      "lastSeen": "2026-09-21T02:33:49.998Z",
       "lastNotifiedAt": "2026-09-20T20:06:05.167Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -3809,7 +3809,19 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-3950"
+      "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:7a4fb44d": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"update: moving BETWEEN terminal states (Done -> Canceled) does NOT print the reopen warning (not actually reopening)\"",
+      "firstSeen": "2026-09-21T02:33:50.341Z",
+      "lastSeen": "2026-09-21T02:33:50.341Z",
+      "lastNotifiedAt": "2026-09-21T02:33:50.341Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-3952"
     }
   }
 }

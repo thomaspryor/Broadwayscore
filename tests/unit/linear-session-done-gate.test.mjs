@@ -33,6 +33,24 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 process.env.LINEAR_API_KEY = 'test-key';
+
+// The CLI's `deps.verifyCmdEvidence || makeVerifyCmdEvidence(...)` fallback
+// (linear-session.js) is the branch a real session takes, and a test that
+// always injects a stub proves nothing about it — a fallback replaced by a
+// rubber stamp would keep every test in this file green. Patching the
+// linear-cmd-execution.js export HERE, before linear-session.js is required
+// below (it destructures the factory at require time), gives that branch a
+// spy instead of the real executor: the wiring test asserts the CLI actually
+// builds from this factory and hands it the recorded command, and every other
+// unstubbed call in this file is kept from shelling out to a real
+// origin/main checkout by accident.
+const cmdExecModule = require('../../scripts/lib/linear-cmd-execution.js');
+const factorySpy = { built: 0, cmds: [], result: { allowed: true, verdict: 'own-verify-passed', reason: 'spy: command passed', notOnMain: false, sha: 'spy0000000' } };
+cmdExecModule.makeVerifyCmdEvidence = () => {
+  factorySpy.built += 1;
+  return (cmd) => { factorySpy.cmds.push(cmd); return factorySpy.result; };
+};
+
 const { cmdReport, cmdClaim } = require('../../scripts/linear-session.js');
 
 // Mirrors this team's real states (queried live: In Review, Canceled, Todo,
@@ -144,7 +162,7 @@ test('allowed: a safe-form verify command in the issue description', async () =>
     const cmds = [];
     await cmdReport(
       { issue: 'BRO-9458', status: 'done', summary: 'did the work' },
-      { verifyCmdEvidence: (cmd) => { cmds.push(cmd); return { allowed: true, reason: 'stub: command passed' }; } }
+      { verifyCmdEvidence: (cmd) => { cmds.push(cmd); return { allowed: true, verdict: 'own-verify-passed', reason: 'stub: command passed', notOnMain: false, sha: 'stub000000' }; } }
     );
     assert.deepEqual(cmds, ['node --test tests/unit/done-semantics-gate.test.mjs']);
     assert.match(h.getLogs(), /"doneGateRefused":false/);
@@ -158,10 +176,14 @@ test('refused: the recorded acceptance command is executed and FAILS', async () 
       issue: { description: '## Acceptance criteria\n- `node --test tests/unit/done-semantics-gate.test.mjs` passes' },
       updateShouldBeCalled: false,
     });
+    // No `verdict` on the result — this is applyCmdExecution's own fallback
+    // branch (linear-done-gate.js: `(execResult && execResult.verdict) ||
+    // 'verify-cmd-failed'`). The brain-side twin of this test covers the other
+    // branch, a result that DOES carry the executor's real 'own-verify-failed'.
     await assert.rejects(
       () => cmdReport(
         { issue: 'BRO-9458', status: 'done', summary: 'did the work' },
-        { verifyCmdEvidence: () => ({ allowed: false, verdict: 'verify-cmd-failed', reason: 'stub: command failed' }) }
+        { verifyCmdEvidence: () => ({ allowed: false, reason: 'stub: command failed' }) }
       ),
       /EXIT/
     );
@@ -169,6 +191,25 @@ test('refused: the recorded acceptance command is executed and FAILS', async () 
     assert.match(h.getErrors(), /REFUSED \(verify-cmd-failed\)/);
     assert.match(h.getLogs(), /"doneGateRefused":true/);
   });
+});
+
+test('wiring: with NO verifyCmdEvidence dep, the CLI builds the executor from linear-cmd-execution.js and hands it the recorded command', async () => {
+  const before = { built: factorySpy.built, cmds: factorySpy.cmds.length };
+  await withStubbedExit(async (h) => {
+    mockFetch({
+      issue: { description: '## Acceptance criteria\n- `node --test tests/unit/done-semantics-gate.test.mjs` passes' },
+      updateShouldBeCalled: true,
+    });
+    // Deliberately no second argument: this is the production default path.
+    await cmdReport({ issue: 'BRO-9458', status: 'done', summary: 'did the work' });
+    assert.match(h.getLogs(), /"doneGateRefused":false/);
+  });
+  assert.equal(factorySpy.built, before.built + 1, 'cmdReport must build the executor from makeVerifyCmdEvidence when no dep is injected');
+  assert.deepEqual(
+    factorySpy.cmds.slice(before.cmds),
+    ['node --test tests/unit/done-semantics-gate.test.mjs'],
+    'the recorded acceptance command must reach the real factory\'s verifier, not be waved through'
+  );
 });
 
 test('allowed: PR-EVIDENCE recorded in a past comment (not the description or this report)', async () => {
