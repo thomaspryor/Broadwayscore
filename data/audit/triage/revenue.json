@@ -1,15 +1,15 @@
 {
   "system": "revenue",
-  "status": "pass",
-  "lastChecked": "2026-09-20T11:52:53.611Z",
+  "status": "warn",
+  "lastChecked": "2026-09-21T13:24:59.021Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Revenue: affiliate health",
-      "status": "pass",
-      "message": "10 checks healthy (0h ago)"
+      "status": "warn",
+      "message": "1 anomaly: Bot click divergence"
     }
   ]
 }
