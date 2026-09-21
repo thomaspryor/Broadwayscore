@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-09-21T11:49:29.057Z",
-  "windowDays": 1,
-  "targets": 1,
-  "auditedThisRun": 1,
-  "carriedForward": 556,
+  "generatedAt": "2026-09-21T17:35:03.940Z",
+  "windowDays": 1095,
+  "targets": 272,
+  "auditedThisRun": 8,
+  "carriedForward": 549,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 309,
-    "missingCurrentRun": 430,
+    "missingCurrentRun": 431,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 794,
-    "totalRecoverable": 6,
+    "totalFlaggedMisses": 795,
+    "totalRecoverable": 8,
     "totalRecovered": 7,
     "priorProductionCitations": 2504
   },
@@ -4631,9 +4631,10 @@
       "aggregatorListedUrls": [
         "https://nystagereview.com/2026/09/17/america-who-hurt-you-mental-state/",
         "https://newyorktheater.me/2026/09/17/america-who-hurt-you-review/",
-        "https://theaterpizzazz.com/sarah-jones-excels-in-america-who-hurt-you/",
-        "https://thefrontrowcenter.com/2026/09/america-who-hurt-you/",
         "https://1minutecritic.com/america-who-hurt-you-sarah-jones-review/",
+        "https://theaterpizzazz.com/sarah-jones-excels-in-america-who-hurt-you/",
+        "https://1minutecritic.substack.com/p/america-who-hurt-you-review-sarah-jones",
+        "https://thefrontrowcenter.com/2026/09/america-who-hurt-you/",
         "https://www.harlemworldmagazine.com/national-black-theatre-and-theatre-for-a-new-audience-present-america-who-hurt-you/"
       ],
       "dirFiles": 10,
@@ -4697,8 +4698,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 3,
+            "results": 10,
+            "accepted": 4,
             "error": null
           },
           {
@@ -4707,7 +4708,17 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"America, Who Hurt You?\" Ting review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -4717,8 +4728,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -4728,7 +4739,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -4742,19 +4753,27 @@
             "error": null
           }
         ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 6,
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 36,
         "byReason": {
-          "non-review-host": 27,
+          "non-review-host": 34,
           "aggregator-internal-nav": 2
         }
       },
-      "dedupedVariants": [],
+      "dedupedVariants": [
+        {
+          "url": "https://1minutecritic.substack.com/p/america-who-hurt-you-review-sarah-jones",
+          "host": "1minutecritic.substack.com",
+          "matchedUrl": "https://1minutecritic.com/america-who-hurt-you-sarah-jones-review/",
+          "outletId": "one-minute-critic",
+          "reason": "same outlet \"one-minute-critic\" already held at 1minutecritic.com; 1minutecritic.substack.com is a registered alias of it"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -4782,22 +4801,28 @@
             "firstSeenAt": "2026-09-19T06:54:18.824Z"
           },
           {
+            "url": "https://1minutecritic.com/america-who-hurt-you-sarah-jones-review/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-19T06:54:18.824Z"
+          },
+          {
             "url": "https://theaterpizzazz.com/sarah-jones-excels-in-america-who-hurt-you/",
             "outletId": "theaterpizzazz.com",
             "state": "live",
             "firstSeenAt": "2026-09-19T21:19:05.506Z"
           },
           {
+            "url": "https://1minutecritic.substack.com/p/america-who-hurt-you-review-sarah-jones",
+            "outletId": "1minutecritic.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-21T17:35:03.940Z"
+          },
+          {
             "url": "https://thefrontrowcenter.com/2026/09/america-who-hurt-you/",
             "outletId": "thefrontrowcenter.com",
             "state": "live",
             "firstSeenAt": "2026-09-19T21:19:05.506Z"
-          },
-          {
-            "url": "https://1minutecritic.com/america-who-hurt-you-sarah-jones-review/",
-            "outletId": "1minutecritic.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-19T06:54:18.824Z"
           },
           {
             "url": "https://nystagereview.com/2026/09/17/america-who-hurt-you-mental-state/",
@@ -4814,10 +4839,10 @@
             "firstSeenAt": "2026-09-19T06:54:18.824Z"
           }
         ],
-        "liveCount": 4,
-        "candidateCount": 6
+        "liveCount": 5,
+        "candidateCount": 7
       },
-      "computedAt": "2026-09-21T11:24:10.560Z"
+      "computedAt": "2026-09-21T17:35:03.940Z"
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -30413,11 +30438,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 34,
         "byReason": {
-          "aggregator-internal-nav": 1,
           "non-review-host": 26,
+          "aggregator-internal-nav": 2,
           "merch-store": 3,
+          "non-review-path": 1,
+          "venue-production-page": 1,
           "static-asset": 1
         }
       },
@@ -30446,7 +30473,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-09-21T05:44:22.707Z"
+      "computedAt": "2026-09-21T17:35:03.940Z"
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -31030,7 +31057,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-21T11:24:10.560Z"
+      "computedAt": "2026-09-21T17:35:03.940Z"
     },
     {
       "showId": "crazy-mama-off-broadway-2026",
@@ -70980,13 +71007,16 @@
         "https://www.talkinbroadway.com/page/ob/09_14_26.html",
         "https://culturesauce.com/jean-michel-basquiat-roger-guenveur-smith-off-broadway-review/",
         "https://www.theatermania.com/news/under-the-radar-review-basquiat-as-seen-through-the-eyes-of-a-friend-in-in-honor-of-jean-michel-basquiat_1818063/",
+        "https://exeuntnyc.com/reviews/review-in-honor-of-jean-michel-basquiat-at-new-york-theatre-workshop/",
         "https://www.newyorktheatreguide.com/reviews/in-honor-of-jean-michel-basquiat-off-broadway-review-roger-guenveur-smith",
         "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-the-late-great-artist-jazzed-up/",
         "https://www.timeout.com/newyork/theater/in-honor-of-jean-michel-basquiat-play-review-roger-guenveur-smith",
         "https://1minutecritic.com/honor-jean-michel-basquiat-review/",
-        "https://www.theatermania.com/news/review-roger-guenveur-smiths-impressionistic-tribute-to-artist-jean-michel-basquiat_1853657/",
         "https://thefrontrowcenter.com/2026/09/in-honor-of-jean-michel-basquiat/",
+        "https://www.theatermania.com/news/review-roger-guenveur-smiths-impressionistic-tribute-to-artist-jean-michel-basquiat_1853657/",
+        "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-a-poetic-tribute/",
         "https://www.newyorktheatreguide.com/show/46616-in-honor-of-jean-michel-basquiat",
+        "https://1minutecritic.substack.com/p/honor-jean-michel-basquiat-review",
         "https://pagesonstages.com/2026/09/18/in-honor-of-jean-michel-basquiat/",
         "https://theaterscene.com/reviews/in-honor-of-jean-michel-basquiat/",
         "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672"
@@ -70995,6 +71025,12 @@
       "dirClean": 11,
       "inReviewsJson": 11,
       "missing": [
+        {
+          "url": "https://exeuntnyc.com/reviews/review-in-honor-of-jean-michel-basquiat-at-new-york-theatre-workshop/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "serpCensus": true
+        },
         {
           "url": "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672",
           "host": "ticketsales.com",
@@ -71035,8 +71071,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 6,
+            "results": 9,
+            "accepted": 5,
             "error": null
           },
           {
@@ -71046,7 +71082,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -71056,7 +71092,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 3,
             "error": null
           },
           {
@@ -71066,7 +71102,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -71076,7 +71112,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -71092,19 +71128,39 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 11,
+        "resultCount": 14,
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 30,
         "byReason": {
+          "non-review-host": 27,
           "aggregator-internal-nav": 2,
-          "non-review-host": 26,
           "ticketing-reseller": 1
         }
       },
-      "dedupedVariants": [],
+      "dedupedVariants": [
+        {
+          "url": "https://1minutecritic.substack.com/p/honor-jean-michel-basquiat-review",
+          "host": "1minutecritic.substack.com",
+          "matchedUrl": "https://1minutecritic.com/honor-jean-michel-basquiat-review/",
+          "outletId": "one-minute-critic",
+          "reason": "same outlet \"one-minute-critic\" already held at 1minutecritic.com; 1minutecritic.substack.com is a registered alias of it"
+        }
+      ],
       "ingestResults": [
+        {
+          "url": "https://exeuntnyc.com/reviews/review-in-honor-of-jean-michel-basquiat-at-new-york-theatre-workshop/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
         {
           "url": "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672",
           "host": "ticketsales.com",
@@ -71122,6 +71178,13 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "exeunt-magazine",
+            "outlet": "exeunt-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://exeuntnyc.com/reviews/review-in-honor-of-jean-michel-basquiat-at-new-york-theatre-workshop/"
+          },
           {
             "outletId": "ticketsales.com",
             "outlet": "ticketsales.com",
@@ -71176,22 +71239,34 @@
             "firstSeenAt": "2026-09-20T22:08:24.514Z"
           },
           {
-            "url": "https://www.theatermania.com/news/review-roger-guenveur-smiths-impressionistic-tribute-to-artist-jean-michel-basquiat_1853657/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-19T06:54:18.824Z"
-          },
-          {
             "url": "https://thefrontrowcenter.com/2026/09/in-honor-of-jean-michel-basquiat/",
             "outletId": "thefrontrowcenter.com",
             "state": "live",
             "firstSeenAt": "2026-09-20T15:35:03.611Z"
           },
           {
+            "url": "https://www.theatermania.com/news/review-roger-guenveur-smiths-impressionistic-tribute-to-artist-jean-michel-basquiat_1853657/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-19T06:54:18.824Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/09/14/in-honor-of-jean-michel-basquiat-a-poetic-tribute/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-21T17:35:03.940Z"
+          },
+          {
             "url": "https://www.newyorktheatreguide.com/show/46616-in-honor-of-jean-michel-basquiat",
             "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-09-19T06:54:18.824Z"
+          },
+          {
+            "url": "https://1minutecritic.substack.com/p/honor-jean-michel-basquiat-review",
+            "outletId": "1minutecritic.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-21T17:35:03.940Z"
           },
           {
             "url": "https://pagesonstages.com/2026/09/18/in-honor-of-jean-michel-basquiat/",
@@ -71204,6 +71279,13 @@
             "outletId": "theaterscene.com",
             "state": "live",
             "firstSeenAt": "2026-09-21T05:44:22.707Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-in-honor-of-jean-michel-basquiat-at-new-york-theatre-workshop/",
+            "outletId": "exeunt-magazine",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-21T17:35:03.940Z"
           },
           {
             "url": "https://www.ticketsales.com/in-honor-of-jean-michel-basquiat-tickets-new-york-theatre-workshop/event/7417672",
@@ -71220,10 +71302,10 @@
             "firstSeenAt": "2026-09-14T19:55:29.406Z"
           }
         ],
-        "liveCount": 10,
-        "candidateCount": 12
+        "liveCount": 11,
+        "candidateCount": 14
       },
-      "computedAt": "2026-09-21T05:44:22.707Z"
+      "computedAt": "2026-09-21T17:35:03.940Z"
     },
     {
       "showId": "in-the-print-off-west-end-2026",
@@ -87478,12 +87560,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 2096,
+        "count": 2102,
         "byReason": {
-          "aggregator-internal-nav": 1531,
           "not-http-url": 386,
+          "non-review-host": 137,
+          "aggregator-internal-nav": 1531,
           "aggregator-section-root": 32,
-          "non-review-host": 131,
           "roundup-page": 16
         }
       },
@@ -88667,7 +88749,7 @@
         "liveCount": 0,
         "candidateCount": 33
       },
-      "computedAt": "2026-09-21T05:44:22.707Z"
+      "computedAt": "2026-09-21T17:35:03.940Z"
     },
     {
       "showId": "madama-butterfly-off-broadway-2024",
@@ -103567,15 +103649,15 @@
         "https://www.londontheatre.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-west-end-review-garrick-theatre",
         "https://www.thetimes.co.uk/article/my-sons-a-queer-but-what-can-you-do-review-charming-but-slender-confessional-snbkftqmz",
         "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-turbine_54370.html",
-        "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
         "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
-        "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
-        "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963",
         "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
+        "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963",
         "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
         "https://www.jacktheladmag.com/theatre-reviews/my-sons-a-queer-but-what-can-you-do",
         "https://theatreweekly.com/interview-rob-madge-on-my-sons-a-queer-but-what-can-you-do/",
+        "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
         "https://musicaltheatrereview.com/music-review-rob-madge-my-sons-a-queer-but-what-can-you-do-cast-album/",
+        "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
         "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
         "https://theatreweekly.com/my-sons-a-queer-but-what-can-you-do-returns-for-final-west-end-run-at-the-apollo-theatre/",
         "https://www.burnhamdramaturgy.com/non-place/review-my-sons-a-queer-but-what-can-you-do",
@@ -103587,15 +103669,15 @@
       "inReviewsJson": 6,
       "missing": [
         {
-          "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
-          "host": "westendwilma.com",
-          "knownOutletId": "west-end-wilma",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
           "host": "westendtheatre.com",
           "knownOutletId": "westendtheatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
+          "host": "westendwilma.com",
+          "knownOutletId": "west-end-wilma",
           "serpCensus": true
         },
         {
@@ -103691,9 +103773,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
-          "host": "allthatdazzles.co.uk",
-          "knownOutletId": "all-that-dazzles-uk",
+          "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -103701,14 +103783,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "all-that-dazzles-uk--all-that-dazzles.json",
+              "file": "theatreandtonic--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
-            },
-            {
-              "file": "all-that-dazzles-uk--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
+              "urlInDir": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review"
             }
           ],
           "serpCensus": true
@@ -103732,42 +103809,24 @@
           "serpCensus": true
         },
         {
-          "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatreandtonic--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
           "host": "newyorktheatreguide.com",
           "knownOutletId": "nytg",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "recoverable": true,
+          "recoverableFile": "nytg--gillian-russo.json",
+          "recoverableOutletId": "nytg",
+          "recoverableCritic": "Gillian Russo",
           "recoverableCount": 0,
           "dirFlags": [
             {
               "file": "nytg--gillian-russo.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review"
+              "flag": "emptyBody",
+              "urlInDir": "https://www.newyorktheatreguide.com/theatre-news/news/my-sons-a-queer-but-what-can-you-do-to-play-off-broadway"
             },
             {
               "file": "nytg--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review"
+              "flag": "duplicate",
+              "urlInDir": "https://www.newyorktheatreguide.com/theatre-news/news/my-sons-a-queer-but-what-can-you-do-to-play-off-broadway"
             }
           ],
           "serpCensus": true
@@ -103827,6 +103886,29 @@
           "serpCensus": true
         },
         {
+          "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "all-that-dazzles-uk--all-that-dazzles.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
+            },
+            {
+              "file": "all-that-dazzles-uk--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
           "host": "londontheatredirect.com",
           "knownOutletId": "londontheatredirect",
@@ -103866,16 +103948,16 @@
           "url": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do",
           "host": "thestage.co.uk",
           "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
+          "recoverable": true,
+          "recoverableFile": "thestage--paul-vale.json",
+          "recoverableOutletId": "thestage",
+          "recoverableCritic": "Paul Vale",
+          "recoverableCount": 2,
           "dirFlags": [
             {
               "file": "thestage--paul-vale.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-review-at-ambassadors-london-by-rob-madge"
+              "flag": "emptyBody",
+              "urlInDir": "https://www.thestage.co.uk/news/production-news/my-sons-a-queer-but-what-can-you-do-lands-new-york-premiere"
             }
           ],
           "serpCensus": true
@@ -103897,7 +103979,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 1
           },
           "lbo-roundup": {
             "found": false,
@@ -103931,7 +104013,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -103941,7 +104023,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -103951,7 +104033,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 3,
             "error": null
           },
           {
@@ -103961,7 +104043,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -103971,7 +104053,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -103991,14 +104073,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 217,
+        "count": 221,
         "byReason": {
-          "aggregator-internal-nav": 161,
           "not-http-url": 6,
+          "non-review-host": 46,
+          "aggregator-internal-nav": 161,
           "aggregator-section-root": 4,
-          "non-review-host": 41,
           "roundup-page": 1,
-          "non-review-path": 3,
+          "non-review-path": 2,
           "ticketing-listing": 1
         }
       },
@@ -104011,18 +104093,6 @@
       ],
       "ingestResults": [
         {
-          "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
-          "host": "westendwilma.com",
-          "outletId": "west-end-wilma",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
-        },
-        {
           "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
           "host": "westendtheatre.com",
           "outletId": "westendtheatre",
@@ -104033,6 +104103,18 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "Refusing to ingest — https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-"
+        },
+        {
+          "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
+          "host": "westendwilma.com",
+          "outletId": "west-end-wilma",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
         },
         {
           "url": "https://www.burnhamdramaturgy.com/non-place/review-my-sons-a-queer-but-what-can-you-do",
@@ -104060,22 +104142,42 @@
         }
       ],
       "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/my-sons-a-queer-but-what-can-you-do-review",
+          "host": "newyorktheatreguide.com",
+          "file": "nytg--gillian-russo.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Existing publishDate \"2025-04-22\" fails the date guard for this show's window — correcting to \"2",
+          "recoveryCount": 1
+        }
+      ],
+      "recoverySkippedByCap": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do",
+          "host": "thestage.co.uk",
+          "file": "thestage--paul-vale.json"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "west-end-wilma",
-            "outlet": "west-end-wilma",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/"
-          },
           {
             "outletId": "westendtheatre",
             "outlet": "westendtheatre",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/"
+          },
+          {
+            "outletId": "west-end-wilma",
+            "outlet": "west-end-wilma",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/"
           },
           {
             "outletId": "burnhamdramaturgy.com",
@@ -104113,11 +104215,11 @@
             "url": "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-turbine_54370.html"
           },
           {
-            "outletId": "all-that-dazzles-uk",
-            "outlet": "all-that-dazzles-uk",
+            "outletId": "theatreandtonic",
+            "outlet": "theatreandtonic",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
+            "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review"
           },
           {
             "outletId": "i-paper",
@@ -104125,13 +104227,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963"
-          },
-          {
-            "outletId": "theatreandtonic",
-            "outlet": "theatreandtonic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review"
           },
           {
             "outletId": "nytg",
@@ -104160,6 +104255,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://musicaltheatrereview.com/music-review-rob-madge-my-sons-a-queer-but-what-can-you-do-cast-album/"
+          },
+          {
+            "outletId": "all-that-dazzles-uk",
+            "outlet": "all-that-dazzles-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre"
           },
           {
             "outletId": "londontheatredirect",
@@ -104210,15 +104312,15 @@
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
           },
           {
-            "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
-            "outletId": "west-end-wilma",
+            "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
+            "outletId": "westendtheatre",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-19T21:19:05.506Z"
           },
           {
-            "url": "https://www.westendtheatre.com/351899/news/rob-madges-my-sons-a-queer-but-what-can-you-do-to-return-to-the-west-end-this-autumn/",
-            "outletId": "westendtheatre",
+            "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
+            "outletId": "west-end-wilma",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-19T21:19:05.506Z"
@@ -104259,8 +104361,8 @@
             "firstSeenAt": "2026-09-17T12:24:54.760Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
-            "outletId": "all-that-dazzles-uk",
+            "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
+            "outletId": "theatreandtonic",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-19T21:19:05.506Z"
@@ -104268,13 +104370,6 @@
           {
             "url": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963",
             "outletId": "i-paper",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-19T21:19:05.506Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
-            "outletId": "theatreandtonic",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-19T21:19:05.506Z"
@@ -104308,6 +104403,13 @@
             "firstSeenAt": "2026-09-19T21:19:05.506Z"
           },
           {
+            "url": "https://www.allthatdazzles.co.uk/post/review-my-son-s-a-queer-but-what-can-you-do-ambassadors-theatre",
+            "outletId": "all-that-dazzles-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-19T21:19:05.506Z"
+          },
+          {
             "url": "https://www.londontheatredirect.com/play/my-sons-a-queer-but-what-can-you-do-tickets",
             "outletId": "londontheatredirect",
             "state": "GAP",
@@ -104332,7 +104434,7 @@
         "liveCount": 4,
         "candidateCount": 20
       },
-      "computedAt": "2026-09-21T05:44:22.707Z"
+      "computedAt": "2026-09-21T17:35:03.940Z"
     },
     {
       "showId": "mystic-pizza-regional-2025",
@@ -136092,7 +136194,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -136101,8 +136203,8 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 0,
             "error": null
           },
           {
@@ -136122,11 +136224,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 30,
+        "count": 32,
         "byReason": {
-          "aggregator-internal-nav": 4,
-          "non-review-host": 23,
-          "merch-store": 2,
+          "non-review-host": 25,
+          "aggregator-internal-nav": 3,
+          "merch-store": 3,
           "venue-production-page": 1
         }
       },
@@ -136183,7 +136285,7 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-09-21T05:44:22.707Z"
+      "computedAt": "2026-09-21T17:35:03.940Z"
     },
     {
       "showId": "spare-parts-off-broadway-2026",
@@ -155336,19 +155438,20 @@
       "aggregatorListedUrls": [
         "https://www.theatermania.com/news/review-in-the-hope-theory-helder-guimaraes-attempts-to-conjure-magic-from-his-immigration-story_1854157/",
         "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7",
-        "https://www.show-score.com/off-broadway-shows/the-hope-theory",
+        "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
+        "https://www.theatreinla.com/the-hope-theory/reviews/10524/",
         "https://stageraw.com/the-hope-theory/",
-        "https://larchmontbuzz.com/theater/theater-review-the-hope-theory/",
-        "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway"
+        "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway",
+        "https://larchmontbuzz.com/theater/theater-review-the-hope-theory/"
       ],
       "dirFiles": 7,
       "dirClean": 2,
       "inReviewsJson": 1,
       "missing": [
         {
-          "url": "https://www.show-score.com/off-broadway-shows/the-hope-theory",
-          "host": "show-score.com",
-          "knownOutletId": null,
+          "url": "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
+          "host": "thetheatretimes.com",
+          "knownOutletId": "the-theatre-times",
           "serpCensus": true
         },
         {
@@ -155366,6 +155469,24 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://www.theatreinla.com/the-hope-theory/reviews/10524/",
+          "host": "theatreinla.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatreinla--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.theatreinla.com/the-hope-theory/reviews/10524/"
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway",
           "host": "newyorktheatreguide.com",
@@ -155429,7 +155550,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -155439,7 +155560,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 4,
             "error": null
           },
           {
@@ -155449,35 +155570,36 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 6,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 35,
         "byReason": {
-          "aggregator-internal-nav": 8,
-          "non-review-host": 21
+          "non-review-host": 23,
+          "aggregator-internal-nav": 9,
+          "venue-production-page": 3
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://www.show-score.com/off-broadway-shows/the-hope-theory",
-          "host": "show-score.com",
-          "outletId": null,
-          "provisional": true,
+          "url": "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
+          "host": "thetheatretimes.com",
+          "outletId": "the-theatre-times",
+          "provisional": false,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "unknown-outlet-no-host"
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
         },
         {
           "url": "https://stageraw.com/the-hope-theory/",
@@ -155501,7 +155623,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=larchmontbuzz.com): Scrapingdog HTTP 400: Oops! Someth"
+          "reason": "⚠️  provisional outlet \"larchmontbuzz\" (not in registry) — onboard to outlet-registry.json after rev"
         }
       ],
       "ingestSkippedByCap": [],
@@ -155509,11 +155631,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
+            "outletId": "the-theatre-times",
+            "outlet": "the-theatre-times",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.show-score.com/off-broadway-shows/the-hope-theory"
+            "url": "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/"
           },
           {
             "outletId": "stageraw.com",
@@ -155528,6 +155650,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://larchmontbuzz.com/theater/theater-review-the-hope-theory/"
+          },
+          {
+            "outletId": "theatreinla.com",
+            "outlet": "theatreinla.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatreinla.com/the-hope-theory/reviews/10524/"
           },
           {
             "outletId": "nytg",
@@ -155552,11 +155681,11 @@
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
-            "url": "https://www.show-score.com/off-broadway-shows/the-hope-theory",
-            "outletId": "show-score.com",
+            "url": "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
+            "outletId": "the-theatre-times",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-20T07:18:46.455Z"
+            "firstSeenAt": "2026-09-21T17:35:03.940Z"
           },
           {
             "url": "https://stageraw.com/the-hope-theory/",
@@ -155573,6 +155702,13 @@
             "firstSeenAt": "2026-09-20T22:08:24.514Z"
           },
           {
+            "url": "https://www.theatreinla.com/the-hope-theory/reviews/10524/",
+            "outletId": "theatreinla.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-21T17:35:03.940Z"
+          },
+          {
             "url": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway",
             "outletId": "nytg",
             "state": "GAP",
@@ -155581,9 +155717,9 @@
           }
         ],
         "liveCount": 2,
-        "candidateCount": 6
+        "candidateCount": 7
       },
-      "computedAt": "2026-09-21T05:44:22.707Z"
+      "computedAt": "2026-09-21T17:35:03.940Z"
     },
     {
       "showId": "the-house-of-the-negro-insane-off-broadway-2026",
