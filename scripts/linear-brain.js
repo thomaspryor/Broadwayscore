@@ -301,6 +301,21 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         process.exit(1);
       }
 
+      // Same shape as --duplicate-of above (ship-check finding, 2026-09-21):
+      // without this, `update BRO-1 --state Done --cancel-reason "..."` would
+      // exit 0 having silently discarded the flag, matching the exact
+      // adversarial-review failure --duplicate-of was already fixed for.
+      if (args['cancel-reason'] !== undefined && (!target || target.type !== CANCELED_STATE_TYPE)) {
+        console.error(
+          `❌ --cancel-reason only applies to a move into a canceled-type state.\n` +
+            (target
+              ? `   --state "${target.name}" is a ${target.type}-type state, so the flag would do nothing.`
+              : `   No --state was given, so the flag would do nothing.`) +
+            `\n   Drop --cancel-reason, or pass the team's canceled state via --state.`
+        );
+        process.exit(1);
+      }
+
       // BRO-457: refuse a move into a completed-type state unless the issue
       // carries one of done-semantics-gate.js's two accepted evidence shapes.
       // Resolved (not written) so far — same "costs nothing on refusal" shape
@@ -480,9 +495,23 @@ async function main(argv = process.argv.slice(2), deps = {}) {
           console.error(cancelGate.reason);
           console.error(
             `\n  node scripts/linear-brain.js update ${issue.identifier} ` +
-              `--state ${target.name} --cancel-reason "<at least 20 characters>"\n`
+              `--state ${target.name} --cancel-reason "<at least 20 characters>" ` +
+              `(or set LINEAR_CANCEL_GATE_DISABLED=1 for automation that must not block)\n`
           );
           process.exit(7);
+        }
+        // Ship-check finding, 2026-09-21 (both reviewers independently, and
+        // correctly): a PASSING gate here recorded the reason in `cancelGate`
+        // and then discarded it — nothing wrote it to the card, the ledger,
+        // or the success JSON. The operator typed 20 mandatory characters
+        // that lived only in shell history, so the audit trail this gate
+        // exists to create didn't exist. Reuses the EXISTING comment-then-
+        // state write path below rather than adding a second write call
+        // (Codex's own suggested fix) — folded into any --comment the caller
+        // already gave rather than replacing it, so neither is lost.
+        if (cancelGate.gated && cancelGate.allowed) {
+          const reasonLine = `Canceled: ${cancelGate.reason}`;
+          args.comment = args.comment !== undefined ? `${args.comment}\n\n${reasonLine}` : reasonLine;
         }
       }
 

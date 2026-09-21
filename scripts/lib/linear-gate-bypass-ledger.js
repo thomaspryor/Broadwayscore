@@ -31,7 +31,17 @@
 const fs = require('fs');
 const path = require('path');
 
-const DEFAULT_LEDGER = 'data/audit/linear-gate-bypass.jsonl';
+// Anchored to __dirname, NOT process.cwd() (ship-check finding, 2026-09-21,
+// confirmed live: this worktree's own cwd-relative write left a stray,
+// never-committed data/audit/linear-gate-bypass.jsonl on disk). CLAUDE.md
+// requires sessions to work in worktrees, and callers like bsc-prune.js spawn
+// linear-brain.js with no explicit cwd — a cwd-relative default fragments the
+// ledger across every worktree that ever ran this CLI, most of which are
+// deleted after merging and never commit their copy. That defeats the entire
+// "turn unmeasured bypass usage into a number" premise this file exists for.
+// Matches the sibling precedent (bww-roundup-persistence.js's
+// MISS_LEDGER_PATH: path.join(__dirname, '..', '..', 'data', 'audit', ...)).
+const DEFAULT_LEDGER = path.join(__dirname, '..', '..', 'data', 'audit', 'linear-gate-bypass.jsonl');
 
 /**
  * @param {object} row

@@ -46,9 +46,9 @@ function runUpdate({ argv, fromType = 'unstarted', writesExpected }) {
       getIssue: async () => issue,
       getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
       appendBypassRow: (row) => { console.error('BYPASS_ROW ' + JSON.stringify(row)); },
-      createComment: async () => {
+      createComment: async (id, body) => {
         ${writesExpected
-          ? "console.error('CREATE_COMMENT_CALLED');"
+          ? "console.error('CREATE_COMMENT_CALLED ' + JSON.stringify(body));"
           : "throw new Error('createComment must not be called — the gate refused before any write');"}
       },
       updateIssue: async () => {
@@ -82,7 +82,7 @@ test('refused (exit 7): --cancel-reason given but under the length floor', () =>
   assert.match(res.stderr, /no-cancel-reason/);
 });
 
-test('allowed: a real cancel reason moves the state', () => {
+test('allowed: a real cancel reason moves the state AND is posted as a comment (ship-check finding, 2026-09-21: it used to be silently discarded)', () => {
   const res = runUpdate({
     argv: [
       'update',
@@ -96,7 +96,29 @@ test('allowed: a real cancel reason moves the state', () => {
   });
   assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}`);
   assert.match(res.stderr, /UPDATE_ISSUE_CALLED/);
+  assert.match(res.stderr, /CREATE_COMMENT_CALLED/, 'the reason must actually land on the card, not just satisfy the gate');
+  assert.match(res.stderr, /Superseded by BRO-1 which covers the same fix\./);
   assert.doesNotMatch(res.stderr, /REFUSED/);
+});
+
+test('the cancel reason is APPENDED to an explicit --comment, not replaced by it', () => {
+  const res = runUpdate({
+    argv: [
+      'update',
+      'BRO-9435',
+      '--state',
+      'Canceled',
+      '--comment',
+      'Closing out the sprint cleanup.',
+      '--cancel-reason',
+      'Superseded by BRO-1 which covers the same fix.',
+    ],
+    writesExpected: true,
+  });
+  assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}`);
+  const body = res.stderr.match(/CREATE_COMMENT_CALLED (".*")/)[1];
+  assert.match(body, /Closing out the sprint cleanup\./, 'the caller\'s own comment must survive');
+  assert.match(body, /Superseded by BRO-1 which covers the same fix\./, 'the cancel reason must also land');
 });
 
 test('LINEAR_CANCEL_GATE_DISABLED=1 proceeds past the refusal and logs an env-disabled bypass row', () => {
@@ -154,6 +176,15 @@ test('a re-run on an issue ALREADY Canceled is not a real transition and the can
   assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}`);
   assert.doesNotMatch(res.stderr, /REFUSED/, 'the cancel gate must not demand a reason for a non-transition');
   assert.match(res.stderr, /CREATE_COMMENT_CALLED/);
+});
+
+test('--cancel-reason on a non-canceled --state is refused (exit 1), matching the --duplicate-of precedent', () => {
+  const res = runUpdate({
+    argv: ['update', 'BRO-9435', '--state', 'Done', '--cancel-reason', 'this flag would do nothing here'],
+    writesExpected: false,
+  });
+  assert.equal(res.status, 1, `expected exit 1, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /--cancel-reason only applies to a move into a canceled-type state/);
 });
 
 test('the Done gate --force bypass logs a "force" row with the reason', () => {

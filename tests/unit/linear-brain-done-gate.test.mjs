@@ -60,6 +60,11 @@ function runUpdate({ argv, description, comments = [], updateShouldBeCalled, ver
       verifyEvidence: ${verifier},
       getIssue: async () => issue,
       getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
+      // BRO-3435, ship-check finding 2026-09-21: without this stub, a
+      // --force / LINEAR_DONE_GATE_DISABLED=1 case below falls through to
+      // the REAL appendBypassRow and writes a live row to
+      // data/audit/linear-gate-bypass.jsonl on every CI run of this file.
+      appendBypassRow: () => {},
       updateIssue: async () => {
         ${updateShouldBeCalled ? "console.error('UPDATE_ISSUE_CALLED');" : "throw new Error('updateIssue must not be called — the gate refused before any write');"}
       },
@@ -194,6 +199,7 @@ test('LINEAR_DONE_GATE_DISABLED=1 bypasses the gate for automation', () => {
     main(['update', 'BRO-9457', '--state', 'Done'], {
       getIssue: async () => issue,
       getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
+      appendBypassRow: () => {},
       updateIssue: async () => { console.error('UPDATE_ISSUE_CALLED'); },
       createComment: async () => {},
     });

@@ -193,8 +193,30 @@ test('not gated: report --status=in-review never consults the gate even with zer
 test('--force with a reason ≥10 chars bypasses the gate', async () => {
   await withStubbedExit(async (h) => {
     mockFetch({ issue: { description: 'Fixed the thing, looks good.' }, updateShouldBeCalled: true });
-    await cmdReport({ issue: 'BRO-9458', status: 'done', summary: 'did the work', force: 'owner said ship it now' });
+    // deps.appendBypassRow stubbed everywhere a bypass can fire in this file
+    // (ship-check finding, 2026-09-21) — without it this test writes a REAL
+    // row to data/audit/linear-gate-bypass.jsonl on every CI run.
+    await cmdReport(
+      { issue: 'BRO-9458', status: 'done', summary: 'did the work', force: 'owner said ship it now' },
+      { appendBypassRow: () => {} }
+    );
     assert.match(h.getLogs(), /"doneGateRefused":false/);
+  });
+});
+
+test('the --force bypass on report --status=done logs a "force" row via linear-session.js\'s OWN ledger wiring (ship-check finding, 2026-09-21: linear-brain.js\'s wiring alone undercounted the path sessions actually use)', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({ issue: { description: 'Fixed the thing, looks good.' }, updateShouldBeCalled: true });
+    const rows = [];
+    await cmdReport(
+      { issue: 'BRO-9458', status: 'done', summary: 'did the work', force: 'owner said ship it now, no time to verify' },
+      { appendBypassRow: (row) => rows.push(row) }
+    );
+    assert.equal(rows.length, 1);
+    assert.equal(rows[0].gate, 'done');
+    assert.equal(rows[0].mechanism, 'force');
+    assert.equal(rows[0].reason, 'owner said ship it now, no time to verify');
+    assert.equal(rows[0].identifier, 'BRO-9458');
   });
 });
 
@@ -203,7 +225,10 @@ test('LINEAR_DONE_GATE_DISABLED=1 bypasses the gate for automation', async () =>
     process.env.LINEAR_DONE_GATE_DISABLED = '1';
     try {
       mockFetch({ issue: { description: 'Fixed the thing, looks good.' }, updateShouldBeCalled: true });
-      await cmdReport({ issue: 'BRO-9458', status: 'done', summary: 'did the work' });
+      await cmdReport(
+        { issue: 'BRO-9458', status: 'done', summary: 'did the work' },
+        { appendBypassRow: () => {} }
+      );
       assert.match(h.getLogs(), /"doneGateRefused":false/);
     } finally {
       delete process.env.LINEAR_DONE_GATE_DISABLED;
