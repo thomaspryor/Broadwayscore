@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-21T17:35:03.940Z",
+  "generatedAt": "2026-09-21T21:33:50.564Z",
   "windowDays": 1095,
-  "targets": 272,
-  "auditedThisRun": 8,
-  "carriedForward": 549,
+  "targets": 273,
+  "auditedThisRun": 3,
+  "carriedForward": 554,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
@@ -31057,7 +31057,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-21T17:35:03.940Z"
+      "computedAt": "2026-09-21T21:33:50.564Z"
     },
     {
       "showId": "crazy-mama-off-broadway-2026",
@@ -32775,28 +32775,28 @@
         "https://www.londontheatre.co.uk/reviews/darkling-review-bush-theatre",
         "https://everything-theatre.co.uk/2026/09/review-darkling-bush-theatre/",
         "https://theatreandtonic.co.uk/blog/darkling-bush-theatre-review",
-        "https://www.timeout.com/london/theatre/darkling-review",
         "https://viewfromthegods.co.uk/2026/09/17/darkling-bush-theatre/",
-        "https://www.thereviewshub.com/darkling-bush-theatre-london/",
         "https://www.theguardian.com/stage/2026/sep/17/darkling-review-bush-theatre-london-linnea-berthelsen",
-        "https://khambayswordswordswords.blog/2026/09/18/darkling-at-the-bush-theatre-2026-review/",
+        "https://www.thereviewshub.com/darkling-bush-theatre-london/",
+        "https://chiswickcalendar.co.uk/darkling-bush-theatre-review/",
+        "https://www.timeout.com/london/theatre/darkling-review",
         "https://www.allthatdazzles.co.uk/post/review-darkling-bush-theatre",
         "https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london",
         "https://redbuslondinium.uk/2026/09/15/review-darkling-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
         "https://www.bushtheatre.co.uk/event/darkling/",
         "https://lovelondonloveculture.com/2026/09/16/review-darkling-bush-theatre/",
+        "https://khambayswordswordswords.blog/2026/09/18/darkling-at-the-bush-theatre-2026-review/",
         "https://www.pinkprincetheatre.com/post/review-darkling-bush-theatre",
-        "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre",
         "https://readaboutstuff.com/2026/09/16/review-darkling-bush-theatre-london/",
-        "https://susanelkin.co.uk/articles/darkling-susan-elkin-reviews/",
-        "https://liamodell.com/2026/09/16/darkling-review-bush-theatre-linnea-berthelsen-stranger-things-titas-halder-birmingham-oxford-manchester/",
-        "https://www.londontheatre1.com/reviews/darkling-bush-theatre/",
-        "https://www.whatsonstage.com/news/darkling-with-linnea-berthelsen-at-bush-theatre-and-on-tour-review_1731568/",
-        "https://morningstaronline.co.uk/article/theatre-review-darkling-bush-theatre-london"
+        "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre",
+        "https://www.atctheatre.com/production/darkling-2026/",
+        "https://onceaweektheatre.com/darkling-at-the-bush-theatre/",
+        "https://www.broadwayworld.com/westend/article/Review-DARKLING-Bush-Theatre-20260916",
+        "https://liamodell.com/2026/09/16/darkling-review-bush-theatre-linnea-berthelsen-stranger-things-titas-halder-birmingham-oxford-manchester/"
       ],
-      "dirFiles": 33,
-      "dirClean": 22,
-      "inReviewsJson": 23,
+      "dirFiles": 35,
+      "dirClean": 23,
+      "inReviewsJson": 24,
       "missing": [
         {
           "url": "https://redbuslondinium.uk/2026/09/15/review-darkling-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
@@ -32821,15 +32821,19 @@
           "count": 1
         },
         {
-          "host": "broadwayworld.com",
+          "host": "londontheatre1.com",
           "count": 1
         },
         {
-          "host": "londonlivinglarge.com",
+          "host": "susanelkin.co.uk",
           "count": 1
         },
         {
-          "host": "onceaweektheatre.com",
+          "host": "morningstaronline.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theupcoming.co.uk",
           "count": 1
         }
       ],
@@ -32853,9 +32857,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.whatsonstage.com/news/darkling-with-linnea-berthelsen-at-bush-theatre-and-on-tour-review_1731568/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
+          "url": "https://www.atctheatre.com/production/darkling-2026/",
+          "host": "atctheatre.com",
+          "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -32863,9 +32867,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "whatsonstage--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.whatsonstage.com/news/darkling-with-linnea-berthelsen-at-bush-theatre-and-on-tour-review_1731568/"
+              "file": "atctheatre--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.atctheatre.com/production/darkling-2026/"
             }
           ],
           "serpCensus": true
@@ -32887,7 +32891,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 1
           },
           "lbo-roundup": {
             "found": false,
@@ -32951,7 +32955,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -32961,7 +32965,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           }
         ],
@@ -32971,10 +32975,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 11,
+        "count": 13,
         "byReason": {
-          "non-review-host": 8,
-          "roundup-page": 1,
+          "non-review-host": 10,
+          "event-listing": 1,
           "ticketing-listing": 2
         }
       },
@@ -33031,11 +33035,11 @@
             "url": "https://www.bushtheatre.co.uk/event/darkling/"
           },
           {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
+            "outletId": "atctheatre.com",
+            "outlet": "atctheatre.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.whatsonstage.com/news/darkling-with-linnea-berthelsen-at-bush-theatre-and-on-tour-review_1731568/"
+            "url": "https://www.atctheatre.com/production/darkling-2026/"
           }
         ],
         "suppressedMissing": [],
@@ -33059,22 +33063,10 @@
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/darkling-review",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-20T07:18:46.455Z"
-          },
-          {
             "url": "https://viewfromthegods.co.uk/2026/09/17/darkling-bush-theatre/",
             "outletId": "viewfromthegods.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-20T15:35:03.611Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/darkling-bush-theatre-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
             "url": "https://www.theguardian.com/stage/2026/sep/17/darkling-review-bush-theatre-london-linnea-berthelsen",
@@ -33083,8 +33075,20 @@
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
-            "url": "https://khambayswordswordswords.blog/2026/09/18/darkling-at-the-bush-theatre-2026-review/",
-            "outletId": "khambayswordswordswords.blog",
+            "url": "https://www.thereviewshub.com/darkling-bush-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-20T07:18:46.455Z"
+          },
+          {
+            "url": "https://chiswickcalendar.co.uk/darkling-bush-theatre-review/",
+            "outletId": "chiswickcalendar.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-21T21:33:50.564Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/darkling-review",
+            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
@@ -33101,14 +33105,14 @@
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
-            "url": "https://www.pinkprincetheatre.com/post/review-darkling-bush-theatre",
-            "outletId": "pinkprincetheatre.com",
+            "url": "https://khambayswordswordswords.blog/2026/09/18/darkling-at-the-bush-theatre-2026-review/",
+            "outletId": "khambayswordswordswords.blog",
             "state": "live",
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
-            "url": "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre",
-            "outletId": "voicemag.uk",
+            "url": "https://www.pinkprincetheatre.com/post/review-darkling-bush-theatre",
+            "outletId": "pinkprincetheatre.com",
             "state": "live",
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
@@ -33119,28 +33123,28 @@
             "firstSeenAt": "2026-09-21T11:24:10.560Z"
           },
           {
-            "url": "https://susanelkin.co.uk/articles/darkling-susan-elkin-reviews/",
-            "outletId": "susanelkin.co.uk",
+            "url": "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre",
+            "outletId": "voicemag.uk",
             "state": "live",
-            "firstSeenAt": "2026-09-20T22:08:24.514Z"
+            "firstSeenAt": "2026-09-20T07:18:46.455Z"
+          },
+          {
+            "url": "https://onceaweektheatre.com/darkling-at-the-bush-theatre/",
+            "outletId": "onceaweektheatre.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-21T21:33:50.564Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-DARKLING-Bush-Theatre-20260916",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-21T21:33:50.564Z"
           },
           {
             "url": "https://liamodell.com/2026/09/16/darkling-review-bush-theatre-linnea-berthelsen-stranger-things-titas-halder-birmingham-oxford-manchester/",
             "outletId": "liamodell.com",
             "state": "live",
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/reviews/darkling-bush-theatre/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-20T22:08:24.514Z"
-          },
-          {
-            "url": "https://morningstaronline.co.uk/article/theatre-review-darkling-bush-theatre-london",
-            "outletId": "morningstaronline.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-20T22:08:24.514Z"
           },
           {
             "url": "https://redbuslondinium.uk/2026/09/15/review-darkling-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
@@ -33164,17 +33168,17 @@
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/darkling-with-linnea-berthelsen-at-bush-theatre-and-on-tour-review_1731568/",
-            "outletId": "whatsonstage",
+            "url": "https://www.atctheatre.com/production/darkling-2026/",
+            "outletId": "atctheatre.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-20T22:08:24.514Z"
+            "firstSeenAt": "2026-09-21T21:33:50.564Z"
           }
         ],
         "liveCount": 17,
         "candidateCount": 21
       },
-      "computedAt": "2026-09-21T11:24:10.560Z"
+      "computedAt": "2026-09-21T21:33:50.564Z"
     },
     {
       "showId": "data-off-broadway-2026",
@@ -88749,7 +88753,7 @@
         "liveCount": 0,
         "candidateCount": 33
       },
-      "computedAt": "2026-09-21T17:35:03.940Z"
+      "computedAt": "2026-09-21T21:33:50.564Z"
     },
     {
       "showId": "madama-butterfly-off-broadway-2024",
