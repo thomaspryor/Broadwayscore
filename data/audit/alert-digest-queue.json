@@ -532,14 +532,14 @@
   },
   {
     "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.1% (379/498)\noff-broadway: 42.5% (136/320)\nwest-end: 76.2% (423/555)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (913h)\nA Midsummer Night's Dream — observer (913h)\nA Midsummer Night's Dream — standard (913h)\nABBA Voyage — independent (913h)\nAladdin — ew (913h)\n… 175 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (913h)\nBuena Vista Social Club — nydailynews (913h)\nHadestown — nydailynews (913h)\nMasquerade — nydailynews (913h)\nMaybe Happy Ending — nydailynews (913h)\n… 10 more circuit-open cell(s)",
+    "title": "T1 Coverage Scoreboard — already tracked at BRO-3975",
+    "description": "This condition already has an open tracker (BRO-3975); not filing a duplicate. It will go quiet in the digest from here.\n\nbroadway: 76.1% (379/498)\noff-broadway: 42.5% (136/320)\nwest-end: 76.2% (423/555)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (914h)\nA Midsummer Night's Dream — observer (914h)\nA Midsummer Night's Dream — standard (914h)\nABBA Voyage — independent (914h)\nAladdin — ew (914h)\n… 168 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (914h)\nBuena Vista Social Club — broadwaynews (914h)\nBuena Vista Social Club — nydailynews (914h)\nHadestown — nydailynews (914h)\nHeathers The Musical — dailybeast (914h)\n… 17 more circuit-open cell(s)",
     "severity": "warning",
     "url": null,
-    "decision": false,
+    "decision": true,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-21T11:24:25.771Z"
+    "queuedAt": "2026-09-21T11:49:46.760Z"
   }
 ]
