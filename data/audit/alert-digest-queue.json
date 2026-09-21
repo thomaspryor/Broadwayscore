@@ -34,5 +34,50 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-21T15:38:42.265Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 65.2% of shows changed coverage state — already tracked at BRO-3030",
+    "description": "This condition already has an open tracker (BRO-3030); not filing a duplicate. It will go quiet in the digest from here.\n\nreview-gap blast radius 65.2% (15/23 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: amaze-magic-off-broadway-2025, catarina-and-the-beauty-of-killing-fascists-west-end-2026, cats-the-jellicle-ball-2026, darkling-off-west-end-2026, death-of-a-salesman-2026, golden-boy-off-west-end-2026, how-the-other-half-loves-west-end-2026, jesus-christ-superstar-west-end-2026, shifters-off-broadway-2026, the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026, the-cherry-orchard-park-avenue-armory-off-broadway-2026, the-pass-off-broadway-2026, the-winters-tale-off-broadway-2026, thelma-and-louise-a-new-musical-off-west-end-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nPARTIAL write: the other 8 show(s) audited this run were NOT risky and were persisted normally. Only the 15 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": true,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-21T17:35:06.010Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage — already tracked at BRO-3030",
+    "description": "This condition already has an open tracker (BRO-3030); not filing a duplicate. It will go quiet in the digest from here.\n\n3/136 show(s) differ between internal state and what prod serves.\nscore-drift: 3\nDarkling: score-drift\nA Month in the Country: score-drift\nMuch Ado About Nothing: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": true,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-21T17:35:39.796Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h — already tracked at BRO-3030",
+    "description": "This condition already has an open tracker (BRO-3030); not filing a duplicate. It will go quiet in the digest from here.\n\n2 T1/T2 outlet(s) still missing >24h after they became measurable.",
+    "severity": "error",
+    "url": null,
+    "decision": true,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Just in Time — timeout (26h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"just-in-time-2025\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Paranormal Activity — theatermania (29h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"paranormal-activity-2026\" -f max_tier=3 -f aggregators_only=false"
+      }
+    ],
+    "queuedAt": "2026-09-21T17:35:43.084Z"
   }
 ]
