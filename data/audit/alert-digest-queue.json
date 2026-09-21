@@ -223,5 +223,34 @@
       }
     ],
     "queuedAt": "2026-09-21T01:25:46.086Z"
+  },
+  {
+    "conditionKey": "land:land/BRO-3707",
+    "title": "Landing blocked: push red on land/BRO-3707",
+    "description": "land.yml did not land land/BRO-3707: the push gate went red at 9cfbf1849a. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/BRO-3707 @ 9cfbf1849a (origin/land/BRO-3707) → origin/main @ 8ea6b72f5a [land] attempt 1/3: rebased onto 8ea6b72f5a, 16 file(s) changed — running checks [land] verified-base: main moved 4cd6f5047d → 8ea6b72f5a across 24 file(s), substantive — running the full gauntlet [land] linked 17 gitignored path(s) into the worktree (node_modules/core data) [land] checks: colocated-tests=ok, node  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35552578757",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/BRO-3707"
+      },
+      {
+        "name": "gate",
+        "value": "push"
+      },
+      {
+        "name": "tip",
+        "value": "9cfbf1849ac50665203d2d760856435a06c6ce81"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35552578757"
+      }
+    ],
+    "queuedAt": "2026-09-21T02:18:16.135Z"
   }
 ]
