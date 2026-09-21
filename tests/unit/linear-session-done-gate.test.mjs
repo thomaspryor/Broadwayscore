@@ -45,9 +45,15 @@ process.env.LINEAR_API_KEY = 'test-key';
 // unstubbed call in this file is kept from shelling out to a real
 // origin/main checkout by accident.
 const cmdExecModule = require('../../scripts/lib/linear-cmd-execution.js');
-const factorySpy = { built: 0, cmds: [], result: { allowed: true, verdict: 'own-verify-passed', reason: 'spy: command passed', notOnMain: false, sha: 'spy0000000' } };
-cmdExecModule.makeVerifyCmdEvidence = () => {
+const SPY_PASS = { allowed: true, verdict: 'own-verify-passed', reason: 'spy: command passed', notOnMain: false, sha: 'spy0000000' };
+const SPY_FAIL = { allowed: false, verdict: 'own-verify-failed', reason: 'spy: command failed', notOnMain: false, sha: 'spy0000000' };
+// `result` is shared mutable state across tests in this one process, so every
+// test that changes it restores SPY_PASS in a finally (ship-check finding,
+// Codex, 2026-09-21).
+const factorySpy = { built: 0, cmds: [], opts: [], result: SPY_PASS };
+cmdExecModule.makeVerifyCmdEvidence = (opts) => {
   factorySpy.built += 1;
+  factorySpy.opts.push(opts);
   return (cmd) => { factorySpy.cmds.push(cmd); return factorySpy.result; };
 };
 
@@ -195,8 +201,9 @@ test('refused: the recorded acceptance command is executed and FAILS', async () 
 
 test('wiring: with NO verifyCmdEvidence dep, the CLI builds the executor from linear-cmd-execution.js and hands it the recorded command', async () => {
   const before = { built: factorySpy.built, cmds: factorySpy.cmds.length };
+  let calls;
   await withStubbedExit(async (h) => {
-    mockFetch({
+    calls = mockFetch({
       issue: { description: '## Acceptance criteria\n- `node --test tests/unit/done-semantics-gate.test.mjs` passes' },
       updateShouldBeCalled: true,
     });
@@ -205,11 +212,44 @@ test('wiring: with NO verifyCmdEvidence dep, the CLI builds the executor from li
     assert.match(h.getLogs(), /"doneGateRefused":false/);
   });
   assert.equal(factorySpy.built, before.built + 1, 'cmdReport must build the executor from makeVerifyCmdEvidence when no dep is injected');
+  assert.equal(typeof (factorySpy.opts[factorySpy.opts.length - 1] || {}).log, 'function', 'the factory must get a logger, or the operator sees nothing while it blocks on a real checkout');
   assert.deepEqual(
     factorySpy.cmds.slice(before.cmds),
     ['node --test tests/unit/done-semantics-gate.test.mjs'],
     'the recorded acceptance command must reach the real factory\'s verifier, not be waved through'
   );
+  // `updateShouldBeCalled: true` only PERMITS the mutation — it never requires
+  // it, so a cmdReport that stopped writing would keep this test green
+  // (ship-check finding, Codex, 2026-09-21). Require exactly one issueUpdate,
+  // carrying the Done state.
+  const updates = calls.filter((c) => c.query.includes('issueUpdate'));
+  assert.equal(updates.length, 1, 'the allowed path must perform exactly one issueUpdate');
+  assert.equal(updates[0].variables.input.stateId, 'state-done');
+});
+
+test('wiring: the default path REFUSES when the executor it built says the command failed', async () => {
+  factorySpy.result = SPY_FAIL;
+  try {
+    const before = factorySpy.cmds.length;
+    let calls;
+    await withStubbedExit(async (h) => {
+      calls = mockFetch({
+        issue: { description: '## Acceptance criteria\n- `node --test tests/unit/done-semantics-gate.test.mjs` passes' },
+        updateShouldBeCalled: false,
+      });
+      await assert.rejects(
+        () => cmdReport({ issue: 'BRO-9458', status: 'done', summary: 'did the work' }),
+        /EXIT/
+      );
+      assert.equal(h.getExitCode(), 5);
+      assert.match(h.getErrors(), /REFUSED \(own-verify-failed\)/);
+      assert.match(h.getLogs(), /"doneGateRefused":true/);
+    });
+    assert.equal(factorySpy.cmds.length, before + 1, 'the verifier it built must still be consulted');
+    assert.equal(calls.filter((c) => c.query.includes('issueUpdate')).length, 0);
+  } finally {
+    factorySpy.result = SPY_PASS;
+  }
 });
 
 test('allowed: PR-EVIDENCE recorded in a past comment (not the description or this report)', async () => {
