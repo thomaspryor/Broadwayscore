@@ -227,14 +227,27 @@ function recentRecheckFailures(now) {
   return out;
 }
 
+// Codex adversarial review (BRO-3924): without an age check, a report that
+// stops being regenerated (BRO-3551's own cron disabled, erroring, or just
+// never scheduled) would suppress a card as "already-passes" FOREVER off one
+// stale verdict — including past the point where main regresses and the
+// card's acceptance command no longer actually passes. Same window
+// RECHECK_WINDOW_MS already uses for recheckFailures below, so both
+// consumers of "how stale is too stale for an acceptance verdict" agree.
+const OPEN_BACKLOG_SWEEP_MAX_AGE_MS = RECHECK_WINDOW_MS;
+
 // BRO-3924 (R3): the watchdog consumes BRO-3551's own report as an
 // ineligible reason — it NEVER runs runVerify itself inside the 90s sweep.
 // Fail-soft (same doctrine as recentRecheckFailures above): a missing or
 // corrupt report degrades to "no already-passing cards known", never blocks
 // a sweep.
-function loadAlreadyPassesReport() {
+function loadAlreadyPassesReport(now = Date.now(), reportPath = OPEN_BACKLOG_SWEEP_REPORT_PATH) {
   try {
-    const raw = JSON.parse(fs.readFileSync(OPEN_BACKLOG_SWEEP_REPORT_PATH, 'utf8'));
+    const raw = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+    const generatedMs = Date.parse(raw.generatedAt || '');
+    if (!Number.isFinite(generatedMs) || now - generatedMs > OPEN_BACKLOG_SWEEP_MAX_AGE_MS) {
+      return { alreadyDone: [], checkoutSha: null };
+    }
     const alreadyDone = Array.isArray(raw.alreadyDone) ? raw.alreadyDone : [];
     return { alreadyDone, checkoutSha: raw.checkoutSha || null };
   } catch {
@@ -1058,4 +1071,7 @@ module.exports = {
   dispatchArgvFor, linearTasksForPlan, linearStartedTasksForPlan, LINEAR_CACHE_TTL_MS,
   // BRO-3429: same rationale — tested against the real function, not a copy.
   reArmHintFor,
+  // BRO-3924 (R3): exported (with an injectable path param) so the staleness
+  // check is tested against the real function, not a copy.
+  loadAlreadyPassesReport, OPEN_BACKLOG_SWEEP_REPORT_PATH, OPEN_BACKLOG_SWEEP_MAX_AGE_MS,
 };

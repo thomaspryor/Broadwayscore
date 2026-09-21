@@ -1060,6 +1060,90 @@ test('BRO-3924 (R5): a card the watchdog never claimed contributes nothing to sp
   assert.equal(breaker.liveNow, 0);
 });
 
+test('BRO-3924 (R5, Codex catch): medianJobCostUSD samples job-failed cost, not just job-done — a crash loop must not fall back to the cold-start figure', () => {
+  const entries = [];
+  for (let i = 0; i < 5; i++) {
+    entries.push({ ts: T(60), event: 'job-spawned', jobId: `f${i}`, taskId: `linear:BRO-97${i}` });
+    entries.push({ ts: T(1), event: 'job-failed', jobId: `f${i}`, taskId: `linear:BRO-97${i}`, costUSD: 20 });
+  }
+  assert.equal(core.medianJobCostUSD(entries, NOW), 20);
+});
+
+test('BRO-3924 (R5, subagent catch): a negative costUSD row cannot offset legitimate spend', () => {
+  const id = 'linear:BRO-980';
+  const entries = [
+    ...headlessOpen(id, 'job-980', T(10), T(9)),
+    { ts: T(1), event: 'job-done', jobId: 'job-980', taskId: id, costUSD: -50 },
+  ];
+  const rows = core.watchdogSpendRows(entries, NOW);
+  assert.equal(rows[0].usd, 0, 'a negative cost must clamp to 0, never subtract');
+});
+
+test('BRO-3924 (R5, Codex catch): a retry-timeout still records the resumed job\'s real cost, not zero', () => {
+  const id = 'linear:BRO-990';
+  const entries = [
+    { ts: T(120), event: core.WATCHDOG_EVENTS.REDISPATCH, taskId: id },
+    { ts: T(119), event: 'launch', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: T(119), event: 'job-spawned', jobId: 'job-990', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: T(90), event: 'job-retried', jobId: 'job-990', taskId: id, costUSD: 4 },
+    // No successor ever spawns — well past SPEND_ORPHAN_TIMEOUT_H (1h).
+  ];
+  const rows = core.watchdogSpendRows(entries, NOW);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].usd, 4);
+  assert.equal(rows[0].event, 'card-fail');
+});
+
+test('BRO-3924 (R5, Codex catch): an ancient abandoned claim cannot acquire a much-later unrelated job\'s cost or success', () => {
+  const id = 'linear:BRO-991';
+  const entries = [
+    // A claim from 10 days ago — no job ever spawned for IT.
+    { ts: T(10 * 24 * 60), event: core.WATCHDOG_EVENTS.REDISPATCH, taskId: id },
+    // A completely unrelated manual dispatch today, unconnected to the watchdog.
+    { ts: T(9), event: 'launch', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: T(9), event: 'job-spawned', jobId: 'manual-job', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: T(1), event: 'job-done', jobId: 'manual-job', taskId: id, costUSD: 12 },
+  ];
+  const rows = core.watchdogSpendRows(entries, NOW);
+  assert.deepEqual(rows, [], 'the ancient claim must be outside the lookback window and never offered to classifyDispatches');
+});
+
+test('BRO-3924 (R5, Codex catch): the spend breaker recomputes cleanly with only the current window\'s claims (no lookback regression for recent retries)', () => {
+  const id = 'linear:BRO-992';
+  const entries = [
+    ...headlessOpen(id, 'job-992a', T(47 * 60), T(47 * 60 - 1)), // 47h ago — inside the 48h lookback
+    { ts: T(46 * 60), event: 'job-done', jobId: 'job-992a', taskId: id, costUSD: 6 },
+  ];
+  const rows = core.watchdogSpendRows(entries, NOW);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].usd, 6);
+});
+
+test('BRO-3924 (R3, Codex catch): a stale sweep report (past the max-age window) is treated as empty, a fresh one is trusted', () => {
+  const wd = require('../dispatch-watchdog.js');
+  const os = require('node:os');
+  const path = require('node:path');
+  const fs = require('node:fs');
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'sweep-report-'));
+  const reportPath = path.join(tmpDir, 'report.json');
+  const now = Date.now();
+  const write = (generatedAt) => fs.writeFileSync(reportPath, JSON.stringify({
+    generatedAt, checkoutSha: 'deadbeef',
+    alreadyDone: [{ id: 'BRO-1', name: 'x', verifyCmd: 'test -f x' }],
+  }));
+
+  write(new Date(now - 72 * 3600 * 1000).toISOString()); // 72h old, past the 48h max age
+  assert.deepEqual(wd.loadAlreadyPassesReport(now, reportPath).alreadyDone, []);
+
+  write(new Date(now - 1 * 3600 * 1000).toISOString()); // 1h old — well within the window
+  assert.equal(wd.loadAlreadyPassesReport(now, reportPath).alreadyDone.length, 1);
+
+  write('not-a-date');
+  assert.deepEqual(wd.loadAlreadyPassesReport(now, reportPath).alreadyDone, [], 'an unparseable generatedAt must not be trusted as fresh');
+
+  fs.rmSync(tmpDir, { recursive: true, force: true });
+});
+
 test('BRO-3924 (R5): the spend hold surfaces in globalHolds/pausedByPolicy/toDispatch exactly like the other caps', () => {
   const entries = [];
   for (let i = 0; i < core.CAPS.watchdogConcurrent; i++) {

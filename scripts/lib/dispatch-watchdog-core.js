@@ -202,6 +202,15 @@ const CAPS = Object.freeze({
 
 function round2(n) { return Math.round(n * 100) / 100; }
 
+// Subagent review (BRO-3924): a single corrupted/negative costUSD ledger row
+// would otherwise pass straight into spentUSD's sum and OFFSET legitimate
+// positive spend from other rows — a money guard silently suppressing its
+// own halt is the one direction it must never fail toward.
+function positiveUSD(v) {
+  const n = Number(v);
+  return Number.isFinite(n) && n > 0 ? n : 0;
+}
+
 function median(nums) {
   if (!nums || !nums.length) return 0;
   const sorted = [...nums].sort((a, b) => a - b);
@@ -244,7 +253,14 @@ function medianJobCostUSD(entries, now) {
   const cutoff = now - SPEND_MEDIAN_WINDOW_MS;
   const costs = [];
   for (const job of foldJobs(entries).values()) {
-    if (!job || job.event !== JOB_EVENTS.DONE) continue;
+    // Codex/subagent review (BRO-3924): DONE-only sampling is backwards for
+    // the exact scenario this guard exists to catch — a crash loop produces
+    // job-failed rows (bsc-runner.js still records their real costUSD) and
+    // NO job-done rows, so a DONE-only median would fall back to the
+    // cold-start figure for the very claims that are actively spending,
+    // understating the reservation right when it matters most. Any
+    // TERMINAL_JOB_EVENTS outcome with a real cost counts.
+    if (!job || !TERMINAL_JOB_EVENTS.has(job.event)) continue;
     const ts = Date.parse(job.ts || '');
     if (!Number.isFinite(ts) || ts < cutoff) continue;
     const usd = Number(job.costUSD);
@@ -285,13 +301,35 @@ const SPEND_ORPHAN_TIMEOUT_H = 1;
 // constraint) at the cost of O(all-time claims) per call, which is already
 // this file's existing performance shape (watchdogClaimPending,
 // dispatchCapDecision and friends all walk the full entries array too).
+// Codex adversarial review (BRO-3924): classifyDispatches' findMyJob has NO
+// upper time bound — it takes the EARLIEST spawn at or after the claim's ts,
+// however far in the future. That is safe for linear-drain-parked.js's own
+// reconcileOutcomes because a resolved dispatch stops being re-offered to
+// findMyJob at all (isDispatchResolved checks its own PERSISTED
+// resolvingEvents). This reconciliation is deliberately stateless — nothing
+// is ever written back — so without a bound, a truly-abandoned watchdog
+// claim from weeks ago would be re-evaluated on every call forever and could
+// silently acquire a much-later, UNRELATED manual dispatch's job: its cost,
+// or worse, a spurious 'card-pass' that clears the "zero completions" halt
+// on a claim the watchdog itself never actually landed. Bounding the CLAIM
+// set to a recent window closes this without touching the shared helper:
+// only spend within the last local day can ever matter to today's breaker
+// (watchdogSpendBreaker filters to today below), so a claim outside this
+// window is simply never offered to classifyDispatches at all — not "found
+// and misattributed", just never considered. Wider than one day for margin
+// around the local-day boundary and SPEND_ORPHAN_TIMEOUT_H's own grace.
+const SPEND_CLAIM_LOOKBACK_MS = 48 * 3600 * 1000;
+
 function watchdogSpendRows(entries, now) {
-  const hasClaims = (entries || []).some(e => e && e.event === WATCHDOG_EVENTS.REDISPATCH);
+  const cutoff = now - SPEND_CLAIM_LOOKBACK_MS;
+  const isRecentClaim = e => e && e.event === WATCHDOG_EVENTS.REDISPATCH &&
+    Number.isFinite(Date.parse(e.ts || '')) && Date.parse(e.ts) >= cutoff;
+  const hasClaims = (entries || []).some(isRecentClaim);
   if (!hasClaims) return [];
   const decisions = dispatchReconcile.classifyDispatches({
     ledgerEntries: entries,
     dispatchLedgerEntries: entries,
-    isDispatchRow: e => e && e.event === WATCHDOG_EVENTS.REDISPATCH,
+    isDispatchRow: isRecentClaim,
     resolvingEvents: new Set(),
     orphanTimeoutH: SPEND_ORPHAN_TIMEOUT_H,
     cardIdOf: d => String(d.taskId),
@@ -300,15 +338,22 @@ function watchdogSpendRows(entries, now) {
   });
   const rows = [];
   for (const { cardId, job, kind } of decisions) {
-    // Orphan/retry-timeout: no job ever spawned (or the resume never did) —
-    // no cost was incurred, same treatment linear-drain-parked.js's own
-    // ORPHAN branch gives it ("usd: 0 — no job ever spawned").
-    if (kind !== dispatchReconcile.DECISION_KINDS.TERMINAL) continue;
+    // Orphan: no job ever spawned at all — no cost was incurred, same
+    // treatment linear-drain-parked.js's own ORPHAN branch gives it.
+    if (kind === dispatchReconcile.DECISION_KINDS.ORPHAN) continue;
+    if (kind === dispatchReconcile.DECISION_KINDS.RETRY_TIMEOUT) {
+      // Codex adversarial review: the resumed chain's own job may already
+      // have incurred real cost before it stalled — dropping this silently
+      // UNDERSTATED spend exactly where the money guard needs it most. Same
+      // field linear-drain-parked.js's own RETRY_TIMEOUT branch records.
+      rows.push({ ts: job.ts || null, taskId: cardId, event: 'card-fail', usd: positiveUSD(job.costUSD) });
+      continue;
+    }
     rows.push({
       ts: job.ts || null,
       taskId: cardId,
       event: job.event === JOB_EVENTS.DONE ? 'card-pass' : 'card-fail',
-      usd: Number(job.costUSD) || 0,
+      usd: positiveUSD(job.costUSD),
     });
   }
   return rows;
