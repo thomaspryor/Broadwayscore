@@ -522,12 +522,12 @@ test('BRO-3437: a stale unlaunched claim against the retired Notion mirror is ne
 
 test('BRO-3429: once actually parked, the card leaves awaitingClaim/noLaunchPark and does not double-count needsYou', () => {
   const parked = [
-    { ts: T(60), event: 'watchdog-redispatch', taskId: '51', kind: 'p01-backlog' },
+    { ts: T(60), event: 'watchdog-redispatch', taskId: 'linear:BRO-51', kind: 'p01-backlog' },
     // The CLI appends this PARK row right after the sweep above computed
     // noLaunchPark — simulating the NEXT sweep's view of the ledger.
-    { ts: T(59), event: core.WATCHDOG_EVENTS.PARK, taskId: '51', reason: 'no launch' },
+    { ts: T(59), event: core.WATCHDOG_EVENTS.PARK, taskId: 'linear:BRO-51', reason: 'no launch' },
   ];
-  const tasks = new Map([task(51, 'pending', 'P1 Now')]);
+  const tasks = new Map([lin('BRO-51', 'pending', 'P1 Now')]);
   const plan = core.planSweep(parked, tasks, { now: NOW, liveTitles: LIVE });
   assert.equal(plan.awaitingClaim.length, 0, 'a parked id must not also sit in the passive label list');
   assert.equal(plan.noLaunchPark.length, 0, 'and must not be re-parked every sweep');
@@ -540,13 +540,13 @@ test('BRO-3429: once actually parked, the card leaves awaitingClaim/noLaunchPark
 
 test('BRO-3429: a fresh launch after a park re-arms the card for the NEXT stall', () => {
   const entries = [
-    { ts: T(120), event: 'watchdog-redispatch', taskId: '52', kind: 'p01-backlog' },
-    { ts: T(119), event: core.WATCHDOG_EVENTS.PARK, taskId: '52', reason: 'no launch' },
-    { ts: T(60), event: 'launch', taskId: '52', subject: 'Fix thing 52', workspaceRef: 'workspace:1' },
-    { ts: T(50), event: 'dead', taskId: '52', workspaceRef: 'workspace:1' },
-    { ts: T(10), event: 'watchdog-redispatch', taskId: '52', kind: 'retry' },
+    { ts: T(120), event: 'watchdog-redispatch', taskId: 'linear:BRO-52', kind: 'p01-backlog' },
+    { ts: T(119), event: core.WATCHDOG_EVENTS.PARK, taskId: 'linear:BRO-52', reason: 'no launch' },
+    { ts: T(60), event: 'launch', taskId: 'linear:BRO-52', subject: 'Fix thing 52', workspaceRef: 'workspace:1' },
+    { ts: T(50), event: 'dead', taskId: 'linear:BRO-52', workspaceRef: 'workspace:1' },
+    { ts: T(10), event: 'watchdog-redispatch', taskId: 'linear:BRO-52', kind: 'retry' },
   ];
-  const tasks = new Map([task(52, 'in_progress')]);
+  const tasks = new Map([lin('BRO-52', 'in_progress')]);
   const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
   // The retry claim at T(10) is only ~2.5 min old — still inside the boot
   // grace, so it must not be parked YET (that would defeat the boot-window
@@ -832,21 +832,39 @@ test('BRO-3442 (adversarial review): a blocked P0/P1 task is NOT ALSO queued for
 
 test('BRO-3442 (adversarial review): a stale job-blocked superseded by a LATER successful job is not re-parked', () => {
   const entries = [
-    { ts: T(30), event: 'job-blocked', taskId: '92', jobId: '92-old', reason: 'stale blocker, already resolved' },
-    { ts: T(10), event: 'job-spawned', taskId: '92', jobId: '92-new' },
-    { ts: T(5), event: 'job-done', taskId: '92', jobId: '92-new', sessionId: 'sess-92' },
+    { ts: T(30), event: 'job-blocked', taskId: 'linear:BRO-92', jobId: '92-old', reason: 'stale blocker, already resolved' },
+    { ts: T(10), event: 'job-spawned', taskId: 'linear:BRO-92', jobId: '92-new' },
+    { ts: T(5), event: 'job-done', taskId: 'linear:BRO-92', jobId: '92-new', sessionId: 'sess-92' },
   ];
-  const plan = core.planSweep(entries, new Map([task(92, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  const plan = core.planSweep(entries, new Map([lin('BRO-92', 'in_progress')]), { now: NOW, liveTitles: LIVE });
   assert.equal(plan.jobBlocked.length, 0, 'the LATEST job for the task (job-done) must win over an older job-blocked jobId');
 });
 
 test('BRO-3442: a job-blocked task already watchdog-parked is not surfaced again', () => {
   const entries = [
-    { ts: T(30), event: 'job-blocked', taskId: '93', jobId: '93-abc', reason: 'missing credential' },
-    { ts: T(20), event: core.WATCHDOG_EVENTS.PARK, taskId: '93', subject: 'x' },
+    { ts: T(30), event: 'job-blocked', taskId: 'linear:BRO-93', jobId: '93-abc', reason: 'missing credential' },
+    { ts: T(20), event: core.WATCHDOG_EVENTS.PARK, taskId: 'linear:BRO-93', subject: 'x' },
   ];
-  const plan = core.planSweep(entries, new Map([task(93, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  const plan = core.planSweep(entries, new Map([lin('BRO-93', 'in_progress')]), { now: NOW, liveTitles: LIVE });
   assert.equal(plan.jobBlocked.length, 0);
+});
+
+// BRO-3437 (ship-check/Codex): 12 legacy watchdog-park rows already sit in the
+// ledger with bare-numeric ids and NOTHING relaunches those ids, so they never
+// clear. They must keep suppressing their id (watchdogParkedIds is untouched)
+// but must not count as owner work — otherwise "N need you" stays inflated
+// forever by cards no surface can show.
+test('BRO-3437: legacy bare-id park rows stay suppressed but do not inflate needsYou/parkedTotal; live ones still count', () => {
+  const legacy = [{ ts: T(60), event: core.WATCHDOG_EVENTS.PARK, taskId: '1864', reason: 'legacy' }];
+  assert.ok(core.watchdogParkedIds(legacy).has('1864'), 'legacy park row still suppresses its id');
+  const p1 = core.planSweep(legacy, new Map([task(1864, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(p1.needsYou, 0);
+  assert.equal(p1.parkedTotal, 0);
+
+  const live = [{ ts: T(60), event: core.WATCHDOG_EVENTS.PARK, taskId: 'linear:BRO-1864', reason: 'x' }];
+  const p2 = core.planSweep(live, new Map([lin('BRO-1864', 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(p2.needsYou, 1);
+  assert.equal(p2.parkedTotal, 1);
 });
 
 // ── BRO-3404: cmux-lane holds must not gate the headless lane ─────────────

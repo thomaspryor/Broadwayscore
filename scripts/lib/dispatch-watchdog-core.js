@@ -1121,7 +1121,13 @@ function planSweep(entries, tasks, opts) {
   // BRO-3924 (R3): alreadyPasses cards count toward needsYou too — same
   // treatment as recheckFailures, a human decision (close the card) this
   // sweep surfaces but never acts on itself.
-  const needsYou = toPark.length + wdParked.size + recheckFailures.length +
+  //
+  // BRO-3437: wdParked is still the full exclusion set (a legacy bare-id park
+  // row must keep suppressing its id), but only live-board parks are owner
+  // work — a retired-board park never clears (nothing relaunches those ids),
+  // so counting it kept "N need you" inflated by cards no surface can show.
+  const wdParkedLive = [...wdParked].filter(isLiveBoardTaskId).length;
+  const needsYou = toPark.length + wdParkedLive + recheckFailures.length +
     (outage.outage ? 1 : 0) + (failureRate.leaking ? 1 : 0) + awaitingClaim.length +
     unlandedDone.length + jobBlocked.length + alreadyPasses.length;
 
@@ -1136,7 +1142,7 @@ function planSweep(entries, tasks, opts) {
     recheckFailures,
     alreadyPasses,
     needsYou,
-    parkedTotal: wdParked.size + toPark.length + noLaunchPark.length + jobBlocked.length,
+    parkedTotal: wdParkedLive + toPark.length + noLaunchPark.length + jobBlocked.length,
   };
 }
 

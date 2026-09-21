@@ -85,3 +85,15 @@ test('BRO-3437: the live-board twin of each park source still parks (assertion a
   assert.deepEqual(ids(plan.noLaunchPark), [LIVE.claim]);
   assert.ok(ids(plan.toDispatch).includes(LIVE.backlog), 'live backlog card must still be dispatchable');
 });
+
+// Tripwire: planSweep's lists are only safe if every PARK write in executeSweep
+// consumes one of them. A fifth `event: WATCHDOG_EVENTS.PARK` append would
+// bypass the gates asserted above, so adding one must force a conscious
+// decision here (gate its source on isLiveBoardTaskId, then bump this count).
+test('BRO-3437: dispatch-watchdog.js has exactly the four known PARK write sites', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('./dispatch-watchdog.js', import.meta.url), 'utf8');
+  const writes = src.match(/event:\s*core\.WATCHDOG_EVENTS\.PARK\b/g) || [];
+  assert.equal(writes.length, 4,
+    'a new PARK writer must take its ids from a planSweep list that is gated on isLiveBoardTaskId (toPark, jobBlocked, noLaunchPark, toDispatch)');
+});
