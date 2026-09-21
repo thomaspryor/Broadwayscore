@@ -31,6 +31,10 @@ permissions:
   contents: write
   actions: write
 
+concurrency:
+  group: recover-wsj-subscriber
+  cancel-in-progress: false
+
 jobs:
   recover:
     runs-on: ubuntu-latest

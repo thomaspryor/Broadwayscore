@@ -60,6 +60,15 @@ on:
 #   ft.com (~104)       - Low success rate expected
 #   telegraph.co.uk (~102) - Low success rate expected
 
+# Per-run group (not shared): `collect-all`/`rebuild-all` matrix-partition
+# by domain (disjoint DOMAIN_FILTER shards), and each domain/all self-chains
+# its own next round with a NEW run_id. A shared group would only queue a
+# second concurrent manual dispatch, never affect the chain or the matrix.
+# See docs/workflow-concurrency-audit.md.
+concurrency:
+  group: collect-hard-paywall-${{ github.run_id }}
+  cancel-in-progress: false
+
 jobs:
   collect-single:
     if: ${{ inputs.domain != 'all' }}

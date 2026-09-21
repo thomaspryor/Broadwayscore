@@ -38,6 +38,19 @@ permissions:
   contents: write
   actions: write
 
+# Shared group is safe here even though this workflow self-chains: the
+# "Chain next run" step is the LAST step of the single `extract` job, so by
+# the time it dispatches the next run, this run has nothing left to do but
+# exit — the new run queues for at most a few seconds, not "eating its own
+# tail". A shared group is also the actual fix for the real race: THREE
+# independent callers (bulk-collect-review-texts.yml, llm-ensemble-score.yml,
+# rebuild-reviews.yml) can all dispatch this workflow around the same time;
+# without a group two of those dispatches could run in parallel and race on
+# the same review-texts files. See docs/workflow-concurrency-audit.md.
+concurrency:
+  group: extract-pull-quotes
+  cancel-in-progress: false
+
 jobs:
   extract:
     name: Extract pull quotes

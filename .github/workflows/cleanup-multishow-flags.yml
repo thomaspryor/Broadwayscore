@@ -12,6 +12,10 @@ on:
           - 'true'
           - 'false'
 
+concurrency:
+  group: cleanup-multishow-flags
+  cancel-in-progress: false
+
 jobs:
   cleanup:
     runs-on: ubuntu-latest
