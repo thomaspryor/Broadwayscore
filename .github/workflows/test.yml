@@ -2498,6 +2498,9 @@ on:
       # in scripts/tests/ (registered in tests/unit-test-manifest.txt — that
       # dir is NOT globbed); path-listed so a solo edit triggers CI.
       - 'scripts/dispatch-watchdog.js'
+      # BRO-3437: class-level "no watchdog-park source names a retired-board
+      # id" test (top-level scripts/*.test.mjs are NOT globbed).
+      - 'scripts/dispatch-watchdog.test.mjs'
       - 'scripts/tests/dispatch-watchdog-core.test.mjs'
       - 'scripts/tests/dispatch-outcome.test.mjs'
       # BRO-3923: digest-autofix never files a "BSC Daily: Watchdog parked

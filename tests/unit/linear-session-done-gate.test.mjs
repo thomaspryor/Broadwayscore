@@ -54,6 +54,11 @@ const factorySpy = { built: 0, cmds: [], opts: [], result: SPY_PASS };
 cmdExecModule.makeVerifyCmdEvidence = (opts) => {
   factorySpy.built += 1;
   factorySpy.opts.push(opts);
+  // Calling the logger, not just type-checking it: a CLI that passed
+  // `{ log: () => {} }` satisfies typeof === 'function' and prints nothing
+  // while it blocks on a real checkout (ship-check finding, 2026-09-21 —
+  // mutation-proven, the type check alone left all 38 tests green).
+  if (opts && typeof opts.log === 'function') opts.log('LOG_PROBE');
   return (cmd) => { factorySpy.cmds.push(cmd); return factorySpy.result; };
 };
 
@@ -210,9 +215,9 @@ test('wiring: with NO verifyCmdEvidence dep, the CLI builds the executor from li
     // Deliberately no second argument: this is the production default path.
     await cmdReport({ issue: 'BRO-9458', status: 'done', summary: 'did the work' });
     assert.match(h.getLogs(), /"doneGateRefused":false/);
+    assert.match(h.getErrors(), /LOG_PROBE/, 'the factory must get a logger that actually reaches the operator, or they see nothing while it blocks on a real checkout');
   });
   assert.equal(factorySpy.built, before.built + 1, 'cmdReport must build the executor from makeVerifyCmdEvidence when no dep is injected');
-  assert.equal(typeof (factorySpy.opts[factorySpy.opts.length - 1] || {}).log, 'function', 'the factory must get a logger, or the operator sees nothing while it blocks on a real checkout');
   assert.deepEqual(
     factorySpy.cmds.slice(before.cmds),
     ['node --test tests/unit/done-semantics-gate.test.mjs'],
