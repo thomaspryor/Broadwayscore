@@ -135,7 +135,11 @@ test('update: a no-op re-run on an already-terminal issue (same state) does NOT 
     state: { id: 'state-done', name: 'Done', type: 'completed' },
   });
   // isRealTransition is false here (target.id === issue.state.id), so this
-  // hits the done-gate above instead — either refused (no evidence) or
-  // allowed, but never the reopen warning since nothing is being reopened.
+  // hits the done-gate instead — refused, since this fixture carries no
+  // evidence — but never the reopen warning, since nothing is being reopened.
+  // The exit-status assertion is not decoration: without it, ANY mutation
+  // that throws before the reopen-warning block (exit 2) keeps this test
+  // green on a doesNotMatch alone (ship-check finding, 2026-09-21).
+  assert.equal(res.status, 5, `expected the done-gate refusal, got ${res.status}. stderr:\n${res.stderr}`);
   assert.doesNotMatch(res.stderr, /a concluded state/);
 });

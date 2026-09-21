@@ -151,14 +151,33 @@ test('refused: the recorded acceptance command is executed and FAILS', () => {
 // require time, so patching the linear-cmd-execution.js export BEFORE
 // requiring linear-brain.js hands the CLI a spy — no clone, no fetch, no
 // nested test run.
-test('wiring: with NO verifyCmdEvidence dep, the CLI builds the executor from linear-cmd-execution.js and hands it the recorded command', () => {
+// Same fixture as runUpdate, except it injects NO verifyCmdEvidence dep and
+// instead replaces linear-cmd-execution.js's factory export with a spy that
+// returns `allowed`. That exercises the production default path end to end:
+// the CLI builds its own verifier, hands it the recorded command, and — the
+// half a spy that always passes can never prove — actually ACTS on what comes
+// back (ship-check finding, Codex, 2026-09-21: with only an always-allow spy,
+// a default path that called the verifier and then discarded its result kept
+// every test in this file green).
+function runWiringFixture(allowed) {
+  const spyResult = allowed
+    ? "{ allowed: true, verdict: 'own-verify-passed', reason: 'spy: passed', notOnMain: false, sha: 'spy0000000' }"
+    : "{ allowed: false, verdict: 'own-verify-failed', reason: 'spy: failed', notOnMain: false, sha: 'spy0000000' }";
   const script = `
     const cmdExec = require('./scripts/lib/linear-cmd-execution.js');
-    cmdExec.makeVerifyCmdEvidence = () => {
-      console.error('REAL_FACTORY_BUILT');
+    cmdExec.makeVerifyCmdEvidence = (opts) => {
+      // The CLI must hand the factory a WORKING logger, or the operator never
+      // sees the "[linear-cmd-execution] running ..." line while it blocks on
+      // a real checkout (linear-brain.js passes a console.error logger).
+      // Asserting typeof === 'function' is not enough: a CLI that passed a
+      // no-op logger would satisfy that and print nothing (ship-check
+      // finding, 2026-09-21 — mutation-proven, all 38 tests stayed green).
+      // Call it and assert the line actually reaches stderr. NOTE: this
+      // comment lives inside a template literal, so no backticks here.
+      if (opts && typeof opts.log === 'function') opts.log('LOG_PROBE');
       return (cmd) => {
         console.error('REAL_FACTORY_CMD:' + cmd);
-        return { allowed: true, verdict: 'own-verify-passed', reason: 'spy', notOnMain: false, sha: 'spy0000000' };
+        return ${spyResult};
       };
     };
     const { main } = require('./scripts/linear-brain.js');
@@ -166,16 +185,35 @@ test('wiring: with NO verifyCmdEvidence dep, the CLI builds the executor from li
     main(['update', 'BRO-9457', '--state', 'Done'], {
       getIssue: async () => issue,
       getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
+      // Stubbed for the same reason runUpdate stubs it: unstubbed, the real
+      // makeVerifyEvidence shells out to git remote get-url origin and a
+      // shallow-repo read at build time, making this file git-state dependent
+      // and breaking its own "no test ever shells out" promise (ship-check
+      // finding, 2026-09-21). The subject here is the CMD executor seam.
+      // (No backticks in this comment — it is inside a template literal.)
+      verifyEvidence: () => ({ verified: null, reason: 'stub: unknown' }),
       appendBypassRow: () => {},
       updateIssue: async () => { console.error('UPDATE_ISSUE_CALLED'); },
       createComment: async () => {},
     });
   `;
-  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  return spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+}
+
+test('wiring: with NO verifyCmdEvidence dep, the CLI builds the executor from linear-cmd-execution.js and hands it the recorded command', () => {
+  const res = runWiringFixture(true);
   assert.equal(res.status, 0, `expected exit 0, got ${res.status}. stderr:\n${res.stderr}`);
-  assert.match(res.stderr, /REAL_FACTORY_BUILT/, 'the CLI must build its executor from linear-cmd-execution.js when no dep is injected');
+  assert.match(res.stderr, /LOG_PROBE/, 'the CLI must build its executor from linear-cmd-execution.js with a logger that actually reaches the operator');
   assert.match(res.stderr, /REAL_FACTORY_CMD:node --test tests\/unit\/done-semantics-gate\.test\.mjs/);
   assert.match(res.stderr, /UPDATE_ISSUE_CALLED/);
+});
+
+test('wiring: the default path REFUSES when the executor it built says the command failed', () => {
+  const res = runWiringFixture(false);
+  assert.equal(res.status, 5, `expected exit 5, got ${res.status}. stderr:\n${res.stderr}`);
+  assert.match(res.stderr, /REAL_FACTORY_CMD:/, 'the verifier it built must still be consulted');
+  assert.match(res.stderr, /REFUSED \(own-verify-failed\)/);
+  assert.doesNotMatch(res.stderr, /UPDATE_ISSUE_CALLED/, 'a failing recorded command must block the write on the default path too');
 });
 
 test('allowed: a PR-EVIDENCE marker recording merged+deployed+checked', () => {
