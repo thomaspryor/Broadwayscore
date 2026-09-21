@@ -1,43 +1,20 @@
 {
-  "updatedAt": "2026-09-21T12:24:16.147Z",
-  "processed": 65,
-  "failed": 238,
-  "successRate": "21.5%",
+  "updatedAt": "2026-09-21T12:35:52.612Z",
+  "processed": 67,
+  "failed": 301,
+  "successRate": "18.2%",
   "tierBreakdown": {
-    "playwright": 37,
+    "playwright": 38,
     "amp": 0,
-    "browserbase": 9,
+    "browserbase": 10,
     "directCookies": 1,
-    "scrapingbee": 18,
+    "scrapingbee": 19,
     "brightdata": 4,
     "archiveToday": 0,
     "archive": 4
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-09-21T10:44:19.171Z",
-      "event": "bb-session",
-      "session": "22bf5c15",
-      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
-    },
-    {
-      "t": "2026-09-21T11:02:16.025Z",
-      "event": "bb-session",
-      "session": "6945699c",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
-    },
-    {
-      "t": "2026-09-21T11:02:16.527Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-21T11:05:04.438Z",
-      "event": "bb-session",
-      "session": "93ab2100",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
-    },
     {
       "t": "2026-09-21T11:05:04.974Z",
       "event": "bb-cookie-inject",
@@ -126,6 +103,28 @@
       "t": "2026-09-21T12:19:28.442Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-21T12:28:13.024Z",
+      "event": "bb-session",
+      "session": "504da29b",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-21T12:28:13.786Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-21T12:33:28.611Z",
+      "event": "bb-session",
+      "session": "305b771c",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-09-21T12:33:29.238Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
