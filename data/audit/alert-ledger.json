@@ -145,12 +145,13 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-21T19:14:35.173Z",
+      "lastSeen": "2026-09-21T19:59:41.689Z",
       "lastNotifiedAt": "2026-09-21T19:14:35.173Z",
       "lastSurfacedAt": "2026-09-21T19:14:35.173Z",
       "notifyCount": 97,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3790,18 +3791,16 @@
       "resolvedAt": "2026-09-21T12:00:59.616Z"
     },
     "test-yml:red:Unit Tests:0858c92a": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
-      "lastSeen": "2026-09-21T02:22:14.663Z",
-      "lastNotifiedAt": "2026-09-21T01:14:39.220Z",
+      "lastSeen": "2026-09-21T19:59:41.370Z",
+      "lastNotifiedAt": "2026-09-21T19:59:41.370Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-3935",
-      "silentRefires": 4,
-      "resolvedAt": "2026-09-21T03:04:56.096Z"
+      "linearIdentifier": "BRO-3935"
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
       "status": "resolved",
@@ -4134,13 +4133,13 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run unit tests — \"disruption-off-broadway-2026: no unrecovered gap in the last CI-computed audit snapshot\"",
       "firstSeen": "2026-09-21T12:00:59.625Z",
-      "lastSeen": "2026-09-21T19:14:29.031Z",
+      "lastSeen": "2026-09-21T19:59:41.686Z",
       "lastNotifiedAt": "2026-09-21T12:00:59.625Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-3977",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "geo-bots:Chile": {
       "status": "open",
