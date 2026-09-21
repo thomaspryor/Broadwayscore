@@ -84,4 +84,65 @@ function computeCombinedWith(showId, otherShowIds, siblingIndex) {
     .sort();
 }
 
-module.exports = { baseSlug, areSameTitleSiblings, computeCombinedWith };
+/**
+ * Shows an aggregator roundup explicitly cited a given review URL for.
+ *
+ * Breaks the combined-review deadlock (BRO-3794). Two guards disagreed about
+ * which comes first:
+ *
+ *   scripts/lib/url-ownership.js  — refuse a 2nd copy of a URL under another
+ *                                   show UNLESS the owning copy is already
+ *                                   flagged isCombinedReview/isRoundupArticle.
+ *   flag-combined-reviews.js      — flag isCombinedReview only once the URL
+ *                                   ALREADY appears under 2+ shows.
+ *
+ * So a genuine multi-show article collected for show A first could never be
+ * collected for show B: the flagger waited for a second copy the ownership
+ * guard would never let anyone create. The gap was structurally permanent and
+ * every remediation pass re-tried it forever — Disruption's la-voce-di-new-york
+ * and the-interested-bystander roundups sat uncollectable behind exactly this
+ * while the babysitter loop reported them as an open gap run after run.
+ *
+ * The way out is evidence we already hold and never used: Playbill Verdict /
+ * BWW Review Roundup cite these URLs as reviews OF show B. A second,
+ * independent publisher saying "this article reviews B" is the same class of
+ * signal as "a second copy exists on disk", and it needs no scrape — the gap
+ * audit already commits it to data/audit/show-review-gap.json.
+ *
+ * @param {Array} auditResults  entries from data/audit/show-review-gap.json
+ * @param {(url: string) => string|null} normalizeUrl caller's normalizer, so
+ *   the citation index is keyed exactly like the on-disk URL index it merges
+ *   into (a mismatched normalizer here silently indexes nothing).
+ * @returns {Map<string, Set<string>>} normalized URL -> showIds citing it
+ */
+function buildAggregatorCitationIndex(auditResults, normalizeUrl) {
+  const index = new Map();
+  if (!Array.isArray(auditResults)) return index;
+  for (const entry of auditResults) {
+    const showId = entry && entry.showId;
+    if (!showId) continue;
+    // Deliberately NOT every aggregator-listed URL — only the ones this show
+    // is recorded as still MISSING. A cited URL we already hold for this show
+    // needs no flag, and a cited URL that was never a gap is not evidence of
+    // anything blocked. Scoping to `missing` targets exactly the deadlock:
+    // the audit says "show B is missing this URL", the ownership guard says
+    // "show A owns it and you may not create a second copy", and nothing can
+    // move. Broadening this to aggregatorListedUrls newly flagged 297 corpus
+    // files as isCombinedReview — which exempts them from the cross-show
+    // contamination guards — to fix 2 genuinely-stuck ones. Not a trade worth
+    // making silently.
+    const urls = Array.isArray(entry.missing)
+      ? entry.missing.map((m) => (m && typeof m === 'object' ? m.url : m))
+      : [];
+    for (const url of urls) {
+      if (typeof url !== 'string') continue;
+      const norm = normalizeUrl(url);
+      if (!norm) continue;
+      if (!index.has(norm)) index.set(norm, new Set());
+      index.get(norm).add(showId);
+    }
+  }
+  return index;
+}
+
+module.exports = { baseSlug, areSameTitleSiblings, computeCombinedWith, buildAggregatorCitationIndex };

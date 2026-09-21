@@ -10,7 +10,8 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { baseSlug, computeCombinedWith } = require('./lib/combined-review-utils');
+const { baseSlug, computeCombinedWith, buildAggregatorCitationIndex } = require('./lib/combined-review-utils');
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { buildSiblingIndex } = require('./lib/market-routing');
 
@@ -20,11 +21,34 @@ const USAGE = `flag-combined-reviews.js — Flag review-text files that share a 
 
 Usage:
   node scripts/flag-combined-reviews.js [options]
+  node scripts/flag-combined-reviews.js --use-aggregator-citations --dry-run
+                                                     also treat a Playbill/BWW
+                                                     citation as multi-show
+                                                     evidence (BRO-3794); OFF by
+                                                     default, see comment above
   node scripts/flag-combined-reviews.js --help, -h    print this usage and exit
 `;
-const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+// resolveReviewTextsDir(), not a bare __dirname join: review-texts is a
+// separate private-repo clone in the MAIN checkout and is not a symlink, so the
+// bare join silently pointed at a nonexistent path when run from a worktree
+// (same bug as ingest-review-from-url.js, BRO-3794).
+const REVIEW_TEXTS_DIR = resolveReviewTextsDir();
+const GAP_AUDIT_PATH = path.join(__dirname, '..', 'data', 'audit', 'show-review-gap.json');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
+// Opt-in, default OFF (BRO-3794). The aggregator-citation signal below is the
+// correct way out of the combined-review deadlock, but switching it on
+// wholesale newly flags 166 corpus files as isCombinedReview — which exempts
+// each of them from the cross-show contamination guards. Measured, not
+// guessed: 502 URLs are currently deadlocked (held by show A, recorded missing
+// for show B, so the ownership guard can never be satisfied). Most are
+// genuine multi-show roundups; some will be the opposite case — show A holding
+// show B's review by mistake — and flagging THOSE combined would hide real
+// contamination instead of fixing it. Sorting the two apart is a corpus
+// judgement call for a human, so the capability ships wired-up, tested and
+// off. Run with --use-aggregator-citations --dry-run to see the current
+// candidate set.
+const USE_AGGREGATOR_CITATIONS = process.argv.includes('--use-aggregator-citations');
 
 function loadShows() {
   const raw = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
@@ -75,9 +99,34 @@ function main() {
 
   const siblingIndex = buildSiblingIndex(loadShows());
 
+  // Second co-occurrence signal (BRO-3794): a Playbill Verdict / BWW Review
+  // Roundup citing this URL as a review of a DIFFERENT show is evidence the
+  // article is multi-show, exactly like a second copy on disk — and unlike a
+  // second copy, the ownership guard can't prevent it from existing. Without
+  // this the two guards deadlock and a genuine joint review collected for one
+  // show is permanently uncollectable for the other. Absent/unreadable audit
+  // file degrades to the old disk-only behaviour rather than failing the run.
+  let citationIndex = new Map();
+  if (USE_AGGREGATOR_CITATIONS) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(GAP_AUDIT_PATH, 'utf8'));
+      citationIndex = buildAggregatorCitationIndex(raw.results || raw, normalizeUrl);
+    } catch {
+      console.log('(no readable data/audit/show-review-gap.json — using on-disk co-occurrence only)');
+    }
+  }
+
   let flagged = 0, urlCount = 0, siblingEntriesSkipped = 0, staleFlagsCleared = 0;
+  let citationOnlyUrls = 0;
   for (const [url, entries] of urlMap) {
-    const uniqueShows = new Set(entries.map(e => e.showId));
+    const heldShows = new Set(entries.map(e => e.showId));
+    // Union of shows that hold a copy and shows an aggregator cited this URL
+    // for. The per-entry sibling filter in computeCombinedWith still applies,
+    // so a citation naming a same-title sibling can't manufacture a joint
+    // review out of a routing decision.
+    const uniqueShows = new Set(heldShows);
+    for (const cited of (citationIndex.get(url) || [])) uniqueShows.add(cited);
+    if (uniqueShows.size > heldShows.size && heldShows.size < 2) citationOnlyUrls++;
     if (uniqueShows.size < 2) continue;
     // Require 2+ DIFFERENT base shows. Filters out same-production-different-id
     // cases that aren't joint reviews.
@@ -187,6 +236,9 @@ function main() {
 
   console.log('=== SUMMARY ===');
   console.log(`URLs shared across 2+ shows: ${urlCount}`);
+  if (USE_AGGREGATOR_CITATIONS) {
+    console.log(`URLs recognized as multi-show via aggregator citation alone (deadlocked without --use-aggregator-citations): ${citationOnlyUrls}`);
+  }
   console.log(`Files flagged isCombinedReview: ${flagged}`);
   console.log(`Entries skipped (co-occurrence was only with a same-title sibling, owned by market-routing instead): ${siblingEntriesSkipped}`);
   console.log(`Stale isCombinedReview flags cleared (backfill of pre-fix false positives): ${staleFlagsCleared}`);
