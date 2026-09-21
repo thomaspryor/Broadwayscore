@@ -604,6 +604,11 @@ on:
       # in the lib-test glob; path-listed so a solo edit triggers CI
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/check-provider-spend.js'
+      # BRO-3227: colocated test for the freshness/continuity guard above.
+      # Registered in tests/unit-test-manifest.txt (runs in the unit-tests
+      # job), but a solo push touching only this file needs its own path
+      # entry too, or it gets zero CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/check-provider-spend.test.mjs'
       # BRO-3057 what-else: scripts/config/provider-spend-thresholds.json is the
       # exact same gap as scripts/config/provider-pricing.json fixed above in the
       # same commit — check-provider-spend.js and scripts/lib/scrapingdog-caps.js
