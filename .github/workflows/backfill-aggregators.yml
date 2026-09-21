@@ -27,6 +27,15 @@ on:
 permissions:
   contents: write
 
+# Per-run group (not shared): the `backfill` job's matrix partitions the
+# 730+ show set into disjoint parallel_jobs shards — a shared group would
+# only ever contain one run at a time anyway (manual, one-off trigger), so
+# this exists to make the "runs don't collide" property explicit rather
+# than to serialize anything real. See docs/workflow-concurrency-audit.md.
+concurrency:
+  group: backfill-aggregators-${{ github.run_id }}
+  cancel-in-progress: false
+
 jobs:
   prepare:
     runs-on: ubuntu-latest

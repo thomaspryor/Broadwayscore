@@ -194,5 +194,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-21T00:49:35.163Z"
+  },
+  {
+    "conditionKey": "land:land/bro3922-watchdog-awaitingclaim-guard",
+    "title": "Landing blocked: unit-tests-node red on land/bro3922-watchdog-awaitingclaim-guard",
+    "description": "land.yml did not land land/bro3922-watchdog-awaitingclaim-guard: the unit-tests-node gate went red at 5b9cb42dce. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35550025543",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro3922-watchdog-awaitingclaim-guard"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "5b9cb42dce129a001b00a5c476cd241f7abd25f6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35550025543"
+      }
+    ],
+    "queuedAt": "2026-09-21T01:25:46.086Z"
   }
 ]

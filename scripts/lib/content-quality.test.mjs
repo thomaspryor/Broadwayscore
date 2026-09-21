@@ -276,3 +276,56 @@ test('detectMultiShowContent: a category suffix in the showId does not exclude u
     `'west side story' is a different show and must still be counted; got ${JSON.stringify(suffixed.showsFound)}`
   );
 });
+
+// ============================================================================
+// PARKED_DOMAIN_PATTERNS (BRO-3862) — a dead outlet's domain lapses, a squatter
+// serves a sales page, and the fetch returns HTTP 200 with enough text to look
+// like an article. theaternewsonline.com alone produced 25 such files across
+// 20+ different shows. They were labelled `isNonReview: news` by the LLM
+// classifier, which reads as a reversible editorial call, so they sat in the
+// false-positive audit queue pretending to be reviews we were wrongly excluding.
+//
+// Scanned via detectStrongChromeDumpAnywhere, so they inherit that function's
+// mandatory "text lacks substantial review content" gate.
+// ============================================================================
+
+const { detectStrongChromeDumpAnywhere, PARKED_DOMAIN_PATTERNS } = require('./content-quality.js');
+
+test('detects the live theaternewsonline.com parking page', () => {
+  const text = 'theaternewsonline.com Skip to main content Excellent 4.6 out of 5 Trustpilot '
+    + 'The domain name theaternewsonline.com is for sale! Premium Verified Domain '
+    + 'Get a price in less than 24 hours First Name * Last Name * Email * Phone *';
+  const r = detectStrongChromeDumpAnywhere(text);
+  assert.strictEqual(r.detected, true);
+  assert.match(r.match, /is for sale|price in less than 24 hours/i);
+});
+
+test('detects the other parking-page phrasings', () => {
+  for (const s of [
+    'This domain is for sale.',
+    'Buy this domain today and get started.',
+    'The domain name is parked and awaiting configuration.',
+  ]) {
+    assert.strictEqual(detectStrongChromeDumpAnywhere(s).detected, true, s);
+  }
+});
+
+test('theatre criticism about "the public domain" is NOT a parked page', () => {
+  // The false positives the pattern shape exists to avoid: every pattern binds
+  // "domain" to a sale or parking phrase, so ordinary prose about rights,
+  // ownership or metaphor cannot match.
+  for (const s of [
+    'The score fell into the public domain last year, which is why this revival can use it.',
+    'Chekhov is in the public domain, so every company in town has a Cherry Orchard.',
+    'She rules the stage as if it were her private domain.',
+    'Sondheim remains the undisputed master of this domain.',
+  ]) {
+    const hit = PARKED_DOMAIN_PATTERNS.some(re => re.test(s));
+    assert.strictEqual(hit, false, `must not match: ${s}`);
+  }
+});
+
+test('the parked-domain family is non-empty and all entries are regexes', () => {
+  assert.ok(PARKED_DOMAIN_PATTERNS.length > 0);
+  for (const re of PARKED_DOMAIN_PATTERNS) assert.ok(re instanceof RegExp);
+});

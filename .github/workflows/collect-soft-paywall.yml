@@ -51,6 +51,14 @@ on:
 #   observer.com (~248 reviews) - known-blocked for Playwright, ScrapingBee works
 #   chicagotribune.com (~264 reviews) - known-blocked for Playwright, Archive.org works
 
+# Per-run group (not shared): same shape as collect-hard-paywall.yml —
+# domain-partitioned matrix + self-chaining rounds. A shared group would
+# only queue a second concurrent manual dispatch, never affect the chain
+# or the matrix. See docs/workflow-concurrency-audit.md.
+concurrency:
+  group: collect-soft-paywall-${{ github.run_id }}
+  cancel-in-progress: false
+
 jobs:
   collect-single:
     if: ${{ inputs.domain != 'all' }}

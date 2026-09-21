@@ -90,6 +90,10 @@ const {
 // drift apart.
 const { AUTOFIX_FILED_MARKER, BSC_DAILY_TITLE_PREFIX } = require('./autofix-filed-marker.js');
 const { LINEAR_TASK_ID_RE, LINEAR_IDENTIFIER_RE } = require('./task-id-namespace.js');
+// BRO-3923: never file/reattach a "BSC Daily: Watchdog parked #<bare
+// numeric>" tracker for the frozen Notion mirror — see that module's header
+// for the incident (31 hand-canceled trackers, 2026-09-21).
+const { isWatchdogParkedMirrorTracker } = require('./digest-autofix-mirror-park-guard.js');
 
 // Pulling a Linear identifier out of linear-issue-create.js's JSON output.
 // Built from the shared identifier shape rather than a third hand-written
@@ -350,7 +354,7 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     ...(Array.isArray(health?.warns) ? health.warns : []),
     ...extraIssues,
     ...normalizeQueuedRows(queued),
-  ].filter(r => r && r.name);
+  ].filter(r => r && r.name && !isWatchdogParkedMirrorTracker(r.name, r.conditionKey));
 
   // Every "<condition> on <show>" row's ANCHOR is the plan row at the
   // position of its first occurrence in this batch — a later same-condition

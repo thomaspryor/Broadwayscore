@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-21T00:39:34.903Z",
+  "runDate": "2026-09-21T01:13:10.940Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 59,
+    "processed": 60,
     "failed": 90,
     "skipped": 0,
-    "successRate": "39.6%"
+    "successRate": "40.0%"
   },
   "tierBreakdown": {
     "playwright": 39,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 12,
-    "brightdata": 2,
+    "brightdata": 3,
     "archiveToday": 0,
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 58,
+    "totalFailed": 57,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 58,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -109,7 +109,8 @@
     "thelma-and-louise-a-new-musical-off-west-end-2026/west-end-best-friend--cara-brazier.json",
     "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json",
     "cat-cohen-broad-strokes-off-broadway-2026/nysr--unknown.json",
-    "shifters-off-broadway-2026/nysr--unknown.json"
+    "shifters-off-broadway-2026/nysr--unknown.json",
+    "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json"
   ],
   "failed": [
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/variety--unknown.json",
@@ -163,7 +164,6 @@
     "the-waverly-gallery-2018/nypost--johnny-oleksinski.json",
     "the-nap-2018/nypost--johnny-oleksinski.json",
     "escape-to-margaritaville-2018/vulture--jesse-green.json",
-    "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
     "farinelli-and-the-king-2017/observer--rex-reed.json",
     "indecent-2017/usatoday--elysa-gardner.json",
     "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json",
@@ -195,13 +195,14 @@
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
     "darkling-off-west-end-2026/thestage--unknown.json",
-    "darkling-off-west-end-2026/voice-magazine--unknown.json",
     "thelma-and-louise-a-new-musical-off-west-end-2026/thestage--unknown.json",
     "golden-boy-off-west-end-2026/ntlive--powster.json",
     "golden-boy-off-west-end-2026/thestage--unknown.json",
     "golden-boy-off-west-end-2026/whatsonstage--unknown.json",
     "million-dollar-quartet-off-west-end-2026/enjoy--unknown.json",
-    "million-dollar-quartet-off-west-end-2026/londontheatredirect--unknown.json"
+    "million-dollar-quartet-off-west-end-2026/londontheatredirect--unknown.json",
+    "million-dollar-quartet-off-west-end-2026/telegraph--charles-spencer.json",
+    "million-dollar-quartet-off-west-end-2026/theupcoming--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -246,7 +247,10 @@
       "shifters-off-broadway-2026/nysr--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/darkling-off-west-end-2026/voice-magazine--unknown.json",
+      "darkling-off-west-end-2026/voice-magazine--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "darkling-off-west-end-2026/broadwayworld--cindy-marcolina.json",
@@ -264,7 +268,8 @@
     ],
     "brightdata": [
       "the-cherry-orchard-park-avenue-armory-off-broadway-2026/wsj--charles-isherwood.json",
-      "darkling-off-west-end-2026/voice-magazine--unknown.json"
+      "darkling-off-west-end-2026/voice-magazine--unknown.json",
+      "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -274,5 +279,11 @@
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "john-lithgow-stories-by-heart-2018/vulture--jesse-green.json",
+      "oldUrl": "https://www.vulture.com/2018/01/theater-review-john-lithgow-stories-by-heart.html",
+      "newUrl": "https://www.vulture.com/2018/01/theater-review-john-lithgow-talks-reads-charms-everyone.html"
+    }
+  ]
 }

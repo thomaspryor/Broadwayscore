@@ -46,6 +46,15 @@ env:
   # All known paywall domains to exclude
   PAYWALL_DOMAINS: 'nytimes.com,vulture.com,nymag.com,wsj.com,washingtonpost.com,newyorker.com,ft.com,telegraph.co.uk,thetimes.co.uk,theatermania.com,timeout.com,ew.com,deadline.com,observer.com,chicagotribune.com,nypost.com,variety.com,hollywoodreporter.com,nydailynews.com,newsday.com'
 
+# Per-run group (not shared): the `collect` job's matrix partitions eligible
+# reviews into disjoint parallel_jobs shards, and the `rebuild` job
+# self-chains the next round with a NEW run_id after this run's rebuild
+# completes. A shared group would only ever queue a second concurrent
+# manual dispatch, not affect the chain. See docs/workflow-concurrency-audit.md.
+concurrency:
+  group: collect-free-reviews-${{ github.run_id }}
+  cancel-in-progress: false
+
 jobs:
   prepare:
     runs-on: ubuntu-latest

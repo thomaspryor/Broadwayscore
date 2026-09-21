@@ -28,6 +28,18 @@ on:
   schedule:
     - cron: '0 8 * * 3' # Wednesdays at 8 AM UTC
 
+# Per-shows group, not shared: two callers (opening-night-poller.yml,
+# opening-night-orchestrator.yml) dispatch this with DIFFERENT `shows` values
+# around the same time. GitHub cancels a PENDING run in a concurrency group
+# the moment a third run for that group arrives, regardless of
+# cancel-in-progress — a shared group could silently drop a distinct show-set
+# request (not idempotent/interchangeable with another). Keying by `shows`
+# means different show sets never collide; the rare cron (no inputs) falls
+# back to a stable 'scheduled' key.
+concurrency:
+  group: fetch-guardian-reviews-${{ inputs.shows || 'scheduled' }}
+  cancel-in-progress: false
+
 jobs:
   fetch-guardian:
     runs-on: ubuntu-latest
