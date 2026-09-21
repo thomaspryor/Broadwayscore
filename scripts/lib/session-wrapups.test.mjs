@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   parseJsonLines, messageText, firstUserMessage, sessionLabel,
   finalAssistantEntry, finalAssistantText, statusLine, workspaceVerdict,
+  recordedBlock, sessionStatus,
 } from './session-wrapups.js';
 
 const line = obj => JSON.stringify(obj);
@@ -96,4 +97,21 @@ test('workspaceVerdict decision table matches bsc-prune closability', () => {
   assert.match(workspaceVerdict({ done: true, alive: true }), /^DONE /);
   assert.match(workspaceVerdict({ done: false, alive: true }), /^WORKING/);
   assert.match(workspaceVerdict({ done: false, alive: false }), /^IDLE un-marked/);
+});
+
+test('recordedBlock/sessionStatus: verdict comes from the wrapup-block tool_result when the chat is plain English (BRO-3914)', () => {
+  const rec = 'WRAPUP-BLOCK RECORDED v1\nDONE x\nTHIS SESSION: CLOSE ME — verified, nothing running\nWRAPUP-BLOCK END\n';
+  const entries = [
+    { type: 'user', message: { content: 'fix it' } },
+    { type: 'assistant', message: { content: [{ type: 'tool_use', id: 'w1', name: 'Bash', input: { command: 'wrapup-block --file b.txt' } }] } },
+    { type: 'user', message: { content: [{ type: 'tool_result', tool_use_id: 'w1', content: rec, is_error: false }] } },
+    { type: 'assistant', message: { content: [{ type: 'text', text: 'Fixed it. You can close this tab.' }] } },
+  ];
+  assert.equal(recordedBlock(entries), 'DONE x\nTHIS SESSION: CLOSE ME — verified, nothing running');
+  assert.equal(sessionStatus(entries), 'THIS SESSION: CLOSE ME — verified, nothing running');
+  // a rejected (is_error) record and a sidechain record are ignored
+  assert.equal(recordedBlock([{ type: 'user', message: { content: [{ type: 'tool_result', content: rec, is_error: true }] } }]), '');
+  assert.equal(recordedBlock([{ type: 'user', isSidechain: true, message: { content: [{ type: 'tool_result', content: rec }] } }]), '');
+  // legacy in-chat verdict still wins
+  assert.equal(sessionStatus(entries.concat([{ type: 'assistant', message: { content: 'THIS SESSION: IDLE — legacy' } }])), 'THIS SESSION: IDLE — legacy');
 });

@@ -90,6 +90,38 @@ function statusLine(text) {
   return /<[^>]*>/.test(line) ? '' : line;
 }
 
+// BRO-3914 (2026-09-20): interactive sessions no longer put the machine
+// block in the chat message — they record it with `wrapup-block --file`,
+// whose tool_result carries the block between these sentinels. Scan the
+// tail backwards for the LAST such result so a finished session's verdict
+// is still recoverable after its plain-English final message.
+const RECORD_START = 'WRAPUP-BLOCK RECORDED v1';
+const RECORD_END = 'WRAPUP-BLOCK END';
+function recordedBlock(entries) {
+  for (let i = entries.length - 1; i >= 0; i--) {
+    const e = entries[i];
+    if (!e || e.type !== 'user' || e.isSidechain) continue;
+    const c = e.message && e.message.content;
+    if (!Array.isArray(c)) continue;
+    for (const it of c) {
+      if (!it || it.type !== 'tool_result' || it.is_error) continue;
+      const txt = typeof it.content === 'string' ? it.content
+        : Array.isArray(it.content) ? it.content.map(x => (x && x.text) || '').join('\n') : '';
+      const a = txt.indexOf(RECORD_START);
+      if (a < 0) continue;
+      const b = txt.indexOf(RECORD_END, a);
+      if (b < 0) continue;
+      return txt.slice(a + RECORD_START.length, b).trim();
+    }
+  }
+  return '';
+}
+
+// Verdict line from the final chat text, else from the last recorded block.
+function sessionStatus(entries) {
+  return statusLine(finalAssistantText(entries)) || statusLine(recordedBlock(entries));
+}
+
 // One-glance verdict for an open workspace. Inputs are booleans bsc-status
 // derives from cmux (isDoneTitle / claudeAliveIn) — kept pure so the
 // decision table is testable. Mirrors bsc-prune's closability rule: ✅ AND
@@ -107,4 +139,5 @@ function workspaceVerdict({ done, alive }) {
 module.exports = {
   parseJsonLines, messageText, firstUserMessage, sessionLabel,
   finalAssistantEntry, finalAssistantText, statusLine, workspaceVerdict,
+  recordedBlock, sessionStatus,
 };
