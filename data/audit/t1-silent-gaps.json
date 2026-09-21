@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-21T05:44:25.038Z",
+  "generatedAt": "2026-09-21T11:24:17.556Z",
   "windowDays": 45,
   "showsScanned": 78,
   "gaps": [
@@ -17,27 +17,30 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-story-west-end-2026",
       "firstSeen": "2026-09-18T14:47:11.077Z",
-      "fileAgeHours": 62.95359805555555,
+      "fileAgeHours": 68.61678027777778,
       "gapSeenAt": "2026-09-20T16:50:34.106Z",
-      "nonTerminalAgeHours": 12.897480833333333
+      "nonTerminalAgeHours": 18.562069166666667
     },
     {
-      "showId": "truly-howard-hughes-off-broadway-2026",
-      "title": "Truly, Howard Hughes",
-      "openingDate": null,
-      "file": "cititour--unknown.json",
-      "outletId": "cititour",
-      "tier": 2,
-      "type": "unscored",
-      "dispatchable": false,
-      "url": "https://cititour.com/NYC_Events/Truly-Howard-Hughes/34944",
-      "recovery": null,
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "title": "My Son’s A Queer (But What Can You Do?)",
+      "openingDate": "2026-09-17",
+      "file": "thestage--paul-vale.json",
+      "outletId": "thestage",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thestage.co.uk/news/production-news/my-sons-a-queer-but-what-can-you-do-lands-new-york-premiere",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+      },
       "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=truly-howard-hughes-off-broadway-2026",
-      "firstSeen": "2026-09-09T14:56:32.660Z",
-      "fileAgeHours": 278.7976725,
-      "gapSeenAt": "2026-09-20T07:18:48.420Z",
-      "nonTerminalAgeHours": 22.426838055555557
+      "fix": "node scripts/ingest-review-from-url.js --show=my-sons-a-queer-but-what-can-you-do-west-end-2026 --url=https://www.thestage.co.uk/news/production-news/my-sons-a-queer-but-what-can-you-do-lands-new-york-premiere --outlet=thestage --critic=\"Paul Vale\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-09-17T00:46:30.887Z",
+      "fileAgeHours": 106.62939916666667,
+      "gapSeenAt": "2026-09-21T11:24:17.555Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "the-winters-tale-off-broadway-2026",
@@ -53,9 +56,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-winters-tale-off-broadway-2026",
       "firstSeen": "2026-08-13T10:48:31.706Z",
-      "fileAgeHours": 930.9312869444444,
+      "fileAgeHours": 936.5958997222223,
       "gapSeenAt": "2026-09-20T22:08:26.926Z",
-      "nonTerminalAgeHours": 7.599475277777778
+      "nonTerminalAgeHours": 13.26406361111111
     },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
@@ -70,9 +73,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 107.72598833333333,
+      "fileAgeHours": 113.39059888888889,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 107.64511861111112
+      "nonTerminalAgeHours": 113.30970694444444
     },
     {
       "showId": "the-hope-theory-off-broadway-2026",
@@ -88,27 +91,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-hope-theory-off-broadway-2026",
       "firstSeen": "2026-09-18T10:20:54.798Z",
-      "fileAgeHours": 67.39170916666667,
+      "fileAgeHours": 73.05630055555555,
       "gapSeenAt": "2026-09-19T01:54:16.553Z",
-      "nonTerminalAgeHours": 51.83569
-    },
-    {
-      "showId": "million-dollar-quartet-off-west-end-2026",
-      "title": "Million Dollar Quartet",
-      "openingDate": "2026-09-14",
-      "file": "broadwayworld--michael-major.json",
-      "outletId": "broadwayworld",
-      "tier": 2,
-      "type": "unscored",
-      "dispatchable": false,
-      "url": "https://www.broadwayworld.com/westend/article/Video-MILLION-DOLLAR-QUARTET-Trailer-Released-Ahead-of-2026-London-Return-20260909",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=million-dollar-quartet-off-west-end-2026",
-      "firstSeen": "2026-09-17T08:13:24.884Z",
-      "fileAgeHours": 93.51670305555555,
-      "gapSeenAt": "2026-09-21T05:44:25.037Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 57.500278333333334
     }
   ],
   "contradictions": []

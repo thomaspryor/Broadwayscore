@@ -1,11 +1,179 @@
 {
-  "generatedAt": "2026-09-21T05:44:33.555Z",
+  "generatedAt": "2026-09-21T11:24:25.588Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 139,
-  "clean": 139,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 128,
+  "defective": 11,
+  "byType": {
+    "score-drift": 11
+  },
+  "shows": [
+    {
+      "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
+      "title": "The Cherry Orchard",
+      "openingDate": "2026-09-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 67.49 vs local 67.7 (Δ0.21)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 7,
+      "deployedCount": 7
+    },
+    {
+      "showId": "darkling-off-west-end-2026",
+      "title": "Darkling",
+      "openingDate": "2026-09-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 71.22 vs local 71.03 (Δ0.19)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 23,
+      "deployedCount": 23
+    },
+    {
+      "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
+      "title": "BLOODSPORT: After Helen of Troy",
+      "openingDate": "2026-09-13",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 73.11 vs local 73.24 (Δ0.13)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 27
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "title": "Man to Man",
+      "openingDate": "2026-09-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.96 vs local 77.04 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 33,
+      "deployedCount": 33
+    },
+    {
+      "showId": "kimberly-akimbo-off-west-end-2026",
+      "title": "Kimberly Akimbo",
+      "openingDate": "2026-09-09",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 80.99 vs local 81.05 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 27
+    },
+    {
+      "showId": "a-month-in-the-country-west-end-2026",
+      "title": "A Month in the Country",
+      "openingDate": "2026-09-02",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.81 vs local 79.35 (Δ0.46)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 29,
+      "deployedCount": 29
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "title": "Death Note: The Musical",
+      "openingDate": "2026-08-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 72.81 vs local 72.95 (Δ0.14)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 35,
+      "deployedCount": 35
+    },
+    {
+      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
+      "title": "Much Ado About Nothing",
+      "openingDate": "2026-06-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.48 vs local 78.59 (Δ0.11)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 23,
+      "deployedCount": 23
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "title": "Oh, Mary!",
+      "openingDate": "2025-12-18",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.42 vs local 75.51 (Δ0.09)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 28,
+      "deployedCount": 28
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "title": "Hadestown",
+      "openingDate": "2024-02-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 73.99 vs local 73.93 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 21,
+      "deployedCount": 21
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "title": "Moulin Rouge! The Musical",
+      "openingDate": "2022-01-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.76 vs local 69.97 (Δ0.21)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 21,
+      "deployedCount": 21
+    }
+  ]
 }

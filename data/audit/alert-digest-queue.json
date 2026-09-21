@@ -143,18 +143,6 @@
     "queuedAt": "2026-09-20T23:59:07.531Z"
   },
   {
-    "conditionKey": "deployed-coverage:stale",
-    "title": "Deployed coverage — the site is serving stale coverage",
-    "description": "16/138 show(s) differ between internal state and what prod serves.\nscore-drift: 16\nThe Cherry Orchard: score-drift\nThelma & Louise: A New Musical: score-drift\nDarkling: score-drift\nIn Honor of Jean-Michel Basquiat: score-drift\nThe Body of Mary: A Play in Three Acts (of God): score-drift",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-21T00:49:35.002Z"
-  },
-  {
     "conditionKey": "t1-coverage:new-gaps-24h",
     "title": "T1 Coverage — new gaps past 24h",
     "description": "1 T1/T2 outlet(s) still missing >24h after they became measurable.",
@@ -253,18 +241,6 @@
       }
     ],
     "queuedAt": "2026-09-21T03:13:41.808Z"
-  },
-  {
-    "conditionKey": "review-gap:blast-radius-refused",
-    "title": "Review-gap audit refused to write — 64.3% of shows changed coverage state",
-    "description": "review-gap blast radius 64.3% (18/28 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: amaze-magic-off-broadway-2025, america-who-hurt-you-off-broadway-2026, an-american-daughter-off-broadway-2026, buena-vista-social-club-2025, catarina-and-the-beauty-of-killing-fascists-west-end-2026, cats-the-jellicle-ball-2026, darkling-off-west-end-2026, death-note-the-musical-west-end-2026, death-of-a-salesman-2026, gimme-a-sign-off-broadway-2026, how-the-other-half-loves-west-end-2026, jesus-christ-superstar-west-end-2026, shifters-off-broadway-2026, the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026, the-cherry-orchard-park-avenue-armory-off-broadway-2026, the-pass-off-broadway-2026, the-winters-tale-off-broadway-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nPARTIAL write: the other 10 show(s) audited this run were NOT risky and were persisted normally. Only the 18 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-21T05:44:22.827Z"
   },
   {
     "conditionKey": "review-gap:opening-window:a-month-in-the-country-west-end-2026",
@@ -519,18 +495,6 @@
     "queuedAt": "2026-09-21T05:44:23.114Z"
   },
   {
-    "conditionKey": "t1-coverage:scoreboard",
-    "title": "T1 Coverage Scoreboard",
-    "description": "broadway: 76.1% (379/498)\noff-broadway: 42.5% (136/320)\nwest-end: 76.2% (423/555)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (908h)\nA Midsummer Night's Dream — observer (908h)\nA Midsummer Night's Dream — standard (908h)\nABBA Voyage — independent (908h)\nAladdin — ew (908h)\n… 175 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (908h)\nBuena Vista Social Club — nydailynews (908h)\nHadestown — nydailynews (908h)\nMasquerade — nydailynews (908h)\nMaybe Happy Ending — nydailynews (908h)\n… 10 more circuit-open cell(s)",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-21T05:44:33.742Z"
-  },
-  {
     "conditionKey": "corpus-drift:cv-flag-contradiction",
     "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
     "description": "check-corpus-drift.js audit \"cv-flag-contradiction\" (node scripts/audit-cv-flag-contradiction.js --window=30 --strict) has been drifting. Latest output:\n\nFlag-vs-CV contradiction sweep: 142 shows in the last 30d window, 5 contradiction(s) found.\n  [wrongProduction] tosca-off-broadway-2026/new-york-classical-review--george-grella.json (925w)\n  [wrongProduction] tosca-off-broadway-2026/operawire--chris-ruel.json (2816w)\n  [wrongProduction] miles-for-mary-off-broadway-2026/talkinbroadway--marc-miller.json (675w)\n  [wrongProduction] kimberly-akimbo-off-west-end-2026/broadwayworld--katie-kirkpatrick.json (899w)\n  [wrongProduction] the-revlon-girl-off-west-end-2026/london-box-office--stacey-tyler.json (817w)\nCoverage: examined 87 of 3054 corpus show(s) (1418 review file(s) parsed).\n  --window=30d selected 142 show(s): 39 already opened, 103 not yet opened (the window filter has no upper bound).\n  55 selected show(s) yielded no readable review file (directory missing, unreadable, empty, or every file failed to parse).\n  2967 corpus show(s) were NOT examined, of which 423 carry no usable openingDate (missing or unparseable) and are excluded at EVERY window.\n  A clean result above covers only the examined shows. It is not a statement about the corpus.\n\n(4 baselined, 1 new)\n\n⚠️  NEW flag-vs-CV contradiction(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/cv-flag-contradiction-baseline.json):\n  [wrongProduction] kimberly-akimbo-off-west-end-2026/broadwayworld--katie-kirkpatrick.json\n\nInvestigate, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-cv-flag-contradiction.js --update-baseline",
@@ -541,5 +505,41 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-21T09:41:19.073Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 76.0% of shows changed coverage state",
+    "description": "review-gap blast radius 76.0% (19/25 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: amaze-magic-off-broadway-2025, cats-the-jellicle-ball-2026, conflicted-off-broadway-2026, death-note-the-musical-west-end-2026, death-of-a-salesman-2026, golden-boy-off-west-end-2026, how-the-other-half-loves-west-end-2026, in-honor-of-jean-michel-basquiat-off-broadway-2026, jesus-christ-superstar-west-end-2026, macbeth-off-broadway-2026, my-sons-a-queer-but-what-can-you-do-west-end-2026, shifters-off-broadway-2026, spandex-off-broadway-2026, the-cherry-orchard-park-avenue-armory-off-broadway-2026, the-hope-theory-off-broadway-2026, the-pass-off-broadway-2026, the-winters-tale-off-broadway-2026, thelma-and-louise-a-new-musical-off-west-end-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nPARTIAL write: the other 6 show(s) audited this run were NOT risky and were persisted normally. Only the 19 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-21T11:24:10.652Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage",
+    "description": "11/139 show(s) differ between internal state and what prod serves.\nscore-drift: 11\nThe Cherry Orchard: score-drift\nDarkling: score-drift\nBLOODSPORT: After Helen of Troy: score-drift\nMan to Man: score-drift\nKimberly Akimbo: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-21T11:24:25.602Z"
+  },
+  {
+    "conditionKey": "t1-coverage:scoreboard",
+    "title": "T1 Coverage Scoreboard",
+    "description": "broadway: 76.1% (379/498)\noff-broadway: 42.5% (136/320)\nwest-end: 76.2% (423/555)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (913h)\nA Midsummer Night's Dream — observer (913h)\nA Midsummer Night's Dream — standard (913h)\nABBA Voyage — independent (913h)\nAladdin — ew (913h)\n… 175 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (913h)\nBuena Vista Social Club — nydailynews (913h)\nHadestown — nydailynews (913h)\nMasquerade — nydailynews (913h)\nMaybe Happy Ending — nydailynews (913h)\n… 10 more circuit-open cell(s)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-21T11:24:25.771Z"
   }
 ]
