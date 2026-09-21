@@ -112,7 +112,10 @@ jobs:
           bash scripts/lib/push-with-retry.sh 5 main
 
       - name: Notify on failure
-        if: failure()
+        # BRO-3707: a hang in "Audit, enrich, re-audit" hitting the job's own
+        # timeout-minutes: 20 reports conclusion "cancelled", not "failure" —
+        # a bare failure() here would silently drop this critical alert.
+        if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
         with:
           title: 'Card Verifiability Audit Failed'
