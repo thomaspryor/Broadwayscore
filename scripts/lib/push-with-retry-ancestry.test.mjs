@@ -249,13 +249,83 @@ test('BRO-3899: the Git Data API fallback is disqualified (not silently squashed
     const finalHead = sh('git rev-parse HEAD', runnerDir).trim();
 
     assert.notEqual(code, 0, `expected non-zero exit (every push fails, API fallback disqualified); got 0. Output:\n${stdout}`);
-    assert.match(stdout, /skipping Git Data API fallback.*merge commit.*BRO-3899|BRO-3899.*merge commit/,
+    assert.match(stdout, /skipping Git Data API fallback — our outgoing diff contains a merge commit/,
       `expected the new merge-commit API-fallback disqualifier to fire. Output:\n${stdout}`);
     assert.equal(
       sh(`git merge-base --is-ancestor ${mergeCommit} ${finalHead} && echo yes || echo no`, runnerDir).trim(),
       'yes',
       `merge commit ${mergeCommit} was dropped from local HEAD's ancestry after exhaustion (HEAD is ${finalHead}). Output:\n${stdout}`,
     );
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('BRO-3899: a merge in range does not trigger the early-fallback break (remaining local attempts are spent, not forfeited)', () => {
+  // The post-loop fallback block disqualifies a merge commit, so breaking out
+  // of the retry loop early "to try the fallback" would forfeit the remaining
+  // local attempts for a fallback that cannot run (the BRO-3663 cliff, here
+  // for merge commits). PUSH_API_FALLBACK_AFTER_ATTEMPTS=2 with 3 attempts
+  // makes the old code break at attempt 2; the fixed code must reach attempt 3.
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-retry-3899-early-'));
+  const originDir = path.join(tmp, 'origin.git');
+  const seedDir = path.join(tmp, 'seed');
+  const runnerDir = path.join(tmp, 'runner');
+
+  try {
+    sh(`git init -q --bare "${originDir}"`, tmp);
+    sh(`git init -q "${seedDir}"`, tmp);
+    sh('git config user.email t@t.t', seedDir);
+    sh('git config user.name t', seedDir);
+    sh('git commit -q --allow-empty -m base', seedDir);
+    sh('git branch -M main', seedDir);
+    sh(`git push -q "${originDir}" main`, seedDir);
+
+    fs.mkdirSync(runnerDir);
+    sh('git init -q', runnerDir);
+    sh('git config user.email t@t.t', runnerDir);
+    sh('git config user.name t', runnerDir);
+    sh(`git remote add origin "${originDir}"`, runnerDir);
+    sh('git fetch -q origin main', runnerDir);
+    sh('git checkout -q -B main origin/main', runnerDir);
+
+    sh('git checkout -q -b feature', runnerDir);
+    fs.writeFileSync(path.join(runnerDir, 'feature.js'), 'const feature = 1;\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "feature commit"', runnerDir);
+    sh('git checkout -q main', runnerDir);
+    fs.writeFileSync(path.join(runnerDir, 'main-own.js'), 'const mainOwn = 1;\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "main own commit"', runnerDir);
+    sh(`git merge --no-edit -q feature -m "Merge branch 'feature'"`, runnerDir);
+
+    const fakeGitDir = makeAllPushesFailGitDir(tmp);
+
+    let stdout = '';
+    let code = 0;
+    try {
+      stdout = execSync(`bash "${SCRIPT}" 3 main`, {
+        cwd: runnerDir,
+        stdio: 'pipe',
+        env: {
+          ...process.env, ...GIT_ENV,
+          PATH: `${fakeGitDir}:${process.env.PATH}`,
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '2',
+          PUSH_FAILURE_LOG: path.join(tmp, 'failures.jsonl'),
+        },
+      }).toString();
+    } catch (err) {
+      code = err.status ?? 1;
+      stdout = `${err.stdout || ''}${err.stderr || ''}`;
+    }
+
+    assert.notEqual(code, 0, `expected non-zero exit (every push fails); got 0. Output:\n${stdout}`);
+    assert.match(stdout, /NOT breaking out early for the Git Data API fallback — our outgoing range contains a merge commit/,
+      `expected the early-break gate to be suppressed by the merge commit. Output:\n${stdout}`);
+    assert.doesNotMatch(stdout, /breaking out of the local fetch\+rebase\+push loop early/,
+      `the loop broke out early and forfeited its remaining local attempts. Output:\n${stdout}`);
+    assert.match(stdout, /Push failed \(attempt 3\/3\)/,
+      `attempt 3 of 3 never ran — the remaining local attempts were forfeited. Output:\n${stdout}`);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
