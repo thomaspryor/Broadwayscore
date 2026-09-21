@@ -177,6 +177,10 @@ test('trendsFor compares the last 4 full weeks with the 4 before and applies the
   };
   const { rising, falling } = trendsFor(series, W9, 'cur');
   assert.deepEqual(rising.map((x) => [x.key, x.recentPerWeek, x.priorPerWeek, x.pct]), [['fresh', 30, 0, null], ['email', 40, 20, 100]]);
+  // One big week is not a trend: [200,0,0,0] has a median of 0.
+  const oneHit = trendsFor({ burst: { w1: 20, w2: 20, w3: 20, w4: 20, w5: 200, w6: 0, w7: 0, w8: 0 } }, W9, 'cur');
+  assert.deepEqual(oneHit.rising, []);
+  assert.deepEqual(oneHit.falling.map((x) => [x.key, x.recentPerWeek, x.pct]), [['burst', 0, -100]]);
   assert.deepEqual(falling.map((x) => [x.key, x.pct]), [['reddit', -60]]);
   assert.deepEqual(trendsFor(series, W9.slice(0, 5), 'cur').rising, []); // fewer than 8 full weeks
 });
@@ -203,6 +207,10 @@ test('indexReferralLanding ties referrers to landing pages per week and overall'
   assert.equal(idx.byDomain['www.reddit.com']['/'], 10);
   assert.equal(idx.byDomain['blog.example']['/west-end'], 6);
   assert.ok(!idx.byDomain['broken-row-without-arrow']);
+  // Search engines never count as referral landings, same policy as "new sites".
+  const searchIdx = indexReferralLanding([{ date: '2026-08-03', key: 'search.brave.com → /', sessions: 9 }, { date: '2026-08-03', key: 'x.com → /a → /b', sessions: 2 }]);
+  assert.ok(!searchIdx.byDomain['search.brave.com']);
+  assert.equal(searchIdx.byDomain['x.com']['/a → /b'], 2); // path keeps a later arrow
 });
 
 test('buildReport renders rising/falling, new sites and referral landing sections with landing pages on referrer spikes', () => {
@@ -225,6 +233,6 @@ test('buildReport renders rising/falling, new sites and referral landing section
   assert.match(md, /\*\*www\.reddit\.com\*\* \(PostHog referring domain\): 325 sessions[^\n]*landing on \/show\/trainspotting-the-musical-west-end \(300\)/);
   assert.match(md, /## Rising and falling[\s\S]*\*\*Falling\*\*[\s\S]*\*\*www\.reddit\.com\*\* \(referrer\): 20\/week now vs 50\/week before \(-60%\)/);
   assert.match(md, /## New sites linking to you[\s\S]*\*\*blog\.example\*\*: 12 visits since Aug 24, landing on \/west-end \(12\)/);
-  assert.match(md, /## Where social and referral traffic lands[\s\S]*\| www\.reddit\.com \| 40 \|/);
+  assert.match(md, /## Where referral traffic lands[\s\S]*\| www\.reddit\.com \| 40 \|/);
   assert.ok(md.indexOf('## Rising and falling') < md.indexOf('## PostHog (Real Users lens)')); // in the emailed summary
 });
