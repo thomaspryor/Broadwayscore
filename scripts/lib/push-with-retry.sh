@@ -2370,7 +2370,14 @@ for i in $(seq 1 "$MAX_RETRIES"); do
        && [ -z "$_PUSH_API_EARLY_BREAK_OK" ]; then
     _early_break_rc=0
     api_fallback_paths_ok "$SCRIPT_ENTRY_BASE" "$SCRIPT_ENTRY_HEAD" || _early_break_rc=$?
-    if [ "$_early_break_rc" = "0" ]; then
+    if [ "$_early_break_rc" = "0" ] && _range_has_merge_commit "$SCRIPT_ENTRY_HEAD"; then
+      # BRO-3899: the post-loop fallback block disqualifies a merge commit in
+      # range (push-via-git-api.sh would squash it to single-parent), so
+      # breaking out early here would forfeit the remaining local attempts for
+      # a fallback that cannot run — the same cliff BRO-3663 closed for paths.
+      _PUSH_API_EARLY_BREAK_OK=false
+      echo "::warning::push-with-retry: NOT breaking out early for the Git Data API fallback — our outgoing range contains a merge commit the fallback would squash into a single-parent commit (BRO-3899). Spending the remaining local attempts instead."
+    elif [ "$_early_break_rc" = "0" ]; then
       _PUSH_API_EARLY_BREAK_OK=true
     else
       _PUSH_API_EARLY_BREAK_OK=false
@@ -2606,7 +2613,7 @@ if [ "$pushed" != "true" ] && [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ]; then
     # HEAD (current, post-reset), same range convention as the managed-file
     # check just above.
     if [ "$_api_fallback_ok" = "true" ] && _range_has_merge_commit "HEAD"; then
-      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff contains a merge commit, which push-via-git-api.sh would squash into a single-parent commit, discarding its ancestry (BRO-3899). Falling back to the local fetch+rebase+push path instead."
+      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff contains a merge commit, which push-via-git-api.sh would squash into a single-parent commit, discarding its ancestry (BRO-3899). The push fails here and local HEAD is left at its merge-intact restore point rather than pushing a squashed history."
       _api_fallback_ok=false
     fi
   fi
@@ -2712,7 +2719,7 @@ if [ "$pushed" != "true" ]; then
   # content-dropped error) and repeating the pointer here would read as "try
   # the thing that was just tried and failed."
   if [ "$_api_fallback_ok" != "true" ]; then
-    echo "::error::push-with-retry: the Git Data API fallback (default-on) did NOT run this attempt — either PUSH_API_FALLBACK_DISABLE=1 was set, this is the broadway-review-texts repo (excluded — no protected-field reconciliation in the fallback yet), no origin merge-base could be resolved at script start (SCRIPT_ENTRY_BASE empty), scripts/lib/push-via-git-api.sh is missing, the pre-fallback HEAD reset itself failed, or the diff touched a MANAGED/shows.json/reviews.json/unaudited-data-audit path not on API_FALLBACK_SAFE or API_FALLBACK_MERGE (see the warnings above for which). It has landed on the first attempt in confirmed production incidents where this local fetch+rebase+push flow lost 20-100+ consecutive attempts (tasks #707, #1791) — see scripts/lib/push-via-git-api.sh if none of the disqualifying reasons above apply."
+    echo "::error::push-with-retry: the Git Data API fallback (default-on) did NOT run this attempt — either PUSH_API_FALLBACK_DISABLE=1 was set, this is the broadway-review-texts repo (excluded — no protected-field reconciliation in the fallback yet), no origin merge-base could be resolved at script start (SCRIPT_ENTRY_BASE empty), scripts/lib/push-via-git-api.sh is missing, the pre-fallback HEAD reset itself failed, the diff touched a MANAGED/shows.json/reviews.json/unaudited-data-audit path not on API_FALLBACK_SAFE or API_FALLBACK_MERGE, or the outgoing range contains a merge commit the fallback would squash (BRO-3899) (see the warnings above for which). It has landed on the first attempt in confirmed production incidents where this local fetch+rebase+push flow lost 20-100+ consecutive attempts (tasks #707, #1791) — see scripts/lib/push-via-git-api.sh if none of the disqualifying reasons above apply."
   fi
   restore_head_if_moved "$_EXHAUSTION_REASON"
   exit 1
