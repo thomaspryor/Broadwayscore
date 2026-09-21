@@ -56,11 +56,30 @@ test('resolves the Best Actor show column (Work) by label regardless of position
   assert.equal(entries[0].winner, 'Hamlet');
 });
 
-test('skips a table whose header row is too short instead of misreading rows', () => {
+test('a table opening directly with a one-cell ceremony row still parses via the fixed showCol fallback', () => {
+  // Code-review finding: an earlier version of this fix REJECTED the whole
+  // table whenever the first row had <2 cells. But this file's own
+  // documented layout has real tables that open directly with a one-cell
+  // ceremony/ordinal row (no separate labeled header row at all) — rejecting
+  // those would be a regression on a previously-working case, not a fix.
   const html = esPage(`
-    <tr><th>Ceremony</th></tr>
     <tr><td>4th</td></tr>
+    <tr><td>Chips with Everything</td><td>Arnold Wesker</td></tr>
   `);
   const entries = extractCategoryEntries(html, 'Best Play', 1900);
-  assert.deepEqual(entries, []);
+  assert.equal(entries.length, 1);
+  assert.equal(entries[0].winner, 'Chips with Everything');
+});
+
+test('prefers an exact header label match over an earlier candidate substring match', () => {
+  // "Play" would substring-match "Playwright" before the loop ever tries an
+  // exact match for "Work" — without exact-first ordering, a Playwright
+  // column earlier in the candidate list order would wrongly win.
+  const html = esPage(`
+    <tr><th>Ceremony</th><th>Playwright</th><th>Work</th></tr>
+    <tr><td>5th</td><td>Robert Bolt</td><td>A Man for All Seasons</td></tr>
+  `);
+  const entries = extractCategoryEntries(html, 'Best Actor', 1900);
+  assert.equal(entries.length, 1);
+  assert.equal(entries[0].winner, 'A Man for All Seasons');
 });

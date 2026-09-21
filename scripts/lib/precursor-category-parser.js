@@ -221,7 +221,24 @@ function parseCategoryPage(html, opts = {}) {
   // year-prefixed first column — picking only the first table would lose
   // 80%+ of years on modern pages.
   const yearTables = tables.filter((t) => {
-    const rows = Array.from(t.querySelectorAll('tr')).slice(1, 6);
+    const allRows = Array.from(t.querySelectorAll('tr'));
+    if (allRows.length === 0) return false;
+    // Resolve Year by header label first (BRO-3596 code review finding: the
+    // per-row fix below is unreachable if this selection step still assumes
+    // cells[0] — a table that moves Year off the first column would never
+    // even be selected as a "year table"). Fall back to the historical
+    // first-cell heuristic when no header row is present with a Year label.
+    const headerCells = Array.from(allRows[0].children)
+      .filter((c) => c.tagName === 'TH' || c.tagName === 'TD')
+      .map((c) => (c.textContent || '').trim());
+    const yearIdx = findColumnIndex(headerCells, 'Year');
+    const rows = allRows.slice(1, 6);
+    if (yearIdx !== -1) {
+      return rows.some((r) => {
+        const cells = Array.from(r.children).filter((c) => c.tagName === 'TH' || c.tagName === 'TD');
+        return parseFourDigitYear((cells[yearIdx]?.textContent) || '');
+      });
+    }
     return rows.some((r) => parseFourDigitYear((r.querySelector('th,td')?.textContent) || ''));
   });
   if (yearTables.length === 0) return [];

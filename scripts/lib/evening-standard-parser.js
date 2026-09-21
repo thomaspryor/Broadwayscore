@@ -134,23 +134,40 @@ function extractCategoryEntries(html, category, minYear = 1990) {
     // winner). Column 0 of the header is always Ceremony/Year (see file
     // docstring); the label search operates in the same "data columns only"
     // basis as showCol/winnerCells below (header cells minus column 0).
+    //
+    // This is a best-effort UPGRADE, never a rejection: some genuine ES
+    // tables open directly with a one-cell ceremony/ordinal row instead of a
+    // labeled multi-column header row (see the "Rowspan-combined first
+    // cell" and single-cell-ordinal branches below, which this file already
+    // handles). A short or unlabeled first row there is normal, not a sign
+    // of drift — so on any resolution failure we silently keep the fixed
+    // showCol rather than skipping the whole table (code review finding:
+    // an earlier version of this fix rejected such tables outright).
     const headerCells = Array.from(rowsArr[0].children)
       .filter((c) => c.tagName === 'TH' || c.tagName === 'TD')
       .map((c) => (c.textContent || '').trim());
+    let resolvedShowCol = showCol;
     try {
       assertTableSchema([headerCells], { minCells: 2 });
-    } catch (err) {
-      if (err instanceof TableSchemaError) {
-        console.warn(`evening-standard-parser: skipping table for "${category}" — ${err.message}`);
-        continue;
+      const dataHeaderCells = headerCells.slice(1);
+      const candidates = ['Play', 'Musical', 'Work', 'Show'];
+      // Exact match across ALL candidates first, then substring across all
+      // candidates — otherwise an early candidate's substring match (e.g.
+      // "Play" inside "Playwright") could win over a later candidate's exact
+      // match (e.g. "Work") purely by list order.
+      let labelIdx = candidates
+        .map((l) => dataHeaderCells.findIndex((h) => h.toLowerCase() === l.toLowerCase()))
+        .find((i) => i !== -1);
+      if (labelIdx === undefined) {
+        labelIdx = candidates
+          .map((l) => findColumnIndex(dataHeaderCells, l))
+          .find((i) => i !== -1);
       }
-      throw err;
+      if (labelIdx !== undefined) resolvedShowCol = labelIdx;
+    } catch (err) {
+      if (!(err instanceof TableSchemaError)) throw err;
+      // No labeled multi-column header row found — fall back to showCol.
     }
-    const dataHeaderCells = headerCells.slice(1);
-    const labelIdx = ['Play', 'Musical', 'Work', 'Show']
-      .map((l) => findColumnIndex(dataHeaderCells, l))
-      .find((i) => i !== -1);
-    const resolvedShowCol = labelIdx !== undefined ? labelIdx : showCol;
 
     let currentYear = null;
     let isFirstDataRowAfterHeader = false;

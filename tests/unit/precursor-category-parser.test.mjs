@@ -6,11 +6,13 @@
 // silently read a non-year cell as the year on every row, dropping the
 // whole table with no signal at all.
 //
-// parseYearTable is tested directly (bypassing parseCategoryPage's
-// pre-existing yearTables selection heuristic, which itself keys off the
-// literal first cell of early rows and is out of scope here) so a genuine
-// column-reorder case can be exercised the same way BRO-2375's
-// nydcc-legacy-table-parser.test.mjs does.
+// parseCategoryPage's own table-SELECTION step (yearTables filter) also
+// resolves Year by header label now — a code-review finding on the first
+// version of this fix caught that the per-row resolution in parseYearTable
+// was unreachable in production if selection still assumed cells[0]: a
+// table that moved Year off the first column would never even be picked as
+// a "year table". The column-reorder regression test below therefore goes
+// through the real parseCategoryPage entry point, not just parseYearTable.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -45,19 +47,18 @@ test('parses the live schema (Year | Winner | Nominees) end-to-end via parseCate
   assert.equal(entries[0].winner, 'Hadestown');
 });
 
-test('resolves the Year column by label when a Ref column is inserted before it', () => {
-  // Before the fix, cells[0] ("[1]") would fail parseFourDigitYear and this
-  // row (the table's only row) would be silently dropped.
-  const table = tableEl(`
+test('resolves the Year column by label end-to-end via parseCategoryPage when a Ref column is inserted before it', () => {
+  // Before the fix, cells[0] ("[1]") would fail parseFourDigitYear both at
+  // table-selection time (yearTables filter) and at row-extraction time —
+  // this table would never even be selected, let alone parsed.
+  const html = `<html><body><table class="wikitable">
     <tr><th>Ref</th><th>Year</th><th>Winner</th></tr>
     <tr><td>[1]</td><td>2021</td><td><i><b>Moulin Rouge!</b></i></td></tr>
-  `);
-  const { byYear, ensureYear } = newYearMap();
-  parseYearTable(table, { minYear: 2000 }, ensureYear);
-  assert.equal(byYear.size, 1);
-  const entry = byYear.get(2021);
-  assert.ok(entry, 'expected an entry for year 2021');
-  assert.equal(entry.winner, 'Moulin Rouge!');
+  </table></body></html>`;
+  const entries = parseCategoryPage(html, { minYear: 2000 });
+  assert.equal(entries.length, 1);
+  assert.equal(entries[0].year, 2021);
+  assert.equal(entries[0].winner, 'Moulin Rouge!');
 });
 
 test('throws TableSchemaError instead of misreading rows when Year is not a header label', () => {

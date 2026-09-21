@@ -68,3 +68,19 @@ test('Best Actor category still resolves showCol=2 alongside a label-based Year 
   assert.equal(entries.length, 1);
   assert.equal(entries[0].winner, 'Hamlet');
 });
+
+test('resolves the SHOW column by label too, when Play moves off its fixed index', () => {
+  // Code-review finding: resolving Year alone while leaving Show at the
+  // fixed SHOW_COLUMN_BY_CATEGORY index is worse than leaving both fixed —
+  // before this fix, showCol=1 would read "1994" (the Year column's own
+  // text) as the winner once Play moved to index 2, with no signal at all
+  // since Year still resolved "correctly".
+  const html = ccPage(`
+    <tr><th>Ref</th><th>Year</th><th>Play</th><th>Writer</th></tr>
+    <tr><td>[2]</td><td>1994</td><td>Arcadia</td><td>Tom Stoppard</td></tr>
+  `);
+  const entries = extractCategoryEntries(html, 'Best New Play', 1980);
+  assert.equal(entries.length, 1);
+  assert.equal(entries[0].year, 1994);
+  assert.equal(entries[0].winner, 'Arcadia');
+});

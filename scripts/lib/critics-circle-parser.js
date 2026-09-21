@@ -34,13 +34,29 @@ const { assertTableSchema, TableSchemaError, findColumnIndex } = require('./tabl
 
 const CC_URL = 'https://en.wikipedia.org/wiki/Critics%27_Circle_Theatre_Award';
 
-/** Section anchor → which column index holds the SHOW title. */
+/** Section anchor → which column index holds the SHOW title (fallback when
+ *  the header row has no resolvable label — see SHOW_LABEL_BY_CATEGORY). */
 const SHOW_COLUMN_BY_CATEGORY = {
   'Best New Play': 1,            // recipient = the play
   'Best Actor': 2,                // recipient = person, work = play
   'Best Actress': 2,
   'Best Director': 2,
   'Most Promising Playwright': 2, // recipient = playwright, work = breakout play
+};
+
+/**
+ * Header label to resolve the SHOW column by, per category (BRO-3596 code
+ * review finding: resolving Year alone while leaving Show at a fixed index
+ * is worse than leaving both fixed — a table that moves Ref/Year around
+ * without moving Play/Work would silently read the wrong cell as the
+ * winner, now with no signal at all since Year still resolves "correctly").
+ */
+const SHOW_LABEL_BY_CATEGORY = {
+  'Best New Play': 'Play',
+  'Best Actor': 'Work',
+  'Best Actress': 'Work',
+  'Best Director': 'Work',
+  'Most Promising Playwright': 'Work',
 };
 
 /** Section heading IDs as Wikipedia normalizes them (spaces → underscores). */
@@ -143,6 +159,13 @@ function extractCategoryEntries(html, category, minYear = 1990) {
       console.warn(`critics-circle-parser: skipping table for "${category}" — Year column not found by label in header: ${JSON.stringify(headerCells)}`);
       continue;
     }
+    // Resolve the SHOW column by label too — resolving Year alone while
+    // leaving Show at a fixed index would misread the wrong cell as the
+    // winner the moment a table reorders columns around Year, with no
+    // signal at all since Year still "correctly" resolves.
+    const showLabel = SHOW_LABEL_BY_CATEGORY[category];
+    const labelShowIdx = showLabel ? findColumnIndex(headerCells, showLabel) : -1;
+    const showIdx = labelShowIdx !== -1 ? labelShowIdx : showCol;
 
     for (const row of rows) {
       // Wikipedia uses <th> for the year and <td> for data cells. Collect
@@ -154,7 +177,7 @@ function extractCategoryEntries(html, category, minYear = 1990) {
       if (!yearMatch) continue; // header row (no year)
       const year = parseInt(yearMatch[1], 10);
       if (year < minYear) continue;
-      const showCell = cells[showCol];
+      const showCell = cells[showIdx];
       if (!showCell) continue;
       const winner = (showCell.textContent || '')
         .replace(/\[\s*\d+\s*\]/g, '') // strip [12] reference markers

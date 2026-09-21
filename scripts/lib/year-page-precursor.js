@@ -243,9 +243,16 @@ function parseYearPageTable(table, { year, categoryPrefixRe }) {
     .map((row) => row.replace(/^\s*\n?/, ''))
     .filter((trimmed) => (trimmed.startsWith('|') || trimmed.startsWith('!')) && !/^\s*!/.test(trimmed));
 
+  // Check EVERY row for the 2-cell shape, not just the first — a leading
+  // section/separator row (e.g. a colspan'd "Acting awards" divider) would
+  // otherwise wrongly reject an entire table of otherwise-valid rows (code
+  // review finding). Only throw when NO row reaches 2 cells, i.e. the table
+  // itself is fundamentally broken.
   if (dataRows.length > 0) {
-    const firstCells = dataRows[0].split(/\n\s*\|\s*/);
-    assertTableSchema([firstCells], { minCells: 2 });
+    const rowCellCounts = dataRows.map((r) => r.split(/\n\s*\|\s*/).length);
+    if (Math.max(...rowCellCounts) < 2) {
+      assertTableSchema([dataRows[0].split(/\n\s*\|\s*/)], { minCells: 2 });
+    }
   }
 
   const categories = {};

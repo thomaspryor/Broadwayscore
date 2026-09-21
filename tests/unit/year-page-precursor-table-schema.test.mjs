@@ -35,6 +35,22 @@ test('parses a well-formed category table', () => {
   assert.deepEqual(categories['Outstanding Musical'].nominees, ['Ragtime', 'Cats']);
 });
 
+test('a leading one-cell separator row does not reject an otherwise-valid table', () => {
+  // Code-review finding: checking only dataRows[0] would wrongly reject a
+  // table whose first row is a colspan'd section divider even though every
+  // other row is a normal 2-cell Category|Nominees pair.
+  const table = `{| class="wikitable"
+|-
+| colspan="2" | Acting awards
+|-
+| '''[[Outstanding Lead Actor]]'''
+| {{bulleted list|''[[Ragtime]]''|''[[Cats]]''}}
+|-
+|}`;
+  const categories = parseYearPageTable(table, { year: 2024, categoryPrefixRe });
+  assert.ok(categories['Outstanding Lead Actor'], 'expected an Outstanding Lead Actor entry despite the leading divider row');
+});
+
 test('throws TableSchemaError instead of silently returning zero categories when rows never reach 2 cells', () => {
   // Simulates a markup change that collapses the Category|Nominees row onto
   // a single cell. Before the fix, this returned {} with no signal — the
