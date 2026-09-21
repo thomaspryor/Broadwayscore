@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-09-21T01:46:23.286Z",
-  "processed": 60,
-  "failed": 90,
-  "successRate": "40.0%",
+  "updatedAt": "2026-09-21T01:51:40.666Z",
+  "processed": 63,
+  "failed": 117,
+  "successRate": "35.0%",
   "tierBreakdown": {
-    "playwright": 39,
+    "playwright": 40,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingbee": 12,
-    "brightdata": 3,
+    "scrapingbee": 13,
+    "brightdata": 4,
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-09-20T21:01:43.542Z",
-      "event": "bb-session",
-      "session": "734c1dc3",
-      "url": "https://www.wsj.com/articles/the-cherry-orchard-review-chekhov-speaks-korean-506"
-    },
-    {
-      "t": "2026-09-20T21:01:44.088Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-09-20T21:03:14.767Z",
       "event": "bb-session",
@@ -90,6 +79,58 @@
       "event": "bb-session",
       "session": "6a2d0c03",
       "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+    },
+    {
+      "t": "2026-09-21T01:42:34.157Z",
+      "event": "bb-session",
+      "session": "1a555e05",
+      "url": "https://www.wsj.com/articles/the-cherry-orchard-review-chekhov-speaks-korean-506"
+    },
+    {
+      "t": "2026-09-21T01:42:35.011Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-21T01:42:59.660Z",
+      "event": "bb-session",
+      "session": "e31316cc",
+      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
+    },
+    {
+      "t": "2026-09-21T01:43:00.433Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-21T01:44:26.920Z",
+      "event": "bb-session",
+      "session": "3b105248",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    },
+    {
+      "t": "2026-09-21T01:44:44.521Z",
+      "event": "bb-session",
+      "session": "41a352c7",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    },
+    {
+      "t": "2026-09-21T01:45:27.901Z",
+      "event": "bb-session",
+      "session": "b942e9e4",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
+    },
+    {
+      "t": "2026-09-21T01:51:03.468Z",
+      "event": "bb-session",
+      "session": "1cfeccd1",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
+    },
+    {
+      "t": "2026-09-21T01:51:16.158Z",
+      "event": "bb-session",
+      "session": "a965bc86",
+      "url": "https://www.abouttheartists.com/plays/70485-the-ford-slash-hill-project-by-lee-s"
     }
   ]
 }
