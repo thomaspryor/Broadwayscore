@@ -37,6 +37,14 @@ on:
 # Two modes: (1) verify unverified reviews for wrong-production/wrong-show/film-TV
 #             (2) re-evaluate existing wrongProduction/wrongShow flags for false positives
 
+# Per-run group (not shared): matrix partitions reviews into disjoint
+# parallel_jobs shards, and self-chains the next round with a NEW run_id.
+# A shared group would only queue a second concurrent manual dispatch,
+# never affect the chain or the matrix. See docs/workflow-concurrency-audit.md.
+concurrency:
+  group: verify-existing-reviews-${{ github.run_id }}
+  cancel-in-progress: false
+
 jobs:
   prepare:
     runs-on: ubuntu-latest

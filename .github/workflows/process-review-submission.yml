@@ -10,6 +10,17 @@ on:
         required: true
         type: string
 
+# Per-issue group, not shared: GitHub cancels a PENDING run in a concurrency
+# group the moment a third run for that same group arrives, regardless of
+# cancel-in-progress (docs: "any existing pending job... will be canceled and
+# the new queued job... will take its place"). A shared group here would
+# silently drop issue B's submission if issue C is opened while A is still
+# running — each issue is distinct, non-idempotent work, not an interchangeable
+# retry. Keying by issue number means different issues never collide.
+concurrency:
+  group: process-review-submission-${{ github.event.issue.number || inputs.issue_number }}
+  cancel-in-progress: false
+
 jobs:
   validate:
     # Run for workflow_dispatch or new issues with review-submission label

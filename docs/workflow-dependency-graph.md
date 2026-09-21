@@ -65,8 +65,8 @@ the same files.
 | `opening-night-completeness-check.yml` | ❌ (read-only diff) | ❌ | `opening-night-completeness-check` |
 | `opening-night-checklist.yml` | ❌ (read-only) | ❌ | `opening-night-checklist` |
 | `adjudicate-review-queue.yml` | ✅ | ❌ (dispatches `rebuild-reviews.yml`) | `adjudicate-review-queue` (added this session) |
-| `fetch-guardian-reviews.yml` | ✅ | ✅ | (single-threaded caller only — dispatched per-show by the poller) |
-| `process-review-submission.yml` | ✅ | ✅ | (single-threaded — one GH Issue at a time) |
+| `fetch-guardian-reviews.yml` | ✅ | ✅ | `fetch-guardian-reviews` (added BRO-3500 — was previously undocumented-only "single-threaded caller" intent) |
+| `process-review-submission.yml` | ✅ | ✅ | `process-review-submission` (added BRO-3500 — was previously undocumented-only "single-threaded" intent) |
 | `llm-ensemble-score.yml` | ✅ (writes scores) | ❌ (triggers rebuild) | `scoring-reviews[-{rescore_reason}]` |
 | `update-critic-consensus.yml` | ❌ (separate file, `critic-consensus.json`) | ❌ | `update-critic-consensus` |
 | `scrape-new-aggregators.yml`, `scrape-westendtheatre.yml`, `scrape-stagedoor.yml`, `scrape-thestage-roundups.yml`, `sweep-we-aggregators.yml`, `collect-we-ob-reviews.yml` | ✅ | ✅ or dispatches `rebuild-reviews.yml` | own per-workflow groups (verified present) |
@@ -76,11 +76,11 @@ the same files.
 `opening-night-orchestrator.yml` and `vercel-deploy.yml` are deliberate exceptions with
 documented rationale in the files themselves — not gaps.
 
-## Known gaps (audited this session, not yet fixed)
+## Closed gap: BRO-3500 (22 more workflows, fixed)
 
-`grep -l "uses: \./\.github/actions/push-review-texts"` + `grep -l "cd data/review-texts"`
-across `.github/workflows/*.yml`, minus every file with a top-level `^concurrency:` line —
-**22 workflows write review-texts with no concurrency group at all**:
+The 22-workflow gap this session's audit found (below) is now closed — every one has a
+top-level `concurrency:` group, with the shared-vs-per-run choice for each documented
+in `docs/workflow-concurrency-audit.md`:
 
 ```
 backfill-aggregators.yml        collect-soft-paywall.yml        rescrape-truncated.yml
@@ -94,13 +94,16 @@ collect-hard-paywall.yml        recover-wsj-subscriber.yml      scrape-nysr.yml
                                                                   weekly-integrity.yml
 ```
 
-Not a blind batch-fix: several of these are intentionally-parallel matrix/self-chaining
+It was not a blind batch-fix: several are intentionally-parallel matrix/self-chaining
 workflows (`bulk-collect-review-texts.yml` partitions disjoint show sets across matrix
-jobs; a naive shared group could reintroduce the exact "queue depth 1 cancels 5+ queued
-runs" bug `rebuild-fast.yml`'s own comment warns about, from the Beaches/Rocky Horror
-opening-night incident). Each needs the same per-workflow judgment call
-`opening-night-poller.yml`'s per-show/market group and `collect-review-texts.yml`'s
-per-filter group already made. Tracked as BRO-3500.
+jobs; a naive shared group could have reintroduced the exact "queue depth 1 cancels 5+
+queued runs" bug `rebuild-fast.yml`'s own comment warns about, from the Beaches/Rocky
+Horror opening-night incident). Those got the same per-run-group treatment
+`rebuild-fast.yml` and `enrich-reviews.yml` already use; everything else got a
+straightforward shared group matching `opening-night-poller.yml`'s per-show/market
+group and `collect-review-texts.yml`'s per-filter group in spirit (queue whole
+invocations, never touch legitimate internal parallelism). Full per-workflow rationale
+in `docs/workflow-concurrency-audit.md`.
 
 ## Dispatch graph
 

@@ -20,6 +20,10 @@ permissions:
   contents: write
   actions: write
 
+concurrency:
+  group: overnight-collect
+  cancel-in-progress: false
+
 jobs:
   collect-batch:
     runs-on: ubuntu-latest
