@@ -8,7 +8,7 @@ const require = createRequire(import.meta.url);
 const {
   enrichOneCard, spliceNotes,
   selectRefusedLinearIdentifiers, normalizeLinearIssue, makeLinearWriteCard, linearIssueNumber,
-  isLinearIssueTerminal, categoryOfLinearIssue,
+  isLinearIssueTerminal, categoryOfLinearIssue, parseIdentifiersArg, priorityTierRank,
 } = require('./enrich-card-acceptance.js');
 // Rule 15: assert against the REAL validator the production path uses, never a
 // copy — if isSafeCheckCommand's notion of "safe" drifts, these tests move with
@@ -1084,4 +1084,109 @@ test('guardrail 2b: judges the CORRECTED command, so a path correction cannot sm
   assert.equal(r.action, 'failed');
   assert.match(r.detail, /test-f-satisfied/);
   assert.equal(calls.length, 0, 'the corrected-and-vacuous command must never reach the card');
+});
+
+// BRO-3913: --identifiers on the normal Linear leg — explicit allow-list,
+// caller's order preserved (priority-first sweeps), unknown/armed ids dropped.
+test('selectRefusedLinearIdentifiers honours an identifiers allow-list in the caller order', () => {
+  const armed = '## Acceptance criteria\nVERIFY: node --test scripts/enrich-card-acceptance.test.mjs\n';
+  const open = [
+    { identifier: 'BRO-10', description: 'no criteria here' },
+    { identifier: 'BRO-20', description: armed },
+    { identifier: 'BRO-30', description: '' },
+    { identifier: 'BRO-40', description: 'still nothing' },
+  ];
+  // Sanity: the fixture's "armed" card really is armed by the real gate.
+  assert.equal(evaluateVerifiability(armed).armed, true);
+  // Default: id-ascending, armed card excluded.
+  assert.deepEqual(selectRefusedLinearIdentifiers(open), ['BRO-10', 'BRO-30', 'BRO-40']);
+  // Allow-list: caller order wins, armed + unknown + duplicate ids are dropped.
+  assert.deepEqual(
+    selectRefusedLinearIdentifiers(open, { identifiers: ['BRO-40', 'BRO-20', 'BRO-999', 'BRO-10', 'BRO-40'] }),
+    ['BRO-40', 'BRO-10'],
+  );
+  // At the pure-function level an empty allow-list means "no restriction",
+  // not "nothing" — the CLI refuses a --identifiers that yields no ids
+  // (exit 2 in main(), see the parseIdentifiersArg tests below) so this
+  // branch is never reached from an empty flag.
+  assert.deepEqual(selectRefusedLinearIdentifiers(open, { identifiers: [] }), ['BRO-10', 'BRO-30', 'BRO-40']);
+});
+
+// BRO-3913 second-opinion blocker: the DEFAULT sweep must arm what the
+// watchdog drains first. Tier comes from the real linear-watchdog-source.js
+// priorityOf (field 1 → P0, 2 → P1, title prefix only when the field is
+// unset), tiebreak BRO-N ascending — never an id-only sort.
+test('selectRefusedLinearIdentifiers: default order is P0, then P1, then the rest, BRO-N ascending within a tier', () => {
+  const unarmed = '## Problem\nno command here';
+  const open = [
+    { identifier: 'BRO-500', title: 'Medium card', description: unarmed, priority: 3 },
+    { identifier: 'BRO-400', title: 'High card', description: unarmed, priority: 2 },
+    { identifier: 'BRO-300', title: 'P1: hand-filed, field unset', description: unarmed, priority: 0 },
+    { identifier: 'BRO-200', title: 'No priority at all (old fixture shape)', description: unarmed },
+    { identifier: 'BRO-100', title: 'Urgent card', description: unarmed, priority: 1 },
+    { identifier: 'BRO-50', title: 'P0: title says urgent but field says Low', description: unarmed, priority: 4 },
+    { identifier: 'BRO-450', title: 'Another High card', description: unarmed, priority: 2 },
+    { identifier: 'BRO-10', title: 'Armed urgent card must not appear', description: '## Acceptance criteria\n`npx tsc --noEmit`', priority: 1 },
+  ];
+  assert.deepEqual(selectRefusedLinearIdentifiers(open), [
+    'BRO-100',            // P0 (field 1)
+    'BRO-300', 'BRO-400', 'BRO-450', // P1: title-prefix fallback (field unset) sorts WITH field-2 issues, by number
+    'BRO-50', 'BRO-200', 'BRO-500',  // rest: explicit Low ignores its "P0:" title; missing field sorts last tier
+  ]);
+  // priority-2 before priority-3 regardless of BRO number.
+  assert.ok(selectRefusedLinearIdentifiers(open).indexOf('BRO-450') < selectRefusedLinearIdentifiers(open).indexOf('BRO-50'));
+  // The rank helper is the same mapping priorityOf exposes: P0 < P1 < everything else.
+  assert.equal(priorityTierRank({ priority: 1 }), 0);
+  assert.equal(priorityTierRank({ priority: 2 }), 1);
+  assert.equal(priorityTierRank({ priority: 0, title: 'P1: x' }), 1);
+  assert.equal(priorityTierRank({ priority: 3, title: 'P0: x' }), 2);
+  assert.equal(priorityTierRank({ title: 'plain' }), 2);
+  assert.equal(priorityTierRank(null), 2);
+  // The allow-list path is untouched: caller order wins even across tiers.
+  assert.deepEqual(
+    selectRefusedLinearIdentifiers(open, { identifiers: ['BRO-500', 'BRO-100', 'BRO-10'] }),
+    ['BRO-500', 'BRO-100'],
+  );
+});
+
+test('parseIdentifiersArg: absent → null; list is split, trimmed, de-blanked, uppercased; empty flag → []', () => {
+  assert.equal(parseIdentifiersArg({}), null);
+  assert.equal(parseIdentifiersArg({ identifiers: undefined }), null);
+  assert.equal(parseIdentifiersArg(undefined), null);
+  assert.deepEqual(parseIdentifiersArg({ identifiers: 'BRO-1, bro-2,,' }), ['BRO-1', 'BRO-2']);
+  assert.deepEqual(parseIdentifiersArg({ identifiers: '' }), []);
+  assert.deepEqual(parseIdentifiersArg({ identifiers: true }), []);  // bare --identifiers (parseArgs yields true)
+  assert.deepEqual(parseIdentifiersArg({ identifiers: ' , ' }), []);
+});
+
+// BRO-3913 ship-check (Codex): `--identifiers=BRO-1` used to parse as the
+// unknown key "identifiers=BRO-1", so the flag read as ABSENT and the sweep
+// silently widened to the whole backlog — bypassing the empty-list refusal.
+test('parseArgs accepts --key=value as well as --key value', () => {
+  const { parseArgs } = require('./enrich-card-acceptance.js');
+  assert.deepEqual(parseArgs(['--identifiers=BRO-1,BRO-2', '--dry-run']), { _: [], identifiers: 'BRO-1,BRO-2', 'dry-run': true });
+  assert.deepEqual(parseArgs(['--identifiers', 'BRO-1', '--limit=5']), { _: [], identifiers: 'BRO-1', limit: '5' });
+  // An explicit empty value is still an explicit (refusable) value, not "absent".
+  assert.deepEqual(parseArgs(['--identifiers=']), { _: [], identifiers: '' });
+});
+
+// BRO-3913 ship-check (Codex): a card armed through a COMMENT is dispatchable
+// (linear-next reads comments) but the description-only sweep still selected
+// it, and the write would have replaced the description with a second command.
+test('isArmedIncludingComments: comment-supplied command counts as armed, description-only selector still lists it', () => {
+  const { isArmedIncludingComments } = require('./enrich-card-acceptance.js');
+  const cmd = '## Acceptance criteria\nVERIFY: node --test scripts/enrich-card-acceptance.test.mjs\n';
+  const viaComment = {
+    identifier: 'BRO-1', description: 'no criteria in the body',
+    comments: { nodes: [{ body: cmd, createdAt: '2026-09-20T00:00:00.000Z' }] },
+  };
+  const viaDescription = { identifier: 'BRO-2', description: cmd, comments: { nodes: [] } };
+  const unarmed = { identifier: 'BRO-3', description: 'nothing', comments: { nodes: [{ body: 'just chatter', createdAt: '2026-09-20T00:00:00.000Z' }] } };
+  assert.equal(isArmedIncludingComments(viaComment), true);
+  assert.equal(isArmedIncludingComments(viaDescription), true);
+  assert.equal(isArmedIncludingComments(unarmed), false);
+  assert.equal(isArmedIncludingComments(null), false);
+  // The list-query selector cannot see comments, so BRO-1 is still selected
+  // there — the per-issue re-check in runLinearLeg is what skips it.
+  assert.deepEqual(selectRefusedLinearIdentifiers([viaComment, viaDescription, unarmed]), ['BRO-1', 'BRO-3']);
 });

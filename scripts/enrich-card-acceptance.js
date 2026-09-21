@@ -110,6 +110,7 @@ const { CLAUDE_HAIKU, KIMI, GEMINI_FLASH } = require('./lib/models.js');
 // require unconditionally: getApiKey() is only called lazily inside an
 // actual graphql() call, so a Notion-only run never needs LINEAR_API_KEY set.
 const linear = require('./lib/linear-client.js');
+const { priorityOf } = require('./lib/linear-watchdog-source.js');
 // BRO-3395: the re-arm path's pure selection/refusal logic — see that
 // module's header for why armed-but-vacuous cards need a SEPARATE selector
 // from selectRefusedLinearIdentifiers (which explicitly excludes armed cards)
@@ -148,6 +149,7 @@ Usage:
   node scripts/enrich-card-acceptance.js [--limit N] [--dry-run] [--source notion|linear|both]
   node scripts/enrich-card-acceptance.js --cards id1,id2
   node scripts/enrich-card-acceptance.js --from-report
+  node scripts/enrich-card-acceptance.js --source linear [--identifiers BRO-1,BRO-2]
   node scripts/enrich-card-acceptance.js --source linear --rearm [--identifiers BRO-1,BRO-2] [--allow-human-written]
 
   --limit N       max cards to enrich PER SOURCE this run (default ${DEFAULT_LIMIT})
@@ -165,8 +167,16 @@ Usage:
                   is posted as a COMMENT, never a description rewrite (per
                   BRO-2796). Refuses any card lacking the enricher's own
                   'auto-enriched' label unless --allow-human-written is given.
-  --identifiers   comma-separated BRO-N identifiers to restrict --rearm to
-                  (still requires each to be armed+vacuous)
+  --identifiers   comma-separated BRO-N identifiers to restrict the Linear
+                  leg to, processed in the order given (case-insensitive).
+                  Without it the sweep is P0 → P1 → rest, BRO-N ascending
+                  within a tier (BRO-3913: the watchdog never drains
+                  Medium/Low, so an id-ordered sweep armed cards nobody
+                  dispatches). A flag that yields no ids is refused (exit 2).
+                  With --rearm: restricts the rearm sweep instead (each must
+                  still be armed+vacuous) and is a FILTER only — the rearm
+                  selector keeps ascending BRO-N order, not the list order.
+                  Both "--identifiers A,B" and "--identifiers=A,B" work.
   --allow-human-written  with --rearm, also rewrite cards whose acceptance
                   section has no 'auto-enriched' marker (looks human-written)
   --help/-h       show this message, do nothing else
@@ -177,6 +187,13 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     const t = argv[i];
     if (t.startsWith('--')) {
+      // `--key=value` (ship-check/Codex, BRO-3913): without this branch
+      // `--identifiers=BRO-1` became the unknown key "identifiers=BRO-1", so
+      // parseIdentifiersArg saw the flag as ABSENT and the run silently
+      // widened to the whole backlog — the exact case the empty-list refusal
+      // exists to stop.
+      const eq = t.indexOf('=');
+      if (eq > 2) { a[t.slice(2, eq)] = t.slice(eq + 1); continue; }
       const k = t.slice(2);
       const n = argv[i + 1];
       if (n === undefined || n.startsWith('--')) a[k] = true;
@@ -724,11 +741,66 @@ function linearIssueNumber(identifier) {
   return m ? parseInt(m[1], 10) : Infinity;
 }
 
-function selectRefusedLinearIdentifiers(openIssuesWithDesc) {
-  return (openIssuesWithDesc || [])
-    .filter(iss => iss && !evaluateVerifiability(iss.description || '').armed)
-    .map(iss => iss.identifier)
-    .sort((a, b) => linearIssueNumber(a) - linearIssueNumber(b));
+// BRO-3913, DEFAULT ORDER: priority tier first, BRO-N ascending within a tier.
+// The dispatch watchdog only ever drains P0/P1 (linear-watchdog-source.js
+// priorityOf: Linear priority field 1 → P0, 2 → P1, a "P0:"/"P1:" title
+// prefix only when the field is unset), so a purely id-ordered sweep spent
+// its Haiku calls and Linear writes arming Medium/Low cards nothing will
+// dispatch while 95 unarmed (2026-09-20) Urgent/High cards waited behind
+// them. Same priorityOf() the watchdog uses — never a re-derived mapping —
+// so the two can't disagree about what "P0" means. Issues with no priority
+// field at all (older fixtures) fall through priorityOf's title fallback and
+// then to the last tier.
+//
+// `identifiers` (optional) restricts the sweep to an explicit allow-list AND
+// returns them in the CALLER'S order, not tier/issue-number order — the
+// caller (or a wrapper) decides, this function only honours it. Unknown or
+// already-armed identifiers are dropped; see runLinearLeg for the log line
+// that names them. An EMPTY array means "no restriction" at this level; the
+// CLI refuses a flag that yields no ids before ever fetching (main()).
+const PRIORITY_TIER_RANK = Object.freeze({ P0: 0, P1: 1 });
+function priorityTierRank(issue) {
+  const tier = priorityOf(issue);
+  return tier in PRIORITY_TIER_RANK ? PRIORITY_TIER_RANK[tier] : Object.keys(PRIORITY_TIER_RANK).length;
+}
+
+// PURE. The dispatch-side notion of "armed": description OR any comment
+// supplies a safe acceptance command (same call shape as linear-next.js's
+// verify gate and this file's --rearm commentGate). The sweep selector above
+// is description-only on purpose (the list query does not fetch comments);
+// this re-check runs on the per-issue getIssue() payload, which does.
+function isArmedIncludingComments(issue) {
+  if (!issue) return false;
+  return !!evaluateVerifiability(String(issue.description || ''), sortedCommentBodies(issue)).armed;
+}
+
+function selectRefusedLinearIdentifiers(openIssuesWithDesc, { identifiers = null } = {}) {
+  const refused = (openIssuesWithDesc || [])
+    .filter(iss => iss && !evaluateVerifiability(iss.description || '').armed);
+  if (Array.isArray(identifiers) && identifiers.length) {
+    const refusedSet = new Set(refused.map(iss => iss.identifier));
+    const seen = new Set();
+    return identifiers.filter(id => refusedSet.has(id) && !seen.has(id) && seen.add(id));
+  }
+  return refused
+    .sort((a, b) => (priorityTierRank(a) - priorityTierRank(b))
+      || (linearIssueNumber(a.identifier) - linearIssueNumber(b.identifier)))
+    .map(iss => iss.identifier);
+}
+
+// Pure — one parser for --identifiers, shared by runLinearLeg and
+// runLinearRearmLeg (BRO-3913 second-opinion: the two legs had drifted into
+// two copies). null when the flag is absent; otherwise the comma-split,
+// trimmed, de-blanked, UPPERCASED list ('bro-2' must match Linear's 'BRO-2').
+// A flag that yields ZERO ids (bare `--identifiers`, or `--identifiers ""`
+// from an unset shell variable) returns [] — main() refuses that with exit 2
+// before any Linear fetch, because silently widening to the whole backlog is
+// the opposite of what the caller asked for.
+function parseIdentifiersArg(args) {
+  const raw = args ? args.identifiers : undefined;
+  if (raw === undefined || raw === null || raw === false) return null;
+  if (raw === true) return [];
+  return String(raw).split(',').map(s => s.trim()).filter(Boolean).map(s => s.toUpperCase());
 }
 
 // Pure — extracts the category a Linear issue inherited from its Notion
@@ -1327,7 +1399,18 @@ async function runLinearLeg(args, { dryRun, limit }) {
     return [];
   }
 
-  const refusedIdentifiers = selectRefusedLinearIdentifiers(openIssues).slice(0, limit);
+  const identifiers = parseIdentifiersArg(args);
+  const selected = selectRefusedLinearIdentifiers(openIssues, { identifiers });
+  if (identifiers && identifiers.length) {
+    const kept = new Set(selected);
+    const dropped = [...new Set(identifiers)].filter(id => !kept.has(id));
+    const shown = dropped.slice(0, 20).join(',') + (dropped.length > 20 ? `,… (+${dropped.length - 20} more)` : '');
+    console.error(`[enrich-card-acceptance] linear: --identifiers gave ${identifiers.length} ids; ${selected.length} selected, ${dropped.length} dropped (already armed or not an open issue)${dropped.length ? `: ${shown}` : ''}`);
+  }
+  const refusedIdentifiers = selected.slice(0, limit);
+  if (selected.length > refusedIdentifiers.length) {
+    console.error(`[enrich-card-acceptance] linear: --limit ${limit} truncates ${selected.length} selected issue(s) to ${refusedIdentifiers.length}; ${selected.length - refusedIdentifiers.length} left for a later run`);
+  }
   console.error(`[enrich-card-acceptance] linear: ${refusedIdentifiers.length} refused issue(s) to process (mode=${dryRun ? 'dry-run' : 'LIVE'}, model=${MODEL})`);
   if (!refusedIdentifiers.length) return [];
 
@@ -1376,6 +1459,15 @@ async function runLinearLeg(args, { dryRun, limit }) {
       console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${identifier} → skipped (${skipResult.detail})`);
       continue;
     }
+    if (isArmedIncludingComments(full)) {
+      const skipResult = {
+        id: full.id, name: full.title, action: 'skipped', source: 'linear',
+        detail: 'already armed via a comment (linear-next reads comments; a description rewrite would add a second, conflicting command)',
+      };
+      results.push(skipResult);
+      console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${identifier} → skipped (${skipResult.detail})`);
+      continue;
+    }
     const card = normalizeLinearIssue(full);
     const result = await enrichOneCard(card, { callLLM, writeCard, dryRun, force: !!args.force });
     result.source = 'linear';
@@ -1400,9 +1492,7 @@ async function runLinearRearmLeg(args, { dryRun, limit }) {
     return [];
   }
 
-  const identifiers = typeof args.identifiers === 'string'
-    ? args.identifiers.split(',').map(s => s.trim()).filter(Boolean)
-    : undefined;
+  const identifiers = parseIdentifiersArg(args);
   const candidates = selectRearmCandidates(openIssues, defaultExistsOnOriginMain, { identifiers }).slice(0, limit);
   console.error(`[enrich-card-acceptance] linear rearm: ${candidates.length} armed-but-vacuous issue(s) to process (mode=${dryRun ? 'dry-run' : 'LIVE'}, model=${MODEL})`);
   if (!candidates.length) return [];
@@ -1489,6 +1579,15 @@ async function main() {
     console.error(`--limit must be a positive integer, got ${JSON.stringify(args.limit)}`);
     process.exit(1);
   }
+  // BRO-3913: a --identifiers that yields no ids (bare flag, or "" from an
+  // unset shell variable) must not silently fall back to sweeping the whole
+  // backlog — refuse here, before any leg fetches from Linear. Exit 2 keeps
+  // it distinguishable from the exit-1 argument errors above.
+  const parsedIdentifiers = parseIdentifiersArg(args);
+  if (parsedIdentifiers && parsedIdentifiers.length === 0) {
+    console.error(`--identifiers was passed but yielded no ids (got ${JSON.stringify(args.identifiers)}) — pass a comma-separated BRO-N list, or omit the flag to sweep everything`);
+    process.exit(2);
+  }
   // Default 'notion', NOT 'both' (ship-check/Codex finding, task #1830): an
   // existing unflagged cron/manual invocation of this script has run
   // Notion-only for its whole history. Defaulting the zero-arg form to
@@ -1560,12 +1659,15 @@ module.exports = {
   parseEnrichResponse, mergeTags, spliceNotes, allFailed,
   logEnrichmentWrite, ENRICHMENT_LOG_PATH, MODEL, DEFAULT_LIMIT, USAGE,
   selectProvider, callLLM, callAnthropic, callOpenRouter, callGemini,
+  isArmedIncludingComments, parseArgs,
   OPENROUTER_MODEL, GEMINI_MODEL,
   // task #1830: Linear read/write path — exported for unit coverage without
   // a live Linear API call (writeBack/normalizeLinearIssue/selectRefused... are
   // pure; makeLinearWriteCard takes an injectable client).
   writeBack, selectRefusedLinearIdentifiers, normalizeLinearIssue, makeLinearWriteCard,
   linearIssueNumber, isLinearIssueTerminal, categoryOfLinearIssue,
+  // BRO-3913: pure — default P0/P1-first ordering + the shared --identifiers parser.
+  priorityTierRank, parseIdentifiersArg,
   // BRO-3395: rearm path — makeLinearRearmWriteCard/runLinearRearmLeg take an
   // injectable client/args the same way the task #1830 exports above do.
   makeLinearRearmWriteCard, runLinearRearmLeg,
