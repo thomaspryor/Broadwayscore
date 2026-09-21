@@ -133,9 +133,41 @@ test('allowed: a safe-form verify command in the issue description', async () =>
       issue: { description: '## Acceptance criteria\n- `node --test tests/unit/done-semantics-gate.test.mjs` passes' },
       updateShouldBeCalled: true,
     });
-    await cmdReport({ issue: 'BRO-9458', status: 'done', summary: 'did the work' });
+    // deps.verifyCmdEvidence, not the real linear-cmd-execution.js executor:
+    // unstubbed, this one case clones/fetches origin/main and runs `node --test
+    // ...` for REAL (~36s on a loaded machine, and it is the same shell-out that
+    // blew tests/unit/linear-brain-done-gate.test.mjs's 15s cap and blocked
+    // BRO-3435's land on 2026-09-21). What this file proves is the WIRING — that
+    // cmdReport hands the recorded command to the executor seam — which the
+    // captured `cmds` assertion below states directly; the executor's own real
+    // behavior is scripts/lib/linear-cmd-execution.test.mjs's job.
+    const cmds = [];
+    await cmdReport(
+      { issue: 'BRO-9458', status: 'done', summary: 'did the work' },
+      { verifyCmdEvidence: (cmd) => { cmds.push(cmd); return { allowed: true, reason: 'stub: command passed' }; } }
+    );
+    assert.deepEqual(cmds, ['node --test tests/unit/done-semantics-gate.test.mjs']);
     assert.match(h.getLogs(), /"doneGateRefused":false/);
     assert.match(h.getLogs(), /"stateName":"Done"/);
+  });
+});
+
+test('refused: the recorded acceptance command is executed and FAILS', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({
+      issue: { description: '## Acceptance criteria\n- `node --test tests/unit/done-semantics-gate.test.mjs` passes' },
+      updateShouldBeCalled: false,
+    });
+    await assert.rejects(
+      () => cmdReport(
+        { issue: 'BRO-9458', status: 'done', summary: 'did the work' },
+        { verifyCmdEvidence: () => ({ allowed: false, verdict: 'verify-cmd-failed', reason: 'stub: command failed' }) }
+      ),
+      /EXIT/
+    );
+    assert.equal(h.getExitCode(), 5);
+    assert.match(h.getErrors(), /REFUSED \(verify-cmd-failed\)/);
+    assert.match(h.getLogs(), /"doneGateRefused":true/);
   });
 });
 
