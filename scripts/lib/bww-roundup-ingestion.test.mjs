@@ -101,10 +101,16 @@ describe('BRO-3322: BWW-roundup ingestion resolves real outlets and dedupes crit
     const reviews = extractBWWRoundupReviews(html, 'safe-house-off-broadway-2026', BWW_URL);
 
     assert.strictEqual(reviews.length, 4);
-    const outletIds = reviews.map(r => r.outletId).sort();
-    assert.deepStrictEqual(outletIds,
-      ['blogcritics', 'frontmezzjunkies', 'stagebuddy', 'times-square-chronicles'].sort(),
-      `each critic must resolve to their real outlet, got ${JSON.stringify(outletIds)}`);
+    const pairs = reviews.map(r => [r.outletId, r.criticName]).sort();
+    assert.deepStrictEqual(pairs,
+      [
+        ['blogcritics', 'Jon Sobel'],
+        ['frontmezzjunkies', 'Ross'],
+        ['stagebuddy', 'Mack Muldofsky'],
+        ['times-square-chronicles', 'Suzanna Bowling'],
+      ].sort(),
+      `each critic must resolve to their own real outlet, got ${JSON.stringify(pairs)}`);
+    const outletIds = reviews.map(r => r.outletId);
     for (const bogusId of ['jon-sobel', 'ross', 'mack-muldofsky', 'suzanna-bowling']) {
       assert.ok(!outletIds.includes(bogusId), `critic name must never become an outletId, found "${bogusId}"`);
     }
