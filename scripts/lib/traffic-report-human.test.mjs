@@ -15,7 +15,8 @@ test('pageName turns paths into names a person would say, using shows.json title
   assert.equal(pageName('/west-end', shows), 'the West End page');
   assert.equal(pageName('/show/electra-persona-west-end', shows), 'Electra / Persona (West End) page');
   assert.equal(pageName('/show/trainspotting-the-musical-west-end', shows), 'Trainspotting the Musical (West End) page'); // slug fallback
-  assert.equal(pageName('/show/the-dead-1904', shows), 'The Dead page'); // year stripped
+  assert.equal(pageName('/show/the-dead-1904', shows), 'The Dead 1904 page'); // a pre-2000 "year" is part of the title
+  assert.equal(pageName('/show/giant-2026', shows), 'Giant page'); // a production year is not
   assert.equal(pageName('/show/after-all-these-years-off-broadway'), 'After All These Years (Off-Broadway) page');
   assert.equal(pageName('/guides/best-broadway-musicals'), 'the "Best Broadway Musicals" guide');
   assert.equal(pageName('/browse/broadway-age-guide'), 'the "Broadway Age Guide" list');
@@ -83,18 +84,37 @@ test('buildHumanSummary writes the owner-facing sections in plain language from 
 
   const md = buildHumanSummary({ ph, ga, weeks, currentWeek, showsPath });
   assert.match(md, /^# Your traffic, week of Sep 7/m);
-  assert.match(md, /\*\*In short\.\*\* Last week 2,950 people visited \(real visitors, bots excluded\), about the same as a typical week/);
+  assert.match(md, /\*\*In short\.\*\* Last week the site had 2,950 visits \(known bots excluded\), about the same as a typical week/);
+  assert.match(md, /Search brought 2,000 of them \(68%\), about the same as usual\. Search is where most/);
   assert.match(md, /## What's working[\s\S]*\*\*Electra \/ Persona \(West End\) page\*\*: about 72 visits a week, up from 18 \(\+300%\)\.[^\n]*14 from awardsworthy\.org[^\n]*opened Sep 1/);
   assert.match(md, /Biggest single weeks[\s\S]*Week of Jul 20: \*\*Trainspotting the Musical \(West End\) page\*\* got 610 visits \(usually 2\)\. 287 of them came from Reddit\./);
   assert.match(md, /## What's fading[\s\S]*\*\*Reddit\*\* is sending less: 25 visits a week, down from 50 \(-50%\)/);
-  assert.match(md, /## Keep an eye on[\s\S]*\*\*Wicked \(Broadway\) page\*\* went from 70 visits a week to 2 while the show is still open\. That is a collapse/);
+  assert.match(md, /## Keep an eye on[\s\S]*\*\*Wicked \(Broadway\) page\*\* went from 70 visits a week to 2 while the show is still running\. That is a collapse/);
   assert.match(md, /## New sites sending you visitors[\s\S]*\*\*awardsworthy\.org\*\*: 14 visits since Aug 31, all to Electra \/ Persona \(West End\) page/);
   assert.ok(!/lilo|resend\.com/.test(md.split('## Reddit and social')[0])); // search engine + own tooling never listed as new sites
   assert.match(md, /## Reddit and social[\s\S]*\*\*Reddit\*\*: 100 visits in the last 4 weeks \(a typical week is 25, it was 50 a month earlier\), mostly to the homepage \(60\)\. Your best Reddit week was Jul 20: 325 visits, 287 of them to Trainspotting the Musical \(West End\) page\. That is what one good post does/);
-  assert.match(md, /Traffic from \*\*Hong Kong\*\* looks automated: 1,200 visits/);
+  assert.match(md, /Traffic from \*\*Hong Kong\*\* might be automated: 1,200 visits/);
   assert.match(md, /Google Analytics logged 383 untagged visits/);
   assert.match(md, /Email brought 20 visits last week, 56% below/);
   assert.match(md, /\| Search \(Google, Bing, etc\.\) \| 2,000 \| 2,000 \| 0% \|/);
   assert.ok(!/Week of Aug 17: \*\*Electra/.test(md), 'a rising page is not also listed as a one-off big week');
   assert.ok(!/\/show\//.test(md), 'no raw URL slugs anywhere in the summary');
+});
+
+test('buildHumanSummary never throws on missing data and never reassures when it cannot know', () => {
+  const md = buildHumanSummary({ ph: { skipped: 'no key' }, ga: { skipped: 'no key' }, weeks: ['2026-09-07', '2026-09-14'], currentWeek: '2026-09-14', problems: ['PostHog skipped: no key'] });
+  assert.match(md, /^# Your traffic, week of Sep 7/m);
+  assert.match(md, /Part of the data did not load/);
+  assert.match(md, /Needs 8 full weeks of data/);
+  assert.match(md, /Referrer data did not load/);
+  assert.match(md, /Nothing looks broken in the data that loaded/);
+  assert.ok(!/Nothing grew by more than 40%/.test(md));
+  // referrer query failed → no "mostly search and direct" guesses
+  const weeks = allWeeks('2026-06-15', '2026-09-15');
+  const full = weeks.filter((w) => w !== '2026-09-14');
+  const ph = { errors: { referralLanding: 'boom' }, referralLanding: [], channelType: [], referringDomain: [], country: [], utmSource: [],
+    landing: full.map((w, i) => ({ date: w, key: '/show/x', sessions: i >= 9 ? 60 : 10, users: 1 })) };
+  const md2 = buildHumanSummary({ ph, ga: { skipped: 'x' }, weeks, currentWeek: '2026-09-14' });
+  assert.match(md2, /\*\*X page\*\*: about 60 visits a week, up from 10/);
+  assert.ok(!/Mostly search and direct/.test(md2));
 });

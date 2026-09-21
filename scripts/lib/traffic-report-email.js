@@ -104,9 +104,11 @@ function buildSubject(md) {
 /** Subject from the human summary: the week and the one-line gist. */
 function buildHumanSubject(md) {
   const week = (md.match(/^# Your traffic, week of (.+)$/m) || [, ''])[1];
-  const gist = (md.match(/\*\*In short\.\*\* Last week ([\d,]+) people visited[^.]*?(\d+% (?:more|fewer))/) || []);
+  const count = (md.match(/\*\*In short\.\*\* Last week the site had ([\d,]+) visits/) || [])[1];
+  const mv = md.match(/visits \([^)]*\), (about the same as|(\d+)% (more|fewer) than) a typical week/) || [];
+  const move = mv[1] ? (mv[2] ? `, ${mv[2]}% ${mv[3]} than usual` : ', about usual') : '';
   const incomplete = /Part of the data did not load/.test(md) ? ' (partial data)' : '';
-  return `Your traffic, week of ${week}${gist[1] ? `: ${gist[1]} visitors${gist[2] ? `, ${gist[2]} than usual` : ''}` : ''}${incomplete}`;
+  return `Your traffic, week of ${week}${count ? `: ${count} visits${move}` : ''}${incomplete}`;
 }
 
 function buildHtml(md, { runUrl } = {}) {

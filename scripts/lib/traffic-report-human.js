@@ -103,7 +103,7 @@ function pageName(pth, shows = new Map()) {
       const market = MARKET_LABEL[show.category] || MARKET_LABEL[show.market] || null;
       return `${show.title}${market ? ` (${market})` : ''} page`;
     }
-    let base = slug.replace(/-\d{4}$/, '');
+    let base = slug.replace(/-(20\d{2})$/, '');
     let market = null;
     for (const [suffix, label] of [['-off-west-end', 'Off West End'], ['-west-end', 'West End'], ['-off-broadway', 'Off-Broadway'], ['-broadway', 'Broadway']]) {
       if (base.endsWith(suffix)) { base = base.slice(0, -suffix.length); market = label; break; }
@@ -157,6 +157,7 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
   // showsPath: explicit data/shows.json (CI checks core data out to /tmp/core-data-checkout; locally the repo has it)
   const H = helpers();
   const shows = loadShows(showsPath);
+  if (showsPath && !shows.size) notes.push('Show titles could not be loaded this week, so pages are named from their web addresses.');
   const full = weeks.filter((w) => w !== currentWeek);
   const last = full[full.length - 1];
   const recent4 = full.slice(-4);
@@ -164,12 +165,19 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
   const monthAvgWeeks = full.slice(-5, -1); // the 4 weeks before the last full week
   const phOk = ph && !ph.skipped;
   const gaOk = ga && !ga.skipped;
+  const enoughWeeks = full.length >= 8;
+  // Referrer attribution only when the referrer × page query actually returned
+  // rows; otherwise say nothing about where a page's visitors came from.
+  const refAvailable = phOk && Array.isArray(ph.referralLanding) && ph.referralLanding.length > 0 && !(ph.errors && ph.errors.referralLanding);
+  const notes = [];
   const S = (rows) => H.bucketWeekly((rows || []).map((r) => ({ date: r.date, key: r.key, value: r.sessions })));
   const U = (rows) => H.bucketWeekly((rows || []).map((r) => ({ date: r.date, key: r.key, value: r.users || 0 })));
 
   const channel = phOk ? S(ph.channelType) : {};
+  // Search engines, direct and our own tooling are dropped BEFORE naming, so a
+  // merged name like "Bing" can never slip past a domain-shaped filter later.
   const referrerRaw = phOk ? S(ph.referringDomain) : {};
-  const referrer = mergeSeries(referrerRaw, sourceName);
+  const referrer = mergeSeries(Object.fromEntries(Object.entries(referrerRaw).filter(([d]) => !isSearch(d) && !isOwnTooling(d) && !isDirect(d))), sourceName);
   const landing = phOk ? S(ph.landing) : {};
   const country = phOk ? S(ph.country) : {};
   const countryUsers = phOk ? U(ph.country) : {};
@@ -222,11 +230,12 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
   if (phOk && lastTotal) {
     const p = pctChange(lastTotal, avgTotal);
     const vs = (pc) => (pc === null ? '' : Math.abs(pc) < 3 ? 'about the same as' : pc > 0 ? `${pc}% more than` : `${Math.abs(pc)}% fewer than`);
-    inShort.push(`Last week ${fmtN(lastTotal)} people visited (real visitors, bots excluded), ${vs(p)} a typical week in the previous month.`);
+    inShort.push(`Last week the site had ${fmtN(lastTotal)} visits (known bots excluded)${p === null ? '' : `, ${vs(p)} a typical week in the previous month`}.`);
     if (searchLast) {
       const sp = pctChange(searchLast, searchAvg);
       const move = sp === null ? '' : Math.abs(sp) < 3 ? ', about the same as usual' : `, ${sp > 0 ? 'up' : 'down'} ${Math.abs(sp)}%`;
-      inShort.push(`Search brought ${fmtN(searchLast)} of them${move}. Search is where almost all your traffic comes from, so that number is the one to watch.`);
+      const share = Math.round((searchLast / lastTotal) * 100);
+      inShort.push(`Search brought ${fmtN(searchLast)} of them (${share}%)${move}.${share >= 50 ? ' Search is where most of your traffic comes from, so that number is the one to watch.' : ''}`);
     }
   } else if (!phOk) {
     inShort.push('PostHog (the trustworthy visitor count) did not load this week, so the summary is limited.');
@@ -247,7 +256,8 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
     const named = srcs.reduce((t, [, c]) => t + c, 0);
     const total4 = sumWeeks(landing[x.key] || {}, recent4);
     let why = '';
-    if (srcs.length && named >= total4 * 0.5) why = ` Mostly from ${srcs.slice(0, 2).map(([n, c]) => `${n} (${fmtN(c)})`).join(' and ')}.`;
+    if (!refAvailable) why = '';
+    else if (srcs.length && named >= total4 * 0.5) why = ` Mostly from ${srcs.slice(0, 2).map(([n, c]) => `${n} (${fmtN(c)})`).join(' and ')}.`;
     else if (srcs.length) why = ` Mostly search and direct, plus ${srcs.slice(0, 2).map(([n, c]) => `${fmtN(c)} from ${n}`).join(' and ')}.`;
     else why = ' Mostly search and direct.';
     let ctx = '';
@@ -278,7 +288,7 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
     if (seenPage.has(s.key)) continue;
     seenPage.add(s.key);
     const srcs = sourcesForPath(s.key, [s.week]);
-    const from = srcs.length && srcs[0][1] >= s.value * 0.25 ? ` ${fmtN(srcs[0][1])} of them came from ${srcs[0][0]}.` : '';
+    const from = refAvailable && srcs.length && srcs[0][1] >= s.value * 0.25 ? ` ${fmtN(srcs[0][1])} of them came from ${srcs[0][0]}.` : '';
     bigWeeks.push(`Week of ${fmtDate(s.week)}: **${pageName(s.key, shows)}** got ${fmtN(s.value)} visits (usually ${fmtN(s.priorMedian)}).${from}`);
     if (bigWeeks.length >= 4) break;
   }
@@ -289,10 +299,12 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
   for (const x of tLanding.falling.slice(0, 6)) {
     const show = showOf(x.key);
     const collapsed = x.priorPerWeek >= 40 && x.pct <= -80;
-    if (collapsed && show && show.status && show.status !== 'open') {
-      fading.push(`**${pageName(x.key, shows)}**: ${fmtN(x.recentPerWeek)} visits a week, down from ${fmtN(x.priorPerWeek)}. The show has ${show.status === 'closed' ? 'closed' : show.status}, so that is expected.`);
+    const live = show && /^(open|opened|previews|running)$/i.test(String(show.status || ''));
+    const closed = show && /^(closed|closing)$/i.test(String(show.status || ''));
+    if (collapsed && closed) {
+      fading.push(`**${pageName(x.key, shows)}**: ${fmtN(x.recentPerWeek)} visits a week, down from ${fmtN(x.priorPerWeek)}. The show has closed, so that is expected.`);
     } else if (collapsed) {
-      watch.push(`**${pageName(x.key, shows)}** went from ${fmtN(x.priorPerWeek)} visits a week to ${fmtN(x.recentPerWeek)}${show ? ' while the show is still open' : ''}. That is a collapse, not a fade: check the page still loads and is still in Google.`);
+      watch.push(`**${pageName(x.key, shows)}** went from ${fmtN(x.priorPerWeek)} visits a week to ${fmtN(x.recentPerWeek)}${live ? ' while the show is still running' : ''}. That is a collapse, not a fade: check the page still loads and is still in Google.`);
     } else {
       fading.push(`**${pageName(x.key, shows)}**: ${fmtN(x.recentPerWeek)} visits a week, down from ${fmtN(x.priorPerWeek)} (${x.pct}%).`);
     }
@@ -339,8 +351,10 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
   for (const [c, bw] of Object.entries(country)) {
     const s4 = sumWeeks(bw, recent4);
     const u4 = sumWeeks(countryUsers[c] || {}, recent4);
-    if (s4 >= 300 && u4 / s4 >= 0.985 && c !== 'United States' && c !== 'United Kingdom') {
-      watch.push(`Traffic from **${c}** looks automated: ${fmtN(s4)} visits in 4 weeks and every one a different visitor viewing one page. Real readers come back. Say the word and it gets filtered out like the known bot countries already are.`);
+    // Per-day unique visitors ≈ visits is only suggestive (daily returners look
+    // the same), so this needs volume and a near-perfect ratio, and says "might".
+    if (s4 >= 500 && u4 / s4 >= 0.985 && c !== 'United States' && c !== 'United Kingdom') {
+      watch.push(`Traffic from **${c}** might be automated: ${fmtN(s4)} visits in 4 weeks, and on every single day each visit was a new visitor. Hong Kong looked exactly like this before it was confirmed as bots. Not filtered yet; say the word.`);
     }
   }
   if (gaOk) {
@@ -366,9 +380,10 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
   // ---- assemble ----
   md.push(`**In short.** ${inShort.join(' ')}`);
   md.push('');
+  const thin = !enoughWeeks ? `- Needs 8 full weeks of data to compare month over month; this run has ${full.length}.` : null;
   md.push(`## What's working`);
   md.push('');
-  md.push(working.length ? working.map((l) => `- ${l}`).join('\n') : '- Nothing grew by more than 40% this month. Steady is fine.');
+  md.push(working.length ? working.map((l) => `- ${l}`).join('\n') : thin || '- Nothing grew by more than 40% this month. Steady is fine.');
   md.push('');
   if (bigWeeks.length) {
     md.push(`**Biggest single weeks in the last 3 months**`);
@@ -378,11 +393,11 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
   }
   md.push(`## What's fading`);
   md.push('');
-  md.push(fading.length ? fading.map((l) => `- ${l}`).join('\n') : '- Nothing fell by more than 40% this month.');
+  md.push(fading.length ? fading.map((l) => `- ${l}`).join('\n') : thin || '- Nothing fell by more than 40% this month.');
   md.push('');
   md.push(`## New sites sending you visitors`);
   md.push('');
-  md.push(freshLines.length ? freshLines.map((l) => `- ${l}`).join('\n') : '- None this month. (Search engines, social networks and your own tools are not counted here.)');
+  md.push(freshLines.length ? freshLines.map((l) => `- ${l}`).join('\n') : !phOk ? '- Referrer data did not load this week.' : '- None this month. (Search engines, social networks and your own tools are not counted here.)');
   md.push('');
   md.push(`## Reddit and social`);
   md.push('');
@@ -390,7 +405,8 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
   md.push('');
   md.push(`## Keep an eye on`);
   md.push('');
-  md.push(watch.length ? watch.map((l) => `- ${l}`).join('\n') : '- Nothing looks broken.');
+  md.push(watch.length ? watch.map((l) => `- ${l}`).join('\n') : problems.length || !enoughWeeks ? '- Nothing looks broken in the data that loaded, but this week\'s data is incomplete (see the note at the top).' : '- Nothing looks broken.');
+  if (notes.length) { md.push(''); md.push(notes.map((l) => `_${l}_`).join('\n')); }
   md.push('');
 
   // channels table with plain names
@@ -406,7 +422,7 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
     for (const r of rows) md.push(`| ${r.name} | ${fmtN(r.last)} | ${fmtN(r.avg)} | ${fmtPct(pctChange(r.last, r.avg))} |`);
     md.push('');
   }
-  md.push(`_The full week-by-week tables are attached as a file. Numbers are PostHog "real visitors" (bots and your own visits excluded)._`);
+  md.push(`_The full week-by-week tables are attached as a file. Numbers are visits as counted by PostHog, with known bot countries and your own visits excluded._`);
   md.push('');
   return md.join('\n');
 }

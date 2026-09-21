@@ -643,7 +643,9 @@ async function main() {
   }
 
   const cw = fromRaw ? fromRaw.currentWeek : currentWeek;
-  const { md, problems, spikes } = buildReport({ ga, ph, startDate, endDate, weeks, currentWeek: cw });
+  const sd = fromRaw ? fromRaw.startDate : startDate;
+  const ed = fromRaw ? fromRaw.endDate : endDate;
+  const { md, problems, spikes } = buildReport({ ga, ph, startDate: sd, endDate: ed, weeks, currentWeek: cw });
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'traffic-sources-report.md'), md);
   // The owner-facing summary (what the email body is made of).
@@ -651,7 +653,7 @@ async function main() {
   const showsPath = typeof args.shows === 'string' ? args.shows : [path.join(__dirname, '..', 'data', 'shows.json'), '/tmp/core-data-checkout/shows.json'].find((p) => fs.existsSync(p));
   const summary = buildHumanSummary({ ga, ph, weeks, currentWeek: cw, problems, showsPath });
   fs.writeFileSync(path.join(outDir, 'traffic-sources-summary.md'), summary);
-  fs.writeFileSync(path.join(outDir, 'traffic-sources-raw.json'), JSON.stringify({ startDate, endDate, weeks, currentWeek, spikes, ga, ph }, null, 1));
+  fs.writeFileSync(path.join(outDir, 'traffic-sources-raw.json'), JSON.stringify({ startDate: sd, endDate: ed, weeks, currentWeek: cw, spikes, ga, ph }, null, 1));
   console.log(`Wrote ${path.join(outDir, 'traffic-sources-report.md')} (${md.length} chars, ${spikes.length} spikes) + traffic-sources-summary.md (${summary.length} chars)`);
   if (problems.length) {
     for (const p of problems) console.error(`::warning::${p}`);
