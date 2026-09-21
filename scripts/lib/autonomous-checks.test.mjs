@@ -341,10 +341,27 @@ test('runSafeChecks cleans up the throwaway HOME it created', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-home-'));
   fs.mkdirSync(path.join(dir, 'scripts'), { recursive: true });
   fs.writeFileSync(path.join(dir, 'scripts', 'good.js'), 'const x = 1;\n');
-  const before = fs.readdirSync(os.tmpdir()).filter(n => n.startsWith('auto-checks-home-')).length;
-  runSafeChecks({ cwd: dir, changedFiles: ['scripts/good.js'], isSafeCheckCommand: () => false, tier: 3 });
-  const after = fs.readdirSync(os.tmpdir()).filter(n => n.startsWith('auto-checks-home-')).length;
-  assert.equal(after, before, 'no fake HOME left behind');
+
+  // Track the exact HOME dir this call creates via a mkdtempSync spy instead
+  // of counting all auto-checks-home-* dirs in the shared os.tmpdir() — a
+  // concurrent process (another test file's own runSafeChecks call, or a
+  // different Claude Code session/worktree on this machine) can create or
+  // not-yet-clean-up its own dir in that window and flip a global count for
+  // reasons unrelated to this call (BRO-3929).
+  const realMkdtempSync = fs.mkdtempSync;
+  let createdHome = null;
+  fs.mkdtempSync = (...args) => {
+    const result = realMkdtempSync(...args);
+    if (path.basename(result).startsWith('auto-checks-home-')) createdHome = result;
+    return result;
+  };
+  try {
+    runSafeChecks({ cwd: dir, changedFiles: ['scripts/good.js'], isSafeCheckCommand: () => false, tier: 3 });
+  } finally {
+    fs.mkdtempSync = realMkdtempSync;
+  }
+  assert.ok(createdHome, 'runSafeChecks should have created a throwaway HOME');
+  assert.equal(fs.existsSync(createdHome), false, 'no fake HOME left behind');
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
