@@ -122,6 +122,14 @@ describe('wrongProduction setter scripts honor manual-clear breadcrumb', () => {
       // 2026-04-26). It's a giant orchestration file — exempt because the
       // grep would always hit and the guard pattern is per-block, not per-line.
       'rebuild-all-reviews.js',
+      // A LINTER, not a writer. lint-autoclear-invalidate.js exists to find
+      // `.wrongProduction = true` writes that lack a matching autoclear
+      // invalidate call, so the pattern this test greps for appears in its
+      // own doc comment and in the regexes it scans other files with. It
+      // never opens a review file for writing — `grep -n "writeFileSync\|
+      // fs.write" scripts/lint-autoclear-invalidate.js` returns nothing.
+      // Landed by BRO-3908 (125eb35542d); this entry is the missing half.
+      'lint-autoclear-invalidate.js',
       // Sweep scripts are intentional flag-clearers + flag-restorers, not auditors.
       'clear-stale-wrong-production-flags.js',
       'restore-protected-fields.js',
