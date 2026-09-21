@@ -55,6 +55,16 @@ test('ledgerFreshnessHours: all-corrupt ledger is maximally stale (Infinity), no
   assert.equal(hours, Infinity);
 });
 
+test('ledgerFreshnessHours: a future day (clock skew) reads as fresher, never masks real staleness', () => {
+  // Documents intentional behavior (ship-check finding): a future `day` can
+  // only ever make freshness look MORE fresh, never less — the safe
+  // direction for a staleness alarm to be wrong in (same principle as
+  // provider-spend-core.js's BB_OVERAGE pricing comment).
+  const now = new Date('2026-09-20T06:45:00Z');
+  const hours = ledgerFreshnessHours([{ day: '2026-09-25' }], now);
+  assert.ok(hours < 0, 'a future day computes as negative hours-stale, i.e. "fresher than now"');
+});
+
 test('ledgerFreshnessHours: exactly at the 48h boundary is not > threshold', () => {
   // Day ends 2026-09-18T23:59:59.999Z; now = +48h puts us just under the
   // "> 48h" comparator's trip point.
@@ -110,4 +120,18 @@ test('missingLedgerDays: corrupt day values (non-YYYY-MM-DD) are ignored, not tr
   const records = [{ day: 'zzz' }, { day: null }, { day: '2026-09-18' }];
   const missing = missingLedgerDays(records, now, 1);
   assert.deepEqual(missing, [], '2026-09-18 (the only valid, in-window day) is present');
+});
+
+test('missingLedgerDays: duplicate day entries and out-of-order records do not affect the result', () => {
+  const now = new Date('2026-09-20T06:45:00Z');
+  const records = [
+    { day: '2026-09-18' }, { day: '2026-09-16' }, { day: '2026-09-18' }, { day: '2026-09-17' },
+  ];
+  assert.deepEqual(missingLedgerDays(records, now, 3), []);
+});
+
+test('missingLedgerDays: a future day (clock skew / bad --day backfill) cannot fill a real gap', () => {
+  const now = new Date('2026-09-20T06:45:00Z');
+  const missing = missingLedgerDays([{ day: '2026-09-25' }], now, 1);
+  assert.deepEqual(missing, ['2026-09-18'], 'a future record must not be mistaken for the in-window day');
 });
