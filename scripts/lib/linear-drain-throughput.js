@@ -115,10 +115,14 @@ async function fetchUnarmedUrgentHighCount({ graphql, teamKey = 'BRO', maxPages 
       // silent "zero unarmed issues" (ship-check/Codex finding, BRO-3923) —
       // same validation backlog-inflow-ratio.js's countMatching already
       // applies to this exact client.
-      if (!conn || !Array.isArray(conn.nodes)) {
-        return { ok: false, reason: 'malformed-response: missing issues.nodes', count: null };
+      // pageInfo missing entirely (not just hasNextPage:false) is ALSO
+      // malformed — a genuinely-done page always carries a pageInfo object
+      // (codex re-review finding: `{issues:{nodes:[]}}` with no pageInfo at
+      // all used to read as "0 unarmed, scan complete" instead of a failure).
+      if (!conn || !Array.isArray(conn.nodes) || !conn.pageInfo || typeof conn.pageInfo !== 'object') {
+        return { ok: false, reason: 'malformed-response: missing issues.nodes or issues.pageInfo', count: null };
       }
-      const pageInfo = conn.pageInfo || { hasNextPage: false };
+      const pageInfo = conn.pageInfo;
       issues.push(...conn.nodes);
       if (!pageInfo.hasNextPage) return { ok: true, reason: null, count: countUnarmedUrgentHigh(issues) };
       after = pageInfo.endCursor;
