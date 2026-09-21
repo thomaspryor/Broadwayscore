@@ -1606,6 +1606,14 @@ async function main(argv = process.argv.slice(2)) {
   if (lowTrust.size > 0) {
     console.log(`⚠️  low-trust WE reference source(s) — rows report-only: ${[...lowTrust].join(', ')}`);
   }
+  // BRO-3928 item 3: --fail-on-gap exists but nothing wires its signal to a
+  // human — it only reddens this hourly CI job's own log, which "nobody reads"
+  // (the ticket's framing). Collect genuine (current-run, non-priorRun) gaps
+  // on shows actually IN the opening-night window (not the 3y/--include-closed
+  // back-catalogue grind, which still carries a real but non-urgent backlog)
+  // and queue ONE digest line via routeAlert below — the same disposition:
+  // 'digest' pattern audit-opening-night-coverage.js's T1 scoreboard uses.
+  const openingWindowGaps = [];
   for (const s of targets) {
     // Soft time budget: stop taking on new shows before the CI hard timeout so
     // the checkpoint + ingested review-texts commit cleanly (the 25-min cancel
@@ -1728,6 +1736,15 @@ async function main(argv = process.argv.slice(2)) {
     const gapTotal = r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length - nPriorGap;
     const summary = `  ${r.inReviewsJson}/${r.aggregatorListedUrls.length || '?'} reviews | ${gapTotal} gap (missing=${r.missing.filter(m => !m.priorRun).length} flagged=${r.flaggedMisses.filter(m => !m.priorRun).length} citedNoUrl=${r.citedNoUrl.filter(c => !c.priorRun).length}${nPriorGap ? ` | +${nPriorGap} prior-run blocked, not counted` : ''})`;
     if (verbose || gapTotal > 0) console.log(`${r.showId}${verbose ? '' : ': ' + r.title}\n${summary}`);
+    // BRO-3928 item 3: same "uncollected" definition pre-send-check.mjs already
+    // gates on (missing + citedNoUrl, current-run only — flaggedMisses excluded
+    // as collected-but-excluded, often permanently and correctly so). Scoped to
+    // the opening window so a real gap on a show readers will see this week
+    // surfaces without anyone reading this workflow's own log.
+    const uncollectedNow = r.missing.filter(m => !m.priorRun).length + r.citedNoUrl.filter(c => !c.priorRun).length;
+    if (uncollectedNow > 0 && inOpeningWindow(s)) {
+      openingWindowGaps.push({ showId: r.showId, title: r.title, uncollected: uncollectedNow });
+    }
     if (verbose && r.missing.length > 0) {
       for (const m of r.missing) console.log(`    ❌ ${m.url}`);
     }
@@ -1936,6 +1953,35 @@ async function main(argv = process.argv.slice(2)) {
       } catch (e) {
         console.log(`::warning::uncited-stub sweep failed for ${r.showId}: ${(e.message || '').slice(0, 120)}`);
       }
+    }
+  }
+
+  // BRO-3928 item 3: queue the opening-window gap list for the daily digest.
+  // Same routeAlert(disposition:'digest') pattern as the T1 scoreboard in
+  // audit-opening-night-coverage.js — one conditionKey, short cooldown so a
+  // stale line doesn't sit for a week, and it rides the EXISTING digest email
+  // rather than opening a new send path. Scoped to the opening window (not the
+  // --include-closed back-catalogue grind) so this never pages on the
+  // known/deferred backlog — only on a gap a reader could hit this week.
+  if (useCheckpoint && openingWindowGaps.length > 0) {
+    try {
+      const { routeAlert } = require('./lib/owner-alert-router');
+      const lines = openingWindowGaps
+        .sort((a, b) => b.uncollected - a.uncollected)
+        .map(g => `• ${g.title} (${g.showId}): ${g.uncollected} uncollected review(s) already cited by aggregators`);
+      const routed = await routeAlert({
+        conditionKey: 'review-gap:opening-window',
+        title: `Review gap — ${openingWindowGaps.length} opening-window show(s) with uncollected reviews`,
+        description: lines.join('\n'),
+        severity: 'warning',
+        disposition: 'digest',
+        cooldownHours: 20,
+      });
+      console.log(routed.action === 'silent'
+        ? `\nOpening-window gap digest suppressed (cooldown still open): ${openingWindowGaps.length} show(s) affected.`
+        : `\nOpening-window gap queued for the daily digest: ${openingWindowGaps.length} show(s), ${openingWindowGaps.reduce((a, g) => a + g.uncollected, 0)} uncollected review(s) total.`);
+    } catch (e) {
+      console.error(`::error::opening-window gap digest queue failed: ${(e.message || '').slice(0, 120)}`);
     }
   }
 
@@ -2288,7 +2334,7 @@ async function main(argv = process.argv.slice(2)) {
   // matches the file a reader would open to debug the discrepancy.
   const reportedAudit = (partial && quarantined) ? quarantined : audit;
   const reportedResults = reportedAudit.results;
-  console.log(`Summary: ${reportedAudit.counts.withGap}/${reportedResults.length} shows on file with gaps (${results.length} audited this run) | ${reportedAudit.counts.totalMissing} URLs not in dir | ${reportedAudit.counts.totalFlaggedMisses} URLs in dir but flagged out (${reportedAudit.counts.totalRecoverable} recoverable, ${reportedAudit.counts.totalRecovered} self-healed) | ${outletsWritten.length} unknown outlets`);
+  console.log(`Summary: ${reportedAudit.counts.withGap}/${reportedResults.length} shows on file with gaps (${results.length} audited this run) | ${reportedAudit.counts.missingCurrentRun} URLs not in dir | ${reportedAudit.counts.totalFlaggedMisses} URLs in dir but flagged out (${reportedAudit.counts.totalRecoverable} recoverable, ${reportedAudit.counts.totalRecovered} self-healed) | ${outletsWritten.length} unknown outlets${reportedAudit.counts.priorProductionCitations ? ` | +${reportedAudit.counts.priorProductionCitations} prior-production citation(s) on file, permanently report-only, NOT counted above` : ''}`);
   if (useCheckpoint) {
     console.log(`Checkpoint: ${results.length} shows audited this run${budgetHit ? ' (time-budget partial — remaining shows resume next run)' : ' (full eligible set complete)'}. State: ${CHECKPOINT_PATH}`);
   }
