@@ -144,13 +144,12 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-21T03:10:34.036Z",
-      "lastNotifiedAt": "2026-09-21T03:10:34.036Z",
-      "lastSurfacedAt": "2026-09-21T03:10:34.036Z",
-      "notifyCount": 92,
+      "lastSeen": "2026-09-21T03:57:03.875Z",
+      "lastNotifiedAt": "2026-09-21T03:57:03.875Z",
+      "lastSurfacedAt": "2026-09-21T03:57:03.875Z",
+      "notifyCount": 93,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 1
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3739,13 +3738,13 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run unit tests — \"should have valid designation values\"",
       "firstSeen": "2026-09-20T20:06:05.167Z",
-      "lastSeen": "2026-09-21T03:10:34.034Z",
+      "lastSeen": "2026-09-21T03:57:03.772Z",
       "lastNotifiedAt": "2026-09-20T20:06:05.167Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-3893",
-      "silentRefires": 18
+      "silentRefires": 19
     },
     "test-yml:red:Data Validation:9b5157f4": {
       "status": "resolved",
@@ -3826,6 +3825,30 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Data Validation:de9aa140": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Data Validation / Run data validation",
+      "firstSeen": "2026-09-21T03:56:59.498Z",
+      "lastSeen": "2026-09-21T03:56:59.498Z",
+      "lastNotifiedAt": "2026-09-21T03:56:59.498Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-3958"
+    },
+    "test-yml:red:Unit Tests:4241349f": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"BRO-2462: a claim-outage (wedged launcher) is NOT a policy pause — pausedByPolicy stays false even though holds is non-empty\"",
+      "firstSeen": "2026-09-21T03:57:03.470Z",
+      "lastSeen": "2026-09-21T03:57:03.470Z",
+      "lastNotifiedAt": "2026-09-21T03:57:03.470Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-3955"
     }
   }
 }
