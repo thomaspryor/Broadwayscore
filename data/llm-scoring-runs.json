@@ -1,5 +1,27 @@
 [
   {
+    "startedAt": "2026-09-19T22:53:05.638Z",
+    "completedAt": "2026-09-19T22:53:23.754Z",
+    "totalReviews": 44180,
+    "processed": 1,
+    "skipped": 44174,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 22139,
+      "output": 839,
+      "total": 61453
+    },
+    "costUsd": 0.10537365,
+    "runId": "35473367091",
+    "errorDetails": [
+      {
+        "showId": "oliver-west-end-2024",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
     "startedAt": "2026-09-19T22:53:25.791Z",
     "completedAt": "2026-09-19T22:59:28.150Z",
     "totalReviews": 173,
@@ -233514,41 +233536,19 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-09-21T11:36:11.098Z",
-    "completedAt": "2026-09-21T11:36:28.123Z",
-    "totalReviews": 44246,
+    "startedAt": "2026-09-21T11:57:21.182Z",
+    "completedAt": "2026-09-21T11:57:21.190Z",
+    "totalReviews": 0,
     "processed": 0,
-    "skipped": 44239,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 24848,
-      "output": 733,
-      "total": 70791
-    },
-    "costUsd": 0.11256675,
-    "runId": "35592614202",
-    "errorDetails": [
-      {
-        "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
-        "outletId": "abouttheartists",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-09-21T11:36:30.094Z",
-    "completedAt": "2026-09-21T11:43:05.783Z",
-    "totalReviews": 178,
-    "processed": 178,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 459514,
-      "output": 41604,
-      "total": 501118
+      "input": 0,
+      "output": 0,
+      "total": 0
     },
-    "costUsd": 1.2932647,
-    "runId": "35592614202",
+    "costUsd": 0,
+    "runId": "35594502849",
     "errorDetails": []
   }
 ]
