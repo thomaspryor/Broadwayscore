@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-21T23:40:35.660Z",
+  "generated": "2026-09-21T23:47:50.350Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 94,
+  "count": 93,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -653,13 +653,6 @@
       "targetFile": "theatermania--hayley-levitt.json",
       "reason": "orphaned-duplicate-heal: theatermania--hayley-levitt.json was flagged invalid after theatermania--zachary-stewart.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "million-dollar-quartet-off-west-end-2026",
-      "loserFile": "whatsonstage--hang-yuen.json",
-      "targetFile": "whatsonstage--andy-plaice.json",
-      "reason": "orphaned-duplicate-heal: whatsonstage--andy-plaice.json was flagged invalid after whatsonstage--hang-yuen.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
