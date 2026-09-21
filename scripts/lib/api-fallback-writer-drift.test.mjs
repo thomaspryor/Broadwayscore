@@ -137,10 +137,10 @@ test('REGRESSION: every real apiFallbackSafe(public-repo) registry entry still p
   }
 });
 
-test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (126 as of ci-green-rate 2026-09-20: the BRO-3670 125 PLUS ci-green-rate.jsonl (data-health-check.yml\'s nightly CI green-rate ledger, same apiFallbackSafe commit step as health-digest-snapshot.json); 125 as of BRO-3670 2026-09-16: the BRO-3431 126, MINUS the ticket-ab-monitor-state entry this fix froze (BRO-3456, 912f84e7d43, removed monitor-gate-ab.yml\'s write step); 126 as of BRO-3431 2026-09-15: the BRO-3426 125 PLUS notion-schedule-coupling.json (data-health-check.yml\'s new BRO-3431-reopen shadow audit); 125 as of BRO-3426 2026-09-15: the BRO-3071 124, MINUS the gate-cold-start-monitor-state entry BRO-3422 froze, PLUS the two done-evidence audit files data-health-check.yml writes; 124 as of BRO-3071 2026-09-14 what-else sweep -- see that registry file\'s own BRO-3071 comment block for the full per-workflow breakdown of the 85 newly added on top of the prior 39), not an accidental duplicate or drop', () => {
+test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe entries (127 as of BRO-2722 2026-09-21: the ci-green-rate 126 PLUS audit/progress-watch-state.json (llm-ensemble-score.yml\'s scheduled-run liveness snapshot, sole writer scripts/check-progress-stalls.js — was staged unregistered via the workflow\'s broad `data/audit/` git-add glob, disqualifying its "Commit and push changes" step\'s Git Data API fallback and causing the repeat push-retry-exhaustion failure the card reported); 126 as of ci-green-rate 2026-09-20: the BRO-3670 125 PLUS ci-green-rate.jsonl (data-health-check.yml\'s nightly CI green-rate ledger, same apiFallbackSafe commit step as health-digest-snapshot.json); 125 as of BRO-3670 2026-09-16: the BRO-3431 126, MINUS the ticket-ab-monitor-state entry this fix froze (BRO-3456, 912f84e7d43, removed monitor-gate-ab.yml\'s write step); 126 as of BRO-3431 2026-09-15: the BRO-3426 125 PLUS notion-schedule-coupling.json (data-health-check.yml\'s new BRO-3431-reopen shadow audit); 125 as of BRO-3426 2026-09-15: the BRO-3071 124, MINUS the gate-cold-start-monitor-state entry BRO-3422 froze, PLUS the two done-evidence audit files data-health-check.yml writes; 124 as of BRO-3071 2026-09-14 what-else sweep -- see that registry file\'s own BRO-3071 comment block for the full per-workflow breakdown of the 85 newly added on top of the prior 39), not an accidental duplicate or drop', () => {
   const publicSafe = CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === 'public-repo' && e.apiFallbackSafe === true);
   const files = publicSafe.map((e) => e.file).sort();
-  assert.equal(publicSafe.length, 126); // 125 (BRO-3670) + ci-green-rate.jsonl (2026-09-20)
+  assert.equal(publicSafe.length, 127); // 126 (ci-green-rate) + audit/progress-watch-state.json (BRO-2722, 2026-09-21)
   assert.deepEqual(files, [
     'audit/affiliate-health.json',
     'audit/affiliate-link-probe.json',
@@ -222,6 +222,7 @@ test('sanity: CORE_DATA_MERGE_REGISTRY has exactly the seeded apiFallbackSafe en
     'audit/possible-venue-transfers.json',
     'audit/processed-feedback.json',
     'audit/processed-review-submissions.json',
+    'audit/progress-watch-state.json',
     'audit/provider-spend-daily.jsonl',
     'audit/provider-spend-snapshot.json',
     'audit/rebuild-score-drift.json',
