@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
   "openingDate": "2026-09-17",
-  "detectedAt": "2026-09-21T01:48:46.000Z",
+  "detectedAt": "2026-09-21T05:33:41.556Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "grabyourgroupandgo--linda-taft-mackinnon.json",
-      "outletId": "grabyourgroupandgo",
-      "criticName": "Linda Taft MacKinnon",
-      "url": "https://grabyourgroupandgo.com/event/the-cherry-orchard-radically-re-imagined-at-the-armory-who-will-go-i-wonder/",
-      "fullTextLen": 2685,
-      "dispatchActionable": false,
-      "skipReason": "terminal_text_gate_block",
-      "rescoreBlockedReason": "bot_stub_truncation:not_a_review",
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
-    },
     {
       "file": "wsj--charles-isherwood.json",
       "outletId": "wsj",
@@ -40,9 +23,9 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
+  "orphanCount": 1,
   "dispatchableOrphanCount": 0,
-  "blockedOrphanCount": 2,
+  "blockedOrphanCount": 1,
   "blockBroadcast": true,
   "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
