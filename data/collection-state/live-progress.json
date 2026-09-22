@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-09-22T00:43:22.233Z",
-  "processed": 85,
-  "failed": 406,
-  "successRate": "17.3%",
+  "updatedAt": "2026-09-22T02:02:06.585Z",
+  "processed": 87,
+  "failed": 412,
+  "successRate": "17.4%",
   "tierBreakdown": {
-    "playwright": 49,
+    "playwright": 50,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 2,
-    "scrapingbee": 19,
+    "scrapingbee": 20,
     "brightdata": 5,
     "archiveToday": 0,
     "archive": 11
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-09-21T23:28:29.133Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-21T23:31:29.482Z",
-      "event": "bb-session",
-      "session": "c3c5e911",
-      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
-    },
-    {
-      "t": "2026-09-21T23:31:29.975Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-09-21T23:34:03.801Z",
-      "event": "bb-session",
-      "session": "08f72de0",
-      "url": "https://www.talkinbroadway.com/page/regional/cincy/cincy616.html"
-    },
     {
       "t": "2026-09-21T23:34:04.313Z",
       "event": "bb-cookie-inject",
@@ -124,6 +102,28 @@
       "t": "2026-09-22T00:39:12.368Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-22T01:54:21.059Z",
+      "event": "bb-session",
+      "session": "5034c656",
+      "url": "https://www.thestage.co.uk/news/production-news/my-sons-a-queer-but-what-can-you"
+    },
+    {
+      "t": "2026-09-22T01:54:21.755Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-22T01:56:01.854Z",
+      "event": "bb-session",
+      "session": "9adcee6d",
+      "url": "https://thestage.co.uk/reviews/darkling-review-bush-theatre-london"
+    },
+    {
+      "t": "2026-09-22T01:56:02.483Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
