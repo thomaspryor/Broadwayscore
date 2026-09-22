@@ -168,9 +168,12 @@ function generateApproveUrl(workflowFile, alertTitle) {
 
 // BRO-3349: the ONE definition of "is the provider-spend ledger stale?" —
 // shared with its producer (scripts/check-provider-spend.js, which
-// re-exports these). provider-spend-core.js is a pure lib with no top-level
-// side effects, unlike the CLI that used to own them.
-const { ledgerFreshnessHours, STALE_HOURS_THRESHOLD: PROVIDER_SPEND_STALE_HOURS } = require('./lib/provider-spend-core');
+// re-exports these). Imported from provider-spend-core.js rather than from
+// the CLI: the CLI has top-level side effects (hasHelpFlag/process.exit,
+// argv-derived DAY) that would fire on require. provider-spend-core.js does
+// pull in provider-telemetry/browserbase-caps, but neither does I/O, reads
+// env, or cycles at require time (verified, ship-check/Codex).
+const { ledgerFreshnessHours, lastLedgerDay, STALE_HOURS_THRESHOLD: PROVIDER_SPEND_STALE_HOURS } = require('./lib/provider-spend-core');
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const AUDIT_DIR = path.join(DATA_DIR, 'audit');
 const PIPELINE_DIR = path.join(AUDIT_DIR, 'pipeline-health');
@@ -421,10 +424,29 @@ async function tryAutoFix(checkResult) {
 
 // --- Helpers ---
 
-function hoursAgo(dateStr) {
-  const d = new Date(dateStr);
+// BRO-3349 (prevent-class): a BARE "YYYY-MM-DD" is a whole UTC day, not the
+// instant of its midnight. `new Date('2026-09-20')` is that day's START, so
+// treating it as a write timestamp inflates every reported age by up to 24h —
+// which is exactly how "Data quality: provider spend ledger" spent five days
+// reporting a perfectly fresh ledger as ">48h stale". Two live FRESHNESS_CHECKS
+// fields are day-shaped today (data/cast-changes.json's `lastUpdated`, warn at
+// 72h with a Wed+Sat writer — a Saturday write read 83h on Tuesday against a
+// true 59h; and data/commercial.json's `_meta.lastUpdated`), and nothing stops
+// a future producer from emitting another. Anchoring on the day's END is the
+// only reading that cannot over-report: a file written at ANY point during day
+// D is at most as old as D's end. Full timestamps are untouched — they do not
+// match the bare-day shape. Covered by scripts/tests/health-check-hours-ago.test.mjs.
+const BARE_DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+function hoursAgo(dateStr, now = Date.now()) {
+  // `new Date(null)` is epoch 0, i.e. a FINITE ~497,000h — a plausible-looking
+  // number rather than the Infinity every caller's "no usable value" branch
+  // expects. Numeric epoch inputs stay supported (some snapshots store
+  // `timestamp` as a number); only null is special-cased.
+  if (dateStr === null) return Infinity;
+  const d = new Date(BARE_DAY_RE.test(dateStr) ? `${dateStr}T23:59:59.999Z` : dateStr);
   if (isNaN(d.getTime())) return Infinity;
-  return (Date.now() - d.getTime()) / (1000 * 60 * 60);
+  return (now - d.getTime()) / (1000 * 60 * 60);
 }
 
 function formatAge(hours) {
@@ -1104,9 +1126,10 @@ function checkBatchState() {
  * Canonical-predicate rule (memory: feedback_includability_predicates_must_be_
  * canonical): import the producer's function, never restate its math here.
  * @param {string|null} raw
+ * @param {Date} [now] injectable clock (tests) — never stubbed globally
  * @returns {{name: string, status: string, message: string, hint?: string}}
  */
-function providerSpendLedgerResult(raw) {
+function providerSpendLedgerResult(raw, now = new Date()) {
   const name = 'Data quality: provider spend ledger';
   const hint = 'node scripts/check-provider-spend.js';
   if (raw == null) {
@@ -1119,11 +1142,11 @@ function providerSpendLedgerResult(raw) {
     if (!line) continue;
     try { records.push(JSON.parse(line)); } catch { /* skip corrupt line */ }
   }
-  const age = ledgerFreshnessHours(records);
+  const age = ledgerFreshnessHours(records, now);
   if (!Number.isFinite(age)) {
     return { name, status: 'warn', message: 'Provider-spend ledger has no parseable rows', hint };
   }
-  const lastDay = records.map((r) => r && r.day).filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort().pop();
+  const lastDay = lastLedgerDay(records);
   if (age > PROVIDER_SPEND_STALE_HOURS) {
     return {
       name,
@@ -1132,7 +1155,11 @@ function providerSpendLedgerResult(raw) {
       hint: 'Check the "Commit provider spend ledger (apiFallbackSafe)" step in data-health-check.yml — a push that reports success can still silently drop this file if an earlier commit step in the same job hard-resets the working tree first.',
     };
   }
-  return { name, status: 'pass', message: `Newest entry (day=${lastDay}) ${formatAge(age)} past its end-of-day` };
+  // A day still in progress (a manual `--day=<today>` run) has not ENDED yet,
+  // so `age` is negative — "-12h past its end-of-day" is nonsense in the owner's
+  // digest even though the pass verdict is right (ship-check P2).
+  const ageText = age < 0 ? 'not yet ended' : `${formatAge(age)} past its end-of-day`;
+  return { name, status: 'pass', message: `Newest entry (day=${lastDay}) ${ageText}` };
 }
 
 function checkQuality() {
@@ -5262,4 +5289,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { providerSpendLedgerResult, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems };
+module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems };

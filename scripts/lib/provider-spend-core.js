@@ -354,20 +354,57 @@ const CONTINUITY_WINDOW_DAYS = 7;
 const VALID_DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 /**
+ * Epoch ms for the END (23:59:59.999 UTC) of a "YYYY-MM-DD" day, or NaN if
+ * `day` is not a real calendar date.
+ *
+ * BRO-3349 (ship-check/Codex P1): VALID_DAY_RE alone is NOT enough. It is a
+ * SHAPE check, and shapes like "2026-99-99" pass it while `new Date()` yields
+ * Invalid Date. Because the old code picked the lexical max of shape-valid
+ * days FIRST and converted second, a single such row outranked every real day
+ * and made ledgerFreshnessHours() return NaN — which every caller treats as
+ * "no usable data" (a WARN), not as staleness. One garbage row therefore
+ * downgraded this dead-man from ERROR to a permanent WARN even with months of
+ * real rows present and the reconciliation long dead. Validate the instant,
+ * not the shape, and let a bad row lose ONE day rather than the whole check
+ * (the same rule readLedger() already applies to unparseable JSON lines).
+ * @param {string} day
+ * @returns {number}
+ */
+function dayEndMs(day) {
+  if (!VALID_DAY_RE.test(day)) return NaN;
+  return new Date(`${day}T23:59:59.999Z`).getTime();
+}
+
+/**
  * Hours between `now` and the end (23:59:59.999 UTC) of the ledger's most
- * recent VALIDLY-DAY-SHAPED recorded day. Infinity for an empty (or
- * entirely malformed) ledger — no usable data is maximally stale, never
- * "fresh by default".
+ * recent REAL recorded day. Infinity for an empty (or entirely malformed)
+ * ledger — no usable data is maximally stale, never "fresh by default".
+ * Never NaN: an unreal day is dropped, not propagated.
  * @param {Array<{day: string}>} records
  * @param {Date} [now]
  * @returns {number}
  */
 function ledgerFreshnessHours(records, now = new Date()) {
-  const days = (records || []).filter(Boolean).map((r) => r.day).filter((d) => VALID_DAY_RE.test(d));
-  if (!days.length) return Infinity;
-  const lastDay = days.reduce((max, d) => (d > max ? d : max), days[0]);
-  const lastDayEnd = new Date(`${lastDay}T23:59:59.999Z`).getTime();
-  return (now.getTime() - lastDayEnd) / 3600000;
+  const ends = (records || []).filter(Boolean).map((r) => dayEndMs(r.day)).filter((ms) => Number.isFinite(ms));
+  if (!ends.length) return Infinity;
+  return (now.getTime() - Math.max(...ends)) / 3600000;
+}
+
+/**
+ * The ledger's most recent REAL recorded day ("YYYY-MM-DD"), or null. Shares
+ * dayEndMs()'s validity rule so a row's reported `day` can never disagree with
+ * the age computed for it.
+ * @param {Array<{day: string}>} records
+ * @returns {string|null}
+ */
+function lastLedgerDay(records) {
+  let best = null;
+  let bestMs = -Infinity;
+  for (const r of (records || []).filter(Boolean)) {
+    const ms = dayEndMs(r.day);
+    if (Number.isFinite(ms) && ms > bestMs) { bestMs = ms; best = r.day; }
+  }
+  return best;
 }
 
 /**
@@ -400,5 +437,5 @@ module.exports = {
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot,
   utcYesterday, isNextUtcDay, aggregateLedgerByDay, bbCost,
   BB_BASE_MONTHLY_USD, BB_BASE_AMORTIZED_DAYS, BB_OVERAGE_PER_BROWSER_HOUR_USD,
-  ledgerFreshnessHours, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,
+  ledgerFreshnessHours, lastLedgerDay, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,
 };

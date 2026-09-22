@@ -6,6 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday, isNextUtcDay,
   aggregateLedgerByDay, bbCost,
+  ledgerFreshnessHours, lastLedgerDay,
 } = require('./provider-spend-core.js');
 
 const THRESHOLDS = {
@@ -303,4 +304,36 @@ test('aggregateLedgerByDay: category is null for providers that never set it', (
   ];
   const rows = aggregateLedgerByDay(records, '2026-09-01');
   assert.equal(rows[0].category, null);
+});
+
+// --- BRO-3349: freshness helpers moved here from check-provider-spend.js ---
+
+test('ledgerFreshnessHours: a shape-valid but UNREAL day is dropped, never propagated as NaN', () => {
+  // "2026-99-99" matches /^\d{4}-\d{2}-\d{2}$/ but is Invalid Date. The old
+  // lexical-max-then-convert order let it outrank every real day and return
+  // NaN, which callers read as "no usable data" (WARN) instead of staleness —
+  // one garbage row silenced the dead-man permanently (ship-check/Codex P1).
+  const now = new Date('2026-09-25T00:00:00Z');
+  const hours = ledgerFreshnessHours([{ day: '2026-09-19' }, { day: '2026-99-99' }], now);
+  assert.ok(Number.isFinite(hours), `expected a finite age, got ${hours}`);
+  assert.ok(Math.abs(hours - 120) < 0.01, `expected ~120h from 2026-09-19's end-of-day, got ${hours}`);
+});
+
+test('ledgerFreshnessHours: an entirely unreal ledger is Infinity (maximally stale), not NaN', () => {
+  const hours = ledgerFreshnessHours([{ day: '2026-99-99' }, { day: 'zzz' }, { day: null }], new Date());
+  assert.equal(hours, Infinity);
+});
+
+test('lastLedgerDay: reports the newest REAL day, ignoring unreal and malformed ones', () => {
+  assert.equal(lastLedgerDay([{ day: '2026-09-17' }, { day: '2026-99-99' }, { day: '2026-09-19' }]), '2026-09-19');
+  assert.equal(lastLedgerDay([{ day: '2026-99-99' }]), null);
+  assert.equal(lastLedgerDay([]), null);
+  assert.equal(lastLedgerDay(null), null);
+});
+
+test('lastLedgerDay agrees with ledgerFreshnessHours about which day is newest', () => {
+  const records = [{ day: '2026-09-17' }, { day: '2026-99-99' }, { day: '2026-09-19' }];
+  const now = new Date('2026-09-21T13:25:11.107Z');
+  const day = lastLedgerDay(records);
+  assert.equal(ledgerFreshnessHours(records, now), ledgerFreshnessHours([{ day }], now));
 });
