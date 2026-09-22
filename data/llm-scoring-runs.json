@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-09-20T13:55:56.473Z",
-    "completedAt": "2026-09-20T14:02:08.447Z",
-    "totalReviews": 175,
-    "processed": 175,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 457295,
-      "output": 40512,
-      "total": 497807
-    },
-    "costUsd": 1.276765,
-    "runId": "35514173377",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-20T14:19:11.241Z",
-    "completedAt": "2026-09-20T14:19:30.728Z",
-    "totalReviews": 44183,
-    "processed": 4,
-    "skipped": 44177,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 18741,
-      "output": 1145,
-      "total": 56832
-    },
-    "costUsd": 0.09976075000000001,
-    "runId": "35515266293",
-    "errorDetails": [
-      {
-        "showId": "oliver-west-end-2024",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-09-20T14:19:31.999Z",
     "completedAt": "2026-09-20T14:26:01.437Z",
     "totalReviews": 175,
@@ -210447,6 +210409,38 @@
     },
     "costUsd": 1.2772759,
     "runId": "35686279361",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-22T05:01:28.667Z",
+    "completedAt": "2026-09-22T05:01:59.543Z",
+    "totalReviews": 44293,
+    "processed": 0,
+    "skipped": 44289,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 16044,
+      "output": 566,
+      "total": 46399
+    },
+    "costUsd": 0.09542830000000001,
+    "runId": "35687711610",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-22T05:02:00.941Z",
+    "completedAt": "2026-09-22T05:08:37.703Z",
+    "totalReviews": 177,
+    "processed": 177,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 457361,
+      "output": 41089,
+      "total": 498450
+    },
+    "costUsd": 1.2829934,
+    "runId": "35687711610",
     "errorDetails": []
   }
 ]
