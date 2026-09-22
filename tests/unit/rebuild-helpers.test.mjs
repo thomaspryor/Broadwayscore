@@ -24,6 +24,7 @@ const {
   normalizeQuoteWrapping,
   cleanExcerpt,
   isContentVerificationActive,
+  aggregatorStarsCorroboratedByFullText,
   getBestScore,
   scoreToBucket,
   scoreToThumb,
@@ -155,6 +156,86 @@ describe('getBestScore — explicit scores', () => {
     const result = getBestScore(data);
     assert.strictEqual(result.score, 25);
     assert.strictEqual(result.source, 'originalScore-priority0');
+  });
+
+  test('P0.5: aggregatorStars ignored when its excerpt is cross-attributed from another show (Book of Mormon West End 2026-09-22)', () => {
+    // Regression fixture: WestEndTheatre.com roundup matching wrote aggregatorStars
+    // "2/5" and westEndTheatreExcerpt onto a Guardian/Book of Mormon file from a
+    // DIFFERENT show's (Brigadoon) roundup row. fullText is a genuine, correct,
+    // unanimous-ensemble Rave review of the actual show — the excerpt shares no
+    // distinctive vocabulary with it.
+    const flags = [];
+    const data = {
+      outletId: 'guardian',
+      aggregatorStars: '2/5',
+      westEndTheatreExcerpt: "There's no heat in the heather in this tame revival … Alan Jay Lerner and Frederick Loewe's postwar musical … Brigadoon itself.",
+      fullText: 'If you are lucky enough to somehow have a ticket for this, the most cryingly good night out to have come along for years. The Book of Mormon is far, far cleverer, far kinder, far more nuanced than that, and one of its many surprises is that it sent an enraptured, ecstatic audience home with an odd sense of having come, somehow, to really like Mormons. '.repeat(3),
+      llmScore: { score: 94, confidence: 'high', bucket: 'Rave' },
+      ensembleData: { needsReview: false },
+    };
+    const result = getBestScore(data, {
+      flagForHumanReview: (d, reason, detail) => flags.push(reason),
+    });
+    assert.strictEqual(result.score, 94);
+    assert.strictEqual(result.source, 'llmScore');
+    assert.ok(flags.includes('aggregatorStars-excerpt-mismatch'));
+  });
+
+  test('P0.5: aggregatorStars still trusted when its excerpt genuinely matches fullText', () => {
+    const data = {
+      outletId: 'guardian',
+      aggregatorStars: '4/5',
+      westEndTheatreExcerpt: 'A gorgeous, uplifting tribute to the link between theatre and the imaginative realm of childrens play.',
+      fullText: 'This is a wonderful show. A gorgeous, uplifting tribute to the link between theatre and the imaginative realm of childrens play. A triumph of puppetry and design that will move audiences of all ages for years to come.',
+    };
+    const result = getBestScore(data);
+    assert.strictEqual(result.score, 80);
+    assert.strictEqual(result.source, 'originalScore-priority0');
+  });
+
+  test('P0.5: aggregatorStars with no excerpt to cross-check is not blocked', () => {
+    const data = { outletId: 'guardian', aggregatorStars: '3/5', fullText: 'x'.repeat(300) };
+    const result = getBestScore(data);
+    assert.strictEqual(result.score, 60);
+    assert.strictEqual(result.source, 'originalScore-priority0');
+  });
+});
+
+describe('aggregatorStarsCorroboratedByFullText', () => {
+  test('no fullText — nothing to check, returns true', () => {
+    assert.strictEqual(aggregatorStarsCorroboratedByFullText({}), true);
+  });
+
+  test('no excerpt fields — nothing to cross-check, returns true', () => {
+    assert.strictEqual(aggregatorStarsCorroboratedByFullText({ fullText: 'x'.repeat(300) }), true);
+  });
+
+  test('excerpt too short to judge (< 4 distinctive words) — permissive', () => {
+    const data = { fullText: 'x'.repeat(300), westEndTheatreExcerpt: 'Wow great show' };
+    assert.strictEqual(aggregatorStarsCorroboratedByFullText(data), true);
+  });
+
+  test('only checks westEndTheatreExcerpt, not other roundup-style excerpt fields', () => {
+    // theStageExcerpt (and similar) are often multi-critic roundup blurbs that
+    // paraphrase or quote several outlets in the aggregator's own words — they
+    // can legitimately describe the right show/critic without ever being a
+    // literal substring of that critic's own fullText. blood-of-my-blood-
+    // west-end-2026/guardian--arifa-akbar.json (ship-check false positive,
+    // 2026-09-22): theStageExcerpt quotes Akbar via The Stage's own summary,
+    // wording that never appears in her actual Guardian review text.
+    const data = {
+      fullText: "Mike Bartlett's striking three-act play is a curiously changing thing, entering into similar grounds of family and nation across its acts.".repeat(3),
+      theStageExcerpt: 'This questing knotty philosophical piece is supremely funny and utterly absorbing, writes Sarah Crompton, while Dominic Cavendish labels it fiercely timely.',
+    };
+    assert.strictEqual(aggregatorStarsCorroboratedByFullText(data), true);
+  });
+
+  test('mismatched excerpt (different show) — false', () => {
+    const data = {
+      fullText: 'The Book of Mormon is a hilarious and inventive musical about missionaries in Uganda.'.repeat(3),
+      westEndTheatreExcerpt: 'Brigadoon swims in its own aspic, a purposeless revival full of bagpipes and drumming.',
+    };
+    assert.strictEqual(aggregatorStarsCorroboratedByFullText(data), false);
   });
 });
 
