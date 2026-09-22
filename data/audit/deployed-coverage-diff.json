@@ -1,13 +1,12 @@
 {
-  "generatedAt": "2026-09-21T21:34:19.494Z",
+  "generatedAt": "2026-09-22T00:36:55.564Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 136,
-  "clean": 124,
-  "defective": 12,
+  "clean": 135,
+  "defective": 1,
   "byType": {
-    "score-drift": 11,
     "unreachable": 1
   },
   "shows": [
@@ -25,171 +24,6 @@
       "missingFromProd": [],
       "localCount": 0,
       "deployedCount": null
-    },
-    {
-      "showId": "darkling-off-west-end-2026",
-      "title": "Darkling",
-      "openingDate": "2026-09-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 71.26 vs local 71.43 (Δ0.17)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 24,
-      "deployedCount": 24
-    },
-    {
-      "showId": "million-dollar-quartet-off-west-end-2026",
-      "title": "Million Dollar Quartet",
-      "openingDate": "2026-09-14",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.28 vs local 75.6 (Δ0.68)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 19,
-      "deployedCount": 19
-    },
-    {
-      "showId": "kimberly-akimbo-off-west-end-2026",
-      "title": "Kimberly Akimbo",
-      "openingDate": "2026-09-09",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 81.27 vs local 81.16 (Δ0.11)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 27,
-      "deployedCount": 27
-    },
-    {
-      "showId": "a-month-in-the-country-west-end-2026",
-      "title": "A Month in the Country",
-      "openingDate": "2026-09-02",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.58 vs local 79.36 (Δ0.22)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 29,
-      "deployedCount": 29
-    },
-    {
-      "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
-      "title": "Rhinoceros",
-      "openingDate": "2026-08-24",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 88.25 vs local 88.38 (Δ0.13)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 10,
-      "deployedCount": 10
-    },
-    {
-      "showId": "death-note-the-musical-west-end-2026",
-      "title": "Death Note: The Musical",
-      "openingDate": "2026-08-11",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 72.9 vs local 72.81 (Δ0.09)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 35,
-      "deployedCount": 35
-    },
-    {
-      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
-      "title": "Much Ado About Nothing",
-      "openingDate": "2026-06-20",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.63 vs local 78.5 (Δ0.13)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23
-    },
-    {
-      "showId": "oh-mary-west-end-2025",
-      "title": "Oh, Mary!",
-      "openingDate": "2025-12-18",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.25 vs local 75.39 (Δ0.14)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 28,
-      "deployedCount": 28
-    },
-    {
-      "showId": "hadestown-west-end-2024",
-      "title": "Hadestown",
-      "openingDate": "2024-02-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 73.99 vs local 73.84 (Δ0.15)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "title": "Operation Mincemeat",
-      "openingDate": "2023-05-09",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 88.02 vs local 88.14 (Δ0.12)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "title": "Moulin Rouge! The Musical",
-      "openingDate": "2022-01-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 69.97 vs local 69.77 (Δ0.2)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21
     }
   ]
 }
