@@ -1,46 +1,42 @@
 {
   "processed": [
-    "macbeth-off-broadway-2026/ew--reviewed-by.json"
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
+    "the-invention-of-love-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
   ],
   "failed": [
-    "macbeth-off-broadway-2026/hollywood-reporter--unknown.json",
-    "macbeth-off-broadway-2026/abc-news--unknown.json",
-    "macbeth-off-broadway-2026/ew--leah-greenblatt.json",
-    "macbeth-off-broadway-2026/newsday--linda-winer.json",
-    "macbeth-off-broadway-2026/newsday--unknown.json",
-    "macbeth-off-broadway-2026/thewrap--robert-hofler.json",
-    "macbeth-off-broadway-2026/thewrap--unknown.json",
-    "macbeth-off-broadway-2026/timeout--naveen-kumar.json",
-    "macbeth-off-broadway-2026/timeout--unknown.json",
-    "macbeth-off-broadway-2026/amny--unknown.json",
-    "macbeth-off-broadway-2026/chicagotribune--chris-jones.json",
-    "macbeth-off-broadway-2026/chicagotribune--unknown.json",
-    "macbeth-off-broadway-2026/daily-mail--patrick-marmion.json",
-    "macbeth-off-broadway-2026/financialtimes--shirley-apthorp.json",
-    "macbeth-off-broadway-2026/huffpost--unknown.json",
-    "macbeth-off-broadway-2026/i-paper--fiona-mountford.json",
-    "macbeth-off-broadway-2026/independent--alice-saville.json",
-    "macbeth-off-broadway-2026/seen-and-heard-international--clive-peacock.json",
-    "macbeth-off-broadway-2026/standard--nick-curtis.json",
-    "macbeth-off-broadway-2026/telegraph--dominic-cavendish.json",
-    "macbeth-off-broadway-2026/thestage--unknown.json",
-    "macbeth-off-broadway-2026/times-uk--clive-davis.json",
-    "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json"
+    "the-invention-of-love-off-broadway-2026/nytg--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/thestage--unknown.json",
+    "the-invention-of-love-off-broadway-2026/thestage--ian-shine.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-invention-of-love-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "macbeth-off-broadway-2026/ew--reviewed-by.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-09-22T19:50:58.267Z",
-  "lastProcessed": "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json",
-  "log": []
+  "startTime": "2026-09-22T21:42:19.400Z",
+  "lastProcessed": "the-invention-of-love-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+  "log": [
+    {
+      "t": "2026-09-22T21:44:34.768Z",
+      "event": "bb-session",
+      "session": "f1fd27fc",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/catarina-and-the-beauty-o"
+    },
+    {
+      "t": "2026-09-22T21:44:35.666Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }

@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-09-22T19:54:03.526Z",
-  "processed": 1,
-  "failed": 23,
-  "successRate": "4.2%",
+  "updatedAt": "2026-09-22T21:45:08.003Z",
+  "processed": 2,
+  "failed": 3,
+  "successRate": "40.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-09-22T21:44:34.768Z",
+      "event": "bb-session",
+      "session": "f1fd27fc",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/catarina-and-the-beauty-o"
+    },
+    {
+      "t": "2026-09-22T21:44:35.666Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    }
+  ]
 }
