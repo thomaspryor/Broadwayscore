@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-22T17:51:25.896Z",
+  "timestamp": "2026-09-22T19:07:56.740Z",
   "stats": {
-    "totalReviews": 43929,
+    "totalReviews": 43933,
     "alreadyFlagged": 18143,
     "dateGuardCatches": 248,
     "directorMismatch": 1048,
     "tvFilmSignals": 1303,
     "londonSignals": 1146,
     "offBroadwaySignals": 509,
-    "yearMismatch": 92,
-    "noPublishDate": 3853
+    "yearMismatch": 93,
+    "noPublishDate": 3857
   },
   "findings": [
     {
@@ -30110,6 +30110,19 @@
     },
     {
       "showId": "the-invention-of-love-off-broadway-2026",
+      "file": "this-week-in-new-york--mark-rifkin.json",
+      "publishDate": "2026-09-20",
+      "url": "https://twi-ny.com/2026/09/20/the-invention-of-love-tom-stoppard-theaterlab/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2001 (2x) more than 2026 (0x). 2001 matches production: the-invention-of-love-2001"
+        }
+      ]
+    },
+    {
+      "showId": "the-invention-of-love-off-broadway-2026",
       "file": "times-square-chronicles--suzanna-bowling.json",
       "score": 68,
       "publishDate": "2026-09-22",
@@ -41479,7 +41492,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2026-09-16",
       "url": "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review",
       "findings": [
@@ -41493,7 +41506,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "londonlivinglarge--london-living-large.json",
-      "score": 76,
+      "score": 78,
       "publishDate": "2026-09-18",
       "url": "https://www.londonlivinglarge.com/2026/09/golden-boy-almeida-theatre-sep-8-oct-31.html",
       "findings": [
