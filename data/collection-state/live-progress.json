@@ -1,18 +1,75 @@
 {
-  "updatedAt": "2026-09-22T08:31:46.273Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-09-22T10:21:09.609Z",
+  "processed": 29,
+  "failed": 72,
+  "successRate": "28.7%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 18,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 7,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 6,
+  "recentActivity": [
+    {
+      "t": "2026-09-22T09:55:46.492Z",
+      "event": "bb-session",
+      "session": "076ab6a6",
+      "url": "https://www.wsj.com/articles/the-cherry-orchard-review-chekhov-speaks-korean-506"
+    },
+    {
+      "t": "2026-09-22T09:55:47.431Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-22T09:59:21.551Z",
+      "event": "bb-session",
+      "session": "5be6aa84",
+      "url": "https://www.thestage.co.uk/news/production-news/my-sons-a-queer-but-what-can-you"
+    },
+    {
+      "t": "2026-09-22T09:59:22.271Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-22T10:05:07.348Z",
+      "event": "bb-session",
+      "session": "b26ae0e0",
+      "url": "https://thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oco"
+    },
+    {
+      "t": "2026-09-22T10:05:08.154Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-22T10:10:51.008Z",
+      "event": "bb-session",
+      "session": "2500c325",
+      "url": "https://deadline.com/2026/09/midnight-madness-revisited-tiff-next-box-office-obs"
+    },
+    {
+      "t": "2026-09-22T10:13:33.225Z",
+      "event": "bb-session",
+      "session": "09ba065b",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-09-22T10:15:49.590Z",
+      "event": "bb-session",
+      "session": "d9d78041",
+      "url": "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse"
+    },
+    {
+      "t": "2026-09-22T10:15:50.325Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
