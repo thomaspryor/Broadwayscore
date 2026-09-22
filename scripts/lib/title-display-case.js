@@ -151,6 +151,15 @@ const MANUAL_REVIEW_IDS = new Set([
 //     Theatre's own <title> tag AND TodayTix's <title> independently agree:
 //     "THIS IS NOT ABOUT ME." (period included). No lowercase form of this
 //     title exists in any source checked.
+//
+// noda-map-320f-west-end-2026 is NOT in this set, and that is a verified
+// decision, not an oversight. A post-handoff review flagged it as suspect —
+// the show's own reviewer described NODA・MAP as "always set in caps" and
+// asked for a source check before either restoring ALL-CAPS here or
+// confirming the stored "Noda Map – 320°F" as-is. Checked 2026-09-22:
+// Sadler's Wells' own <title> tag AND og:title meta tag (raw HTML, not a
+// rendered heading) both read "Noda Map - minus 320 Fahrenheit" — mixed
+// case. The stored title is correct; no exemption needed.
 const KEEP_SHOUTED_IDS = new Set([
   'god-is-a-woman-the-musical-off-west-end-2026',
 ]);
