@@ -14,6 +14,9 @@ function assertShowsQuerySuccess(data) {
     const message = (data && data.message) || 'unknown error';
     throw new Error(`Shows query failed: ${message}`);
   }
+  if (!data.content || !Array.isArray(data.content.records)) {
+    throw new Error(`Shows query failed: success response missing content.records: ${JSON.stringify(data)}`);
+  }
   return data.content.records;
 }
 

@@ -14,26 +14,35 @@ const { assertShowsQuerySuccess } = require('../../scripts/lib/theatr-api-respon
 // surfaced Theatr's message verbatim instead of crashing opaquely; that's
 // the behavior this guards.
 describe('Theatr shows-query response handling', () => {
-  test('surfaces the upstream error message on a failed query', () => {
+  test('surfaces the full upstream error message verbatim on a failed query', () => {
+    const upstreamMessage = "### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: Unknown column 'genre_category'";
     assert.throws(
-      () => assertShowsQuerySuccess({
-        success: false,
-        message: "### Error querying database.  Cause: java.sql.SQLSyntaxErrorException: Unknown column 'genre_category'",
-      }),
-      /Shows query failed:.*genre_category/
+      () => assertShowsQuerySuccess({ success: false, message: upstreamMessage }),
+      { message: `Shows query failed: ${upstreamMessage}` }
     );
   });
 
   test('falls back to a generic message when the upstream gives none', () => {
     assert.throws(
       () => assertShowsQuerySuccess({ success: false }),
-      /Shows query failed: unknown error/
+      { message: 'Shows query failed: unknown error' }
     );
   });
 
   test('throws on a missing/malformed response instead of a raw TypeError', () => {
-    assert.throws(() => assertShowsQuerySuccess(null), /Shows query failed: unknown error/);
-    assert.throws(() => assertShowsQuerySuccess(undefined), /Shows query failed: unknown error/);
+    assert.throws(() => assertShowsQuerySuccess(null), { message: 'Shows query failed: unknown error' });
+    assert.throws(() => assertShowsQuerySuccess(undefined), { message: 'Shows query failed: unknown error' });
+  });
+
+  test('throws instead of a raw TypeError when success is true but content.records is missing', () => {
+    assert.throws(
+      () => assertShowsQuerySuccess({ success: true }),
+      /Shows query failed: success response missing content\.records/
+    );
+    assert.throws(
+      () => assertShowsQuerySuccess({ success: true, content: {} }),
+      /Shows query failed: success response missing content\.records/
+    );
   });
 
   test('returns the records array on success', () => {
