@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-09-22T15:31:05.353Z",
+  "generatedAt": "2026-09-22T19:26:42.853Z",
   "windowDays": 1095,
-  "targets": 283,
-  "auditedThisRun": 4,
-  "carriedForward": 556,
+  "targets": 286,
+  "auditedThisRun": 7,
+  "carriedForward": 553,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 311,
-    "missingCurrentRun": 439,
+    "missingCurrentRun": 436,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 806,
+    "totalFlaggedMisses": 809,
     "totalRecoverable": 6,
     "totalRecovered": 7,
     "priorProductionCitations": 2504
@@ -23170,22 +23170,26 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://events.nationaltheatre.org.uk/events/95881",
+        "https://www.theguardian.com/stage/2026/sep/22/catarina-and-the-beauty-of-killing-fascists-review-fury-europe",
+        "https://www.westendbestfriend.co.uk/news/review-catarina-and-the-beauty-of-killing-fascists-national-theatre",
         "https://www.londontheatre.co.uk/reviews/catarina-and-the-beauty-of-killing-fascists-review-national-theatre",
         "https://www.londontheatre1.com/reviews/catarina-and-the-beauty-of-killing-fascists-review/",
-        "https://www.londonboxoffice.co.uk/news/post/catarina-and-the-beauty-of-killing-fascists-dorfman-national-theatre-review",
-        "https://www.timeout.com/london/theatre/catarina-and-the-beauty-of-killing-fascists-review",
-        "https://www.thestage.co.uk/features/tiago-rodrigues-on-catarina-and-the-beauty-of-killing-fascists-national-theatre-london",
+        "https://www.thestage.co.uk/reviews/catarina-and-the-beauty-of-killing-fascists-review-dorfman-theatre-national-theatre-london",
+        "https://www.thetimes.com/culture/theatre-dance/article/catarina-and-the-beauty-of-killing-fascists-review-3grmddl3g",
+        "https://www.whatsonstage.com/news/catarina-and-the-beauty-of-killing-fascists-at-the-national-theatre-review_1732209/",
+        "https://theartsdesk.com/theatre/catarina-and-beauty-killing-fascists-national-theatre-review-thoroughly-uncomfortable-watch",
+        "https://www.thereviewshub.com/catarina-and-the-beauty-of-killing-fascists-national-theatre-london/",
         "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre",
+        "https://www.londonboxoffice.co.uk/news/post/catarina-and-the-beauty-of-killing-fascists-dorfman-national-theatre-review",
+        "https://www.telegraph.co.uk/theatre/what-to-see/catarina-and-the-beauty-of-killing-fascists-review/",
+        "https://www.timeout.com/london/theatre/catarina-and-the-beauty-of-killing-fascists-review",
         "https://www.theatremonkey.com/show/catarina-and-the-beauty-of-killing-fascists/",
         "https://www.e-flux.com/notes/656073/catarina-and-the-beauty-of-killing-fascists",
-        "https://thetheatretimes.com/catarina-and-the-beauty-of-killing-fascists-at-the-tampere-theatre-festival-do-we-defend-democracy-by-breaking-its-rules/",
-        "https://www.londontheatre.co.uk/theatre-news/news/catarina-and-the-beauty-of-killing-fascists-to-have-uk-premiere-at-the-national",
-        "https://www.timeout.com/london/theatre/catarina-and-the-beauty-of-killing-fascists",
         "https://www.datathistle.com/event/3132980-catarina-and-the-beauty-of-killing-fascists/"
       ],
-      "dirFiles": 9,
-      "dirClean": 7,
-      "inReviewsJson": 5,
+      "dirFiles": 18,
+      "dirClean": 14,
+      "inReviewsJson": 14,
       "missing": [
         {
           "url": "https://events.nationaltheatre.org.uk/events/95881",
@@ -23193,26 +23197,8 @@
           "knownOutletId": null
         },
         {
-          "url": "https://www.thestage.co.uk/features/tiago-rodrigues-on-catarina-and-the-beauty-of-killing-fascists-national-theatre-london",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.e-flux.com/notes/656073/catarina-and-the-beauty-of-killing-fascists",
           "host": "e-flux.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://thetheatretimes.com/catarina-and-the-beauty-of-killing-fascists-at-the-tampere-theatre-festival-do-we-defend-democracy-by-breaking-its-rules/",
-          "host": "thetheatretimes.com",
-          "knownOutletId": "the-theatre-times",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.datathistle.com/event/3132980-catarina-and-the-beauty-of-killing-fascists/",
-          "host": "datathistle.com",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -23223,11 +23209,7 @@
           "count": 1
         },
         {
-          "host": "telegraph.co.uk",
-          "count": 1
-        },
-        {
-          "host": "whatsonstage.com",
+          "host": "ft.com",
           "count": 1
         }
       ],
@@ -23262,8 +23244,26 @@
           "dirFlags": [
             {
               "file": "theatremonkey--unknown.json",
-              "flag": "clean",
+              "flag": "wrongShow",
               "urlInDir": "https://www.theatremonkey.com/show/catarina-and-the-beauty-of-killing-fascists/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.datathistle.com/event/3132980-catarina-and-the-beauty-of-killing-fascists/",
+          "host": "datathistle.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "datathistle--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.datathistle.com/event/3132980-catarina-and-the-beauty-of-killing-fascists/"
             }
           ],
           "serpCensus": true
@@ -23285,7 +23285,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": true,
@@ -23324,7 +23324,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 5,
+            "accepted": 8,
             "error": null
           },
           {
@@ -23343,7 +23343,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 2,
             "error": null
           },
@@ -23354,7 +23354,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -23370,13 +23370,13 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 12,
+        "resultCount": 16,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 12,
         "byReason": {
-          "non-review-host": 18,
+          "non-review-host": 11,
           "venue-production-page": 1
         }
       },
@@ -23395,18 +23395,6 @@
           "reason": "⚠️  provisional outlet \"nationaltheatre\" (not in registry) — onboard to outlet-registry.json after r"
         },
         {
-          "url": "https://www.thestage.co.uk/features/tiago-rodrigues-on-catarina-and-the-beauty-of-killing-fascists-national-theatre-london",
-          "host": "thestage.co.uk",
-          "outletId": "thestage",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Refusing to ingest — https://www.thestage.co.uk/features/tiago-rodrigues-on-catarina-and-the-beauty-"
-        },
-        {
           "url": "https://www.e-flux.com/notes/656073/catarina-and-the-beauty-of-killing-fascists",
           "host": "e-flux.com",
           "outletId": "e-flux",
@@ -23416,31 +23404,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  provisional outlet \"e-flux\" (not in registry) — onboard to outlet-registry.json after review.\n  "
-        },
-        {
-          "url": "https://thetheatretimes.com/catarina-and-the-beauty-of-killing-fascists-at-the-tampere-theatre-festival-do-we-defend-democracy-by-breaking-its-rules/",
-          "host": "thetheatretimes.com",
-          "outletId": "the-theatre-times",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
-        },
-        {
-          "url": "https://www.datathistle.com/event/3132980-catarina-and-the-beauty-of-killing-fascists/",
-          "host": "datathistle.com",
-          "outletId": "datathistle",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=e-flux.com): Scrapingdog HTTP 404: {\"message\":\"This UR"
         }
       ],
       "ingestSkippedByCap": [],
@@ -23455,32 +23419,11 @@
             "url": "https://events.nationaltheatre.org.uk/events/95881"
           },
           {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/features/tiago-rodrigues-on-catarina-and-the-beauty-of-killing-fascists-national-theatre-london"
-          },
-          {
             "outletId": "e-flux.com",
             "outlet": "e-flux.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.e-flux.com/notes/656073/catarina-and-the-beauty-of-killing-fascists"
-          },
-          {
-            "outletId": "the-theatre-times",
-            "outlet": "the-theatre-times",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thetheatretimes.com/catarina-and-the-beauty-of-killing-fascists-at-the-tampere-theatre-festival-do-we-defend-democracy-by-breaking-its-rules/"
-          },
-          {
-            "outletId": "datathistle.com",
-            "outlet": "datathistle.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.datathistle.com/event/3132980-catarina-and-the-beauty-of-killing-fascists/"
           },
           {
             "outletId": "guardian",
@@ -23495,10 +23438,29 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatremonkey.com/show/catarina-and-the-beauty-of-killing-fascists/"
+          },
+          {
+            "outletId": "datathistle.com",
+            "outlet": "datathistle.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.datathistle.com/event/3132980-catarina-and-the-beauty-of-killing-fascists/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.theguardian.com/stage/2026/sep/22/catarina-and-the-beauty-of-killing-fascists-review-fury-europe",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-22T19:26:42.853Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-catarina-and-the-beauty-of-killing-fascists-national-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-22T19:26:42.853Z"
+          },
           {
             "url": "https://www.londontheatre.co.uk/reviews/catarina-and-the-beauty-of-killing-fascists-review-national-theatre",
             "outletId": "londontheatre.co.uk",
@@ -23512,28 +23474,52 @@
             "firstSeenAt": "2026-09-22T10:37:37.415Z"
           },
           {
+            "url": "https://www.thestage.co.uk/reviews/catarina-and-the-beauty-of-killing-fascists-review-dorfman-theatre-national-theatre-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-22T19:26:42.853Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/catarina-and-the-beauty-of-killing-fascists-review-3grmddl3g",
+            "outletId": "thetimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-22T19:26:42.853Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/catarina-and-the-beauty-of-killing-fascists-at-the-national-theatre-review_1732209/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-22T19:26:42.853Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/catarina-and-beauty-killing-fascists-national-theatre-review-thoroughly-uncomfortable-watch",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-22T19:26:42.853Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/catarina-and-the-beauty-of-killing-fascists-national-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-22T19:26:42.853Z"
+          },
+          {
             "url": "https://www.londonboxoffice.co.uk/news/post/catarina-and-the-beauty-of-killing-fascists-dorfman-national-theatre-review",
             "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-22T00:36:35.717Z"
           },
           {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/catarina-and-the-beauty-of-killing-fascists-review/",
+            "outletId": "telegraph.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-22T19:26:42.853Z"
+          },
+          {
             "url": "https://www.timeout.com/london/theatre/catarina-and-the-beauty-of-killing-fascists-review",
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-09-22T00:36:35.717Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/theatre-news/news/catarina-and-the-beauty-of-killing-fascists-to-have-uk-premiere-at-the-national",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-21T00:49:24.476Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/catarina-and-the-beauty-of-killing-fascists",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-21T00:49:24.476Z"
           },
           {
             "url": "https://events.nationaltheatre.org.uk/events/95881",
@@ -23543,32 +23529,11 @@
             "firstSeenAt": "2026-09-18T01:46:03.483Z"
           },
           {
-            "url": "https://www.thestage.co.uk/features/tiago-rodrigues-on-catarina-and-the-beauty-of-killing-fascists-national-theatre-london",
-            "outletId": "thestage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-21T00:49:24.476Z"
-          },
-          {
             "url": "https://www.e-flux.com/notes/656073/catarina-and-the-beauty-of-killing-fascists",
             "outletId": "e-flux.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-21T00:49:24.476Z"
-          },
-          {
-            "url": "https://thetheatretimes.com/catarina-and-the-beauty-of-killing-fascists-at-the-tampere-theatre-festival-do-we-defend-democracy-by-breaking-its-rules/",
-            "outletId": "the-theatre-times",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-21T00:49:24.476Z"
-          },
-          {
-            "url": "https://www.datathistle.com/event/3132980-catarina-and-the-beauty-of-killing-fascists/",
-            "outletId": "datathistle.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-22T00:36:35.717Z"
           },
           {
             "url": "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre",
@@ -23583,12 +23548,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-21T00:49:24.476Z"
+          },
+          {
+            "url": "https://www.datathistle.com/event/3132980-catarina-and-the-beauty-of-killing-fascists/",
+            "outletId": "datathistle.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-22T00:36:35.717Z"
           }
         ],
-        "liveCount": 4,
-        "candidateCount": 11
+        "liveCount": 12,
+        "candidateCount": 17
       },
-      "computedAt": "2026-09-22T10:37:37.415Z"
+      "computedAt": "2026-09-22T19:26:42.853Z"
     },
     {
       "showId": "catch-of-the-day-off-broadway-2026",
@@ -30548,11 +30520,10 @@
       "candidatesRejected": {
         "count": 34,
         "byReason": {
-          "non-review-host": 27,
-          "aggregator-internal-nav": 2,
+          "aggregator-internal-nav": 1,
+          "non-review-host": 28,
           "merch-store": 3,
-          "non-review-path": 1,
-          "static-asset": 1
+          "static-asset": 2
         }
       },
       "dedupedVariants": [],
@@ -30580,7 +30551,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-09-22T10:37:37.415Z"
+      "computedAt": "2026-09-22T19:26:42.853Z"
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -30691,10 +30662,10 @@
       "candidatesRejected": {
         "count": 381,
         "byReason": {
-          "non-review-host": 36,
           "aggregator-internal-nav": 288,
           "not-http-url": 49,
-          "aggregator-section-root": 8
+          "aggregator-section-root": 8,
+          "non-review-host": 36
         }
       },
       "dedupedVariants": [],
@@ -30851,7 +30822,7 @@
         "liveCount": 0,
         "candidateCount": 6
       },
-      "computedAt": "2026-09-22T15:31:05.353Z"
+      "computedAt": "2026-09-22T19:26:42.853Z"
     },
     {
       "showId": "cowbois-west-end-2024",
@@ -31135,7 +31106,7 @@
       "showId": "crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
       "title": "Crazy Mama: A True Story of Love and Madness",
       "openingDate": "2026-09-22",
-      "status": "previews",
+      "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
@@ -31232,10 +31203,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 37,
+        "count": 36,
         "byReason": {
-          "non-review-host": 23,
-          "aggregator-internal-nav": 7,
+          "aggregator-internal-nav": 5,
+          "non-review-host": 24,
           "merch-store": 3,
           "venue-production-page": 4
         }
@@ -31332,7 +31303,7 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-09-22T10:37:37.415Z"
+      "computedAt": "2026-09-22T19:26:42.853Z"
     },
     {
       "showId": "crazy-mama-off-broadway-2026",
@@ -149254,23 +149225,23 @@
         "http://www.nj.com/entertainment/index.ssf/2016/10/the_cherry_orchard_review_diane_lane_cant_bring_th.html",
         "http://www.northjersey.com/arts-and-entertainment/theater-review-the-cherry-orchard-with-diane-lane-1.1677715",
         "https://www.theguardian.com/stage/2016/oct/16/the-cherry-orchard-review-diane-lane",
+        "https://www.theaterscene.net/plays/offbway-plays/the-cherry-orchard-4/tony-marinelli/",
         "https://culturesauce.com/the-cherry-orchard-chekhov-meets-parasite-in-simon-stones-brilliant-update-off-broadway-review/",
         "https://www.theatermania.com/news/review-the-cherry-orchard-reimagined-by-simon-stone-as-a-k-drama_1854057/",
         "https://nystagereview.com/2026/09/18/cherry-orchard-not-your-fathers/",
-        "https://www.theaterscene.net/plays/offbway-plays/the-cherry-orchard-4/tony-marinelli/",
         "https://www.nytimes.com/2026/09/19/theater/chekhov-cherry-orchard-simon-stone-korea.html",
         "https://www.nytimes.com/2026/09/18/theater/cherry-orchard-simon-stone-jeon-do-yeon.html",
         "https://www.wsj.com/articles/the-cherry-orchard-review-chekhov-speaks-korean-5064641a",
         "https://theaterpizzazz.com/a-korean-cast-blossoms-in-a-new-cherry-orchard/",
-        "https://www.vulture.com/article/chekhov-cherry-orchard-armory-stone-korean.html",
-        "https://www.show-score.com/off-broadway-shows/the-cherry-orchard",
-        "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026",
+        "https://www.show-score.com/off-broadway-shows/the-cherry-orchard-park-avenue-armory",
         "https://acsntn.substack.com/p/theater-the-cherry-orchard-at-park",
-        "https://www.newyorktheatreguide.com/show/47487-the-cherry-orchard"
+        "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026",
+        "https://www.newyorktheatreguide.com/show/47487-the-cherry-orchard",
+        "https://berkshirefinearts.com/09-21-2026_simon-stone-s-cherry-orchard.htm"
       ],
-      "dirFiles": 22,
+      "dirFiles": 23,
       "dirClean": 11,
-      "inReviewsJson": 9,
+      "inReviewsJson": 10,
       "missing": [
         {
           "url": "https://www.timeout.com/newyork/blog/broadway-review-diane-lane-suffers-beautifully-in-the-cherry-orchard-101416",
@@ -149357,14 +149328,14 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.theaterscene.net/plays/offbway-plays/the-cherry-orchard-4/tony-marinelli/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene",
+          "url": "https://www.show-score.com/off-broadway-shows/the-cherry-orchard-park-avenue-armory",
+          "host": "show-score.com",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://www.show-score.com/off-broadway-shows/the-cherry-orchard",
-          "host": "show-score.com",
+          "url": "https://berkshirefinearts.com/09-21-2026_simon-stone-s-cherry-orchard.htm",
+          "host": "berkshirefinearts.com",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -149376,6 +149347,24 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026",
+          "host": "abouttheartists.com",
+          "knownOutletId": "abouttheartists",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "abouttheartists--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026"
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://www.newyorktheatreguide.com/show/47487-the-cherry-orchard",
           "host": "newyorktheatreguide.com",
@@ -149439,7 +149428,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -149449,7 +149438,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           }
         ],
@@ -149459,12 +149448,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 309,
+        "count": 313,
         "byReason": {
+          "aggregator-internal-nav": 227,
           "not-http-url": 43,
-          "non-review-host": 33,
-          "aggregator-internal-nav": 228,
           "aggregator-section-root": 4,
+          "non-review-host": 36,
+          "non-review-path": 1,
+          "ticketing-reseller": 1,
           "merch-store": 1
         }
       },
@@ -149551,19 +149542,7 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.theaterscene.net/plays/offbway-plays/the-cherry-orchard-4/tony-marinelli/",
-          "host": "theaterscene.net",
-          "outletId": "theater-scene",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.show-score.com/off-broadway-shows/the-cherry-orchard",
+          "url": "https://www.show-score.com/off-broadway-shows/the-cherry-orchard-park-avenue-armory",
           "host": "show-score.com",
           "outletId": null,
           "provisional": true,
@@ -149573,6 +149552,18 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "unknown-outlet-no-host"
+        },
+        {
+          "url": "https://berkshirefinearts.com/09-21-2026_simon-stone-s-cherry-orchard.htm",
+          "host": "berkshirefinearts.com",
+          "outletId": "berkshirefinearts",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -149664,18 +149655,25 @@
             "url": "https://www.theguardian.com/stage/2016/oct/16/the-cherry-orchard-review-diane-lane"
           },
           {
-            "outletId": "theater-scene",
-            "outlet": "theater-scene",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theaterscene.net/plays/offbway-plays/the-cherry-orchard-4/tony-marinelli/"
-          },
-          {
             "outletId": "show-score.com",
             "outlet": "show-score.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.show-score.com/off-broadway-shows/the-cherry-orchard"
+            "url": "https://www.show-score.com/off-broadway-shows/the-cherry-orchard-park-avenue-armory"
+          },
+          {
+            "outletId": "berkshirefinearts.com",
+            "outlet": "berkshirefinearts.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://berkshirefinearts.com/09-21-2026_simon-stone-s-cherry-orchard.htm"
+          },
+          {
+            "outletId": "abouttheartists",
+            "outlet": "abouttheartists",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026"
           },
           {
             "outletId": "nytg",
@@ -149698,6 +149696,12 @@
             "outletId": "vulture.com",
             "state": "live",
             "firstSeenAt": "2026-09-20T22:08:24.514Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/the-cherry-orchard-4/tony-marinelli/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-09-22T10:37:37.415Z"
           },
           {
             "url": "https://culturesauce.com/the-cherry-orchard-chekhov-meets-parasite-in-simon-stones-brilliant-update-off-broadway-review/",
@@ -149740,18 +149744,6 @@
             "outletId": "theaterpizzazz.com",
             "state": "live",
             "firstSeenAt": "2026-09-22T00:36:35.717Z"
-          },
-          {
-            "url": "https://www.vulture.com/article/chekhov-cherry-orchard-armory-stone-korean.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-22T10:37:37.415Z"
-          },
-          {
-            "url": "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026",
-            "outletId": "abouttheartists.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-20T22:08:24.514Z"
           },
           {
             "url": "https://acsntn.substack.com/p/theater-the-cherry-orchard-at-park",
@@ -149844,18 +149836,25 @@
             "firstSeenAt": "2026-09-20T22:08:24.514Z"
           },
           {
-            "url": "https://www.theaterscene.net/plays/offbway-plays/the-cherry-orchard-4/tony-marinelli/",
-            "outletId": "theater-scene",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-22T10:37:37.415Z"
-          },
-          {
-            "url": "https://www.show-score.com/off-broadway-shows/the-cherry-orchard",
+            "url": "https://www.show-score.com/off-broadway-shows/the-cherry-orchard-park-avenue-armory",
             "outletId": "show-score.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-22T00:36:35.717Z"
+            "firstSeenAt": "2026-09-22T19:26:42.853Z"
+          },
+          {
+            "url": "https://berkshirefinearts.com/09-21-2026_simon-stone-s-cherry-orchard.htm",
+            "outletId": "berkshirefinearts.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-22T19:26:42.853Z"
+          },
+          {
+            "url": "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026",
+            "outletId": "abouttheartists",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-20T22:08:24.514Z"
           },
           {
             "url": "https://www.newyorktheatreguide.com/show/47487-the-cherry-orchard",
@@ -149866,9 +149865,9 @@
           }
         ],
         "liveCount": 9,
-        "candidateCount": 24
+        "candidateCount": 25
       },
-      "computedAt": "2026-09-22T10:37:37.415Z"
+      "computedAt": "2026-09-22T19:26:42.853Z"
     },
     {
       "showId": "the-children-off-west-end-2026",
@@ -156039,7 +156038,8 @@
         "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
         "https://www.theatreinla.com/the-hope-theory/reviews/10524/",
         "https://stageraw.com/the-hope-theory/",
-        "https://larchmontbuzz.com/theater/theater-review-the-hope-theory/"
+        "https://www.broadwayworld.com/los-angeles/article/Review-THE-HOPE-THEORY-at-Geffen-Playhouse-20240507",
+        "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway"
       ],
       "dirFiles": 7,
       "dirClean": 2,
@@ -156064,9 +156064,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://larchmontbuzz.com/theater/theater-review-the-hope-theory/",
-          "host": "larchmontbuzz.com",
-          "knownOutletId": null,
+          "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-HOPE-THEORY-at-Geffen-Playhouse-20240507",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
           "serpCensus": true
         }
       ],
@@ -156086,6 +156086,24 @@
               "file": "theatreinla--unknown.json",
               "flag": "clean",
               "urlInDir": "https://www.theatreinla.com/the-hope-theory/reviews/10524/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytg--bridget-gross.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway"
             }
           ],
           "serpCensus": true
@@ -156155,21 +156173,22 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 7,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
-        "count": 33,
+        "count": 39,
         "byReason": {
-          "non-review-host": 23,
-          "aggregator-internal-nav": 9,
-          "venue-production-page": 1
+          "aggregator-internal-nav": 12,
+          "non-review-host": 24,
+          "non-review-path": 1,
+          "venue-production-page": 2
         }
       },
       "dedupedVariants": [],
@@ -156211,16 +156230,16 @@
           "reason": "⚠️  provisional outlet \"stageraw\" (not in registry) — onboard to outlet-registry.json after review.\n"
         },
         {
-          "url": "https://larchmontbuzz.com/theater/theater-review-the-hope-theory/",
-          "host": "larchmontbuzz.com",
-          "outletId": "larchmontbuzz",
-          "provisional": true,
+          "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-HOPE-THEORY-at-Geffen-Playhouse-20240507",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld",
+          "provisional": false,
           "ok": false,
-          "noop": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  provisional outlet \"larchmontbuzz\" (not in registry) — onboard to outlet-registry.json after rev"
+          "reason": "the-hope-theory-off-broadway-2026: https://www.broadwayworld.com/los-angeles/article/Review-THE-HOPE-THEORY-at-Geffen-Playhouse-20240507 looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
         }
       ],
       "ingestSkippedByCap": [],
@@ -156249,11 +156268,11 @@
             "url": "https://stageraw.com/the-hope-theory/"
           },
           {
-            "outletId": "larchmontbuzz.com",
-            "outlet": "larchmontbuzz.com",
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://larchmontbuzz.com/theater/theater-review-the-hope-theory/"
+            "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-HOPE-THEORY-at-Geffen-Playhouse-20240507"
           },
           {
             "outletId": "theatreinla.com",
@@ -156261,6 +156280,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatreinla.com/the-hope-theory/reviews/10524/"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway"
           }
         ],
         "suppressedMissing": [],
@@ -156299,11 +156325,11 @@
             "firstSeenAt": "2026-09-22T10:37:37.415Z"
           },
           {
-            "url": "https://larchmontbuzz.com/theater/theater-review-the-hope-theory/",
-            "outletId": "larchmontbuzz.com",
+            "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-HOPE-THEORY-at-Geffen-Playhouse-20240507",
+            "outletId": "broadwayworld",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-20T22:08:24.514Z"
+            "firstSeenAt": "2026-09-22T19:26:42.853Z"
           },
           {
             "url": "https://www.theatreinla.com/the-hope-theory/reviews/10524/",
@@ -156311,12 +156337,19 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-22T10:37:37.415Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-22T19:26:42.853Z"
           }
         ],
         "liveCount": 2,
-        "candidateCount": 7
+        "candidateCount": 8
       },
-      "computedAt": "2026-09-22T10:37:37.415Z"
+      "computedAt": "2026-09-22T19:26:42.853Z"
     },
     {
       "showId": "the-house-of-the-negro-insane-off-broadway-2026",
@@ -160229,10 +160262,10 @@
       "candidatesRejected": {
         "count": 1438,
         "byReason": {
-          "non-review-host": 75,
           "aggregator-internal-nav": 1130,
           "not-http-url": 213,
-          "aggregator-section-root": 20
+          "aggregator-section-root": 20,
+          "non-review-host": 75
         }
       },
       "dedupedVariants": [],
@@ -160834,7 +160867,7 @@
         "liveCount": 0,
         "candidateCount": 22
       },
-      "computedAt": "2026-09-22T15:31:05.353Z"
+      "computedAt": "2026-09-22T19:26:42.853Z"
     },
     {
       "showId": "the-little-mermaid-the-musical-off-broadway-2026",
