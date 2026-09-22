@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
   "openingDate": "2026-09-17",
-  "detectedAt": "2026-09-22T11:21:48.895Z",
+  "detectedAt": "2026-09-22T11:41:53.251Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "theater-scene--victor-gluck-editor-in-chief.json",
-      "outletId": "theater-scene",
-      "criticName": "Victor Gluck, Editor-in-Chief",
-      "url": "https://www.theaterscene.net/plays/offbway-plays/the-cherry-orchard-4/tony-marinelli/",
-      "fullTextLen": 13511,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "wsj--charles-isherwood.json",
       "outletId": "wsj",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
