@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-09-22T00:28:55.493Z",
-  "processed": 83,
+  "updatedAt": "2026-09-22T00:43:22.233Z",
+  "processed": 85,
   "failed": 406,
-  "successRate": "17.0%",
+  "successRate": "17.3%",
   "tierBreakdown": {
     "playwright": 49,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 2,
     "scrapingbee": 19,
-    "brightdata": 3,
+    "brightdata": 5,
     "archiveToday": 0,
     "archive": 11
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-09-21T23:22:01.306Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-21T23:25:42.473Z",
-      "event": "bb-session",
-      "session": "1887efc9",
-      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
-    },
-    {
-      "t": "2026-09-21T23:25:43.014Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-21T23:28:28.509Z",
-      "event": "bb-session",
-      "session": "7ac0e337",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/titanique-review-celine-d"
-    },
     {
       "t": "2026-09-21T23:28:29.133Z",
       "event": "bb-cookie-inject",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-09-22T00:26:08.344Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-22T00:29:36.836Z",
+      "event": "bb-session",
+      "session": "6ea7ffa3",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-22T00:29:37.549Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-22T00:39:11.555Z",
+      "event": "bb-session",
+      "session": "ad8fa28c",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-22T00:39:12.368Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
