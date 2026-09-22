@@ -1106,3 +1106,14 @@ to drain — draining it would have injected a Marvel film review into a theatre
 **Monitor lesson:** a `_pending` file is NOT presumptively a recoverable review. Read its url + publishDate
 before drafting a drain — every `_pending` file across all 5 shows this night was prior-run or out-of-scope
 (attempt 20A), and the drain would have been net-negative in every case.
+
+## Gate: outlet index pages lag publication by hours (BRO-3998, 2026-09-21 Catarina)
+Ten outlet-index probes (Guardian/Times/Standard/WhatsOnStage/... section pages) all returned byte-count-proven clean negatives while Telegraph and LondonTheatre1 reviews had already been live ~2h. Google News RSS found both instantly.
+**How to apply:** on opening night, census via `https://news.google.com/rss/search?q="<title>"+review&hl=en-GB&gl=GB&ceid=GB:en` (plain curl + full Chrome UA, no scraper spend) BEFORE trusting any index-page negative. An index probe returning nothing is not evidence of non-publication.
+
+## Gate: promoted-out-of-_pending files with empty body are never retried (BRO-3999, 2026-09-21 Catarina)
+`replay-pending-bylines.js` resolved the Telegraph byline and promoted the file out of `_pending/`, but left `fullText=null` / `contentTier=stub` / `contentTierReason='No text content'` — a state `reviews.json` can never admit, and nothing retries it. `triage-review-gap.js` correctly said `ingested-but-excluded`. A cookie-plain fetch (`ingest-review-from-url.js --outlet=telegraph`, cookies already on disk) got the text first try, zero BD/SB spend.
+**How to apply:** when an outlet shows `ingested-but-excluded` with `noTextOrScoreSignal`, check for a promoted stub with a null body before anything else — re-ingest by URL, don't chase discovery. Bare telegraph.co.uk URLs need `--outlet=telegraph` (ambiguous vs sunday-telegraph).
+
+## Gotcha: add/add rebase carries stub metadata onto a complete file (2026-09-21 Catarina)
+When the pipeline and a monitor both create the same review-texts file, git reports add/add. Union-merging origin's non-null fields carries `pendingReason=no-byline`, `contentTierReason='No text content'`, `isFullReview=false` onto the now-complete file and keeps it excluded. Re-assert those three from the ingested copy after any such merge.
