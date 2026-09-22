@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T12:21:27.730Z",
+  "generatedAt": "2026-09-22T13:10:35.899Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -776,23 +776,22 @@
       "status": "open",
       "slug": "catarina-and-the-beauty-of-killing-fascists-west-end",
       "thumbnail": "/images/shows/catarina-and-the-beauty-of-killing-fascists-west-end-2026/thumbnail.jpg",
-      "siteScore": 66.92,
-      "liveScore": 67,
-      "scoreDrift": 0.0799999999999983,
+      "siteScore": 65.25,
+      "liveScore": 65,
+      "scoreDrift": -0.25,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
-      "t1": 3,
+      "total": 10,
+      "t1": 5,
       "t2": 5,
       "t3": 0,
-      "positive": 2,
+      "positive": 3,
       "mixed": 4,
-      "negative": 2,
+      "negative": 3,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:1/3",
           "hi-conf:4/6"
         ],
         "highConfidence": 4,
@@ -814,14 +813,6 @@
         },
         {
           "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
           "isDualMarket": true
         },
         {
@@ -918,6 +909,18 @@
           "p": 2,
           "m": 4,
           "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-22T13:10:35.899Z",
+          "rc": 10,
+          "s": 65.25,
+          "t1": 5,
+          "t2": 5,
+          "t3": 0,
+          "p": 3,
+          "m": 4,
+          "n": 3,
           "bc": "waiting"
         }
       ]
