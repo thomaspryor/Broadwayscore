@@ -1119,3 +1119,10 @@ Ten outlet-index probes (Guardian/Times/Standard/WhatsOnStage/... section pages)
 
 ## Gotcha: add/add rebase carries stub metadata onto a complete file (2026-09-21 Catarina)
 When the pipeline and a monitor both create the same review-texts file, git reports add/add. Union-merging origin's non-null fields carries `pendingReason=no-byline`, `contentTierReason='No text content'`, `isFullReview=false` onto the now-complete file and keeps it excluded. Re-assert those three from the ingested copy after any such merge.
+
+## Gate: aggregator headline/slug title-match is exact — an outlet's own typo makes the review invisible (2026-09-22, BRO-4001)
+BroadwayWorld UK published its review of `catarina-and-the-beauty-of-killing-fascists-west-end-2026` (09:14:03Z) with the title misspelled **CATERINA** in both the headline and the URL slug. Discovery never found it; `triage-review-gap.js` returned `true-missed-discovery` (0 review-texts files, reviews.json false on local AND origin/main, absent from prod, no `unverifiedOriginChecks`). The opening-night monitor ingested it by hand ~51 min after publication. Google News had still not indexed the article 1h+ later, so the SERP channel would not have rescued it either — a single-character outlet typo silently removed a T2 review from the night.
+
+**Detection:** a census outlet with a published review and NO event in `data/audit/stage-latency.jsonl`, where the outlet's own headline differs from shows.json by a small edit distance.
+**Fix direction:** normalized fuzzy match (edit distance / token-set) with a tight threshold on the BWW discovery title-match and its slug-derived match, extracted to `scripts/lib/` and covered by a require()-based fixture per CLAUDE.md rule 15.
+**Adjacent bug, same ingest:** `ingest-review-from-url.js` extracted `criticName` for this BWW article as the raw author URL `https://www.broadwayworld.com/author/Gary-Naylor` instead of `Gary Naylor` — the BWW author extractor must de-slugify the last path segment.
