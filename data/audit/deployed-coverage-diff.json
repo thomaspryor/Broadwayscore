@@ -1,13 +1,12 @@
 {
-  "generatedAt": "2026-09-22T05:41:09.279Z",
+  "generatedAt": "2026-09-22T10:37:53.683Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 138,
-  "clean": 131,
-  "defective": 7,
+  "clean": 137,
+  "defective": 1,
   "byType": {
-    "score-drift": 6,
     "unreachable": 1
   },
   "shows": [
@@ -25,96 +24,6 @@
       "missingFromProd": [],
       "localCount": 0,
       "deployedCount": null
-    },
-    {
-      "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
-      "title": "BLOODSPORT: After Helen of Troy",
-      "openingDate": "2026-09-13",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 73.05 vs local 73.13 (Δ0.08)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 27,
-      "deployedCount": 27
-    },
-    {
-      "showId": "man-to-man-west-end-2026",
-      "title": "Man to Man",
-      "openingDate": "2026-09-11",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.94 vs local 77.08 (Δ0.14)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 33,
-      "deployedCount": 33
-    },
-    {
-      "showId": "kimberly-akimbo-off-west-end-2026",
-      "title": "Kimberly Akimbo",
-      "openingDate": "2026-09-09",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 81.05 vs local 81.22 (Δ0.17)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 27,
-      "deployedCount": 27
-    },
-    {
-      "showId": "a-month-in-the-country-west-end-2026",
-      "title": "A Month in the Country",
-      "openingDate": "2026-09-02",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.44 vs local 79.96 (Δ0.52)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 29,
-      "deployedCount": 29
-    },
-    {
-      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
-      "title": "Much Ado About Nothing",
-      "openingDate": "2026-06-20",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.48 vs local 78.7 (Δ0.22)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "title": "Moulin Rouge! The Musical",
-      "openingDate": "2022-01-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 69.86 vs local 69.76 (Δ0.1)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21
     }
   ]
 }
