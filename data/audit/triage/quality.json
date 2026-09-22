@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-09-21T13:24:59.021Z",
+  "lastChecked": "2026-09-22T12:06:17.805Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,22 +9,22 @@
     {
       "name": "Quality: star-vs-score mismatch",
       "status": "warn",
-      "message": "1 NEW review(s) whose explicit rating contradicts the score (worst: a-midsummer-nights-dream-west-end-2026 The Times (UK) 2/5 stars→40 vs LLM 73, gap 33)"
+      "message": "2 NEW review(s) whose explicit rating contradicts the score (worst: oh-mary-west-end-2025 Lbc 1/5→20 vs LLM 78, gap 58)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.5% scored (20885/21204)"
+      "message": "98.5% scored (20904/21232)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "warn",
-      "message": "17 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), reviews scored off an excerpt that now have fullText, never flagged for rescore, critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority), exclusion flag contradicted by its own content-verification pass (baseline-diff), cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff), critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff), a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance), maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)"
+      "message": "16 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), reviews scored off an excerpt that now have fullText, never flagged for rescore, critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority), exclusion flag contradicted by its own content-verification pass (baseline-diff), cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff), critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff), a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)"
     },
     {
       "name": "Quality: DMARC deliverability",
       "status": "warn",
-      "message": "Newest DMARC report is 23d old (reporters send daily)"
+      "message": "Newest DMARC report is 24d old (reporters send daily)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -39,12 +39,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1212 outlet(s), 44196 review(s)"
+      "message": "No broken-extractor signature in 1216 outlet(s), 44256 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1212 outlet(s), 44196 review(s)"
+      "message": "No broken-extractor signature in 1216 outlet(s), 44256 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -59,7 +59,7 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "109 outlet×market rows checked, none NEW silent 2+ consecutive weeks (38 known/baselined, 7d ago)"
+      "message": "110 outlet×market rows checked, none NEW silent 2+ consecutive weeks (37 known/baselined, 20h ago)"
     }
   ]
 }
