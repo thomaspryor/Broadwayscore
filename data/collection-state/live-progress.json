@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-09-22T18:58:10.742Z",
-  "processed": 71,
-  "failed": 329,
-  "successRate": "17.8%",
+  "updatedAt": "2026-09-22T19:24:03.245Z",
+  "processed": 74,
+  "failed": 340,
+  "successRate": "17.9%",
   "tierBreakdown": {
-    "playwright": 43,
+    "playwright": 45,
     "amp": 0,
     "browserbase": 13,
     "directCookies": 0,
     "scrapingbee": 20,
-    "brightdata": 3,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 5
+    "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-09-22T16:16:51.183Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-22T16:17:08.312Z",
-      "event": "bb-session",
-      "session": "8cbe1ecb",
-      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
-    },
     {
       "t": "2026-09-22T16:17:08.679Z",
       "event": "bb-cookie-inject",
@@ -125,6 +114,17 @@
       "t": "2026-09-22T17:32:26.662Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-22T19:20:52.848Z",
+      "event": "bb-session",
+      "session": "3dd94044",
+      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
+    },
+    {
+      "t": "2026-09-22T19:20:53.619Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

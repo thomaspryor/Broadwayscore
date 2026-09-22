@@ -70,7 +70,10 @@
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/one-minute-critic--jerry-portwood.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
     "the-cherry-orchard-park-avenue-armory-off-broadway-2026/wsj--charles-isherwood.json",
-    "two-strangers-bway-2025/playbill--margaret-hall.json"
+    "two-strangers-bway-2025/playbill--margaret-hall.json",
+    "macbeth-off-broadway-2026/ew--unknown.json",
+    "macbeth-off-broadway-2026/timeout--unknown.json",
+    "the-invention-of-love-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
   ],
   "failed": [
     "whos-afraid-of-virginia-woolf-west-end-2026/front-row-center--unknown.json",
@@ -349,7 +352,6 @@
     "macbeth-off-broadway-2026/times-uk--clive-davis.json",
     "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json",
     "the-invention-of-love-off-broadway-2026/thestage--ian-shine.json",
-    "the-invention-of-love-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "the-invention-of-love-off-broadway-2026/times-uk--dominic-maxwell.json",
     "slam-frank-off-broadway-2026/nytimes--laura-collins-hughes.json",
     "the-cherry-orchard-park-avenue-armory-off-broadway-2026/theatermania--unknown.json",
@@ -401,7 +403,19 @@
     "the-rocky-horror-show-2026/latimes--alexandra-del-rosario.json",
     "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
     "schmigadoon-2026/variety--clayton-davis.json",
-    "golden-boy-off-west-end-2026/times-uk--the-times.json"
+    "golden-boy-off-west-end-2026/times-uk--the-times.json",
+    "macbeth-off-broadway-2026/hollywood-reporter--unknown.json",
+    "macbeth-off-broadway-2026/abc-news--unknown.json",
+    "macbeth-off-broadway-2026/newsday--unknown.json",
+    "macbeth-off-broadway-2026/thewrap--unknown.json",
+    "macbeth-off-broadway-2026/chicagotribune--unknown.json",
+    "macbeth-off-broadway-2026/huffpost--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/thestage--unknown.json",
+    "the-hope-theory-off-broadway-2026/nytg--bridget-gross.json",
+    "the-hope-theory-off-broadway-2026/wsj--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/everything-theatre--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/standard--nick-curtis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -448,7 +462,9 @@
       "garry-starr-classic-penguins-off-broadway-2026/one-minute-critic--unknown.json",
       "holy-fool-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
       "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/one-minute-critic--jerry-portwood.json",
-      "two-strangers-bway-2025/playbill--margaret-hall.json"
+      "two-strangers-bway-2025/playbill--margaret-hall.json",
+      "macbeth-off-broadway-2026/timeout--unknown.json",
+      "the-invention-of-love-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
     ],
     "amp": [],
     "browserbase": [
@@ -492,7 +508,8 @@
     "brightdata": [
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "the-cherry-orchard-park-avenue-armory-off-broadway-2026/wsj--charles-isherwood.json",
-      "electra-persona-west-end-2026/vocaleyes--unknown.json"
+      "electra-persona-west-end-2026/vocaleyes--unknown.json",
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -500,11 +517,12 @@
       "million-dollar-quartet-off-west-end-2026/broadwayworld--michael-major.json",
       "the-story-west-end-2026/theatrecat--unknown.json",
       "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+      "macbeth-off-broadway-2026/ew--unknown.json"
     ]
   },
   "startTime": "2026-09-22T14:27:32.733Z",
-  "lastProcessed": "oliver-west-end-2024/i-paper--fiona-mountford.json",
+  "lastProcessed": "my-sons-a-queer-but-what-can-you-do-west-end-2026/thestage--paul-vale.json",
   "log": [
     {
       "t": "2026-09-22T15:51:13.507Z",
@@ -683,12 +701,24 @@
       "t": "2026-09-22T17:32:26.662Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-22T19:20:52.848Z",
+      "event": "bb-session",
+      "session": "3dd94044",
+      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
+    },
+    {
+      "t": "2026-09-22T19:20:53.619Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ],
   "recoveredAfterFailure": [
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/timeout-london--tom-wicker.json",
     "holy-fool-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
     "the-cherry-orchard-park-avenue-armory-off-broadway-2026/wsj--charles-isherwood.json",
-    "two-strangers-bway-2025/playbill--margaret-hall.json"
+    "two-strangers-bway-2025/playbill--margaret-hall.json",
+    "the-invention-of-love-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
   ]
 }
