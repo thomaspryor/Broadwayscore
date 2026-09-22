@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T00:17:44.530Z",
+  "generatedAt": "2026-09-22T00:44:07.199Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -431,10 +431,6 @@
       },
       "missingT1": [
         {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
           "name": "Vulture",
           "isDualMarket": false
         },
@@ -781,27 +777,27 @@
       "slug": "catarina-and-the-beauty-of-killing-fascists-west-end",
       "thumbnail": "/images/shows/catarina-and-the-beauty-of-killing-fascists-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 89,
+      "liveScore": 78,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 3,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 1,
-      "t2": 0,
+      "t2": 1,
       "t3": 0,
       "positive": 1,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "2/8 total",
           "T1:0/3",
           "T2:1/2",
-          "hi-conf:0/6"
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -879,6 +875,18 @@
           "t3": 0,
           "p": 1,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-22T00:44:07.199Z",
+          "rc": 2,
+          "s": 78,
+          "t1": 1,
+          "t2": 1,
+          "t3": 0,
+          "p": 1,
+          "m": 1,
           "n": 0,
           "bc": "waiting"
         }
