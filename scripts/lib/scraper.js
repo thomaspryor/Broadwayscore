@@ -166,12 +166,24 @@ function domainMatchesExpected(expectedDomain, actualDomain) {
   // Known alias from DOMAIN_ALIAS_GROUPS (e.g., vulture.com → nymag.com)
   const aliases = DOMAIN_ALIASES.get(expectedDomain);
   if (aliases && aliases.has(actualDomain)) return true;
-  // Registry domain aliases (e.g., oneminutecritic.com ↔ 1minutecritic.com)
+  // Registry domain aliases (e.g., oneminutecritic.com ↔ 1minutecritic.com).
+  // Subdomain-aware on the alias itself: an outlet's real content can live on
+  // a subdomain of a registered alias (Daily Mail's e-edition publishes at
+  // newspaper.dailymail.com, a subdomain of the registered alias
+  // dailymail.com, not dailymail.com itself) — a bare Set.has() only matched
+  // the literal alias string, so those hosts were silently dropped by every
+  // caller of this gate (SERP host validation, URL-mismatch verification).
+  // Found via issue #908; validate-review-submission.js's parallel
+  // findMatchingOutletByDomain() already does this suffix check.
   if (_registryDomainAliases) {
     const regAliases = _registryDomainAliases[expectedDomain];
-    if (regAliases && regAliases.has(actualDomain)) return true;
+    if (regAliases && [...regAliases].some(a => actualDomain === a || actualDomain.endsWith('.' + a))) {
+      return true;
+    }
     const regAliases2 = _registryDomainAliases[actualDomain];
-    if (regAliases2 && regAliases2.has(expectedDomain)) return true;
+    if (regAliases2 && [...regAliases2].some(a => expectedDomain === a || expectedDomain.endsWith('.' + a))) {
+      return true;
+    }
   }
   return false;
 }
