@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T00:36:37.919Z",
+  "generatedAt": "2026-09-22T05:41:00.050Z",
   "windowDays": 45,
   "showsScanned": 77,
   "gaps": [
@@ -17,9 +17,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-story-west-end-2026",
       "firstSeen": "2026-09-18T14:47:11.077Z",
-      "fileAgeHours": 81.82383472222222,
+      "fileAgeHours": 86.89664888888889,
       "gapSeenAt": "2026-09-20T16:50:34.106Z",
-      "nonTerminalAgeHours": 31.767725833333333
+      "nonTerminalAgeHours": 36.84054
     },
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
@@ -34,9 +34,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=my-sons-a-queer-but-what-can-you-do-west-end-2026 --url=https://www.thestage.co.uk/news/production-news/my-sons-a-queer-but-what-can-you-do-lands-new-york-premiere --outlet=thestage --critic=\"Paul Vale\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-17T00:46:30.887Z",
-      "fileAgeHours": 119.83501722222222,
+      "fileAgeHours": 124.90783055555555,
       "gapSeenAt": "2026-09-21T11:24:17.555Z",
-      "nonTerminalAgeHours": 13.205656666666666
+      "nonTerminalAgeHours": 18.278470833333333
     },
     {
       "showId": "the-winters-tale-off-broadway-2026",
@@ -52,9 +52,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-winters-tale-off-broadway-2026",
       "firstSeen": "2026-08-13T10:48:31.706Z",
-      "fileAgeHours": 949.8015372222222,
+      "fileAgeHours": 954.8743480555555,
       "gapSeenAt": "2026-09-20T22:08:26.926Z",
-      "nonTerminalAgeHours": 26.46972027777778
+      "nonTerminalAgeHours": 31.542534444444446
     },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
@@ -69,9 +69,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 126.59624083333334,
+      "fileAgeHours": 131.66905166666666,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 126.51536361111111
+      "nonTerminalAgeHours": 131.5881777777778
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -86,9 +86,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays --outlet=thestage --critic=\"Dave Fargnoli\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T17:56:44.755Z",
-      "fileAgeHours": 126.66467944444445,
+      "fileAgeHours": 131.73749138888888,
       "gapSeenAt": "2026-09-21T21:33:52.974Z",
-      "nonTerminalAgeHours": 3.0458180555555554
+      "nonTerminalAgeHours": 8.118632222222223
     },
     {
       "showId": "the-hope-theory-off-broadway-2026",
@@ -104,9 +104,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-hope-theory-off-broadway-2026",
       "firstSeen": "2026-09-18T10:20:54.798Z",
-      "fileAgeHours": 86.26195138888889,
+      "fileAgeHours": 91.33476361111111,
       "gapSeenAt": "2026-09-19T01:54:16.553Z",
-      "nonTerminalAgeHours": 70.705935
+      "nonTerminalAgeHours": 75.77874916666667
     }
   ],
   "contradictions": []

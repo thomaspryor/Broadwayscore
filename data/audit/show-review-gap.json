@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-22T00:36:35.717Z",
+  "generatedAt": "2026-09-22T05:40:57.861Z",
   "windowDays": 1095,
-  "targets": 275,
-  "auditedThisRun": 15,
-  "carriedForward": 545,
+  "targets": 274,
+  "auditedThisRun": 3,
+  "carriedForward": 557,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
@@ -13,7 +13,7 @@
     "totalFlaggedMisses": 800,
     "totalRecoverable": 6,
     "totalRecovered": 7,
-    "priorProductionCitations": 2506
+    "priorProductionCitations": 2505
   },
   "results": [
     {
@@ -30666,8 +30666,7 @@
       "status": "upcoming",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-the-metropolitan-operas-new-cosi-fan-tutte",
-        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-The-Critics-Think-of-COSI-FAN-TUTTE-At-The-Met-With-Kelli-OHara-20180316"
+        "https://playbill.com/article/read-the-reviews-for-the-metropolitan-operas-new-cosi-fan-tutte"
       ],
       "aggregatorListedUrls": [
         "https://www.theepochtimes.com/opera-review-cosi-fan-tutte_2468625.html",
@@ -30675,8 +30674,7 @@
         "http://www.vulture.com/2018/03/cos-fan-tutte-kelli-ohara-and-the-shadow-of-levine.html",
         "https://www.nytimes.com/2018/03/16/arts/music/cosi-fan-tutte-review-met-opera.html",
         "http://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/",
-        "https://www.wsj.com/articles/cosi-fan-tutte-review-a-carnival-of-deception-1521485960",
-        "https://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/"
+        "https://www.wsj.com/articles/cosi-fan-tutte-review-a-carnival-of-deception-1521485960"
       ],
       "dirFiles": 3,
       "dirClean": 0,
@@ -30705,13 +30703,6 @@
         },
         {
           "url": "http://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/",
           "host": "observer.com",
           "knownOutletId": "observer",
           "priorRun": true,
@@ -30766,12 +30757,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 380,
+        "count": 100,
         "byReason": {
-          "aggregator-internal-nav": 284,
-          "not-http-url": 49,
-          "aggregator-section-root": 8,
-          "non-review-host": 39
+          "non-review-host": 20,
+          "aggregator-internal-nav": 67,
+          "not-http-url": 9,
+          "aggregator-section-root": 4
         }
       },
       "dedupedVariants": [],
@@ -30779,10 +30770,6 @@
         {
           "url": "https://playbill.com/article/read-the-reviews-for-the-metropolitan-operas-new-cosi-fan-tutte",
           "publishDate": "2018-03-20"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-The-Critics-Think-of-COSI-FAN-TUTTE-At-The-Met-With-Kelli-OHara-20180316",
-          "publishDate": "2018-03-16"
         }
       ],
       "weIngestBlocked": [
@@ -30806,12 +30793,6 @@
         },
         {
           "url": "http://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/",
-          "host": "observer.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/",
           "host": "observer.com",
           "priorRun": true,
           "reason": "prior-run"
@@ -30849,13 +30830,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "http://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/"
-          },
-          {
-            "outletId": "observer",
-            "outlet": "observer",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/"
           },
           {
             "outletId": "epoch-times",
@@ -30904,13 +30878,6 @@
             "firstSeenAt": "2026-09-20T01:54:21.561Z"
           },
           {
-            "url": "https://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/",
-            "outletId": "observer",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-20T01:54:21.561Z"
-          },
-          {
             "url": "https://www.theepochtimes.com/opera-review-cosi-fan-tutte_2468625.html",
             "outletId": "epoch-times",
             "state": "IN_FLIGHT",
@@ -30928,7 +30895,7 @@
         "liveCount": 0,
         "candidateCount": 6
       },
-      "computedAt": "2026-09-22T00:36:35.717Z"
+      "computedAt": "2026-09-22T05:40:57.861Z"
     },
     {
       "showId": "cowbois-west-end-2024",
@@ -33129,21 +33096,21 @@
         "https://theatreandtonic.co.uk/blog/darkling-bush-theatre-review",
         "https://viewfromthegods.co.uk/2026/09/17/darkling-bush-theatre/",
         "https://www.theguardian.com/stage/2026/sep/17/darkling-review-bush-theatre-london-linnea-berthelsen",
-        "https://www.thereviewshub.com/darkling-bush-theatre-london/",
         "https://chiswickcalendar.co.uk/darkling-bush-theatre-review/",
+        "https://www.thereviewshub.com/darkling-bush-theatre-london/",
         "https://www.timeout.com/london/theatre/darkling-review",
         "https://www.allthatdazzles.co.uk/post/review-darkling-bush-theatre",
         "https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london",
         "https://redbuslondinium.uk/2026/09/15/review-darkling-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
         "https://www.bushtheatre.co.uk/event/darkling/",
+        "https://www.pinkprincetheatre.com/post/review-darkling-bush-theatre",
         "https://lovelondonloveculture.com/2026/09/16/review-darkling-bush-theatre/",
         "https://khambayswordswordswords.blog/2026/09/18/darkling-at-the-bush-theatre-2026-review/",
-        "https://www.pinkprincetheatre.com/post/review-darkling-bush-theatre",
-        "https://readaboutstuff.com/2026/09/16/review-darkling-bush-theatre-london/",
         "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre",
+        "https://readaboutstuff.com/2026/09/16/review-darkling-bush-theatre-london/",
         "https://www.atctheatre.com/production/darkling-2026/",
-        "https://onceaweektheatre.com/darkling-at-the-bush-theatre/",
         "https://www.broadwayworld.com/westend/article/Review-DARKLING-Bush-Theatre-20260916",
+        "https://onceaweektheatre.com/darkling-at-the-bush-theatre/",
         "https://liamodell.com/2026/09/16/darkling-review-bush-theatre-linnea-berthelsen-stranger-things-titas-halder-birmingham-oxford-manchester/"
       ],
       "dirFiles": 35,
@@ -33243,7 +33210,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -33307,7 +33274,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -33317,7 +33284,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           }
         ],
@@ -33327,11 +33294,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 13,
+        "count": 12,
         "byReason": {
-          "non-review-host": 10,
-          "event-listing": 1,
-          "ticketing-listing": 2
+          "non-review-host": 9,
+          "ticketing-listing": 2,
+          "event-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -33427,16 +33394,16 @@
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
-            "url": "https://www.thereviewshub.com/darkling-bush-theatre-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-20T07:18:46.455Z"
-          },
-          {
             "url": "https://chiswickcalendar.co.uk/darkling-bush-theatre-review/",
             "outletId": "chiswickcalendar.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-21T21:33:50.564Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/darkling-bush-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
             "url": "https://www.timeout.com/london/theatre/darkling-review",
@@ -33457,14 +33424,20 @@
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
+            "url": "https://www.pinkprincetheatre.com/post/review-darkling-bush-theatre",
+            "outletId": "pinkprincetheatre.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-20T07:18:46.455Z"
+          },
+          {
             "url": "https://khambayswordswordswords.blog/2026/09/18/darkling-at-the-bush-theatre-2026-review/",
             "outletId": "khambayswordswordswords.blog",
             "state": "live",
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
-            "url": "https://www.pinkprincetheatre.com/post/review-darkling-bush-theatre",
-            "outletId": "pinkprincetheatre.com",
+            "url": "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre",
+            "outletId": "voicemag.uk",
             "state": "live",
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
@@ -33475,20 +33448,14 @@
             "firstSeenAt": "2026-09-21T11:24:10.560Z"
           },
           {
-            "url": "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre",
-            "outletId": "voicemag.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-20T07:18:46.455Z"
-          },
-          {
-            "url": "https://onceaweektheatre.com/darkling-at-the-bush-theatre/",
-            "outletId": "onceaweektheatre.com",
+            "url": "https://www.broadwayworld.com/westend/article/Review-DARKLING-Bush-Theatre-20260916",
+            "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-09-21T21:33:50.564Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-DARKLING-Bush-Theatre-20260916",
-            "outletId": "broadwayworld.com",
+            "url": "https://onceaweektheatre.com/darkling-at-the-bush-theatre/",
+            "outletId": "onceaweektheatre.com",
             "state": "live",
             "firstSeenAt": "2026-09-21T21:33:50.564Z"
           },
@@ -33530,7 +33497,7 @@
         "liveCount": 17,
         "candidateCount": 21
       },
-      "computedAt": "2026-09-21T21:33:50.564Z"
+      "computedAt": "2026-09-22T05:40:57.861Z"
     },
     {
       "showId": "data-off-broadway-2026",
@@ -159912,10 +159879,10 @@
       "candidatesRejected": {
         "count": 1438,
         "byReason": {
+          "non-review-host": 75,
           "aggregator-internal-nav": 1130,
           "not-http-url": 213,
-          "aggregator-section-root": 20,
-          "non-review-host": 75
+          "aggregator-section-root": 20
         }
       },
       "dedupedVariants": [],
@@ -160517,7 +160484,7 @@
         "liveCount": 0,
         "candidateCount": 22
       },
-      "computedAt": "2026-09-22T00:36:35.717Z"
+      "computedAt": "2026-09-22T05:40:57.861Z"
     },
     {
       "showId": "the-little-mermaid-the-musical-off-broadway-2026",
