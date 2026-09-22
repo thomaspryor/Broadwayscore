@@ -28,6 +28,7 @@ const showsPath = path.join(__dirname, '../data/shows.json');
 const reviewsPath = path.join(__dirname, '../data/reviews.json');
 const reviewTextsPath = path.join(__dirname, '../data/review-texts');
 const outletRegistryPath = path.join(__dirname, '../data/outlet-registry.json');
+const criticRegistryPath = path.join(__dirname, '../data/critic-registry.json');
 
 const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf-8'));
 const shows = showsData.shows || showsData; // Handle both formats
@@ -71,6 +72,35 @@ function findMatchingOutletByDomain(url) {
   if (OUTLET_DOMAIN_LOOKUP.has(hostname)) return OUTLET_DOMAIN_LOOKUP.get(hostname);
   for (const [domain, entry] of OUTLET_DOMAIN_LOOKUP) {
     if (hostname.endsWith('.' + domain)) return entry;
+  }
+  return null;
+}
+
+// Loaded once at module load — critic id/displayName -> registry entry
+// (knownOutlets, totalReviews, etc.), used to corroborate a submitter-
+// provided critic name against an outlet match.
+const CRITIC_REGISTRY = (() => {
+  try {
+    const data = JSON.parse(fs.readFileSync(criticRegistryPath, 'utf-8'));
+    return data.critics || data;
+  } catch (err) {
+    console.error('Could not load critic-registry.json for critic matching (non-fatal):', err.message);
+    return {};
+  }
+})();
+
+/**
+ * Find a registered critic matching a submitter-provided name — exact match
+ * on the registry id (slug) or displayName, case-insensitive.
+ */
+function findMatchingCritic(criticName) {
+  if (!criticName) return null;
+  const normalized = criticName.toLowerCase().trim();
+  const slug = normalized.replace(/\s+/g, '-');
+  for (const [id, c] of Object.entries(CRITIC_REGISTRY)) {
+    if (id.toLowerCase() === slug || (c.displayName || '').toLowerCase() === normalized) {
+      return { id, ...c };
+    }
   }
   return null;
 }
@@ -184,7 +214,7 @@ function findMatchingShow(showName) {
 /**
  * Use Claude API to validate the submission
  */
-async function validateWithClaude(submissionData, matchedShowCandidates = [], matchedOutlet = null) {
+async function validateWithClaude(submissionData, matchedShowCandidates = [], matchedOutlet = null, matchedCritic = null) {
   const showsList = shows.map(s => `- ${s.title} (${s.id})`).join('\n');
 
   const today = new Date().toISOString().split('T')[0];
@@ -208,6 +238,13 @@ async function validateWithClaude(submissionData, matchedShowCandidates = [], ma
   const outletNote = matchedOutlet
     ? `\nDETERMINISTIC OUTLET DOMAIN MATCH: the review URL's host resolves to a domain family we already track as a registered outlet: ${matchedOutlet.displayName} (outletId "${matchedOutlet.id}", tier ${matchedOutlet.tier ?? 'unknown'}). This match is against our outlet registry's domain + domainAliases, so treat the outlet itself as legitimate and known — an unfamiliar subdomain (e.g. a paper's digital-edition or e-paper subdomain) is NOT evidence against legitimacy. Focus isReview/isLegitimateOutlet on whether the URL path and any user-provided critic name plausibly describe a review, not on whether you personally recognize this exact subdomain shape.\n`
     : '';
+  // Third leg of the same pattern: a submitter-provided critic name that
+  // matches a REAL critic already on record for the matched outlet is strong,
+  // hard-to-fake corroboration that this is a genuine review, not tabloid/
+  // celebrity content wearing a theatre-section URL path.
+  const criticNote = (matchedCritic && matchedOutlet && (matchedCritic.knownOutlets || []).includes(matchedOutlet.id))
+    ? `\nDETERMINISTIC CRITIC MATCH: "${submissionData.criticName}" is a known critic in our database with ${matchedCritic.totalReviews || 'multiple'} prior review(s) already on record for ${matchedOutlet.displayName}. This corroborates both the outlet match above and that this is a genuine critic review, not a non-review article.\n`
+    : '';
 
   const prompt = `You are validating a theater review submission for Broadway Scorecard. We cover all professional theater in New York City (Broadway AND Off-Broadway) and London (West End AND Off-West-End). Analyze the following submission and determine if it's valid.
 
@@ -219,7 +256,7 @@ ${submissionData.showName ? `- Show Name (user provided): ${submissionData.showN
 ${submissionData.outletName ? `- Outlet Name (user provided): ${submissionData.outletName}` : ''}
 ${submissionData.criticName ? `- Critic Name (user provided): ${submissionData.criticName}` : ''}
 ${submissionData.additionalNotes ? `- Additional Notes: ${submissionData.additionalNotes}` : ''}
-${candidateNote}${outletNote}
+${candidateNote}${outletNote}${criticNote}
 OUR DATABASE SHOWS:
 ${showsList}
 
@@ -354,10 +391,14 @@ async function validateSubmission(issueBody) {
   if (matchedOutlet) {
     console.log(`Matched outlet by domain: ${matchedOutlet.displayName} (${matchedOutlet.id})`);
   }
+  const matchedCritic = findMatchingCritic(submissionData.criticName);
+  if (matchedCritic) {
+    console.log(`Matched critic: ${matchedCritic.displayName || matchedCritic.id} (knownOutlets: ${(matchedCritic.knownOutlets || []).join(', ')})`);
+  }
 
   // Use Claude API for intelligent validation
   console.log('Validating with Claude API...');
-  const claudeValidation = await validateWithClaude(submissionData, matchedShowCandidates, matchedOutlet);
+  const claudeValidation = await validateWithClaude(submissionData, matchedShowCandidates, matchedOutlet, matchedCritic);
 
   console.log('Claude validation result:', JSON.stringify(claudeValidation, null, 2));
 
