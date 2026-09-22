@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-22T00:43:31.875Z",
+  "runDate": "2026-09-22T01:55:06.439Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 85,
-    "failed": 406,
+    "processed": 86,
+    "failed": 407,
     "skipped": 0,
-    "successRate": "17.3%"
+    "successRate": "17.4%"
   },
   "tierBreakdown": {
     "playwright": 49,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 2,
-    "scrapingbee": 19,
+    "scrapingbee": 20,
     "brightdata": 5,
     "archiveToday": 0,
     "archive": 11
   },
   "statistics": {
-    "tier1Attempts": 27,
-    "tier1Success": 11,
+    "tier1Attempts": 21,
+    "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 7,
-    "tier1_5Success": 5,
-    "tier2Attempts": 18,
-    "tier2Success": 2,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 17,
+    "tier2Success": 3,
     "tier3Attempts": 15,
-    "tier3Success": 4,
+    "tier3Success": 5,
     "tier3_6Attempts": 11,
     "tier3_6Success": 0,
-    "tier4Attempts": 20,
-    "tier4Success": 3,
-    "totalFailed": 292,
-    "scrapingBeePageCredits": 86,
+    "tier4Attempts": 16,
+    "tier4Success": 2,
+    "totalFailed": 298,
+    "scrapingBeePageCredits": 84,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 7,
-    "browserbaseMinutesUsed": 1.6,
-    "urlDiscoveryAttempts": 264,
-    "urlDiscoverySuccess": 2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 272,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -135,7 +135,8 @@
     "bloodsport-after-helen-of-troy-off-west-end-2026/bestoftheatre--unknown.json",
     "the-children-off-west-end-2026/telegraph--fiona-mountford.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
-    "two-strangers-bway-2025/theatermania--david-gordon.json"
+    "two-strangers-bway-2025/theatermania--david-gordon.json",
+    "america-who-hurt-you-off-broadway-2026/nytimes--laura-collins-hughes.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -543,7 +544,8 @@
     "the-rocky-horror-show-2026/newsday--daniel-bubbeo.json",
     "the-rocky-horror-show-2026/billboard--joe-lynch.json",
     "the-rocky-horror-show-2026/latimes--alexandra-del-rosario.json",
-    "two-strangers-bway-2025/playbill--margaret-hall.json"
+    "two-strangers-bway-2025/playbill--margaret-hall.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/bestoftheatre--cecil-glover.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -631,7 +633,8 @@
       "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
       "just-in-time-2025/newyorker--conde-nast.json",
       "oh-mary-2024/broadwaynews--brittani-samuel.json",
-      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+      "america-who-hurt-you-off-broadway-2026/nytimes--laura-collins-hughes.json"
     ],
     "brightdata": [
       "darkling-off-west-end-2026/voice-magazine--unknown.json",
@@ -657,22 +660,15 @@
   },
   "failuresByOutlet": {
     "The Stage": {
-      "count": 6,
+      "count": 5,
       "domain": "thestage.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
     "Londontheatredirect": {
-      "count": 3,
+      "count": 2,
       "domain": "londontheatredirect.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Spectator  (UK)": {
-      "count": 1,
-      "domain": "spectator.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -704,18 +700,14 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "million-dollar-quartet-off-west-end-2026/whatsonstage--andy-plaice.json",
-      "oldUrl": "https://www.whatsonstage.com/news/review-million-dollar-quartet-curve-leicester_41824/",
-      "newUrl": "https://www.whatsonstage.com/news/million-dollar-quartet-to-embark-on-major-tour_1731127/"
-    },
-    {
-      "reviewId": "bloodsport-after-helen-of-troy-off-west-end-2026/bestoftheatre--unknown.json",
-      "oldUrl": "https://www.bestoftheatre.co.uk/bloodsport-after-helen-of-troy",
-      "newUrl": "https://www.bestoftheatre.co.uk/blog/post/bloodsport-after-helen-of-troy-trailer"
-    }
-  ]
+  "urlDiscoveries": []
 }
