@@ -1464,7 +1464,7 @@ function checkQuality() {
     }),
 
     // Provider spend ledger dead-man (BRO-3317). The decision lives in
-    // providerSpendLedgerResult() below (exported + unit-tested, CLAUDE.md
+    // providerSpendLedgerResult() above (exported + unit-tested, CLAUDE.md
     // §15) so this row's freshness math cannot drift from the producer's
     // again — see that function's docstring for the BRO-3349 false-positive
     // this shape fixed.
