@@ -85,7 +85,8 @@
     "the-children-off-west-end-2026/telegraph--fiona-mountford.json",
     "schmigadoon-2026/thewrap--robert-hofler.json",
     "two-strangers-bway-2025/theatermania--david-gordon.json",
-    "america-who-hurt-you-off-broadway-2026/nytimes--laura-collins-hughes.json"
+    "america-who-hurt-you-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -494,7 +495,12 @@
     "the-rocky-horror-show-2026/billboard--joe-lynch.json",
     "the-rocky-horror-show-2026/latimes--alexandra-del-rosario.json",
     "two-strangers-bway-2025/playbill--margaret-hall.json",
-    "bloodsport-after-helen-of-troy-off-west-end-2026/bestoftheatre--cecil-glover.json"
+    "bloodsport-after-helen-of-troy-off-west-end-2026/bestoftheatre--cecil-glover.json",
+    "million-dollar-quartet-off-west-end-2026/enjoy--unknown.json",
+    "million-dollar-quartet-off-west-end-2026/theupcoming--unknown.json",
+    "bloodsport-after-helen-of-troy-off-west-end-2026/buy-tickets-direct-from-the-theatre--unknown.json",
+    "night-city-off-west-end-2026/reviewsgate--william-russell.json",
+    "night-city-off-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -547,7 +553,8 @@
       "oh-mary-2024/one-minute-critic--matthew-wexler.json",
       "catarina-and-the-beauty-of-killing-fascists-west-end-2026/london-box-office--stuart-king.json",
       "million-dollar-quartet-off-west-end-2026/whatsonstage--andy-plaice.json",
-      "bloodsport-after-helen-of-troy-off-west-end-2026/bestoftheatre--unknown.json"
+      "bloodsport-after-helen-of-troy-off-west-end-2026/bestoftheatre--unknown.json",
+      "bloodsport-after-helen-of-troy-off-west-end-2026/guardian--emma-john.json"
     ],
     "amp": [],
     "browserbase": [
@@ -609,7 +616,7 @@
     ]
   },
   "startTime": "2026-09-21T19:05:19.505Z",
-  "lastProcessed": "two-strangers-bway-2025/thereviewshub--unknown.json",
+  "lastProcessed": "night-city-off-west-end-2026/timeout-london--unknown.json",
   "log": [
     {
       "t": "2026-09-21T19:15:40.530Z",
@@ -809,6 +816,28 @@
       "t": "2026-09-22T00:39:12.368Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-22T01:54:21.059Z",
+      "event": "bb-session",
+      "session": "5034c656",
+      "url": "https://www.thestage.co.uk/news/production-news/my-sons-a-queer-but-what-can-you"
+    },
+    {
+      "t": "2026-09-22T01:54:21.755Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-22T01:56:01.854Z",
+      "event": "bb-session",
+      "session": "9adcee6d",
+      "url": "https://thestage.co.uk/reviews/darkling-review-bush-theatre-london"
+    },
+    {
+      "t": "2026-09-22T01:56:02.483Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ],
   "recoveredAfterFailure": [
