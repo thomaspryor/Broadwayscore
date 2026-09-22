@@ -1,95 +1,87 @@
 {
-  "runDate": "2026-09-22T19:54:18.555Z",
+  "runDate": "2026-09-22T21:45:25.882Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026,macbeth-off-broadway-2026",
+    "showFilter": "catarina-and-the-beauty-of-killing-fascists-west-end-2026,the-invention-of-love-off-broadway-2026,spandex-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 23,
+    "processed": 2,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "4.2%"
+    "successRate": "40.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
     "tier1Attempts": 2,
     "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 2,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 2,
-    "tier4Success": 1,
-    "totalFailed": 22,
-    "scrapingBeePageCredits": 0,
+    "tier4Success": 0,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 21,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "macbeth-off-broadway-2026/ew--reviewed-by.json"
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
+    "the-invention-of-love-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
   ],
   "failed": [
-    "macbeth-off-broadway-2026/hollywood-reporter--unknown.json",
-    "macbeth-off-broadway-2026/abc-news--unknown.json",
-    "macbeth-off-broadway-2026/ew--leah-greenblatt.json",
-    "macbeth-off-broadway-2026/newsday--linda-winer.json",
-    "macbeth-off-broadway-2026/newsday--unknown.json",
-    "macbeth-off-broadway-2026/thewrap--robert-hofler.json",
-    "macbeth-off-broadway-2026/thewrap--unknown.json",
-    "macbeth-off-broadway-2026/timeout--naveen-kumar.json",
-    "macbeth-off-broadway-2026/timeout--unknown.json",
-    "macbeth-off-broadway-2026/amny--unknown.json",
-    "macbeth-off-broadway-2026/chicagotribune--chris-jones.json",
-    "macbeth-off-broadway-2026/chicagotribune--unknown.json",
-    "macbeth-off-broadway-2026/daily-mail--patrick-marmion.json",
-    "macbeth-off-broadway-2026/financialtimes--shirley-apthorp.json",
-    "macbeth-off-broadway-2026/huffpost--unknown.json",
-    "macbeth-off-broadway-2026/i-paper--fiona-mountford.json",
-    "macbeth-off-broadway-2026/independent--alice-saville.json",
-    "macbeth-off-broadway-2026/seen-and-heard-international--clive-peacock.json",
-    "macbeth-off-broadway-2026/standard--nick-curtis.json",
-    "macbeth-off-broadway-2026/telegraph--dominic-cavendish.json",
-    "macbeth-off-broadway-2026/thestage--unknown.json",
-    "macbeth-off-broadway-2026/times-uk--clive-davis.json",
-    "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json"
+    "the-invention-of-love-off-broadway-2026/nytg--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/thestage--unknown.json",
+    "the-invention-of-love-off-broadway-2026/thestage--ian-shine.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "the-invention-of-love-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "macbeth-off-broadway-2026/ew--reviewed-by.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Stage": {
+      "count": 1,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
