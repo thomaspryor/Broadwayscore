@@ -48,3 +48,4 @@
 {"ts":"2026-09-08T01:36:10.830Z","conditionKey":"bd-circuit-breaker-serp_api1","from":"ok","to":"tripped","day":"2026-09-08","units":2140,"ceiling":500,"ceilingSource":null,"source":"history-backfill","prevTs":null}
 {"ts":"2026-09-21T14:37:05.583Z","conditionKey":"bd-circuit-breaker-web_unlocker2","from":"ok","to":"tripped","day":"2026-09-21","units":1057,"ceiling":750,"ceilingSource":"opening-window-reserve","source":null,"prevTs":"2026-09-06T22:30:22.775Z"}
 {"ts":"2026-09-22T06:55:36.339Z","conditionKey":"bd-circuit-breaker-web_unlocker2","from":"ok","to":"tripped","day":"2026-09-22","units":438,"ceiling":250,"ceilingSource":"opening-window-reserve","source":null,"prevTs":"2026-09-21T14:37:05.583Z"}
+{"ts":"2026-09-22T17:23:53.427Z","conditionKey":"bd-circuit-breaker-web_unlocker2","from":"tripped","to":"ok","day":"2026-09-22","units":636,"ceiling":0,"ceilingSource":"opening-window-reserve","source":null,"prevTs":"2026-09-22T06:55:36.339Z"}
