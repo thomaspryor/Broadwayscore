@@ -1,37 +1,20 @@
 {
-  "updatedAt": "2026-09-22T03:43:06.390Z",
-  "processed": 87,
-  "failed": 412,
-  "successRate": "17.4%",
+  "updatedAt": "2026-09-22T04:08:24.540Z",
+  "processed": 92,
+  "failed": 424,
+  "successRate": "17.8%",
   "tierBreakdown": {
-    "playwright": 50,
+    "playwright": 52,
     "amp": 0,
-    "browserbase": 8,
-    "directCookies": 2,
-    "scrapingbee": 20,
+    "browserbase": 9,
+    "directCookies": 3,
+    "scrapingbee": 22,
     "brightdata": 5,
     "archiveToday": 0,
-    "archive": 11
+    "archive": 12
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-09-22T00:04:58.243Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-09-22T00:11:18.980Z",
-      "event": "bb-session",
-      "session": "71a03515",
-      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
-    },
-    {
-      "t": "2026-09-22T00:18:48.717Z",
-      "event": "bb-session",
-      "session": "a3677246",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
-    },
     {
       "t": "2026-09-22T00:18:49.461Z",
       "event": "bb-cookie-inject",
@@ -126,6 +109,23 @@
       "event": "bb-session",
       "session": "29299648",
       "url": "https://www.londontheatredirect.com/es/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-09-22T04:00:35.586Z",
+      "event": "bb-session",
+      "session": "fd124162",
+      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
+    },
+    {
+      "t": "2026-09-22T04:00:36.337Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-22T04:06:12.652Z",
+      "event": "bb-session",
+      "session": "0eb98146",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
     }
   ]
 }
