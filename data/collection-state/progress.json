@@ -67,7 +67,8 @@
     "garry-starr-classic-penguins-off-broadway-2026/one-minute-critic--unknown.json",
     "holy-fool-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
     "paranormal-activity-2026/nytimes--helen-shaw.json",
-    "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/one-minute-critic--jerry-portwood.json"
+    "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/one-minute-critic--jerry-portwood.json",
+    "schmigadoon-2026/thewrap--robert-hofler.json"
   ],
   "failed": [
     "whos-afraid-of-virginia-woolf-west-end-2026/front-row-center--unknown.json",
@@ -386,7 +387,20 @@
     "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
     "disruption-off-broadway-2026/times-uk--dominic-maxwell.json",
     "disruption-off-broadway-2026/whatsonstage--alun-hood.json",
-    "cat-cohen-broad-strokes-off-broadway-2026/new-york-city-theatre--unknown.json"
+    "cat-cohen-broad-strokes-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/thereviewshub--unknown.json",
+    "the-lost-boys-2026/bloomberg--chris-rovzar.json",
+    "the-lost-boys-2026/rollingstone--sarah-grant.json",
+    "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
+    "the-rocky-horror-show-2026/newsday--daniel-bubbeo.json",
+    "the-rocky-horror-show-2026/thereviewshub--daniel-wood.json",
+    "the-rocky-horror-show-2026/cititour--unknown.json",
+    "the-rocky-horror-show-2026/billboard--joe-lynch.json",
+    "the-rocky-horror-show-2026/british-theatre--unknown.json",
+    "the-rocky-horror-show-2026/latimes--alexandra-del-rosario.json",
+    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+    "schmigadoon-2026/variety--clayton-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -473,7 +487,9 @@
       "just-in-time-2025/newyorker--conde-nast.json",
       "maybe-happy-ending-2024/newyorker--conde-nast.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "schmigadoon-2026/thewrap--robert-hofler.json"
+    ],
     "archiveToday": [],
     "archive": [
       "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json",
@@ -484,7 +500,7 @@
     ]
   },
   "startTime": "2026-09-22T14:27:32.733Z",
-  "lastProcessed": "sinatra-the-musical-west-end-2026/express-uk--west-end-theatre.json",
+  "lastProcessed": "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
   "log": [
     {
       "t": "2026-09-22T15:51:13.507Z",
@@ -641,6 +657,28 @@
       "t": "2026-09-22T17:23:44.312Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-22T17:30:14.125Z",
+      "event": "bb-session",
+      "session": "7a0a71d1",
+      "url": "https://www.thetimes.com/culture/books/article/beatrix-potter-author-archives-ta"
+    },
+    {
+      "t": "2026-09-22T17:30:14.898Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-22T17:32:26.048Z",
+      "event": "bb-session",
+      "session": "349164fd",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-22T17:32:26.662Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ],
   "recoveredAfterFailure": [

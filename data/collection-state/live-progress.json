@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-09-22T17:26:17.673Z",
-  "processed": 68,
-  "failed": 317,
-  "successRate": "17.7%",
+  "updatedAt": "2026-09-22T17:42:43.994Z",
+  "processed": 69,
+  "failed": 330,
+  "successRate": "17.3%",
   "tierBreakdown": {
     "playwright": 42,
     "amp": 0,
     "browserbase": 13,
     "directCookies": 0,
     "scrapingbee": 20,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 5
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-09-22T16:02:37.228Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-09-22T16:13:37.392Z",
-      "event": "bb-session",
-      "session": "62c6fd19",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
-    },
-    {
-      "t": "2026-09-22T16:13:37.825Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-22T16:16:50.817Z",
-      "event": "bb-session",
-      "session": "ac7b8fc4",
-      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
-    },
     {
       "t": "2026-09-22T16:16:51.183Z",
       "event": "bb-cookie-inject",
@@ -125,6 +103,28 @@
       "t": "2026-09-22T17:23:44.312Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-22T17:30:14.125Z",
+      "event": "bb-session",
+      "session": "7a0a71d1",
+      "url": "https://www.thetimes.com/culture/books/article/beatrix-potter-author-archives-ta"
+    },
+    {
+      "t": "2026-09-22T17:30:14.898Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-22T17:32:26.048Z",
+      "event": "bb-session",
+      "session": "349164fd",
+      "url": "https://au.variety.com/2026/more/news/schmigadoon-best-musical-cinco-paul-apple-"
+    },
+    {
+      "t": "2026-09-22T17:32:26.662Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
