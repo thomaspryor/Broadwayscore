@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-22T19:04:11.706Z",
+  "generated": "2026-09-22T19:32:41.165Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 93,
+  "count": 94,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -561,6 +561,13 @@
       "loserFile": "british-theatre--unknown.json",
       "targetFile": "british-theatre--david-chadderton.json",
       "reason": "orphaned-duplicate-heal: british-theatre--david-chadderton.json was flagged invalid after british-theatre--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "loserFile": "standard--nick-curtis.json",
+      "targetFile": "standard--unknown.json",
+      "reason": "orphaned-duplicate-heal: standard--unknown.json was flagged invalid after standard--nick-curtis.json was pointed at it",
       "field": "duplicateOf"
     },
     {
