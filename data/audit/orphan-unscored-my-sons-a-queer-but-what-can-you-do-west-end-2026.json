@@ -2,11 +2,11 @@
   "version": 1,
   "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
   "openingDate": "2026-09-17",
-  "detectedAt": "2026-09-22T14:11:52.477Z",
+  "detectedAt": "2026-09-22T14:19:54.284Z",
   "windowDays": 7,
   "orphans": [
     {
-      "file": "timeout--tom-wicker.json",
+      "file": "timeout-london--tom-wicker.json",
       "outletId": "timeout-london",
       "criticName": "Tom Wicker",
       "url": "https://www.timeout.com/london/theatre/my-sons-a-queer-but-what-can-you-do-review",
@@ -19,7 +19,7 @@
       "originalScore": null,
       "originalScoreNormalized": null,
       "llmScore": null,
-      "contentTier": "excerpt",
+      "contentTier": "invalid",
       "eligibilityReason": null
     }
   ],
@@ -27,6 +27,6 @@
   "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 0,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-09-22T14:11:52.477Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }
