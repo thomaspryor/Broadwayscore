@@ -2723,6 +2723,18 @@ on:
       # tests/unit-test-manifest.txt, not globbed), so it's path-listed here
       # so a solo edit to just the test still triggers CI.
       - 'scripts/tests/provider-spend-ledger-commit-ordering.test.mjs'
+      # BRO-3349: the freshness-math regression guard for health-check.js's
+      # "Data quality: provider spend ledger" row. scripts/health-check.js and
+      # scripts/lib/provider-spend-core.js are already covered above/by the
+      # 'scripts/lib/**' glob; this test lives in scripts/tests/ (registered in
+      # tests/unit-test-manifest.txt, not globbed), so it's path-listed here so
+      # a solo edit to just the test still triggers CI.
+      - 'scripts/tests/provider-spend-ledger-freshness-row.test.mjs'
+      # BRO-3349 prevent-class: the same start-of-day inflation, guarded in
+      # health-check.js's shared hoursAgo() so every freshness row is covered
+      # (data/cast-changes.json's day-shaped lastUpdated sits on a 72h warn bar).
+      # Same scripts/tests/ path-listing rationale as the entry directly above.
+      - 'scripts/tests/health-check-hours-ago.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
       # validate-show-venue.js already path-listed above (line ~180).

@@ -335,8 +335,107 @@ function aggregateLedgerByDay(ledgerRecords, day) {
     || a.script.localeCompare(b.script));
 }
 
+// BRO-3227 (moved here from check-provider-spend.js by BRO-3349): the
+// ledger going stale/discontinuous is not itself a spend breach
+// (budgetBreaches/computeStreak below only see whatever record THIS run
+// produces) — it's a "did prior runs' writes
+// actually land?" question, which is exactly what BRO-3317 found silently
+// broken for 11 days (a `push-with-retry.sh` hard-reset fallback discarded
+// this script's own write, and nothing noticed because the script itself
+// kept exiting 0 daily). These thresholds gate a loud, independent check of
+// the ledger AS COMMITTED, read before this run contributes anything.
+const STALE_HOURS_THRESHOLD = 48;
+const CONTINUITY_WINDOW_DAYS = 7;
+
+// "YYYY-MM-DD" only — guards both functions below against a corrupt/
+// hand-edited record (e.g. {day: "zzz"} or {day: null}) silently producing
+// Invalid Date/NaN math instead of being treated as absent (ship-check
+// finding, BRO-3227).
+const VALID_DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+/**
+ * Epoch ms for the END (23:59:59.999 UTC) of a "YYYY-MM-DD" day, or NaN if
+ * `day` is not a real calendar date.
+ *
+ * BRO-3349 (ship-check/Codex P1): VALID_DAY_RE alone is NOT enough. It is a
+ * SHAPE check, and shapes like "2026-99-99" pass it while `new Date()` yields
+ * Invalid Date. Because the old code picked the lexical max of shape-valid
+ * days FIRST and converted second, a single such row outranked every real day
+ * and made ledgerFreshnessHours() return NaN — which every caller treats as
+ * "no usable data" (a WARN), not as staleness. One garbage row therefore
+ * downgraded this dead-man from ERROR to a permanent WARN even with months of
+ * real rows present and the reconciliation long dead. Validate the instant,
+ * not the shape, and let a bad row lose ONE day rather than the whole check
+ * (the same rule readLedger() already applies to unparseable JSON lines).
+ * @param {string} day
+ * @returns {number}
+ */
+function dayEndMs(day) {
+  if (!VALID_DAY_RE.test(day)) return NaN;
+  return new Date(`${day}T23:59:59.999Z`).getTime();
+}
+
+/**
+ * Hours between `now` and the end (23:59:59.999 UTC) of the ledger's most
+ * recent REAL recorded day. Infinity for an empty (or entirely malformed)
+ * ledger — no usable data is maximally stale, never "fresh by default".
+ * Never NaN: an unreal day is dropped, not propagated.
+ * @param {Array<{day: string}>} records
+ * @param {Date} [now]
+ * @returns {number}
+ */
+function ledgerFreshnessHours(records, now = new Date()) {
+  const ends = (records || []).filter(Boolean).map((r) => dayEndMs(r.day)).filter((ms) => Number.isFinite(ms));
+  if (!ends.length) return Infinity;
+  return (now.getTime() - Math.max(...ends)) / 3600000;
+}
+
+/**
+ * The ledger's most recent REAL recorded day ("YYYY-MM-DD"), or null. Shares
+ * dayEndMs()'s validity rule so a row's reported `day` can never disagree with
+ * the age computed for it.
+ * @param {Array<{day: string}>} records
+ * @returns {string|null}
+ */
+function lastLedgerDay(records) {
+  let best = null;
+  let bestMs = -Infinity;
+  for (const r of (records || []).filter(Boolean)) {
+    const ms = dayEndMs(r.day);
+    if (Number.isFinite(ms) && ms > bestMs) { bestMs = ms; best = r.day; }
+  }
+  return best;
+}
+
+/**
+ * UTC calendar days ("YYYY-MM-DD"), ascending, in the trailing `days`-day
+ * window that have no record. The window ends TWO days before `now`, not
+ * one: "yesterday" relative to `now` is DAY (utcYesterday(now), the day
+ * THIS run's own reconciliation is about to write) — checking for it in the
+ * pre-write ledger would report it missing on every single healthy run,
+ * since nothing has written it yet at check time (ship-check/Codex P1
+ * finding, BRO-3227 — confirmed live: a --dry-run against the real ledger
+ * flagged the just-not-yet-written day as "missing" before this fix). The
+ * window this function validates is the `days` complete days a healthy
+ * ledger should ALREADY contain from prior runs, not the day in flight.
+ * @param {Array<{day: string}>} records
+ * @param {Date} [now]
+ * @param {number} [days]
+ * @returns {string[]}
+ */
+function missingLedgerDays(records, now = new Date(), days = CONTINUITY_WINDOW_DAYS) {
+  const present = new Set((records || []).filter(Boolean).map((r) => r.day).filter((d) => VALID_DAY_RE.test(d)));
+  const missing = [];
+  for (let i = 2; i <= days + 1; i++) {
+    const d = new Date(now.getTime() - i * 86400000).toISOString().slice(0, 10);
+    if (!present.has(d)) missing.push(d);
+  }
+  return missing.sort();
+}
+
 module.exports = {
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot,
   utcYesterday, isNextUtcDay, aggregateLedgerByDay, bbCost,
   BB_BASE_MONTHLY_USD, BB_BASE_AMORTIZED_DAYS, BB_OVERAGE_PER_BROWSER_HOUR_USD,
+  ledgerFreshnessHours, lastLedgerDay, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,
 };
