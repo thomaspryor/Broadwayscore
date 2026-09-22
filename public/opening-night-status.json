@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T13:54:48.967Z",
+  "generatedAt": "2026-09-22T14:12:12.345Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -397,23 +397,23 @@
       "slug": "macbeth-off-broadway",
       "thumbnail": "/images/shows/macbeth-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 50,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
+      "total": 1,
+      "t1": 1,
       "t2": 0,
       "t3": 0,
       "positive": 0,
       "mixed": 0,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
-          "T1:0/3",
+          "1/12 total",
+          "T1:1/3",
           "T2:0/3",
           "hi-conf:0/8"
         ],
@@ -764,6 +764,20 @@
           "name": "The Tennessean",
           "isDualMarket": false
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-09-22T14:12:12.345Z",
+          "rc": 1,
+          "s": 50,
+          "t1": 1,
+          "t2": 0,
+          "t3": 0,
+          "p": 0,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        }
       ]
     },
     {
@@ -807,10 +821,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
