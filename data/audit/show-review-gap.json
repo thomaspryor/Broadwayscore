@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-09-22T10:37:37.415Z",
+  "generatedAt": "2026-09-22T15:31:05.353Z",
   "windowDays": 1095,
-  "targets": 274,
-  "auditedThisRun": 11,
-  "carriedForward": 549,
+  "targets": 283,
+  "auditedThisRun": 4,
+  "carriedForward": 556,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 311,
-    "missingCurrentRun": 434,
+    "missingCurrentRun": 439,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 802,
+    "totalFlaggedMisses": 806,
     "totalRecoverable": 6,
     "totalRecovered": 7,
-    "priorProductionCitations": 2502
+    "priorProductionCitations": 2504
   },
   "results": [
     {
@@ -30689,11 +30689,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 377,
+        "count": 381,
         "byReason": {
-          "not-http-url": 49,
           "non-review-host": 36,
-          "aggregator-internal-nav": 284,
+          "aggregator-internal-nav": 288,
+          "not-http-url": 49,
           "aggregator-section-root": 8
         }
       },
@@ -30851,7 +30851,7 @@
         "liveCount": 0,
         "candidateCount": 6
       },
-      "computedAt": "2026-09-22T10:37:37.415Z"
+      "computedAt": "2026-09-22T15:31:05.353Z"
     },
     {
       "showId": "cowbois-west-end-2024",
@@ -33050,24 +33050,24 @@
         "https://www.londontheatre.co.uk/reviews/darkling-review-bush-theatre",
         "https://everything-theatre.co.uk/2026/09/review-darkling-bush-theatre/",
         "https://theatreandtonic.co.uk/blog/darkling-bush-theatre-review",
-        "https://viewfromthegods.co.uk/2026/09/17/darkling-bush-theatre/",
         "https://www.theguardian.com/stage/2026/sep/17/darkling-review-bush-theatre-london-linnea-berthelsen",
+        "https://www.timeout.com/london/theatre/darkling-review",
+        "https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london",
+        "https://viewfromthegods.co.uk/2026/09/17/darkling-bush-theatre/",
+        "https://khambayswordswordswords.blog/2026/09/18/darkling-at-the-bush-theatre-2026-review/",
+        "https://www.allthatdazzles.co.uk/post/review-darkling-bush-theatre",
         "https://chiswickcalendar.co.uk/darkling-bush-theatre-review/",
         "https://www.thereviewshub.com/darkling-bush-theatre-london/",
-        "https://www.timeout.com/london/theatre/darkling-review",
-        "https://www.allthatdazzles.co.uk/post/review-darkling-bush-theatre",
-        "https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london",
         "https://redbuslondinium.uk/2026/09/15/review-darkling-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
         "https://www.bushtheatre.co.uk/event/darkling/",
         "https://www.pinkprincetheatre.com/post/review-darkling-bush-theatre",
         "https://lovelondonloveculture.com/2026/09/16/review-darkling-bush-theatre/",
-        "https://khambayswordswordswords.blog/2026/09/18/darkling-at-the-bush-theatre-2026-review/",
         "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre",
-        "https://readaboutstuff.com/2026/09/16/review-darkling-bush-theatre-london/",
-        "https://www.atctheatre.com/production/darkling-2026/",
-        "https://www.broadwayworld.com/westend/article/Review-DARKLING-Bush-Theatre-20260916",
         "https://onceaweektheatre.com/darkling-at-the-bush-theatre/",
-        "https://liamodell.com/2026/09/16/darkling-review-bush-theatre-linnea-berthelsen-stranger-things-titas-halder-birmingham-oxford-manchester/"
+        "https://www.whatsonstage.com/news/darkling-with-linnea-berthelsen-at-bush-theatre-and-on-tour-review_1731568/",
+        "https://liamodell.com/2026/09/16/darkling-review-bush-theatre-linnea-berthelsen-stranger-things-titas-halder-birmingham-oxford-manchester/",
+        "https://susanelkin.co.uk/articles/darkling-susan-elkin-reviews/",
+        "https://www.londontheatre1.com/reviews/darkling-bush-theatre/"
       ],
       "dirFiles": 35,
       "dirClean": 23,
@@ -33096,11 +33096,11 @@
           "count": 1
         },
         {
-          "host": "londontheatre1.com",
+          "host": "broadwayworld.com",
           "count": 1
         },
         {
-          "host": "susanelkin.co.uk",
+          "host": "readaboutstuff.com",
           "count": 1
         },
         {
@@ -33132,9 +33132,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.atctheatre.com/production/darkling-2026/",
-          "host": "atctheatre.com",
-          "knownOutletId": null,
+          "url": "https://www.whatsonstage.com/news/darkling-with-linnea-berthelsen-at-bush-theatre-and-on-tour-review_1731568/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -33142,9 +33142,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "atctheatre--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.atctheatre.com/production/darkling-2026/"
+              "file": "whatsonstage--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.whatsonstage.com/news/darkling-with-linnea-berthelsen-at-bush-theatre-and-on-tour-review_1731568/"
             }
           ],
           "serpCensus": true
@@ -33166,7 +33166,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 2
           },
           "lbo-roundup": {
             "found": false,
@@ -33210,7 +33210,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -33230,7 +33230,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -33250,11 +33250,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 12,
+        "count": 10,
         "byReason": {
-          "non-review-host": 9,
-          "ticketing-listing": 2,
-          "event-listing": 1
+          "non-review-host": 8,
+          "roundup-page": 1,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -33310,11 +33310,11 @@
             "url": "https://www.bushtheatre.co.uk/event/darkling/"
           },
           {
-            "outletId": "atctheatre.com",
-            "outlet": "atctheatre.com",
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.atctheatre.com/production/darkling-2026/"
+            "url": "https://www.whatsonstage.com/news/darkling-with-linnea-berthelsen-at-bush-theatre-and-on-tour-review_1731568/"
           }
         ],
         "suppressedMissing": [],
@@ -33338,14 +33338,38 @@
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
+            "url": "https://www.theguardian.com/stage/2026/sep/17/darkling-review-bush-theatre-london-linnea-berthelsen",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-20T07:18:46.455Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/darkling-review",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-20T07:18:46.455Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-20T07:18:46.455Z"
+          },
+          {
             "url": "https://viewfromthegods.co.uk/2026/09/17/darkling-bush-theatre/",
             "outletId": "viewfromthegods.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-20T15:35:03.611Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/sep/17/darkling-review-bush-theatre-london-linnea-berthelsen",
-            "outletId": "theguardian.com",
+            "url": "https://khambayswordswordswords.blog/2026/09/18/darkling-at-the-bush-theatre-2026-review/",
+            "outletId": "khambayswordswordswords.blog",
+            "state": "live",
+            "firstSeenAt": "2026-09-20T07:18:46.455Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-darkling-bush-theatre",
+            "outletId": "allthatdazzles.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
@@ -33362,32 +33386,8 @@
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/darkling-review",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-20T07:18:46.455Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-darkling-bush-theatre",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-20T07:18:46.455Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-20T07:18:46.455Z"
-          },
-          {
             "url": "https://www.pinkprincetheatre.com/post/review-darkling-bush-theatre",
             "outletId": "pinkprincetheatre.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-20T07:18:46.455Z"
-          },
-          {
-            "url": "https://khambayswordswordswords.blog/2026/09/18/darkling-at-the-bush-theatre-2026-review/",
-            "outletId": "khambayswordswordswords.blog",
             "state": "live",
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
@@ -33396,18 +33396,6 @@
             "outletId": "voicemag.uk",
             "state": "live",
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
-          },
-          {
-            "url": "https://readaboutstuff.com/2026/09/16/review-darkling-bush-theatre-london/",
-            "outletId": "readaboutstuff.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-21T11:24:10.560Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-DARKLING-Bush-Theatre-20260916",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-21T21:33:50.564Z"
           },
           {
             "url": "https://onceaweektheatre.com/darkling-at-the-bush-theatre/",
@@ -33420,6 +33408,18 @@
             "outletId": "liamodell.com",
             "state": "live",
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
+          },
+          {
+            "url": "https://susanelkin.co.uk/articles/darkling-susan-elkin-reviews/",
+            "outletId": "susanelkin.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-22T15:31:05.353Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/darkling-bush-theatre/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-22T15:31:05.353Z"
           },
           {
             "url": "https://redbuslondinium.uk/2026/09/15/review-darkling-bush-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
@@ -33443,17 +33443,17 @@
             "firstSeenAt": "2026-09-20T07:18:46.455Z"
           },
           {
-            "url": "https://www.atctheatre.com/production/darkling-2026/",
-            "outletId": "atctheatre.com",
+            "url": "https://www.whatsonstage.com/news/darkling-with-linnea-berthelsen-at-bush-theatre-and-on-tour-review_1731568/",
+            "outletId": "whatsonstage",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-21T21:33:50.564Z"
+            "firstSeenAt": "2026-09-22T15:31:05.353Z"
           }
         ],
         "liveCount": 17,
         "candidateCount": 21
       },
-      "computedAt": "2026-09-22T05:40:57.861Z"
+      "computedAt": "2026-09-22T15:31:05.353Z"
     },
     {
       "showId": "data-off-broadway-2026",
@@ -156966,8 +156966,8 @@
     {
       "showId": "the-invention-of-love-off-broadway-2026",
       "title": "The Invention of Love",
-      "openingDate": null,
-      "status": "upcoming",
+      "openingDate": "2026-09-21",
+      "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
@@ -156978,11 +156978,22 @@
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/invention-of-love-tom-stoppard-b2665608.html",
         "https://www.theguardian.com/stage/2024/dec/17/the-invention-of-love-review-hampstead-theatre-london",
         "https://www.whatsonstage.com/news/the-invention-of-love-review-simon-russell-beale-is-perfectly-cast-in-tom-stoppard-revival_1658010/",
-        "https://www.thestage.co.uk/reviews/the-invention-of-love-review-hampstead-theatre-london-2024-simon-russell-beale-tom-stoppard-blanche-mcintyre"
+        "https://www.thestage.co.uk/reviews/the-invention-of-love-review-hampstead-theatre-london-2024-simon-russell-beale-tom-stoppard-blanche-mcintyre",
+        "https://www.vulture.com/article/how-much-did-i-love-the-invention-of-love.html",
+        "https://t2conline.com/the-invention-of-love-david-greenspan-is-brilliant-but-tom-stoppard-needs-an-editor/",
+        "https://www.vulture.com/tags/the-invention-of-love/",
+        "https://twi-ny.com/2026/09/20/the-invention-of-love-tom-stoppard-theaterlab/",
+        "https://www.allthatdazzles.co.uk/post/review-the-invention-of-love-hampstead-theatre",
+        "https://theaterlabnyc.com/tlab-shares-the-invention-of-love/",
+        "https://playstosee.com/reviews/uk-reviews/the-invention-of-love/",
+        "https://www.thereviewshub.com/the-invention-of-love-hampstead-theatre-london/",
+        "https://sierz.co.uk/reviews/the-invention-of-love-hampstead-theatre/",
+        "https://ctxlivetheatre.com/reviews/the-invention-of-love-by-tom-stoppard-austin-sh/",
+        "https://www.newyorktheatreguide.com/show/48030-the-invention-of-love"
       ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 7,
+      "dirClean": 1,
+      "inReviewsJson": 1,
       "missing": [
         {
           "url": "https://www.londontheatre.co.uk/reviews/the-invention-of-love-review-hampstead-theatre",
@@ -156995,47 +157006,267 @@
           "knownOutletId": "timeout-london"
         },
         {
+          "url": "https://www.vulture.com/article/how-much-did-i-love-the-invention-of-love.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "serpCensus": true
+        },
+        {
+          "url": "https://t2conline.com/the-invention-of-love-david-greenspan-is-brilliant-but-tom-stoppard-needs-an-editor/",
+          "host": "t2conline.com",
+          "knownOutletId": "times-square-chronicles",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.vulture.com/tags/the-invention-of-love/",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "serpCensus": true
+        },
+        {
+          "url": "https://twi-ny.com/2026/09/20/the-invention-of-love-tom-stoppard-theaterlab/",
+          "host": "twi-ny.com",
+          "knownOutletId": "this-week-in-new-york",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-the-invention-of-love-hampstead-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theaterlabnyc.com/tlab-shares-the-invention-of-love/",
+          "host": "theaterlabnyc.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://playstosee.com/reviews/uk-reviews/the-invention-of-love/",
+          "host": "playstosee.com",
+          "knownOutletId": "plays-to-see",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thereviewshub.com/the-invention-of-love-hampstead-theatre-london/",
+          "host": "thereviewshub.com",
+          "knownOutletId": "thereviewshub",
+          "serpCensus": true
+        },
+        {
+          "url": "https://sierz.co.uk/reviews/the-invention-of-love-hampstead-theatre/",
+          "host": "sierz.co.uk",
+          "knownOutletId": "sierz-co-uk",
+          "serpCensus": true
+        },
+        {
+          "url": "https://ctxlivetheatre.com/reviews/the-invention-of-love-by-tom-stoppard-austin-sh/",
+          "host": "ctxlivetheatre.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/show/48030-the-invention-of-love",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-invention-of-love-review-simon-russell-beale/",
           "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph"
+          "knownOutletId": "sunday-telegraph",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "telegraph--dominic-cavendish.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/the-invention-of-love-review-simon-russell-beale/"
+            }
+          ]
         },
         {
           "url": "https://www.thetimes.com/article/ea1194a2-8601-47c3-b441-bc0c9088a55c",
           "host": "thetimes.com",
-          "knownOutletId": "times-uk"
+          "knownOutletId": "times-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "times-uk--dominic-maxwell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thetimes.com/article/ea1194a2-8601-47c3-b441-bc0c9088a55c"
+            }
+          ]
         },
         {
           "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/invention-of-love-tom-stoppard-b2665608.html",
           "host": "independent.co.uk",
-          "knownOutletId": "independent"
+          "knownOutletId": "independent",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "independent--tim-bano.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/invention-of-love-tom-stoppard-b2665608.html"
+            }
+          ]
         },
         {
           "url": "https://www.theguardian.com/stage/2024/dec/17/the-invention-of-love-review-hampstead-theatre-london",
           "host": "theguardian.com",
-          "knownOutletId": "guardian"
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--david-jays.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2024/dec/17/the-invention-of-love-review-hampstead-theatre-london"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
         },
         {
           "url": "https://www.whatsonstage.com/news/the-invention-of-love-review-simon-russell-beale-is-perfectly-cast-in-tom-stoppard-revival_1658010/",
           "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage"
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--miriam-sallon.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/the-invention-of-love-review-simon-russell-beale-is-perfectly-cast-in-tom-stoppard-revival_1658010/"
+            }
+          ]
         },
         {
           "url": "https://www.thestage.co.uk/reviews/the-invention-of-love-review-hampstead-theatre-london-2024-simon-russell-beale-tom-stoppard-blanche-mcintyre",
           "host": "thestage.co.uk",
-          "knownOutletId": "thestage"
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--ian-shine.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/reviews/the-invention-of-love-review-hampstead-theatre-london-2024-simon-russell-beale-tom-stoppard-blanche-mcintyre"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Invention of Love\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Invention of Love\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Invention of Love\" review theaterlab",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"The Invention of Love\" Stoppard review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Invention of Love Theaterlab review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Invention of Love Theaterlab review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Invention of Love Theaterlab review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 11,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 34,
+        "byReason": {
+          "non-review-host": 30,
+          "venue-production-page": 1,
+          "aggregator-internal-nav": 2,
+          "merch-store": 1
+        }
       },
       "dedupedVariants": [],
       "ingestResults": [
@@ -157064,57 +157295,82 @@
           "reason": "[review-write-guard] date-implausible: the-invention-of-love-off-broadway-2026/timeout-london--andrz"
         },
         {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-invention-of-love-review-simon-russell-beale/",
-          "host": "telegraph.co.uk",
-          "outletId": "sunday-telegraph",
+          "url": "https://www.vulture.com/article/how-much-did-i-love-the-invention-of-love.html",
+          "host": "vulture.com",
+          "outletId": "vulture",
           "provisional": false,
-          "ok": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+          "reason": null
         },
         {
-          "url": "https://www.thetimes.com/article/ea1194a2-8601-47c3-b441-bc0c9088a55c",
-          "host": "thetimes.com",
-          "outletId": "times-uk",
+          "url": "https://t2conline.com/the-invention-of-love-david-greenspan-is-brilliant-but-tom-stoppard-needs-an-editor/",
+          "host": "t2conline.com",
+          "outletId": "times-square-chronicles",
           "provisional": false,
-          "ok": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+          "reason": null
         },
         {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/invention-of-love-tom-stoppard-b2665608.html",
-          "host": "independent.co.uk",
-          "outletId": "independent",
+          "url": "https://www.vulture.com/tags/the-invention-of-love/",
+          "host": "vulture.com",
+          "outletId": "vulture",
           "provisional": false,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+          "reason": "Article extraction returned 184 chars — pattern may be missing for this outlet. Add an entry to scri"
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.theguardian.com/stage/2024/dec/17/the-invention-of-love-review-hampstead-theatre-london",
-          "host": "theguardian.com",
-          "outletId": "guardian"
+          "url": "https://twi-ny.com/2026/09/20/the-invention-of-love-tom-stoppard-theaterlab/",
+          "host": "twi-ny.com",
+          "outletId": "this-week-in-new-york"
         },
         {
-          "url": "https://www.whatsonstage.com/news/the-invention-of-love-review-simon-russell-beale-is-perfectly-cast-in-tom-stoppard-revival_1658010/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage"
+          "url": "https://www.allthatdazzles.co.uk/post/review-the-invention-of-love-hampstead-theatre",
+          "host": "allthatdazzles.co.uk",
+          "outletId": "all-that-dazzles-uk"
         },
         {
-          "url": "https://www.thestage.co.uk/reviews/the-invention-of-love-review-hampstead-theatre-london-2024-simon-russell-beale-tom-stoppard-blanche-mcintyre",
-          "host": "thestage.co.uk",
-          "outletId": "thestage"
+          "url": "https://theaterlabnyc.com/tlab-shares-the-invention-of-love/",
+          "host": "theaterlabnyc.com",
+          "outletId": "theaterlabnyc"
+        },
+        {
+          "url": "https://playstosee.com/reviews/uk-reviews/the-invention-of-love/",
+          "host": "playstosee.com",
+          "outletId": "plays-to-see"
+        },
+        {
+          "url": "https://www.thereviewshub.com/the-invention-of-love-hampstead-theatre-london/",
+          "host": "thereviewshub.com",
+          "outletId": "thereviewshub"
+        },
+        {
+          "url": "https://sierz.co.uk/reviews/the-invention-of-love-hampstead-theatre/",
+          "host": "sierz.co.uk",
+          "outletId": "sierz-co-uk"
+        },
+        {
+          "url": "https://ctxlivetheatre.com/reviews/the-invention-of-love-by-tom-stoppard-austin-sh/",
+          "host": "ctxlivetheatre.com",
+          "outletId": "ctxlivetheatre"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/show/48030-the-invention-of-love",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg"
         }
       ],
       "censusVerdict": {
@@ -157133,6 +157389,83 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/theatre/the-invention-of-love-review"
+          },
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.vulture.com/article/how-much-did-i-love-the-invention-of-love.html"
+          },
+          {
+            "outletId": "times-square-chronicles",
+            "outlet": "times-square-chronicles",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://t2conline.com/the-invention-of-love-david-greenspan-is-brilliant-but-tom-stoppard-needs-an-editor/"
+          },
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.vulture.com/tags/the-invention-of-love/"
+          },
+          {
+            "outletId": "this-week-in-new-york",
+            "outlet": "this-week-in-new-york",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://twi-ny.com/2026/09/20/the-invention-of-love-tom-stoppard-theaterlab/"
+          },
+          {
+            "outletId": "all-that-dazzles-uk",
+            "outlet": "all-that-dazzles-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.allthatdazzles.co.uk/post/review-the-invention-of-love-hampstead-theatre"
+          },
+          {
+            "outletId": "theaterlabnyc.com",
+            "outlet": "theaterlabnyc.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theaterlabnyc.com/tlab-shares-the-invention-of-love/"
+          },
+          {
+            "outletId": "plays-to-see",
+            "outlet": "plays-to-see",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://playstosee.com/reviews/uk-reviews/the-invention-of-love/"
+          },
+          {
+            "outletId": "thereviewshub",
+            "outlet": "thereviewshub",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thereviewshub.com/the-invention-of-love-hampstead-theatre-london/"
+          },
+          {
+            "outletId": "sierz-co-uk",
+            "outlet": "sierz-co-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://sierz.co.uk/reviews/the-invention-of-love-hampstead-theatre/"
+          },
+          {
+            "outletId": "ctxlivetheatre.com",
+            "outlet": "ctxlivetheatre.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ctxlivetheatre.com/reviews/the-invention-of-love-by-tom-stoppard-austin-sh/"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/show/48030-the-invention-of-love"
           },
           {
             "outletId": "sunday-telegraph",
@@ -157182,64 +157515,141 @@
           {
             "url": "https://www.londontheatre.co.uk/reviews/the-invention-of-love-review-hampstead-theatre",
             "outletId": "london-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-14T23:04:15.991Z"
           },
           {
             "url": "https://www.timeout.com/london/theatre/the-invention-of-love-review",
             "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-14T23:04:15.991Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/how-much-did-i-love-the-invention-of-love.html",
+            "outletId": "vulture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-22T15:31:05.353Z"
+          },
+          {
+            "url": "https://t2conline.com/the-invention-of-love-david-greenspan-is-brilliant-but-tom-stoppard-needs-an-editor/",
+            "outletId": "times-square-chronicles",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-22T15:31:05.353Z"
+          },
+          {
+            "url": "https://www.vulture.com/tags/the-invention-of-love/",
+            "outletId": "vulture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-22T15:31:05.353Z"
+          },
+          {
+            "url": "https://twi-ny.com/2026/09/20/the-invention-of-love-tom-stoppard-theaterlab/",
+            "outletId": "this-week-in-new-york",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-22T15:31:05.353Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-the-invention-of-love-hampstead-theatre",
+            "outletId": "all-that-dazzles-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-22T15:31:05.353Z"
+          },
+          {
+            "url": "https://theaterlabnyc.com/tlab-shares-the-invention-of-love/",
+            "outletId": "theaterlabnyc.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-22T15:31:05.353Z"
+          },
+          {
+            "url": "https://playstosee.com/reviews/uk-reviews/the-invention-of-love/",
+            "outletId": "plays-to-see",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-22T15:31:05.353Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/the-invention-of-love-hampstead-theatre-london/",
+            "outletId": "thereviewshub",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-22T15:31:05.353Z"
+          },
+          {
+            "url": "https://sierz.co.uk/reviews/the-invention-of-love-hampstead-theatre/",
+            "outletId": "sierz-co-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-22T15:31:05.353Z"
+          },
+          {
+            "url": "https://ctxlivetheatre.com/reviews/the-invention-of-love-by-tom-stoppard-austin-sh/",
+            "outletId": "ctxlivetheatre.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-22T15:31:05.353Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/show/48030-the-invention-of-love",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-22T15:31:05.353Z"
           },
           {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-invention-of-love-review-simon-russell-beale/",
             "outletId": "sunday-telegraph",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-14T23:04:15.991Z"
           },
           {
             "url": "https://www.thetimes.com/article/ea1194a2-8601-47c3-b441-bc0c9088a55c",
             "outletId": "times-uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-14T23:04:15.991Z"
           },
           {
             "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/invention-of-love-tom-stoppard-b2665608.html",
             "outletId": "independent",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-14T23:04:15.991Z"
           },
           {
             "url": "https://www.theguardian.com/stage/2024/dec/17/the-invention-of-love-review-hampstead-theatre-london",
             "outletId": "guardian",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-14T23:04:15.991Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/the-invention-of-love-review-simon-russell-beale-is-perfectly-cast-in-tom-stoppard-revival_1658010/",
             "outletId": "whatsonstage",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-14T23:04:15.991Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/the-invention-of-love-review-hampstead-theatre-london-2024-simon-russell-beale-tom-stoppard-blanche-mcintyre",
             "outletId": "thestage",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-14T23:04:15.991Z"
           }
         ],
         "liveCount": 0,
-        "candidateCount": 8
+        "candidateCount": 18
       },
-      "computedAt": "2026-09-14T23:04:15.991Z"
+      "computedAt": "2026-09-22T15:31:05.353Z"
     },
     {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
@@ -159523,7 +159933,7 @@
       "showId": "the-last-ship-west-end-2026",
       "title": "The Last Ship",
       "openingDate": "2026-09-23",
-      "status": "upcoming",
+      "status": "previews",
       "category": "west-end",
       "aggregatorArticles": [
         "https://www.broadwayworld.com/article/Review-Roundup-Stings-THE-LAST-SHIP-at-the-Ahmanson-in-Los-Angeles-What-Did-the-Critics-Think-20200124",
@@ -159819,9 +160229,9 @@
       "candidatesRejected": {
         "count": 1438,
         "byReason": {
-          "not-http-url": 213,
           "non-review-host": 75,
           "aggregator-internal-nav": 1130,
+          "not-http-url": 213,
           "aggregator-section-root": 20
         }
       },
@@ -160424,7 +160834,7 @@
         "liveCount": 0,
         "candidateCount": 22
       },
-      "computedAt": "2026-09-22T10:37:37.415Z"
+      "computedAt": "2026-09-22T15:31:05.353Z"
     },
     {
       "showId": "the-little-mermaid-the-musical-off-broadway-2026",
