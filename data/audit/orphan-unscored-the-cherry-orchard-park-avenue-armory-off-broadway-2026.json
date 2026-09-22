@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
   "openingDate": "2026-09-17",
-  "detectedAt": "2026-09-22T19:07:44.502Z",
+  "detectedAt": "2026-09-22T19:35:46.248Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "berkshirefinearts--susan-hall.json",
+      "outletId": "berkshirefinearts",
+      "criticName": "Susan Hall",
+      "url": "https://berkshirefinearts.com/09-21-2026_simon-stone-s-cherry-orchard.htm",
+      "fullTextLen": 2887,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "wsj--charles-isherwood.json",
       "outletId": "wsj",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
