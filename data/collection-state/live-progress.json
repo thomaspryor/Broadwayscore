@@ -1,37 +1,20 @@
 {
-  "updatedAt": "2026-09-22T10:52:32.189Z",
-  "processed": 59,
-  "failed": 182,
-  "successRate": "24.5%",
+  "updatedAt": "2026-09-22T10:59:59.032Z",
+  "processed": 63,
+  "failed": 238,
+  "successRate": "20.9%",
   "tierBreakdown": {
-    "playwright": 36,
+    "playwright": 39,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 9,
     "directCookies": 1,
     "scrapingbee": 14,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 6
+    "archive": 7
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 16,
   "recentActivity": [
-    {
-      "t": "2026-09-22T09:55:46.492Z",
-      "event": "bb-session",
-      "session": "076ab6a6",
-      "url": "https://www.wsj.com/articles/the-cherry-orchard-review-chekhov-speaks-korean-506"
-    },
-    {
-      "t": "2026-09-22T09:55:47.431Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-22T09:59:21.551Z",
-      "event": "bb-session",
-      "session": "5be6aa84",
-      "url": "https://www.thestage.co.uk/news/production-news/my-sons-a-queer-but-what-can-you"
-    },
     {
       "t": "2026-09-22T09:59:22.271Z",
       "event": "bb-cookie-inject",
@@ -121,6 +104,29 @@
       "t": "2026-09-22T10:47:29.724Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-22T10:54:29.777Z",
+      "event": "bb-session",
+      "session": "eb7d1821",
+      "url": "https://www.londontheatredirect.com/booking/paranormal-activity-tickets/11-2026/"
+    },
+    {
+      "t": "2026-09-22T10:54:49.433Z",
+      "event": "bb-session",
+      "session": "05090fea",
+      "url": "https://www.londontheatredirect.com/booking/paranormal-activity-tickets/11-2026/"
+    },
+    {
+      "t": "2026-09-22T10:59:02.636Z",
+      "event": "bb-session",
+      "session": "630eb511",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-22T10:59:03.465Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
