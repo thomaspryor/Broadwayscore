@@ -22,5 +22,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-22T12:15:03.881Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Catarina and the Beauty of Killing Fascists",
+    "description": "times-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a legitimate review of 'Catarina and the Beau — https://www.thetimes.com/culture/theatre-dance/article/catarina-and-the-beauty-of-killing-fascists-review-3grmddl3g",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-22T15:00:08.645Z"
+  },
+  {
+    "conditionKey": "opening-night-revival-unverified-catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+    "title": "Unverified revival on Catarina and the Beauty of Killing Fascists",
+    "description": "catarina-and-the-beauty-of-killing-fascists-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-22T15:00:08.682Z"
   }
 ]
