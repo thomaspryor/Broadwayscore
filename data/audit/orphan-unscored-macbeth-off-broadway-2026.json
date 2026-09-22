@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "showId": "macbeth-off-broadway-2026",
+  "openingDate": "2026-09-22",
+  "detectedAt": "2026-09-22T13:54:30.297Z",
+  "windowDays": 7,
+  "orphans": [
+    {
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "outletId": "nytimes",
+      "criticName": "Elisabeth Vincentelli",
+      "url": "https://www.nytimes.com/2026/09/20/arts/music/met-opera-macbeth-louisa-proske.html",
+      "fullTextLen": 1213,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "bot_stub_truncation:not_a_review",
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    }
+  ],
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 1,
+  "blockBroadcast": true,
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
+}
