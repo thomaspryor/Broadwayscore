@@ -1,25 +1,30 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-09-21T13:24:59.024Z",
+  "lastChecked": "2026-09-22T12:06:17.806Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
+      "name": "Data: OB closing candidates awaiting review",
+      "status": "warn",
+      "message": "1 open Off-Broadway show(s) look closed per the weekly detector. Oldest: my-joy-is-heavy-off-broadway-2025 → 2026-04-05 [high]"
+    },
+    {
       "name": "Data: T1/T2 silent review gaps",
       "status": "warn",
-      "message": "5 discovered review(s) not reaching the composite score (3 T1). First: the-story-west-end-2026 — the-spectator-uk (unscored)"
+      "message": "7 discovered review(s) not reaching the composite score (4 T1). First: the-story-west-end-2026 — the-spectator-uk (unscored)"
     },
     {
       "name": "Data: uncollected live review strands",
       "status": "warn",
-      "message": "35 discovered review URL(s) across 27 live show(s) were never fetched. First: operation-mincemeat-west-end-2024 (3 stranded)"
+      "message": "38 discovered review URL(s) across 28 live show(s) were never fetched. First: harry-potter-and-the-cursed-child-both-parts-west-end-2021 (3 stranded)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "error",
-      "message": "6 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Game of Thrones: The Mad King\" (wet-roundup — missing 41d) — 5 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+      "message": "7 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Game of Thrones: The Mad King\" (wet-roundup — missing 42d) — 6 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     }
   ]
 }

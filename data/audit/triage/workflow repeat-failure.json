@@ -1,15 +1,15 @@
 {
   "system": "workflow repeat-failure",
-  "status": "error",
-  "lastChecked": "2026-09-21T13:24:59.024Z",
+  "status": "warn",
+  "lastChecked": "2026-09-22T12:06:17.807Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Test Suite",
-      "status": "error",
-      "message": "Test Suite failed 8 times in the last 24h — likely broken, not transient."
+      "name": "Workflow repeat-failure: Rebuild Reviews Data",
+      "status": "warn",
+      "message": "Rebuild Reviews Data failed 3 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
     },
     {
       "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
