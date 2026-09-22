@@ -27,11 +27,53 @@ const __dirname = path.dirname(__filename);
 const showsPath = path.join(__dirname, '../data/shows.json');
 const reviewsPath = path.join(__dirname, '../data/reviews.json');
 const reviewTextsPath = path.join(__dirname, '../data/review-texts');
+const outletRegistryPath = path.join(__dirname, '../data/outlet-registry.json');
 
 const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf-8'));
 const shows = showsData.shows || showsData; // Handle both formats
 const reviewsData = JSON.parse(fs.readFileSync(reviewsPath, 'utf-8'));
 const reviews = reviewsData.reviews || reviewsData; // Handle both formats
+
+// domain (registered or alias) -> { id, displayName, tier } — built once at
+// module load. Lets the URL's host be matched against every outlet's known
+// domain family (e.g. dailymail.co.uk's registered alias dailymail.com),
+// not just the primary domain a submitter's subdomain might not resemble.
+const OUTLET_DOMAIN_LOOKUP = (() => {
+  const lookup = new Map();
+  try {
+    const registryData = JSON.parse(fs.readFileSync(outletRegistryPath, 'utf-8'));
+    const outlets = registryData.outlets || registryData;
+    for (const [id, o] of Object.entries(outlets)) {
+      if (!o.domain) continue;
+      const entry = { id, displayName: o.displayName || id, tier: o.tier };
+      for (const d of [o.domain, ...(o.domainAliases || [])]) {
+        lookup.set(d.toLowerCase(), entry);
+      }
+    }
+  } catch (err) {
+    console.error('Could not load outlet-registry.json for domain matching (non-fatal):', err.message);
+  }
+  return lookup;
+})();
+
+/**
+ * Find the registered outlet (if any) whose domain family matches a URL's
+ * host — exact match or subdomain (e.g. "newspaper.dailymail.com" matches
+ * the registered alias domain "dailymail.com").
+ */
+function findMatchingOutletByDomain(url) {
+  let hostname;
+  try {
+    hostname = new URL(url).hostname.replace(/^www\./, '').toLowerCase();
+  } catch {
+    return null;
+  }
+  if (OUTLET_DOMAIN_LOOKUP.has(hostname)) return OUTLET_DOMAIN_LOOKUP.get(hostname);
+  for (const [domain, entry] of OUTLET_DOMAIN_LOOKUP) {
+    if (hostname.endsWith('.' + domain)) return entry;
+  }
+  return null;
+}
 
 // Initialize Anthropic client
 const anthropic = new Anthropic({
@@ -142,7 +184,7 @@ function findMatchingShow(showName) {
 /**
  * Use Claude API to validate the submission
  */
-async function validateWithClaude(submissionData, matchedShowCandidates = []) {
+async function validateWithClaude(submissionData, matchedShowCandidates = [], matchedOutlet = null) {
   const showsList = shows.map(s => `- ${s.title} (${s.id})`).join('\n');
 
   const today = new Date().toISOString().split('T')[0];
@@ -156,6 +198,16 @@ async function validateWithClaude(submissionData, matchedShowCandidates = []) {
   const candidateNote = matchedShowCandidates.length
     ? `\nDETERMINISTIC TITLE MATCH: the submitter's show name ("${submissionData.showName}") exactly matches ${matchedShowCandidates.length} entr${matchedShowCandidates.length > 1 ? 'ies' : 'y'} already in our database — these ARE present in OUR DATABASE SHOWS below, do not conclude the show is missing just because you don't independently re-spot it there:\n${matchedShowCandidates.map(s => `  - ${s.title} (${s.id}) — category=${s.category || 'unknown'}, status=${s.status || 'unknown'}, opened=${s.openingDate || 'unknown'}`).join('\n')}\nUse the review URL and any other submitted details to decide which (if any) of these candidates is the actual production being reviewed. If exactly one candidate's market/era plausibly matches the URL, prefer it over declaring the show unmatched.\n`
     : '';
+  // Same problem, one layer down: after the title-match fix above, issue #908
+  // was STILL rejected — this time because the URL's host (a Daily Mail
+  // digital-edition subdomain the model didn't recognize) read as "suspicious"
+  // next to a tabloid-style headline, despite matching our own outlet
+  // registry's registered domain alias for Daily Mail. Give the same explicit
+  // treatment to outlet-domain matches as to show matches: a registry hit
+  // means the host family is a known, tracked outlet, not a judgment call.
+  const outletNote = matchedOutlet
+    ? `\nDETERMINISTIC OUTLET DOMAIN MATCH: the review URL's host resolves to a domain family we already track as a registered outlet: ${matchedOutlet.displayName} (outletId "${matchedOutlet.id}", tier ${matchedOutlet.tier ?? 'unknown'}). This match is against our outlet registry's domain + domainAliases, so treat the outlet itself as legitimate and known — an unfamiliar subdomain (e.g. a paper's digital-edition or e-paper subdomain) is NOT evidence against legitimacy. Focus isReview/isLegitimateOutlet on whether the URL path and any user-provided critic name plausibly describe a review, not on whether you personally recognize this exact subdomain shape.\n`
+    : '';
 
   const prompt = `You are validating a theater review submission for Broadway Scorecard. We cover all professional theater in New York City (Broadway AND Off-Broadway) and London (West End AND Off-West-End). Analyze the following submission and determine if it's valid.
 
@@ -167,7 +219,7 @@ ${submissionData.showName ? `- Show Name (user provided): ${submissionData.showN
 ${submissionData.outletName ? `- Outlet Name (user provided): ${submissionData.outletName}` : ''}
 ${submissionData.criticName ? `- Critic Name (user provided): ${submissionData.criticName}` : ''}
 ${submissionData.additionalNotes ? `- Additional Notes: ${submissionData.additionalNotes}` : ''}
-${candidateNote}
+${candidateNote}${outletNote}
 OUR DATABASE SHOWS:
 ${showsList}
 
@@ -298,10 +350,14 @@ async function validateSubmission(issueBody) {
     }
   }
   const matchedShow = matchedShowCandidates[0] || null;
+  const matchedOutlet = findMatchingOutletByDomain(submissionData.reviewUrl);
+  if (matchedOutlet) {
+    console.log(`Matched outlet by domain: ${matchedOutlet.displayName} (${matchedOutlet.id})`);
+  }
 
   // Use Claude API for intelligent validation
   console.log('Validating with Claude API...');
-  const claudeValidation = await validateWithClaude(submissionData, matchedShowCandidates);
+  const claudeValidation = await validateWithClaude(submissionData, matchedShowCandidates, matchedOutlet);
 
   console.log('Claude validation result:', JSON.stringify(claudeValidation, null, 2));
 
