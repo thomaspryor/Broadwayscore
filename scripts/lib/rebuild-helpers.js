@@ -343,6 +343,79 @@ function isContentVerificationActive(data) {
   return true;
 }
 
+// Distinctive-word tokens: lowercase alpha runs of 5+ chars. Short/common words
+// carry no cross-show signal, so they're excluded from both sides of the
+// overlap check below.
+const _DISTINCTIVE_TOKEN_RE = /[a-z]{5,}/g;
+
+// Only westEndTheatreExcerpt is checked here, NOT the full EXCERPT_FIELDS list.
+// westEndTheatreExcerpt is scraped straight off the review's own page section
+// (extractSectionReviews/extractStarRatings in sweep-we-aggregators.js) — when
+// correctly matched, its wording is a literal slice of that same fullText.
+// The other excerpt fields (theStageExcerpt, dtliExcerpt, bwwExcerpt, etc.) are
+// frequently ROUNDUP blurbs that paraphrase or quote SEVERAL critics in one
+// outlet's own words (e.g. "Dominic Cavendish labels it 'fiercely timely'") —
+// legitimately about the right show and critic, but not a substring of that
+// critic's own fullText elsewhere. Checking those too produced 45 false
+// positives corpus-wide (ship-check on this fix, 2026-09-22) — restricting to
+// westEndTheatreExcerpt, the field actually implicated in the Book of Mormon
+// incident, keeps the signal clean.
+const _AGGREGATOR_STAR_EXCERPT_FIELD = 'westEndTheatreExcerpt';
+
+/**
+ * Guard against aggregatorStars (a THIRD-PARTY-relayed rating — e.g.
+ * WestEndTheatre.com reporting "Guardian: 2/5") being cross-attributed from a
+ * DIFFERENT show's roundup entry that happens to share this file's outlet+critic
+ * slot. Caught 2026-09-22 (Broadway Scorecard feedback form): a WestEndTheatre
+ * roundup match wrote aggregatorStars="2/5" and westEndTheatreExcerpt onto
+ * the-book-of-mormon-west-end-2024/guardian--arifa-akbar.json from Brigadoon's
+ * roundup row, not Book of Mormon's — this file's own fullText was (and remained)
+ * a correct, unanimous-ensemble Rave review, but the contaminated aggregatorStars
+ * won P0.5 precedence over it and later drove a bad adjudicatedScore=40.
+ *
+ * When the file carries BOTH a full-length review body (fullText) and a
+ * westEndTheatreExcerpt (the same WET sweep writes aggregatorStars alongside
+ * it), the excerpt should describe the SAME review as fullText. A short
+ * excerpt sharing essentially none of its distinctive words with a long,
+ * unrelated fullText is the signature of this cross-attribution bug, not of
+ * normal excerpting (a real WET excerpt is a verbatim slice of the review it's
+ * paired with).
+ *
+ * Deliberately permissive: returns true (don't block) whenever there isn't
+ * enough signal to judge — no fullText, no westEndTheatreExcerpt, or too few
+ * distinctive words in the excerpt to trust a ratio. This is a targeted
+ * contamination check, not a general content-quality gate.
+ *
+ * @param {object} data - a parsed review-text record
+ * @returns {boolean} false only when westEndTheatreExcerpt looks like it
+ *   belongs to a different review than fullText
+ */
+function aggregatorStarsCorroboratedByFullText(data) {
+  if (!data || typeof data.fullText !== 'string' || data.fullText.length < 200) return true;
+
+  const excerpts = [data[_AGGREGATOR_STAR_EXCERPT_FIELD]].filter((v) => typeof v === 'string' && v.length >= 40);
+  if (excerpts.length === 0) return true;
+
+  const fullTextLower = data.fullText.toLowerCase();
+  let judged = false;
+  for (const excerpt of excerpts) {
+    const tokens = new Set((excerpt.toLowerCase().match(_DISTINCTIVE_TOKEN_RE) || []));
+    if (tokens.size < 4) continue; // too short to judge — don't penalize
+    judged = true;
+
+    let matched = 0;
+    for (const t of tokens) {
+      if (fullTextLower.includes(t)) matched++;
+    }
+    // At least one excerpt corroborates fullText — good enough (a file can carry
+    // several excerpt fields from different aggregators; only one needs to agree).
+    if (matched / tokens.size >= 0.2) return true;
+  }
+  // true (don't block) when no excerpt had enough signal to judge; false only
+  // when at least one judgeable excerpt failed to overlap with fullText.
+  return !judged;
+}
+
 /**
  * Determine the best score for a review from all available sources.
  *
@@ -556,8 +629,22 @@ function getBestScore(data, opts = {}) {
     // Score was nulled by P0 script — recover from previousOriginalScore
     resolvedOriginalScore = String(data.previousOriginalScore);
   }
+  // aggregatorStars corroboration guard (2026-09-22, Book of Mormon West End
+  // feedback report): only trust a third-party-relayed star rating when it
+  // isn't contradicted by a mismatched excerpt riding along with it (see
+  // aggregatorStarsCorroboratedByFullText docblock). resolvedOriginalScore is
+  // NOT gated here — it comes from the outlet's own fetched page, a different,
+  // lower-risk pipeline than the aggregator-roundup excerpt+star pairing this
+  // guards against.
+  const aggregatorStarsUsable = data.aggregatorStars && (isKnownStarOutlet || isLBOFirstParty)
+    && aggregatorStarsCorroboratedByFullText(data);
+  if (data.aggregatorStars && (isKnownStarOutlet || isLBOFirstParty) && !aggregatorStarsUsable) {
+    inc('aggregatorStarsExcerptMismatch');
+    flagForHumanReview(data, 'aggregatorStars-excerpt-mismatch',
+      `aggregatorStars "${data.aggregatorStars}" ignored — its excerpt field doesn't overlap with fullText (likely cross-attributed from a different show's aggregator roundup row)`);
+  }
   const effectiveOriginalScore = (!scoreCleared && !isAggregatorScoreSource && resolvedOriginalScore)
-    || (data.aggregatorStars && (isKnownStarOutlet || isLBOFirstParty) ? data.aggregatorStars : null);
+    || (aggregatorStarsUsable ? data.aggregatorStars : null);
   const effectiveScoreLabel = data.originalScore ? 'originalScore' : 'aggregatorStars (known star outlet)';
 
   if (effectiveOriginalScore && !downgradeShowScore) {
@@ -788,9 +875,12 @@ function getBestScore(data, opts = {}) {
   }
 
   // P5.7: aggregatorStars fallback — third-party star ratings from aggregator sites.
-  // Only trust if the outlet actually publishes star ratings (KNOWN_STAR_OUTLETS).
-  // Otherwise the aggregator may have invented the rating (e.g., London Theatre).
-  if (data.aggregatorStars && isKnownStarOutlet) {
+  // Only trust if the outlet actually publishes star ratings (KNOWN_STAR_OUTLETS)
+  // and, same as P0.5 above, the rating isn't contradicted by a mismatched
+  // excerpt riding along with it (aggregatorStarsCorroboratedByFullText).
+  // Otherwise the aggregator may have invented the rating (e.g., London Theatre)
+  // or cross-attributed it from a different show's roundup row.
+  if (data.aggregatorStars && isKnownStarOutlet && aggregatorStarsCorroboratedByFullText(data)) {
     const parsed = parseOriginalScore(data.aggregatorStars, data.outletId);
     if (parsed !== null) {
       inc('aggregatorStarsFallback');
@@ -1020,6 +1110,7 @@ module.exports = {
   cleanExcerpt,
   // Scoring
   isContentVerificationActive,
+  aggregatorStarsCorroboratedByFullText,
   getBestScore,
   // URL date extraction
   extractDateFromUrl,
