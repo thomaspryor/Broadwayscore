@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-22T20:04:08.829Z",
+  "timestamp": "2026-09-22T21:50:07.263Z",
   "stats": {
-    "totalReviews": 43943,
-    "alreadyFlagged": 18151,
+    "totalReviews": 43950,
+    "alreadyFlagged": 18153,
     "dateGuardCatches": 248,
     "directorMismatch": 1048,
     "tvFilmSignals": 1303,
-    "londonSignals": 1147,
+    "londonSignals": 1148,
     "offBroadwaySignals": 509,
     "yearMismatch": 93,
-    "noPublishDate": 3858
+    "noPublishDate": 3859
   },
   "findings": [
     {
@@ -1083,7 +1083,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 78,
+      "score": 76,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -6498,7 +6498,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2025-10-08",
       "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
       "findings": [
@@ -14975,7 +14975,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
-      "score": 82,
+      "score": 81,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
       "findings": [
@@ -15251,7 +15251,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "plays-international--jeremy-malies.json",
-      "score": 79,
+      "score": 81,
       "publishDate": "2025-12-15",
       "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
       "findings": [
@@ -19716,7 +19716,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-06-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-shakespeares-globe-review",
       "findings": [
@@ -20204,7 +20204,7 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "thestage--sam-marlowe.json",
-      "score": 100,
+      "score": 99,
       "publishDate": "October 19th, 2022",
       "url": "https://www.thestage.co.uk/reviews/my-neighbour-totoro-barbican-theatre-studio-ghibli-hayao-miyazaki-review",
       "findings": [
@@ -20240,6 +20240,17 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 575d before show (October 20th, 2022 vs 2024-05-17)"
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "file": "broadwayworld--abbie-grundy.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 861d before show (2024-05-08 vs 2026-09-16)"
         }
       ]
     },
@@ -20282,17 +20293,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1423d before show (2022-10-24 vs 2026-09-16)"
-        }
-      ]
-    },
-    {
-      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
-      "file": "nytg--gillian-russo.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 512d before show (2025-04-22 vs 2026-09-16)"
         }
       ]
     },
@@ -35373,7 +35373,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "all-that-dazzles-uk--sam-woodward.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-09-04",
       "url": "https://www.allthatdazzles.co.uk/post/review-a-month-in-the-country-donmar-warehouse",
       "findings": [
@@ -35456,7 +35456,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "theartsdispatch--the-arts-dispatch.json",
-      "score": 78,
+      "score": 76,
       "publishDate": "2026-09-13",
       "url": "https://theartsdispatch.substack.com/p/a-month-in-the-country-review-donmar",
       "findings": [
@@ -36788,7 +36788,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-06-28",
       "url": "https://www.londontheatre1.com/reviews/archduke-royal-court/",
       "findings": [
@@ -36886,7 +36886,7 @@
     {
       "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
       "findings": [
@@ -38265,6 +38265,20 @@
     },
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": 77,
+      "publishDate": "2026-09-22",
+      "url": "https://www.allthatdazzles.co.uk/post/review-catarina-and-the-beauty-of-killing-fascists-dorfman-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "file": "artsdesk--aleks-sierz.json",
       "score": 62,
       "publishDate": "2026-09-22",
@@ -39611,7 +39625,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
-      "score": 79,
+      "score": 82,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
       "findings": [
@@ -39625,7 +39639,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": 76,
+      "score": 78,
       "publishDate": "2026-08-13",
       "url": "https://playsinternational.org.uk/death-note-the-musical-barbican/",
       "findings": [
@@ -41493,7 +41507,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 74,
+      "score": 75,
       "publishDate": "2026-09-16",
       "url": "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review",
       "findings": [
@@ -41507,7 +41521,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "londonlivinglarge--london-living-large.json",
-      "score": 75,
+      "score": 77,
       "publishDate": "2026-09-18",
       "url": "https://www.londonlivinglarge.com/2026/09/golden-boy-almeida-theatre-sep-8-oct-31.html",
       "findings": [
@@ -42028,7 +42042,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
@@ -46017,7 +46031,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "artsdesk--demetrios-matheou.json",
-      "score": 79,
+      "score": 82,
       "publishDate": null,
       "url": "http://theartsdesk.com/theatre/mass-donmar-warehouse-review-purgatorial-cat-and-mouse",
       "findings": [
@@ -46031,7 +46045,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2026-04-30",
       "url": "https://www.theguardian.com/stage/2026/apr/30/mass-review-donmar-warehouse-london",
       "findings": [
