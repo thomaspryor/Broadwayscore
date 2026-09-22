@@ -1109,6 +1109,8 @@ before drafting a drain — every `_pending` file across all 5 shows this night 
 
 ## Gate: outlet index pages lag publication by hours (BRO-3998, 2026-09-21 Catarina)
 Ten outlet-index probes (Guardian/Times/Standard/WhatsOnStage/... section pages) all returned byte-count-proven clean negatives while Telegraph and LondonTheatre1 reviews had already been live ~2h. Google News RSS found both instantly.
+**Strongest datapoint (pass 31, 06:45Z):** `timeout.com/london/theatre` returned HTTP 200 / 230,649 B with ZERO `catarina` hits while Time Out's own review of that show had been live AND scored at 89 for ~7 hours. The blind spot is not a short publication lag — an outlet's section index can omit its own already-published review most of a day later. A clean index is never evidence of non-publication, at any elapsed time.
+
 **How to apply:** on opening night, census via `https://news.google.com/rss/search?q="<title>"+review&hl=en-GB&gl=GB&ceid=GB:en` (plain curl + full Chrome UA, no scraper spend) BEFORE trusting any index-page negative. An index probe returning nothing is not evidence of non-publication.
 
 ## Gate: promoted-out-of-_pending files with empty body are never retried (BRO-3999, 2026-09-21 Catarina)
