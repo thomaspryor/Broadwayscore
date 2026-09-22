@@ -1,6 +1,13 @@
 {
   "processed": [
-    "macbeth-off-broadway-2026/ew--reviewed-by.json"
+    "macbeth-off-broadway-2026/ew--reviewed-by.json",
+    "macbeth-off-broadway-2026/playbill--unknown.json",
+    "america-who-hurt-you-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--gillian-russo.json",
+    "the-cherry-orchard-park-avenue-armory-off-broadway-2026/wsj--charles-isherwood.json",
+    "the-hope-theory-off-broadway-2026/wsj--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json",
+    "the-cherry-orchard-park-avenue-armory-off-broadway-2026/abouttheartists--unknown.json"
   ],
   "failed": [
     "macbeth-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -25,22 +32,82 @@
     "macbeth-off-broadway-2026/telegraph--dominic-cavendish.json",
     "macbeth-off-broadway-2026/thestage--unknown.json",
     "macbeth-off-broadway-2026/times-uk--clive-davis.json",
-    "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json"
+    "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json",
+    "the-invention-of-love-off-broadway-2026/nytg--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/thestage--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
+    "the-invention-of-love-off-broadway-2026/thestage--ian-shine.json",
+    "the-invention-of-love-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/variety--unknown.json",
+    "slam-frank-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "the-hope-theory-off-broadway-2026/nytg--bridget-gross.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/timeout-london--tom-wicker.json",
+    "the-cherry-orchard-park-avenue-armory-off-broadway-2026/theatermania--unknown.json",
+    "the-cherry-orchard-park-avenue-armory-off-broadway-2026/thereviewshub--unknown.json",
+    "america-who-hurt-you-off-broadway-2026/playbill--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/east-midlands-theatre--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/everything-theatre--sara-west.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/everything-theatre--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/jacktheladmag--simon-webb.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/standard--nick-curtis.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/theatre-weekly--greg-stewart.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/thestage--paul-vale.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/west-end-best-friend--maya-bateman.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--charlotte-vickers.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--daniella-harrison.json",
+    "table-17-off-west-end-2026/london-box-office--stuart-king.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "macbeth-off-broadway-2026/playbill--unknown.json",
+      "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--gillian-russo.json",
+      "the-cherry-orchard-park-avenue-armory-off-broadway-2026/abouttheartists--unknown.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-cherry-orchard-park-avenue-armory-off-broadway-2026/wsj--charles-isherwood.json",
+      "the-cherry-orchard-park-avenue-armory-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/the-hope-theory-off-broadway-2026/wsj--unknown.json",
+      "the-hope-theory-off-broadway-2026/wsj--unknown.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "america-who-hurt-you-off-broadway-2026/nytimes--laura-collins-hughes.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "macbeth-off-broadway-2026/ew--reviewed-by.json"
+      "macbeth-off-broadway-2026/ew--reviewed-by.json",
+      "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json"
     ]
   },
   "startTime": "2026-09-22T19:50:58.267Z",
-  "lastProcessed": "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json",
-  "log": []
+  "lastProcessed": "the-cherry-orchard-park-avenue-armory-off-broadway-2026/abouttheartists--unknown.json",
+  "log": [
+    {
+      "t": "2026-09-22T21:05:10.828Z",
+      "event": "bb-session",
+      "session": "181955cb",
+      "url": "https://www.wsj.com/articles/the-cherry-orchard-review-chekhov-speaks-korean-506"
+    },
+    {
+      "t": "2026-09-22T21:05:11.741Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-22T21:05:27.771Z",
+      "event": "bb-session",
+      "session": "11a1a183",
+      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
+    },
+    {
+      "t": "2026-09-22T21:05:28.711Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }

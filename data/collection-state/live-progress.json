@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-09-22T19:54:03.526Z",
-  "processed": 1,
-  "failed": 23,
-  "successRate": "4.2%",
+  "updatedAt": "2026-09-22T21:08:00.586Z",
+  "processed": 8,
+  "failed": 48,
+  "successRate": "14.3%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-09-22T21:05:10.828Z",
+      "event": "bb-session",
+      "session": "181955cb",
+      "url": "https://www.wsj.com/articles/the-cherry-orchard-review-chekhov-speaks-korean-506"
+    },
+    {
+      "t": "2026-09-22T21:05:11.741Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-22T21:05:27.771Z",
+      "event": "bb-session",
+      "session": "11a1a183",
+      "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-"
+    },
+    {
+      "t": "2026-09-22T21:05:28.711Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
