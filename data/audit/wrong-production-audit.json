@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-22T14:20:04.691Z",
+  "timestamp": "2026-09-22T15:10:24.380Z",
   "stats": {
     "totalReviews": 43915,
-    "alreadyFlagged": 18134,
-    "dateGuardCatches": 247,
+    "alreadyFlagged": 18135,
+    "dateGuardCatches": 248,
     "directorMismatch": 1048,
     "tvFilmSignals": 1302,
     "londonSignals": 1143,
     "offBroadwaySignals": 508,
     "yearMismatch": 92,
-    "noPublishDate": 3856
+    "noPublishDate": 3851
   },
   "findings": [
     {
@@ -1083,7 +1083,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 77,
+      "score": 75,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -2568,7 +2568,7 @@
     {
       "showId": "beetlejuice-west-end-2026",
       "file": "london-box-office--shehrazade-zafar-arif.json",
-      "score": 98,
+      "score": 97,
       "publishDate": "2026-05-27",
       "url": "https://www.londonboxoffice.co.uk/news/post/beetlejuice-prince-edward-review",
       "findings": [
@@ -2582,7 +2582,7 @@
     {
       "showId": "beetlejuice-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 95,
+      "score": 97,
       "publishDate": "2026-05-29",
       "url": "https://www.londonboxoffice.co.uk/news/post/beetlejuice-prince-edward-review",
       "findings": [
@@ -3989,7 +3989,7 @@
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "2021-12-13",
       "url": "https://www.allthatdazzles.co.uk/post/review-cabaret-at-the-kit-kat-club",
       "findings": [
@@ -6498,7 +6498,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2025-10-08",
       "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
       "findings": [
@@ -14961,7 +14961,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 58,
+      "score": 60,
       "publishDate": "2025-12-12",
       "url": "https://www.allthatdazzles.co.uk/post/review-into-the-woods-bridge-theatre",
       "findings": [
@@ -15129,7 +15129,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "london-box-office--stuart-king.json",
-      "score": 59,
+      "score": 56,
       "publishDate": "2025-12-12",
       "url": "https://www.londonboxoffice.co.uk/news/post/into-the-woods-bridge-theatre-review",
       "findings": [
@@ -15991,7 +15991,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "afridiziak-theatre-news--mark-arbouine.json",
-      "score": 83,
+      "score": 84,
       "publishDate": "2026-03-28",
       "url": "https://www.afridiziak.com/reviews/john-proctor-is-the-villain/",
       "findings": [
@@ -16188,7 +16188,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
@@ -20245,8 +20245,19 @@
     },
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "file": "broadwayworld--abbie-grundy.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 468d before show (2025-06-05 vs 2026-09-16)"
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "gay-times--chris-selman.json",
-      "score": 98,
+      "score": 99,
       "publishDate": "2022-10-24",
       "url": "https://www.gaytimes.co.uk/originals/my-sons-a-queer-but-what-can-you-do-makes-triumphant-west-end-debut-review/",
       "findings": [
@@ -35384,7 +35395,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 74,
+      "score": 73,
       "publishDate": "2026-09-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/a-month-in-the-country-donmar-warehouse-review",
       "findings": [
@@ -35412,7 +35423,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "theartsdispatch--the-arts-dispatch.json",
-      "score": 80,
+      "score": 77,
       "publishDate": "2026-09-13",
       "url": "https://theartsdispatch.substack.com/p/a-month-in-the-country-review-donmar",
       "findings": [
@@ -36842,7 +36853,7 @@
     {
       "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 73,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
       "findings": [
@@ -38222,6 +38233,7 @@
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "file": "artsdesk--aleks-sierz.json",
+      "score": 62,
       "publishDate": "2026-09-22",
       "url": "https://theartsdesk.com/theatre/catarina-and-beauty-killing-fascists-national-theatre-review-thoroughly-uncomfortable-watch",
       "findings": [
@@ -38249,6 +38261,7 @@
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "file": "guardian--arifa-akbar.json",
+      "score": 61,
       "publishDate": "2026-09-22",
       "url": "https://www.theguardian.com/stage/2026/sep/22/catarina-and-the-beauty-of-killing-fascists-review-fury-europe",
       "findings": [
@@ -39551,7 +39564,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
-      "score": 82,
+      "score": 81,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
       "findings": [
@@ -39565,7 +39578,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2026-08-13",
       "url": "https://playsinternational.org.uk/death-note-the-musical-barbican/",
       "findings": [
@@ -41405,7 +41418,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 74,
       "publishDate": "2026-09-16",
       "url": "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review",
       "findings": [
@@ -41419,7 +41432,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "londonlivinglarge--london-living-large.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-09-18",
       "url": "https://www.londonlivinglarge.com/2026/09/golden-boy-almeida-theatre-sep-8-oct-31.html",
       "findings": [
@@ -41940,7 +41953,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 77,
+      "score": 80,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
@@ -45514,7 +45527,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-09-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
       "findings": [
@@ -45929,7 +45942,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "artsdesk--demetrios-matheou.json",
-      "score": 81,
+      "score": 82,
       "publishDate": null,
       "url": "http://theartsdesk.com/theatre/mass-donmar-warehouse-review-purgatorial-cat-and-mouse",
       "findings": [
@@ -46055,7 +46068,7 @@
     {
       "showId": "matilda-the-musical-west-end-2021",
       "file": "london-theatre--peter-brown.json",
-      "score": 92,
+      "score": 91,
       "publishDate": "November 24th, 2011",
       "url": "https://www.londontheatre.co.uk/reviews/matilda-the-musical-review",
       "findings": [
