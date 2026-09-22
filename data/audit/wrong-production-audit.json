@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-09-22T00:52:20.246Z",
+  "timestamp": "2026-09-22T02:04:47.906Z",
   "stats": {
-    "totalReviews": 43876,
-    "alreadyFlagged": 18123,
+    "totalReviews": 43875,
+    "alreadyFlagged": 18124,
     "dateGuardCatches": 246,
     "directorMismatch": 1048,
     "tvFilmSignals": 1302,
-    "londonSignals": 1136,
+    "londonSignals": 1138,
     "offBroadwaySignals": 508,
     "yearMismatch": 91,
     "noPublishDate": 3845
@@ -38215,6 +38215,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "file": "londontheatre1--chris-omaweng.json",
+      "publishDate": "2026-09-21",
+      "url": "https://www.londontheatre1.com/reviews/catarina-and-the-beauty-of-killing-fascists-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2026-09-21",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/catarina-and-the-beauty-of-killing-fascists-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
