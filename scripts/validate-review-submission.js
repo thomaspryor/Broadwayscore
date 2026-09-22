@@ -107,37 +107,56 @@ function checkDuplicateReview(url, showId) {
 }
 
 /**
- * Find matching show in database
+ * Find ALL shows in the database matching a title — a title can span multiple
+ * productions (different markets, different eras, e.g. two "Golden Boy"
+ * entries), so callers need every candidate rather than an arbitrary first hit.
  */
-function findMatchingShow(showName) {
-  if (!showName) return null;
+function findMatchingShows(showName) {
+  if (!showName) return [];
 
   const normalizedInput = showName.toLowerCase().trim();
 
   // Exact title match
-  let match = shows.find(s => s.title.toLowerCase() === normalizedInput);
-  if (match) return match;
+  let matches = shows.filter(s => s.title.toLowerCase() === normalizedInput);
+  if (matches.length) return matches;
 
   // Check if input matches slug
-  match = shows.find(s => s.id === normalizedInput || s.slug === normalizedInput);
-  if (match) return match;
+  matches = shows.filter(s => s.id === normalizedInput || s.slug === normalizedInput);
+  if (matches.length) return matches;
 
   // Partial match
-  match = shows.find(s =>
+  return shows.filter(s =>
     s.title.toLowerCase().includes(normalizedInput) ||
     normalizedInput.includes(s.title.toLowerCase())
   );
+}
 
-  return match;
+/**
+ * Find matching show in database (first candidate — see findMatchingShows
+ * for the full list used to disambiguate duplicate titles).
+ */
+function findMatchingShow(showName) {
+  return findMatchingShows(showName)[0] || null;
 }
 
 /**
  * Use Claude API to validate the submission
  */
-async function validateWithClaude(submissionData) {
+async function validateWithClaude(submissionData, matchedShowCandidates = []) {
   const showsList = shows.map(s => `- ${s.title} (${s.id})`).join('\n');
 
   const today = new Date().toISOString().split('T')[0];
+  // BRO: a deterministic title lookup already ran before this call. Surface
+  // its result explicitly rather than relying on the model to re-find the
+  // same entry unaided inside the full show list below — issue #908 (Golden
+  // Boy / Daily Mail) rejected a review as "no current production in our
+  // database" even though golden-boy-off-west-end-2026 was present verbatim
+  // in showsList; the model just didn't spot its own evidence. A named
+  // candidate line removes that burden.
+  const candidateNote = matchedShowCandidates.length
+    ? `\nDETERMINISTIC TITLE MATCH: the submitter's show name ("${submissionData.showName}") exactly matches ${matchedShowCandidates.length} entr${matchedShowCandidates.length > 1 ? 'ies' : 'y'} already in our database — these ARE present in OUR DATABASE SHOWS below, do not conclude the show is missing just because you don't independently re-spot it there:\n${matchedShowCandidates.map(s => `  - ${s.title} (${s.id}) — category=${s.category || 'unknown'}, status=${s.status || 'unknown'}, opened=${s.openingDate || 'unknown'}`).join('\n')}\nUse the review URL and any other submitted details to decide which (if any) of these candidates is the actual production being reviewed. If exactly one candidate's market/era plausibly matches the URL, prefer it over declaring the show unmatched.\n`
+    : '';
+
   const prompt = `You are validating a theater review submission for Broadway Scorecard. We cover all professional theater in New York City (Broadway AND Off-Broadway) and London (West End AND Off-West-End). Analyze the following submission and determine if it's valid.
 
 TODAY'S DATE: ${today} — use this when evaluating publication dates in URLs or metadata. Review URLs with dates in 2025 or 2026 are expected and valid.
@@ -148,7 +167,7 @@ ${submissionData.showName ? `- Show Name (user provided): ${submissionData.showN
 ${submissionData.outletName ? `- Outlet Name (user provided): ${submissionData.outletName}` : ''}
 ${submissionData.criticName ? `- Critic Name (user provided): ${submissionData.criticName}` : ''}
 ${submissionData.additionalNotes ? `- Additional Notes: ${submissionData.additionalNotes}` : ''}
-
+${candidateNote}
 OUR DATABASE SHOWS:
 ${showsList}
 
@@ -254,43 +273,49 @@ async function validateSubmission(issueBody) {
     };
   }
 
-  // Check if user-provided show name matches our database
-  let matchedShow = null;
+  // Check if user-provided show name matches our database. A title can match
+  // multiple productions (different markets/eras), so keep every candidate —
+  // not just the first — for the LLM prompt and duplicate check below.
+  let matchedShowCandidates = [];
   if (submissionData.showName) {
-    matchedShow = findMatchingShow(submissionData.showName);
-    if (matchedShow) {
-      console.log(`Matched show: ${matchedShow.title} (${matchedShow.id})`);
+    matchedShowCandidates = findMatchingShows(submissionData.showName);
+    if (matchedShowCandidates.length) {
+      console.log(`Matched show candidates: ${matchedShowCandidates.map(s => `${s.title} (${s.id})`).join(', ')}`);
 
-      // Re-check duplicate with specific show ID
-      const showDuplicateCheck = checkDuplicateReview(submissionData.reviewUrl, matchedShow.id);
-      if (showDuplicateCheck.isDuplicate) {
-        return {
-          isValid: false,
-          error: `This review is already in our database at ${showDuplicateCheck.location}`,
-          recommendation: 'reject',
-          isDuplicate: true,
-          existingLocation: showDuplicateCheck.location
-        };
+      // Re-check duplicate against every candidate show ID
+      for (const candidate of matchedShowCandidates) {
+        const showDuplicateCheck = checkDuplicateReview(submissionData.reviewUrl, candidate.id);
+        if (showDuplicateCheck.isDuplicate) {
+          return {
+            isValid: false,
+            error: `This review is already in our database at ${showDuplicateCheck.location}`,
+            recommendation: 'reject',
+            isDuplicate: true,
+            existingLocation: showDuplicateCheck.location
+          };
+        }
       }
     }
   }
+  const matchedShow = matchedShowCandidates[0] || null;
 
   // Use Claude API for intelligent validation
   console.log('Validating with Claude API...');
-  const claudeValidation = await validateWithClaude(submissionData);
+  const claudeValidation = await validateWithClaude(submissionData, matchedShowCandidates);
 
   console.log('Claude validation result:', JSON.stringify(claudeValidation, null, 2));
 
   // Guard: an 'approve' recommendation must resolve to a real database show id,
   // otherwise the downstream scrape job (which gates on approve and needs a
   // showId to ingest) fails AFTER the submitter already got an approval email.
-  // Fall back to the deterministic title match; if neither resolves, downgrade
-  // to manual review rather than approving a review we can't attach.
+  // Fall back to the deterministic title match ONLY when it's unambiguous
+  // (exactly one candidate) — multiple same-title candidates (e.g. two
+  // "Golden Boy" productions) must not be silently guessed.
   if (claudeValidation.recommendation === 'approve') {
     const llmShowId = claudeValidation.extractedData?.showId;
     const resolvedId =
       (llmShowId && shows.some(s => s.id === llmShowId) && llmShowId) ||
-      matchedShow?.id ||
+      (matchedShowCandidates.length === 1 ? matchedShowCandidates[0].id : null) ||
       null;
     if (resolvedId) {
       if (claudeValidation.extractedData) {
