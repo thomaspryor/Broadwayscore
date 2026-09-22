@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-22T12:19:02.731Z",
+  "runDate": "2026-09-22T13:44:55.198Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,42 +11,42 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 68,
-    "failed": 303,
+    "processed": 70,
+    "failed": 308,
     "skipped": 0,
-    "successRate": "18.3%"
+    "successRate": "18.5%"
   },
   "tierBreakdown": {
     "playwright": 40,
-    "amp": 0,
+    "amp": 1,
     "browserbase": 9,
-    "directCookies": 3,
-    "scrapingbee": 15,
+    "directCookies": 4,
+    "scrapingbee": 16,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 8
   },
   "statistics": {
-    "tier1Attempts": 24,
+    "tier1Attempts": 23,
     "tier1Success": 6,
-    "ampAttempts": 0,
-    "ampSuccess": 0,
-    "tier1_5Attempts": 10,
-    "tier1_5Success": 5,
-    "tier2Attempts": 23,
-    "tier2Success": 5,
+    "ampAttempts": 1,
+    "ampSuccess": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 19,
+    "tier2Success": 2,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 15,
+    "tier3_6Attempts": 13,
     "tier3_6Success": 0,
-    "tier4Attempts": 22,
-    "tier4Success": 3,
-    "totalFailed": 295,
-    "scrapingBeePageCredits": 106,
+    "tier4Attempts": 19,
+    "tier4Success": 2,
+    "totalFailed": 298,
+    "scrapingBeePageCredits": 85,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 10,
-    "browserbaseMinutesUsed": 2.8,
-    "urlDiscoveryAttempts": 266,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 269,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -118,7 +118,9 @@
     "just-in-time-2025/newyorker--conde-nast.json",
     "maybe-happy-ending-2024/newyorker--conde-nast.json",
     "oh-mary-2024/broadwaynews--brittani-samuel.json",
-    "oh-mary-2024/one-minute-critic--matthew-wexler.json"
+    "oh-mary-2024/one-minute-critic--matthew-wexler.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
+    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -423,7 +425,12 @@
     "the-devil-wears-prada-west-end-2024/nytimes--alexis-soloski.json",
     "the-devil-wears-prada-west-end-2024/washpost--peter-marks.json",
     "oh-mary-2024/british-theatre--unknown.json",
-    "oh-mary-2024/frontmezzjunkies--unknown.json"
+    "oh-mary-2024/frontmezzjunkies--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/thestage--neil-norman.json",
+    "the-hunger-games-on-stage-west-end-2025/fairypoweredproductions--unknown.json",
+    "oh-mary-2024/queerty--jude-cramer.json",
+    "oh-mary-2024/west-end-best-friend--unknown.json",
+    "oh-mary-2024/west-end-wilma--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -468,7 +475,9 @@
       "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
       "catarina-and-the-beauty-of-killing-fascists-west-end-2026/datathistle--unknown.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/man-to-man-west-end-2026/deadline--unknown.json"
+    ],
     "browserbase": [
       "data/review-texts/midnight-off-broadway-2026/deadline--glenn-garner.json",
       "midnight-off-broadway-2026/deadline--glenn-garner.json",
@@ -483,7 +492,8 @@
     "directCookies": [
       "the-story-west-end-2026/times-uk--clive-davis.json",
       "just-in-time-2025/newyorker--conde-nast.json",
-      "maybe-happy-ending-2024/newyorker--conde-nast.json"
+      "maybe-happy-ending-2024/newyorker--conde-nast.json",
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json"
     ],
     "scrapingbee": [
       "america-who-hurt-you-off-broadway-2026/nytimes--laura-collins-hughes.json",
@@ -500,7 +510,8 @@
       "paranormal-activity-2026/nytimes--helen-shaw.json",
       "weve-been-here-before-a-one-woman-musical-off-broadway-2026/broadwayworld--nicole-rosky.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
-      "oh-mary-2024/broadwaynews--brittani-samuel.json"
+      "oh-mary-2024/broadwaynews--brittani-samuel.json",
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -516,26 +527,19 @@
     ]
   },
   "failuresByOutlet": {
+    "The Stage": {
+      "count": 7,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
     "The Wall Street Journal": {
       "count": 1,
       "domain": "wsj.com",
       "hasCredentials": true,
       "isPaywalled": true,
       "isKnownBlocked": true
-    },
-    "The Stage": {
-      "count": 4,
-      "domain": "thestage.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Times (UK)": {
-      "count": 1,
-      "domain": "thetimes.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
     },
     "Londontheatredirect": {
       "count": 2,
