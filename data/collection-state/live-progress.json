@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-22T16:15:51.281Z",
-  "processed": 30,
-  "failed": 70,
-  "successRate": "30.0%",
+  "updatedAt": "2026-09-22T16:22:37.536Z",
+  "processed": 73,
+  "failed": 327,
+  "successRate": "18.3%",
   "tierBreakdown": {
-    "playwright": 19,
+    "playwright": 46,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingbee": 7,
+    "scrapingbee": 21,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 5
+    "archive": 6
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-09-22T15:51:13.507Z",
@@ -44,6 +44,17 @@
       "domain": "thetimes.com"
     },
     {
+      "t": "2026-09-22T16:19:08.903Z",
+      "event": "bb-session",
+      "session": "a4361e7e",
+      "url": "https://www.thetimes.com/culture/books/article/beatrix-potter-author-archives-ta"
+    },
+    {
+      "t": "2026-09-22T16:19:09.442Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
       "t": "2026-09-22T16:02:36.789Z",
       "event": "bb-session",
       "session": "b2320cf0",
@@ -53,6 +64,39 @@
       "t": "2026-09-22T16:02:37.228Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-22T16:13:37.392Z",
+      "event": "bb-session",
+      "session": "62c6fd19",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-22T16:13:37.825Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-22T16:16:50.817Z",
+      "event": "bb-session",
+      "session": "ac7b8fc4",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-09-22T16:16:51.183Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-22T16:17:08.312Z",
+      "event": "bb-session",
+      "session": "8cbe1ecb",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
+    },
+    {
+      "t": "2026-09-22T16:17:08.679Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
