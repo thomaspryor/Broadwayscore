@@ -3110,24 +3110,26 @@
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-09-21T23:59:40.142Z",
+      "lastSeen": "2026-09-22T09:09:45.945Z",
       "lastNotifiedAt": "2026-09-21T23:59:40.142Z",
       "lastSurfacedAt": "2026-09-21T23:59:40.142Z",
       "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-21T23:59:40.177Z",
+      "lastSeen": "2026-09-22T09:09:45.950Z",
       "lastNotifiedAt": "2026-09-21T23:59:40.177Z",
       "lastSurfacedAt": "2026-09-21T23:59:40.177Z",
       "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3780,12 +3782,13 @@
       "disposition": "digest",
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-09-21T23:59:40.140Z",
+      "lastSeen": "2026-09-22T09:09:45.943Z",
       "lastNotifiedAt": "2026-09-21T23:59:40.140Z",
       "lastSurfacedAt": "2026-09-21T23:59:40.140Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "open",
@@ -4110,13 +4113,13 @@
       "disposition": "digest",
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-09-21T23:59:40.136Z",
+      "lastSeen": "2026-09-22T09:09:45.939Z",
       "lastNotifiedAt": "2026-09-21T09:41:19.072Z",
       "lastSurfacedAt": "2026-09-21T09:41:19.072Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "open",
