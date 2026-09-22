@@ -61,7 +61,9 @@
     "two-strangers-bway-2025/playbill--margaret-hall.json",
     "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-    "just-in-time-2025/newyorker--conde-nast.json"
+    "just-in-time-2025/newyorker--conde-nast.json",
+    "darkling-off-west-end-2026/guardian--unknown.json",
+    "golden-boy-off-west-end-2026/the-jewish-chronicle--john-nathan.json"
   ],
   "failed": [
     "macbeth-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -357,7 +359,11 @@
     "operation-mincemeat-2025/whatsonstage--alex-wood.json",
     "buena-vista-social-club-2025/new-york-city-theatre--unknown.json",
     "buena-vista-social-club-2025/observer--david-cote.json",
-    "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json"
+    "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
+    "darkling-off-west-end-2026/voice-magazine--unknown.json",
+    "thelma-and-louise-a-new-musical-off-west-end-2026/thestage--unknown.json",
+    "golden-boy-off-west-end-2026/daily-mail--patrick-marmion.json",
+    "golden-boy-off-west-end-2026/ntlive--powster.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -389,7 +395,9 @@
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "avenue-q-west-end-2026/reviewsgate--william-russell.json",
       "two-strangers-bway-2025/playbill--margaret-hall.json",
-      "amaze-magic-off-broadway-2025/timeout--adam-feldman.json"
+      "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
+      "darkling-off-west-end-2026/guardian--unknown.json",
+      "golden-boy-off-west-end-2026/the-jewish-chronicle--john-nathan.json"
     ],
     "amp": [],
     "browserbase": [
@@ -446,7 +454,7 @@
     ]
   },
   "startTime": "2026-09-22T19:50:58.267Z",
-  "lastProcessed": "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
+  "lastProcessed": "golden-boy-off-west-end-2026/ntlive--powster.json",
   "log": [
     {
       "t": "2026-09-22T21:05:10.828Z",
@@ -548,6 +556,35 @@
       "event": "bb-session",
       "session": "4f80afc2",
       "url": "https://www.whatsonstage.com/tags/operation-mincemeat/"
+    },
+    {
+      "t": "2026-09-22T23:29:25.148Z",
+      "event": "bb-session",
+      "session": "15fd6c7c",
+      "url": "https://www.thestage.co.uk/news/production-news/my-sons-a-queer-but-what-can-you"
+    },
+    {
+      "t": "2026-09-22T23:29:25.682Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-22T23:33:29.660Z",
+      "event": "bb-session",
+      "session": "095a72c1",
+      "url": "https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-jos"
+    },
+    {
+      "t": "2026-09-22T23:34:28.269Z",
+      "event": "bb-session",
+      "session": "77bb516b",
+      "url": "https://www.ntlive.com/plays/golden-boy/"
+    },
+    {
+      "t": "2026-09-22T23:34:47.601Z",
+      "event": "bb-session",
+      "session": "9c97e64b",
+      "url": "https://www.ntlive.com/plays/golden-boy/"
     }
   ]
 }
