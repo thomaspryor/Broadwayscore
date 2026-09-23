@@ -553,7 +553,15 @@ function landBranch(o) {
         pushMain({ cwd: workdir, sha: head, log });
       } catch (err) {
         const errText = String(err.stderr || err.message || '');
-        const errLine = errText.split('\n').map(l => l.trim()).filter(l => l && !/^remote:\s*$/.test(l)).slice(-1)[0] || 'push failed';
+        // The LAST line of a rejected push is git's generic trailer ("error:
+        // failed to push some refs to …"); the reason is the line(s) above it
+        // (`! [remote rejected] … (refusing to allow a Personal Access Token
+        // to create or update workflow … without `workflow` scope)`, `!
+        // [rejected] … (fetch first)`, a hook's own message). Keep the
+        // meaningful tail, hints stripped (2026-09-21: a landing was refused
+        // with nothing but the trailer in the report).
+        const errLines = errText.split('\n').map(l => l.trim()).filter(l => l && !/^remote:\s*$/.test(l) && !/^hint:/.test(l));
+        const errLine = errLines.filter(l => !/^error: failed to push some refs/.test(l)).slice(-3).join(' | ') || errLines.slice(-1)[0] || 'push failed';
         gitOrNull(['fetch', remote, target], workdir);
         const kind = classifyPushFailure({ baseSha: landBase, nowBase: gitOrNull(['rev-parse', targetRef], workdir) });
         if (kind !== 'race') {
