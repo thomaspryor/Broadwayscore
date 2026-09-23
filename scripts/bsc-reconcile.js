@@ -69,6 +69,12 @@ const bscNext = require('./bsc-next.js');
 const { readLease, releaseLease, pidLooksLikeClaude, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
 const { RECHECK_AFTER_RE } = require('./lib/recheck-stamp.js');
 const { summarizeCmuxFailures, classifyCmuxError } = require('./lib/cmux-socket-auth.js');
+// BRO-3925 (backlog-drain R4): Linear-'started' zombie sweep. Pure decision
+// logic lives in the lib module (CLAUDE.md rule 15); this file only wires
+// I/O (Linear fetch, fs/git worktree checks, ledger writes) around it.
+const linearZombie = require('./lib/linear-started-zombie-sweep.js');
+const { hasLiveLease } = require('./lib/worktree-live-lease-check.js');
+const { hasLiveProcessInDir } = require('./lib/gc-worktree-liveness.js');
 
 const REPORT_PATH = path.join(REPO, 'data', 'audit', 'reconcile-report.jsonl');
 const DRY = process.argv.includes('--dry-run');
@@ -799,6 +805,203 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
   return { ran: true, checked, flipped, skipped };
 }
 
+// ── Linear-'started' zombie sweep (BRO-3925, backlog-drain R4) ─────────────
+// The Linear-side sibling of sweepUntrackedInProgress above, for a DIFFERENT
+// shape of stuck work: a Linear issue whose LATEST dispatch attempt's
+// dispatch-ledger job actually finished (JOB_EVENTS.DONE — the session
+// exited cleanly and its work landed on origin/main) but never called
+// `linear-session.js report` before ending, leaving the issue stuck in a
+// 'started' state (linear-watchdog-source.js's ineligibleReason refuses to
+// ever re-dispatch a started-type issue) with no write-back and no
+// visibility. See scripts/lib/linear-started-zombie-sweep.js's header for
+// the full mechanism and why "worktree already gone" is the EXPECTED
+// dominant case, not a bug.
+//
+// Fail-closed by construction (this card's own title): every unknown/
+// ambiguous signal refuses rather than resets. The one genuinely
+// state-changing action (moving a real Linear issue to Backlog) is kept
+// behind an explicit opt-in kill switch, LINEAR_ZOMBIE_RESET_ENABLED=1 —
+// detection/refusal/park bookkeeping runs unconditionally and is the low-
+// risk half of this sweep; actually resetting a card is the only action
+// that moves real production state, so it stays off until a dry run against
+// real data has been reviewed (same "prove it before it's live" posture as
+// BSC_RECONCILE_RETRY/WE_GAP_INGEST/DEPLOY_GATE_DISABLED elsewhere in this
+// codebase).
+const LINEAR_ZOMBIE_SWEEP_STATE_PATH = path.join(REPO, 'data', 'audit', 'linear-zombie-sweep-state.json');
+const LINEAR_ZOMBIE_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'bsc-reconcile-linear-zombie-ledger.jsonl');
+const LINEAR_ZOMBIE_SWEEP_INTERVAL_MS = 6 * 3600 * 1000; // Linear fetches cost quota — no need for 5-min cadence
+const LINEAR_ZOMBIE_MAX_RESETS_PER_DAY = 10;
+
+function readLinearZombieLedger(ledgerPath = LINEAR_ZOMBIE_LEDGER_PATH) {
+  let raw;
+  try { raw = fs.readFileSync(ledgerPath, 'utf8'); } catch { return []; }
+  const out = [];
+  for (const line of raw.split('\n')) {
+    const t = line.trim();
+    if (!t) continue;
+    try { out.push(JSON.parse(t)); } catch { /* skip corrupt line */ }
+  }
+  return out;
+}
+
+// ts is stamped on EVERY row here, never left to the caller (ship-check
+// finding on the plan review): attempt-memory.js's attemptOutcomesForCard
+// silently drops any entry with an unparseable ts, which would silently
+// defeat the 2-strike park this ledger exists to drive.
+function appendLinearZombieLedger(entry, ledgerPath = LINEAR_ZOMBIE_LEDGER_PATH) {
+  fs.mkdirSync(path.dirname(ledgerPath), { recursive: true });
+  fs.appendFileSync(ledgerPath, JSON.stringify({ ts: new Date().toISOString(), ...entry }) + '\n');
+}
+
+function readLinearZombieResetCount(statePath, today) {
+  try {
+    const state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
+    return state && state.resetDay === today ? (state.resetCount || 0) : 0;
+  } catch { return 0; }
+}
+
+async function sweepLinearStartedZombies({ dryRun = false, deps = {} } = {}) {
+  const {
+    readLedgerEntriesFn = ledger.readEntries,
+    getIssueFn = (identifier) => require('./lib/linear-client.js').getIssue(identifier),
+    // Imported call, not a spawned CLI — cmdReport is exported by
+    // linear-session.js for exactly this kind of in-process reuse.
+    reportBackFn = (identifier, summary) =>
+      require('./linear-session.js').cmdReport({ issue: identifier, status: 'paused', summary }),
+    gitStatusFn = (cwd) => {
+      try { return execFileSync('git', ['-C', cwd, 'status', '--porcelain'], { encoding: 'utf8' }).trim(); }
+      catch { return null; } // null = "could not verify" -> caller treats as unsafe, never as clean
+    },
+    gitAheadCountFn = (cwd) => {
+      try {
+        const out = execFileSync('git', ['-C', cwd, 'rev-list', '--count', 'origin/main..HEAD'], { encoding: 'utf8' }).trim();
+        const n = Number(out);
+        return Number.isFinite(n) ? n : null;
+      } catch { return null; }
+    },
+    existsFn = fs.existsSync,
+    hasLiveLeaseFn = hasLiveLease,
+    hasLiveProcessFn = hasLiveProcessInDir,
+    reportFn = report,
+    nowFn = Date.now,
+    statePath = LINEAR_ZOMBIE_SWEEP_STATE_PATH,
+    ledgerPath = LINEAR_ZOMBIE_LEDGER_PATH,
+    maxResetsPerDay = LINEAR_ZOMBIE_MAX_RESETS_PER_DAY,
+    resetEnabled = process.env.LINEAR_ZOMBIE_RESET_ENABLED === '1',
+  } = deps;
+
+  let state = null;
+  try { state = JSON.parse(fs.readFileSync(statePath, 'utf8')); } catch { /* first run */ }
+  if (!dryRun && state && Number.isFinite(Date.parse(state.lastRunTs))
+    && nowFn() - Date.parse(state.lastRunTs) < LINEAR_ZOMBIE_SWEEP_INTERVAL_MS) {
+    return { ran: false, checked: 0, reset: [], refused: [] };
+  }
+
+  const entries = readLedgerEntriesFn();
+  const candidates = linearZombie.findJobDoneLinearCandidates(entries);
+  const zombieLedgerEntries = readLinearZombieLedger(ledgerPath);
+  const today = linearZombie.zombieLocalDay(nowFn());
+  let resetsToday = dryRun ? 0 : readLinearZombieResetCount(statePath, today);
+
+  const reset = [];
+  const refused = [];
+  let checked = 0;
+
+  for (const cand of candidates) {
+    let issue;
+    try { issue = await getIssueFn(cand.identifier); } catch (e) {
+      reportFn({ kind: 'linear-zombie-fetch-error', identifier: cand.identifier, detail: e.message });
+      continue;
+    }
+    if (!issue || !issue.state || issue.state.type !== 'started') continue; // stale — already resolved
+    checked++;
+
+    let worktree = { exists: false };
+    let live = false;
+    if (existsFn(cand.cwd)) {
+      const status = gitStatusFn(cand.cwd);
+      const aheadCount = gitAheadCountFn(cand.cwd);
+      worktree = { exists: true, dirty: status !== '', error: status === null || aheadCount === null, aheadCount };
+      live = Boolean(hasLiveLeaseFn(cand.cwd) || hasLiveProcessFn(cand.cwd));
+    }
+
+    const decision = linearZombie.decideZombieReset({ issue, spawnedTs: cand.spawnedTs, worktree, live });
+    if (decision.action === 'skip') continue;
+
+    const contentHash = linearZombie.computeZombieContentHash({ title: issue.title, jobId: cand.jobId });
+
+    if (decision.action === 'reset') {
+      reset.push({ identifier: cand.identifier, jobId: cand.jobId, reason: decision.reason });
+      if (dryRun) continue;
+      if (!resetEnabled) {
+        reportFn({ kind: 'linear-zombie-reset-disabled', identifier: cand.identifier, detail: 'would reset (LINEAR_ZOMBIE_RESET_ENABLED not set) — refusing, no state changed' });
+        continue;
+      }
+      if (resetsToday >= maxResetsPerDay) {
+        reportFn({ kind: 'linear-zombie-reset-capped', identifier: cand.identifier, detail: `daily reset cap (${maxResetsPerDay}) reached` });
+        continue;
+      }
+      // TOCTOU re-check (ship-check finding): the decision above was made
+      // against a snapshot fetched at the TOP of this loop iteration — the
+      // window between that fetch and the write below is normally
+      // sub-second, but a human or another machine acting on this exact
+      // issue in that window is exactly the case this sweep must never act
+      // through. Re-fetch fresh and re-run the SAME predicate; only a
+      // decision that is STILL 'reset' against the freshest available view
+      // gets written — same "re-read is the last word, never the stale
+      // snapshot" posture as sweepUntrackedInProgress's flipFn above.
+      let freshIssue;
+      try { freshIssue = await getIssueFn(cand.identifier); } catch (e) {
+        reportFn({ kind: 'linear-zombie-fetch-error', identifier: cand.identifier, detail: e.message });
+        continue;
+      }
+      const freshDecision = linearZombie.decideZombieReset({ issue: freshIssue, spawnedTs: cand.spawnedTs, worktree, live });
+      if (freshDecision.action !== 'reset') {
+        reportFn({ kind: 'linear-zombie-reset-stale', identifier: cand.identifier, detail: `re-check before write found "${freshDecision.action}: ${freshDecision.reason}" — something changed since the first read, refusing this tick` });
+        continue;
+      }
+      const summary = linearZombie.buildZombieResetSummary({ identifier: cand.identifier, jobId: cand.jobId, reason: decision.reason });
+      try {
+        // NOTE for any future caller of reportBackFn/cmdReport: this ALWAYS
+        // passes status:'paused', which never reaches cmdReport's Done-gate
+        // (scripts/linear-session.js's `if (args.status === 'done')`
+        // branch) — that branch can process.exit(5) on refusal, which a
+        // plain try/catch here cannot intercept, and an uncaught exit would
+        // kill this entire 5-min launchd tick mid-run, taking every OTHER
+        // sweep in main() down with it. Never change this call to pass
+        // status:'done'.
+        await reportBackFn(cand.identifier, summary);
+      } catch (e) {
+        reportFn({ kind: 'linear-zombie-reset-failed', identifier: cand.identifier, detail: e.message });
+        continue;
+      }
+      appendLinearZombieLedger({ event: 'card-pass', cardId: cand.identifier, contentHash }, ledgerPath);
+      resetsToday++;
+      reportFn({ kind: 'linear-zombie-reset', identifier: cand.identifier, jobId: cand.jobId, reason: decision.reason, detail: `${cand.identifier} reset to Backlog — job ${cand.jobId} finished with no write-back (${decision.reason})` });
+      continue;
+    }
+
+    // action === 'refuse'
+    refused.push({ identifier: cand.identifier, reason: decision.reason });
+    if (dryRun) continue;
+    const wasParked = linearZombie.isZombieResetParked(cand.identifier, { ledgerEntries: zombieLedgerEntries, contentHash }).parked;
+    appendLinearZombieLedger({ event: 'card-fail', cardId: cand.identifier, contentHash, reason: decision.reason }, ledgerPath);
+    // Suppress the repeated digest line once already parked (2 unchanged
+    // refusals in a row) — still refuses, still ledgers, just stops nagging
+    // the same permanently-stuck card every 6h tick forever.
+    if (!wasParked) reportFn({ kind: 'linear-zombie-refused', identifier: cand.identifier, reason: decision.reason, detail: `${cand.identifier} stuck 'started' with a finished job and no write-back — refused: ${decision.reason}` });
+  }
+
+  if (!dryRun) {
+    try {
+      fs.mkdirSync(path.dirname(statePath), { recursive: true });
+      fs.writeFileSync(statePath, JSON.stringify({ lastRunTs: new Date(nowFn()).toISOString(), resetDay: today, resetCount: resetsToday }, null, 2));
+    } catch { /* state write must never fail the sweep */ }
+  }
+
+  return { ran: true, checked, reset, refused };
+}
+
 // ── Flagless-resume sweep (task #985) ───────────────────────────────────────
 // cmux's OWN restart-recovery path (triggered reviving a dead pane — #886)
 // can resume a session with a bare `claude --worktree X --resume <id>`
@@ -1204,6 +1407,14 @@ async function main() {
     console.error(`[bsc-reconcile] zombie sweep crashed (non-fatal): ${e.message}`);
   }
 
+  // BRO-3925: Linear-'started' zombie sweep, same best-effort isolation.
+  try {
+    const linearZombieSweep = await sweepLinearStartedZombies({ dryRun: DRY });
+    if (linearZombieSweep.ran) console.log(`[bsc-reconcile] linear-zombies checked=${linearZombieSweep.checked} reset=${linearZombieSweep.reset.length} refused=${linearZombieSweep.refused.length}${DRY ? ' (dry-run)' : ''}`);
+  } catch (e) {
+    console.error(`[bsc-reconcile] linear-zombie sweep crashed (non-fatal): ${e.message}`);
+  }
+
   // Owner mandate 2026-08-03: stalled-task sweep, same best-effort isolation.
   try {
     const stallSweep = reconcileStalledTasks({ dryRun: DRY });
@@ -1299,4 +1510,4 @@ if (require.main === module) {
   main().catch(err => { console.error('bsc-reconcile crashed:', err); process.exit(1); });
 }
 
-module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK, collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, RESUME_LOOKBACK_MS, sweepUntrackedInProgress, UNTRACKED_SWEEP_STATE_PATH, stripOwnParkNote, UNTRACKED_MARKER, OUTCOME_PARK_MARKER, sweepOrphanedJobs, GRACE_MS };
+module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK, collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, RESUME_LOOKBACK_MS, sweepUntrackedInProgress, UNTRACKED_SWEEP_STATE_PATH, stripOwnParkNote, UNTRACKED_MARKER, OUTCOME_PARK_MARKER, sweepOrphanedJobs, GRACE_MS, sweepLinearStartedZombies, LINEAR_ZOMBIE_SWEEP_STATE_PATH, LINEAR_ZOMBIE_LEDGER_PATH, LINEAR_ZOMBIE_MAX_RESETS_PER_DAY };

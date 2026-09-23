@@ -2445,6 +2445,13 @@ on:
       # (root-level scripts/*.test.mjs is not globbed) — path-listed so a
       # solo edit still triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/bsc-reconcile-reopen-idempotency.test.mjs'
+      # BRO-3925 (backlog-drain R4): Linear-'started' zombie sweep. Pure
+      # logic lives in scripts/lib/linear-started-zombie-sweep.js (already
+      # covered by the scripts/lib/** glob above); this test lives in
+      # scripts/tests/ (not globbed, registered in
+      # tests/unit-test-manifest.txt) so a solo edit still triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/tests/bsc-reconcile-linear-started.test.mjs'
       # Flagless-resume revive helper (task #985) — colocated test runs in the
       # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
       - 'tests/unit/bsc-runner-lease.test.mjs'

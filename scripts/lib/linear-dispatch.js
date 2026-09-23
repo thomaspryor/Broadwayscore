@@ -1100,4 +1100,5 @@ module.exports = {
   hasLiveLedgerEntry,
   terminalBreadcrumbForTask,
   dispatchCommentIsOurFinishedLaunch,
+  DISPATCH_COMMENT_CORRELATION_RE,
 };

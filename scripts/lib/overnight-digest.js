@@ -51,6 +51,13 @@ const ACTIONABLE_RECONCILE_KINDS = new Set([
   'flagless-session', 'flagless-revive-failed',
   'card-drift-suspected', 'card-drift-delivery-failed',
   'orphan', 'orphan-suspect', 'retry-cap',
+  // BRO-3925 (backlog-drain R4): Linear-'started' zombie sweep. Not added to
+  // CORRELATABLE/RESOLVING_RECONCILE_KINDS below — same "actionable but not
+  // correlated" treatment this file's own header already gives zombie-flip
+  // (a card that sat broken for days is worth surfacing every window it's
+  // still true, not just once).
+  'linear-zombie-refused', 'linear-zombie-reset', 'linear-zombie-reset-failed',
+  'linear-zombie-reset-stale', 'linear-zombie-fetch-error',
 ]);
 
 // Subset of ACTIONABLE_RECONCILE_KINDS whose taskId (+jobId for orphan) is a
