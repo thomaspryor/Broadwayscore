@@ -30,6 +30,7 @@ const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards')
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
 const { VALID_TIERS } = require('./lib/outlet-tiers');
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
+const { urlFragmentReason } = require('./lib/url-fragment-title');
 const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
 // Same critic-identity function the rebuild's manual-entry merge uses — a gate
 // that normalizes differently from the writer cannot catch the writer's dupes.
@@ -424,11 +425,24 @@ function validateRequiredFields(shows) {
  * `og:title`), not a command that guesses for them.
  */
 function validateShowTitles(shows) {
-  info('Checking show titles for scrape artifacts (venue suffix / ALL-CAPS)...');
+  info('Checking show titles for scrape artifacts (URL fragment / venue suffix / ALL-CAPS)...');
   const venueVocabulary = buildVenueVocabulary(shows);
   let bad = 0;
 
   for (const show of shows) {
+    // BRO-3915: a title that is a URL fragment is a PHANTOM SHOW, not a
+    // mis-cased one — normalising it would only produce a tidier phantom. It
+    // gets a slug, a browse card, an images directory and a slot in every
+    // coverage denominator, and with a null openingDate it is invisible to
+    // the date-windowed checks that would otherwise catch it. Check first and
+    // skip the case machinery entirely.
+    const fragmentReason = urlFragmentReason(show.title);
+    if (fragmentReason) {
+      bad++;
+      error(`Show "${show.title}" (${show.id}) has a URL fragment as its title — it ${fragmentReason}. This is a phantom row minted by a listing scraper that followed a tab/pagination control and treated the link's query string as a production (tabdates-off-west-end-2026, Hampstead Theatre). DELETE the row (write via scripts/lib/shows-write-guard.js, not a bare edit) and fix the discovery path that created it so it rejects non-production links.`);
+      continue;
+    }
+
     const result = normalizeShowTitle(show, { venueVocabulary });
 
     if (result.manualReview) {
