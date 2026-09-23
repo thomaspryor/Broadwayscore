@@ -35,7 +35,7 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const cmuxws = require('./cmux-workspaces.js');
-const { isBusy, lastRealContentLine } = require('./cmux-auth-stall.js');
+const { isBusy, lastRealContentLine, detectAuthStall } = require('./cmux-auth-stall.js');
 
 const RELAUNCH_SCRIPT = path.join(__dirname, 'relaunch-claude-tab.sh');
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -195,7 +195,8 @@ function healTab(ref, opts = {}) {
   let screen;
   try { screen = readScreen(); } catch (e) { return { healed: false, reason: `cannot read the tab's screen (${e.message})` }; }
   if (isBusy(screen)) return { healed: false, reason: 'tab is busy (spinner on screen) — left alone' };
-  if (requireLoggedOut && (cmuxws.hasClaudeChrome(screen) || !LOGIN_TEXT_RE.test(screen))) {
+  const stall = detectAuthStall(screen);
+  if (requireLoggedOut && !(stall && stall.kind === 'logged-out')) {
     return { healed: false, reason: 'tab is not showing a lost-login screen — left alone' };
   }
 

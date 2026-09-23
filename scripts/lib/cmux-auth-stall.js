@@ -99,6 +99,24 @@ const BORDER_RE = /^─{5,}$/;
 // code-review finding showed a bare `/^✔/` would also skip real assistant
 // output that happens to start with a checkmark.
 const BUSY_RE = /^[✻✳]/;
+// ...except the COMPLETED-turn line, which reuses the same glyph in the past
+// tense: "✻ Crunched for 0s · done 1:34 AM", "✻ Worked for 3m 2s". Captured
+// live 2026-09-23 (BRO-4065) on a real logged-out tab: treating it as busy
+// made every finished-but-dead tab look mid-turn, so nothing would ever
+// touch it. In-flight spinners are present-tense ("✻ Waiting for 2
+// background agents…"), never "<verb>ed for <digit>".
+const DONE_LINE_RE = /^[✻✳]\s+\S+ed\s+for\s+\d/i;
+function isBusyLine(l) { return BUSY_RE.test(l) && !DONE_LINE_RE.test(l); }
+// A logged-out claude from Claude Code 2.1.27x+ DOES draw the "ctx NN%"
+// status bar (verified live 2026-09-23, BRO-4065 scratch tab: `env -u
+// CLAUDE_CODE_OAUTH_TOKEN claude` rendered "🪶 HAIKU │ ctx 0%" with the
+// right-aligned notice "Not logged in · Run /login" directly above the input
+// box, and "⎿  Not logged in · Please run /login" as the reply to any
+// prompt). So the chromeless rule below alone missed every real logged-out
+// tab. With chrome present, only the LAST real content line counts — that is
+// the CLI's own notice/reply slot, never conversation history quoting it.
+const LOGGED_OUT_LINE_RE = /^(?:⎿\s*)?not logged in\b.*\/login\b/i;
+const API_AUTH_LINE_RE = /^(?:⎿\s*)?(?:api error\b.*(?:authentication_error|invalid[\s_-]?api[\s_-]?key)|invalid[\s_-]?api[\s_-]?key)/i;
 const UPDATE_BANNER_RE = /^✔\s*update installed/i;
 // The input-box prompt char, WITH OR WITHOUT a draft after it — an earlier
 // version only matched a bare "❯" with nothing following, so a stalled pane
@@ -139,7 +157,7 @@ function lastRealContentLine(text) {
 // observation). Mirrors claudeMidTurnIn's fail-safe stance in
 // cmux-workspaces.js: uncertain-or-busy must never read as idle-and-stuck.
 function isBusy(text) {
-  return String(text || '').split('\n').some(l => BUSY_RE.test(l.trim()));
+  return String(text || '').split('\n').some(l => isBusyLine(l.trim()));
 }
 
 /**
@@ -163,6 +181,11 @@ function detectAuthStall(screenText) {
   if (!hasChrome && API_AUTH_ERROR_RE.test(text)) {
     return { kind: 'logged-out', reason: 'screen shows an API auth rejection' };
   }
+  if (hasChrome) {
+    const last = lastRealContentLine(text);
+    if (LOGGED_OUT_LINE_RE.test(last)) return { kind: 'logged-out', reason: 'the CLI\'s own "Not logged in · Run /login" notice is its last line' };
+    if (API_AUTH_LINE_RE.test(last)) return { kind: 'logged-out', reason: 'last line is an API auth rejection' };
+  }
   if (!isBusy(text) && STALLED_RESUME_RE.test(lastRealContentLine(text))) {
     return { kind: 'stalled-resume', reason: 'last rendered line is the CLI\'s "No response requested." placeholder' };
   }
@@ -171,5 +194,5 @@ function detectAuthStall(screenText) {
 
 module.exports = {
   detectAuthStall, lastRealContentLine, isBusy,
-  LOGGED_OUT_RE, LOGIN_HINT_RE, API_AUTH_ERROR_RE, STALLED_RESUME_RE,
+  LOGGED_OUT_RE, LOGIN_HINT_RE, API_AUTH_ERROR_RE, STALLED_RESUME_RE, LOGGED_OUT_LINE_RE, DONE_LINE_RE,
 };
