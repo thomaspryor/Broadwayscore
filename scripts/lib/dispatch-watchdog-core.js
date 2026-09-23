@@ -41,7 +41,6 @@ const {
   TERMINAL_LAUNCH_EVENTS, TERMINAL_JOB_EVENTS, foldJobs, JOB_EVENTS,
   openTaskWorkspaceLaunches, dispatchCapDecision, parkedTasks,
   detectLauncherOutage, detectLauncherFailureRate, FAILURE_RATE_LOOKBACK_MS,
-  newestRowForTask,
 } = require('./dispatch-ledger.js');
 const { isExcludedCategory } = require('./autonomous-eligibility.js');
 const { isLiveBoardTaskId } = require('./task-id-namespace.js');
@@ -812,24 +811,52 @@ function isTaskOpen(task) {
   return !!task && (task.status === 'pending' || task.status === 'in_progress');
 }
 
-// BRO-4076: ledger events meaning a task's newest dispatch attempt already
-// reached a terminal, nothing-left-to-do outcome, so the p01-backlog sweep
-// must not re-select it even though the task mirror still reads 'pending'
-// (ack-landed.js's landed-acked row is a Linear COMMENT, not a state change —
-// same blind spot for any future writer that lands a job-done row without
-// moving the issue). NOT a claim that the work is verified-landed on
-// origin/main — job-done alone is exactly what BRO-3424's separate
-// unlandedDone/unlandedJobDone check above exists to re-verify by git
-// ancestry; this only says "the watchdog itself has nothing further to
-// dispatch," the same judgment ack-landed-core.js's NOTHING_TO_ACK_EVENTS
-// already makes for its own idempotency guard.
+// BRO-4076: ledger events meaning a task's dispatch attempt was explicitly,
+// auditably VERIFIED landed on origin/main — so neither the p01-backlog sweep
+// nor the dead-launch retry loop should re-select the task even though the
+// task mirror still reads 'pending' (ack-landed.js's landed-acked row is a
+// Linear COMMENT, not a state change on the issue — nothing else moves it).
+//
+// Deliberately NOT JOB_EVENTS.DONE (Codex adversarial review, BRO-4076
+// ship-check): a bare job-done is bsc-runner's own self-report, not a
+// verified landing — that gap is exactly what BRO-3424's separate
+// unlandedDone/unlandedJobDone check above exists to catch, and that check is
+// bounded (7-day lookback, skips jobs with no recorded cwd — see
+// headless-unlanded-detection.js). Auto-suppressing on job-done here would
+// let a wrongly-classified job permanently vanish from the backlog with no
+// compensating alert once that window closes. landed-acked/
+// landed-before-dispatch carry no such gap — ack-landed.js only ever writes
+// them after re-checking sha ancestry against a fresh origin/main and
+// re-running the card's own acceptance command itself (scripts/ack-landed.js
+// steps 2-4). The live audit for this ticket found 0 of the 7 currently
+// affected cards were bare job-done — narrowing to these two costs nothing
+// against the real incident.
 const NO_FURTHER_DISPATCH_EVENTS = new Set([
-  JOB_EVENTS.DONE, JOB_EVENTS.LANDED_ACKED, JOB_EVENTS.LANDED_BEFORE_DISPATCH,
+  JOB_EVENTS.LANDED_ACKED, JOB_EVENTS.LANDED_BEFORE_DISPATCH,
 ]);
 
+// A launch/job-spawned row marks a FRESH dispatch attempt — the only thing
+// that may clear a landed verdict (same self-healing convention as
+// watchdogParkedIds, cleared only by 'launch', and REDISPATCH_REARM_MS's
+// claim-pending logic elsewhere in this file). Deliberately NOT a raw
+// "newest row of any type" read (newestRowForTask alone): Codex adversarial
+// review caught that bsc-prune.js can append a 'prune-closed' row for an
+// already-dead OLD workspace well after an unrelated landed-acked ack has
+// already landed for the same task — prune-closed and ack-landed are
+// independent async writers with nothing serializing them, so file order is
+// not "did new work supersede the ack," only "which write happened last." A
+// raw-newest read would un-suppress a genuinely-done card the moment that
+// stale cleanup sweep caught up. Walking forward and only resetting on an
+// actual new dispatch attempt is immune to that ordering race.
 function hasNoFurtherDispatchWork(taskId, entries) {
-  const newest = newestRowForTask(taskId, entries);
-  return !!(newest && NO_FURTHER_DISPATCH_EVENTS.has(newest.event));
+  const want = String(taskId);
+  let landed = false;
+  for (const e of entries || []) {
+    if (!e || String(e.taskId) !== want) continue;
+    if (e.event === 'launch' || e.event === JOB_EVENTS.SPAWNED) landed = false;
+    else if (NO_FURTHER_DISPATCH_EVENTS.has(e.event)) landed = true;
+  }
+  return landed;
 }
 
 /**
@@ -971,6 +998,7 @@ function planSweep(entries, tasks, opts) {
     // more by the watchdog. Retry goes through `bsc-next --id`, which skips
     // actionable()'s filter entirely, so this is the only place to stop it.
     if (isExcludedCategory(task)) continue;
+    if (hasNoFurtherDispatchWork(id, entries)) continue;   // BRO-4076: e.g. launch->dead->landed-acked
     const term = lastTerminalEventForTask(id, entries);
     if (!term || term.event !== 'dead') continue;  // vanished/prune-closed/remapped: not ours
     // Card #1233: substantive deaths only count toward the park threshold —
