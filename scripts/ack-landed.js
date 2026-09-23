@@ -140,6 +140,84 @@ function gitOk(args) {
   return r.status === 0;
 }
 
+// BRO-4074 / BRO-4078: extracted so a test can exercise the REAL git cherry +
+// patch-id plumbing against a hermetic rebased repo, not just decideAck given
+// a hand-set tiedToStrandedByPatch boolean (which proves the decision logic
+// but not the git plumbing that feeds it). cwd is injectable for the same
+// reason namingCandidates' is: production always passes REPO, a test passes
+// a throwaway repo. landed defaults true so every existing call site (which
+// only ever invoked this after already checking landing.verdict === 'LANDED')
+// keeps its exact behavior unchanged.
+function computeStrandedTie(sha, strandedSha, opts = {}) {
+  const cwd = opts.cwd || REPO;
+  const landed = opts.landed !== false;
+  // maxBuffer default (execFileSync: 1 MiB) is not optional here — `git
+  // cherry` over a long-lived stranded branch, or `git show` piping a large
+  // diff into patch-id, can both exceed it (same overflow class namingCandidates
+  // guards against above; adversarial review, BRO-4078).
+  const gitIn = (args, o = {}) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 64 * 1024 * 1024, ...o }).trim();
+  const gitOkIn = (args) => spawnSync('git', args, { cwd, encoding: 'utf8' }).status === 0;
+
+  // job-stranded tie: --sha is the stranded sha itself, or an ancestor of it.
+  const tiedToStranded = Boolean(
+    strandedSha
+      && (String(strandedSha).startsWith(sha) || sha.startsWith(String(strandedSha))
+        || gitOkIn(['merge-base', '--is-ancestor', sha, String(strandedSha)]))
+  );
+
+  // BRO-4074: the ancestry tie above cannot hold for a job whose work landed
+  // through land.yml, because landing REBASES — which rewrites the sha. The
+  // stranded sha is then never an ancestor of origin/main, and the sha that IS
+  // on main is not an ancestor of the stranded sha. Both directions refuse, so
+  // no rebase-landed stranded job could be acked at all, and the fan-out gate
+  // that depends on acks could never be satisfied for one. Observed on BRO-4070
+  // and BRO-4071 on 2026-09-23.
+  //
+  // The rebase-aware tie is patch EQUIVALENCE, which is what `git cherry`
+  // already computes and what rebase itself uses to recognise duplicates: an
+  // upstream commit introducing the same change as one in the stranded job's
+  // own history. That is strictly stronger evidence than "names the card" —
+  // it compares the diff, not the prose — so this widens WHICH sha is
+  // accepted without weakening WHAT is proven. Recorded separately on the
+  // ledger row so the looser path is auditable rather than invisible.
+  let tiedToStrandedByPatch = false;
+  if (!tiedToStranded && strandedSha && landed) {
+    try {
+      const base = gitIn(['merge-base', String(strandedSha), 'origin/main']);
+      // `git cherry <upstream> <head>` prints '- <sha>' for each commit in
+      // head..<head> whose patch is ALREADY upstream. Ask it about the
+      // stranded job's own commits against origin/main.
+      const cherry = gitIn(['cherry', 'origin/main', String(strandedSha), base]);
+      const alreadyUpstream = cherry.split('\n')
+        .filter(l => l.startsWith('-'))
+        .map(l => l.slice(1).trim())
+        .filter(Boolean);
+      if (alreadyUpstream.length) {
+        // At least one of the stranded job's commits is patch-identical to
+        // something on origin/main. Require that the sha being acked is one of
+        // those upstream twins, by patch-id, not merely that some twin exists.
+        const patchIdOf = (target) => {
+          try {
+            // stdio must be overridden too: gitIn pins stdin to 'ignore', so
+            // passing `input` alone silently feeds patch-id nothing and it
+            // returns an empty id, which reads as "no match" rather than as an
+            // error. That cost a debugging round here.
+            const out = gitIn(['patch-id', '--stable'], {
+              input: gitIn(['show', '--no-color', target]),
+              stdio: ['pipe', 'pipe', 'pipe'],
+            });
+            return (out.split(/\s+/)[0] || '').trim();
+          } catch { return ''; }
+        };
+        const wantIds = new Set(alreadyUpstream.map(patchIdOf).filter(Boolean));
+        const gotId = patchIdOf(sha);
+        tiedToStrandedByPatch = Boolean(gotId && wantIds.has(gotId));
+      }
+    } catch { /* best effort: no tie, the ordinary refusal stands */ }
+  }
+  return { tiedToStranded, tiedToStrandedByPatch };
+}
+
 // BRO-4068: the naming refusal used to say only "pass the job's own commit,
 // not an unrelated one" — true, but it never said WHICH commit would do. A
 // session hit it on BRO-4066, concluded from the bare refusal that the card
@@ -356,63 +434,9 @@ function main() {
   } catch (e) {
     refuse(ref, [`could not read commit ${sha}: ${String(e.stderr || e.message).trim()}`]);
   }
-  // job-stranded tie: --sha is the stranded sha itself, or an ancestor of it.
-  landing.tiedToStranded = Boolean(
-    pre.stranded && pre.stranded.sha
-      && (String(pre.stranded.sha).startsWith(sha) || sha.startsWith(String(pre.stranded.sha))
-        || gitOk(['merge-base', '--is-ancestor', sha, String(pre.stranded.sha)]))
-  );
-  // BRO-4074: the ancestry tie above cannot hold for a job whose work landed
-  // through land.yml, because landing REBASES — which rewrites the sha. The
-  // stranded sha is then never an ancestor of origin/main, and the sha that IS
-  // on main is not an ancestor of the stranded sha. Both directions refuse, so
-  // no rebase-landed stranded job could be acked at all, and the fan-out gate
-  // that depends on acks could never be satisfied for one. Observed on BRO-4070
-  // and BRO-4071 on 2026-09-23.
-  //
-  // The rebase-aware tie is patch EQUIVALENCE, which is what `git cherry`
-  // already computes and what rebase itself uses to recognise duplicates: an
-  // upstream commit introducing the same change as one in the stranded job's
-  // own history. That is strictly stronger evidence than "names the card" —
-  // it compares the diff, not the prose — so this widens WHICH sha is
-  // accepted without weakening WHAT is proven. Recorded separately on the
-  // ledger row so the looser path is auditable rather than invisible.
-  landing.tiedToStrandedByPatch = false;
-  if (!landing.tiedToStranded && pre.stranded && pre.stranded.sha && landing.verdict === 'LANDED') {
-    try {
-      const strandedSha = String(pre.stranded.sha);
-      const base = git(['merge-base', strandedSha, 'origin/main']);
-      // `git cherry <upstream> <head>` prints '- <sha>' for each commit in
-      // head..<head> whose patch is ALREADY upstream. Ask it about the
-      // stranded job's own commits against origin/main.
-      const cherry = git(['cherry', 'origin/main', strandedSha, base]);
-      const alreadyUpstream = cherry.split('\n')
-        .filter(l => l.startsWith('-'))
-        .map(l => l.slice(1).trim())
-        .filter(Boolean);
-      if (alreadyUpstream.length) {
-        // At least one of the stranded job's commits is patch-identical to
-        // something on origin/main. Require that the sha being acked is one of
-        // those upstream twins, by patch-id, not merely that some twin exists.
-        const patchIdOf = (target) => {
-          try {
-            // stdio must be overridden too: git() pins stdin to 'ignore', so
-            // passing `input` alone silently feeds patch-id nothing and it
-            // returns an empty id, which reads as "no match" rather than as an
-            // error. That cost a debugging round here.
-            const out = git(['patch-id', '--stable'], {
-              input: git(['show', '--no-color', target]),
-              stdio: ['pipe', 'pipe', 'pipe'],
-            });
-            return (out.split(/\s+/)[0] || '').trim();
-          } catch { return ''; }
-        };
-        const wantIds = new Set(alreadyUpstream.map(patchIdOf).filter(Boolean));
-        const gotId = patchIdOf(sha);
-        landing.tiedToStrandedByPatch = Boolean(gotId && wantIds.has(gotId));
-      }
-    } catch { /* best effort: no tie, the ordinary refusal stands */ }
-  }
+  const tie = computeStrandedTie(sha, pre.stranded && pre.stranded.sha, { cwd: REPO, landed: landing.verdict === 'LANDED' });
+  landing.tiedToStranded = tie.tiedToStranded;
+  landing.tiedToStrandedByPatch = tie.tiedToStrandedByPatch;
   console.error(`→ git: ${sha.slice(0, 11)} ${landing.verdict} on origin/main; authored ${landing.authorTs}, committed ${landing.commitTs}`);
   if (pre.launchVerifyCmd && pre.launchVerifyCmd !== args.verify.trim()) {
     console.error(`⚠️  --verify differs from the command recorded at dispatch (${pre.launchVerifyCmd}); both are kept on the ledger row`);
@@ -460,4 +484,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, CODE_PATHS, VERIFY_TIMEOUT_MS, namingCandidates, candidatesFor };
+module.exports = { parseArgs, CODE_PATHS, VERIFY_TIMEOUT_MS, namingCandidates, candidatesFor, computeStrandedTie };

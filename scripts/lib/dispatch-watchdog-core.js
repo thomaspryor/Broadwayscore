@@ -811,6 +811,54 @@ function isTaskOpen(task) {
   return !!task && (task.status === 'pending' || task.status === 'in_progress');
 }
 
+// BRO-4076: ledger events meaning a task's dispatch attempt was explicitly,
+// auditably VERIFIED landed on origin/main — so neither the p01-backlog sweep
+// nor the dead-launch retry loop should re-select the task even though the
+// task mirror still reads 'pending' (ack-landed.js's landed-acked row is a
+// Linear COMMENT, not a state change on the issue — nothing else moves it).
+//
+// Deliberately NOT JOB_EVENTS.DONE (Codex adversarial review, BRO-4076
+// ship-check): a bare job-done is bsc-runner's own self-report, not a
+// verified landing — that gap is exactly what BRO-3424's separate
+// unlandedDone/unlandedJobDone check above exists to catch, and that check is
+// bounded (7-day lookback, skips jobs with no recorded cwd — see
+// headless-unlanded-detection.js). Auto-suppressing on job-done here would
+// let a wrongly-classified job permanently vanish from the backlog with no
+// compensating alert once that window closes. landed-acked/
+// landed-before-dispatch carry no such gap — ack-landed.js only ever writes
+// them after re-checking sha ancestry against a fresh origin/main and
+// re-running the card's own acceptance command itself (scripts/ack-landed.js
+// steps 2-4). The live audit for this ticket found 0 of the 7 currently
+// affected cards were bare job-done — narrowing to these two costs nothing
+// against the real incident.
+const NO_FURTHER_DISPATCH_EVENTS = new Set([
+  JOB_EVENTS.LANDED_ACKED, JOB_EVENTS.LANDED_BEFORE_DISPATCH,
+]);
+
+// A launch/job-spawned row marks a FRESH dispatch attempt — the only thing
+// that may clear a landed verdict (same self-healing convention as
+// watchdogParkedIds, cleared only by 'launch', and REDISPATCH_REARM_MS's
+// claim-pending logic elsewhere in this file). Deliberately NOT a raw
+// "newest row of any type" read (newestRowForTask alone): Codex adversarial
+// review caught that bsc-prune.js can append a 'prune-closed' row for an
+// already-dead OLD workspace well after an unrelated landed-acked ack has
+// already landed for the same task — prune-closed and ack-landed are
+// independent async writers with nothing serializing them, so file order is
+// not "did new work supersede the ack," only "which write happened last." A
+// raw-newest read would un-suppress a genuinely-done card the moment that
+// stale cleanup sweep caught up. Walking forward and only resetting on an
+// actual new dispatch attempt is immune to that ordering race.
+function hasNoFurtherDispatchWork(taskId, entries) {
+  const want = String(taskId);
+  let landed = false;
+  for (const e of entries || []) {
+    if (!e || String(e.taskId) !== want) continue;
+    if (e.event === 'launch' || e.event === JOB_EVENTS.SPAWNED) landed = false;
+    else if (NO_FURTHER_DISPATCH_EVENTS.has(e.event)) landed = true;
+  }
+  return landed;
+}
+
 /**
  * The sweep decision. Everything the CLI needs to act, plus everything the
  * dashboard needs to render, from pure inputs:
@@ -950,6 +998,7 @@ function planSweep(entries, tasks, opts) {
     // more by the watchdog. Retry goes through `bsc-next --id`, which skips
     // actionable()'s filter entirely, so this is the only place to stop it.
     if (isExcludedCategory(task)) continue;
+    if (hasNoFurtherDispatchWork(id, entries)) continue;   // BRO-4076: e.g. launch->dead->landed-acked
     const term = lastTerminalEventForTask(id, entries);
     if (!term || term.event !== 'dead') continue;  // vanished/prune-closed/remapped: not ours
     // Card #1233: substantive deaths only count toward the park threshold —
@@ -1026,6 +1075,7 @@ function planSweep(entries, tasks, opts) {
     // card that still matters gets migrated to Linear, not drained in place.
     if (!isLiveBoardTaskId(id)) continue;
     if (open.has(id) || ownerParked.has(id) || wdParked.has(id)) continue;
+    if (hasNoFurtherDispatchWork(id, entries)) continue;   // BRO-4076
     if (blockedTaskIds.has(id)) continue;          // BRO-3442: about to be parked this sweep
     if (claimPending.has(id)) continue;            // #1564: same suppression as the retry path above
     if (dispatchCapDecision(id, entries).blocked) continue;
@@ -1349,4 +1399,6 @@ module.exports = {
   // R5 (BRO-3924): exported for direct unit testing, not just through planSweep.
   median, medianJobCostUSD, watchdogSpendRows, watchdogSpendBreaker,
   WATCHDOG_SPEND_THRESHOLD_USD, SPEND_MEDIAN_WINDOW_MS, FALLBACK_JOB_COST_USD,
+  // BRO-4076: exported for direct unit testing, not just through planSweep.
+  NO_FURTHER_DISPATCH_EVENTS, hasNoFurtherDispatchWork,
 };

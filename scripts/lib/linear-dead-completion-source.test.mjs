@@ -35,6 +35,33 @@ test('findLinearDeadLaunchCandidates: a job-done after the launch is not a candi
   assert.deepEqual(src.findLinearDeadLaunchCandidates(entries), []);
 });
 
+// BRO-4075: the exact BRO-4065 live-incident shape — a job classified
+// job-stopped-short, then a separate session re-verifies the commits landed
+// and writes landed-acked. Before the isAttemptEvent fix, this task still
+// showed up as a dead-launch candidate (latestAttemptForTask skipped past the
+// landed-acked row), and reconcile-dead-completions.js reopened the
+// already-Done Linear issue off the back of it.
+test('findLinearDeadLaunchCandidates: a stopped-short job followed by a landed-acked row is NOT a candidate', () => {
+  const entries = [
+    { event: 'launch', taskId: 'linear:BRO-4065', ts: '2026-09-23T06:00:00.000Z', workspaceRef: 'headless:linear:BRO-4065' },
+    { event: 'job-spawned', taskId: 'linear:BRO-4065', jobId: 'j4065', ts: '2026-09-23T06:01:00.000Z' },
+    { event: 'job-stopped-short', taskId: 'linear:BRO-4065', jobId: 'j4065', ts: '2026-09-23T06:11:07.000Z' },
+    { event: 'landed-acked', taskId: 'linear:BRO-4065', jobId: 'j4065', sha: 'ff10e4de1a6', ts: '2026-09-23T06:15:41.000Z' },
+  ];
+  assert.deepEqual(src.findLinearDeadLaunchCandidates(entries), []);
+});
+
+test('findLinearDeadLaunchCandidates: a stopped-short job with NO ack row is still a candidate (regression guard for the fix above)', () => {
+  const entries = [
+    { event: 'launch', taskId: 'linear:BRO-4066', ts: '2026-09-23T06:00:00.000Z', workspaceRef: 'headless:linear:BRO-4066' },
+    { event: 'job-spawned', taskId: 'linear:BRO-4066', jobId: 'j4066', ts: '2026-09-23T06:01:00.000Z' },
+    { event: 'job-stopped-short', taskId: 'linear:BRO-4066', jobId: 'j4066', ts: '2026-09-23T06:11:07.000Z' },
+  ];
+  const out = src.findLinearDeadLaunchCandidates(entries);
+  assert.equal(out.length, 1);
+  assert.equal(out[0].taskId, 'linear:BRO-4066');
+});
+
 test('findLinearDeadLaunchCandidates: empty/malformed input never throws', () => {
   assert.deepEqual(src.findLinearDeadLaunchCandidates([]), []);
   assert.deepEqual(src.findLinearDeadLaunchCandidates(null), []);

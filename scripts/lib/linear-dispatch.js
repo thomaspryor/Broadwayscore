@@ -457,6 +457,19 @@ function hasLiveLedgerEntry(taskId, entries) {
   if (!latest) return false;
   if (dispatchLedger.isLatestDispatchDead(taskId, list)) return false;
   if (latest.event === dispatchLedger.JOB_EVENTS.DONE) return false;
+  // BRO-4075 (Codex + QA-subagent adversarial review catch): a dead-shaped
+  // latest attempt (job-stopped-short/job-stranded/...) that a LANDED_ACKED/
+  // LANDED_BEFORE_DISPATCH row has certified as actually-landed is ALSO a
+  // finished success, same bucket as JOB_EVENTS.DONE above — not "still
+  // live". Without this, isLatestDispatchDead correctly reads false (the ack
+  // overrides deadness — see dispatch-ledger.js's resolveDeadAttempt), but
+  // this function fell through past both checks above and, because headless
+  // job-* rows never carry a workspaceRef, terminalForLaunch below can never
+  // rescue it either — so an already-finished, already-verified task read as
+  // "live" forever, and linear-next.js wrongly refused a legitimate future
+  // re-dispatch with "it already looks dispatched". Measured on the real
+  // ledger: 28 landed-acked rows in exactly this shape.
+  if (dispatchLedger.isDeadShapedAttempt(latest) && dispatchLedger.landedAckOverridesDeath(taskId, latest, list)) return false;
   // BRO-3045: a 'launch' whose own terminal breadcrumb the ledger has already
   // written is over. isAttemptEvent excludes vanished/prune-closed/remapped
   // (correctly — they describe a workspace, not an attempt), so

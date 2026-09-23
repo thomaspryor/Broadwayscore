@@ -186,6 +186,119 @@ test('undispatched P0/P1 pending cards queue, P0 first; marketing/human cards ex
   assert.deepEqual(plan.toDispatch.map(q => q.taskId), ['linear:BRO-19', 'linear:BRO-20']);
 });
 
+// BRO-4076: live incident — BRO-4066 was landed-acked at 07:38:55Z (a
+// Linear COMMENT, not a state change — ack-landed.js never moves the issue),
+// then the p01-backlog sweep at 08:54:07Z re-selected and re-dispatched it
+// anyway because the task mirror still read 'pending'. The newest ledger row
+// must now suppress it even though `task.status` never changed.
+test('BRO-4076: a pending P0/P1 card whose newest ledger row is landed-acked is excluded from p01Queue', () => {
+  const entries = [
+    { ts: T(90), event: 'launch', taskId: 'linear:BRO-19', subject: 's', workspaceRef: 'workspace:5' },
+    { ts: T(30), event: 'job-stopped-short', taskId: 'linear:BRO-19' },
+    { ts: T(10), event: 'landed-acked', taskId: 'linear:BRO-19', jobId: 'j1', sha: 'abc123' },
+  ];
+  const tasks = new Map([lin('BRO-19', 'pending', 'P0 Now')]);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.deepEqual(plan.p01Queue.map(q => q.taskId), [],
+    'a landed-acked card must not re-enter the fresh-backlog queue');
+});
+
+test('BRO-4076: a pending P0/P1 card whose newest ledger row is landed-before-dispatch is excluded from p01Queue', () => {
+  const entries = [
+    { ts: T(90), event: 'launch', taskId: 'linear:BRO-19', subject: 's', workspaceRef: 'workspace:5' },
+    { ts: T(30), event: 'job-stopped-short', taskId: 'linear:BRO-19' },
+    { ts: T(10), event: 'landed-before-dispatch', taskId: 'linear:BRO-19', jobId: 'j1', sha: 'abc123' },
+  ];
+  const tasks = new Map([lin('BRO-19', 'pending', 'P0 Now')]);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.deepEqual(plan.p01Queue.map(q => q.taskId), []);
+});
+
+// No-over-exclusion control: a NON-landed terminal outcome (job-failed) must
+// not trip the new check — the card is still genuinely undispatched work.
+// Headless-lane rows only (job-spawned/job-failed, no separate cmux 'launch')
+// so the task is excluded from `open` via TERMINAL_JOB_EVENTS, not still
+// treated as an in-flight cmux launch.
+test('BRO-4076: a pending P0/P1 card whose newest ledger row is job-failed (not landed) still queues', () => {
+  const entries = [
+    { ts: T(90), event: 'job-spawned', taskId: 'linear:BRO-19', jobId: 'j1', workspaceRef: 'headless:linear:BRO-19' },
+    { ts: T(10), event: 'job-failed', taskId: 'linear:BRO-19', jobId: 'j1' },
+  ];
+  const tasks = new Map([lin('BRO-19', 'pending', 'P0 Now')]);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.deepEqual(plan.p01Queue.map(q => q.taskId), ['linear:BRO-19'],
+    'a non-landed terminal outcome must not suppress genuinely undispatched work');
+});
+
+// Direct unit coverage of the pure predicate (CLAUDE.md rule 15: require()
+// the real function). job-spawned is the ticket's own acceptance-criteria
+// example of "still eligible" — tested directly here because a card whose
+// newest row is job-spawned is ALSO always in planSweep's `open` set (a
+// non-terminal folded job), so a full-planSweep test of that exact shape
+// would only exercise the pre-existing `open.has(id)` exclusion, never this
+// predicate.
+// Codex adversarial review (BRO-4076 ship-check): bare job-done is
+// deliberately NOT terminal here — see NO_FURTHER_DISPATCH_EVENTS's own
+// comment. Only the explicitly-verified landed-acked/landed-before-dispatch
+// events suppress; a bare job-done card is left to BRO-3424's unlandedDone
+// mechanism instead, so it can still be caught (and re-armed) if the "done"
+// self-report was wrong.
+test('BRO-4076: hasNoFurtherDispatchWork — landed-acked/landed-before-dispatch are terminal, job-done/job-spawned/job-failed/no-rows are not', () => {
+  const landedAcked = [{ ts: T(1), event: 'landed-acked', taskId: 'linear:BRO-1' }];
+  const landedBefore = [{ ts: T(1), event: 'landed-before-dispatch', taskId: 'linear:BRO-1' }];
+  const jobDone = [{ ts: T(1), event: 'job-done', taskId: 'linear:BRO-1' }];
+  const jobSpawned = [{ ts: T(1), event: 'job-spawned', taskId: 'linear:BRO-1' }];
+  const jobFailed = [{ ts: T(1), event: 'job-failed', taskId: 'linear:BRO-1' }];
+  assert.equal(core.hasNoFurtherDispatchWork('linear:BRO-1', landedAcked), true);
+  assert.equal(core.hasNoFurtherDispatchWork('linear:BRO-1', landedBefore), true);
+  assert.equal(core.hasNoFurtherDispatchWork('linear:BRO-1', jobDone), false);
+  assert.equal(core.hasNoFurtherDispatchWork('linear:BRO-1', jobSpawned), false);
+  assert.equal(core.hasNoFurtherDispatchWork('linear:BRO-1', jobFailed), false);
+  assert.equal(core.hasNoFurtherDispatchWork('linear:BRO-1', []), false);
+});
+
+// Codex adversarial review: a raw "newest row of any type" read would be
+// un-suppressed by a LATER, unrelated 'prune-closed' row (bsc-prune.js's own
+// async cleanup of an old dead workspace, independent of the ack). Only a
+// fresh launch/job-spawned may clear a landed verdict.
+test('BRO-4076: a prune-closed row written AFTER landed-acked (delayed cleanup sweep) does not un-suppress the card', () => {
+  const entries = [
+    { ts: T(90), event: 'launch', taskId: 'linear:BRO-1', workspaceRef: 'workspace:1' },
+    { ts: T(60), event: 'landed-acked', taskId: 'linear:BRO-1', jobId: 'j1' },
+    // bsc-prune's sweep catches up on the now-idle old workspace afterwards.
+    { ts: T(1), event: 'prune-closed', taskId: 'linear:BRO-1', workspaceRef: 'workspace:1' },
+  ];
+  assert.equal(core.hasNoFurtherDispatchWork('linear:BRO-1', entries), true);
+});
+
+// A genuinely fresh redispatch (new launch/job-spawned AFTER the ack) DOES
+// clear the suppression — landed-acked must never permanently block real new
+// work on a card that was legitimately redispatched later.
+test('BRO-4076: a fresh launch after landed-acked clears the suppression', () => {
+  const entries = [
+    { ts: T(90), event: 'landed-acked', taskId: 'linear:BRO-1', jobId: 'j1' },
+    { ts: T(10), event: 'launch', taskId: 'linear:BRO-1', workspaceRef: 'workspace:9' },
+  ];
+  assert.equal(core.hasNoFurtherDispatchWork('linear:BRO-1', entries), false);
+});
+
+// The retry loop (dead-launch retries, a separate ~50-line block above
+// p01Queue) had the identical bypass: launch -> dead -> landed-acked left
+// `lastTerminalEventForTask` reading 'dead' as the latest LAUNCH-terminal
+// event (landed-acked isn't a launch-terminal event), so the card still
+// re-entered `retryable` and got redispatched (Codex adversarial catch).
+test('BRO-4076: launch->dead->landed-acked is excluded from the retry loop too, not just p01Queue', () => {
+  const entries = [
+    { ts: T(90), event: 'launch', taskId: 'linear:BRO-14', subject: 's', workspaceRef: 'workspace:8' },
+    { ts: T(60), event: 'dead', taskId: 'linear:BRO-14', workspaceRef: 'workspace:8' },
+    { ts: T(30), event: 'landed-acked', taskId: 'linear:BRO-14', jobId: 'j1' },
+  ];
+  const tasks = new Map([lin('BRO-14', 'in_progress')]);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.retryable.length, 0, 'a landed-acked card must not be retried as a dead launch');
+  assert.equal(plan.toDispatch.length, 0);
+});
+
 // BRO-3633: loadTasksUnioned() (audit-dispatch-outcomes.js) unions live/ +
 // archive/ and tags each task fromArchive so planSweep can tell "still live"
 // apart from "deliberately shelved". task-store-archive.js's pending-task
