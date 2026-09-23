@@ -1377,6 +1377,13 @@ const JOB_EVENTS = Object.freeze({
   // of a defect) and NOT in TERMINAL_JOB_EVENTS (it does not close a jobId —
   // the STOPPED_SHORT/STRANDED row already did).
   LANDED_ACKED: 'landed-acked',
+  // FANOUT_VERIFIED (+ `refs`, `verifyCmd`, `exitCode`, `reason`, `ackedBy`;
+  // taskId 'fanout'): BRO-3939 — a session that dispatched >= 2 children ran
+  // a real safe-form check across the COMBINED result after every child
+  // landed (scripts/fanout-verified.js). Gate O v2 requires this row before
+  // such a session may CLOSE ME / IDLE. Not a job event: not terminal, not
+  // dead-like, not an attempt; it names refs, never a jobId.
+  FANOUT_VERIFIED: 'fanout-verified',
 });
 
 // RETRIED is terminal for the OLD jobId: a retry supersedes it with a brand-new

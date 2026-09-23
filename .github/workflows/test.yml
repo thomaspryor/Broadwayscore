@@ -178,6 +178,9 @@ on:
       # wraps (scripts/lib/** is globbed above); listed so a solo edit to the
       # CLI itself still fires CI.
       - 'scripts/ack-landed.js'
+      # scripts/lib/fanout-verified-core.test.mjs covers the decision this
+      # CLI wraps (BRO-3939); listed so a solo edit to the CLI still fires CI.
+      - 'scripts/fanout-verified.js'
       # tests/unit/assert-broadcast-step-order.test.mjs
       - 'scripts/assert-broadcast-step-order.js'
       # tests/unit/audit-ensemble-rejections.test.mjs

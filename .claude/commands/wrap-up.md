@@ -302,9 +302,9 @@ The user pastes the prompt into a fresh session and it works with zero extra con
 
 **End the report with a mandatory `### Next` section** that triages EVERY Notion card created this session and every recommendation you made, each into exactly one bucket:
 - **DONE-NOW** — you did it before ending (say what happened)
-- **DISPATCHED** — you launched it via bsc-next (workspace name + task)
-- **DEFERRED** — user-decision or different-machine items ONLY, with the deferral bar + HANDOFF PROMPT (format above)
-- **BACKLOG** — one line on why it can safely wait; no user action needed
+- **DISPATCHED** — you launched it via bsc-next / linear-next (ref + exact title). Gate O makes you own its landing. If you dispatched two or more children and are closing, run `node scripts/fanout-verified.js --refs A,B --verify "<safe-form combined check>" --reason "..."` after the last one lands — Gate S refuses CLOSE ME without that ledger row (owner 2026-09-20: per-child LANDED lines are "spawn and hope").
+- **DEFERRED** — user-decision or different-machine items ONLY, with the deferral bar + HANDOFF PROMPT (format above); owner-judgment items go in a DECISION NEEDED block instead.
+- There is NO backlog bucket (owner 2026-09-20): every found item is fixed now, dispatched, or a DECISION NEEDED. finish-line Gate 3 refuses "filed as Backlog / out of scope / not fixed / worth a follow-up" endings.
 
 **Close with a plain-English message for the owner, and record the machine block separately** (owner escalation 2026-09-20, BRO-3914; `exit-status-gate.sh` reads the recorded block, never the chat, when one is fresh):
 
