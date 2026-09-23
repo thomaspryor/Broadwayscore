@@ -3119,26 +3119,26 @@
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-09-23T11:12:45.021Z",
+      "lastSeen": "2026-09-23T11:50:39.872Z",
       "lastNotifiedAt": "2026-09-23T09:13:28.953Z",
       "lastSurfacedAt": "2026-09-23T09:13:28.953Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-23T11:12:45.026Z",
+      "lastSeen": "2026-09-23T11:50:39.878Z",
       "lastNotifiedAt": "2026-09-23T09:13:28.959Z",
       "lastSurfacedAt": "2026-09-23T09:13:28.959Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3515,13 +3515,13 @@
       "disposition": "digest",
       "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
       "firstSeen": "2026-09-18T16:10:40.527Z",
-      "lastSeen": "2026-09-23T11:12:45.029Z",
+      "lastSeen": "2026-09-23T11:50:39.882Z",
       "lastNotifiedAt": "2026-09-23T09:13:28.964Z",
       "lastSurfacedAt": "2026-09-23T09:13:28.964Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-remediation-exhausted-t1-missing:america-who-hurt-you-off-broadway-2026": {
       "status": "open",
@@ -3606,13 +3606,13 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on Catarina and the Beauty of Killing Fascists",
       "firstSeen": "2026-09-19T01:14:40.621Z",
-      "lastSeen": "2026-09-22T22:39:10.583Z",
+      "lastSeen": "2026-09-23T11:56:22.164Z",
       "lastNotifiedAt": "2026-09-19T01:14:40.621Z",
       "lastSurfacedAt": "2026-09-19T01:14:40.621Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 27
+      "silentRefires": 28
     },
     "express-retry-still-thin:crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026": {
       "status": "open",
@@ -3791,13 +3791,13 @@
       "disposition": "digest",
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-09-23T11:12:45.019Z",
+      "lastSeen": "2026-09-23T11:50:39.869Z",
       "lastNotifiedAt": "2026-09-23T09:13:28.949Z",
       "lastSurfacedAt": "2026-09-23T09:13:28.949Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4125,13 +4125,12 @@
       "disposition": "digest",
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-09-23T11:12:45.014Z",
-      "lastNotifiedAt": "2026-09-22T11:25:10.946Z",
-      "lastSurfacedAt": "2026-09-22T11:25:10.946Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-09-23T11:50:39.863Z",
+      "lastNotifiedAt": "2026-09-23T11:50:39.863Z",
+      "lastSurfacedAt": "2026-09-23T11:50:39.863Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 8
+      "linearIdentifier": null
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -4304,13 +4303,13 @@
       "disposition": "digest",
       "title": "Shipped review missing publishDate on Catarina and the Beauty of Killing Fascists",
       "firstSeen": "2026-09-22T05:03:35.169Z",
-      "lastSeen": "2026-09-22T22:39:10.586Z",
+      "lastSeen": "2026-09-23T11:56:22.166Z",
       "lastNotifiedAt": "2026-09-22T05:03:35.169Z",
       "lastSurfacedAt": "2026-09-22T05:03:35.169Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "opening-night-cv-wrongproduction-unhandled-catarina-and-the-beauty-of-killing-fascists-west-end-2026": {
       "status": "open",
@@ -4330,13 +4329,13 @@
       "disposition": "digest",
       "title": "Unverified revival on Catarina and the Beauty of Killing Fascists",
       "firstSeen": "2026-09-22T15:00:08.682Z",
-      "lastSeen": "2026-09-22T22:39:10.588Z",
+      "lastSeen": "2026-09-23T11:56:22.168Z",
       "lastNotifiedAt": "2026-09-22T15:00:08.682Z",
       "lastSurfacedAt": "2026-09-22T15:00:08.682Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "review-gap:opening-window:the-invention-of-love-off-broadway-2026": {
       "status": "open",
