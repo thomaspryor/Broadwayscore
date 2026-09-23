@@ -15,6 +15,8 @@
      dispatch-watchdog-health — this failure is directly owner-visible
      (a stuck tab someone might open any minute), those two watch background
      infrastructure health. Decision logic: scripts/lib/cmux-auth-stall.js.
+     Logged-out tabs are relaunched in place with the login token first
+     (scripts/lib/claude-tab-relaunch.js, BRO-4065); only a failed repair is marked.
      Marking mechanism (rename to a leading ❓ + needs-you state file):
      scripts/cmux-auth-stall-watchdog.js. Manual check:
      node scripts/cmux-auth-stall-watchdog.js --dry-run -->

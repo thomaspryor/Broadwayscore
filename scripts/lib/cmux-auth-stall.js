@@ -18,7 +18,10 @@
  *    not carry CLAUDE_CODE_OAUTH_TOKEN — see BRO-4056) never goes through
  *    that gate, so nothing upstream ever refuses the launch. The pane just
  *    sits on a login prompt forever, chromeless, so every other liveness
- *    probe reads it as healthy.
+ *    probe reads it as healthy. BRO-4065 correction: Claude Code 2.1.27x+
+ *    DOES draw the chrome while logged out, with the notice "Not logged in ·
+ *    Run /login" as the last line above the input box — detected by a second
+ *    rule that only reads that last-line slot (see LOGGED_OUT_LINE_RE).
  *
  *  - STALLED RESUME: a session resumed with no real prompt answers with the
  *    CLI's literal placeholder "No response requested." and then does
@@ -38,7 +41,9 @@
  * reason BRO-4056 calls the needs-you sidebar "brittle": it only reads a
  * leading ❓ title glyph that nothing was writing for these two cases.
  * scripts/cmux-auth-stall-watchdog.js polls read-screen for every live
- * workspace and calls detectAuthStall() on the result; a hit gets the same
+ * workspace and calls detectAuthStall() on the result; a logged-out hit is
+ * first REPAIRED in place (scripts/lib/claude-tab-relaunch.js, BRO-4065); a
+ * stalled-resume hit, or a failed repair, gets the same
  * ❓ glyph via `workspace-action --action rename` plus a needs-you state
  * file, reusing the exact mechanism bsc-needs-you.js / the digest / the
  * sidebar already read for a DECISION NEEDED tab, so no consumer needs to
