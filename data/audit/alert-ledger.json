@@ -145,7 +145,7 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-23T04:20:41.049Z",
+      "lastSeen": "2026-09-23T04:21:57.724Z",
       "lastNotifiedAt": "2026-09-23T04:06:00.059Z",
       "lastSurfacedAt": "2026-09-23T04:06:00.059Z",
       "notifyCount": 100,
@@ -4461,35 +4461,14 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every JOB_EVENTS value is exactly terminal, open, or a named non-job-state exemption\"",
-      "firstSeen": "2026-09-23T04:01:14.957Z",
-      "lastSeen": "2026-09-23T04:17:33.663Z",
-      "lastNotifiedAt": "2026-09-23T04:01:14.957Z",
+      "firstSeen": "2026-09-23T03:53:03.115Z",
+      "lastSeen": "2026-09-23T04:21:57.721Z",
+      "lastNotifiedAt": "2026-09-23T03:53:03.115Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4059",
-      "silentRefires": 1,
-      "absentRunIds": [
-        "35817035146"
-      ]
-    },
-    "test-yml:red:Unit Tests:eb9a92ac": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every scripts/ root file with the shred signature and no fold is in the frozen baseline\"",
-      "firstSeen": "2026-09-23T04:20:36.319Z",
-      "lastSeen": "2026-09-23T04:20:36.319Z",
-      "lastNotifiedAt": "2026-09-23T04:20:36.319Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-4063",
-      "dispatch": {
-        "requestedAt": "2026-09-23T04:20:36.319Z",
-        "mode": "dispatch-at-filing",
-        "runId": "35817035146",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35817035146"
-      }
+      "silentRefires": 2
     }
   }
 }
