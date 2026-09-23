@@ -3639,6 +3639,21 @@ function isRepeatFailureSelfHealed(conclusionsNewestFirst) {
   return leadingGreens >= 2;
 }
 
+// A self-healed repeat-failure streak (result.selfHealed, set from
+// isRepeatFailureSelfHealed() above) is not actionable — 2+ consecutive
+// green runs since the last failure mean the condition already resolved
+// itself. Without this override, the digest's urgency bucketing used only
+// the static AUTO_FIX_PLAYBOOK entry (hardcoded 'fix-now' for every
+// "Workflow repeat-failure:" check) regardless of selfHealed — only
+// `status`/`message` were selfHealed-aware — so a provably-ended streak
+// still filed a Linear card at fix-now urgency with the generic "likely
+// broken, not a transient blip" hint (BRO-2742). Pure (no IO) — unit-tested
+// in tests/unit/health-check-repeat-failures.test.mjs.
+function effectiveUrgencyLevel(urgencyLevel, result) {
+  if (result && result.selfHealed) return 'low';
+  return urgencyLevel;
+}
+
 function repeatFailureResults(workflowSummary) {
   if (!workflowSummary || workflowSummary.skipped) return [];
   const repeats = workflowSummary.repeatFailures || [];
@@ -4521,6 +4536,8 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
           }
         } catch {}
 
+        urgencyLevel = effectiveUrgencyLevel(urgencyLevel, r);
+
         if (urgencyLevel === 'low') {
           lowCount.count++;
         } else {
@@ -5289,4 +5306,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems };
+module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems };

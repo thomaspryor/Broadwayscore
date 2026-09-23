@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
+const { repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
 
 test('repeatFailureResults: skipped summary yields no synthetic checks', () => {
   assert.deepEqual(repeatFailureResults({ skipped: true, repeatFailures: [{ name: 'x.yml', count: 9 }] }), []);
@@ -84,6 +84,19 @@ test('playbook routes repeat-failure checks to fix-now (actionable, not low)', (
   const entry = getPlaybookEntry('Workflow repeat-failure: update-lottery-rush.yml');
   assert.ok(entry, 'expected a playbook entry to match');
   assert.equal(entry.urgency, 'fix-now');
+});
+
+// BRO-2742: the static playbook's fix-now urgency ignored r.selfHealed, so an
+// already-resolved repeat-failure streak still filed an alarming Linear card.
+test('effectiveUrgencyLevel: selfHealed result downgrades to low regardless of playbook urgency', () => {
+  assert.equal(effectiveUrgencyLevel('fix-now', { selfHealed: true }), 'low');
+  assert.equal(effectiveUrgencyLevel('this-week', { selfHealed: true }), 'low');
+});
+
+test('effectiveUrgencyLevel: non-selfHealed or unrelated results pass urgency through unchanged', () => {
+  assert.equal(effectiveUrgencyLevel('fix-now', { selfHealed: false }), 'fix-now');
+  assert.equal(effectiveUrgencyLevel('fix-now', {}), 'fix-now');
+  assert.equal(effectiveUrgencyLevel('low', { selfHealed: true }), 'low');
 });
 
 test('getDigestSubject: a promoted repeat-failure error names the workflow (not "All clear")', () => {
