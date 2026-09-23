@@ -151,7 +151,11 @@ function gitOk(args) {
 function computeStrandedTie(sha, strandedSha, opts = {}) {
   const cwd = opts.cwd || REPO;
   const landed = opts.landed !== false;
-  const gitIn = (args, o = {}) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], ...o }).trim();
+  // maxBuffer default (execFileSync: 1 MiB) is not optional here — `git
+  // cherry` over a long-lived stranded branch, or `git show` piping a large
+  // diff into patch-id, can both exceed it (same overflow class namingCandidates
+  // guards against above; adversarial review, BRO-4078).
+  const gitIn = (args, o = {}) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 64 * 1024 * 1024, ...o }).trim();
   const gitOkIn = (args) => spawnSync('git', args, { cwd, encoding: 'utf8' }).status === 0;
 
   // job-stranded tie: --sha is the stranded sha itself, or an ancestor of it.

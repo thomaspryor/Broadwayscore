@@ -75,7 +75,7 @@ test('BRO-4078: a stranded job\'s two commits, REBASED onto origin/main (new sha
   // land.yml's own operation: rebase the job's commits onto current
   // origin/main. This mints two BRAND NEW shas with identical patches.
   git(['checkout', '-q', 'job']);
-  git(['rebase', 'origin/main']);
+  git(['rebase', '-q', 'origin/main']);
   const rebasedTip = git(['rev-parse', 'HEAD']);
   assert.notEqual(rebasedTip, strandedSha, 'a real rebase must mint a new sha, or this test proves nothing');
 
@@ -115,19 +115,35 @@ test('BRO-4078: a stranded job\'s two commits, REBASED onto origin/main (new sha
   assert.equal(decision.row.sha, rebasedTip);
 });
 
-test('BRO-4078: an unrelated commit that merely NAMES the card is not patch-tied and stays refused', () => {
+test('BRO-4078: an unrelated commit that merely NAMES the card is rejected by a genuine patch mismatch, not a vacuous empty-upstream exit', () => {
+  // Land the stranded job's OWN commits first (rebase, same as the accepted
+  // test above), so alreadyUpstream is genuinely non-empty when the unrelated
+  // sha is tested below. Without this, the rejection could pass for the
+  // wrong reason: computeStrandedTie short-circuits to false whenever NO
+  // stranded commit has landed at all (`if (alreadyUpstream.length)` never
+  // entering the loop), which would pass this assertion even if the
+  // patch-id comparison line was deleted entirely (adversarial review
+  // catch — the original version of this test never landed anything).
   git(['checkout', '-q', '-b', 'job']);
-  const strandedSha = commit(`fix(${REF}): the real work`, '2026-01-01T10:00:00Z', 'a.txt');
-
+  commit(`fix(${REF}): part one`, '2026-01-01T10:00:00Z', 'a.txt');
+  const strandedSha = commit(`fix(${REF}): part two`, '2026-01-01T10:05:00Z', 'b.txt');
   git(['checkout', '-q', 'main']);
-  // Different content entirely, but the message names the card — the exact
+  commit('chore: unrelated main-line work', '2026-01-01T10:02:00Z', 'c.txt');
+  git(['update-ref', 'refs/remotes/origin/main', 'refs/heads/main']);
+  git(['checkout', '-q', 'job']);
+  git(['rebase', '-q', 'origin/main']);
+  git(['checkout', '-q', 'main']);
+  git(['merge', '-q', '--ff-only', 'job']);
+  git(['update-ref', 'refs/remotes/origin/main', 'refs/heads/main']);
+
+  // NOW a genuinely unrelated commit lands, naming the card — the exact
   // shape a mistaken --sha would take.
   const unrelatedSha = commit(`chore(${REF}): unrelated cleanup that just happens to mention the card`, '2026-01-01T10:10:00Z', 'z.txt');
   git(['update-ref', 'refs/remotes/origin/main', 'refs/heads/main']);
 
   const tie = computeStrandedTie(unrelatedSha, strandedSha, { cwd: repo });
   assert.equal(tie.tiedToStranded, false);
-  assert.equal(tie.tiedToStrandedByPatch, false, 'different diff — naming the card is not enough');
+  assert.equal(tie.tiedToStrandedByPatch, false, 'different diff — naming the card is not enough, even with real upstream twins to compare against');
 
   const rows = [
     { ts: '2026-01-01T09:50:00.000Z', event: 'job-spawned', taskId: TASK, jobId: `${TASK}-fixture` },
