@@ -1,20 +1,20 @@
 {
   "system": "workflow repeat-failure",
   "status": "warn",
-  "lastChecked": "2026-09-22T12:06:17.807Z",
+  "lastChecked": "2026-09-23T12:15:49.653Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Rebuild Reviews Data",
+      "name": "Workflow repeat-failure: Land",
       "status": "warn",
-      "message": "Rebuild Reviews Data failed 3 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "message": "Land failed 4 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
     },
     {
-      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
+      "name": "Workflow repeat-failure: Deploy to Vercel",
       "status": "warn",
-      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
+      "message": "Deploy to Vercel failed 2 times in the last 24h — likely broken, not transient."
     }
   ]
 }

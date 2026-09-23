@@ -1,15 +1,15 @@
 {
   "system": "audience coverage",
-  "status": "pass",
-  "lastChecked": "2026-09-22T12:06:17.805Z",
+  "status": "warn",
+  "lastChecked": "2026-09-23T12:15:49.649Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Audience coverage: open-show gaps",
-      "status": "ok",
-      "message": "No open shows with unlinked audience sources"
+      "status": "warn",
+      "message": "2 open show(s) have audience data on a source that didn't link — Mezzanine: Macbeth (326 ratings ↔ Macbeth); Mezzanine: Macbeth (108 ratings ↔ Macbeth)"
     }
   ]
 }

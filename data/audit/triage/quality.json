@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-09-22T12:06:17.805Z",
+  "lastChecked": "2026-09-23T12:15:49.649Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,17 +14,17 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.5% scored (20904/21232)"
+      "message": "98.5% scored (20926/21253)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "warn",
-      "message": "16 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), reviews scored off an excerpt that now have fullText, never flagged for rescore, critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority), exclusion flag contradicted by its own content-verification pass (baseline-diff), cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff), critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff), a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)"
+      "message": "17 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), reviews scored off an excerpt that now have fullText, never flagged for rescore, critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority), exclusion flag contradicted by its own content-verification pass (baseline-diff), cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff), critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff), a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance), public/data/shows/{id}.json existing for an id no longer in shows.json"
     },
     {
       "name": "Quality: DMARC deliverability",
       "status": "warn",
-      "message": "Newest DMARC report is 24d old (reporters send daily)"
+      "message": "Newest DMARC report is 25d old (reporters send daily)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -39,12 +39,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1216 outlet(s), 44256 review(s)"
+      "message": "No broken-extractor signature in 1223 outlet(s), 44327 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1216 outlet(s), 44256 review(s)"
+      "message": "No broken-extractor signature in 1223 outlet(s), 44327 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -59,7 +59,7 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "110 outlet×market rows checked, none NEW silent 2+ consecutive weeks (37 known/baselined, 20h ago)"
+      "message": "110 outlet×market rows checked, none NEW silent 2+ consecutive weeks (37 known/baselined, 2d ago)"
     }
   ]
 }
