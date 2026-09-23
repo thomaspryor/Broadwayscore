@@ -513,6 +513,32 @@ const KNOWN_GAPS = [
   // backstopped the same way as every other gap in this list —
   // infra-post-write-audit.sh reads the real post-Bash git diff every call.
   'a `<<TAG` heredoc-opener sequence living inside a `#` comment is still read as a real heredoc opener, and can swallow a genuine write on a later line',
+  // Adversarial review (BRO-4073 round 3), confirmed PRE-EXISTING against the
+  // BRO-4070 baseline (identical on both sides of BRO-4073 — reproduced
+  // against the pre-BRO-4073 commit directly, not introduced by the comment
+  // fix). maskQuotedRedirectOperatorsAndComments' quote branch has never
+  // tracked escaping AT ALL inside an open quote — real double-quote rules
+  // escape only `$ \` " \ <newline>`, real single-quote rules escape
+  // nothing — so a backslash-escaped `"` inside a double-quoted string
+  // (`"foo\"bar" > real.js`) is misread as the quote's own closing
+  // delimiter, the following `"` wrongly opens a new (unterminated) fake
+  // quote, and a real redirect later in the same command is silently lost
+  // inside it. Same exposure in bashPatchSources. Not chased here: correct
+  // handling needs quote-TYPE-aware escaping (double-quote and single-quote
+  // rules differ), a materially bigger change than this ticket's comment
+  // fix, for a case whose failure direction (a write is missed, never a
+  // false block) is backstopped the same as every other gap in this list.
+  'a backslash-escaped quote character living INSIDE an already-open quoted string is misread as that quote\'s closing delimiter, which can silently swallow a real write later in the command',
+  // Same session, same root cause (shellSegments() has always been
+  // quote-blind AND escape-blind at the `;|&\n` split boundary — documented
+  // above this function, pre-existing, unrelated to the round-2 escape
+  // tracking this ticket added for `#`-detection specifically, which is
+  // local to maskQuotedRedirectOperatorsAndComments and never claimed to
+  // extend to shellSegments' own splitting). An escaped separator outside
+  // any quote (`echo hi > foo\;bar.js`, a single real filename containing a
+  // literal `;`) still gets raw-split by shellSegments into two pieces,
+  // corrupting the resolved target rather than merely misclassifying it.
+  'an escaped `;`, `|`, or `&` outside quotes is still split on by shellSegments() as if it were a real statement separator, corrupting (not just misclassifying) the resolved target',
 ];
 
 // ── path normalisation ───────────────────────────────────────────────────────
