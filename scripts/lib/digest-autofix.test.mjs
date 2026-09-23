@@ -957,8 +957,15 @@ function stripComments(src) {
 
 test('every repo-wide dispatchDetached call site passes allowAutofixFiled (BRO-2499 class guard)', () => {
   const repo = path.join(__dirname, '..', '..');
-  // <file> => reason a caller legitimately does NOT waive. Empty today.
-  const EXEMPT_CALL_SITES = new Map();
+  // <file> => reason a caller legitimately does NOT waive.
+  const EXEMPT_CALL_SITES = new Map([
+    // BRO-4054: the red-first pass dispatches cards owner-alert-router files
+    // in DISPATCH mode — they carry neither the autofix-filed marker/title
+    // nor the PARKED sentinel, so neither guard fires on them and passing
+    // the waivers would only widen the bypass for nothing. The pass runs
+    // classifyHeadlessDispatchability itself before spawning.
+    ['scripts/lib/red-first-dispatch.js', 'BRO-4054: dispatch-mode cards, no autofix marker and no PARKED sentinel — nothing to waive'],
+  ]);
 
   // A "caller" is a .js file under scripts/ that either invokes
   // dispatchDetached directly or binds it as its dispatch function (the
@@ -983,6 +990,7 @@ test('every repo-wide dispatchDetached call site passes allowAutofixFiled (BRO-2
   assert.deepEqual(callers.sort(), [
     'scripts/lib/autofix-canary.js',
     'scripts/lib/digest-autofix.js',
+    'scripts/lib/red-first-dispatch.js',
     'scripts/linear-drain-parked.js',
   ], `dispatchDetached caller set changed — each new one needs a BRO-2499 decision (waive or add to EXEMPT_CALL_SITES): ${callers.join(', ')}`);
 

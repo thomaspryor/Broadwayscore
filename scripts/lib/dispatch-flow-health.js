@@ -34,6 +34,32 @@
  * claim outage), which must still page through the tab-count path even when
  * it also appears in the caller's `holds` list. See dispatch-watchdog-core.js's
  * `pausedByPolicy` for the split.
+ *
+ * 2026-09-21 — the THIRD blindness, and the one that motivates measuring what
+ * the watchdog DOES rather than proxies for it. From 2026-09-16T18:56Z to
+ * 2026-09-19T23:19Z (76.4h) the watchdog made ZERO watchdog-redispatch claims
+ * while health() logged "healthy" every 15 min. Every existing path was blind
+ * at once: (1) `launch` rows kept flowing from retries/re-launches of EXISTING
+ * jobs — 23 of the 64 45-min windows had launches>0 — so the zero-launch
+ * precondition never held; (2) eligibleQueueDepth was -1 throughout, because
+ * the caller only supplied it when `holds` was empty and a cmux-only hold was
+ * active (BRO-3404 made those non-blocking for the headless lane; this check
+ * never learned that) — and the launchd health process never loaded the
+ * Linear board at all, so its depth was structurally 0 regardless (see
+ * health() in dispatch-watchdog.js); (3) liveAutoWorkspaces counts cmux tabs,
+ * which detached headless jobs never drop below 3.
+ *
+ * claimsLastWindow is the first term that reads the watchdog's OWN output: a
+ * claim is the sweep deciding to take on new work. Zero of them for
+ * CLAIM_WINDOW_MS while dispatchableDepth — core.stallDetectionDepth(plan), the
+ * work the sweep WOULD claim this instant with every hold/budget/lane rule
+ * already applied — is > 0 is a stall by definition, whatever launches or
+ * tabs say. Deliberately NOT gated on dispatchPaused: pausedByPolicy includes
+ * the cmux auto-tab ceiling, under which the headless lane keeps claiming
+ * (BRO-3404), while a depth drawn from toDispatch is already 0 under every
+ * genuine policy pause (kill switch, day/hour budget, concurrency cap) since
+ * budget is 0 there. Gating on it would only silence the check in the one
+ * case it must fire.
  */
 'use strict';
 
@@ -57,6 +83,21 @@ const FLOW_WINDOW_MS = 45 * 60 * 1000;
 // backlog is deep enough to prove dead" needs its own measurement.
 const STALL_QUEUE_DEPTH_THRESHOLD = 20;
 
+// 2026-09-21: lookback for watchdog-redispatch CLAIMS (the sweep taking on new
+// work), the term that finally reads the watchdog's own output instead of a
+// proxy. Six hours is measured, not chosen, against the real ledger:
+//   - a 45-min claims window false-alarms: 11 of 32 windows on 2026-09-16 (a
+//     known-good day, 183 claims) had zero claims AND free concurrency;
+//   - the longest zero-claim gap on that good day was 3.1h, so 6h never
+//     alarms there (0 of 96 15-min samples);
+//   - 6h catches all three real incidents on record: the 76.4h stall of
+//     16-19 Sep (280 of 284 samples, the first 4 being the ramp-in), the
+//     16.2h halt on 15 Sep (the cmux-hold bug BRO-3404 fixed) and the 14.4h
+//     gap on 20 Sep (the dark-then-mirror period in BRO-3896).
+// Not derived from PACING_HOURS (8): pacing is a spend policy, detection is
+// not, and coupling them would move this bar whenever the owner retunes spend.
+const CLAIM_WINDOW_MS = 6 * 60 * 60 * 1000;
+
 // launchesLast45m === -1 means the ledger was unreadable — "cannot prove
 // dead" must win over "looks dead" (fail-safe: an I/O hiccup must never
 // page as a real outage). eligibleQueueDepth === -1 (default) means the
@@ -67,7 +108,26 @@ const STALL_QUEUE_DEPTH_THRESHOLD = 20;
 // dispatchPaused (BRO-2462) short-circuits BOTH trip paths — the caller
 // must only set it true for a genuine policy pause, never for a detected
 // failure (that must still page through the tab-count path below).
-function isDispatchFlowDead({ liveAutoWorkspaces, launchesLast45m, eligibleQueueDepth = -1, dispatchPaused = false }) {
+function isDispatchFlowDead({ liveAutoWorkspaces, launchesLast45m, eligibleQueueDepth = -1, dispatchPaused = false, claimsLastWindow = -1, dispatchableDepth = -1 }) {
+  // Claims path (2026-09-21, see header): the sweep has taken on NO new work
+  // for CLAIM_WINDOW_MS while there is work it would take right now. This is
+  // evaluated FIRST and independently of the launch/tab terms below, because
+  // those are exactly the terms that stayed green through the 76.4h stall.
+  // -1 = caller could not count claims (unreadable ledger) -> cannot prove
+  // dead, same fail-safe as launchesLast45m. Not gated on dispatchPaused —
+  // see the header for why (toDispatch-derived depth is already 0 under every
+  // genuine policy pause; the one pause it would add, the cmux tab ceiling,
+  // is the one the headless lane keeps claiming through).
+  // dispatchableDepth is a SEPARATE input from eligibleQueueDepth (ship-check,
+  // 2026-09-22): it is toDispatch-derived and therefore capped at the per-sweep
+  // budget, so feeding it to the legacy deep-queue path below would make that
+  // path's > STALL_QUEUE_DEPTH_THRESHOLD test unreachable.
+  if (claimsLastWindow === 0 && dispatchableDepth > 0) return true;
+  // liveAutoWorkspaces null = cmux unobservable (ship-check 2026-09-22): the
+  // tab and launch paths below cannot be proven, so they must not fire —
+  // `null < MIN_LIVE_AUTO_WORKSPACES` is true in JS and would page on every
+  // cmux hiccup. The claims path above does not need cmux and already ran.
+  if (liveAutoWorkspaces === null || liveAutoWorkspaces === undefined) return false;
   if (launchesLast45m === -1) return false;
   if (launchesLast45m !== 0) return false;
   if (dispatchPaused) return false;
@@ -76,5 +136,5 @@ function isDispatchFlowDead({ liveAutoWorkspaces, launchesLast45m, eligibleQueue
 }
 
 module.exports = {
-  isDispatchFlowDead, MIN_LIVE_AUTO_WORKSPACES, FLOW_WINDOW_MS, STALL_QUEUE_DEPTH_THRESHOLD,
+  isDispatchFlowDead, MIN_LIVE_AUTO_WORKSPACES, FLOW_WINDOW_MS, STALL_QUEUE_DEPTH_THRESHOLD, CLAIM_WINDOW_MS,
 };

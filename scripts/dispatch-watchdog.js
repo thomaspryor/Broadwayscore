@@ -910,16 +910,33 @@ function pageIfKillSwitchStale(filePath, { conditionKey, label, clearHint, now =
 // and "ledger unreadable" into the same signal, losing the -1 fail-safe
 // sentinel isDispatchFlowDead relies on to tell "confirmed dead" from
 // "cannot prove dead".
-function launchesInFlowWindow(now) {
+// One raw read of the ledger for the flow check, or null if it cannot be
+// read. Both flow counters (launches, and since 2026-09-21 claims) derive
+// from this single parse so they can never disagree about whether the
+// ledger was readable — a -1 "cannot prove dead" on one and a real count on
+// the other would let the check page on half a picture (second-opinion
+// warning on the claims-path change).
+// health()'s bound on the Linear fetch, and how long a timed-out tick lingers
+// so an alert fired that tick can still deliver before the forced exit.
+// Env override exists so the timeout path can be exercised for real.
+const LINEAR_HEALTH_TIMEOUT_MS = Number(process.env.WATCHDOG_HEALTH_LINEAR_TIMEOUT_MS) || 120 * 1000;
+const HEALTH_ALERT_GRACE_MS = 60 * 1000;
+
+function readFlowLedgerEntries() {
   let raw;
   try { raw = fs.readFileSync(dispatchLedger.LEDGER_PATH, 'utf8'); }
-  catch { return -1; }
+  catch { return null; }
   const entries = [];
   for (const line of raw.split('\n')) {
     const t = line.trim();
     if (!t) continue;
     try { entries.push(JSON.parse(t)); } catch { /* skip corrupt line */ }
   }
+  return entries;
+}
+
+function launchesInFlowWindow(now, entries) {
+  if (!entries) return -1;
   return dispatchLedger.countRecentLaunches(entries, { now, windowMs: flowHealth.FLOW_WINDOW_MS });
 }
 
@@ -939,7 +956,30 @@ function hlog(msg, stream = 'log') {
   console[stream](`[${new Date().toISOString()}] ${msg}`);
 }
 
-function health() {
+// 2026-09-21: watchdog-redispatch claims in the (6h) claims window — the
+// sweep taking on NEW work, as opposed to `launch` rows, which retries and
+// re-launches of existing jobs keep producing through a stall. Reuses
+// core.watchdogClaimsInWindow (the hourly-pacing counter) rather than a
+// second counter, with excludeFuture:true — a future-dated row must never
+// read as "claimed recently" here or a real stall never pages. Pacing keeps
+// the opposite (over-count => spend less) default; see that function's note.
+function claimsInClaimWindow(now, entries) {
+  if (!entries) return -1;
+  return core.watchdogClaimsInWindow(entries, now, flowHealth.CLAIM_WINDOW_MS, { excludeFuture: true }).length;
+}
+
+// async since 2026-09-21: the flow check must `await refreshLinearTasks()`
+// before building its plan. --health runs as a FRESH launchd process every
+// 900s, so linearTaskCache starts at {ts: 0} and linearTasksForPlan() returns
+// an empty Map unless something in THIS process fetched Linear first. Only
+// the dashboard loop and --status ever did; health() never did, so from the
+// moment BRO-3878 filtered the frozen Notion mirror out of p01Queue, the
+// launchd health check's queue depth was structurally 0 on every tick — the
+// health log shows queueDepth=0 for every reading after that landed while the
+// sweep was claiming Linear cards 2-6 times per 45 min. A stall detector that
+// cannot see the queue cannot detect a stall (second-opinion correctness
+// blocker 1 on the claims-path change). main() already unwraps the promise.
+async function health() {
   if (watchdogOff()) {
     // Deliberate disable is not an outage — paging on it would train the
     // owner to ignore the pager (ship-check P0). But a disable left engaged
@@ -972,11 +1012,24 @@ function health() {
     // visible marker for "the flow check actually ran" vs. "it silently
     // skipped (cmux unobservable)", ~/Library/Logs/dispatch-watchdog-health.log
     // can't prove which one happened on a given tick.
-    let flowSuffix = ' (flow check skipped: cmux unobservable)';
+    let flowSuffix = ' (flow check skipped)';
     try {
       const now = Date.now();
-      const liveAutoWorkspaces = cmuxws.listWorkspaces().filter(w => hasAutoDispatchMarker(w.title)).length;
-      const launchesLast45m = launchesInFlowWindow(now);
+      // Ship-check 2026-09-22 (Codex P1): cmux being unreachable from launchd
+      // (a routine state — dozens of "flow check skipped" lines in the health
+      // log) used to skip the WHOLE check. Only the tab-count terms need cmux;
+      // the claims path reads the ledger + Linear. null = unobservable, which
+      // isDispatchFlowDead treats as "cannot prove" for the tab/launch paths
+      // while still evaluating the claims path.
+      let liveAutoWorkspaces = null;
+      try {
+        liveAutoWorkspaces = cmuxws.listWorkspaces().filter(w => hasAutoDispatchMarker(w.title)).length;
+      } catch (e) {
+        hlog(`[watchdog] tab-count terms skipped (cmux unobservable): ${e.message}`, 'error');
+      }
+      const flowEntries = readFlowLedgerEntries();           // one read feeds both counters
+      const launchesLast45m = launchesInFlowWindow(now, flowEntries);
+      const claimsLastWindow = claimsInClaimWindow(now, flowEntries);
       // BRO-409: only trust a real queue depth when dispatch is actually
       // enabled AND no other legitimate hold explains zero launches — a
       // deliberate dispatch pause (NO_DISPATCH_FILE), or the watchdog's own
@@ -1007,29 +1060,81 @@ function health() {
       // unconditional tab-count behavior (paging), not toward silently
       // suppressing it; an unknown state must never look like a known pause.
       let eligibleQueueDepth = -1;
+      let dispatchableDepth = -1;
+      let linearNote = '';
       const dispatchEnabledNow = dispatchEnabled();
       let dispatchPaused = !dispatchEnabledNow;
       if (dispatchEnabledNow) {
         try {
+          // 2026-09-21: fetch Linear FIRST — see the note on health() above.
+          // Without this, a fresh launchd process plans against an empty
+          // task map and every depth below is 0 by construction.
+          // Bounded at 120s so a slow Linear (worst case ~6.5 min/page x 30
+          // pages of retries) cannot hold this tick's decision hostage. The
+          // race does NOT cancel the fetch — the process lives until it
+          // settles — but on timeout linearTaskCache.ok is still false in this
+          // fresh process, so both depths stay -1 ("cannot prove"). Never
+          // "fix" the lingering fetch with process.exit(): pageOwner does not
+          // await routeAlert, so an early exit would drop a page.
+          let linearTimer;
+          const timedOut = await Promise.race([
+            refreshLinearTasks().then(() => false),
+            new Promise((resolve) => { linearTimer = setTimeout(() => resolve(true), LINEAR_HEALTH_TIMEOUT_MS); }),
+          ]);
+          clearTimeout(linearTimer);
+          if (timedOut) {
+            linearNote = ', linear=timeout';
+            // The race does not cancel the fetch; left alone the process
+            // lives until it settles (retries can run for hours) and launchd
+            // skips every tick meanwhile — heartbeat-stale pages included
+            // (Codex P1). Exit once any page this tick fired has had
+            // HEALTH_ALERT_GRACE_MS to deliver (pageOwner does not await
+            // routeAlert, so exiting immediately would drop it). unref: never
+            // delays a process that would otherwise exit on its own.
+            setTimeout(() => process.exit(), HEALTH_ALERT_GRACE_MS).unref();
+          } else if (!linearTaskCache.ok) {
+            linearNote = `, linear=unavailable (${linearTaskCache.reason})`;
+          }
           const plan = buildPlan(now);
           dispatchPaused = plan.budgets.pausedByPolicy;
-          if (plan.budgets.holds.length === 0) eligibleQueueDepth = plan.p01Queue.length;
+          // Two depths, two paths (ship-check 2026-09-22 split them):
+          //  - eligibleQueueDepth feeds the legacy deep-queue path exactly as
+          //    before (p01Queue, trusted only with no holds at all). It must
+          //    stay p01Queue-sized: toDispatch is capped at the per-sweep
+          //    budget and could never exceed STALL_QUEUE_DEPTH_THRESHOLD.
+          //  - dispatchableDepth feeds the claims path: core.stallDetectionDepth
+          //    — toDispatch (holds, budget, lane filter and every p01Queue
+          //    exclusion applied; 0 under every genuine policy pause), except
+          //    under a FAILURE hold (claim outage, or a concurrency cap held by
+          //    slots older than the claims window), where it reports the stuck
+          //    claims + lane-eligible work so the wedge cannot silence its own
+          //    detector. See that function's note.
+          // The old single depth stayed -1 under ANY hold, cmux-only included,
+          // and so blinded both paths for the whole 76.4h stall of 16-19 Sep.
+          // A failed Linear fetch keeps -1 on both: an unknown board must never
+          // read as "nothing to do" (exactly how the previous version lied).
+          if (linearTaskCache.ok) {
+            if (plan.budgets.holds.length === 0) eligibleQueueDepth = plan.p01Queue.length;
+            dispatchableDepth = core.stallDetectionDepth(plan, { now, staleSlotMs: flowHealth.CLAIM_WINDOW_MS });
+          }
         } catch (e) { hlog(`[watchdog] queue-depth check skipped (${e.message})`, 'error'); }
       }
-      if (flowHealth.isDispatchFlowDead({ liveAutoWorkspaces, launchesLast45m, eligibleQueueDepth, dispatchPaused })) {
+      const claimWindowH = Math.round(flowHealth.CLAIM_WINDOW_MS / 3600000);
+      if (flowHealth.isDispatchFlowDead({ liveAutoWorkspaces, launchesLast45m, eligibleQueueDepth, dispatchPaused, claimsLastWindow, dispatchableDepth })) {
         pageOwner({
           conditionKey: 'dispatch-flow-dead',
           title: 'Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched',
-          description: `Only ${liveAutoWorkspaces} live 🤖 auto-dispatch workspace(s) and ${launchesLast45m} ledger launch(es) in the last ${Math.round(flowHealth.FLOW_WINDOW_MS / 60000)} min (eligible P0/P1 queue depth: ${eligibleQueueDepth}). The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.`,
+          description: `${claimsLastWindow} new-work claim(s) in the last ${claimWindowH}h with ${dispatchableDepth} card(s) the sweep would dispatch right now (eligible P0/P1 queue depth: ${eligibleQueueDepth}); ${liveAutoWorkspaces} live 🤖 auto-dispatch workspace(s) and ${launchesLast45m} ledger launch(es) in the last ${Math.round(flowHealth.FLOW_WINDOW_MS / 60000)} min. The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and linear-next.js/bsc-next.js for a stuck sweep. (Claims are the sweep taking on NEW work; launches alone kept flowing from retries through the 76.4h stall of 16-19 Sep 2026.)`,
           severity: 'error',
           cooldownHours: 24,
         });
-        hlog(`watchdog: heartbeat healthy but dispatch flow DEAD (live=${liveAutoWorkspaces}, launches45m=${launchesLast45m}, queueDepth=${eligibleQueueDepth}) — owner paged`);
+        hlog(`watchdog: heartbeat healthy but dispatch flow DEAD (claims${claimWindowH}h=${claimsLastWindow}, dispatchable=${dispatchableDepth}, queueDepth=${eligibleQueueDepth}, live=${liveAutoWorkspaces}, launches45m=${launchesLast45m}) — owner paged`);
         return 1;
       }
-      flowSuffix = ` (flow: live=${liveAutoWorkspaces}, launches45m=${launchesLast45m}, queueDepth=${eligibleQueueDepth})`;
+      flowSuffix = ` (flow: claims${claimWindowH}h=${claimsLastWindow}, dispatchable=${dispatchableDepth}, queueDepth=${eligibleQueueDepth}, live=${liveAutoWorkspaces === null ? 'unobservable' : liveAutoWorkspaces}, launches45m=${launchesLast45m}${linearNote})`;
     } catch (e) {
-      hlog(`[watchdog] flow-dead check skipped (cmux unobservable): ${e.message}`, 'error');
+      flowSuffix = ' (flow check skipped: error)';
+      hlog(`[watchdog] flow-dead check skipped: ${e.message}`, 'error');
     }
     hlog(`watchdog healthy — heartbeat ${Math.round(age / 60000)} min old${flowSuffix}`);
     return 0;

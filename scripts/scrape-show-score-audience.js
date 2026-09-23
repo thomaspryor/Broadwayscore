@@ -1021,7 +1021,14 @@ async function main() {
     console.log(`\n── Listings Discovery Phase: ${uncachedBefore} uncached shows ──`);
     try {
       const { execSync } = require('child_process');
-      const result = execSync('node scripts/discover-show-score-urls-from-listings.js', {
+      // /what-else follow-up (BRO-4055): this call used to never forward
+      // --dry-run, so a "safe preview" run of THIS script still performed
+      // real writes via the child process (caught live: a --dry-run run
+      // wrote a new url to show-score-urls.json on disk). Forward it.
+      const childCmd = dryRun
+        ? 'node scripts/discover-show-score-urls-from-listings.js --dry-run'
+        : 'node scripts/discover-show-score-urls-from-listings.js';
+      const result = execSync(childCmd, {
         cwd: path.join(__dirname, '..'),
         encoding: 'utf8',
         timeout: 120000,

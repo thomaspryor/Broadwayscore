@@ -135,3 +135,64 @@ test('coverageDigestLines sorts least-complete first and respects the limit', ()
   assert.strictEqual(lines.length, 1);
   assert.match(lines[0], /^Barely Started/);
 });
+
+test('v2 verdict: a prior-production citation never eats a "being fetched" slot', () => {
+  // The same Car Man shape, but with a verdict the CURRENT rule produced.
+  // candidateCount no longer contains the old citation, so all 3 outstanding
+  // slots are genuinely still being fetched — reporting "2" would understate
+  // the real work by exactly the number of un-actionable old citations.
+  const line = coverageDigestLine({
+    title: 'The Car Man',
+    showId: 'the-car-man-west-end-2026',
+    censusVerdict: { verdict: 'incomplete', liveCount: 11, candidateCount: 14, censusSchema: 2 },
+    missing: [
+      { url: 'a', host: 'a.com' },
+      { url: 'b', host: 'b.com' },
+      { url: 'c', host: 'c.com', priorRun: true },
+    ],
+  });
+  assert.strictEqual(
+    line,
+    "The Car Man: 11 of 14 known reviews live — 3 being fetched — separately, 1 (older production) on file from outside this run's candidate pool",
+  );
+});
+
+test('a pre-v2 verdict keeps the original fit-or-overflow heuristic unchanged', () => {
+  // No schema stamp: the legacy row is read exactly as it was written, so an
+  // excluded citation that FITS in the remaining slots still consumes one.
+  // (An earlier cut decided this by candidate-URL membership; withdrawn —
+  // candidateCount is outlet-distinct, so URL matching mixed counting units.)
+  const line = coverageDigestLine({
+    title: 'Legacy Show',
+    showId: 'legacy-show-2026',
+    censusVerdict: {
+      verdict: 'incomplete',
+      liveCount: 1,
+      candidateCount: 3,
+      candidates: [{ url: 'a' }, { url: 'b' }, { url: 'c' }],
+    },
+    missing: [{ url: 'b', host: 'b.com' }, { url: 'c', host: 'c.com', priorRun: true }],
+  });
+  assert.strictEqual(line, 'Legacy Show: 1 of 3 known reviews live — 1 being fetched, 1 excluded (older production)');
+});
+
+test('a v2 verdict ignores the candidate list entirely — outside by construction', () => {
+  // Same row, now stamped v2. The citation cannot be a candidate, so it must
+  // not eat a "being fetched" slot no matter what the candidate list says.
+  const line = coverageDigestLine({
+    title: 'Legacy Show',
+    showId: 'legacy-show-2026',
+    censusVerdict: {
+      verdict: 'incomplete',
+      liveCount: 1,
+      candidateCount: 3,
+      censusSchema: 2,
+      candidates: [{ url: 'a' }, { url: 'b' }, { url: 'c' }],
+    },
+    missing: [{ url: 'b', host: 'b.com' }, { url: 'c', host: 'c.com', priorRun: true }],
+  });
+  assert.strictEqual(
+    line,
+    "Legacy Show: 1 of 3 known reviews live — 2 being fetched — separately, 1 (older production) on file from outside this run's candidate pool",
+  );
+});

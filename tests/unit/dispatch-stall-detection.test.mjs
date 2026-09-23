@@ -34,6 +34,34 @@ test('BRO-409 incident shape: live tabs at min, zero launches, deep eligible que
   );
 });
 
+test('16-19 Sep 2026 incident shape: launches still flowing from retries, tabs well above min, cmux-only hold, zero claims for 6h with dispatchable work -> dead', () => {
+  // Measured from the real ledger: 76.4h with zero watchdog-redispatch rows
+  // while 23 of 64 45-min windows still had launch rows and health() logged
+  // "healthy" every 15 min. Before the claims path, every term below was
+  // green: launches>0 short-circuits the launch path, tabs>=3 keeps the
+  // tab path quiet, and the depth fed under a cmux-only hold was -1.
+  assert.equal(
+    isDispatchFlowDead({
+      liveAutoWorkspaces: 12,
+      launchesLast45m: 3,
+      dispatchableDepth: 11,       // core.stallDetectionDepth(plan) — headless work under a cmux-only hold
+      dispatchPaused: false,
+      claimsLastWindow: 0,
+    }),
+    true,
+  );
+  // The same reading one legitimate-lull away: nothing dispatchable -> not dead.
+  assert.equal(
+    isDispatchFlowDead({ liveAutoWorkspaces: 12, launchesLast45m: 3, dispatchableDepth: 0, claimsLastWindow: 0 }),
+    false,
+  );
+  // And the pre-fix blind reading — depth unknown (-1) — still cannot prove dead.
+  assert.equal(
+    isDispatchFlowDead({ liveAutoWorkspaces: 12, launchesLast45m: 3, dispatchableDepth: -1, claimsLastWindow: 0 }),
+    false,
+  );
+});
+
 test('queue depth at the threshold does not trip', () => {
   assert.equal(
     isDispatchFlowDead({ liveAutoWorkspaces: MIN_LIVE_AUTO_WORKSPACES, launchesLast45m: 0, eligibleQueueDepth: STALL_QUEUE_DEPTH_THRESHOLD }),
