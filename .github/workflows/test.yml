@@ -195,6 +195,8 @@ on:
       # checks out at depth 1) - same scripts/tests/ situation, so it needs
       # its own entry too.
       - 'scripts/tests/ack-landed-naming-candidates.test.mjs'
+      # BRO-4071: --sha derivation test (throwaway git repo, same situation).
+      - 'scripts/tests/ack-landed-derive-sha.test.mjs'
       # BRO-4066: the reclassify-headless-endings.js backfill CLI and its
       # scripts/tests/ test (registered in tests/unit-test-manifest.txt) —
       # neither is covered by the globs above, so both need their own entry.

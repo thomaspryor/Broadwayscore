@@ -333,8 +333,9 @@ function main() {
     if (cands === undefined) refuse(ref, [`--sha not given and it cannot be derived: ${ref}'s dispatch launch timestamps are not all readable, so no sha can satisfy --already-landed's timing check`]);
     if (cands === null) refuse(ref, [`--sha not given and it cannot be derived: searching origin/main for commits naming ${ref} failed (no origin/main, a shallow clone, or git refused the query) — pass --sha explicitly`]);
     if (!cands.length) refuse(ref, [`--sha not given and no commit on origin/main names ${ref} ${where} — nothing to derive; pass --sha if the work landed under commits that never mention the card`]);
-    // namingCandidates keeps git log order (newest commit first, capped at
-    // 5), so [0] is the tip of the most recent landing. Every candidate passes the same naming + window guard,
+    // namingCandidates keeps git log order (newest commit first; --no-merges
+    // over land.yml's linear rebases, capped at 5), so [0] is the most
+    // recently landed naming commit. Every candidate passes the same naming + window guard,
     // so the choice only affects which sha the ledger row cites.
     args.sha = cands[0].sha;
     console.error(`→ --sha not given: derived ${args.sha} — the newest of ${cands.length}${cands.length >= 5 ? '+' : ''} commit(s) on origin/main naming ${ref} ${where}`);
