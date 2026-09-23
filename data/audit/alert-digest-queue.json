@@ -539,5 +539,38 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-23T06:56:57.722Z"
+  },
+  {
+    "conditionKey": "opening-night-drift:macbeth-off-broadway-2026",
+    "title": "Opening night drift: Macbeth (macbeth-off-broadway-2026) — escalated after 20 notifications",
+    "description": "Filed BRO-4067 for owner triage after 20 repeats with no tracker.\n\nReview counts do not reconcile for Macbeth (macbeth-off-broadway-2026): local review-texts=7, reviews.json aggregate=0, live production=n/a, drift=7 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35831480300",
+    "decision": true,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "Macbeth (macbeth-off-broadway-2026)",
+        "inline": false
+      },
+      {
+        "name": "Counts",
+        "value": "local=7, aggregate=0, live=n/a, drift=7",
+        "inline": false
+      },
+      {
+        "name": "Opening",
+        "value": "2026-09-22",
+        "inline": false
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/35831480300)",
+        "inline": false
+      }
+    ],
+    "queuedAt": "2026-09-23T07:26:05.879Z"
   }
 ]
