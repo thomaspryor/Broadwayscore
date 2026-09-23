@@ -1,0 +1,115 @@
+{
+  "runDate": "2026-09-23T02:27:15.302Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026,catarina-and-the-beauty-of-killing-fascists-west-end-2026,macbeth-off-broadway-2026,the-invention-of-love-off-broadway-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 3,
+    "failed": 28,
+    "skipped": 0,
+    "successRate": "9.7%"
+  },
+  "tierBreakdown": {
+    "playwright": 2,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 1,
+    "archiveToday": 0,
+    "archive": 1
+  },
+  "statistics": {
+    "tier1Attempts": 4,
+    "tier1Success": 2,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 1,
+    "tier3Attempts": 2,
+    "tier3Success": 2,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 0,
+    "tier4Attempts": 4,
+    "tier4Success": 1,
+    "totalFailed": 27,
+    "scrapingBeePageCredits": 20,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.3,
+    "urlDiscoveryAttempts": 25,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "macbeth-off-broadway-2026/ew--unknown.json",
+    "macbeth-off-broadway-2026/playbill--unknown.json",
+    "the-invention-of-love-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
+  ],
+  "failed": [
+    "macbeth-off-broadway-2026/hollywood-reporter--unknown.json",
+    "macbeth-off-broadway-2026/abc-news--unknown.json",
+    "macbeth-off-broadway-2026/ew--leah-greenblatt.json",
+    "macbeth-off-broadway-2026/newsday--linda-winer.json",
+    "macbeth-off-broadway-2026/newsday--unknown.json",
+    "macbeth-off-broadway-2026/thewrap--robert-hofler.json",
+    "macbeth-off-broadway-2026/thewrap--unknown.json",
+    "macbeth-off-broadway-2026/timeout--naveen-kumar.json",
+    "macbeth-off-broadway-2026/timeout--unknown.json",
+    "macbeth-off-broadway-2026/amny--unknown.json",
+    "macbeth-off-broadway-2026/chicagotribune--chris-jones.json",
+    "macbeth-off-broadway-2026/chicagotribune--unknown.json",
+    "macbeth-off-broadway-2026/daily-mail--patrick-marmion.json",
+    "macbeth-off-broadway-2026/financialtimes--shirley-apthorp.json",
+    "macbeth-off-broadway-2026/huffpost--unknown.json",
+    "macbeth-off-broadway-2026/i-paper--fiona-mountford.json",
+    "macbeth-off-broadway-2026/independent--alice-saville.json",
+    "macbeth-off-broadway-2026/playbill--dan-meyer.json",
+    "macbeth-off-broadway-2026/seen-and-heard-international--clive-peacock.json",
+    "macbeth-off-broadway-2026/standard--nick-curtis.json",
+    "macbeth-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "macbeth-off-broadway-2026/thestage--unknown.json",
+    "macbeth-off-broadway-2026/times-uk--clive-davis.json",
+    "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json",
+    "the-invention-of-love-off-broadway-2026/nytg--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/thestage--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
+    "the-invention-of-love-off-broadway-2026/thestage--ian-shine.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "macbeth-off-broadway-2026/playbill--unknown.json",
+      "the-invention-of-love-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json"
+    ],
+    "archiveToday": [],
+    "archive": [
+      "macbeth-off-broadway-2026/ew--unknown.json"
+    ]
+  },
+  "failuresByOutlet": {
+    "The Stage": {
+      "count": 1,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": []
+}

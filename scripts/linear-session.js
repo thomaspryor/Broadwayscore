@@ -49,6 +49,7 @@ const lsr = require('./lib/linear-session-reporting');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
 const { makeVerifyEvidence } = require('./lib/done-evidence-verify');
 const { makeVerifyCmdEvidence } = require('./lib/linear-cmd-execution');
+const { appendBypassRow } = require('./lib/linear-gate-bypass-ledger');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 const { checkIssueStaleness, newestComments } = require('./lib/linear-staleness-check');
 
@@ -311,6 +312,26 @@ async function cmdReport(args, deps = {}) {
         args.force && typeof args.force === 'string' && args.force.length >= 10 ? args.force : null;
       if (args.force && !bypassReason) {
         console.error('⚠️  --force ignored by done-semantics gate: the reason must be a string of ≥10 characters.');
+      }
+      // Ship-check finding (Codex adversarial review, 2026-09-21): this is
+      // the OTHER call site that can bypass the Done gate — the one this
+      // file's own comment above says is "the one --status=done sessions
+      // actually use" — and linear-brain.js's bypass ledger only instrumented
+      // its own `update` command. Logging only one of two live bypass paths
+      // would make the ledger's counts wrong in the direction that matters:
+      // undercounting the path actually used, i.e. the exact "unmeasured
+      // premise" the ledger exists to fix.
+      const sessionEnvDisabled = !bypassReason && process.env.LINEAR_DONE_GATE_DISABLED === '1';
+      if (bypassReason || sessionEnvDisabled) {
+        try {
+          (deps.appendBypassRow || appendBypassRow)({
+            identifier: issue.identifier,
+            gate: 'done',
+            mechanism: bypassReason ? 'force' : 'env-disabled',
+            reason: bypassReason,
+            targetState: completion.stateName,
+          });
+        } catch { /* diagnostic only — never block the report */ }
       }
       if (!bypassReason && process.env.LINEAR_DONE_GATE_DISABLED !== '1') {
         // Same three text sources linear-brain.js's update gate reads:

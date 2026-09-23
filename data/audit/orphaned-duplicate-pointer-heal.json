@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-21T00:52:47.561Z",
+  "generated": "2026-09-23T02:32:49.618Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 93,
+  "count": 97,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -200,6 +200,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "inter-alia-west-end-2026",
+      "loserFile": "whatsonstage--unknown.json",
+      "targetFile": "whatsonstage--lucinda-everett.json",
+      "reason": "orphaned-duplicate-heal: whatsonstage--lucinda-everett.json was flagged invalid after whatsonstage--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "jagged-little-pill-2019",
       "loserFile": "vulture--jesse-green.json",
       "targetFile": "vulture--helen-shaw.json",
@@ -246,6 +253,13 @@
       "loserFile": "nytimes--ben-brantley.json",
       "targetFile": "nytimes--matt-wolf.json",
       "reason": "orphaned-duplicate-heal: nytimes--matt-wolf.json was flagged invalid after nytimes--ben-brantley.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "loserFile": "ew--unknown.json",
+      "targetFile": "ew--reviewed-by.json",
+      "reason": "orphaned-duplicate-heal: ew--reviewed-by.json was flagged invalid after ew--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -565,6 +579,13 @@
     },
     {
       "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "loserFile": "standard--nick-curtis.json",
+      "targetFile": "standard--unknown.json",
+      "reason": "orphaned-duplicate-heal: standard--unknown.json was flagged invalid after standard--nick-curtis.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
       "loserFile": "west-end-best-friend--cara-brazier.json",
       "targetFile": "west-end-best-friend--unknown.json",
       "reason": "orphaned-duplicate-heal: west-end-best-friend--unknown.json was flagged invalid after west-end-best-friend--cara-brazier.json was pointed at it",
@@ -653,6 +674,13 @@
       "targetFile": "theatermania--hayley-levitt.json",
       "reason": "orphaned-duplicate-heal: theatermania--hayley-levitt.json was flagged invalid after theatermania--zachary-stewart.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "loserFile": "ew--unknown.json",
+      "targetFile": "ew--reviewed-by.json",
+      "reason": "orphaned-duplicate-heal: ew--reviewed-by.json was flagged invalid after ew--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }

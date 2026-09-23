@@ -138,7 +138,12 @@ describe('scoring-delta.js decideInclusion auto-clear replay', () => {
 // (not silently allowed) so this test still fails the moment a FIFTH field is
 // added without a branch, and so removing an entry from this list is a visible
 // diff when the follow-up lands.
-const KNOWN_UNCOVERED = new Set(['suspectedMisattribution', 'isNonReview', 'fabricatedEntry', 'rejectedAt']);
+//
+// isNonReview closed (BRO-3862): decideInclusion was blind to every
+// isNonReview-driven flip — the exact class of change this ticket's audit
+// sweeps make — so scoring-delta.js always reported "0 flips" for them. Fixed
+// by mirroring rebuild-all-reviews.js:3570 (incl. isNonReviewDemotedByFreshCV).
+const KNOWN_UNCOVERED = new Set(['suspectedMisattribution', 'fabricatedEntry', 'rejectedAt']);
 describe('scoring-delta.js FLAG_FIELDS / decideInclusion coverage', () => {
   test('every FLAG_FIELDS name is referenced inside decideInclusion, or explicitly listed as a known gap', () => {
     const { FLAG_FIELDS } = require('./scoring-delta.js');

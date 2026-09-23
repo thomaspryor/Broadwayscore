@@ -103,27 +103,17 @@ jobs:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Cancel competing orchestrator/poller runs
-        env:
-          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-        run: |
-          echo "=== Pausing competing workflows to prevent data races ==="
-          CANCELLED=0
-          for WORKFLOW in opening-night-orchestrator.yml opening-night-poller.yml llm-ensemble-score.yml; do
-            for RUN_ID in $(gh run list --workflow=$WORKFLOW --status=in_progress --json databaseId --jq '.[].databaseId' 2>/dev/null); do
-              echo "  Cancelling $WORKFLOW run $RUN_ID..."
-              gh run cancel "$RUN_ID" && CANCELLED=$((CANCELLED+1)) || echo "  ⚠ Could not cancel $RUN_ID"
-            done
-            for RUN_ID in $(gh run list --workflow=$WORKFLOW --status=queued --json databaseId --jq '.[].databaseId' 2>/dev/null); do
-              echo "  Cancelling queued $WORKFLOW run $RUN_ID..."
-              gh run cancel "$RUN_ID" && CANCELLED=$((CANCELLED+1)) || echo "  ⚠ Could not cancel $RUN_ID"
-            done
-          done
-          echo "Cancelled $CANCELLED competing runs. Express has the data repo to itself."
-          # Wait briefly for cancellations to propagate
-          [ $CANCELLED -gt 0 ] && sleep 15 || true
-
       - name: Set ORCHESTRATOR_PAUSED (time-limited lease, blocks cron-triggered orchestrators)
+        # BRO-3707: moved BEFORE "Cancel competing orchestrator/poller runs"
+        # (was after). This step doesn't read anything the cancel step
+        # produces, and ordering it first closes a race an adversarial review
+        # found: the cancelled orchestrator/poller run's own "Check for
+        # Express preemption" step (gated `if: cancelled()`) can execute and
+        # read ORCHESTRATOR_PAUSED within milliseconds of being cancelled —
+        # well before the cancel step's later `sleep 15` — so with the lease
+        # set AFTER cancelling, that check could still read empty and send a
+        # false "Failed" alert on a routine takeover. Setting the lease first
+        # means it's already visible before any competing run is cancelled.
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
@@ -175,6 +165,26 @@ jobs:
             echo "::error::Could not set ORCHESTRATOR_PAUSED — aborting to prevent unguarded concurrent orchestrator writes"
             exit 1
           fi
+
+      - name: Cancel competing orchestrator/poller runs
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          echo "=== Pausing competing workflows to prevent data races ==="
+          CANCELLED=0
+          for WORKFLOW in opening-night-orchestrator.yml opening-night-poller.yml llm-ensemble-score.yml; do
+            for RUN_ID in $(gh run list --workflow=$WORKFLOW --status=in_progress --json databaseId --jq '.[].databaseId' 2>/dev/null); do
+              echo "  Cancelling $WORKFLOW run $RUN_ID..."
+              gh run cancel "$RUN_ID" && CANCELLED=$((CANCELLED+1)) || echo "  ⚠ Could not cancel $RUN_ID"
+            done
+            for RUN_ID in $(gh run list --workflow=$WORKFLOW --status=queued --json databaseId --jq '.[].databaseId' 2>/dev/null); do
+              echo "  Cancelling queued $WORKFLOW run $RUN_ID..."
+              gh run cancel "$RUN_ID" && CANCELLED=$((CANCELLED+1)) || echo "  ⚠ Could not cancel $RUN_ID"
+            done
+          done
+          echo "Cancelled $CANCELLED competing runs. Express has the data repo to itself."
+          # Wait briefly for cancellations to propagate
+          [ $CANCELLED -gt 0 ] && sleep 15 || true
 
       - name: Checkout core data (shows.json, reviews.json, etc.)
         uses: ./.github/actions/checkout-core-data
@@ -593,7 +603,10 @@ jobs:
           esac
 
       - name: Notify on failure
-        if: failure()
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 90 reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # silently drop this critical alert.
+        if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
         with:
           title: 'Opening Night Express Failed — ${{ inputs.show_id }}'

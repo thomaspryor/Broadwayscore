@@ -28,6 +28,7 @@ const {
 } = require('./lib/provider-billing');
 const {
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday, aggregateLedgerByDay,
+  ledgerFreshnessHours, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,
 } = require('./lib/provider-spend-core');
 const {
   countCallsByProvider, topCallers, creditsByProvider, topCallersByCredits,
@@ -38,6 +39,15 @@ const REPO = path.join(__dirname, '..');
 const LEDGER = path.join(REPO, 'data', 'audit', 'provider-spend-daily.jsonl');
 const SNAPSHOT = path.join(REPO, 'data', 'audit', 'provider-spend-snapshot.json');
 const THRESHOLDS_PATH = path.join(REPO, 'scripts', 'config', 'provider-spend-thresholds.json');
+// BRO-3349: these four moved to lib/provider-spend-core.js (imported above)
+// so scripts/health-check.js's "Data quality: provider spend ledger" row can
+// share the SAME freshness predicate instead of re-deriving it. They are
+// re-exported below unchanged, so every existing caller/test of this script's
+// module surface keeps working. Why the move rather than health-check.js
+// requiring this file directly: this file is a CLI with top-level side
+// effects (hasHelpFlag/process.exit, argv-derived DAY), and provider-spend-
+// core.js is the file whose own docstring already claims ownership of "pure
+// decision functions" for this subsystem.
 // S0-T6: durable daily rollup of the per-call ledger. The raw ledger
 // (CALL_LEDGER_PATH, provider-telemetry.js) rotates at MAX_LEDGER_LINES —
 // under a day at unthrottled Scrapingdog volume — so it cannot answer a
@@ -111,6 +121,23 @@ async function main() {
   }
   const ledger = readLedger();
   const prev = [...ledger].reverse().find((r) => r.day < DAY) || null;
+
+  // BRO-3227: check the ledger AS COMMITTED (before this run adds anything)
+  // — this run's own write always looks fresh by construction, so freshness/
+  // continuity only means something measured against what survived to disk.
+  const now = new Date();
+  const freshnessHours = ledgerFreshnessHours(ledger, now);
+  const missingDays = missingLedgerDays(ledger, now, CONTINUITY_WINDOW_DAYS);
+  const ledgerUnhealthy = freshnessHours > STALE_HOURS_THRESHOLD || missingDays.length > 0;
+  if (ledgerUnhealthy) {
+    const parts = [];
+    if (freshnessHours > STALE_HOURS_THRESHOLD) {
+      const ageText = Number.isFinite(freshnessHours) ? `${freshnessHours.toFixed(1)}h` : 'no entries ever recorded';
+      parts.push(`most recent entry was ${ageText} old before this run (> ${STALE_HOURS_THRESHOLD}h threshold)`);
+    }
+    if (missingDays.length) parts.push(`missing day(s) in the trailing ${CONTINUITY_WINDOW_DAYS}: ${missingDays.join(', ')}`);
+    console.error(`::error::provider-spend-daily.jsonl is stale/discontinuous — ${parts.join('; ')}. Continuing so today's (${DAY}) entry can still land.`);
+  }
 
   const zone = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
   const [bbUsage, bdSerp, bdUnlocker, sb, sd] = await Promise.all([
@@ -221,9 +248,40 @@ async function main() {
       } : {}),
     });
   }
+
+  // BRO-3227: fires independently of the overspend/unmeasured breach above —
+  // a stale/discontinuous ledger is a "the truth layer itself is broken"
+  // condition, not a spend condition, so it gets its own conditionKey and
+  // survives even on a day with no budget breach at all. Routed AFTER this
+  // run's own write lands, so a real fix (today's entry landing) is on
+  // record even if this alert is what someone acts on.
+  if (ledgerUnhealthy) {
+    const { routeAlert } = require('./lib/owner-alert-router');
+    const parts = [];
+    if (freshnessHours > STALE_HOURS_THRESHOLD) {
+      const ageText = Number.isFinite(freshnessHours) ? `${freshnessHours.toFixed(1)}h` : 'no entries ever recorded';
+      parts.push(`most recent entry was ${ageText} old before this run`);
+    }
+    if (missingDays.length) parts.push(`missing day(s): ${missingDays.join(', ')}`);
+    await routeAlert({
+      conditionKey: 'provider-spend:stale-ledger',
+      title: 'Provider spend ledger is stale or discontinuous',
+      description: `Before today's (${DAY}) write: ${parts.join('; ')}. See data/audit/provider-spend-daily.jsonl.`,
+      hint: 'Check whether check-provider-spend.js ran on the missing day(s), and whether its write survived a later push-with-retry.sh hard-reset (BRO-3317 class bug) — that class silently discarded 11 days of this same ledger once already.',
+      severity: 'warn',
+      disposition: 'digest',
+      cooldownHours: 20,
+    });
+  }
 }
 
-main().catch((err) => {
-  console.error(`::error::check-provider-spend crashed: ${err && err.message}`);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch((err) => {
+    console.error(`::error::check-provider-spend crashed: ${err && err.message}`);
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  ledgerFreshnessHours, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,
+};

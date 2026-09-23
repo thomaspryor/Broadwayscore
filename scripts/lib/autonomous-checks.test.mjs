@@ -341,10 +341,25 @@ test('runSafeChecks cleans up the throwaway HOME it created', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-home-'));
   fs.mkdirSync(path.join(dir, 'scripts'), { recursive: true });
   fs.writeFileSync(path.join(dir, 'scripts', 'good.js'), 'const x = 1;\n');
-  const before = fs.readdirSync(os.tmpdir()).filter(n => n.startsWith('auto-checks-home-')).length;
-  runSafeChecks({ cwd: dir, changedFiles: ['scripts/good.js'], isSafeCheckCommand: () => false, tier: 3 });
-  const after = fs.readdirSync(os.tmpdir()).filter(n => n.startsWith('auto-checks-home-')).length;
-  assert.equal(after, before, 'no fake HOME left behind');
+  // Track the exact dir(s) THIS call creates instead of counting every
+  // auto-checks-home-* in the shared os.tmpdir(): other processes (parallel
+  // sessions, land.js gauntlets) create and delete same-prefixed dirs
+  // concurrently, which flipped a global count and false-blocked unrelated
+  // landings (BRO-3929).
+  const created = [];
+  const realMkdtemp = fs.mkdtempSync;
+  fs.mkdtempSync = (prefix, ...rest) => {
+    const p = realMkdtemp(prefix, ...rest);
+    if (path.basename(String(prefix)).startsWith('auto-checks-home-')) created.push(p);
+    return p;
+  };
+  try {
+    runSafeChecks({ cwd: dir, changedFiles: ['scripts/good.js'], isSafeCheckCommand: () => false, tier: 3 });
+  } finally {
+    fs.mkdtempSync = realMkdtemp;
+  }
+  assert.ok(created.length > 0, 'runSafeChecks created a throwaway HOME (spy must see it, or this test proves nothing)');
+  for (const p of created) assert.equal(fs.existsSync(p), false, `fake HOME left behind: ${p}`);
   fs.rmSync(dir, { recursive: true, force: true });
 });
 

@@ -20,6 +20,12 @@
  *     this one.
  *   essay-intro-fp — already covered by audit-exclusion-flags.js; reported
  *     here for corpus-size context only, not gated (that script owns it).
+ *   already-excluded — wrongShow/wrongProduction/contentVerification.
+ *     wrongArticle/garbage-text/invalid contentTier/dead-page chrome dump.
+ *     The file is already correctly kept out of reviews.json by one of
+ *     these OTHER mechanisms; counting it under "unaudited" too just
+ *     inflates the backlog with files that need no further action
+ *     (2026-09-21 re-verification: this was ~74% of the raw hit count).
  *   unaudited — no existing predicate covers this file. No validated
  *     auto-clear predicate exists yet; reported so the count is visible and
  *     trending, per the ticket's "measured continuously" ask.
@@ -96,7 +102,7 @@ function main() {
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const args = parseArgs(argv);
 
-  const buckets = { 'wrong-show-suspect': [], 'essay-intro-fp': [], unaudited: [] };
+  const buckets = { 'wrong-show-suspect': [], 'essay-intro-fp': [], 'already-excluded': [], unaudited: [] };
   let scanned = 0;
 
   const { dirs: showDirs, rootMissing } = listShowDirs(REVIEW_TEXTS_DIR, args.show);
@@ -134,7 +140,7 @@ function main() {
     }
   }
 
-  const total = buckets['wrong-show-suspect'].length + buckets['essay-intro-fp'].length + buckets.unaudited.length;
+  const total = buckets['wrong-show-suspect'].length + buckets['essay-intro-fp'].length + buckets['already-excluded'].length + buckets.unaudited.length;
 
   if (args.json) {
     console.log(JSON.stringify({ scanned, total, buckets }, null, 2));
@@ -142,6 +148,7 @@ function main() {
     console.log(`Nonreview slug-coverage sweep: ${scanned} review file(s) scanned, ${total} in-scope hit(s) (isNonReview + >=400w + review URL slug).`);
     console.log(`  wrong-show-suspect: ${buckets['wrong-show-suspect'].length} (owned/gated by audit-review-type-wrong-show.js, reported here for context only)`);
     console.log(`  essay-intro-fp:     ${buckets['essay-intro-fp'].length} (owned by audit-exclusion-flags.js, not gated here)`);
+    console.log(`  already-excluded:   ${buckets['already-excluded'].length} (wrongShow/wrongProduction/wrongArticle/garbage-text/dead-page — correctly excluded via a different mechanism already, no action needed)`);
     console.log(`  unaudited:          ${buckets.unaudited.length} (no validated auto-clear predicate yet — reported, not gated)`);
   }
 

@@ -204,7 +204,10 @@ jobs:
       # before that fix. Pages on every failure since the next scheduled
       # attempt is 3-4 days away.
       - name: Notify on failure
-        if: failure()
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 180 reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # silently drop this critical alert.
+        if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
         with:
           title: 'Image Fetch Failed'

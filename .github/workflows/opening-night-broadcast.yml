@@ -973,7 +973,7 @@ jobs:
               // as an unexplained pipeline hang. Adversarial review 2026-08-26: don't let a
               // read/parse failure (e.g. a partial core-data checkout) mislabel EVERY overdue
               // show as consensus-blocked — that's a confident wrong answer, worse than the
-              // old generic message. Only claim "missing" once the file actually parsed.
+              // old generic message. Only claim \"missing\" once the file actually parsed.
               if (!why) {
                 try {
                   const { getShowConsensusText } = require('./scripts/lib/critic-consensus-lookup');
@@ -993,8 +993,8 @@ jobs:
             // even attempted. Moved into the routeAlert() .then() below
             // (BRO-1699 ship-check finding): this file's OWN checklist/drift
             // gates above already stamp state only after confirmed delivery
-            // ("blocked=true is written from INSIDE the node call, only once
-            // we know the owner was actually informed") specifically because
+            // (\"blocked=true is written from INSIDE the node call, only once
+            // we know the owner was actually informed\") specifically because
             // writing first and notifying second means a delivery failure
             // gets silently marked as handled, suppressing the real retry for
             // up to cooldownHours. Same discipline applied here.
@@ -1442,7 +1442,12 @@ jobs:
       # gate flag set still pages normally.
       - name: Notify on failure
         id: notify
-        if: failure() && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 24 reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # silently drop this critical alert. The gate outputs stay a safe
+        # AND-guard on cancellation too: a cancelled gate step never sets its
+        # 'blocked' output, so the != 'true' checks still pass through.
+        if: (failure() || cancelled()) && steps.checklist_gate.outputs.blocked != 'true' && steps.drift_gate.outputs.blocked != 'true' && steps.orphan_gate.outputs.blocked != 'true'
         uses: ./.github/actions/notify-failure
         with:
           title: 'Opening Night Broadcast Failed'

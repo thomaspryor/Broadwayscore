@@ -167,8 +167,20 @@ function hasSafeVerifyCommand(issue) {
  * PURE. The full "should the watchdog queue this" predicate, split out so a
  * test can assert each reason independently. Returns a reason string when the
  * issue is NOT eligible, or null when it is.
+ *
+ * @param {object} issue
+ * @param {object} [opts]
+ * @param {Set<string>} [opts.alreadyPassesIds]  Linear identifiers (e.g.
+ *   "BRO-1234") that BRO-3551's own sweep (scripts/sweep-open-backlog-
+ *   acceptance.js) already found passing their OWN acceptance command on
+ *   main. Injected by the caller (dispatch-watchdog.js reads
+ *   data/audit/open-backlog-acceptance-sweep.json — I/O — and passes the id
+ *   set in here), same pattern as planSweep's own `recheckFailures` opt —
+ *   this module stays pure and never touches the filesystem itself, and
+ *   never re-runs the acceptance command (BRO-3924: "never run runVerify
+ *   inside the 90s watchdog loop").
  */
-function ineligibleReason(issue) {
+function ineligibleReason(issue, opts = {}) {
   if (!issue || !issue.identifier) return 'malformed';
   const stateType = issue.state && issue.state.type;
   if (!stateType) return 'no-state';
@@ -182,6 +194,17 @@ function ineligibleReason(issue) {
   if (stateType === 'started') return 'already-started';
   if (!priorityOf(issue)) return 'not-p0-p1';
   if (isAutofixFiledIssue(issue)) return 'autofix-filed-tracker';
+  // BRO-3924 (R3): checked BEFORE the armed/headless checks below —
+  // sweep-open-backlog-acceptance.js only ever records an id in its
+  // `alreadyDone` report after confirming it clears BOTH of those gates
+  // itself (selectOpenBacklogSweepCandidates requires an armed verify
+  // command AND classifyHeadlessDispatchability), so an id present here is
+  // guaranteed to reach 'unarmed'/'headless-blocked' anyway — this ordering
+  // is a pure short-circuit, not a behavior change. A card that regressed
+  // since the sweep ran (edited, re-armed differently) still reports
+  // 'already-passes' until the NEXT sweep refreshes the report — the same
+  // staleness window recheckFailures already tolerates.
+  if (opts.alreadyPassesIds && opts.alreadyPassesIds.has(issue.identifier)) return 'already-passes';
   const gate = evaluateVerifiability(String(issue.description || ''));
   if (!gate.cmd) return 'unarmed';
   // Ship-check (Codex): being ARMED is necessary but not sufficient. linear-next
@@ -197,8 +220,8 @@ function ineligibleReason(issue) {
   return null;
 }
 
-function isWatchdogEligible(issue) {
-  return ineligibleReason(issue) === null;
+function isWatchdogEligible(issue, opts) {
+  return ineligibleReason(issue, opts) === null;
 }
 
 /**
@@ -294,7 +317,7 @@ async function fetchLinearWatchdogTasks(client, opts = {}) {
             stateName: (issue.state && issue.state.name) || 'Unknown',
           });
         }
-        if (!isWatchdogEligible(issue)) continue;
+        if (!isWatchdogEligible(issue, opts)) continue;
         const task = mapIssueToTask(issue);
         if (task) tasks.set(task.id, task);
       }

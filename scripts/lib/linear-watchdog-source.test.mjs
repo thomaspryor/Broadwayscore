@@ -71,6 +71,27 @@ test('ineligibleReason: each refusal is distinguishable', () => {
   );
 });
 
+test('BRO-3924 (R3): ineligibleReason returns already-passes for an injected sweep-report id, and is unaffected otherwise', () => {
+  const alreadyPassesIds = new Set(['BRO-3000']);
+  assert.equal(src.ineligibleReason(issue(), { alreadyPassesIds }), 'already-passes');
+  assert.equal(src.ineligibleReason(issue()), null, 'omitting opts entirely still behaves like before (existing 1-arg call sites)');
+  assert.equal(src.ineligibleReason(issue(), {}), null, 'an opts object with no alreadyPassesIds is a no-op');
+  assert.equal(
+    src.ineligibleReason(issue({ identifier: 'BRO-4000' }), { alreadyPassesIds }),
+    null,
+    'a different identifier is unaffected',
+  );
+  // Ordering: already-passes is checked before the armed/unarmed gate, but an
+  // unarmed card is not IN the report by construction (sweep-open-backlog-
+  // acceptance.js only records ids that already cleared that gate) — the
+  // order only matters for which reason string a stale-since-sweep card
+  // reports, never for eligibility itself.
+  assert.equal(
+    src.ineligibleReason(issue({ identifier: 'BRO-5000', description: 'unarmed' }), { alreadyPassesIds: new Set(['BRO-5000']) }),
+    'already-passes',
+  );
+});
+
 test('mapIssueToTask emits the task-mirror shape planSweep consumes', () => {
   const t = src.mapIssueToTask(issue({ identifier: 'BRO-3380', priority: 1, title: 'P0: thing' }));
   assert.equal(t.id, 'linear:BRO-3380');
@@ -145,6 +166,19 @@ test('fetchLinearWatchdogTasks paginates and filters to eligible issues only', a
   assert.equal(res.ok, true);
   assert.equal(res.scanned, 5);
   assert.deepEqual([...res.tasks.keys()].sort(), ['linear:BRO-10', 'linear:BRO-14']);
+});
+
+test('BRO-3924 (R3): fetchLinearWatchdogTasks excludes an already-passing id when the report Set is injected', async () => {
+  const nodes = [
+    issue({ identifier: 'BRO-30', priority: 1 }),   // would be eligible
+    issue({ identifier: 'BRO-31', priority: 1 }),   // already passes — excluded
+  ];
+  const client = { graphql: async () => ({ issues: { nodes, pageInfo: { hasNextPage: false } } }) };
+  const withoutReport = await src.fetchLinearWatchdogTasks(client, {});
+  assert.deepEqual([...withoutReport.tasks.keys()].sort(), ['linear:BRO-30', 'linear:BRO-31']);
+
+  const withReport = await src.fetchLinearWatchdogTasks(client, { alreadyPassesIds: new Set(['BRO-31']) });
+  assert.deepEqual([...withReport.tasks.keys()], ['linear:BRO-30']);
 });
 
 test('a partial fetch is discarded, never returned as a smaller backlog', async () => {

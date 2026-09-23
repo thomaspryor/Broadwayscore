@@ -1,78 +1,92 @@
 {
-  "generatedAt": "2026-09-14T17:06:00.998Z",
-  "verdict": "ok",
-  "reason": "3 search method(s) within 0.15 of their 3-run median",
-  "regressions": [],
+  "generatedAt": "2026-09-21T17:14:16.665Z",
+  "verdict": "regressed",
+  "reason": "onDisk: recall 0.722 vs 0.881 median over 4 prior run(s) — down 0.159 (threshold 0.15), yield 3.25 vs 19.15 URLs/show; onDisk: recall 0.722 vs 0.881 median over 4 prior run(s) — down 0.159 (threshold 0.15), yield 3.25 vs 19.15 URLs/show",
+  "regressions": [
+    {
+      "level": "families",
+      "arm": "onDisk",
+      "baseline": 0.881,
+      "current": 0.722,
+      "drop": 0.159,
+      "rule": "week-on-week",
+      "reason": "recall 0.722 vs 0.881 median over 4 prior run(s) — down 0.159 (threshold 0.15), yield 3.25 vs 19.15 URLs/show"
+    },
+    {
+      "level": "arms",
+      "arm": "onDisk",
+      "baseline": 0.881,
+      "current": 0.722,
+      "drop": 0.159,
+      "rule": "week-on-week",
+      "reason": "recall 0.722 vs 0.881 median over 4 prior run(s) — down 0.159 (threshold 0.15), yield 3.25 vs 19.15 URLs/show"
+    }
+  ],
   "comparedArms": 3,
-  "trendEntries": 4,
+  "trendEntries": 5,
   "latest": {
-    "date": "2026-09-14",
-    "generatedAt": "2026-09-14T17:06:00.998Z",
+    "date": "2026-09-21",
+    "generatedAt": "2026-09-21T17:14:16.665Z",
     "naivePages": 2,
-    "shows": 5,
-    "excluded": {},
-    "truthUrls": 80,
-    "onDiskUrls": 66,
-    "newFromNaive": 9,
+    "shows": 4,
+    "excluded": {
+      "settling": 1
+    },
+    "truthUrls": 18,
+    "onDiskUrls": 13,
+    "newFromNaive": 5,
     "families": {
-      "naive": 0.463,
-      "onDisk": 0.825,
-      "scoped": 0.2
+      "naive": 0.778,
+      "onDisk": 0.722,
+      "scoped": 0.222
     },
     "arms": {
-      "naive-p0": 0.263,
-      "naive-p1": 0.2,
-      "onDisk": 0.825,
-      "scoped-q0": 0.163,
-      "scoped-q1": 0.138
+      "naive-p0": 0.5,
+      "naive-p1": 0.389,
+      "onDisk": 0.722,
+      "scoped-q0": 0.111,
+      "scoped-q1": 0.167,
+      "scoped-q2": 0.167
     },
-    "combinedRecall": 0.888,
+    "combinedRecall": 0.722,
     "familyYield": {
-      "naive": 7.4,
-      "onDisk": 13.2,
-      "scoped": 3.2
+      "naive": 3.5,
+      "onDisk": 3.25,
+      "scoped": 1
     },
     "armYield": {
-      "naive-p0": 4.2,
-      "naive-p1": 3.2,
-      "onDisk": 13.2,
-      "scoped-q0": 2.6,
-      "scoped-q1": 2.2
+      "naive-p0": 2.25,
+      "naive-p1": 1.75,
+      "onDisk": 3.25,
+      "scoped-q0": 0.5,
+      "scoped-q1": 0.75,
+      "scoped-q2": 0.75
     },
     "armsFailed": {
       "naive-p0": 0,
       "naive-p1": 0,
       "onDisk": 0,
       "scoped-q0": 0,
-      "scoped-q1": 0
+      "scoped-q1": 0,
+      "scoped-q2": 0
     },
     "unavailableArms": [],
     "byCategory": {
       "off-broadway": {
-        "shows": 2,
-        "truthUrls": 27,
+        "shows": 4,
+        "truthUrls": 18,
         "families": {
-          "naive": 0.37,
-          "onDisk": 0.741,
-          "scoped": 0.074
-        }
-      },
-      "off-west-end": {
-        "shows": 3,
-        "truthUrls": 53,
-        "families": {
-          "naive": 0.509,
-          "onDisk": 0.868,
-          "scoped": 0.264
+          "naive": 0.778,
+          "onDisk": 0.722,
+          "scoped": 0.222
         }
       }
     },
     "sampleIds": [
-      "bloodsport-after-helen-of-troy-off-west-end-2026",
-      "night-city-off-west-end-2026",
-      "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
-      "the-human-voice-the-seven-deadly-sins-west-end-2026",
-      "safe-house-off-broadway-2026"
+      "spandex-off-broadway-2026",
+      "the-hope-theory-off-broadway-2026",
+      "gimme-a-sign-off-broadway-2026",
+      "conflicted-off-broadway-2026"
     ]
   }
 }

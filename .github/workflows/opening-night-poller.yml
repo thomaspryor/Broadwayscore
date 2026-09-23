@@ -1004,9 +1004,34 @@ jobs:
           DEPLOY_VERIFIED="$DEPLOY_VERIFIED" DEPLOY_TIMED_OUT="$DEPLOY_TIMED_OUT" DEPLOY_REASON="$DEPLOY_REASON" \
           node scripts/opening-night-pipeline-verify.js
 
+      # BRO-3707: opening-night-express.yml deliberately `gh run cancel`s any
+      # in-progress poller run before taking over (its "Cancel competing
+      # orchestrator/poller runs" step), then sets ORCHESTRATOR_PAUSED — an
+      # expected, routine cancellation, not a hang. Without this check, adding
+      # cancelled() to Notify below would page "Poller Failed" on every
+      # Express takeover. If the lease is set, this cancellation is very
+      # likely that takeover, not a genuine job-timeout; skip the alert.
+      - name: Check for Express preemption
+        id: check_preemption
+        if: cancelled()
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          PAUSED=$(gh api "repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED" --jq '.value' 2>/dev/null) || PAUSED=""
+          if [ -n "$PAUSED" ]; then
+            echo "preempted=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::ORCHESTRATOR_PAUSED=$PAUSED — treating this cancellation as an Express takeover, not a hang. Skipping alert."
+          else
+            echo "preempted=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Notify on failure
         id: notify
-        if: failure()
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 100 reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # silently drop this critical alert. Guarded against the Express-
+        # takeover false positive by check_preemption above.
+        if: failure() || (cancelled() && steps.check_preemption.outputs.preempted != 'true')
         uses: ./.github/actions/notify-failure
         with:
           title: 'Opening Night Poller Failed'

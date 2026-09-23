@@ -1,7 +1,7 @@
 {
   "system": "cron failed",
   "status": "warn",
-  "lastChecked": "2026-09-20T11:52:53.612Z",
+  "lastChecked": "2026-09-22T12:06:17.806Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -10,11 +10,6 @@
       "name": "Cron failed: Test Suite",
       "status": "warn",
       "message": "Last run inconclusive: failure (1h ago), no success in 48h"
-    },
-    {
-      "name": "Cron failed: Reverse Discovery",
-      "status": "warn",
-      "message": "Last run inconclusive: failure (3h ago), no success in 24h"
     }
   ]
 }

@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-20T10:15:09.073Z",
+  "generatedAt": "2026-09-22T10:30:08.024Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-09-20T09:46:01.149Z",
-    "reviewsJsonAgeHours": 0.5,
+    "reviewsJsonLastUpdated": "2026-09-22T09:55:04.662Z",
+    "reviewsJsonAgeHours": 0.6,
     "freshnessBreach": false,
-    "showsScanned": 20,
-    "filesScanned": 309,
+    "showsScanned": 16,
+    "filesScanned": 211,
     "showsOverThreshold": 0,
     "orphanReviews": 5
   },
@@ -40,7 +40,7 @@
   "perShow": [
     {
       "showDir": "alvin-ailey-american-dance-theater-new-works-west-end-2026",
-      "actual": 9,
+      "actual": 10,
       "scanned": 14,
       "suppressedCount": 0,
       "suppressed": [],
@@ -48,58 +48,41 @@
     },
     {
       "showDir": "america-who-hurt-you-off-broadway-2026",
-      "actual": 5,
-      "scanned": 10,
+      "actual": 7,
+      "scanned": 12,
       "suppressedCount": 0,
       "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "actual": 5,
+      "scanned": 9,
+      "suppressedCount": 2,
+      "suppressed": [
+        {
+          "file": "broadwayworld--gary-naylor.json",
+          "outletId": "broadwayworld",
+          "criticName": "Gary Naylor",
+          "publishDate": "2026-09-22",
+          "url": "https://www.broadwayworld.com/westend/article/Review-CATERINA-AND-THE-BEAUTY-OF-KILLING-FASCISTS-National-Theatre-20260922"
+        },
+        {
+          "file": "whatsonstage--sarah-crompton.json",
+          "outletId": "whatsonstage",
+          "criticName": "Sarah Crompton",
+          "publishDate": "2026-09-22",
+          "url": "https://www.whatsonstage.com/news/catarina-and-the-beauty-of-killing-fascists-at-the-national-theatre-review_1732209/"
+        }
+      ],
       "overThreshold": false
     },
     {
       "showDir": "darkling-off-west-end-2026",
-      "actual": 22,
-      "scanned": 32,
+      "actual": 24,
+      "scanned": 35,
       "suppressedCount": 0,
       "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "golden-boy-off-west-end-2026",
-      "actual": 20,
-      "scanned": 42,
-      "suppressedCount": 1,
-      "suppressed": [
-        {
-          "file": "london-theatre--unknown.json",
-          "outletId": "london-theatre",
-          "criticName": "Unknown",
-          "publishDate": "2026-09-16",
-          "url": "https://www.londontheatre.co.uk/reviews/golden-boy-review-josh-oconnor"
-        }
-      ],
-      "overThreshold": false
-    },
-    {
-      "showDir": "in-honor-of-jean-michel-basquiat-off-broadway-2026",
-      "actual": 10,
-      "scanned": 13,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "million-dollar-quartet-off-west-end-2026",
-      "actual": 18,
-      "scanned": 29,
-      "suppressedCount": 1,
-      "suppressed": [
-        {
-          "file": "londonmumsmagazine--francesca-olivieri.json",
-          "outletId": "londonmumsmagazine",
-          "criticName": "Francesca Olivieri",
-          "publishDate": "2026-09-09",
-          "url": "https://www.londonmumsmagazine.com/whats-on/million-dollar-quartet-preview-your-cheat-sheet-for-a-night-of-rock-n-roll/"
-        }
-      ],
       "overThreshold": false
     },
     {
@@ -111,25 +94,9 @@
       "overThreshold": false
     },
     {
-      "showDir": "pre-existing-condition-off-broadway-2026",
-      "actual": 21,
-      "scanned": 38,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
-      "actual": 4,
-      "scanned": 6,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
       "showDir": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
-      "actual": 3,
-      "scanned": 8,
+      "actual": 9,
+      "scanned": 22,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -137,23 +104,15 @@
     {
       "showDir": "the-hope-theory-off-broadway-2026",
       "actual": 1,
-      "scanned": 6,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "the-seven-deadly-sins-the-human-voice-off-west-end-2026",
-      "actual": 6,
-      "scanned": 12,
+      "scanned": 7,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "thelma-and-louise-a-new-musical-off-west-end-2026",
-      "actual": 23,
-      "scanned": 32,
+      "actual": 25,
+      "scanned": 35,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false

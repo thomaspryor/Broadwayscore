@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-09-18",
+  "asOf": "2026-09-20",
   "shadow": false,
   "checks": [
     {
@@ -30,25 +30,25 @@
       "key": "affiliate:zero-conversions",
       "label": "7-day zero-conversion ceiling",
       "verdict": "pass",
-      "reason": "14 conversions in trailing 7d"
+      "reason": "17 conversions in trailing 7d"
     },
     {
       "key": "affiliate:click-flow-collapse",
       "label": "Site ticket-click flow",
       "verdict": "pass",
-      "reason": "449/472 = 95% of peak, above the 20% floor"
+      "reason": "460/472 = 97% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:impact-click-collapse",
       "label": "Impact click ingestion",
       "verdict": "pass",
-      "reason": "555/555 = 100% of peak, above the 20% floor"
+      "reason": "655/655 = 100% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:handoff-break",
       "label": "Click → Impact handoff",
       "verdict": "pass",
-      "reason": "Impact/PostHog click ratio 238% over 3d"
+      "reason": "Impact/PostHog click ratio 243% over 3d"
     },
     {
       "key": "affiliate:bot-divergence",
@@ -60,9 +60,9 @@
       "key": "affiliate:payout-anomaly",
       "label": "Payout economics",
       "verdict": "pass",
-      "reason": "take-rate 2.85%, 0 zero-payout"
+      "reason": "take-rate 2.83%, 1 zero-payout"
     }
   ],
   "failingCount": 0,
-  "updatedAt": "2026-09-20T11:51:57.265Z"
+  "updatedAt": "2026-09-22T12:04:54.003Z"
 }

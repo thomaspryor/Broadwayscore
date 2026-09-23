@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-20",
+  "generatedAt": "2026-09-21",
   "sites": {
     "scripts/add-requested-show.js::const hash = candidateHash({ title: candidate.title, venue: candidate.venue });": {
       "file": "scripts/add-requested-show.js",
@@ -93,13 +93,13 @@
     },
     "scripts/audit-show-score-urls.js::venue: show.venue, status: show.status,": {
       "file": "scripts/audit-show-score-urls.js",
-      "line": 172,
+      "line": 168,
       "kind": "literal",
       "snippet": "venue: show.venue, status: show.status,"
     },
     "scripts/audit-show-score-urls.js::show: { title: show.title, venue: show.venue, status: show.status, openingDate: show.openingDate, closingDate: show.closingDate },": {
       "file": "scripts/audit-show-score-urls.js",
-      "line": 222,
+      "line": 218,
       "kind": "literal",
       "snippet": "show: { title: show.title, venue: show.venue, status: show.status, openingDate: show.openingDate, closingDate: show.closingDate },"
     },
@@ -123,19 +123,19 @@
     },
     "scripts/audit-touring-contamination.js::venue: obj.venue || null,": {
       "file": "scripts/audit-touring-contamination.js",
-      "line": 706,
+      "line": 707,
       "kind": "literal",
       "snippet": "venue: obj.venue || null,"
     },
     "scripts/audit-touring-contamination.js::venue: parsed.venue,": {
       "file": "scripts/audit-touring-contamination.js",
-      "line": 955,
+      "line": 957,
       "kind": "literal",
       "snippet": "venue: parsed.venue,"
     },
     "scripts/audit-touring-contamination.js::venue: v.venue,": {
       "file": "scripts/audit-touring-contamination.js",
-      "line": 1027,
+      "line": 1029,
       "kind": "literal",
       "snippet": "venue: v.venue,"
     },
@@ -165,7 +165,7 @@
     },
     "scripts/collect-review-texts.js::venue: showMeta?.venue || null,": {
       "file": "scripts/collect-review-texts.js",
-      "line": 6678,
+      "line": 6680,
       "kind": "literal",
       "snippet": "venue: showMeta?.venue || null,"
     },
@@ -301,15 +301,21 @@
       "kind": "literal",
       "snippet": "venue: venueName,"
     },
+    "scripts/discover-new-shows.js::heldForTitleReview.push({ title: show.title, venue: show.venue, source: show._discoverySource || show.source || null });": {
+      "file": "scripts/discover-new-shows.js",
+      "line": 2307,
+      "kind": "literal",
+      "snippet": "heldForTitleReview.push({ title: show.title, venue: show.venue, source: show._discoverySource || show.source || null });"
+    },
     "scripts/discover-new-shows.js::venue: s.venue": {
       "file": "scripts/discover-new-shows.js",
-      "line": 2490,
+      "line": 2506,
       "kind": "literal",
       "snippet": "venue: s.venue"
     },
     "scripts/discover-new-shows.js::venue: show.venue,": {
       "file": "scripts/discover-new-shows.js",
-      "line": 2861,
+      "line": 2877,
       "kind": "literal",
       "snippet": "venue: show.venue,"
     },
@@ -369,7 +375,7 @@
     },
     "scripts/fix-show-titles.js::if (m && classifyVenueSuffix(show.title, { venue: show.venue, venueVocabulary }).action === 'none') {": {
       "file": "scripts/fix-show-titles.js",
-      "line": 86,
+      "line": 94,
       "kind": "literal",
       "snippet": "if (m && classifyVenueSuffix(show.title, { venue: show.venue, venueVocabulary }).action === 'none') {"
     },
@@ -513,7 +519,7 @@
     },
     "scripts/lib/show-title-normalize.js::venue: show.venue,": {
       "file": "scripts/lib/show-title-normalize.js",
-      "line": 64,
+      "line": 74,
       "kind": "literal",
       "snippet": "venue: show.venue,"
     },
@@ -549,19 +555,19 @@
     },
     "scripts/lib/we-listing-discover.js::.map(v => ({ venue: v, slug: v.replace(/[.']/g, '').replace(/\\s+/g, '-') }))": {
       "file": "scripts/lib/we-listing-discover.js",
-      "line": 85,
+      "line": 123,
       "kind": "literal",
       "snippet": ".map(v => ({ venue: v, slug: v.replace(/[.']/g, '').replace(/\\s+/g, '-') }))"
     },
     "scripts/lib/we-listing-discover.js::return { venue: venueFromWetDescription(description), articlePublishedAt: datePublished };": {
       "file": "scripts/lib/we-listing-discover.js",
-      "line": 242,
+      "line": 301,
       "kind": "literal",
       "snippet": "return { venue: venueFromWetDescription(description), articlePublishedAt: datePublished };"
     },
     "scripts/lib/we-listing-discover.js::venue: venueMatch.venue,": {
       "file": "scripts/lib/we-listing-discover.js",
-      "line": 341,
+      "line": 400,
       "kind": "literal",
       "snippet": "venue: venueMatch.venue,"
     },
@@ -573,19 +579,19 @@
     },
     "scripts/llm-scoring/index.ts::venue: string | null;": {
       "file": "scripts/llm-scoring/index.ts",
-      "line": 300,
+      "line": 301,
       "kind": "literal",
       "snippet": "venue: string | null;"
     },
     "scripts/llm-scoring/index.ts::venue: show.venue || null,": {
       "file": "scripts/llm-scoring/index.ts",
-      "line": 318,
+      "line": 319,
       "kind": "literal",
       "snippet": "venue: show.venue || null,"
     },
     "scripts/llm-scoring/index.ts::reviewFile.venue = showMeta.venue ?? undefined;": {
       "file": "scripts/llm-scoring/index.ts",
-      "line": 2034,
+      "line": 2037,
       "kind": "assignment",
       "snippet": "reviewFile.venue = showMeta.venue ?? undefined;"
     },
@@ -715,39 +721,45 @@
       "kind": "literal",
       "snippet": "logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });"
     },
+    "scripts/promote-ob-venue-candidates.js::logEntry({ kind: 'title-source-preferred', title: pick.title, venue: c.venue, from: c.title, source });": {
+      "file": "scripts/promote-ob-venue-candidates.js",
+      "line": 626,
+      "kind": "literal",
+      "snippet": "logEntry({ kind: 'title-source-preferred', title: pick.title, venue: c.venue, from: c.title, source });"
+    },
     "scripts/promote-ob-venue-candidates.js::logEntry({ kind: 'skip-unconfirmed', title: c.title, venue: c.venue, reason });": {
       "file": "scripts/promote-ob-venue-candidates.js",
-      "line": 623,
+      "line": 635,
       "kind": "literal",
       "snippet": "logEntry({ kind: 'skip-unconfirmed', title: c.title, venue: c.venue, reason });"
     },
     "scripts/promote-ob-venue-candidates.js::logEntry({ kind: misroute ? 'skip-west-end-misroute' : 'skip-invalid-venue', title: c.title, venue: c.venue });": {
       "file": "scripts/promote-ob-venue-candidates.js",
-      "line": 647,
+      "line": 659,
       "kind": "literal",
       "snippet": "logEntry({ kind: misroute ? 'skip-west-end-misroute' : 'skip-invalid-venue', title: c.title, venue: c.venue });"
     },
     "scripts/promote-ob-venue-candidates.js::logEntry({ kind: 'skip-id-collision', title: c.title, venue: c.venue, id: entry.id });": {
       "file": "scripts/promote-ob-venue-candidates.js",
-      "line": 652,
+      "line": 664,
       "kind": "literal",
       "snippet": "logEntry({ kind: 'skip-id-collision', title: c.title, venue: c.venue, id: entry.id });"
     },
     "scripts/promote-ob-venue-candidates.js::existingCandidates.push({ id: entry.id, title: entry.title, venue: c.venue });": {
       "file": "scripts/promote-ob-venue-candidates.js",
-      "line": 667,
+      "line": 679,
       "kind": "literal",
       "snippet": "existingCandidates.push({ id: entry.id, title: entry.title, venue: c.venue });"
     },
     "scripts/promote-ob-venue-candidates.js::existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue });": {
       "file": "scripts/promote-ob-venue-candidates.js",
-      "line": 669,
+      "line": 681,
       "kind": "literal",
       "snippet": "existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue });"
     },
     "scripts/promote-ob-venue-candidates.js::logEntry({ kind: 'promote', title: c.title, venue: c.venue, id: entry.id, confirmationSource: source, reviewCount: c.category === 'regional' ? c.reviewCount : u": {
       "file": "scripts/promote-ob-venue-candidates.js",
-      "line": 674,
+      "line": 686,
       "kind": "literal",
       "snippet": "logEntry({ kind: 'promote', title: c.title, venue: c.venue, id: entry.id, confirmationSource: source, reviewCount: c.category === 'regional' ? c.reviewCount : u"
     },
@@ -793,27 +805,39 @@
       "kind": "literal",
       "snippet": "logEntry({ kind: 'skip-unconfirmed', title: c.title, venue: c.venue, source: c.source, reason: r.reason });"
     },
+    "scripts/promote-we-aggregator-candidates.js::const titleCheck = normalizeShowTitle({ title: c.title, venue: c.venue }, { venueVocabulary });": {
+      "file": "scripts/promote-we-aggregator-candidates.js",
+      "line": 365,
+      "kind": "literal",
+      "snippet": "const titleCheck = normalizeShowTitle({ title: c.title, venue: c.venue }, { venueVocabulary });"
+    },
+    "scripts/promote-we-aggregator-candidates.js::logEntry({ kind: 'skip-shouted-title', title: c.title, venue: c.venue, source: c.source });": {
+      "file": "scripts/promote-we-aggregator-candidates.js",
+      "line": 368,
+      "kind": "literal",
+      "snippet": "logEntry({ kind: 'skip-shouted-title', title: c.title, venue: c.venue, source: c.source });"
+    },
     "scripts/promote-we-aggregator-candidates.js::logEntry({ kind: 'skip-invalid-venue', title: c.title, venue: c.venue, source: c.source });": {
       "file": "scripts/promote-we-aggregator-candidates.js",
-      "line": 370,
+      "line": 382,
       "kind": "literal",
       "snippet": "logEntry({ kind: 'skip-invalid-venue', title: c.title, venue: c.venue, source: c.source });"
     },
     "scripts/promote-we-aggregator-candidates.js::logEntry({ kind: 'skip-id-collision', title: c.title, venue: c.venue, id: entry.id });": {
       "file": "scripts/promote-we-aggregator-candidates.js",
-      "line": 375,
+      "line": 387,
       "kind": "literal",
       "snippet": "logEntry({ kind: 'skip-id-collision', title: c.title, venue: c.venue, id: entry.id });"
     },
     "scripts/promote-we-aggregator-candidates.js::existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue });": {
       "file": "scripts/promote-we-aggregator-candidates.js",
-      "line": 380,
+      "line": 392,
       "kind": "literal",
       "snippet": "existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue });"
     },
     "scripts/promote-we-aggregator-candidates.js::logEntry({ kind: 'promote', title: p.candidate.title, venue: p.candidate.venue, id: p.entry.id, source: p.candidate.source });": {
       "file": "scripts/promote-we-aggregator-candidates.js",
-      "line": 430,
+      "line": 442,
       "kind": "literal",
       "snippet": "logEntry({ kind: 'promote', title: p.candidate.title, venue: p.candidate.venue, id: p.entry.id, source: p.candidate.source });"
     },
@@ -975,7 +999,7 @@
     },
     "scripts/verify-existing-reviews.js::venue: show?.venue || '',": {
       "file": "scripts/verify-existing-reviews.js",
-      "line": 289,
+      "line": 290,
       "kind": "literal",
       "snippet": "venue: show?.venue || '',"
     }

@@ -1,445 +1,420 @@
+'use strict';
+
 /**
- * Unit tests for validate-review-texts.js validation logic
+ * Unit tests for scripts/validate-review-texts.js.
  *
- * Tests the core validation functions without requiring the full file system.
+ * CLAUDE.md §15: never re-copy validation logic into a test file — require()
+ * the real function. validateReviewFile(filePath, validOutlets, seenReviews)
+ * does its own file I/O, so each test writes a real fixture file under a
+ * temp dir (fs.mkdtempSync pattern from tests/unit/json-conflict-marker.test.mjs)
+ * and asserts on the real function's output, including the checks the
+ * previous hand-copied version never exercised: aggregator_contamination,
+ * aggregator_url_mismatch, and broken_duplicate_ref.
  */
 
-const assert = require('assert');
+const { test } = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
 
-// ============================================================================
-// GARBAGE CRITIC NAME PATTERNS (copied from validate-review-texts.js)
-// ============================================================================
+const { validateReviewFile } = require('../../scripts/validate-review-texts.js');
 
-const GARBAGE_PATTERNS = [
-  /^photo\s*(credit|by)?/i,
-  /^staff$/i,
-  /^&nbsp;/,
-  /^\s*$/,
-  /^unknown$/i,
-  /^advertisement$/i,
-  /^editorial$/i,
+function makeTmpShowDir() {
+  return fs.mkdtempSync(path.join(os.tmpdir(), 'validate-review-texts-test-'));
+}
+
+function writeReview(dir, filename, data) {
+  const filePath = path.join(dir, filename);
+  fs.writeFileSync(filePath, JSON.stringify(data));
+  return filePath;
+}
+
+function withTmpShowDir(fn) {
+  const dir = makeTmpShowDir();
+  try {
+    fn(dir);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+const KNOWN_OUTLET = 'chicagotribune';
+
+// ----------------------------------------------------------------------------
+// Required fields (errors)
+// ----------------------------------------------------------------------------
+
+test('valid review passes with no errors or warnings', () => {
+  withTmpShowDir((dir) => {
+    const filePath = writeReview(dir, 'review.json', {
+      showId: 'hamilton-2015',
+      outletId: KNOWN_OUTLET,
+      criticName: 'Chris Jones',
+      url: 'https://www.chicagotribune.com/hamilton-review',
+      fullText: 'A review of the show.',
+    });
+
+    const result = validateReviewFile(filePath, new Set([KNOWN_OUTLET]), new Map());
+
+    assert.deepEqual(result.errors, []);
+    assert.deepEqual(result.warnings, []);
+  });
+});
+
+test('missing showId is a required_fields error', () => {
+  withTmpShowDir((dir) => {
+    const filePath = writeReview(dir, 'review.json', {
+      outletId: KNOWN_OUTLET,
+      criticName: 'Chris Jones',
+    });
+
+    const result = validateReviewFile(filePath, new Set([KNOWN_OUTLET]), new Map());
+
+    assert.ok(result.errors.some((e) => e.check === 'required_fields' && /showId/.test(e.message)));
+  });
+});
+
+test('missing outlet and outletId is a required_fields error', () => {
+  withTmpShowDir((dir) => {
+    const filePath = writeReview(dir, 'review.json', {
+      showId: 'hamilton-2015',
+      criticName: 'Chris Jones',
+    });
+
+    const result = validateReviewFile(filePath, new Set([KNOWN_OUTLET]), new Map());
+
+    assert.ok(result.errors.some((e) => e.check === 'required_fields' && /outletId or outlet/.test(e.message)));
+  });
+});
+
+// ----------------------------------------------------------------------------
+// Unknown outlet (warning, not error)
+// ----------------------------------------------------------------------------
+
+test('unknown outlet is a warning, not an error', () => {
+  withTmpShowDir((dir) => {
+    const filePath = writeReview(dir, 'review.json', {
+      showId: 'hamilton-2015',
+      outletId: 'not-a-real-outlet-xyz123',
+      criticName: 'Chris Jones',
+    });
+
+    const result = validateReviewFile(filePath, new Set([KNOWN_OUTLET]), new Map());
+
+    assert.equal(result.errors.length, 0);
+    assert.ok(result.warnings.some((w) => w.check === 'unknown_outlet'));
+  });
+});
+
+test('registered outlet produces no unknown_outlet warning', () => {
+  withTmpShowDir((dir) => {
+    const filePath = writeReview(dir, 'review.json', {
+      showId: 'hamilton-2015',
+      outletId: KNOWN_OUTLET,
+      criticName: 'Chris Jones',
+    });
+
+    const result = validateReviewFile(filePath, new Set([KNOWN_OUTLET]), new Map());
+
+    assert.ok(!result.warnings.some((w) => w.check === 'unknown_outlet'));
+  });
+});
+
+// ----------------------------------------------------------------------------
+// Garbage critic names (warning, not error)
+// ----------------------------------------------------------------------------
+
+const GARBAGE_CRITIC_NAMES = [
+  'Photo Credit',
+  'photo by',
+  'PHOTO',
+  'Staff',
+  'STAFF',
+  '&nbsp;Name',
+  'Unknown',
+  'UNKNOWN',
+  'Advertisement',
+  'Editorial',
+  '',
+  '   ',
 ];
 
-function isGarbageCriticName(name) {
-  if (!name || typeof name !== 'string') return true;
+for (const criticName of GARBAGE_CRITIC_NAMES) {
+  test(`garbage critic name ${JSON.stringify(criticName)} produces a warning, not an error`, () => {
+    withTmpShowDir((dir) => {
+      const filePath = writeReview(dir, 'review.json', {
+        showId: 'hamilton-2015',
+        outletId: KNOWN_OUTLET,
+        criticName,
+      });
 
-  const trimmed = name.trim();
-  if (!trimmed) return true;
+      const result = validateReviewFile(filePath, new Set([KNOWN_OUTLET]), new Map());
 
-  for (const pattern of GARBAGE_PATTERNS) {
-    if (pattern.test(trimmed)) {
-      return true;
-    }
-  }
-
-  return false;
+      assert.equal(result.errors.length, 0);
+      assert.ok(result.warnings.some((w) => w.check === 'garbage_critic_name'));
+    });
+  });
 }
 
-// ============================================================================
-// OUTLET NORMALIZATION (copied from validate-review-texts.js)
-// ============================================================================
+test('missing criticName produces a garbage_critic_name warning', () => {
+  withTmpShowDir((dir) => {
+    const filePath = writeReview(dir, 'review.json', {
+      showId: 'hamilton-2015',
+      outletId: KNOWN_OUTLET,
+    });
 
-function normalizeOutletId(id) {
-  if (!id) return null;
-  return id.toLowerCase().trim();
-}
+    const result = validateReviewFile(filePath, new Set([KNOWN_OUTLET]), new Map());
 
-function generateReviewKey(outletId, outlet, criticName) {
-  const normalizedOutlet = normalizeOutletId(outletId) || normalizeOutletId(outlet) || 'unknown';
-  const normalizedCritic = (criticName || 'unknown').toLowerCase().trim().replace(/\s+/g, '-');
-  return `${normalizedOutlet}::${normalizedCritic}`;
-}
+    assert.ok(result.warnings.some((w) => w.check === 'garbage_critic_name'));
+  });
+});
 
-// ============================================================================
-// TESTS
-// ============================================================================
+const VALID_CRITIC_NAMES = ['Jesse Green', 'Ben Brantley', 'Laura Collins-Hughes', "Johnny O'Sullivan Jr. III"];
 
-let passed = 0;
-let failed = 0;
+for (const criticName of VALID_CRITIC_NAMES) {
+  test(`valid critic name ${JSON.stringify(criticName)} produces no garbage_critic_name warning`, () => {
+    withTmpShowDir((dir) => {
+      const filePath = writeReview(dir, 'review.json', {
+        showId: 'hamilton-2015',
+        outletId: KNOWN_OUTLET,
+        criticName,
+      });
 
-function test(name, fn) {
-  try {
-    fn();
-    console.log(`  ✓ ${name}`);
-    passed++;
-  } catch (err) {
-    console.log(`  ✗ ${name}`);
-    console.log(`    ${err.message}`);
-    failed++;
-  }
+      const result = validateReviewFile(filePath, new Set([KNOWN_OUTLET]), new Map());
+
+      assert.ok(!result.warnings.some((w) => w.check === 'garbage_critic_name'));
+    });
+  });
 }
 
 // ----------------------------------------------------------------------------
-// isGarbageCriticName tests
+// Duplicate reviews
 // ----------------------------------------------------------------------------
 
-console.log('\n=== isGarbageCriticName ===\n');
+test('duplicate outlet+critic with the same URL is an error', () => {
+  withTmpShowDir((dir) => {
+    const seenReviews = new Map();
+    const first = writeReview(dir, 'first.json', {
+      showId: 'hamilton-2015',
+      outletId: KNOWN_OUTLET,
+      criticName: 'Chris Jones',
+      url: 'https://www.chicagotribune.com/hamilton-review',
+    });
+    const second = writeReview(dir, 'second.json', {
+      showId: 'hamilton-2015',
+      outletId: KNOWN_OUTLET,
+      criticName: 'Chris Jones',
+      url: 'https://www.chicagotribune.com/hamilton-review',
+    });
 
-test('returns true for null', () => {
-  assert.strictEqual(isGarbageCriticName(null), true);
+    const result1 = validateReviewFile(first, new Set([KNOWN_OUTLET]), seenReviews);
+    assert.equal(result1.errors.length, 0);
+
+    const result2 = validateReviewFile(second, new Set([KNOWN_OUTLET]), seenReviews);
+    assert.ok(result2.errors.some((e) => e.check === 'duplicate_review'));
+  });
 });
 
-test('returns true for undefined', () => {
-  assert.strictEqual(isGarbageCriticName(undefined), true);
+test('duplicate outlet+critic with different URLs is a warning, not an error', () => {
+  withTmpShowDir((dir) => {
+    const seenReviews = new Map();
+    const first = writeReview(dir, 'first.json', {
+      showId: 'hamilton-2015',
+      outletId: KNOWN_OUTLET,
+      criticName: 'Chris Jones',
+      url: 'https://www.chicagotribune.com/hamilton-review-original',
+    });
+    const second = writeReview(dir, 'second.json', {
+      showId: 'hamilton-2015',
+      outletId: KNOWN_OUTLET,
+      criticName: 'Chris Jones',
+      url: 'https://www.chicagotribune.com/hamilton-review-updated',
+    });
+
+    validateReviewFile(first, new Set([KNOWN_OUTLET]), seenReviews);
+    const result2 = validateReviewFile(second, new Set([KNOWN_OUTLET]), seenReviews);
+
+    assert.equal(result2.errors.length, 0);
+    assert.ok(result2.warnings.some((w) => w.check === 'duplicate_review'));
+  });
 });
 
-test('returns true for empty string', () => {
-  assert.strictEqual(isGarbageCriticName(''), true);
+test('same critic at different outlets is not a duplicate', () => {
+  withTmpShowDir((dir) => {
+    const seenReviews = new Map();
+    const validOutlets = new Set([KNOWN_OUTLET, 'nytimes']);
+    const first = writeReview(dir, 'first.json', {
+      showId: 'hamilton-2015',
+      outletId: KNOWN_OUTLET,
+      criticName: 'Jesse Green',
+    });
+    const second = writeReview(dir, 'second.json', {
+      showId: 'hamilton-2015',
+      outletId: 'nytimes',
+      criticName: 'Jesse Green',
+    });
+
+    const result1 = validateReviewFile(first, validOutlets, seenReviews);
+    const result2 = validateReviewFile(second, validOutlets, seenReviews);
+
+    assert.ok(!result1.errors.some((e) => e.check === 'duplicate_review'));
+    assert.ok(!result2.errors.some((e) => e.check === 'duplicate_review'));
+    assert.ok(!result2.warnings.some((w) => w.check === 'duplicate_review'));
+  });
 });
 
-test('returns true for whitespace only', () => {
-  assert.strictEqual(isGarbageCriticName('   '), true);
-});
+test('same outlet+critic in different show directories is not a duplicate', () => {
+  const seenReviews = new Map();
+  withTmpShowDir((dir1) => {
+    withTmpShowDir((dir2) => {
+      const first = writeReview(dir1, 'review.json', {
+        showId: path.basename(dir1),
+        outletId: KNOWN_OUTLET,
+        criticName: 'Jesse Green',
+      });
+      const second = writeReview(dir2, 'review.json', {
+        showId: path.basename(dir2),
+        outletId: KNOWN_OUTLET,
+        criticName: 'Jesse Green',
+      });
 
-test('returns true for "Photo Credit"', () => {
-  assert.strictEqual(isGarbageCriticName('Photo Credit'), true);
-});
+      const result1 = validateReviewFile(first, new Set([KNOWN_OUTLET]), seenReviews);
+      const result2 = validateReviewFile(second, new Set([KNOWN_OUTLET]), seenReviews);
 
-test('returns true for "photo by"', () => {
-  assert.strictEqual(isGarbageCriticName('photo by'), true);
-});
-
-test('returns true for "PHOTO"', () => {
-  assert.strictEqual(isGarbageCriticName('PHOTO'), true);
-});
-
-test('returns true for "Staff"', () => {
-  assert.strictEqual(isGarbageCriticName('Staff'), true);
-});
-
-test('returns true for "STAFF"', () => {
-  assert.strictEqual(isGarbageCriticName('STAFF'), true);
-});
-
-test('returns true for "&nbsp;Name"', () => {
-  assert.strictEqual(isGarbageCriticName('&nbsp;Name'), true);
-});
-
-test('returns true for "Unknown"', () => {
-  assert.strictEqual(isGarbageCriticName('Unknown'), true);
-});
-
-test('returns true for "UNKNOWN"', () => {
-  assert.strictEqual(isGarbageCriticName('UNKNOWN'), true);
-});
-
-test('returns true for "Advertisement"', () => {
-  assert.strictEqual(isGarbageCriticName('Advertisement'), true);
-});
-
-test('returns true for "Editorial"', () => {
-  assert.strictEqual(isGarbageCriticName('Editorial'), true);
-});
-
-test('returns false for valid name "Jesse Green"', () => {
-  assert.strictEqual(isGarbageCriticName('Jesse Green'), false);
-});
-
-test('returns false for valid name "Ben Brantley"', () => {
-  assert.strictEqual(isGarbageCriticName('Ben Brantley'), false);
-});
-
-test('returns false for valid name "Laura Collins-Hughes"', () => {
-  assert.strictEqual(isGarbageCriticName('Laura Collins-Hughes'), false);
-});
-
-test('returns false for name with numbers "Johnny O\'Sullivan Jr. III"', () => {
-  assert.strictEqual(isGarbageCriticName("Johnny O'Sullivan Jr. III"), false);
-});
-
-test('returns true for non-string input (number)', () => {
-  assert.strictEqual(isGarbageCriticName(123), true);
-});
-
-test('returns true for non-string input (object)', () => {
-  assert.strictEqual(isGarbageCriticName({}), true);
-});
-
-// ----------------------------------------------------------------------------
-// normalizeOutletId tests
-// ----------------------------------------------------------------------------
-
-console.log('\n=== normalizeOutletId ===\n');
-
-test('returns null for null input', () => {
-  assert.strictEqual(normalizeOutletId(null), null);
-});
-
-test('returns null for undefined input', () => {
-  assert.strictEqual(normalizeOutletId(undefined), null);
-});
-
-test('returns null for empty string', () => {
-  assert.strictEqual(normalizeOutletId(''), null);
-});
-
-test('lowercases "NYTIMES" to "nytimes"', () => {
-  assert.strictEqual(normalizeOutletId('NYTIMES'), 'nytimes');
-});
-
-test('lowercases "NYTimes" to "nytimes"', () => {
-  assert.strictEqual(normalizeOutletId('NYTimes'), 'nytimes');
-});
-
-test('trims whitespace " nytimes " to "nytimes"', () => {
-  assert.strictEqual(normalizeOutletId(' nytimes '), 'nytimes');
-});
-
-test('handles mixed case "The Hollywood Reporter"', () => {
-  assert.strictEqual(normalizeOutletId('The Hollywood Reporter'), 'the hollywood reporter');
+      assert.ok(!result1.errors.some((e) => e.check === 'duplicate_review'));
+      assert.ok(!result2.errors.some((e) => e.check === 'duplicate_review'));
+      assert.ok(!result2.warnings.some((w) => w.check === 'duplicate_review'));
+    });
+  });
 });
 
 // ----------------------------------------------------------------------------
-// generateReviewKey tests
+// Aggregator score contamination (the copied test never exercised this check)
 // ----------------------------------------------------------------------------
 
-console.log('\n=== generateReviewKey ===\n');
+test('aggregator scoreSource with originalScore and no humanReviewScore is contamination', () => {
+  withTmpShowDir((dir) => {
+    const filePath = writeReview(dir, 'review.json', {
+      showId: 'hamilton-2015',
+      outletId: KNOWN_OUTLET,
+      criticName: 'Chris Jones',
+      scoreSource: 'show-score-stars',
+      originalScore: '4/5',
+    });
 
-test('generates key from outletId and criticName', () => {
-  assert.strictEqual(
-    generateReviewKey('nytimes', null, 'Jesse Green'),
-    'nytimes::jesse-green'
-  );
+    const result = validateReviewFile(filePath, new Set([KNOWN_OUTLET]), new Map());
+
+    assert.ok(result.errors.some((e) => e.check === 'aggregator_contamination'));
+  });
 });
 
-test('falls back to outlet when outletId is null', () => {
-  assert.strictEqual(
-    generateReviewKey(null, 'The New York Times', 'Jesse Green'),
-    'the new york times::jesse-green'
-  );
-});
+test('aggregator scoreSource with humanReviewScore override is not contamination', () => {
+  withTmpShowDir((dir) => {
+    const filePath = writeReview(dir, 'review.json', {
+      showId: 'hamilton-2015',
+      outletId: KNOWN_OUTLET,
+      criticName: 'Chris Jones',
+      scoreSource: 'show-score-stars',
+      originalScore: '4/5',
+      humanReviewScore: 80,
+    });
 
-test('prefers outletId over outlet when both present', () => {
-  assert.strictEqual(
-    generateReviewKey('nytimes', 'The New York Times', 'Jesse Green'),
-    'nytimes::jesse-green'
-  );
-});
+    const result = validateReviewFile(filePath, new Set([KNOWN_OUTLET]), new Map());
 
-test('uses "unknown" for missing outlet', () => {
-  assert.strictEqual(
-    generateReviewKey(null, null, 'Jesse Green'),
-    'unknown::jesse-green'
-  );
-});
-
-test('uses "unknown" for missing critic', () => {
-  assert.strictEqual(
-    generateReviewKey('nytimes', null, null),
-    'nytimes::unknown'
-  );
-});
-
-test('normalizes critic name with multiple spaces', () => {
-  // Multiple spaces get collapsed to single dash
-  assert.strictEqual(
-    generateReviewKey('nytimes', null, 'Laura  Collins  Hughes'),
-    'nytimes::laura-collins-hughes'
-  );
-});
-
-test('lowercases everything', () => {
-  assert.strictEqual(
-    generateReviewKey('NYTimes', null, 'JESSE GREEN'),
-    'nytimes::jesse-green'
-  );
+    assert.ok(!result.errors.some((e) => e.check === 'aggregator_contamination'));
+  });
 });
 
 // ----------------------------------------------------------------------------
-// Integration tests - mock file validation
+// Aggregator URL mismatch (the copied test never exercised this check)
 // ----------------------------------------------------------------------------
 
-console.log('\n=== File validation logic ===\n');
+test('real outlet with an aggregator-domain URL and no preservable score is a mismatch', () => {
+  withTmpShowDir((dir) => {
+    const filePath = writeReview(dir, 'review.json', {
+      showId: 'hamilton-2015',
+      outletId: KNOWN_OUTLET,
+      criticName: 'Chris Jones',
+      url: 'https://www.show-score.com/shows/hamilton',
+    });
 
-function validateReviewData(data, validOutlets, seenReviews, showId) {
-  const errors = [];
+    const result = validateReviewFile(filePath, new Set([KNOWN_OUTLET]), new Map());
 
-  // Check 1: Required fields
-  if (!data.showId) {
-    errors.push({ check: 'required_fields', message: 'Missing showId' });
-  }
-
-  if (!data.outletId && !data.outlet) {
-    errors.push({ check: 'required_fields', message: 'Missing outlet' });
-  }
-
-  // Check 2: Unknown outlets
-  const outletId = normalizeOutletId(data.outletId);
-  if (outletId && !validOutlets.has(outletId)) {
-    errors.push({ check: 'unknown_outlet', message: `Unknown outlet: ${outletId}` });
-  }
-
-  // Check 3: Garbage critic names
-  if (isGarbageCriticName(data.criticName)) {
-    errors.push({ check: 'garbage_critic', message: `Garbage critic: ${data.criticName}` });
-  }
-
-  // Check 4: Duplicates
-  const key = generateReviewKey(data.outletId, data.outlet, data.criticName);
-  const fullKey = `${showId}::${key}`;
-  if (seenReviews.has(fullKey)) {
-    errors.push({ check: 'duplicate', message: `Duplicate: ${key}` });
-  }
-  seenReviews.add(fullKey);
-
-  return errors;
-}
-
-test('valid review passes all checks', () => {
-  const validOutlets = new Set(['nytimes', 'vulture', 'variety']);
-  const seenReviews = new Set();
-
-  const errors = validateReviewData({
-    showId: 'hamilton-2015',
-    outletId: 'nytimes',
-    outlet: 'The New York Times',
-    criticName: 'Jesse Green'
-  }, validOutlets, seenReviews, 'hamilton-2015');
-
-  assert.strictEqual(errors.length, 0, `Expected 0 errors, got: ${JSON.stringify(errors)}`);
+    assert.ok(result.errors.some((e) => e.check === 'aggregator_url_mismatch'));
+  });
 });
 
-test('missing showId is an error', () => {
-  const validOutlets = new Set(['nytimes']);
-  const seenReviews = new Set();
+test('real outlet with an aggregator-domain URL but a preservable star score is not a mismatch', () => {
+  withTmpShowDir((dir) => {
+    const filePath = writeReview(dir, 'review.json', {
+      showId: 'hamilton-2015',
+      outletId: KNOWN_OUTLET,
+      criticName: 'Chris Jones',
+      url: 'https://www.show-score.com/shows/hamilton',
+      aggregatorStars: 4,
+    });
 
-  const errors = validateReviewData({
-    outletId: 'nytimes',
-    criticName: 'Jesse Green'
-  }, validOutlets, seenReviews, 'test-show');
+    const result = validateReviewFile(filePath, new Set([KNOWN_OUTLET]), new Map());
 
-  assert.strictEqual(errors.length, 1);
-  assert.strictEqual(errors[0].check, 'required_fields');
-});
-
-test('missing outlet and outletId is an error', () => {
-  const validOutlets = new Set(['nytimes']);
-  const seenReviews = new Set();
-
-  const errors = validateReviewData({
-    showId: 'hamilton-2015',
-    criticName: 'Jesse Green'
-  }, validOutlets, seenReviews, 'hamilton-2015');
-
-  assert.strictEqual(errors.length, 1);
-  assert.strictEqual(errors[0].check, 'required_fields');
-});
-
-test('unknown outlet is an error', () => {
-  const validOutlets = new Set(['nytimes', 'vulture']);
-  const seenReviews = new Set();
-
-  const errors = validateReviewData({
-    showId: 'hamilton-2015',
-    outletId: 'fake-outlet',
-    criticName: 'Jesse Green'
-  }, validOutlets, seenReviews, 'hamilton-2015');
-
-  assert.strictEqual(errors.length, 1);
-  assert.strictEqual(errors[0].check, 'unknown_outlet');
-});
-
-test('garbage critic name is an error', () => {
-  const validOutlets = new Set(['nytimes']);
-  const seenReviews = new Set();
-
-  const errors = validateReviewData({
-    showId: 'hamilton-2015',
-    outletId: 'nytimes',
-    criticName: 'Photo Credit'
-  }, validOutlets, seenReviews, 'hamilton-2015');
-
-  assert.strictEqual(errors.length, 1);
-  assert.strictEqual(errors[0].check, 'garbage_critic');
-});
-
-test('duplicate review is an error', () => {
-  const validOutlets = new Set(['nytimes']);
-  const seenReviews = new Set();
-
-  // First review - should pass
-  const errors1 = validateReviewData({
-    showId: 'hamilton-2015',
-    outletId: 'nytimes',
-    criticName: 'Jesse Green'
-  }, validOutlets, seenReviews, 'hamilton-2015');
-
-  assert.strictEqual(errors1.length, 0);
-
-  // Second review with same outlet+critic - should fail
-  const errors2 = validateReviewData({
-    showId: 'hamilton-2015',
-    outletId: 'nytimes',
-    criticName: 'Jesse Green'
-  }, validOutlets, seenReviews, 'hamilton-2015');
-
-  assert.strictEqual(errors2.length, 1);
-  assert.strictEqual(errors2[0].check, 'duplicate');
-});
-
-test('same critic at different outlets is not duplicate', () => {
-  const validOutlets = new Set(['nytimes', 'vulture']);
-  const seenReviews = new Set();
-
-  const errors1 = validateReviewData({
-    showId: 'hamilton-2015',
-    outletId: 'nytimes',
-    criticName: 'Jesse Green'
-  }, validOutlets, seenReviews, 'hamilton-2015');
-
-  const errors2 = validateReviewData({
-    showId: 'hamilton-2015',
-    outletId: 'vulture',
-    criticName: 'Jesse Green'
-  }, validOutlets, seenReviews, 'hamilton-2015');
-
-  assert.strictEqual(errors1.length, 0);
-  assert.strictEqual(errors2.length, 0);
-});
-
-test('same outlet+critic at different shows is not duplicate', () => {
-  const validOutlets = new Set(['nytimes']);
-  const seenReviews = new Set();
-
-  const errors1 = validateReviewData({
-    showId: 'hamilton-2015',
-    outletId: 'nytimes',
-    criticName: 'Jesse Green'
-  }, validOutlets, seenReviews, 'hamilton-2015');
-
-  const errors2 = validateReviewData({
-    showId: 'wicked-2003',
-    outletId: 'nytimes',
-    criticName: 'Jesse Green'
-  }, validOutlets, seenReviews, 'wicked-2003');
-
-  assert.strictEqual(errors1.length, 0);
-  assert.strictEqual(errors2.length, 0);
-});
-
-test('multiple errors can be reported', () => {
-  const validOutlets = new Set(['nytimes']);
-  const seenReviews = new Set();
-
-  const errors = validateReviewData({
-    // Missing showId
-    outletId: 'fake-outlet',  // Unknown outlet
-    criticName: 'Staff'  // Garbage name
-  }, validOutlets, seenReviews, 'test-show');
-
-  assert.strictEqual(errors.length, 3);
-  assert.ok(errors.some(e => e.check === 'required_fields'));
-  assert.ok(errors.some(e => e.check === 'unknown_outlet'));
-  assert.ok(errors.some(e => e.check === 'garbage_critic'));
+    assert.ok(!result.errors.some((e) => e.check === 'aggregator_url_mismatch'));
+  });
 });
 
 // ----------------------------------------------------------------------------
-// Summary
+// Broken duplicateOf reference (the copied test never exercised this check)
 // ----------------------------------------------------------------------------
 
-console.log('\n' + '='.repeat(50));
-console.log(`\nResults: ${passed} passed, ${failed} failed\n`);
+test('duplicateOf pointing at a missing file is a broken_duplicate_ref error', () => {
+  withTmpShowDir((dir) => {
+    const filePath = writeReview(dir, 'review.json', {
+      showId: 'hamilton-2015',
+      outletId: KNOWN_OUTLET,
+      criticName: 'Chris Jones',
+      duplicateOf: 'does-not-exist.json',
+    });
 
-if (failed > 0) {
-  process.exit(1);
-}
+    const result = validateReviewFile(filePath, new Set([KNOWN_OUTLET]), new Map());
+
+    assert.ok(result.errors.some((e) => e.check === 'broken_duplicate_ref'));
+  });
+});
+
+test('duplicateOf pointing at an existing file has no broken_duplicate_ref error', () => {
+  withTmpShowDir((dir) => {
+    writeReview(dir, 'target.json', {
+      showId: 'hamilton-2015',
+      outletId: KNOWN_OUTLET,
+      criticName: 'Chris Jones',
+      fullText: 'The canonical copy.',
+    });
+    const filePath = writeReview(dir, 'review.json', {
+      showId: 'hamilton-2015',
+      outletId: KNOWN_OUTLET,
+      criticName: 'Chris Jones',
+      duplicateOf: 'target.json',
+    });
+
+    const result = validateReviewFile(filePath, new Set([KNOWN_OUTLET]), new Map());
+
+    assert.ok(!result.errors.some((e) => e.check === 'broken_duplicate_ref'));
+    assert.equal(result.skipped, true, 'a duplicateOf file is excluded from the rebuild population');
+  });
+});
+
+// ----------------------------------------------------------------------------
+// Corrupt JSON
+// ----------------------------------------------------------------------------
+
+test('unparseable JSON is a json_parse error carrying the file path', () => {
+  withTmpShowDir((dir) => {
+    const filePath = path.join(dir, 'broken.json');
+    fs.writeFileSync(filePath, '{ not valid json');
+
+    const result = validateReviewFile(filePath, new Set([KNOWN_OUTLET]), new Map());
+
+    assert.equal(result.errors.length, 1);
+    assert.equal(result.errors[0].check, 'json_parse');
+    assert.ok(result.errors[0].file.includes('broken.json'));
+  });
+});

@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-15T09:55:09.217Z",
+    "generatedAt": "2026-09-22T09:45:24.393Z",
     "threshold": 40,
-    "showsScanned": 1842,
-    "reviewsScanned": 35954,
-    "duplicatesFound": 96,
+    "showsScanned": 1860,
+    "reviewsScanned": 36405,
+    "duplicatesFound": 94,
     "byMethod": {
       "similarity": [
         {
@@ -158,21 +158,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "david-copperfield-59e59-theaters-off-broadway-2026",
-          "method": "similarity",
-          "similarity": 85,
-          "primaryFile": "theater-life--unknown.json",
-          "primaryOutlet": "Theater Life",
-          "primaryCritic": "Unknown",
-          "secondaryFile": "theater-pizzazz--alix-cohen.json",
-          "secondaryOutlet": "Theater Pizzazz",
-          "secondaryCritic": "Alix Cohen",
-          "primaryScore": 59,
-          "secondaryScore": 76,
-          "scoreDiff": 17,
-          "textSource": "fullText"
-        },
-        {
           "showId": "disaster-2016",
           "method": "similarity",
           "similarity": 93,
@@ -229,6 +214,21 @@
           "secondaryCritic": "Unknown",
           "primaryScore": 86,
           "secondaryScore": 87,
+          "scoreDiff": 1,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "golden-boy-off-west-end-2026",
+          "method": "similarity",
+          "similarity": 73,
+          "primaryFile": "viewfromthegods--simon-jenner.json",
+          "primaryOutlet": "Viewfromthegods",
+          "primaryCritic": "Simon Jenner",
+          "secondaryFile": "fringereview--unknown.json",
+          "secondaryOutlet": "Fringereview",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 91,
+          "secondaryScore": 90,
           "scoreDiff": 1,
           "textSource": "fullText"
         },
@@ -563,6 +563,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "on-the-twentieth-century-2015",
+          "method": "similarity",
+          "similarity": 58,
+          "primaryFile": "front-row-center--tulis-mccall.json",
+          "primaryOutlet": "The Front Row Center",
+          "primaryCritic": "Tulis McCall",
+          "secondaryFile": "nytg--brian-scott-lipton.json",
+          "secondaryOutlet": "New York Theatre Guide",
+          "secondaryCritic": "Brian Scott Lipton",
+          "primaryScore": 93,
+          "secondaryScore": 91,
+          "scoreDiff": 2,
+          "textSource": "fullText"
+        },
+        {
           "showId": "on-your-feet-2015",
           "method": "similarity",
           "similarity": 79,
@@ -626,9 +641,9 @@
           "showId": "paranormal-activity-2026",
           "method": "similarity",
           "similarity": 90,
-          "primaryFile": "theater-life--unknown.json",
+          "primaryFile": "theater-life--david-sheward.json",
           "primaryOutlet": "Theater Life",
-          "primaryCritic": "Unknown",
+          "primaryCritic": "David Sheward",
           "secondaryFile": "thedaviddesk2--davidsheward.json",
           "secondaryOutlet": "thedaviddesk2",
           "secondaryCritic": "David.sheward",
@@ -1063,9 +1078,9 @@
           "showId": "the-real-ivanov-off-broadway-2026",
           "method": "similarity+llm",
           "similarity": 56,
-          "primaryFile": "theater-life--unknown.json",
+          "primaryFile": "theater-life--david-sheward.json",
           "primaryOutlet": "Theater Life",
-          "primaryCritic": "Unknown",
+          "primaryCritic": "David Sheward",
           "secondaryFile": "thedaviddesk2--davidsheward.json",
           "secondaryOutlet": "Thedaviddesk2",
           "secondaryCritic": "David.sheward",
@@ -1405,51 +1420,6 @@
           "secondaryScore": 73,
           "scoreDiff": 2,
           "textSource": "fullText"
-        },
-        {
-          "showId": "the-devil-wears-prada-west-end-2024",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "guardian--susannah-clapp.json",
-          "primaryOutlet": "The Guardian",
-          "primaryCritic": "Susannah Clapp",
-          "secondaryFile": "observer--susannah-clapp.json",
-          "secondaryOutlet": "Observer",
-          "secondaryCritic": "Susannah Clapp",
-          "primaryScore": 45,
-          "secondaryScore": 42,
-          "scoreDiff": 3,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "the-lion-king-west-end-2021",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "independent--paul-taylor.json",
-          "primaryOutlet": "The Independent",
-          "primaryCritic": "PaulTaylor",
-          "secondaryFile": "telegraph--charles-spencer.json",
-          "secondaryOutlet": "The Telegraph",
-          "secondaryCritic": "Charles Spencer",
-          "primaryScore": 76,
-          "secondaryScore": 83,
-          "scoreDiff": 7,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "ulysses-off-broadway-2026",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "lighting-and-sound-america--david-barbour.json",
-          "primaryOutlet": "Lighting & Sound America",
-          "primaryCritic": "David Barbour",
-          "secondaryFile": "lighting-sound-america--david-barbour.json",
-          "secondaryOutlet": "Lighting & Sound America",
-          "secondaryCritic": "David Barbour",
-          "primaryScore": 53,
-          "secondaryScore": 60,
-          "scoreDiff": 7,
-          "textSource": "fullText"
         }
       ]
     }
@@ -1741,21 +1711,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "david-copperfield-59e59-theaters-off-broadway-2026",
-      "method": "similarity",
-      "similarity": 85,
-      "primaryFile": "theater-life--unknown.json",
-      "primaryOutlet": "Theater Life",
-      "primaryCritic": "Unknown",
-      "secondaryFile": "theater-pizzazz--alix-cohen.json",
-      "secondaryOutlet": "Theater Pizzazz",
-      "secondaryCritic": "Alix Cohen",
-      "primaryScore": 59,
-      "secondaryScore": 76,
-      "scoreDiff": 17,
-      "textSource": "fullText"
-    },
-    {
       "showId": "dear-evan-hansen-2016",
       "method": "fingerprint",
       "similarity": 100,
@@ -1872,6 +1827,21 @@
       "secondaryCritic": "Unknown",
       "primaryScore": 86,
       "secondaryScore": 87,
+      "scoreDiff": 1,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "method": "similarity",
+      "similarity": 73,
+      "primaryFile": "viewfromthegods--simon-jenner.json",
+      "primaryOutlet": "Viewfromthegods",
+      "primaryCritic": "Simon Jenner",
+      "secondaryFile": "fringereview--unknown.json",
+      "secondaryOutlet": "Fringereview",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 91,
+      "secondaryScore": 90,
       "scoreDiff": 1,
       "textSource": "fullText"
     },
@@ -2386,6 +2356,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "on-the-twentieth-century-2015",
+      "method": "similarity",
+      "similarity": 58,
+      "primaryFile": "front-row-center--tulis-mccall.json",
+      "primaryOutlet": "The Front Row Center",
+      "primaryCritic": "Tulis McCall",
+      "secondaryFile": "nytg--brian-scott-lipton.json",
+      "secondaryOutlet": "New York Theatre Guide",
+      "secondaryCritic": "Brian Scott Lipton",
+      "primaryScore": 93,
+      "secondaryScore": 91,
+      "scoreDiff": 2,
+      "textSource": "fullText"
+    },
+    {
       "showId": "on-your-feet-2015",
       "method": "similarity",
       "similarity": 79,
@@ -2449,9 +2434,9 @@
       "showId": "paranormal-activity-2026",
       "method": "similarity",
       "similarity": 90,
-      "primaryFile": "theater-life--unknown.json",
+      "primaryFile": "theater-life--david-sheward.json",
       "primaryOutlet": "Theater Life",
-      "primaryCritic": "Unknown",
+      "primaryCritic": "David Sheward",
       "secondaryFile": "thedaviddesk2--davidsheward.json",
       "secondaryOutlet": "thedaviddesk2",
       "secondaryCritic": "David.sheward",
@@ -2731,21 +2716,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "the-devil-wears-prada-west-end-2024",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "guardian--susannah-clapp.json",
-      "primaryOutlet": "The Guardian",
-      "primaryCritic": "Susannah Clapp",
-      "secondaryFile": "observer--susannah-clapp.json",
-      "secondaryOutlet": "Observer",
-      "secondaryCritic": "Susannah Clapp",
-      "primaryScore": 45,
-      "secondaryScore": 42,
-      "scoreDiff": 3,
-      "textSource": "fullText"
-    },
-    {
       "showId": "the-glass-menagerie-2013",
       "method": "similarity",
       "similarity": 86,
@@ -2758,21 +2728,6 @@
       "primaryScore": 93,
       "secondaryScore": 88,
       "scoreDiff": 5,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "independent--paul-taylor.json",
-      "primaryOutlet": "The Independent",
-      "primaryCritic": "PaulTaylor",
-      "secondaryFile": "telegraph--charles-spencer.json",
-      "secondaryOutlet": "The Telegraph",
-      "secondaryCritic": "Charles Spencer",
-      "primaryScore": 76,
-      "secondaryScore": 83,
-      "scoreDiff": 7,
       "textSource": "fullText"
     },
     {
@@ -2824,9 +2779,9 @@
       "showId": "the-real-ivanov-off-broadway-2026",
       "method": "similarity+llm",
       "similarity": 56,
-      "primaryFile": "theater-life--unknown.json",
+      "primaryFile": "theater-life--david-sheward.json",
       "primaryOutlet": "Theater Life",
-      "primaryCritic": "Unknown",
+      "primaryCritic": "David Sheward",
       "secondaryFile": "thedaviddesk2--davidsheward.json",
       "secondaryOutlet": "Thedaviddesk2",
       "secondaryCritic": "David.sheward",
@@ -2863,21 +2818,6 @@
       "primaryScore": 89,
       "secondaryScore": 86,
       "scoreDiff": 3,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "ulysses-off-broadway-2026",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "lighting-and-sound-america--david-barbour.json",
-      "primaryOutlet": "Lighting & Sound America",
-      "primaryCritic": "David Barbour",
-      "secondaryFile": "lighting-sound-america--david-barbour.json",
-      "secondaryOutlet": "Lighting & Sound America",
-      "secondaryCritic": "David Barbour",
-      "primaryScore": 53,
-      "secondaryScore": 60,
-      "scoreDiff": 7,
       "textSource": "fullText"
     },
     {

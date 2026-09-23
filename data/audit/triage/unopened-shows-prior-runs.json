@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-09-20T12:01:04.477Z",
+  "generatedAt": "2026-09-22T12:14:34.162Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3048,
+  "scannedShows": 3054,
   "flaggedShows": 51,
-  "flaggedFiles": 195,
+  "flaggedFiles": 198,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 28,
-    "needs-human-review": 23
+    "likely-contamination": 29,
+    "needs-human-review": 22
   },
   "shows": [
     {
@@ -675,174 +675,6 @@
       ]
     },
     {
-      "showId": "medea-off-broadway-2026",
-      "title": "Medea",
-      "market": "broadway",
-      "status": "upcoming",
-      "venue": "Metropolitan Opera House",
-      "previewsStartDate": "2026-10-30",
-      "openingDate": "2026-10-30",
-      "verdict": "likely-contamination",
-      "reasoning": "11/11 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 11,
-        "distinctYears": [
-          2014,
-          2015,
-          2023
-        ],
-        "spanDays": 3131,
-        "flaggedCount": 11,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "express-uk--neil-norman.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "express-uk",
-          "criticName": "Neil Norman",
-          "publishDate": "2014-07-24",
-          "url": "https://www.express.co.uk/entertainment/theatre/491278/Greek-tragedy-Medea-at-the-National-Theatre",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "guardian--arifa-akbar.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Arifa Akbar",
-          "publishDate": "2023-02-18",
-          "url": "https://www.theguardian.com/stage/2023/feb/18/medea-review-sohoplace-london",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "guardian--susannah-clapp.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Susannah Clapp",
-          "publishDate": "2023-02-18",
-          "url": "https://www.theguardian.com/stage/2023/feb/26/the-week-in-theatre-grenfell-system-failure-medea-trouble-in-butetown-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "i-paper--fiona-mountford.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "i-paper",
-          "criticName": "Fiona Mountford",
-          "publishDate": "2023-02-18",
-          "url": "https://inews.co.uk/culture/arts/medea-soho-place-review-sophie-okonedo-blisteringly-brilliant-revenge-tragedy-2159926",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "independent--alice-saville.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "independent",
-          "criticName": "Alice Saville",
-          "publishDate": "2023-02-18",
-          "url": "https://www.independent.co.uk/independentpremium/culture/medea-review-sophie-okonedo-b2285262.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--nick-curtis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "Nick Curtis",
-          "publishDate": "2023-02-18",
-          "url": "https://www.standard.co.uk/culture/theatre/medea-sohoplace-review-sophie-okonedo-ben-daniels-must-see-b1061181.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--dominic-cavendish.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Dominic Cavendish",
-          "publishDate": "2023-02-18",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/medea-sohoplace-review-sophie-okonedo-gives-mythic-otherworldly/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--sam-marlowe.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Sam Marlowe",
-          "publishDate": "2023-02-18",
-          "url": "https://www.thestage.co.uk/reviews/medea-review-the-byre-theatre-st-andrews",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "timeout--adam-feldman.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "timeout",
-          "criticName": "Adam Feldman",
-          "publishDate": "2015-01-23",
-          "url": "https://www.timeout.com/newyork/theater/another-medea",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--clive-davis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Clive Davis",
-          "publishDate": "2023-02-18",
-          "url": "https://www.thetimes.co.uk/article/6d29aa7c-aed6-11ed-91ef-347dcf6a25f6",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--quentin-letts.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Quentin Letts",
-          "publishDate": "2023-02-18",
-          "url": "https://www.thetimes.co.uk/article/21e2de6c-b21e-11ed-93c1-9f4b65bf4405",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "orlando-off-west-end-2026",
       "title": "Orlando: A Pornobiography",
       "market": "west-end",
@@ -1156,6 +988,160 @@
           "criticName": "Sarah Crompton",
           "publishDate": "2024-10-09",
           "url": "https://www.whatsonstage.com/news/ray-fearon-to-play-macbeth-in-globes-wonder-season_39744/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2026",
+      "title": "Medea",
+      "market": "broadway",
+      "status": "upcoming",
+      "venue": "Metropolitan Opera House",
+      "previewsStartDate": "2026-10-30",
+      "openingDate": "2026-10-30",
+      "verdict": "likely-contamination",
+      "reasoning": "10/10 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 10,
+        "distinctYears": [
+          2014,
+          2023
+        ],
+        "spanDays": 3131,
+        "flaggedCount": 10,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "express-uk--neil-norman.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "express-uk",
+          "criticName": "Neil Norman",
+          "publishDate": "2014-07-24",
+          "url": "https://www.express.co.uk/entertainment/theatre/491278/Greek-tragedy-Medea-at-the-National-Theatre",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "guardian--arifa-akbar.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "guardian",
+          "criticName": "Arifa Akbar",
+          "publishDate": "2023-02-18",
+          "url": "https://www.theguardian.com/stage/2023/feb/18/medea-review-sohoplace-london",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "guardian--susannah-clapp.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "guardian",
+          "criticName": "Susannah Clapp",
+          "publishDate": "2023-02-18",
+          "url": "https://www.theguardian.com/stage/2023/feb/26/the-week-in-theatre-grenfell-system-failure-medea-trouble-in-butetown-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "i-paper--fiona-mountford.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "i-paper",
+          "criticName": "Fiona Mountford",
+          "publishDate": "2023-02-18",
+          "url": "https://inews.co.uk/culture/arts/medea-soho-place-review-sophie-okonedo-blisteringly-brilliant-revenge-tragedy-2159926",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "independent--alice-saville.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "independent",
+          "criticName": "Alice Saville",
+          "publishDate": "2023-02-18",
+          "url": "https://www.independent.co.uk/independentpremium/culture/medea-review-sophie-okonedo-b2285262.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "standard--nick-curtis.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "standard",
+          "criticName": "Nick Curtis",
+          "publishDate": "2023-02-18",
+          "url": "https://www.standard.co.uk/culture/theatre/medea-sohoplace-review-sophie-okonedo-ben-daniels-must-see-b1061181.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "telegraph--dominic-cavendish.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "telegraph",
+          "criticName": "Dominic Cavendish",
+          "publishDate": "2023-02-18",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/medea-sohoplace-review-sophie-okonedo-gives-mythic-otherworldly/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thestage--sam-marlowe.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "thestage",
+          "criticName": "Sam Marlowe",
+          "publishDate": "2023-02-18",
+          "url": "https://www.thestage.co.uk/reviews/medea-review-the-byre-theatre-st-andrews",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "times-uk--clive-davis.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "times-uk",
+          "criticName": "Clive Davis",
+          "publishDate": "2023-02-18",
+          "url": "https://www.thetimes.co.uk/article/6d29aa7c-aed6-11ed-91ef-347dcf6a25f6",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "times-uk--quentin-letts.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "times-uk",
+          "criticName": "Quentin Letts",
+          "publishDate": "2023-02-18",
+          "url": "https://www.thetimes.co.uk/article/21e2de6c-b21e-11ed-93c1-9f4b65bf4405",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -2054,6 +2040,94 @@
       ]
     },
     {
+      "showId": "the-invention-of-love-off-broadway-2026",
+      "title": "The Invention of Love",
+      "market": "broadway",
+      "status": "previews",
+      "venue": "Theaterlab",
+      "previewsStartDate": "2026-09-17",
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "5/5 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 5,
+        "distinctYears": [
+          2024
+        ],
+        "spanDays": 0,
+        "flaggedCount": 5,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "guardian--david-jays.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "guardian",
+          "criticName": "David Jays",
+          "publishDate": "2024-12-17",
+          "url": "https://www.theguardian.com/stage/2024/dec/17/the-invention-of-love-review-hampstead-theatre-london",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        },
+        {
+          "file": "independent--tim-bano.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "independent",
+          "criticName": "Tim Bano",
+          "publishDate": "2024-12-17",
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/invention-of-love-tom-stoppard-b2665608.html",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        },
+        {
+          "file": "telegraph--dominic-cavendish.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "telegraph",
+          "criticName": "Dominic Cavendish",
+          "publishDate": "2024-12-17",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-invention-of-love-review-simon-russell-beale/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "times-uk--dominic-maxwell.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "times-uk",
+          "criticName": "Dominic Maxwell",
+          "publishDate": "2024-12-17",
+          "url": "https://www.thetimes.com/article/ea1194a2-8601-47c3-b441-bc0c9088a55c",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        },
+        {
+          "file": "whatsonstage--miriam-sallon.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "whatsonstage",
+          "criticName": "Miriam Sallon",
+          "publishDate": "2024-12-17",
+          "url": "https://www.whatsonstage.com/news/the-invention-of-love-review-simon-russell-beale-is-perfectly-cast-in-tom-stoppard-revival_1658010/",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "blood-of-my-blood-west-end-2026",
       "title": "Blood of my Blood",
       "market": "west-end",
@@ -2208,7 +2282,7 @@
       "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
       "title": "Who’s Afraid of Virginia Woolf?",
       "market": "west-end",
-      "status": "upcoming",
+      "status": "previews",
       "venue": "Soho Place",
       "previewsStartDate": "2026-09-21",
       "openingDate": "2026-09-30",
@@ -2795,7 +2869,7 @@
           "outletId": "times-uk",
           "criticName": "Kevin Ng",
           "publishDate": "2025-01-06",
-          "url": "https://www.thetimes.com/culture/classical-opera/article/aida-review-the-met-dpkkr7tmf?eafs_enabled=false",
+          "url": "https://www.thetimes.com/culture/classical-opera/article/aida-review-the-met-dpkkr7tmf",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -3196,42 +3270,6 @@
           "criticName": "Virginia Webb",
           "publishDate": "2018-03-17",
           "url": "https://www.ft.com/content/df0e8380-290f-11e8-9274-2b13fccdc744",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "market": "broadway",
-      "status": "upcoming",
-      "venue": "Metropolitan Opera House",
-      "previewsStartDate": "2026-11-01",
-      "openingDate": "2026-11-01",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Metropolitan Opera House\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2026
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "broadwayworld--aliya-al-hassan.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "broadwayworld",
-          "criticName": "Alexandre Diaconu",
-          "publishDate": "2026-07-02",
-          "url": "https://www.broadwayworld.com/bwwopera/article/Review-TOSCA-at-La-Monnaie-20260702",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

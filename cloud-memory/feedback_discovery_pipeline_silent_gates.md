@@ -1106,3 +1106,25 @@ to drain — draining it would have injected a Marvel film review into a theatre
 **Monitor lesson:** a `_pending` file is NOT presumptively a recoverable review. Read its url + publishDate
 before drafting a drain — every `_pending` file across all 5 shows this night was prior-run or out-of-scope
 (attempt 20A), and the drain would have been net-negative in every case.
+
+## Gate: outlet index pages lag publication by hours (BRO-3998, 2026-09-21 Catarina)
+Ten outlet-index probes (Guardian/Times/Standard/WhatsOnStage/... section pages) all returned byte-count-proven clean negatives while Telegraph and LondonTheatre1 reviews had already been live ~2h. Google News RSS found both instantly.
+**Strongest datapoint (pass 31, 06:45Z):** `timeout.com/london/theatre` returned HTTP 200 / 230,649 B with ZERO `catarina` hits while Time Out's own review of that show had been live AND scored at 89 for ~7 hours. The blind spot is not a short publication lag — an outlet's section index can omit its own already-published review most of a day later. A clean index is never evidence of non-publication, at any elapsed time.
+
+**How to apply:** on opening night, census via `https://news.google.com/rss/search?q="<title>"+review&hl=en-GB&gl=GB&ceid=GB:en` (plain curl + full Chrome UA, no scraper spend) BEFORE trusting any index-page negative. An index probe returning nothing is not evidence of non-publication.
+
+## Gate: promoted-out-of-_pending files with empty body are never retried (BRO-3999, 2026-09-21 Catarina)
+`replay-pending-bylines.js` resolved the Telegraph byline and promoted the file out of `_pending/`, but left `fullText=null` / `contentTier=stub` / `contentTierReason='No text content'` — a state `reviews.json` can never admit, and nothing retries it. `triage-review-gap.js` correctly said `ingested-but-excluded`. A cookie-plain fetch (`ingest-review-from-url.js --outlet=telegraph`, cookies already on disk) got the text first try, zero BD/SB spend.
+**How to apply:** when an outlet shows `ingested-but-excluded` with `noTextOrScoreSignal`, check for a promoted stub with a null body before anything else — re-ingest by URL, don't chase discovery. Bare telegraph.co.uk URLs need `--outlet=telegraph` (ambiguous vs sunday-telegraph).
+
+## Gotcha: add/add rebase carries stub metadata onto a complete file (2026-09-21 Catarina)
+When the pipeline and a monitor both create the same review-texts file, git reports add/add. Union-merging origin's non-null fields carries `pendingReason=no-byline`, `contentTierReason='No text content'`, `isFullReview=false` onto the now-complete file and keeps it excluded. Re-assert those three from the ingested copy after any such merge.
+
+## Gate: aggregator headline/slug title-match is exact — an outlet's own typo makes the review invisible (2026-09-22, BRO-4001)
+BroadwayWorld UK published its review of `catarina-and-the-beauty-of-killing-fascists-west-end-2026` (09:14:03Z) with the title misspelled **CATERINA** in both the headline and the URL slug. Discovery never found it; `triage-review-gap.js` returned `true-missed-discovery` (0 review-texts files, reviews.json false on local AND origin/main, absent from prod, no `unverifiedOriginChecks`). The opening-night monitor ingested it by hand ~51 min after publication. Google News had still not indexed the article 1h+ later, so the SERP channel would not have rescued it either — a single-character outlet typo silently removed a T2 review from the night.
+
+**Detection:** a census outlet with a published review and NO event in `data/audit/stage-latency.jsonl`, where the outlet's own headline differs from shows.json by a small edit distance.
+**Fix direction:** normalized fuzzy match (edit distance / token-set) with a tight threshold on the BWW discovery title-match and its slug-derived match, extracted to `scripts/lib/` and covered by a require()-based fixture per CLAUDE.md rule 15.
+**Adjacent bug, same ingest:** `ingest-review-from-url.js` extracted `criticName` for this BWW article as the raw author URL `https://www.broadwayworld.com/author/Gary-Naylor` instead of `Gary Naylor` — the BWW author extractor must de-slugify the last path segment.
+
+- **Wrong-production cast via web-search backfill (2026-09-23, macbeth-off-broadway-2026):** "Backfill cast via web search" attached broadway.com/shows/macbeth-2022/cast (Daniel Craig play) to the Met's 2026 Verdi opera. Check prod `ca` for opera/revival titles on opening night; check `sourceUrl` year slug in data/cast/<id>.json. Workaround: delete the cast file. Systemic fix carded (Linear, parked P2).

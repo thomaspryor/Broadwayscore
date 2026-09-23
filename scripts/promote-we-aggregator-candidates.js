@@ -357,6 +357,18 @@ async function main() {
       continue;
     }
 
+    // BRO-3920 — a shouted title is detection-only now (no more guessed
+    // casing), so it must be held here rather than written: buildShowEntry
+    // below writes candidate.title through unchanged, and validate-data.js's
+    // gate would only catch it AFTER this run already committed it, failing
+    // CI for the whole batch instead of holding the one bad candidate.
+    const titleCheck = normalizeShowTitle({ title: c.title, venue: c.venue }, { venueVocabulary });
+    if (titleCheck.manualReview) {
+      skipped.push({ candidate: c, reason: 'shouted title — needs a human to check the source\'s structured metadata (scripts/lib/title-display-case.js)' });
+      logEntry({ kind: 'skip-shouted-title', title: c.title, venue: c.venue, source: c.source });
+      continue;
+    }
+
     const entry = buildWestEndAggregatorShowEntry(c, venueVocabulary);
     // sanitizeVenueForWrite (S0-T3, card #994) returns null for a
     // placeholder/neighbourhood-blob venue — refuse to write a garbage venue

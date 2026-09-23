@@ -1,582 +1,163 @@
 {
-  "generatedAt": "2026-09-14T17:06:00.998Z",
+  "generatedAt": "2026-09-21T17:14:16.665Z",
   "naivePages": 2,
   "settlingHours": 24,
   "totals": {
-    "shows": 5,
-    "excluded": [],
-    "undatedCandidates": 2,
-    "truthUrls": 80,
-    "scopedUrls": 16,
-    "naiveUrls": 37,
-    "onDiskUrls": 66,
-    "newFromNaive": 9,
+    "shows": 4,
+    "excluded": [
+      {
+        "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+        "state": "settling",
+        "reason": "opened 17h ago (<24h) — SERP indexing still settling"
+      }
+    ],
+    "undatedCandidates": 6,
+    "truthUrls": 18,
+    "scopedUrls": 4,
+    "naiveUrls": 14,
+    "onDiskUrls": 13,
+    "newFromNaive": 5,
     "perArm": {
       "naive-p0": {
-        "found": 21,
-        "queries": 5,
-        "failed": 0,
-        "recall": 0.263
-      },
-      "naive-p1": {
-        "found": 16,
-        "queries": 5,
-        "failed": 0,
-        "recall": 0.2
-      },
-      "onDisk": {
-        "found": 66,
-        "queries": 5,
-        "failed": 0,
-        "recall": 0.825
-      },
-      "scoped-q0": {
-        "found": 13,
-        "queries": 5,
-        "failed": 0,
-        "recall": 0.163
-      },
-      "scoped-q1": {
-        "found": 11,
+        "found": 9,
         "queries": 4,
         "failed": 0,
-        "recall": 0.138
+        "recall": 0.5
+      },
+      "naive-p1": {
+        "found": 7,
+        "queries": 4,
+        "failed": 0,
+        "recall": 0.389
+      },
+      "onDisk": {
+        "found": 13,
+        "queries": 4,
+        "failed": 0,
+        "recall": 0.722
+      },
+      "scoped-q0": {
+        "found": 2,
+        "queries": 4,
+        "failed": 0,
+        "recall": 0.111
+      },
+      "scoped-q1": {
+        "found": 3,
+        "queries": 4,
+        "failed": 0,
+        "recall": 0.167
+      },
+      "scoped-q2": {
+        "found": 3,
+        "queries": 3,
+        "failed": 0,
+        "recall": 0.167
       }
     },
     "perFamily": {
       "naive": {
-        "found": 37,
+        "found": 14,
         "arms": 2,
         "failed": 0,
-        "recall": 0.463
+        "recall": 0.778
       },
       "onDisk": {
-        "found": 66,
+        "found": 13,
         "arms": 1,
         "failed": 0,
-        "recall": 0.825
+        "recall": 0.722
       },
       "scoped": {
-        "found": 16,
-        "arms": 2,
+        "found": 4,
+        "arms": 3,
         "failed": 0,
-        "recall": 0.2
+        "recall": 0.222
       }
     },
     "byCategory": {
       "off-broadway": {
-        "shows": 2,
-        "truthUrls": 27,
+        "shows": 4,
+        "truthUrls": 18,
         "families": {
           "naive": {
-            "found": 10,
-            "arms": 2,
-            "failed": 0,
-            "recall": 0.37
-          },
-          "onDisk": {
-            "found": 20,
-            "arms": 1,
-            "failed": 0,
-            "recall": 0.741
-          },
-          "scoped": {
-            "found": 2,
-            "arms": 2,
-            "failed": 0,
-            "recall": 0.074
-          }
-        }
-      },
-      "off-west-end": {
-        "shows": 3,
-        "truthUrls": 53,
-        "families": {
-          "naive": {
-            "found": 27,
-            "arms": 2,
-            "failed": 0,
-            "recall": 0.509
-          },
-          "onDisk": {
-            "found": 46,
-            "arms": 1,
-            "failed": 0,
-            "recall": 0.868
-          },
-          "scoped": {
             "found": 14,
             "arms": 2,
             "failed": 0,
-            "recall": 0.264
+            "recall": 0.778
+          },
+          "onDisk": {
+            "found": 13,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.722
+          },
+          "scoped": {
+            "found": 4,
+            "arms": 3,
+            "failed": 0,
+            "recall": 0.222
           }
         }
       }
     },
-    "scopedRecall": 0.2,
-    "naiveRecall": 0.463
+    "scopedRecall": 0.222,
+    "naiveRecall": 0.778
   },
   "shows": [
     {
-      "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
-      "title": "BLOODSPORT: After Helen of Troy",
-      "market": "off-west-end",
-      "openingDate": "2026-09-13",
-      "sampleState": "measured",
-      "sampleReason": "opened 2d ago",
+      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "title": "Catarina and the Beauty of Killing Fascists",
+      "market": "west-end",
+      "openingDate": "2026-09-21",
+      "sampleState": "settling",
+      "sampleReason": "opened 17h ago (<24h) — SERP indexing still settling",
       "geo": "gb",
-      "naiveQuery": "BLOODSPORT: After Helen of Troy Theatre Royal Stratford East review",
+      "naiveQuery": "Catarina and the Beauty of Killing Fascists National Theatre review",
       "counts": {
-        "truth": 21,
-        "scoped": 6,
-        "naive": 9,
-        "onDisk": 17
+        "truth": 6,
+        "scoped": 1,
+        "naive": 6,
+        "onDisk": 2
       },
       "recall": {
-        "scoped": 0.286,
-        "naive": 0.429,
-        "onDisk": 0.81,
-        "censusPlusDisk": 0.952
+        "scoped": 0.167,
+        "naive": 1,
+        "onDisk": 0.333,
+        "censusPlusDisk": 0.5
       },
       "newFromNaive": [
-        "https://www.stratfordeast.com/whats-on/all-shows/bloodsport-after-helen-of-troy"
+        "https://thetheatretimes.com/catarina-and-the-beauty-of-killing-fascists-at-the-tampere-theatre-festival-do-we-defend-democracy-by-breaking-its-rules/",
+        "https://www.londontheatre.co.uk/theatre-news/news/catarina-and-the-beauty-of-killing-fascists-to-have-uk-premiere-at-the-national",
+        "https://www.timeout.com/london/theatre/catarina-and-the-beauty-of-killing-fascists"
       ],
       "missedByCensus": [
-        "https://www.stratfordeast.com/whats-on/all-shows/bloodsport-after-helen-of-troy",
-        "https://everything-theatre.co.uk/2026/09/review-bloodsport-after-helen-of-troy-stratford-east/",
-        "https://www.thestage.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-ava-pickett-michelle-dockery",
-        "https://www.thereviewshub.com/bloodsport-after-helen-of-troy-stratford-east-london/",
-        "https://www.standard.co.uk/culture/theatre/bloodsport-after-helen-of-troy-review-b1296572.html",
-        "https://www.britishtheatreguide.info/reviews/bloodsport-aft-theatre-royal-s-26002",
-        "https://www.broadwayworld.com/westend/article/Review-BLOODSPORT-AFTER-HELEN-OF-TROY-Stratford-East-20260911",
-        "https://www.ft.com/content/dca1a15b-517e-4d6c-90f7-e1ac46db8f4c",
-        "https://liamodell.com/2026/09/11/bloodsport-after-helen-of-troy-review-stratford-east-london-ava-pickett-1536/",
-        "https://www.londonboxoffice.co.uk/news/post/bloodsport-after-helen-of-troy-theatre-royal-stratford-east-review",
-        "https://www.london-unattached.com/bloodsport-stratford-east/",
-        "https://playsinternational.org.uk/bloodsport-after-helen-of-troy/",
-        "https://theatreweekly.com/review-bloodsport-after-helen-of-troy-at-stratford-east/",
-        "https://westendwilma.com/review-bloodsport-after-helen-of-troy-review/",
-        "https://www.whatsonstage.com/news/bloodsport-after-helen-of-troy-review-michelle-dockery-and-laura-aikman-in-a-play-that-takes-on-the-world_1731495/"
+        "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre",
+        "https://thetheatretimes.com/catarina-and-the-beauty-of-killing-fascists-at-the-tampere-theatre-festival-do-we-defend-democracy-by-breaking-its-rules/",
+        "https://www.theatremonkey.com/show/catarina-and-the-beauty-of-killing-fascists/",
+        "https://www.londontheatre.co.uk/theatre-news/news/catarina-and-the-beauty-of-killing-fascists-to-have-uk-premiere-at-the-national",
+        "https://www.timeout.com/london/theatre/catarina-and-the-beauty-of-killing-fascists"
       ],
       "arms": [
         {
           "arm": "scoped-q0",
-          "query": "\"BLOODSPORT: After Helen of Troy\" West End review 2026",
+          "query": "\"Catarina and the Beauty of Killing Fascists\" West End review 2026",
           "page": 0,
           "geo": null,
-          "raw": 9,
-          "accepted": 4,
-          "urls": [
-            "https://www.theguardian.com/stage/2026/sep/11/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-michelle-dockery",
-            "https://www.londontheatre.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east",
-            "https://www.westendtheatre.com/364392/news/bloodsport-after-helen-of-troy-trailer/",
-            "https://www.timeout.com/london/theatre/bloodsport-after-helen-of-troy-review"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"BLOODSPORT: After Helen of Troy\" review stratford",
-          "page": 0,
-          "geo": null,
-          "raw": 9,
-          "accepted": 5,
-          "urls": [
-            "https://www.theguardian.com/stage/2026/sep/11/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-michelle-dockery",
-            "https://www.allthatdazzles.co.uk/post/review-bloodsport-after-helen-of-troy-stratford-east",
-            "https://www.londontheatre.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east",
-            "https://www.timeout.com/london/theatre/bloodsport-after-helen-of-troy-review",
-            "https://www.thetimes.com/culture/theatre-dance/article/bloodsport-after-helen-of-troy-review-michelle-dockery-goes-tarantino-stdjbx2vw"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "BLOODSPORT: After Helen of Troy Theatre Royal Stratford East review",
-          "page": 0,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 5,
-          "urls": [
-            "https://www.stratfordeast.com/whats-on/all-shows/bloodsport-after-helen-of-troy",
-            "https://www.theguardian.com/stage/2026/sep/11/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-michelle-dockery",
-            "https://www.thetimes.com/culture/theatre-dance/article/bloodsport-after-helen-of-troy-review-michelle-dockery-goes-tarantino-stdjbx2vw",
-            "https://everything-theatre.co.uk/2026/09/review-bloodsport-after-helen-of-troy-stratford-east/",
-            "https://www.londontheatre.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "BLOODSPORT: After Helen of Troy Theatre Royal Stratford East review",
-          "page": 1,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 4,
-          "urls": [
-            "https://www.thestage.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-ava-pickett-michelle-dockery",
-            "https://www.thereviewshub.com/bloodsport-after-helen-of-troy-stratford-east-london/",
-            "https://www.standard.co.uk/culture/theatre/bloodsport-after-helen-of-troy-review-b1296572.html",
-            "https://www.allthatdazzles.co.uk/post/review-bloodsport-after-helen-of-troy-stratford-east"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 17,
-          "accepted": 17,
-          "urls": [
-            "https://www.allthatdazzles.co.uk/post/review-bloodsport-after-helen-of-troy-stratford-east",
-            "https://www.britishtheatreguide.info/reviews/bloodsport-aft-theatre-royal-s-26002",
-            "https://www.broadwayworld.com/westend/article/Review-BLOODSPORT-AFTER-HELEN-OF-TROY-Stratford-East-20260911",
-            "https://everything-theatre.co.uk/2026/09/review-bloodsport-after-helen-of-troy-stratford-east/",
-            "https://www.ft.com/content/dca1a15b-517e-4d6c-90f7-e1ac46db8f4c",
-            "https://www.theguardian.com/stage/2026/sep/11/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-michelle-dockery",
-            "https://liamodell.com/2026/09/11/bloodsport-after-helen-of-troy-review-stratford-east-london-ava-pickett-1536/",
-            "https://www.londonboxoffice.co.uk/news/post/bloodsport-after-helen-of-troy-theatre-royal-stratford-east-review",
-            "https://www.london-unattached.com/bloodsport-stratford-east/",
-            "https://playsinternational.org.uk/bloodsport-after-helen-of-troy/",
-            "https://www.standard.co.uk/culture/theatre/bloodsport-after-helen-of-troy-review-b1296572.html",
-            "https://theatreweekly.com/review-bloodsport-after-helen-of-troy-at-stratford-east/",
-            "https://www.thereviewshub.com/bloodsport-after-helen-of-troy-stratford-east-london/",
-            "https://www.thestage.co.uk/reviews/bloodsport-after-helen-of-troy-review-theatre-royal-stratford-east-london-ava-pickett-michelle-dockery",
-            "https://www.timeout.com/london/theatre/bloodsport-after-helen-of-troy-review",
-            "https://westendwilma.com/review-bloodsport-after-helen-of-troy-review/",
-            "https://www.whatsonstage.com/news/bloodsport-after-helen-of-troy-review-michelle-dockery-and-laura-aikman-in-a-play-that-takes-on-the-world_1731495/"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "night-city-off-west-end-2026",
-      "title": "Night City",
-      "market": "off-west-end",
-      "openingDate": "2026-09-12",
-      "sampleState": "measured",
-      "sampleReason": "opened 3d ago",
-      "geo": "gb",
-      "naiveQuery": "Night City Southwark Playhouse review",
-      "counts": {
-        "truth": 22,
-        "scoped": 8,
-        "naive": 13,
-        "onDisk": 20
-      },
-      "recall": {
-        "scoped": 0.364,
-        "naive": 0.591,
-        "onDisk": 0.909,
-        "censusPlusDisk": 0.955
-      },
-      "newFromNaive": [
-        "https://loureviews.blog/2026/09/12/play-review-night-city-at-southwark-playhouse-borough/amp/"
-      ],
-      "missedByCensus": [
-        "https://rolandcat.substack.com/p/review-night-city-southwark-playhouse",
-        "https://southwarkplayhouse.co.uk/productions/night-city/",
-        "https://www.allthatdazzles.co.uk/post/review-night-city-southwark-playhouse-borough",
-        "https://viewfromthegods.co.uk/2026/09/12/night-city-southwark-playhouse-borough/",
-        "https://saltertonartsreview.com/2026/09/night-city-southwark-playhouse-borough-london/",
-        "https://loureviews.blog/2026/09/12/play-review-night-city-at-southwark-playhouse-borough/amp/",
-        "https://www.thereviewshub.com/night-city-southwark-playhouse-borough-london/",
-        "https://www.britishtheatreguide.info/reviews/night-city-southwark-playh-26005",
-        "https://www.broadwayworld.com/westend/article/Review-NIGHT-CITY-Southwark-Playhouse-20260912",
-        "https://fringereview.co.uk/review/fringereview-uk/2026/night-city/",
-        "https://www.londonboxoffice.co.uk/news/post/night-city-southwark-playhouse-borough-review",
-        "https://www.reviewsgate.co.uk/all-reviews/night-city-by-max-wilkinson-southwark-playhouse",
-        "https://www.southwark.gov.uk/southwark-presents/night-city",
-        "https://terripaddock.com/events/night-city/"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"Night City\" West End review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 9,
-          "accepted": 7,
-          "urls": [
-            "https://www.londonpubtheatres.com/review-night-city-at-southwark-playhouse-10-september-3-october-2026",
-            "https://www.londontheatre1.com/reviews/night-city-southwark-playhouse-borough/",
-            "https://loureviews.blog/2026/09/12/play-review-night-city-at-southwark-playhouse-borough/",
-            "https://www.thestage.co.uk/reviews/night-city-review-southwark-playhouse-borough-london",
-            "https://www.londonbornandbred.co.uk/post/night-city-at-southwark-playhouse",
-            "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse",
-            "https://onin.london/night-city-at-southwark-playhouse-review/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"Night City\" review southwark",
-          "page": 0,
-          "geo": null,
-          "raw": 9,
-          "accepted": 6,
-          "urls": [
-            "https://loureviews.blog/2026/09/12/play-review-night-city-at-southwark-playhouse-borough/",
-            "https://www.thestage.co.uk/reviews/night-city-review-southwark-playhouse-borough-london",
-            "https://www.londonbornandbred.co.uk/post/night-city-at-southwark-playhouse",
-            "https://onin.london/night-city-at-southwark-playhouse-review/",
-            "https://theatreandtonic.co.uk/blog/night-city-at-southwark-playhouse-borough-review",
-            "https://www.londontheatre1.com/reviews/night-city-southwark-playhouse-borough/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "Night City Southwark Playhouse review",
-          "page": 0,
-          "geo": "gb",
-          "raw": 9,
-          "accepted": 8,
-          "urls": [
-            "https://theatreandtonic.co.uk/blog/night-city-at-southwark-playhouse-borough-review",
-            "https://rolandcat.substack.com/p/review-night-city-southwark-playhouse",
-            "https://southwarkplayhouse.co.uk/productions/night-city/",
-            "https://www.allthatdazzles.co.uk/post/review-night-city-southwark-playhouse-borough",
-            "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse",
-            "https://www.londonbornandbred.co.uk/post/night-city-at-southwark-playhouse",
-            "https://viewfromthegods.co.uk/2026/09/12/night-city-southwark-playhouse-borough/",
-            "https://saltertonartsreview.com/2026/09/night-city-southwark-playhouse-borough-london/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "Night City Southwark Playhouse review",
-          "page": 1,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 5,
-          "urls": [
-            "https://loureviews.blog/2026/09/12/play-review-night-city-at-southwark-playhouse-borough/amp/",
-            "https://www.londontheatre1.com/reviews/night-city-southwark-playhouse-borough/",
-            "https://www.thereviewshub.com/night-city-southwark-playhouse-borough-london/",
-            "https://www.britishtheatreguide.info/reviews/night-city-southwark-playh-26005",
-            "https://www.broadwayworld.com/westend/article/Review-NIGHT-CITY-Southwark-Playhouse-20260912"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 20,
-          "accepted": 20,
-          "urls": [
-            "https://www.allthatdazzles.co.uk/post/review-night-city-southwark-playhouse-borough",
-            "https://www.britishtheatreguide.info/reviews/night-city-southwark-playh-26005",
-            "https://www.broadwayworld.com/westend/article/Review-NIGHT-CITY-Southwark-Playhouse-20260912",
-            "https://fringereview.co.uk/review/fringereview-uk/2026/night-city/",
-            "https://www.londonboxoffice.co.uk/news/post/night-city-southwark-playhouse-borough-review",
-            "https://www.londonbornandbred.co.uk/post/night-city-at-southwark-playhouse",
-            "https://www.londontheatre1.com/reviews/night-city-southwark-playhouse-borough/",
-            "https://loureviews.blog/2026/09/12/play-review-night-city-at-southwark-playhouse-borough/",
-            "https://onin.london/night-city-at-southwark-playhouse-review/",
-            "https://www.reviewsgate.co.uk/all-reviews/night-city-by-max-wilkinson-southwark-playhouse",
-            "https://rolandcat.substack.com/p/review-night-city-southwark-playhouse",
-            "https://saltertonartsreview.com/2026/09/night-city-southwark-playhouse-borough-london/",
-            "https://www.southwark.gov.uk/southwark-presents/night-city",
-            "https://southwarkplayhouse.co.uk/productions/night-city/",
-            "https://terripaddock.com/events/night-city/",
-            "https://theatreandtonic.co.uk/blog/night-city-at-southwark-playhouse-borough-review",
-            "https://www.thereviewshub.com/night-city-southwark-playhouse-borough-london/",
-            "https://www.thestage.co.uk/reviews/night-city-review-southwark-playhouse-borough-london",
-            "https://viewfromthegods.co.uk/2026/09/12/night-city-southwark-playhouse-borough/",
-            "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
-      "title": "Mrs. Stern Wanders the Prussian State Library (Luna Stage)",
-      "market": "off-broadway",
-      "openingDate": "2026-09-12",
-      "sampleState": "measured",
-      "sampleReason": "opened 3d ago",
-      "geo": "us",
-      "naiveQuery": "Mrs. Stern Wanders the Prussian State Library (Luna Stage) 59E59 Theaters (Theater A) review",
-      "counts": {
-        "truth": 15,
-        "scoped": 0,
-        "naive": 2,
-        "onDisk": 13
-      },
-      "recall": {
-        "scoped": 0,
-        "naive": 0.133,
-        "onDisk": 0.867,
-        "censusPlusDisk": 0.867
-      },
-      "newFromNaive": [
-        "https://www.show-score.com/off-broadway-shows/mrs-stern-wanders-the-prussian-state-library-luna-stage",
-        "https://www.iloveny.com/thebeat/post/luna-stage-to-present-new-york-premiere-of-mrs-stern-wanders-the-prussian-state-library/"
-      ],
-      "missedByCensus": [
-        "https://www.show-score.com/off-broadway-shows/mrs-stern-wanders-the-prussian-state-library-luna-stage",
-        "https://www.iloveny.com/thebeat/post/luna-stage-to-present-new-york-premiere-of-mrs-stern-wanders-the-prussian-state-library/",
-        "https://www.adriandimanlig.com/viewpoints-strong-women-at-the-helm-amy-berrymans-walden-and-jenny-lyn-baders-mrs-stern-wanders-the-prussian-state-library/",
-        "https://thefrontrowcenter.com/2024/11/mrs-stern-wanders-the-prussian-state-library/",
-        "https://www.theguardian.com/stage/2026/aug/13/mrs-stern-wanders-the-prussian-state-library-review-traverse-theatre-edinburgh-hanah-arendt",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=2PK89K",
-        "https://www.nysun.com/article/a-portrait-of-hannah-arendt-as-a-young-woman-shows-the-philosopher-debating-zionism-with-the-gestapo",
-        "https://www.nytimes.com/2024/12/21/theater/mrs-stern-racecar-racecar-racecar-review.html",
-        "https://www.offoffonline.com/offoffonline/2024/9/26/mrs-stern-wanders-the-prussian-state-library",
-        "https://pagesonstages.wordpress.com/2024/10/26/prussian-library/",
-        "https://playstosee.com/reviews/mrs-stern-wanders-the-prussian-state-library/",
-        "https://therecs.co.uk/mrs-stern-wanders-the-prussian-state-library/",
-        "https://theaterpizzazz.com/the-wolf-at-the-door-of-history-mrs-stern-wanders-the-prussian-state-library/",
-        "https://www.theaterscene.net/plays/offbway-plays/mrs-stern-wanders-the-prussian-state-library/joel-benjamin/",
-        "https://twi-ny.com/2024/12/26/mrs-stern-wanders-the-prussian-state-library-bashevis-demons/"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"Mrs. Stern Wanders the Prussian State Library (Luna Stage)\" Off-Broadway review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"Mrs. Stern Wanders the Prussian State Library (Luna Stage)\" review 59e59",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "Mrs. Stern Wanders the Prussian State Library (Luna Stage) 59E59 Theaters (Theater A) review",
-          "page": 0,
-          "geo": "us",
           "raw": 10,
           "accepted": 1,
           "urls": [
-            "https://www.show-score.com/off-broadway-shows/mrs-stern-wanders-the-prussian-state-library-luna-stage"
+            "https://www.thestage.co.uk/features/tiago-rodrigues-on-catarina-and-the-beauty-of-killing-fascists-national-theatre-london"
           ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "Mrs. Stern Wanders the Prussian State Library (Luna Stage) 59E59 Theaters (Theater A) review",
-          "page": 1,
-          "geo": "us",
-          "raw": 10,
-          "accepted": 1,
-          "urls": [
-            "https://www.iloveny.com/thebeat/post/luna-stage-to-present-new-york-premiere-of-mrs-stern-wanders-the-prussian-state-library/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 13,
-          "accepted": 13,
-          "urls": [
-            "https://www.adriandimanlig.com/viewpoints-strong-women-at-the-helm-amy-berrymans-walden-and-jenny-lyn-baders-mrs-stern-wanders-the-prussian-state-library/",
-            "https://thefrontrowcenter.com/2024/11/mrs-stern-wanders-the-prussian-state-library/",
-            "https://www.theguardian.com/stage/2026/aug/13/mrs-stern-wanders-the-prussian-state-library-review-traverse-theatre-edinburgh-hanah-arendt",
-            "http://www.lightingandsoundamerica.com/news/story.asp?ID=2PK89K",
-            "https://www.nysun.com/article/a-portrait-of-hannah-arendt-as-a-young-woman-shows-the-philosopher-debating-zionism-with-the-gestapo",
-            "https://www.nytimes.com/2024/12/21/theater/mrs-stern-racecar-racecar-racecar-review.html",
-            "https://www.offoffonline.com/offoffonline/2024/9/26/mrs-stern-wanders-the-prussian-state-library",
-            "https://pagesonstages.wordpress.com/2024/10/26/prussian-library/",
-            "https://playstosee.com/reviews/mrs-stern-wanders-the-prussian-state-library/",
-            "https://therecs.co.uk/mrs-stern-wanders-the-prussian-state-library/",
-            "https://theaterpizzazz.com/the-wolf-at-the-door-of-history-mrs-stern-wanders-the-prussian-state-library/",
-            "https://www.theaterscene.net/plays/offbway-plays/mrs-stern-wanders-the-prussian-state-library/joel-benjamin/",
-            "https://twi-ny.com/2024/12/26/mrs-stern-wanders-the-prussian-state-library-bashevis-demons/"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
-      "title": "The Human Voice / The Seven Deadly Sins",
-      "market": "off-west-end",
-      "openingDate": "2026-09-12",
-      "sampleState": "measured",
-      "sampleReason": "opened 3d ago",
-      "geo": "gb",
-      "naiveQuery": "The Human Voice / The Seven Deadly Sins Charing Cross Theatre review",
-      "counts": {
-        "truth": 10,
-        "scoped": 0,
-        "naive": 5,
-        "onDisk": 9
-      },
-      "recall": {
-        "scoped": 0,
-        "naive": 0.5,
-        "onDisk": 0.9,
-        "censusPlusDisk": 0.9
-      },
-      "newFromNaive": [
-        "https://theatreweekly.com/katherine-mcindoe-to-star-in-double-bill-of-the-seven-deadly-sins-and-the-human-voice-at-charing-cross-theatre/"
-      ],
-      "missedByCensus": [
-        "https://www.londontheatre1.com/reviews/the-seven-deadly-sins-the-human-voice/",
-        "https://www.jackstage.co.uk/post/the-seven-deadly-sins-the-human-voice-review-abstract-double-bill-of-opera-in-need-of-more-contex",
-        "https://www.theatremonkey.com/show/the-human-voice-the-seven-deadly-sins/",
-        "https://theatreweekly.com/katherine-mcindoe-to-star-in-double-bill-of-the-seven-deadly-sins-and-the-human-voice-at-charing-cross-theatre/",
-        "https://www.gocomgo.com/charing-cross-theatre/the-human-voice-the-seven-deadly-2026-09-11-19-30-charing-cross/213497",
-        "https://concerts.consequence.net/events/the-human-voice-the-seven-deadly-sins-at-charing-cross-theatre-on-2026-09-16-14-30",
-        "https://www.gigantic.com/the-seven-deadly-sins-the-human-voice-2026-09-12-19-30-789661",
-        "https://www.londontheatredirect.com/opera/the-seven-deadly-sins-the-human-voice-tickets",
-        "https://rhombusrota.co.uk/2026/09/12/the-seven-deadly-sins-the-human-voice-at-charing-cross-theatre-review/",
-        "https://www.todoweekend.com/london/events/theatre/the-seven-deadly-sins-the-human-voice-888262"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"The Human Voice / The Seven Deadly Sins\" West End review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 1,
-          "accepted": 0,
-          "urls": [],
           "ok": true,
           "error": null
         },
         {
           "arm": "scoped-q1",
-          "query": "\"The Human Voice / The Seven Deadly Sins\" review charing",
+          "query": "\"Catarina and the Beauty of Killing Fascists\" review national",
           "page": 0,
           "geo": null,
-          "raw": 1,
+          "raw": 10,
           "accepted": 0,
           "urls": [],
           "ok": true,
@@ -584,29 +165,30 @@
         },
         {
           "arm": "naive-p0",
-          "query": "The Human Voice / The Seven Deadly Sins Charing Cross Theatre review",
+          "query": "Catarina and the Beauty of Killing Fascists National Theatre review",
           "page": 0,
           "geo": "gb",
           "raw": 10,
           "accepted": 3,
           "urls": [
-            "https://www.londontheatre1.com/reviews/the-seven-deadly-sins-the-human-voice/",
-            "https://www.jackstage.co.uk/post/the-seven-deadly-sins-the-human-voice-review-abstract-double-bill-of-opera-in-need-of-more-contex",
-            "https://www.theatremonkey.com/show/the-human-voice-the-seven-deadly-sins/"
+            "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre",
+            "https://thetheatretimes.com/catarina-and-the-beauty-of-killing-fascists-at-the-tampere-theatre-festival-do-we-defend-democracy-by-breaking-its-rules/",
+            "https://www.theatremonkey.com/show/catarina-and-the-beauty-of-killing-fascists/"
           ],
           "ok": true,
           "error": null
         },
         {
           "arm": "naive-p1",
-          "query": "The Human Voice / The Seven Deadly Sins Charing Cross Theatre review",
+          "query": "Catarina and the Beauty of Killing Fascists National Theatre review",
           "page": 1,
           "geo": "gb",
           "raw": 10,
-          "accepted": 2,
+          "accepted": 3,
           "urls": [
-            "https://theatreweekly.com/katherine-mcindoe-to-star-in-double-bill-of-the-seven-deadly-sins-and-the-human-voice-at-charing-cross-theatre/",
-            "https://www.gocomgo.com/charing-cross-theatre/the-human-voice-the-seven-deadly-2026-09-11-19-30-charing-cross/213497"
+            "https://www.londontheatre.co.uk/theatre-news/news/catarina-and-the-beauty-of-killing-fascists-to-have-uk-premiere-at-the-national",
+            "https://www.thestage.co.uk/features/tiago-rodrigues-on-catarina-and-the-beauty-of-killing-fascists-national-theatre-london",
+            "https://www.timeout.com/london/theatre/catarina-and-the-beauty-of-killing-fascists"
           ],
           "ok": true,
           "error": null
@@ -616,18 +198,11 @@
           "query": null,
           "page": null,
           "geo": null,
-          "raw": 9,
-          "accepted": 9,
+          "raw": 2,
+          "accepted": 2,
           "urls": [
-            "https://concerts.consequence.net/events/the-human-voice-the-seven-deadly-sins-at-charing-cross-theatre-on-2026-09-16-14-30",
-            "https://www.gigantic.com/the-seven-deadly-sins-the-human-voice-2026-09-12-19-30-789661",
-            "https://www.gocomgo.com/charing-cross-theatre/the-human-voice-the-seven-deadly-2026-09-11-19-30-charing-cross/213497",
-            "https://www.jackstage.co.uk/post/the-seven-deadly-sins-the-human-voice-review-abstract-double-bill-of-opera-in-need-of-more-contex",
-            "https://www.londontheatre1.com/reviews/the-seven-deadly-sins-the-human-voice/",
-            "https://www.londontheatredirect.com/opera/the-seven-deadly-sins-the-human-voice-tickets",
-            "https://rhombusrota.co.uk/2026/09/12/the-seven-deadly-sins-the-human-voice-at-charing-cross-theatre-review/",
-            "https://www.theatremonkey.com/show/the-human-voice-the-seven-deadly-sins/",
-            "https://www.todoweekend.com/london/events/theatre/the-seven-deadly-sins-the-human-voice-888262"
+            "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre",
+            "https://www.theatremonkey.com/show/catarina-and-the-beauty-of-killing-fascists/"
           ],
           "ok": true,
           "error": null
@@ -635,87 +210,205 @@
       ]
     },
     {
-      "showId": "safe-house-off-broadway-2026",
-      "title": "Safe House",
+      "showId": "spandex-off-broadway-2026",
+      "title": "Spandex",
       "market": "off-broadway",
-      "openingDate": "2026-09-11",
+      "openingDate": "2026-09-19",
       "sampleState": "measured",
-      "sampleReason": "opened 4d ago",
+      "sampleReason": "opened 3d ago",
       "geo": "us",
-      "naiveQuery": "Safe House Theatre Row review",
+      "naiveQuery": "Spandex Asylum NYC review",
       "counts": {
-        "truth": 12,
-        "scoped": 2,
-        "naive": 8,
-        "onDisk": 7
+        "truth": 4,
+        "scoped": 1,
+        "naive": 2,
+        "onDisk": 3
       },
       "recall": {
-        "scoped": 0.167,
-        "naive": 0.667,
-        "onDisk": 0.583,
-        "censusPlusDisk": 0.667
+        "scoped": 0.25,
+        "naive": 0.5,
+        "onDisk": 0.75,
+        "censusPlusDisk": 0.75
       },
       "newFromNaive": [
-        "https://exeuntnyc.com/reviews/review-safe-house-at-st-anns-warehouse/",
-        "https://openingnight.online/safe-house-at-theatre-row/",
-        "https://www.theatreinchicago.com/the-safe-house/reviews/10085/",
-        "https://www.newyorktheatreguide.com/reviews/safe-house-off-broadway-review"
+        "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197749"
       ],
       "missedByCensus": [
-        "https://exeuntnyc.com/reviews/review-safe-house-at-st-anns-warehouse/",
-        "https://openingnight.online/safe-house-at-theatre-row/",
-        "https://www.theatreinchicago.com/the-safe-house/reviews/10085/",
-        "https://www.newyorktheatreguide.com/reviews/safe-house-off-broadway-review",
-        "https://www.theaterscene.net/plays/offbway-plays/safe-house-2/victor-gluck/",
-        "https://aislesay.com/safe-house/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4LGZPY",
-        "https://stageandcinema.com/2026/09/09/safe-house-theatre-row-review/",
-        "https://twi-ny.com/2026/09/06/safe-house-lb-browne-theatre-row/",
-        "https://t2conline.com/safe-house-when-protection-becomes-another-kind-of-prison/"
+        "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/",
+        "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197749",
+        "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197747"
       ],
       "arms": [
         {
           "arm": "scoped-q0",
-          "query": "\"Safe House\" Off-Broadway review 2026",
+          "query": "\"Spandex\" Off-Broadway review 2026",
           "page": 0,
           "geo": null,
           "raw": 10,
-          "accepted": 2,
+          "accepted": 1,
           "urls": [
-            "https://frontmezzjunkies.com/2026/09/10/safe-house-turns-a-family-bunker-into-a-dangerous-shelter/",
-            "https://www.show-score.com/off-broadway-shows/safe-house-theatre-row"
+            "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html"
           ],
           "ok": true,
           "error": null
         },
         {
+          "arm": "scoped-q1",
+          "query": "\"Spandex\" review asylum",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
           "arm": "naive-p0",
-          "query": "Safe House Theatre Row review",
+          "query": "Spandex Asylum NYC review",
           "page": 0,
           "geo": "us",
           "raw": 10,
-          "accepted": 4,
+          "accepted": 2,
           "urls": [
-            "https://www.show-score.com/off-broadway-shows/safe-house-theatre-row",
-            "https://exeuntnyc.com/reviews/review-safe-house-at-st-anns-warehouse/",
-            "https://openingnight.online/safe-house-at-theatre-row/",
-            "https://frontmezzjunkies.com/2026/09/10/safe-house-turns-a-family-bunker-into-a-dangerous-shelter/"
+            "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/",
+            "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197749"
           ],
           "ok": true,
           "error": null
         },
         {
           "arm": "naive-p1",
-          "query": "Safe House Theatre Row review",
+          "query": "Spandex Asylum NYC review",
           "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 3,
+          "accepted": 3,
+          "urls": [
+            "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html",
+            "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/",
+            "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197747"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "the-hope-theory-off-broadway-2026",
+      "title": "The Hope Theory",
+      "market": "off-broadway",
+      "openingDate": "2026-09-17",
+      "sampleState": "measured",
+      "sampleReason": "opened 5d ago",
+      "geo": "us",
+      "naiveQuery": "The Hope Theory New York City Center/Stage II review",
+      "counts": {
+        "truth": 7,
+        "scoped": 2,
+        "naive": 7,
+        "onDisk": 4
+      },
+      "recall": {
+        "scoped": 0.286,
+        "naive": 1,
+        "onDisk": 0.571,
+        "censusPlusDisk": 0.571
+      },
+      "newFromNaive": [
+        "https://www.show-score.com/off-broadway-shows/the-hope-theory",
+        "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
+        "https://stageraw.com/the-hope-theory/"
+      ],
+      "missedByCensus": [
+        "https://www.show-score.com/off-broadway-shows/the-hope-theory",
+        "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
+        "https://www.theatreinla.com/the-hope-theory/reviews/10524/",
+        "https://stageraw.com/the-hope-theory/",
+        "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"The Hope Theory\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://www.theatermania.com/news/review-in-the-hope-theory-helder-guimaraes-attempts-to-conjure-magic-from-his-immigration-story_1854157/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"The Hope Theory\" review york",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://www.theatermania.com/news/review-in-the-hope-theory-helder-guimaraes-attempts-to-conjure-magic-from-his-immigration-story_1854157/",
+            "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q2",
+          "query": "\"The Hope Theory\" Guimarães review",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://www.theatermania.com/news/review-in-the-hope-theory-helder-guimaraes-attempts-to-conjure-magic-from-his-immigration-story_1854157/",
+            "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "The Hope Theory New York City Center/Stage II review",
+          "page": 0,
           "geo": "us",
           "raw": 10,
           "accepted": 4,
           "urls": [
-            "https://www.theatreinchicago.com/the-safe-house/reviews/10085/",
-            "https://www.newyorktheatreguide.com/reviews/safe-house-off-broadway-review",
-            "https://www.theaterscene.net/plays/offbway-plays/safe-house-2/victor-gluck/",
-            "https://aislesay.com/safe-house/"
+            "https://www.theatermania.com/news/review-in-the-hope-theory-helder-guimaraes-attempts-to-conjure-magic-from-his-immigration-story_1854157/",
+            "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7",
+            "https://www.show-score.com/off-broadway-shows/the-hope-theory",
+            "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "The Hope Theory New York City Center/Stage II review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 5,
+          "urls": [
+            "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
+            "https://www.theatreinla.com/the-hope-theory/reviews/10524/",
+            "https://www.show-score.com/off-broadway-shows/the-hope-theory",
+            "https://stageraw.com/the-hope-theory/",
+            "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway"
           ],
           "ok": true,
           "error": null
@@ -725,16 +418,226 @@
           "query": null,
           "page": null,
           "geo": null,
-          "raw": 7,
-          "accepted": 7,
+          "raw": 4,
+          "accepted": 4,
           "urls": [
-            "https://aislesay.com/safe-house/",
-            "https://frontmezzjunkies.com/2026/09/10/safe-house-turns-a-family-bunker-into-a-dangerous-shelter/",
-            "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4LGZPY",
-            "https://stageandcinema.com/2026/09/09/safe-house-theatre-row-review/",
-            "https://www.theaterscene.net/plays/offbway-plays/safe-house-2/victor-gluck/",
-            "https://twi-ny.com/2026/09/06/safe-house-lb-browne-theatre-row/",
-            "https://t2conline.com/safe-house-when-protection-becomes-another-kind-of-prison/"
+            "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway",
+            "https://www.theatermania.com/news/review-in-the-hope-theory-helder-guimaraes-attempts-to-conjure-magic-from-his-immigration-story_1854157/",
+            "https://www.theatreinla.com/the-hope-theory/reviews/10524/",
+            "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "gimme-a-sign-off-broadway-2026",
+      "title": "Gimme a Sign!",
+      "market": "off-broadway",
+      "openingDate": "2026-09-17",
+      "sampleState": "measured",
+      "sampleReason": "opened 5d ago",
+      "geo": "us",
+      "naiveQuery": "Gimme a Sign! SoHo Playhouse review",
+      "counts": {
+        "truth": 6,
+        "scoped": 0,
+        "naive": 4,
+        "onDisk": 5
+      },
+      "recall": {
+        "scoped": 0,
+        "naive": 0.667,
+        "onDisk": 0.833,
+        "censusPlusDisk": 0.833
+      },
+      "newFromNaive": [
+        "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/"
+      ],
+      "missedByCensus": [
+        "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign",
+        "https://theweereview.com/review/bailey-swilley-gimme-a-sign/",
+        "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/",
+        "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign",
+        "https://donyc.com/events/2026/9/20/gimme-a-sign-tickets",
+        "https://thecomedybureau.com/show/gimme-a-sign-in-nyc-2/2026-09-17/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Gimme a Sign!\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Gimme a Sign!\" review soho",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q2",
+          "query": "\"Gimme a Sign!\" Swilley review",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Gimme a Sign! SoHo Playhouse review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign",
+            "https://theweereview.com/review/bailey-swilley-gimme-a-sign/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Gimme a Sign! SoHo Playhouse review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/",
+            "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 5,
+          "accepted": 5,
+          "urls": [
+            "https://donyc.com/events/2026/9/20/gimme-a-sign-tickets",
+            "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign",
+            "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign",
+            "https://thecomedybureau.com/show/gimme-a-sign-in-nyc-2/2026-09-17/",
+            "https://theweereview.com/review/bailey-swilley-gimme-a-sign/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "conflicted-off-broadway-2026",
+      "title": "Conflicted",
+      "market": "off-broadway",
+      "openingDate": "2026-09-17",
+      "sampleState": "measured",
+      "sampleReason": "opened 5d ago",
+      "geo": "us",
+      "naiveQuery": "Conflicted SoHo Playhouse review",
+      "counts": {
+        "truth": 1,
+        "scoped": 1,
+        "naive": 1,
+        "onDisk": 1
+      },
+      "recall": {
+        "scoped": 1,
+        "naive": 1,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Conflicted\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Conflicted\" review soho",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://www.sohoplayhouse.com/see-a-show/conflicted"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q2",
+          "query": "\"Conflicted\" Katz review",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://www.sohoplayhouse.com/see-a-show/conflicted"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Conflicted SoHo Playhouse review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://www.sohoplayhouse.com/see-a-show/conflicted"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Conflicted SoHo Playhouse review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 1,
+          "accepted": 1,
+          "urls": [
+            "https://www.sohoplayhouse.com/see-a-show/conflicted"
           ],
           "ok": true,
           "error": null
@@ -746,147 +649,156 @@
   "onDiskUnavailable": false,
   "trend": {
     "entry": {
-      "date": "2026-09-14",
-      "generatedAt": "2026-09-14T17:06:00.998Z",
+      "date": "2026-09-21",
+      "generatedAt": "2026-09-21T17:14:16.665Z",
       "naivePages": 2,
-      "shows": 5,
-      "excluded": {},
-      "truthUrls": 80,
-      "onDiskUrls": 66,
-      "newFromNaive": 9,
+      "shows": 4,
+      "excluded": {
+        "settling": 1
+      },
+      "truthUrls": 18,
+      "onDiskUrls": 13,
+      "newFromNaive": 5,
       "families": {
-        "naive": 0.463,
-        "onDisk": 0.825,
-        "scoped": 0.2
+        "naive": 0.778,
+        "onDisk": 0.722,
+        "scoped": 0.222
       },
       "arms": {
-        "naive-p0": 0.263,
-        "naive-p1": 0.2,
-        "onDisk": 0.825,
-        "scoped-q0": 0.163,
-        "scoped-q1": 0.138
+        "naive-p0": 0.5,
+        "naive-p1": 0.389,
+        "onDisk": 0.722,
+        "scoped-q0": 0.111,
+        "scoped-q1": 0.167,
+        "scoped-q2": 0.167
       },
-      "combinedRecall": 0.888,
+      "combinedRecall": 0.722,
       "familyYield": {
-        "naive": 7.4,
-        "onDisk": 13.2,
-        "scoped": 3.2
+        "naive": 3.5,
+        "onDisk": 3.25,
+        "scoped": 1
       },
       "armYield": {
-        "naive-p0": 4.2,
-        "naive-p1": 3.2,
-        "onDisk": 13.2,
-        "scoped-q0": 2.6,
-        "scoped-q1": 2.2
+        "naive-p0": 2.25,
+        "naive-p1": 1.75,
+        "onDisk": 3.25,
+        "scoped-q0": 0.5,
+        "scoped-q1": 0.75,
+        "scoped-q2": 0.75
       },
       "armsFailed": {
         "naive-p0": 0,
         "naive-p1": 0,
         "onDisk": 0,
         "scoped-q0": 0,
-        "scoped-q1": 0
+        "scoped-q1": 0,
+        "scoped-q2": 0
       },
       "unavailableArms": [],
       "byCategory": {
         "off-broadway": {
-          "shows": 2,
-          "truthUrls": 27,
+          "shows": 4,
+          "truthUrls": 18,
           "families": {
-            "naive": 0.37,
-            "onDisk": 0.741,
-            "scoped": 0.074
-          }
-        },
-        "off-west-end": {
-          "shows": 3,
-          "truthUrls": 53,
-          "families": {
-            "naive": 0.509,
-            "onDisk": 0.868,
-            "scoped": 0.264
+            "naive": 0.778,
+            "onDisk": 0.722,
+            "scoped": 0.222
           }
         }
       },
       "sampleIds": [
-        "bloodsport-after-helen-of-troy-off-west-end-2026",
-        "night-city-off-west-end-2026",
-        "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
-        "the-human-voice-the-seven-deadly-sins-west-end-2026",
-        "safe-house-off-broadway-2026"
+        "spandex-off-broadway-2026",
+        "the-hope-theory-off-broadway-2026",
+        "gimme-a-sign-off-broadway-2026",
+        "conflicted-off-broadway-2026"
       ]
     },
     "judgement": {
-      "verdict": "ok",
-      "reason": "3 search method(s) within 0.15 of their 3-run median",
-      "regressions": [],
+      "verdict": "regressed",
+      "reason": "onDisk: recall 0.722 vs 0.881 median over 4 prior run(s) — down 0.159 (threshold 0.15), yield 3.25 vs 19.15 URLs/show; onDisk: recall 0.722 vs 0.881 median over 4 prior run(s) — down 0.159 (threshold 0.15), yield 3.25 vs 19.15 URLs/show",
+      "regressions": [
+        {
+          "level": "families",
+          "arm": "onDisk",
+          "baseline": 0.881,
+          "current": 0.722,
+          "drop": 0.159,
+          "rule": "week-on-week",
+          "reason": "recall 0.722 vs 0.881 median over 4 prior run(s) — down 0.159 (threshold 0.15), yield 3.25 vs 19.15 URLs/show"
+        },
+        {
+          "level": "arms",
+          "arm": "onDisk",
+          "baseline": 0.881,
+          "current": 0.722,
+          "drop": 0.159,
+          "rule": "week-on-week",
+          "reason": "recall 0.722 vs 0.881 median over 4 prior run(s) — down 0.159 (threshold 0.15), yield 3.25 vs 19.15 URLs/show"
+        }
+      ],
       "latest": {
-        "date": "2026-09-14",
-        "generatedAt": "2026-09-14T17:06:00.998Z",
+        "date": "2026-09-21",
+        "generatedAt": "2026-09-21T17:14:16.665Z",
         "naivePages": 2,
-        "shows": 5,
-        "excluded": {},
-        "truthUrls": 80,
-        "onDiskUrls": 66,
-        "newFromNaive": 9,
+        "shows": 4,
+        "excluded": {
+          "settling": 1
+        },
+        "truthUrls": 18,
+        "onDiskUrls": 13,
+        "newFromNaive": 5,
         "families": {
-          "naive": 0.463,
-          "onDisk": 0.825,
-          "scoped": 0.2
+          "naive": 0.778,
+          "onDisk": 0.722,
+          "scoped": 0.222
         },
         "arms": {
-          "naive-p0": 0.263,
-          "naive-p1": 0.2,
-          "onDisk": 0.825,
-          "scoped-q0": 0.163,
-          "scoped-q1": 0.138
+          "naive-p0": 0.5,
+          "naive-p1": 0.389,
+          "onDisk": 0.722,
+          "scoped-q0": 0.111,
+          "scoped-q1": 0.167,
+          "scoped-q2": 0.167
         },
-        "combinedRecall": 0.888,
+        "combinedRecall": 0.722,
         "familyYield": {
-          "naive": 7.4,
-          "onDisk": 13.2,
-          "scoped": 3.2
+          "naive": 3.5,
+          "onDisk": 3.25,
+          "scoped": 1
         },
         "armYield": {
-          "naive-p0": 4.2,
-          "naive-p1": 3.2,
-          "onDisk": 13.2,
-          "scoped-q0": 2.6,
-          "scoped-q1": 2.2
+          "naive-p0": 2.25,
+          "naive-p1": 1.75,
+          "onDisk": 3.25,
+          "scoped-q0": 0.5,
+          "scoped-q1": 0.75,
+          "scoped-q2": 0.75
         },
         "armsFailed": {
           "naive-p0": 0,
           "naive-p1": 0,
           "onDisk": 0,
           "scoped-q0": 0,
-          "scoped-q1": 0
+          "scoped-q1": 0,
+          "scoped-q2": 0
         },
         "unavailableArms": [],
         "byCategory": {
           "off-broadway": {
-            "shows": 2,
-            "truthUrls": 27,
+            "shows": 4,
+            "truthUrls": 18,
             "families": {
-              "naive": 0.37,
-              "onDisk": 0.741,
-              "scoped": 0.074
-            }
-          },
-          "off-west-end": {
-            "shows": 3,
-            "truthUrls": 53,
-            "families": {
-              "naive": 0.509,
-              "onDisk": 0.868,
-              "scoped": 0.264
+              "naive": 0.778,
+              "onDisk": 0.722,
+              "scoped": 0.222
             }
           }
         },
         "sampleIds": [
-          "bloodsport-after-helen-of-troy-off-west-end-2026",
-          "night-city-off-west-end-2026",
-          "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
-          "the-human-voice-the-seven-deadly-sins-west-end-2026",
-          "safe-house-off-broadway-2026"
+          "spandex-off-broadway-2026",
+          "the-hope-theory-off-broadway-2026",
+          "gimme-a-sign-off-broadway-2026",
+          "conflicted-off-broadway-2026"
         ]
       },
       "comparedArms": 3,

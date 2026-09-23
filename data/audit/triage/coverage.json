@@ -1,20 +1,20 @@
 {
   "system": "coverage",
   "status": "warn",
-  "lastChecked": "2026-09-20T11:52:53.612Z",
+  "lastChecked": "2026-09-22T12:06:17.806Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
       "name": "Coverage: SERP census recall",
-      "status": "pass",
-      "message": "a plain Google search found 46%, reviews already collected found 83%, our targeted searches found 20% — across 5 recent opening(s); 80 review pages any of our searches could find; 3 search method(s) steady vs recent weeks (6d ago)"
+      "status": "warn",
+      "message": "Review coverage dropped — reviews already collected now finds 72% vs 88% recently; reviews already collected now finds 72% vs 88% recently (across 4 recent opening(s); 18 review pages any of our searches could find). New shows may be going live with published reviews missing."
     },
     {
       "name": "Coverage: adversarial probe",
       "status": "warn",
-      "message": "The naive search found 2 review URL(s) this pipeline hasn't discovered yet: the-story-west-end-2026, man-to-man-west-end-2026"
+      "message": "The naive search found 1 review URL(s) this pipeline hasn't discovered yet: the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026"
     }
   ]
 }

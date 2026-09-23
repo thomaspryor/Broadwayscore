@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "warn",
-  "lastChecked": "2026-09-20T11:52:53.612Z",
+  "lastChecked": "2026-09-22T12:06:17.806Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,22 +9,22 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "24h ago, success"
+      "message": "22h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
       "status": "pass",
-      "message": "3h ago, success"
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Collect Review Texts",
       "status": "warn",
-      "message": "Last run still running (started 3h ago)"
+      "message": "Last run still running (started 1h ago)"
     },
     {
       "name": "Cron: LLM Ensemble Score",
-      "status": "warn",
-      "message": "Last run still running (started 0h ago)"
+      "status": "pass",
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Opening Night Broadcast",
@@ -34,12 +34,12 @@
     {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "7h ago, success"
+      "message": "20h ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "4d ago, success"
+      "message": "6d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
@@ -54,22 +54,27 @@
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "23h ago, success"
+      "message": "3d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "1d ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "1d ago, success"
     },
     {
       "name": "Cron: Update Social Pulse",
       "status": "pass",
-      "message": "6d ago, success"
+      "message": "1d ago, success"
+    },
+    {
+      "name": "Cron: Reverse Discovery",
+      "status": "pass",
+      "message": "3h ago, success"
     }
   ]
 }

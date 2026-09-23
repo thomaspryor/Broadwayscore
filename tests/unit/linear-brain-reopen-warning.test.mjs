@@ -92,7 +92,14 @@ test('update: a routine Todo -> In Progress transition does NOT print the conclu
 
 test('update: moving BETWEEN terminal states (Done -> Canceled) does NOT print the reopen warning (not actually reopening)', () => {
   const res = runUpdate({
-    argv: ['update', 'BRO-9459', '--state', 'Canceled'],
+    // --cancel-reason satisfies the canceled-state reason gate (BRO-3435,
+    // scripts/lib/linear-cancel-gate.js, exit 7): Done -> Canceled IS a real
+    // transition INTO a canceled-type state, so the gate fires on it by design
+    // and this test would otherwise exit 7 instead of 0. Same shape as the
+    // Done -> Duplicate case below, which feeds the duplicate gate a
+    // pre-existing relation for the same reason. The subject here is the
+    // reopen warning, not either gate.
+    argv: ['update', 'BRO-9459', '--state', 'Canceled', '--cancel-reason', 'superseded by the consolidated follow-up card'],
     state: { id: 'state-done', name: 'Done', type: 'completed' },
   });
   assert.equal(res.status, 0, `stderr:\n${res.stderr}`);
@@ -128,7 +135,11 @@ test('update: a no-op re-run on an already-terminal issue (same state) does NOT 
     state: { id: 'state-done', name: 'Done', type: 'completed' },
   });
   // isRealTransition is false here (target.id === issue.state.id), so this
-  // hits the done-gate above instead — either refused (no evidence) or
-  // allowed, but never the reopen warning since nothing is being reopened.
+  // hits the done-gate instead — refused, since this fixture carries no
+  // evidence — but never the reopen warning, since nothing is being reopened.
+  // The exit-status assertion is not decoration: without it, ANY mutation
+  // that throws before the reopen-warning block (exit 2) keeps this test
+  // green on a doesNotMatch alone (ship-check finding, 2026-09-21).
+  assert.equal(res.status, 5, `expected the done-gate refusal, got ${res.status}. stderr:\n${res.stderr}`);
   assert.doesNotMatch(res.stderr, /a concluded state/);
 });

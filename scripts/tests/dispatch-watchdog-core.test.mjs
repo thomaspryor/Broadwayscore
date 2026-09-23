@@ -403,19 +403,23 @@ test('#1564: an unlanded claim re-arms by itself after REDISPATCH_REARM_MS', () 
 });
 
 test('#1564: the retry path is suppressed too, not just the P0/P1 backlog', () => {
+  // BRO-3437: fixtured on Linear, not Notion — a bare-numeric id is excluded
+  // from awaitingClaim/noLaunchPark unconditionally now, so a Notion fixture
+  // would read 0 for the wrong reason instead of exercising the boot-grace/
+  // escalation mechanics this test is actually about.
   const entries = [
-    { ts: T(300), event: 'launch', taskId: '24', subject: 'Fix thing 24', workspaceRef: 'workspace:9' },
-    { ts: T(280), event: 'dead', taskId: '24', workspaceRef: 'workspace:9' },
-    { ts: T(60), event: 'watchdog-redispatch', taskId: '24', kind: 'retry' },
+    { ts: T(300), event: 'launch', taskId: 'linear:BRO-24', subject: 'Fix thing 24', workspaceRef: 'workspace:9' },
+    { ts: T(280), event: 'dead', taskId: 'linear:BRO-24', workspaceRef: 'workspace:9' },
+    { ts: T(60), event: 'watchdog-redispatch', taskId: 'linear:BRO-24', kind: 'retry' },
   ];
-  const plan = core.planSweep(entries, new Map([task(24, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  const plan = core.planSweep(entries, new Map([lin('BRO-24', 'in_progress')]), { now: NOW, liveTitles: LIVE });
   assert.equal(plan.toDispatch.length, 0, 'a retry claim that never landed must not re-fire every sweep');
   assert.equal(plan.awaitingClaim.length, 1, 'and it must be surfaced to the owner, not silently dropped');
   // BRO-3429: past grace, with no fleet-wide outage in play, this is no
   // longer a passive label — it is actively parked and paged.
   assert.equal(plan.noLaunchPark.length, 1, 'and it must be escalated to an actual park, not just a label');
-  assert.equal(plan.noLaunchPark[0].taskId, '24');
-  assert.match(core.renderNarrative(plan), /#24 .*parked \(won't retry\)/);
+  assert.equal(plan.noLaunchPark[0].taskId, 'linear:BRO-24');
+  assert.match(core.renderNarrative(plan), /#linear:BRO-24 .*parked \(won't retry\)/);
   // Suppressed cards leave p01Queue/retryable, so if they did not also land in
   // needsYou the tab title would read "0 need you" over a shrinking backlog.
   assert.ok(plan.needsYou >= 1, 'a suppressed card must count toward needsYou');
@@ -424,14 +428,17 @@ test('#1564: the retry path is suppressed too, not just the P0/P1 backlog', () =
 test('#1564: a claim younger than the boot grace suppresses but is NOT labelled a failure', () => {
   // A launch takes minutes and sweeps run every 92s, so labelling immediately
   // announced every healthy dispatch as "could not start" first (ship-check P1).
-  const entries = [{ ts: T(2), event: 'watchdog-redispatch', taskId: '27', kind: 'p01-backlog' }];
-  const tasks = new Map([task(27, 'pending', 'P1 Now')]);
+  // BRO-3437: fixtured on Linear — a bare id is excluded from awaitingClaim
+  // unconditionally now, which would make the "past grace" assertion below
+  // read 0 for the wrong reason.
+  const entries = [{ ts: T(2), event: 'watchdog-redispatch', taskId: 'linear:BRO-27', kind: 'p01-backlog' }];
+  const tasks = new Map([lin('BRO-27', 'pending', 'P1 Now')]);
   const booting = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
   assert.equal(booting.toDispatch.length, 0, 'still suppressed — that is the duplicate guard');
   assert.equal(booting.awaitingClaim.length, 0, 'but not yet called a failure');
   assert.equal(booting.needsYou, 0);
 
-  const older = [{ ts: new Date(NOW - core.CLAIM_LABEL_GRACE_MS - 60000).toISOString(), event: 'watchdog-redispatch', taskId: '27', kind: 'p01-backlog' }];
+  const older = [{ ts: new Date(NOW - core.CLAIM_LABEL_GRACE_MS - 60000).toISOString(), event: 'watchdog-redispatch', taskId: 'linear:BRO-27', kind: 'p01-backlog' }];
   assert.equal(core.planSweep(older, tasks, { now: NOW, liveTitles: LIVE }).awaitingClaim.length, 1,
     'past the grace window it IS a failure the owner must see');
 });
@@ -442,15 +449,17 @@ test('#1564: a wedged launcher (claims, and nothing launching fleet-wide) holds 
   // failedLaunchEntries() returns [] for a ref-less failure, so NOTHING is
   // journaled. Every claim then looks like a guard refusal and
   // detectLauncherOutage (which keys on 'dead' rows) is blind. (ship-check P0)
+  // BRO-3437: fixtured on Linear — bare ids are excluded from awaitingClaim
+  // unconditionally now, which would collapse every count below to 0.
   const old = m => new Date(NOW - m * 60000).toISOString();
   const tasks = new Map([
-    task(40, 'pending', 'P1 Now'), task(41, 'pending', 'P1 Now'),
-    task(42, 'pending', 'P1 Now'), task(43, 'pending', 'P1 Now'),
+    lin('BRO-40', 'pending', 'P1 Now'), lin('BRO-41', 'pending', 'P1 Now'),
+    lin('BRO-42', 'pending', 'P1 Now'), lin('BRO-43', 'pending', 'P1 Now'),
   ]);
   const wedged = [
-    { ts: old(90), event: 'watchdog-redispatch', taskId: '40', kind: 'p01-backlog' },
-    { ts: old(80), event: 'watchdog-redispatch', taskId: '41', kind: 'p01-backlog' },
-    { ts: old(70), event: 'watchdog-redispatch', taskId: '42', kind: 'p01-backlog' },
+    { ts: old(90), event: 'watchdog-redispatch', taskId: 'linear:BRO-40', kind: 'p01-backlog' },
+    { ts: old(80), event: 'watchdog-redispatch', taskId: 'linear:BRO-41', kind: 'p01-backlog' },
+    { ts: old(70), event: 'watchdog-redispatch', taskId: 'linear:BRO-42', kind: 'p01-backlog' },
   ];
   const plan = core.planSweep(wedged, tasks, { now: NOW, liveTitles: LIVE });
   assert.equal(plan.awaitingClaim.length, 3);
@@ -468,7 +477,7 @@ test('#1564: a wedged launcher (claims, and nothing launching fleet-wide) holds 
   // that is three genuinely refused cards, not an outage. Must not hold.
   const refusedRun = [
     ...wedged,
-    { ts: old(5), event: 'launch', taskId: '43', subject: 'Fix thing 43', workspaceRef: 'workspace:1' },
+    { ts: old(5), event: 'launch', taskId: 'linear:BRO-43', subject: 'Fix thing 43', workspaceRef: 'workspace:1' },
   ];
   const plan2 = core.planSweep(refusedRun, tasks, { now: NOW, liveTitles: LIVE });
   assert.equal(plan2.awaitingClaim.length, 3);
@@ -485,22 +494,40 @@ test('#1564: a wedged launcher (claims, and nothing launching fleet-wide) holds 
 // REDISPATCH_REARM_MS (24h) — no ledger event, no page, forever. Live ledger
 // evidence: 84 watchdog-redispatch claims over 7 days, 0 launches, 0 parks.
 test('BRO-3429: a stale unlaunched claim is parked, not just labelled', () => {
-  const entries = [{ ts: T(60), event: 'watchdog-redispatch', taskId: '50', kind: 'p01-backlog' }];
-  const tasks = new Map([task(50, 'pending', 'P1 Now')]);
+  // BRO-3437: fixtured on Linear — a bare id would never reach noLaunchPark.
+  const entries = [{ ts: T(60), event: 'watchdog-redispatch', taskId: 'linear:BRO-50', kind: 'p01-backlog' }];
+  const tasks = new Map([lin('BRO-50', 'pending', 'P1 Now')]);
   const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
   assert.equal(plan.noLaunchPark.length, 1);
-  assert.equal(plan.noLaunchPark[0].taskId, '50');
+  assert.equal(plan.noLaunchPark[0].taskId, 'linear:BRO-50');
   assert.equal(plan.parkedTotal, 1, 'parkedTotal must count a card about to be parked this tick');
+});
+
+// BRO-3437: board-targeting-audit.js measured the `watchdog-park` ledger
+// event at 100% retired-board ids over 7 days, most recently <1h old.
+// BRO-3390/3878 already stopped p01Queue/retryable from creating FRESH
+// claims against the retired Notion mirror, but a claim already sitting in
+// the ledger from before those fixes still aged past CLAIM_LABEL_GRACE_MS
+// and reached noLaunchPark — writing a watchdog-park row and paging the
+// owner about a card Linear has never heard of. Same shape as the test
+// above, bare-numeric id instead of `linear:`.
+test('BRO-3437: a stale unlaunched claim against the retired Notion mirror is never promoted to awaitingClaim/noLaunchPark', () => {
+  const entries = [{ ts: T(60), event: 'watchdog-redispatch', taskId: '60', kind: 'p01-backlog' }];
+  const tasks = new Map([task(60, 'pending', 'P1 Now')]);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.awaitingClaim.length, 0, 'a retired-board claim must never be surfaced as a labelled failure');
+  assert.equal(plan.noLaunchPark.length, 0, 'and must never be escalated to an actual park');
+  assert.equal(plan.parkedTotal, 0);
 });
 
 test('BRO-3429: once actually parked, the card leaves awaitingClaim/noLaunchPark and does not double-count needsYou', () => {
   const parked = [
-    { ts: T(60), event: 'watchdog-redispatch', taskId: '51', kind: 'p01-backlog' },
+    { ts: T(60), event: 'watchdog-redispatch', taskId: 'linear:BRO-51', kind: 'p01-backlog' },
     // The CLI appends this PARK row right after the sweep above computed
     // noLaunchPark — simulating the NEXT sweep's view of the ledger.
-    { ts: T(59), event: core.WATCHDOG_EVENTS.PARK, taskId: '51', reason: 'no launch' },
+    { ts: T(59), event: core.WATCHDOG_EVENTS.PARK, taskId: 'linear:BRO-51', reason: 'no launch' },
   ];
-  const tasks = new Map([task(51, 'pending', 'P1 Now')]);
+  const tasks = new Map([lin('BRO-51', 'pending', 'P1 Now')]);
   const plan = core.planSweep(parked, tasks, { now: NOW, liveTitles: LIVE });
   assert.equal(plan.awaitingClaim.length, 0, 'a parked id must not also sit in the passive label list');
   assert.equal(plan.noLaunchPark.length, 0, 'and must not be re-parked every sweep');
@@ -513,13 +540,13 @@ test('BRO-3429: once actually parked, the card leaves awaitingClaim/noLaunchPark
 
 test('BRO-3429: a fresh launch after a park re-arms the card for the NEXT stall', () => {
   const entries = [
-    { ts: T(120), event: 'watchdog-redispatch', taskId: '52', kind: 'p01-backlog' },
-    { ts: T(119), event: core.WATCHDOG_EVENTS.PARK, taskId: '52', reason: 'no launch' },
-    { ts: T(60), event: 'launch', taskId: '52', subject: 'Fix thing 52', workspaceRef: 'workspace:1' },
-    { ts: T(50), event: 'dead', taskId: '52', workspaceRef: 'workspace:1' },
-    { ts: T(10), event: 'watchdog-redispatch', taskId: '52', kind: 'retry' },
+    { ts: T(120), event: 'watchdog-redispatch', taskId: 'linear:BRO-52', kind: 'p01-backlog' },
+    { ts: T(119), event: core.WATCHDOG_EVENTS.PARK, taskId: 'linear:BRO-52', reason: 'no launch' },
+    { ts: T(60), event: 'launch', taskId: 'linear:BRO-52', subject: 'Fix thing 52', workspaceRef: 'workspace:1' },
+    { ts: T(50), event: 'dead', taskId: 'linear:BRO-52', workspaceRef: 'workspace:1' },
+    { ts: T(10), event: 'watchdog-redispatch', taskId: 'linear:BRO-52', kind: 'retry' },
   ];
-  const tasks = new Map([task(52, 'in_progress')]);
+  const tasks = new Map([lin('BRO-52', 'in_progress')]);
   const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
   // The retry claim at T(10) is only ~2.5 min old — still inside the boot
   // grace, so it must not be parked YET (that would defeat the boot-window
@@ -770,13 +797,26 @@ test('BRO-3424: omitting unlandedJobDone entirely is backward compatible (defaul
 // BRO-3442: a headless job that ended THIS SESSION: CLOSE ME — BLOCKED: is a
 // PARK-with-reason signal, surfaced in a new `jobBlocked` plan field.
 test('BRO-3442: a job-blocked task surfaces in jobBlocked and needsYou', () => {
-  const entries = [{ ts: T(10), event: 'job-blocked', taskId: '90', jobId: '90-abc', reason: 'needs owner decision: rotate the key' }];
-  const plan = core.planSweep(entries, new Map([task(90, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  // BRO-3437: fixtured on Linear — a bare id is excluded from jobBlocked
+  // unconditionally now.
+  const entries = [{ ts: T(10), event: 'job-blocked', taskId: 'linear:BRO-90', jobId: '90-abc', reason: 'needs owner decision: rotate the key' }];
+  const plan = core.planSweep(entries, new Map([lin('BRO-90', 'in_progress')]), { now: NOW, liveTitles: LIVE });
   assert.equal(plan.jobBlocked.length, 1);
-  assert.equal(plan.jobBlocked[0].taskId, '90');
+  assert.equal(plan.jobBlocked[0].taskId, 'linear:BRO-90');
   assert.equal(plan.jobBlocked[0].reason, 'needs owner decision: rotate the key');
   assert.ok(plan.needsYou >= 1);
   assert.ok(plan.parkedTotal >= 1);
+});
+
+// BRO-3437: same signal, retired Notion mirror. A job dispatched (by any
+// means) against a bare-numeric id has no live Linear card the owner can
+// act on, so surfacing it in jobBlocked — and dispatch-watchdog.js writing
+// a watchdog-park row for it — is exactly the writer board-targeting-
+// audit.js caught at 100% retired-board ids.
+test('BRO-3437: a job-blocked task against the retired Notion mirror never surfaces in jobBlocked', () => {
+  const entries = [{ ts: T(10), event: 'job-blocked', taskId: '91', jobId: '91-abc', reason: 'needs owner decision: rotate the key' }];
+  const plan = core.planSweep(entries, new Map([task(91, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.jobBlocked.length, 0);
 });
 
 test('BRO-3442 (adversarial review): a blocked P0/P1 task is NOT ALSO queued for dispatch in the same sweep', () => {
@@ -792,21 +832,39 @@ test('BRO-3442 (adversarial review): a blocked P0/P1 task is NOT ALSO queued for
 
 test('BRO-3442 (adversarial review): a stale job-blocked superseded by a LATER successful job is not re-parked', () => {
   const entries = [
-    { ts: T(30), event: 'job-blocked', taskId: '92', jobId: '92-old', reason: 'stale blocker, already resolved' },
-    { ts: T(10), event: 'job-spawned', taskId: '92', jobId: '92-new' },
-    { ts: T(5), event: 'job-done', taskId: '92', jobId: '92-new', sessionId: 'sess-92' },
+    { ts: T(30), event: 'job-blocked', taskId: 'linear:BRO-92', jobId: '92-old', reason: 'stale blocker, already resolved' },
+    { ts: T(10), event: 'job-spawned', taskId: 'linear:BRO-92', jobId: '92-new' },
+    { ts: T(5), event: 'job-done', taskId: 'linear:BRO-92', jobId: '92-new', sessionId: 'sess-92' },
   ];
-  const plan = core.planSweep(entries, new Map([task(92, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  const plan = core.planSweep(entries, new Map([lin('BRO-92', 'in_progress')]), { now: NOW, liveTitles: LIVE });
   assert.equal(plan.jobBlocked.length, 0, 'the LATEST job for the task (job-done) must win over an older job-blocked jobId');
 });
 
 test('BRO-3442: a job-blocked task already watchdog-parked is not surfaced again', () => {
   const entries = [
-    { ts: T(30), event: 'job-blocked', taskId: '93', jobId: '93-abc', reason: 'missing credential' },
-    { ts: T(20), event: core.WATCHDOG_EVENTS.PARK, taskId: '93', subject: 'x' },
+    { ts: T(30), event: 'job-blocked', taskId: 'linear:BRO-93', jobId: '93-abc', reason: 'missing credential' },
+    { ts: T(20), event: core.WATCHDOG_EVENTS.PARK, taskId: 'linear:BRO-93', subject: 'x' },
   ];
-  const plan = core.planSweep(entries, new Map([task(93, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  const plan = core.planSweep(entries, new Map([lin('BRO-93', 'in_progress')]), { now: NOW, liveTitles: LIVE });
   assert.equal(plan.jobBlocked.length, 0);
+});
+
+// BRO-3437 (ship-check/Codex): 12 legacy watchdog-park rows already sit in the
+// ledger with bare-numeric ids and NOTHING relaunches those ids, so they never
+// clear. They must keep suppressing their id (watchdogParkedIds is untouched)
+// but must not count as owner work — otherwise "N need you" stays inflated
+// forever by cards no surface can show.
+test('BRO-3437: legacy bare-id park rows stay suppressed but do not inflate needsYou/parkedTotal; live ones still count', () => {
+  const legacy = [{ ts: T(60), event: core.WATCHDOG_EVENTS.PARK, taskId: '1864', reason: 'legacy' }];
+  assert.ok(core.watchdogParkedIds(legacy).has('1864'), 'legacy park row still suppresses its id');
+  const p1 = core.planSweep(legacy, new Map([task(1864, 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(p1.needsYou, 0);
+  assert.equal(p1.parkedTotal, 0);
+
+  const live = [{ ts: T(60), event: core.WATCHDOG_EVENTS.PARK, taskId: 'linear:BRO-1864', reason: 'x' }];
+  const p2 = core.planSweep(live, new Map([lin('BRO-1864', 'in_progress')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(p2.needsYou, 1);
+  assert.equal(p2.parkedTotal, 1);
 });
 
 // ── BRO-3404: cmux-lane holds must not gate the headless lane ─────────────
@@ -945,4 +1003,212 @@ test('structuralGuardRefusal: still recognizes "it already looks dispatched" whe
     '  Re-run with --force if you know this is stale.',
   ].join('\n');
   assert.equal(core.structuralGuardRefusal(out), '[linear-next] REFUSING to dispatch BRO-3431: it already looks dispatched.');
+});
+
+// ── BRO-3924 R3: consuming BRO-3551's open-backlog sweep report ────────────
+
+test('BRO-3924 (R3): already-passing cards count toward needsYou and render in the narrative', () => {
+  const plan = core.planSweep([], new Map(), {
+    now: NOW, liveTitles: LIVE,
+    alreadyPasses: [{ id: 'BRO-9001', name: 'Fix the thing', verifyCmd: 'node --test x.test.mjs' }],
+  });
+  assert.equal(plan.needsYou, 1);
+  assert.match(core.renderNarrative(plan), /already passes its own acceptance command/);
+});
+
+test('BRO-3924 (R3): omitting alreadyPasses entirely is backward compatible (defaults to none)', () => {
+  const plan = core.planSweep([], new Map(), { now: NOW, liveTitles: LIVE });
+  assert.deepEqual(plan.alreadyPasses, []);
+  assert.equal(plan.needsYou, 0);
+});
+
+// ── BRO-3924 R5: spend circuit breaker ──────────────────────────────────────
+
+function headlessOpen(id, jobId, claimTs, spawnTs) {
+  return [
+    { ts: claimTs, event: core.WATCHDOG_EVENTS.REDISPATCH, taskId: id },
+    { ts: spawnTs, event: 'launch', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: spawnTs, event: 'job-spawned', jobId, taskId: id, workspaceRef: `headless:${id}` },
+  ];
+}
+
+test('BRO-3924 (R5): the threshold is derived from the shared default scaled by watchdogConcurrency, not the bare $12 backlog-drain default', () => {
+  const backlogDrain = require('../lib/backlog-drain.js');
+  const expected = Math.round(backlogDrain.DEFAULT_SPEND_THRESHOLD_USD * (core.CAPS.watchdogConcurrent / backlogDrain.DEFAULT_CONCURRENCY_CAP) * 100) / 100;
+  assert.equal(core.WATCHDOG_SPEND_THRESHOLD_USD, expected);
+  assert.ok(core.WATCHDOG_SPEND_THRESHOLD_USD > backlogDrain.DEFAULT_SPEND_THRESHOLD_USD, 'must be scaled UP, not reused bare, at 3x the concurrency');
+});
+
+test('BRO-3924 (R5): medianJobCostUSD falls back to the documented historical figure when there is no recent cost history', () => {
+  assert.equal(core.medianJobCostUSD([], NOW), core.FALLBACK_JOB_COST_USD);
+});
+
+test('BRO-3924 (R5): medianJobCostUSD ignores job-done rows older than the 7-day window', () => {
+  const entries = [
+    { ts: T(8 * 24 * 60), event: 'job-spawned', jobId: 'old', taskId: 'linear:BRO-1' },
+    { ts: T(8 * 24 * 60 - 1), event: 'job-done', jobId: 'old', taskId: 'linear:BRO-1', costUSD: 999 },
+  ];
+  assert.equal(core.medianJobCostUSD(entries, NOW), core.FALLBACK_JOB_COST_USD);
+});
+
+test('BRO-3924 (R5): in-flight claims with zero completions trip the spend breaker (in-flight reservation)', () => {
+  const entries = [];
+  for (let i = 0; i < core.CAPS.watchdogConcurrent; i++) {
+    entries.push(...headlessOpen(`linear:BRO-90${i}`, `job-90${i}`, T(5), T(4)));
+  }
+  const breaker = core.watchdogSpendBreaker(entries, NOW);
+  assert.equal(breaker.liveNow, core.CAPS.watchdogConcurrent);
+  assert.ok(breaker.reservedUSD > 0);
+  assert.equal(breaker.completions, 0);
+  assert.equal(breaker.halt, true);
+  assert.match(breaker.reason, /spend circuit breaker/);
+});
+
+test('BRO-3924 (R5): a single landed completion clears the halt even at high reserved spend', () => {
+  const entries = [];
+  for (let i = 0; i < core.CAPS.watchdogConcurrent; i++) {
+    entries.push(...headlessOpen(`linear:BRO-91${i}`, `job-91${i}`, T(10), T(9)));
+  }
+  // Finish exactly one of them — its job is no longer open, so liveNow drops
+  // by one, and its cost lands as a real 'card-pass' row.
+  entries.push({ ts: T(1), event: 'job-done', jobId: 'job-910', taskId: 'linear:BRO-910', costUSD: 5 });
+  const breaker = core.watchdogSpendBreaker(entries, NOW);
+  assert.equal(breaker.liveNow, core.CAPS.watchdogConcurrent - 1);
+  assert.equal(breaker.completions, 1);
+  assert.equal(breaker.halt, false, 'zero-completions is the halt condition — one landed job must clear it regardless of spend');
+});
+
+test('BRO-3924 (R5): a job-done from a prior local calendar day does not count toward today\'s spend', () => {
+  const id = 'linear:BRO-920';
+  const entries = [
+    { ts: T(24 * 60 + 10), event: core.WATCHDOG_EVENTS.REDISPATCH, taskId: id },
+    { ts: T(24 * 60 + 9), event: 'launch', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: T(24 * 60 + 9), event: 'job-spawned', jobId: 'job-920', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: T(24 * 60 + 1), event: 'job-done', jobId: 'job-920', taskId: id, costUSD: 999 },
+  ];
+  const breaker = core.watchdogSpendBreaker(entries, NOW);
+  assert.equal(breaker.liveNow, 0, 'the job already finished — nothing is in flight');
+  assert.equal(breaker.spentUSD, 0, 'a completed job from a prior local day must not count toward today\'s spend');
+});
+
+test('BRO-3924 (R5): watchdogSpendRows attributes each claim to its OWN job, not a stale earlier one for the same task', () => {
+  const id = 'linear:BRO-930';
+  const entries = [
+    ...headlessOpen(id, 'jobA', T(60), T(59)),
+    { ts: T(50), event: 'job-failed', jobId: 'jobA', taskId: id, costUSD: 2 },
+    ...headlessOpen(id, 'jobB', T(40), T(39)),
+    { ts: T(30), event: 'job-done', jobId: 'jobB', taskId: id, costUSD: 8 },
+  ];
+  const rows = core.watchdogSpendRows(entries, NOW);
+  assert.equal(rows.length, 2);
+  assert.deepEqual(rows.map(r => r.usd).sort((a, b) => a - b), [2, 8]);
+  assert.deepEqual(rows.map(r => r.event).sort(), ['card-fail', 'card-pass']);
+});
+
+test('BRO-3924 (R5): a card the watchdog never claimed contributes nothing to spend, even if its job completes today', () => {
+  const id = 'linear:BRO-940';
+  const entries = [
+    // No WATCHDOG_EVENTS.REDISPATCH row for this task — a manual/owner dispatch.
+    { ts: T(9), event: 'launch', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: T(9), event: 'job-spawned', jobId: 'job-940', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: T(1), event: 'job-done', jobId: 'job-940', taskId: id, costUSD: 500 },
+  ];
+  const breaker = core.watchdogSpendBreaker(entries, NOW);
+  assert.equal(breaker.spentUSD, 0);
+  assert.equal(breaker.liveNow, 0);
+});
+
+test('BRO-3924 (R5, Codex catch): medianJobCostUSD samples job-failed cost, not just job-done — a crash loop must not fall back to the cold-start figure', () => {
+  const entries = [];
+  for (let i = 0; i < 5; i++) {
+    entries.push({ ts: T(60), event: 'job-spawned', jobId: `f${i}`, taskId: `linear:BRO-97${i}` });
+    entries.push({ ts: T(1), event: 'job-failed', jobId: `f${i}`, taskId: `linear:BRO-97${i}`, costUSD: 20 });
+  }
+  assert.equal(core.medianJobCostUSD(entries, NOW), 20);
+});
+
+test('BRO-3924 (R5, subagent catch): a negative costUSD row cannot offset legitimate spend', () => {
+  const id = 'linear:BRO-980';
+  const entries = [
+    ...headlessOpen(id, 'job-980', T(10), T(9)),
+    { ts: T(1), event: 'job-done', jobId: 'job-980', taskId: id, costUSD: -50 },
+  ];
+  const rows = core.watchdogSpendRows(entries, NOW);
+  assert.equal(rows[0].usd, 0, 'a negative cost must clamp to 0, never subtract');
+});
+
+test('BRO-3924 (R5, Codex catch): a retry-timeout still records the resumed job\'s real cost, not zero', () => {
+  const id = 'linear:BRO-990';
+  const entries = [
+    { ts: T(120), event: core.WATCHDOG_EVENTS.REDISPATCH, taskId: id },
+    { ts: T(119), event: 'launch', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: T(119), event: 'job-spawned', jobId: 'job-990', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: T(90), event: 'job-retried', jobId: 'job-990', taskId: id, costUSD: 4 },
+    // No successor ever spawns — well past SPEND_ORPHAN_TIMEOUT_H (1h).
+  ];
+  const rows = core.watchdogSpendRows(entries, NOW);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].usd, 4);
+  assert.equal(rows[0].event, 'card-fail');
+});
+
+test('BRO-3924 (R5, Codex catch): an ancient abandoned claim cannot acquire a much-later unrelated job\'s cost or success', () => {
+  const id = 'linear:BRO-991';
+  const entries = [
+    // A claim from 10 days ago — no job ever spawned for IT.
+    { ts: T(10 * 24 * 60), event: core.WATCHDOG_EVENTS.REDISPATCH, taskId: id },
+    // A completely unrelated manual dispatch today, unconnected to the watchdog.
+    { ts: T(9), event: 'launch', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: T(9), event: 'job-spawned', jobId: 'manual-job', taskId: id, workspaceRef: `headless:${id}` },
+    { ts: T(1), event: 'job-done', jobId: 'manual-job', taskId: id, costUSD: 12 },
+  ];
+  const rows = core.watchdogSpendRows(entries, NOW);
+  assert.deepEqual(rows, [], 'the ancient claim must be outside the lookback window and never offered to classifyDispatches');
+});
+
+test('BRO-3924 (R5, Codex catch): the spend breaker recomputes cleanly with only the current window\'s claims (no lookback regression for recent retries)', () => {
+  const id = 'linear:BRO-992';
+  const entries = [
+    ...headlessOpen(id, 'job-992a', T(47 * 60), T(47 * 60 - 1)), // 47h ago — inside the 48h lookback
+    { ts: T(46 * 60), event: 'job-done', jobId: 'job-992a', taskId: id, costUSD: 6 },
+  ];
+  const rows = core.watchdogSpendRows(entries, NOW);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].usd, 6);
+});
+
+test('BRO-3924 (R3, Codex catch): a stale sweep report (past the max-age window) is treated as empty, a fresh one is trusted', () => {
+  const wd = require('../dispatch-watchdog.js');
+  const os = require('node:os');
+  const path = require('node:path');
+  const fs = require('node:fs');
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'sweep-report-'));
+  const reportPath = path.join(tmpDir, 'report.json');
+  const now = Date.now();
+  const write = (generatedAt) => fs.writeFileSync(reportPath, JSON.stringify({
+    generatedAt, checkoutSha: 'deadbeef',
+    alreadyDone: [{ id: 'BRO-1', name: 'x', verifyCmd: 'test -f x' }],
+  }));
+
+  write(new Date(now - 72 * 3600 * 1000).toISOString()); // 72h old, past the 48h max age
+  assert.deepEqual(wd.loadAlreadyPassesReport(now, reportPath).alreadyDone, []);
+
+  write(new Date(now - 1 * 3600 * 1000).toISOString()); // 1h old — well within the window
+  assert.equal(wd.loadAlreadyPassesReport(now, reportPath).alreadyDone.length, 1);
+
+  write('not-a-date');
+  assert.deepEqual(wd.loadAlreadyPassesReport(now, reportPath).alreadyDone, [], 'an unparseable generatedAt must not be trusted as fresh');
+
+  fs.rmSync(tmpDir, { recursive: true, force: true });
+});
+
+test('BRO-3924 (R5): the spend hold surfaces in globalHolds/pausedByPolicy/toDispatch exactly like the other caps', () => {
+  const entries = [];
+  for (let i = 0; i < core.CAPS.watchdogConcurrent; i++) {
+    entries.push(...headlessOpen(`linear:BRO-95${i}`, `job-95${i}`, T(5), T(4)));
+  }
+  const plan = core.planSweep(entries, new Map([lin('BRO-960', 'pending', 'P1 Now')]), { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.budgets.pausedByPolicy, true);
+  assert.equal(plan.toDispatch.length, 0);
+  assert.ok(plan.budgets.holds.some(h => h.includes('spend circuit breaker')));
 });

@@ -75,6 +75,18 @@ const TICKET_DOMAINS = new Set([
   // (a deny-list entry that matches a real review is worse than the phantom
   // gap it removes).
   'ticketluck.com', 'etickets.com',
+  // BRO-3909 (main-red incident, 31 consecutive pushes): grabyourgroupandgo.com
+  // is a Broadway/Off-Broadway GROUP ticket sales business, not a review
+  // outlet. Its "review" of The Cherry Orchard (Park Avenue Armory) is group-
+  // rate marketing copy ("Your ticket price includes our favorable group
+  // ticket pricing of $178 plus a $32 service fee ... To update attendee
+  // information for one of your events, please submit the information
+  // below."), ingested via submit-review-form under a domainless outletId
+  // derived from the host. Same class as ticketline.co.uk above — nothing had
+  // ingested this host before, so it reddened audit-outlet-registry.js
+  // --strict as a NEW unregistered outlet rather than showing up in the
+  // pre-existing baseline.
+  'grabyourgroupandgo.com',
 ]);
 
 // Aggregator/listing sites — not direct review sources

@@ -139,7 +139,30 @@ const MANUAL_REVIEW_IDS = new Set([
 // owes us a decision here" and is reported by the sweep as outstanding work;
 // KEEP_SHOUTED_IDS means "decided, the caps are correct, never ask again"
 // and is silent.
-const KEEP_SHOUTED_IDS = new Set([]);
+//
+// BRO-3920 verification pass, 2026-09-20/21 — these two were reverted from
+// the algorithm's guessed mixed case back to ALL-CAPS after checking the
+// SOURCE's own structured metadata (JSON-LD `name` / og:title / <title>),
+// not a rendered heading, per show:
+//   god-is-a-woman-the-musical-off-west-end-2026 — King's Head Theatre's own
+//     JSON-LD Event.name, og:title and <title> all agree: "GOD IS A WOMAN
+//     THE MUSICAL". Luisa Omielan's own comedy-show branding.
+//   this-is-not-about-me-* (both the OWE and the 59E59 OB transfer) — Soho
+//     Theatre's own <title> tag AND TodayTix's <title> independently agree:
+//     "THIS IS NOT ABOUT ME." (period included). No lowercase form of this
+//     title exists in any source checked.
+//
+// noda-map-320f-west-end-2026 is NOT in this set, and that is a verified
+// decision, not an oversight. A post-handoff review flagged it as suspect —
+// the show's own reviewer described NODA・MAP as "always set in caps" and
+// asked for a source check before either restoring ALL-CAPS here or
+// confirming the stored "Noda Map – 320°F" as-is. Checked 2026-09-22:
+// Sadler's Wells' own <title> tag AND og:title meta tag (raw HTML, not a
+// rendered heading) both read "Noda Map - minus 320 Fahrenheit" — mixed
+// case. The stored title is correct; no exemption needed.
+const KEEP_SHOUTED_IDS = new Set([
+  'god-is-a-woman-the-musical-off-west-end-2026',
+]);
 
 // The ingestion paths normalise a title BEFORE the row has an id — the id is
 // DERIVED from the normalised title, so it cannot be an input to it. An
@@ -149,10 +172,10 @@ const KEEP_SHOUTED_IDS = new Set([]);
 // forever. Both sets are mirrored by title so ingestion honours them too.
 // (Adversarial review finding; confirmed by running the composer with a
 // title and no id.)
-const MANUAL_REVIEW_TITLES = new Set([
-  'más sabe el saulo por viejo...',
+const MANUAL_REVIEW_TITLES = new Set([]);
+const KEEP_SHOUTED_TITLES = new Set([
+  'this is not about me.',
 ]);
-const KEEP_SHOUTED_TITLES = new Set([]);
 
 function titleKey(title) {
   return String(title || '').trim().toLowerCase().replace(/\s+/g, ' ');

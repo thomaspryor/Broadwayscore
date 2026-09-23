@@ -104,7 +104,11 @@ jobs:
           aws s3 ls "s3://${R2_BUCKET}/weekly/${STAMP}/" --endpoint-url "$R2_ENDPOINT" --human-readable --summarize
 
       - name: Checkout for notify action
-        if: failure()
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 60 reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # skip this checkout, and the Notify step below would then be unable
+        # to resolve ./.github/actions/notify-failure.
+        if: failure() || cancelled()
         uses: actions/checkout@v5
         with:
           sparse-checkout: |
@@ -112,7 +116,9 @@ jobs:
             scripts/lib/discord-notify.js
 
       - name: Notify on failure
-        if: failure()
+        # BRO-3707: see "Checkout for notify action" above — same cancelled()
+        # gap, and this is the step that actually sends the critical alert.
+        if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
         with:
           title: 'R2 Cold Backup Failed'

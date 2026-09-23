@@ -37,7 +37,7 @@
 const fs = require('fs');
 const path = require('path');
 const { loadStaging, writeStagingCandidates, updateStaging } = require('./lib/venue-listing-discover');
-const { isCandidateConfirmed, decideCriticListingPromotion } = require('./lib/ob-cross-validation');
+const { isCandidateConfirmed, decideCriticListingPromotion, preferCorroboratingTitle } = require('./lib/ob-cross-validation');
 const { isKnownOffBroadwayVenue, isNonNycVenue, OFF_BROADWAY_VENUES, isWestEndVenue, sanitizeVenueForWrite, marketForCategory } = require('./lib/venue-classification');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { scrapePlaybillOBData } = require('./lib/playbill-ob-schedule');
@@ -615,6 +615,18 @@ async function main() {
     } else {
       const r = isCandidateConfirmed(c, { playbillEntries, lortelEntries });
       confirmed = r.confirmed; reason = r.reason; source = r.source;
+      // BRO-3920: the venue's own page is a scrape-artifact risk (rendered
+      // heading, CSS caps, inconsistent CMS input — Signature Theatre's own
+      // WordPress data is shouted at every tier, not just on render). Prefer
+      // the corroborating Playbill/Lortel entry's title when it disagrees on
+      // casing and looks more trustworthy (see preferCorroboratingTitle).
+      if (confirmed && r.matchedTitle) {
+        const pick = preferCorroboratingTitle(c.title, r.matchedTitle);
+        if (pick.swapped) {
+          logEntry({ kind: 'title-source-preferred', title: pick.title, venue: c.venue, from: c.title, source });
+          c.title = pick.title;
+        }
+      }
     }
 
     if (!confirmed) {

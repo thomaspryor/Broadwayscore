@@ -259,6 +259,15 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-08-22: grepped every .github/workflows/*.yml and scripts/*.js for the literal filename — only scripts/audit-imageless-scored-shows.js writes it, invoked only by audit-imageless-scored-shows.yml\'s "Commit audit ledger" step; that workflow now declares concurrency: {group: audit-imageless-scored-shows, cancel-in-progress: false} (added alongside this entry — it had none before) so its own cron and a manual workflow_dispatch queue instead of racing each other into the fallback.',
     note: 'card #1456 self-heal ledger (cooldown/escalation state for scored shows missing images) — its commit step was losing the local fetch+rebase+push race under main-branch churn on ~20 of its last 25 runs (confirmed via run history) before this fix',
   },
+  {
+    file: 'audit/progress-watch-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'scoring-reviews',
+    verifiedBy: '2026-09-21 (BRO-2722): grepped every .github/workflows/*.yml and scripts/*.js for the literal filename — only scripts/check-progress-stalls.js writes it, invoked only by llm-ensemble-score.yml\'s "Snapshot progress-watch state" step, gated on github.event_name == \'schedule\' (never set by a workflow_dispatch input, so its concurrency group is always the bare default, never the -{rescore_reason} suffixed variant). That workflow declares concurrency: {group: scoring-reviews[-reason], cancel-in-progress: false}, and every writer invocation lands in the unsuffixed \'scoring-reviews\' group specifically, so overlapping scheduled runs queue instead of racing.',
+    note: 'liveness snapshot read by health-check.js\'s progressWatchResults() — was staged unregistered via git-add-existing.sh\'s broad `data/audit/` glob in the "Check for changes" step on every scheduled run, disqualifying that run\'s "Commit and push changes" step from the Git Data API fallback and forcing it onto the slow fetch+rebase+push path (root cause of the BRO-2722 repeat-failure alert — run 34818414035, 2026-09-14, "Commit and push changes" exhausted all 5 retry attempts under main-branch push contention with the fallback disqualified).',
+  },
   // 2026-08-23 follow-up (same originating incident, run 32625283171): the
   // apiFallbackSafe fix above only isolated health-digest-snapshot.json —
   // data-health-check.yml's "Commit health check + triage data" step still

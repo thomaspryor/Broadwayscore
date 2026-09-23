@@ -58,14 +58,17 @@ scripts/bsc-reconcile-reopen-idempotency.test.mjs
 scripts/bsc-reconcile.test.mjs
 scripts/check-cross-outlet-attribution-drift.test.mjs
 scripts/check-linear-drain-health.test.mjs
+scripts/check-provider-spend.test.mjs
 scripts/check-rebuild-staleness.test.mjs
 scripts/check-review-count-drift.test.mjs
 scripts/check-seo-health.test.mjs
 scripts/clear-stale-roundup-flags.test.mjs
 scripts/cloud-memory-sync.test.mjs
 scripts/collect-review-texts.test.mjs
+scripts/critical-workflow-alert-conditions.test.mjs
 scripts/cron-health-chronic.test.mjs
 scripts/discover-new-shows.test.mjs
+scripts/dispatch-watchdog.test.mjs
 scripts/enrich-card-acceptance.test.mjs
 scripts/enrich-fallback-ticket-links.test.mjs
 scripts/enrich-ibdb-dates.test.mjs
@@ -185,6 +188,7 @@ scripts/tests/check-push-ledger-content-check.test.mjs
 scripts/tests/close-time-verify.test.mjs
 scripts/tests/cmux-launch-reclaim.test.mjs
 scripts/tests/cmux-reachability-check.test.mjs
+scripts/tests/digest-autofix-mirror-park-guard.test.mjs
 scripts/tests/dispatch-card-drift.test.mjs
 scripts/tests/dispatch-claim-requires-workspace.test.mjs
 scripts/tests/dispatch-outcome-digest.test.mjs
@@ -196,6 +200,7 @@ scripts/tests/gc-dry-run-parity.test.mjs
 scripts/tests/gc-merged-worktrees-liveness.test.mjs
 scripts/tests/headless-dispatch-telemetry.test.mjs
 scripts/tests/headless-dispatchability.test.mjs
+scripts/tests/health-check-hours-ago.test.mjs
 scripts/tests/hook-guard-restore.test.mjs
 scripts/tests/hook-liveness.test.mjs
 scripts/tests/infra-gate-registration.test.mjs
@@ -214,6 +219,7 @@ scripts/tests/observable-before-absence.test.mjs
 scripts/tests/opening-night-monitor-kill-switch-staleness.test.mjs
 scripts/tests/orphan-task-reconciliation.test.mjs
 scripts/tests/provider-spend-ledger-commit-ordering.test.mjs
+scripts/tests/provider-spend-ledger-freshness-row.test.mjs
 scripts/tests/pull-quote-quality.test.mjs
 scripts/tests/recheck-ledger-persistence.test.mjs
 scripts/tests/record-push-ledger-redaction.test.mjs
@@ -262,8 +268,10 @@ tests/unit/audit-dependencies.test.mjs
 tests/unit/audit-ensemble-rejections.test.mjs
 tests/unit/audit-imageless-scored-shows-push-timeout.test.mjs
 tests/unit/audit-imageless-scored-shows-push.test.mjs
+tests/unit/audit-outlet-registry-gaps.test.mjs
 tests/unit/audit-pre2005-reviews-locked.test.mjs
 tests/unit/audit-same-job-breadcrumb-coverage.test.mjs
+tests/unit/audit-show-review-gap.test.mjs
 tests/unit/audit-url-collisions.test.mjs
 tests/unit/audit-we-closing-dates.test.mjs
 tests/unit/audit-workflow-hygiene-batch-poll-timeout.test.mjs
@@ -398,6 +406,7 @@ tests/unit/critic-consensus-eligibility.test.mjs
 tests/unit/critic-fill-rules.test.mjs
 tests/unit/critic-listing-promotion.test.mjs
 tests/unit/critic-registry-guard.test.mjs
+tests/unit/critics-circle-parser.test.mjs
 tests/unit/critics-label-interactivity.test.mjs
 tests/unit/critics-take-generation.test.mjs
 tests/unit/cron-health-chronic-refresh-show-score.test.mjs
@@ -465,6 +474,7 @@ tests/unit/enrich-card-rearm-vacuous.test.mjs
 tests/unit/ensemble.test.mjs
 tests/unit/essay-intro-nonreview-fp.test.mjs
 tests/unit/eurydice-image-found.test.mjs
+tests/unit/evening-standard-parser.test.mjs
 tests/unit/everybodys-talking-about-jamie-show-exists.test.mjs
 tests/unit/exact-title-and-clone-guards.test.mjs
 tests/unit/exclusion-logger.test.mjs
@@ -562,6 +572,7 @@ tests/unit/lbo-individual-star-extraction.test.mjs
 tests/unit/lbo-roundup-page-validation.test.mjs
 tests/unit/ledger-future-timestamp.test.mjs
 tests/unit/linear-acceptance-extraction.test.mjs
+tests/unit/linear-brain-cancel-gate.test.mjs
 tests/unit/linear-brain-done-gate.test.mjs
 tests/unit/linear-brain-duplicate-gate.test.mjs
 tests/unit/linear-brain-reopen-warning.test.mjs
@@ -582,6 +593,7 @@ tests/unit/lint-workflow-guards-swallowed-audit-writers-floor.test.mjs
 tests/unit/live-rc-missing-drift.test.mjs
 tests/unit/llm-confidence-cap.test.mjs
 tests/unit/llm-ensemble-max-cost-wiring.test.mjs
+tests/unit/llm-ensemble-score-reviews-workflow.test.mjs
 tests/unit/llm-extractor.test.mjs
 tests/unit/llm-fallback-partial.test.mjs
 tests/unit/llm-scoring-rebuild-parity.test.mjs
@@ -700,6 +712,7 @@ tests/unit/poller-blocklist.test.mjs
 tests/unit/poller-idempotency.test.mjs
 tests/unit/pr-supervisor-core.test.mjs
 tests/unit/pre-push-visual-gate-scope.test.mjs
+tests/unit/precursor-category-parser.test.mjs
 tests/unit/preview-placeholder-merge.test.mjs
 tests/unit/prior-run-discovery-window.test.mjs
 tests/unit/prior-run-review-display.test.mjs
@@ -808,6 +821,7 @@ tests/unit/scrape-nysr-preserves-exclusion-flags.test.mjs
 tests/unit/scrape-theatre-reviews-preserves-exclusion-flags.test.mjs
 tests/unit/scrape-thestage-roundups-preserves-exclusion-flags.test.mjs
 tests/unit/scrape-westendtheatre-push-timeout.test.mjs
+tests/unit/scraper-domain-match-alias-subdomain.test.mjs
 tests/unit/scraper-spend-attribution.test.mjs
 tests/unit/scraper-unwrap-redirect.test.mjs
 tests/unit/scraper-url-mismatch-audit.test.mjs
@@ -884,6 +898,7 @@ tests/unit/theater-tips-validators.test.mjs
 tests/unit/theaterlife-byline.test.mjs
 tests/unit/theatermania-extractor.test.mjs
 tests/unit/theatr-coverage-audit.test.mjs
+tests/unit/theatr-data-workflow.test.mjs
 tests/unit/theatr-skip-shows.test.mjs
 tests/unit/theatrely-extractor.test.mjs
 tests/unit/ticket-buttons-single-only.test.mjs
@@ -921,6 +936,7 @@ tests/unit/validate-data-cross-market-check.test.mjs
 tests/unit/validate-data-push-refusal-sentinel.test.mjs
 tests/unit/validate-data-unscored-review-texts.test.mjs
 tests/unit/validate-data-venue-complex-wiring.test.mjs
+tests/unit/validate-review-texts.test.js
 tests/unit/validate-show-venue.test.mjs
 tests/unit/variety-extractor.test.mjs
 tests/unit/venue-aliases.test.mjs
@@ -936,6 +952,7 @@ tests/unit/watchlist-delete-icon-contrast.test.mjs
 tests/unit/watchlist-grid-remove-affordance.test.mjs
 tests/unit/we-gap-reference.test.mjs
 tests/unit/we-gate-proving.test.mjs
+tests/unit/we-listing-discover.test.mjs
 tests/unit/we-reviews-blocked-by-needsReview.test.mjs
 tests/unit/we-roundup-discover.test.mjs
 tests/unit/west-end-rage-clicks.test.mjs
@@ -951,3 +968,4 @@ tests/unit/worktree-live-lease-check.test.mjs
 tests/unit/wrong-production-autoclear.test.mjs
 tests/unit/wrong-production-rebuild-guard.test.mjs
 tests/unit/wrong-production-setters-honor-manual-clear.test.mjs
+tests/unit/year-page-precursor-table-schema.test.mjs

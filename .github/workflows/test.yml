@@ -310,6 +310,15 @@ on:
       # scripts/lib/audit-push-retry-budgets.js (globbed above), but this
       # file itself needs its own entry.
       - 'scripts/audit-push-retry-budgets.js'
+      # BRO-3954: scripts/audit-review-type-wrong-show.js had NO entry here at
+      # all before this fix (same "unlisted scripts/ = ZERO CI" gap this
+      # comment block documents elsewhere) — a solo edit to it, including this
+      # ticket's own --verify-pushed wiring, would otherwise trigger zero CI.
+      - 'scripts/audit-review-type-wrong-show.js'
+      # BRO-3954: thin CLI wrapper for scripts/lib/apply-scripts-verify-pushed-
+      # scan.js (globbed above) — same thin-wrapper-outside-scripts/lib/ gap
+      # shape as audit-push-retry-budgets.js just above.
+      - 'scripts/audit-apply-scripts-verify-pushed.js'
       # scripts/ingest-dmarc-reports.js + its colocated test (BRO-525): the
       # DMARC parser and analyzer live in scripts/lib/ (globbed above), but the
       # ingest CLI and its test sit at the top level of scripts/, so a solo
@@ -604,6 +613,11 @@ on:
       # in the lib-test glob; path-listed so a solo edit triggers CI
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/check-provider-spend.js'
+      # BRO-3227: colocated test for the freshness/continuity guard above.
+      # Registered in tests/unit-test-manifest.txt (runs in the unit-tests
+      # job), but a solo push touching only this file needs its own path
+      # entry too, or it gets zero CI (feedback_test_yml_push_path_allowlist).
+      - 'scripts/check-provider-spend.test.mjs'
       # BRO-3057 what-else: scripts/config/provider-spend-thresholds.json is the
       # exact same gap as scripts/config/provider-pricing.json fixed above in the
       # same commit — check-provider-spend.js and scripts/lib/scrapingdog-caps.js
@@ -942,6 +956,15 @@ on:
       # of silently discarding the incoming branch's fix. Path-listed so a
       # solo edit to the .sh triggers CI.
       - 'scripts/lib/merge-worktree-to-main.conflict-resolution.test.sh'
+      # BRO-3595: pop_stash_safely()'s auto-gen-only takeover loop ran
+      # `git checkout HEAD -- "$f"` unconditionally and swallowed the error
+      # (`|| true`, no log line) when HEAD has no version of the path (a
+      # modify/delete conflict where local main deleted the file) — left the
+      # path unresolved in the index while `git stash drop` still ran, losing
+      # the content with zero trace. Same bug class as BRO-2364
+      # (scripts/lib/sync-audit-checkout.sh). Path-listed so a solo edit to
+      # the .sh triggers CI.
+      - 'scripts/lib/merge-worktree-to-main.stash-pop-head-missing-path.test.sh'
       # Task #1511: the push-retry loop's `git merge origin/$DEFAULT_BRANCH
       # --no-edit` on retry redirected its own stderr/stdout to /dev/null
       # before die("could not merge remote changes on retry") — zero
@@ -1122,6 +1145,13 @@ on:
       # needed. Registered explicitly in the unit-test node --test list below
       # (top-level scripts/*.test.mjs is not globbed).
       - 'scripts/send-opening-digest.test.mjs'
+      # BRO-3707: scans every .github/workflows/*.yml (already covered by the
+      # '.github/workflows/**' glob below) for severity:'critical' Notify-on-
+      # failure steps missing cancelled() coverage. Registered explicitly in
+      # the unit-test node --test list below (top-level scripts/*.test.mjs is
+      # not globbed); its scripts/lib/critical-workflow-notify-cancelled.js
+      # helper is already covered by the 'scripts/lib/**' glob above.
+      - 'scripts/critical-workflow-alert-conditions.test.mjs'
       # Genre classifier (non-theatrical routing, mirror of src/lib/genre.ts) +
       # its colocated parity/FP test, and the discovery writer that tags new
       # shows. Without these path entries a solo edit triggers ZERO CI.
@@ -2484,8 +2514,18 @@ on:
       # in scripts/tests/ (registered in tests/unit-test-manifest.txt — that
       # dir is NOT globbed); path-listed so a solo edit triggers CI.
       - 'scripts/dispatch-watchdog.js'
+      # BRO-3437: class-level "no watchdog-park source names a retired-board
+      # id" test (top-level scripts/*.test.mjs are NOT globbed).
+      - 'scripts/dispatch-watchdog.test.mjs'
       - 'scripts/tests/dispatch-watchdog-core.test.mjs'
       - 'scripts/tests/dispatch-outcome.test.mjs'
+      # BRO-3923: digest-autofix never files a "BSC Daily: Watchdog parked
+      # #<bare numeric>" tracker for the frozen Notion mirror. The guard lib
+      # (scripts/lib/digest-autofix-mirror-park-guard.js) is auto-covered by
+      # the scripts/lib/** glob above; its test lives in scripts/tests/ (not
+      # globbed, same gap shape as dispatch-watchdog-core.test.mjs above) so
+      # it's registered in tests/unit-test-manifest.txt AND path-listed here.
+      - 'scripts/tests/digest-autofix-mirror-park-guard.test.mjs'
       # The digest sibling was missed when the pair above was listed: grep for
       # "dispatch-outcome-digest" across .github/workflows/ returned NOTHING,
       # so neither the lib nor its test could trigger any workflow. The test is
@@ -2683,6 +2723,18 @@ on:
       # tests/unit-test-manifest.txt, not globbed), so it's path-listed here
       # so a solo edit to just the test still triggers CI.
       - 'scripts/tests/provider-spend-ledger-commit-ordering.test.mjs'
+      # BRO-3349: the freshness-math regression guard for health-check.js's
+      # "Data quality: provider spend ledger" row. scripts/health-check.js and
+      # scripts/lib/provider-spend-core.js are already covered above/by the
+      # 'scripts/lib/**' glob; this test lives in scripts/tests/ (registered in
+      # tests/unit-test-manifest.txt, not globbed), so it's path-listed here so
+      # a solo edit to just the test still triggers CI.
+      - 'scripts/tests/provider-spend-ledger-freshness-row.test.mjs'
+      # BRO-3349 prevent-class: the same start-of-day inflation, guarded in
+      # health-check.js's shared hoursAgo() so every freshness row is covered
+      # (data/cast-changes.json's day-shaped lastUpdated sits on a 72h warn bar).
+      # Same scripts/tests/ path-listing rationale as the entry directly above.
+      - 'scripts/tests/health-check-hours-ago.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
       # validate-show-venue.js already path-listed above (line ~180).
@@ -4870,6 +4922,25 @@ jobs:
         # script does NOT wedge and completes normally.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/merge-worktree-to-main.conflict-resolution.test.sh
+
+      - name: Run merge-worktree-to-main stash-pop-head-missing-path regression test (BRO-3595)
+        # BRO-3595: same bug class as BRO-2364 (scripts/lib/sync-audit-checkout.sh)
+        # — pop_stash_safely()'s auto-gen-only takeover loop ran `git checkout
+        # HEAD -- "$f"` unconditionally for every unmerged auto-gen path and
+        # swallowed the error with `|| true` (no log line) whenever HEAD has no
+        # version of that path. Verified empirically that this is NOT reachable
+        # via a brand-new file that exists only in the stash (git stash pop
+        # refuses outright with "needs merge" the instant any conflict already
+        # exists, before touching anything else) — the real trigger is a
+        # modify/delete conflict: the worktree branch modifies an auto-gen
+        # path, local main independently deletes it, so `git merge $BRANCH`
+        # conflicts DU on it and HEAD has no version to check out. The path was
+        # left unresolved in the index while `git stash drop` still ran,
+        # losing the content with zero trace. Asserts the resolved path has no
+        # unmerged index entry, the working-tree file is cleanly removed (not
+        # left half-conflicted), and the stash is dropped.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/merge-worktree-to-main.stash-pop-head-missing-path.test.sh
 
       - name: Run merge-worktree-to-main retry-merge-error regression test (task #1511)
         # Task #1511 (Notion 3bc637c5416f8183aa89fecafdc5cbc6): the push-retry

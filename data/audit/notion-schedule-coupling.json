@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-09-20T19:04:16.122Z",
+  "generatedAt": "2026-09-22T12:14:55.252Z",
   "workflowHalf": {
     "ok": true,
     "reason": null,
     "scannedWorkflows": 175,
-    "scannedScripts": 503,
+    "scannedScripts": 504,
     "findings": [
       {
         "workflow": "card-verifiability-audit.yml",
@@ -46,20 +46,12 @@
     ]
   },
   "launchdHalf": {
-    "ok": true,
-    "reason": null,
-    "scannedAgents": 29,
-    "scannedScripts": 13,
-    "findings": [
-      {
-        "label": "com.bwsc.opening-night-monitor",
-        "script": "scripts/opening-night-monitor-launch.js",
-        "signals": [
-          "loadTasksUnioned"
-        ]
-      }
-    ]
+    "ok": false,
+    "reason": "not darwin — launchd is Mac-only, this half is CI-blind by design (same restriction as check-hook-liveness.js)",
+    "scannedAgents": 0,
+    "scannedScripts": 0,
+    "findings": []
   },
-  "totalFindings": 6,
-  "bannerText": "notion-schedule-coupling: 6 live schedule(s) still reference the frozen Notion mirror — see data/audit/notion-schedule-coupling.json"
+  "totalFindings": 5,
+  "bannerText": "notion-schedule-coupling: 5 live schedule(s) still reference the frozen Notion mirror — see data/audit/notion-schedule-coupling.json"
 }

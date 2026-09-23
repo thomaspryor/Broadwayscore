@@ -166,6 +166,14 @@ function generateApproveUrl(workflowFile, alertTitle) {
 }
 // Critical workflow failures still alert via notify-failure composite action.
 
+// BRO-3349: the ONE definition of "is the provider-spend ledger stale?" —
+// shared with its producer (scripts/check-provider-spend.js, which
+// re-exports these). Imported from provider-spend-core.js rather than from
+// the CLI: the CLI has top-level side effects (hasHelpFlag/process.exit,
+// argv-derived DAY) that would fire on require. provider-spend-core.js does
+// pull in provider-telemetry/browserbase-caps, but neither does I/O, reads
+// env, or cycles at require time (verified, ship-check/Codex).
+const { ledgerFreshnessHours, lastLedgerDay, STALE_HOURS_THRESHOLD: PROVIDER_SPEND_STALE_HOURS } = require('./lib/provider-spend-core');
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const AUDIT_DIR = path.join(DATA_DIR, 'audit');
 const PIPELINE_DIR = path.join(AUDIT_DIR, 'pipeline-health');
@@ -416,10 +424,29 @@ async function tryAutoFix(checkResult) {
 
 // --- Helpers ---
 
-function hoursAgo(dateStr) {
-  const d = new Date(dateStr);
+// BRO-3349 (prevent-class): a BARE "YYYY-MM-DD" is a whole UTC day, not the
+// instant of its midnight. `new Date('2026-09-20')` is that day's START, so
+// treating it as a write timestamp inflates every reported age by up to 24h —
+// which is exactly how "Data quality: provider spend ledger" spent five days
+// reporting a perfectly fresh ledger as ">48h stale". Two live FRESHNESS_CHECKS
+// fields are day-shaped today (data/cast-changes.json's `lastUpdated`, warn at
+// 72h with a Wed+Sat writer — a Saturday write read 83h on Tuesday against a
+// true 59h; and data/commercial.json's `_meta.lastUpdated`), and nothing stops
+// a future producer from emitting another. Anchoring on the day's END is the
+// only reading that cannot over-report: a file written at ANY point during day
+// D is at most as old as D's end. Full timestamps are untouched — they do not
+// match the bare-day shape. Covered by scripts/tests/health-check-hours-ago.test.mjs.
+const BARE_DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+function hoursAgo(dateStr, now = Date.now()) {
+  // `new Date(null)` is epoch 0, i.e. a FINITE ~497,000h — a plausible-looking
+  // number rather than the Infinity every caller's "no usable value" branch
+  // expects. Numeric epoch inputs stay supported (some snapshots store
+  // `timestamp` as a number); only null is special-cased.
+  if (dateStr === null) return Infinity;
+  const d = new Date(BARE_DAY_RE.test(dateStr) ? `${dateStr}T23:59:59.999Z` : dateStr);
   if (isNaN(d.getTime())) return Infinity;
-  return (Date.now() - d.getTime()) / (1000 * 60 * 60);
+  return (now - d.getTime()) / (1000 * 60 * 60);
 }
 
 function formatAge(hours) {
@@ -1070,6 +1097,71 @@ function checkBatchState() {
 
 // --- Category D: Content Quality ---
 
+/**
+ * providerSpendLedgerResult — decision for the "Data quality: provider spend
+ * ledger" row. `raw` is the literal text of data/audit/provider-spend-daily.jsonl
+ * (null when the file is absent/unreadable).
+ *
+ * Reads the ledger's own last `day` field rather than provider-spend-
+ * snapshot.json's generatedAt: the two files are staged by separate `git add`
+ * lines in the same commit step (adversarial review finding, 2026-09-14), so
+ * if the ledger's `git add` ever silently no-ops while the snapshot's
+ * succeeds, a generatedAt-based check would report healthy while the ledger —
+ * the thing BRO-3317's acceptance criteria literally names — stayed frozen.
+ *
+ * BRO-3349: this row used to compare `Date.now() - new Date(lastDay)`, i.e.
+ * measure from the START of the recorded day. That adds a phantom ~24h on
+ * top of the ~24h that check-provider-spend.js's `day` is ALREADY behind
+ * (its default DAY is utcYesterday() — the last COMPLETE day), and the row
+ * is evaluated BEFORE "Provider spend reconciliation" runs later in the same
+ * data-health-check.yml job, so the freshest `day` it can ever see is two
+ * calendar days back. Healthy runs therefore measured 48h + hours-into-day
+ * and tripped the >48h bar EVERY single-run day: the committed digest
+ * snapshots show error on 2026-09-17/18/19/20/21 and pass only on 09-20's
+ * second same-day run. Measuring from the END of the recorded day —
+ * ledgerFreshnessHours(), the producer's own already-tested predicate — puts
+ * a healthy run at 24-37h and a genuinely skipped reconciliation at 48h+,
+ * which is the bar this check was always meant to enforce.
+ *
+ * Canonical-predicate rule (memory: feedback_includability_predicates_must_be_
+ * canonical): import the producer's function, never restate its math here.
+ * @param {string|null} raw
+ * @param {Date} [now] injectable clock (tests) — never stubbed globally
+ * @returns {{name: string, status: string, message: string, hint?: string}}
+ */
+function providerSpendLedgerResult(raw, now = new Date()) {
+  const name = 'Data quality: provider spend ledger';
+  const hint = 'node scripts/check-provider-spend.js';
+  if (raw == null) {
+    return { name, status: 'warn', message: 'No provider-spend ledger yet (cron not yet run)', hint };
+  }
+  // Corrupt-line-tolerant, same as check-provider-spend.js's own readLedger():
+  // a bad row loses one day, never the whole check.
+  const records = [];
+  for (const line of raw.split('\n')) {
+    if (!line) continue;
+    try { records.push(JSON.parse(line)); } catch { /* skip corrupt line */ }
+  }
+  const age = ledgerFreshnessHours(records, now);
+  if (!Number.isFinite(age)) {
+    return { name, status: 'warn', message: 'Provider-spend ledger has no parseable rows', hint };
+  }
+  const lastDay = lastLedgerDay(records);
+  if (age > PROVIDER_SPEND_STALE_HOURS) {
+    return {
+      name,
+      status: 'error',
+      message: `Provider spend ledger's newest entry (day=${lastDay}) is ${formatAge(age)} past its end-of-day (>${PROVIDER_SPEND_STALE_HOURS}h) — the daily reconciliation itself has stopped landing`,
+      hint: 'Check the "Commit provider spend ledger (apiFallbackSafe)" step in data-health-check.yml — a push that reports success can still silently drop this file if an earlier commit step in the same job hard-resets the working tree first.',
+    };
+  }
+  // A day still in progress (a manual `--day=<today>` run) has not ENDED yet,
+  // so `age` is negative — "-12h past its end-of-day" is nonsense in the owner's
+  // digest even though the pass verdict is right (ship-check P2).
+  const ageText = age < 0 ? 'not yet ended' : `${formatAge(age)} past its end-of-day`;
+  return { name, status: 'pass', message: `Newest entry (day=${lastDay}) ${ageText}` };
+}
+
 function checkQuality() {
   return [
     // Star-vs-score contradiction detector (card #396, Birthright 2026-07-24).
@@ -1371,46 +1463,16 @@ function checkQuality() {
       return { name: 'Revenue: affiliate health', status: 'pass', message: `${checks.length} checks healthy (${formatAge(age)} ago)${shadowTag}` };
     }),
 
-    // Provider spend ledger dead-man (BRO-3317): "Provider spend
-    // reconciliation" runs earlier in this same data-health-check.yml job.
-    // Reads provider-spend-daily.jsonl's own last `day` field directly —
-    // NOT provider-spend-snapshot.json's generatedAt — because the two files
-    // are staged by separate `git add` lines in the same commit step
-    // (adversarial review finding, 2026-09-14): if the ledger's `git add`
-    // ever silently no-ops (bad path, permissions) while the snapshot's
-    // succeeds, a generatedAt-based check would report healthy while the
-    // ledger itself — the thing this check exists to guard, and the thing
-    // BRO-3317's acceptance criteria literally names — stays frozen. Same
-    // dead-man shape as "Revenue: affiliate health" above otherwise. error at
-    // >48h (not a separate warn tier — matches every sibling dead-man check
-    // in this block, and BRO-3317's acceptance bar is simply "loud within
-    // 48h, not silent for 11 days"). check-provider-spend.js's DAY default is
-    // utcYesterday(), so a healthy daily run's last `day` is always ~24-31h
-    // old at check time (this job runs ~06:45 UTC) — comfortably under the
-    // 48h bar with room for one late/retried run before it trips.
+    // Provider spend ledger dead-man (BRO-3317). The decision lives in
+    // providerSpendLedgerResult() above (exported + unit-tested, CLAUDE.md
+    // §15) so this row's freshness math cannot drift from the producer's
+    // again — see that function's docstring for the BRO-3349 false-positive
+    // this shape fixed.
     runCheck('Data quality: provider spend ledger', () => {
-      const name = 'Data quality: provider spend ledger';
       const ledgerFile = path.join(AUDIT_DIR, 'provider-spend-daily.jsonl');
-      if (!fs.existsSync(ledgerFile)) {
-        return { name, status: 'warn', message: 'No provider-spend ledger yet (cron not yet run)', hint: 'node scripts/check-provider-spend.js' };
-      }
-      let lastDay;
-      try {
-        const lines = fs.readFileSync(ledgerFile, 'utf8').split('\n').filter(Boolean);
-        // Corrupt-line-tolerant, same as check-provider-spend.js's own
-        // readLedger(): a bad row loses one day, never the whole check.
-        for (const line of lines) {
-          try { lastDay = JSON.parse(line).day || lastDay; } catch { /* skip corrupt line */ }
-        }
-      } catch { /* fall through to the missing-day warn below */ }
-      if (!lastDay) {
-        return { name, status: 'warn', message: 'Provider-spend ledger has no parseable rows', hint: 'node scripts/check-provider-spend.js' };
-      }
-      const age = hoursAgo(lastDay);
-      if (age > 48) {
-        return { name, status: 'error', message: `Provider spend ledger's newest entry (day=${lastDay}) is ${formatAge(age)} old (>48h) — the daily reconciliation itself has stopped landing`, hint: 'Check the "Commit provider spend ledger (apiFallbackSafe)" step in data-health-check.yml — a push that reports success can still silently drop this file if an earlier commit step in the same job hard-resets the working tree first.' };
-      }
-      return { name, status: 'pass', message: `Newest entry (day=${lastDay}) ${formatAge(age)} old` };
+      let raw = null;
+      try { raw = fs.readFileSync(ledgerFile, 'utf8'); } catch { /* absent/unreadable -> null */ }
+      return providerSpendLedgerResult(raw);
     }),
 
     // Cross-outlet attribution drift (card #1550, Notion 3bd637c5-416f-81b0):
@@ -5227,4 +5289,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems };
+module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems };

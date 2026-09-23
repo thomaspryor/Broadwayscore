@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-20T09:59:29.207Z",
+  "generatedAt": "2026-09-22T10:14:53.632Z",
   "total": 300,
   "armedCount": 300,
   "refusedCount": 0,
@@ -70,33 +70,6 @@
       ]
     },
     {
-      "id": "3d4637c5-416f-812a-9809-fa92aca76cbb",
-      "name": "Missing show: Brothers Paranormal",
-      "url": "https://app.notion.com/p/Missing-show-Brothers-Paranormal-3d4637c5416f812a9809fa92aca76cbb",
-      "cmd": "node --test tests/unit/brothers-paranormal-show-exists.test.mjs",
-      "missingPaths": [
-        "tests/unit/brothers-paranormal-show-exists.test.mjs"
-      ]
-    },
-    {
-      "id": "3d4637c5-416f-810b-b23c-c84ffab9531f",
-      "name": "Missing show: Everybody's Talking About Jamie",
-      "url": "https://app.notion.com/p/Missing-show-Everybody-s-Talking-About-Jamie-3d4637c5416f810bb23cc84ffab9531f",
-      "cmd": "node --test tests/unit/everybodys-talking-about-jamie-show-exists.test.mjs",
-      "missingPaths": [
-        "tests/unit/everybodys-talking-about-jamie-show-exists.test.mjs"
-      ]
-    },
-    {
-      "id": "3d4637c5-416f-81dc-b52e-def6cec08c64",
-      "name": "Missing show: Standing at the Sky's Edge",
-      "url": "https://app.notion.com/p/Missing-show-Standing-at-the-Sky-s-Edge-3d4637c5416f81dcb52edef6cec08c64",
-      "cmd": "node --test tests/unit/standing-at-the-skys-edge-show-exists.test.mjs",
-      "missingPaths": [
-        "tests/unit/standing-at-the-skys-edge-show-exists.test.mjs"
-      ]
-    },
-    {
       "id": "3d4637c5-416f-8147-8002-ccb7e1f2c6b4",
       "name": "Search ratio remains extremely high — 675 searches by only 75 users (9:1)",
       "url": "https://app.notion.com/p/Search-ratio-remains-extremely-high-675-searches-by-only-75-users-9-1-3d4637c5416f81478002ccb7e1f2c6b4",
@@ -121,42 +94,6 @@
       "cmd": "node --test tests/unit/search-zero-results.test.mjs",
       "missingPaths": [
         "tests/unit/search-zero-results.test.mjs"
-      ]
-    },
-    {
-      "id": "3cd637c5-416f-81ab-b6db-d636b42b8036",
-      "name": "Missing show: Mystic Pizza",
-      "url": "https://app.notion.com/p/Missing-show-Mystic-Pizza-3cd637c5416f81abb6dbd636b42b8036",
-      "cmd": "node --test tests/unit/mystic-pizza-show-existence.test.mjs",
-      "missingPaths": [
-        "tests/unit/mystic-pizza-show-existence.test.mjs"
-      ]
-    },
-    {
-      "id": "3cd637c5-416f-8108-b2ca-c8922771691f",
-      "name": "Missing show: Ride the Cyclone",
-      "url": "https://app.notion.com/p/Missing-show-Ride-the-Cyclone-3cd637c5416f8108b2cac8922771691f",
-      "cmd": "node --test scripts/validate-show-venue.test.mjs",
-      "missingPaths": [
-        "scripts/validate-show-venue.test.mjs"
-      ]
-    },
-    {
-      "id": "3cd637c5-416f-81fc-8126-d8a00162716a",
-      "name": "Missing show: Danny and the Deep Blue Sea",
-      "url": "https://app.notion.com/p/Missing-show-Danny-and-the-Deep-Blue-Sea-3cd637c5416f81fc8126d8a00162716a",
-      "cmd": "test -f scripts/lib/Danny-and-the-Deep-Blue-Sea.js",
-      "missingPaths": [
-        "scripts/lib/Danny-and-the-Deep-Blue-Sea.js"
-      ]
-    },
-    {
-      "id": "3c8637c5-416f-8157-878b-e2742e32d778",
-      "name": "Triage 30+ dead/zombie cmux workspaces after repeated cmux crashes",
-      "url": "https://app.notion.com/p/Triage-30-dead-zombie-cmux-workspaces-after-repeated-cmux-crashes-3c8637c5416f8157878be2742e32d778",
-      "cmd": "node --test scripts/cmux-triage.test.mjs",
-      "missingPaths": [
-        "scripts/cmux-triage.test.mjs"
       ]
     },
     {
@@ -520,24 +457,6 @@
       ]
     },
     {
-      "id": "3b3637c5-416f-817a-960b-cad593603b21",
-      "name": "BSC Daily: Workflow repeat-failure: Opening Night Poller — auto",
-      "url": "https://app.notion.com/p/BSC-Daily-Workflow-repeat-failure-Opening-Night-Poller-auto-3b3637c5416f817a960bcad593603b21",
-      "cmd": "node --test tests/unit/opening-night-poller.test.mjs",
-      "missingPaths": [
-        "tests/unit/opening-night-poller.test.mjs"
-      ]
-    },
-    {
-      "id": "3b0637c5-416f-8159-a5c9-d106e8586882",
-      "name": "BSC Daily: Workflow repeat-failure: Rebuild Reviews Data",
-      "url": "https://app.notion.com/p/BSC-Daily-Workflow-repeat-failure-Rebuild-Reviews-Data-3b0637c5416f8159a5c9d106e8586882",
-      "cmd": "node --test scripts/repeat-failure-check.test.mjs",
-      "missingPaths": [
-        "scripts/repeat-failure-check.test.mjs"
-      ]
-    },
-    {
       "id": "3b0637c5-416f-81ed-a053-f5c2e2bd0074",
       "name": "P1: prove the BWW roundup fix actually recovers reviews — yield provenance + Broadway replay + missing 4th roundup",
       "url": "https://app.notion.com/p/P1-prove-the-BWW-roundup-fix-actually-recovers-reviews-yield-provenance-Broadway-replay-missi-3b0637c5416f81eda053f5c2e2bd0074",
@@ -571,15 +490,6 @@
       "cmd": "test -f scripts/process-feedback-submissions.mjs",
       "missingPaths": [
         "scripts/process-feedback-submissions.mjs"
-      ]
-    },
-    {
-      "id": "3a8637c5-416f-8166-8716-f8edbfa04ade",
-      "name": "BSC Daily: Workflow repeat-failure: Audit Aggregator Review Gap",
-      "url": "https://app.notion.com/p/BSC-Daily-Workflow-repeat-failure-Audit-Aggregator-Review-Gap-3a8637c5416f81668716f8edbfa04ade",
-      "cmd": "node --test scripts/lib/audit-aggregator-review-gap.test.mjs",
-      "missingPaths": [
-        "scripts/lib/audit-aggregator-review-gap.test.mjs"
       ]
     },
     {
@@ -760,6 +670,114 @@
       "cmd": "node --test scripts/vercel-deploy.test.mjs",
       "missingPaths": [
         "scripts/vercel-deploy.test.mjs"
+      ]
+    },
+    {
+      "id": "32b637c5-416f-81d9-8e38-ec5156c1535f",
+      "name": "Launch Discount Tix pages + features on r/Broadway Tuesday",
+      "url": "https://app.notion.com/p/Launch-Discount-Tix-pages-features-on-r-Broadway-Tuesday-32b637c5416f81d98e38ec5156c1535f",
+      "cmd": "node --test tests/unit/discount-tix-bundle.test.mjs",
+      "missingPaths": [
+        "tests/unit/discount-tix-bundle.test.mjs"
+      ]
+    },
+    {
+      "id": "3e2637c5-416f-814f-9d9b-f4af608e6d90",
+      "name": "[Content Error] — Book of mormon Review of the guardian is positive not 45",
+      "url": "https://app.notion.com/p/Content-Error-Book-of-mormon-Review-of-the-guardian-is-positive-not-45-3e2637c5416f814f9d9bf4af608e6d90",
+      "cmd": "node --test tests/unit/book-of-mormon-guardian-review.test.mjs",
+      "missingPaths": [
+        "tests/unit/book-of-mormon-guardian-review.test.mjs"
+      ]
+    },
+    {
+      "id": "3e0637c5-416f-81ca-9fe9-e3678533178d",
+      "name": "[Review Submission] The New York Stage Review review of The Cherry Orchard",
+      "url": "https://app.notion.com/p/Review-Submission-The-New-York-Stage-Review-review-of-The-Cherry-Orchard-3e0637c5416f81ca9fe9e3678533178d",
+      "cmd": "node --test tests/unit/review-submission.test.mjs",
+      "missingPaths": [
+        "tests/unit/review-submission.test.mjs"
+      ]
+    },
+    {
+      "id": "3e0637c5-416f-81ad-9d30-e21fbd4f068f",
+      "name": "[Review Submission] The New York Stage Review review of America who hurt you",
+      "url": "https://app.notion.com/p/Review-Submission-The-New-York-Stage-Review-review-of-America-who-hurt-you-3e0637c5416f81ad9d30e21fbd4f068f",
+      "cmd": "node --test tests/unit/review-submission-validation.test.mjs",
+      "missingPaths": [
+        "tests/unit/review-submission-validation.test.mjs"
+      ]
+    },
+    {
+      "id": "3df637c5-416f-819b-a747-d2a9c347a052",
+      "name": "[Review Submission] The Verdict review of Two Strangers (Carry a Cake Across New York)",
+      "url": "https://app.notion.com/p/Review-Submission-The-Verdict-review-of-Two-Strangers-Carry-a-Cake-Across-New-York-3df637c5416f819ba747d2a9c347a052",
+      "cmd": "node --test tests/unit/the-verdict-two-strangers-review.test.mjs",
+      "missingPaths": [
+        "tests/unit/the-verdict-two-strangers-review.test.mjs"
+      ]
+    },
+    {
+      "id": "3db637c5-416f-8196-a623-d50a2a05959c",
+      "name": "Search used as site navigation — no browse/nav alternative surfaced",
+      "url": "https://app.notion.com/p/Search-used-as-site-navigation-no-browse-nav-alternative-surfaced-3db637c5416f8196a623d50a2a05959c",
+      "cmd": "node --test tests/unit/search-navigation-ratio.test.mjs",
+      "missingPaths": [
+        "tests/unit/search-navigation-ratio.test.mjs"
+      ]
+    },
+    {
+      "id": "3d4637c5-416f-8108-8eab-edf6251a4fa8",
+      "name": "Traffic down to 3,473 users — 13% below ~4k weekly baseline",
+      "url": "https://app.notion.com/p/Traffic-down-to-3-473-users-13-below-4k-weekly-baseline-3d4637c5416f81088eabedf6251a4fa8",
+      "cmd": "node --test scripts/traffic-investigation.test.mjs",
+      "missingPaths": [
+        "scripts/traffic-investigation.test.mjs"
+      ]
+    },
+    {
+      "id": "3d1637c5-416f-8153-a865-c950e41e4e20",
+      "name": "[Other] Hi Tom — I came across your recent scraper cost report and noticed the combinat…",
+      "url": "https://app.notion.com/p/Other-Hi-Tom-I-came-across-your-recent-scraper-cost-report-and-noticed-the-combinat-3d1637c5416f8153a865c950e41e4e20",
+      "cmd": "node --test tests/unit/scraper-cost-diagnostic.test.mjs",
+      "missingPaths": [
+        "tests/unit/scraper-cost-diagnostic.test.mjs"
+      ]
+    },
+    {
+      "id": "3cd637c5-416f-812f-9826-c3e6fe6ba1ce",
+      "name": "Ride the Cyclone — missing production returning zero results",
+      "url": "https://app.notion.com/p/Ride-the-Cyclone-missing-production-returning-zero-results-3cd637c5416f812f9826c3e6fe6ba1ce",
+      "cmd": "node --test tests/unit/ride-the-cyclone-search.test.mjs",
+      "missingPaths": [
+        "tests/unit/ride-the-cyclone-search.test.mjs"
+      ]
+    },
+    {
+      "id": "3cd637c5-416f-81a1-a575-ef9ffea90d0d",
+      "name": "Danny and the Deep Blue Sea — missing Off-Broadway production",
+      "url": "https://app.notion.com/p/Danny-and-the-Deep-Blue-Sea-missing-Off-Broadway-production-3cd637c5416f81a1a575ef9ffea90d0d",
+      "cmd": "node --test tests/unit/danny-deep-blue-sea-search.test.mjs",
+      "missingPaths": [
+        "tests/unit/danny-deep-blue-sea-search.test.mjs"
+      ]
+    },
+    {
+      "id": "3c8637c5-416f-8110-a776-f5cba1657e16",
+      "name": "Move venue write-time validation into the shows.json write choke point (saveShows)",
+      "url": "https://app.notion.com/p/Move-venue-write-time-validation-into-the-shows-json-write-choke-point-saveShows-3c8637c5416f8110a776f5cba1657e16",
+      "cmd": "node --test scripts/lib/shows-write-guard.test.mjs",
+      "missingPaths": [
+        "scripts/lib/shows-write-guard.test.mjs"
+      ]
+    },
+    {
+      "id": "3c8637c5-416f-81f9-9046-c2724c71b8da",
+      "name": "P2: isPlaceholderVenue is exact-match only, not contamination-safe",
+      "url": "https://app.notion.com/p/P2-isPlaceholderVenue-is-exact-match-only-not-contamination-safe-3c8637c5416f81f99046c2724c71b8da",
+      "cmd": "node --test scripts/audit-placeholder-venues.test.mjs",
+      "missingPaths": [
+        "scripts/audit-placeholder-venues.test.mjs"
       ]
     }
   ],

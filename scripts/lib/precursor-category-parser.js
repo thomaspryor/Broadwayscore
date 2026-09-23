@@ -10,6 +10,7 @@
  */
 
 const { JSDOM } = require('jsdom');
+const { assertTableSchema, TableSchemaError, findColumnIndex } = require('./table-schema-assertion');
 
 const USER_AGENT = 'BroadwayScorecardBot/1.0 (broadway-scorecard project; precursor-awards-scraper)';
 
@@ -112,42 +113,34 @@ function parseFourDigitYear(text) {
 }
 
 /**
- * Parse a Wikipedia per-category award page and return entries shaped like:
- *   [{ year, winner, nominees: [...] }, ...]
+ * Parse one already-selected wikitable's rows into year entries, merging
+ * results into the caller's `ensureYear` map.
  *
- * Handles the two common Wikipedia layouts:
- *   A) Per-year rows: `<tr><td rowspan>YEAR</td><td>WINNER ‡</td><td>NOMINEES…</td></tr>`
- *      (winner cell + nominee list cell)
- *   B) One row per nominee, year `rowspan`d down the first column.
+ * Resolves the Year column by header label rather than assuming cells[0]
+ * (BRO-3596 — same column-drift class as BRO-2375: a table that inserts a
+ * column ahead of Year would otherwise silently read a non-year cell as the
+ * year on every row, dropping the whole table with no signal at all).
+ *
+ * @throws {TableSchemaError} if the table's header doesn't reach minCells or
+ *   has no column resolvable as Year
  */
-function parseCategoryPage(html, opts = {}) {
-  const dom = new JSDOM(html);
-  const doc = dom.window.document;
-  const tables = Array.from(doc.querySelectorAll('table.wikitable'));
-  if (tables.length === 0) return [];
-
-  // Wikipedia award category pages usually split history into per-decade
-  // tables (1970s, 1980s, 1990s, ...). Parse EVERY wikitable that has a
-  // year-prefixed first column — picking only the first table would lose
-  // 80%+ of years on modern pages.
-  const yearTables = tables.filter((t) => {
-    const rows = Array.from(t.querySelectorAll('tr')).slice(1, 6);
-    return rows.some((r) => parseFourDigitYear((r.querySelector('th,td')?.textContent) || ''));
-  });
-  if (yearTables.length === 0) return [];
-
-  const byYear = new Map();
-  function ensureYear(y) {
-    if (!byYear.has(y)) byYear.set(y, { year: y, winner: null, nomineeSet: new Map() });
-    return byYear.get(y);
-  }
-
-  for (const yearTable of yearTables) {
-    let currentYear = null;
-    let rowsLeftForYear = 0;
-    let currentWinnerSeen = false;
+function parseYearTable(yearTable, opts, ensureYear) {
+  let currentYear = null;
+  let rowsLeftForYear = 0;
+  let currentWinnerSeen = false;
 
   const rows = Array.from(yearTable.querySelectorAll('tr'));
+  if (rows.length === 0) return;
+
+  const headerCells = Array.from(rows[0].children)
+    .filter((c) => c.tagName === 'TH' || c.tagName === 'TD')
+    .map((c) => (c.textContent || '').trim());
+  assertTableSchema([headerCells], { minCells: 2 });
+  const yearIdx = findColumnIndex(headerCells, 'Year');
+  if (yearIdx === -1) {
+    throw new TableSchemaError(`Year column not found by label in header: ${JSON.stringify(headerCells)}`);
+  }
+
   for (const row of rows) {
     const cells = Array.from(row.children).filter((el) => el.tagName === 'TD' || el.tagName === 'TH');
     if (cells.length === 0) continue;
@@ -155,19 +148,20 @@ function parseCategoryPage(html, opts = {}) {
     const rowBgHighlight = bgIsHighlight(row.getAttribute('style')) ||
       Array.from(cells).some((c) => bgIsHighlight(c.getAttribute('style')));
 
-    // Year detection: first cell text starts with a 4-digit year.
+    // Year detection: the year-column cell text starts with a 4-digit year.
     // If the cell has rowspan, the next N rows belong to the same year.
-    let firstCell = cells[0];
-    let nomineeCells = cells.slice(1);
-    const yearFromCell = parseFourDigitYear(firstCell.textContent || '');
+    let firstCell = cells[yearIdx];
+    let nomineeCells = firstCell ? cells.filter((_, i) => i !== yearIdx) : cells.slice(1);
+    const yearFromCell = firstCell ? parseFourDigitYear(firstCell.textContent || '') : null;
     if (yearFromCell) {
       currentYear = yearFromCell;
       const rs = parseInt(firstCell.getAttribute('rowspan') || '1', 10);
       rowsLeftForYear = rs > 1 ? rs : 1;
       currentWinnerSeen = false;
     } else if (rowsLeftForYear > 0 && currentYear) {
-      // Continuation row for the rowspan'd year. The "first cell" here is
-      // actually a nominee cell.
+      // Continuation row for the rowspan'd year. The year cell is absent
+      // from this row's DOM entirely (rowspan), so every cell here is a
+      // nominee cell.
       nomineeCells = cells;
     } else {
       continue;
@@ -205,7 +199,67 @@ function parseCategoryPage(html, opts = {}) {
 
     rowsLeftForYear = Math.max(0, rowsLeftForYear - 1);
   }
-  } // end for (const yearTable of yearTables)
+}
+
+/**
+ * Parse a Wikipedia per-category award page and return entries shaped like:
+ *   [{ year, winner, nominees: [...] }, ...]
+ *
+ * Handles the two common Wikipedia layouts:
+ *   A) Per-year rows: `<tr><td rowspan>YEAR</td><td>WINNER ‡</td><td>NOMINEES…</td></tr>`
+ *      (winner cell + nominee list cell)
+ *   B) One row per nominee, year `rowspan`d down the first column.
+ */
+function parseCategoryPage(html, opts = {}) {
+  const dom = new JSDOM(html);
+  const doc = dom.window.document;
+  const tables = Array.from(doc.querySelectorAll('table.wikitable'));
+  if (tables.length === 0) return [];
+
+  // Wikipedia award category pages usually split history into per-decade
+  // tables (1970s, 1980s, 1990s, ...). Parse EVERY wikitable that has a
+  // year-prefixed first column — picking only the first table would lose
+  // 80%+ of years on modern pages.
+  const yearTables = tables.filter((t) => {
+    const allRows = Array.from(t.querySelectorAll('tr'));
+    if (allRows.length === 0) return false;
+    // Resolve Year by header label first (BRO-3596 code review finding: the
+    // per-row fix below is unreachable if this selection step still assumes
+    // cells[0] — a table that moves Year off the first column would never
+    // even be selected as a "year table"). Fall back to the historical
+    // first-cell heuristic when no header row is present with a Year label.
+    const headerCells = Array.from(allRows[0].children)
+      .filter((c) => c.tagName === 'TH' || c.tagName === 'TD')
+      .map((c) => (c.textContent || '').trim());
+    const yearIdx = findColumnIndex(headerCells, 'Year');
+    const rows = allRows.slice(1, 6);
+    if (yearIdx !== -1) {
+      return rows.some((r) => {
+        const cells = Array.from(r.children).filter((c) => c.tagName === 'TH' || c.tagName === 'TD');
+        return parseFourDigitYear((cells[yearIdx]?.textContent) || '');
+      });
+    }
+    return rows.some((r) => parseFourDigitYear((r.querySelector('th,td')?.textContent) || ''));
+  });
+  if (yearTables.length === 0) return [];
+
+  const byYear = new Map();
+  function ensureYear(y) {
+    if (!byYear.has(y)) byYear.set(y, { year: y, winner: null, nomineeSet: new Map() });
+    return byYear.get(y);
+  }
+
+  for (const yearTable of yearTables) {
+    try {
+      parseYearTable(yearTable, opts, ensureYear);
+    } catch (err) {
+      if (err instanceof TableSchemaError) {
+        console.warn(`precursor-category-parser: skipping table — ${err.message}`);
+        continue;
+      }
+      throw err;
+    }
+  }
 
   return Array.from(byYear.values())
     .map(({ year, winner, nomineeSet }) => {
@@ -220,4 +274,4 @@ function parseCategoryPage(html, opts = {}) {
     .sort((a, b) => a.year - b.year);
 }
 
-module.exports = { fetchHtml, parseCategoryPage, bgIsHighlight };
+module.exports = { fetchHtml, parseCategoryPage, bgIsHighlight, parseYearTable };

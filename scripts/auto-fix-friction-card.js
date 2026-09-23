@@ -253,13 +253,9 @@ function applyPatch(filePath, oldString, newString) {
   fs.writeFileSync(filePath, patched, 'utf8');
 }
 
+const { revertFile: revertFileAt } = require('./lib/friction-revert-file.js');
 function revertFile(filePath) {
-  try {
-    // Restore both index (staging) and working tree from HEAD
-    execSync(`git checkout HEAD -- "${filePath}"`, { cwd: ROOT, stdio: 'pipe' });
-  } catch {
-    // best effort
-  }
+  revertFileAt(filePath, ROOT);
 }
 
 function runValidation() {

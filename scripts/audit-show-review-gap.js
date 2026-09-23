@@ -1366,6 +1366,21 @@ function ingestMissingUrl(showId, url, knownOutletId) {
 //   printed it inside `if (residualShows.length > 0)`, so a run whose ONLY
 //   problem was a brand-new skip reason stayed completely silent — the exact
 //   bug this module exists to kill, reproduced inside its own reporting.
+// Same "uncollected" definition pre-send-check.mjs already gates on (current-
+// run missing + citedNoUrl; flaggedMisses excluded as collected-but-excluded,
+// often permanently and correctly so) — MINUS whatever this same run's
+// --ingest-missing pass just successfully filled. Without the subtraction, a
+// show whose gap this run's own ingest just closed would still be reported as
+// gapped by anything computed before the ingest step ran (ship-check finding,
+// BRO-3928: the first draft of the opening-window digest below snapshotted
+// this BEFORE ingestion).
+function currentRunUncollected(r) {
+  const ingestedOk = new Set((r.ingestResults || []).filter(x => x.ok).map(x => x.url));
+  const missing = (r.missing || []).filter(m => !m.priorRun && !ingestedOk.has(m.url)).length;
+  const citedNoUrl = (r.citedNoUrl || []).filter(c => !c.priorRun).length;
+  return missing + citedNoUrl;
+}
+
 function computeResidualCounts(r, ingestMissing) {
   const failedIngest = (r.ingestResults || []).filter(x => !x.ok && !x.noop).length;
   const noopIngest = (r.ingestResults || []).filter(x => x.noop).length;
@@ -2288,9 +2303,65 @@ async function main(argv = process.argv.slice(2)) {
   // matches the file a reader would open to debug the discrepancy.
   const reportedAudit = (partial && quarantined) ? quarantined : audit;
   const reportedResults = reportedAudit.results;
-  console.log(`Summary: ${reportedAudit.counts.withGap}/${reportedResults.length} shows on file with gaps (${results.length} audited this run) | ${reportedAudit.counts.totalMissing} URLs not in dir | ${reportedAudit.counts.totalFlaggedMisses} URLs in dir but flagged out (${reportedAudit.counts.totalRecoverable} recoverable, ${reportedAudit.counts.totalRecovered} self-healed) | ${outletsWritten.length} unknown outlets`);
+  console.log(`Summary: ${reportedAudit.counts.withGap}/${reportedResults.length} shows on file with gaps (${results.length} audited this run) | ${reportedAudit.counts.missingCurrentRun} URLs not in dir | ${reportedAudit.counts.totalFlaggedMisses} URLs in dir but flagged out (${reportedAudit.counts.totalRecoverable} recoverable, ${reportedAudit.counts.totalRecovered} self-healed) | ${outletsWritten.length} unknown outlets${reportedAudit.counts.priorProductionCitations ? ` | +${reportedAudit.counts.priorProductionCitations} prior-production citation(s) on file, permanently report-only, NOT counted above` : ''}`);
   if (useCheckpoint) {
     console.log(`Checkpoint: ${results.length} shows audited this run${budgetHit ? ' (time-budget partial — remaining shows resume next run)' : ' (full eligible set complete)'}. State: ${CHECKPOINT_PATH}`);
+  }
+
+  // BRO-3928 item 3: --fail-on-gap exists but nothing wires its signal to a
+  // human — it only reddens this hourly CI job's own log, which "nobody
+  // reads" (the ticket's framing). Queue ONE routeAlert(disposition:'digest')
+  // line per opening-window show with a genuine current-run gap, same pattern
+  // as the T1 scoreboard in audit-opening-night-coverage.js, so a real gap on
+  // a show readers will see this week reaches the daily digest.
+  //   - Reads from `reportedResults` (the blast-radius-accepted, ACTUALLY
+  //     PERSISTED data), not the raw per-run `results` — a quarantined show's
+  //     unvetted fresh numbers must never reach the owner (ship-check/Codex
+  //     finding: queuing before the blast-radius decision could advertise a
+  //     result the write path itself judged untrustworthy).
+  //   - `currentRunUncollected` nets out this run's own successful ingests, so
+  //     a gap this same run just closed isn't reported as still open.
+  //   - Per-show conditionKey (not one combined key for the whole run): the
+  //     checkpoint's time budget means a hurried run only touches a handful
+  //     of shows, and one combined key's cooldown would suppress a genuinely
+  //     NEW gap on a different show found in a later run for up to
+  //     cooldownHours (Codex finding).
+  //   - Skipped entirely on --dry-run — a dry run must never have the one
+  //     real side effect (queuing owner-facing content) that isn't gated on
+  //     `!dryRun` everywhere else in this file.
+  //   - Gated on --checkpoint, matching this file's existing convention (see
+  //     the WE completeness alert above): a manual `--show=X` debugging run
+  //     has no dedup state and the operator is watching stdout, not the
+  //     digest — it must not queue a real alert every invocation.
+  if (!dryRun && useCheckpoint) {
+    try {
+      const { routeAlert, removeDigestLines } = require('./lib/owner-alert-router');
+      for (const r of reportedResults) {
+        if (!r || !r.showId || !inOpeningWindow({ openingDate: r.openingDate })) continue;
+        const conditionKey = `review-gap:opening-window:${r.showId}`;
+        const uncollected = currentRunUncollected(r);
+        if (uncollected <= 0) {
+          // Queue-only cleanup (never resolveCondition/ledger — a resolved
+          // ledger condition would reset the OTHER show's cooldown clock is
+          // not a risk here since keys are per-show, but resolving on every
+          // quiet run is still the known anti-pattern documented at
+          // audit-opening-night-coverage.js's "No resolveCondition() call"
+          // comment; removeDigestLines only trims the not-yet-sent queue).
+          removeDigestLines(conditionKey);
+          continue;
+        }
+        await routeAlert({
+          conditionKey,
+          title: `Review gap — "${r.title || r.showId}" missing ${uncollected} cited review(s)`,
+          description: `${r.title || r.showId} (${r.showId}): ${uncollected} review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=${r.showId} --checkpoint --ingest-missing`,
+          severity: 'warning',
+          disposition: 'digest',
+          cooldownHours: 20,
+        }).catch((e) => console.error(`::error::opening-window gap digest queue failed for ${r.showId}: ${(e.message || '').slice(0, 120)}`));
+      }
+    } catch (e) {
+      console.error(`::error::opening-window gap digest routing failed: ${(e.message || '').slice(0, 120)}`);
+    }
   }
   if (verbose && outletsWritten.length > 0) {
     console.log('\nUnknown outlets (not in outlet-registry.json):');
@@ -2431,4 +2502,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, computeResidualCounts, main, USAGE };
+module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, computeResidualCounts, currentRunUncollected, main, USAGE };

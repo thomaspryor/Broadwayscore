@@ -933,6 +933,33 @@ _head_is_descendant() {
   git merge-base --is-ancestor "$1" "$2" 2>/dev/null
 }
 
+# BRO-3899: does our outgoing range contain a merge commit? A plain `git
+# rebase` (no --rebase-merges) computes its replay range as "commits
+# reachable from HEAD, not in upstream, excluding merges" — so a merge
+# commit sitting in that range (e.g. the CALLER's own pre-existing `git
+# merge feature-branch --no-edit`, made just before invoking this script) is
+# silently DROPPED from history by the rebase. Confirmed live: local main
+# with a merge commit MC, origin advanced on an unrelated file, `git rebase
+# -X theirs origin/main` resolves with zero real conflicts ("Successfully
+# rebased") yet `git merge-base --is-ancestor MC HEAD` afterward is false —
+# MC's own object survives (reachable via reflog/`git log --all`) and its
+# file CONTENT is usually still faithfully replayed (via the non-merge
+# commits it merged in), which is exactly why this script's content-based
+# safety nets (verify_content_survived, check-post-rebase-survival.js) never
+# catch it: they diff file/tree content, not whether a specific commit
+# object remains an ancestor of HEAD. The push can report SUCCESS while
+# silently flattening the merge out of main's history — see
+# scripts/lib/push-with-retry-ancestry.test.mjs.
+#
+# Range is `origin/$PULL_BRANCH..head` — the SAME range `git rebase
+# <upstream>` itself computes (not RESTORE_BASE_HEAD, which in the exact
+# incident shape already equals the merge commit itself, making
+# RESTORE_BASE_HEAD..head the empty range A..A and this check a no-op).
+_range_has_merge_commit() {  # _range_has_merge_commit <head>
+  git rev-parse --verify --quiet "origin/$PULL_BRANCH" >/dev/null 2>&1 || return 1
+  [ -n "$(git rev-list --merges --max-count=1 "origin/$PULL_BRANCH..$1" 2>/dev/null || true)" ]
+}
+
 # The known-safe local commit to reset back to when this run needs to discard
 # its own (possibly polluted) resolution attempt and retry cleanly. Starts
 # equal to SCRIPT_ENTRY_HEAD but can ADVANCE — see sync_restore_base_head()
@@ -2035,7 +2062,17 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # survival-check failure log pinpoints the exact path that dropped a file
   # (rebase-clean vs rebase-resolved vs merge vs cherry-pick). Diagnostics only.
   RESOLUTION_PATH=none
-  if _rebase_with_captured_stderr; then
+  # BRO-3899: skip rebase entirely (not even attempted — deliberately NOT
+  # folded into the _REBASE_REFUSAL_REASON branch below, which is reset only
+  # INSIDE _rebase_with_captured_stderr and would otherwise read as a STALE
+  # reason from an earlier iteration's real refusal) when our outgoing range
+  # contains a merge commit a plain rebase would silently drop. Falls
+  # through to the merge fallback just below instead, which merges origin
+  # INTO current HEAD (keeping HEAD as first parent), correctly preserving
+  # the merge commit's ancestry by construction.
+  if _range_has_merge_commit "$PRE_REBASE_SHA"; then
+    echo "  Skipping rebase: outgoing range contains a merge commit that a plain \`git rebase\` (no --rebase-merges) would silently drop from history (BRO-3899). Going straight to the merge fallback, which preserves it via first-parent ancestry."
+  elif _rebase_with_captured_stderr; then
     rebase_ok=true
     RESOLUTION_PATH="rebase-clean(-X theirs)"
     restore_protected_fields
@@ -2102,6 +2139,13 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       git merge --abort 2>/dev/null || true
       # Last resort: reset to remote, then cherry-pick our commit(s) on top.
       # This guarantees we end up ahead of remote with our changes applied.
+      # BRO-3899 residual note: `git cherry-pick <range>` below has the same
+      # merge-commit blind spot as rebase (it errors on a merge commit
+      # without -m rather than silently dropping it, so this is a hard
+      # failure here, not a silent loss) — low risk in practice since the
+      # merge fallback just above runs first and should resolve almost every
+      # case before reaching this branch. Not guarded separately; revisit if
+      # this path is ever seen to fire on a merge-containing range.
       echo "  Trying reset + cherry-pick approach..."
       OUR_HEAD=$(git rev-parse HEAD 2>/dev/null || true)
       if [ -n "$OUR_HEAD" ]; then
@@ -2326,7 +2370,14 @@ for i in $(seq 1 "$MAX_RETRIES"); do
        && [ -z "$_PUSH_API_EARLY_BREAK_OK" ]; then
     _early_break_rc=0
     api_fallback_paths_ok "$SCRIPT_ENTRY_BASE" "$SCRIPT_ENTRY_HEAD" || _early_break_rc=$?
-    if [ "$_early_break_rc" = "0" ]; then
+    if [ "$_early_break_rc" = "0" ] && _range_has_merge_commit "$SCRIPT_ENTRY_HEAD"; then
+      # BRO-3899: the post-loop fallback block disqualifies a merge commit in
+      # range (push-via-git-api.sh would squash it to single-parent), so
+      # breaking out early here would forfeit the remaining local attempts for
+      # a fallback that cannot run — the same cliff BRO-3663 closed for paths.
+      _PUSH_API_EARLY_BREAK_OK=false
+      echo "::warning::push-with-retry: NOT breaking out early for the Git Data API fallback — our outgoing range contains a merge commit the fallback would squash into a single-parent commit (BRO-3899). Spending the remaining local attempts instead."
+    elif [ "$_early_break_rc" = "0" ]; then
       _PUSH_API_EARLY_BREAK_OK=true
     else
       _PUSH_API_EARLY_BREAK_OK=false
@@ -2548,6 +2599,23 @@ if [ "$pushed" != "true" ] && [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ]; then
       echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file (without apiFallbackMerge coverage), shows.json/reviews.json, an unaudited data/audit/ path (not in API_FALLBACK_SAFE either), or the disqualifier check itself failed unexpectedly (rc=$_managed_check_rc, failing closed).${_API_DISQUALIFY_DETAIL:+ Offending path — $_API_DISQUALIFY_DETAIL.} See PUSH_RECONCILE_MERGED_JSON=1 for the safe path for MANAGED files, scripts/lib/core-data-merge-registry.js's apiFallbackSafe entries for a hand-verified single-writer path, or its apiFallbackMerge entries for a genuinely multi-writer path with real reconciliation."
       _api_fallback_ok=false
     fi
+    # BRO-3899 (adversarial-review finding): push-via-git-api.sh SQUASHES every
+    # outgoing commit into a single API commit by plumbing (its own header
+    # calls this out: "squashing N outgoing commits into one API commit, message
+    # taken from HEAD's") — a documented, accepted tradeoff for ordinary
+    # multi-commit pushes, but fatal to a MERGE commit specifically: squashing
+    # collapses it to a single-parent commit, discarding the second-parent
+    # ancestry entirely. Unlike the local rebase path fixed above, there is no
+    # "fall through to a safer strategy" for the API fallback itself — it only
+    # has one strategy (squash-via-plumbing) — so a merge in range disqualifies
+    # the fallback outright and the caller falls back to the existing, safe
+    # local fetch+rebase+push path (now itself merge-aware). Checked against
+    # HEAD (current, post-reset), same range convention as the managed-file
+    # check just above.
+    if [ "$_api_fallback_ok" = "true" ] && _range_has_merge_commit "HEAD"; then
+      echo "::warning::push-with-retry: skipping Git Data API fallback — our outgoing diff contains a merge commit, which push-via-git-api.sh would squash into a single-parent commit, discarding its ancestry (BRO-3899). The push fails here and local HEAD is left at its merge-intact restore point rather than pushing a squashed history."
+      _api_fallback_ok=false
+    fi
   fi
 fi
 if [ "$_api_fallback_ok" = "true" ]; then
@@ -2651,7 +2719,7 @@ if [ "$pushed" != "true" ]; then
   # content-dropped error) and repeating the pointer here would read as "try
   # the thing that was just tried and failed."
   if [ "$_api_fallback_ok" != "true" ]; then
-    echo "::error::push-with-retry: the Git Data API fallback (default-on) did NOT run this attempt — either PUSH_API_FALLBACK_DISABLE=1 was set, this is the broadway-review-texts repo (excluded — no protected-field reconciliation in the fallback yet), no origin merge-base could be resolved at script start (SCRIPT_ENTRY_BASE empty), scripts/lib/push-via-git-api.sh is missing, the pre-fallback HEAD reset itself failed, or the diff touched a MANAGED/shows.json/reviews.json/unaudited-data-audit path not on API_FALLBACK_SAFE or API_FALLBACK_MERGE (see the warnings above for which). It has landed on the first attempt in confirmed production incidents where this local fetch+rebase+push flow lost 20-100+ consecutive attempts (tasks #707, #1791) — see scripts/lib/push-via-git-api.sh if none of the disqualifying reasons above apply."
+    echo "::error::push-with-retry: the Git Data API fallback (default-on) did NOT run this attempt — either PUSH_API_FALLBACK_DISABLE=1 was set, this is the broadway-review-texts repo (excluded — no protected-field reconciliation in the fallback yet), no origin merge-base could be resolved at script start (SCRIPT_ENTRY_BASE empty), scripts/lib/push-via-git-api.sh is missing, the pre-fallback HEAD reset itself failed, the diff touched a MANAGED/shows.json/reviews.json/unaudited-data-audit path not on API_FALLBACK_SAFE or API_FALLBACK_MERGE, or the outgoing range contains a merge commit the fallback would squash (BRO-3899) (see the warnings above for which). It has landed on the first attempt in confirmed production incidents where this local fetch+rebase+push flow lost 20-100+ consecutive attempts (tasks #707, #1791) — see scripts/lib/push-via-git-api.sh if none of the disqualifying reasons above apply."
   fi
   restore_head_if_moved "$_EXHAUSTION_REASON"
   exit 1

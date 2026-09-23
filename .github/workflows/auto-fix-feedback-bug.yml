@@ -10,8 +10,18 @@ on:
         required: true
         type: number
 
+# Per-issue group, not shared (BRO-3500 what-else follow-up — same bug class
+# Codex caught in process-review-submission.yml): GitHub cancels a PENDING
+# run in a concurrency group the moment a third run for that group arrives,
+# regardless of cancel-in-progress. A shared group here would silently drop
+# issue B's auto-fix attempt if issue C is opened while A is still running —
+# each issue is distinct, non-idempotent work. Keyed to match
+# execute-approved-fix.yml's group exactly (same issue number, same group
+# value) so the two workflows still coordinate: an issue's auto-fix and its
+# manually-approved-fix execution can't run concurrently on the SAME issue,
+# while different issues run in true parallel like today.
 concurrency:
-  group: auto-fix-feedback-bug
+  group: auto-fix-feedback-bug-${{ github.event.issue.number || inputs.issue_number }}
   cancel-in-progress: false
 
 jobs:

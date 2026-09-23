@@ -22,8 +22,11 @@ permissions:
   contents: write
   issues: write
 
+# Per-issue group, matching auto-fix-feedback-bug.yml's key exactly (BRO-3500
+# what-else follow-up) — see that file's comment for why a shared group was
+# wrong. workflow_dispatch-only here so inputs.issue_number is always set.
 concurrency:
-  group: auto-fix-feedback-bug
+  group: auto-fix-feedback-bug-${{ inputs.issue_number }}
   cancel-in-progress: false
 
 jobs:

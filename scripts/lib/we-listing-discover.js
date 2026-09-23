@@ -80,7 +80,45 @@ const WE_SLUG_MIN_LENGTH = 5;
 // real, distinct, NON-West-End venue. The false match minted a second,
 // garbage-titled show ("An Ideal Husband Hammersmith Review2") duplicating
 // the correctly-entered an-ideal-husband-west-end-2026.
-const WE_SLUG_GENERIC_EXCLUDE = new Set(['playhouse', 'cambridge', 'lyric']);
+//
+// BRO-3787: systematic audit of every remaining short (<=8 char slug)
+// WEST_END_VENUES entry for the same collision class. Two more real,
+// currently-operating NON-West-End venues share a bare name closely enough
+// (and with a low enough cost of blanket exclusion — see evidence below)
+// to join the Set outright, same treatment as playhouse/cambridge/lyric:
+//   - "coliseum": Oldham Coliseum Theatre, a long-running Greater
+//     Manchester repertory theatre — distinct from the West End's London
+//     Coliseum. Cost of exclusion is near-zero: every genuine West End
+//     Coliseum slug observed in this repo's audit data (giselle-london-
+//     coliseum-review, kinky-boots-london-coliseum-review, now-you-see-me-
+//     live-london-coliseum-review) already says "london coliseum," which
+//     has its own longer, separate WEST_END_VENUES entry unaffected by
+//     this exclusion — bare "coliseum" was never carrying real signal.
+//   - "queen's" (slug "queens"): Queen's Theatre, Hornchurch — a real,
+//     currently-operating regional producing theatre in East London/South
+//     Essex. Cost of exclusion is zero going forward: the West End's own
+//     "Queen's" was renamed Sondheim Theatre in 2019, so any NEW LBO/WET
+//     slug for that building uses "sondheim," not "queens" — Hornchurch is
+//     now the only real-world referent a "queens" slug can mean.
+// The other 6 short entries flagged by this audit (apollo, garrick,
+// lyceum, old vic, phoenix, savoy) are each ALSO major, currently-active
+// West End venues with real, already-observed bare-slug matches in this
+// repo's audit data (e.g. apollo-theatre-review, garrick-theatre-review,
+// old-vic with no "the-" prefix) — ship-check adversarial review (BRO-3787)
+// caught that blanket-excluding them the same way would silently break
+// live discovery for the genuine West End venue, not just the false
+// positive. Those 6 get the narrower, palace/national-style treatment
+// below (WE_SLUG_FALSE_POSITIVE_RE) instead: reject only the specific
+// colliding compound, leave the bare West End match intact.
+// Checked and found to have NO practical non-West-End collision at all
+// (left matchable, no exclusion needed): adelphi, aldwych, dominion,
+// dorfman, duchess, fortune, gielgud, novello, olivier, sondheim, wyndhams/
+// wyndham's. "fortune" was missed by the first pass of this audit (only 22
+// of the 23 remaining short entries were checked) — the only non-West-End
+// "Fortune Theatre" is in Dunedin, New Zealand, which closed in 2018 and is
+// not a source this matcher ever sees slugs from (LBO/WET are UK-only), so
+// it carries no real collision risk.
+const WE_SLUG_GENERIC_EXCLUDE = new Set(['playhouse', 'cambridge', 'lyric', 'coliseum', 'queens']);
 const VENUE_SLUG_ENTRIES = [...WEST_END_VENUES]
   .map(v => ({ venue: v, slug: v.replace(/[.']/g, '').replace(/\s+/g, '-') }))
   .filter(e => e.slug.length >= WE_SLUG_MIN_LENGTH && !WE_SLUG_GENERIC_EXCLUDE.has(e.slug))
@@ -135,7 +173,28 @@ function stripNationalAuditorium(remainder) {
 // west-end show) — but other companies also use "National" in their name and
 // are NOT South Bank / West End: National Theatre Wales, National Theatre of
 // Scotland, Welsh National Opera. Adversarial ship-check review (2026-08-14).
-const WE_SLUG_FALSE_POSITIVE_RE = /(^|-)(the-)?other-palace(-|$)|(^|-)alexandra-palace(-|$)|(^|-)(welsh-)?national-theatre-wales(-|$)|(^|-)national-theatre-scotland(-|$)|(^|-)welsh-national-opera(-|$)/;
+//
+// BRO-3787: same "bare venue name stays matchable, only the specific
+// colliding compound is rejected" treatment for 6 more short WEST_END_VENUES
+// entries, each a major currently-active West End venue with real,
+// already-observed bare-slug matches in this repo's audit data — so, unlike
+// coliseum/queens above, blanket Set-exclusion would have cost real signal:
+//   - apollo: O2 Apollo Manchester ("o2-apollo"/"apollo-manchester").
+//   - garrick: Lichfield Garrick Theatre ("lichfield-garrick") — the exact
+//     "real-venue's-name-as-a-compound-word" pattern lyric/Lyric Hammersmith
+//     hit in BRO-3716.
+//   - lyceum: Royal Lyceum Theatre, Edinburgh ("royal-lyceum"/
+//     "lyceum-edinburgh").
+//   - old vic: Bristol Old Vic ("bristol-old-vic"). Genuine West End Old Vic
+//     slugs observed in this repo's audit data (arcadia-old-vic-review,
+//     review-a-christmas-carol-old-vic) use bare "old-vic" with no "the-"
+//     prefix, so excluding "old-vic" from VENUE_SLUG_ENTRIES entirely (as
+//     first attempted) would have broken real discovery — this scoped
+//     rejection preserves it.
+//   - phoenix: Exeter Phoenix ("exeter-phoenix").
+//   - savoy: Savoy Theatre, Monmouth ("savoy-theatre-monmouth"/
+//     "monmouth-savoy").
+const WE_SLUG_FALSE_POSITIVE_RE = /(^|-)(the-)?other-palace(-|$)|(^|-)alexandra-palace(-|$)|(^|-)(welsh-)?national-theatre-wales(-|$)|(^|-)national-theatre-scotland(-|$)|(^|-)welsh-national-opera(-|$)|(^|-)o2-apollo(-|$)|(^|-)apollo-manchester(-|$)|(^|-)manchester-apollo(-|$)|(^|-)lichfield-garrick(-|$)|(^|-)royal-lyceum(-|$)|(^|-)lyceum-edinburgh(-|$)|(^|-)edinburgh-lyceum(-|$)|(^|-)bristol-old-vic(-|$)|(^|-)old-vic-bristol(-|$)|(^|-)exeter-phoenix(-|$)|(^|-)savoy(-theatre)?-monmouth(-|$)|(^|-)monmouth(-theatre)?-savoy(-|$)/;
 
 /**
  * Extracts a WET-listing post's show title from its rendered title, e.g.

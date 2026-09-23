@@ -321,6 +321,10 @@ jobs:
           # as healthy, and counts toward the step-down streak. That is the
           # inverse of the gate's purpose (ship-check finding, task #684).
           BROWSERBASE_MAX_SESSIONS_PER_DAY: ${{ vars.BROWSERBASE_MAX_SESSIONS_PER_DAY }}
+          # provider-spend:overspend routes disposition:'auto' (Linear issue).
+          # Missing key = every overspend logged a failed dispatch and tripped
+          # the alert-router dispatch-deadman page (2026-09-21/22).
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/check-provider-spend.js
 
       # BRO-3317: the write above (fs.writeFileSync in check-provider-spend.js)
@@ -1290,7 +1294,10 @@ jobs:
 
       - name: Notify on failure
         id: notify
-        if: failure()
+        # BRO-3707: a hang in any uncapped step hitting the job's own
+        # timeout-minutes: 180 reports conclusion "cancelled", not "failure" —
+        # a bare failure() here would silently drop this critical alert.
+        if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
         with:
           title: 'Daily Data Health Check Crashed'

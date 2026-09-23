@@ -37,6 +37,7 @@ const path = require('path');
 const cheerio = require('cheerio');
 const { venuesMatch } = require('./lib/deduplication');
 const { normalizeUrl, baselineKeySet, computeNewViolators } = require('./lib/show-score-urls-baseline');
+const { findDuplicateUrls } = require('./lib/show-score-url-map');
 
 const DATA_DIR = path.join(__dirname, '../data');
 const URLS_PATH = path.join(DATA_DIR, 'show-score-urls.json');
@@ -135,15 +136,10 @@ const results = { confirmed_wrong: [], duplicate_url: [], suspicious: [], ok: []
 // are the same Show Score page and must collide here, not slip past as two
 // singleton groups (adversarial review, BRO-3471). Report the raw url from
 // whichever entry is seen first so the report still shows real data.
-const urlToIds = {};
-for (const [id, url] of Object.entries(urlData.shows)) {
-  const key = normalizeUrl(url);
-  if (!urlToIds[key]) urlToIds[key] = { url, showIds: [] };
-  urlToIds[key].showIds.push(id);
-}
-for (const { url, showIds } of Object.values(urlToIds)) {
-  if (showIds.length > 1) results.duplicate_url.push({ url, showIds });
-}
+// Extracted to lib/show-score-url-map.js (CLAUDE.md rule 15) so this
+// grouping logic has its own test instead of only being exercised via the
+// baseline-diff tests, which cover what happens AFTER duplicates are found.
+results.duplicate_url.push(...findDuplicateUrls(urlData.shows));
 
 if (UPDATE_BASELINE) {
   const urls = results.duplicate_url.map(d => ({ url: d.url, showIds: d.showIds }));

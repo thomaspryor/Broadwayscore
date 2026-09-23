@@ -9,7 +9,50 @@ import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const { shouldRunTestGate, listColocatedTestFiles, runTestGate, diffFailingSets } = require('./merge-post-merge-test-gate.js');
+const { shouldRunTestGate, listColocatedTestFiles, runTestGate, diffFailingSets, baselineCheckoutOptions } = require('./merge-post-merge-test-gate.js');
+
+// --- baselineCheckoutOptions: pure, no I/O (BRO-3962) ---
+//
+// The prod bug this guards: makeFreshCheckout()'s own default `repo` (its
+// __dirname-derived DEFAULT_REPO) resolves to whatever ephemeral checkout
+// this gate file happened to be loaded from — a session's own job worktree
+// when invoked via merge-worktree-to-main.sh's absolute `$SCRIPT_DIR` path —
+// not the stable main checkout. MERGE_TEST_GATE_REPO_DIR is how the caller
+// overrides that with an explicit, stable path instead.
+
+test('baselineCheckoutOptions: repo comes from MERGE_TEST_GATE_REPO_DIR when set', () => {
+  const opts = baselineCheckoutOptions({ MERGE_TEST_GATE_REPO_DIR: '/Users/tompryor/Broadwayscore' });
+  assert.equal(opts.repo, '/Users/tompryor/Broadwayscore');
+  assert.equal(opts.prefix, 'merge-test-gate-baseline-');
+});
+
+test('baselineCheckoutOptions: repo is undefined (not a falsy string) when the env var is unset — falls through to makeFreshCheckout\'s own default parameter', () => {
+  const opts = baselineCheckoutOptions({});
+  // Strict `undefined`, not `''` or `null` — an empty/null string would NOT
+  // trigger makeFreshCheckout's `repo = DEFAULT_REPO` destructuring default
+  // (only a literal `undefined` does), so this exact value matters.
+  assert.equal(opts.repo, undefined);
+  assert.equal(typeof opts.repo, 'undefined');
+});
+
+test('baselineCheckoutOptions: handles a null/undefined env object without throwing', () => {
+  assert.doesNotThrow(() => baselineCheckoutOptions(null));
+  assert.doesNotThrow(() => baselineCheckoutOptions(undefined));
+  assert.equal(baselineCheckoutOptions(undefined).repo, undefined);
+});
+
+test('baselineCheckoutOptions: sha comes from MERGE_TEST_GATE_BASELINE_SHA when set, null otherwise', () => {
+  assert.equal(baselineCheckoutOptions({ MERGE_TEST_GATE_BASELINE_SHA: 'abc123' }).sha, 'abc123');
+  assert.equal(baselineCheckoutOptions({}).sha, null);
+});
+
+test('baselineCheckoutOptions: both env vars together, independent of each other', () => {
+  const opts = baselineCheckoutOptions({
+    MERGE_TEST_GATE_BASELINE_SHA: 'deadbeef',
+    MERGE_TEST_GATE_REPO_DIR: '/tmp/some-repo',
+  });
+  assert.deepEqual(opts, { prefix: 'merge-test-gate-baseline-', sha: 'deadbeef', repo: '/tmp/some-repo' });
+});
 
 // --- shouldRunTestGate: pure decision, no I/O ---
 

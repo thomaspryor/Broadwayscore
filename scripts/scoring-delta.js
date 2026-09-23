@@ -239,6 +239,14 @@ const FLAG_FIELDS = new Set([
   // that clears one WITHOUT touching wrongProduction itself would otherwise
   // escape Guard 1b's data-flag-change detection.
   'wrongProductionReason', 'wrongProductionNote',
+  // BRO-3862 (Codex adversarial review): decideInclusion's new isNonReview
+  // branch checks nonReviewFlag/nonReviewContent directly, and its demotion
+  // carve-out (isNonReviewDemotedByFreshCV) reads contentVerification +
+  // classifiedAt/textFetchedAt to judge freshness. Without these, a sweep
+  // that flips ONLY one of them (isNonReview itself unchanged) would escape
+  // detection the same way wrongProductionReason/-Note did above.
+  'nonReviewFlag', 'nonReviewContent', 'contentVerification',
+  'classifiedAt', 'textFetchedAt', 'isNonReviewReason',
 ]);
 
 // Detect flag-field changes in data/review-texts/ (a separate git repo from
@@ -998,6 +1006,22 @@ function decideInclusion(review, show, guards) {
     if (!isStale) return { included: false, reason: 'isRoundupArticle' };
   }
   if (review.incompleteReason === 'wrong_content') return { included: false, reason: 'incompleteReason:wrong_content' };
+  // Mirror rebuild-all-reviews.js:3570 — the ACTUAL scoring-corpus enforcement
+  // for isNonReview (it does not delegate to isIncludableForRebuild, so it has
+  // to be replayed here explicitly too). BRO-3862: this branch was missing
+  // entirely, so every isNonReview-clear sweep (audit-exclusion-flags.js,
+  // audit-nonreview-slug-coverage.js hand-clears) replayed as "0 flips" —
+  // the exact class of change §12.7 requires this gate to catch.
+  // isNonReviewDemotedByFreshCV (called below) reads review.classifiedAt and
+  // review.isNonReviewReason to judge staleness — both are FLAG_FIELDS entries
+  // that are load-bearing for THIS branch even though they're consumed inside
+  // the delegated predicate rather than textually present here.
+  const isNonReviewDemoted = typeof guards.isNonReviewDemotedByFreshCV === 'function'
+    ? guards.isNonReviewDemotedByFreshCV(review)
+    : false;
+  if ((review.isNonReview === true && !isNonReviewDemoted) || review.nonReviewFlag === true || review.nonReviewContent === true) {
+    return { included: false, reason: 'isNonReview' };
+  }
   if (review.contentTier === 'invalid') {
     // Mirror review-guards.js:3507-3514: a contentTier of 'invalid' set BECAUSE of
     // wrongProduction is stale once that flag clears, so production falls through
@@ -1288,6 +1312,17 @@ function main() {
         && (baseline.__crossMarketLib?.outletIsUkSideSelfHealRegion?.toString() || '') === (working.__crossMarketLib?.outletIsUkSideSelfHealRegion?.toString() || '')
         && String([...(baseline.__crossMarketLib?.UK_SELF_HEAL_REGIONS || [])].sort()) === String([...(working.__crossMarketLib?.UK_SELF_HEAL_REGIONS || [])].sort())
         && (baseline.cvBlocksUkWrongProductionAutoClear?.toString() || '') === (working.cvBlocksUkWrongProductionAutoClear?.toString() || '')
+        // BRO-3862: decideInclusion's isNonReview branch (added alongside this
+        // comparison — it was missing entirely before) calls this to demote a
+        // stale flag. Same blind-spot class as every other entry in this list:
+        // an edit to ONLY this predicate must not leave guardsIdentical true.
+        && (baseline.isNonReviewDemotedByFreshCV?.toString() || '') === (working.isNonReviewDemotedByFreshCV?.toString() || '')
+        // isNonReviewDemotedByFreshCV's own CV-promoted branch delegates to
+        // this (review-guards.js:1855) rather than inlining the check — same
+        // "toString() of the caller doesn't capture an edit inside a function
+        // it calls" gap as isWithinTourLeg above (Codex adversarial review,
+        // BRO-3862).
+        && (baseline.hasHighConfidenceLlmScore?.toString() || '') === (working.hasHighConfidenceLlmScore?.toString() || '')
         // Canonical inclusion predicate + pre-opening gate. isIncludableForRebuild
         // was NOT in this list before 2026-07-21, so edits to the canonical
         // predicate silently skipped Phase A ("decisions identical") — the
