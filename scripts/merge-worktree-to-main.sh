@@ -1,36 +1,140 @@
 #!/usr/bin/env bash
 #
-# merge-worktree-to-main.sh — safely integrate a worktree branch into main and push.
+# merge-worktree-to-main.sh — land a worktree branch on origin/main.
 #
-# WHY THIS EXISTS
-#   `git pull --rebase` SILENTLY DROPS merge commits. Hand-rolled worktree
-#   integration has therefore "pushed successfully" while the work was missing
-#   from origin (2026-06-21 incident; memory/feedback_pull_rebase_drops_merge_commits.md).
-#   This script encodes the only-safe sequence so no session improvises it again:
-#     1. integrate origin with `git merge` (NEVER rebase),
-#     2. merge the worktree branch (preserves the commits),
-#     3. push with merge-based retry if origin moved,
-#     4. VERIFY the changed files actually exist on origin/main, exit non-zero if not.
-#   It also beats the background data-daemon that constantly rewrites
-#   data/audit + cloud-memory + public/data/admin (which otherwise blocks merges).
+# DEFAULT (BRO-3873 step 4 / BRO-3425): the session's landing script is a THIN
+# client of .github/workflows/land.yml. It never touches the shared main
+# checkout beyond read-only object-store queries:
+#     1. local pre-flight floors on the BRANCH tree (node --check on changed
+#        scripts, the scripts/lib colocated-test floor vs the fork point);
+#        the push audits + tsc run in scripts/hooks/pre-push on the push below,
+#     2. `git push origin <tip>:refs/heads/land/<branch>`,
+#     3. wait for land.yml (scripts/lib/wait-for-run.sh — one API call per
+#        ≥60s, quota-aware, 45 min cap; falls back to `git ls-remote` polling
+#        when gh is unavailable) — land.yml runs the delta-vs-base gates on
+#        the REBASED tree, fast-forwards main under the serialized `landing`
+#        group, verifies ancestry and deletes the land/** ref,
+#     4. prove it locally (ancestor or patch-equivalent on a fresh
+#        origin/main), run the content-survival check, print
+#          LANDED: <branch> → <sha> in <s>s via land/<branch> (<run-url>)
+#        or, on a red gate,
+#          REFUSED: <branch> — land run <conclusion> at gate '<name>' (<run-url>)
+#          with the alert conditionKey land:land/<branch>            (exit 1)
+#        or, after 45 min without a verdict, TIMEOUT + run URL         (exit 2).
+#   Sessions land via land/**; bots (workflows, launchd daemons) keep pushing
+#   main directly through scripts/lib/push-with-retry.sh — that is deliberate.
+#
+# STALENESS GUARD (reviewer P0): at startup this file compares itself with
+#   origin/main's copy; if they differ (a worktree branched before a change
+#   to this script), or this is a detached copy with no scripts/lib beside
+#   it, it materialises origin/main's scripts/ into a temp dir and re-execs
+#   that copy with the same args. Decision: scripts/lib/merge-script-staleness.sh.
+#   Opt out: MERGE_SCRIPT_NO_REEXEC=1. Marker: MERGE_SCRIPT_STALENESS_GUARD.
+#
+# LEGACY (rollback only): LAND_LEGACY_DIRECT=1 restores the pre-step-4 flow —
+#   merge origin into the SHARED main checkout, merge the branch, push main
+#   directly with merge-based retry, verify — with a loud deprecation line.
+#   Its history and hazards: `git pull --rebase` silently drops merge commits
+#   (2026-06-21), the data-daemon dirties the shared checkout mid-merge,
+#   concurrent sessions reset each other's local main (#546/#668/#677).
+#   Before switching a fleet back to it, drain the queue first — cancel the
+#   in-flight land.yml runs and delete pending land/** refs (`gh run list
+#   --workflow=land.yml --status=in_progress`, `gh api -X DELETE
+#   repos/thomaspryor/Broadwayscore/git/refs/heads/land/<b>`) — or two
+#   writers (land.yml's fast-forward and the legacy direct push) race.
+#
+# ROLLBACK FLAGS (all three documented here on purpose — one place):
+#   LAND_LEGACY_DIRECT=1   this script: legacy direct merge+push (logged by the
+#                          pre-push hook as direct-push-allowed)
+#   LAND_ENFORCE_OFF=1     scripts/hooks/pre-push + the ~/.claude PreToolUse
+#                          gate: allow a session's direct push to main (logged)
+#   DIRECT_PUSH_DETECT_OFF repo VARIABLE =1: disables
+#                          .github/workflows/check-direct-push-to-main.yml
+#                          (the digest for main shas with no landings.jsonl row)
 #
 # USAGE
 #   scripts/merge-worktree-to-main.sh [branch] [-- file1 file2 ...]
-#     branch   worktree branch to integrate (default: current branch)
-#     files    paths that MUST exist on origin/main after push
+#     branch   worktree branch to land (default: current branch)
+#     files    paths that MUST exist on origin/main after landing
 #              (default: the files the branch changed vs main)
-#   DRY_RUN=1 scripts/merge-worktree-to-main.sh   # do everything except the push
+#   DRY_RUN=1 scripts/merge-worktree-to-main.sh   # floors only, no push
+#   LAND_WAIT_MIN=45                              # land.yml wait cap
 #
-# docs: landing now has a lib (BRO-3873 step 2) — scripts/lib/land-branch.js
-#   landBranch() does rebase → check gauntlet → fast-forward push → ancestry proof
-#   in a throwaway detached worktree, never in this shared checkout, and
-#   scripts/land.js is its CLI (`node scripts/land.js --branch <name>`).
-#   Step 4 of that plan routes this script through it; until then the two
-#   verify the same things by different means.
+# RESUME CONTRACT: every run is idempotent. land.yml takes 10-22 min and the
+#   Claude Bash tool caps one command at 10 min, so from a session run it as
+#   `LAND_WAIT_MIN=9 bash scripts/merge-worktree-to-main.sh` (Bash timeout
+#   600000) and simply RE-RUN on TIMEOUT: an already-landed tip prints LANDED
+#   at once (ancestor, patch-equivalent, or a landings.jsonl row naming the
+#   tip); a land/<branch> ref already at the tip is not re-pushed, the wait
+#   just continues. A REFUSED verdict is final until the branch changes.
+#
+# The landing actor itself is scripts/lib/land-branch.js (BRO-3873 step 2),
+# run by land.yml; scripts/land.js is its CLI.
 #
 set -uo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
+
+# ── MERGE_SCRIPT_STALENESS_GUARD (BRO-3873 step 4, reviewer P0) ──────────────
+# Bump MERGE_SCRIPT_VERSION whenever the landing behaviour changes. A copy
+# whose version is LOWER than origin/main's re-execs origin/main's copy; a
+# copy without the line is version 0. Compared by version, not bytes, so
+# the branch that ships a newer script never defers to the older origin
+# copy (2026-09-20: a byte-compare did exactly that and the old copy merged
+# the WIP branch into the shared main checkout).
+MERGE_SCRIPT_VERSION=2
+# Runs BEFORE any lib is sourced: a detached copy (`git show origin/main:… >
+# /tmp/x.sh && bash /tmp/x.sh`) has no scripts/lib beside it, and an old
+# worktree's copy may lack libs a newer version needs — so the re-exec
+# materialises origin/main's whole scripts/ tree, not just this file.
+# The repo whose origin/main we compare against: this file's own checkout
+# first (a worktree's copy compares against ITS origin), the cwd's only for
+# a detached copy that has no checkout of its own.
+_mss_repo="$(git -C "${SCRIPT_DIR:-.}" rev-parse --show-toplevel 2>/dev/null || git rev-parse --show-toplevel 2>/dev/null || true)"
+if [ -n "$_mss_repo" ] && [ "${MERGE_SCRIPT_REEXECED:-}" != "1" ] && [ "${MERGE_SCRIPT_NO_REEXEC:-}" != "1" ]; then
+  _mss_tmp="$(mktemp -d "${TMPDIR:-/tmp}/land-script.XXXXXX")"
+  _mss_origin="$_mss_tmp/origin-copy.sh"
+  # Bounded, best-effort refresh of origin/main (offline → cached ref).
+  if command -v timeout >/dev/null 2>&1; then timeout 30 git -C "$_mss_repo" fetch origin main -q 2>/dev/null || true
+  elif command -v gtimeout >/dev/null 2>&1; then gtimeout 30 git -C "$_mss_repo" fetch origin main -q 2>/dev/null || true
+  else git -C "$_mss_repo" fetch origin main -q 2>/dev/null || true; fi
+  git -C "$_mss_repo" show origin/main:scripts/merge-worktree-to-main.sh > "$_mss_origin" 2>/dev/null || : > "$_mss_origin"
+  # The decision lib: ours when it is beside us, else origin/main's (a
+  # detached copy has no lib dir at all) — never an inline re-statement.
+  _mss_lib="$SCRIPT_DIR/lib/merge-script-staleness.sh"
+  if [ ! -f "$_mss_lib" ]; then
+    _mss_lib="$_mss_tmp/merge-script-staleness.sh"
+    git -C "$_mss_repo" show origin/main:scripts/lib/merge-script-staleness.sh > "$_mss_lib" 2>/dev/null || : > "$_mss_lib"
+  fi
+  if [ -s "$_mss_lib" ]; then
+    # shellcheck source=scripts/lib/merge-script-staleness.sh
+    source "$_mss_lib"
+    _mss_decision=$(merge_script_staleness_decision "${BASH_SOURCE[0]}" "$_mss_origin" "$SCRIPT_DIR/lib")
+  else
+    _mss_decision="skip:no-origin-copy"
+  fi
+  if [ "$_mss_decision" = "skip:origin-older" ] && [ ! -d "$SCRIPT_DIR/lib" ]; then
+    echo "❌ merge script: this is a detached copy (no scripts/lib beside it) and origin/main's copy is older than it — run it from a checkout instead: bash scripts/merge-worktree-to-main.sh" >&2
+    exit 1
+  fi
+  if [ "$_mss_decision" = "reexec" ]; then
+    if git -C "$_mss_repo" archive origin/main scripts/merge-worktree-to-main.sh scripts/lib 2>/dev/null | tar -x -C "$_mss_tmp" 2>/dev/null \
+       && [ -f "$_mss_tmp/scripts/merge-worktree-to-main.sh" ]; then
+      echo "→ merge script: origin/main's copy is newer (MERGE_SCRIPT_VERSION $(merge_script_version "${BASH_SOURCE[0]}") → $(merge_script_version "$_mss_origin")) or this copy runs detached — re-exec'ing origin/main's copy (BRO-3425; MERGE_SCRIPT_NO_REEXEC=1 to disable)" >&2
+      export MERGE_SCRIPT_REEXECED=1 MERGE_SCRIPT_REEXEC_TMP="$_mss_tmp"
+      exec bash "$_mss_tmp/scripts/merge-worktree-to-main.sh" "$@"
+    fi
+    echo "⚠ merge script: could not materialise origin/main's scripts/ — continuing with this copy" >&2
+  fi
+  rm -rf "$_mss_tmp" 2>/dev/null || true
+  unset _mss_tmp _mss_origin _mss_decision _mss_lib
+fi
+unset _mss_repo
+# The re-exec'd copy removes its own temp tree on exit (the legacy path's
+# EXIT trap below re-installs this alongside push_mutex_release).
+_mss_cleanup() { [ -n "${MERGE_SCRIPT_REEXEC_TMP:-}" ] && rm -rf "$MERGE_SCRIPT_REEXEC_TMP" 2>/dev/null; return 0; }
+trap '_mss_cleanup' EXIT
+
 # shellcheck source=scripts/lib/push-mutex.sh
 source "$SCRIPT_DIR/lib/push-mutex.sh"
 # shellcheck source=scripts/lib/disk-floor-check.sh
@@ -48,6 +152,7 @@ else
   [ "${1:-}" = "--" ] && shift
   VERIFY_FILES=("$@")
 fi
+VERIFY_FILES_EXPLICIT=0; [ ${#VERIFY_FILES[@]} -gt 0 ] && VERIFY_FILES_EXPLICIT=1
 
 # --- Locate the main worktree (first entry of `git worktree list`) ---
 MAIN_DIR=$(git worktree list --porcelain 2>/dev/null | awk '/^worktree /{print $2; exit}')
@@ -117,6 +222,254 @@ if [ ${#VERIFY_FILES[@]} -eq 0 ]; then
 fi
 log "will verify ${#VERIFY_FILES[@]} file(s) present + ${#DELETED_FILES[@]} deleted on origin after push"
 
+# verify_files_on_origin — the per-file existence/absence proof both paths
+# share (the incident this script was born from: "pushed" with the work
+# missing from origin). Reads a FRESHLY fetched origin/$DEFAULT_BRANCH.
+verify_files_on_origin() {
+  local f fail=0
+  echo "── verifying on origin/$DEFAULT_BRANCH ──"
+  for f in ${VERIFY_FILES[@]+"${VERIFY_FILES[@]}"}; do
+    if g cat-file -e "origin/$DEFAULT_BRANCH:$f" 2>/dev/null; then echo "  ✓ $f"; else echo "  ✗ MISSING: $f"; fail=1; fi
+  done
+  for f in ${DELETED_FILES[@]+"${DELETED_FILES[@]}"}; do
+    if g cat-file -e "origin/$DEFAULT_BRANCH:$f" 2>/dev/null; then echo "  ✗ STILL PRESENT (deletion did not land): $f"; fail=1; else echo "  ✓ deleted: $f"; fi
+  done
+  return $fail
+}
+
+# prove_and_finish <tip> <fork> <landed_sha> <proof> <land_name> <run_url> <t0>
+# The ONE completion path for every "it landed" outcome — first completion,
+# resume after TIMEOUT, already-an-ancestor — so none of them can skip the
+# per-file existence proof, the content-survival check, or the delayed
+# re-verify (Codex ship-check finding: an early resume exit printed LANDED
+# for a landing that a later commit had reverted). Reads a freshly fetched
+# origin/$DEFAULT_BRANCH; exits 0 on success, dies otherwise.
+prove_and_finish() {
+  local tip="$1" fork="$2" landed_sha="$3" proof="$4" land_name="$5" run_url="$6" t0="$7"
+  g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null || true
+  if [ $(( ${#VERIFY_FILES[@]} + ${#DELETED_FILES[@]} )) -gt 0 ]; then
+    verify_files_on_origin || die "origin/$DEFAULT_BRANCH does not match what landed — a file we added is absent, or a file we deleted is still there"
+  fi
+  if [ "${PUSH_SKIP_CONTENT_SURVIVAL_CHECK:-}" != "1" ] && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/push-content-survival.js" ] && [ -n "$fork" ]; then
+    echo "── content-survival check vs origin/$DEFAULT_BRANCH ──"
+    local cs_out cs_rc
+    cs_out="$(cd "$MAIN_DIR" 2>/dev/null || exit 2; node "$SCRIPT_DIR/lib/push-content-survival.js" --before-sha="$tip" --base-sha="$fork" --check-ref="origin/$DEFAULT_BRANCH" 2>&1)"; cs_rc=$?
+    [ -n "$cs_out" ] && echo "$cs_out"
+    [ "$cs_rc" != 1 ] || die "origin/$DEFAULT_BRANCH REVERTED content this landing pushed (see above) — re-apply on top of the reverting commit"
+  fi
+  if [ -n "$landed_sha" ] && command -v node >/dev/null 2>&1 && [ -f "$MAIN_DIR/scripts/verify-merge-landed.js" ]; then
+    local vlog="$MAIN_DIR/data/audit/verify-merge-landed.log"
+    mkdir -p "$(dirname "$vlog")" 2>/dev/null || true
+    ( cd "$MAIN_DIR" 2>/dev/null || exit 0
+      nohup node scripts/verify-merge-landed.js --sha="$landed_sha" --branch="$DEFAULT_BRANCH" --label="$BRANCH -> $DEFAULT_BRANCH (land/**)" --delays=120,480,900 </dev/null >>"$vlog" 2>&1 & )
+    log "delayed re-verify scheduled (+2m/+8m/+15m against ${landed_sha:0:10}) — log: $vlog"
+  fi
+  echo "LANDED: $BRANCH → ${landed_sha:-<rebased; sha in data/audit/landings.jsonl once its row lands>} in $(( $(date +%s) - t0 ))s${land_name:+ via $land_name}${run_url:+ ($run_url)} [proof: $proof]"
+  exit 0
+}
+
+# ══ DEFAULT PATH (BRO-3873 step 4): land via land/<branch> + land.yml ════════
+# Never checks out, merges into, or stashes on $MAIN_DIR. The `g` calls in
+# here read the shared object store / remote-tracking refs; the only writes
+# are `g fetch` (ref updates) and the delayed re-verify's append to
+# data/audit/verify-merge-landed.log — both exactly as the legacy path did.
+# Run it FROM YOUR WORKTREE: given a branch name from elsewhere, the floors
+# are skipped and the land/** push is made from $MAIN_DIR's object store
+# (so scripts/hooks/pre-push's tsc, if it fires, sees main's tree).
+land_via_landing_branch() {
+  local t0 tip fork src_dir cwd_top cwd_head land_name push_dir changed
+  t0=$(date +%s)
+  tip=$(g rev-parse "$BRANCH" 2>/dev/null) || die "cannot resolve $BRANCH"
+
+  g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null || log "  ⚠ fetch failed (offline?) — continuing with cached origin/$DEFAULT_BRANCH"
+  land_name="$BRANCH"
+  case "$land_name" in land/*) ;; *) land_name="land/$BRANCH" ;; esac
+  # ── resume contract ───────────────────────────────────────────────────────
+  # Every run is idempotent, so a wait cut short (the Claude Bash tool caps a
+  # command at 10 min; land.yml takes 10-22 min) is resumed by simply
+  # re-running: already landed → LANDED at once (ancestor, or the rebased
+  # patches are on origin/main / a landings.jsonl row names this tip);
+  # land/<branch> already at this tip → no re-push, just wait again.
+  fork=$(g merge-base "origin/$DEFAULT_BRANCH" "$tip" 2>/dev/null || true)
+  [ -n "$fork" ] || die "no merge-base between origin/$DEFAULT_BRANCH and $BRANCH"
+  # The default verify list above is anchored on the shared checkout's LOCAL
+  # main, which sessions no longer advance — re-anchor on origin's fork point
+  # (live c1 probe: 152 "files to verify" for a one-line branch).
+  if [ "$VERIFY_FILES_EXPLICIT" = 0 ]; then
+    VERIFY_FILES=(); DELETED_FILES=()
+    while IFS= read -r f; do [ -n "$f" ] && VERIFY_FILES+=("$f"); done < <(g diff --name-only --diff-filter=d "$fork" "$tip" 2>/dev/null)
+    while IFS= read -r f; do [ -n "$f" ] && DELETED_FILES+=("$f"); done < <(g diff --name-only --no-renames --diff-filter=D "$fork" "$tip" 2>/dev/null)
+    log "will verify ${#VERIFY_FILES[@]} file(s) present + ${#DELETED_FILES[@]} deleted on origin after landing (vs origin fork ${fork:0:10})"
+  fi
+  local prior_sha=""
+  prior_sha=$(g show "origin/$DEFAULT_BRANCH:data/audit/landings.jsonl" 2>/dev/null | grep -F "\"tip\":\"$tip\"" | tail -1 | sed -E 's/.*"sha":"([0-9a-f]{40})".*/\1/')
+  if is_landed "$tip" "$DEFAULT_BRANCH"; then
+    prove_and_finish "$tip" "$fork" "$tip" "ancestor" "" "" "$t0"   # exits
+  fi
+  if [ -n "$prior_sha" ] || { [ -n "$(g cherry "origin/$DEFAULT_BRANCH" "$tip" 2>/dev/null)" ] && [ -z "$(g cherry "origin/$DEFAULT_BRANCH" "$tip" 2>/dev/null | grep '^+')" ]; }; then
+    # Landed by an earlier run (resume after TIMEOUT, or a re-run). The SAME
+    # proofs as a first completion run here — a landing that was since
+    # reverted must not read as success (Codex ship-check finding).
+    local prior_proof="patch-equivalent (rebased by land.yml)"
+    [ -n "$prior_sha" ] && prior_proof="landings.jsonl row for this tip"
+    prove_and_finish "$tip" "$fork" "$prior_sha" "$prior_proof" "$land_name" "" "$t0"
+  fi
+  changed=$(g diff --name-only --diff-filter=d "$fork" "$tip" 2>/dev/null || true)
+
+  # ── local pre-flight floors, on the BRANCH tree ────────────────────────────
+  # The tree we floor-check is the checkout this was run from, when its HEAD
+  # is the branch tip (the normal "run it from your worktree" case). Run from
+  # elsewhere (branch given by name), the floors are skipped with a note —
+  # land.yml's gauntlet on the rebased tree is the gate that decides anyway.
+  src_dir=""
+  cwd_top=$(git rev-parse --show-toplevel 2>/dev/null || true)
+  cwd_head=$(git rev-parse HEAD 2>/dev/null || true)
+  [ -n "$cwd_top" ] && [ "$cwd_head" = "$tip" ] && src_dir="$cwd_top"
+  if [ -z "$src_dir" ]; then
+    log "pre-flight floors: skipped (cwd is not a checkout of $BRANCH's tip) — land.yml runs the full gauntlet"
+  else
+    local f err syntax_fail=0
+    while IFS= read -r f; do
+      case "$f" in scripts/*.js|scripts/*.mjs|scripts/*.cjs) ;; *) continue ;; esac
+      [ -f "$src_dir/$f" ] || continue
+      if ! err=$(node --check "$src_dir/$f" 2>&1); then
+        echo "  ✗ $f" >&2; echo "$err" | sed 's/^/      /' >&2; syntax_fail=1
+      fi
+    done <<< "$changed"
+    [ "$syntax_fail" = 0 ] || die "pre-flight syntax floor failed on $BRANCH (node --check) — fix, commit, re-run"
+    if [ "${MERGE_SKIP_POST_MERGE_TEST_GATE:-}" = "1" ]; then
+      log "colocated test floor: skipped (MERGE_SKIP_POST_MERGE_TEST_GATE=1)"
+    elif [ ! -f "$src_dir/data/shows.json" ] || [ ! -f "$src_dir/data/reviews.json" ]; then
+      # DATA GUARD — same rule as scripts/hooks/pre-push's tsc step: a bare
+      # worktree has no data/*.json symlinks, and a dozen scripts/lib tests
+      # read them, so the floor would report data-absent failures as "new"
+      # (measured 2026-09-20: 12 false NEW failures in this exact spot).
+      # land.yml's gauntlet checks out core data and runs the same batch.
+      log "colocated test floor: skipped (data/shows.json + reviews.json absent — bare worktree; land.yml runs the scripts/lib batch with core data)"
+    elif [ -n "$(echo "$changed" | tr -d '[:space:]')" ] && command -v node >/dev/null 2>&1; then
+      local gate="$SCRIPT_DIR/lib/merge-post-merge-test-gate.js"
+      [ -f "$gate" ] || gate="$src_dir/scripts/lib/merge-post-merge-test-gate.js"
+      if [ -f "$gate" ]; then
+        log "colocated test floor: scripts/lib/*.test.mjs on $BRANCH's tree vs fork point ${fork:0:10} (scripts/lib/merge-post-merge-test-gate.js)"
+        if ! echo "$changed" | (cd "$src_dir" && MERGE_TEST_GATE_BASELINE_SHA="$fork" node "$gate"); then
+          die "colocated test floor failed on $BRANCH — see the gate's own 'post-merge test floor: FAILED (...)' line above (MERGE_SKIP_POST_MERGE_TEST_GATE=1 to bypass)"
+        fi
+      fi
+    fi
+    log "push audits + tsc: run by scripts/hooks/pre-push on the land/** push below (range ${fork:0:10}..${tip:0:10})"
+  fi
+
+  if [ "${DRY_RUN:-0}" = "1" ]; then
+    echo "DRY_RUN=1 — floors done; would push ${tip:0:10} → origin/$land_name for land.yml. Nothing pushed."
+    exit 0
+  fi
+
+  # ── push the tip to land/<branch> (skipped on resume: ref already there) ──
+  push_dir="${src_dir:-$MAIN_DIR}"
+  local pout remote_land
+  remote_land=$(git -C "$push_dir" ls-remote --heads origin "$land_name" 2>/dev/null | awk '{print $1}')
+  if [ "$remote_land" = "$tip" ]; then
+    log "origin/$land_name is already at ${tip:0:10} — resuming the wait for land.yml (no re-push)"
+  elif ! pout=$(git -C "$push_dir" push origin "$tip:refs/heads/$land_name" 2>&1); then
+    if echo "$pout" | grep -qiE 'non-fast-forward|fetch first|\[rejected\]'; then
+      log "  origin/$land_name exists from an earlier attempt — replacing it"
+      pout=$(git -C "$push_dir" push --force origin "$tip:refs/heads/$land_name" 2>&1) || { echo "$pout" >&2; die "push to $land_name failed"; }
+    else
+      echo "$pout" >&2; die "push to $land_name failed (the pre-push hook's audits run here — fix on $BRANCH and re-run)"
+    fi
+  else
+    log "pushed ${tip:0:10} → origin/$land_name (land.yml takes it from here)"
+  fi
+
+  # ── wait for land.yml ─────────────────────────────────────────────────────
+  local run_id="" run_url="" poll_rc wait_min="${LAND_WAIT_MIN:-45}" wait_sh
+  wait_sh="$SCRIPT_DIR/lib/wait-for-run.sh"; [ -f "$wait_sh" ] || wait_sh="$MAIN_DIR/scripts/lib/wait-for-run.sh"
+  if command -v gh >/dev/null 2>&1 && command -v node >/dev/null 2>&1; then
+    local _i run_json
+    for _i in 1 2 3 4 5 6; do
+      run_json=$(cd "$push_dir" && gh run list --workflow=land.yml --branch="$land_name" --json databaseId,headSha,url --limit 5 2>/dev/null || true)
+      read -r run_id run_url < <(RJ="$run_json" TIP="$tip" node -e '
+        let rows = []; try { rows = JSON.parse(process.env.RJ || "[]"); } catch {}
+        const r = rows.find(x => x.headSha === process.env.TIP);
+        if (r) console.log(`${r.databaseId} ${r.url}`); else console.log("");' 2>/dev/null)
+      [ -n "$run_id" ] && break
+      sleep 20
+    done
+  fi
+  if [ -n "$run_id" ] && [ -f "$wait_sh" ]; then
+    log "land run $run_url — waiting (wait-for-run.sh: one API call per ≥60s, ${wait_min} min cap)"
+    (cd "$push_dir" && bash "$wait_sh" "$run_id" "$wait_min"); poll_rc=$?
+  else
+    log "no land.yml run visible for ${tip:0:10} (gh unavailable, or the listing lagged) — polling refs/heads/$land_name via git ls-remote every 60s (${wait_min} min cap; land.yml deletes it only after ancestry is verified)"
+    local deadline; deadline=$(( $(date +%s) + wait_min * 60 )); poll_rc=2
+    while [ "$(date +%s)" -lt "$deadline" ]; do
+      if ! git -C "$push_dir" ls-remote --exit-code --heads origin "$land_name" >/dev/null 2>&1; then poll_rc=0; break; fi
+      sleep 60
+    done
+  fi
+
+  case "$poll_rc" in
+    0)
+      local landed_sha="" proof="" _t
+      for _t in 1 2 3 4 5; do
+        g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null || true
+        landed_sha=$(g show "origin/$DEFAULT_BRANCH:data/audit/landings.jsonl" 2>/dev/null | grep -F "\"tip\":\"$tip\"" | tail -1 | sed -E 's/.*"sha":"([0-9a-f]{40})".*/\1/')
+        [ -n "$landed_sha" ] && break
+        sleep 30   # the landings.jsonl row is committed by land.yml a step after the push
+      done
+      if is_landed "$tip" "$DEFAULT_BRANCH"; then
+        proof="ancestor"; landed_sha="${landed_sha:-$tip}"
+      elif [ -n "$(g cherry "origin/$DEFAULT_BRANCH" "$tip" 2>/dev/null)" ] && [ -z "$(g cherry "origin/$DEFAULT_BRANCH" "$tip" 2>/dev/null | grep '^+')" ]; then
+        # non-empty AND no '+': an EMPTY cherry (merge-only branch, or a
+        # failed cherry) is no evidence at all, never equivalence.
+        proof="patch-equivalent (rebased by land.yml)"
+      else
+        die "land run reported success but ${tip:0:10}'s commits are on origin/$DEFAULT_BRANCH neither as ancestors nor as equivalent patches — inspect ${run_url:-the land.yml run} before assuming anything landed"
+      fi
+      prove_and_finish "$tip" "$fork" "$landed_sha" "$proof" "$land_name" "$run_url" "$t0"   # exits
+      ;;
+    1)
+      # A red run is not proof nothing landed: land.yml can go red AFTER its
+      # fast-forward (ancestry UNKNOWN, a ledger step throwing). Check the
+      # landing itself before claiming REFUSED (ship-check finding).
+      g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null || true
+      local late_sha=""
+      late_sha=$(g show "origin/$DEFAULT_BRANCH:data/audit/landings.jsonl" 2>/dev/null | grep -F "\"tip\":\"$tip\"" | tail -1 | sed -E 's/.*"sha":"([0-9a-f]{40})".*/\1/')
+      if is_landed "$tip" "$DEFAULT_BRANCH"; then
+        log "land run went red but ${tip:0:10} IS on origin/$DEFAULT_BRANCH — treating as landed; inspect ${run_url:-the run} for the red step"
+        prove_and_finish "$tip" "$fork" "$tip" "ancestor (run red after the push)" "$land_name" "$run_url" "$t0"
+      elif [ -n "$late_sha" ] || { [ -n "$(g cherry "origin/$DEFAULT_BRANCH" "$tip" 2>/dev/null)" ] && [ -z "$(g cherry "origin/$DEFAULT_BRANCH" "$tip" 2>/dev/null | grep '^+')" ]; }; then
+        log "land run went red but ${tip:0:10}'s patches ARE on origin/$DEFAULT_BRANCH — treating as landed; inspect ${run_url:-the run} for the red step"
+        prove_and_finish "$tip" "$fork" "$late_sha" "patch-equivalent (run red after the push)" "$land_name" "$run_url" "$t0"
+      fi
+      local conclusion="failure" gate="unknown"
+      if [ -n "$run_id" ] && command -v gh >/dev/null 2>&1; then
+        read -r conclusion gate < <(cd "$push_dir" && gh run view "$run_id" --json conclusion,jobs --jq '[.conclusion, ([.jobs[] | select(.conclusion=="failure") | .steps[] | select(.conclusion=="failure") | .name] | first // "unknown")] | join(" ")' 2>/dev/null || echo "failure unknown")
+      fi
+      echo "REFUSED: $BRANCH — land run $conclusion at gate '$gate'${run_url:+ ($run_url)}"
+      echo "  alert conditionKey: land:$land_name (digest) — refs/heads/$land_name is left in place; nothing reached $DEFAULT_BRANCH."
+      case "$conclusion" in
+        cancelled) echo "  cancelled = superseded in the 'landing' concurrency group; re-run this script (an empty commit is fine) to land again." ;;
+        *) echo "  Fix on $BRANCH, commit, and re-run this script (any push to $land_name re-runs the checks)." ;;
+      esac
+      exit 1
+      ;;
+    *)
+      echo "TIMEOUT: $BRANCH — no land.yml verdict after ${wait_min} min${run_url:+ — run: $run_url}. origin/$land_name is in place; RE-RUN THIS SCRIPT TO RESUME (it will not re-push, and prints LANDED at once if the run finished meanwhile)."
+      exit 2
+      ;;
+  esac
+}
+
+if [ "${LAND_LEGACY_DIRECT:-}" = "1" ]; then
+  echo "⚠️  DEPRECATED (BRO-3425): LAND_LEGACY_DIRECT=1 — merging $BRANCH into the SHARED main checkout ($MAIN_DIR) and pushing $DEFAULT_BRANCH directly. Rollback-only; the default lands via land/** + land.yml. scripts/hooks/pre-push logs this as direct-push-allowed." >&2
+else
+  land_via_landing_branch
+  exit 3   # unreachable — the function always exits
+fi
+
+# ══ LEGACY PATH (LAND_LEGACY_DIRECT=1 only) ══════════════════════════════════
+
 # ── Local push mutex (task #556) ─────────────────────────────────────────────
 # The whole flow below — stash, checkout main, fetch+merge origin, merge the
 # worktree branch, push, verify — operates on the SHARED main worktree
@@ -128,7 +481,7 @@ log "will verify ${#VERIFY_FILES[@]} file(s) present + ${#DELETED_FILES[@]} dele
 # ancestor-check verify step below remains as defense in depth. See
 # scripts/lib/push-mutex.sh.
 push_mutex_acquire
-trap 'push_mutex_release' EXIT
+trap 'push_mutex_release; _mss_cleanup' EXIT
 
 # BRO-142 (generalized to REBASE_HEAD/CHERRY_PICK_HEAD/REVERT_HEAD by task
 # #1558): refuse to touch $MAIN_DIR if it already has an in-progress-operation
@@ -643,23 +996,7 @@ if [ "${DRY_RUN:-0}" != "1" ] && [ $(( ${#VERIFY_FILES[@]} + ${#DELETED_FILES[@]
   # worse than the false alarm this all replaced — it happens AFTER a successful
   # push, so the delayed #668 re-verify below never gets scheduled. Same idiom
   # and same reason as scripts/lib/push-with-retry.sh:737 and scripts/hooks/pre-push:53.
-  VERIFY_FAIL=0
-  echo "── verifying on origin/$DEFAULT_BRANCH ──"
-  for f in ${VERIFY_FILES[@]+"${VERIFY_FILES[@]}"}; do
-    if g cat-file -e "origin/$DEFAULT_BRANCH:$f" 2>/dev/null; then
-      echo "  ✓ $f"
-    else
-      echo "  ✗ MISSING: $f"; VERIFY_FAIL=1
-    fi
-  done
-  for f in ${DELETED_FILES[@]+"${DELETED_FILES[@]}"}; do
-    if g cat-file -e "origin/$DEFAULT_BRANCH:$f" 2>/dev/null; then
-      echo "  ✗ STILL PRESENT (deletion did not land): $f"; VERIFY_FAIL=1
-    else
-      echo "  ✓ deleted: $f"
-    fi
-  done
-  [ "$VERIFY_FAIL" = 0 ] || die "origin/$DEFAULT_BRANCH does not match what we pushed — a file we added is absent, or a file we deleted is still there"
+  verify_files_on_origin || die "origin/$DEFAULT_BRANCH does not match what we pushed — a file we added is absent, or a file we deleted is still there"
 fi
 
 # --- Schedule a delayed re-verify (task #668) ────────────────────────────────

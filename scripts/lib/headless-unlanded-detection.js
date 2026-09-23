@@ -42,9 +42,60 @@
  */
 
 const fs = require('fs');
+const path = require('path');
 const { execFileSync } = require('child_process');
 const { checkLanded } = require('./landing-verify.js');
 const { JOB_EVENTS, foldJobs } = require('./dispatch-ledger.js');
+const { parseLandings, findLanding } = require('./landings-ledger.js');
+
+/**
+ * BRO-3873 step 4: sessions now land via land/** + land.yml, which REBASES
+ * the branch before its fast-forward push — the job worktree's HEAD sha is
+ * then NOT an ancestor of origin/main even though every patch is. Ancestry
+ * alone would call every such landing 'unlanded'. Two rebase-proof signals
+ * override a NOT_LANDED ancestry verdict, in this order:
+ *   1. a data/audit/landings.jsonl row whose `tip` is the job's HEAD (land.yml
+ *      writes it after verifying ancestry of the REBASED sha),
+ *   2. `git cherry origin/main <sha>` listing no `+` line (every commit's
+ *      patch-id is already upstream).
+ * Pure; the git/ledger reads happen in detectJobLanding().
+ * @param {object} o
+ * @param {'LANDED'|'NOT_LANDED'|'UNKNOWN'|null} o.ancestryVerdict
+ * @param {string|null} o.sha
+ * @param {object[]} [o.landings]   parsed landings.jsonl rows
+ * @param {boolean|null} [o.cherryPlus]  true = some patch missing upstream, false = none missing, null = check unavailable
+ * @returns {{verdict:'LANDED'|'NOT_LANDED'|'UNKNOWN'|null, reason:string|null}}
+ */
+function resolveLandedVerdict({ ancestryVerdict, sha, landings = [], cherryPlus = null }) {
+  if (ancestryVerdict !== 'NOT_LANDED') return { verdict: ancestryVerdict, reason: null };
+  if (sha && findLanding(landings, { tip: sha })) return { verdict: 'LANDED', reason: 'landings.jsonl:tip' };
+  if (cherryPlus === false) return { verdict: 'LANDED', reason: 'patch-equivalent' };
+  return { verdict: 'NOT_LANDED', reason: null };
+}
+
+function readOriginLandings(cwd) {
+  // origin/main's copy first (fresh after the fetch the caller did), then the
+  // canonical checkout's working copy as a fallback.
+  try {
+    return parseLandings(execFileSync('git', ['-C', cwd, 'show', 'origin/main:data/audit/landings.jsonl'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }));
+  } catch { /* fall through */ }
+  try {
+    const common = execFileSync('git', ['-C', cwd, 'rev-parse', '--git-common-dir'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    const root = path.isAbsolute(common) ? path.dirname(common) : path.resolve(cwd, common, '..');
+    return parseLandings(fs.readFileSync(path.join(root, 'data', 'audit', 'landings.jsonl'), 'utf8'));
+  } catch { return []; }
+}
+
+function cherryPlusFor(cwd, sha) {
+  try {
+    const out = execFileSync('git', ['-C', cwd, 'cherry', 'origin/main', sha], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    // EMPTY output is no evidence, not equivalence: `git cherry` skips merge
+    // commits, so a merge-only branch (conflict resolutions live in the
+    // merge itself) lists nothing whether or not it landed (Codex finding).
+    if (!out.trim()) return null;
+    return /^\+/m.test(out);
+  } catch { return null; }
+}
 
 /**
  * Pure: given what we know about a job-done job's worktree, decide whether
@@ -97,7 +148,10 @@ function detectJobLanding({ cwd } = {}) {
   if (!sha) {
     return { status: classifyJobDoneLanding({ cwdExists: true, landedVerdict: null, dirty }), sha: null, verdict: null, dirty };
   }
-  const { verdict } = checkLanded({ sha, cwd, ref: 'origin/main' });
+  const ancestry = checkLanded({ sha, cwd, ref: 'origin/main' });
+  const { verdict } = ancestry.verdict === 'NOT_LANDED'
+    ? resolveLandedVerdict({ ancestryVerdict: ancestry.verdict, sha, landings: readOriginLandings(cwd), cherryPlus: cherryPlusFor(cwd, sha) })
+    : ancestry;
   return { status: classifyJobDoneLanding({ cwdExists: true, landedVerdict: verdict, dirty }), sha, verdict, dirty };
 }
 
@@ -148,6 +202,7 @@ function findUnlandedJobDoneEntries(entries, { sinceMs = null, mainRepoCwd = nul
 
 module.exports = {
   classifyJobDoneLanding,
+  resolveLandedVerdict,
   detectJobLanding,
   findUnlandedJobDoneEntries,
 };

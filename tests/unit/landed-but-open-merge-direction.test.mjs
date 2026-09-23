@@ -94,3 +94,21 @@ test('malformed lines are skipped without throwing', () => {
   assert.equal(index.get('BRO-7'), 'eeeeeee');
   assert.equal(index.size, 1);
 });
+
+// BRO-3873 step 4: a land.yml landing is a rebase + fast-forward — no merge
+// commit for the git-log index — so the landings.jsonl rows land.yml writes
+// are folded in by the land/** branch name (same `linear-BRO-N-` key).
+test('buildMergeCommitIndex folds landings.jsonl rows in by land/** branch name; git-log evidence wins when both exist', () => {
+  const lines = ["ccccccc Merge branch 'job/linear-BRO-100-abc'"];
+  const rows = [
+    { branch: 'land/job/linear-BRO-200-def', sha: '9'.repeat(40), tip: 'e'.repeat(40) },   // older landing of BRO-200
+    { branch: 'land/job/linear-BRO-200-def', sha: 'd'.repeat(40), tip: 'e'.repeat(40) },   // newer landing of BRO-200
+    { branch: 'land/job/linear-BRO-100-abc', sha: 'f'.repeat(40) },
+    { branch: 'land/worktree-no-card', sha: '1'.repeat(40) },
+    { branch: null, sha: '2'.repeat(40) },
+  ];
+  const index = buildMergeCommitIndex(lines, rows);
+  assert.equal(index.get('BRO-200'), 'd'.repeat(40), 'the NEWEST ledger row wins (rows are appended oldest-first)');
+  assert.equal(index.get('BRO-100'), 'f'.repeat(40), 'ledger rows are folded first; a later git-log line does not displace them');
+  assert.equal(index.size, 2);
+});

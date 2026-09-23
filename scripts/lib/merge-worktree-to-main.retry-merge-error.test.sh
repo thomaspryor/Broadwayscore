@@ -21,6 +21,7 @@
 #
 # Run: bash scripts/lib/merge-worktree-to-main.retry-merge-error.test.sh
 set -uo pipefail
+export LAND_LEGACY_DIRECT=1   # BRO-3873 step 4: this fixture exercises the legacy direct merge+push path
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MERGE_SCRIPT="$SCRIPT_DIR/../merge-worktree-to-main.sh"

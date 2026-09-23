@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  classifyJobDoneLanding, detectJobLanding, findUnlandedJobDoneEntries,
+  classifyJobDoneLanding, detectJobLanding, findUnlandedJobDoneEntries, resolveLandedVerdict,
 } = require('../../scripts/lib/headless-unlanded-detection.js');
 
 // Same fixture shape as scripts/lib/landing-verify.test.mjs: a bare origin
@@ -205,6 +205,43 @@ test('findUnlandedJobDoneEntries: sinceMs excludes job-done events older than th
 
     const cutoffBeforeJob = Date.parse('2026-09-15T09:00:00.000Z');
     assert.equal(findUnlandedJobDoneEntries(entries, { sinceMs: cutoffBeforeJob }).length, 1);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+// BRO-3873 step 4: land.yml REBASES before its fast-forward push, so a landed
+// job's HEAD is no longer an ancestor of origin/main. Ancestry alone would
+// call every such landing 'unlanded' (second-opinion design blocker).
+test('resolveLandedVerdict: a landings.jsonl row by tip, or patch-equivalence, overrides NOT_LANDED; nothing overrides LANDED/UNKNOWN', () => {
+  const sha = 'a'.repeat(40);
+  assert.equal(resolveLandedVerdict({ ancestryVerdict: 'NOT_LANDED', sha, landings: [{ sha: 'b'.repeat(40), tip: sha, branch: 'land/job/x' }] }).verdict, 'LANDED');
+  assert.equal(resolveLandedVerdict({ ancestryVerdict: 'NOT_LANDED', sha, landings: [], cherryPlus: false }).verdict, 'LANDED');
+  assert.equal(resolveLandedVerdict({ ancestryVerdict: 'NOT_LANDED', sha, landings: [], cherryPlus: true }).verdict, 'NOT_LANDED');
+  assert.equal(resolveLandedVerdict({ ancestryVerdict: 'NOT_LANDED', sha, landings: [], cherryPlus: null }).verdict, 'NOT_LANDED');
+  assert.equal(resolveLandedVerdict({ ancestryVerdict: 'UNKNOWN', sha, landings: [{ tip: sha, sha }] }).verdict, 'UNKNOWN');
+  assert.equal(resolveLandedVerdict({ ancestryVerdict: 'LANDED', sha }).verdict, 'LANDED');
+});
+
+test('findUnlandedJobDoneEntries: a job landed by REBASE (land.yml) — HEAD not an ancestor, patches upstream — is NOT unlanded', () => {
+  const { root, origin } = makeFixture();
+  try {
+    const jobCwd = cloneJobCwd(origin, root, 'job-rebased');
+    const jobSha = addUnpushedCommit(jobCwd, 'rebased-fix');
+    // What land.yml does: origin/main moves (bot churn), the job's commit is
+    // replayed on top (new sha, same patch) and fast-forwarded to main.
+    const lander = cloneJobCwd(origin, root, 'lander');
+    addUnpushedCommit(lander, 'bot-churn');
+    execFileSync('git', ['fetch', '-q', jobCwd, 'main'], { cwd: lander });
+    execFileSync('git', ['cherry-pick', 'FETCH_HEAD'], { cwd: lander, stdio: ['ignore', 'pipe', 'pipe'] });
+    execFileSync('git', ['push', '-q', 'origin', 'HEAD:main'], { cwd: lander });
+    execFileSync('git', ['fetch', '-q', 'origin', 'main'], { cwd: jobCwd });
+    const landedSha = execFileSync('git', ['rev-parse', 'origin/main'], { cwd: jobCwd, encoding: 'utf8' }).trim();
+    assert.notEqual(landedSha, jobSha);
+    assert.throws(() => execFileSync('git', ['merge-base', '--is-ancestor', jobSha, 'origin/main'], { cwd: jobCwd }), 'fixture must not be an ancestor');
+
+    const entries = jobDoneLedger({ taskId: 'linear:BRO-3', jobId: 'job3-abc', cwd: jobCwd });
+    assert.deepEqual(findUnlandedJobDoneEntries(entries), []);
   } finally {
     fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
