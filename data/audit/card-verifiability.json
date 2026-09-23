@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22T10:14:53.632Z",
+  "generatedAt": "2026-09-23T10:16:30.866Z",
   "total": 300,
   "armedCount": 300,
   "refusedCount": 0,
@@ -682,6 +682,42 @@
       ]
     },
     {
+      "id": "3e3637c5-416f-81a2-994d-ec11d2646058",
+      "name": "[Review Submission] The Jewish Chronicle review of Golden Boy",
+      "url": "https://app.notion.com/p/Review-Submission-The-Jewish-Chronicle-review-of-Golden-Boy-3e3637c5416f81a2994dec11d2646058",
+      "cmd": "node --test tests/unit/review-submission-golden-boy.test.mjs",
+      "missingPaths": [
+        "tests/unit/review-submission-golden-boy.test.mjs"
+      ]
+    },
+    {
+      "id": "3e3637c5-416f-81ef-bebb-e45fe6f215d8",
+      "name": "[Review Submission] West End Best Friend review of Golden Boy",
+      "url": "https://app.notion.com/p/Review-Submission-West-End-Best-Friend-review-of-Golden-Boy-3e3637c5416f81efbebbe45fe6f215d8",
+      "cmd": "node --test tests/unit/review-submission-validation.test.mjs",
+      "missingPaths": [
+        "tests/unit/review-submission-validation.test.mjs"
+      ]
+    },
+    {
+      "id": "3e3637c5-416f-8149-8259-f5da6f2db6cb",
+      "name": "[Review Submission] The Daily Mail review of Golden Boy",
+      "url": "https://app.notion.com/p/Review-Submission-The-Daily-Mail-review-of-Golden-Boy-3e3637c5416f81498259f5da6f2db6cb",
+      "cmd": "node --test tests/unit/review-submission-golden-boy.test.mjs",
+      "missingPaths": [
+        "tests/unit/review-submission-golden-boy.test.mjs"
+      ]
+    },
+    {
+      "id": "3e3637c5-416f-816a-a9c9-cb44cbc03f13",
+      "name": "[Review Submission] The Sunday Times review of Golden Boy",
+      "url": "https://app.notion.com/p/Review-Submission-The-Sunday-Times-review-of-Golden-Boy-3e3637c5416f816aa9c9cb44cbc03f13",
+      "cmd": "node --test tests/unit/review-submission-golden-boy.test.mjs",
+      "missingPaths": [
+        "tests/unit/review-submission-golden-boy.test.mjs"
+      ]
+    },
+    {
       "id": "3e2637c5-416f-814f-9d9b-f4af608e6d90",
       "name": "[Content Error] — Book of mormon Review of the guardian is positive not 45",
       "url": "https://app.notion.com/p/Content-Error-Book-of-mormon-Review-of-the-guardian-is-positive-not-45-3e2637c5416f814f9d9bf4af608e6d90",
@@ -751,33 +787,6 @@
       "cmd": "node --test tests/unit/ride-the-cyclone-search.test.mjs",
       "missingPaths": [
         "tests/unit/ride-the-cyclone-search.test.mjs"
-      ]
-    },
-    {
-      "id": "3cd637c5-416f-81a1-a575-ef9ffea90d0d",
-      "name": "Danny and the Deep Blue Sea — missing Off-Broadway production",
-      "url": "https://app.notion.com/p/Danny-and-the-Deep-Blue-Sea-missing-Off-Broadway-production-3cd637c5416f81a1a575ef9ffea90d0d",
-      "cmd": "node --test tests/unit/danny-deep-blue-sea-search.test.mjs",
-      "missingPaths": [
-        "tests/unit/danny-deep-blue-sea-search.test.mjs"
-      ]
-    },
-    {
-      "id": "3c8637c5-416f-8110-a776-f5cba1657e16",
-      "name": "Move venue write-time validation into the shows.json write choke point (saveShows)",
-      "url": "https://app.notion.com/p/Move-venue-write-time-validation-into-the-shows-json-write-choke-point-saveShows-3c8637c5416f8110a776f5cba1657e16",
-      "cmd": "node --test scripts/lib/shows-write-guard.test.mjs",
-      "missingPaths": [
-        "scripts/lib/shows-write-guard.test.mjs"
-      ]
-    },
-    {
-      "id": "3c8637c5-416f-81f9-9046-c2724c71b8da",
-      "name": "P2: isPlaceholderVenue is exact-match only, not contamination-safe",
-      "url": "https://app.notion.com/p/P2-isPlaceholderVenue-is-exact-match-only-not-contamination-safe-3c8637c5416f81f99046c2724c71b8da",
-      "cmd": "node --test scripts/audit-placeholder-venues.test.mjs",
-      "missingPaths": [
-        "scripts/audit-placeholder-venues.test.mjs"
       ]
     }
   ],
