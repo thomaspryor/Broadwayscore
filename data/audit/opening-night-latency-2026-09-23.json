@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-23T17:08:23.873Z",
+  "generatedAt": "2026-09-23T20:28:14.085Z",
   "date": "2026-09-23",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 237450,
+  "entryCount": 238540,
   "shows": [
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
@@ -4651,7 +4651,7 @@
     },
     {
       "showId": "godspell-2011",
-      "reviewCount": 17,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8129,13 +8129,13 @@
     },
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
-      "reviewCount": 15,
+      "reviewCount": 17,
       "median_e2e_ms": 108743212,
       "p90_e2e_ms": 130484790,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 736003,
+        "scored-to-rebuilt": 598005,
         "rebuilt-to-deployed": 89895423
       },
       "reviews_over_15min": 6,
@@ -8410,7 +8410,7 @@
     },
     {
       "showId": "macbeth-off-broadway-2026",
-      "reviewCount": 3,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
