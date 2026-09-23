@@ -2,7 +2,12 @@
   "processed": [
     "macbeth-off-broadway-2026/playbill--dan-meyer.json",
     "macbeth-off-broadway-2026/playbill--unknown.json",
-    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/theatreboard--unknown.json"
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/theatreboard--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--gillian-russo.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json",
+    "darkling-off-west-end-2026/guardian--unknown.json",
+    "darkling-off-west-end-2026/broadwayworld--cindy-marcolina.json",
+    "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json"
   ],
   "failed": [
     "macbeth-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -32,24 +37,62 @@
     "catarina-and-the-beauty-of-killing-fascists-west-end-2026/london-unattached--madeleine-morrow.json",
     "catarina-and-the-beauty-of-killing-fascists-west-end-2026/thestage--unknown.json",
     "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
-    "the-invention-of-love-off-broadway-2026/thestage--ian-shine.json"
+    "the-invention-of-love-off-broadway-2026/thestage--ian-shine.json",
+    "the-last-ship-west-end-2026/timeout--unknown.json",
+    "the-last-ship-west-end-2026/around-the-town-chicago--unknown.json",
+    "the-last-ship-west-end-2026/chicago-sun-times--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/variety--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/timeout-london--tom-wicker.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/east-midlands-theatre--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/everything-theatre--sara-west.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/everything-theatre--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/jacktheladmag--simon-webb.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/standard--nick-curtis.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/theatre-weekly--greg-stewart.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/thestage--paul-vale.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/west-end-best-friend--maya-bateman.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--charlotte-vickers.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--daniella-harrison.json",
+    "table-17-off-west-end-2026/london-box-office--stuart-king.json",
+    "darkling-off-west-end-2026/thestage--unknown.json",
+    "darkling-off-west-end-2026/voice-magazine--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "macbeth-off-broadway-2026/playbill--dan-meyer.json",
       "macbeth-off-broadway-2026/playbill--unknown.json",
-      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/theatreboard--unknown.json"
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/theatreboard--unknown.json",
+      "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--gillian-russo.json",
+      "darkling-off-west-end-2026/guardian--unknown.json",
+      "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json",
+      "darkling-off-west-end-2026/broadwayworld--cindy-marcolina.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-09-23T21:17:54.294Z",
-  "lastProcessed": "the-invention-of-love-off-broadway-2026/thestage--ian-shine.json",
-  "log": []
+  "lastProcessed": "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json",
+  "log": [
+    {
+      "t": "2026-09-23T22:26:50.209Z",
+      "event": "bb-session",
+      "session": "dbc34c93",
+      "url": "https://www.thestage.co.uk/news/production-news/my-sons-a-queer-but-what-can-you"
+    },
+    {
+      "t": "2026-09-23T22:26:51.107Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
