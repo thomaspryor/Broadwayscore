@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-09-22T22:44:43.064Z",
+  "generatedAt": "2026-09-23T01:14:28.989Z",
   "windowDays": 1095,
-  "targets": 286,
-  "auditedThisRun": 9,
-  "carriedForward": 551,
+  "targets": 281,
+  "auditedThisRun": 6,
+  "carriedForward": 556,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 312,
-    "missingCurrentRun": 433,
+    "withGap": 313,
+    "missingCurrentRun": 452,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 812,
+    "totalFlaggedMisses": 813,
     "totalRecoverable": 6,
     "totalRecovered": 7,
     "priorProductionCitations": 2504
@@ -30570,7 +30570,16 @@
         "https://www.nytimes.com/2018/03/16/arts/music/cosi-fan-tutte-review-met-opera.html",
         "http://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/",
         "https://www.wsj.com/articles/cosi-fan-tutte-review-a-carnival-of-deception-1521485960",
-        "https://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/"
+        "https://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/",
+        "https://innewcastle.co.uk/review-the-glasshouse-international-centre-for-music-reopens-sage-one-with-mozarts-cosi-fan-tutti/",
+        "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/",
+        "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178",
+        "https://parterre.com/broadcast/109259/cosi-fan-tutte/",
+        "https://letterboxd.com/petricor/film/the-metropolitan-opera-cosi-fan-tutte/",
+        "https://www.operabase.com/productions/cosi-fan-tutte-671121/en",
+        "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
+        "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot",
+        "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/"
       ],
       "dirFiles": 3,
       "dirClean": 0,
@@ -30610,6 +30619,60 @@
           "knownOutletId": "observer",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://innewcastle.co.uk/review-the-glasshouse-international-centre-for-music-reopens-sage-one-with-mozarts-cosi-fan-tutti/",
+          "host": "innewcastle.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/",
+          "host": "operawire.com",
+          "knownOutletId": "operawire",
+          "serpCensus": true
+        },
+        {
+          "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178",
+          "host": "bachtrack.com",
+          "knownOutletId": "bachtrack",
+          "serpCensus": true
+        },
+        {
+          "url": "https://parterre.com/broadcast/109259/cosi-fan-tutte/",
+          "host": "parterre.com",
+          "knownOutletId": "parterre-box",
+          "serpCensus": true
+        },
+        {
+          "url": "https://letterboxd.com/petricor/film/the-metropolitan-opera-cosi-fan-tutte/",
+          "host": "letterboxd.com",
+          "knownOutletId": "letterboxd",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.operabase.com/productions/cosi-fan-tutte-671121/en",
+          "host": "operabase.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
+          "host": "londongrip.co.uk",
+          "knownOutletId": "londongrip",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "serpCensus": true
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/",
+          "host": "aroundthetownchicago.com",
+          "knownOutletId": "around-the-town-chicago",
+          "serpCensus": true
         }
       ],
       "dirOnly": [],
@@ -30656,16 +30719,74 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Così fan tutte\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Così fan tutte\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Così fan tutte\" review metropolitan",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Così fan tutte Metropolitan Opera House review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Così fan tutte Metropolitan Opera House review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Così fan tutte Metropolitan Opera House review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 9,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 381,
+        "count": 408,
         "byReason": {
-          "aggregator-internal-nav": 288,
+          "aggregator-internal-nav": 293,
           "not-http-url": 49,
           "aggregator-section-root": 8,
-          "non-review-host": 36
+          "non-review-host": 55,
+          "ticketing-reseller": 3
         }
       },
       "dedupedVariants": [],
@@ -30711,8 +30832,90 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
+      "ingestResults": [
+        {
+          "url": "https://innewcastle.co.uk/review-the-glasshouse-international-centre-for-music-reopens-sage-one-with-mozarts-cosi-fan-tutti/",
+          "host": "innewcastle.co.uk",
+          "outletId": "innewcastle",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"innewcastle\" (not in registry) — onboard to outlet-registry.json after revie"
+        },
+        {
+          "url": "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/",
+          "host": "operawire.com",
+          "outletId": "operawire",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178",
+          "host": "bachtrack.com",
+          "outletId": "bachtrack",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "spawnSync node ETIMEDOUT"
+        },
+        {
+          "url": "https://parterre.com/broadcast/109259/cosi-fan-tutte/",
+          "host": "parterre.com",
+          "outletId": "parterre-box",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://letterboxd.com/petricor/film/the-metropolitan-opera-cosi-fan-tutte/",
+          "host": "letterboxd.com",
+          "outletId": "letterboxd",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.operabase.com/productions/cosi-fan-tutte-671121/en",
+          "host": "operabase.com",
+          "outletId": "operabase"
+        },
+        {
+          "url": "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
+          "host": "londongrip.co.uk",
+          "outletId": "londongrip"
+        },
+        {
+          "url": "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot",
+          "host": "theguardian.com",
+          "outletId": "guardian"
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/",
+          "host": "aroundthetownchicago.com",
+          "outletId": "around-the-town-chicago"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -30750,6 +30953,69 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/"
+          },
+          {
+            "outletId": "innewcastle.co.uk",
+            "outlet": "innewcastle.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://innewcastle.co.uk/review-the-glasshouse-international-centre-for-music-reopens-sage-one-with-mozarts-cosi-fan-tutti/"
+          },
+          {
+            "outletId": "operawire",
+            "outlet": "operawire",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/"
+          },
+          {
+            "outletId": "bachtrack",
+            "outlet": "bachtrack",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178"
+          },
+          {
+            "outletId": "parterre-box",
+            "outlet": "parterre-box",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://parterre.com/broadcast/109259/cosi-fan-tutte/"
+          },
+          {
+            "outletId": "letterboxd",
+            "outlet": "letterboxd",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://letterboxd.com/petricor/film/the-metropolitan-opera-cosi-fan-tutte/"
+          },
+          {
+            "outletId": "operabase.com",
+            "outlet": "operabase.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.operabase.com/productions/cosi-fan-tutte-671121/en"
+          },
+          {
+            "outletId": "londongrip",
+            "outlet": "londongrip",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot"
+          },
+          {
+            "outletId": "around-the-town-chicago",
+            "outlet": "around-the-town-chicago",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/"
           },
           {
             "outletId": "epoch-times",
@@ -30805,6 +31071,69 @@
             "firstSeenAt": "2026-09-22T10:37:37.415Z"
           },
           {
+            "url": "https://innewcastle.co.uk/review-the-glasshouse-international-centre-for-music-reopens-sage-one-with-mozarts-cosi-fan-tutti/",
+            "outletId": "innewcastle.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/",
+            "outletId": "operawire",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178",
+            "outletId": "bachtrack",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://parterre.com/broadcast/109259/cosi-fan-tutte/",
+            "outletId": "parterre-box",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://letterboxd.com/petricor/film/the-metropolitan-opera-cosi-fan-tutte/",
+            "outletId": "letterboxd",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://www.operabase.com/productions/cosi-fan-tutte-671121/en",
+            "outletId": "operabase.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
+            "outletId": "londongrip",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot",
+            "outletId": "guardian",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/",
+            "outletId": "around-the-town-chicago",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
             "url": "https://www.theepochtimes.com/opera-review-cosi-fan-tutte_2468625.html",
             "outletId": "epoch-times",
             "state": "IN_FLIGHT",
@@ -30820,9 +31149,9 @@
           }
         ],
         "liveCount": 0,
-        "candidateCount": 6
+        "candidateCount": 15
       },
-      "computedAt": "2026-09-22T22:44:43.064Z"
+      "computedAt": "2026-09-23T01:14:28.989Z"
     },
     {
       "showId": "cowbois-west-end-2024",
@@ -37520,7 +37849,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-21T11:49:29.057Z"
+      "computedAt": "2026-09-23T01:14:28.989Z"
     },
     {
       "showId": "dinosaur-world-live-off-west-end-2026",
@@ -41463,7 +41792,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-21T00:49:24.476Z"
+      "computedAt": "2026-09-23T01:14:28.989Z"
     },
     {
       "showId": "encores-la-cage-aux-folles-off-broadway-2026",
@@ -124968,6 +125297,41 @@
       "computedAt": "2026-08-30T07:41:12.140Z"
     },
     {
+      "showId": "red-riding-hood-off-broadway-2026",
+      "title": "Red Riding Hood",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-09-23T01:14:28.989Z"
+    },
+    {
       "showId": "redcliffe-off-west-end-2026",
       "title": "Redcliffe",
       "openingDate": "2026-05-29",
@@ -160047,7 +160411,18 @@
         "http://www.timeout.com/chicago/theater/the-last-ship",
         "http://www.aroundthetownchicago.com/theatre-reviews/the-last-ship/",
         "http://www.chicagonow.com/bon-bini/2014/06/the-best-of-chicago-theatre-sting-new-musical-the-last-ship-explodes-to-life/",
-        "https://youtu.be/fh8lw-DJuu8"
+        "https://youtu.be/fh8lw-DJuu8",
+        "https://www.thetimes.com/culture/music/article/sting-interview-police-last-ship-musical-theatre-royal-drury-lane-rknkmjhzq",
+        "https://lwtheatres.co.uk/whats-on/the-last-ship/",
+        "https://sting.com/blogs/news/the-last-ship-to-dock-in-london-theatre-royal-drury-lane-between-22-september-and-3-october-2026",
+        "https://www.timeout.com/london/theatre/the-last-ship",
+        "https://lwtickets.co.uk/whats-on/the-last-ship/",
+        "https://musicaltheatrereview.com/sting-to-bring-his-musical-the-last-ship-into-the-west-end/",
+        "https://lwtheatres.co.uk/a-complete-guide-to-the-last-ship-at-theatre-royal-drury-lane/",
+        "https://didtheylikeit.com/shows/the-last-ship-reviews/",
+        "https://theatreweekly.com/sting-to-star-in-limited-west-end-run-of-the-last-ship-at-theatre-royal-drury-lane/",
+        "https://musicaltheatrereview.com/the-last-ship-la-seine-musicale-paris/",
+        "https://www.londontheatredirect.com/musical/the-last-ship-tickets"
       ],
       "dirFiles": 3,
       "dirClean": 0,
@@ -160239,6 +160614,66 @@
           "url": "https://youtu.be/fh8lw-DJuu8",
           "host": "youtu.be",
           "knownOutletId": null
+        },
+        {
+          "url": "https://www.thetimes.com/culture/music/article/sting-interview-police-last-ship-musical-theatre-royal-drury-lane-rknkmjhzq",
+          "host": "thetimes.com",
+          "knownOutletId": "times-uk",
+          "serpCensus": true
+        },
+        {
+          "url": "https://lwtheatres.co.uk/whats-on/the-last-ship/",
+          "host": "lwtheatres.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://sting.com/blogs/news/the-last-ship-to-dock-in-london-theatre-royal-drury-lane-between-22-september-and-3-october-2026",
+          "host": "sting.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://lwtickets.co.uk/whats-on/the-last-ship/",
+          "host": "lwtickets.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://musicaltheatrereview.com/sting-to-bring-his-musical-the-last-ship-into-the-west-end/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "serpCensus": true
+        },
+        {
+          "url": "https://lwtheatres.co.uk/a-complete-guide-to-the-last-ship-at-theatre-royal-drury-lane/",
+          "host": "lwtheatres.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://didtheylikeit.com/shows/the-last-ship-reviews/",
+          "host": "didtheylikeit.com",
+          "knownOutletId": "dtli",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreweekly.com/sting-to-star-in-limited-west-end-run-of-the-last-ship-at-theatre-royal-drury-lane/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "serpCensus": true
+        },
+        {
+          "url": "https://musicaltheatrereview.com/the-last-ship-la-seine-musicale-paris/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatredirect.com/musical/the-last-ship-tickets",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
+          "serpCensus": true
         }
       ],
       "dirOnly": [],
@@ -160299,21 +160734,133 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/the-last-ship",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.timeout.com/chicago/theater/the-last-ship"
+            }
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
-      "weReference": null,
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Last Ship\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Last Ship\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Last Ship\" review drury",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Last Ship Theatre Royal Drury Lane review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Last Ship Theatre Royal Drury Lane review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Last Ship Theatre Royal Drury Lane review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 11,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 1438,
+        "count": 1474,
         "byReason": {
           "aggregator-internal-nav": 1130,
           "not-http-url": 213,
           "aggregator-section-root": 20,
-          "non-review-host": 75
+          "non-review-host": 107,
+          "ticketing-listing": 4
         }
       },
       "dedupedVariants": [],
@@ -160509,9 +161056,88 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "Refusing to ingest — https://youtu.be/fh8lw-DJuu8 matches a known non-review domain (ticket/listing/"
+        },
+        {
+          "url": "https://www.thetimes.com/culture/music/article/sting-interview-police-last-ship-musical-theatre-royal-drury-lane-rknkmjhzq",
+          "host": "thetimes.com",
+          "outletId": "times-uk",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
+        {
+          "url": "https://lwtheatres.co.uk/whats-on/the-last-ship/",
+          "host": "lwtheatres.co.uk",
+          "outletId": "lwtheatres",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://sting.com/blogs/news/the-last-ship-to-dock-in-london-theatre-royal-drury-lane-between-22-september-and-3-october-2026",
+          "host": "sting.com",
+          "outletId": "sting",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://lwtickets.co.uk/whats-on/the-last-ship/",
+          "host": "lwtickets.co.uk",
+          "outletId": "lwtickets",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
         }
       ],
-      "ingestSkippedByCap": [],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://musicaltheatrereview.com/sting-to-bring-his-musical-the-last-ship-into-the-west-end/",
+          "host": "musicaltheatrereview.com",
+          "outletId": "musical-theatre-review"
+        },
+        {
+          "url": "https://lwtheatres.co.uk/a-complete-guide-to-the-last-ship-at-theatre-royal-drury-lane/",
+          "host": "lwtheatres.co.uk",
+          "outletId": "lwtheatres"
+        },
+        {
+          "url": "https://didtheylikeit.com/shows/the-last-ship-reviews/",
+          "host": "didtheylikeit.com",
+          "outletId": "dtli"
+        },
+        {
+          "url": "https://theatreweekly.com/sting-to-star-in-limited-west-end-run-of-the-last-ship-at-theatre-royal-drury-lane/",
+          "host": "theatreweekly.com",
+          "outletId": "theatre-weekly"
+        },
+        {
+          "url": "https://musicaltheatrereview.com/the-last-ship-la-seine-musicale-paris/",
+          "host": "musicaltheatrereview.com",
+          "outletId": "musical-theatre-review"
+        },
+        {
+          "url": "https://www.londontheatredirect.com/musical/the-last-ship-tickets",
+          "host": "londontheatredirect.com",
+          "outletId": "londontheatredirect"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -160705,6 +161331,76 @@
             "url": "https://youtu.be/fh8lw-DJuu8"
           },
           {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.com/culture/music/article/sting-interview-police-last-ship-musical-theatre-royal-drury-lane-rknkmjhzq"
+          },
+          {
+            "outletId": "lwtheatres.co.uk",
+            "outlet": "lwtheatres.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://lwtheatres.co.uk/whats-on/the-last-ship/"
+          },
+          {
+            "outletId": "sting.com",
+            "outlet": "sting.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://sting.com/blogs/news/the-last-ship-to-dock-in-london-theatre-royal-drury-lane-between-22-september-and-3-october-2026"
+          },
+          {
+            "outletId": "lwtickets.co.uk",
+            "outlet": "lwtickets.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://lwtickets.co.uk/whats-on/the-last-ship/"
+          },
+          {
+            "outletId": "musical-theatre-review",
+            "outlet": "musical-theatre-review",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://musicaltheatrereview.com/sting-to-bring-his-musical-the-last-ship-into-the-west-end/"
+          },
+          {
+            "outletId": "lwtheatres.co.uk",
+            "outlet": "lwtheatres.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://lwtheatres.co.uk/a-complete-guide-to-the-last-ship-at-theatre-royal-drury-lane/"
+          },
+          {
+            "outletId": "dtli",
+            "outlet": "dtli",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://didtheylikeit.com/shows/the-last-ship-reviews/"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/sting-to-star-in-limited-west-end-run-of-the-last-ship-at-theatre-royal-drury-lane/"
+          },
+          {
+            "outletId": "musical-theatre-review",
+            "outlet": "musical-theatre-review",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://musicaltheatrereview.com/the-last-ship-la-seine-musicale-paris/"
+          },
+          {
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatredirect.com/musical/the-last-ship-tickets"
+          },
+          {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
@@ -160724,6 +161420,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "http://www.aroundthetownchicago.com/theatre-reviews/the-last-ship/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/the-last-ship"
           }
         ],
         "suppressedMissing": [],
@@ -160918,6 +161621,76 @@
             "firstSeenAt": "2026-09-22T22:44:43.064Z"
           },
           {
+            "url": "https://www.thetimes.com/culture/music/article/sting-interview-police-last-ship-musical-theatre-royal-drury-lane-rknkmjhzq",
+            "outletId": "times-uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://lwtheatres.co.uk/whats-on/the-last-ship/",
+            "outletId": "lwtheatres.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://sting.com/blogs/news/the-last-ship-to-dock-in-london-theatre-royal-drury-lane-between-22-september-and-3-october-2026",
+            "outletId": "sting.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://lwtickets.co.uk/whats-on/the-last-ship/",
+            "outletId": "lwtickets.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/sting-to-bring-his-musical-the-last-ship-into-the-west-end/",
+            "outletId": "musical-theatre-review",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://lwtheatres.co.uk/a-complete-guide-to-the-last-ship-at-theatre-royal-drury-lane/",
+            "outletId": "lwtheatres.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://didtheylikeit.com/shows/the-last-ship-reviews/",
+            "outletId": "dtli",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://theatreweekly.com/sting-to-star-in-limited-west-end-run-of-the-last-ship-at-theatre-royal-drury-lane/",
+            "outletId": "theatre-weekly",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/the-last-ship-la-seine-musicale-paris/",
+            "outletId": "musical-theatre-review",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://www.londontheatredirect.com/musical/the-last-ship-tickets",
+            "outletId": "londontheatredirect",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
             "url": "http://www.timeout.com/newyork/theater/the-last-ship",
             "outletId": "timeout-london",
             "state": "IN_FLIGHT",
@@ -160937,12 +161710,19 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-09-20T01:54:21.561Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/the-last-ship",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
           }
         ],
         "liveCount": 0,
-        "candidateCount": 23
+        "candidateCount": 31
       },
-      "computedAt": "2026-09-22T22:44:43.064Z"
+      "computedAt": "2026-09-23T01:14:28.989Z"
     },
     {
       "showId": "the-little-mermaid-the-musical-off-broadway-2026",
@@ -168888,6 +169668,41 @@
         "candidateCount": 13
       },
       "computedAt": "2026-08-30T07:41:12.140Z"
+    },
+    {
+      "showId": "the-secret-circus-musical-off-broadway-2026",
+      "title": "The Secret Circus Musical",
+      "openingDate": "2026-09-26",
+      "status": "previews",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-09-23T01:14:28.989Z"
     },
     {
       "showId": "the-seven-deadly-sins-the-human-voice-off-west-end-2026",
