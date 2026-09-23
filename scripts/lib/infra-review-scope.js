@@ -310,6 +310,19 @@ const REDIRECT_RE = /(?:^|\s)\d*>>?\s*["']?([^\s"'<>;&|]+)/g;
 // position stable, which is what lets the caller line this output up 1:1
 // with the unmasked segment array by index.
 //
+// Outside quotes, a backslash escapes the immediately following character —
+// `foo\ #literal` is ONE word ("foo #literal"), so the '#' is mid-word, not
+// a comment start, and a real redirect later in that same command must still
+// be seen (Codex adversarial review, BRO-4073: an escaped space before '#'
+// was misread as a real word boundary, blanking a genuine `> real/target.js`
+// that followed — a false NEGATIVE, the dangerous direction for a gate whose
+// job is "ask for review", never "silently miss a write"). Escaping inside
+// quotes has different, quote-specific rules (single quotes: none at all;
+// double quotes: only `$ \` " \ <newline>`) that the existing quote-tracking
+// here has never modeled — matching that pre-existing, accepted level of
+// fidelity, this only tracks escaping OUTSIDE quotes, where '#' is the sole
+// thing being escape-checked.
+//
 // Runs on the WHOLE (unsplit) command, mirroring stripHeredocBodies's own
 // placement (both run before shellSegments()) — NOT per-segment. shellSegments
 // is already documented as quote-blind at the split boundary (a `;` inside a
@@ -318,17 +331,47 @@ const REDIRECT_RE = /(?:^|\s)\d*>>?\s*["']?([^\s"'<>;&|]+)/g;
 // "run this; then > path"`) or a comment spanning a `;`-split point from
 // landing its `>` or comment text in a different segment than the quote/
 // comment-start that should have masked it.
+//
+// A `;|&\n` that lives INSIDE a comment is blanked along with the rest of the
+// comment (real bash: nothing inside a comment is a separator, so `echo ok #
+// note; > path` is ONE real command, not two) — which means shellSegments()
+// run on this function's output can produce a DIFFERENT segment count than
+// shellSegments() run on the raw command. Callers must derive ALL of their
+// segments from this function's output alone and never zip them by index
+// against a separately-computed raw-command segment array (Codex adversarial
+// review, BRO-4073 round 2: an earlier revision of bashWriteTargets did
+// exactly that zip, with a `?? rawSegment` fallback for the count mismatch —
+// so `echo ok # note; > scripts/lib/file-lock.js` masked to ONE segment,
+// the raw command still split into TWO, and the second loop iteration fell
+// back to the raw, unmasked segment for its REDIRECT_RE scan, resurrecting
+// the exact bug this function exists to close, one layer down). See
+// bashWriteTargets and bashPatchSources below — both segment the MASKED
+// command only, precisely to keep this a non-issue rather than a fragile
+// invariant to maintain.
 function maskQuotedRedirectOperatorsAndComments(command) {
   const str = String(command);
   let out = '';
   let quote = null;
   let atWordStart = true;
+  let escapeNext = false;
   for (let i = 0; i < str.length; i++) {
     const ch = str[i];
     if (quote) {
       if (ch === quote) quote = null;
       out += ch === '>' ? ' ' : ch;
       atWordStart = false;
+      continue;
+    }
+    if (escapeNext) {
+      out += ch;
+      atWordStart = false;
+      escapeNext = false;
+      continue;
+    }
+    if (ch === '\\') {
+      out += ch;
+      atWordStart = false;
+      escapeNext = true;
       continue;
     }
     if (ch === '#' && atWordStart) {
@@ -454,6 +497,22 @@ const KNOWN_GAPS = [
   // infra-post-write-audit.sh reads the real post-Bash git diff every call
   // (not just at merge/push), independent of which shell command produced it.
   'an unrecognised command prefix (sudo, strace, a future coreutil) ahead of a write command',
+  // Codex adversarial review, BRO-4073: stripHeredocBodies() runs BEFORE
+  // maskQuotedRedirectOperatorsAndComments(), and is itself comment-blind —
+  // it has no notion that a `<<TAG` sequence living inside a `#` comment
+  // (`echo ok # <<EOF`) is just commentary, not a real heredoc opener. It
+  // still consumes every following line as fake "body" until a line
+  // matching the tag turns up (or the command ends), which can silently
+  // swallow a genuine write on a later line. Pre-existing: stripHeredocBodies
+  // was exactly as comment-blind before BRO-4073 added any comment handling
+  // at all — this ticket did not introduce the gap, just gained the context
+  // to name it. Not chased here: reordering the two passes (or making
+  // stripHeredocBodies comment-aware) is a bigger restructuring of an
+  // already-hardened, separately-tested function (task #1557) than this
+  // ticket's scope, and the false-negative direction this produces is
+  // backstopped the same way as every other gap in this list —
+  // infra-post-write-audit.sh reads the real post-Bash git diff every call.
+  'a `<<TAG` heredoc-opener sequence living inside a `#` comment is still read as a real heredoc opener, and can swallow a genuine write on a later line',
 ];
 
 // ── path normalisation ───────────────────────────────────────────────────────
@@ -620,16 +679,20 @@ function unwrapCommandPrefix(tokens) {
 function bashWriteTargets(command) {
   if (!command) return [];
   command = stripHeredocBodies(command);
-  // Split BOTH the real command and its masked (quote/comment-safe) twin the
-  // same way. maskQuotedRedirectOperatorsAndComments() only ever swaps a
-  // character for a space — it never touches the `;|&\n` characters
-  // shellSegments() splits on — so the two segment arrays line up 1:1 by
-  // index. tokenize() below reads the MASKED segment (BRO-4073): a trailing
-  // `# also see scripts/lib/other.js` comment must not shift a `sed -i …
-  // real.js` target, or inflate a `tee`/patch operand list, the same way it
-  // must not fake a REDIRECT_RE match — masking a quoted '>' or a comment
-  // has no effect on where quotes/tokens start or end, so real operands are
-  // unaffected.
+  // Segment the MASKED (quote/comment-safe) command ONLY — never zip it
+  // against a separately-computed raw-command segment array by index. A
+  // comment can contain a `;|&\n` that the raw command would split on but
+  // the masked command does not (the comment swallows it, same as real
+  // bash), so the two would NOT reliably line up 1:1 — see the "Callers
+  // must derive ALL of their segments from this function's output alone"
+  // note on maskQuotedRedirectOperatorsAndComments above (BRO-4073 round 2,
+  // Codex adversarial review: an earlier revision here zipped raw/masked
+  // segments by index with a `?? rawSegment` fallback for the count
+  // mismatch, which resurrected the exact bug this function exists to
+  // close). tokenize() reads the same masked segment REDIRECT_RE does: a
+  // trailing `# also see scripts/lib/other.js` comment must not shift a
+  // `sed -i … real.js` target, or inflate a `tee`/patch operand list, the
+  // same way it must not fake a REDIRECT_RE match.
   const maskedSegments = shellSegments(maskQuotedRedirectOperatorsAndComments(command));
   const out = new Set();
   const add = (t) => {
@@ -639,10 +702,7 @@ function bashWriteTargets(command) {
     out.add(v);
   };
 
-  const segments = shellSegments(command);
-  for (let i = 0; i < segments.length; i++) {
-    const segment = segments[i];
-    const maskedSegment = maskedSegments[i] ?? segment;
+  for (const maskedSegment of maskedSegments) {
     REDIRECT_RE.lastIndex = 0;
     let m;
     while ((m = REDIRECT_RE.exec(maskedSegment)) !== null) add(m[1]);

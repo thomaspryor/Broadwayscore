@@ -497,6 +497,30 @@ test('bashWriteTargets treats a whole-segment comment as no command at all', () 
   assert.deepEqual(bashWriteTargets('# just a comment about > scripts/lib/foo.js'), []);
 });
 
+// Codex adversarial review (BRO-4073 round 2) caught two regressions in the
+// first cut of the comment fix.
+test('bashWriteTargets is not fooled by a separator character living INSIDE a comment (BRO-4073 round 2, P2)', () => {
+  // The ';' and the '>' are BOTH inside the comment here — real bash treats
+  // the whole thing after '#' as commentary, so this is really just `echo
+  // ok`, with no write at all. An earlier revision blanked the comment's
+  // separator characters but still zipped a raw-command segment array
+  // (split on the UNMASKED ';') against the masked one by index, so the
+  // count mismatch fell back to the raw, unmasked second segment and
+  // resurrected the exact bug this file exists to close.
+  assert.deepEqual(bashWriteTargets('echo ok # note; > scripts/lib/file-lock.js'), []);
+});
+
+test('bashWriteTargets still catches a real redirect after an ESCAPED space, even though the escaped space looks like a word boundary (BRO-4073 round 2, P1)', () => {
+  // `foo\ #literal` is ONE bash word ("foo #literal") — the escaped space is
+  // not a real word boundary, so the '#' is mid-word, not a comment start,
+  // and the real redirect that follows must still be caught. An earlier
+  // revision treated every space as a word boundary regardless of escaping,
+  // so the '#' here was misread as starting a comment and the real `>` was
+  // masked away — a false NEGATIVE (a write silently missed), the dangerous
+  // direction for this gate.
+  assert.deepEqual(bashWriteTargets('echo foo\\ #literal > scripts/lib/file-lock.js'), ['scripts/lib/file-lock.js']);
+});
+
 // Codex adversarial review (BRO-2450): these are the one shared definition
 // review-gate.mjs's merge gate also reads (via a lazy require()). Frozen so
 // a bug in either caller mutating them can't silently alter the other gate.
