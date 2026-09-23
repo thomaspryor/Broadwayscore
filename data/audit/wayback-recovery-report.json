@@ -1,20 +1,23 @@
 {
-  "totalCandidates": 63,
+  "totalCandidates": 67,
   "cdxFound": 3,
-  "cdxNotFound": 1,
-  "recovered": 0,
+  "cdxNotFound": 4,
+  "recovered": 2,
   "recoveredByTier": {
-    "1": 0,
+    "1": 1,
     "2": 0,
-    "3": 0
+    "3": 1
   },
-  "recoveredByDomain": {},
-  "tooShort": 5,
+  "recoveredByDomain": {
+    "vulture.com": 1,
+    "whatsonstage.com": 1
+  },
+  "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 59,
-  "notInArchive": 1,
+  "errors": 60,
+  "notInArchive": 4,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }
