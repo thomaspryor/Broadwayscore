@@ -272,36 +272,80 @@ const PATCH_COMMANDS = new Set(['patch']);
 // `> path` / `>> path`, including `2> path`. Deliberately not `<`.
 const REDIRECT_RE = /(?:^|\s)\d*>>?\s*["']?([^\s"'<>;&|]+)/g;
 
-// Neutralise '>' characters that live INSIDE a single/double-quoted span, so
-// REDIRECT_RE (which is quote-blind — it runs as a raw regex scan, not
-// through tokenize()) can never mistake a literal '>' inside a string for a
-// real shell redirect operator (BRO-4070: a read-only `echo "… > path"`
-// diagnostic was BLOCKED because the quoted '>' was read as a redirect).
-// Only the operator character itself is replaced (with a space) — everything
-// else, including a legitimately QUOTED redirect TARGET (`> "scripts/lib/
-// foo.js"`, whose '>' sits outside the quotes), is left untouched, so a real
-// redirect is still detected exactly as before.
+// Neutralise '>' characters that live INSIDE a single/double-quoted span, and
+// blank out text that lives inside an UNQUOTED shell '#' comment, so
+// REDIRECT_RE (which is quote-blind and comment-blind — it runs as a raw
+// regex scan, not through tokenize()) can never mistake a literal '>' inside
+// a string or a comment for a real shell redirect operator, and so
+// tokenize()'s WRITE_COMMANDS scan (sed -i, cp, mv, tee, …) can never read a
+// word from comment text as a real operand.
+//
+// BRO-4070 covered the quoted case: a read-only `echo "… > path"` diagnostic
+// was BLOCKED because the quoted '>' was read as a redirect. BRO-4073 is the
+// sibling gap that fix deliberately left open (kept narrow per that session's
+// second-opinion review): a read-only `git log … # mentions > path in a
+// comment` diagnostic is ALSO blocked, because comment text was never masked
+// at all. Both live in the same state machine because comment detection
+// needs the same quote-tracking redirect-masking already has — a '#' inside
+// a quoted string is not a comment start, so a second, quote-blind regex
+// pass for comments would misfire on `echo "# not a comment"`.
+//
+// '>' handling: only the operator character itself is replaced (with a
+// space) when INSIDE quotes — everything else, including a legitimately
+// QUOTED redirect TARGET (`> "scripts/lib/foo.js"`, whose '>' sits outside
+// the quotes), is left untouched, so a real redirect is still detected
+// exactly as before. '>' outside quotes and outside a comment is never
+// touched — it is a real candidate operator for REDIRECT_RE to find.
+//
+// '#' handling: once outside any quote, a '#' is a comment start ONLY at a
+// shell word boundary — start-of-string, or immediately after whitespace or
+// one of `;|&\n(` — mirroring real bash's rule that '#' starts a comment
+// only as the first character of a word. This deliberately excludes
+// parameter expansion (`${x#prefix}`, `${#arr[@]}` — '#' preceded by a var
+// name or '{', never a word boundary) and URL fragments in an unquoted arg
+// (`http://x#foo` — '#' is mid-word). Once a comment starts, everything up
+// to (not including) the next newline is blanked — comments end at the
+// newline in real bash, so a later line's real command must still be seen.
+// Blanking with spaces rather than deleting keeps every other character's
+// position stable, which is what lets the caller line this output up 1:1
+// with the unmasked segment array by index.
 //
 // Runs on the WHOLE (unsplit) command, mirroring stripHeredocBodies's own
 // placement (both run before shellSegments()) — NOT per-segment. shellSegments
 // is already documented as quote-blind at the split boundary (a `;` inside a
-// quoted string over-splits); resolving quote pairing before that split, not
-// after, is what stops a semicolon-quoted fake redirect (`echo "run this;
-// then > path"`) from landing its `>` in a different segment than the quote
-// that should have masked it.
-function maskQuotedRedirectOperators(command) {
+// quoted string over-splits); resolving quote/comment state before that
+// split, not after, is what stops a semicolon-quoted fake redirect (`echo
+// "run this; then > path"`) or a comment spanning a `;`-split point from
+// landing its `>` or comment text in a different segment than the quote/
+// comment-start that should have masked it.
+function maskQuotedRedirectOperatorsAndComments(command) {
   const str = String(command);
   let out = '';
   let quote = null;
+  let atWordStart = true;
   for (let i = 0; i < str.length; i++) {
     const ch = str[i];
     if (quote) {
       if (ch === quote) quote = null;
       out += ch === '>' ? ' ' : ch;
-    } else {
-      if (ch === '"' || ch === "'") quote = ch;
-      out += ch;
+      atWordStart = false;
+      continue;
     }
+    if (ch === '#' && atWordStart) {
+      while (i < str.length && str[i] !== '\n') { out += ' '; i++; }
+      i--; // step back so the for-loop's i++ lands on the newline (or end)
+      atWordStart = false;
+      continue;
+    }
+    if (ch === '"' || ch === "'") {
+      quote = ch;
+      out += ch;
+      atWordStart = false;
+      continue;
+    }
+    out += ch;
+    atWordStart = ch === ' ' || ch === '\t' || ch === '\n'
+      || ch === ';' || ch === '|' || ch === '&' || ch === '(';
   }
   return out;
 }
@@ -576,13 +620,17 @@ function unwrapCommandPrefix(tokens) {
 function bashWriteTargets(command) {
   if (!command) return [];
   command = stripHeredocBodies(command);
-  // Split BOTH the real command and its redirect-safe twin the same way.
-  // maskQuotedRedirectOperators() only ever swaps a '>' for a space — it
-  // never touches the `;|&\n` characters shellSegments() splits on — so the
-  // two segment arrays line up 1:1 by index; tokenize() below still reads the
-  // real (unmasked) segment, since masking a quoted '>' has no effect on
-  // where quotes/tokens start or end.
-  const redirectSafeSegments = shellSegments(maskQuotedRedirectOperators(command));
+  // Split BOTH the real command and its masked (quote/comment-safe) twin the
+  // same way. maskQuotedRedirectOperatorsAndComments() only ever swaps a
+  // character for a space — it never touches the `;|&\n` characters
+  // shellSegments() splits on — so the two segment arrays line up 1:1 by
+  // index. tokenize() below reads the MASKED segment (BRO-4073): a trailing
+  // `# also see scripts/lib/other.js` comment must not shift a `sed -i …
+  // real.js` target, or inflate a `tee`/patch operand list, the same way it
+  // must not fake a REDIRECT_RE match — masking a quoted '>' or a comment
+  // has no effect on where quotes/tokens start or end, so real operands are
+  // unaffected.
+  const maskedSegments = shellSegments(maskQuotedRedirectOperatorsAndComments(command));
   const out = new Set();
   const add = (t) => {
     const v = (t || '').trim();
@@ -594,12 +642,12 @@ function bashWriteTargets(command) {
   const segments = shellSegments(command);
   for (let i = 0; i < segments.length; i++) {
     const segment = segments[i];
-    const redirectSegment = redirectSafeSegments[i] ?? segment;
+    const maskedSegment = maskedSegments[i] ?? segment;
     REDIRECT_RE.lastIndex = 0;
     let m;
-    while ((m = REDIRECT_RE.exec(redirectSegment)) !== null) add(m[1]);
+    while ((m = REDIRECT_RE.exec(maskedSegment)) !== null) add(m[1]);
 
-    const tokens = tokenize(segment);
+    const tokens = tokenize(maskedSegment);
     if (!tokens.length) continue;
     const resolved = unwrapCommandPrefix(tokens);
     if (!resolved.length) continue;
@@ -635,7 +683,10 @@ function bashPatchSources(command) {
   if (!command) return [];
   command = stripHeredocBodies(command);
   const out = new Set();
-  for (const segment of shellSegments(command)) {
+  // Same masked-segment input as bashWriteTargets (BRO-4073) — a trailing
+  // `# see scripts/lib/other.js` comment must not read as an extra patch
+  // operand, the same class of gap the REDIRECT_RE fix closes.
+  for (const segment of shellSegments(maskQuotedRedirectOperatorsAndComments(command))) {
     const tokens = tokenize(segment);
     if (!tokens.length) continue;
     const head = tokens[0].value.replace(/^.*\//, '');
@@ -825,7 +876,7 @@ module.exports = {
   shellSegments,
   tokenize,
   stripHeredocBodies,
-  maskQuotedRedirectOperators,
+  maskQuotedRedirectOperatorsAndComments,
   // Same sharing rationale, same two callers (BRO-2450): review-gate.mjs's
   // merge gate had this exact wrapper list first (BRO-2436); bashWriteTargets
   // needed it too, so this is the one definition both read instead of two

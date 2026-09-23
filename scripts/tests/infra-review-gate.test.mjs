@@ -41,7 +41,7 @@ const {
   WRAPPER_COMMANDS,
   WRAPPER_VALUE_FLAGS,
   WRAPPER_LEADING_ARG,
-  maskQuotedRedirectOperators,
+  maskQuotedRedirectOperatorsAndComments,
 } = scope;
 
 const NOW = Date.parse('2026-08-06T12:00:00Z');
@@ -385,14 +385,14 @@ test('bashWriteTargets does not hang or throw on a bare/incomplete wrapper', () 
 // string (not a real shell redirect) was misread as one. Reproduced live: a
 // read-only `node -e` diagnostic whose quoted argument merely CONTAINED the
 // substring "> .github/workflows/test.yml" was BLOCKED by the real gate.
-test('maskQuotedRedirectOperators only neutralises a `>` that is INSIDE quotes', () => {
-  assert.equal(maskQuotedRedirectOperators('echo "a > b"'), 'echo "a   b"');
-  assert.equal(maskQuotedRedirectOperators("echo 'a > b'"), "echo 'a   b'");
+test('maskQuotedRedirectOperatorsAndComments only neutralises a `>` that is INSIDE quotes', () => {
+  assert.equal(maskQuotedRedirectOperatorsAndComments('echo "a > b"'), 'echo "a   b"');
+  assert.equal(maskQuotedRedirectOperatorsAndComments("echo 'a > b'"), "echo 'a   b'");
   // outside quotes — untouched
-  assert.equal(maskQuotedRedirectOperators('cat f > g'), 'cat f > g');
+  assert.equal(maskQuotedRedirectOperatorsAndComments('cat f > g'), 'cat f > g');
   // a redirect whose OWN target is quoted: the '>' sits outside the quotes,
   // so it survives masking exactly as before.
-  assert.equal(maskQuotedRedirectOperators('cat f > "g"'), 'cat f > "g"');
+  assert.equal(maskQuotedRedirectOperatorsAndComments('cat f > "g"'), 'cat f > "g"');
 });
 
 test('bashWriteTargets ignores a `>` that only appears inside a quoted string (BRO-4070)', () => {
@@ -416,6 +416,85 @@ test('bashWriteTargets still catches a real redirect, including one with a quote
 // hole one segment over.
 test('bashWriteTargets closes the fake redirect even when a `;` inside the same quoted string would otherwise split it into another segment', () => {
   assert.deepEqual(bashWriteTargets('echo "run this; then > .github/workflows/test.yml"'), []);
+});
+
+// BRO-4073: the sibling gap BRO-4070 deliberately left open. A '>' living
+// inside an UNQUOTED shell '#' comment (never executed by real bash, same as
+// a quoted string) was still read as a real redirect target — comment text
+// was never masked at all. Reproduced live: a read-only `git log --oneline
+// -1 # mentions > scripts/lib/file-lock.js in a comment` diagnostic was
+// BLOCKED by the real gate, classified as writing to a critical
+// concurrency-primitive file.
+test('maskQuotedRedirectOperatorsAndComments blanks an UNQUOTED `#` comment to end of line', () => {
+  assert.equal(
+    maskQuotedRedirectOperatorsAndComments('git log -1 # mentions > file.js'),
+    'git log -1                     ',
+  );
+  // '#' inside quotes is not a comment start — the '#' itself is untouched;
+  // the '>' is still masked to a space per the pre-existing BRO-4070
+  // quoted-redirect-operator behavior (quoting affects both characters this
+  // function handles, independently).
+  assert.equal(
+    maskQuotedRedirectOperatorsAndComments('echo "# 5 > should-not-blank.js"'),
+    'echo "# 5   should-not-blank.js"',
+  );
+  // mid-word '#' (parameter expansion / URL fragment shape) is not a comment
+  // start — only a '#' at a shell word boundary starts a comment.
+  assert.equal(
+    maskQuotedRedirectOperatorsAndComments('echo ${x#prefix} > file.js'),
+    'echo ${x#prefix} > file.js',
+  );
+  assert.equal(
+    maskQuotedRedirectOperatorsAndComments('echo http://x#foo > file.js'),
+    'echo http://x#foo > file.js',
+  );
+  // a comment ends at the newline, not at the end of the whole command — a
+  // later real command on the next line must still be visible.
+  assert.equal(
+    maskQuotedRedirectOperatorsAndComments('echo hi # comment > fake.js\ncat f > real.js'),
+    'echo hi                    \ncat f > real.js',
+  );
+});
+
+test('bashWriteTargets returns [] for the exact BRO-4073 repro (a `>` inside a trailing `#` comment)', () => {
+  assert.deepEqual(
+    bashWriteTargets('git log --oneline -1 # mentions > scripts/lib/file-lock.js in a comment'),
+    [],
+  );
+});
+
+test('bashWriteTargets still catches a real redirect that precedes a trailing `#` comment on the same line', () => {
+  assert.deepEqual(bashWriteTargets('echo hi > scripts/lib/foo.js # ship it'), ['scripts/lib/foo.js']);
+});
+
+// The sibling gap the second-opinion review caught: REDIRECT_RE isn't the
+// only comment-blind scan — tokenize()'s WRITE_COMMANDS detection (sed -i,
+// tee, patch, …) reads the same segment text, so an unmasked comment could
+// shift a `-i`/`last`-mode target to a word mentioned only in a trailing
+// comment, or inflate a `tee`/patch operand list with comment words.
+test('bashWriteTargets does not let a trailing comment shift a sed -i target to a word merely mentioned in the comment', () => {
+  assert.deepEqual(
+    bashWriteTargets("sed -i '' 's/a/b/' scripts/lib/real.js # also see scripts/lib/other.js"),
+    ['scripts/lib/real.js'],
+  );
+});
+
+test('bashWriteTargets does not let a trailing comment inflate a `tee` operand list', () => {
+  assert.deepEqual(
+    bashWriteTargets('printf x | tee scripts/lib/real.js # not scripts/lib/other.js'),
+    ['scripts/lib/real.js'],
+  );
+});
+
+test('bashPatchSources does not let a trailing comment add a spurious patch source', () => {
+  assert.deepEqual(
+    bashPatchSources('git apply scripts/lib/real.patch # not scripts/lib/other.patch'),
+    ['scripts/lib/real.patch'],
+  );
+});
+
+test('bashWriteTargets treats a whole-segment comment as no command at all', () => {
+  assert.deepEqual(bashWriteTargets('# just a comment about > scripts/lib/foo.js'), []);
 });
 
 // Codex adversarial review (BRO-2450): these are the one shared definition
