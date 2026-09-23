@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-23T12:30:29.227Z",
+  "timestamp": "2026-09-23T12:37:16.961Z",
   "stats": {
-    "totalReviews": 43967,
-    "alreadyFlagged": 18170,
+    "totalReviews": 43971,
+    "alreadyFlagged": 18171,
     "dateGuardCatches": 246,
     "directorMismatch": 1049,
     "tvFilmSignals": 1304,
-    "londonSignals": 1153,
+    "londonSignals": 1154,
     "offBroadwaySignals": 510,
     "yearMismatch": 93,
-    "noPublishDate": 3852
+    "noPublishDate": 3854
   },
   "findings": [
     {
@@ -53195,6 +53195,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "the-last-ship-west-end-2026",
+      "file": "musical-theatre-review--angela-thomas.json",
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/sting-to-bring-his-musical-the-last-ship-into-the-west-end/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
