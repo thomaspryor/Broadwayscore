@@ -1497,13 +1497,13 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-09-22T16:07:32.782Z",
+      "lastSeen": "2026-09-23T15:54:24.066Z",
       "lastNotifiedAt": "2026-09-21T17:36:41.780Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-2864",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1620,13 +1620,13 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-09-22T16:07:32.780Z",
+      "lastSeen": "2026-09-23T15:54:24.063Z",
       "lastNotifiedAt": "2026-09-16T15:54:33.667Z",
       "lastSurfacedAt": null,
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-3656",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -1826,7 +1826,7 @@
       "silentRefires": 1
     },
     "cron-health:Test Suite": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Test Suite",
@@ -1836,7 +1836,8 @@
       "lastSurfacedAt": "2026-09-22T16:07:29.358Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-23T15:54:24.162Z"
     },
     "cron-health-chronic:Weekly Video Reviews": {
       "status": "resolved",
@@ -2560,7 +2561,7 @@
       "linearIdentifier": "BRO-3104"
     },
     "cron-health:Check Opening Night Drift": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Check Opening Night Drift",
@@ -2570,7 +2571,8 @@
       "lastSurfacedAt": "2026-09-22T16:07:29.352Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-23T15:54:24.155Z"
     },
     "cron-health-chronic:Enrich Off-Broadway Dates": {
       "status": "resolved",
@@ -2662,12 +2664,13 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Audit Aggregator Review Gap",
       "firstSeen": "2026-09-10T15:38:37.584Z",
-      "lastSeen": "2026-09-22T16:07:29.445Z",
+      "lastSeen": "2026-09-23T15:54:24.059Z",
       "lastNotifiedAt": "2026-09-22T16:07:29.445Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-3150"
+      "linearIdentifier": "BRO-3150",
+      "silentRefires": 1
     },
     "gap:the-story-west-end-2026/the-spectator-uk--unknown.json": {
       "status": "resolved",
