@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { detectAuthStall, lastRealContentLine, lastNonBlankLine, isBusy } = require('./cmux-auth-stall.js');
+const { detectAuthStall, lastRealContentLine, isBusy } = require('./cmux-auth-stall.js');
 
 // Realistic bottom-of-pane chrome, verified live against a real `cmux
 // read-screen` capture (this file's header) — the chrome bar, the spinner,
@@ -34,9 +34,37 @@ test('detectAuthStall: a session actively busy right after the placeholder is wo
   assert.equal(detectAuthStall(withChrome('No response requested.', { busy: true })), null);
 });
 
-test('isBusy: true only while the ✻ in-flight spinner is on screen', () => {
+test('isBusy: true while the ✻ in-flight spinner is on screen', () => {
   assert.equal(isBusy(withChrome('anything', { busy: true })), true);
   assert.equal(isBusy(withChrome('anything', { busy: false })), false);
+});
+
+test('isBusy: also true for the ✳ spinner glyph (code-review finding — two sibling files name ✳, not ✻, as cmux\'s general activity glyph)', () => {
+  assert.equal(isBusy('✳ Thinking...\n\n🤖 SONNET │ ctx 10% │ main │ Broadwayscore'), true);
+});
+
+test('lastRealContentLine: only treats "Update installed" as the banner, not any ✔-led real content (code-review finding)', () => {
+  const screen = [
+    '✔ All 27 tests passed before this commit.',
+    '',
+    '──────────────────────────',
+    '❯',
+    '──────────────────────────',
+    '🤖 SONNET │ ctx 41% │ main │ Broadwayscore',
+  ].join('\n');
+  assert.equal(lastRealContentLine(screen), '✔ All 27 tests passed before this commit.');
+});
+
+test('lastRealContentLine: only treats a boxed "❯"-led line (bordered) as the prompt, not real content that quotes a shell prompt (code-review finding)', () => {
+  const screen = [
+    'Run it with ❯ npm run build to reproduce.',
+    '',
+    '──────────────────────────',
+    '❯',
+    '──────────────────────────',
+    '🤖 SONNET │ ctx 41% │ main │ Broadwayscore',
+  ].join('\n');
+  assert.equal(lastRealContentLine(screen), 'Run it with ❯ npm run build to reproduce.');
 });
 
 test('detectAuthStall: chrome-gate — a HEALTHY session merely quoting the auth-error phrase is not flagged (adversarial review finding)', () => {
@@ -93,7 +121,3 @@ test('detectAuthStall: empty/garbage screen text never throws', () => {
   assert.equal(detectAuthStall(undefined), null);
 });
 
-test('lastNonBlankLine: ignores trailing/leading blank lines and whitespace', () => {
-  assert.equal(lastNonBlankLine('a\n\n  b  \n\n\n'), 'b');
-  assert.equal(lastNonBlankLine(''), '');
-});

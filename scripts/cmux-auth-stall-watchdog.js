@@ -33,11 +33,11 @@
 'use strict';
 
 const fs = require('fs');
-const os = require('os');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { cmuxAvailable, listWorkspaces, run } = require('./lib/cmux-workspaces.js');
 const { detectAuthStall } = require('./lib/cmux-auth-stall.js');
+const { isNeedsYouTitle, NEEDS_YOU_DIR } = require('./lib/needs-you-snapshot.js');
 
 const USAGE = `cmux-auth-stall-watchdog — mark logged-out / stalled-resume cmux tabs ❓ NEEDS YOU.
 
@@ -50,19 +50,18 @@ Never closes or restarts a workspace — marking only. See scripts/lib/cmux-auth
 for what it detects and why (BRO-4056).
 `;
 
-const NEEDS_YOU_DIR = process.env.CLAUDE_CODE_NEEDS_YOU_DIR
-  || path.join(os.homedir(), '.claude', 'state', 'needs-you');
-
 // Same glyph set/priority as workspace-mark-done.js's MANAGED_GLYPHS: ❓
 // (needs you) always wins and replaces whichever of ✅/🧭 already
 // led the title, so a logged-out tab that happened to be ✅-marked before
 // it died doesn't keep reading as done.
 const MANAGED_GLYPH_RE = /^([^\p{L}\p{N}[]*?)[✅❓🧭]\s*/u;
 
+// Delegates to isNeedsYouTitle (imported above from needs-you-snapshot.js —
+// the SAME glyph-zone check the sidebar/digest actually read) instead of
+// reimplementing the ❓-detection independently (code-review finding: an
+// independent copy risks silently drifting from what those consumers read).
 function leadingGlyph(title) {
-  const head = String(title || '').trim().slice(0, 4);
-  if (head.includes('❓')) return '❓';
-  return null;
+  return isNeedsYouTitle(title) ? '❓' : null;
 }
 
 function stripManagedGlyph(title) {
@@ -131,10 +130,16 @@ function scanOnce({
     // finding): the pane could have logged back in or produced real output
     // during that same read-screen window. Writing off the FIRST read alone
     // would mark a tab that already recovered by the time of the write.
-    let freshScreen;
+    let freshScreen, freshHit;
     try { freshScreen = runFn(['read-screen', '--workspace', w.ref]); }
     catch (e) { log(`[cmux-auth-stall-watchdog] re-read-screen failed for ${w.ref}: ${e.message} — skipping rename`); continue; }
-    if (!detectAuthStall(freshScreen)) { log(`[cmux-auth-stall-watchdog] ${w.ref}: recovered since the scan — skipping rename`); continue; }
+    freshHit = detectAuthStall(freshScreen);
+    if (!freshHit) { log(`[cmux-auth-stall-watchdog] ${w.ref}: recovered since the scan — skipping rename`); continue; }
+    // Use the FRESH hit's kind/reason from here on (code-review finding): the
+    // condition can change shape, not just resolve, between the two reads
+    // (e.g. logged-out -> stalled-resume after a relaunch mid-scan) — writing
+    // the STALE first-read kind/question would persist the wrong recovery
+    // guidance even though the code went out of its way to re-verify first.
 
     const newTitle = `❓ ${stripManagedGlyph(fresh.title)}`.trim();
     if (newTitle === '❓') { log(`[cmux-auth-stall-watchdog] ${w.ref}: mark would empty the title — skipping rename`); continue; }
@@ -153,10 +158,10 @@ function scanOnce({
 
     const state = {
       ref: w.ref,
-      question: QUESTIONS[hit.kind],
+      question: QUESTIONS[freshHit.kind],
       ts: new Date().toISOString(),
       source: 'cmux-auth-stall-watchdog',
-      kind: hit.kind,
+      kind: freshHit.kind,
     };
     try {
       if (writeStateFn) writeStateFn(w.ref, state);

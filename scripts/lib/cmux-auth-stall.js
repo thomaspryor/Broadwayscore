@@ -44,10 +44,14 @@
  * sidebar already read for a DECISION NEEDED tab, so no consumer needs to
  * learn a new signal.
  *
- * Pure (no fs/process/child_process) so it's testable against fixture screen
- * text with no cmux socket required (CLAUDE.md rule 15).
+ * Pure — no I/O of its own (requiring cmux-workspaces.js for its hasClaudeChrome
+ * regex costs nothing at require-time; that module's own fs/child_process
+ * imports are never invoked by this file) — so it's testable against fixture
+ * screen text with no cmux socket required (CLAUDE.md rule 15).
  */
 'use strict';
+
+const { hasClaudeChrome } = require('./cmux-workspaces.js');
 
 // Matches the CLI's own worded rejection (claude-cli.js's own comment quotes
 // it verbatim: "Not logged in · Please run /login") tolerant of the
@@ -63,47 +67,65 @@ const API_AUTH_ERROR_RE = /invalid[\s_-]?api[\s_-]?key|authentication_error|plea
 // phrase.
 const STALLED_RESUME_RE = /^no response requested\.?$/i;
 
-// Same regex as hasClaudeChrome() in cmux-workspaces.js (kept as a separate
-// constant, not an import, so this module stays dependency-free/pure per its
-// header) — the persistent "ctx NN%" status-bar line every live session
-// renders. VERIFIED LIVE against a real `cmux read-screen` capture on this
-// machine (2026-09-22): the assistant's actual last spoken line sits ABOVE
-// this bar, with a spinner line ("✳ Waiting for..."), an input-box
-// border, and an empty "❯" prompt line in between, and MORE persistent
-// chrome (permission-mode line, background-agent list) renders BELOW it. A
-// naive "last non-blank line of the whole capture" (this file's first
-// version) would therefore never match a real stalled session at all — it
-// would hit that trailing chrome instead. lastRealContentLine() below walks
-// upward from the chrome line (or the end of the text if no chrome renders
-// yet — the exact shape of a fresh login-prompt pane) skipping the spinner/
+// hasClaudeChrome() (imported above from cmux-workspaces.js) tests for the
+// persistent "ctx NN%" status-bar line every live session renders. VERIFIED
+// LIVE against a real `cmux read-screen` capture on this machine
+// (2026-09-22): the assistant's actual last spoken line sits ABOVE this bar,
+// with a spinner line ("✻ Waiting for..."), an input-box border, and an
+// empty "❯" prompt line in between, and MORE persistent chrome
+// (permission-mode line, background-agent list) renders BELOW it. A naive
+// "last non-blank line of the whole capture" (this file's first version)
+// would therefore never match a real stalled session at all — it would hit
+// that trailing chrome instead. lastRealContentLine() below walks upward
+// from the chrome line (or the end of the text if no chrome renders yet —
+// the exact shape of a fresh login-prompt pane) skipping the spinner/
 // border/prompt noise, to find the last line the SESSION actually wrote.
-const CHROME_LINE_RE = /│\s*ctx\s+(?:\?|\d+%)/;
 const BORDER_RE = /^─{5,}$/;
-// ✻ (U+273B) is cmux's IN-FLIGHT spinner ("✻ Waiting for N background agents
-// to finish") — its presence means a turn is actively running, never
-// "stalled" (isBusy() below). ✔ (U+2714) leads a static "Update installed ·
-// Restart to update" banner — persistent chrome, not a busy signal, but
-// still noise to skip when hunting for the assistant's real last line. Both
-// captured from a real `read-screen` dump on this machine (2026-09-22).
-const BUSY_RE = /^✻/;
-const UPDATE_BANNER_RE = /^✔/;
-// Any line led by the input-box prompt char, WITH OR WITHOUT a draft after
-// it — an earlier version only matched a bare "❯" with nothing following,
-// so a stalled pane with an unsubmitted draft in the box (adversarial review
-// finding) stopped the upward scan at the draft line instead of continuing
-// to the real last assistant line above it.
+// ✻ (U+273B) is cmux's IN-FLIGHT spinner for "✻ Waiting for N background
+// agents to finish" — verified against a REAL live `cmux read-screen`
+// capture on this machine (2026-09-22, codepoint-extracted, not eyeballed:
+// `[...line].map(c => c.codePointAt(0).toString(16))` on the actual captured
+// text returned '273b'). ✳ (U+2733) is ALSO included: two sibling files in
+// this codebase (cmux-workspaces.js's hasRunningClaude comment, and
+// ~/.claude/hooks/lib/workspace-mark-done.js's glyph-zone comment)
+// independently name ✳ as cmux's general activity/spinner glyph, for a
+// different busy sub-state than the one this file captured directly — a
+// code-review verifier flagged the single-glyph version as a real gap
+// (isBusy() would miss that other busy shape), and matching both is strictly
+// safer than trusting either source alone. ✔ (U+2714) leads a static
+// "Update installed · Restart to update" banner — persistent chrome, not a
+// busy signal, but still noise to skip when hunting for the assistant's real
+// last line; anchored to that literal phrase (not just the glyph) since a
+// code-review finding showed a bare `/^✔/` would also skip real assistant
+// output that happens to start with a checkmark.
+const BUSY_RE = /^[✻✳]/;
+const UPDATE_BANNER_RE = /^✔\s*update installed/i;
+// The input-box prompt char, WITH OR WITHOUT a draft after it — an earlier
+// version only matched a bare "❯" with nothing following, so a stalled pane
+// with an unsubmitted draft in the box (adversarial review finding) stopped
+// the upward scan at the draft line instead of continuing to the real last
+// assistant line above it. Restricted to POSITION, not just the leading
+// glyph (code-review finding: a bare `/^❯/` would also skip real assistant
+// output that happens to quote a shell prompt, e.g. "❯ npm run build") — the
+// input box always renders as border/❯-line/border immediately below the
+// assistant's last line, so this only matches when the line one step closer
+// to the chrome bar is itself a border line.
 const PROMPT_LINE_RE = /^❯/;
 
 function lastRealContentLine(text) {
   const lines = String(text || '').split('\n').map(l => l.trim());
   let chromeIdx = -1;
   for (let i = lines.length - 1; i >= 0; i--) {
-    if (CHROME_LINE_RE.test(lines[i])) { chromeIdx = i; break; }
+    if (hasClaudeChrome(lines[i])) { chromeIdx = i; break; }
   }
   const upperBound = chromeIdx >= 0 ? chromeIdx : lines.length;
   for (let i = upperBound - 1; i >= 0; i--) {
     const l = lines[i];
-    if (!l || BORDER_RE.test(l) || BUSY_RE.test(l) || UPDATE_BANNER_RE.test(l) || PROMPT_LINE_RE.test(l)) continue;
+    if (!l || BORDER_RE.test(l) || BUSY_RE.test(l) || UPDATE_BANNER_RE.test(l)) continue;
+    // Only the BOXED prompt line (border immediately below it, toward the
+    // chrome bar) counts as noise — real content that happens to start with
+    // "❯" outside that box is never skipped.
+    if (PROMPT_LINE_RE.test(l) && i + 1 < lines.length && BORDER_RE.test(lines[i + 1])) continue;
     return l;
   }
   return '';
@@ -120,11 +142,6 @@ function isBusy(text) {
   return String(text || '').split('\n').some(l => BUSY_RE.test(l.trim()));
 }
 
-function lastNonBlankLine(text) {
-  const lines = String(text || '').split('\n').map(l => l.trim()).filter(Boolean);
-  return lines.length ? lines[lines.length - 1] : '';
-}
-
 /**
  * @param {string} screenText raw `cmux read-screen --workspace <ref>` output.
  * @returns {{kind: 'logged-out'|'stalled-resume', reason: string}|null}
@@ -139,7 +156,7 @@ function detectAuthStall(screenText) {
   // cmux-workspaces.js); a truly logged-out pane never does. Requiring
   // chrome's absence is precise, not just heuristic: it directly encodes
   // "this pane genuinely has no live authenticated session on it."
-  const hasChrome = CHROME_LINE_RE.test(text);
+  const hasChrome = hasClaudeChrome(text);
   if (!hasChrome && LOGGED_OUT_RE.test(text) && LOGIN_HINT_RE.test(text)) {
     return { kind: 'logged-out', reason: 'screen shows "Not logged in · Please run /login"' };
   }
@@ -153,6 +170,6 @@ function detectAuthStall(screenText) {
 }
 
 module.exports = {
-  detectAuthStall, lastRealContentLine, lastNonBlankLine, isBusy,
-  LOGGED_OUT_RE, LOGIN_HINT_RE, API_AUTH_ERROR_RE, STALLED_RESUME_RE, CHROME_LINE_RE,
+  detectAuthStall, lastRealContentLine, isBusy,
+  LOGGED_OUT_RE, LOGIN_HINT_RE, API_AUTH_ERROR_RE, STALLED_RESUME_RE,
 };
