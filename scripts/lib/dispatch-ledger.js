@@ -284,7 +284,26 @@ function isAttemptEvent(event) {
     // latestAttemptForTask skips straight past it to the ORIGINAL launch row,
     // so isLatestDispatchDead below never sees that the most recent attempt
     // never actually ran (card #1454 ship-check finding).
-    || event === JOB_EVENTS.ABANDONED;
+    || event === JOB_EVENTS.ABANDONED
+    // BRO-4075: LANDED_ACKED/LANDED_BEFORE_DISPATCH are ack-landed.js's own
+    // "I re-verified this really landed" rows, written for a jobId bsc-runner
+    // already classified STOPPED_SHORT/STRANDED (or, for the
+    // --already-landed sibling, for work that predates every dispatch
+    // attempt). Neither was in this set, so latestAttemptForTask below walked
+    // straight past them back to the earlier dead-shaped STOPPED_SHORT/
+    // STRANDED row — isLatestDispatchDead then reported the task as dead
+    // despite the ack row proving otherwise, and
+    // linear-dead-completion-source.js reopened an already-Done Linear issue
+    // for it (live: BRO-4065, 2026-09-23). Neither is in isDeadlikeEvent (see
+    // their own JOB_EVENTS comments — both are the opposite of a defect), so
+    // adding them here only ever makes resolveDeadAttempt see the ack as
+    // "latest", never newly marks anything dead. FANOUT_VERIFIED joins for
+    // doc-taxonomy consistency with its own JOB_EVENTS comment, but is a
+    // structural no-op here: fanout-verified.js always writes taskId:
+    // 'fanout' (a literal sentinel), which never matches a real taskId lookup
+    // in latestAttemptForTask.
+    || event === JOB_EVENTS.LANDED_ACKED || event === JOB_EVENTS.LANDED_BEFORE_DISPATCH
+    || event === JOB_EVENTS.FANOUT_VERIFIED;
 }
 
 // The most recent dispatch-attempt entry for a task, or null if it was never

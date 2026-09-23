@@ -214,3 +214,46 @@ test('#1795: reopenTask falls back to the old any-marker no-op when deadAttemptT
   assert.equal(task.status, 'completed', 'no deadAttemptTs to key off of, so the legacy any-marker guard applies');
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+// ── BRO-4075: must not reopen a Done Linear issue whose "dead" attempt was
+// actually landed-and-acked ────────────────────────────────────────────────
+//
+// main()'s Linear pass (lines 264-287) only ever calls correctLinearIssue()
+// for taskIds that findLinearDeadLaunchCandidates() returns — that function
+// (linear-dead-completion-source.js, BRO-3431) is the SAME candidate source
+// this file's own header describes as the Linear counterpart of the Notion
+// completed-task scan. It is exercised directly here (not through main(),
+// which does live Linear/spawnSync I/O) for the same reason this file never
+// calls correctNotionCard()/correctLinearIssue() directly elsewhere: the gate
+// worth regression-testing is "does this taskId even become a candidate",
+// because that gate is what main()'s loop is unconditionally built on.
+const { findLinearDeadLaunchCandidates } = require('./lib/linear-dead-completion-source.js');
+
+test('BRO-4075: a landed-acked row after job-stopped-short means the task is never even offered to correctLinearIssue', () => {
+  // Live BRO-4065 shape: bsc-runner classified the job job-stopped-short,
+  // then a separate session re-verified the sha on origin/main and wrote
+  // landed-acked. Before the dispatch-ledger.js isAttemptEvent fix, this
+  // taskId still showed up in findLinearDeadLaunchCandidates()'s output, and
+  // reconcile-dead-completions.js's main() reopened the already-Done Linear
+  // issue for it.
+  const entries = [
+    { event: 'launch', taskId: 'linear:BRO-4065', ts: '2026-09-23T06:00:00.000Z', workspaceRef: 'headless:linear:BRO-4065' },
+    { event: 'job-spawned', taskId: 'linear:BRO-4065', jobId: 'j4065', ts: '2026-09-23T06:01:00.000Z' },
+    { event: 'job-stopped-short', taskId: 'linear:BRO-4065', jobId: 'j4065', ts: '2026-09-23T06:11:07.000Z' },
+    { event: 'landed-acked', taskId: 'linear:BRO-4065', jobId: 'j4065', sha: 'ff10e4de1a6', ts: '2026-09-23T06:15:41.000Z' },
+    { event: 'fanout-verified', taskId: 'fanout', refs: ['linear:BRO-4065'], ts: '2026-09-23T06:15:53.000Z' },
+  ];
+  const candidates = findLinearDeadLaunchCandidates(entries);
+  assert.deepEqual(candidates, [], 'main() only calls correctLinearIssue() for candidates in this list — an empty list means the Done issue is never touched');
+});
+
+test('BRO-4075: a genuinely dead launch (no ack row) still reaches correctLinearIssue as a candidate', () => {
+  const entries = [
+    { event: 'launch', taskId: 'linear:BRO-4070', ts: '2026-09-23T06:00:00.000Z', workspaceRef: 'headless:linear:BRO-4070' },
+    { event: 'job-spawned', taskId: 'linear:BRO-4070', jobId: 'j4070', ts: '2026-09-23T06:01:00.000Z' },
+    { event: 'job-stopped-short', taskId: 'linear:BRO-4070', jobId: 'j4070', ts: '2026-09-23T06:11:07.000Z' },
+  ];
+  const candidates = findLinearDeadLaunchCandidates(entries);
+  assert.equal(candidates.length, 1);
+  assert.equal(candidates[0].taskId, 'linear:BRO-4070');
+});

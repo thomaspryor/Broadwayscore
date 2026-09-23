@@ -1315,6 +1315,79 @@ test('BRO-2565 end-to-end shape: latestAttemptForTask/isLatestDispatchDead never
   assert.equal(isLatestDispatchDead('2565', entries), false, 'a bare suspicion must never make isLatestDispatchDead true');
 });
 
+// ── BRO-4075: a landed-acked row must not be skipped by latestAttemptForTask ─
+// isAttemptEvent used to exclude LANDED_ACKED/LANDED_BEFORE_DISPATCH/
+// FANOUT_VERIFIED, so latestAttemptForTask walked past them back to an
+// earlier dead-shaped row. Live incident: BRO-4065's job was classified
+// job-stopped-short, then a separate session re-verified the commits landed
+// and wrote landed-acked — reconcile-dead-completions.js reopened the
+// already-Done Linear issue anyway.
+const { latestAttemptForTask: latestAttemptForTaskBro4075 } = require('./dispatch-ledger.js');
+
+test('isAttemptEvent recognizes LANDED_ACKED, LANDED_BEFORE_DISPATCH, and FANOUT_VERIFIED', () => {
+  assert.equal(isAttemptEvent(JOB_EVENTS.LANDED_ACKED), true);
+  assert.equal(isAttemptEvent(JOB_EVENTS.LANDED_BEFORE_DISPATCH), true);
+  assert.equal(isAttemptEvent(JOB_EVENTS.FANOUT_VERIFIED), true);
+});
+
+test('BRO-4075: launch -> job-spawned -> job-stopped-short -> landed-acked resolves latest attempt to the ack row, not the stale stopped-short row', () => {
+  const entries = [
+    { event: 'launch', taskId: 'linear:BRO-4065', workspaceRef: 'headless:linear:BRO-4065', ts: '2026-09-23T06:00:00.000Z' },
+    { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-4065', jobId: 'j4065', ts: '2026-09-23T06:01:00.000Z' },
+    { event: JOB_EVENTS.STOPPED_SHORT, taskId: 'linear:BRO-4065', jobId: 'j4065', ts: '2026-09-23T06:11:07.000Z', reason: 'missing THIS SESSION: line' },
+    { event: JOB_EVENTS.LANDED_ACKED, taskId: 'linear:BRO-4065', jobId: 'j4065', sha: 'ff10e4de1a6', ts: '2026-09-23T06:15:41.000Z' },
+  ];
+  const latest = latestAttemptForTaskBro4075('linear:BRO-4065', entries);
+  assert.equal(latest.event, JOB_EVENTS.LANDED_ACKED, 'landed-acked must win as the latest attempt, not the earlier stopped-short row');
+  assert.equal(isLatestDispatchDead('linear:BRO-4065', entries), false, 'a landed-acked row after a stopped-short attempt must never read as dead');
+});
+
+test('BRO-4075: the same shape with STRANDED instead of STOPPED_SHORT is also not dead once acked', () => {
+  const entries = [
+    { event: 'launch', taskId: 'linear:BRO-9', workspaceRef: 'headless:linear:BRO-9', ts: '2026-09-23T06:00:00.000Z' },
+    { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-9', jobId: 'j9', ts: '2026-09-23T06:01:00.000Z' },
+    { event: JOB_EVENTS.STRANDED, taskId: 'linear:BRO-9', jobId: 'j9', ts: '2026-09-23T06:11:00.000Z', sha: 'abc123' },
+    { event: JOB_EVENTS.LANDED_ACKED, taskId: 'linear:BRO-9', jobId: 'j9', sha: 'abc123', ts: '2026-09-23T06:15:00.000Z' },
+  ];
+  assert.equal(isLatestDispatchDead('linear:BRO-9', entries), false);
+});
+
+test('BRO-4075: a landed-before-dispatch row after a stale stopped-short re-dispatch is also not dead', () => {
+  const entries = [
+    { event: 'launch', taskId: 'linear:BRO-10', workspaceRef: 'headless:linear:BRO-10', ts: '2026-09-15T06:00:00.000Z' },
+    { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-10', jobId: 'j10a', ts: '2026-09-15T06:01:00.000Z' },
+    { event: JOB_EVENTS.DONE, taskId: 'linear:BRO-10', jobId: 'j10a', ts: '2026-09-15T06:10:00.000Z' },
+    // a mistaken re-dispatch of already-done work, which dies
+    { event: 'launch', taskId: 'linear:BRO-10', workspaceRef: 'headless:linear:BRO-10', ts: '2026-09-20T06:00:00.000Z' },
+    { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-10', jobId: 'j10b', ts: '2026-09-20T06:01:00.000Z' },
+    { event: JOB_EVENTS.STOPPED_SHORT, taskId: 'linear:BRO-10', jobId: 'j10b', ts: '2026-09-20T06:11:00.000Z' },
+    { event: JOB_EVENTS.LANDED_BEFORE_DISPATCH, taskId: 'linear:BRO-10', jobId: 'j10b', sha: 'def456', ts: '2026-09-20T06:15:00.000Z' },
+  ];
+  assert.equal(isLatestDispatchDead('linear:BRO-10', entries), false);
+});
+
+test('BRO-4075: FANOUT_VERIFIED always carries taskId "fanout", so widening isAttemptEvent never changes a real task\'s latest attempt', () => {
+  const entries = [
+    { event: 'launch', taskId: 'linear:BRO-11', workspaceRef: 'headless:linear:BRO-11', ts: '2026-09-20T06:00:00.000Z' },
+    { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-11', jobId: 'j11', ts: '2026-09-20T06:01:00.000Z' },
+    { event: JOB_EVENTS.DONE, taskId: 'linear:BRO-11', jobId: 'j11', ts: '2026-09-20T06:10:00.000Z' },
+    { event: JOB_EVENTS.FANOUT_VERIFIED, taskId: 'fanout', refs: ['linear:BRO-11'], ts: '2026-09-20T06:15:00.000Z' },
+  ];
+  const latest = latestAttemptForTaskBro4075('linear:BRO-11', entries);
+  assert.equal(latest.event, JOB_EVENTS.DONE, 'the fanout-verified row (taskId "fanout") must never be mistaken for this real task\'s own latest attempt');
+});
+
+test('BRO-4075: the ordinary success path (no ack row at all) is undisturbed — latest attempt is still job-done', () => {
+  const entries = [
+    { event: 'launch', taskId: 'linear:BRO-12', workspaceRef: 'headless:linear:BRO-12', ts: '2026-09-20T06:00:00.000Z' },
+    { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-12', jobId: 'j12', ts: '2026-09-20T06:01:00.000Z' },
+    { event: JOB_EVENTS.DONE, taskId: 'linear:BRO-12', jobId: 'j12', ts: '2026-09-20T06:10:00.000Z' },
+  ];
+  const latest = latestAttemptForTaskBro4075('linear:BRO-12', entries);
+  assert.equal(latest.event, JOB_EVENTS.DONE);
+  assert.equal(isLatestDispatchDead('linear:BRO-12', entries), false);
+});
+
 // ── Contradicted dead rows (BRO-2599) ───────────────────────────────────────
 // A 'dead' row proven false by the buried worker's own later Linear session
 // report (audit-false-dead-ledger-rows.js, BRO-2575) must not count toward
