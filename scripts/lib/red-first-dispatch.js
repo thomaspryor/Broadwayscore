@@ -193,15 +193,22 @@ function appendJournal(row, p = JOURNAL_PATH) {
   fs.appendFileSync(p, JSON.stringify({ ts: new Date().toISOString(), ...row }) + '\n');
 }
 
-// Read-only view of the TRACKED ledger as origin/main has it. Bounded: the
-// fetch is code-checkout-staleness.js's 5s fail-open fetch, the show has its
-// own timeout. Returns null when unreadable (the follow-up phase then skips).
+// Read-only view of the TRACKED ledger as origin/main has it. Bounded (5s
+// each, fail-open) and never a checkout. Returns null when unreadable (the
+// follow-up phase then skips this tick).
+const FETCH_TIMEOUT_MS = 5000;
 function readTrackedLedgerFromOrigin() {
   try {
-    const { fetchOriginMain } = require('./code-checkout-staleness.js');
-    fetchOriginMain(REPO);
+    try {
+      // unbounded-fetch-ok: single-ref fetch from the Mac's FULL clone on the
+      // launchd tick (bsc-reconcile) / by-hand CLI only — this function is
+      // never invoked from a workflow, let alone a fetch-depth:1 checkout.
+      execFileSync('git', ['-C', REPO, 'fetch', 'origin', '+refs/heads/main:refs/remotes/origin/main', '-q'], {
+        timeout: FETCH_TIMEOUT_MS, stdio: 'ignore',
+      });
+    } catch { /* stale origin/main ref is still a usable read — fail-open */ }
     const raw = execFileSync('git', ['-C', REPO, 'show', `origin/main:${TRACKED_LEDGER_REL}`], {
-      encoding: 'utf8', timeout: 5000, stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 16 * 1024 * 1024,
+      encoding: 'utf8', timeout: FETCH_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 16 * 1024 * 1024,
     });
     const parsed = JSON.parse(raw);
     return parsed && parsed.conditions ? parsed : null;
