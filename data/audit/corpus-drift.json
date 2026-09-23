@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-23T11:12:44.975Z",
+    "generatedAt": "2026-09-23T11:50:39.818Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -18,7 +18,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 44378\nHas fullText: 35389\n\n--- Quality Breakdown ---\n  full: 24405 (69.0%)\n  truncated: 10200 (28.8%)\n  partial: 352 (1.0%)\n  excerpt: 332 (0.9%)\n  stub: 80 (0.2%)\n  complete: 19 (0.1%)\n  unknown: 1 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 7257\n  has_footer_junk: 1629\n  ends_with_ellipsis: 143\n  has_footer_text: 108\n  paywall_or_login_prompt: 76\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 69.0% (min: 25%)\n  ✅ Truncated: 28.8% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
+      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 44378\nHas fullText: 35391\n\n--- Quality Breakdown ---\n  full: 24407 (69.0%)\n  truncated: 10200 (28.8%)\n  partial: 352 (1.0%)\n  excerpt: 332 (0.9%)\n  stub: 80 (0.2%)\n  complete: 19 (0.1%)\n  unknown: 1 (0.0%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 7257\n  has_footer_junk: 1629\n  ends_with_ellipsis: 143\n  has_footer_text: 108\n  paywall_or_login_prompt: 76\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 69.0% (min: 25%)\n  ✅ Truncated: 28.8% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
     },
     {
       "name": "aggregator-truth",
@@ -81,7 +81,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 6 flagged, 41 exempt, 20 covered\n  ⚠️   145  data/audit/guard-escalation-state.json  — no merge driver; needs a decision\n  ⚠️    93  data/audit/orphaned-duplicate-pointer-heal.json  — no merge driver; needs a decision\n  ⚠️    55  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️    46  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    33  .github/workflows/test.yml  — no merge driver; needs a decision\n  ⚠️    33  data/audit/main-streak-failing-jobs.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 6 flagged, 41 exempt, 20 covered\n  ⚠️   145  data/audit/guard-escalation-state.json  — no merge driver; needs a decision\n  ⚠️    93  data/audit/orphaned-duplicate-pointer-heal.json  — no merge driver; needs a decision\n  ⚠️    56  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️    46  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    33  .github/workflows/test.yml  — no merge driver; needs a decision\n  ⚠️    33  data/audit/main-streak-failing-jobs.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",

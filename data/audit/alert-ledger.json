@@ -3119,26 +3119,26 @@
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-09-23T11:12:45.021Z",
+      "lastSeen": "2026-09-23T11:50:39.872Z",
       "lastNotifiedAt": "2026-09-23T09:13:28.953Z",
       "lastSurfacedAt": "2026-09-23T09:13:28.953Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-23T11:12:45.026Z",
+      "lastSeen": "2026-09-23T11:50:39.878Z",
       "lastNotifiedAt": "2026-09-23T09:13:28.959Z",
       "lastSurfacedAt": "2026-09-23T09:13:28.959Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3515,13 +3515,13 @@
       "disposition": "digest",
       "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
       "firstSeen": "2026-09-18T16:10:40.527Z",
-      "lastSeen": "2026-09-23T11:12:45.029Z",
+      "lastSeen": "2026-09-23T11:50:39.882Z",
       "lastNotifiedAt": "2026-09-23T09:13:28.964Z",
       "lastSurfacedAt": "2026-09-23T09:13:28.964Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-remediation-exhausted-t1-missing:america-who-hurt-you-off-broadway-2026": {
       "status": "open",
@@ -3791,13 +3791,13 @@
       "disposition": "digest",
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-09-23T11:12:45.019Z",
+      "lastSeen": "2026-09-23T11:50:39.869Z",
       "lastNotifiedAt": "2026-09-23T09:13:28.949Z",
       "lastSurfacedAt": "2026-09-23T09:13:28.949Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4125,13 +4125,12 @@
       "disposition": "digest",
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-09-23T11:12:45.014Z",
-      "lastNotifiedAt": "2026-09-22T11:25:10.946Z",
-      "lastSurfacedAt": "2026-09-22T11:25:10.946Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-09-23T11:50:39.863Z",
+      "lastNotifiedAt": "2026-09-23T11:50:39.863Z",
+      "lastSurfacedAt": "2026-09-23T11:50:39.863Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 8
+      "linearIdentifier": null
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -4383,26 +4382,26 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on La Bohème",
       "firstSeen": "2026-09-23T00:41:01.715Z",
-      "lastSeen": "2026-09-23T06:02:37.002Z",
+      "lastSeen": "2026-09-23T11:44:32.455Z",
       "lastNotifiedAt": "2026-09-23T00:41:01.715Z",
       "lastSurfacedAt": "2026-09-23T00:41:01.715Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-revival-unverified-la-boheme-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Unverified revival on La Bohème",
       "firstSeen": "2026-09-23T00:41:01.718Z",
-      "lastSeen": "2026-09-23T06:02:37.004Z",
+      "lastSeen": "2026-09-23T11:44:32.458Z",
       "lastNotifiedAt": "2026-09-23T00:41:01.718Z",
       "lastSurfacedAt": "2026-09-23T00:41:01.718Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "review-gap:opening-window:cosi-fan-tutte-off-broadway-2026": {
       "status": "open",
@@ -4516,12 +4515,13 @@
       "disposition": "digest",
       "title": "Unverified revival on Macbeth",
       "firstSeen": "2026-09-23T06:02:37.005Z",
-      "lastSeen": "2026-09-23T06:02:37.005Z",
+      "lastSeen": "2026-09-23T11:44:32.460Z",
       "lastNotifiedAt": "2026-09-23T06:02:37.005Z",
       "lastSurfacedAt": "2026-09-23T06:02:37.005Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "express-retry-still-thin:macbeth-off-broadway-2026": {
       "status": "open",
