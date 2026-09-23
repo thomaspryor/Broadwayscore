@@ -516,4 +516,28 @@ describe('validateContentMentionsShow — BRO-4058 feature-headline backstop rel
     assert.strictEqual(r.valid, false);
     assert.match(r.reason, /HTML <title>/);
   });
+
+  // Codex adversarial review (2026-09-22): a punctuated catalog title ("Oliver!")
+  // must still be recognized as "leading" a headline that drops the punctuation
+  // ("Oliver review"), the same way the CURRENT show's own title is punctuation-
+  // stripped above (tStripped) — otherwise this reject path silently misses it.
+  test('catalog title with trailing punctuation ("Oliver!") is still recognized leading an unpunctuated headline', () => {
+    const r = validateContentMentionsShow(LONG_BODY(5), '<title>Oliver review — a rollicking revival | The Stage</title>', 'A Life in the Theatre', 'a-life-in-the-theatre-2010');
+    assert.strictEqual(r.valid, false);
+    assert.match(r.reason, /HTML <title>/);
+  });
+
+  // Codex adversarial review (2026-09-22): the long-title body-mention discount
+  // (bodyHasLongTitlePhrase, effectiveThreshold=1) exists to rescue reviews whose
+  // <title> PROVES the show. With htmlTitleMatch===false there is no positive
+  // title proof, so a single incidental mention of the full title phrase must NOT
+  // be enough to survive a negative/uninformative title signal.
+  test('long title mentioned only ONCE with an uninformative <title> is REJECTED (does not inherit the long-title 1-mention discount)', () => {
+    const body = 'By our critic. '.repeat(30) +
+      'A Life in the Theatre is name-checked once here as an example of backstage drama. ' +
+      'This roundup covers several unrelated anecdotes from decades of stagecraft history. '.repeat(20);
+    const r = validateContentMentionsShow(body, '<title>Great Backstage Yarns We Love — a listicle</title>', 'A Life in the Theatre', 'a-life-in-the-theatre-2010');
+    assert.strictEqual(r.valid, false);
+    assert.match(r.reason, /undiscounted/);
+  });
 });

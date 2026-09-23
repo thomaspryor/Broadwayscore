@@ -3279,23 +3279,39 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   // LEADS WITH a different catalog show's title — the same "leads with" proof
   // titleLeadsWithShow/headlineLeadsWithShow use above to establish a
   // dedicated review — which is what a genuinely wrong-article fetch (CDN
-  // misroute, stale cache, wrong-slug redirect) looks like. Run each catalog
-  // title through the same normalize() fold used for headlineLead/tokens above
-  // (loadBroadwayShows() only lowercases) so an accented title like "Les
-  // Misérables" isn't silently exempted from this check.
+  // misroute, stale cache, wrong-slug redirect) looks like. Each catalog title
+  // is compared both after the same normalize() fold used for headlineLead/
+  // tokens above (loadBroadwayShows() only lowercases, so an accented title
+  // like "Les Misérables" would otherwise be silently exempted) and after the
+  // same trailing-punctuation strip applied to the CURRENT show's own title
+  // above (tStripped) — without it "Oliver review" wouldn't be recognized as
+  // leading with catalog title "Oliver!" (adversarial review, 2026-09-22).
   if (htmlTitleMatch === false) {
     const otherShowTitles = loadBroadwayShows();
     const namesOtherShow = !!headlineLead && otherShowTitles.some((rawOtherTitle) => {
       const otherTitle = normalize(rawOtherTitle).toLowerCase();
-      if (otherTitle.length <= 4) return false;
-      if (otherTitle === strippedTitle) return false;
-      if (strippedTitle && (strippedTitle.includes(otherTitle) || otherTitle.includes(strippedTitle))) return false;
-      return headlineLead.startsWith(otherTitle);
+      const otherTitleStripped = otherTitle.replace(/[?!.,;:'"]+/g, ' ').replace(/\s+/g, ' ').trim();
+      return [otherTitle, otherTitleStripped].some((candidate) => {
+        if (candidate.length <= 4) return false;
+        if (candidate === strippedTitle) return false;
+        if (strippedTitle && (strippedTitle.includes(candidate) || candidate.includes(strippedTitle))) return false;
+        return headlineLead.startsWith(candidate);
+      });
     });
-    if (namesOtherShow) {
+    // The long-title body-mention discount (bodyHasLongTitlePhrase, below)
+    // exists to rescue reviews whose <title> PROVES the show — with
+    // htmlTitleMatch===false there is no positive title proof, so a single
+    // incidental body mention of the full title phrase in an otherwise
+    // unrelated article must not be enough to survive a negative title
+    // signal (adversarial review, 2026-09-22). Require the full, undiscounted
+    // length-scaled threshold here regardless of bodyHasLongTitlePhrase.
+    const insufficientBodyEvidence = mentionCount < threshold;
+    if (namesOtherShow || insufficientBodyEvidence) {
       return {
         valid: false,
-        reason: `HTML <title> "${htmlTitle}" does not reference show "${showTitle || showId}"`,
+        reason: namesOtherShow
+          ? `HTML <title> "${htmlTitle}" does not reference show "${showTitle || showId}"`
+          : `show mentioned ${mentionCount}× (below undiscounted ${threshold} threshold required when HTML <title> doesn't reference the show)`,
         mentionCount,
         threshold,
         htmlTitle,
