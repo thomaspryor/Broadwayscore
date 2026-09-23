@@ -141,18 +141,16 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-23T00:48:44.061Z",
-      "lastNotifiedAt": "2026-09-22T16:48:58.126Z",
-      "lastSurfacedAt": "2026-09-22T16:48:58.126Z",
-      "notifyCount": 99,
+      "lastSeen": "2026-09-23T04:06:00.059Z",
+      "lastNotifiedAt": "2026-09-23T04:06:00.059Z",
+      "lastSurfacedAt": "2026-09-23T04:06:00.059Z",
+      "notifyCount": 100,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 2,
-      "resolvedAt": "2026-09-23T03:10:29.152Z"
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -4463,12 +4461,13 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every JOB_EVENTS value is exactly terminal, open, or a named non-job-state exemption\"",
       "firstSeen": "2026-09-23T03:53:03.115Z",
-      "lastSeen": "2026-09-23T03:53:03.115Z",
+      "lastSeen": "2026-09-23T04:06:00.015Z",
       "lastNotifiedAt": "2026-09-23T03:53:03.115Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-4059"
+      "linearIdentifier": "BRO-4059",
+      "silentRefires": 1
     }
   }
 }
