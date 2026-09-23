@@ -34,7 +34,7 @@ const {
 } = require('./lib/cmux-workspaces.js');
 const {
   parseJsonLines, firstUserMessage, sessionLabel, finalAssistantEntry,
-  statusLine, workspaceVerdict,
+  statusLine, workspaceVerdict, recordedBlock,
 } = require('./lib/session-wrapups.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
@@ -87,7 +87,9 @@ function transcriptSummary(file) {
   const finalEntry = finalAssistantEntry(tail);
   return {
     label: sessionLabel(firstUserMessage(head)),
-    status: statusLine(finalEntry.text),
+    // BRO-3914: plain-English endings carry no verdict; fall back to the
+    // block the session recorded via wrapup-block (its tool_result).
+    status: statusLine(finalEntry.text) || statusLine(recordedBlock(tail)),
     // Wrap-up timestamp, NOT file mtime: transcript relocation (worktree
     // removal) touches mtime long after the session actually finished.
     endedAt: finalEntry.timestamp || null,

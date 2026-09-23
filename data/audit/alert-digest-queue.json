@@ -183,5 +183,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-23T01:14:29.196Z"
+  },
+  {
+    "conditionKey": "land:land/bro3922-watchdog-awaitingclaim-guard",
+    "title": "Landing blocked: rebase red on land/bro3922-watchdog-awaitingclaim-guard",
+    "description": "land.yml did not land land/bro3922-watchdog-awaitingclaim-guard: the rebase gate went red at cf96143bf2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35813003988",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro3922-watchdog-awaitingclaim-guard"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "cf96143bf29ff855c183807f3156bce4a991ea2c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35813003988"
+      }
+    ],
+    "queuedAt": "2026-09-23T03:07:58.636Z"
   }
 ]
