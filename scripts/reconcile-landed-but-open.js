@@ -129,17 +129,41 @@ function mergeKeyForSubject(subject) {
 // the same `linear-BRO-N-` key, so those rows are folded into the same index
 // (a branch name has no "into …" clause, so the direction rule is moot).
 // Injected for the test; read from the canonical checkout otherwise.
+// git log's own default maxBuffer (1 MiB) throws ENOBUFS well within reach of
+// this repo's real history — measured 2026-09-23: `git log origin/main
+// --oneline --grep=linear-` is 762 commits / 58,121 bytes today (~76
+// bytes/commit), so ~13,800 matching commits would overflow the default.
+// Same 64 MiB precedent as ack-landed.js's namingCandidates and verify runs.
+const GIT_LOG_MAX_BUFFER = 64 * 1024 * 1024;
+
 function readLandingRowsForIndex() {
   const { parseLandings, readLandings } = require('./lib/landings-ledger.js');
   // origin/main's copy first — the shared checkout no longer advances on a
-  // session's landing — then the working copy as a fallback.
+  // session's landing — then the working copy as a fallback. maxBuffer here
+  // too (review catch, BRO-4071): landings.jsonl is tiny today, but this is
+  // the same execFileSync-with-no-maxBuffer shape as the git-log call below,
+  // and this fallback is exactly the "still stands" backstop that call's own
+  // catch leans on — no sense leaving it exposed to the identical failure mode.
   try {
-    return parseLandings(execFileSync('git', ['-C', REPO, 'show', 'origin/main:data/audit/landings.jsonl'], { encoding: 'utf8', timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'ignore'] }));
+    return parseLandings(execFileSync('git', ['-C', REPO, 'show', 'origin/main:data/audit/landings.jsonl'], { encoding: 'utf8', timeout: GIT_TIMEOUT_MS, maxBuffer: GIT_LOG_MAX_BUFFER, stdio: ['ignore', 'pipe', 'ignore'] }));
   } catch { /* fall through */ }
   return readLandings(REPO).rows;
 }
 
-function buildMergeCommitIndex(injectedLines = null, landingRows = null) {
+// Returned attached to the index (a Map stays a Map — buildMergeCommitIndex's
+// existing callers and tests all use it as one) rather than changing the
+// return shape: `map.gitLogFailed` is undefined/false when the git-log pass
+// ran (even if it matched nothing) and true when it could NOT run at all (no
+// origin/main locally, git missing, or an ENOBUFS overflow). Collapsing those
+// two into one empty-looking index is the exact bug class just fixed in
+// ack-landed.js's namingCandidates (BRO-4068): a lookup that fails is
+// indistinguishable from a lookup that found nothing, so the caller states
+// "no landings found" as fact when it never actually looked. The ledger-rows
+// pass is deliberately NOT covered by this flag — its own try/catch already
+// degrades to "the git-log index below still stands", i.e. a missing/
+// unreadable ledger is not this sweep's primary evidence source and losing it
+// is not the same kind of blind spot.
+function buildMergeCommitIndex(injectedLines = null, landingRows = null, opts = {}) {
   const map = new Map(); // "BRO-2558" -> sha
   // Ledger rows are appended oldest-first; walk them NEWEST-first so the most
   // recent landing wins, matching the git-log (newest-first) rule below.
@@ -155,9 +179,13 @@ function buildMergeCommitIndex(injectedLines = null, landingRows = null) {
   try {
     let lines = injectedLines;
     if (!lines) {
+      // opts.cwd is test-only (default: the hardcoded REPO) — same pattern as
+      // ack-landed.js's namingCandidates(opts.cwd), so a test can point this
+      // at a throwaway/nonexistent path to exercise the real execFileSync
+      // failure path instead of a copy of it.
       const out = execFileSync('git', [
-        '-C', REPO, 'log', 'origin/main', '--oneline', '--grep=linear-',
-      ], { encoding: 'utf8', timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+        '-C', opts.cwd || REPO, 'log', 'origin/main', '--oneline', '--grep=linear-',
+      ], { encoding: 'utf8', timeout: GIT_TIMEOUT_MS, maxBuffer: GIT_LOG_MAX_BUFFER, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
       if (!out) return map;
       lines = out.split('\n');
     }
@@ -172,10 +200,20 @@ function buildMergeCommitIndex(injectedLines = null, landingRows = null) {
       if (!key) continue;
       if (!map.has(key)) map.set(key, sha);
     }
-  } catch {
-    // git failure (no origin/main locally, etc.) must fail SAFE — an EMPTY
-    // index reads as "no merge commit" for every card, which the classifier
-    // already treats as not-closable. Never crash the sweep over this.
+  } catch (e) {
+    // git failure (no origin/main locally, ENOBUFS overflow, etc.) must fail
+    // SAFE — an EMPTY index reads as "no merge commit" for every card, which
+    // the classifier already treats as not-closable, so this never makes a
+    // still-open card look closable. But it must not fail SILENT: mark the
+    // index as unreliable so the caller can say "could not look" instead of
+    // misreporting "looked, found none" (BRO-4071).
+    map.gitLogFailed = true;
+    // e.stderr is a Buffer (or string) that is truthy even when EMPTY — the
+    // exact shape of an ENOBUFS overflow with nothing captured on stderr — so
+    // `e.stderr || e.message` alone would pick the empty buffer and stringify
+    // it to '', silently discarding e.message (review catch, BRO-4071).
+    const stderrText = e && e.stderr ? String(e.stderr).trim() : '';
+    map.gitLogError = stderrText || String((e && e.message) || e).trim();
   }
   return map;
 }
@@ -297,6 +335,9 @@ async function main(argv = process.argv.slice(2)) {
   // (acceptance-check-core.js's own convention: "every card verifies against
   // the same origin/main, so N checkouts would be N copies of one tree").
   const mergeIndex = buildMergeCommitIndex();
+  if (mergeIndex.gitLogFailed) {
+    console.error(`[reconcile-landed-but-open] WARNING: could not scan origin/main for merge commits (${mergeIndex.gitLogError}) — this run's merge-commit evidence is INCOMPLETE, not "no landings found". Re-run once the underlying git failure is fixed before trusting a low candidate count.`);
+  }
   if (!asJson) console.error(`[reconcile-landed-but-open] merge-commit index built (${mergeIndex.size} matching commit(s) on origin/main); computing per-card evidence...`);
   const preliminary = issues.map((issue) => {
     const identifier = issue.identifier;
@@ -392,12 +433,17 @@ async function main(argv = process.argv.slice(2)) {
 
   const candidates = results.filter((r) => r.closable);
   const withMergeCommit = results.filter((r) => r.reasons[0] && r.reasons[0].startsWith('merge commit found')).length;
+  const gitLogFailed = Boolean(mergeIndex.gitLogFailed);
+  const gitLogError = mergeIndex.gitLogError || null;
 
   if (asJson) {
-    console.log(JSON.stringify({ scanned: results.length, withMergeCommit, closableCandidates: candidates.length, results }, null, 2));
-    return { scanned: results.length, withMergeCommit, closableCandidates: candidates.length, results };
+    console.log(JSON.stringify({ scanned: results.length, withMergeCommit, closableCandidates: candidates.length, gitLogFailed, gitLogError, results }, null, 2));
+    return { scanned: results.length, withMergeCommit, closableCandidates: candidates.length, gitLogFailed, gitLogError, results };
   }
 
+  if (gitLogFailed) {
+    console.log(`\n⚠️  origin/main could not be scanned for merge commits (${gitLogError}). Every count below only reflects the dispatch-ledger's landing rows — treat "0 candidates" as "could not check", not "nothing landed".`);
+  }
   console.log(`[reconcile-landed-but-open] scanned ${results.length} In-Progress issue(s); ${withMergeCommit} carry a merge commit on origin/main; ${candidates.length} pass every gate and are closable.`);
   if (!candidates.length) {
     console.log('No closable candidates this run. (report-only — nothing was changed)');
@@ -422,7 +468,11 @@ async function main(argv = process.argv.slice(2)) {
     console.log(`\n${deferredCount} candidate(s) had their acceptance re-check deferred (time budget spent) — re-run to resolve them.`);
   }
   console.log('\nThis is report-only — nothing above was closed. Close a candidate by hand (or a separately gated step), per BRO-2313.');
-  return { scanned: results.length, withMergeCommit, closableCandidates: candidates.length, results };
+  // Same shape as the --json return below (review catch, BRO-4071): a caller
+  // using main() as a library function in text mode must see gitLogFailed on
+  // the return value too, not just in the printed warning above — otherwise
+  // it can still mistake "could not check" for "nothing landed" from code.
+  return { scanned: results.length, withMergeCommit, closableCandidates: candidates.length, gitLogFailed, gitLogError, results };
 }
 
 if (require.main === module) {
