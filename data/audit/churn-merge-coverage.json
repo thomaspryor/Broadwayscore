@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-23T23:21:57.523Z",
+    "generatedAt": "2026-09-23T23:29:41.025Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -34,7 +34,7 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 180
+      "churn": 181
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -138,7 +138,7 @@
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 57
+      "churn": 58
     },
     {
       "path": "public/data/shows/all-my-sons-west-end-2025.json",
@@ -192,32 +192,32 @@
   "covered": [
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 274,
+      "churn": 275,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 266,
+      "churn": 267,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 250,
+      "churn": 251,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 250,
+      "churn": 251,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 250,
+      "churn": 251,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 248,
+      "churn": 249,
       "mergeAttr": "union"
     },
     {
