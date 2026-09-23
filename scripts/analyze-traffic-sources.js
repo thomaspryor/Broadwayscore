@@ -412,7 +412,7 @@ function newSources(series, weeks, currentWeek, { minTotal = 5 } = {}) {
 }
 
 // Search engines and our own domain are not "sites linking to us".
-const NOT_A_LINKING_SITE = /google\.|bing\.com|yahoo\.|duckduckgo|ecosia|brave\.com|kagi\.com|yandex|baidu|startpage|qwant|broadwayscorecard\.com|^\$direct$|^\(none\)$/i;
+const NOT_A_LINKING_SITE = /google\.|bing\.com|yahoo\.|duckduckgo|ecosia|brave\.com|kagi\.com|yandex|baidu|startpage|qwant|lilo\.org|oceanhero|presearch|metacrawler|lycos|zapmeta|hotbot|search66|webcrawler|dogpile|excite\.|ask\.com|aol\.com|^(www\.)?search\.|broadwayscorecard\.com|^\$direct$|^\(none\)$/i;
 
 /** referralLanding rows are keyed "domain → path"; index them week → domain → {path: sessions}. */
 function indexReferralLanding(rows) {

@@ -96,3 +96,9 @@ test('buildHumanSubject carries the week, the visit count and the direction', ()
   assert.equal(buildHumanSubject('# Your traffic, week of Sep 7\n\n> Part of the data did not load this week\n\n**In short.** PostHog did not load.'),
     'Your traffic, week of Sep 7 (partial data)');
 });
+
+test('markdownToHtml renders _italic_ lines and leaves underscores inside words alone', () => {
+  const html = markdownToHtml('_The full tables are attached._\n\nsnake_case_word stays');
+  assert.match(html, /<em>The full tables are attached\.<\/em>/);
+  assert.match(html, /snake_case_word stays/);
+});

@@ -27,6 +27,7 @@ function inline(md) {
   return escapeHtml(md)
     .replace(/\\\|/g, '|') // mdCell() escapes pipes in the report; not needed in HTML
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[\s(])_([^_\n]+)_(?=[\s).,;:!?]|$)/g, '$1<em>$2</em>')
     .replace(/`([^`]+)`/g, '<code>$1</code>');
 }
 

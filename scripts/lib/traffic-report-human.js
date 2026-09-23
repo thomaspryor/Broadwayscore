@@ -25,10 +25,10 @@ function helpers() { return require('../analyze-traffic-sources'); } // lazy: th
 
 // ---------- naming ----------
 
-const SEARCH_ENGINE = /google|bing\.com|yahoo|duckduckgo|ecosia|brave\.com|kagi|yandex|baidu|startpage|qwant|lilo\.org|oceanhero|presearch|^search\./i;
+const SEARCH_ENGINE = /google|bing\.com|yahoo|duckduckgo|ecosia|brave\.com|kagi|yandex|baidu|startpage|qwant|lilo\.org|oceanhero|presearch|metacrawler|lycos|zapmeta|hotbot|search66|webcrawler|dogpile|excite\.|ask\.com|aol\.com|^(www\.)?search\.|^search\./i;
 const OWN_TOOLING = /broadwayscorecard\.com|resend\.com|vercel\.(app|com)|localhost|posthog\.com/i;
 const SOURCE_NAMES = [
-  [/reddit/i, 'Reddit'],
+  [/(^|\.)reddit\.|^com\.reddit\./i, 'Reddit'],
   [/facebook|fb\.com|fbcdn/i, 'Facebook'],
   [/instagram/i, 'Instagram'],
   [/^t\.co$|^x\.com$|twitter/i, 'X (Twitter)'],
@@ -39,7 +39,7 @@ const SOURCE_NAMES = [
   [/pinterest/i, 'Pinterest'],
   [/youtube|youtu\.be/i, 'YouTube'],
   [/chatgpt|openai/i, 'ChatGPT'],
-  [/copilot/i, 'Microsoft Copilot'],
+  [/(^|\.)copilot\./i, 'Microsoft Copilot'],
   [/claude\.ai/i, 'Claude'],
   [/perplexity/i, 'Perplexity'],
   [/gemini\.google/i, 'Gemini'],
@@ -131,6 +131,11 @@ function pctChange(now, before) {
   return Math.round(((now - before) / before) * 100);
 }
 function fmtPct(p) { return p === null ? 'new' : `${p > 0 ? '+' : ''}${p}%`; }
+/** "up from 18 (+300%)" reads fine; "up from 1 (+4600%)" does not. */
+function fromBefore(before, pct) {
+  if (before < 5) return 'up from almost nothing';
+  return `up from ${fmtN(before)} (${fmtPct(pct)})`;
+}
 function fmtDate(iso) {
   return new Date(iso + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 }
@@ -156,6 +161,7 @@ function mergeSeries(series, nameOf) {
 function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPath }) {
   // showsPath: explicit data/shows.json (CI checks core data out to /tmp/core-data-checkout; locally the repo has it)
   const H = helpers();
+  const notes = [];
   const shows = loadShows(showsPath);
   if (showsPath && !shows.size) notes.push('Show titles could not be loaded this week, so pages are named from their web addresses.');
   const full = weeks.filter((w) => w !== currentWeek);
@@ -169,7 +175,6 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
   // Referrer attribution only when the referrer × page query actually returned
   // rows; otherwise say nothing about where a page's visitors came from.
   const refAvailable = phOk && Array.isArray(ph.referralLanding) && ph.referralLanding.length > 0 && !(ph.errors && ph.errors.referralLanding);
-  const notes = [];
   const S = (rows) => H.bucketWeekly((rows || []).map((r) => ({ date: r.date, key: r.key, value: r.sessions })));
   const U = (rows) => H.bucketWeekly((rows || []).map((r) => ({ date: r.date, key: r.key, value: r.users || 0 })));
 
@@ -265,17 +270,17 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
       const future = new Date(show.openingDate) > new Date(last + 'T00:00:00Z');
       ctx = future ? ` The show opens ${fmtDate(show.openingDate)}, so this is pre-opening interest.` : ` The show opened ${fmtDate(show.openingDate)}, so this is opening interest.`;
     }
-    working.push(`**${pageName(x.key, shows)}**: about ${fmtN(x.recentPerWeek)} visits a week, up from ${fmtN(x.priorPerWeek)} (${fmtPct(x.pct)}).${why}${ctx}`);
+    working.push(`**${pageName(x.key, shows)}**: about ${fmtN(x.recentPerWeek)} visits a week, ${fromBefore(x.priorPerWeek, x.pct)}.${why}${ctx}`);
   }
   for (const x of tRef.rising.filter((r) => !isSearch(r.key) && r.key !== 'Direct').slice(0, 3)) {
     const pages = pagesForSource(x.key, recent4);
-    working.push(`**${x.key}** is sending more: ${fmtN(x.recentPerWeek)} visits a week, up from ${fmtN(x.priorPerWeek)} (${fmtPct(x.pct)})${pages.length ? `, mostly to ${listPages(pages)}` : ''}.`);
+    working.push(`**${x.key}** is sending more: ${fmtN(x.recentPerWeek)} visits a week, ${fromBefore(x.priorPerWeek, x.pct)}${pages.length ? `, mostly to ${listPages(pages)}` : ''}.`);
   }
   for (const x of tChannel.rising.filter((c) => c.key !== 'Organic Search').slice(0, 2)) {
-    working.push(`**${channelName(x.key)}** as a whole is up: ${fmtN(x.recentPerWeek)} a week vs ${fmtN(x.priorPerWeek)} (${fmtPct(x.pct)}).`);
+    working.push(`**${channelName(x.key)}** as a whole is up on a four-week view: a typical week is now ${fmtN(x.recentPerWeek)} visits, it was ${fmtN(x.priorPerWeek)} the month before.`);
   }
   for (const x of tUtm.rising.slice(0, 2)) {
-    working.push(`**${utmName(x.key)}** links are bringing ${fmtN(x.recentPerWeek)} visits a week, up from ${fmtN(x.priorPerWeek)} (${fmtPct(x.pct)}).`);
+    working.push(`**${utmName(x.key)}** links are bringing ${fmtN(x.recentPerWeek)} visits a week, ${fromBefore(x.priorPerWeek, x.pct)}.`);
   }
 
   // ---- Biggest single weeks (PostHog landing spikes, one per page) ----
@@ -296,24 +301,35 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
   // ---- What's fading + keep an eye on ----
   const fading = [];
   const watch = [];
+  // GA4 sees every arrival on a page (including direct); PostHog's landing series
+  // above is external arrivals through the Real Users lens. If PostHog collapses
+  // while GA4 is flat, it was direct/bot traffic to that page that stopped, not
+  // the page (the Wicked case, 2026-09-21).
+  const gaLanding = gaOk ? H.bucketWeekly((ga.landing || []).map((r) => ({ date: r.date, key: r.key, value: r.sessions }))) : null;
+  const gaTrendFor = (pth) => (gaLanding && gaLanding[pth]) ? H.trendsFor({ [pth]: gaLanding[pth] }, weeks, currentWeek, { minWeekly: 1, pct: 40 }) : null;
   for (const x of tLanding.falling.slice(0, 6)) {
     const show = showOf(x.key);
     const collapsed = x.priorPerWeek >= 40 && x.pct <= -80;
     const live = show && /^(open|opened|previews|running)$/i.test(String(show.status || ''));
     const closed = show && /^(closed|closing)$/i.test(String(show.status || ''));
+    const gaT = collapsed ? gaTrendFor(x.key) : null;
+    const gaFlat = gaT && !gaT.falling.length; // GA4 has the page but it did not fall 40%+
     if (collapsed && closed) {
       fading.push(`**${pageName(x.key, shows)}**: ${fmtN(x.recentPerWeek)} visits a week, down from ${fmtN(x.priorPerWeek)}. The show has closed, so that is expected.`);
+    } else if (collapsed && gaFlat) {
+      watch.push(`Direct visits to **${pageName(x.key, shows)}** stopped (about ${fmtN(x.priorPerWeek)} a week to ${fmtN(x.recentPerWeek)}). Google visits to it are unchanged, so this is a bot or a removed link somewhere, not a broken page.`);
     } else if (collapsed) {
-      watch.push(`**${pageName(x.key, shows)}** went from ${fmtN(x.priorPerWeek)} visits a week to ${fmtN(x.recentPerWeek)}${live ? ' while the show is still running' : ''}. That is a collapse, not a fade: check the page still loads and is still in Google.`);
+      watch.push(`**${pageName(x.key, shows)}** went from ${fmtN(x.priorPerWeek)} visits a week to ${fmtN(x.recentPerWeek)}${live ? ' while the show is still running' : ''}. ${gaT ? 'Google visits to it fell too, so check the page still loads and is still in Google.' : 'Could be a bot or a removed link; check the page still loads.'}`);
     } else {
       fading.push(`**${pageName(x.key, shows)}**: ${fmtN(x.recentPerWeek)} visits a week, down from ${fmtN(x.priorPerWeek)} (${x.pct}%).`);
     }
   }
-  for (const x of tRef.falling.filter((r) => !isSearch(r.key) && r.key !== 'Direct').slice(0, 3)) {
+  // Social sources get their own section below; do not say it twice.
+  for (const x of tRef.falling.filter((r) => !isSearch(r.key) && r.key !== 'Direct' && !SOCIAL.has(r.key)).slice(0, 3)) {
     fading.push(`**${x.key}** is sending less: ${fmtN(x.recentPerWeek)} visits a week, down from ${fmtN(x.priorPerWeek)} (${x.pct}%).`);
   }
-  for (const x of tChannel.falling.slice(0, 3)) {
-    fading.push(`**${channelName(x.key)}** as a whole is down: ${fmtN(x.recentPerWeek)} a week vs ${fmtN(x.priorPerWeek)} (${x.pct}%).`);
+  for (const x of tChannel.falling.filter((c) => c.key !== 'Organic Social').slice(0, 3)) {
+    fading.push(`**${channelName(x.key)}** as a whole is down on a four-week view: a typical week is now ${fmtN(x.recentPerWeek)} visits, it was ${fmtN(x.priorPerWeek)} the month before.`);
   }
 
   // ---- New sites sending you visitors ----
@@ -342,7 +358,17 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
     for (const w of full) if (!best || (bw[w] || 0) > best.v) best = { w, v: bw[w] || 0 };
     if (best && best.v >= Math.max(30, typicalNow * 3)) {
       const bp = pagesForSource(name, [best.w]);
-      line += ` Your best ${name} week was ${fmtDate(best.w)}: ${fmtN(best.v)} visits${bp.length ? `, ${fmtN(bp[0][1])} of them to ${pageName(bp[0][0], shows)}` : ''}. That is what one good post does; a typical week now is ${fmtN(typicalNow)}.`;
+      line += ` Your best ${name} week was ${fmtDate(best.w)}: ${fmtN(best.v)} visits`;
+      if (bp.length) {
+        const pth = bp[0][0];
+        const show = showOf(pth);
+        const opened = show && show.openingDate && Math.abs(new Date(show.openingDate) - new Date(best.w + 'T00:00:00Z')) < 11 * 86400000;
+        line += `, ${fmtN(bp[0][1])} of them to ${pageName(pth, shows)}${opened ? ` (the show opened ${fmtDate(show.openingDate)})` : ''}`;
+        const after = full.slice(full.indexOf(best.w) + 1, full.indexOf(best.w) + 4).map((w) => (landing[pth] || {})[w] || 0);
+        if (after.length === 3) line += `. The page then got ${after.map(fmtN).join(', ')} visits in the following weeks`;
+      }
+      const monthsOfNormal = typicalNow > 0 ? Math.round(best.v / typicalNow / 4) : 0;
+      line += `.${monthsOfNormal >= 1 ? ` One good week brought about ${monthsOfNormal === 1 ? 'a month' : monthsOfNormal + ' months'} of normal ${name} traffic, and it faded within a month.` : ''}`;
     }
     social.push(line);
   }
@@ -365,16 +391,18 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
         const s = (gaCh[key] || {})[w] || 0;
         const e = (gaEng[key] || {})[w] || 0;
         if (s >= 100 && e / s < 0.05) {
-          watch.push(`Google Analytics logged ${fmtN(s)} untagged visits with almost no engagement in the week of ${fmtDate(w)}. Those are bots or a tracking glitch, not readers; the counts above already leave them out.`);
+          watch.push(`Google Analytics logged ${fmtN(s)} extra visits in the week of ${fmtDate(w)} that never clicked anything: bots or a tracking glitch, not readers, and not counted above.`);
           break;
         }
       }
     }
   }
   const email = channel['Email'];
-  if (email) {
-    const e = pctChange(email[last] || 0, sumWeeks(email, monthAvgWeeks) / Math.max(1, monthAvgWeeks.length));
-    if (e !== null && e <= -30) watch.push(`Email brought ${fmtN(email[last] || 0)} visits last week, ${Math.abs(e)}% below the previous month. Did a send go out?`);
+  if (email && full.length >= 5) {
+    const priorWeeks = full.slice(0, -1).map((w) => email[w] || 0);
+    const lowest = Math.min(...priorWeeks);
+    const lastE = email[last] || 0;
+    if (lastE < lowest && lowest >= 10) watch.push(`Email brought only ${fmtN(lastE)} visits last week, below every other week in this report (the low was ${fmtN(lowest)}). Did a send go out?`);
   }
 
   // ---- assemble ----
