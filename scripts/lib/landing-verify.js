@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 'use strict';
+// land.yml live case (c), 2026-09-23: docs-only line from a PRE-change worktree, landed by re-exec of origin/main's script copy (BRO-3873 step 4).
 /**
  * Shallow-aware "did it land" ancestry check (task #1489).
  *
