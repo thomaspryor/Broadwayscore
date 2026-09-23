@@ -21,7 +21,10 @@ import { fileURLToPath } from 'url';
 import { isBlockedReviewUrl } from './lib/domain-filters.js';
 import outletCanonicalize from './lib/outlet-canonicalize.js';
 
+import reviewGuards from './lib/review-guards.js';
+
 const { lookupOutletForHost } = outletCanonicalize;
+const { canonicalizeUrlForDedup } = reviewGuards;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -135,7 +138,9 @@ function parseIssueBody(issueBody) {
 function checkDuplicateReview(url, showId) {
   // Check reviews.json
   for (const review of reviews) {
-    if (review.url && review.url.toLowerCase() === url.toLowerCase()) {
+    // canonicalizeUrlForDedup: utm params / param order / fragments must not let
+    // a listed review through as "new".
+    if (review.url && canonicalizeUrlForDedup(review.url) === canonicalizeUrlForDedup(url)) {
       return { isDuplicate: true, location: 'reviews.json', showId: review.showId };
     }
   }

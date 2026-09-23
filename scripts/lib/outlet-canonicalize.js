@@ -131,7 +131,8 @@ function compactOutletNames() {
 function parseDomain(url) {
   if (!url || typeof url !== 'string') return null;
   const m = url.match(/^https?:\/\/(?:www\.)?([^/?#]+)/i);
-  return m ? m[1].toLowerCase() : null;
+  // Drop userinfo and port: "dailymail.com:443" must look up "dailymail.com".
+  return m ? m[1].toLowerCase().replace(/^[^@]*@/, '').replace(/:\d+$/, '').replace(/^www\./, '') : null;
 }
 
 function isRegisteredCanonical(id) {
