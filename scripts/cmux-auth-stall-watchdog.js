@@ -14,11 +14,19 @@
  * OBSERVABLE is the pane's rendered screen, which only a poll (this script,
  * via `cmux read-screen`) can see.
  *
- * Read-mostly and additive: never closes or restarts anything (that's a
- * human/recovery-session decision — see BRO-4056's root cause #3, where an
- * automated relaunch left tabs silently idle for ~2 days). The only WRITE
- * this script performs is a cosmetic rename (❓-prefix) plus a needs-you
- * state JSON, both idempotent and already the exact mechanism
+ * AUTO-HEAL (BRO-4065): a LOGGED-OUT tab is repaired, not just marked. The
+ * dead claude is stopped and the same session resumed inside that tab's own
+ * shell via scripts/lib/claude-tab-relaunch.js (types
+ * scripts/lib/relaunch-claude-tab.sh, which carries the login token), then
+ * the tab must show its normal prompt again. Only if that fails does the tab
+ * get ❓ plus a plain-English line. Limits: at most one attempt per tab per
+ * 30 min, never a busy tab, never a tab whose claude isn't sitting directly
+ * in an interactive shell. A ❓ this watchdog put on a logged-out tab is
+ * retried on later cycles and cleared once the tab is healed. Stalled-resume
+ * tabs are still only marked (they are logged in; restarting would not help).
+ *
+ * Never closes anything. Otherwise the only writes are a cosmetic rename
+ * (❓-prefix) plus a needs-you state JSON — the exact mechanism
  * workspace-mark-done.js uses for DECISION NEEDED.
  *
  *   node scripts/cmux-auth-stall-watchdog.js             scan + mark
@@ -38,16 +46,22 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { cmuxAvailable, listWorkspaces, run } = require('./lib/cmux-workspaces.js');
 const { detectAuthStall } = require('./lib/cmux-auth-stall.js');
 const { isNeedsYouTitle, NEEDS_YOU_DIR } = require('./lib/needs-you-snapshot.js');
+const { healTab } = require('./lib/claude-tab-relaunch.js');
 
-const USAGE = `cmux-auth-stall-watchdog — mark logged-out / stalled-resume cmux tabs ❓ NEEDS YOU.
+const HEAL_STATE_DIR = path.join(path.dirname(NEEDS_YOU_DIR), 'auth-stall-heal');
+const HEAL_MIN_INTERVAL_MS = 30 * 60 * 1000;
+const SOURCE = 'cmux-auth-stall-watchdog';
+
+const USAGE = `cmux-auth-stall-watchdog — repair logged-out cmux tabs; mark the rest ❓ NEEDS YOU.
 
 Usage:
-  node scripts/cmux-auth-stall-watchdog.js             scan every live workspace, mark hits
-  node scripts/cmux-auth-stall-watchdog.js --dry-run    scan and report only, no rename/state write
+  node scripts/cmux-auth-stall-watchdog.js             scan every live workspace, heal logged-out tabs, mark the rest
+  node scripts/cmux-auth-stall-watchdog.js --dry-run    scan and report only, no relaunch/rename/state write
   node scripts/cmux-auth-stall-watchdog.js --help       show this message, do nothing else
 
-Never closes or restarts a workspace — marking only. See scripts/lib/cmux-auth-stall.js
-for what it detects and why (BRO-4056).
+Logged-out tabs are relaunched in place with the saved login (max 1 try per tab per 30 min,
+never a busy tab); only a failed repair is marked ❓. Never closes a workspace.
+Detection: scripts/lib/cmux-auth-stall.js (BRO-4056). Repair: scripts/lib/claude-tab-relaunch.js (BRO-4065).
 `;
 
 // Same glyph set/priority as workspace-mark-done.js's MANAGED_GLYPHS: ❓
@@ -73,30 +87,99 @@ function needsYouFile(ref, dir = NEEDS_YOU_DIR) {
   return path.join(dir, `${String(ref).replace(/[^a-zA-Z0-9_-]/g, '_')}.json`);
 }
 
+// Owner-facing, so plain English only (BRO-4065): never tell the owner to
+// /login — the keychain sentinel wipes a manual login within 5 minutes.
 const QUESTIONS = {
-  'logged-out': 'Tab shows "Not logged in · Please run /login" — do NOT just run /login in it (BRO-4056: a manual /login gets auto-purged by the keychain sentinel within minutes and can mask whether the underlying token-propagation bug recurred). Relaunch/restore it through a launch path that carries CLAUDE_CODE_OAUTH_TOKEN instead.',
-  'stalled-resume': 'Tab was resumed with no real prompt and only replied "No response requested." — give it a real prompt or restart the session; it has been sitting idle since the last scan found it this way.',
+  'logged-out': 'This tab lost its login and couldn\'t be restarted automatically. You don\'t need to log in. The system retries every 30 minutes; if it still shows this, close the tab or ask any other session to "relaunch the logged-out tab".',
+  'stalled-resume': 'This tab was reopened but never picked its work back up, so it has been sitting idle. Type what you want it to do, or close it if you no longer need it.',
 };
+// For an agent session reading the state file, not for the owner.
+function agentRemedy(ref) {
+  return `node scripts/relaunch-claude-tab.js --workspace ${ref}`;
+}
 
 function stateFileExists(ref) {
   try { return fs.existsSync(needsYouFile(ref)); } catch { return false; }
+}
+
+function readState(ref) {
+  try { return JSON.parse(fs.readFileSync(needsYouFile(ref), 'utf8')); } catch { return null; }
+}
+
+// Only ever removes a state file THIS watchdog wrote (re-read + source check)
+// — a DECISION NEEDED captured by the Stop hook is never touched.
+function clearOwnState(ref) {
+  const st = readState(ref);
+  if (st && st.source === SOURCE) fs.unlinkSync(needsYouFile(ref));
+}
+
+function lastHealAttempt(ref) {
+  try { return JSON.parse(fs.readFileSync(needsYouFile(ref, HEAL_STATE_DIR), 'utf8')).ts || null; } catch { return null; }
+}
+
+function recordHealAttempt(ref, result) {
+  fs.mkdirSync(HEAL_STATE_DIR, { recursive: true });
+  fs.writeFileSync(needsYouFile(ref, HEAL_STATE_DIR), JSON.stringify({ ref, ts: Date.now(), healed: !!result.healed, reason: result.reason, command: result.command || null }, null, 2));
 }
 
 function scanOnce({
   dryRun = false, log = console.error,
   cmuxAvailableFn = cmuxAvailable, listWorkspacesFn = listWorkspaces, runFn = run,
   writeStateFn = null, stateExistsFn = stateFileExists,
+  readStateFn = readState, clearStateFn = clearOwnState,
+  healFn = null, lastHealAttemptFn = lastHealAttempt, recordHealAttemptFn = recordHealAttempt,
+  now = Date.now,
 } = {}) {
-  if (!cmuxAvailableFn()) { log('[cmux-auth-stall-watchdog] cmux not found — nothing to check.'); return { scanned: 0, marked: [] }; }
+  const empty = { scanned: 0, marked: [], healed: [] };
+  if (!cmuxAvailableFn()) { log('[cmux-auth-stall-watchdog] cmux not found — nothing to check.'); return empty; }
   let workspaces;
-  try { workspaces = listWorkspacesFn(); } catch (e) { log(`[cmux-auth-stall-watchdog] listWorkspaces failed: ${e.message}`); return { scanned: 0, marked: [] }; }
+  try { workspaces = listWorkspacesFn(); } catch (e) { log(`[cmux-auth-stall-watchdog] listWorkspaces failed: ${e.message}`); return empty; }
+
+  const heal = healFn || ((ref) => healTab(ref, { deps: { runFn } }));
+  // One repair attempt per tab per HEAL_MIN_INTERVAL_MS, recorded BEFORE the
+  // attempt's outcome is known so a crash mid-attempt still counts. Returns
+  // null when rate-limited.
+  function tryHeal(ref) {
+    let last = null;
+    try { last = lastHealAttemptFn(ref); } catch { /* unreadable → treat as never tried */ }
+    if (last && now() - last < HEAL_MIN_INTERVAL_MS) {
+      log(`[cmux-auth-stall-watchdog] ${ref}: repair already tried ${Math.round((now() - last) / 60000)} min ago — waiting before the next try`);
+      return null;
+    }
+    try { recordHealAttemptFn(ref, { healed: false, reason: 'attempt started' }); } catch (e) { log(`[cmux-auth-stall-watchdog] ${ref}: could not record repair attempt (${e.message}) — skipping repair`); return null; }
+    let result;
+    try { result = heal(ref); } catch (e) { result = { healed: false, reason: `repair threw: ${e.message}` }; }
+    if (!result || typeof result !== 'object') result = { healed: false, reason: 'repair returned nothing' };
+    try { recordHealAttemptFn(ref, result); } catch { /* the 'attempt started' row already rate-limits */ }
+    log(`[cmux-auth-stall-watchdog] ${ref}: repair ${result.healed ? 'SUCCEEDED' : 'failed'} — ${result.reason}${result.command ? ` (typed: ${result.command})` : ''}`);
+    return result;
+  }
 
   const marked = [];
+  const healed = [];
   for (const w of workspaces) {
     if (!w || !w.ref) continue;
     // Already flagged — don't stomp an existing captured question/timestamp,
-    // matches workspace-mark-done.js's own 'already-needs-you' noop.
-    if (leadingGlyph(w.title) === '❓') continue;
+    // matches workspace-mark-done.js's own 'already-needs-you' noop. The one
+    // exception: a logged-out ❓ THIS watchdog wrote is retried (rate-limited)
+    // and cleared once the tab is healed.
+    if (leadingGlyph(w.title) === '❓') {
+      const st = readStateFn(w.ref);
+      if (!st || st.source !== SOURCE || st.kind !== 'logged-out') continue;
+      if (dryRun) { log(`[cmux-auth-stall-watchdog] WOULD RETRY REPAIR of ${w.ref} (marked logged-out earlier)`); continue; }
+      const r = tryHeal(w.ref);
+      if (!r || !r.healed) continue;
+      healed.push({ ref: w.ref, title: w.title, reason: r.reason });
+      try {
+        const fresh = listWorkspacesFn().find(x => x && x.ref === w.ref);
+        if (fresh && leadingGlyph(fresh.title) === '❓') {
+          const cleared = stripManagedGlyph(fresh.title);
+          if (cleared) runFn(['workspace-action', '--action', 'rename', '--workspace', w.ref, '--title', cleared]);
+        }
+        clearStateFn(w.ref);
+      } catch (e) { log(`[cmux-auth-stall-watchdog] ${w.ref}: healed, but clearing the ❓ failed: ${e.message}`); }
+      continue;
+    }
 
     let screen;
     try { screen = runFn(['read-screen', '--workspace', w.ref]); }
@@ -110,7 +193,12 @@ function scanOnce({
     const hit = detectAuthStall(screen);
     if (!hit) continue;
 
-    log(`[cmux-auth-stall-watchdog] ${dryRun ? 'WOULD MARK' : 'MARKING'} ${w.ref} (${hit.kind}): ${hit.reason}`);
+    if (hit.kind === 'logged-out' && !dryRun) {
+      const r = tryHeal(w.ref);
+      if (r && r.healed) { healed.push({ ref: w.ref, title: w.title, reason: r.reason }); continue; }
+    }
+
+    log(`[cmux-auth-stall-watchdog] ${dryRun ? `WOULD ${hit.kind === 'logged-out' ? 'REPAIR (or mark if that fails)' : 'MARK'}` : 'MARKING'} ${w.ref} (${hit.kind}): ${hit.reason}`);
     marked.push({ ref: w.ref, title: w.title, ...hit });
     if (dryRun) continue;
 
@@ -160,8 +248,9 @@ function scanOnce({
       ref: w.ref,
       question: QUESTIONS[freshHit.kind],
       ts: new Date().toISOString(),
-      source: 'cmux-auth-stall-watchdog',
+      source: SOURCE,
       kind: freshHit.kind,
+      ...(freshHit.kind === 'logged-out' ? { agentRemedy: agentRemedy(w.ref) } : {}),
     };
     try {
       if (writeStateFn) writeStateFn(w.ref, state);
@@ -173,17 +262,17 @@ function scanOnce({
       log(`[cmux-auth-stall-watchdog] state write failed for ${w.ref}: ${e.message} (title was still renamed)`);
     }
   }
-  return { scanned: workspaces.length, marked };
+  return { scanned: workspaces.length, marked, healed };
 }
 
 function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
   const dryRun = argv.includes('--dry-run');
-  const { scanned, marked } = scanOnce({ dryRun });
-  console.error(`[cmux-auth-stall-watchdog] scanned ${scanned} workspace(s), ${marked.length} flagged${dryRun ? ' (dry-run, nothing written)' : ''}`);
+  const { scanned, marked, healed } = scanOnce({ dryRun });
+  console.error(`[cmux-auth-stall-watchdog] scanned ${scanned} workspace(s), ${healed.length} repaired, ${marked.length} flagged${dryRun ? ' (dry-run, nothing written)' : ''}`);
   return 0;
 }
 
 if (require.main === module) process.exit(main());
 
-module.exports = { main, USAGE, scanOnce, leadingGlyph, stripManagedGlyph, needsYouFile, QUESTIONS, NEEDS_YOU_DIR };
+module.exports = { main, USAGE, scanOnce, leadingGlyph, stripManagedGlyph, needsYouFile, agentRemedy, QUESTIONS, NEEDS_YOU_DIR, HEAL_STATE_DIR, HEAL_MIN_INTERVAL_MS };

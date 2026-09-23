@@ -210,7 +210,7 @@ function main(argv = process.argv.slice(2)) {
         console.log(`  [${alive ? 'RUNNING' : 'UNKNOWN — next bsc-reconcile tick will resolve'}] #${j.taskId} ${j.subject || ''} (${j.jobId})`);
         console.log(`      log: ${j.logFile || '(none)'}`);
         if (alive) console.log(`      pid ${lease.pid} — live; do NOT resume while running`);
-        else if ((lease && lease.sessionId) || j.sessionId) console.log(`      attach: (cd ${j.cwd} && claude --resume ${(lease && lease.sessionId) || j.sessionId})`);
+        else if ((lease && lease.sessionId) || j.sessionId) console.log(`      attach: ${require('./lib/claude-tab-relaunch.js').RELAUNCH_SCRIPT} --cwd ${j.cwd} --resume ${(lease && lease.sessionId) || j.sessionId}`);
       }
       for (const j of recentDone) {
         console.log(`  [${j.event.replace('job-', '').toUpperCase()}] #${j.taskId} ${j.subject || ''}${j.stage ? ` (${j.stage})` : ''}${typeof j.costUSD === 'number' ? ` $${j.costUSD.toFixed(2)}` : ''}`);

@@ -26,6 +26,8 @@ const ledger = require('./dispatch-ledger.js');
 
 const { cmuxSpawnEnv } = require('./cmux-socket-auth.js');
 const CMUX = cmuxws.CMUX;
+const { RELAUNCH_SCRIPT, shQuote } = require('./claude-tab-relaunch.js');
+const RELAUNCH_WRAPPER = /^[\w./-]+$/.test(RELAUNCH_SCRIPT) ? RELAUNCH_SCRIPT : shQuote(RELAUNCH_SCRIPT);
 
 // Find the OS pid of the claude_code process for a workspace from `cmux top
 // --processes --format tsv` output. Mirrors hasLiveClaude's predicate
@@ -63,7 +65,10 @@ function composeReviveCommand(originalCommand, { model = null } = {}) {
   const idx = cmd.indexOf('claude');
   if (idx === -1) return cmd;
   const rest = cmd.slice(idx + 'claude'.length).trim();
-  const parts = ['claude'];
+  // BRO-4065: respawn-pane runs its command in cmux's app env, which has no
+  // CLAUDE_CODE_OAUTH_TOKEN — a bare `claude` here comes up "Not logged in".
+  // The sanctioned wrapper re-exports the token from .env, then execs claude.
+  const parts = [RELAUNCH_WRAPPER];
   if (model && !/--model\b/.test(rest)) parts.push('--model', model);
   if (rest) parts.push(rest);
   if (!/--dangerously-skip-permissions/.test(rest)) parts.push('--dangerously-skip-permissions');

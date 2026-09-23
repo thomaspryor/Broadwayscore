@@ -35,7 +35,7 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const cmuxws = require('./cmux-workspaces.js');
-const { isBusy } = require('./cmux-auth-stall.js');
+const { isBusy, lastRealContentLine } = require('./cmux-auth-stall.js');
 
 const RELAUNCH_SCRIPT = path.join(__dirname, 'relaunch-claude-tab.sh');
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -144,10 +144,14 @@ function buildRelaunchCommand({ sessionId = null, hasTranscript = false, cwd = n
   return parts.join(' ');
 }
 
-// A healed tab draws the normal status bar and no login text. Pure.
+// A healed tab draws the normal "ctx NN%" status bar (a logged-out claude
+// never does — cmux-auth-stall.js's chrome-absence contract) and its last
+// real line is not a login error. Deliberately NOT "no login text anywhere":
+// a resumed session replays its history, which can quote this exact error
+// (every BRO-4056/4065 session does). Pure.
 function looksHealthy(screenText) {
   const t = String(screenText || '');
-  return cmuxws.hasClaudeChrome(t) && !LOGIN_TEXT_RE.test(t);
+  return cmuxws.hasClaudeChrome(t) && !LOGIN_TEXT_RE.test(lastRealContentLine(t));
 }
 
 function sleepMs(ms) { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms); }

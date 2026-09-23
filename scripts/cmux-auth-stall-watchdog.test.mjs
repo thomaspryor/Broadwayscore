@@ -6,6 +6,18 @@ const { scanOnce, leadingGlyph, stripManagedGlyph } = require('./cmux-auth-stall
 
 function noopLog() {}
 
+// BRO-4065: scanOnce now tries to REPAIR a logged-out tab before marking it.
+// Every call below stubs the repair + its rate-limit/state I/O so no test ever
+// touches a real tab or writes into ~/.claude/state (the repair defaults are
+// real). Individual tests override healFn to exercise the repair path.
+const HEAL_STUBS = {
+  healFn: () => ({ healed: false, reason: 'stubbed repair failure' }),
+  lastHealAttemptFn: () => null,
+  recordHealAttemptFn: () => {},
+  readStateFn: () => null,
+  clearStateFn: () => {},
+};
+
 // Every ref below uses an obviously-fake "test-N" suffix, NEVER a small
 // integer — this machine's real cmux workspaces are numbered that way, and a
 // test that forgets to override writeStateFn falls through to scanOnce's
@@ -31,6 +43,7 @@ test('scanOnce: marks a logged-out workspace — renames and writes state', () =
   const renamed = [];
   const written = [];
   const { scanned, marked } = scanOnce({
+    ...HEAL_STUBS,
     log: noopLog,
     cmuxAvailableFn: () => true,
     listWorkspacesFn: () => [{ ref: 'workspace:test-1', title: '🧭 Some auto-dispatched task' }],
@@ -48,13 +61,16 @@ test('scanOnce: marks a logged-out workspace — renames and writes state', () =
   assert.equal(renamed[0][renamed[0].indexOf('--title') + 1], '❓ Some auto-dispatched task');
   assert.equal(written.length, 1);
   assert.equal(written[0].ref, 'workspace:test-1');
-  assert.match(written[0].state.question, /Not logged in/);
+  assert.match(written[0].state.question, /lost its login/);
+  assert.doesNotMatch(written[0].state.question, /\/login|CLAUDE_CODE_OAUTH_TOKEN/);
+  assert.match(written[0].state.agentRemedy, /relaunch-claude-tab\.js --workspace workspace:test-1/);
 });
 
 test('scanOnce: dry-run reports the hit but renames/writes nothing', () => {
   const renamed = [];
   const written = [];
   const { marked } = scanOnce({
+    ...HEAL_STUBS,
     dryRun: true,
     log: noopLog,
     cmuxAvailableFn: () => true,
@@ -75,6 +91,7 @@ test('scanOnce: dry-run reports the hit but renames/writes nothing', () => {
 test('scanOnce: already ❓-marked tabs are skipped (never re-read, never stomped)', () => {
   let readScreenCalls = 0;
   const { marked } = scanOnce({
+    ...HEAL_STUBS,
     log: noopLog,
     cmuxAvailableFn: () => true,
     listWorkspacesFn: () => [{ ref: 'workspace:test-3', title: '❓ Already flagged' }],
@@ -87,6 +104,7 @@ test('scanOnce: already ❓-marked tabs are skipped (never re-read, never stompe
 test('scanOnce: a healthy workspace is left untouched', () => {
   const renamed = [];
   const { marked } = scanOnce({
+    ...HEAL_STUBS,
     log: noopLog,
     cmuxAvailableFn: () => true,
     listWorkspacesFn: () => [{ ref: 'workspace:test-4', title: 'Healthy tab' }],
@@ -112,6 +130,7 @@ test('scanOnce: TOCTOU — re-checks the CURRENT screen right before the write, 
   const renamed = [];
   let screenCalls = 0;
   const { marked } = scanOnce({
+    ...HEAL_STUBS,
     log: noopLog,
     cmuxAvailableFn: () => true,
     listWorkspacesFn: () => [{ ref: 'workspace:test-5', title: 'Recovering tab' }],
@@ -137,6 +156,7 @@ test('scanOnce: TOCTOU — re-list right before the write; a title changed since
   const written = [];
   let listCalls = 0;
   scanOnce({
+    ...HEAL_STUBS,
     log: noopLog,
     cmuxAvailableFn: () => true,
     listWorkspacesFn: () => {
@@ -160,6 +180,7 @@ test('scanOnce: TOCTOU — ref vanished by write time is skipped, not renamed', 
   const renamed = [];
   let listCalls = 0;
   scanOnce({
+    ...HEAL_STUBS,
     log: noopLog,
     cmuxAvailableFn: () => true,
     listWorkspacesFn: () => {
@@ -179,6 +200,7 @@ test('scanOnce: TOCTOU — already ❓-marked by the time of the write is skippe
   const renamed = [];
   let listCalls = 0;
   scanOnce({
+    ...HEAL_STUBS,
     log: noopLog,
     cmuxAvailableFn: () => true,
     listWorkspacesFn: () => {
@@ -203,6 +225,7 @@ test('scanOnce: never overwrites an EXISTING needs-you state file (another write
   // is nothing there yet.
   const written = [];
   scanOnce({
+    ...HEAL_STUBS,
     log: noopLog,
     cmuxAvailableFn: () => true,
     listWorkspacesFn: () => [{ ref: 'workspace:test-9', title: 'Racing with the Stop hook' }],
@@ -218,6 +241,7 @@ test('scanOnce: never overwrites an EXISTING needs-you state file (another write
 
 test('scanOnce: a read-screen error is fail-safe (skip, never mark)', () => {
   const { marked, scanned } = scanOnce({
+    ...HEAL_STUBS,
     log: noopLog,
     cmuxAvailableFn: () => true,
     listWorkspacesFn: () => [{ ref: 'workspace:test-10', title: 'Flaky tab' }],
@@ -231,4 +255,105 @@ test('scanOnce: cmux unavailable returns zero scanned, no throw', () => {
   const { scanned, marked } = scanOnce({ log: noopLog, cmuxAvailableFn: () => false });
   assert.equal(scanned, 0);
   assert.equal(marked.length, 0);
+});
+
+// ---- BRO-4065: auto-heal ----
+
+function healHarness({ title = '🧭 Task', screen = 'Not logged in · Please run /login', healResult = { healed: true, reason: 'ok' }, lastAttempt = null, state = null, dryRun = false } = {}) {
+  const calls = { heal: [], rename: [], written: [], cleared: [], recorded: [] };
+  const result = scanOnce({
+    ...HEAL_STUBS,
+    dryRun,
+    log: noopLog,
+    cmuxAvailableFn: () => true,
+    listWorkspacesFn: () => [{ ref: 'workspace:test-h', title }],
+    runFn: (args) => {
+      if (args[0] === 'read-screen') return screen;
+      if (args[0] === 'workspace-action') { calls.rename.push(args[args.indexOf('--title') + 1]); return ''; }
+      throw new Error(`unexpected cmux call: ${args.join(' ')}`);
+    },
+    writeStateFn: (ref, st) => calls.written.push(st),
+    readStateFn: () => state,
+    clearStateFn: (ref) => calls.cleared.push(ref),
+    healFn: (ref) => { calls.heal.push(ref); return healResult; },
+    lastHealAttemptFn: () => lastAttempt,
+    recordHealAttemptFn: (ref, r) => calls.recorded.push(r),
+    now: () => 10 * 60 * 60 * 1000,
+  });
+  return { result, calls };
+}
+
+test('heal: a logged-out tab that repairs is NOT marked ❓', () => {
+  const { result, calls } = healHarness();
+  assert.deepEqual(calls.heal, ['workspace:test-h']);
+  assert.equal(result.healed.length, 1);
+  assert.equal(result.marked.length, 0);
+  assert.equal(calls.rename.length, 0);
+  assert.equal(calls.written.length, 0);
+  // attempt recorded before the outcome, then the outcome
+  assert.equal(calls.recorded.length, 2);
+  assert.equal(calls.recorded[1].healed, true);
+});
+
+test('heal: a failed repair falls back to ❓ with plain-English text', () => {
+  const { result, calls } = healHarness({ healResult: { healed: false, reason: 'normal prompt never came back' } });
+  assert.equal(calls.heal.length, 1);
+  assert.equal(result.marked.length, 1);
+  assert.deepEqual(calls.rename, ['❓ Task']);
+  assert.match(calls.written[0].question, /couldn't be restarted automatically/);
+  assert.doesNotMatch(calls.written[0].question, /\/login/);
+});
+
+test('heal: rate limit — a tab tried <30 min ago is not retried, just marked', () => {
+  const now = 10 * 60 * 60 * 1000;
+  const { result, calls } = healHarness({ lastAttempt: now - 10 * 60 * 1000 });
+  assert.equal(calls.heal.length, 0);
+  assert.equal(result.marked.length, 1);
+});
+
+test('heal: rate limit — a tab tried >30 min ago is retried', () => {
+  const now = 10 * 60 * 60 * 1000;
+  const { calls } = healHarness({ lastAttempt: now - 31 * 60 * 1000 });
+  assert.equal(calls.heal.length, 1);
+});
+
+test('heal: a ❓ tab THIS watchdog marked logged-out is retried and un-marked on success', () => {
+  const { result, calls } = healHarness({
+    title: '❓ Task',
+    state: { source: 'cmux-auth-stall-watchdog', kind: 'logged-out' },
+  });
+  assert.equal(calls.heal.length, 1);
+  assert.equal(result.healed.length, 1);
+  assert.deepEqual(calls.rename, ['Task']);
+  assert.deepEqual(calls.cleared, ['workspace:test-h']);
+});
+
+test('heal: a ❓ tab owned by someone else (DECISION NEEDED) is never touched', () => {
+  const { calls } = healHarness({ title: '❓ Task', state: { question: 'Pick A or B' } });
+  assert.equal(calls.heal.length, 0);
+  assert.equal(calls.rename.length, 0);
+  assert.equal(calls.cleared.length, 0);
+});
+
+test('heal: a ❓ stalled-resume mark is not a repair candidate', () => {
+  const { calls } = healHarness({ title: '❓ Task', state: { source: 'cmux-auth-stall-watchdog', kind: 'stalled-resume' } });
+  assert.equal(calls.heal.length, 0);
+});
+
+test('heal: stalled-resume tabs are only marked, never relaunched', () => {
+  const { result, calls } = healHarness({ screen: 'No response requested.' });
+  assert.equal(calls.heal.length, 0);
+  assert.equal(result.marked.length, 1);
+});
+
+test('heal: dry-run never relaunches anything', () => {
+  const { calls } = healHarness({ dryRun: true });
+  assert.equal(calls.heal.length, 0);
+  assert.equal(calls.rename.length, 0);
+});
+
+test('heal: a repair that throws is treated as a failure and the tab is marked', () => {
+  const { result } = healHarness({ healResult: null });
+  // healResult null → healFn returns null → handled as not healed
+  assert.equal(result.marked.length, 1);
 });
