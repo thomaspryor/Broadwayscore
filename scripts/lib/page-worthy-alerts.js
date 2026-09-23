@@ -65,14 +65,14 @@ const PAGE_WORTHY_PREFIXES = [
   // owner noticed one show's email arriving and another's never had). Nothing
   // retries these automatically, so the page IS the recovery mechanism.
   'broadcast:never-sent:',
-  // check-opening-night-drift.yml: local review-texts, the reviews.json
-  // aggregate and live production disagree on a show's review count, past the
-  // grace window, during its opening-night window. This is NOT a new paging
-  // decision — c82cc427bdd's sendAlert(severity:'error', email:true) already
-  // emailed the owner on every occurrence, with no dedup at all. Listing it
-  // here preserves exactly that delivery while the router adds the per-show
-  // cooldown it never had. Suffix is the show id.
-  'opening-night-drift:',
+  // 'opening-night-drift:' was listed here 2026-09 and REMOVED 2026-09-23
+  // (owner email-noise complaint): it emailed once per show every 6h for the
+  // whole ±7-day opening window, ~40 emails in one week across 5 shows. A
+  // review-count mismatch between review-texts, reviews.json and live prod is
+  // a data-reconciliation gap, not "the pipeline is dead tonight" — the
+  // opening-night pipeline's real dead-man signals are the on-monitor-* and
+  // broadcast:* keys above. check-opening-night-drift.yml still routes it
+  // (downgraded to the morning digest by the router), so nothing goes silent.
 ];
 
 const PAGE_WORTHY_CONDITION_KEYS = new Set([
@@ -170,19 +170,13 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // mode this card exists to close. 24h cooldown (routeAlert call site) caps
   // this to at most one email per day while main stays red.
   'test-yml:main-streak-escalation',
-  // BRO-3865: 'test-yml:main-streak' — health-check.js's "no confirmed-green
-  // run in Nh" aggregate backstop, downgraded here from 'auto' to 'human'
-  // now that test.yml's push-triggered dispatch files a per-signature 'auto'
-  // card per distinct breakage (conditionKey 'test-yml:red:<job>:<hash>')
-  // instead of one shared 'auto' card under this key. Same Category 3
-  // rationale as 'test-yml:main-streak-escalation' right above: main
-  // staying red with no per-signature card stemming it IS the pipeline
-  // stalling, not "diagnose one failing test." 24h cooldown at the call
-  // site (matches the escalation tier) — 'auto' never paged more than once
-  // per incident (tracker dedupe), so 'human' needs the same-length cooldown
-  // or it turns a condition that can stay open for weeks into an email
-  // every few hours.
-  'test-yml:main-streak',
+  // 'test-yml:main-streak' (health-check.js's "no confirmed-green run in Nh"
+  // backstop) was listed here by BRO-3865 and REMOVED 2026-09-23 (owner
+  // email-noise complaint). It paged the SAME condition as
+  // 'test-yml:main-streak-escalation' above under a second conditionKey with
+  // its own cooldown, so a red trunk produced two independent email streams.
+  // The escalation tier stays the one email; this backstop now lands in the
+  // morning digest's "trunk: RED" line (router downgrade human -> digest).
 ]);
 
 function isPageWorthy(conditionKey) {

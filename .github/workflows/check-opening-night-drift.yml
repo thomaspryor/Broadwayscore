@@ -231,14 +231,12 @@ jobs:
                     + ` — the five pipeline steps behind this fail silently and independently;`
                     + ` it checks all five and prints the fix command for each.`,
                   severity: 'error',
-                  // 'human', not 'auto'. c82cc427bdd is live on main, so this alert DOES
-                  // email the owner today (severity 'error' + email:true clears
-                  // shouldEmailAlert). 'auto' only files a PARKED Linear issue — no email,
-                  // no digest line — so it would have silently deleted the one delivered
-                  // signal an opening-night drift has. Routing through the sanctioned
-                  // sender is the lint fix; changing who hears about it is a separate
-                  // decision, and is deliberately not being made here.
-                  disposition: 'human',
+                  // 'digest' (2026-09-23, owner email-noise complaint): this used to
+                  // be 'human' and page-worthy, which emailed once per show every 6h
+                  // for the whole opening window. It now lands in the morning digest
+                  // (and the router escalates a long-open digest condition to a
+                  // Linear issue). The queue file is committed by the step below.
+                  disposition: 'digest',
                   // Explicit, never the 7-day default: the workflow already runs its
                   // own 6h same-fingerprint cooldown in drift-state.json, and a
                   // 168h router cooldown would silently win over it, leaving the two
@@ -254,14 +252,8 @@ jobs:
                 });
 
                 console.log(`[drift] ${conditionKey} -> ${result.action}`);
-                // routeAlert downgrades 'human' to 'digest' for any conditionKey not on
-                // the page-worthy allowlist, so a silent demotion shows up here rather
-                // than being discovered the next time a drift goes unnoticed. It also
-                // returns dispatchOk:false when a tracker could not be filed, which
+                // routeAlert returns dispatchOk:false when a tracker could not be filed, which
                 // otherwise prints an encouraging action with nothing actually sent.
-                if (result.action === 'digest') {
-                  core.warning(`${conditionKey} was downgraded to the digest — add 'opening-night-drift:' to scripts/lib/page-worthy-alerts.js if it should page.`);
-                }
                 if (result.dispatchOk === false) {
                   core.warning(`${conditionKey} did not file a tracker: ${result.dispatchError || 'unknown error'}`);
                 }
@@ -297,7 +289,7 @@ jobs:
           # matches the staging command and the path on the SAME line
           # ([^\n]*), so a backslash continuation makes drift-state.json look
           # like it has no writer at all and fails that guard.
-          bash scripts/lib/git-add-existing.sh data/audit/drift-state.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
+          bash scripts/lib/git-add-existing.sh data/audit/drift-state.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json
           if git diff --cached --quiet; then
             echo "No state changes to commit."
           else

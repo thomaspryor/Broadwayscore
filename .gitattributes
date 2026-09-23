@@ -330,6 +330,17 @@ data/audit/linear-drain-parked-ledger.jsonl merge=union
 # nothing depends on file order or de-dupes by identity.
 data/audit/linear-gate-bypass.jsonl merge=union
 
+# ci-green-rate.jsonl (scripts/ci-green-rate.js --record → appendLedger, run
+# nightly by health-check.js; committed by data-health-check.yml): arrived
+# tracked with no merge attribute on 2026-09-22 and turned main's
+# audit-ledger-merge-attrs.test.mjs red. Append-only (fs.appendFileSync of one
+# line, never pruned or rewritten). Its only reader,
+# scripts/lib/ci-green-rate.js assessTrend(), takes rows "any order", keys
+# them by UTC day of the explicit `ts` field and keeps the LATEST ts per day
+# (no summing), and walks the streak by calendar day, not file order — so
+# neither disqualifier applies and a union-duplicated line is inert.
+data/audit/ci-green-rate.jsonl merge=union
+
 # Accumulate-state (read-modify-write of a live counter/keyed-object/array) —
 # `ours` would silently discard the other side's accrued state (open alert
 # conditions, processed-feedback ids, per-outlet/per-zone circuit-breaker trip
