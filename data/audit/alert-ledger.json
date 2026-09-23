@@ -15,13 +15,12 @@
       "disposition": "auto",
       "title": "BSC Daily: SEO: health",
       "firstSeen": "2026-07-24T07:50:32.738Z",
-      "lastSeen": "2026-09-22T12:06:24.358Z",
-      "lastNotifiedAt": "2026-09-15T12:12:18.407Z",
+      "lastSeen": "2026-09-23T12:16:07.479Z",
+      "lastNotifiedAt": "2026-09-23T12:16:07.479Z",
       "lastSurfacedAt": null,
-      "notifyCount": 4,
+      "notifyCount": 5,
       "cardId": "3ba637c5-416f-81ee-bf77-eb41b75c5b07",
-      "linearIdentifier": "BRO-3350",
-      "silentRefires": 2
+      "linearIdentifier": "BRO-3350"
     },
     "health-check:Secrets: health": {
       "status": "open",
@@ -73,38 +72,37 @@
       "disposition": "auto",
       "title": "BSC Daily: Audience coverage: open-show gaps",
       "firstSeen": "2026-07-24T07:50:35.242Z",
-      "lastSeen": "2026-09-20T11:52:56.106Z",
+      "lastSeen": "2026-09-23T12:15:51.469Z",
       "lastNotifiedAt": "2026-09-20T11:52:56.106Z",
       "lastSurfacedAt": null,
       "notifyCount": 4,
       "cardId": "3b6637c5-416f-8101-ba5f-dda540f78b96",
-      "linearIdentifier": "BRO-3700"
+      "linearIdentifier": "BRO-3700",
+      "silentRefires": 1
     },
     "health-check:Sync: baseline drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Sync: baseline drift",
       "firstSeen": "2026-07-24T07:50:35.775Z",
-      "lastSeen": "2026-09-22T12:06:19.607Z",
-      "lastNotifiedAt": "2026-09-15T12:12:14.120Z",
+      "lastSeen": "2026-09-23T12:15:51.472Z",
+      "lastNotifiedAt": "2026-09-23T12:15:51.472Z",
       "lastSurfacedAt": null,
-      "notifyCount": 6,
+      "notifyCount": 7,
       "cardId": "3b8637c5-416f-8197-8600-fc247b284a3e",
-      "linearIdentifier": "BRO-3164",
-      "silentRefires": 3
+      "linearIdentifier": "BRO-3164"
     },
     "health-check:Quality: corpus drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Quality: corpus drift",
       "firstSeen": "2026-07-24T07:50:36.268Z",
-      "lastSeen": "2026-09-22T12:06:19.611Z",
-      "lastNotifiedAt": "2026-09-15T12:12:14.512Z",
+      "lastSeen": "2026-09-23T12:15:54.278Z",
+      "lastNotifiedAt": "2026-09-23T12:15:54.278Z",
       "lastSurfacedAt": null,
-      "notifyCount": 7,
+      "notifyCount": 8,
       "cardId": "3b6637c5-416f-8198-a033-eca6dcc6e7d7",
-      "linearIdentifier": "BRO-3081",
-      "silentRefires": 3
+      "linearIdentifier": "BRO-3081"
     },
     "opening-night-sla:pages-stuck": {
       "status": "resolved",
@@ -159,13 +157,13 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: star-vs-score mismatch",
       "firstSeen": "2026-07-27T08:00:24.727Z",
-      "lastSeen": "2026-09-22T12:06:19.609Z",
+      "lastSeen": "2026-09-23T12:15:54.275Z",
       "lastNotifiedAt": "2026-09-21T13:25:00.869Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-3978",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Credits: ScrapingBee": {
       "status": "open",
@@ -285,14 +283,15 @@
     },
     "provider-spend:overspend": {
       "status": "open",
-      "disposition": "digest",
+      "disposition": "auto",
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-09-05T02:22:20.323Z",
-      "lastNotifiedAt": "2026-09-05T02:22:20.323Z",
-      "notifyCount": 20,
+      "lastSeen": "2026-09-23T12:16:31.539Z",
+      "lastNotifiedAt": "2026-09-23T12:16:31.539Z",
+      "lastSurfacedAt": "2026-09-23T12:16:31.539Z",
+      "notifyCount": 21,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": "BRO-3030"
     },
     "orphan-unscored-requeue:tao-of-glass-west-end-2026": {
       "status": "open",
@@ -344,12 +343,13 @@
       "disposition": "auto",
       "title": "BSC Daily: Coverage: SERP census recall",
       "firstSeen": "2026-08-03T07:58:02.691Z",
-      "lastSeen": "2026-09-22T12:06:19.618Z",
+      "lastSeen": "2026-09-23T12:16:07.477Z",
       "lastNotifiedAt": "2026-09-22T12:06:19.618Z",
       "lastSurfacedAt": null,
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-2296"
+      "linearIdentifier": "BRO-2296",
+      "silentRefires": 1
     },
     "health-check:Cron failed: Test Suite": {
       "status": "open",
@@ -590,12 +590,13 @@
       "disposition": "digest",
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
-      "lastSeen": "2026-09-22T12:15:03.881Z",
+      "lastSeen": "2026-09-23T12:26:09.287Z",
       "lastNotifiedAt": "2026-09-22T12:15:03.881Z",
       "lastSurfacedAt": "2026-09-22T12:15:03.881Z",
       "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "affiliate:bot-divergence": {
       "status": "resolved",
@@ -725,13 +726,13 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: outlet domain moves",
       "firstSeen": "2026-08-11T07:57:54.489Z",
-      "lastSeen": "2026-09-22T12:06:19.615Z",
+      "lastSeen": "2026-09-23T12:16:07.475Z",
       "lastNotifiedAt": "2026-09-20T11:52:57.332Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": "3b9637c5-416f-81bd-965b-ddfceefeae77",
       "linearIdentifier": "BRO-2263",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "health-check:Quality: outlet invalid-content rate": {
       "status": "open",
@@ -804,18 +805,17 @@
       "linearIdentifier": null
     },
     "test-yml:main-streak": {
-      "status": "resolved",
-      "disposition": "human",
-      "title": "Main test.yml red — no confirmed-green run in 12.1h",
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "Main test.yml red — no confirmed-green run in 349.6h",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-09-22T12:05:34.780Z",
-      "lastNotifiedAt": "2026-09-21T13:24:17.774Z",
+      "lastSeen": "2026-09-23T12:15:13.032Z",
+      "lastNotifiedAt": "2026-09-23T12:15:13.032Z",
       "lastSurfacedAt": "2026-09-21T13:24:17.774Z",
-      "notifyCount": 64,
+      "notifyCount": 65,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 1,
-      "resolvedAt": "2026-09-23T03:10:29.087Z"
+      "linearIdentifier": "BRO-3030"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -2982,13 +2982,12 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: DMARC deliverability",
       "firstSeen": "2026-09-15T12:12:15.198Z",
-      "lastSeen": "2026-09-22T12:06:19.613Z",
-      "lastNotifiedAt": "2026-09-15T12:12:15.198Z",
+      "lastSeen": "2026-09-23T12:16:01.267Z",
+      "lastNotifiedAt": "2026-09-23T12:16:01.267Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-2600",
-      "silentRefires": 3
+      "linearIdentifier": "BRO-4093"
     },
     "health-check:Digest: content-invariant check": {
       "status": "open",
