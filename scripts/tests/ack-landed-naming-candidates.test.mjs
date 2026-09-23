@@ -95,8 +95,12 @@ test('BRO-4068: an unknown card, a missing ref and a bad base all degrade to no 
   assert.deepEqual(namingCandidates('BRO-99999999', LAUNCH, TERMINAL, { cwd: repo, base: 'main' }), []);
   assert.deepEqual(namingCandidates('', LAUNCH, TERMINAL, { cwd: repo, base: 'main' }), []);
   assert.deepEqual(namingCandidates(null, LAUNCH, TERMINAL, { cwd: repo, base: 'main' }), []);
-  // A shallow CI checkout has no origin/main; that must be a missing hint, never a crash.
-  assert.deepEqual(namingCandidates(CARD, LAUNCH, TERMINAL, { cwd: repo, base: 'no-such-ref' }), []);
+  // A shallow CI checkout has no origin/main. That must come back as null,
+  // NOT [] — the caller prints "no commit names this card" on [], and saying
+  // that after a lookup which never ran is the same false dead end that got
+  // BRO-4068 filed. null means "could not look", [] means "looked, found none".
+  assert.equal(namingCandidates(CARD, LAUNCH, TERMINAL, { cwd: repo, base: 'no-such-ref' }), null,
+    'a lookup that could not run must be distinguishable from one that found nothing');
 });
 
 // The hint reaches candidates through `git log --grep`, an UNANCHORED substring

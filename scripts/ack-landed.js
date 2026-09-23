@@ -165,9 +165,21 @@ function namingCandidates(ref, launchTs, terminalTs, opts = {}) {
   // matching on %s alone would reject the very commits this hint exists to
   // offer. Fields stay tab-separated inside each record.
   const args = ['log', base, '--no-merges', '-z', '--format=%h%x09%aI%x09%s%x09%B',
-    '-n', '400', `--grep=${ref}`, '-i'];
+    // --max-count applies AFTER --grep, so this is 1000 MATCHING commits, not
+    // 1000 commits scanned. It is raised well past any plausible real count
+    // because the anchored filter below thins these further: a card id that
+    // shares a prefix with noisier siblings would otherwise see the true
+    // match crowded out of the window (review P2).
+    '-n', '1000', `--grep=${ref}`, '-i'];
   const r = spawnSync('git', args, { cwd, encoding: 'utf8' });
-  if (r.status !== 0 || !r.stdout) return [];
+  // null = the lookup could not run (no origin/main, shallow clone, git
+  // missing, a ref git's own regex rejects); [] = it ran and found nothing.
+  // Collapsing the two let the caller print "no commit names this card" on a
+  // lookup that never happened — a confident dead end it had not established,
+  // which is the same false conclusion that produced BRO-4068 in the first
+  // place (adversarial review catch).
+  if (r.status !== 0) return null;
+  if (!r.stdout) return [];
   const lo = Date.parse(launchTs || '');
   const hi = Date.parse(terminalTs || '');
   const out = [];
@@ -196,7 +208,10 @@ function refuse(ref, refusals, ctx = {}) {
   for (const r of refusals) console.error(`   - ${r}`);
   if (refusals.some(r => /does not name/.test(String(r)))) {
     const cands = namingCandidates(ref, ctx.launchTs, ctx.terminalTs);
-    if (cands.length) {
+    if (cands === null) {
+      console.error('   → could not search origin/main for commits naming it (no origin/main here, a shallow');
+      console.error('     clone, or git refused the query) — this is NOT evidence that no such commit exists.');
+    } else if (cands.length) {
       console.error(`   → these commits on origin/main DO name ${ref} and fall inside this job's window — pass one as --sha:`);
       for (const c of cands) console.error(`       ${c.sha}  ${c.authored}  ${String(c.subject).slice(0, 62)}`);
     } else {
