@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-23T12:11:26.674Z",
+  "generatedAt": "2026-09-23T12:30:35.642Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,22 +13,22 @@
       "slug": "cosi-fan-tutte-off-broadway",
       "thumbnail": "/images/shows/cosi-fan-tutte-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 50,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 4,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
       "t2": 0,
-      "t3": 0,
+      "t3": 1,
       "positive": 0,
       "mixed": 0,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "1/12 total",
           "T1:0/3",
           "T2:0/3",
           "hi-conf:0/8"
@@ -333,10 +333,6 @@
           "isDualMarket": false
         },
         {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
           "name": "Evening Standard",
           "isDualMarket": false
         },
@@ -383,6 +379,20 @@
         {
           "name": "The Tennessean",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-09-23T12:30:35.642Z",
+          "rc": 1,
+          "s": 50,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 0,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
