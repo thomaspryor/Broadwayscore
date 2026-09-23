@@ -55,8 +55,9 @@ const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
   failingStepSignatures, firstFailingTestNameInJobLog, signaturesToResolve, RED_SIGNATURE_PREFIX,
+  trackSignatureAbsence, STALE_ABSENT_RUN_THRESHOLD,
 } = require('./lib/main-red-streak.js');
-const { routeAlert, loadLedger, resolveCondition } = require('./lib/owner-alert-router.js');
+const { routeAlert, loadLedger, resolveCondition, patchCondition } = require('./lib/owner-alert-router.js');
 // BRO-3907: every card this script files used to carry prose-only acceptance
 // criteria ("Condition X no longer fires") — linear-next.js's dispatch gate
 // refuses that outright, so every one of these cards sat undispatchable. This
@@ -76,6 +77,10 @@ const USAGE = `route-main-streak-signatures.js — BRO-3865 per-breakage alert r
     --prev-url     previous failed run's URL, folded into the escalation email's fields
     --streak       consecutive-failure count, folded into alert fields/description
   Resolution (closing signatures whose job went green on THIS run) always runs, independent of the flags above.
+  Stale resolution (BRO-4054) also always runs: an open signature whose job failed on ${STALE_ABSENT_RUN_THRESHOLD}
+  consecutive runs WITHOUT that signature appearing is resolved with resolveReason 'stale-signature'.
+  Cards filed here are dispatch-at-filing (no PARKED sentinel; the Mac-side red-first pass in
+  bsc-reconcile's 5-min tick dispatches them — scripts/red-first-dispatch.js runs that pass by hand).
   Any gh/API failure degrades to "do nothing this run" rather than throwing — never fails the calling job.
   --help, -h     print this usage and exit — no reads/writes
 `;
@@ -119,7 +124,9 @@ function fetchCurrentRunJobs(runId) {
 async function fetchJobLogText(jobId) {
   const { GITHUB_REPOSITORY, GH_TOKEN, GITHUB_TOKEN } = process.env;
   const token = GH_TOKEN || GITHUB_TOKEN;
-  if (!GITHUB_REPOSITORY || !jobId || !token) return '';
+  // null = "could not look" (BRO-4054: the stale tracker must then NOT count
+  // an absence for this job); '' = looked, found no TAP line.
+  if (!GITHUB_REPOSITORY || !jobId || !token) return null;
   const url = `https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/jobs/${jobId}/logs`;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 30000);
@@ -134,12 +141,12 @@ async function fetchJobLogText(jobId) {
     });
     if (!res.ok) {
       console.error(`[route-main-streak-signatures] job log fetch failed for job ${jobId} (HTTP ${res.status}); this signature falls back to job+step only.`);
-      return '';
+      return null;
     }
     return await res.text();
   } catch (err) {
     console.error(`[route-main-streak-signatures] job log fetch failed for job ${jobId} (${err.message}); this signature falls back to job+step only.`);
-    return '';
+    return null;
   } finally {
     clearTimeout(timer);
   }
@@ -176,16 +183,26 @@ async function main() {
   const jobs = allJobsFetched.filter((j) => !opts.excludeJobs.includes(j?.name));
   const run = { jobs };
 
-  // Test names only matter for --dispatch (sharpening which card gets
-  // filed/titled) — resolution only needs job.conclusion, so skip the extra
-  // per-job log fetch() calls entirely on a run that won't dispatch
-  // (a green run, or a red run still under the streak-2 dispatch gate).
+  const ledger = loadLedger();
+  const openRedConditions = Object.fromEntries(Object.entries(ledger.conditions || {})
+    .filter(([key, c]) => c && c.status === 'open' && key.startsWith(RED_SIGNATURE_PREFIX)));
+  const openRedKeys = Object.keys(openRedConditions);
+
+  // Test names matter for --dispatch (sharpening which card gets filed/
+  // titled) AND, since BRO-4054, for judging whether an OPEN signature is
+  // still present — a job+step-only signature never equals a job+step+test
+  // key. Skip the per-job log fetch() calls only when neither applies (a
+  // green run with nothing open, or a red run under the streak-2 gate with
+  // no open red condition to re-judge).
   let testNameByJob = new Map();
-  if (opts.dispatch) {
+  const unreliableJobs = new Set();
+  if (opts.dispatch || openRedKeys.length) {
     for (const job of jobs) {
       if (!job?.conclusion || ['success', 'skipped'].includes(job.conclusion)) continue;
-      if (!job.databaseId) continue;
-      const testName = firstFailingTestNameInJobLog(await fetchJobLogText(job.databaseId));
+      if (!job.databaseId) { unreliableJobs.add(job.name || ''); continue; }
+      const logText = await fetchJobLogText(job.databaseId);
+      if (logText === null) { unreliableJobs.add(job.name || ''); continue; }
+      const testName = firstFailingTestNameInJobLog(logText);
       if (testName) testNameByJob.set(job.name || '', testName);
     }
   }
@@ -196,15 +213,25 @@ async function main() {
   // the dispatch threshold and --dispatch was never passed — the ledger
   // must not hold a stale open condition just because nothing new was filed
   // this run.
-  const ledger = loadLedger();
-  const openRedKeys = Object.entries(ledger.conditions || {})
-    .filter(([, c]) => c && c.status === 'open')
-    .map(([key]) => key)
-    .filter((key) => key.startsWith(RED_SIGNATURE_PREFIX));
   const toResolve = signaturesToResolve(openRedKeys, run, currentSignatures);
   for (const key of toResolve) {
-    resolveCondition(key);
+    resolveCondition(key, { reason: 'job-green' });
     console.log(`[route-main-streak-signatures] resolved ${key} — its job is confirmed green on this run`);
+  }
+
+  // BRO-4054 stale resolution: the signature's job is STILL failing, but on
+  // something else, for STALE_ABSENT_RUN_THRESHOLD consecutive runs. The
+  // Linear card itself is left to the Mac-side red-first follow-up sweep
+  // (scripts/lib/red-first-dispatch.js), which knows whether a job is live;
+  // CI only knows the ledger.
+  const stillOpen = Object.fromEntries(Object.entries(openRedConditions).filter(([key]) => !toResolve.includes(key)));
+  const stale = trackSignatureAbsence(stillOpen, currentSignatures, run, opts.runId, { unreliableJobs });
+  for (const [key, absentRunIds] of Object.entries(stale.updates)) {
+    patchCondition(key, { absentRunIds });
+  }
+  for (const key of stale.toResolve) {
+    resolveCondition(key, { reason: 'stale-signature' });
+    console.log(`[route-main-streak-signatures] resolved ${key} — stale: absent from ${STALE_ABSENT_RUN_THRESHOLD} consecutive failed runs (${(stale.updates[key] || []).join(', ')}) while its job kept failing elsewhere`);
   }
 
   if (!opts.dispatch) return;
@@ -239,6 +266,9 @@ async function main() {
       ],
       url: runUrl || undefined,
       verify,
+      // BRO-4054: file in dispatch mode (Todo, no PARKED sentinel) and stamp
+      // the request on the condition — see owner-alert-router.js dispatchCard.
+      dispatchAtFiling: { runId: String(opts.runId), runUrl: runUrl || null },
     }).catch((e) => console.error(`[route-main-streak-signatures] dispatch failed for ${sig.conditionKey}: ${e.message}`));
   }
 

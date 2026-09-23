@@ -34,6 +34,12 @@ const { evaluateVerifiability } = require('./verify-gate.js');
 // prepended in front of it, so a substring check (not startsWith) is what
 // survives that wrapping.
 const AUTO_FILED_MARKER = 'Auto-filed by owner-alert-router';
+// BRO-4054: the OTHER provenance line owner-alert-router writes — on cards it
+// files in DISPATCH mode (no `PARKED:` sentinel) for the Mac-side red-first
+// pass (scripts/lib/red-first-dispatch.js). Deliberately not a superstring of
+// AUTO_FILED_MARKER: isAutoFiledParked() below uses `.includes`, and this
+// drain must never select those cards too (double-dispatch).
+const DISPATCH_AT_FILING_MARKER = 'Filed by owner-alert-router for dispatch-at-filing';
 
 // Linear identifiers are "<TEAM>-<N>", N increasing monotonically per team —
 // the same FIFO-by-number convention linear-next.js's --list already treats
@@ -87,6 +93,7 @@ function selectDrainCandidates(issues, { limit = 3, alreadyAttempted = new Set()
 
 module.exports = {
   AUTO_FILED_MARKER,
+  DISPATCH_AT_FILING_MARKER,
   PARKED_STATE_TYPES,
   issueNumber,
   isAutoFiledParked,
