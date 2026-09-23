@@ -1315,22 +1315,27 @@ test('BRO-2565 end-to-end shape: latestAttemptForTask/isLatestDispatchDead never
   assert.equal(isLatestDispatchDead('2565', entries), false, 'a bare suspicion must never make isLatestDispatchDead true');
 });
 
-// ── BRO-4075: a landed-acked row must not be skipped by latestAttemptForTask ─
-// isAttemptEvent used to exclude LANDED_ACKED/LANDED_BEFORE_DISPATCH/
-// FANOUT_VERIFIED, so latestAttemptForTask walked past them back to an
-// earlier dead-shaped row. Live incident: BRO-4065's job was classified
-// job-stopped-short, then a separate session re-verified the commits landed
-// and wrote landed-acked — reconcile-dead-completions.js reopened the
-// already-Done Linear issue anyway.
+// ── BRO-4075: a landed-acked row must override deadness for the attempt it
+// certifies, WITHOUT becoming "latest attempt" for the whole task ─────────
+// isAttemptEvent deliberately does NOT include LANDED_ACKED/
+// LANDED_BEFORE_DISPATCH/FANOUT_VERIFIED — a first version of this fix did,
+// but two independent adversarial reviews (Codex + a QA subagent) caught
+// that blanket-widening broke hasLiveLedgerEntry (linear-dispatch.js) and
+// could let an old job's ack conceal a newer, independently-failed attempt.
+// The real fix is resolveDeadAttempt's landedAckOverridesDeath, scoped to
+// the SPECIFIC dead-shaped attempt's own jobId. Live incident: BRO-4065's
+// job was classified job-stopped-short, then a separate session re-verified
+// the commits landed and wrote landed-acked — reconcile-dead-completions.js
+// reopened the already-Done Linear issue anyway.
 const { latestAttemptForTask: latestAttemptForTaskBro4075 } = require('./dispatch-ledger.js');
 
-test('isAttemptEvent recognizes LANDED_ACKED, LANDED_BEFORE_DISPATCH, and FANOUT_VERIFIED', () => {
-  assert.equal(isAttemptEvent(JOB_EVENTS.LANDED_ACKED), true);
-  assert.equal(isAttemptEvent(JOB_EVENTS.LANDED_BEFORE_DISPATCH), true);
-  assert.equal(isAttemptEvent(JOB_EVENTS.FANOUT_VERIFIED), true);
+test('isAttemptEvent does NOT recognize LANDED_ACKED/LANDED_BEFORE_DISPATCH/FANOUT_VERIFIED (the fix lives in resolveDeadAttempt instead)', () => {
+  assert.equal(isAttemptEvent(JOB_EVENTS.LANDED_ACKED), false);
+  assert.equal(isAttemptEvent(JOB_EVENTS.LANDED_BEFORE_DISPATCH), false);
+  assert.equal(isAttemptEvent(JOB_EVENTS.FANOUT_VERIFIED), false);
 });
 
-test('BRO-4075: launch -> job-spawned -> job-stopped-short -> landed-acked resolves latest attempt to the ack row, not the stale stopped-short row', () => {
+test('BRO-4075: launch -> job-spawned -> job-stopped-short -> landed-acked is not dead, but latestAttemptForTask still returns the stopped-short row (hasLiveLedgerEntry-safe)', () => {
   const entries = [
     { event: 'launch', taskId: 'linear:BRO-4065', workspaceRef: 'headless:linear:BRO-4065', ts: '2026-09-23T06:00:00.000Z' },
     { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-4065', jobId: 'j4065', ts: '2026-09-23T06:01:00.000Z' },
@@ -1338,8 +1343,8 @@ test('BRO-4075: launch -> job-spawned -> job-stopped-short -> landed-acked resol
     { event: JOB_EVENTS.LANDED_ACKED, taskId: 'linear:BRO-4065', jobId: 'j4065', sha: 'ff10e4de1a6', ts: '2026-09-23T06:15:41.000Z' },
   ];
   const latest = latestAttemptForTaskBro4075('linear:BRO-4065', entries);
-  assert.equal(latest.event, JOB_EVENTS.LANDED_ACKED, 'landed-acked must win as the latest attempt, not the earlier stopped-short row');
-  assert.equal(isLatestDispatchDead('linear:BRO-4065', entries), false, 'a landed-acked row after a stopped-short attempt must never read as dead');
+  assert.equal(latest.event, JOB_EVENTS.STOPPED_SHORT, 'the ack row must never become "latest attempt" — only override its deadness');
+  assert.equal(isLatestDispatchDead('linear:BRO-4065', entries), false, 'a landed-acked row for the latest dead-shaped attempt must override its deadness');
 });
 
 test('BRO-4075: the same shape with STRANDED instead of STOPPED_SHORT is also not dead once acked', () => {
@@ -1352,7 +1357,7 @@ test('BRO-4075: the same shape with STRANDED instead of STOPPED_SHORT is also no
   assert.equal(isLatestDispatchDead('linear:BRO-9', entries), false);
 });
 
-test('BRO-4075: a landed-before-dispatch row after a stale stopped-short re-dispatch is also not dead', () => {
+test('BRO-4075: a landed-before-dispatch row for the latest dead-shaped attempt is also not dead', () => {
   const entries = [
     { event: 'launch', taskId: 'linear:BRO-10', workspaceRef: 'headless:linear:BRO-10', ts: '2026-09-15T06:00:00.000Z' },
     { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-10', jobId: 'j10a', ts: '2026-09-15T06:01:00.000Z' },
@@ -1366,7 +1371,31 @@ test('BRO-4075: a landed-before-dispatch row after a stale stopped-short re-disp
   assert.equal(isLatestDispatchDead('linear:BRO-10', entries), false);
 });
 
-test('BRO-4075: FANOUT_VERIFIED always carries taskId "fanout", so widening isAttemptEvent never changes a real task\'s latest attempt', () => {
+// Codex adversarial review catch: ack-landed --job-id lets a session ack an
+// OLDER job's landing even after a newer, independent dispatch attempt
+// exists on the same taskId (ack-landed-core.js's rowsForJobId). The ack's
+// jobId must therefore be checked against the CURRENT dead-shaped attempt's
+// own jobId, not just "any ack for this taskId" — otherwise acking job A's
+// old landing would wrongly hide job B's real, later, unrelated failure.
+test('BRO-4075: an ack for an OLDER job does not override a DIFFERENT, later, independently-failed attempt', () => {
+  const entries = [
+    // job A: dispatched, lands, but (for whatever reason) never got acked at the time
+    { event: 'launch', taskId: 'linear:BRO-20', workspaceRef: 'headless:linear:BRO-20', ts: '2026-09-20T06:00:00.000Z' },
+    { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-20', jobId: 'jA', ts: '2026-09-20T06:01:00.000Z' },
+    { event: JOB_EVENTS.STOPPED_SHORT, taskId: 'linear:BRO-20', jobId: 'jA', ts: '2026-09-20T06:11:00.000Z' },
+    // job B: a genuinely later, independent dispatch attempt that failed for real
+    { event: 'launch', taskId: 'linear:BRO-20', workspaceRef: 'headless:linear:BRO-20', ts: '2026-09-21T06:00:00.000Z' },
+    { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-20', jobId: 'jB', ts: '2026-09-21T06:01:00.000Z' },
+    { event: JOB_EVENTS.FAILED, taskId: 'linear:BRO-20', jobId: 'jB', ts: '2026-09-21T06:11:00.000Z' },
+    // someone later runs `ack-landed --job-id jA` to certify job A's old landing
+    { event: JOB_EVENTS.LANDED_ACKED, taskId: 'linear:BRO-20', jobId: 'jA', sha: 'aaa111', ts: '2026-09-22T06:00:00.000Z' },
+  ];
+  const latest = latestAttemptForTaskBro4075('linear:BRO-20', entries);
+  assert.equal(latest.event, JOB_EVENTS.FAILED, 'job B (jobId jB) is the true latest attempt');
+  assert.equal(isLatestDispatchDead('linear:BRO-20', entries), true, 'acking job A must never hide job B\'s real, later, unrelated failure');
+});
+
+test('BRO-4075: FANOUT_VERIFIED never affects latest-attempt resolution (it always carries taskId "fanout", a sentinel, never a real task id)', () => {
   const entries = [
     { event: 'launch', taskId: 'linear:BRO-11', workspaceRef: 'headless:linear:BRO-11', ts: '2026-09-20T06:00:00.000Z' },
     { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-11', jobId: 'j11', ts: '2026-09-20T06:01:00.000Z' },
@@ -1386,6 +1415,23 @@ test('BRO-4075: the ordinary success path (no ack row at all) is undisturbed —
   const latest = latestAttemptForTaskBro4075('linear:BRO-12', entries);
   assert.equal(latest.event, JOB_EVENTS.DONE);
   assert.equal(isLatestDispatchDead('linear:BRO-12', entries), false);
+});
+
+test('BRO-4075: hasLiveLedgerEntry-equivalent check — a plain job-done row is unaffected, and a landed-acked-after-stopped-short row is still NOT the "latest attempt" (so linear-dispatch.js\'s hasLiveLedgerEntry never misreads it as live)', () => {
+  const entries = [
+    { event: 'launch', taskId: 'linear:BRO-13', workspaceRef: 'headless:linear:BRO-13', ts: '2026-09-23T06:00:00.000Z' },
+    { event: JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-13', jobId: 'j13', ts: '2026-09-23T06:01:00.000Z' },
+    { event: JOB_EVENTS.STOPPED_SHORT, taskId: 'linear:BRO-13', jobId: 'j13', ts: '2026-09-23T06:11:00.000Z' },
+    { event: JOB_EVENTS.LANDED_ACKED, taskId: 'linear:BRO-13', jobId: 'j13', sha: 'bbb222', ts: '2026-09-23T06:15:00.000Z' },
+  ];
+  const latest = latestAttemptForTaskBro4075('linear:BRO-13', entries);
+  // hasLiveLedgerEntry's own logic: not dead (verified above) and latest.event
+  // !== JOB_EVENTS.DONE, but the latest attempt is STILL job-stopped-short
+  // (isDeadlikeEvent), not landed-acked — isLatestDispatchDead already
+  // returning false is what stops hasLiveLedgerEntry from reading this task
+  // as "live" (its very first check is isLatestDispatchDead).
+  assert.equal(latest.event, JOB_EVENTS.STOPPED_SHORT);
+  assert.equal(isLatestDispatchDead('linear:BRO-13', entries), false);
 });
 
 // ── Contradicted dead rows (BRO-2599) ───────────────────────────────────────

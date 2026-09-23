@@ -257,3 +257,22 @@ test('BRO-4075: a genuinely dead launch (no ack row) still reaches correctLinear
   assert.equal(candidates.length, 1);
   assert.equal(candidates[0].taskId, 'linear:BRO-4070');
 });
+
+// Codex adversarial review catch: main()'s candidate list is a snapshot from
+// one readEntries() call at startup; correctLinearIssue() is a slow network
+// round-trip. If ack-landed.js finishes acking this exact taskId in that
+// window, a stale candidate must not still reopen the issue. correctLinearIssue
+// re-verifies against opts.entries (a fresh read in production) before ever
+// reaching linearClient.getIssue — this test never mocks the network at all
+// because the fix must return false BEFORE getting that far.
+test('BRO-4075: correctLinearIssue refuses (never touches Linear) when a fresh ledger read shows the task is no longer dead', async () => {
+  const { correctLinearIssue } = require('./reconcile-dead-completions.js');
+  const freshEntries = [
+    { event: 'launch', taskId: 'linear:BRO-4071', ts: '2026-09-23T06:00:00.000Z', workspaceRef: 'headless:linear:BRO-4071' },
+    { event: 'job-spawned', taskId: 'linear:BRO-4071', jobId: 'j4071', ts: '2026-09-23T06:01:00.000Z' },
+    { event: 'job-stopped-short', taskId: 'linear:BRO-4071', jobId: 'j4071', ts: '2026-09-23T06:11:07.000Z' },
+    { event: 'landed-acked', taskId: 'linear:BRO-4071', jobId: 'j4071', sha: 'ccc333', ts: '2026-09-23T06:20:00.000Z' },
+  ];
+  const result = await correctLinearIssue('BRO-4071', 'linear:BRO-4071', { entries: freshEntries });
+  assert.equal(result, false, 'a fresh ledger showing the task landed must refuse the reopen without ever calling the Linear API');
+});

@@ -212,9 +212,27 @@ function pageNotionCorrectionFailure(taskId, notionId, err) {
 // correctNotionCard's caller — the local reopen (not applicable here, since
 // there IS no local mirror file for a linear:-only task) already happened by
 // the time this runs; nothing to un-reopen.
-async function correctLinearIssue(identifier) {
+//
+// BRO-4075 (Codex adversarial review catch): the candidate list main() loops
+// over is a SNAPSHOT taken once at startup (readEntries() below), but each
+// correctLinearIssue() call is a slow network round-trip (getIssue + a
+// spawnSync'd linear-brain.js update) — if `scripts/ack-landed.js` finishes
+// acking this exact taskId in that window (writing landed-acked, which
+// never itself touches Linear state), the stale candidate would still
+// reopen an issue the FRESH ledger no longer considers dead. taskId is
+// re-verified against a fresh readEntries() right before the Linear
+// mutation, mirroring the read-then-check discipline shouldReopenLinearIssue
+// already applies to the Linear side of this same decision. opts.entries is
+// an injection point for tests only — production always re-reads live
+// (opts.entries defaults to undefined, which falls through to readEntries()).
+async function correctLinearIssue(identifier, taskId, opts = {}) {
   const linearClient = require('./lib/linear-client.js');
   const { shouldReopenLinearIssue } = require('./lib/linear-dead-completion-source.js');
+  if (taskId) {
+    const { isLatestDispatchDead } = require('./lib/dispatch-ledger.js');
+    const freshEntries = opts.entries || readEntries();
+    if (!isLatestDispatchDead(taskId, freshEntries)) return false;
+  }
   const issue = await linearClient.getIssue(identifier);
   if (!shouldReopenLinearIssue(issue)) return false;
   const today = new Date().toISOString().slice(0, 10);
@@ -275,7 +293,7 @@ async function main(argv = process.argv.slice(2)) {
   console.log(`\nChecking ${linearCandidates.length} Linear dead-launch candidate(s) live:`);
   for (const c of linearCandidates) {
     try {
-      const corrected = fix ? await correctLinearIssue(c.identifier) : false;
+      const corrected = fix ? await correctLinearIssue(c.identifier, c.taskId) : false;
       if (fix && corrected) {
         console.log(`  ${c.identifier}  reopened Todo -> was Done while its dispatch was journaled dead`);
       } else if (!fix) {

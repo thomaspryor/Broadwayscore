@@ -284,26 +284,57 @@ function isAttemptEvent(event) {
     // latestAttemptForTask skips straight past it to the ORIGINAL launch row,
     // so isLatestDispatchDead below never sees that the most recent attempt
     // never actually ran (card #1454 ship-check finding).
-    || event === JOB_EVENTS.ABANDONED
-    // BRO-4075: LANDED_ACKED/LANDED_BEFORE_DISPATCH are ack-landed.js's own
-    // "I re-verified this really landed" rows, written for a jobId bsc-runner
-    // already classified STOPPED_SHORT/STRANDED (or, for the
-    // --already-landed sibling, for work that predates every dispatch
-    // attempt). Neither was in this set, so latestAttemptForTask below walked
-    // straight past them back to the earlier dead-shaped STOPPED_SHORT/
-    // STRANDED row — isLatestDispatchDead then reported the task as dead
-    // despite the ack row proving otherwise, and
-    // linear-dead-completion-source.js reopened an already-Done Linear issue
-    // for it (live: BRO-4065, 2026-09-23). Neither is in isDeadlikeEvent (see
-    // their own JOB_EVENTS comments — both are the opposite of a defect), so
-    // adding them here only ever makes resolveDeadAttempt see the ack as
-    // "latest", never newly marks anything dead. FANOUT_VERIFIED joins for
-    // doc-taxonomy consistency with its own JOB_EVENTS comment, but is a
-    // structural no-op here: fanout-verified.js always writes taskId:
-    // 'fanout' (a literal sentinel), which never matches a real taskId lookup
-    // in latestAttemptForTask.
-    || event === JOB_EVENTS.LANDED_ACKED || event === JOB_EVENTS.LANDED_BEFORE_DISPATCH
-    || event === JOB_EVENTS.FANOUT_VERIFIED;
+    || event === JOB_EVENTS.ABANDONED;
+  // BRO-4075: LANDED_ACKED/LANDED_BEFORE_DISPATCH are deliberately NOT added
+  // here, even though they are what a first version of this fix added, and
+  // even though they're the direct cause of the false-reopen bug this card
+  // is about (see resolveDeadAttempt's landedAckOverridesDeath below, which
+  // IS the fix). Two independent adversarial reviews (Codex + a QA subagent)
+  // caught that this file has FOUR callers of latestAttemptForTask, not one,
+  // and blanket-widening "attempt" broke two of them:
+  //   1. linear-dispatch.js's hasLiveLedgerEntry() has a JOB_EVENTS.DONE
+  //      carve-out for "finished, not live" but none for these two — with
+  //      them as attempt events, a task whose latest row is landed-acked
+  //      (no workspaceRef, so terminalForLaunch can't rescue it) read as
+  //      "live" forever, making linear-next.js refuse a legitimate future
+  //      re-dispatch on an already-finished task with a factually wrong
+  //      "live" refusal. NOT hypothetical: the real ledger carries 28
+  //      landed-acked rows in exactly this shape.
+  //   2. `ack-landed --job-id` deliberately supports acking an OLDER job's
+  //      landing even after a NEWER, independent dispatch attempt exists on
+  //      the same taskId (ack-landed-core.js's rowsForJobId). Because
+  //      latestAttemptForTask matches by taskId only, an old job's ack could
+  //      win the "latest attempt" comparison outright and hide a genuinely
+  //      failed, unrelated LATER attempt from dead-completion detection.
+  // The scoped override below fixes the exact BRO-4065 shape without either
+  // side effect: it never changes what latestAttemptForTask/isAttemptEvent
+  // return for ANY caller, so hasLiveLedgerEntry, linear-started-zombie-
+  // sweep.js, and linear-next.js's log line are all untouched by this fix.
+}
+
+// BRO-4075: does a LANDED_ACKED/LANDED_BEFORE_DISPATCH row prove that
+// deadAttempt (the task's true latest dispatch attempt, dead-shaped) is not
+// actually dead? Scoped to deadAttempt's OWN jobId, not "any ack for this
+// taskId" — see isAttemptEvent's comment above for why a taskId-only match
+// would be wrong. ack-landed.js always writes a row's jobId from the
+// ledger's own newest/launch row at ack time (ack-landed-core.js's
+// decideAck/decideAlreadyLanded), so a normal (non --job-id-scoped) ack of
+// the current dead attempt naturally matches here. Must be written STRICTLY
+// AFTER the dead attempt — an ack can only certify work that already
+// happened.
+function landedAckOverridesDeath(taskId, deadAttempt, entries) {
+  if (!deadAttempt || !deadAttempt.jobId) return false;
+  const deadTs = Date.parse(deadAttempt.ts || '');
+  for (const e of entries || []) {
+    if (!e || typeof e !== 'object') continue;
+    if (String(e.taskId) !== String(taskId)) continue;
+    if (e.event !== JOB_EVENTS.LANDED_ACKED && e.event !== JOB_EVENTS.LANDED_BEFORE_DISPATCH) continue;
+    if (e.jobId !== deadAttempt.jobId) continue;
+    const ts = Date.parse(e.ts || '');
+    if (Number.isFinite(deadTs) && Number.isFinite(ts) && ts <= deadTs) continue;
+    return true;
+  }
+  return false;
 }
 
 // The most recent dispatch-attempt entry for a task, or null if it was never
@@ -386,13 +417,18 @@ function resolveDeadAttempt(taskId, entries, opts = {}) {
   const latest = latestAttemptForTask(taskId, entries);
   if (!latest) return null;
   if (!isDeadShapedAttempt(latest)) return null;
+  // BRO-4075: an ack-landed row for THIS SPECIFIC dead-shaped attempt (same
+  // jobId, written after it) proves it did land — see landedAckOverridesDeath.
+  if (landedAckOverridesDeath(taskId, latest, entries)) return null;
 
   if (opts.beforeTs) {
     const cutoffTs = Date.parse(opts.beforeTs);
     const latestTs = Date.parse(latest.ts || '');
     if (Number.isFinite(cutoffTs) && Number.isFinite(latestTs) && latestTs > cutoffTs) {
       const atCutoff = latestAttemptForTask(taskId, entries, opts);
-      return (atCutoff && isDeadShapedAttempt(atCutoff)) ? atCutoff : null;
+      if (!atCutoff || !isDeadShapedAttempt(atCutoff)) return null;
+      if (landedAckOverridesDeath(taskId, atCutoff, entries)) return null;
+      return atCutoff;
     }
   }
   return latest;
@@ -1655,8 +1691,8 @@ module.exports = {
   // bsc-next, dispatch-watchdog, the S6 canary) died on load. Do not re-add
   // them when resolving a merge from an older branch.
   classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision,
-  isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, resolveDeadAttempt, followRetryChain,
-  newestRowForTask,
+  isDeadlikeEvent, isAttemptEvent, isDeadShapedAttempt, latestAttemptForTask, isLatestDispatchDead, resolveDeadAttempt,
+  landedAckOverridesDeath, followRetryChain, newestRowForTask,
   terminalForLaunch, terminalJobEventForLaunch,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
   pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,
