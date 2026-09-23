@@ -7,7 +7,9 @@
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json",
     "darkling-off-west-end-2026/guardian--unknown.json",
     "darkling-off-west-end-2026/broadwayworld--cindy-marcolina.json",
-    "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json"
+    "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json",
+    "darkling-off-west-end-2026/voice-magazine--unknown.json",
+    "golden-boy-off-west-end-2026/the-jewish-chronicle--john-nathan.json"
   ],
   "failed": [
     "macbeth-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -57,7 +59,7 @@
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--daniella-harrison.json",
     "table-17-off-west-end-2026/london-box-office--stuart-king.json",
     "darkling-off-west-end-2026/thestage--unknown.json",
-    "darkling-off-west-end-2026/voice-magazine--unknown.json"
+    "thelma-and-louise-a-new-musical-off-west-end-2026/thestage--holly-o.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -67,10 +69,14 @@
       "catarina-and-the-beauty-of-killing-fascists-west-end-2026/theatreboard--unknown.json",
       "my-sons-a-queer-but-what-can-you-do-west-end-2026/nytg--gillian-russo.json",
       "darkling-off-west-end-2026/guardian--unknown.json",
-      "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json"
+      "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json",
+      "golden-boy-off-west-end-2026/the-jewish-chronicle--john-nathan.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/darkling-off-west-end-2026/voice-magazine--unknown.json",
+      "darkling-off-west-end-2026/voice-magazine--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json",
@@ -81,7 +87,7 @@
     "archive": []
   },
   "startTime": "2026-09-23T21:17:54.294Z",
-  "lastProcessed": "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json",
+  "lastProcessed": "golden-boy-off-west-end-2026/the-jewish-chronicle--john-nathan.json",
   "log": [
     {
       "t": "2026-09-23T22:26:50.209Z",
@@ -93,6 +99,15 @@
       "t": "2026-09-23T22:26:51.107Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-23T23:44:08.327Z",
+      "event": "bb-session",
+      "session": "069dfe5b",
+      "url": "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre"
     }
+  ],
+  "recoveredAfterFailure": [
+    "darkling-off-west-end-2026/voice-magazine--unknown.json"
   ]
 }
