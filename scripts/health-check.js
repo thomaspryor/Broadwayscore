@@ -3654,6 +3654,25 @@ function effectiveUrgencyLevel(urgencyLevel, result) {
   return urgencyLevel;
 }
 
+// Shared "is this result actionable (not low-urgency)" predicate — the exact
+// filter getDigestSubject(), updateErrorFingerprint(), and the overall status
+// banner each reimplemented inline from the static playbook alone. Routing
+// them all through effectiveUrgencyLevel() keeps the subject line, the
+// day-streak fingerprint, and the status banner consistent with the card-
+// filing logic in sendEmailDigest: a selfHealed repeat-failure must not
+// count toward "N warnings need attention" in one place while the digest
+// body calls it "monitoring itself, no action needed" in another.
+function isActionableResult(r) {
+  const entry = getPlaybookEntry(r.name);
+  // No playbook entry at all → actionable by default (matches the three
+  // inline predicates this replaced: `!entry || entry.urgency !== 'low'`).
+  // Only checks WITH an entry get run through effectiveUrgencyLevel, so a
+  // selfHealed result can only be downgraded when something already opted
+  // it into a static urgency in the first place.
+  if (!entry) return true;
+  return effectiveUrgencyLevel(entry.urgency, r) !== 'low';
+}
+
 function repeatFailureResults(workflowSummary) {
   if (!workflowSummary || workflowSummary.skipped) return [];
   const repeats = workflowSummary.repeatFailures || [];
@@ -3668,6 +3687,11 @@ function repeatFailureResults(workflowSummary) {
         ? ' — 2+ consecutive green runs since; likely self-healed, failures will age out of the window.'
         : ' — likely broken, not transient.'),
     hint: 'Open the latest run from the Repeat Workflow Failures section of the digest and fix the root cause.',
+    // BRO-2742: must be carried through — effectiveUrgencyLevel()/
+    // isActionableResult() key off this to keep urgency, subject line, and
+    // card-filing consistent with the selfHealed-aware status/message above.
+    // Without it, a self-healed streak still filed a fix-now Linear card.
+    selfHealed: !!r.selfHealed,
   }));
 }
 
@@ -4219,12 +4243,8 @@ function getDigestSubject(results, history, autoFixResults) {
   const fixMap = autoFixResults || {};
 
   // Only count items that are NOT auto-fixed AND are actionable (not LOW priority)
-  const isActionable = (r) => {
-    const entry = getPlaybookEntry(r.name);
-    return !entry || entry.urgency !== 'low';
-  };
-  const unfixedErrors = errors.filter(r => !fixMap[r.name]?.fixed && isActionable(r));
-  const unfixedWarns = warns.filter(r => !fixMap[r.name]?.fixed && isActionable(r));
+  const unfixedErrors = errors.filter(r => !fixMap[r.name]?.fixed && isActionableResult(r));
+  const unfixedWarns = warns.filter(r => !fixMap[r.name]?.fixed && isActionableResult(r));
   const autoFixedCount = Object.values(fixMap).filter(f => f.fixed).length;
 
   const days = history.consecutiveErrorDays || 0;
@@ -4263,11 +4283,7 @@ function getDigestSubject(results, history, autoFixResults) {
 // filter getDigestSubject applies (auto-fixed and low-urgency excluded).
 function updateErrorFingerprint(history, results, autoFixResults) {
   const fixMap = autoFixResults || {};
-  const isActionable = (r) => {
-    const entry = getPlaybookEntry(r.name);
-    return !entry || entry.urgency !== 'low';
-  };
-  const unfixedErrors = results.filter(r => r.status === 'error' && !fixMap[r.name]?.fixed && isActionable(r));
+  const unfixedErrors = results.filter(r => r.status === 'error' && !fixMap[r.name]?.fixed && isActionableResult(r));
   history.lastErrorFingerprint = unfixedErrors.length ? errorSetFingerprint(unfixedErrors) : '';
   return history;
 }
@@ -4811,17 +4827,14 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     console.log(`[Owner Email Volume] Skipped — ${e.message}`);
   }
 
-  // Overall status banner. Same isActionable filter getDigestSubject() uses
-  // (ship-check finding, card #364): without it, the merged email's subject
-  // line ("BSC Daily: All clear") could contradict its own site-health block
-  // ("2 errors, 1 warning") whenever the only unfixed items are low-urgency
-  // playbook entries — exactly the noise the owner asked this merge to kill.
-  const isActionableForSnapshot = (r) => {
-    const entry = getPlaybookEntry(r.name);
-    return !entry || entry.urgency !== 'low';
-  };
-  const unfixedErrors = errors.filter(r => !autoFixResults?.[r.name]?.fixed && isActionableForSnapshot(r));
-  const unfixedWarns = warns.filter(r => !autoFixResults?.[r.name]?.fixed && isActionableForSnapshot(r));
+  // Overall status banner. Same isActionableResult filter getDigestSubject()
+  // uses (ship-check finding, card #364): without it, the merged email's
+  // subject line ("BSC Daily: All clear") could contradict its own site-health
+  // block ("2 errors, 1 warning") whenever the only unfixed items are
+  // low-urgency playbook entries — exactly the noise the owner asked this
+  // merge to kill.
+  const unfixedErrors = errors.filter(r => !autoFixResults?.[r.name]?.fixed && isActionableResult(r));
+  const unfixedWarns = warns.filter(r => !autoFixResults?.[r.name]?.fixed && isActionableResult(r));
   const overallStatus = unfixedErrors.length > 0 ? 'error' : unfixedWarns.length > 0 ? 'warn' : 'pass';
   const bannerColor = getStatusColor(overallStatus);
   const bannerText = errors.length > 0

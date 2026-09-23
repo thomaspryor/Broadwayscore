@@ -99,6 +99,41 @@ test('effectiveUrgencyLevel: non-selfHealed or unrelated results pass urgency th
   assert.equal(effectiveUrgencyLevel('low', { selfHealed: true }), 'low');
 });
 
+test('effectiveUrgencyLevel: tolerates a null/undefined result', () => {
+  assert.equal(effectiveUrgencyLevel('fix-now', null), 'fix-now');
+  assert.equal(effectiveUrgencyLevel('fix-now', undefined), 'fix-now');
+});
+
+// BRO-2742 follow-up: getDigestSubject/updateErrorFingerprint/the status
+// banner each reimplemented the same "is this actionable" filter inline from
+// the static playbook alone — none of them knew about selfHealed either, so
+// even after downgrading the card-filing urgency a selfHealed repeat-failure
+// could still drive "BSC Daily: N warnings need attention" in the subject
+// while the digest body said "no action needed". They now share
+// isActionableResult(), which is selfHealed-aware.
+// Codex adversarial review (ship-check) caught a real regression here: the
+// three inline predicates this replaced treated "no playbook entry at all"
+// as actionable (`!entry || ...`), but an early isActionableResult() draft
+// defaulted a missing entry's urgency to 'low', silently dropping any check
+// with no AUTO_FIX_PLAYBOOK match from the subject/fingerprint/banner.
+test('getDigestSubject: a warning with no playbook entry still counts (no silent drop)', () => {
+  const results = [{ name: 'Some brand-new check with no playbook match', status: 'warn', message: 'uh oh' }];
+  const subject = getDigestSubject(results, { consecutiveErrorDays: 0 }, {});
+  assert.match(subject, /1 warning/);
+  assert.doesNotMatch(subject, /All clear/);
+});
+
+test('getDigestSubject: a selfHealed repeat-failure warning does not trigger "warnings need attention"', () => {
+  const results = repeatFailureResults({
+    skipped: false,
+    repeatFailures: [{ name: 'opening-night-broadcast.yml', count: 4, latestUrl: 'https://x/4', selfHealed: true }],
+  });
+  assert.equal(results[0].status, 'warn');
+  const subject = getDigestSubject(results, { consecutiveErrorDays: 0 }, {});
+  assert.match(subject, /All clear/);
+  assert.doesNotMatch(subject, /warning/);
+});
+
 test('getDigestSubject: a promoted repeat-failure error names the workflow (not "All clear")', () => {
   const results = [
     { name: 'Freshness: reviews.json', status: 'pass', message: 'ok' },
