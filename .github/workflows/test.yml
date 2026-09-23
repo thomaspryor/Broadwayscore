@@ -5082,7 +5082,7 @@ jobs:
     # aggregator archives deleted. Moved out of data-validation (BRO-3425).
     if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20  # review-texts checkout + npm ci dominate
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -5194,6 +5194,11 @@ jobs:
           fi
           echo "✓ $TOTAL aggregator archive files present"
 
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
@@ -5223,6 +5228,24 @@ jobs:
         # body. Stops the Stage Cuckoo-trap from re-entering after a
         # well-meaning refactor accidentally removes a gate.
         run: node scripts/audit-verifier-wiring.js
+
+      - name: Audit text quality — catastrophe floor (blocking)
+        # Mass-wipe floor (~5x looser than the digest band): a real ship-blocker,
+        # not drift, so it stays blocking (BRO-3425 ship-check).
+        if: always()
+        # heal-exempt: catastrophe floor (wide bands, see below) — a real trip
+        # means active data-quality damage (e.g. a scraper hitting a cookie
+        # expiry) requiring human triage, not routine drift to auto-heal
+        # (BRO-3507 ratchet seed, 2026-09-16).
+        run: node scripts/audit-text-quality.js --gate
+        # GATE band: <10% full OR >85% truncated OR >25% unknown. ~5x looser than
+        # the MONITOR band in check-corpus-drift.yml, so normal drift never reds
+        # the trunk — only a scraper flooding the corpus with truncated/unknown
+        # bodies (e.g. a cookie-expiry) trips it. That's a real ship-blocker.
+      # "Audit critic-outlet affinities" MOVED to check-corpus-drift.js
+      # (BRO-3535, 2026-09-16) — baseline-diff audit with no narrower
+      # on-push-safe mode. Non-blocking companion:
+      # scripts/check-corpus-drift.js AUDITS['critic-outlets'].
 
   data-validation:
     name: Data Validation
@@ -5771,23 +5794,6 @@ jobs:
         run: node scripts/validate-archive-productions.js
         continue-on-error: true  # Don't fail build, just warn - archives need manual refetch
 
-      - name: Audit text quality — catastrophe floor (blocking)
-        if: always()
-        # heal-exempt: catastrophe floor (wide bands, see below) — a real trip
-        # means active data-quality damage (e.g. a scraper hitting a cookie
-        # expiry) requiring human triage, not routine drift to auto-heal
-        # (BRO-3507 ratchet seed, 2026-09-16).
-        run: node scripts/audit-text-quality.js --gate
-        # GATE band: <10% full OR >85% truncated OR >25% unknown. ~5x looser than
-        # the MONITOR band in check-corpus-drift.yml, so normal drift never reds
-        # the trunk — only a scraper flooding the corpus with truncated/unknown
-        # bodies (e.g. a cookie-expiry) trips it. That's a real ship-blocker.
-
-      # "Audit critic-outlet affinities" MOVED to check-corpus-drift.js
-      # (BRO-3535, 2026-09-16) — baseline-diff audit with no narrower
-      # on-push-safe mode. Non-blocking companion:
-      # scripts/check-corpus-drift.js AUDITS['critic-outlets'].
-
       - name: Audit outlet-registry gaps
         # if: always() so an earlier failure in this job cannot SKIP the gate
         # that diagnoses outlet-registry problems. Without it this step
@@ -5956,12 +5962,19 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const { data } = await github.rest.actions.listJobsForWorkflowRunAttempt({
-              owner: context.repo.owner, repo: context.repo.repo,
-              run_id: context.runId, attempt_number: Number(process.env.GITHUB_RUN_ATTEMPT || 1), per_page: 100,
-            });
-            const job = (data.jobs || []).find(j => j.name === 'Data Validation');
-            const failing = ((job && job.steps) || []).filter(s => s.conclusion === 'failure').map(s => s.name);
+            // A failed lookup must not drop the digest line — fall back to a
+            // generic title (ship-check finding).
+            let failing = [];
+            try {
+              const { data } = await github.rest.actions.listJobsForWorkflowRunAttempt({
+                owner: context.repo.owner, repo: context.repo.repo,
+                run_id: context.runId, attempt_number: Number(process.env.GITHUB_RUN_ATTEMPT || 1), per_page: 100,
+              });
+              const job = (data.jobs || []).find(j => j.name === 'Data Validation');
+              failing = ((job && job.steps) || []).filter(s => s.conclusion === 'failure').map(s => s.name);
+            } catch (e) {
+              core.warning(`could not list failing Data Validation steps: ${e.message}`);
+            }
             const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
             await routeAlert({
               conditionKey: 'test-yml:data-validation-red',
@@ -6022,6 +6035,13 @@ jobs:
               });
             }
 
+      # Own step, NOT folded into "Record pipeline success" (if: success()) —
+      # this job's data-validation `--gate` audits redden main routinely (see
+      # comments above), and folding ledger telemetry into a success()-gated
+      # step would silently drop it on every one of those routine failures.
+      # This step is unconditional (if: always()) so SERP-spend rows from
+      # this job's url-discovery.js calls are never lost to a validation
+      # gate failure. BRO-163.
       - name: Commit scraper-spend ledger
         if: always()
         continue-on-error: true
@@ -6268,7 +6288,9 @@ jobs:
         # dependency-audit/awards-data-freshness being skipped on push is a
         # no-op here, not a false trip.
         run: |
-          if [ "${{ contains(needs.*.result, 'failure') }}" == "true" ]; then
+          # A timed-out data-safety-guards reports 'cancelled', not 'failure'; a
+          # guard that never finished has not passed (BRO-3425 ship-check).
+          if [ "${{ contains(needs.*.result, 'failure') }}" == "true" ] || [ "${{ needs.data-safety-guards.result }}" == "cancelled" ]; then
             echo "Some tests failed"
             exit 1
           else
@@ -6358,7 +6380,7 @@ jobs:
         # "Route alert" below crashes with MODULE_NOT_FOUND (no checkout ran)
         # and "Commit alert-router ledger changes" fails too (no .git dir).
         # Discovered 2026-07-23 when this exact path went red on merge.
-        if: "!cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/main'"
+        if: "!cancelled() && github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')"
         uses: actions/checkout@v5
 
       # BRO-3507: names WHICH sibling job(s) are failing right now, and
@@ -6378,58 +6400,7 @@ jobs:
       # identically. State is only written when the set actually changes —
       # not on every push — so this doesn't add a guaranteed diff to the
       # ledger commit below on every one of main's 200-1200 daily commits.
-      - name: Record pipeline success
-        # Moved from data-validation (BRO-3425): the Test Suite freshness marker
-        # health-check.js reads must track the CODE verdict, not corpus state.
-        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          mkdir -p data/audit/pipeline-health
-          date -u > data/audit/pipeline-health/test.last-success
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/pipeline-health/
-          # Was a single `A || B && C || echo warning` chain. Two problems:
-          #   1. Precedence — `(A || B) && C` ran push-with-retry.sh even when
-          #      there was nothing staged to commit.
-          #   2. A total push failure (push-with-retry.sh exits 1 after
-          #      MAX_RETRIES) was swallowed into a ::warning:: and the step still
-          #      reported success. Observed on green runs 31850823598 and
-          #      31852747324: "All push attempts failed after 7 attempts", step
-          #      green. That is exactly when it matters — the marker written here
-          #      is what health-check.js's "Pipeline: test" staleness check reads
-          #      for the daily digest, so a persistently failing push makes the
-          #      digest report a stale test pipeline while CI is in fact green.
-          # Still deliberately NON-FATAL (explicit `exit 0`): losing a single race
-          # against a busy main must not redden a green run. The failure is made
-          # observable instead — an ::error:: annotation plus a job-summary entry,
-          # which surface on the run page rather than at line ~N of the log — and
-          # the durable cross-run signal is the marker's own staleness, which
-          # health-check.js already reports daily (hint added there names this
-          # step as a cause so a stale marker isn't misread as "test never ran").
-          if git diff --staged --quiet; then
-            echo "No pipeline-health change to record"
-            exit 0
-          fi
-          git commit -q -m "health: Record test success"
-          if bash scripts/lib/push-with-retry.sh; then
-            exit 0
-          fi
-          MSG="Health recording push failed — data/audit/pipeline-health/test.last-success was NOT updated. CI is green but the marker is now stale; if this repeats for >48h the daily health digest will report 'Pipeline: test' as stale. Check run ${GITHUB_RUN_ID} for the push-with-retry.sh output."
-          echo "::error title=Health recording push failed::${MSG}"
-          {
-            echo "### :warning: Health recording push failed"
-            echo ""
-            echo "${MSG}"
-          } >> "$GITHUB_STEP_SUMMARY"
-          exit 0
 
-      # Own step, NOT folded into "Record pipeline success" (if: success()) —
-      # this job's data-validation `--gate` audits redden main routinely (see
-      # comments above), and folding ledger telemetry into a success()-gated
-      # step would silently drop it on every one of those routine failures.
-      # This step is unconditional (if: always()) so SERP-spend rows from
-      # this job's url-discovery.js calls are never lost to a validation
-      # gate failure. BRO-163.
       - name: Detect failing-job-set change
         id: stepset
         if: "!cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/main'"
@@ -6536,6 +6507,51 @@ jobs:
         run: |
           node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('test-yml:main-streak')"
           node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('test-yml:main-streak-escalation')"
+
+      - name: Record pipeline success
+        # Moved from data-validation (BRO-3425): the Test Suite freshness marker
+        # health-check.js reads must track the CODE verdict, not corpus state.
+        if: success() && github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')
+        run: |
+          mkdir -p data/audit/pipeline-health
+          date -u > data/audit/pipeline-health/test.last-success
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/pipeline-health/
+          # Was a single `A || B && C || echo warning` chain. Two problems:
+          #   1. Precedence — `(A || B) && C` ran push-with-retry.sh even when
+          #      there was nothing staged to commit.
+          #   2. A total push failure (push-with-retry.sh exits 1 after
+          #      MAX_RETRIES) was swallowed into a ::warning:: and the step still
+          #      reported success. Observed on green runs 31850823598 and
+          #      31852747324: "All push attempts failed after 7 attempts", step
+          #      green. That is exactly when it matters — the marker written here
+          #      is what health-check.js's "Pipeline: test" staleness check reads
+          #      for the daily digest, so a persistently failing push makes the
+          #      digest report a stale test pipeline while CI is in fact green.
+          # Still deliberately NON-FATAL (explicit `exit 0`): losing a single race
+          # against a busy main must not redden a green run. The failure is made
+          # observable instead — an ::error:: annotation plus a job-summary entry,
+          # which surface on the run page rather than at line ~N of the log — and
+          # the durable cross-run signal is the marker's own staleness, which
+          # health-check.js already reports daily (hint added there names this
+          # step as a cause so a stale marker isn't misread as "test never ran").
+          if git diff --staged --quiet; then
+            echo "No pipeline-health change to record"
+            exit 0
+          fi
+          git commit -q -m "health: Record test success"
+          if bash scripts/lib/push-with-retry.sh; then
+            exit 0
+          fi
+          MSG="Health recording push failed — data/audit/pipeline-health/test.last-success was NOT updated. CI is green but the marker is now stale; if this repeats for >48h the daily health digest will report 'Pipeline: test' as stale. Check run ${GITHUB_RUN_ID} for the push-with-retry.sh output."
+          echo "::error title=Health recording push failed::${MSG}"
+          {
+            echo "### :warning: Health recording push failed"
+            echo ""
+            echo "${MSG}"
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 0
 
       # The ledger/digest-queue writes above only exist on the ephemeral runner's
       # disk until committed — without this, cooldown/resolve state resets every
