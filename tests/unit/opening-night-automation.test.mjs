@@ -113,7 +113,7 @@ describe('Shared protection-field guarantee (fixes the class of bug, not one ins
     assert.equal(fields.allowEarlyDate, true);
     assert.equal(fields.humanReviewedWrongProduction, false);
     assert.equal(fields.humanReviewedWrongArticle, false);
-    assert.deepEqual(fields.contentVerification, { wrongProduction: false, wrongArticle: false });
+    assert.deepEqual(fields.contentVerification, { isValid: true, confidence: 'manual', verifiedBy: 'manual-ingest', wrongProduction: false, wrongArticle: false });
     assert.equal(fields.manualContentTier, 'complete');
     // The per-file protectedFields lock must itself list the score + tier fields,
     // or a rebase can silently drop them even though the guard fields above hold.

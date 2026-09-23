@@ -294,6 +294,17 @@ jobs:
         if: success()
         run: node scripts/rebuild-all-reviews.js
 
+      # Issue #908: the success comment used to fire whenever ingest exited 0,
+      # even when the written file was excluded (contentTier=invalid) and never
+      # reached the site. Ask the rebuilt reviews.json instead.
+      - name: Check review landed in reviews.json
+        id: landed
+        if: success()
+        run: |
+          node scripts/check-submission-landed.js \
+            --show="${{ needs.validate.outputs.show_id }}" \
+            --url="${{ needs.validate.outputs.review_url }}"
+
 
       - name: Push review-texts to private repo
         if: always()
@@ -338,7 +349,7 @@ jobs:
           workflow-name: process-review-submission
 
       - name: Post success comment
-        if: success()
+        if: success() && steps.landed.outputs.landed == 'true'
         uses: actions/github-script@v7
         env:
           ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
@@ -368,6 +379,49 @@ jobs:
               state: 'closed',
               state_reason: 'completed'
             });
+
+      - name: Post not-landed comment
+        if: success() && steps.landed.outputs.landed != 'true'
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
+          EXCLUDED_REASON: ${{ steps.landed.outputs.excluded_reason }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issueNumber = parseInt(process.env.ISSUE_NUMBER);
+            const body = '## ⏳ Received — finishing by hand\n\n' +
+              'Thanks! This submission was approved, but our automated pipeline could not add it to the site on its own ' +
+              '(`' + (process.env.EXCLUDED_REASON || 'unknown') + '`). A maintainer has been notified and will finish adding it.\n\n' +
+              '---\n*Automated check • ' + new Date().toISOString() + '*';
+            await github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: issueNumber, body,
+            });
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: issueNumber,
+              labels: ['needs-manual-review'],
+            });
+
+      - name: Email owner - approved submission not on site
+        if: success() && steps.landed.outputs.landed != 'true'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
+          SHOW_ID: ${{ needs.validate.outputs.show_id }}
+          REVIEW_URL: ${{ needs.validate.outputs.review_url }}
+          EXCLUDED_REASON: ${{ steps.landed.outputs.excluded_reason }}
+        run: |
+          if [ -z "$RESEND_API_KEY" ] || [ -z "$OWNER_EMAIL" ]; then
+            echo "::warning::Missing RESEND_API_KEY/OWNER_EMAIL; owner not emailed"; exit 0
+          fi
+          PAYLOAD=$(node -e 'const e=process.env;process.stdout.write(JSON.stringify({
+            from:"Broadway Scorecard <noreply@broadwayscorecard.com>",to:[e.OWNER_EMAIL],
+            subject:`Action: approved review submission #${e.ISSUE_NUMBER} is not on the site`,
+            text:`A reader-submitted review was approved but did not make it onto the site.\n\nShow: ${e.SHOW_ID}\nURL: ${e.REVIEW_URL}\nReason: ${e.EXCLUDED_REASON||"unknown"}\n\nIssue: https://github.com/${process.env.GITHUB_REPOSITORY}/issues/${e.ISSUE_NUMBER}`}))')
+          curl -s -o /dev/null -w "%{http_code}" -X POST https://api.resend.com/emails \
+            -H "Authorization: Bearer $RESEND_API_KEY" -H "Content-Type: application/json" \
+            -d "$PAYLOAD" | grep -qE '^2' || echo "::warning::Owner email failed"
 
       - name: Notify on failure
         if: failure()
