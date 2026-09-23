@@ -588,18 +588,26 @@ jobs:
       # push the same core-data repo, e.g. electra-persona-west-end-2026's
       # 27 failures 2026-09-01→04, all "Commit rebuilt reviews.json") the
       # shared 240s default only fits ~1-2 real fetch→rebase-conflict→merge
-      # cycles (task #458) before giving up — confirmed in those runs'
-      # logs (e.g. run 33910221902: 2 attempts, "overall deadline 240s
-      # exceeded"). data/reviews.json is intentionally excluded from the
-      # Git Data API fallback (task #1792 — a whole-file overlay could
-      # silently drop a concurrent writer's edit to a different show), so
-      # the local fetch+rebase+push loop is the only path and needs more
-      # real cycles, not a faster escape hatch. 900s/25 retries are task
-      # #1842's own live-verified data-health-check.yml numbers (~725s of
-      # backoff under a 900s deadline, ~175s margin), reused directly per
-      # that task's guidance. This job has no explicit timeout-minutes (360m
-      # GitHub default), so unlike rebuild-reviews.yml's job-timeout bump,
-      # there is already ample headroom for the extra worst-case runtime.
+      # cycles (task #458) before giving up — confirmed in those runs' logs
+      # (e.g. run 33910221902: 2 attempts, "overall deadline 240s exceeded").
+      # The `git add data/audit/` above routinely picks up per-show state
+      # files this repo has never registered for the Git Data API fallback
+      # (e.g. data/audit/poller-backoff/{show-id}.json, written by
+      # opening-night-poller.js for every show it's tracking) — any single
+      # unregistered data/audit/ path disqualifies the WHOLE commit from that
+      # fast path (scripts/lib/api-fallback-disqualifier-core.js's third
+      # condition), forcing the slow local fetch+rebase+push loop, which is
+      # exactly what needs more real cycles during an opening-night burst
+      # where several shows' pollers are all writing that directory at once.
+      # (NOT a data/reviews.json NEVER_FALLBACK case, despite this step's
+      # own name/commit message — verified against the actual failing runs'
+      # `git add`/commit content, which never touches data/reviews.json.)
+      # 900s/25 retries are task #1842's own live-verified data-health-
+      # check.yml numbers (~725s of backoff under a 900s deadline, ~175s
+      # margin), reused directly per that task's guidance. This job has no
+      # explicit timeout-minutes (360m GitHub default), so unlike rebuild-
+      # reviews.yml's job-timeout bump, there is already ample headroom for
+      # the extra worst-case runtime.
       - name: Commit rebuilt reviews.json
         env:
           # Task #784: gather-reviews.js writes attribution rows to the shared
