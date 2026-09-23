@@ -1,10 +1,13 @@
 {
-  "updatedAt": "2026-09-22T12:14:42.417Z",
-  "scanned": 2103,
-  "showsWithViolations": 40,
-  "totalViolations": 40,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-09-23T12:25:59.113Z",
+  "scanned": 2104,
+  "showsWithViolations": 42,
+  "totalViolations": 42,
+  "newSinceLastRun": 2,
+  "newViolationKeys": [
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+    "macbeth-off-broadway-2026"
+  ],
   "violationKeys": [
     "the-lost-boys-2026",
     "schmigadoon-2026",
@@ -38,7 +41,9 @@
     "a-month-in-the-country-west-end-2026",
     "the-story-west-end-2026",
     "paranormal-activity-2026",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
     "la-boheme-off-broadway-2026",
+    "macbeth-off-broadway-2026",
     "tosca-off-broadway-2026",
     "the-smile-of-her-off-west-end-2026",
     "disruption-off-broadway-2026",
@@ -337,10 +342,28 @@
       ]
     },
     {
+      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "title": "Catarina and the Beauty of Killing Fascists",
+      "openingDate": "2026-09-21",
+      "message": "catarina-and-the-beauty-of-killing-fascists-west-end-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
       "showId": "la-boheme-off-broadway-2026",
       "title": "La Bohème",
       "openingDate": "2026-09-25",
       "message": "la-boheme-off-broadway-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "title": "Macbeth",
+      "openingDate": "2026-09-22",
+      "message": "macbeth-off-broadway-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -385,7 +408,7 @@
       "showId": "pre-existing-condition-off-broadway-2026",
       "title": "Pre-Existing Condition",
       "openingDate": "2026-09-14",
-      "message": "pre-existing-condition-off-broadway-2026 review text mentions \"revival\" 10x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "pre-existing-condition-off-broadway-2026 review text mentions \"revival\" 8x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

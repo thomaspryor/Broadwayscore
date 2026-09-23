@@ -1,15 +1,15 @@
 {
   "system": "alert router",
-  "status": "error",
-  "lastChecked": "2026-09-22T12:06:17.806Z",
+  "status": "pass",
+  "lastChecked": "2026-09-23T12:15:49.651Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Alert Router: dispatch deadman",
-      "status": "error",
-      "message": "Most recent auto-dispatch attempt failed (41/131 succeeded in the last 7d) — same failure class as the 2026-07-24 npm-ci incident. Last error: LINEAR_API_KEY not set in .env or environment"
+      "status": "pass",
+      "message": "42/133 auto-dispatch attempts LAUNCHED ok in the last 7d (launch only — see \"Autofix: jobs actually succeeding\" for whether they fixed anything)"
     }
   ]
 }

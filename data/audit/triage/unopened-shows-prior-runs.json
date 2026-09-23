@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-09-22T12:14:34.162Z",
+  "generatedAt": "2026-09-23T12:25:50.546Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3054,
-  "flaggedShows": 51,
-  "flaggedFiles": 198,
+  "scannedShows": 3056,
+  "flaggedShows": 48,
+  "flaggedFiles": 182,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 29,
-    "needs-human-review": 22
+    "likely-contamination": 27,
+    "needs-human-review": 21
   },
   "shows": [
     {
@@ -834,160 +834,6 @@
           "criticName": "Quentin Letts",
           "publishDate": "2022-12-07",
           "url": "https://www.thetimes.co.uk/article/c3081868-759a-11ed-b756-a5744446c41f",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "macbeth-off-broadway-2026",
-      "title": "Macbeth",
-      "market": "broadway",
-      "status": "upcoming",
-      "venue": "Metropolitan Opera House",
-      "previewsStartDate": null,
-      "openingDate": "2026-09-22",
-      "verdict": "likely-contamination",
-      "reasoning": "10/10 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 10,
-        "distinctYears": [
-          2022,
-          2024
-        ],
-        "spanDays": 894,
-        "flaggedCount": 10,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "daily-mail--patrick-marmion.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "daily-mail",
-          "criticName": "Sarah Tetteh",
-          "publishDate": "2024-10-09",
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-3319922/Chic-Marion-Cotillard-flashes-hint-toned-tum-cropped-black-white-Macbeth-screening-Michael-Fassbender.html",
-          "wrongProduction": true,
-          "wrongShow": true,
-          "evaluationError": null
-        },
-        {
-          "file": "ew--leah-greenblatt.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "ew",
-          "criticName": "Leah Greenblatt",
-          "publishDate": "2022-04-29",
-          "url": "https://ew.com/theater/theater-reviews/macbeth-broadway-daniel-craig-ruth-negga/?srsltid=AfmBOooJNQuj_HN2SEY3xzhoaIUOc1g0yRU-matkmtFIUqToCGFeatx4",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "financialtimes--shirley-apthorp.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "financialtimes",
-          "criticName": "Shirley Apthorp",
-          "publishDate": "2024-10-09",
-          "url": "https://www.ft.com/content/f7ebf4b5-c66e-4a01-940c-ecb280b4252c",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "guardian--arifa-akbar.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Arifa Akbar",
-          "publishDate": "2024-10-09",
-          "url": "https://www.theguardian.com/stage/2023/dec/16/macbeth-review-david-tennant-thrills-in-this-high-concept-production",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "i-paper--fiona-mountford.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "i-paper",
-          "criticName": "Fiona Mountford",
-          "publishDate": "2024-10-09",
-          "url": "https://inews.co.uk/culture/arts/macbeth-donmar-warehouse-review-david-tennant-magnificent-style-over-substance-2812821",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "independent--alice-saville.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "independent",
-          "criticName": "Alice Saville",
-          "publishDate": "2024-10-09",
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/macbeth-donmar-review-david-tennant-b2465197.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--nick-curtis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "Nick Curtis",
-          "publishDate": "2024-10-09",
-          "url": "https://www.standard.co.uk/culture/theatre/the-tragedy-of-macbeth-review-almeida-theatre-saoirse-ronan-london-b960539.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--dominic-cavendish.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Dominic Cavendish",
-          "publishDate": "2024-10-09",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/macbeth-chichester-festival-theatre-review-muted-john-simm-dervla/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--clive-davis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Clive Davis",
-          "publishDate": "2024-10-09",
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/macbeth-review-more-brittas-empire-than-blasted-heath-cthw0bpcq",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "whatsonstage--sarah-crompton.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "whatsonstage",
-          "criticName": "Sarah Crompton",
-          "publishDate": "2024-10-09",
-          "url": "https://www.whatsonstage.com/news/ray-fearon-to-play-macbeth-in-globes-wonder-season_39744/",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -2035,94 +1881,6 @@
           "url": "https://www.thetimes.co.uk/article/7f74ad3c-0497-11ee-a1e5-6222cf71d60e",
           "wrongProduction": true,
           "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "the-invention-of-love-off-broadway-2026",
-      "title": "The Invention of Love",
-      "market": "broadway",
-      "status": "previews",
-      "venue": "Theaterlab",
-      "previewsStartDate": "2026-09-17",
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "5/5 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 5,
-        "distinctYears": [
-          2024
-        ],
-        "spanDays": 0,
-        "flaggedCount": 5,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "guardian--david-jays.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "David Jays",
-          "publishDate": "2024-12-17",
-          "url": "https://www.theguardian.com/stage/2024/dec/17/the-invention-of-love-review-hampstead-theatre-london",
-          "wrongProduction": true,
-          "wrongShow": true,
-          "evaluationError": null
-        },
-        {
-          "file": "independent--tim-bano.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "independent",
-          "criticName": "Tim Bano",
-          "publishDate": "2024-12-17",
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/invention-of-love-tom-stoppard-b2665608.html",
-          "wrongProduction": true,
-          "wrongShow": true,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--dominic-cavendish.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Dominic Cavendish",
-          "publishDate": "2024-12-17",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-invention-of-love-review-simon-russell-beale/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--dominic-maxwell.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Dominic Maxwell",
-          "publishDate": "2024-12-17",
-          "url": "https://www.thetimes.com/article/ea1194a2-8601-47c3-b441-bc0c9088a55c",
-          "wrongProduction": true,
-          "wrongShow": true,
-          "evaluationError": null
-        },
-        {
-          "file": "whatsonstage--miriam-sallon.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "whatsonstage",
-          "criticName": "Miriam Sallon",
-          "publishDate": "2024-12-17",
-          "url": "https://www.whatsonstage.com/news/the-invention-of-love-review-simon-russell-beale-is-perfectly-cast-in-tom-stoppard-revival_1658010/",
-          "wrongProduction": true,
-          "wrongShow": true,
           "evaluationError": null
         }
       ]
@@ -3234,42 +2992,6 @@
           "criticName": "Stuart King",
           "publishDate": "2024-07-31",
           "url": "https://www.londonboxoffice.co.uk/news/post/death-of-england-michael-delroy-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "cosi-fan-tutte-off-broadway-2026",
-      "title": "Così fan tutte",
-      "market": "broadway",
-      "status": "upcoming",
-      "venue": "Metropolitan Opera House",
-      "previewsStartDate": "2026-09-23",
-      "openingDate": "2026-09-23",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Metropolitan Opera House\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2018
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "financialtimes--virginia-webb.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "financialtimes",
-          "criticName": "Virginia Webb",
-          "publishDate": "2018-03-17",
-          "url": "https://www.ft.com/content/df0e8380-290f-11e8-9274-2b13fccdc744",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

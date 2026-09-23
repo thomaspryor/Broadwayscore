@@ -1,27 +1,15 @@
 [
   {
     "conditionKey": "provider-spend:overspend",
-    "title": "Scraping spend over budget",
-    "description": "Day 2026-09-21. Over budget: scrapingbee 40991 credits > 35000. 2026-09-21 · Browserbase: $0.75 (63 sessions, 41.76min) · 2026-09-21 · Bright Data: $1.96 (120 serp / 1190 unlocker) · ScrapingBee: 40991 credits (484783 this cycle) · ScrapingDog: 23919 credits (1019757 this cycle) · Browserbase attribution: 6% attributed — top callers (covers 6% of billed calls): collect-review-texts.js 3, sweep-we-aggregators.js:the-stage 1 · ⚠️ Browserbase top-caller coverage low: 6% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · Bright Data attribution: 85% attributed — top callers (covers 78% of billed calls): opening-night-poller.js 749, fetch-show-images-auto.js 156, audit-show-review-gap.js 55, backfill-unknown-critics.js 34, collect-outlet-reviews.js 32 · ⚠️ Bright Data top-caller coverage low: 78% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · ScrapingBee attribution: 23% attributed — top callers (covers 22% of billed credits): fetch-show-images-auto.js 5976cr, opening-night-poller.js 2281cr, ob-discovery-ticket-links.js 275cr, gather-reviews.js 218cr, collect-review-texts.js 157cr · ⚠️ ScrapingBee top-caller coverage low: 22% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · ScrapingDog attribution: 54% attributed — top callers (covers 38% of billed credits): audit-show-review-gap.js 3322cr, collect-outlet-reviews.js 2690cr, opening-night-poller.js 1175cr, scrape-nyc-theatre-roundups.js 1040cr, fetch-show-images-auto.js 939cr · ⚠️ ScrapingDog top-caller coverage low: 38% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight. Verification streak reset to 0.",
+    "title": "Scraping spend over budget — already tracked at BRO-3030",
+    "description": "This condition already has an open tracker (BRO-3030); not filing a duplicate. It will go quiet in the digest from here.\n\nDay 2026-09-22. Over budget: scrapingbee 50874 credits > 35000. 2026-09-22 · Browserbase: $0.81 (113 sessions, 69.13min) · 2026-09-22 · Bright Data: $2.17 (214 serp / 1235 unlocker) · ScrapingBee: 50874 credits (535657 this cycle) · ScrapingDog: 32711 credits (1052468 this cycle) · Browserbase attribution: 2% attributed — top callers (covers 2% of billed calls): collect-review-texts.js 2 · ⚠️ Browserbase top-caller coverage low: 2% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · Bright Data attribution: 57% attributed — top callers (covers 55% of billed calls): opening-night-poller.js 637, gather-reviews.js 71, audit-show-review-gap.js 51, collect-outlet-reviews.js 21, backfill-unknown-critics.js 14 · ⚠️ Bright Data top-caller coverage low: 55% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · ScrapingBee attribution: 12% attributed — top callers (covers 12% of billed credits): fetch-show-images-auto.js 2925cr, opening-night-poller.js 2136cr, gather-reviews.js 594cr, collect-outlet-reviews.js 225cr, ob-discovery-ticket-links.js 175cr · ⚠️ ScrapingBee top-caller coverage low: 12% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · ScrapingDog attribution: 27% attributed — top callers (covers 21% of billed credits): audit-show-review-gap.js 1973cr, opening-night-poller.js 1931cr, scrape-nyc-theatre-roundups.js 1160cr, gather-reviews.js 1001cr, collect-outlet-reviews.js 770cr · ⚠️ ScrapingDog top-caller coverage low: 21% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight. Verification streak reset to 0.",
     "severity": "error",
     "url": null,
     "decision": true,
-    "decisionPrompt": "Scraping spend over budget: scrapingbee 40991 credits > 35000. Should I raise the daily budget, or do you want scraping volume cut to stay within it?",
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-22T12:06:43.438Z"
-  },
-  {
-    "conditionKey": "time-to-publish-sla:unmeasurable",
-    "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
-    "description": "Scope: 2 opening window(s): crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026 (2026-09-22), macbeth-off-broadway-2026 (2026-09-22)\n0 review(s) still in flight.\nStage log currently starts at 2026-08-21T04:29:05.437Z.\nThis is NOT a pass — the SLA had too little to judge.",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-22T12:15:03.881Z"
+    "queuedAt": "2026-09-23T12:16:33.891Z"
   },
   {
     "conditionKey": "opening-night-cv-wrongproduction-unhandled-catarina-and-the-beauty-of-killing-fascists-west-end-2026",
@@ -46,18 +34,6 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-22T15:00:08.682Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-invention-of-love-off-broadway-2026",
-    "title": "Review gap — \"The Invention of Love\" missing 11 cited review(s)",
-    "description": "The Invention of Love (the-invention-of-love-off-broadway-2026): 11 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-invention-of-love-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-22T15:31:05.549Z"
   },
   {
     "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:catarina-and-the-beauty-of-killing-fascists-west-end-2026:timeout-london",
@@ -719,5 +695,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-23T11:50:39.864Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-invention-of-love-off-broadway-2026",
+    "title": "Review gap — \"The Invention of Love\" missing 7 cited review(s)",
+    "description": "The Invention of Love (the-invention-of-love-off-broadway-2026): 7 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-invention-of-love-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-23T12:29:09.528Z"
   }
 ]
