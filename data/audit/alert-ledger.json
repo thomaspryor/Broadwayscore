@@ -145,9 +145,9 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-23T04:17:33.667Z",
-      "lastNotifiedAt": "2026-09-23T04:01:15.284Z",
-      "lastSurfacedAt": "2026-09-23T04:01:15.284Z",
+      "lastSeen": "2026-09-23T04:20:41.049Z",
+      "lastNotifiedAt": "2026-09-23T04:06:00.059Z",
+      "lastSurfacedAt": "2026-09-23T04:06:00.059Z",
       "notifyCount": 100,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
@@ -4468,7 +4468,28 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4059",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "absentRunIds": [
+        "35817035146"
+      ]
+    },
+    "test-yml:red:Unit Tests:eb9a92ac": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every scripts/ root file with the shred signature and no fold is in the frozen baseline\"",
+      "firstSeen": "2026-09-23T04:20:36.319Z",
+      "lastSeen": "2026-09-23T04:20:36.319Z",
+      "lastNotifiedAt": "2026-09-23T04:20:36.319Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4063",
+      "dispatch": {
+        "requestedAt": "2026-09-23T04:20:36.319Z",
+        "mode": "dispatch-at-filing",
+        "runId": "35817035146",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35817035146"
+      }
     }
   }
 }
