@@ -1377,6 +1377,24 @@ const JOB_EVENTS = Object.freeze({
   // of a defect) and NOT in TERMINAL_JOB_EVENTS (it does not close a jobId —
   // the STOPPED_SHORT/STRANDED row already did).
   LANDED_ACKED: 'landed-acked',
+  // LANDED_BEFORE_DISPATCH (+ `sha`, `verifyCmd`, `reason`, `ackedBy`,
+  // `jobId`): BRO-4069 — the sibling case LANDED_ACKED cannot express. A
+  // card whose work already reached origin/main BEFORE this dispatch even
+  // launched (a stale/mistaken re-dispatch of an already-done card — e.g.
+  // linear:BRO-3471, landed 2026-09-15, re-dispatched by mistake on
+  // 2026-09-20 and 2026-09-21) has no sha that is "this job's work": every
+  // attempt on the card postdates the real landing, so decideAck's
+  // authored-after-launch tie can never pass, and the card could never
+  // acquire a clean terminal ledger row. Written ONLY by
+  // scripts/ack-landed.js's `--already-landed` path, which asserts the
+  // OPPOSITE timing from decideAck (sha authored BEFORE the ref's EARLIEST
+  // launch row, not after some attempt's launch) and still re-verifies
+  // ancestry + reruns a safe-form acceptance command. Deliberately a
+  // DISTINCT event from LANDED_ACKED so a no-op re-dispatch is never
+  // misrecorded as this job's own productive work. Same non-membership as
+  // LANDED_ACKED: not a `job-` event (foldJobs/openJobs skip it), not in
+  // isDeadlikeEvent, not in TERMINAL_JOB_EVENTS.
+  LANDED_BEFORE_DISPATCH: 'landed-before-dispatch',
   // FANOUT_VERIFIED (+ `refs`, `verifyCmd`, `exitCode`, `reason`, `ackedBy`;
   // taskId 'fanout'): BRO-3939 — a session that dispatched >= 2 children ran
   // a real safe-form check across the COMBINED result after every child

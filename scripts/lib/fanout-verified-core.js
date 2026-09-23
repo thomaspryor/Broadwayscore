@@ -40,7 +40,14 @@ function normalizeRef(raw) {
 const RUNS_TESTS_RE = /^(?:node --test|npx tsx --test)\b/;
 const MIN_REASON_CHARS = 15;
 const FANOUT_EVENT = 'fanout-verified';
-const LANDED_EVENTS = new Set(['job-done', 'landed-acked']);
+// landed-before-dispatch (BRO-4069): ack-landed.js's --already-landed
+// sibling of landed-acked — same "must postdate the last bad row" rule
+// applies (adversarial review 2026-09-23: this set silently diverged from
+// Gate O v2's GO_ACK_EVENTS when the new event was added there, which would
+// have left a fan-out child acked via --already-landed permanently unlanded
+// from THIS module's point of view even though Gate O itself accepts it).
+const LANDED_EVENTS = new Set(['job-done', 'landed-acked', 'landed-before-dispatch']);
+const ACK_EVENTS = new Set(['landed-acked', 'landed-before-dispatch']);
 const BAD_EVENTS = new Set(['job-orphaned', 'job-failed', 'job-stopped-short', 'job-stranded',
   'job-abandoned', 'job-blocked']);
 const RELAUNCH_EVENTS = new Set(['launch', 'job-spawned', 'watchdog-redispatch', 'job-retried']);
@@ -53,7 +60,7 @@ function landingState(rows) {
     const ev = String(row.event || '');
     const ts = String(row.ts || '');
     if (LANDED_EVENTS.has(ev)) {
-      if (ev === 'landed-acked' && ts <= lastBadTs) {
+      if (ACK_EVENTS.has(ev) && ts <= lastBadTs) {
         state = { landed: false, detail: `${ev} ${ts.slice(0, 19)} is not newer than the last bad row ${lastBadTs.slice(0, 19)}`, ts };
       } else {
         state = { landed: true, detail: `${ev} ${ts.slice(0, 19)}`, ts };

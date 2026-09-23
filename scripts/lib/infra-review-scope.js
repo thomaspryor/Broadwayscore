@@ -272,6 +272,40 @@ const PATCH_COMMANDS = new Set(['patch']);
 // `> path` / `>> path`, including `2> path`. Deliberately not `<`.
 const REDIRECT_RE = /(?:^|\s)\d*>>?\s*["']?([^\s"'<>;&|]+)/g;
 
+// Neutralise '>' characters that live INSIDE a single/double-quoted span, so
+// REDIRECT_RE (which is quote-blind — it runs as a raw regex scan, not
+// through tokenize()) can never mistake a literal '>' inside a string for a
+// real shell redirect operator (BRO-4070: a read-only `echo "… > path"`
+// diagnostic was BLOCKED because the quoted '>' was read as a redirect).
+// Only the operator character itself is replaced (with a space) — everything
+// else, including a legitimately QUOTED redirect TARGET (`> "scripts/lib/
+// foo.js"`, whose '>' sits outside the quotes), is left untouched, so a real
+// redirect is still detected exactly as before.
+//
+// Runs on the WHOLE (unsplit) command, mirroring stripHeredocBodies's own
+// placement (both run before shellSegments()) — NOT per-segment. shellSegments
+// is already documented as quote-blind at the split boundary (a `;` inside a
+// quoted string over-splits); resolving quote pairing before that split, not
+// after, is what stops a semicolon-quoted fake redirect (`echo "run this;
+// then > path"`) from landing its `>` in a different segment than the quote
+// that should have masked it.
+function maskQuotedRedirectOperators(command) {
+  const str = String(command);
+  let out = '';
+  let quote = null;
+  for (let i = 0; i < str.length; i++) {
+    const ch = str[i];
+    if (quote) {
+      if (ch === quote) quote = null;
+      out += ch === '>' ? ' ' : ch;
+    } else {
+      if (ch === '"' || ch === "'") quote = ch;
+      out += ch;
+    }
+  }
+  return out;
+}
+
 // Split a command line into rough segments so `printf x | tee f && sed -i … g`
 // is seen as three commands. Quote-blind by design: a `|` inside a quoted
 // string over-splits, which can only ever produce an extra candidate path, and
@@ -542,6 +576,13 @@ function unwrapCommandPrefix(tokens) {
 function bashWriteTargets(command) {
   if (!command) return [];
   command = stripHeredocBodies(command);
+  // Split BOTH the real command and its redirect-safe twin the same way.
+  // maskQuotedRedirectOperators() only ever swaps a '>' for a space — it
+  // never touches the `;|&\n` characters shellSegments() splits on — so the
+  // two segment arrays line up 1:1 by index; tokenize() below still reads the
+  // real (unmasked) segment, since masking a quoted '>' has no effect on
+  // where quotes/tokens start or end.
+  const redirectSafeSegments = shellSegments(maskQuotedRedirectOperators(command));
   const out = new Set();
   const add = (t) => {
     const v = (t || '').trim();
@@ -550,10 +591,13 @@ function bashWriteTargets(command) {
     out.add(v);
   };
 
-  for (const segment of shellSegments(command)) {
+  const segments = shellSegments(command);
+  for (let i = 0; i < segments.length; i++) {
+    const segment = segments[i];
+    const redirectSegment = redirectSafeSegments[i] ?? segment;
     REDIRECT_RE.lastIndex = 0;
     let m;
-    while ((m = REDIRECT_RE.exec(segment)) !== null) add(m[1]);
+    while ((m = REDIRECT_RE.exec(redirectSegment)) !== null) add(m[1]);
 
     const tokens = tokenize(segment);
     if (!tokens.length) continue;
@@ -781,6 +825,7 @@ module.exports = {
   shellSegments,
   tokenize,
   stripHeredocBodies,
+  maskQuotedRedirectOperators,
   // Same sharing rationale, same two callers (BRO-2450): review-gate.mjs's
   // merge gate had this exact wrapper list first (BRO-2436); bashWriteTargets
   // needed it too, so this is the one definition both read instead of two
