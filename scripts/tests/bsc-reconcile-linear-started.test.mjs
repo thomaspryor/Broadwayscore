@@ -31,7 +31,7 @@ const {
   COMMENT_PAGE_CAP,
 } = require('../lib/linear-started-zombie-sweep.js');
 const { JOB_EVENTS } = require('../lib/dispatch-ledger.js');
-const { sweepLinearStartedZombies } = require('../bsc-reconcile.js');
+const { sweepLinearStartedZombies, readLinearZombieLedger } = require('../bsc-reconcile.js');
 
 // ── findJobDoneLinearCandidates ─────────────────────────────────────────────
 
@@ -385,6 +385,13 @@ test('sweepLinearStartedZombies: park suppresses the repeated digest line once c
   // still report (0 and then 1 prior rows exist at decision time), and only
   // occurrence 3 (2 prior rows now exist) goes silent.
   const entries = candidateEntries('BRO-6', 'job-6', '/wt/gone6');
+  // Real sweep ticks for the SAME card are 6h apart (the cadence gate), so
+  // two real card-fail rows can never share a millisecond timestamp in
+  // production — but three synchronous test calls easily do, which would
+  // make readLinearZombieLedger's exact-line dedup (added for a DIFFERENT
+  // reason: merge=union can duplicate a row's exact bytes) collapse three
+  // genuinely distinct occurrences into one. A tiny real delay between calls
+  // is the correct fix here, not weakening the dedup guard.
   const runOnce = async (ledgerPath) => {
     const { deps, reported } = harness({
       entries,
@@ -393,6 +400,7 @@ test('sweepLinearStartedZombies: park suppresses the repeated digest line once c
     });
     if (ledgerPath) deps.ledgerPath = ledgerPath;
     await sweepLinearStartedZombies({ dryRun: false, deps });
+    await new Promise((resolve) => setTimeout(resolve, 2));
     return { reported, ledgerPath: deps.ledgerPath };
   };
   const first = await runOnce();
@@ -415,4 +423,17 @@ test('sweepLinearStartedZombies: a stale candidate (state moved on since the led
   assert.equal(out.reset.length, 0);
   assert.equal(reportedBack.length, 0);
   assert.equal(reported.length, 0);
+});
+
+test('readLinearZombieLedger: exact-duplicate lines are dropped (merge=union safety) so one real failure never reads as two', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bsc-reconcile-linear-zombie-dedup-'));
+  const ledgerPath = path.join(dir, 'ledger.jsonl');
+  const row = JSON.stringify({ ts: '2026-09-01T00:00:00.000Z', event: 'card-fail', cardId: 'BRO-1', contentHash: 'abc' });
+  // A union merge can leave the exact same line twice (sync-audit-checkout.sh's
+  // recovery stage re-appending locally-saved rows on top of origin's).
+  fs.writeFileSync(ledgerPath, `${row}\n${row}\n`);
+  const entries = readLinearZombieLedger(ledgerPath);
+  assert.equal(entries.length, 1, 'the duplicate line must collapse to one entry');
+  const park = isZombieResetParked('BRO-1', { ledgerEntries: entries, contentHash: 'abc' });
+  assert.equal(park.parked, false, 'one real failure (however many times its line is duplicated on disk) must never park at maxFailures=2');
 });

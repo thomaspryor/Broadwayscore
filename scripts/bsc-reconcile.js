@@ -838,13 +838,28 @@ const LINEAR_ZOMBIE_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'bsc-reconcil
 const LINEAR_ZOMBIE_SWEEP_INTERVAL_MS = 6 * 3600 * 1000; // Linear fetches cost quota — no need for 5-min cadence
 const LINEAR_ZOMBIE_MAX_RESETS_PER_DAY = 10;
 
+// Exact-duplicate lines are dropped, and that is load-bearing rather than
+// tidiness — same fix, same reason, as scripts/linear-drain-parked.js's own
+// readLedger() (see .gitattributes' entry for this file): this ledger
+// carries merge=union so concurrent appends union instead of conflicting,
+// and a union can leave the SAME row twice (e.g. sync-audit-checkout.sh's
+// recovery stage re-appending locally-saved rows on top of origin's
+// committed ones). attempt-memory.js's checkPark() counts every 'card-fail'
+// row in the newest-to-oldest streak with no dedupe of its own, and
+// DEFAULT_MAX_FAILURES is 2 — one duplicated fail row is enough to turn a
+// single real refusal into a false park. Every row carries a millisecond ISO
+// `ts` stamped at append time (appendLinearZombieLedger below), so two
+// genuinely distinct entries never serialise identically.
 function readLinearZombieLedger(ledgerPath = LINEAR_ZOMBIE_LEDGER_PATH) {
   let raw;
   try { raw = fs.readFileSync(ledgerPath, 'utf8'); } catch { return []; }
   const out = [];
+  const seen = new Set();
   for (const line of raw.split('\n')) {
     const t = line.trim();
     if (!t) continue;
+    if (seen.has(t)) continue;
+    seen.add(t);
     try { out.push(JSON.parse(t)); } catch { /* skip corrupt line */ }
   }
   return out;
@@ -1541,4 +1556,4 @@ if (require.main === module) {
   main().catch(err => { console.error('bsc-reconcile crashed:', err); process.exit(1); });
 }
 
-module.exports = { main, runRedFirstPassBounded, RED_FIRST_TIMEOUT_MS, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK, collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, RESUME_LOOKBACK_MS, sweepUntrackedInProgress, UNTRACKED_SWEEP_STATE_PATH, stripOwnParkNote, UNTRACKED_MARKER, OUTCOME_PARK_MARKER, sweepOrphanedJobs, GRACE_MS, sweepLinearStartedZombies, LINEAR_ZOMBIE_SWEEP_STATE_PATH, LINEAR_ZOMBIE_LEDGER_PATH, LINEAR_ZOMBIE_MAX_RESETS_PER_DAY };
+module.exports = { main, runRedFirstPassBounded, RED_FIRST_TIMEOUT_MS, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK, collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, RESUME_LOOKBACK_MS, sweepUntrackedInProgress, UNTRACKED_SWEEP_STATE_PATH, stripOwnParkNote, UNTRACKED_MARKER, OUTCOME_PARK_MARKER, sweepOrphanedJobs, GRACE_MS, sweepLinearStartedZombies, LINEAR_ZOMBIE_SWEEP_STATE_PATH, LINEAR_ZOMBIE_LEDGER_PATH, LINEAR_ZOMBIE_MAX_RESETS_PER_DAY, readLinearZombieLedger };
