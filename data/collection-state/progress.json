@@ -18,9 +18,7 @@
     "thelma-and-louise-a-new-musical-off-west-end-2026/bestoftheatre--unknown.json",
     "kimberly-akimbo-off-west-end-2026/matineemouse--matinee-mouse.json",
     "white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
-    "schmigadoon-2026/variety--variety-australia-staff.json",
-    "cosi-fan-tutte-off-broadway-2026/operawire--francisco-salazar.json",
-    "cosi-fan-tutte-off-broadway-2026/nytimes--james-barron.json"
+    "schmigadoon-2026/variety--variety-australia-staff.json"
   ],
   "failed": [
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
@@ -150,7 +148,22 @@
     "medea-off-broadway-2026/times-uk--clive-davis.json",
     "medea-off-broadway-2026/times-uk--quentin-letts.json",
     "in-the-heights-off-broadway-2026/nytheatre--martin-denton.json",
-    "in-the-heights-off-broadway-2026/variety--david-rooney.json"
+    "in-the-heights-off-broadway-2026/variety--david-rooney.json",
+    "cosi-fan-tutte-off-broadway-2026/times-uk--unknown.json",
+    "macbeth-off-broadway-2026/timeout--unknown.json",
+    "macbeth-off-broadway-2026/chicagotribune--unknown.json",
+    "macbeth-off-broadway-2026/playbill--unknown.json",
+    "macbeth-off-broadway-2026/thestage--unknown.json",
+    "the-hope-theory-off-broadway-2026/nytg--bridget-gross.json",
+    "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
+    "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json",
+    "pre-existing-condition-off-broadway-2026/nytimes--unknown.json",
+    "pre-existing-condition-off-broadway-2026/guardian--unknown.json",
+    "pre-existing-condition-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "pre-existing-condition-off-broadway-2026/airmail--air-mail.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/new-york-sun--ar-hoffman.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/plays-to-see--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -172,7 +185,10 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/el-quijote-off-broadway-2026/nytimes--george-hunka.json",
-      "el-quijote-off-broadway-2026/nytimes--george-hunka.json"
+      "el-quijote-off-broadway-2026/nytimes--george-hunka.json",
+      "data/review-texts/macbeth-off-broadway-2026/times-uk--clive-davis.json",
+      "macbeth-off-broadway-2026/times-uk--clive-davis.json",
+      "data/review-texts/the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -181,8 +197,7 @@
       "weve-been-here-before-a-one-woman-musical-off-broadway-2026/broadwayworld--nicole-rosky.json",
       "kimberly-akimbo-off-west-end-2026/matineemouse--matinee-mouse.json",
       "just-in-time-2025/newyorker--conde-nast.json",
-      "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
-      "cosi-fan-tutte-off-broadway-2026/nytimes--james-barron.json"
+      "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json"
     ],
     "brightdata": [
       "in-honor-of-jean-michel-basquiat-off-broadway-2026/broadwayworld--fred-mason.json"
@@ -193,7 +208,7 @@
     ]
   },
   "startTime": "2026-09-23T08:39:50.073Z",
-  "lastProcessed": "oh-mary-west-end-2025/usatoday--patrick-ryan.json",
+  "lastProcessed": "the-holes-off-broadway-2026/standard--unknown.json",
   "log": [
     {
       "t": "2026-09-23T13:44:14.833Z",
@@ -410,6 +425,23 @@
       "event": "bb-session",
       "session": "bcb32ad8",
       "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-23T14:29:08.895Z",
+      "event": "bb-session",
+      "session": "874038f3",
+      "url": "https://www.thetimes.com/culture/classical-opera/article/macbeth-at-the-met-revi"
+    },
+    {
+      "t": "2026-09-23T14:29:09.504Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-23T14:30:38.583Z",
+      "event": "bb-session",
+      "session": "90ae7eeb",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
     }
   ]
 }

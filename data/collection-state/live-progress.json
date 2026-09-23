@@ -1,33 +1,34 @@
 {
-  "updatedAt": "2026-09-23T14:10:40.149Z",
-  "processed": 66,
-  "failed": 274,
-  "successRate": "19.4%",
+  "updatedAt": "2026-09-23T14:32:42.425Z",
+  "processed": 19,
+  "failed": 143,
+  "successRate": "11.7%",
   "tierBreakdown": {
     "playwright": 13,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingbee": 16,
-    "brightdata": 3,
+    "scrapingbee": 6,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-09-23T11:24:27.656Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-09-23T13:54:54.445Z",
+      "t": "2026-09-23T11:32:13.496Z",
       "event": "bb-session",
-      "session": "a19a971c",
-      "url": "https://www.nytimes.com/2006/03/02/theater/reviews/02espa.html"
+      "session": "83cdfedb",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
     },
     {
-      "t": "2026-09-23T13:54:54.978Z",
+      "t": "2026-09-23T11:35:19.094Z",
+      "event": "bb-session",
+      "session": "c2cca4ec",
+      "url": "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse"
+    },
+    {
+      "t": "2026-09-23T11:35:20.102Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
     },
@@ -109,6 +110,23 @@
       "event": "bb-session",
       "session": "bcb32ad8",
       "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-23T14:29:08.895Z",
+      "event": "bb-session",
+      "session": "874038f3",
+      "url": "https://www.thetimes.com/culture/classical-opera/article/macbeth-at-the-met-revi"
+    },
+    {
+      "t": "2026-09-23T14:29:09.504Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-23T14:30:38.583Z",
+      "event": "bb-session",
+      "session": "90ae7eeb",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
     }
   ]
 }
