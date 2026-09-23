@@ -191,9 +191,9 @@ on:
       # BRO-4069: same reason as the BRO-4066 entry above — the
       # --already-landed fixture test also lives in scripts/tests/.
       - 'scripts/tests/ack-landed-already-landed.test.mjs'
-      # BRO-4068: the naming-hint test builds a throwaway repo rather than
-      # reading this repo's history, because CI checks out at depth 1 — same
-      # scripts/tests/ situation, so it needs its own entry too.
+      # BRO-4068: the naming-hint test (builds a throwaway git repo, since CI
+      # checks out at depth 1) - same scripts/tests/ situation, so it needs
+      # its own entry too.
       - 'scripts/tests/ack-landed-naming-candidates.test.mjs'
       # BRO-4066: the reclassify-headless-endings.js backfill CLI and its
       # scripts/tests/ test (registered in tests/unit-test-manifest.txt) —

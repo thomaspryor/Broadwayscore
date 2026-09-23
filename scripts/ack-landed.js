@@ -192,6 +192,9 @@ function namingCandidates(ref, launchTs, terminalTs, opts = {}) {
   if (!r.stdout) return [];
   const lo = Date.parse(launchTs || '');
   const hi = Date.parse(terminalTs || '');
+  // --already-landed mode: decideAlreadyLanded wants the sha authored
+  // STRICTLY before the ref's earliest launch, with no lower bound.
+  const before = Date.parse(opts.beforeTs || '');
   const out = [];
   for (const record of r.stdout.split('\0')) {
     if (!record.trim()) continue;
@@ -202,8 +205,12 @@ function namingCandidates(ref, launchTs, terminalTs, opts = {}) {
     // so the hint can never offer a sha the guard would then refuse.
     if (!core.messageNamesRef(fullMessage, ref)) continue;
     const at = Date.parse(authored || '');
-    // Mirror decideAck's own bounds, so a suggestion can never trade the
-    // naming refusal for the timing one.
+    // An unreadable author date is refused by both decide functions, so it
+    // is never a usable suggestion.
+    if (!Number.isFinite(at)) continue;
+    // Mirror the deciding function's own bounds, so a suggestion can never
+    // trade the naming refusal for the timing one.
+    if (Number.isFinite(before) && at >= before) continue;
     if (Number.isFinite(lo) && Number.isFinite(at) && at <= lo) continue;
     if (Number.isFinite(hi) && Number.isFinite(at) && at > hi + core.COMMIT_AFTER_TERMINAL_GRACE_MS) continue;
     out.push({ sha, authored, subject });
@@ -216,16 +223,27 @@ function refuse(ref, refusals, ctx = {}) {
   console.error(`❌ REFUSED: ${ref} not acked — ${refusals.length} failed precondition(s):`);
   for (const r of refusals) console.error(`   - ${r}`);
   if (refusals.some(r => /does not name/.test(String(r)))) {
-    const cands = namingCandidates(ref, ctx.launchTs, ctx.terminalTs);
-    if (cands === null) {
+    const where = ctx.alreadyLanded ? `before ${ref}'s earliest dispatch launch (${ctx.beforeTs})` : "inside this job's window";
+    // decideAlreadyLanded refuses EVERY sha while any launch row has an
+    // unreadable ts, so offering candidates then would only trade refusals.
+    const noTiming = ctx.alreadyLanded && (!Number.isFinite(Date.parse(ctx.beforeTs || ''))
+      || refusals.some(r => /unreadable ts/.test(String(r))));
+    const cands = noTiming
+      ? undefined
+      : namingCandidates(ref, ctx.launchTs, ctx.terminalTs, { beforeTs: ctx.beforeTs });
+    if (cands === undefined) {
+      console.error(`   → ${ref}'s dispatch launch timestamps are not all readable, so no sha can satisfy --already-landed's timing check — no candidates offered.`);
+    } else if (cands === null) {
       console.error('   → could not search origin/main for commits naming it (no origin/main here, a shallow');
       console.error('     clone, or git refused the query) — this is NOT evidence that no such commit exists.');
     } else if (cands.length) {
-      console.error(`   → these commits on origin/main DO name ${ref} and fall inside this job's window — pass one as --sha:`);
+      console.error(`   → these commits on origin/main DO name ${ref} and fall ${where} — pass one as --sha:`);
       for (const c of cands) console.error(`       ${c.sha}  ${c.authored}  ${String(c.subject).slice(0, 62)}`);
     } else {
-      console.error(`   → no commit on origin/main names ${ref} inside this job's window. If the work really did land`);
-      console.error('     under commits that never mention the card, that is the case --job-id does not cover — say so on the card.');
+      console.error(`   → no commit on origin/main names ${ref} ${where}. If the work really did land`);
+      console.error(ctx.alreadyLanded
+        ? '     after a dispatch launched, drop --already-landed (optionally pass --job-id) and ack that attempt instead.'
+        : '     under commits that never mention the card, that is the case --job-id does not cover — say so on the card.');
     }
   }
   console.error('   Nothing was written to the dispatch ledger.');
@@ -276,6 +294,14 @@ function main() {
   const earliestLaunchRow = alreadyLanded ? core.earliestLaunch(rows) : null;
   const earliestLaunchTs = alreadyLanded ? (earliestLaunchRow ? earliestLaunchRow.ts : '(none readable)') : pre.launch.ts;
   console.error(`→ ledger: newest row for ${ref}${jobId ? ` (job ${jobId})` : ''} is ${pre.newest.event} (${pre.newest.ts}); ${alreadyLanded ? 'earliest launch' : 'launch'} ${earliestLaunchTs}`);
+  // The naming hint's window must mirror the decision that will judge the
+  // suggested sha, or a suggestion just trades the naming refusal for a
+  // timing one. decideAck: (launch, terminal + grace]. decideAlreadyLanded:
+  // strictly before the EARLIEST launch — pre.launch is the latest one here,
+  // because --already-landed never scopes rows by jobId.
+  const hintCtx = alreadyLanded
+    ? { alreadyLanded: true, beforeTs: earliestLaunchRow ? earliestLaunchRow.ts : null }
+    : { launchTs: pre.launch.ts, terminalTs: pre.newest.ts };
 
   // 2. Fresh origin/main + ancestry (shallow-safe).
   try {
@@ -321,7 +347,7 @@ function main() {
   const verify = { cmd: args.verify.trim(), safe: isSafeCheckCommand(args.verify.trim()), unsafeReason: null, exitCode: null };
   if (!verify.safe) verify.unsafeReason = (explainUnsafeCheckCommand(verify.cmd) || {}).reason || null;
   const dryRun = decide({ verify: { ...verify, exitCode: 0 } });
-  if (!dryRun.ok) refuse(ref, dryRun.refusals, { launchTs: pre.launch && pre.launch.ts, terminalTs: pre.newest && pre.newest.ts });
+  if (!dryRun.ok) refuse(ref, dryRun.refusals, hintCtx);
 
   console.error(`→ running verify in ${REPO}: ${verify.cmd}`);
   const run = spawnSync('bash', ['-c', verify.cmd], { cwd: REPO, encoding: 'utf8', timeout: VERIFY_TIMEOUT_MS, maxBuffer: 64 * 1024 * 1024 });
@@ -332,7 +358,7 @@ function main() {
   }
 
   const decision = decide({ verify });
-  if (!decision.ok) refuse(ref, decision.refusals, { launchTs: pre.launch && pre.launch.ts, terminalTs: pre.newest && pre.newest.ts });
+  if (!decision.ok) refuse(ref, decision.refusals, hintCtx);
 
   // 5. Write the row. appendEntry self-stamps ts (never backdated).
   const written = ledger.appendEntry(decision.row);

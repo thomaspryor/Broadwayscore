@@ -362,8 +362,7 @@ function decideAlreadyLanded(input) {
     }
   }
 
-  const refRe = new RegExp(`(?<![\\w-])${String(ref || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\w-])`, 'i');
-  if (!refRe.test(String(landing.message || ''))) {
+  if (!messageNamesRef(landing.message, ref)) {
     refusals.push(`the sha's commit message does not name ${ref} — pass the card's own prior landing commit, not an unrelated one`);
   }
 
@@ -393,6 +392,5 @@ function formatAckLine(ref, row) {
 module.exports = {
   MIN_REASON_CHARS, COMMIT_AFTER_TERMINAL_GRACE_MS, ACKABLE_TERMINAL_EVENTS, NOTHING_TO_ACK_EVENTS,
   rowsForRef, rowsForJobId, normalizeRef, ledgerPrecondition, earliestLaunch,
-  decideAck, decideAlreadyLanded, formatAckLine,
-  messageNamesRef,
+  decideAck, decideAlreadyLanded, formatAckLine, messageNamesRef,
 };

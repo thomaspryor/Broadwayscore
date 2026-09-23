@@ -106,6 +106,20 @@ test('BRO-4068: an unknown card, a missing ref and a bad base all degrade to no 
 // The hint reaches candidates through `git log --grep`, an UNANCHORED substring
 // match, while the refusal uses an anchored one. Both sides now call this single
 // predicate so they can never disagree.
+test('BRO-4068 x BRO-4069: --already-landed mode offers only shas authored strictly BEFORE the earliest launch', () => {
+  // decideAlreadyLanded refuses any sha authored at or after the ref's
+  // earliest launch, so the hint must never offer one — including the
+  // in-window commits the default (decideAck) mode would offer.
+  const EARLIEST = '2026-01-01T11:00:00Z';
+  const early = commit(`fix(${CARD}): landed before anyone dispatched it`, '2026-01-01T10:00:00Z');
+  const atLaunch = commit(`fix(${CARD}): authored exactly at the launch`, EARLIEST);
+  const rows = namingCandidates(CARD, null, null, { cwd: repo, base: 'main', beforeTs: EARLIEST });
+  assert.ok(rows.some(r => r.sha === early), 'a pre-launch naming commit is the one --already-landed accepts');
+  assert.ok(!rows.some(r => r.sha === atLaunch), 'decideAlreadyLanded refuses workTs >= launch, so equality is excluded');
+  assert.ok(rows.every(r => Date.parse(r.authored) < Date.parse(EARLIEST)),
+    'no post-launch commit (e.g. the in-window ones above) may be offered in this mode');
+});
+
 test('BRO-4068: the naming predicate is anchored, so a shorter id never matches a longer one', () => {
   assert.equal(core.messageNamesRef('fix(BRO-406): y', 'BRO-406'), true, 'the exact id matches');
   assert.equal(core.messageNamesRef('fix(BRO-4066): x', 'BRO-406'), false, 'BRO-4066 is NOT BRO-406');
