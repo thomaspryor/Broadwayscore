@@ -5075,96 +5075,17 @@ jobs:
         if: always()  # independent suite — don't let an earlier red step skip it
         run: node --test scripts/lib/api-fallback-disqualifier.test.mjs
 
-  data-validation:
-    name: Data Validation
-    # See unit-tests above — Dependabot can't auth to private data repo.
+  data-safety-guards:
+    name: Data Safety Guards
+    # Code-vs-corpus guards that must stay blocking on every push: copyrighted
+    # text in the public repo, public show JSONs regenerated from stale data,
+    # aggregator archives deleted. Moved out of data-validation (BRO-3425).
     if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
-    # Hard ceiling (task #183). Without this the job rode GitHub's 6h default, so a
-    # stalled git push in "Record pipeline success" left 8 consecutive runs stuck
-    # in_progress 20-25+ min (2026-07-14). push-with-retry.sh now self-bounds every
-    # network op (~4 min budget), so the normal validation pass (~15 min) has ample
-    # headroom; 30 min guarantees a conclusion even if a step wedges.
-    #
-    # BRO-2984 (2026-09-08) removed this job's dominant step (the
-    # "Validate provisional show venue+dates against Playbill" sweep, 881s /
-    # 14.7min on run 33410708893) plus its push-bound "Persist venue/date audit
-    # rotation state" companion, so the obvious move was to lower this number
-    # too. It was briefly cut to 25 and that was WRONG — recorded here so the
-    # next reader does not redo it. The asymmetry: a ceiling that is too HIGH
-    # costs nothing (Actions bills the run's real duration, and a wedged step is
-    # already bounded by push-with-retry.sh's own deadline), while one that is
-    # too LOW reports CANCELLED, not FAILED — the conclusion this repo has
-    # repeatedly misread as success (BRO-2611 wasted a whole analysis on it, and
-    # Test Summary treats cancelled as non-failure).
-    #
-    # CI worst case, from real numbers: fixed cost 935s (Checkout 569s + every
-    # non-Playbill audit 366s, both measured on run 33410708893) + the two
-    # push-bound steps that remain — "Record pipeline success" (inline
-    # push-with-retry.sh) and "Commit scraper-spend ledger" (the same script
-    # inside its composite action). Neither file is in
-    # core-data-merge-registry.js's API_FALLBACK_SAFE list, so push-with-retry's
-    # Git Data API fallback is disqualified for both and each caps at its 240s
-    # PUSH_DEADLINE_SEC + one 90s GIT_NET_TIMEOUT_SEC in-flight overshoot = 330s.
-    # Total 569 + 366 + 330 + 330 = 1595s = 26.6min, which 37 covers and 25 does
-    # not.
-    #
-    # Do NOT add push-mutex.sh's 900s wait to that sum (an earlier draft of this
-    # comment did, and it inflates the case toward 60): the lock lives in the
-    # repo's own git common dir, or a /tmp path keyed to cwd as a fallback
-    # (scripts/lib/push-mutex.sh:77-89). Actions runners are fresh per job and
-    # steps run sequentially, so nothing else on the runner can hold it —
-    # mutex contention is a local-worktree phenomenon (card #669 was an
-    # interactive session), not a CI one.
-    #
-    # Ratcheted by tests/unit/data-validation-job-budget.test.mjs, which models
-    # THIS job as well as the relocated sweep's — the retarget that briefly left
-    # this job unmodelled is how the 25 slipped through in the first place.
-    timeout-minutes: 37
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-        with:
-          # fetch-depth: 300 (task #466 root-cause fix, 2026-08-22): default
-          # depth-1 gave push-with-retry.sh's final "Commit scraper-spend
-          # ledger" step (if: always(), the job's LAST step, ~15-20+ min after
-          # this checkout runs — checkout-core-data + checkout-aggregator-
-          # archive + the full validation/gate suite all happen first) too
-          # little headroom. push-with-retry.sh bounds its post-conflict fetch
-          # to a `--shallow-since` window anchored on THIS checkout's single
-          # boundary commit (scripts/lib/shallow-fetch-args.js), then widens
-          # once (1 day) before aborting with "fetch could not restore
-          # ancestry to the shallow checkout's original boundary" if that
-          # boundary still isn't an ancestor of the fetched tip — confirmed
-          # hitting this job twice, identical error, not caused by any PR
-          # diff (this repo lands ~150 commits/hour from many concurrent
-          # bots/sessions). Considered `fetch-depth: 0` (a full clone, which
-          # skips push-with-retry.sh's shallow-checkout code path entirely —
-          # the error message's own suggested escalation) but REJECTED it
-          # after finding 3 in-repo measurements of its real cost on this
-          # ~2.2GB/165k-commit history: guard-no-orphan-commit.yml ("took >5
-          # min and got cancelled"), sweep-we-aggregators.yml (task #1813,
-          # "~22-23 min TWICE in real dispatches"), update-show-status.yml
-          # (task #1810, "~17-25 min per run") — all only viable because
-          # those jobs carry 90-130 min timeouts. This job's 30-min timeout is
-          # deliberate (line above: "guarantees a conclusion even if a step
-          # wedges"); a 17-25 min checkout would consume most of that budget
-          # before any of the ~15 min of actual validation work runs. A
-          # bounded `fetch-depth: 300` is still a fast shallow clone (same
-          # cost class as the default depth 1 — GitHub negotiates a fixed
-          # small depth efficiently regardless of N), but gives push-with-
-          # retry.sh's ALREADY-GENERIC ancestry logic (it computes the
-          # boundary as "the oldest local commit" with no assumption of
-          # exactly 1 commit — see its own "SHALLOW checkout ($N local
-          # commit(s))" log line) a boundary commit ~300 commits further back
-          # in time, i.e. ~2 hours of churn headroom at this repo's measured
-          # rate — far more than this job's actual ~15-20 min runtime. No
-          # scripts/lib/push-with-retry.sh changes needed; it already handles
-          # N>1 shallow checkouts correctly. Second-opinion review (session
-          # recorded via review-gate.mjs --query=record-plan) rejected the
-          # fetch-depth:0 option specifically because of the measurements
-          # above.
-          fetch-depth: 300
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
@@ -5272,6 +5193,151 @@ jobs:
             exit 1
           fi
           echo "✓ $TOTAL aggregator archive files present"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test star rating extractors
+        if: always()
+        run: node tests/star-rating-extractors.test.js
+        # Verifies all outlet-specific star extractors against saved HTML fixtures
+      # Corpus-statistics audits MOVED to check-corpus-drift.yml (2026-06-21).
+      # `validate-aggregator-truth.js` (count ratios) and `audit-text-quality.js`
+      # (tight % bands) flap as the rebuild bots drift the corpus every ~30 min,
+      # so they reddened main for non-code reasons. They now run non-blocking in
+      # the drift workflow and surface in the daily digest via health-check.js
+      # ("Quality: corpus drift"). What STAYS here is the catastrophe FLOOR
+      # below — wide bands that only trip on a genuine quality collapse the
+      # row-count floors (500 shows / 15k reviews) structurally can't catch.
+
+      - name: Audit WE sweep verifier wiring
+        if: always()
+        # S3-T5 — asserts every extractor call in sweep-we-aggregators.js is
+        # preceded by a verifyPage/verifyAggregatorUrl call in the same fn
+        # body. Stops the Stage Cuckoo-trap from re-entering after a
+        # well-meaning refactor accidentally removes a gate.
+        run: node scripts/audit-verifier-wiring.js
+
+  data-validation:
+    name: Data Validation
+    # See unit-tests above — Dependabot can't auth to private data repo.
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    # Hard ceiling (task #183). Without this the job rode GitHub's 6h default, so a
+    # stalled git push in "Record pipeline success" left 8 consecutive runs stuck
+    # in_progress 20-25+ min (2026-07-14). push-with-retry.sh now self-bounds every
+    # network op (~4 min budget), so the normal validation pass (~15 min) has ample
+    # headroom; 30 min guarantees a conclusion even if a step wedges.
+    #
+    # BRO-2984 (2026-09-08) removed this job's dominant step (the
+    # "Validate provisional show venue+dates against Playbill" sweep, 881s /
+    # 14.7min on run 33410708893) plus its push-bound "Persist venue/date audit
+    # rotation state" companion, so the obvious move was to lower this number
+    # too. It was briefly cut to 25 and that was WRONG — recorded here so the
+    # next reader does not redo it. The asymmetry: a ceiling that is too HIGH
+    # costs nothing (Actions bills the run's real duration, and a wedged step is
+    # already bounded by push-with-retry.sh's own deadline), while one that is
+    # too LOW reports CANCELLED, not FAILED — the conclusion this repo has
+    # repeatedly misread as success (BRO-2611 wasted a whole analysis on it, and
+    # Test Summary treats cancelled as non-failure).
+    #
+    # CI worst case, from real numbers: fixed cost 935s (Checkout 569s + every
+    # non-Playbill audit 366s, both measured on run 33410708893) + the two
+    # push-bound steps that remain — "Record pipeline success" (inline
+    # push-with-retry.sh) and "Commit scraper-spend ledger" (the same script
+    # inside its composite action). Neither file is in
+    # core-data-merge-registry.js's API_FALLBACK_SAFE list, so push-with-retry's
+    # Git Data API fallback is disqualified for both and each caps at its 240s
+    # PUSH_DEADLINE_SEC + one 90s GIT_NET_TIMEOUT_SEC in-flight overshoot = 330s.
+    # Total 569 + 366 + 330 + 330 = 1595s = 26.6min, which 37 covers and 25 does
+    # not.
+    #
+    # Do NOT add push-mutex.sh's 900s wait to that sum (an earlier draft of this
+    # comment did, and it inflates the case toward 60): the lock lives in the
+    # repo's own git common dir, or a /tmp path keyed to cwd as a fallback
+    # (scripts/lib/push-mutex.sh:77-89). Actions runners are fresh per job and
+    # steps run sequentially, so nothing else on the runner can hold it —
+    # mutex contention is a local-worktree phenomenon (card #669 was an
+    # interactive session), not a CI one.
+    #
+    # Ratcheted by tests/unit/data-validation-job-budget.test.mjs, which models
+    # THIS job as well as the relocated sweep's — the retarget that briefly left
+    # this job unmodelled is how the 25 slipped through in the first place.
+    timeout-minutes: 37
+    # Corpus-state audits: they report, they do not decide main's color.
+    # Bots rewrite the data ~300x/day, so asserting it on every code push kept
+    # main red 2026-09-19 → 09-22 (and ~95% of runs before that) with no code
+    # change (BRO-3425). Failures route to the daily digest (last step).
+    # The three leak/regression guards live in data-safety-guards (blocking).
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          # fetch-depth: 300 (task #466 root-cause fix, 2026-08-22): default
+          # depth-1 gave push-with-retry.sh's final "Commit scraper-spend
+          # ledger" step (if: always(), the job's LAST step, ~15-20+ min after
+          # this checkout runs — checkout-core-data + checkout-aggregator-
+          # archive + the full validation/gate suite all happen first) too
+          # little headroom. push-with-retry.sh bounds its post-conflict fetch
+          # to a `--shallow-since` window anchored on THIS checkout's single
+          # boundary commit (scripts/lib/shallow-fetch-args.js), then widens
+          # once (1 day) before aborting with "fetch could not restore
+          # ancestry to the shallow checkout's original boundary" if that
+          # boundary still isn't an ancestor of the fetched tip — confirmed
+          # hitting this job twice, identical error, not caused by any PR
+          # diff (this repo lands ~150 commits/hour from many concurrent
+          # bots/sessions). Considered `fetch-depth: 0` (a full clone, which
+          # skips push-with-retry.sh's shallow-checkout code path entirely —
+          # the error message's own suggested escalation) but REJECTED it
+          # after finding 3 in-repo measurements of its real cost on this
+          # ~2.2GB/165k-commit history: guard-no-orphan-commit.yml ("took >5
+          # min and got cancelled"), sweep-we-aggregators.yml (task #1813,
+          # "~22-23 min TWICE in real dispatches"), update-show-status.yml
+          # (task #1810, "~17-25 min per run") — all only viable because
+          # those jobs carry 90-130 min timeouts. This job's 30-min timeout is
+          # deliberate (line above: "guarantees a conclusion even if a step
+          # wedges"); a 17-25 min checkout would consume most of that budget
+          # before any of the ~15 min of actual validation work runs. A
+          # bounded `fetch-depth: 300` is still a fast shallow clone (same
+          # cost class as the default depth 1 — GitHub negotiates a fixed
+          # small depth efficiently regardless of N), but gives push-with-
+          # retry.sh's ALREADY-GENERIC ancestry logic (it computes the
+          # boundary as "the oldest local commit" with no assumption of
+          # exactly 1 commit — see its own "SHALLOW checkout ($N local
+          # commit(s))" log line) a boundary commit ~300 commits further back
+          # in time, i.e. ~2 hours of churn headroom at this repo's measured
+          # rate — far more than this job's actual ~15-20 min runtime. No
+          # scripts/lib/push-with-retry.sh changes needed; it already handles
+          # N>1 shallow checkouts correctly. Second-opinion review (session
+          # recorded via review-gate.mjs --query=record-plan) rejected the
+          # fetch-depth:0 option specifically because of the measurements
+          # above.
+          fetch-depth: 300
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Verify core data freshness
+        run: |
+          # Canary: shows.json must exist and be valid after checkout-core-data
+          node -e "const d=JSON.parse(require('fs').readFileSync('data/shows.json','utf8'));
+                   const shows=d.shows||d; if(!shows.length) throw new Error('shows.json is empty');
+                   console.log('shows.json: '+shows.length+' shows');"
+          node -e "const d=JSON.parse(require('fs').readFileSync('data/reviews.json','utf8'));
+                   const reviews=d.reviews||d; if(!reviews.length) throw new Error('reviews.json is empty');
+                   console.log('reviews.json: '+reviews.length+' reviews');"
 
       - name: Checkout review-texts (private repo)
         uses: ./.github/actions/checkout-review-texts
@@ -5705,19 +5771,6 @@ jobs:
         run: node scripts/validate-archive-productions.js
         continue-on-error: true  # Don't fail build, just warn - archives need manual refetch
 
-      - name: Test star rating extractors
-        if: always()
-        run: node tests/star-rating-extractors.test.js
-        # Verifies all outlet-specific star extractors against saved HTML fixtures
-
-      # Corpus-statistics audits MOVED to check-corpus-drift.yml (2026-06-21).
-      # `validate-aggregator-truth.js` (count ratios) and `audit-text-quality.js`
-      # (tight % bands) flap as the rebuild bots drift the corpus every ~30 min,
-      # so they reddened main for non-code reasons. They now run non-blocking in
-      # the drift workflow and surface in the daily digest via health-check.js
-      # ("Quality: corpus drift"). What STAYS here is the catastrophe FLOOR
-      # below — wide bands that only trip on a genuine quality collapse the
-      # row-count floors (500 shows / 15k reviews) structurally can't catch.
       - name: Audit text quality — catastrophe floor (blocking)
         if: always()
         # heal-exempt: catastrophe floor (wide bands, see below) — a real trip
@@ -5734,14 +5787,6 @@ jobs:
       # (BRO-3535, 2026-09-16) — baseline-diff audit with no narrower
       # on-push-safe mode. Non-blocking companion:
       # scripts/check-corpus-drift.js AUDITS['critic-outlets'].
-
-      - name: Audit WE sweep verifier wiring
-        if: always()
-        # S3-T5 — asserts every extractor call in sweep-we-aggregators.js is
-        # preceded by a verifyPage/verifyAggregatorUrl call in the same fn
-        # body. Stops the Stage Cuckoo-trap from re-entering after a
-        # well-meaning refactor accidentally removes a gate.
-        run: node scripts/audit-verifier-wiring.js
 
       - name: Audit outlet-registry gaps
         # if: always() so an earlier failure in this job cannot SKIP the gate
@@ -5902,12 +5947,43 @@ jobs:
         # a floor. Decision + tests: scripts/lib/review-texts-gate.{js,test.mjs}.
         # Full validator runs daily in check-corpus-drift.yml (→ digest).
 
-      - name: Notify on failure
-        if: failure()
-        uses: ./.github/actions/notify-failure
+      - name: Route data-audit failures to the daily digest
+        # BRO-3425: this job is continue-on-error, so a corpus-state audit going
+        # red no longer reddens main or pages anyone. It queues ONE digest line
+        # (24h cooldown) naming the failing steps. The old Discord "Test Suite
+        # Failed" ping fired on every data drift and is gone with the demotion.
+        if: failure() && (github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
+        uses: actions/github-script@v7
         with:
-          title: 'Test Suite Failed'
-          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          script: |
+            const { data } = await github.rest.actions.listJobsForWorkflowRunAttempt({
+              owner: context.repo.owner, repo: context.repo.repo,
+              run_id: context.runId, attempt_number: Number(process.env.GITHUB_RUN_ATTEMPT || 1), per_page: 100,
+            });
+            const job = (data.jobs || []).find(j => j.name === 'Data Validation');
+            const failing = ((job && job.steps) || []).filter(s => s.conclusion === 'failure').map(s => s.name);
+            const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
+            await routeAlert({
+              conditionKey: 'test-yml:data-validation-red',
+              title: `Data audits failing (non-blocking): ${failing.join(', ') || 'see run'}`,
+              description: `Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              disposition: 'digest',
+              severity: 'warning',
+              cooldownHours: 24,
+            });
+
+      - name: Commit data-audit digest line
+        if: failure() && (github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
+        run: |
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if ! git diff --staged --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git commit -m "data: alert-router ledger update [skip ci]"
+            # Non-blocking, same as test-summary's ledger commit: a lost race
+            # only delays the digest line to the next red run.
+            bash scripts/lib/push-with-retry.sh || echo "::warning::Data-audit digest ledger push failed — next red run re-queues it"
+          fi
 
       - name: Create issue on failure
         if: failure() && github.event_name == 'schedule'
@@ -5946,56 +6022,6 @@ jobs:
               });
             }
 
-      - name: Record pipeline success
-        if: success()
-        run: |
-          mkdir -p data/audit/pipeline-health
-          date -u > data/audit/pipeline-health/test.last-success
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/pipeline-health/
-          # Was a single `A || B && C || echo warning` chain. Two problems:
-          #   1. Precedence — `(A || B) && C` ran push-with-retry.sh even when
-          #      there was nothing staged to commit.
-          #   2. A total push failure (push-with-retry.sh exits 1 after
-          #      MAX_RETRIES) was swallowed into a ::warning:: and the step still
-          #      reported success. Observed on green runs 31850823598 and
-          #      31852747324: "All push attempts failed after 7 attempts", step
-          #      green. That is exactly when it matters — the marker written here
-          #      is what health-check.js's "Pipeline: test" staleness check reads
-          #      for the daily digest, so a persistently failing push makes the
-          #      digest report a stale test pipeline while CI is in fact green.
-          # Still deliberately NON-FATAL (explicit `exit 0`): losing a single race
-          # against a busy main must not redden a green run. The failure is made
-          # observable instead — an ::error:: annotation plus a job-summary entry,
-          # which surface on the run page rather than at line ~N of the log — and
-          # the durable cross-run signal is the marker's own staleness, which
-          # health-check.js already reports daily (hint added there names this
-          # step as a cause so a stale marker isn't misread as "test never ran").
-          if git diff --staged --quiet; then
-            echo "No pipeline-health change to record"
-            exit 0
-          fi
-          git commit -q -m "health: Record test success"
-          if bash scripts/lib/push-with-retry.sh; then
-            exit 0
-          fi
-          MSG="Health recording push failed — data/audit/pipeline-health/test.last-success was NOT updated. CI is green but the marker is now stale; if this repeats for >48h the daily health digest will report 'Pipeline: test' as stale. Check run ${GITHUB_RUN_ID} for the push-with-retry.sh output."
-          echo "::error title=Health recording push failed::${MSG}"
-          {
-            echo "### :warning: Health recording push failed"
-            echo ""
-            echo "${MSG}"
-          } >> "$GITHUB_STEP_SUMMARY"
-          exit 0
-
-      # Own step, NOT folded into "Record pipeline success" (if: success()) —
-      # this job's data-validation `--gate` audits redden main routinely (see
-      # comments above), and folding ledger telemetry into a success()-gated
-      # step would silently drop it on every one of those routine failures.
-      # This step is unconditional (if: always()) so SERP-spend rows from
-      # this job's url-discovery.js calls are never lost to a validation
-      # gate failure. BRO-163.
       - name: Commit scraper-spend ledger
         if: always()
         continue-on-error: true
@@ -6226,7 +6252,9 @@ jobs:
     # fail on a push to main must be added here too, or it silently
     # re-creates this exact blind spot (see .github/workflows/CLAUDE.md
     # "Notification Severity").
-    needs: [unit-tests, data-validation, e2e-tests, visual-regression, design-tokens-lint, lint-workflows, typescript-check, dependency-audit, awards-data-freshness]
+    # data-validation is deliberately NOT here: it audits corpus state, is
+    # continue-on-error, and routes failures to the daily digest (BRO-3425).
+    needs: [unit-tests, data-safety-guards, e2e-tests, visual-regression, design-tokens-lint, lint-workflows, typescript-check, dependency-audit, awards-data-freshness]
     if: always()
     steps:
       - name: Check results
@@ -6350,6 +6378,58 @@ jobs:
       # identically. State is only written when the set actually changes —
       # not on every push — so this doesn't add a guaranteed diff to the
       # ledger commit below on every one of main's 200-1200 daily commits.
+      - name: Record pipeline success
+        # Moved from data-validation (BRO-3425): the Test Suite freshness marker
+        # health-check.js reads must track the CODE verdict, not corpus state.
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          mkdir -p data/audit/pipeline-health
+          date -u > data/audit/pipeline-health/test.last-success
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/pipeline-health/
+          # Was a single `A || B && C || echo warning` chain. Two problems:
+          #   1. Precedence — `(A || B) && C` ran push-with-retry.sh even when
+          #      there was nothing staged to commit.
+          #   2. A total push failure (push-with-retry.sh exits 1 after
+          #      MAX_RETRIES) was swallowed into a ::warning:: and the step still
+          #      reported success. Observed on green runs 31850823598 and
+          #      31852747324: "All push attempts failed after 7 attempts", step
+          #      green. That is exactly when it matters — the marker written here
+          #      is what health-check.js's "Pipeline: test" staleness check reads
+          #      for the daily digest, so a persistently failing push makes the
+          #      digest report a stale test pipeline while CI is in fact green.
+          # Still deliberately NON-FATAL (explicit `exit 0`): losing a single race
+          # against a busy main must not redden a green run. The failure is made
+          # observable instead — an ::error:: annotation plus a job-summary entry,
+          # which surface on the run page rather than at line ~N of the log — and
+          # the durable cross-run signal is the marker's own staleness, which
+          # health-check.js already reports daily (hint added there names this
+          # step as a cause so a stale marker isn't misread as "test never ran").
+          if git diff --staged --quiet; then
+            echo "No pipeline-health change to record"
+            exit 0
+          fi
+          git commit -q -m "health: Record test success"
+          if bash scripts/lib/push-with-retry.sh; then
+            exit 0
+          fi
+          MSG="Health recording push failed — data/audit/pipeline-health/test.last-success was NOT updated. CI is green but the marker is now stale; if this repeats for >48h the daily health digest will report 'Pipeline: test' as stale. Check run ${GITHUB_RUN_ID} for the push-with-retry.sh output."
+          echo "::error title=Health recording push failed::${MSG}"
+          {
+            echo "### :warning: Health recording push failed"
+            echo ""
+            echo "${MSG}"
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 0
+
+      # Own step, NOT folded into "Record pipeline success" (if: success()) —
+      # this job's data-validation `--gate` audits redden main routinely (see
+      # comments above), and folding ledger telemetry into a success()-gated
+      # step would silently drop it on every one of those routine failures.
+      # This step is unconditional (if: always()) so SERP-spend rows from
+      # this job's url-discovery.js calls are never lost to a validation
+      # gate failure. BRO-163.
       - name: Detect failing-job-set change
         id: stepset
         if: "!cancelled() && github.event_name == 'push' && github.ref == 'refs/heads/main'"
@@ -6444,7 +6524,7 @@ jobs:
           PREV_FAILED_URL: ${{ steps.streak.outputs.prev_failed_url }}
           STREAK: ${{ steps.streak.outputs.streak }}
         run: |
-          ARGS=(--run-id="$GITHUB_RUN_ID" --exclude-job="Test Summary" --streak="${STREAK:-?}" --prev-url="$PREV_FAILED_URL")
+          ARGS=(--run-id="$GITHUB_RUN_ID" --exclude-job="Test Summary" --exclude-job="Data Validation" --streak="${STREAK:-?}" --prev-url="$PREV_FAILED_URL")
           if [ "${{ steps.streak.outputs.should_dispatch }}" == "true" ]; then ARGS+=(--dispatch); fi
           if [ "${{ steps.streak.outputs.should_escalate }}" == "true" ]; then ARGS+=(--escalate); fi
           node scripts/route-main-streak-signatures.js "${ARGS[@]}"
