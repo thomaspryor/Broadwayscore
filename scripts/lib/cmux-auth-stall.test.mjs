@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { detectAuthStall, lastRealContentLine, lastNonBlankLine } = require('./cmux-auth-stall.js');
+const { detectAuthStall, lastRealContentLine, lastNonBlankLine, isBusy } = require('./cmux-auth-stall.js');
 
 // Realistic bottom-of-pane chrome, verified live against a real `cmux
 // read-screen` capture (this file's header) — the chrome bar, the spinner,
@@ -30,8 +30,33 @@ test('detectAuthStall: catches a stalled resume — placeholder is the last REAL
   assert.equal(detectAuthStall(withChrome('No response requested.')).kind, 'stalled-resume');
 });
 
-test('detectAuthStall: also fires while the spinner/update-banner chrome is showing (busy mid-turn is not "not stalled")', () => {
-  assert.equal(detectAuthStall(withChrome('No response requested.', { busy: true })).kind, 'stalled-resume');
+test('detectAuthStall: a session actively busy right after the placeholder is working, not stalled (adversarial review finding)', () => {
+  assert.equal(detectAuthStall(withChrome('No response requested.', { busy: true })), null);
+});
+
+test('isBusy: true only while the ✻ in-flight spinner is on screen', () => {
+  assert.equal(isBusy(withChrome('anything', { busy: true })), true);
+  assert.equal(isBusy(withChrome('anything', { busy: false })), false);
+});
+
+test('detectAuthStall: chrome-gate — a HEALTHY session merely quoting the auth-error phrase is not flagged (adversarial review finding)', () => {
+  // The exact self-reference risk: a tab discussing/reviewing THIS bug could
+  // display the literal phrase, but it's a live authenticated session (has
+  // the ctx chrome bar) — chrome presence alone rules out logged-out.
+  assert.equal(detectAuthStall(withChrome('The detector matches "Not logged in · Please run /login" text.')), null);
+  assert.equal(detectAuthStall(withChrome('Old scrollback once showed: authentication_error, but it recovered.')), null);
+});
+
+test('detectAuthStall: an unsubmitted draft in the prompt box does not hide a real stalled placeholder above it (adversarial review finding)', () => {
+  const screen = [
+    'No response requested.',
+    '',
+    '──────────────────────────',
+    '❯ half-typed draft the owner never sent',
+    '──────────────────────────',
+    '🤖 SONNET │ ctx 41% │ main │ Broadwayscore',
+  ].join('\n');
+  assert.equal(detectAuthStall(screen).kind, 'stalled-resume');
 });
 
 test('detectAuthStall: placeholder followed by REAL output is not stalled', () => {

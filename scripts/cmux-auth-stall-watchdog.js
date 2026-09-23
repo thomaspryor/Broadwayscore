@@ -27,7 +27,7 @@
  *
  * Intended to run on the same 5-minute cadence as
  * ~/.config/claude/keychain-sentinel.sh (its LaunchAgent plist is
- * ~/Library/LaunchAgents/com.tompryor.cmux-auth-stall-watchdog.plist) so a
+ * scripts/launchd/com.broadwayscore.cmux-auth-stall-watchdog.plist) so a
  * tab that goes bad between owner glances is caught within one cycle.
  */
 'use strict';
@@ -78,10 +78,14 @@ const QUESTIONS = {
   'stalled-resume': 'Tab was resumed with no real prompt and only replied "No response requested." — give it a real prompt or restart the session; it has been sitting idle since the last scan found it this way.',
 };
 
+function stateFileExists(ref) {
+  try { return fs.existsSync(needsYouFile(ref)); } catch { return false; }
+}
+
 function scanOnce({
   dryRun = false, log = console.error,
   cmuxAvailableFn = cmuxAvailable, listWorkspacesFn = listWorkspaces, runFn = run,
-  writeStateFn = null,
+  writeStateFn = null, stateExistsFn = stateFileExists,
 } = {}) {
   if (!cmuxAvailableFn()) { log('[cmux-auth-stall-watchdog] cmux not found — nothing to check.'); return { scanned: 0, marked: [] }; }
   let workspaces;
@@ -122,11 +126,29 @@ function scanOnce({
     if (!fresh) { log(`[cmux-auth-stall-watchdog] ${w.ref}: gone by the time of the write — skipping rename`); continue; }
     if (leadingGlyph(fresh.title) === '❓') { log(`[cmux-auth-stall-watchdog] ${w.ref}: already ❓-marked since the scan — skipping rename`); continue; }
 
+    // Re-check the CONDITION too, not just identity (adversarial review
+    // finding): the pane could have logged back in or produced real output
+    // during that same read-screen window. Writing off the FIRST read alone
+    // would mark a tab that already recovered by the time of the write.
+    let freshScreen;
+    try { freshScreen = runFn(['read-screen', '--workspace', w.ref]); }
+    catch (e) { log(`[cmux-auth-stall-watchdog] re-read-screen failed for ${w.ref}: ${e.message} — skipping rename`); continue; }
+    if (!detectAuthStall(freshScreen)) { log(`[cmux-auth-stall-watchdog] ${w.ref}: recovered since the scan — skipping rename`); continue; }
+
     const newTitle = `❓ ${stripManagedGlyph(fresh.title)}`.trim();
     if (newTitle === '❓') { log(`[cmux-auth-stall-watchdog] ${w.ref}: mark would empty the title — skipping rename`); continue; }
 
     try { runFn(['workspace-action', '--action', 'rename', '--workspace', w.ref, '--title', newTitle]); }
     catch (e) { log(`[cmux-auth-stall-watchdog] rename failed for ${w.ref}: ${e.message}`); continue; }
+
+    // Never clobber an EXISTING needs-you state file (adversarial review
+    // finding): the Stop hook writes into this exact directory for a real
+    // DECISION NEEDED, uncoordinated with this watchdog. If something has
+    // already claimed this ref, leave its captured question alone — the
+    // rename above is still correct (❓ is a fine mark either way), only the
+    // state-file WRITE is skipped so a real question is never overwritten
+    // with this watchdog's generic recovery text.
+    if (stateExistsFn(w.ref)) { log(`[cmux-auth-stall-watchdog] ${w.ref}: needs-you state already exists — leaving it, renamed only`); continue; }
 
     const state = {
       ref: w.ref,
