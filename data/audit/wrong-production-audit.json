@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-09-23T12:47:00.589Z",
+  "timestamp": "2026-09-23T14:11:55.186Z",
   "stats": {
-    "totalReviews": 43972,
-    "alreadyFlagged": 18171,
-    "dateGuardCatches": 246,
-    "directorMismatch": 1049,
-    "tvFilmSignals": 1304,
+    "totalReviews": 43976,
+    "alreadyFlagged": 18174,
+    "dateGuardCatches": 245,
+    "directorMismatch": 1050,
+    "tvFilmSignals": 1306,
     "londonSignals": 1154,
     "offBroadwaySignals": 510,
     "yearMismatch": 93,
@@ -6484,7 +6484,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-06-29",
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6498,7 +6498,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 82,
+      "score": 81,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6512,7 +6512,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2025-10-08",
       "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
       "findings": [
@@ -7616,6 +7616,34 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2012 (2x) more than 2026 (1x). 2012 matches production: death-of-a-salesman-2012"
+        }
+      ]
+    },
+    {
+      "showId": "deep-heat-rivalry-off-west-end-2026",
+      "file": "all-that-dazzles-uk--sam-woodward.json",
+      "score": 81,
+      "publishDate": "2026-09-17",
+      "url": "https://www.allthatdazzles.co.uk/post/review-deep-heat-rivalry-the-other-palace-studio",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "deep-heat-rivalry-off-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "score": 86,
+      "publishDate": "2026-09-17",
+      "url": "https://www.londontheatre.co.uk/reviews/deep-heat-rivalry-review-the-other-palace",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -15133,7 +15161,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
-      "score": 81,
+      "score": 79,
       "publishDate": "2025-12-12",
       "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283?srsltid=AfmBOopZW29rEZK9Fg8EKA2nVqf0gU1fVIrWNIjC9D0Sf-uihs3xV8FN",
       "findings": [
@@ -16023,7 +16051,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "afridiziak-theatre-news--mark-arbouine.json",
-      "score": 83,
+      "score": 84,
       "publishDate": "2026-03-28",
       "url": "https://www.afridiziak.com/reviews/john-proctor-is-the-villain/",
       "findings": [
@@ -16089,7 +16117,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2026-03-27",
       "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
       "findings": [
@@ -16220,7 +16248,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
@@ -16646,7 +16674,7 @@
     {
       "showId": "kimberly-akimbo-off-west-end-2026",
       "file": "thestage--tom-wicker.json",
-      "score": 88,
+      "score": 86,
       "publishDate": "2026-09-10",
       "url": "https://www.thestage.co.uk/reviews/kimberly-akimbo-review-hampstead-theatre-london",
       "findings": [
@@ -19794,7 +19822,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 89,
+      "score": 90,
       "publishDate": "2026-06-23",
       "url": "https://www.standard.co.uk/culture/theatre/much-ado-about-nothing-shakespeare-globe-2026-b1287248.html",
       "findings": [
@@ -21682,6 +21710,20 @@
       "file": "guardian--kate-wyver.json",
       "score": 87,
       "publishDate": "December 16th, 2025",
+      "url": "https://www.theguardian.com/stage/2025/dec/16/paranormal-activity-review-ambassadors-theatre-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"oren peli\" from paranormal-activity-2026"
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "guardian--unknown.json",
+      "score": 83,
+      "publishDate": null,
       "url": "https://www.theguardian.com/stage/2025/dec/16/paranormal-activity-review-ambassadors-theatre-london",
       "findings": [
         {
@@ -34497,20 +34539,6 @@
     },
     {
       "showId": "white-rabbit-red-rabbit-west-end-2026",
-      "file": "guardian--david-jays.json",
-      "score": 62,
-      "publishDate": "October 6th, 2024",
-      "url": "https://www.theguardian.com/tv-and-radio/2026/jul/18/buried-dead-rabbit-podcast-review-hampshire-school",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 610d before show (October 6th, 2024 vs 2026-06-08)"
-        }
-      ]
-    },
-    {
-      "showId": "white-rabbit-red-rabbit-west-end-2026",
       "file": "thestage--dave-fargnoli.json",
       "score": 76,
       "publishDate": "October 3rd, 2024",
@@ -35384,7 +35412,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "all-that-dazzles-uk--sam-woodward.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "2026-09-04",
       "url": "https://www.allthatdazzles.co.uk/post/review-a-month-in-the-country-donmar-warehouse",
       "findings": [
@@ -35439,7 +35467,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 76,
       "publishDate": "2026-09-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/a-month-in-the-country-donmar-warehouse-review",
       "findings": [
@@ -35467,7 +35495,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "theartsdispatch--the-arts-dispatch.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-09-13",
       "url": "https://theartsdispatch.substack.com/p/a-month-in-the-country-review-donmar",
       "findings": [
@@ -36799,7 +36827,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2026-06-28",
       "url": "https://www.londontheatre1.com/reviews/archduke-royal-court/",
       "findings": [
@@ -36897,7 +36925,7 @@
     {
       "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 76,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
       "findings": [
@@ -38166,7 +38194,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-05-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-care-young-vic",
       "findings": [
@@ -39676,7 +39704,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-08-13",
       "url": "https://playsinternational.org.uk/death-note-the-musical-barbican/",
       "findings": [
@@ -42093,7 +42121,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
@@ -46124,7 +46152,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 61,
+      "score": 63,
       "publishDate": "2026-04-30",
       "url": "https://www.londontheatre.co.uk/reviews/mass-review-donmar-warehouse",
       "findings": [
