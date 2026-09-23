@@ -47,11 +47,17 @@ function isSetupJobOnlyFailure(job) {
 
 // Absence of job-level detail must never manufacture an infra excuse — only
 // classify a run as infra-only when the evidence explicitly says so.
+// Jobs that report but never decide main's color (job-level continue-on-error
+// in test.yml, BRO-3425). Their check run still concludes 'failure', so every
+// "which job is failing" reader must skip them or it blames data drift.
+const NON_BLOCKING_JOB_NAMES = new Set(['Data Validation']);
+const isBlockingFailedJob = (j) => j?.conclusion && !['success', 'skipped'].includes(j.conclusion) && !NON_BLOCKING_JOB_NAMES.has(j.name);
+
 function isInfraOnlyFailure(run) {
   if (run.conclusion === 'success') return false;
   const jobs = run.jobs || [];
   if (!jobs.length) return false;
-  const failingJobs = jobs.filter((j) => j?.conclusion && !['success', 'skipped'].includes(j.conclusion));
+  const failingJobs = jobs.filter(isBlockingFailedJob);
   if (!failingJobs.length) return false;
   return failingJobs.every(isSetupJobOnlyFailure);
 }
@@ -138,7 +144,7 @@ function classify(run) {
 function failingJobNames(run) {
   const jobs = run.jobs || [];
   const names = jobs
-    .filter((j) => j?.conclusion && !['success', 'skipped'].includes(j.conclusion))
+    .filter(isBlockingFailedJob)
     .map((j) => j.name)
     .filter(Boolean);
   return names.length ? names.join(', ') : (run.conclusion || 'unknown');
@@ -352,6 +358,7 @@ function signaturesToResolve(openConditionKeys, run, currentSignatures) {
 }
 
 module.exports = {
+  NON_BLOCKING_JOB_NAMES,
   assessMainRedStreak,
   DEFAULT_THRESHOLD_HOURS,
   failingJobNames,

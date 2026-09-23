@@ -67,9 +67,10 @@ const { verifyForSignature } = require('./lib/red-signature-verify-cmd.js');
 const TEST_YML_PATH = path.join(__dirname, '..', '.github', 'workflows', 'test.yml');
 
 const USAGE = `route-main-streak-signatures.js — BRO-3865 per-breakage alert routing for main's test.yml
-  node scripts/route-main-streak-signatures.js --run-id=<id> [--dispatch] [--escalate] [--prev-url=<url>] [--streak=<n>] [--exclude-job=<name>]
+  node scripts/route-main-streak-signatures.js --run-id=<id> [--dispatch] [--escalate] [--prev-url=<url>] [--streak=<n>] [--exclude-job=<name> ...]
     --run-id       required — the workflow run to inspect (gh run view --json jobs; raw fetch() for job logs)
-    --exclude-job  a job NAME to drop before computing signatures (test.yml passes its own "Test Summary")
+    --exclude-job  a job NAME to drop before computing signatures; repeatable (test.yml passes its own
+                   "Test Summary" and the non-blocking "Data Validation")
     --dispatch     file an 'auto' card for each currently-failing signature (caller gates this on streak>=2)
     --escalate     also send/resurface the 'test-yml:main-streak-escalation' human page (caller gates this on streak>=4)
     --prev-url     previous failed run's URL, folded into the escalation email's fields
@@ -84,14 +85,14 @@ function gh(args, { maxBuffer = 32 * 1024 * 1024, timeout = 120000 } = {}) {
 }
 
 function parseArgs(argv) {
-  const out = { dispatch: false, escalate: false, runId: null, prevUrl: '', streak: '?', excludeJob: null };
+  const out = { dispatch: false, escalate: false, runId: null, prevUrl: '', streak: '?', excludeJobs: [] };
   for (const arg of argv) {
     if (arg === '--dispatch') out.dispatch = true;
     else if (arg === '--escalate') out.escalate = true;
     else if (arg.startsWith('--run-id=')) out.runId = arg.slice('--run-id='.length);
     else if (arg.startsWith('--prev-url=')) out.prevUrl = arg.slice('--prev-url='.length);
     else if (arg.startsWith('--streak=')) out.streak = arg.slice('--streak='.length);
-    else if (arg.startsWith('--exclude-job=')) out.excludeJob = arg.slice('--exclude-job='.length);
+    else if (arg.startsWith('--exclude-job=')) out.excludeJobs.push(arg.slice('--exclude-job='.length));
   }
   return out;
 }
@@ -169,10 +170,10 @@ async function main() {
   // spurious "Test Summary" card — fail loudly instead of guessing.
   const allJobsFetched = fetchCurrentRunJobs(opts.runId);
   if (allJobsFetched === null) return; // gh failure already logged; do nothing this run
-  if (opts.excludeJob && !allJobsFetched.some((j) => j?.name === opts.excludeJob)) {
-    console.error(`::warning::[route-main-streak-signatures] --exclude-job="${opts.excludeJob}" matched no job on this run (jobs seen: ${allJobsFetched.map((j) => j?.name).join(', ')}) — the aggregator job may have been renamed; update the --exclude-job value in test.yml or every red push will file a spurious signature for it.`);
+  for (const excludeJob of opts.excludeJobs.filter((name) => !allJobsFetched.some((j) => j?.name === name))) {
+    console.error(`::warning::[route-main-streak-signatures] --exclude-job="${excludeJob}" matched no job on this run (jobs seen: ${allJobsFetched.map((j) => j?.name).join(', ')}) — the aggregator job may have been renamed; update the --exclude-job value in test.yml or every red push will file a spurious signature for it.`);
   }
-  const jobs = allJobsFetched.filter((j) => j?.name !== opts.excludeJob);
+  const jobs = allJobsFetched.filter((j) => !opts.excludeJobs.includes(j?.name));
   const run = { jobs };
 
   // Test names only matter for --dispatch (sharpening which card gets

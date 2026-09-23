@@ -95,7 +95,9 @@ function inspectFailedRun(runId) {
   // "Test Summary" is a roll-up job that fails because something else did —
   // naming it as the top failing job would point every reader at the wrong
   // place, so it only wins when it is the ONLY failing job.
-  const real = failingJobs.filter((j) => !/^test summary$/i.test(j.name || ''));
+  const { NON_BLOCKING_JOB_NAMES } = require('./lib/main-red-streak.js');
+  // Non-blocking jobs (Data Validation, BRO-3425) never explain a red trunk either.
+  const real = failingJobs.filter((j) => !/^test summary$/i.test(j.name || '') && !NON_BLOCKING_JOB_NAMES.has(j.name));
   const topFailingJob = (real[0] || failingJobs[0] || {}).name || null;
   return { failingJobs, failingPaths, topFailingJob };
 }
