@@ -50,7 +50,7 @@ test.before(() => {
   git(['init', '-q', '-b', 'main']);
 });
 
-test.after(() => { try { fs.rmSync(repo, { recursive: true, force: true }); } catch { /* best effort */ } });
+test.after(() => { try { fs.rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); } catch { /* best effort */ } });
 
 // Fixtures mirror the real BRO-4066 landing exactly: the id lives in the BODY,
 // a sibling commit names a LONGER id, and a third names nothing at all.
@@ -145,6 +145,6 @@ test('BRO-4068: a match set far larger than 1 MiB of commit bodies still yields 
     assert.ok(rows.length > 0, 'and it must still return candidates');
   } finally {
     repo = saved;
-    try { fs.rmSync(big, { recursive: true, force: true }); } catch { /* best effort */ }
+    try { fs.rmSync(big, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); } catch { /* best effort */ }
   }
 });
