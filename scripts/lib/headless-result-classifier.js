@@ -26,6 +26,24 @@
  * not adversarial input the way a quoted example inside a long turn can be,
  * and the added complexity isn't worth it for this call site.
  *
+ * BRO-4064: the owner escalation of 2026-09-20 (BRO-3914) moved every
+ * session's OWNER-FACING chat message to plain English — "You can close this
+ * tab." / "Keep this tab open." / "Nothing is running here; keep this tab
+ * only if…" — with the real `THIS SESSION:` verdict recorded SEPARATELY via
+ * `wrapup-block --file` (~/.claude/hooks/lib/wrapup-block.js) rather than
+ * printed in the chat text. Headless jobs follow the same instructions, so
+ * `res.resultText` (the CLI's final printed message) stopped carrying a
+ * `THIS SESSION:` line at all — this function fell through to the default
+ * 'stopped-short' for 48 of 61 jobs in 3 days (2026-09-21..23), 3 confirmed
+ * to have fully landed. Two changes fix it: (1) below, recognize the 3
+ * plain-English closing templates directly, matching only their LEADING
+ * phrase (real jobs append a clause, e.g. BRO-3925's actual line was "Keep
+ * this tab open until that CI check confirms green.", not the bare
+ * template); (2) headless-wrapup-block.js's classifyHeadlessJobResult()
+ * prefers the recorded machine block (whose own last line is always
+ * canonical `THIS SESSION:` syntax) over `resultText` when a fresh one
+ * exists, falling back to this function's plain-English handling otherwise.
+ *
  * Landing (did the work actually reach origin/main) is a SEPARATE, git-I/O
  * concern handled by headless-unlanded-detection.js's detectJobLanding() —
  * this module only classifies the TEXT.
@@ -51,6 +69,19 @@ function lastContentLine(text) {
 const BLOCKED_RE = /^\s*[^\w\s]{0,6}\s*THIS SESSION\s*:\s*(?:CLOSE ME|IDLE)\s*[—–:-]*\s*BLOCKED:\s*(.*)$/i;
 const KEEP_OPEN_RE = /^\s*[^\w\s]{0,6}\s*(?:THIS SESSION\s*:\s*KEEP OPEN|NOT SAFE TO EXIT)\b/i;
 const CLEAN_CLOSE_RE = /^\s*[^\w\s]{0,6}\s*THIS SESSION\s*:\s*(?:CLOSE ME|IDLE)\b/i;
+
+// BRO-4064: the 3 plain-English closing templates (CLAUDE.md's owner-facing
+// verdict rules), matched on their LEADING phrase only — sessions routinely
+// append a clause ("Keep this tab open until X confirms.", "...keep this tab
+// only if you want to continue <topic>."). No BLOCKED-reason equivalent
+// exists in the plain-English form: a pending owner decision maps to "Keep
+// this tab open" per CLAUDE.md ("A pending DECISION NEEDED always means KEEP
+// OPEN"), which this already classifies as stopped-short — the DECISION
+// NEEDED detail itself lives in the chat prose, not in a machine-parseable
+// suffix, so it isn't surfaced as a distinct `blocked` outcome here.
+const PLAIN_CLOSE_RE = /^\s*[^\w\s]{0,6}\s*you can close this tab\b/i;
+const PLAIN_IDLE_RE = /^\s*[^\w\s]{0,6}\s*nothing is running here\b/i;
+const PLAIN_KEEP_OPEN_RE = /^\s*[^\w\s]{0,6}\s*keep this tab open\b/i;
 
 /**
  * @param {string} resultText the job's raw final result text (runClaudeCli's
@@ -79,6 +110,17 @@ function classifyHeadlessResult(resultText) {
   }
 
   if (CLEAN_CLOSE_RE.test(line)) {
+    return { outcome: 'clean' };
+  }
+
+  if (PLAIN_KEEP_OPEN_RE.test(line)) {
+    return {
+      outcome: 'stopped-short',
+      reason: 'ended on plain-English "Keep this tab open" — a headless -p session is never resumed by a background notification',
+    };
+  }
+
+  if (PLAIN_CLOSE_RE.test(line) || PLAIN_IDLE_RE.test(line)) {
     return { outcome: 'clean' };
   }
 

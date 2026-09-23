@@ -26,7 +26,7 @@ const { execFileSync } = require('child_process');
 const { runClaudeCli } = require('./claude-cli.js');
 const ledger = require('./dispatch-ledger.js');
 const { shouldRefuseDispatch, isLeaseLive } = require('./worktree-gc-reclaim.js');
-const { classifyHeadlessResult } = require('./headless-result-classifier.js');
+const { classifyHeadlessJobResult } = require('./headless-wrapup-block.js');
 const { detectJobLanding } = require('./headless-unlanded-detection.js');
 
 // Hardcoded for the same reason as dispatch-ledger.js: callers routinely run
@@ -413,7 +413,10 @@ async function runJob(opts) {
     if (res.ok) {
       // BRO-3442: an exit-0 job is not automatically job-done — classify what
       // the session's own final text actually said before trusting it.
-      const classified = classifyHeadlessResult(res.resultText);
+      // BRO-4064: prefer the session's own recorded wrapup-block (still
+      // canonical THIS SESSION: syntax) over its now-plain-English
+      // resultText when one exists — see headless-wrapup-block.js header.
+      const classified = classifyHeadlessJobResult({ resultText: res.resultText, sessionId: res.sessionId, cwd });
       if (classified.outcome === 'blocked') {
         headlessOutcome = 'blocked';
         ledger.appendEntry({ event: ledger.JOB_EVENTS.BLOCKED, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, reason: classified.reason });
