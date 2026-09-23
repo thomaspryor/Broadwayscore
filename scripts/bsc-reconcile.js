@@ -69,6 +69,9 @@ const bscNext = require('./bsc-next.js');
 const { readLease, releaseLease, pidLooksLikeClaude, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
 const { RECHECK_AFTER_RE } = require('./lib/recheck-stamp.js');
 const { summarizeCmuxFailures, classifyCmuxError } = require('./lib/cmux-socket-auth.js');
+// BRO-4054: red-main signature cards are dispatched by THIS tick (the most
+// frequent Linear-capable loop on the Mac) — see runRedFirstPassBounded().
+const redFirst = require('./lib/red-first-dispatch.js');
 
 const REPORT_PATH = path.join(REPO, 'data', 'audit', 'reconcile-report.jsonl');
 const DRY = process.argv.includes('--dry-run');
@@ -98,6 +101,9 @@ const DISPATCH_TIMEOUT_MS = 10 * 60 * 1000;
 // keeps a first-ever run against several flagless tabs from hammering cmux
 // (and the owner's screen, if any of them wake it) in one tick.
 const MAX_REVIVE_PER_TICK = 3;
+// BRO-4054: hard bound on the red-first pass so a slow Linear/API call can
+// never eat this tick's 300s StartInterval (launchd skips overlapping runs).
+const RED_FIRST_TIMEOUT_MS = 90 * 1000;
 
 // Every cmux failure this tick, collected so main() can escalate ONCE at the
 // end rather than paging per sweep (BRO-2959). Routing through report() means
@@ -1103,7 +1109,32 @@ function sweepOrphanedJobs(entries, { dryRun = false, deps = {} } = {}) {
   return { orphans };
 }
 
+// BRO-4054 "red-first": main's red-signature cards are the one class of work
+// that blocks every other session (every push lands on a red trunk), so they
+// are dispatched BEFORE any orphan/tab sweep in this tick. Bounded and
+// non-fatal: a crash or a slow Linear call degrades to "try again in 5 min",
+// never to a skipped reconcile tick.
+async function runRedFirstPassBounded() {
+  let timer = null;
+  try {
+    const summary = await Promise.race([
+      redFirst.runRedFirstPass({ dryRun: DRY, log: (m) => console.log(m) }),
+      new Promise((resolve) => { timer = setTimeout(() => resolve({ timedOut: true }), RED_FIRST_TIMEOUT_MS); }),
+    ]);
+    if (summary && summary.timedOut) {
+      report({ kind: 'red-first-timeout', detail: `red-first pass exceeded ${RED_FIRST_TIMEOUT_MS / 1000}s — abandoned this tick (any spawn already made is detached and unaffected)` });
+    } else if (summary && !summary.disabled) {
+      console.log(`[bsc-reconcile] red-first dispatched=${summary.dispatched.length} skipped=${summary.skipped.length} followUps=${summary.followUps.length}${DRY ? ' (dry-run)' : ''}`);
+    }
+  } catch (e) {
+    console.error(`[bsc-reconcile] red-first pass crashed (non-fatal): ${e.message}`);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
 async function main() {
+  await runRedFirstPassBounded();
   const entries = ledger.readEntries();
   const open = ledger.openJobs(entries);
   const { orphans } = sweepOrphanedJobs(entries, { dryRun: DRY });
@@ -1299,4 +1330,4 @@ if (require.main === module) {
   main().catch(err => { console.error('bsc-reconcile crashed:', err); process.exit(1); });
 }
 
-module.exports = { main, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK, collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, RESUME_LOOKBACK_MS, sweepUntrackedInProgress, UNTRACKED_SWEEP_STATE_PATH, stripOwnParkNote, UNTRACKED_MARKER, OUTCOME_PARK_MARKER, sweepOrphanedJobs, GRACE_MS };
+module.exports = { main, runRedFirstPassBounded, RED_FIRST_TIMEOUT_MS, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK, collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, RESUME_LOOKBACK_MS, sweepUntrackedInProgress, UNTRACKED_SWEEP_STATE_PATH, stripOwnParkNote, UNTRACKED_MARKER, OUTCOME_PARK_MARKER, sweepOrphanedJobs, GRACE_MS };
