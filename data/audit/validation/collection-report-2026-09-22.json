@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-22T22:53:22.802Z",
+  "runDate": "2026-09-22T23:59:40.489Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,15 +11,15 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 62,
-    "failed": 294,
+    "processed": 63,
+    "failed": 311,
     "skipped": 0,
-    "successRate": "17.4%"
+    "successRate": "16.8%"
   },
   "tierBreakdown": {
-    "playwright": 28,
+    "playwright": 29,
     "amp": 0,
-    "browserbase": 9,
+    "browserbase": 11,
     "directCookies": 1,
     "scrapingbee": 13,
     "brightdata": 4,
@@ -27,27 +27,27 @@
     "archive": 14
   },
   "statistics": {
-    "tier1Attempts": 50,
-    "tier1Success": 29,
+    "tier1Attempts": 24,
+    "tier1Success": 7,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 10,
-    "tier1_5Success": 5,
-    "tier2Attempts": 29,
-    "tier2Success": 16,
-    "tier3Attempts": 14,
-    "tier3Success": 5,
-    "tier3_6Attempts": 9,
+    "tier1_5Attempts": 9,
+    "tier1_5Success": 6,
+    "tier2Attempts": 18,
+    "tier2Success": 4,
+    "tier3Attempts": 11,
+    "tier3Success": 1,
+    "tier3_6Attempts": 11,
     "tier3_6Success": 0,
-    "tier4Attempts": 52,
-    "tier4Success": 7,
-    "totalFailed": 245,
-    "scrapingBeePageCredits": 97,
+    "tier4Attempts": 18,
+    "tier4Success": 3,
+    "totalFailed": 299,
+    "scrapingBeePageCredits": 106,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 10,
-    "browserbaseMinutesUsed": 2.7,
-    "urlDiscoveryAttempts": 225,
-    "urlDiscoverySuccess": 3,
+    "browserbaseSessionsUsed": 9,
+    "browserbaseMinutesUsed": 3,
+    "urlDiscoveryAttempts": 269,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -112,7 +112,8 @@
     "two-strangers-bway-2025/playbill--margaret-hall.json",
     "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-    "just-in-time-2025/newyorker--conde-nast.json"
+    "just-in-time-2025/newyorker--conde-nast.json",
+    "golden-boy-off-west-end-2026/the-jewish-chronicle--john-nathan.json"
   ],
   "failed": [
     "macbeth-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -408,7 +409,24 @@
     "operation-mincemeat-2025/whatsonstage--alex-wood.json",
     "buena-vista-social-club-2025/new-york-city-theatre--unknown.json",
     "buena-vista-social-club-2025/observer--david-cote.json",
-    "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json"
+    "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
+    "golden-boy-off-west-end-2026/times-uk--patrick-kidd.json",
+    "man-to-man-west-end-2026/londonlivinglarge--unknown.json",
+    "man-to-man-west-end-2026/theupcoming--unknown.json",
+    "the-story-west-end-2026/theatre-south-east--unknown.json",
+    "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
+    "my-neighbour-totoro-west-end-2025/timeout-london--tom-wicker.json",
+    "my-neighbour-totoro-west-end-2025/british-theatre--julia-jordan.json",
+    "my-neighbour-totoro-west-end-2025/lbc--flaminia-luck.json",
+    "my-neighbour-totoro-west-end-2025/thestage--sam-marlowe.json",
+    "titanique-west-end-2024/nytimes--unknown.json",
+    "titanique-west-end-2024/london-theatre-reviews--unknown.json",
+    "titanique-west-end-2024/nypost--johnny-oleksinski.json",
+    "titanique-west-end-2024/the-queer-review--james-kleinmann.json",
+    "titanique-west-end-2024/thewrap--robert-hofler.json",
+    "titanique-west-end-2024/wsj--charles-isherwood.json",
+    "titanique-west-end-2024/cititour--brian-scott-lipton.json",
+    "titanique-west-end-2024/nysr--david-finkle.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -439,7 +457,8 @@
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "avenue-q-west-end-2026/reviewsgate--william-russell.json",
       "two-strangers-bway-2025/playbill--margaret-hall.json",
-      "amaze-magic-off-broadway-2025/timeout--adam-feldman.json"
+      "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
+      "golden-boy-off-west-end-2026/the-jewish-chronicle--john-nathan.json"
     ],
     "amp": [],
     "browserbase": [
@@ -451,7 +470,9 @@
       "data/review-texts/man-to-man-west-end-2026/deadline--unknown.json",
       "data/review-texts/white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
-      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/golden-boy-off-west-end-2026/times-uk--patrick-kidd.json",
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
     ],
     "directCookies": [
       "just-in-time-2025/newyorker--conde-nast.json"
@@ -496,16 +517,9 @@
     ]
   },
   "failuresByOutlet": {
-    "The Stage": {
-      "count": 4,
-      "domain": "thestage.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Londontheatredirect": {
-      "count": 2,
-      "domain": "londontheatredirect.com",
+    "The Times (UK)": {
+      "count": 1,
+      "domain": "thetimes.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -517,9 +531,16 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "The Sunday Times": {
-      "count": 1,
-      "domain": "thetimes.com",
+    "The Stage": {
+      "count": 4,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Londontheatredirect": {
+      "count": 2,
+      "domain": "londontheatredirect.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -544,23 +565,14 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
+    },
+    "WhatsOnStage": {
+      "count": 1,
+      "domain": "whatsonstage.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "million-dollar-quartet-off-west-end-2026/londontheatredirect--hay-brunsdon.json",
-      "oldUrl": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-million-dollar-quartet-at-the-arts-at-marble-arch-theatre?srsltid=AU7gw4XGSVDcMmr7Y8l5EdJku64RYD5gn7E24vl_zPllxsnytU1SeG0I",
-      "newUrl": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-million-dollar-quartet-at-the-arts-at-marble-arch-theatre?srsltid=AU7gw4X0wjRpcTCSOCNyVMfHCFHtsh9VmwPTsbSWFaVQttnitImv71Ap"
-    },
-    {
-      "reviewId": "weve-been-here-before-a-one-woman-musical-off-broadway-2026/broadwayworld--nicole-rosky.json",
-      "oldUrl": "https://www.broadwayworld.com/article/Lindsey-Kraft-Will-Premiere-One-Woman-Musical-WEVE-BEEN-HERE-BEFORE-Music-Directed-By-Ben-Folds-20260709",
-      "newUrl": "https://www.broadwayworld.com/article/Video-Lindsey-Kraft-Ben-Folds-Give-a-Sneak-Peek-of-WEVE-BEEN-HERE-BEFORE-20260727"
-    },
-    {
-      "reviewId": "two-strangers-bway-2025/playbill--margaret-hall.json",
-      "oldUrl": "https://playbill.com/article/watch-fall-in-love-with-new-york-all-over-again-with-two-strangers-carry-a-cake-across-new-york",
-      "newUrl": "https://playbill.com/article/what-are-the-reviews-of-broadways-two-strangers-carry-a-cake-across-new-york"
-    }
-  ]
+  "urlDiscoveries": []
 }

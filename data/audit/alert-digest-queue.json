@@ -135,5 +135,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-22T22:44:43.227Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-la-boheme-off-broadway-2026",
+    "title": "Placeholder synopsis on La Bohème",
+    "description": "synopsis for la-boheme-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-23T00:41:01.716Z"
+  },
+  {
+    "conditionKey": "opening-night-revival-unverified-la-boheme-off-broadway-2026",
+    "title": "Unverified revival on La Bohème",
+    "description": "la-boheme-off-broadway-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-23T00:41:01.718Z"
   }
 ]
