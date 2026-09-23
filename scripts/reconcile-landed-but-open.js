@@ -129,22 +129,26 @@ function mergeKeyForSubject(subject) {
 // the same `linear-BRO-N-` key, so those rows are folded into the same index
 // (a branch name has no "into …" clause, so the direction rule is moot).
 // Injected for the test; read from the canonical checkout otherwise.
-function readLandingRowsForIndex() {
-  const { parseLandings, readLandings } = require('./lib/landings-ledger.js');
-  // origin/main's copy first — the shared checkout no longer advances on a
-  // session's landing — then the working copy as a fallback.
-  try {
-    return parseLandings(execFileSync('git', ['-C', REPO, 'show', 'origin/main:data/audit/landings.jsonl'], { encoding: 'utf8', timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'ignore'] }));
-  } catch { /* fall through */ }
-  return readLandings(REPO).rows;
-}
-
 // git log's own default maxBuffer (1 MiB) throws ENOBUFS well within reach of
 // this repo's real history — measured 2026-09-23: `git log origin/main
 // --oneline --grep=linear-` is 762 commits / 58,121 bytes today (~76
 // bytes/commit), so ~13,800 matching commits would overflow the default.
 // Same 64 MiB precedent as ack-landed.js's namingCandidates and verify runs.
 const GIT_LOG_MAX_BUFFER = 64 * 1024 * 1024;
+
+function readLandingRowsForIndex() {
+  const { parseLandings, readLandings } = require('./lib/landings-ledger.js');
+  // origin/main's copy first — the shared checkout no longer advances on a
+  // session's landing — then the working copy as a fallback. maxBuffer here
+  // too (review catch, BRO-4071): landings.jsonl is tiny today, but this is
+  // the same execFileSync-with-no-maxBuffer shape as the git-log call below,
+  // and this fallback is exactly the "still stands" backstop that call's own
+  // catch leans on — no sense leaving it exposed to the identical failure mode.
+  try {
+    return parseLandings(execFileSync('git', ['-C', REPO, 'show', 'origin/main:data/audit/landings.jsonl'], { encoding: 'utf8', timeout: GIT_TIMEOUT_MS, maxBuffer: GIT_LOG_MAX_BUFFER, stdio: ['ignore', 'pipe', 'ignore'] }));
+  } catch { /* fall through */ }
+  return readLandings(REPO).rows;
+}
 
 // Returned attached to the index (a Map stays a Map — buildMergeCommitIndex's
 // existing callers and tests all use it as one) rather than changing the
@@ -204,7 +208,12 @@ function buildMergeCommitIndex(injectedLines = null, landingRows = null, opts = 
     // index as unreliable so the caller can say "could not look" instead of
     // misreporting "looked, found none" (BRO-4071).
     map.gitLogFailed = true;
-    map.gitLogError = String((e && (e.stderr || e.message)) || e).trim();
+    // e.stderr is a Buffer (or string) that is truthy even when EMPTY — the
+    // exact shape of an ENOBUFS overflow with nothing captured on stderr — so
+    // `e.stderr || e.message` alone would pick the empty buffer and stringify
+    // it to '', silently discarding e.message (review catch, BRO-4071).
+    const stderrText = e && e.stderr ? String(e.stderr).trim() : '';
+    map.gitLogError = stderrText || String((e && e.message) || e).trim();
   }
   return map;
 }
@@ -459,7 +468,11 @@ async function main(argv = process.argv.slice(2)) {
     console.log(`\n${deferredCount} candidate(s) had their acceptance re-check deferred (time budget spent) — re-run to resolve them.`);
   }
   console.log('\nThis is report-only — nothing above was closed. Close a candidate by hand (or a separately gated step), per BRO-2313.');
-  return { scanned: results.length, withMergeCommit, closableCandidates: candidates.length, results };
+  // Same shape as the --json return below (review catch, BRO-4071): a caller
+  // using main() as a library function in text mode must see gitLogFailed on
+  // the return value too, not just in the printed warning above — otherwise
+  // it can still mistake "could not check" for "nothing landed" from code.
+  return { scanned: results.length, withMergeCommit, closableCandidates: candidates.length, gitLogFailed, gitLogError, results };
 }
 
 if (require.main === module) {
