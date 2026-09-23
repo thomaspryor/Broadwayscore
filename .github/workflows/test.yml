@@ -981,6 +981,15 @@ on:
       # else), unlike the syntax-floor and push-audits die() paths above it.
       # Path-listed so a solo edit to the .sh triggers CI.
       - 'scripts/lib/merge-worktree-to-main.retry-merge-error.test.sh'
+      # BRO-3873 step 4/5 (BRO-3425): the merge script is a thin land/**
+      # client; its self-staleness guard, the pre-push hook's direct-push
+      # refusal and the landings ledger each have a pure lib + colocated
+      # .test.mjs (globbed at execution). Path-listed so a solo edit to any
+      # of the libs, or to the detector CLI outside scripts/lib/**, triggers CI.
+      - 'scripts/lib/merge-script-staleness.sh'
+      - 'scripts/lib/direct-push-guard.sh'
+      - 'scripts/lib/landings-ledger.js'
+      - 'scripts/check-direct-push-to-main.js'
       # Card #835: shared range-scoped push-audit dispatch — extracted from
       # scripts/hooks/pre-push (already covered by the scripts/hooks/** glob
       # below) so scripts/merge-worktree-to-main.sh can call the same runner.

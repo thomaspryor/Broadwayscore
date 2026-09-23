@@ -122,8 +122,36 @@ function mergeKeyForSubject(subject) {
 // `injectedLines` exists so the indexing loop itself is testable — the
 // direction rule has to be verified AT ITS CALL SITE, not only on the helper,
 // or removing the call would still pass every test.
-function buildMergeCommitIndex(injectedLines = null) {
+// `landingRows` (BRO-3873 step 4): sessions now land via land/** + land.yml,
+// a REBASE + fast-forward that leaves no merge commit for the git-log index
+// above to find. land.yml records every landing in data/audit/landings.jsonl
+// with the land/** branch name — `land/job/linear-BRO-787-mt2lmgu8` carries
+// the same `linear-BRO-N-` key, so those rows are folded into the same index
+// (a branch name has no "into …" clause, so the direction rule is moot).
+// Injected for the test; read from the canonical checkout otherwise.
+function readLandingRowsForIndex() {
+  const { parseLandings, readLandings } = require('./lib/landings-ledger.js');
+  // origin/main's copy first — the shared checkout no longer advances on a
+  // session's landing — then the working copy as a fallback.
+  try {
+    return parseLandings(execFileSync('git', ['-C', REPO, 'show', 'origin/main:data/audit/landings.jsonl'], { encoding: 'utf8', timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'ignore'] }));
+  } catch { /* fall through */ }
+  return readLandings(REPO).rows;
+}
+
+function buildMergeCommitIndex(injectedLines = null, landingRows = null) {
   const map = new Map(); // "BRO-2558" -> sha
+  // Ledger rows are appended oldest-first; walk them NEWEST-first so the most
+  // recent landing wins, matching the git-log (newest-first) rule below.
+  try {
+    const rows = landingRows || readLandingRowsForIndex();
+    for (const row of [...rows].reverse()) {
+      const key = row && row.branch ? mergeKeyForSubject(String(row.branch)) : null;
+      if (key && row.sha && !map.has(key)) map.set(key, row.sha);
+    }
+  } catch {
+    // no ledger, unreadable ledger — the git-log index below still stands
+  }
   try {
     let lines = injectedLines;
     if (!lines) {

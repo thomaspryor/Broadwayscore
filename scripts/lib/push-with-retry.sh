@@ -81,6 +81,17 @@ if [[ "$BRANCH" != *:* ]]; then
   BRANCH="HEAD:$BRANCH"
 fi
 
+# BRO-3425 / BRO-3873 step 5: scripts/hooks/pre-push refuses a direct push to
+# main unless the pusher is CI or this script. This marker is how the hook
+# tells the two apart (scripts/lib/direct-push-guard.sh: allow:push-with-
+# retry-bot, logged outside CI). Bots — every workflow step, the launchd
+# daemons, autonomous runners — keep their direct push exactly as before.
+# A SESSION typing `bash scripts/lib/push-with-retry.sh … main` by hand is
+# stopped earlier, at the Bash tool, by ~/.claude/hooks/pre-push-review-gate.sh;
+# this export is not a session escape hatch. Only set when unset so a caller
+# that deliberately marks itself otherwise is respected.
+export PUSH_WITH_RETRY_CALLER="${PUSH_WITH_RETRY_CALLER:-bot}"
+
 # ── Hang guards (Notion 39d637c5 / task #183) ────────────────────────────────
 # Under high commit churn on a busy main, a `git fetch`/`git push` can stall on an
 # open-but-idle HTTP connection to the remote (git has NO default low-speed abort),

@@ -529,6 +529,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           SHA: ${{ steps.land.outputs.sha }}
+          TIP: ${{ needs.checks.outputs.tip }}
         # The ref is deleted only AFTER scripts/lib/landing-verify.js confirms
         # the landed sha is an ancestor of a freshly fetched origin/main (exit
         # 0). UNKNOWN (exit 2) or NOT_LANDED keep the ref and say so; a ref
@@ -536,9 +537,34 @@ jobs:
         run: |
           git fetch origin main
           if node scripts/lib/landing-verify.js --sha="$SHA" --cwd="$PWD"; then
-            gh api -X DELETE "repos/${{ github.repository }}/git/refs/heads/$BRANCH"
-            echo "deleted refs/heads/$BRANCH — ${SHA:0:10} is an ancestor of origin/main"
-            echo "- ref: deleted after ancestry verification" >> "$GITHUB_STEP_SUMMARY"
+            # BRO-3873 step 5: the landing record FIRST, before any cleanup.
+            # A fast-forward creates no commit to stamp a trailer on, so
+            # data/audit/landings.jsonl is the proof
+            # check-direct-push-to-main.yml consults for every non-bot push
+            # to main; the merge script also reads it for the landed sha.
+            # Committed by the ledger step below (a crash between here and
+            # there loses the row, never the landing).
+            LAND_BRANCH="$BRANCH" LAND_SHA="$SHA" LAND_TIP="$TIP" LAND_BASE="${{ needs.checks.outputs.base }}" \
+            LAND_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" LAND_ATTEMPTS="${{ steps.land.outputs.attempts }}" \
+            node -e '
+              const { appendLanding } = require("./scripts/lib/landings-ledger.js");
+              const e = process.env;
+              const row = appendLanding({ repoDir: process.cwd(), branch: e.LAND_BRANCH, sha: e.LAND_SHA, tip: e.LAND_TIP, base: e.LAND_BASE, runUrl: e.LAND_RUN_URL, attempts: e.LAND_ATTEMPTS || null });
+              console.log(`landings.jsonl += ${JSON.stringify(row)}`);
+            '
+            echo "- landings.jsonl: row appended for \`${SHA:0:10}\`" >> "$GITHUB_STEP_SUMMARY"
+            # Delete the ref ONLY if it still points at the tip this run
+            # verified — a newer push to the same land/** branch has its own
+            # run and must not lose its ref to this one (Codex finding).
+            NOW_AT=$(gh api "repos/${{ github.repository }}/git/ref/heads/$BRANCH" --jq .object.sha 2>/dev/null || echo "")
+            if [ "$NOW_AT" = "$TIP" ]; then
+              gh api -X DELETE "repos/${{ github.repository }}/git/refs/heads/$BRANCH"
+              echo "deleted refs/heads/$BRANCH — ${SHA:0:10} is an ancestor of origin/main"
+              echo "- ref: deleted after ancestry verification" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "refs/heads/$BRANCH now points at ${NOW_AT:-<gone>} (this run verified ${TIP:0:10}) — left for its own run"
+              echo "- ref: KEPT (moved to a newer tip since this run's checks)" >> "$GITHUB_STEP_SUMMARY"
+            fi
             # A branch of this name that goes red later must notify fresh.
             node scripts/land-alert.js --branch "$BRANCH" --resolve
           else
@@ -564,10 +590,13 @@ jobs:
         # scripts/land-alert.js calls routeAlert()/resolveCondition(); the
         # ledger, digest queue and attempts log only exist on this runner's
         # disk until committed. Non-blocking by rule (ledger-step-guard).
+        # data/audit/landings.jsonl (the landing record above) rides the
+        # same commit — it must reach main within the direct-push
+        # detector's 6-minute wait, so this step never waits on anything.
         run: |
-          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl data/audit/landings.jsonl 2>/dev/null || true
           if ! git diff --staged --quiet; then
-            git commit -m "data: alert-router ledger update (land.yml) [skip ci]"
+            git commit -m "data: alert-router ledger + landings record (land.yml) [skip ci]"
             bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Alert-router ledger push failed — next run will recompute state"
           else
             echo "No ledger changes to commit."

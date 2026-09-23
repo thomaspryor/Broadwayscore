@@ -21,6 +21,7 @@
 # Run: bash scripts/lib/merge-worktree-to-main.content-drop.test.sh
 
 set -uo pipefail
+export LAND_LEGACY_DIRECT=1   # BRO-3873 step 4: this fixture exercises the legacy direct merge+push path
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 SCRIPT="$REPO_ROOT/scripts/merge-worktree-to-main.sh"
