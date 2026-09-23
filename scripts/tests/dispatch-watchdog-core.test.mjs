@@ -659,6 +659,20 @@ test('watchdogClaimsInWindow ignores unparseable and future-dated rows (BRO-395 
   assert.ok(rows.every(r => r.event === core.WATCHDOG_EVENTS.REDISPATCH));
   assert.ok(rows.some(r => r.taskId === '3'));
   assert.ok(!rows.some(r => r.ts === 'not-a-date'));
+  // The pacing default keeps the future-dated row (documented above) — pin
+  // it, so a later "fix" cannot silently hand allowance back.
+  assert.ok(rows.some(r => r.taskId === '2'), 'pacing default must keep counting a future-dated claim');
+
+  // 2026-09-21: the stall detector reads this same counter and needs the
+  // OPPOSITE direction — a future-dated claim that counted as "recent"
+  // forever would make dispatch-flow-health report "alive" on every tick
+  // through a real stall. excludeFuture:true is that opt-in; nothing else
+  // about the filter changes.
+  const clamped = core.watchdogClaimsInWindow(entries, NOW, undefined, { excludeFuture: true });
+  assert.ok(clamped.some(r => r.taskId === '3'), 'a genuine in-window claim still counts');
+  assert.ok(!clamped.some(r => r.taskId === '2'), 'excludeFuture must drop the future-dated claim');
+  assert.ok(!clamped.some(r => r.ts === 'not-a-date'));
+  assert.equal(clamped.length, 1);
 });
 
 test('a Linear-sourced task is queued, ordered and dispatched like any other', () => {
@@ -1211,4 +1225,148 @@ test('BRO-3924 (R5): the spend hold surfaces in globalHolds/pausedByPolicy/toDis
   assert.equal(plan.budgets.pausedByPolicy, true);
   assert.equal(plan.toDispatch.length, 0);
   assert.ok(plan.budgets.holds.some(h => h.includes('spend circuit breaker')));
+});
+
+// ── stallDetectionDepth (2026-09-22 ship-check) ─────────────────────────────
+// The depth the stall detector's claims path reads. These run through the REAL
+// planSweep so a renamed/dropped budgets field fails here, not in production.
+const H = 3600 * 1000;
+const SIX_H = 6 * H;
+const hAgo = h => new Date(NOW - h * H).toISOString();
+
+test('stallDetectionDepth: normal sweep reads toDispatch', () => {
+  const tasks = new Map([lin('BRO-100', 'pending', 'P1 Now'), lin('BRO-101', 'pending', 'P1 Now')]);
+  const plan = core.planSweep([], tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(core.stallDetectionDepth(plan, { now: NOW, staleSlotMs: SIX_H }), plan.toDispatch.length);
+  assert.ok(plan.toDispatch.length > 0);
+});
+
+test('stallDetectionDepth: claim outage after the wedge claimed the WHOLE queue still reads > 0 (reviewer repro)', () => {
+  // 10 cards, all claimed 7h ago, nothing launched anywhere: p01Queue and
+  // laneEligible are empty (claimPending), toDispatch is 0 — the pre-fix
+  // depth silenced the claims path in exactly the case it exists for.
+  const ids = Array.from({ length: 10 }, (_, i) => `BRO-${200 + i}`);
+  const tasks = new Map(ids.map(id => lin(id, 'pending', 'P1 Now')));
+  const entries = ids.map(id => ({ ts: hAgo(7), event: 'watchdog-redispatch', taskId: `linear:${id}`, kind: 'p01-backlog' }));
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.budgets.globalHoldFlags.claimOutage, true);
+  assert.equal(plan.budgets.laneEligible, 0);
+  assert.equal(plan.toDispatch.length, 0);
+  assert.equal(core.stallDetectionDepth(plan, { now: NOW, staleSlotMs: SIX_H }), 10);
+});
+
+test('stallDetectionDepth: claim outage + kill switch is a policy pause -> 0', () => {
+  const ids = Array.from({ length: 5 }, (_, i) => `BRO-${300 + i}`);
+  const tasks = new Map(ids.map(id => lin(id, 'pending', 'P1 Now')));
+  const entries = ids.map(id => ({ ts: hAgo(7), event: 'watchdog-redispatch', taskId: `linear:${id}`, kind: 'p01-backlog' }));
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE, dispatchEnabled: false });
+  assert.equal(plan.budgets.globalHoldFlags.killSwitch, true);
+  assert.equal(core.stallDetectionDepth(plan, { now: NOW, staleSlotMs: SIX_H }), 0);
+});
+
+function concurrencyFixture(launchAgeH, slots = 6) {
+  // `slots` (default 6) watchdog-claimed tasks whose launches never closed -> concurrency at cap,
+  // plus 3 fresh P1 cards waiting.
+  const held = Array.from({ length: slots }, (_, i) => `BRO-${400 + i}`);
+  const waiting = ['BRO-500', 'BRO-501', 'BRO-502'];
+  const tasks = new Map([...held, ...waiting].map(id => lin(id, 'in_progress', 'P1 Now')));
+  for (const id of waiting) tasks.set(`linear:${id}`, lin(id, 'pending', 'P1 Now')[1]);
+  const entries = [];
+  held.forEach((id, i) => {
+    entries.push({ ts: hAgo(launchAgeH + 0.1), event: 'watchdog-redispatch', taskId: `linear:${id}`, kind: 'p01-backlog' });
+    entries.push({ ts: hAgo(launchAgeH), event: 'launch', taskId: `linear:${id}`, subject: id, workspaceRef: `workspace:${600 + i}` });
+  });
+  return { entries, tasks };
+}
+
+test('stallDetectionDepth: concurrency cap held by FRESH slots is pacing -> 0', () => {
+  const { entries, tasks } = concurrencyFixture(1);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.budgets.globalHoldFlags.concurrency, true);
+  assert.equal(core.stallDetectionDepth(plan, { now: NOW, staleSlotMs: SIX_H }), 0);
+});
+
+test('stallDetectionDepth: concurrency cap held by slots older than the window is a failure -> waiting work counts (16-19 Sep zombies)', () => {
+  const { entries, tasks } = concurrencyFixture(30);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.budgets.globalHoldFlags.concurrency, true);
+  assert.equal(plan.budgets.oldestLiveSlotTs, Date.parse(hAgo(30)));
+  assert.ok(core.stallDetectionDepth(plan, { now: NOW, staleSlotMs: SIX_H }) > 0);
+});
+
+test('stallDetectionDepth: stale concurrency + day budget spent is still a policy pause -> 0', () => {
+  const { entries, tasks } = concurrencyFixture(30);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  const withBudget = { ...plan, budgets: { ...plan.budgets, globalHoldFlags: { ...plan.budgets.globalHoldFlags, dayBudget: true } } };
+  assert.equal(core.stallDetectionDepth(withBudget, { now: NOW, staleSlotMs: SIX_H }), 0);
+});
+
+test('stallDetectionDepth: spend breaker tripped ONLY by the stale slots\' reservation is the wedge, not a spend decision', () => {
+  // 6 zombie slots x median cost reserve >= the $36 bar with zero real spend:
+  // main's breaker halts on that alone and never releases (slots never close).
+  const { entries, tasks } = concurrencyFixture(30);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.budgets.globalHoldFlags.spendHalt, true);
+  assert.equal(plan.budgets.spend.spentUSD, plan.budgets.spend.reservedUSD);
+  assert.ok(core.stallDetectionDepth(plan, { now: NOW, staleSlotMs: SIX_H }) > 0);
+  // Same slots FRESH -> concurrency is pacing and the reservation is real: 0.
+  const fresh = concurrencyFixture(1);
+  const freshPlan = core.planSweep(fresh.entries, fresh.tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(core.stallDetectionDepth(freshPlan, { now: NOW, staleSlotMs: SIX_H }), 0);
+});
+
+test('stallDetectionDepth: stale concurrency + spend breaker on REAL spend, or any unknown global hold, is a policy pause -> 0', () => {
+  const { entries, tasks } = concurrencyFixture(30);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  const f = plan.budgets.globalHoldFlags;
+  const realSpend = { ...plan.budgets.spend, halt: true, spentUSD: 80, reservedUSD: 36.96, thresholdUSD: 36 };
+  const spend = { ...plan, budgets: { ...plan.budgets, spend: realSpend, globalHoldFlags: { ...f, spendHalt: true } } };
+  assert.equal(core.stallDetectionDepth(spend, { now: NOW, staleSlotMs: SIX_H }), 0);
+  const unknown = { ...plan, budgets: { ...plan.budgets, globalHolds: [...plan.budgets.globalHolds, 'some future hold'] } };
+  assert.equal(core.stallDetectionDepth(unknown, { now: NOW, staleSlotMs: SIX_H }), 0);
+});
+
+test('stallDetectionDepth: claims stuck >6h while unrelated retries keep launching (no claimOutage) still count (Codex P1)', () => {
+  const ids = Array.from({ length: 10 }, (_, i) => `BRO-${700 + i}`);
+  const tasks = new Map(ids.map(id => lin(id, 'pending', 'P1 Now')));
+  const entries = ids.map(id => ({ ts: hAgo(7), event: 'watchdog-redispatch', taskId: `linear:${id}`, kind: 'p01-backlog' }));
+  // an unrelated launch 10 min ago keeps fleet-wide launches flowing
+  entries.push({ ts: T(10), event: 'launch', taskId: 'linear:BRO-999', subject: 'other', workspaceRef: 'workspace:77' });
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.budgets.globalHoldFlags.claimOutage, false);
+  assert.equal(plan.toDispatch.length, 0);
+  assert.equal(plan.budgets.awaitingClaimCount, 10);
+  assert.equal(core.stallDetectionDepth(plan, { now: NOW, staleSlotMs: SIX_H }), 10);
+});
+
+test('stallDetectionDepth: 5 stale slots UNDER the cap tripping the spend breaker by reservation alone is the wedge (Codex P1)', () => {
+  const { entries, tasks } = concurrencyFixture(30, 5);
+  const plan = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE });
+  assert.equal(plan.budgets.globalHoldFlags.concurrency, false);
+  assert.equal(plan.budgets.liveSlotTimes.length, 5);
+  // $8 median x 5 stale slots = $40 reserved, zero real spend, $36 bar.
+  const spend = { ...plan.budgets.spend, halt: true, spentUSD: 40, reservedUSD: 40, perJobUSD: 8, thresholdUSD: 36 };
+  const tripped = { ...plan, toDispatch: [], budgets: { ...plan.budgets, spend,
+    globalHoldFlags: { ...plan.budgets.globalHoldFlags, spendHalt: true }, globalHolds: ['spend circuit breaker'] } };
+  assert.ok(core.stallDetectionDepth(tripped, { now: NOW, staleSlotMs: SIX_H }) > 0);
+  // Same slots FRESH: the reservation is real committed spend -> policy pause.
+  const fresh = concurrencyFixture(1, 5);
+  const fp = core.planSweep(fresh.entries, fresh.tasks, { now: NOW, liveTitles: LIVE });
+  const freshTripped = { ...fp, toDispatch: [], budgets: { ...fp.budgets, spend,
+    globalHoldFlags: { ...fp.budgets.globalHoldFlags, spendHalt: true }, globalHolds: ['spend circuit breaker'] } };
+  assert.equal(core.stallDetectionDepth(freshTripped, { now: NOW, staleSlotMs: SIX_H }), 0);
+  // Real spend over the bar beyond the stale reservation: policy pause.
+  const real = { ...tripped, budgets: { ...tripped.budgets, spend: { ...spend, spentUSD: 90 } } };
+  assert.equal(core.stallDetectionDepth(real, { now: NOW, staleSlotMs: SIX_H }), 0);
+});
+
+test('watchdogLiveOldestTs: skips unparseable ts (one NaN must not read every slot as fresh), null when none', () => {
+  assert.equal(core.watchdogLiveOldestTs([]), null);
+  const entries = [
+    { ts: hAgo(10), event: 'watchdog-redispatch', taskId: 'linear:BRO-1', kind: 'p01-backlog' },
+    { ts: hAgo(9), event: 'launch', taskId: 'linear:BRO-1', workspaceRef: 'workspace:1' },
+    { ts: hAgo(3), event: 'watchdog-redispatch', taskId: 'linear:BRO-2', kind: 'p01-backlog' },
+    { ts: 'garbage', event: 'launch', taskId: 'linear:BRO-2', workspaceRef: 'workspace:2' },
+  ];
+  assert.equal(core.watchdogLiveOldestTs(entries), Date.parse(hAgo(9)));
 });

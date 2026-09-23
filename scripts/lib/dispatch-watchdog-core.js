@@ -531,13 +531,111 @@ function watchdogClaimsToday(entries, now) {
 // lets the drain spend its whole hourly allowance at :59 and the next one at
 // :01, which reproduces the burst this pacing exists to remove.
 const PACING_WINDOW_MS = 3600 * 1000;
-function watchdogClaimsInWindow(entries, now, windowMs = PACING_WINDOW_MS) {
-  const cutoff = new Date(now).getTime() - windowMs;
+// excludeFuture (2026-09-21): a future-dated row (clock skew, corrupt write)
+// satisfies `t >= cutoff` forever. Its two consumers want OPPOSITE safe
+// directions, so this is an explicit knob rather than a fixed rule:
+//   - hourly pacing (the default, excludeFuture=false) deliberately keeps
+//     counting it — over-count => spend less — the same conservative
+//     direction watchdogClaimsToday takes, and never the direction that
+//     hands back allowance (see the BRO-395-shape test in
+//     scripts/tests/dispatch-watchdog-core.test.mjs).
+//   - dispatch-flow-health's stall check (excludeFuture=true) must NOT count
+//     it: one skewed row would read as "claimed recently" on every tick,
+//     for good, and a real stall would never page — the same BRO-395 hazard
+//     dispatch-ledger.js's countRecentLaunches already clamps against.
+function watchdogClaimsInWindow(entries, now, windowMs = PACING_WINDOW_MS, { excludeFuture = false } = {}) {
+  const nowMs = new Date(now).getTime();
+  const cutoff = nowMs - windowMs;
   return (entries || []).filter((e) => {
     if (!e || e.event !== WATCHDOG_EVENTS.REDISPATCH || !e.ts) return false;
     const t = new Date(e.ts).getTime();
-    return Number.isFinite(t) && t >= cutoff;
+    if (!Number.isFinite(t) || t < cutoff) return false;
+    return excludeFuture ? t <= nowMs : true;
   });
+}
+
+// 2026-09-22 (ship-check): the depth the stall detector's claims path reads.
+// Normally plan.toDispatch.length — the work the sweep would claim this
+// instant, 0 under every genuine policy pause because budget is 0 there.
+// Two global holds zero the budget WITHOUT being innocent, and reading
+// toDispatch under them would let the wedge silence its own detector:
+//   - claimOutage: a detected failure. By the time it trips, the wedged sweep
+//     has usually claimed the whole queue (claimPending drops those cards
+//     from p01Queue for 24h), so lane-eligible work alone reads 0 (Codex +
+//     reviewer, reproduced through the real planSweep). The stuck claims ARE
+//     the unfinished work, so they count.
+//   - the concurrency cap, when its oldest live slot is older than
+//     staleSlotMs: slots held by launches that never closed (16-19 Sep: five
+//     tasks held 5 of 6 slots from 09-16 launches for days) are not pacing.
+// Any policy hold alongside them (kill switch, day budget, hourly pacing, the
+// spend circuit breaker on REAL spend, a concurrency cap held by FRESH slots, or any global
+// hold this function has no flag for) still returns toDispatch, i.e. 0.
+// Known gap: a zombie slot something relaunches gets a fresh ts and reads as
+// not stale (none of the 16-19 Sep zombies was relaunched).
+function stallDetectionDepth(plan, { now, staleSlotMs } = {}) {
+  const b = (plan && plan.budgets) || {};
+  const f = b.globalHoldFlags || {};
+  const toDispatch = (plan && plan.toDispatch) ? plan.toDispatch.length : 0;
+  const nowMs = new Date(now == null ? Date.now() : now).getTime();
+  // Slots open longer than the claims window. Counted per slot (not "is the
+  // oldest stale") so the spend check below can subtract exactly their
+  // reservation, and independent of the concurrency cap: five stale slots
+  // under a cap of six can still trip the spend breaker (Codex P1).
+  const staleSlots = Number.isFinite(staleSlotMs)
+    ? (b.liveSlotTimes || []).filter(t => Number.isFinite(t) && nowMs - t >= staleSlotMs).length : 0;
+  const staleConcurrency = !!f.concurrency && staleSlots > 0;
+  // A global hold this function does not know about (added to planSweep
+  // without a flag here) must read as a policy pause, never as a failure:
+  // an unknown hold can cost a missed page, never a false one.
+  const knownHolds = ['killSwitch', 'dayBudget', 'hourly', 'concurrency', 'claimOutage', 'spendHalt'].filter(k => f[k]).length;
+  const unknownHold = Array.isArray(b.globalHolds) && b.globalHolds.length > knownHolds;
+  // The spend breaker (BRO-3924 R5) reserves liveNow x median job cost for
+  // open slots, so the same never-closed slots that make the concurrency cap
+  // stale can trip it on their own (6 zombies x ~$6 > the $36 bar) — and it
+  // never releases, because they never close. When the spend WITHOUT that
+  // reservation is under the bar and the slots are stale, the halt is the
+  // wedge's symptom, not a spend decision. Real spend over the bar stays a
+  // policy pause.
+  const sp = b.spend || {};
+  const spendFromStaleSlots = !!f.spendHalt && staleSlots > 0 &&
+    Number.isFinite(sp.spentUSD) && Number.isFinite(sp.perJobUSD) && Number.isFinite(sp.thresholdUSD) &&
+    sp.spentUSD - staleSlots * sp.perJobUSD < sp.thresholdUSD;
+  const policyBlocking = !!(unknownHold || f.killSwitch || f.dayBudget || f.hourly ||
+    (f.spendHalt && !spendFromStaleSlots) || (f.concurrency && !staleConcurrency));
+  if (policyBlocking) return toDispatch;
+  // Claims that never produced a launch are unfinished work the queue no
+  // longer shows (claimPending hides them for 24h). The claims path only
+  // reads this when there were ZERO claims in the window, so any still
+  // counted here are >= 6h old — the wedge itself, even when unrelated
+  // retries keep launching and claimOutage (which needs fleet-wide launch
+  // silence) never trips (Codex P1). A healthy sweep parks them after
+  // CLAIM_LABEL_GRACE_MS (noLaunchPark), so they do not linger when it runs.
+  const stuckClaims = b.awaitingClaimCount || 0;
+  if (f.claimOutage || staleConcurrency || spendFromStaleSlots) return stuckClaims + (b.laneEligible || 0);
+  return toDispatch + stuckClaims;
+}
+
+// Oldest open launch among the slots watchdogLiveCount counts (same claimed-set
+// + openTasksAnyLane fold), as epoch ms, or null when there are none.
+// Unparseable timestamps are skipped: one NaN would poison the min and read
+// every slot as fresh.
+function watchdogLiveSlotTimes(entries) {
+  const claimed = new Set((entries || [])
+    .filter(e => e && e.event === WATCHDOG_EVENTS.REDISPATCH)
+    .map(e => String(e.taskId)));
+  const times = [];
+  if (!claimed.size) return times;
+  for (const [taskId, launch] of openTasksAnyLane(entries)) {
+    if (!claimed.has(taskId)) continue;
+    const t = Date.parse(launch && launch.ts);
+    if (Number.isFinite(t)) times.push(t);
+  }
+  return times.sort((a, b) => a - b);
+}
+
+function watchdogLiveOldestTs(entries) {
+  const times = watchdogLiveSlotTimes(entries);
+  return times.length ? times[0] : null;
 }
 
 // Watchdog-origin live concurrency: tasks the watchdog claimed whose latest
@@ -1135,7 +1233,22 @@ function planSweep(entries, tasks, opts) {
     now, cmuxObserved,
     inFlight, retryable, toPark, p01Queue, toDispatch, awaitingClaim, noLaunchPark,
     unlandedDone, jobBlocked,
-    budgets: { usedToday, usedThisHour, liveNow, autoTabs, budget, holds, globalHolds, cmuxHolds, pausedByPolicy, caps: CAPS, spend: spendBreaker },
+    budgets: {
+      usedToday, usedThisHour, liveNow, autoTabs, budget, holds, globalHolds, cmuxHolds, pausedByPolicy, caps: CAPS, spend: spendBreaker,
+      // stallDetectionDepth inputs (2026-09-22) — same conditions as the globalHolds pushes above.
+      globalHoldFlags: {
+        killSwitch: !dispatchEnabled,
+        dayBudget: usedToday >= CAPS.perDay,
+        hourly: usedThisHour >= CAPS.perHour,
+        concurrency: liveNow >= CAPS.watchdogConcurrent,
+        claimOutage: !!claimOutage,
+        spendHalt: !!spendBreaker.halt,
+      },
+      awaitingClaimCount: awaitingClaim.length,
+      laneEligible: eligibleForLane.length,
+      liveSlotTimes: watchdogLiveSlotTimes(entries),
+      oldestLiveSlotTs: watchdogLiveOldestTs(entries),
+    },
     outage,
     failureRate,
     crownSessionTabs: deadCrownTabs,
@@ -1230,7 +1343,7 @@ module.exports = {
   watchdogClaimPending, lastLaunchAnywhereMs,
   taskPriority, notionIdOf, taskSortKey, compareTaskIds, taskSourceRank,
   openHeadlessJobTasks, openTasksAnyLane,
-  PACING_WINDOW_MS, PACING_HOURS, watchdogClaimsInWindow,
+  PACING_WINDOW_MS, PACING_HOURS, watchdogClaimsInWindow, stallDetectionDepth, watchdogLiveOldestTs, watchdogLiveSlotTimes,
   watchdogClaimsToday, watchdogLiveCount, watchdogParkedIds,
   lastTerminalEventForTask, planSweep, tabTitle, renderNarrative,
   // R5 (BRO-3924): exported for direct unit testing, not just through planSweep.
