@@ -187,7 +187,27 @@ function isDoneOrInReview(issue) {
   return /in review/i.test(String(state.name || ''));
 }
 
-async function classifyAndFindLanding(row, spawn) {
+// Ship-check + Codex adversarial review (BRO-4066): the git-log-search
+// fallback below can only tell "a commit naming this ref landed in this
+// time window" — it cannot tell WHICH dispatch attempt on the same card
+// produced it. Two attempts on the same card with overlapping activity (a
+// re-dispatch that started before this job's own search window closes, or
+// vice versa) could otherwise have this job's search window silently credit
+// a SIBLING attempt's commit. detectJobLanding's cwd-ancestry path doesn't
+// need this guard — it reads THIS job's own worktree HEAD, not a text
+// search — but the weaker fallback does. Fails closed: any ledger activity
+// from a DIFFERENT jobId on the same taskId inside [sinceMs, untilMs] makes
+// the window ambiguous, full stop.
+function hasOverlappingSiblingJob(entries, taskId, jobId, sinceMs, untilMs) {
+  for (const e of entries) {
+    if (!e || e.jobId === jobId || e.taskId !== taskId) continue;
+    const ts = Date.parse(e.ts || '');
+    if (Number.isFinite(ts) && ts >= sinceMs && ts <= untilMs) return true;
+  }
+  return false;
+}
+
+async function classifyAndFindLanding(row, spawn, entries) {
   const resultText = readLastResultText(spawn.logFile);
   const sessionId = row.sessionId || spawn.sessionId || null;
   const classified = classifyHeadlessJobResult({ resultText, sessionId, cwd: spawn.cwd });
@@ -203,6 +223,11 @@ async function classifyAndFindLanding(row, spawn) {
   const ref = refFromTaskId(row.taskId);
   const sinceIso = spawn.ts;
   const untilIso = new Date(Date.parse(row.ts) + SEARCH_WINDOW_PAD_MS).toISOString();
+  const sinceMs = Date.parse(sinceIso);
+  const untilMs = Date.parse(untilIso);
+  if (hasOverlappingSiblingJob(entries, row.taskId, row.jobId, sinceMs, untilMs)) {
+    return { skip: 'ambiguous: another dispatch attempt on the same card has ledger activity inside this job\'s search window — cannot safely attribute a git-log match to this specific job' };
+  }
   const candidateSha = gitLogRefSearch(ref, sinceIso, untilIso);
   if (!candidateSha) {
     return { skip: 'no landing evidence (worktree gone, no matching commit on origin/main in the job window)' };
@@ -238,7 +263,7 @@ async function main() {
     if (!spawn) { table.push({ ref, jobId: row.jobId, action: 'skip', detail: 'no job-spawned row found for this jobId' }); continue; }
 
     let result;
-    try { result = await classifyAndFindLanding(row, spawn); }
+    try { result = await classifyAndFindLanding(row, spawn, entries); }
     catch (e) { table.push({ ref, jobId: row.jobId, action: 'skip', detail: `error: ${e.message}` }); continue; }
     if (result.skip) { table.push({ ref, jobId: row.jobId, action: 'skip', detail: result.skip }); continue; }
 
@@ -292,4 +317,5 @@ if (require.main === module) {
 module.exports = {
   parseArgs, refFromTaskId, candidateRows, lastRowByJobId, gitLogRefSearch,
   hasSessionReportComment, isDoneOrInReview, readLastResultText, findSpawn,
+  hasOverlappingSiblingJob,
 };

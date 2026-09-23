@@ -68,3 +68,30 @@ test('isDoneOrInReview: reads the card\'s state type/name', () => {
   assert.equal(mod.isDoneOrInReview({ state: { type: 'unstarted', name: 'Todo' } }), false);
   assert.equal(mod.isDoneOrInReview({}), false);
 });
+
+// Ship-check + Codex adversarial review finding: the git-log-search fallback
+// can't tell which of two same-card dispatch attempts produced a matching
+// commit, so any sibling-job ledger activity inside the search window must
+// make the window ambiguous (fail closed), never guessed.
+test('hasOverlappingSiblingJob: true when a DIFFERENT jobId on the same card has a row inside the window', () => {
+  const TASK = 'linear:BRO-1';
+  const entries = [
+    { taskId: TASK, jobId: 'J1', ts: '2026-09-21T01:00:00.000Z' },
+    { taskId: TASK, jobId: 'J2', ts: '2026-09-21T01:30:00.000Z' },
+  ];
+  const since = Date.parse('2026-09-21T00:00:00.000Z');
+  const until = Date.parse('2026-09-21T02:00:00.000Z');
+  assert.equal(mod.hasOverlappingSiblingJob(entries, TASK, 'J1', since, until), true);
+});
+
+test('hasOverlappingSiblingJob: false when no sibling job has activity in the window (own rows and other cards ignored)', () => {
+  const TASK = 'linear:BRO-1';
+  const entries = [
+    { taskId: TASK, jobId: 'J1', ts: '2026-09-21T00:30:00.000Z' }, // own row, ignored
+    { taskId: TASK, jobId: 'J2', ts: '2026-09-22T00:00:00.000Z' }, // sibling, but outside window
+    { taskId: 'linear:BRO-2', jobId: 'J3', ts: '2026-09-21T01:00:00.000Z' }, // different card
+  ];
+  const since = Date.parse('2026-09-21T00:00:00.000Z');
+  const until = Date.parse('2026-09-21T02:00:00.000Z');
+  assert.equal(mod.hasOverlappingSiblingJob(entries, TASK, 'J1', since, until), false);
+});
