@@ -16,6 +16,10 @@ on:
         description: 'Lookback window in days (bucketed into ISO weeks)'
         required: false
         default: '91'
+      send_email:
+        description: 'Email the summary to the owner (set false to verify a change without a send)'
+        required: false
+        default: 'true'
 
 concurrency:
   group: analyze-traffic-sources
@@ -30,6 +34,14 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-node
+      # shows.json gives the summary real show titles and open/closed status
+      # ("Electra / Persona (West End) page", "the show closed, so expected").
+      # Optional: without it the summary falls back to names built from slugs.
+      - name: Checkout core data (show titles for the summary)
+        continue-on-error: true
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - name: Query GA4 + PostHog and build the report
         env:
@@ -52,11 +64,13 @@ jobs:
       # when incomplete (the banner says what failed). Transactional to
       # OWNER_EMAIL only; never a broadcast.
       - name: Email the report to the owner
-        if: always()
+        # Scheduled runs have no inputs (empty != 'false' → send); a manual
+        # run can pass send_email=false to check a change without a send.
+        if: always() && inputs.send_email != 'false'
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-        run: node scripts/email-traffic-report.js --report=traffic-analysis/traffic-sources-report.md --run-url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        run: node scripts/email-traffic-report.js --report=traffic-analysis/traffic-sources-report.md --summary=traffic-analysis/traffic-sources-summary.md --run-url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
       - name: Upload report + raw data
         if: always()

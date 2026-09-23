@@ -412,7 +412,7 @@ function newSources(series, weeks, currentWeek, { minTotal = 5 } = {}) {
 }
 
 // Search engines and our own domain are not "sites linking to us".
-const NOT_A_LINKING_SITE = /google\.|bing\.com|yahoo\.|duckduckgo|ecosia|brave\.com|kagi\.com|yandex|baidu|startpage|qwant|broadwayscorecard\.com|^\$direct$|^\(none\)$/i;
+const NOT_A_LINKING_SITE = /google\.|bing\.com|yahoo\.|duckduckgo|ecosia|brave\.com|kagi\.com|yandex|baidu|startpage|qwant|lilo\.org|oceanhero|presearch|metacrawler|lycos|zapmeta|hotbot|search66|webcrawler|dogpile|excite\.|ask\.com|aol\.com|^(www\.)?search\.|broadwayscorecard\.com|^\$direct$|^\(none\)$/i;
 
 /** referralLanding rows are keyed "domain → path"; index them week → domain → {path: sessions}. */
 function indexReferralLanding(rows) {
@@ -613,6 +613,10 @@ async function main() {
   const args = Object.fromEntries(process.argv.slice(2).filter((a) => a.startsWith('--')).map((a) => {
     const [k, v] = a.slice(2).split('='); return [k, v ?? true];
   }));
+  // --from-raw=<traffic-sources-raw.json>: re-render from a previous run's data
+  // without querying (fast iteration on the wording, and the way a human
+  // summary can be produced locally from a CI artifact).
+  const fromRaw = typeof args['from-raw'] === 'string' ? JSON.parse(fs.readFileSync(args['from-raw'], 'utf8')) : null;
   const days = parseInt(args.days || '91', 10);
   if (!Number.isInteger(days) || days < 14 || days > 400) {
     console.error(`--days must be an integer between 14 and 400 (got ${args.days})`);
@@ -628,20 +632,29 @@ async function main() {
   const range = { startDate, endDate };
 
   console.log(`Range ${startDate}..${endDate} (${weeks.length} weeks, current ${currentWeek})`);
-  const [ga, ph] = await Promise.all([
+  const [ga, ph] = fromRaw ? [fromRaw.ga, fromRaw.ph] : await Promise.all([
     fetchGa4(range).catch((e) => ({ skipped: `GA4 error: ${e.message}` })),
     fetchPostHog(range).catch((e) => ({ skipped: `PostHog error: ${e.message}` })),
   ]);
+  if (fromRaw) { weeks.splice(0, weeks.length, ...fromRaw.weeks); }
   for (const [name, r] of [['GA4', ga], ['PostHog', ph]]) {
     if (r.skipped) console.log(`${name}: SKIPPED — ${r.skipped}`);
     else console.log(`${name}: ${Object.entries(r).filter(([k]) => k !== 'errors').map(([k, v]) => `${k}=${v.length}`).join(', ')}`);
   }
 
-  const { md, problems, spikes } = buildReport({ ga, ph, startDate, endDate, weeks, currentWeek });
+  const cw = fromRaw ? fromRaw.currentWeek : currentWeek;
+  const sd = fromRaw ? fromRaw.startDate : startDate;
+  const ed = fromRaw ? fromRaw.endDate : endDate;
+  const { md, problems, spikes } = buildReport({ ga, ph, startDate: sd, endDate: ed, weeks, currentWeek: cw });
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'traffic-sources-report.md'), md);
-  fs.writeFileSync(path.join(outDir, 'traffic-sources-raw.json'), JSON.stringify({ startDate, endDate, weeks, currentWeek, spikes, ga, ph }, null, 1));
-  console.log(`Wrote ${path.join(outDir, 'traffic-sources-report.md')} (${md.length} chars, ${spikes.length} spikes)`);
+  // The owner-facing summary (what the email body is made of).
+  const { buildHumanSummary } = require('./lib/traffic-report-human');
+  const showsPath = typeof args.shows === 'string' ? args.shows : [path.join(__dirname, '..', 'data', 'shows.json'), '/tmp/core-data-checkout/shows.json'].find((p) => fs.existsSync(p));
+  const summary = buildHumanSummary({ ga, ph, weeks, currentWeek: cw, problems, showsPath });
+  fs.writeFileSync(path.join(outDir, 'traffic-sources-summary.md'), summary);
+  fs.writeFileSync(path.join(outDir, 'traffic-sources-raw.json'), JSON.stringify({ startDate: sd, endDate: ed, weeks, currentWeek: cw, spikes, ga, ph }, null, 1));
+  console.log(`Wrote ${path.join(outDir, 'traffic-sources-report.md')} (${md.length} chars, ${spikes.length} spikes) + traffic-sources-summary.md (${summary.length} chars)`);
   if (problems.length) {
     for (const p of problems) console.error(`::warning::${p}`);
     console.error(`${problems.length} problem(s) — report written but incomplete`);
