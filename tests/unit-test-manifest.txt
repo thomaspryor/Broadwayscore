@@ -64,6 +64,7 @@ scripts/check-review-count-drift.test.mjs
 scripts/check-seo-health.test.mjs
 scripts/clear-stale-roundup-flags.test.mjs
 scripts/cloud-memory-sync.test.mjs
+scripts/cmux-auth-stall-watchdog.test.mjs
 scripts/collect-review-texts.test.mjs
 scripts/critical-workflow-alert-conditions.test.mjs
 scripts/cron-health-chronic.test.mjs
@@ -93,6 +94,7 @@ scripts/lib/cast-changes-data-quality.test.mjs
 scripts/lib/check-critic-coverage.test.mjs
 scripts/lib/check-merge-history.test.mjs
 scripts/lib/cli-help.test.mjs
+scripts/lib/cmux-auth-stall.test.mjs
 scripts/lib/cmux-launch.test.mjs
 scripts/lib/cmux-run-retry.test.mjs
 scripts/lib/cmux-socket-auth.test.mjs

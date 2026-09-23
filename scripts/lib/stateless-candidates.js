@@ -1,5 +1,7 @@
 'use strict';
 
+const { isPriorProductionCitation } = require('./prior-production-citations');
+
 /**
  * stateless-candidates.js — Coverage Verdict S2 (task #906), scope item 4.
  *
@@ -53,6 +55,13 @@ function knownUrlsFor(result) {
   }
   for (const bucket of ['missing', 'flaggedMisses']) {
     for (const m of asArray(result && result[bucket])) {
+      // A prior-production citation is deliberately NOT a census candidate
+      // (censusVerdictFor, BRO-3928 follow-through), so it can never carry a
+      // state and must not be expected to. Counting it here would make this
+      // monitor — whose whole job is catching real contract drift between the
+      // audit and its own census — fire on every revival forever, which is
+      // how a monitor gets muted and stops catching the drift it exists for.
+      if (isPriorProductionCitation(m)) continue;
       if (m && typeof m.url === 'string' && m.url) urls.add(m.url);
     }
   }
@@ -67,6 +76,7 @@ function knownUrlsFor(result) {
 function knownUrllessOutletsFor(result) {
   const ids = new Set();
   for (const c of asArray(result && result.citedNoUrl)) {
+    if (isPriorProductionCitation(c)) continue;   // same reason as knownUrlsFor
     if (c && c.outletId) ids.add(c.outletId);
   }
   return ids;

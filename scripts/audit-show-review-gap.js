@@ -163,6 +163,15 @@ const FRESHNESS_HOURS = parseInt(args.find(a => a.startsWith('--freshness-hours=
 const CHECKPOINT_PATH = path.join(ROOT, 'data', 'audit', 'gap-audit-checkpoint.json');
 // WE completeness gate (2026-07-10): reference rows from WE roundup aggregators.
 const { getWeReferenceRows, isWeShow, inOpeningWindow, missingSetHash } = require('./lib/gap-reference-sources');
+// The one predicate for "citation from an earlier production of this title".
+// Every count a human reads goes through it — see that module's docstring for
+// why five scattered `!m.priorRun` filters were not enough.
+const {
+  isPriorProductionCitation,
+  currentRunOnly,
+  currentRunCount,
+  splitGapCounts,
+} = require('./lib/prior-production-citations');
 const { recordGateObservation, evaluateProving, emptyTracker, aggregatorAccuracy, lowTrustSources } = require('./lib/we-gate-proving');
 const WE_PROVING_PATH = path.join(ROOT, 'data', 'audit', 'we-gate-proving.json');
 function loadWeProving() {
@@ -1137,7 +1146,7 @@ async function auditShow(show, opts = {}) {
   // CURRENT-RUN rows only; prior-run rows are permanently ingest-blocked and prove
   // nothing about ingest safety.
   if (result.weReference && weRefData) {
-    const currentRunRows = weRefData.rows.filter(r => !r.priorRun);
+    const currentRunRows = currentRunOnly(weRefData.rows);
     const missingUrls = new Set(result.missing.map(m => m.url));
     const flaggedUrls = new Set(result.flaggedMisses.map(m => m.url));
     let coveredUrlRows = 0;
@@ -1376,8 +1385,8 @@ function ingestMissingUrl(showId, url, knownOutletId) {
 // this BEFORE ingestion).
 function currentRunUncollected(r) {
   const ingestedOk = new Set((r.ingestResults || []).filter(x => x.ok).map(x => x.url));
-  const missing = (r.missing || []).filter(m => !m.priorRun && !ingestedOk.has(m.url)).length;
-  const citedNoUrl = (r.citedNoUrl || []).filter(c => !c.priorRun).length;
+  const missing = currentRunOnly(r.missing).filter(m => !ingestedOk.has(m.url)).length;
+  const citedNoUrl = currentRunCount(r.citedNoUrl);
   return missing + citedNoUrl;
 }
 
@@ -1388,9 +1397,9 @@ function computeResidualCounts(r, ingestMissing) {
   const expectedIngest = (r.ingestResults || []).filter(x => x.expected).length;
   const unclassifiedIngest = (r.ingestResults || []).filter(x => x.unclassified).length;
   const capped = (r.ingestSkippedByCap || []).length;
-  const uningested = ingestMissing ? 0 : (r.missing || []).filter(m => !m.priorRun).length;
+  const uningested = ingestMissing ? 0 : currentRunCount(r.missing);
   const recovered = (r.recoveryResults || []).filter(x => x.recovered && !x.uncited).length;
-  const flaggedOut = Math.max(0, (r.flaggedMisses || []).filter(m => !m.priorRun).length - recovered);
+  const flaggedOut = Math.max(0, currentRunCount(r.flaggedMisses) - recovered);
   const residual = failedIngest + capped + uningested + flaggedOut + conflictIngest + unclassifiedIngest;
   return { residual, failedIngest, noopIngest, conflictIngest, expectedIngest, unclassifiedIngest, capped, uningested, flaggedOut, recovered };
 }
@@ -1639,7 +1648,17 @@ async function main(argv = process.argv.slice(2)) {
       const prevCensusAt = checkpoint[s.id] && checkpoint[s.id].serpCensusAt;
       checkpoint[s.id] = {
         at: new Date().toISOString(),
-        gaps: r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length,
+        // CURRENT-RUN gap total. This was the raw sum of all three lists, so
+        // every revival carried a permanently non-zero `gaps` — and
+        // gap-audit-freshness.js grants its 365-day re-audit skip ONLY to a
+        // closed show with `gaps === 0`. A closed revival could therefore
+        // never earn the skip: it stayed in the hourly rotation forever,
+        // spending scraper credit re-confirming 2012 citations while shows
+        // that genuinely owed reviews queued behind it in the same rotation.
+        gaps: splitGapCounts(r).total,
+        // Report-only companion, so the subtraction is visible in the file
+        // rather than the gap looking like it silently vanished.
+        priorProductionGaps: splitGapCounts(r).priorProduction.total,
         // uncollected: CURRENT-run reviews we literally do not have on disk
         // (aggregator lists a URL we never fetched, or cites an outlet with no
         // URL). Consumed by the newsletter pre-send gate (task #823), which
@@ -1648,8 +1667,7 @@ async function main(argv = process.argv.slice(2)) {
         // or priorRun rows (prior-production URLs kept report-only in the
         // audit — the TKAM class, where a WE revival "missed" 77 URLs from the
         // 2018 Broadway run; same filter the WE completeness alert applies).
-        uncollected: r.missing.filter(m => !m.priorRun).length
-          + r.citedNoUrl.filter(c => !c.priorRun).length,
+        uncollected: currentRunCount(r.missing) + currentRunCount(r.citedNoUrl),
         ...(isWeShow(s) ? { refVersion: WE_REF_VERSION } : {}),
         ...(checkpoint[s.id] && checkpoint[s.id].weAlert ? { weAlert: checkpoint[s.id].weAlert } : {}),
         // Cooldown stamps ONLY on a fully-successful census (every query
@@ -1688,7 +1706,7 @@ async function main(argv = process.argv.slice(2)) {
       // Prior-run-only sets are UNFIXABLE rows (report-only forever) — alert once
       // on set-change, never daily re-ping, or a returning production emails every
       // day of the 21-day window (ship-check P1 2026-07-10).
-      const allPriorRun = [...weMissing, ...r.citedNoUrl].every(x => x.priorRun);
+      const allPriorRun = [...weMissing, ...r.citedNoUrl].every(isPriorProductionCitation);
       // Manual runs (no --checkpoint) have no dedup state — the operator is
       // watching stdout; log instead of emailing on every invocation.
       if (useCheckpoint && (hash !== prevAlert.hash || (rePingDue && !allPriorRun))) {
@@ -1737,11 +1755,10 @@ async function main(argv = process.argv.slice(2)) {
     // so a common-title show doesn't read as a disaster. Cats (Regent's Park
     // 2026) printed "114 gap" when every one of those was a correctly-blocked
     // Jellicle Ball / 2019 movie / 2016 Broadway-revival URL (2026-08-06).
-    const nPriorGap = r.missing.filter(m => m.priorRun).length
-      + r.flaggedMisses.filter(m => m.priorRun).length
-      + r.citedNoUrl.filter(c => c.priorRun).length;
+    const nPriorGap = splitGapCounts(r).priorProduction.total;
     const gapTotal = r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length - nPriorGap;
-    const summary = `  ${r.inReviewsJson}/${r.aggregatorListedUrls.length || '?'} reviews | ${gapTotal} gap (missing=${r.missing.filter(m => !m.priorRun).length} flagged=${r.flaggedMisses.filter(m => !m.priorRun).length} citedNoUrl=${r.citedNoUrl.filter(c => !c.priorRun).length}${nPriorGap ? ` | +${nPriorGap} prior-run blocked, not counted` : ''})`;
+    const gapSplit = splitGapCounts(r);
+    const summary = `  ${r.inReviewsJson}/${r.aggregatorListedUrls.length || '?'} reviews | ${gapTotal} gap (missing=${gapSplit.missing} flagged=${gapSplit.flaggedMisses} citedNoUrl=${gapSplit.citedNoUrl}${nPriorGap ? ` | +${nPriorGap} prior-run blocked, not counted` : ''})`;
     if (verbose || gapTotal > 0) console.log(`${r.showId}${verbose ? '' : ': ' + r.title}\n${summary}`);
     if (verbose && r.missing.length > 0) {
       for (const m of r.missing) console.log(`    ❌ ${m.url}`);
@@ -1795,7 +1812,7 @@ async function main(argv = process.argv.slice(2)) {
       const eligibleMissing = r.missing.filter(m => !blockedPred(m));
       if (weBlocked.length > 0) {
         r.weIngestBlocked = weBlocked.map(m => ({ url: m.url, host: m.host, priorRun: !!m.priorRun, reason: ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust, serpCensusGateOn }) }));
-        const nPrior = weBlocked.filter(m => m.priorRun).length;
+        const nPrior = weBlocked.filter(isPriorProductionCitation).length;
         console.log(`  ⛔ ${weBlocked.length} URL(s) not ingested (${nPrior} prior-production — permanently report-only${nPrior < weBlocked.length ? `; ${weBlocked.length - nPrior} WE_GAP_INGEST unset — report-only mode` : ''})`);
       }
       const ingestable = eligibleMissing.slice(0, INGEST_PER_SHOW_CAP);
@@ -1866,7 +1883,7 @@ async function main(argv = process.argv.slice(2)) {
       const recBlockedPred = (m) => ingestBlockReason(m, { showIsWe: isWeShow(s), weGateOn: weRecGateOn, lowTrustSources: lowTrust, serpCensusGateOn: serpCensusRecGateOn }) !== null;
       const weRecBlocked = r.flaggedMisses.filter(m => m.recoverable && recBlockedPred(m));
       if (weRecBlocked.length > 0) {
-        const nPrior = weRecBlocked.filter(m => m.priorRun).length;
+        const nPrior = weRecBlocked.filter(isPriorProductionCitation).length;
         console.log(`  ⛔ ${weRecBlocked.length} recoverable(s) not recovered (${nPrior} prior-production — permanently report-only${nPrior < weRecBlocked.length ? `; ${weRecBlocked.length - nPrior} WE_GAP_INGEST unset — report-only mode` : ''})`);
       }
       const recoverables = r.flaggedMisses.filter(m => m.recoverable && !recBlockedPred(m));
