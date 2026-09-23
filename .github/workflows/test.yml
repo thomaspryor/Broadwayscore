@@ -38,6 +38,12 @@ on:
       # covered by scripts/lib/**, but a solo edit to the wrapper would
       # otherwise trigger ZERO CI — the exact gap task #1745 documents.
       - 'scripts/check-missed-broadcasts.js'
+      # scripts/cmux-auth-stall-watchdog.js (BRO-4056) is the I/O wrapper for
+      # scripts/lib/cmux-auth-stall.js (covered by the glob above) — a solo
+      # edit to the wrapper (e.g. the read-screen/rename loop) would otherwise
+      # trigger ZERO CI, the same gap task #1745 documents.
+      - 'scripts/cmux-auth-stall-watchdog.js'
+      - 'scripts/cmux-auth-stall-watchdog.test.mjs'
       # scripts/audit-we-closing-dates.js (BRO-1158) is the I/O orchestrator for
       # scripts/lib/{we-closing-date-extract,we-closing-date-classify,westend-slug-discovery}.js
       # (all covered by the scripts/lib/** glob above). A solo edit to the
@@ -2449,6 +2455,13 @@ on:
       # (root-level scripts/*.test.mjs is not globbed) — path-listed so a
       # solo edit still triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/bsc-reconcile-reopen-idempotency.test.mjs'
+      # BRO-3925 (backlog-drain R4): Linear-'started' zombie sweep. Pure
+      # logic lives in scripts/lib/linear-started-zombie-sweep.js (already
+      # covered by the scripts/lib/** glob above); this test lives in
+      # scripts/tests/ (not globbed, registered in
+      # tests/unit-test-manifest.txt) so a solo edit still triggers CI
+      # (feedback_test_yml_push_path_allowlist).
+      - 'scripts/tests/bsc-reconcile-linear-started.test.mjs'
       # Flagless-resume revive helper (task #985) — colocated test runs in the
       # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
       - 'tests/unit/bsc-runner-lease.test.mjs'

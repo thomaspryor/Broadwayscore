@@ -63,6 +63,10 @@ const NON_JOB_STATE_EVENTS = Object.freeze({
   // terminal jobId (STOPPED_SHORT/STRANDED), not a job-state transition of
   // its own, so the terminal/open fold never needs to classify it.
   'landed-acked': 'ack-landed.js audit row on an already-terminal jobId, not a job-state event',
+  // dispatch-ledger.js JOB_EVENTS.FANOUT_VERIFIED definition (BRO-3939): "Not
+  // a job event: not terminal, not dead-like, not an attempt; it names refs,
+  // never a jobId" — a Gate O v2 proof row, taskId 'fanout'.
+  'fanout-verified': 'fanout-verified.js proof row naming refs, never a jobId; not a job-state event',
 });
 
 test('every JOB_EVENTS value is exactly terminal, open, or a named non-job-state exemption', () => {
