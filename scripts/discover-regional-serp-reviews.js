@@ -119,7 +119,9 @@ function looksLikeAggregationOrReaction(url, title) {
 function resolveRegisteredOutlet(url) {
   const domain = _parseDomain(url);
   if (!domain) return null;
-  return lookupOutletForHost(domain);
+  // exactOnly: this automated path ingests whatever it resolves; a parent-domain
+  // match would turn forum.broadwayworld.com threads into BroadwayWorld reviews.
+  return lookupOutletForHost(domain, { exactOnly: true });
 }
 
 function selectRegionalShows() {

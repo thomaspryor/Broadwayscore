@@ -126,6 +126,10 @@ function buildManualReviewFields(opts = {}) {
     // re-ingest stayed hidden). Same recipe as
     // memory/feedback_manual_review_protection_fields.md.
     fields.rejectionReason = null;
+    // wrongShowReason is write-guard protected: when the file already carries
+    // wrongShowManualClear the guard keeps the old text. Harmless for
+    // inclusion (review-guards only re-promotes it via contentVerificationPromoted,
+    // nulled here), so it is not added to protectedFields below.
     fields.wrongShowReason = null;
     fields.isNonReviewReason = null;
     fields.contentVerificationPromoted = null;
@@ -165,7 +169,6 @@ function buildManualReviewFields(opts = {}) {
       'allowFilmSignal',
       'contentVerification',
       'rejectionReason',
-      'wrongShowReason',
       'isNonReviewReason',
       'contentVerificationPromoted',
       'fullText',

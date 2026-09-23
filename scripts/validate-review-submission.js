@@ -29,7 +29,6 @@ const __dirname = path.dirname(__filename);
 // Load data files
 const showsPath = path.join(__dirname, '../data/shows.json');
 const reviewsPath = path.join(__dirname, '../data/reviews.json');
-const reviewTextsPath = path.join(__dirname, '../data/review-texts');
 const outletRegistryPath = path.join(__dirname, '../data/outlet-registry.json');
 const criticRegistryPath = path.join(__dirname, '../data/critic-registry.json');
 
@@ -141,22 +140,12 @@ function checkDuplicateReview(url, showId) {
     }
   }
 
-  // Check review-texts directory if showId is provided
-  if (showId && fs.existsSync(path.join(reviewTextsPath, showId))) {
-    const files = fs.readdirSync(path.join(reviewTextsPath, showId));
-
-    for (const file of files) {
-      if (!file.endsWith('.json') || file === 'failed-fetches.json') continue;
-
-      const reviewData = JSON.parse(
-        fs.readFileSync(path.join(reviewTextsPath, showId, file), 'utf-8')
-      );
-
-      if (reviewData.url && reviewData.url.toLowerCase() === url.toLowerCase()) {
-        return { isDuplicate: true, location: `review-texts/${showId}/${file}`, showId };
-      }
-    }
-  }
+  // Only reviews.json (what the site shows) counts as "already in our
+  // database". A review-texts file that the rebuild EXCLUDES is not on the
+  // site; rejecting a resubmission because of it made a hidden review
+  // impossible to retry (Golden Boy / Daily Mail, issue #908). Approving lets
+  // ingest merge into the existing file and check-submission-landed.js report
+  // whether it reached the site this time.
 
   return { isDuplicate: false };
 }
