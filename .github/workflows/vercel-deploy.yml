@@ -568,6 +568,7 @@ jobs:
             }
 
       - name: Notify on failure
+        id: notify
         if: failure() && steps.check-newer.outputs.skip_alert != 'true'
         uses: ./.github/actions/notify-failure
         with:
@@ -579,7 +580,13 @@ jobs:
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
 
       - name: Trigger investigation
-        if: failure() && steps.check-newer.outputs.skip_alert != 'true'
+        # Share the notify step's 2h cooldown. investigate-alert.yml has no dedup
+        # of its own and always emails, so without this every consecutive failed
+        # deploy (one per cron tick) sent another "[Investigation] Deploy to
+        # Vercel Failed" email while the plain alert was correctly suppressed
+        # (00:18 and 00:32 on 2026-09-23). The 3rd-consecutive-failure
+        # escalation in check-streak below is unaffected.
+        if: failure() && steps.check-newer.outputs.skip_alert != 'true' && steps.notify.outputs.suppressed != 'true'
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
