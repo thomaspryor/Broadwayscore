@@ -130,6 +130,58 @@ function ledgerPrecondition(rows) {
   return { refusals, newest, launch, launchVerifyCmd, stranded };
 }
 
+// The EARLIEST launch/job-spawned row across ALL of a ref's ledger rows —
+// deliberately NOT ledgerPrecondition's `launch` (that resolves to the MOST
+// RECENT launch in scope, right for decideAck's "tie this sha to THIS
+// attempt," wrong here: decideAlreadyLanded's claim is "before ANY dispatch
+// on its ledger" (BRO-4069), i.e. before every attempt, not just the latest
+// one. A sha that predates only the latest of several attempts could still
+// be an EARLIER attempt's own legitimate work — decideAck --job-id is the
+// correct tool for that shape, not this one (pre-implementation review,
+// 2026-09-23: comparing against the latest launch would silently mislabel a
+// real earlier landing as "no dispatch needed").
+function earliestLaunch(rows) {
+  let earliest = null;
+  let earliestTs = Infinity;
+  for (const r of rows || []) {
+    if (!LAUNCH_EVENTS.has(String(r.event))) continue;
+    const ts = Date.parse(r.ts || '');
+    if (Number.isFinite(ts) && ts < earliestTs) { earliestTs = ts; earliest = r; }
+  }
+  return earliest;
+}
+
+// Shared mechanical checks between decideAck and decideAlreadyLanded — the
+// checkout/verify/reason gates are identical in both; factored out so the
+// two decision functions can't drift apart on these while their sha-timing
+// and event-shape logic (the part that's actually different) stay separate,
+// readable functions per BRO-4069's design ask for a DISTINCT verdict.
+function checkoutRefusals(checkout) {
+  const refusals = [];
+  if (!checkout.containsSha) {
+    refusals.push('the checkout the verify command would run in does not contain the sha yet — pull origin/main there first');
+  }
+  if (Array.isArray(checkout.dirtyCodePaths) && checkout.dirtyCodePaths.length) {
+    refusals.push(`the checkout has uncommitted code changes (${checkout.dirtyCodePaths.slice(0, 5).join(', ')}${checkout.dirtyCodePaths.length > 5 ? ', …' : ''}) — a verify run there would not prove origin/main`);
+  }
+  return refusals;
+}
+
+function verifyRefusals(verify) {
+  if (!verify.cmd) return ['--verify is required (a safe-form acceptance command)'];
+  if (!verify.safe) return [`--verify is not a safe-form command: ${verify.unsafeReason || 'rejected by the allowlist'}`];
+  if (verify.exitCode !== 0) return [`verify command exited ${verify.exitCode === null || verify.exitCode === undefined ? '(not run)' : verify.exitCode}, not 0: ${verify.cmd}`];
+  return [];
+}
+
+function reasonRefusals(reason) {
+  const reasonText = String(reason || '').trim();
+  if (reasonText.length < MIN_REASON_CHARS) {
+    return [`--reason must be at least ${MIN_REASON_CHARS} characters (got ${reasonText.length})`];
+  }
+  return [];
+}
+
 /**
  * @param {object} input
  * @param {string} input.ref            e.g. 'BRO-3535'
@@ -199,26 +251,11 @@ function decideAck(input) {
     refusals.push(`the sha's commit message does not name ${ref} — pass the job's own commit, not an unrelated one`);
   }
 
-  if (!checkout.containsSha) {
-    refusals.push('the checkout the verify command would run in does not contain the sha yet — pull origin/main there first');
-  }
-  if (Array.isArray(checkout.dirtyCodePaths) && checkout.dirtyCodePaths.length) {
-    refusals.push(`the checkout has uncommitted code changes (${checkout.dirtyCodePaths.slice(0, 5).join(', ')}${checkout.dirtyCodePaths.length > 5 ? ', …' : ''}) — a verify run there would not prove origin/main`);
-  }
-
-  if (!verify.cmd) {
-    refusals.push('--verify is required (a safe-form acceptance command)');
-  } else if (!verify.safe) {
-    refusals.push(`--verify is not a safe-form command: ${verify.unsafeReason || 'rejected by the allowlist'}`);
-  } else if (verify.exitCode !== 0) {
-    refusals.push(`verify command exited ${verify.exitCode === null || verify.exitCode === undefined ? '(not run)' : verify.exitCode}, not 0: ${verify.cmd}`);
-  }
+  refusals.push(...checkoutRefusals(checkout));
+  refusals.push(...verifyRefusals(verify));
+  refusals.push(...reasonRefusals(reason));
 
   const reasonText = String(reason || '').trim();
-  if (reasonText.length < MIN_REASON_CHARS) {
-    refusals.push(`--reason must be at least ${MIN_REASON_CHARS} characters (got ${reasonText.length})`);
-  }
-
   const ok = refusals.length === 0;
   const row = ok ? {
     event: 'landed-acked',
@@ -235,11 +272,95 @@ function decideAck(input) {
   return { ok, refusals, row, newest, launch };
 }
 
+/**
+ * BRO-4069 — the sibling case decideAck cannot express: the ref's real work
+ * landed on origin/main BEFORE any dispatch attempt on its ledger even
+ * launched (a stale/mistaken re-dispatch of an already-done card). decideAck
+ * ties a sha to ONE attempt by requiring it be authored AFTER that attempt's
+ * launch; when the sha genuinely predates every attempt, that tie can never
+ * pass, and the card can never acquire a clean terminal ledger row (real
+ * case: linear:BRO-3471, landed 2026-09-15T21:33-04:00, re-dispatched by
+ * mistake on 2026-09-20 and 2026-09-21, both retracted no-ops).
+ *
+ * Asserts the OPPOSITE timing from decideAck: the sha must be authored
+ * before the EARLIEST launch/job-spawned row across the ref's WHOLE ledger
+ * (earliestLaunch, not ledgerPrecondition's scoped/latest `launch` — see
+ * that function's header for why the latest launch would be the wrong
+ * comparison here). No --job-id support: "before ANY dispatch" is a
+ * ledger-wide claim, not an attempt-scoped one, so callers must not scope
+ * `rows` before passing them in.
+ *
+ * Otherwise unchanged from decideAck: fresh-origin/main ancestry, the
+ * commit message must still name the ref (the one guard against an
+ * unrelated earlier commit being passed off as "the card's prior landing"),
+ * checkout must contain the sha with clean code paths, --verify must be
+ * safe-form and exit 0, --reason >= MIN_REASON_CHARS. Writes
+ * 'landed-before-dispatch' (JOB_EVENTS.LANDED_BEFORE_DISPATCH in
+ * dispatch-ledger.js), never 'landed-acked' — a distinct event so a no-op
+ * re-dispatch is never misrecorded as this job's own productive work.
+ *
+ * @param {object} input
+ * @param {string} input.ref     e.g. 'BRO-3471'
+ * @param {object[]} input.rows  ALL ledger rows for the ref (rowsForRef output, unscoped)
+ * @param {object} input.landing  same shape as decideAck's input.landing
+ * @param {object} input.checkout {containsSha:boolean, dirtyCodePaths:string[]}
+ * @param {object} input.verify   {cmd, safe:boolean, unsafeReason, exitCode:number|null}
+ * @param {string} input.reason
+ * @param {string} [input.ackedBy]
+ */
+function decideAlreadyLanded(input) {
+  const { ref, rows, landing = {}, checkout = {}, verify = {}, reason, ackedBy } = input || {};
+  const pre = ledgerPrecondition(rows);
+  const refusals = [...pre.refusals];
+  const { newest } = pre;
+  const launch = earliestLaunch(rows);
+  if (!launch) refusals.push('no launch/job-spawned row for this ref — cannot compare a sha against a dispatch that was never recorded');
+
+  if (landing.verdict !== 'LANDED') {
+    refusals.push(`${landing.sha || '<sha>'} is not an ancestor of origin/main after a fresh fetch (verdict ${landing.verdict || 'missing'}${landing.reason ? ', ' + landing.reason : ''})`);
+  }
+
+  const workTsRaw = landing.authorTs || landing.commitTs || '';
+  const workTs = Date.parse(workTsRaw);
+  if (!Number.isFinite(workTs)) {
+    refusals.push('could not read the commit timestamp for the sha');
+  } else if (launch) {
+    const launchTs = Date.parse(launch.ts || '');
+    if (Number.isFinite(launchTs) && workTs >= launchTs) {
+      refusals.push(`the sha was authored at ${workTsRaw}, not before the ref's earliest dispatch launch (${launch.ts}) — --already-landed only covers work that predates every attempt on this ledger; if this sha is a LATER attempt's own work, use decideAck (optionally with --job-id) instead`);
+    }
+  }
+
+  const refRe = new RegExp(`(?<![\\w-])${String(ref || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\w-])`, 'i');
+  if (!refRe.test(String(landing.message || ''))) {
+    refusals.push(`the sha's commit message does not name ${ref} — pass the card's own prior landing commit, not an unrelated one`);
+  }
+
+  refusals.push(...checkoutRefusals(checkout));
+  refusals.push(...verifyRefusals(verify));
+  refusals.push(...reasonRefusals(reason));
+
+  const reasonText = String(reason || '').trim();
+  const ok = refusals.length === 0;
+  const row = ok ? {
+    event: 'landed-before-dispatch',
+    taskId: (newest && newest.taskId) || `linear:${ref}`,
+    jobId: (newest && newest.jobId) || (launch && launch.jobId) || null,
+    sha: landing.sha,
+    verifyCmd: verify.cmd,
+    reason: reasonText,
+    ackedBy: ackedBy || 'manual',
+    priorEvent: newest ? newest.event : null,
+  } : null;
+  return { ok, refusals, row, newest, launch };
+}
+
 function formatAckLine(ref, row) {
   return `ACKED: ${ref} — ${row.sha} on origin/main, ${row.verifyCmd} exit 0`;
 }
 
 module.exports = {
   MIN_REASON_CHARS, COMMIT_AFTER_TERMINAL_GRACE_MS, ACKABLE_TERMINAL_EVENTS, NOTHING_TO_ACK_EVENTS,
-  rowsForRef, rowsForJobId, normalizeRef, ledgerPrecondition, decideAck, formatAckLine,
+  rowsForRef, rowsForJobId, normalizeRef, ledgerPrecondition, earliestLaunch,
+  decideAck, decideAlreadyLanded, formatAckLine,
 };

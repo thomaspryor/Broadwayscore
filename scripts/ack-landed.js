@@ -48,6 +48,17 @@
  * actually belongs to the card. Omit it for today's default (latest
  * attempt).
  *
+ * --already-landed (BRO-4069): the sibling case --job-id cannot fix — the
+ * ref's real work landed BEFORE ANY dispatch attempt on its ledger even
+ * launched (every attempt was a mistaken re-dispatch of an already-done
+ * card, so no jobId's own window can ever tie the sha to it). Asserts the
+ * OPPOSITE timing: --sha must be authored before the ref's EARLIEST
+ * launch/job-spawned row, not after some attempt's. Writes a distinct
+ * `landed-before-dispatch` row (never `landed-acked`, so the no-op
+ * re-dispatch isn't misrecorded as productive work). Cannot be combined
+ * with --job-id — "before ANY dispatch" is ledger-wide, not attempt-scoped.
+ * decision logic: scripts/lib/ack-landed-core.js decideAlreadyLanded().
+ *
  * Usage:
  *   node scripts/ack-landed.js --id BRO-3535 --sha c88cdf6c126 \
  *     --verify "node scripts/audit-workflow-concurrency.js" \
@@ -84,10 +95,15 @@ Usage:
                      latest — for acking an EARLIER attempt that landed after
                      the card was re-dispatched. Must be a jobId already on
                      this ref's ledger rows.
+  --already-landed  assert the sha was authored BEFORE the ref's EARLIEST
+                     dispatch launch (the opposite of the default tie) —
+                     for a card whose work already existed before it was
+                     ever (mistakenly) dispatched. Writes a distinct
+                     landed-before-dispatch row. Cannot combine with --job-id.
 `;
 
 function parseArgs(argv) {
-  const out = { noLinear: false };
+  const out = { noLinear: false, alreadyLanded: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     const eq = a.indexOf('=');
@@ -101,9 +117,13 @@ function parseArgs(argv) {
       case '--acked-by': out.ackedBy = val(); break;
       case '--job-id': out.jobId = val(); break;
       case '--no-linear': out.noLinear = true; break;
+      case '--already-landed': out.alreadyLanded = true; break;
       default:
         return { error: `unknown argument: ${a}` };
     }
+  }
+  if (out.alreadyLanded && out.jobId) {
+    return { error: '--already-landed cannot be combined with --job-id — "before ANY dispatch" is ledger-wide, not attempt-scoped' };
   }
   return out;
 }
@@ -137,18 +157,29 @@ function main() {
   }
   const ackedBy = args.ackedBy || process.env.CLAUDE_CODE_SESSION_ID || 'manual';
   const jobId = args.jobId || null;
+  const alreadyLanded = Boolean(args.alreadyLanded);
+  // core.decideAck / core.decideAlreadyLanded, picked once up front — the
+  // two share every step below except which decision function ultimately
+  // runs (BRO-4069: decideAlreadyLanded asserts the OPPOSITE sha timing and
+  // never accepts a jobId — see its header in ack-landed-core.js).
+  const decide = (extra) => (alreadyLanded
+    ? core.decideAlreadyLanded({ ref, rows, landing, checkout, reason: args.reason, ackedBy, ...extra })
+    : core.decideAck({ ref, rows, jobId, landing, checkout, reason: args.reason, ackedBy, ...extra }));
 
   // 1. Ledger precondition first — cheap, and a plainly un-ackable ref must
   //    not trigger a fetch or a 10-minute verify run. When --job-id is given,
   //    scope to that ONE dispatch attempt (BRO-4066) so a later attempt's own
   //    terminal row (job-done/landed-acked/another bad row) never masks an
-  //    earlier attempt's landing.
+  //    earlier attempt's landing. --already-landed never scopes by jobId —
+  //    "before ANY dispatch" is ledger-wide (parseArgs already refuses the
+  //    combination).
   const rows = core.rowsForRef(ledger.readEntries(), ref);
   const scoped = core.rowsForJobId(rows, jobId, ref);
   if (scoped.refusal) refuse(ref, [scoped.refusal]);
   const pre = core.ledgerPrecondition(scoped.rows);
   if (pre.refusals.length) refuse(ref, pre.refusals);
-  console.error(`→ ledger: newest row for ${ref}${jobId ? ` (job ${jobId})` : ''} is ${pre.newest.event} (${pre.newest.ts}); launch ${pre.launch.ts}`);
+  const earliestLaunchTs = alreadyLanded ? core.earliestLaunch(rows).ts : pre.launch.ts;
+  console.error(`→ ledger: newest row for ${ref}${jobId ? ` (job ${jobId})` : ''} is ${pre.newest.event} (${pre.newest.ts}); ${alreadyLanded ? 'earliest launch' : 'launch'} ${earliestLaunchTs}`);
 
   // 2. Fresh origin/main + ancestry (shallow-safe).
   try {
@@ -193,7 +224,7 @@ function main() {
   //    spending the run so an unsafe/untied ack never executes anything.
   const verify = { cmd: args.verify.trim(), safe: isSafeCheckCommand(args.verify.trim()), unsafeReason: null, exitCode: null };
   if (!verify.safe) verify.unsafeReason = (explainUnsafeCheckCommand(verify.cmd) || {}).reason || null;
-  const dryRun = core.decideAck({ ref, rows, jobId, landing, checkout, verify: { ...verify, exitCode: 0 }, reason: args.reason, ackedBy });
+  const dryRun = decide({ verify: { ...verify, exitCode: 0 } });
   if (!dryRun.ok) refuse(ref, dryRun.refusals);
 
   console.error(`→ running verify in ${REPO}: ${verify.cmd}`);
@@ -204,7 +235,7 @@ function main() {
     console.error(`   | ${tail}`);
   }
 
-  const decision = core.decideAck({ ref, rows, jobId, landing, checkout, verify, reason: args.reason, ackedBy });
+  const decision = decide({ verify });
   if (!decision.ok) refuse(ref, decision.refusals);
 
   // 5. Write the row. appendEntry self-stamps ts (never backdated).
@@ -212,7 +243,7 @@ function main() {
   console.error(`→ ledger row appended: ${JSON.stringify(written)}`);
 
   if (!args.noLinear) {
-    const comment = `landed-acked by ${ackedBy} (${written.ts}): ${sha} is on origin/main; \`${verify.cmd}\` exit 0. Reason: ${decision.row.reason}. Prior ledger row: ${decision.row.priorEvent}.`;
+    const comment = `${decision.row.event} by ${ackedBy} (${written.ts}): ${sha} is on origin/main; \`${verify.cmd}\` exit 0. Reason: ${decision.row.reason}. Prior ledger row: ${decision.row.priorEvent}.`;
     const lb = spawnSync('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'update', ref, '--comment', comment], { cwd: REPO, encoding: 'utf8', timeout: 60000 });
     console.error(lb.status === 0
       ? `→ Linear comment posted on ${ref}`
