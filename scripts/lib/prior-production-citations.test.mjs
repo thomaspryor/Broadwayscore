@@ -154,9 +154,12 @@ const { mergeGapAudit, needsCensusMigration, CENSUS_SCHEMA, riskStateMap, isRisk
   require('./gap-audit-merge.js');
 
 test('needsCensusMigration flags a pre-BRO-3928 row and leaves current + verdictless rows alone', () => {
-  assert.equal(needsCensusMigration({ censusVerdict: { verdict: 'incomplete', liveCount: 1, candidateCount: 9 } }), true);
-  assert.equal(needsCensusMigration({ censusVerdict: { censusSchema: 1, liveCount: 1, candidateCount: 9 } }), true);
-  assert.equal(needsCensusMigration({ censusVerdict: { censusSchema: CENSUS_SCHEMA } }), false);
+  const withSource = (cv) => ({ censusVerdict: cv, missing: [{ url: 'x', host: 'x.com' }] });
+  assert.equal(needsCensusMigration(withSource({ verdict: 'incomplete', liveCount: 1, candidateCount: 9 })), true);
+  assert.equal(needsCensusMigration(withSource({ censusSchema: 1, liveCount: 1, candidateCount: 9 })), true);
+  assert.equal(needsCensusMigration(withSource({ censusSchema: CENSUS_SCHEMA })), false);
+  // No source arrays to rebuild from → refuse, however stale the stamp.
+  assert.equal(needsCensusMigration({ censusVerdict: { verdict: 'incomplete', liveCount: 1, candidateCount: 9 } }), false);
   assert.equal(needsCensusMigration({ showId: 'legacy-no-verdict' }), false, 'never invent a verdict for a show nobody audited');
   assert.equal(needsCensusMigration(null), false);
 });
@@ -199,4 +202,70 @@ test('a REAL coverage loss still trips the guard after normalisation', () => {
   const prev = riskStateMap([healthy]);
   const next = riskStateMap([broken]);
   assert.equal(isRiskyGapChange(prev['revival-2026'], next['revival-2026']), true);
+});
+
+// ── Migration guards (Codex adversarial review) ─────────────────────────────
+
+test('a row with no usable source arrays is NOT migrated — refuse rather than erase', () => {
+  // A partial write leaves a populated verdict beside empty arrays. Rebuilding
+  // from those arrays would produce candidateCount 0 and silently erase a real
+  // census — and riskStateMap would normalise the previous row the same way,
+  // so the blast-radius guard could not see the loss either.
+  const hollow = {
+    showId: 'hollow-2026',
+    computedAt: '2026-09-01T00:00:00.000Z',
+    missing: [], flaggedMisses: [], citedNoUrl: [], aggregatorListedUrls: [], aggregatorArticles: [],
+    censusVerdict: { verdict: 'incomplete', liveCount: 4, candidateCount: 9, candidates: [] },
+  };
+  assert.equal(needsCensusMigration(hollow), false);
+  const merged = mergeGapAudit(
+    { generatedAt: '2026-09-01T00:00:00.000Z', results: [hollow] },
+    { generatedAt: '2026-09-22T00:00:00.000Z', results: [] },
+  );
+  const row = merged.results.find((r) => r.showId === 'hollow-2026');
+  assert.equal(row.censusVerdict.candidateCount, 9, 'the stale-but-real verdict survives');
+  assert.equal(row.censusVerdict.liveCount, 4);
+});
+
+test('an unparseable computedAt does not become the census clock', () => {
+  // Such a stamp deliberately survives the retention check (it keeps rows it
+  // cannot date). Passed to the classifier as `now`, every age comparison goes
+  // NaN — a GAP downgrades to IN_FLIGHT and the schema stamp then stops it
+  // ever being retried. The run clock is used instead.
+  const bad = { ...REVIVAL, computedAt: 'not-a-date',
+    censusVerdict: { verdict: 'incomplete', liveCount: 1, candidateCount: 6, candidates: [] } };
+  const merged = mergeGapAudit(
+    { generatedAt: '2026-09-01T00:00:00.000Z', results: [bad] },
+    { generatedAt: '2026-09-22T00:00:00.000Z', results: [] },
+  );
+  const row = merged.results.find((r) => r.showId === 'revival-2026');
+  assert.equal(row.censusVerdict.censusSchema, CENSUS_SCHEMA);
+  assert.equal(row.censusVerdict.candidateCount, 2);
+  for (const c of row.censusVerdict.candidates || []) {
+    assert.ok(c.state && c.state !== 'undefined', 'every candidate still carries a real state');
+  }
+});
+
+test('migration is idempotent — a second merge changes nothing', () => {
+  const stale = { ...REVIVAL, computedAt: '2026-09-01T00:00:00.000Z',
+    censusVerdict: { verdict: 'incomplete', liveCount: 1, candidateCount: 6, candidates: [] } };
+  const once = mergeGapAudit({ generatedAt: '2026-09-01T00:00:00.000Z', results: [stale] },
+    { generatedAt: '2026-09-22T00:00:00.000Z', results: [] });
+  const twice = mergeGapAudit(once, { generatedAt: '2026-09-23T00:00:00.000Z', results: [] });
+  const a = once.results.find((r) => r.showId === 'revival-2026');
+  const b = twice.results.find((r) => r.showId === 'revival-2026');
+  assert.equal(b.censusVerdict.candidateCount, a.censusVerdict.candidateCount);
+  assert.equal(b.censusVerdict.liveCount, a.censusVerdict.liveCount);
+  assert.equal(b.computedAt, a.computedAt, 'migration must never fake freshness, on any pass');
+});
+
+test('stateless-candidates does not expect a state for a citation the census excludes', () => {
+  // Otherwise the drift monitor fires on every revival forever and gets muted,
+  // losing the real contract-drift detection it exists for.
+  const { auditShowCandidates } = require('./stateless-candidates.js');
+  const row = { ...REVIVAL, censusVerdict: censusVerdictFor(REVIVAL) };
+  const report = auditShowCandidates(row);
+  const flagged = [...(report.statelessUrls || []), ...(report.statelessOutlets || [])];
+  assert.deepEqual(flagged.filter((x) => String(x).includes('old.example')), [],
+    'no prior-production citation may be reported as a stateless candidate');
 });

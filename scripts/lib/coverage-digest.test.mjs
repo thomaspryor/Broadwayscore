@@ -157,9 +157,11 @@ test('v2 verdict: a prior-production citation never eats a "being fetched" slot'
   );
 });
 
-test('a persisted candidate list decides membership exactly, without a schema stamp', () => {
-  // Legacy verdict that still carried its candidates: citation "c" IS in the
-  // pool, so it consumes a slot and reads as "excluded", not "separately".
+test('a pre-v2 verdict keeps the original fit-or-overflow heuristic unchanged', () => {
+  // No schema stamp: the legacy row is read exactly as it was written, so an
+  // excluded citation that FITS in the remaining slots still consumes one.
+  // (An earlier cut decided this by candidate-URL membership; withdrawn —
+  // candidateCount is outlet-distinct, so URL matching mixed counting units.)
   const line = coverageDigestLine({
     title: 'Legacy Show',
     showId: 'legacy-show-2026',
@@ -172,4 +174,25 @@ test('a persisted candidate list decides membership exactly, without a schema st
     missing: [{ url: 'b', host: 'b.com' }, { url: 'c', host: 'c.com', priorRun: true }],
   });
   assert.strictEqual(line, 'Legacy Show: 1 of 3 known reviews live — 1 being fetched, 1 excluded (older production)');
+});
+
+test('a v2 verdict ignores the candidate list entirely — outside by construction', () => {
+  // Same row, now stamped v2. The citation cannot be a candidate, so it must
+  // not eat a "being fetched" slot no matter what the candidate list says.
+  const line = coverageDigestLine({
+    title: 'Legacy Show',
+    showId: 'legacy-show-2026',
+    censusVerdict: {
+      verdict: 'incomplete',
+      liveCount: 1,
+      candidateCount: 3,
+      censusSchema: 2,
+      candidates: [{ url: 'a' }, { url: 'b' }, { url: 'c' }],
+    },
+    missing: [{ url: 'b', host: 'b.com' }, { url: 'c', host: 'c.com', priorRun: true }],
+  });
+  assert.strictEqual(
+    line,
+    "Legacy Show: 1 of 3 known reviews live — 2 being fetched — separately, 1 (older production) on file from outside this run's candidate pool",
+  );
 });

@@ -325,7 +325,19 @@ function partitionAuditedResults(results, riskyIds) {
 function needsCensusMigration(row) {
   const cv = row && row.censusVerdict;
   if (!cv || typeof cv !== 'object') return false;
-  return cv.censusSchema !== CENSUS_SCHEMA;
+  if (cv.censusSchema === CENSUS_SCHEMA) return false;
+  // Only migrate a row that can actually SUPPORT a rebuilt verdict. The
+  // recompute reads the raw arrays, not the stored verdict, so a row whose
+  // arrays are absent or empty — a partial write, a truncated carry-forward —
+  // would rebuild to `no-census-yet` with candidateCount 0 and silently erase
+  // a census that was previously populated. riskStateMap would then normalise
+  // the PREVIOUS row the same way and compare zero against zero, so the
+  // blast-radius guard could not see the loss either (Codex adversarial
+  // review). Refusing to migrate leaves the stale-but-real verdict in place;
+  // the show's next real audit rewrites it properly.
+  const hasSource = ['missing', 'flaggedMisses', 'citedNoUrl', 'aggregatorListedUrls', 'aggregatorArticles']
+    .some((k) => Array.isArray(row[k]) && row[k].length > 0);
+  return hasSource;
 }
 
 /**
@@ -389,8 +401,17 @@ function mergeGapAudit(prevAudit, runAudit, opts = {}) {
     // run that produced it, and prevCandidates carries firstSeenAt forward.
     const carriedRow = stamp ? { ...r, computedAt: stamp } : { ...r };
     if (needsCensusMigration(carriedRow)) {
+      // Anchor the recompute to the row's own stamp so live/in-flight
+      // classification stays as-of the run that produced it — but ONLY if that
+      // stamp is a real date. A truthy-but-unparseable computedAt survives the
+      // retention check above (it deliberately keeps rows it cannot date), and
+      // feeding it to the classifier as `now` makes every age comparison
+      // NaN — an existing GAP silently downgrades to IN_FLIGHT and the schema
+      // stamp then stops it ever being retried (Codex adversarial review).
+      // Fall back to the run clock, which is always valid.
+      const anchorMs = stamp ? Date.parse(stamp) : NaN;
       carriedRow.censusVerdict = censusVerdictFor(carriedRow, {
-        now: stamp || now,
+        now: Number.isFinite(anchorMs) ? stamp : now,
         prevCandidates: (r.censusVerdict && r.censusVerdict.candidates) || [],
       });
     }

@@ -66,40 +66,30 @@ function coverageStatus(result) {
   // within), the whole list is reported as its own explicitly-unrelated
   // clause instead of folded into the same "N excluded" tally a reader would
   // otherwise take as a subset of "known".
-  // Is a given excluded (prior-production) citation actually INSIDE this
-  // show's candidate pool? It decides whether the citation consumes one of the
-  // un-live candidate slots or sits alongside them, and getting it wrong
-  // understates the real, actionable work — the opposite of what this digest
-  // is for. Three sources of truth, most reliable first:
+  // Is a given excluded (prior-production) citation INSIDE this show's
+  // candidate pool? It decides whether the citation consumes one of the
+  // un-live candidate slots or merely sits alongside them.
   //
-  //  1. A verdict written by the CURRENT rule (censusSchema >= 2). Since
-  //     BRO-3928's follow-through, censusVerdictFor refuses to admit a
-  //     prior-production citation as a candidate at all, so the answer is
-  //     "outside" by construction. No guessing.
-  //  2. A persisted candidate list. Exact per citation, by URL membership —
-  //     covers an older verdict that still carried its candidates.
-  //  3. Neither (a legacy row with only aggregate counts): fall back to the
-  //     original "does the excluded count FIT in the remaining slots?"
-  //     heuristic. It has to guess, but it only ever runs on rows the merge
-  //     has not migrated yet, and it is what those rows were written under.
+  // Since BRO-3928's follow-through, censusVerdictFor refuses to admit a
+  // prior-production citation as a candidate at all, so for any verdict the
+  // current rule produced the answer is "outside" by construction — no
+  // guessing, and `excluded` must NOT be subtracted from "being fetched"
+  // (doing so understates the real, actionable work, the opposite of what
+  // this digest is for).
   //
-  // The task #907 Othello case (54 prior-production citations against 38
-  // candidates) is no longer a special case under (1) or (2): it is simply a
-  // show where all 54 are outside the pool, which is now checkable rather
-  // than inferable.
+  // Older verdicts keep the original fit-or-overflow heuristic unchanged.
+  // An earlier cut of this decided membership by matching excluded URLs
+  // against the persisted `candidates` list; that was withdrawn (Codex
+  // adversarial review) because `candidateCount` is a DISTINCT-OUTLET count
+  // while a URL match counts URLs, so one excluded outlet publishing two URLs
+  // consumed two outlet slots and could report "0 being fetched" over a real
+  // gap — and because a partial candidate list read as authoritative. The
+  // legacy path is reachable only for rows the next merge has not migrated
+  // yet, so the safe choice is the behaviour those rows were written under.
   const remaining = Math.max(0, candidateCount - liveCount);
-  const candidateUrls = new Set(
-    (Array.isArray(cv.candidates) ? cv.candidates : []).map((c) => c && c.url).filter(Boolean),
-  );
-  let insidePool;
-  if (cv.censusSchema >= CENSUS_SCHEMA) {
-    insidePool = [];
-  } else if (candidateUrls.size > 0) {
-    insidePool = excluded.filter((m) => m && m.url && candidateUrls.has(m.url));
-  } else {
-    insidePool = excluded.length > remaining ? [] : excluded;
-  }
-  const outsidePool = excluded.filter((m) => !insidePool.includes(m));
+  const outsideByConstruction = cv.censusSchema >= CENSUS_SCHEMA;
+  const insidePool = (outsideByConstruction || excluded.length > remaining) ? [] : excluded;
+  const outsidePool = insidePool.length ? [] : excluded;
   const pending = Math.max(0, remaining - insidePool.length);
 
   const tally = (rows) => {
