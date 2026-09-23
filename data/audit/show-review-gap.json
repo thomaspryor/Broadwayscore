@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-09-23T06:56:57.530Z",
+  "generatedAt": "2026-09-23T12:29:09.337Z",
   "windowDays": 1095,
-  "targets": 282,
-  "auditedThisRun": 11,
-  "carriedForward": 551,
+  "targets": 281,
+  "auditedThisRun": 6,
+  "carriedForward": 556,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 313,
-    "missingCurrentRun": 453,
+    "missingCurrentRun": 448,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 811,
+    "totalFlaggedMisses": 817,
     "totalRecoverable": 6,
     "totalRecovered": 7,
     "priorProductionCitations": 2496
@@ -25474,7 +25474,7 @@
       "showId": "cosi-fan-tutte-off-broadway-2026",
       "title": "Così fan tutte",
       "openingDate": "2026-09-23",
-      "status": "upcoming",
+      "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [
         "https://playbill.com/article/read-the-reviews-for-the-metropolitan-operas-new-cosi-fan-tutte",
@@ -25491,15 +25491,17 @@
         "https://innewcastle.co.uk/review-the-glasshouse-international-centre-for-music-reopens-sage-one-with-mozarts-cosi-fan-tutti/",
         "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/",
         "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178",
+        "https://www.nytimes.com/2026/09/23/nyregion/snake-metropolitan-opera-cosi-fan-tutte.html",
         "https://parterre.com/broadcast/109259/cosi-fan-tutte/",
         "https://letterboxd.com/petricor/film/the-metropolitan-opera-cosi-fan-tutte/",
         "https://www.operabase.com/productions/cosi-fan-tutte-671121/en",
         "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
+        "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera",
         "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot",
         "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/"
       ],
-      "dirFiles": 3,
-      "dirClean": 0,
+      "dirFiles": 7,
+      "dirClean": 1,
       "inReviewsJson": 0,
       "missing": [
         {
@@ -25544,21 +25546,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/",
-          "host": "operawire.com",
-          "knownOutletId": "operawire",
-          "serpCensus": true
-        },
-        {
-          "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178",
-          "host": "bachtrack.com",
-          "knownOutletId": "bachtrack",
-          "serpCensus": true
-        },
-        {
-          "url": "https://parterre.com/broadcast/109259/cosi-fan-tutte/",
-          "host": "parterre.com",
-          "knownOutletId": "parterre-box",
+          "url": "https://www.nytimes.com/2026/09/23/nyregion/snake-metropolitan-opera-cosi-fan-tutte.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
           "serpCensus": true
         },
         {
@@ -25577,6 +25567,12 @@
           "url": "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
           "host": "londongrip.co.uk",
           "knownOutletId": "londongrip",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera",
+          "host": "australianbookreview.com.au",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -25631,6 +25627,42 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178",
+          "host": "bachtrack.com",
+          "knownOutletId": "bachtrack",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bachtrack--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://parterre.com/broadcast/109259/cosi-fan-tutte/",
+          "host": "parterre.com",
+          "knownOutletId": "parterre-box",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "parterre-box--parterre-box.json",
+              "flag": "clean",
+              "urlInDir": "https://parterre.com/broadcast/109259/cosi-fan-tutte/"
+            }
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -25657,7 +25689,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -25687,13 +25719,13 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 9,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
@@ -25763,33 +25795,9 @@
           "reason": "⚠️  provisional outlet \"innewcastle\" (not in registry) — onboard to outlet-registry.json after revie"
         },
         {
-          "url": "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/",
-          "host": "operawire.com",
-          "outletId": "operawire",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178",
-          "host": "bachtrack.com",
-          "outletId": "bachtrack",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        },
-        {
-          "url": "https://parterre.com/broadcast/109259/cosi-fan-tutte/",
-          "host": "parterre.com",
-          "outletId": "parterre-box",
+          "url": "https://www.nytimes.com/2026/09/23/nyregion/snake-metropolitan-opera-cosi-fan-tutte.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -25809,18 +25817,37 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
-        }
-      ],
-      "ingestSkippedByCap": [
+        },
         {
           "url": "https://www.operabase.com/productions/cosi-fan-tutte-671121/en",
           "host": "operabase.com",
-          "outletId": "operabase"
+          "outletId": "operabase",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"operabase\" (not in registry) — onboard to outlet-registry.json after review."
         },
         {
           "url": "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
           "host": "londongrip.co.uk",
-          "outletId": "londongrip"
+          "outletId": "londongrip",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera",
+          "host": "australianbookreview.com.au",
+          "outletId": "australianbookreview"
         },
         {
           "url": "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot",
@@ -25844,25 +25871,11 @@
             "url": "https://innewcastle.co.uk/review-the-glasshouse-international-centre-for-music-reopens-sage-one-with-mozarts-cosi-fan-tutti/"
           },
           {
-            "outletId": "operawire",
-            "outlet": "operawire",
+            "outletId": "nytimes",
+            "outlet": "nytimes",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/"
-          },
-          {
-            "outletId": "bachtrack",
-            "outlet": "bachtrack",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178"
-          },
-          {
-            "outletId": "parterre-box",
-            "outlet": "parterre-box",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://parterre.com/broadcast/109259/cosi-fan-tutte/"
+            "url": "https://www.nytimes.com/2026/09/23/nyregion/snake-metropolitan-opera-cosi-fan-tutte.html"
           },
           {
             "outletId": "letterboxd",
@@ -25886,6 +25899,13 @@
             "url": "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/"
           },
           {
+            "outletId": "australianbookreview.com.au",
+            "outlet": "australianbookreview.com.au",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera"
+          },
+          {
             "outletId": "guardian",
             "outlet": "guardian",
             "critic": "Unknown",
@@ -25898,10 +25918,30 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/"
+          },
+          {
+            "outletId": "bachtrack",
+            "outlet": "bachtrack",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178"
+          },
+          {
+            "outletId": "parterre-box",
+            "outlet": "parterre-box",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://parterre.com/broadcast/109259/cosi-fan-tutte/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/",
+            "outletId": "operawire.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
           {
             "url": "https://innewcastle.co.uk/review-the-glasshouse-international-centre-for-music-reopens-sage-one-with-mozarts-cosi-fan-tutti/",
             "outletId": "innewcastle.co.uk",
@@ -25910,25 +25950,11 @@
             "firstSeenAt": "2026-09-23T01:14:28.989Z"
           },
           {
-            "url": "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/",
-            "outletId": "operawire",
+            "url": "https://www.nytimes.com/2026/09/23/nyregion/snake-metropolitan-opera-cosi-fan-tutte.html",
+            "outletId": "nytimes",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-09-23T01:14:28.989Z"
-          },
-          {
-            "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178",
-            "outletId": "bachtrack",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-23T01:14:28.989Z"
-          },
-          {
-            "url": "https://parterre.com/broadcast/109259/cosi-fan-tutte/",
-            "outletId": "parterre-box",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+            "firstSeenAt": "2026-09-23T12:29:09.337Z"
           },
           {
             "url": "https://letterboxd.com/petricor/film/the-metropolitan-opera-cosi-fan-tutte/",
@@ -25952,6 +25978,13 @@
             "firstSeenAt": "2026-09-23T01:14:28.989Z"
           },
           {
+            "url": "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera",
+            "outletId": "australianbookreview.com.au",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T12:29:09.337Z"
+          },
+          {
             "url": "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot",
             "outletId": "guardian",
             "state": "IN_FLIGHT",
@@ -25964,13 +25997,27 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178",
+            "outletId": "bachtrack",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://parterre.com/broadcast/109259/cosi-fan-tutte/",
+            "outletId": "parterre-box",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 0,
-        "candidateCount": 9
+        "liveCount": 1,
+        "candidateCount": 11
       },
-      "computedAt": "2026-09-23T01:14:28.989Z"
+      "computedAt": "2026-09-23T12:29:09.337Z"
     },
     {
       "showId": "cowbois-west-end-2024",
@@ -32059,7 +32106,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-23T06:56:57.530Z"
+      "computedAt": "2026-09-23T12:29:09.337Z"
     },
     {
       "showId": "dinosaur-world-live-off-west-end-2026",
@@ -35607,7 +35654,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-23T06:56:57.530Z"
+      "computedAt": "2026-09-23T12:29:09.337Z"
     },
     {
       "showId": "encores-la-cage-aux-folles-off-broadway-2026",
@@ -121886,18 +121933,20 @@
         "https://www.theatermania.com/news/review-the-cherry-orchard-reimagined-by-simon-stone-as-a-k-drama_1854057/",
         "https://nystagereview.com/2026/09/18/cherry-orchard-not-your-fathers/",
         "https://www.nytimes.com/2026/09/19/theater/chekhov-cherry-orchard-simon-stone-korea.html",
+        "https://www.broadwayworld.com/westend/article/Review-THE-CHERRY-ORCHARD-Riverside-Theatre-20260911",
         "https://www.nytimes.com/2026/09/18/theater/cherry-orchard-simon-stone-jeon-do-yeon.html",
+        "https://www.vulture.com/article/chekhov-cherry-orchard-armory-stone-korean.html",
         "https://www.wsj.com/articles/the-cherry-orchard-review-chekhov-speaks-korean-5064641a",
-        "https://theaterpizzazz.com/a-korean-cast-blossoms-in-a-new-cherry-orchard/",
         "https://www.show-score.com/off-broadway-shows/the-cherry-orchard-park-avenue-armory",
-        "https://acsntn.substack.com/p/theater-the-cherry-orchard-at-park",
-        "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026",
         "https://www.newyorktheatreguide.com/show/47487-the-cherry-orchard",
+        "https://www.show-score.com/off-broadway-shows/the-cherry-orchard",
+        "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026",
+        "https://acsntn.substack.com/p/theater-the-cherry-orchard-at-park",
         "https://berkshirefinearts.com/09-21-2026_simon-stone-s-cherry-orchard.htm"
       ],
-      "dirFiles": 23,
-      "dirClean": 11,
-      "inReviewsJson": 10,
+      "dirFiles": 24,
+      "dirClean": 12,
+      "inReviewsJson": 12,
       "missing": [
         {
           "url": "https://www.timeout.com/newyork/blog/broadway-review-diane-lane-suffers-beautifully-in-the-cherry-orchard-101416",
@@ -121990,37 +122039,19 @@
           "serpCensus": true
         },
         {
-          "url": "https://berkshirefinearts.com/09-21-2026_simon-stone-s-cherry-orchard.htm",
-          "host": "berkshirefinearts.com",
+          "url": "https://www.show-score.com/off-broadway-shows/the-cherry-orchard",
+          "host": "show-score.com",
           "knownOutletId": null,
           "serpCensus": true
         }
       ],
       "dirOnly": [
         {
-          "host": "broadwayworld.com",
+          "host": "theaterpizzazz.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026",
-          "host": "abouttheartists.com",
-          "knownOutletId": "abouttheartists",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "abouttheartists--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026"
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://www.newyorktheatreguide.com/show/47487-the-cherry-orchard",
           "host": "newyorktheatreguide.com",
@@ -122035,6 +122066,24 @@
               "file": "nytg--unknown.json",
               "flag": "wrongShow",
               "urlInDir": "https://www.newyorktheatreguide.com/show/47487-the-cherry-orchard"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026",
+          "host": "abouttheartists.com",
+          "knownOutletId": "abouttheartists",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "abouttheartists--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026"
             }
           ],
           "serpCensus": true
@@ -122053,8 +122102,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 5,
+            "results": 10,
+            "accepted": 6,
             "error": null
           },
           {
@@ -122084,7 +122133,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -122094,23 +122143,22 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 13,
+        "resultCount": 15,
         "error": null
       },
       "candidatesRejected": {
-        "count": 313,
+        "count": 310,
         "byReason": {
           "aggregator-internal-nav": 227,
           "not-http-url": 43,
           "aggregator-section-root": 4,
-          "non-review-host": 36,
-          "non-review-path": 1,
+          "non-review-host": 34,
           "ticketing-reseller": 1,
           "merch-store": 1
         }
@@ -122210,16 +122258,16 @@
           "reason": "unknown-outlet-no-host"
         },
         {
-          "url": "https://berkshirefinearts.com/09-21-2026_simon-stone-s-cherry-orchard.htm",
-          "host": "berkshirefinearts.com",
-          "outletId": "berkshirefinearts",
+          "url": "https://www.show-score.com/off-broadway-shows/the-cherry-orchard",
+          "host": "show-score.com",
+          "outletId": null,
           "provisional": true,
-          "ok": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": null
+          "reason": "unknown-outlet-no-host"
         }
       ],
       "ingestSkippedByCap": [],
@@ -122234,18 +122282,11 @@
             "url": "https://www.show-score.com/off-broadway-shows/the-cherry-orchard-park-avenue-armory"
           },
           {
-            "outletId": "berkshirefinearts.com",
-            "outlet": "berkshirefinearts.com",
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://berkshirefinearts.com/09-21-2026_simon-stone-s-cherry-orchard.htm"
-          },
-          {
-            "outletId": "abouttheartists",
-            "outlet": "abouttheartists",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026"
+            "url": "https://www.show-score.com/off-broadway-shows/the-cherry-orchard"
           },
           {
             "outletId": "nytg",
@@ -122253,6 +122294,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.newyorktheatreguide.com/show/47487-the-cherry-orchard"
+          },
+          {
+            "outletId": "abouttheartists",
+            "outlet": "abouttheartists",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026"
           }
         ],
         "suppressedMissing": [],
@@ -122300,10 +122348,22 @@
             "firstSeenAt": "2026-09-22T00:36:35.717Z"
           },
           {
+            "url": "https://www.broadwayworld.com/westend/article/Review-THE-CHERRY-ORCHARD-Riverside-Theatre-20260911",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-23T12:29:09.337Z"
+          },
+          {
             "url": "https://www.nytimes.com/2026/09/18/theater/cherry-orchard-simon-stone-jeon-do-yeon.html",
             "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-09-20T22:08:24.514Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/chekhov-cherry-orchard-armory-stone-korean.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-23T12:29:09.337Z"
           },
           {
             "url": "https://www.wsj.com/articles/the-cherry-orchard-review-chekhov-speaks-korean-5064641a",
@@ -122312,16 +122372,16 @@
             "firstSeenAt": "2026-09-20T22:08:24.514Z"
           },
           {
-            "url": "https://theaterpizzazz.com/a-korean-cast-blossoms-in-a-new-cherry-orchard/",
-            "outletId": "theaterpizzazz.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-22T00:36:35.717Z"
-          },
-          {
             "url": "https://acsntn.substack.com/p/theater-the-cherry-orchard-at-park",
             "outletId": "acsntn.substack.com",
             "state": "live",
             "firstSeenAt": "2026-09-20T22:08:24.514Z"
+          },
+          {
+            "url": "https://berkshirefinearts.com/09-21-2026_simon-stone-s-cherry-orchard.htm",
+            "outletId": "berkshirefinearts.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-22T19:26:42.853Z"
           },
           {
             "url": "https://www.show-score.com/off-broadway-shows/the-cherry-orchard-park-avenue-armory",
@@ -122331,18 +122391,11 @@
             "firstSeenAt": "2026-09-22T19:26:42.853Z"
           },
           {
-            "url": "https://berkshirefinearts.com/09-21-2026_simon-stone-s-cherry-orchard.htm",
-            "outletId": "berkshirefinearts.com",
+            "url": "https://www.show-score.com/off-broadway-shows/the-cherry-orchard",
+            "outletId": "show-score.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-22T19:26:42.853Z"
-          },
-          {
-            "url": "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026",
-            "outletId": "abouttheartists",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-20T22:08:24.514Z"
+            "firstSeenAt": "2026-09-23T12:29:09.337Z"
           },
           {
             "url": "https://www.newyorktheatreguide.com/show/47487-the-cherry-orchard",
@@ -122350,13 +122403,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-20T22:08:24.514Z"
+          },
+          {
+            "url": "https://www.abouttheartists.com/productions/202143-the-cherry-orchard-at-wade-thompson-drill-hall-2026",
+            "outletId": "abouttheartists",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-20T22:08:24.514Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 9,
+        "liveCount": 10,
         "candidateCount": 13
       },
-      "computedAt": "2026-09-22T19:26:42.853Z"
+      "computedAt": "2026-09-23T12:29:09.337Z"
     },
     {
       "showId": "the-children-off-west-end-2026",
@@ -128271,21 +128331,21 @@
         "https://www.thestage.co.uk/reviews/the-invention-of-love-review-hampstead-theatre-london-2024-simon-russell-beale-tom-stoppard-blanche-mcintyre",
         "https://www.vulture.com/article/how-much-did-i-love-the-invention-of-love.html",
         "https://t2conline.com/the-invention-of-love-david-greenspan-is-brilliant-but-tom-stoppard-needs-an-editor/",
+        "https://www.vulture.com/tags/the-invention-of-love/",
         "https://thefrontrowcenter.com/2026/09/the-invention-of-love/",
         "https://www.offoffonline.com/offoffonline/2026/9/19/the-invention-of-love-1UGbA",
-        "https://www.vulture.com/tags/the-invention-of-love/",
         "https://twi-ny.com/2026/09/20/the-invention-of-love-tom-stoppard-theaterlab/",
-        "https://www.allthatdazzles.co.uk/post/review-the-invention-of-love-hampstead-theatre",
         "https://theaterlabnyc.com/tlab-shares-the-invention-of-love/",
+        "https://www.allthatdazzles.co.uk/post/review-the-invention-of-love-hampstead-theatre",
         "https://playstosee.com/reviews/uk-reviews/the-invention-of-love/",
         "https://www.thereviewshub.com/the-invention-of-love-hampstead-theatre-london/",
         "https://sierz.co.uk/reviews/the-invention-of-love-hampstead-theatre/",
         "https://ctxlivetheatre.com/reviews/the-invention-of-love-by-tom-stoppard-austin-sh/",
         "https://www.newyorktheatreguide.com/show/48030-the-invention-of-love"
       ],
-      "dirFiles": 14,
-      "dirClean": 7,
-      "inReviewsJson": 7,
+      "dirFiles": 16,
+      "dirClean": 8,
+      "inReviewsJson": 8,
       "missing": [
         {
           "url": "https://www.londontheatre.co.uk/reviews/the-invention-of-love-review-hampstead-theatre",
@@ -128298,21 +128358,9 @@
           "knownOutletId": "timeout-london"
         },
         {
-          "url": "https://thefrontrowcenter.com/2026/09/the-invention-of-love/",
-          "host": "thefrontrowcenter.com",
-          "knownOutletId": "front-row-center",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.allthatdazzles.co.uk/post/review-the-invention-of-love-hampstead-theatre",
           "host": "allthatdazzles.co.uk",
           "knownOutletId": "all-that-dazzles-uk",
-          "serpCensus": true
-        },
-        {
-          "url": "https://theaterlabnyc.com/tlab-shares-the-invention-of-love/",
-          "host": "theaterlabnyc.com",
-          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -128462,6 +128510,24 @@
           "priorRunSource": "show-score-url-year"
         },
         {
+          "url": "https://theaterlabnyc.com/tlab-shares-the-invention-of-love/",
+          "host": "theaterlabnyc.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theaterlabnyc--orietta.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theaterlabnyc.com/tlab-shares-the-invention-of-love/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://www.newyorktheatreguide.com/show/48030-the-invention-of-love",
           "host": "newyorktheatreguide.com",
           "knownOutletId": "nytg",
@@ -128504,7 +128570,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -128514,7 +128580,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -128524,7 +128590,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -128534,7 +128600,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -128554,10 +128620,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 35,
         "byReason": {
           "aggregator-internal-nav": 3,
-          "non-review-host": 27,
+          "non-review-host": 30,
           "merch-store": 1,
           "venue-production-page": 1
         }
@@ -128589,18 +128655,6 @@
           "reason": "[review-write-guard] date-implausible: the-invention-of-love-off-broadway-2026/timeout-london--andrz"
         },
         {
-          "url": "https://thefrontrowcenter.com/2026/09/the-invention-of-love/",
-          "host": "thefrontrowcenter.com",
-          "outletId": "front-row-center",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
           "url": "https://www.allthatdazzles.co.uk/post/review-the-invention-of-love-hampstead-theatre",
           "host": "allthatdazzles.co.uk",
           "outletId": "all-that-dazzles-uk",
@@ -128613,29 +128667,31 @@
           "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
         },
         {
-          "url": "https://theaterlabnyc.com/tlab-shares-the-invention-of-love/",
-          "host": "theaterlabnyc.com",
-          "outletId": "theaterlabnyc",
-          "provisional": true,
-          "ok": true,
+          "url": "https://playstosee.com/reviews/uk-reviews/the-invention-of-love/",
+          "host": "playstosee.com",
+          "outletId": "plays-to-see",
+          "provisional": false,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://playstosee.com/reviews/uk-reviews/the-invention-of-love/",
-          "host": "playstosee.com",
-          "outletId": "plays-to-see"
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
         },
         {
           "url": "https://www.thereviewshub.com/the-invention-of-love-hampstead-theatre-london/",
           "host": "thereviewshub.com",
-          "outletId": "thereviewshub"
-        },
+          "outletId": "thereviewshub",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        }
+      ],
+      "ingestSkippedByCap": [
         {
           "url": "https://sierz.co.uk/reviews/the-invention-of-love-hampstead-theatre/",
           "host": "sierz.co.uk",
@@ -128665,25 +128721,11 @@
             "url": "https://www.timeout.com/london/theatre/the-invention-of-love-review"
           },
           {
-            "outletId": "front-row-center",
-            "outlet": "front-row-center",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thefrontrowcenter.com/2026/09/the-invention-of-love/"
-          },
-          {
             "outletId": "all-that-dazzles-uk",
             "outlet": "all-that-dazzles-uk",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.allthatdazzles.co.uk/post/review-the-invention-of-love-hampstead-theatre"
-          },
-          {
-            "outletId": "theaterlabnyc.com",
-            "outlet": "theaterlabnyc.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theaterlabnyc.com/tlab-shares-the-invention-of-love/"
           },
           {
             "outletId": "plays-to-see",
@@ -128742,6 +128784,13 @@
             "url": "https://www.whatsonstage.com/news/the-invention-of-love-review-simon-russell-beale-is-perfectly-cast-in-tom-stoppard-revival_1658010/"
           },
           {
+            "outletId": "theaterlabnyc.com",
+            "outlet": "theaterlabnyc.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theaterlabnyc.com/tlab-shares-the-invention-of-love/"
+          },
+          {
             "outletId": "nytg",
             "outlet": "nytg",
             "critic": "Unknown",
@@ -128764,16 +128813,22 @@
             "firstSeenAt": "2026-09-22T15:31:05.353Z"
           },
           {
-            "url": "https://www.offoffonline.com/offoffonline/2026/9/19/the-invention-of-love-1UGbA",
-            "outletId": "offoffonline.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-22T22:44:43.064Z"
-          },
-          {
             "url": "https://www.vulture.com/tags/the-invention-of-love/",
             "outletId": "vulture.com",
             "state": "live",
             "firstSeenAt": "2026-09-22T15:31:05.353Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2026/09/the-invention-of-love/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-22T22:44:43.064Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2026/9/19/the-invention-of-love-1UGbA",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-22T22:44:43.064Z"
           },
           {
             "url": "https://twi-ny.com/2026/09/20/the-invention-of-love-tom-stoppard-theaterlab/",
@@ -128796,22 +128851,8 @@
             "firstSeenAt": "2026-09-14T23:04:15.991Z"
           },
           {
-            "url": "https://thefrontrowcenter.com/2026/09/the-invention-of-love/",
-            "outletId": "front-row-center",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-22T22:44:43.064Z"
-          },
-          {
             "url": "https://www.allthatdazzles.co.uk/post/review-the-invention-of-love-hampstead-theatre",
             "outletId": "all-that-dazzles-uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-22T15:31:05.353Z"
-          },
-          {
-            "url": "https://theaterlabnyc.com/tlab-shares-the-invention-of-love/",
-            "outletId": "theaterlabnyc.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-22T15:31:05.353Z"
@@ -128873,6 +128914,13 @@
             "firstSeenAt": "2026-09-14T23:04:15.991Z"
           },
           {
+            "url": "https://theaterlabnyc.com/tlab-shares-the-invention-of-love/",
+            "outletId": "theaterlabnyc.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-22T15:31:05.353Z"
+          },
+          {
             "url": "https://www.newyorktheatreguide.com/show/48030-the-invention-of-love",
             "outletId": "nytg",
             "state": "GAP",
@@ -128881,10 +128929,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 4,
+        "liveCount": 5,
         "candidateCount": 18
       },
-      "computedAt": "2026-09-22T22:44:43.064Z"
+      "computedAt": "2026-09-23T12:29:09.337Z"
     },
     {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
@@ -130806,7 +130854,7 @@
       "showId": "the-last-ship-west-end-2026",
       "title": "The Last Ship",
       "openingDate": "2026-09-23",
-      "status": "previews",
+      "status": "open",
       "category": "west-end",
       "aggregatorArticles": [
         "https://www.broadwayworld.com/article/Review-Roundup-Stings-THE-LAST-SHIP-at-the-Ahmanson-in-Los-Angeles-What-Did-the-Critics-Think-20200124",
@@ -130847,18 +130895,19 @@
         "http://www.chicagonow.com/bon-bini/2014/06/the-best-of-chicago-theatre-sting-new-musical-the-last-ship-explodes-to-life/",
         "https://youtu.be/fh8lw-DJuu8",
         "https://www.thetimes.com/culture/music/article/sting-interview-police-last-ship-musical-theatre-royal-drury-lane-rknkmjhzq",
+        "https://acedmagazine.com/interview-cast-last-ship/",
         "https://lwtheatres.co.uk/whats-on/the-last-ship/",
-        "https://sting.com/blogs/news/the-last-ship-to-dock-in-london-theatre-royal-drury-lane-between-22-september-and-3-october-2026",
-        "https://www.timeout.com/london/theatre/the-last-ship",
-        "https://lwtickets.co.uk/whats-on/the-last-ship/",
         "https://musicaltheatrereview.com/sting-to-bring-his-musical-the-last-ship-into-the-west-end/",
+        "https://lwtickets.co.uk/whats-on/the-last-ship/",
+        "https://www.timeout.com/london/theatre/the-last-ship",
         "https://lwtheatres.co.uk/a-complete-guide-to-the-last-ship-at-theatre-royal-drury-lane/",
+        "https://theatrevibe.co.uk/2026/08/03/news-the-last-ship-stings-musical-theatre-royal-drury-lane-22nd-september-to-3rd-october-2026/",
         "https://didtheylikeit.com/shows/the-last-ship-reviews/",
-        "https://theatreweekly.com/sting-to-star-in-limited-west-end-run-of-the-last-ship-at-theatre-royal-drury-lane/",
         "https://musicaltheatrereview.com/the-last-ship-la-seine-musicale-paris/",
-        "https://www.londontheatredirect.com/musical/the-last-ship-tickets"
+        "https://www.londontheatredirect.com/musical/the-last-ship-tickets",
+        "https://variety.com/2026/theater/news/sting-the-last-ship-west-end-drury-lane-1236760929/"
       ],
-      "dirFiles": 3,
+      "dirFiles": 6,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
@@ -131056,20 +131105,8 @@
           "serpCensus": true
         },
         {
-          "url": "https://lwtheatres.co.uk/whats-on/the-last-ship/",
-          "host": "lwtheatres.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://sting.com/blogs/news/the-last-ship-to-dock-in-london-theatre-royal-drury-lane-between-22-september-and-3-october-2026",
-          "host": "sting.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://lwtickets.co.uk/whats-on/the-last-ship/",
-          "host": "lwtickets.co.uk",
+          "url": "https://acedmagazine.com/interview-cast-last-ship/",
+          "host": "acedmagazine.com",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -131080,21 +131117,15 @@
           "serpCensus": true
         },
         {
-          "url": "https://lwtheatres.co.uk/a-complete-guide-to-the-last-ship-at-theatre-royal-drury-lane/",
-          "host": "lwtheatres.co.uk",
-          "knownOutletId": null,
+          "url": "https://theatrevibe.co.uk/2026/08/03/news-the-last-ship-stings-musical-theatre-royal-drury-lane-22nd-september-to-3rd-october-2026/",
+          "host": "theatrevibe.co.uk",
+          "knownOutletId": "theatre-vibe",
           "serpCensus": true
         },
         {
           "url": "https://didtheylikeit.com/shows/the-last-ship-reviews/",
           "host": "didtheylikeit.com",
           "knownOutletId": "dtli",
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatreweekly.com/sting-to-star-in-limited-west-end-run-of-the-last-ship-at-theatre-royal-drury-lane/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
           "serpCensus": true
         },
         {
@@ -131107,6 +131138,12 @@
           "url": "https://www.londontheatredirect.com/musical/the-last-ship-tickets",
           "host": "londontheatredirect.com",
           "knownOutletId": "londontheatredirect",
+          "serpCensus": true
+        },
+        {
+          "url": "https://variety.com/2026/theater/news/sting-the-last-ship-west-end-drury-lane-1236760929/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
           "serpCensus": true
         }
       ],
@@ -131170,6 +131207,42 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://lwtheatres.co.uk/whats-on/the-last-ship/",
+          "host": "lwtheatres.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lwtheatres--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://lwtheatres.co.uk/whats-on/the-last-ship/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://lwtickets.co.uk/whats-on/the-last-ship/",
+          "host": "lwtickets.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lwtickets--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://lwtickets.co.uk/whats-on/the-last-ship/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://www.timeout.com/london/theatre/the-last-ship",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
@@ -131183,6 +131256,24 @@
               "file": "timeout--unknown.json",
               "flag": "wrongProduction",
               "urlInDir": "http://www.timeout.com/chicago/theater/the-last-ship"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://lwtheatres.co.uk/a-complete-guide-to-the-last-ship-at-theatre-royal-drury-lane/",
+          "host": "lwtheatres.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lwtheatres--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://lwtheatres.co.uk/whats-on/the-last-ship/"
             }
           ],
           "serpCensus": true
@@ -131252,13 +131343,23 @@
             "error": null
           },
           {
+            "arm": "scoped2",
+            "query": "\"The Last Ship\" Warner review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
             "arm": "naive-p0",
             "query": "The Last Ship Theatre Royal Drury Lane review",
             "page": 0,
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 5,
             "error": null
           },
           {
@@ -131268,7 +131369,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -131278,22 +131379,22 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 4,
             "error": null
           }
         ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 11,
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 1474,
+        "count": 1481,
         "byReason": {
           "aggregator-internal-nav": 1130,
           "not-http-url": 213,
           "aggregator-section-root": 20,
-          "non-review-host": 107,
+          "non-review-host": 114,
           "ticketing-listing": 4
         }
       },
@@ -131504,10 +131605,22 @@
           "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
         },
         {
-          "url": "https://lwtheatres.co.uk/whats-on/the-last-ship/",
-          "host": "lwtheatres.co.uk",
-          "outletId": "lwtheatres",
+          "url": "https://acedmagazine.com/interview-cast-last-ship/",
+          "host": "acedmagazine.com",
+          "outletId": "acedmagazine",
           "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "spawnSync node ETIMEDOUT"
+        },
+        {
+          "url": "https://musicaltheatrereview.com/sting-to-bring-his-musical-the-last-ship-into-the-west-end/",
+          "host": "musicaltheatrereview.com",
+          "outletId": "musical-theatre-review",
+          "provisional": false,
           "ok": true,
           "noop": false,
           "conflict": false,
@@ -131516,22 +131629,10 @@
           "reason": null
         },
         {
-          "url": "https://sting.com/blogs/news/the-last-ship-to-dock-in-london-theatre-royal-drury-lane-between-22-september-and-3-october-2026",
-          "host": "sting.com",
-          "outletId": "sting",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://lwtickets.co.uk/whats-on/the-last-ship/",
-          "host": "lwtickets.co.uk",
-          "outletId": "lwtickets",
-          "provisional": true,
+          "url": "https://theatrevibe.co.uk/2026/08/03/news-the-last-ship-stings-musical-theatre-royal-drury-lane-22nd-september-to-3rd-october-2026/",
+          "host": "theatrevibe.co.uk",
+          "outletId": "theatre-vibe",
+          "provisional": false,
           "ok": true,
           "noop": false,
           "conflict": false,
@@ -131542,24 +131643,9 @@
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://musicaltheatrereview.com/sting-to-bring-his-musical-the-last-ship-into-the-west-end/",
-          "host": "musicaltheatrereview.com",
-          "outletId": "musical-theatre-review"
-        },
-        {
-          "url": "https://lwtheatres.co.uk/a-complete-guide-to-the-last-ship-at-theatre-royal-drury-lane/",
-          "host": "lwtheatres.co.uk",
-          "outletId": "lwtheatres"
-        },
-        {
           "url": "https://didtheylikeit.com/shows/the-last-ship-reviews/",
           "host": "didtheylikeit.com",
           "outletId": "dtli"
-        },
-        {
-          "url": "https://theatreweekly.com/sting-to-star-in-limited-west-end-run-of-the-last-ship-at-theatre-royal-drury-lane/",
-          "host": "theatreweekly.com",
-          "outletId": "theatre-weekly"
         },
         {
           "url": "https://musicaltheatrereview.com/the-last-ship-la-seine-musicale-paris/",
@@ -131570,6 +131656,11 @@
           "url": "https://www.londontheatredirect.com/musical/the-last-ship-tickets",
           "host": "londontheatredirect.com",
           "outletId": "londontheatredirect"
+        },
+        {
+          "url": "https://variety.com/2026/theater/news/sting-the-last-ship-west-end-drury-lane-1236760929/",
+          "host": "variety.com",
+          "outletId": "variety"
         }
       ],
       "censusVerdict": {
@@ -131590,25 +131681,11 @@
             "url": "https://www.thetimes.com/culture/music/article/sting-interview-police-last-ship-musical-theatre-royal-drury-lane-rknkmjhzq"
           },
           {
-            "outletId": "lwtheatres.co.uk",
-            "outlet": "lwtheatres.co.uk",
+            "outletId": "acedmagazine.com",
+            "outlet": "acedmagazine.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://lwtheatres.co.uk/whats-on/the-last-ship/"
-          },
-          {
-            "outletId": "sting.com",
-            "outlet": "sting.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://sting.com/blogs/news/the-last-ship-to-dock-in-london-theatre-royal-drury-lane-between-22-september-and-3-october-2026"
-          },
-          {
-            "outletId": "lwtickets.co.uk",
-            "outlet": "lwtickets.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://lwtickets.co.uk/whats-on/the-last-ship/"
+            "url": "https://acedmagazine.com/interview-cast-last-ship/"
           },
           {
             "outletId": "musical-theatre-review",
@@ -131618,11 +131695,11 @@
             "url": "https://musicaltheatrereview.com/sting-to-bring-his-musical-the-last-ship-into-the-west-end/"
           },
           {
-            "outletId": "lwtheatres.co.uk",
-            "outlet": "lwtheatres.co.uk",
+            "outletId": "theatre-vibe",
+            "outlet": "theatre-vibe",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://lwtheatres.co.uk/a-complete-guide-to-the-last-ship-at-theatre-royal-drury-lane/"
+            "url": "https://theatrevibe.co.uk/2026/08/03/news-the-last-ship-stings-musical-theatre-royal-drury-lane-22nd-september-to-3rd-october-2026/"
           },
           {
             "outletId": "dtli",
@@ -131630,13 +131707,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://didtheylikeit.com/shows/the-last-ship-reviews/"
-          },
-          {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreweekly.com/sting-to-star-in-limited-west-end-run-of-the-last-ship-at-theatre-royal-drury-lane/"
           },
           {
             "outletId": "musical-theatre-review",
@@ -131653,11 +131723,39 @@
             "url": "https://www.londontheatredirect.com/musical/the-last-ship-tickets"
           },
           {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://variety.com/2026/theater/news/sting-the-last-ship-west-end-drury-lane-1236760929/"
+          },
+          {
+            "outletId": "lwtheatres.co.uk",
+            "outlet": "lwtheatres.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://lwtheatres.co.uk/whats-on/the-last-ship/"
+          },
+          {
+            "outletId": "lwtickets.co.uk",
+            "outlet": "lwtickets.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://lwtickets.co.uk/whats-on/the-last-ship/"
+          },
+          {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/theatre/the-last-ship"
+          },
+          {
+            "outletId": "lwtheatres.co.uk",
+            "outlet": "lwtheatres.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://lwtheatres.co.uk/a-complete-guide-to-the-last-ship-at-theatre-royal-drury-lane/"
           }
         ],
         "suppressedMissing": [],
@@ -131677,25 +131775,11 @@
             "firstSeenAt": "2026-09-23T01:14:28.989Z"
           },
           {
-            "url": "https://lwtheatres.co.uk/whats-on/the-last-ship/",
-            "outletId": "lwtheatres.co.uk",
+            "url": "https://acedmagazine.com/interview-cast-last-ship/",
+            "outletId": "acedmagazine.com",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-09-23T01:14:28.989Z"
-          },
-          {
-            "url": "https://sting.com/blogs/news/the-last-ship-to-dock-in-london-theatre-royal-drury-lane-between-22-september-and-3-october-2026",
-            "outletId": "sting.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-23T01:14:28.989Z"
-          },
-          {
-            "url": "https://lwtickets.co.uk/whats-on/the-last-ship/",
-            "outletId": "lwtickets.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+            "firstSeenAt": "2026-09-23T12:29:09.337Z"
           },
           {
             "url": "https://musicaltheatrereview.com/sting-to-bring-his-musical-the-last-ship-into-the-west-end/",
@@ -131705,22 +131789,15 @@
             "firstSeenAt": "2026-09-23T01:14:28.989Z"
           },
           {
-            "url": "https://lwtheatres.co.uk/a-complete-guide-to-the-last-ship-at-theatre-royal-drury-lane/",
-            "outletId": "lwtheatres.co.uk",
+            "url": "https://theatrevibe.co.uk/2026/08/03/news-the-last-ship-stings-musical-theatre-royal-drury-lane-22nd-september-to-3rd-october-2026/",
+            "outletId": "theatre-vibe",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+            "firstSeenAt": "2026-09-23T12:29:09.337Z"
           },
           {
             "url": "https://didtheylikeit.com/shows/the-last-ship-reviews/",
             "outletId": "dtli",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-23T01:14:28.989Z"
-          },
-          {
-            "url": "https://theatreweekly.com/sting-to-star-in-limited-west-end-run-of-the-last-ship-at-theatre-royal-drury-lane/",
-            "outletId": "theatre-weekly",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-09-23T01:14:28.989Z"
@@ -131740,8 +131817,36 @@
             "firstSeenAt": "2026-09-23T01:14:28.989Z"
           },
           {
+            "url": "https://variety.com/2026/theater/news/sting-the-last-ship-west-end-drury-lane-1236760929/",
+            "outletId": "variety",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T12:29:09.337Z"
+          },
+          {
+            "url": "https://lwtheatres.co.uk/whats-on/the-last-ship/",
+            "outletId": "lwtheatres.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://lwtickets.co.uk/whats-on/the-last-ship/",
+            "outletId": "lwtickets.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
             "url": "https://www.timeout.com/london/theatre/the-last-ship",
             "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-23T01:14:28.989Z"
+          },
+          {
+            "url": "https://lwtheatres.co.uk/a-complete-guide-to-the-last-ship-at-theatre-royal-drury-lane/",
+            "outletId": "lwtheatres.co.uk",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-09-23T01:14:28.989Z"
@@ -131749,9 +131854,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 10
+        "candidateCount": 11
       },
-      "computedAt": "2026-09-23T01:14:28.989Z"
+      "computedAt": "2026-09-23T12:29:09.337Z"
     },
     {
       "showId": "the-little-mermaid-the-musical-off-broadway-2026",

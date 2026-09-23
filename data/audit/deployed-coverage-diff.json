@@ -1,29 +1,31 @@
 {
-  "generatedAt": "2026-09-23T06:57:07.395Z",
+  "generatedAt": "2026-09-23T12:29:22.645Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 141,
-  "clean": 140,
+  "checked": 140,
+  "clean": 139,
   "defective": 1,
   "byType": {
-    "unreachable": 1
+    "missing-from-prod": 1
   },
   "shows": [
     {
-      "showId": "gimme-a-sign-off-broadway-2026",
-      "title": "Gimme a Sign!",
-      "openingDate": "2026-09-17",
+      "showId": "kimberly-akimbo-off-west-end-2026",
+      "title": "Kimberly Akimbo",
+      "openingDate": "2026-09-09",
       "ok": false,
       "defects": [
         {
-          "type": "unreachable",
-          "detail": "HTTP 404"
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: matineemouse"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null
+      "missingFromProd": [
+        "matineemouse"
+      ],
+      "localCount": 28,
+      "deployedCount": 27
     }
   ]
 }
