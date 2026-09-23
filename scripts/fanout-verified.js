@@ -79,7 +79,9 @@ function main() {
     const tail = `${run.stdout || ''}\n${run.stderr || ''}`.trim().split('\n').slice(-15).join('\n   | ');
     console.error(`   | ${tail}`);
   }
-  const decision = core.decideFanout({ refs: args.refs, entries, verify, reason: args.reason, ackedBy });
+  // Re-read the ledger AFTER the run: a child that relaunched and landed again
+  // while the check ran was not exercised by it (adversarial review 2026-09-22).
+  const decision = core.decideFanout({ refs: args.refs, entries: ledger.readEntries(), verify, reason: args.reason, ackedBy });
   if (!decision.ok) refuse(decision.refusals);
 
   const written = ledger.appendEntry(decision.row); // self-stamps ts

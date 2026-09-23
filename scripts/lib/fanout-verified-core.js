@@ -24,9 +24,20 @@
  */
 'use strict';
 
-const { rowsForRef, normalizeRef } = require('./ack-landed-core.js');
+const { rowsForRef, normalizeRef: normalizeLinearRef } = require('./ack-landed-core.js');
 
 const MIN_REFS = 2;
+// Gate O also accepts legacy numeric task ids (#1234 / notion:1234); the
+// ledger's taskId ends with ':<id>' in both eras, so rowsForRef works.
+function normalizeRef(raw) {
+  const s = String(raw || '').trim();
+  const n = /^(?:notion:|#)?(\d{3,5})$/.exec(s);
+  return n ? n[1] : normalizeLinearRef(s);
+}
+// A combined check must RUN something across the children. Safe-form alone
+// admits `test -f <file>` and static checks (adversarial review 2026-09-22),
+// which exercise nothing; only test-execution forms count here.
+const RUNS_TESTS_RE = /^(?:node --test|npx tsx --test)\b/;
 const MIN_REASON_CHARS = 15;
 const FANOUT_EVENT = 'fanout-verified';
 const LANDED_EVENTS = new Set(['job-done', 'landed-acked']);
@@ -86,6 +97,7 @@ function decideFanout({ refs, entries, verify, reason, ackedBy }) {
   const cmd = String((verify && verify.cmd) || '').trim();
   if (!cmd) refusals.push('--verify is required: a safe-form command that exercises the combined result');
   else if (!verify.safe) refusals.push(`verify command is not safe-form: ${verify.unsafeReason || cmd}`);
+  else if (!RUNS_TESTS_RE.test(cmd)) refusals.push(`verify command must RUN tests across the children (node --test … / npx tsx --test …); "${cmd}" exercises nothing`);
   else if (verify.exitCode !== 0) refusals.push(`verify command exited ${verify.exitCode}, not 0: ${cmd}`);
   const why = String(reason || '').trim();
   if (why.length < MIN_REASON_CHARS) refusals.push(`--reason must say what the command exercised across the children (>= ${MIN_REASON_CHARS} chars)`);
@@ -110,4 +122,4 @@ function formatFanoutLine(row) {
   return `FANOUT-VERIFIED: ${row.refs.join(', ')} — \`${row.verifyCmd}\` exit 0 (${row.ts || 'ts pending'}); ${row.reason}`;
 }
 
-module.exports = { MIN_REFS, MIN_REASON_CHARS, FANOUT_EVENT, landingState, decideFanout, formatFanoutLine };
+module.exports = { MIN_REFS, MIN_REASON_CHARS, FANOUT_EVENT, RUNS_TESTS_RE, normalizeRef, landingState, decideFanout, formatFanoutLine };

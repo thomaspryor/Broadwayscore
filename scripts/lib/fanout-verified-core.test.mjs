@@ -46,6 +46,17 @@ test('landed-acked newer than the bad row counts; prune-closed needs the ✅ mar
   assert.equal(landingState([{ ts: '2026-09-22T02:00:00Z', event: 'prune-closed', title: 'still going' }]).landed, false);
 });
 
+test('safe-form but non-running commands are refused; numeric refs are accepted', () => {
+  const entries = [done('BRO-1', '2026-09-22T02:00:00Z'), done('BRO-2', '2026-09-22T02:30:00Z'),
+    { ts: '2026-09-22T02:40:00Z', event: 'job-done', taskId: 'notion:1234' }];
+  const base = { refs: ['BRO-1', 'BRO-2'], entries, reason };
+  assert.match(decideFanout({ ...base, verify: { cmd: 'test -f scripts/x.js', safe: true, exitCode: 0 } }).refusals.join(), /must RUN tests/);
+  assert.match(decideFanout({ ...base, verify: { cmd: 'npx tsc --noEmit', safe: true, exitCode: 0 } }).refusals.join(), /must RUN tests/);
+  const d = decideFanout({ refs: ['BRO-1', '#1234'], entries, verify: ok, reason });
+  assert.equal(d.ok, true, d.refusals.join('; '));
+  assert.deepEqual(d.row.refs, ['BRO-1', '1234']);
+});
+
 test('unsafe, failed or missing verify and a thin reason each refuse', () => {
   const entries = [done('BRO-1', '2026-09-22T02:00:00Z'), done('BRO-2', '2026-09-22T02:30:00Z')];
   const base = { refs: ['BRO-1', 'BRO-2'], entries, reason };
