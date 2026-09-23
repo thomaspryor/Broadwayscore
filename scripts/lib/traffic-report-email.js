@@ -27,6 +27,7 @@ function inline(md) {
   return escapeHtml(md)
     .replace(/\\\|/g, '|') // mdCell() escapes pipes in the report; not needed in HTML
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[\s(])_([^_\n]+)_(?=[\s).,;:!?]|$)/g, '$1<em>$2</em>')
     .replace(/`([^`]+)`/g, '<code>$1</code>');
 }
 
@@ -101,14 +102,29 @@ function buildSubject(md) {
   return `Weekly traffic report${incomplete}: ${spikes} biggest change${spikes === 1 ? '' : 's'}, ${range}`;
 }
 
+/** Subject from the human summary: the week and the one-line gist. */
+function buildHumanSubject(md) {
+  const week = (md.match(/^# Your traffic, week of (.+)$/m) || [, ''])[1];
+  const count = (md.match(/\*\*In short\.\*\* Last week the site had ([\d,]+) visits/) || [])[1];
+  const mv = md.match(/visits \([^)]*\), (about the same as|(\d+)% (more|fewer) than) a typical week/) || [];
+  const move = mv[1] ? (mv[2] ? `, ${mv[2]}% ${mv[3]} than usual` : ', about usual') : '';
+  const incomplete = /Part of the data did not load/.test(md) ? ' (partial data)' : '';
+  return `Your traffic, week of ${week}${count ? `: ${count} visits${move}` : ''}${incomplete}`;
+}
+
 function buildHtml(md, { runUrl } = {}) {
   const { summary } = splitReport(md);
   const safeUrl = runUrl ? escapeHtml(runUrl).replace(/"/g, '&quot;') : ''; // escapeHtml skips quotes
-  const link = runUrl ? `<p style="margin:16px 0;color:#6b7280;font-size:12px;">Full tables are attached as markdown. Run log: <a href="${safeUrl}">${safeUrl}</a></p>` : '';
+  const link = runUrl ? `<p style="margin:16px 0;color:#9ca3af;font-size:11px;">Run log (for debugging only): <a href="${safeUrl}">${safeUrl}</a></p>` : '';
   return `<div style="font-family:${FONT};font-size:14px;line-height:1.5;color:#111827;max-width:720px;">${markdownToHtml(summary)}${link}</div>`;
 }
 
-async function sendTrafficReportEmail({ reportPath, runUrl, dryRun = false, to } = {}) {
+/**
+ * @param summaryPath the human summary (scripts/lib/traffic-report-human.js);
+ *   when given it is the email body and the full report is only attached.
+ *   Without it the top of the full report is used (older artifacts).
+ */
+async function sendTrafficReportEmail({ reportPath, summaryPath, runUrl, dryRun = false, to } = {}) {
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
   const OWNER_EMAIL = to || process.env.OWNER_EMAIL;
   if (!RESEND_API_KEY || !OWNER_EMAIL) return { sent: false, reason: 'RESEND_API_KEY or OWNER_EMAIL not set' };
@@ -119,8 +135,15 @@ async function sendTrafficReportEmail({ reportPath, runUrl, dryRun = false, to }
   if (!/^# /m.test(md) || !/^## What changed/m.test(md)) {
     return { sent: false, reason: `report at ${reportPath} is missing its title or "What changed" section (${md.length} bytes)` };
   }
-  const subject = buildSubject(md);
-  const html = buildHtml(md, { runUrl });
+  let body = md;
+  let subject = buildSubject(md);
+  if (summaryPath) {
+    if (!fs.existsSync(summaryPath)) return { sent: false, reason: `summary not found: ${summaryPath}` };
+    body = fs.readFileSync(summaryPath, 'utf8');
+    if (!/^# Your traffic/m.test(body) || !/## What's working/.test(body)) return { sent: false, reason: `summary at ${summaryPath} is not a complete human summary (${body.length} bytes)` };
+    subject = buildHumanSubject(body);
+  }
+  const html = buildHtml(body, { runUrl });
   if (dryRun) {
     console.log(`[email] DRY RUN — would send "${subject}" to ${OWNER_EMAIL} (${html.length} bytes HTML, ${md.length} bytes attachment)`);
     return { sent: false, reason: 'dry-run', subject, html };
@@ -139,4 +162,4 @@ async function sendTrafficReportEmail({ reportPath, runUrl, dryRun = false, to }
   }
 }
 
-module.exports = { sendTrafficReportEmail, markdownToHtml, splitReport, buildSubject, buildHtml };
+module.exports = { sendTrafficReportEmail, markdownToHtml, splitReport, buildSubject, buildHumanSubject, buildHtml };

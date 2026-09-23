@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { markdownToHtml, splitReport, buildSubject, buildHtml, sendTrafficReportEmail } = require('./traffic-report-email.js');
+const { markdownToHtml, splitReport, buildSubject, buildHumanSubject, buildHtml, sendTrafficReportEmail } = require('./traffic-report-email.js');
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -86,4 +86,19 @@ test('sendTrafficReportEmail refuses an empty or truncated report instead of mai
   assert.match(res.reason, /missing its title/);
   const missing = await sendTrafficReportEmail({ reportPath: path.join(dir, 'nope.md'), dryRun: true });
   assert.match(missing.reason, /report not found/);
+});
+
+test('buildHumanSubject carries the week, the visit count and the direction', () => {
+  assert.equal(buildHumanSubject('# Your traffic, week of Sep 14\n\n**In short.** Last week the site had 4,509 visits (known bots excluded), 34% more than a typical week in the previous month. Search brought 2,987 of them (66%).'),
+    'Your traffic, week of Sep 14: 4,509 visits, 34% more than usual');
+  assert.equal(buildHumanSubject('# Your traffic, week of Sep 7\n\n**In short.** Last week the site had 2,950 visits (known bots excluded), about the same as a typical week in the previous month.'),
+    'Your traffic, week of Sep 7: 2,950 visits, about usual');
+  assert.equal(buildHumanSubject('# Your traffic, week of Sep 7\n\n> Part of the data did not load this week\n\n**In short.** PostHog did not load.'),
+    'Your traffic, week of Sep 7 (partial data)');
+});
+
+test('markdownToHtml renders _italic_ lines and leaves underscores inside words alone', () => {
+  const html = markdownToHtml('_The full tables are attached._\n\nsnake_case_word stays');
+  assert.match(html, /<em>The full tables are attached\.<\/em>/);
+  assert.match(html, /snake_case_word stays/);
 });
