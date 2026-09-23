@@ -1,10 +1,12 @@
 {
-  "updatedAt": "2026-09-22T12:14:37.300Z",
-  "scanned": 2103,
-  "showsWithViolations": 331,
-  "totalViolations": 644,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-09-23T12:25:53.755Z",
+  "scanned": 2104,
+  "showsWithViolations": 332,
+  "totalViolations": 645,
+  "newSinceLastRun": 1,
+  "newViolationKeys": [
+    "godspell-2011::bloomberg--jeremy-gerard.json"
+  ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
     "schmigadoon-2026::nytimes--jesse-green.json",
@@ -409,6 +411,7 @@
     "private-lives-2011::ap--mark-kennedy.json",
     "private-lives-2011::backstage--erik-haagensen.json",
     "venus-in-fur-2011::ap--mark-kennedy.json",
+    "godspell-2011::bloomberg--jeremy-gerard.json",
     "other-desert-cities-2011::northjerseycom--robert-feldberg.json",
     "chinglish-2011::ap--mark-kennedy.json",
     "chinglish-2011::newsday--linda-winer.json",
@@ -5360,6 +5363,22 @@
           "outletId": "ap",
           "criticName": "Mark Kennedy",
           "haystackLength": 468,
+          "textIssuesFlag": false
+        }
+      ]
+    },
+    {
+      "showId": "godspell-2011",
+      "title": "Godspell",
+      "openingDate": "2011-11-07",
+      "message": "bloomberg/Jeremy Gerard (bloomberg--jeremy-gerard.json) SHIPPED but fullText never mentions 'Godspell' (350 chars): http://www.businessweek.com/news/2011-11-07/creepy-godspell-sounds-off-key-quarterback-s-a-girl-review.html\n⚠️  faster-times/Jonathan Mandell (faster-times--jonathan-mandell.json) also too short to assess (0 chars): http://www.thefastertimes.com/newyorktheater/2011/11/07/godspell-review/",
+      "violations": [
+        {
+          "filename": "bloomberg--jeremy-gerard.json",
+          "url": "http://www.businessweek.com/news/2011-11-07/creepy-godspell-sounds-off-key-quarterback-s-a-girl-review.html",
+          "outletId": "bloomberg",
+          "criticName": "Jeremy Gerard",
+          "haystackLength": 350,
           "textIssuesFlag": false
         }
       ]
