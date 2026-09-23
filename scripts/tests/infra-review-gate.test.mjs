@@ -41,6 +41,7 @@ const {
   WRAPPER_COMMANDS,
   WRAPPER_VALUE_FLAGS,
   WRAPPER_LEADING_ARG,
+  maskQuotedRedirectOperators,
 } = scope;
 
 const NOW = Date.parse('2026-08-06T12:00:00Z');
@@ -377,6 +378,44 @@ test('bashWriteTargets does not hang or throw on a bare/incomplete wrapper', () 
   assert.deepEqual(bashWriteTargets('timeout'), []);
   assert.deepEqual(bashWriteTargets('timeout 30'), []);
   assert.deepEqual(bashWriteTargets('env FOO=1'), []);
+});
+
+// BRO-4070: REDIRECT_RE ran as a raw regex scan against the segment text,
+// with no quote-awareness at all — a literal '>' living INSIDE a quoted
+// string (not a real shell redirect) was misread as one. Reproduced live: a
+// read-only `node -e` diagnostic whose quoted argument merely CONTAINED the
+// substring "> .github/workflows/test.yml" was BLOCKED by the real gate.
+test('maskQuotedRedirectOperators only neutralises a `>` that is INSIDE quotes', () => {
+  assert.equal(maskQuotedRedirectOperators('echo "a > b"'), 'echo "a   b"');
+  assert.equal(maskQuotedRedirectOperators("echo 'a > b'"), "echo 'a   b'");
+  // outside quotes — untouched
+  assert.equal(maskQuotedRedirectOperators('cat f > g'), 'cat f > g');
+  // a redirect whose OWN target is quoted: the '>' sits outside the quotes,
+  // so it survives masking exactly as before.
+  assert.equal(maskQuotedRedirectOperators('cat f > "g"'), 'cat f > "g"');
+});
+
+test('bashWriteTargets ignores a `>` that only appears inside a quoted string (BRO-4070)', () => {
+  assert.deepEqual(bashWriteTargets('echo "see below: > .github/workflows/test.yml"'), []);
+  assert.deepEqual(bashWriteTargets('echo "the note about .github/workflows/test.yml: > see above"'), []);
+});
+
+test('bashWriteTargets still catches a real redirect, including one with a quoted target (BRO-4070 regression guard)', () => {
+  assert.deepEqual(bashWriteTargets('cat foo.txt > /tmp/out.txt'), ['/tmp/out.txt']);
+  assert.deepEqual(bashWriteTargets("sed -i '' 's/a/b/' scripts/lib/file-lock.js"), ['scripts/lib/file-lock.js']);
+  // the redirect TARGET itself is quoted — must still resolve to the path,
+  // not be swallowed by the same fix that silences a quoted OPERATOR.
+  assert.deepEqual(bashWriteTargets("cat foo.txt > 'scripts/lib/file-lock.js'"), ['scripts/lib/file-lock.js']);
+});
+
+// The false '>' and its real terminating quote can land in DIFFERENT
+// shellSegments() segments once split on `;` — shellSegments is deliberately
+// quote-blind at the split boundary, so quote-pairing has to be resolved
+// against the WHOLE command before splitting (mirroring stripHeredocBodies),
+// not per-segment, or a semicolon inside the same quoted string reopens the
+// hole one segment over.
+test('bashWriteTargets closes the fake redirect even when a `;` inside the same quoted string would otherwise split it into another segment', () => {
+  assert.deepEqual(bashWriteTargets('echo "run this; then > .github/workflows/test.yml"'), []);
 });
 
 // Codex adversarial review (BRO-2450): these are the one shared definition
