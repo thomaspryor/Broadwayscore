@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-23T23:46:21.529Z",
-  "processed": 10,
-  "failed": 48,
-  "successRate": "17.2%",
+  "updatedAt": "2026-09-24T00:12:42.047Z",
+  "processed": 27,
+  "failed": 121,
+  "successRate": "18.2%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 19,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 2,
-    "brightdata": 0,
+    "scrapingbee": 5,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-09-23T22:26:50.209Z",
@@ -27,10 +27,33 @@
       "domain": "thestage.co.uk"
     },
     {
-      "t": "2026-09-23T23:44:08.327Z",
+      "t": "2026-09-23T23:55:52.342Z",
       "event": "bb-session",
-      "session": "069dfe5b",
-      "url": "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre"
+      "session": "a2eb3b0a",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/golden-boy-josh-oconnor-b"
+    },
+    {
+      "t": "2026-09-23T23:55:52.702Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-24T00:01:09.532Z",
+      "event": "bb-session",
+      "session": "1754806f",
+      "url": "http://www.thisislondon.co.uk/theatre/review-23927559-million-dollar-quartet-doe"
+    },
+    {
+      "t": "2026-09-24T00:04:22.333Z",
+      "event": "bb-session",
+      "session": "d9bc7013",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
+    },
+    {
+      "t": "2026-09-24T00:04:31.277Z",
+      "event": "bb-session",
+      "session": "7533319f",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
     }
   ]
 }
