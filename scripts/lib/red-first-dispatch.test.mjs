@@ -86,7 +86,8 @@ test('decideCardFollowUp: never touches a card while a job is live; cancels only
   for (const t of ['completed', 'canceled', 'duplicate']) {
     assert.equal(decideCardFollowUp({ ...base, issueStateType: t, dispatched: false, live: false }), 'none', `terminal state ${t}`);
   }
-  assert.equal(decideCardFollowUp({ ...base, issueStateType: 'started', dispatched: false, live: false }), 'cancel', 'started with no live job and no dispatch signal is treated as never-dispatched — the runtime feeds `dispatched` from the Dispatched comment, so this only happens when nothing ever ran');
+  assert.equal(decideCardFollowUp({ ...base, issueStateType: 'started', dispatched: false, live: false }), 'leave', 'In Progress with no dispatch signal is attended work — never cancel');
+  assert.equal(decideCardFollowUp({ ...base, issueStateType: 'started', dispatched: true, live: false }), 'comment');
 });
 
 test('followUpCommentBody carries the idempotency marker and names the condition', () => {

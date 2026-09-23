@@ -151,7 +151,8 @@ function selectRedFirstCandidates(issues, { journal = [], openJobTaskIds = new S
  * What to do with a red card whose ledger condition has resolved.
  * @returns {'none'|'leave'|'comment'|'cancel'}
  *   none    condition still open, or the issue is already terminal
- *   leave   a job is LIVE on the card — never touch it (not-resolved-while-live)
+ *   leave   a job is LIVE on the card, or it is 'started' with no dispatch signal
+ *           (attended work) — never touch it (not-resolved-while-live)
  *   comment dispatched before, job finished — one note, outcome path owns the close
  *   cancel  never dispatched — close it with the reason
  */
@@ -159,6 +160,9 @@ function decideCardFollowUp({ conditionStatus, issueStateType, dispatched, live 
   if (conditionStatus !== 'resolved') return 'none';
   if (!issueStateType || isTerminalStateType(issueStateType)) return 'none';
   if (live) return 'leave';
+  // A 'started' card (In Progress / In Review) with no dispatch signal is
+  // someone's attended work (a cmux tab, a hand-dispatch) — never cancel it.
+  if (issueStateType === 'started') return dispatched ? 'comment' : 'leave';
   if (dispatched) return 'comment';
   return 'cancel';
 }
