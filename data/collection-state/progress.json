@@ -59,7 +59,8 @@
     "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
     "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
     "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
-    "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+    "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+    "pre-existing-condition-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
   ],
   "failed": [
     "macbeth-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -133,7 +134,6 @@
     "million-dollar-quartet-off-west-end-2026/standard--henry-hitchings.json",
     "million-dollar-quartet-off-west-end-2026/telegraph--charles-spencer.json",
     "million-dollar-quartet-off-west-end-2026/whatsonstage--andy-plaice.json",
-    "pre-existing-condition-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "bloodsport-after-helen-of-troy-off-west-end-2026/bestoftheatre--cecil-glover.json",
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/nytimes--laura-collins-hughes.json",
     "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/guardian--unknown.json",
@@ -331,7 +331,21 @@
     "heathers-the-musical-off-broadway-2025/all-that-dazzles-uk--unknown.json",
     "heathers-the-musical-off-broadway-2025/londontheatre1--unknown.json",
     "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json",
-    "heathers-the-musical-off-broadway-2025/theupcoming--unknown.json"
+    "heathers-the-musical-off-broadway-2025/theupcoming--unknown.json",
+    "the-hope-theory-off-broadway-2026/nytg--bridget-gross.json",
+    "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
+    "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json",
+    "pre-existing-condition-off-broadway-2026/nytimes--unknown.json",
+    "pre-existing-condition-off-broadway-2026/guardian--unknown.json",
+    "pre-existing-condition-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "pre-existing-condition-off-broadway-2026/airmail--air-mail.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/new-york-sun--ar-hoffman.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/plays-to-see--unknown.json",
+    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+    "cosi-fan-tutte-off-broadway-2026/bachtrack--unknown.json",
+    "cosi-fan-tutte-off-broadway-2026/epoch-times--barry-bassis.json",
+    "cosi-fan-tutte-off-broadway-2026/financialtimes--virginia-webb.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -364,7 +378,8 @@
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
       "oh-mary-west-end-2025/ew--christian-holub.json",
-      "amaze-magic-off-broadway-2025/timeout--adam-feldman.json"
+      "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
+      "pre-existing-condition-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
     ],
     "amp": [],
     "browserbase": [
@@ -375,7 +390,8 @@
       "data/review-texts/man-to-man-west-end-2026/deadline--unknown.json",
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
       "data/review-texts/schmigadoon-2026/variety--clayton-davis.json",
-      "schmigadoon-2026/variety--clayton-davis.json"
+      "schmigadoon-2026/variety--clayton-davis.json",
+      "data/review-texts/the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -416,7 +432,7 @@
     ]
   },
   "startTime": "2026-09-23T08:39:50.073Z",
-  "lastProcessed": "heathers-the-musical-off-broadway-2025/theupcoming--unknown.json",
+  "lastProcessed": "cosi-fan-tutte-off-broadway-2026/financialtimes--virginia-webb.json",
   "log": [
     {
       "t": "2026-09-23T09:50:33.473Z",
@@ -503,6 +519,27 @@
       "t": "2026-09-23T10:40:08.344Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-23T10:57:37.736Z",
+      "event": "bb-session",
+      "session": "fa10ac1b",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
+    },
+    {
+      "t": "2026-09-23T11:00:37.058Z",
+      "event": "bb-session",
+      "session": "b328d44c",
+      "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september"
+    },
+    {
+      "t": "2026-09-23T11:00:56.597Z",
+      "event": "bb-session",
+      "session": "7bcd93cc",
+      "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september"
     }
+  ],
+  "recoveredAfterFailure": [
+    "pre-existing-condition-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
   ]
 }

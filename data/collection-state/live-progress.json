@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-23T10:51:27.724Z",
-  "processed": 60,
-  "failed": 270,
-  "successRate": "18.2%",
+  "updatedAt": "2026-09-23T11:01:20.455Z",
+  "processed": 61,
+  "failed": 283,
+  "successRate": "17.7%",
   "tierBreakdown": {
-    "playwright": 29,
+    "playwright": 30,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 9,
     "directCookies": 0,
     "scrapingbee": 12,
     "brightdata": 3,
     "archiveToday": 0,
     "archive": 14
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-09-23T09:50:33.473Z",
@@ -100,6 +100,24 @@
       "t": "2026-09-23T10:40:08.344Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-09-23T10:57:37.736Z",
+      "event": "bb-session",
+      "session": "fa10ac1b",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
+    },
+    {
+      "t": "2026-09-23T11:00:37.058Z",
+      "event": "bb-session",
+      "session": "b328d44c",
+      "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september"
+    },
+    {
+      "t": "2026-09-23T11:00:56.597Z",
+      "event": "bb-session",
+      "session": "7bcd93cc",
+      "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september"
     }
   ]
 }
