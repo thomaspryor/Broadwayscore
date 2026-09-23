@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-23T15:26:10.970Z",
+  "generatedAt": "2026-09-23T16:26:30.497Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,22 +13,22 @@
       "slug": "cosi-fan-tutte-off-broadway",
       "thumbnail": "/images/shows/cosi-fan-tutte-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 50,
+      "liveScore": null,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 5,
       "siteFileExists": true,
-      "total": 1,
+      "total": 0,
       "t1": 0,
       "t2": 0,
-      "t3": 1,
+      "t3": 0,
       "positive": 0,
       "mixed": 0,
-      "negative": 1,
+      "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/12 total",
+          "0/12 total",
           "T1:0/3",
           "T2:0/3",
           "hi-conf:0/8"
@@ -904,28 +904,28 @@
       "status": "open",
       "slug": "macbeth-off-broadway",
       "thumbnail": "/images/shows/macbeth-off-broadway-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 86,
-      "scoreDrift": null,
+      "siteScore": 79.33,
+      "liveScore": 79,
+      "scoreDrift": -0.3299999999999983,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 1,
+      "total": 3,
       "t1": 0,
       "t2": 0,
-      "t3": 1,
-      "positive": 1,
-      "mixed": 0,
+      "t3": 3,
+      "positive": 2,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/12 total",
+          "3/12 total",
           "T1:0/3",
           "T2:0/3",
-          "hi-conf:1/8"
+          "hi-conf:2/8"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1307,6 +1307,18 @@
           "t3": 1,
           "p": 1,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-23T16:26:30.497Z",
+          "rc": 3,
+          "s": 79.33,
+          "t1": 0,
+          "t2": 0,
+          "t3": 3,
+          "p": 2,
+          "m": 1,
           "n": 0,
           "bc": "waiting"
         }
