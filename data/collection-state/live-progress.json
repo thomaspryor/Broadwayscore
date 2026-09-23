@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-09-23T22:30:15.929Z",
-  "processed": 8,
+  "updatedAt": "2026-09-23T23:46:21.529Z",
+  "processed": 10,
   "failed": 48,
-  "successRate": "14.3%",
+  "successRate": "17.2%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 7,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 0,
@@ -25,6 +25,12 @@
       "t": "2026-09-23T22:26:51.107Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-23T23:44:08.327Z",
+      "event": "bb-session",
+      "session": "069dfe5b",
+      "url": "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre"
     }
   ]
 }
