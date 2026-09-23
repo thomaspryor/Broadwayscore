@@ -923,6 +923,22 @@ function launchesInFlowWindow(now) {
   return dispatchLedger.countRecentLaunches(entries, { now, windowMs: flowHealth.FLOW_WINDOW_MS });
 }
 
+// BRO-3922: every line health() prints lands in ~/Library/Logs/
+// dispatch-watchdog-health.log via launchd, and NONE of them carried a
+// timestamp. Measured 2026-09-21 on a 4,190-line log: 3,479 "healthy" ticks,
+// 374 "STALE — owner paged", 285 "disabled by kill switch — health check
+// skipped" — and no way to date any of them. The dispatch loop was down for
+// the whole of 17-18 Sep (ZERO watchdog-* rows in data/audit/dispatch-ledger
+// .jsonl on both days while prune kept running, 312 and 268 rows), and which
+// of those two blind paths covered it could NOT be determined afterwards from
+// this log. A 15-minute launchd tick with no timestamp can describe an outage
+// but never place one. Nothing parses this file (grepped scripts/ and
+// ~/.claude/hooks/: zero readers) and the plist points StandardOutPath and
+// StandardErrorPath at the same file, so prefixing is free and stream-safe.
+function hlog(msg, stream = 'log') {
+  console[stream](`[${new Date().toISOString()}] ${msg}`);
+}
+
 function health() {
   if (watchdogOff()) {
     // Deliberate disable is not an outage — paging on it would train the
@@ -936,10 +952,10 @@ function health() {
       clearHint: `rm ${OFF_FILE}`,
     });
     if (stale) {
-      console.log(`watchdog: disabled by kill switch — STALE (${Math.round(ageMs / 3600000)}h), owner paged`);
+      hlog(`watchdog: disabled by kill switch — STALE (${Math.round(ageMs / 3600000)}h), owner paged`);
       return 1;
     }
-    console.log('watchdog: disabled by kill switch — health check skipped');
+    hlog('watchdog: disabled by kill switch — health check skipped');
     return 0;
   }
   const age = heartbeatAgeMs();
@@ -998,7 +1014,7 @@ function health() {
           const plan = buildPlan(now);
           dispatchPaused = plan.budgets.pausedByPolicy;
           if (plan.budgets.holds.length === 0) eligibleQueueDepth = plan.p01Queue.length;
-        } catch (e) { console.error(`[watchdog] queue-depth check skipped (${e.message})`); }
+        } catch (e) { hlog(`[watchdog] queue-depth check skipped (${e.message})`, 'error'); }
       }
       if (flowHealth.isDispatchFlowDead({ liveAutoWorkspaces, launchesLast45m, eligibleQueueDepth, dispatchPaused })) {
         pageOwner({
@@ -1008,14 +1024,14 @@ function health() {
           severity: 'error',
           cooldownHours: 24,
         });
-        console.log(`watchdog: heartbeat healthy but dispatch flow DEAD (live=${liveAutoWorkspaces}, launches45m=${launchesLast45m}, queueDepth=${eligibleQueueDepth}) — owner paged`);
+        hlog(`watchdog: heartbeat healthy but dispatch flow DEAD (live=${liveAutoWorkspaces}, launches45m=${launchesLast45m}, queueDepth=${eligibleQueueDepth}) — owner paged`);
         return 1;
       }
       flowSuffix = ` (flow: live=${liveAutoWorkspaces}, launches45m=${launchesLast45m}, queueDepth=${eligibleQueueDepth})`;
     } catch (e) {
-      console.error(`[watchdog] flow-dead check skipped (cmux unobservable): ${e.message}`);
+      hlog(`[watchdog] flow-dead check skipped (cmux unobservable): ${e.message}`, 'error');
     }
-    console.log(`watchdog healthy — heartbeat ${Math.round(age / 60000)} min old${flowSuffix}`);
+    hlog(`watchdog healthy — heartbeat ${Math.round(age / 60000)} min old${flowSuffix}`);
     return 0;
   }
   pageOwner({
@@ -1028,7 +1044,7 @@ function health() {
   // Best-effort: works when the launchd→cmux ACL allows it (post-restart
   // password mode); harmless "cmux unobservable" otherwise.
   try { ensureTab(); } catch { /* ACL rejection expected pre-restart */ }
-  console.log('watchdog STALE — owner paged via alert router');
+  hlog('watchdog STALE — owner paged via alert router');
   return 1;
 }
 
