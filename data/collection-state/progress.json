@@ -134,7 +134,11 @@
     "jeeves-takes-charge-west-end-2026/londontheatredirect--keith-taylor.json",
     "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
     "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
-    "marlise-off-broadway-2026/broadwayworld--unknown.json"
+    "marlise-off-broadway-2026/broadwayworld--unknown.json",
+    "macbeth-off-broadway-2026/nytimes--charles-isherwood.json",
+    "the-holes-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "the-holes-off-broadway-2026/nytimes--unknown.json",
+    "the-holes-off-broadway-2026/exeunt-magazine--unknown.json"
   ],
   "failed": [
     "macbeth-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -1080,7 +1084,22 @@
     "anansi-the-spider-west-end-2026/broadwayworld--unknown.json",
     "anansi-the-spider-west-end-2026/thestage--anna-james.json",
     "anansi-the-spider-west-end-2026/whatsonstage--theo-bosanquet.json",
-    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json"
+    "jeeves-takes-charge-west-end-2026/whatsonstage--kris-hallett.json",
+    "cosi-fan-tutte-off-broadway-2026/seen-and-heard-international--michael-cookson.json",
+    "cosi-fan-tutte-off-broadway-2026/seen-and-heard-international--rick-perdian.json",
+    "macbeth-off-broadway-2026/huffpost--gazelle-emami.json",
+    "the-hope-theory-off-broadway-2026/nytg--bridget-gross.json",
+    "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
+    "crazy-mama-off-broadway-2026/cititour--unknown.json",
+    "in-honor-of-jean-michel-basquiat-off-broadway-2026/exeunt-magazine--unknown.json",
+    "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json",
+    "pre-existing-condition-off-broadway-2026/nytimes--unknown.json",
+    "pre-existing-condition-off-broadway-2026/guardian--unknown.json",
+    "pre-existing-condition-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "pre-existing-condition-off-broadway-2026/airmail--air-mail.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/new-york-sun--ar-hoffman.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/plays-to-see--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1144,7 +1163,8 @@
       "anansi-the-spider-west-end-2026/primarytimes--unknown.json",
       "jeeves-takes-charge-west-end-2026/jonathan-baz--unknown.json",
       "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
-      "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json"
+      "jeeves-takes-charge-west-end-2026/thetheatreflyer-co-uk--unknown.json",
+      "the-holes-off-broadway-2026/exeunt-magazine--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1170,7 +1190,8 @@
       "data/review-texts/book-of-mormon-2011/washpost--unknown.json",
       "book-of-mormon-2011/washpost--unknown.json",
       "data/review-texts/el-quijote-off-broadway-2026/nytimes--george-hunka.json",
-      "el-quijote-off-broadway-2026/nytimes--george-hunka.json"
+      "el-quijote-off-broadway-2026/nytimes--george-hunka.json",
+      "data/review-texts/the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json"
     ],
     "directCookies": [
       "just-in-time-2025/newyorker--conde-nast.json"
@@ -1205,7 +1226,9 @@
       "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
       "the-sound-of-music-2027/the-daily-gazette--bill-kellert.json",
       "tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json",
-      "tosca-off-broadway-2026/broadwayworld--roger-catlin.json"
+      "tosca-off-broadway-2026/broadwayworld--roger-catlin.json",
+      "macbeth-off-broadway-2026/nytimes--charles-isherwood.json",
+      "the-holes-off-broadway-2026/nytimes--unknown.json"
     ],
     "brightdata": [
       "in-honor-of-jean-michel-basquiat-off-broadway-2026/broadwayworld--fred-mason.json",
@@ -1220,7 +1243,8 @@
       "spellbound-off-broadway-2026/theater-life--paulanne-simmons.json",
       "the-bathroom-attendant-off-broadway-2026/stagebuddy--unknown.json",
       "jeeves-takes-charge-west-end-2026/ground--unknown.json",
-      "marlise-off-broadway-2026/broadwayworld--unknown.json"
+      "marlise-off-broadway-2026/broadwayworld--unknown.json",
+      "the-holes-off-broadway-2026/nytimes--laura-collins-hughes.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1255,7 +1279,7 @@
     ]
   },
   "startTime": "2026-09-23T08:39:50.073Z",
-  "lastProcessed": "marlise-off-broadway-2026/broadwayworld--unknown.json",
+  "lastProcessed": "the-holes-off-broadway-2026/standard--unknown.json",
   "log": [
     {
       "t": "2026-09-23T09:50:33.473Z",
@@ -1619,6 +1643,46 @@
       "event": "bb-session",
       "session": "2cf131bf",
       "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/feeling-a"
+    },
+    {
+      "t": "2026-09-23T16:06:43.621Z",
+      "event": "bb-session",
+      "session": "c0280490",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    },
+    {
+      "t": "2026-09-23T16:07:01.888Z",
+      "event": "bb-session",
+      "session": "cf7cf936",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    },
+    {
+      "t": "2026-09-23T16:08:23.280Z",
+      "event": "bb-session",
+      "session": "d699fe02",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
+    },
+    {
+      "t": "2026-09-23T16:10:28.727Z",
+      "event": "bb-session",
+      "session": "876eb555",
+      "url": "https://www.nytimes.com/2026/09/23/theater/the-holes-review-max-wolf-friedlich.h"
+    },
+    {
+      "t": "2026-09-23T16:10:29.335Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-23T16:10:47.001Z",
+      "event": "bb-session",
+      "session": "26f1b781",
+      "url": "https://www.nytimes.com/2026/09/23/theater/the-holes-review-max-wolf-friedlich.h"
+    },
+    {
+      "t": "2026-09-23T16:10:47.635Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ],
   "recoveredAfterFailure": [
