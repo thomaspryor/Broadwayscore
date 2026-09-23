@@ -184,6 +184,10 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           BRIGHTDATA_SERP_ZONE: ${{ secrets.BRIGHTDATA_SERP_ZONE }}
+          # routeAlert(disposition:'auto') files a Linear issue; without the key
+          # every trip logged "LINEAR_API_KEY not set" and fed the alert-router
+          # dispatch-deadman page (2026-09-21/22).
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/check-bd-breaker.js
 
       - name: ScrapingDog daily circuit-breaker check

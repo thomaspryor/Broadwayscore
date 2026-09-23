@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-22T22:44:44.983Z",
+  "generatedAt": "2026-09-23T01:14:30.872Z",
   "windowDays": 45,
-  "showsScanned": 76,
+  "showsScanned": 78,
   "gaps": [
     {
       "showId": "the-winters-tale-off-broadway-2026",
@@ -17,9 +17,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-winters-tale-off-broadway-2026",
       "firstSeen": "2026-08-13T10:48:31.706Z",
-      "fileAgeHours": 971.9368622222222,
+      "fileAgeHours": 974.432945,
       "gapSeenAt": "2026-09-20T22:08:26.926Z",
-      "nonTerminalAgeHours": 48.60501583333333
+      "nonTerminalAgeHours": 51.10109611111111
     },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
@@ -34,9 +34,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 148.73156277777778,
+      "fileAgeHours": 151.22764527777778,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 148.65065916666666
+      "nonTerminalAgeHours": 151.14673944444445
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -51,9 +51,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays --outlet=thestage --critic=\"Dave Fargnoli\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T17:56:44.755Z",
-      "fileAgeHours": 148.79999027777777,
+      "fileAgeHours": 151.29607194444444,
       "gapSeenAt": "2026-09-21T21:33:52.974Z",
-      "nonTerminalAgeHours": 25.181113611111112
+      "nonTerminalAgeHours": 27.67719388888889
     }
   ],
   "contradictions": []

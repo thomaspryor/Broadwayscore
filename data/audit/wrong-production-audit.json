@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-23T00:44:49.075Z",
+  "timestamp": "2026-09-23T01:22:14.080Z",
   "stats": {
-    "totalReviews": 43954,
-    "alreadyFlagged": 18156,
+    "totalReviews": 43960,
+    "alreadyFlagged": 18159,
     "dateGuardCatches": 248,
     "directorMismatch": 1048,
     "tvFilmSignals": 1303,
     "londonSignals": 1149,
-    "offBroadwaySignals": 509,
+    "offBroadwaySignals": 510,
     "yearMismatch": 93,
-    "noPublishDate": 3858
+    "noPublishDate": 3859
   },
   "findings": [
     {
@@ -39117,6 +39117,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "cosi-fan-tutte-off-broadway-2026",
+      "file": "parterre-box--parterre-box.json",
+      "publishDate": "2026-09-16",
+      "url": "https://parterre.com/broadcast/109259/cosi-fan-tutte/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
         }
       ]
     },
