@@ -70,6 +70,7 @@ function stripManagedGlyph(title) {
 }
 
 function needsYouFile(ref, dir = NEEDS_YOU_DIR) {
+  // diacritic-guard-ok: sanitizing a cmux workspace ref (workspace:N) into a filename, not a title/name matcher
   return path.join(dir, `${String(ref).replace(/[^a-zA-Z0-9_-]/g, '_')}.json`);
 }
 
