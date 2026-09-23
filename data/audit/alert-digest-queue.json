@@ -707,5 +707,30 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-23T12:29:09.528Z"
+  },
+  {
+    "conditionKey": "feedback-outcomes:2026-09-23T12:33:37.363288+00:00",
+    "title": "Feedback: 1 submission(s), all handled automatically",
+    "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nDeep Heat Rivalry — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Deep Heat Rivalry at The Other Palace is listed as closed but it is running until Oct 11, 2026\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/925",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35876021649",
+    "decision": true,
+    "decisionPrompt": "Receipt only — every message in this run was handled automatically. Nothing to fix.",
+    "model": null,
+    "fields": [
+      {
+        "name": "Submissions",
+        "value": "1"
+      },
+      {
+        "name": "Need you",
+        "value": "0"
+      },
+      {
+        "name": "Pipeline status",
+        "value": "success"
+      }
+    ],
+    "queuedAt": "2026-09-23T14:43:22.443Z"
   }
 ]
