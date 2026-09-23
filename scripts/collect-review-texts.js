@@ -532,6 +532,18 @@ const UNCOLLECTABLE_OUTLETS = (() => {
   return set;
 })();
 
+// BRO-4058 follow-up (2026-09-22): outlets whose <title>/og:title tag is
+// systemically unreliable — confirmed live for pages-on-stages, where the
+// <title> consistently reflects a DIFFERENT post than the one at the fetched
+// URL (a theme/widget bug, not a per-post fluke: verified on 2 independent
+// URLs). Passing that html to validateContentMentionsShow's <title>
+// cross-check risks a false url_content_mismatch reject whenever the wrong
+// title happens to collide with a real catalog show (birthright-off-broadway-
+// 2026: <title> read "The Heart", a real different show). Body-mention
+// evidence alone (htmlTitleMatch=null path, already the no-HTML behavior)
+// is the reliable signal for these outlets.
+const UNRELIABLE_TITLE_OUTLETS = new Set(['pages-on-stages']);
+
 // Domain alias matching — imported from shared lib (scraper.js)
 const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats } = require('./lib/scraper');
 const { shouldCountFailure, isPermanentlyFailed } = require('./lib/failed-fetch-policy');
@@ -6622,9 +6634,10 @@ async function processReview(review) {
       const canonicalTitle = _showsJsonCache
         ? (_showsJsonCache.shows.find(s => s.id === review.showId)?.title || showTitle)
         : showTitle;
+      const trustHtmlTitle = !UNRELIABLE_TITLE_OUTLETS.has((review.outletId || '').toLowerCase());
       const sanity = validateContentMentionsShow(
         result.text,
-        result.html || null,
+        trustHtmlTitle ? (result.html || null) : null,
         canonicalTitle,
         review.showId
       );
@@ -6903,9 +6916,10 @@ async function processReview(review) {
           const retryCanonicalTitle = _showsJsonCache
             ? (_showsJsonCache.shows.find(s => s.id === review.showId)?.title || showTitle)
             : showTitle;
+          const retryTrustHtmlTitle = !UNRELIABLE_TITLE_OUTLETS.has((review.outletId || '').toLowerCase());
           const retrySanity = validateContentMentionsShow(
             retryResult.text,
-            retryResult.html || null,
+            retryTrustHtmlTitle ? (retryResult.html || null) : null,
             retryCanonicalTitle,
             review.showId
           );
