@@ -41,6 +41,7 @@ const {
   TERMINAL_LAUNCH_EVENTS, TERMINAL_JOB_EVENTS, foldJobs, JOB_EVENTS,
   openTaskWorkspaceLaunches, dispatchCapDecision, parkedTasks,
   detectLauncherOutage, detectLauncherFailureRate, FAILURE_RATE_LOOKBACK_MS,
+  newestRowForTask,
 } = require('./dispatch-ledger.js');
 const { isExcludedCategory } = require('./autonomous-eligibility.js');
 const { isLiveBoardTaskId } = require('./task-id-namespace.js');
@@ -811,6 +812,26 @@ function isTaskOpen(task) {
   return !!task && (task.status === 'pending' || task.status === 'in_progress');
 }
 
+// BRO-4076: ledger events meaning a task's newest dispatch attempt already
+// reached a terminal, nothing-left-to-do outcome, so the p01-backlog sweep
+// must not re-select it even though the task mirror still reads 'pending'
+// (ack-landed.js's landed-acked row is a Linear COMMENT, not a state change —
+// same blind spot for any future writer that lands a job-done row without
+// moving the issue). NOT a claim that the work is verified-landed on
+// origin/main — job-done alone is exactly what BRO-3424's separate
+// unlandedDone/unlandedJobDone check above exists to re-verify by git
+// ancestry; this only says "the watchdog itself has nothing further to
+// dispatch," the same judgment ack-landed-core.js's NOTHING_TO_ACK_EVENTS
+// already makes for its own idempotency guard.
+const NO_FURTHER_DISPATCH_EVENTS = new Set([
+  JOB_EVENTS.DONE, JOB_EVENTS.LANDED_ACKED, JOB_EVENTS.LANDED_BEFORE_DISPATCH,
+]);
+
+function hasNoFurtherDispatchWork(taskId, entries) {
+  const newest = newestRowForTask(taskId, entries);
+  return !!(newest && NO_FURTHER_DISPATCH_EVENTS.has(newest.event));
+}
+
 /**
  * The sweep decision. Everything the CLI needs to act, plus everything the
  * dashboard needs to render, from pure inputs:
@@ -1026,6 +1047,7 @@ function planSweep(entries, tasks, opts) {
     // card that still matters gets migrated to Linear, not drained in place.
     if (!isLiveBoardTaskId(id)) continue;
     if (open.has(id) || ownerParked.has(id) || wdParked.has(id)) continue;
+    if (hasNoFurtherDispatchWork(id, entries)) continue;   // BRO-4076
     if (blockedTaskIds.has(id)) continue;          // BRO-3442: about to be parked this sweep
     if (claimPending.has(id)) continue;            // #1564: same suppression as the retry path above
     if (dispatchCapDecision(id, entries).blocked) continue;
@@ -1349,4 +1371,6 @@ module.exports = {
   // R5 (BRO-3924): exported for direct unit testing, not just through planSweep.
   median, medianJobCostUSD, watchdogSpendRows, watchdogSpendBreaker,
   WATCHDOG_SPEND_THRESHOLD_USD, SPEND_MEDIAN_WINDOW_MS, FALLBACK_JOB_COST_USD,
+  // BRO-4076: exported for direct unit testing, not just through planSweep.
+  NO_FURTHER_DISPATCH_EVENTS, hasNoFurtherDispatchWork,
 };
