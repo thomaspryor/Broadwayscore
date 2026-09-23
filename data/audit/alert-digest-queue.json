@@ -649,5 +649,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-23T09:13:28.964Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-4078-mudwlbr7",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-4078-mudwlbr7",
+    "description": "land.yml did not land land/job/linear-BRO-4078-mudwlbr7: the rebase gate went red at 1dbedadc79. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-4078-mudwlbr7 @ 1dbedadc79 (origin/land/job/linear-BRO-4078-mudwlbr7) → origin/main @ c2f35eee13 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ c2f35eee13: Rebasing (1/2) error: could not apply e973eaf4b0... test(BRO-4078): hermetic e2e coverage for the rebase-landed stranded tie hint: Resolve all conflicts manually, mark them as resolved with hint:  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35845013950",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4078-mudwlbr7"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "1dbedadc799fe949cb31a89dcb39e6de9dff3e53"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35845013950"
+      }
+    ],
+    "queuedAt": "2026-09-23T10:02:49.582Z"
   }
 ]
