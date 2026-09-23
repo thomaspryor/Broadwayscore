@@ -117,6 +117,11 @@ function main() {
 
   let newUrls = 0;
   let skippedUrlDupes = 0;
+  // BRO-4055: showIds whose shard URL was rejected as a cross-show
+  // collision. The score merge below must not accept this shard's score for
+  // them either — an older production's contaminated score would otherwise
+  // land in audience-buzz.json even though its URL assignment was refused.
+  const urlConflictShowIds = new Set();
   for (const [showId, url] of Object.entries(allUrls)) {
     if (!isMostRecentProduction(showId)) {
       // Older production: only cache if URL differs from newest production's
@@ -138,6 +143,7 @@ function main() {
     if (conflictId) {
       console.log(`  SKIP URL ${showId}: ${url} already assigned to ${conflictId}`);
       skippedUrlDupes++;
+      urlConflictShowIds.add(showId);
       continue;
     }
     if (!urlData.shows[showId]) {
@@ -158,6 +164,14 @@ function main() {
   let skippedOlder = 0;
 
   for (const [showId, showScoreData] of Object.entries(allScores)) {
+    // BRO-4055: this shard's URL for showId was rejected as a cross-show
+    // collision above — its score is for that same rejected (wrong-
+    // production) page, so it must not be accepted here either.
+    if (urlConflictShowIds.has(showId)) {
+      console.log(`  SKIP ${showId}: score rejected — url assignment was a cross-show collision`);
+      skippedOlder++;
+      continue;
+    }
     // Multi-production guard: older productions only allowed if they have own distinct URL
     if (!isMostRecentProduction(showId) && !hasOwnShowScorePage(showId, urlData.shows || {})) {
       console.log(`  SKIP ${showId}: older production without own ShowScore page`);

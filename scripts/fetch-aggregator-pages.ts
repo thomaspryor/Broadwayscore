@@ -28,6 +28,8 @@ const {
   shouldSkipAsKnownNotFound,
   applyFetchResultToCache,
 } = require('./lib/not-found-cache');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { findConflictingShowId } = require('./lib/show-score-url-map');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '../data');
@@ -301,6 +303,18 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
       // Re-capture HTML AFTER scroll so saved file has all rendered tiles
       html = await page.content();
       const finalTiles = (html.match(/id=['"]critic_review_\d+['"]/g) || []).length;
+
+      // BRO-4055: ownedByOtherShow above only filters GUESSED patterns
+      // before navigation — it can't see a redirect. A pattern nobody owns
+      // can still 30x to a page another showId's stored URL already points
+      // at (Show Score canonicalizing a slug variant), recreating the exact
+      // wrong-production collision this ticket exists to close. Check the
+      // actual landed pageUrl, not just the tried pattern.
+      const conflictShowId = findConflictingShowId(urlMappings, showId, pageUrl);
+      if (conflictShowId) {
+        console.warn(`  ⚠️  [show-score] ${showId}: landed on ${pageUrl}, already owned by ${conflictShowId} — skipping`);
+        continue;
+      }
 
       // Save; a title mismatch means this URL is the WRONG show — don't record
       // it as this show's stored URL, and don't count it as a success. Try the
