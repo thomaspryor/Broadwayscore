@@ -357,8 +357,70 @@ function signaturesToResolve(openConditionKeys, run, currentSignatures) {
     .filter((k) => confirmedGreenJobPrefixes.some((prefix) => k.startsWith(prefix)));
 }
 
+// ── stale signature (BRO-4054) ──────────────────────────────────────────────
+//
+// signaturesToResolve() above closes a red condition only when its OWN job is
+// confirmed green. But a signature can also just stop appearing while the job
+// keeps failing on something ELSE (a different test in the same batched step,
+// or an earlier step) — resolve-on-green never fires, and the card sits open
+// forever (three of the five open red cards on 2026-09-22 were exactly this).
+// Absence is counted per completed push run on main, and ONLY when the key's
+// job actually ran and failed on a real step (second-opinion NIT: a skipped
+// or cancelled job yields no signature either, and three of those must not
+// read as "the breakage is gone"). Any run where the signature IS present
+// resets the counter, so this is "3 CONSECUTIVE failed runs without it".
+
+const STALE_ABSENT_RUN_THRESHOLD = 3;
+
+// job name is everything between the prefix and the trailing ':<8-hex hash>'.
+function jobNameFromRedKey(key) {
+  const rest = String(key || '').slice(RED_SIGNATURE_PREFIX.length);
+  const idx = rest.lastIndexOf(':');
+  return idx === -1 ? rest : rest.slice(0, idx);
+}
+
+/**
+ * @param {Object<string,{absentRunIds?:string[]}>} openRedConditions open ledger records keyed by conditionKey (non-red keys ignored)
+ * @param {Array<{conditionKey:string}>} currentSignatures failingStepSignatures() output for THIS run
+ * @param {{jobs?: Array}} run this run's job data
+ * @param {string} runId this run's id (one absence tick per run — deduped)
+ * @param {object} [opts]
+ * @param {number} [opts.threshold] consecutive absent runs before a key is stale (default 3)
+ * @param {Set<string>} [opts.unreliableJobs] job names whose test-name lookup failed this run —
+ *   their keys get NO absence tick (a job+step-only signature would otherwise never match a
+ *   job+step+test key and three log-fetch hiccups would falsely resolve a still-failing test)
+ * @returns {{toResolve: string[], updates: Object<string,string[]>}} keys now stale, and the
+ *   new absentRunIds per key that changed (present → [], absent → +runId)
+ */
+function trackSignatureAbsence(openRedConditions, currentSignatures, run, runId, { threshold = STALE_ABSENT_RUN_THRESHOLD, unreliableJobs = new Set() } = {}) {
+  const currentSet = new Set((currentSignatures || []).map((s) => s.conditionKey));
+  const failedJobs = new Set(((run && run.jobs) || [])
+    .filter((j) => j?.conclusion === 'failure' && !isSetupJobOnlyFailure(j) && hasFailingStep(j))
+    .map((j) => j.name || ''));
+  const toResolve = [];
+  const updates = {};
+  for (const [key, cond] of Object.entries(openRedConditions || {})) {
+    if (!key.startsWith(RED_SIGNATURE_PREFIX)) continue;
+    const prior = Array.isArray(cond?.absentRunIds) ? cond.absentRunIds.map(String) : [];
+    if (currentSet.has(key)) {
+      if (prior.length) updates[key] = [];
+      continue;
+    }
+    const job = jobNameFromRedKey(key);
+    if (!failedJobs.has(job) || unreliableJobs.has(job)) continue;
+    if (prior.includes(String(runId))) continue;
+    const next = [...prior, String(runId)].slice(-Math.max(1, threshold));
+    updates[key] = next;
+    if (next.length >= threshold) toResolve.push(key);
+  }
+  return { toResolve, updates };
+}
+
 module.exports = {
   NON_BLOCKING_JOB_NAMES,
+  STALE_ABSENT_RUN_THRESHOLD,
+  jobNameFromRedKey,
+  trackSignatureAbsence,
   assessMainRedStreak,
   DEFAULT_THRESHOLD_HOURS,
   failingJobNames,

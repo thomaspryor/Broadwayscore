@@ -91,6 +91,9 @@ const { isPageWorthy } = require('./page-worthy-alerts');
 // shelling out to the linear-brain.js CLI — see linear-issue-create.js's
 // header for why this is the natural repoint target.
 const { createLinearIssue, isUsageLimitExceeded } = require('./linear-issue-create');
+// BRO-4054: provenance marker for cards filed for dispatch-at-filing (no
+// PARKED sentinel) — shared with the Mac-side red-first pass that selects them.
+const { DISPATCH_AT_FILING_MARKER } = require('./linear-drain-parked');
 // Cross-system dedupe (Phase 0 rail 2, plan 2026-08-12, task #1341) — see
 // findLinearDuplicate() below. Every Linear GraphQL call stays inside
 // linear-client.js (audit-linear-issuecreate-chokepoint.js convention).
@@ -467,8 +470,8 @@ async function findLinearDuplicate(conditionKey, { searchIssuesFn = linearClient
 // when it matters (a real 429 burst). If this ever needs bounding, pass
 // timeoutMs/maxAttempts through to linear-client.js's graphql() rather than
 // wrapping the whole call in a race — see linear-client.js's graphql() opts.
-async function dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey, verify }) {
-  const notes = buildCardNotes({ description, hint, fields, conditionKey, verify });
+async function dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey, verify, dispatchAtFiling }) {
+  let notes = buildCardNotes({ description, hint, fields, conditionKey, verify });
   // Linear priority ints: 1=Urgent 2=High 3=Medium 4=Low. Alert-filed issues
   // map error-class severities to High, everything else Medium — Urgent is
   // reserved for humans. (`priority`, when a caller passes one, is the OLD
@@ -479,15 +482,29 @@ async function dispatchCard({ title, description, hint, fields, severity, cardAc
   // worked the instant it's created — the Phase-2 drain/auditor picks
   // parked issues up on its next pass — so this is a park, not a dispatch.
   const parkReason = `Auto-filed by owner-alert-router (condition: ${conditionKey}); parked for triage. The Linear-side drain (Phase 2 follow-up, in build) will dispatch machine-verifiable parked issues; until it ships these surface via the digest.`;
+  // BRO-4054: a `dispatchAtFiling` caller (route-main-streak-signatures.js's
+  // `test-yml:red:<job>:<sig>` cards) wants the card WORKED, not triaged —
+  // main is red on every push until someone fixes it. Those cards are filed
+  // in dispatch mode (Todo, no `PARKED:` line — the very sentinel
+  // headless-dispatchability.js refuses, which is how every red card sat
+  // undispatched, BRO-3536) with a provenance line the Mac-side red-first
+  // pass (scripts/lib/red-first-dispatch.js, bsc-reconcile's 5-min tick)
+  // selects on. The line deliberately does NOT contain linear-drain-parked's
+  // AUTO_FILED_MARKER substring, so the 3x/day parked drain never
+  // double-selects the same card.
+  const dispatchMode = !!dispatchAtFiling;
+  if (dispatchMode) {
+    notes = `${DISPATCH_AT_FILING_MARKER} (BRO-4054; condition: ${conditionKey}). The Mac-side red-first pass dispatches it headless within ~5 minutes of filing; it needs no owner triage unless the VERIFY line below says owner-judgment.\n\n${notes}`;
+  }
   try {
     const { issue } = await createLinearIssue({
       title,
       description: notes,
       priority: linearPriority,
-      park: parkReason,
+      ...(dispatchMode ? { dispatch: true } : { park: parkReason }),
     });
     logDispatchAttempt({ conditionKey, title, ok: true });
-    return { ok: true, cardId: null, linearIdentifier: issue.identifier };
+    return { ok: true, cardId: null, linearIdentifier: issue.identifier, dispatchMode };
   } catch (err) {
     // Log the REAL error verbatim — this is the exact spot the npm-ci incident
     // (2026-07-24) got misdiagnosed as a NOTION_API_KEY problem.
@@ -723,6 +740,7 @@ async function routeAlert(opts) {
     decisionPrompt,
     model,
     verify,
+    dispatchAtFiling,
   } = opts || {};
 
   if (!conditionKey) throw new Error('routeAlert requires a stable conditionKey');
@@ -816,6 +834,7 @@ async function routeAlert(opts) {
         // match means "don't file ANOTHER tracker", not "the old card vanished".
         cardId: existing?.cardId || null,
         linearIdentifier: linearDup.identifier,
+        ...carriedRedFirstFields(existing),
       };
       persistLedger(ledger);
       return { action: 'silent', conditionKey, cardId: existing?.cardId || null, linearIdentifier: linearDup.identifier };
@@ -828,8 +847,19 @@ async function routeAlert(opts) {
   if (pageGated) result.requestedDisposition = disposition;
   let notifyOk = true;
   if (effectiveDisposition === 'auto') {
-    const dispatch = await dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey, verify });
+    const dispatch = await dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey, verify, dispatchAtFiling });
     result.cardId = dispatch.cardId || null;
+    // BRO-4054: the durable "dispatch requested" stamp. The Mac-side pass
+    // selects candidates from Linear itself (a lost ledger push must not
+    // strand the card — second-opinion blocker), so this is telemetry +
+    // the follow-up sweep's "was this ever requested" signal, not the queue.
+    if (dispatch.ok && dispatch.dispatchMode) {
+      result.dispatch = {
+        requestedAt: now,
+        mode: 'dispatch-at-filing',
+        ...(dispatchAtFiling && typeof dispatchAtFiling === 'object' ? { runId: dispatchAtFiling.runId || null, runUrl: dispatchAtFiling.runUrl || null } : {}),
+      };
+    }
     // BRO-286: the filed tracker is a Linear issue — surface WHERE it lives
     // so consumers (health-check's digest line) tell the truth.
     result.linearIdentifier = dispatch.linearIdentifier || null;
@@ -923,20 +953,51 @@ async function routeAlert(opts) {
     // Filed-tracker identity survives in the ledger so the cooldown
     // short-circuit (top of function) keeps reporting it on silent refires.
     linearIdentifier: result.linearIdentifier !== undefined ? result.linearIdentifier : (existing?.linearIdentifier || null),
+    ...carriedRedFirstFields(existing),
+    ...(result.dispatch ? { dispatch: result.dispatch } : {}),
   };
   persistLedger(ledger);
   return result;
 }
 
+// BRO-4054 (second-opinion blocker): both ledger writes in routeAlert build
+// a FRESH record from an explicit field list, so any field another writer
+// stamped on the open condition — the dispatch-at-filing request stamp, the
+// stale-signature absence counter — silently vanished on the next refire
+// (cooldown expiry → dedupe-match rewrite). Carry them across explicitly.
+function carriedRedFirstFields(existing) {
+  const out = {};
+  if (existing && existing.dispatch) out.dispatch = existing.dispatch;
+  if (existing && Array.isArray(existing.absentRunIds)) out.absentRunIds = existing.absentRunIds;
+  return out;
+}
+
+// Merge `patch` into an OPEN condition's record without touching the
+// routeAlert-owned fields (status/lastSeen/notifyCount...). Used by
+// route-main-streak-signatures.js to stamp `absentRunIds` (BRO-4054 stale
+// tracking). No-op (returns false) when the condition is missing or closed.
+function patchCondition(conditionKey, patch) {
+  const ledger = loadLedger();
+  const existing = ledger.conditions[conditionKey];
+  if (!existing || existing.status !== 'open') return false;
+  Object.assign(existing, patch || {});
+  persistLedger(ledger);
+  return true;
+}
+
 // Call the moment the underlying check goes back to green — lets the next
 // occurrence notify immediately instead of waiting out the cooldown.
 // Returns true if an open incident was actually resolved (false = no-op).
-function resolveCondition(conditionKey) {
+// `reason` (BRO-4054, optional) is recorded as `resolveReason` so a reader of
+// the ledger — the Mac-side card follow-up sweep, a human — can tell a
+// same-job-went-green resolution from a stale-signature one.
+function resolveCondition(conditionKey, { reason } = {}) {
   const ledger = loadLedger();
   const existing = ledger.conditions[conditionKey];
   if (!existing || existing.status !== 'open') return false;
   existing.status = 'resolved';
   existing.resolvedAt = new Date().toISOString();
+  if (reason) existing.resolveReason = String(reason);
   persistLedger(ledger);
   return true;
 }
@@ -984,6 +1045,7 @@ module.exports = {
   findLinearDuplicate,
   isPageWorthy, // re-exported for callers/tests that want to check gating without calling routeAlert
   resolveCondition,
+  patchCondition,
   deleteCondition,
   loadLedger,
   headStandsAlone,

@@ -319,6 +319,21 @@ data/audit/dmarc-report-ledger.jsonl merge=union
 #       third condition too — ordering safety is NOT duplicate safety.
 data/audit/linear-drain-parked-ledger.jsonl merge=union
 
+# bsc-reconcile-linear-zombie-ledger.jsonl (scripts/bsc-reconcile.js's
+# sweepLinearStartedZombies, BRO-3925): same three-condition check as
+# linear-drain-parked-ledger.jsonl above, same reader shape (attempt-memory.js
+# checkPark via scripts/bsc-reconcile.js's readLinearZombieLedger). (a) safe —
+# resurrecting a pruned/duplicate card-fail/card-pass row is stale data, not a
+# wrong computed value, and nothing here ever prunes anyway (append-only,
+# unbounded). (b) safe — attempt-memory.js's attemptOutcomesForCard explicitly
+# re-sorts by each row's own ts before walking the streak, never trusts file
+# order. (c) the third condition this repo's own union incidents keep
+# catching: readLinearZombieLedger() does exact-line dedup, same fix
+# linear-drain-parked-ledger.jsonl's readLedger() needed for the identical
+# reason (a duplicated card-fail row would otherwise turn one real failure
+# into a false 2-in-a-row park).
+data/audit/bsc-reconcile-linear-zombie-ledger.jsonl merge=union
+
 # linear-gate-bypass.jsonl (scripts/lib/linear-gate-bypass-ledger.js's
 # appendBypassRow): arrived tracked with no merge attribute on 2026-09-21
 # (BRO-3928 landing discovered it as a pre-existing red on

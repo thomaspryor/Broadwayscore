@@ -720,15 +720,30 @@ async function main() {
 
   // Update Show Score URL mappings if any changed
   if (fetchedShowScore) {
+    // BRO-4055 follow-up: this used to overwrite the WHOLE file from the
+    // in-memory `showScoreUrls` snapshot taken at loadShowScoreUrls() —
+    // silently dropping _discoveryAttempts (and any other top-level key)
+    // every time this script found even one new URL, and losing any
+    // concurrent write another script made to `shows` while this run was
+    // fetching. Re-read the CURRENT on-disk file at write time and merge
+    // this run's additions on top instead of replacing wholesale.
+    let onDisk: { _meta?: Record<string, unknown>; shows?: Record<string, string>; [k: string]: unknown } = {};
+    try {
+      onDisk = JSON.parse(fs.readFileSync(SHOW_SCORE_URLS_PATH, 'utf8'));
+    } catch {
+      onDisk = {};
+    }
     fs.writeFileSync(SHOW_SCORE_URLS_PATH, JSON.stringify({
+      ...onDisk,
       _meta: {
+        ...(onDisk._meta || {}),
         lastUpdated: new Date().toISOString(),
         source: 'Show Score Broadway section',
         needsManualFetch: [],
         needsManualFetchNote: 'URLs auto-updated by fetch script'
       },
-      shows: showScoreUrls
-    }, null, 2));
+      shows: { ...(onDisk.shows || {}), ...showScoreUrls }
+    }, null, 2) + '\n');
 
     // Run extraction
     await runShowScoreExtraction();

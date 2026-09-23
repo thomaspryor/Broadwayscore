@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<!-- cmux logged-out / stalled-resume watchdog (BRO-4056). A cmux tab that
+     never completes a normal Claude turn (a raw-restored pane sitting on
+     "Not logged in · Please run /login", or a resumed session that only
+     ever answered "No response requested.") never fires the Stop hook
+     (~/.claude/hooks/lib/workspace-mark-done.js) and never shows a running
+     claude_code process either — every existing liveness signal reads it as
+     healthy, so the needs-you sidebar/digest never flags it and the owner
+     only finds out by opening the tab. Same 5-minute cadence as
+     ~/.config/claude/keychain-sentinel.sh (same class of "auth went silently
+     bad" problem this machine already watches on that interval), not the
+     15-minute cadence used by com.broadwayscore.cmux-reachability /
+     dispatch-watchdog-health — this failure is directly owner-visible
+     (a stuck tab someone might open any minute), those two watch background
+     infrastructure health. Decision logic: scripts/lib/cmux-auth-stall.js.
+     Marking mechanism (rename to a leading ❓ + needs-you state file):
+     scripts/cmux-auth-stall-watchdog.js. Manual check:
+     node scripts/cmux-auth-stall-watchdog.js --dry-run -->
+<dict>
+  <key>Label</key>
+  <string>com.broadwayscore.cmux-auth-stall-watchdog</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>-c</string>
+    <string>/opt/homebrew/bin/node /Users/tompryor/Broadwayscore/scripts/cmux-auth-stall-watchdog.js</string>
+  </array>
+  <key>StartInterval</key>
+  <integer>300</integer>
+  <key>StandardOutPath</key>
+  <string>/Users/tompryor/Library/Logs/cmux-auth-stall-watchdog.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/tompryor/Library/Logs/cmux-auth-stall-watchdog.log</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin</string>
+  </dict>
+</dict>
+</plist>
