@@ -1,50 +1,28 @@
 {
-  "updatedAt": "2026-09-23T14:47:53.733Z",
-  "processed": 19,
-  "failed": 131,
-  "successRate": "12.7%",
+  "updatedAt": "2026-09-23T15:12:18.142Z",
+  "processed": 116,
+  "failed": 844,
+  "successRate": "12.1%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 50,
     "amp": 0,
-    "browserbase": 4,
-    "directCookies": 0,
-    "scrapingbee": 3,
-    "brightdata": 1,
+    "browserbase": 23,
+    "directCookies": 1,
+    "scrapingbee": 28,
+    "brightdata": 6,
     "archiveToday": 0,
-    "archive": 20
+    "archive": 26
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 20,
   "recentActivity": [
     {
-      "t": "2026-09-23T14:32:58.271Z",
+      "t": "2026-09-23T14:24:12.954Z",
       "event": "bb-session",
-      "session": "5462322e",
-      "url": "https://www.thetimes.com/culture/classical-opera/article/macbeth-at-the-met-revi"
+      "session": "27c33ed8",
+      "url": "https://www.nytimes.com/2022/11/03/theater/my-neighbour-totoro-barbican-london.h"
     },
     {
-      "t": "2026-09-23T14:32:59.030Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-23T14:38:09.186Z",
-      "event": "bb-session",
-      "session": "9da19b76",
-      "url": "https://www.thestage.co.uk/news/edinburgh-fringe-organisers-very-concerned-about"
-    },
-    {
-      "t": "2026-09-23T14:38:09.934Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-09-23T14:43:57.922Z",
-      "event": "bb-session",
-      "session": "ae3e5c7c",
-      "url": "https://www.nytimes.com/2006/03/02/theater/reviews/02espa.html"
-    },
-    {
-      "t": "2026-09-23T14:43:58.577Z",
+      "t": "2026-09-23T14:24:13.817Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -59,6 +37,94 @@
       "event": "bb-session",
       "session": "fc916b80",
       "url": "https://www.theguardian.com/stage/gallery/2023/dec/01/west-end-stranger-things-t"
+    },
+    {
+      "t": "2026-09-23T14:42:36.952Z",
+      "event": "bb-session",
+      "session": "ca98b283",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-09-23T14:42:37.809Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-23T14:46:46.797Z",
+      "event": "bb-session",
+      "session": "90b2a28e",
+      "url": "https://www.nytimes.com/2016/07/26/theater/review-harry-potter-and-the-cursed-ch"
+    },
+    {
+      "t": "2026-09-23T14:46:47.730Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-23T14:51:06.975Z",
+      "event": "bb-session",
+      "session": "1ce18530",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-23T14:51:11.802Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-23T14:51:32.912Z",
+      "event": "bb-session",
+      "session": "cd266f5f",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-23T14:51:37.579Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-23T14:52:49.562Z",
+      "event": "bb-session",
+      "session": "bcd479e5",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/book-of-mormon-restore"
+    },
+    {
+      "t": "2026-09-23T14:52:50.421Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-09-23T14:59:34.144Z",
+      "event": "bb-session",
+      "session": "c6d83f14",
+      "url": "https://www.thestage.co.uk/news/production-news/agatha-christies-the-mousetrap-t"
+    },
+    {
+      "t": "2026-09-23T14:59:35.038Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-23T15:00:01.048Z",
+      "event": "bb-session",
+      "session": "a4caa4e5",
+      "url": "https://www.nytimes.com/2006/03/02/theater/reviews/02espa.html"
+    },
+    {
+      "t": "2026-09-23T15:00:01.907Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-23T15:02:42.510Z",
+      "event": "bb-session",
+      "session": "b5021784",
+      "url": "https://www.thestage.co.uk/long-reviews/evita-review-london-palladium-2025-rache"
+    },
+    {
+      "t": "2026-09-23T15:02:43.286Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
