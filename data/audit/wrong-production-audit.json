@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-09-23T07:04:40.659Z",
+  "timestamp": "2026-09-23T08:53:57.442Z",
   "stats": {
-    "totalReviews": 43963,
+    "totalReviews": 43964,
     "alreadyFlagged": 18164,
     "dateGuardCatches": 248,
     "directorMismatch": 1049,
     "tvFilmSignals": 1304,
-    "londonSignals": 1150,
+    "londonSignals": 1151,
     "offBroadwaySignals": 510,
     "yearMismatch": 93,
     "noPublishDate": 3855
@@ -38320,6 +38320,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "file": "bestoftheatre--daisy-fairfax.json",
+      "publishDate": "2026-09-22",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-catarina-and-the-beauty-of-killing-fascists-dorfman-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
