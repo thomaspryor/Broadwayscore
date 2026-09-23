@@ -139,7 +139,27 @@ function readLandingRowsForIndex() {
   return readLandings(REPO).rows;
 }
 
-function buildMergeCommitIndex(injectedLines = null, landingRows = null) {
+// git log's own default maxBuffer (1 MiB) throws ENOBUFS well within reach of
+// this repo's real history — measured 2026-09-23: `git log origin/main
+// --oneline --grep=linear-` is 762 commits / 58,121 bytes today (~76
+// bytes/commit), so ~13,800 matching commits would overflow the default.
+// Same 64 MiB precedent as ack-landed.js's namingCandidates and verify runs.
+const GIT_LOG_MAX_BUFFER = 64 * 1024 * 1024;
+
+// Returned attached to the index (a Map stays a Map — buildMergeCommitIndex's
+// existing callers and tests all use it as one) rather than changing the
+// return shape: `map.gitLogFailed` is undefined/false when the git-log pass
+// ran (even if it matched nothing) and true when it could NOT run at all (no
+// origin/main locally, git missing, or an ENOBUFS overflow). Collapsing those
+// two into one empty-looking index is the exact bug class just fixed in
+// ack-landed.js's namingCandidates (BRO-4068): a lookup that fails is
+// indistinguishable from a lookup that found nothing, so the caller states
+// "no landings found" as fact when it never actually looked. The ledger-rows
+// pass is deliberately NOT covered by this flag — its own try/catch already
+// degrades to "the git-log index below still stands", i.e. a missing/
+// unreadable ledger is not this sweep's primary evidence source and losing it
+// is not the same kind of blind spot.
+function buildMergeCommitIndex(injectedLines = null, landingRows = null, opts = {}) {
   const map = new Map(); // "BRO-2558" -> sha
   // Ledger rows are appended oldest-first; walk them NEWEST-first so the most
   // recent landing wins, matching the git-log (newest-first) rule below.
@@ -155,9 +175,13 @@ function buildMergeCommitIndex(injectedLines = null, landingRows = null) {
   try {
     let lines = injectedLines;
     if (!lines) {
+      // opts.cwd is test-only (default: the hardcoded REPO) — same pattern as
+      // ack-landed.js's namingCandidates(opts.cwd), so a test can point this
+      // at a throwaway/nonexistent path to exercise the real execFileSync
+      // failure path instead of a copy of it.
       const out = execFileSync('git', [
-        '-C', REPO, 'log', 'origin/main', '--oneline', '--grep=linear-',
-      ], { encoding: 'utf8', timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+        '-C', opts.cwd || REPO, 'log', 'origin/main', '--oneline', '--grep=linear-',
+      ], { encoding: 'utf8', timeout: GIT_TIMEOUT_MS, maxBuffer: GIT_LOG_MAX_BUFFER, stdio: ['ignore', 'pipe', 'pipe'] }).trim();
       if (!out) return map;
       lines = out.split('\n');
     }
@@ -172,10 +196,15 @@ function buildMergeCommitIndex(injectedLines = null, landingRows = null) {
       if (!key) continue;
       if (!map.has(key)) map.set(key, sha);
     }
-  } catch {
-    // git failure (no origin/main locally, etc.) must fail SAFE — an EMPTY
-    // index reads as "no merge commit" for every card, which the classifier
-    // already treats as not-closable. Never crash the sweep over this.
+  } catch (e) {
+    // git failure (no origin/main locally, ENOBUFS overflow, etc.) must fail
+    // SAFE — an EMPTY index reads as "no merge commit" for every card, which
+    // the classifier already treats as not-closable, so this never makes a
+    // still-open card look closable. But it must not fail SILENT: mark the
+    // index as unreliable so the caller can say "could not look" instead of
+    // misreporting "looked, found none" (BRO-4071).
+    map.gitLogFailed = true;
+    map.gitLogError = String((e && (e.stderr || e.message)) || e).trim();
   }
   return map;
 }
@@ -297,6 +326,9 @@ async function main(argv = process.argv.slice(2)) {
   // (acceptance-check-core.js's own convention: "every card verifies against
   // the same origin/main, so N checkouts would be N copies of one tree").
   const mergeIndex = buildMergeCommitIndex();
+  if (mergeIndex.gitLogFailed) {
+    console.error(`[reconcile-landed-but-open] WARNING: could not scan origin/main for merge commits (${mergeIndex.gitLogError}) — this run's merge-commit evidence is INCOMPLETE, not "no landings found". Re-run once the underlying git failure is fixed before trusting a low candidate count.`);
+  }
   if (!asJson) console.error(`[reconcile-landed-but-open] merge-commit index built (${mergeIndex.size} matching commit(s) on origin/main); computing per-card evidence...`);
   const preliminary = issues.map((issue) => {
     const identifier = issue.identifier;
@@ -392,12 +424,17 @@ async function main(argv = process.argv.slice(2)) {
 
   const candidates = results.filter((r) => r.closable);
   const withMergeCommit = results.filter((r) => r.reasons[0] && r.reasons[0].startsWith('merge commit found')).length;
+  const gitLogFailed = Boolean(mergeIndex.gitLogFailed);
+  const gitLogError = mergeIndex.gitLogError || null;
 
   if (asJson) {
-    console.log(JSON.stringify({ scanned: results.length, withMergeCommit, closableCandidates: candidates.length, results }, null, 2));
-    return { scanned: results.length, withMergeCommit, closableCandidates: candidates.length, results };
+    console.log(JSON.stringify({ scanned: results.length, withMergeCommit, closableCandidates: candidates.length, gitLogFailed, gitLogError, results }, null, 2));
+    return { scanned: results.length, withMergeCommit, closableCandidates: candidates.length, gitLogFailed, gitLogError, results };
   }
 
+  if (gitLogFailed) {
+    console.log(`\n⚠️  origin/main could not be scanned for merge commits (${gitLogError}). Every count below only reflects the dispatch-ledger's landing rows — treat "0 candidates" as "could not check", not "nothing landed".`);
+  }
   console.log(`[reconcile-landed-but-open] scanned ${results.length} In-Progress issue(s); ${withMergeCommit} carry a merge commit on origin/main; ${candidates.length} pass every gate and are closable.`);
   if (!candidates.length) {
     console.log('No closable candidates this run. (report-only — nothing was changed)');
