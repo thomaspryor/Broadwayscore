@@ -88,8 +88,11 @@ const CODE_PATHS = ['scripts', 'src', '.github', 'package.json', 'next.config.js
 const USAGE = `ack-landed.js — record that a stopped-short/stranded dispatch's work landed (writes the ledger row Gate O v2 accepts).
 
 Usage:
-  node scripts/ack-landed.js --id BRO-N --sha <commit> --verify "<safe-form acceptance command>" --reason "<why you are sure, >=15 chars>" [--job-id <jobId>] [--no-linear] [--acked-by <id>]
+  node scripts/ack-landed.js --id BRO-N [--sha <commit>] --verify "<safe-form acceptance command>" --reason "<why you are sure, >=15 chars>" [--job-id <jobId>] [--no-linear] [--acked-by <id>]
 
+  --sha <commit>    optional. Omitted: derived from origin/main — the newest
+                     commit naming BRO-N inside the window the chosen mode
+                     judges by; refuses if there is none (BRO-4071).
   --job-id <jobId>  scope every precondition to ONE dispatch attempt (its own
                      launch/job-spawned + terminal rows) instead of the ref's
                      latest — for acking an EARLIER attempt that landed after
@@ -219,18 +222,29 @@ function namingCandidates(ref, launchTs, terminalTs, opts = {}) {
   return out;
 }
 
+// Commits on origin/main that name `ref` inside the window the decision will
+// judge them by (ctx = main()'s hintCtx). Shared by the refusal hint and by
+// --sha derivation (BRO-4071) so the two can never disagree. undefined = no
+// sha can pass --already-landed's timing check (unreadable launch ts);
+// null = the search itself failed; [] = searched, none.
+function candidatesFor(ref, ctx, refusals = [], opts = {}) {
+  // decideAlreadyLanded refuses EVERY sha while any launch row has an
+  // unreadable ts, so offering candidates then would only trade refusals.
+  const noTiming = ctx.alreadyLanded && (!Number.isFinite(Date.parse(ctx.beforeTs || ''))
+    || refusals.some(r => /unreadable ts/.test(String(r))));
+  return noTiming ? undefined : namingCandidates(ref, ctx.launchTs, ctx.terminalTs, { ...opts, beforeTs: ctx.beforeTs });
+}
+
+function whereFor(ref, ctx) {
+  return ctx.alreadyLanded ? `before ${ref}'s earliest dispatch launch (${ctx.beforeTs})` : "inside this job's window";
+}
+
 function refuse(ref, refusals, ctx = {}) {
   console.error(`❌ REFUSED: ${ref} not acked — ${refusals.length} failed precondition(s):`);
   for (const r of refusals) console.error(`   - ${r}`);
   if (refusals.some(r => /does not name/.test(String(r)))) {
-    const where = ctx.alreadyLanded ? `before ${ref}'s earliest dispatch launch (${ctx.beforeTs})` : "inside this job's window";
-    // decideAlreadyLanded refuses EVERY sha while any launch row has an
-    // unreadable ts, so offering candidates then would only trade refusals.
-    const noTiming = ctx.alreadyLanded && (!Number.isFinite(Date.parse(ctx.beforeTs || ''))
-      || refusals.some(r => /unreadable ts/.test(String(r))));
-    const cands = noTiming
-      ? undefined
-      : namingCandidates(ref, ctx.launchTs, ctx.terminalTs, { beforeTs: ctx.beforeTs });
+    const where = whereFor(ref, ctx);
+    const cands = candidatesFor(ref, ctx, refusals);
     if (cands === undefined) {
       console.error(`   → ${ref}'s dispatch launch timestamps are not all readable, so no sha can satisfy --already-landed's timing check — no candidates offered.`);
     } else if (cands === null) {
@@ -256,8 +270,8 @@ function main() {
   const args = parseArgs(argv);
   if (args.error) { console.error(args.error); console.error(USAGE); process.exit(2); }
   const ref = core.normalizeRef(args.id);
-  if (!ref || !args.sha || !args.verify || !args.reason) {
-    console.error('missing or malformed --id/--sha/--verify/--reason (id must be BRO-N)');
+  if (!ref || !args.verify || !args.reason) {
+    console.error('missing or malformed --id/--verify/--reason (id must be BRO-N)');
     console.error(USAGE);
     process.exit(2);
   }
@@ -309,6 +323,24 @@ function main() {
   } catch (e) {
     refuse(ref, [`git fetch origin main failed: ${String(e.stderr || e.message).trim()}`]);
   }
+  // 2b. No --sha: derive it (BRO-4071) from the same candidate search the
+  //     refusal hint uses, AFTER the fetch so it sees current origin/main.
+  //     The derived sha then runs every precondition below exactly as a
+  //     typed one would — derivation only removes the guess, never a check.
+  if (!args.sha) {
+    const cands = candidatesFor(ref, hintCtx);
+    const where = whereFor(ref, hintCtx);
+    if (cands === undefined) refuse(ref, [`--sha not given and it cannot be derived: ${ref}'s dispatch launch timestamps are not all readable, so no sha can satisfy --already-landed's timing check`]);
+    if (cands === null) refuse(ref, [`--sha not given and it cannot be derived: searching origin/main for commits naming ${ref} failed (no origin/main, a shallow clone, or git refused the query) — pass --sha explicitly`]);
+    if (!cands.length) refuse(ref, [`--sha not given and no commit on origin/main names ${ref} ${where} — nothing to derive; pass --sha if the work landed under commits that never mention the card`]);
+    // namingCandidates keeps git log order (newest commit first; --no-merges
+    // over land.yml's linear rebases, capped at 5), so [0] is the most
+    // recently landed naming commit. Every candidate passes the same naming + window guard,
+    // so the choice only affects which sha the ledger row cites.
+    args.sha = cands[0].sha;
+    console.error(`→ --sha not given: derived ${args.sha} — the newest of ${cands.length}${cands.length >= 5 ? '+' : ''} commit(s) on origin/main naming ${ref} ${where}`);
+    for (const c of cands.slice(1)) console.error(`     also naming it: ${c.sha}  ${c.authored}  ${String(c.subject).slice(0, 62)}`);
+  }
   let sha;
   try {
     sha = git(['rev-parse', '--verify', `${args.sha}^{commit}`]);
@@ -330,6 +362,57 @@ function main() {
       && (String(pre.stranded.sha).startsWith(sha) || sha.startsWith(String(pre.stranded.sha))
         || gitOk(['merge-base', '--is-ancestor', sha, String(pre.stranded.sha)]))
   );
+  // BRO-4074: the ancestry tie above cannot hold for a job whose work landed
+  // through land.yml, because landing REBASES — which rewrites the sha. The
+  // stranded sha is then never an ancestor of origin/main, and the sha that IS
+  // on main is not an ancestor of the stranded sha. Both directions refuse, so
+  // no rebase-landed stranded job could be acked at all, and the fan-out gate
+  // that depends on acks could never be satisfied for one. Observed on BRO-4070
+  // and BRO-4071 on 2026-09-23.
+  //
+  // The rebase-aware tie is patch EQUIVALENCE, which is what `git cherry`
+  // already computes and what rebase itself uses to recognise duplicates: an
+  // upstream commit introducing the same change as one in the stranded job's
+  // own history. That is strictly stronger evidence than "names the card" —
+  // it compares the diff, not the prose — so this widens WHICH sha is
+  // accepted without weakening WHAT is proven. Recorded separately on the
+  // ledger row so the looser path is auditable rather than invisible.
+  landing.tiedToStrandedByPatch = false;
+  if (!landing.tiedToStranded && pre.stranded && pre.stranded.sha && landing.verdict === 'LANDED') {
+    try {
+      const strandedSha = String(pre.stranded.sha);
+      const base = git(['merge-base', strandedSha, 'origin/main']);
+      // `git cherry <upstream> <head>` prints '- <sha>' for each commit in
+      // head..<head> whose patch is ALREADY upstream. Ask it about the
+      // stranded job's own commits against origin/main.
+      const cherry = git(['cherry', 'origin/main', strandedSha, base]);
+      const alreadyUpstream = cherry.split('\n')
+        .filter(l => l.startsWith('-'))
+        .map(l => l.slice(1).trim())
+        .filter(Boolean);
+      if (alreadyUpstream.length) {
+        // At least one of the stranded job's commits is patch-identical to
+        // something on origin/main. Require that the sha being acked is one of
+        // those upstream twins, by patch-id, not merely that some twin exists.
+        const patchIdOf = (target) => {
+          try {
+            // stdio must be overridden too: git() pins stdin to 'ignore', so
+            // passing `input` alone silently feeds patch-id nothing and it
+            // returns an empty id, which reads as "no match" rather than as an
+            // error. That cost a debugging round here.
+            const out = git(['patch-id', '--stable'], {
+              input: git(['show', '--no-color', target]),
+              stdio: ['pipe', 'pipe', 'pipe'],
+            });
+            return (out.split(/\s+/)[0] || '').trim();
+          } catch { return ''; }
+        };
+        const wantIds = new Set(alreadyUpstream.map(patchIdOf).filter(Boolean));
+        const gotId = patchIdOf(sha);
+        landing.tiedToStrandedByPatch = Boolean(gotId && wantIds.has(gotId));
+      }
+    } catch { /* best effort: no tie, the ordinary refusal stands */ }
+  }
   console.error(`→ git: ${sha.slice(0, 11)} ${landing.verdict} on origin/main; authored ${landing.authorTs}, committed ${landing.commitTs}`);
   if (pre.launchVerifyCmd && pre.launchVerifyCmd !== args.verify.trim()) {
     console.error(`⚠️  --verify differs from the command recorded at dispatch (${pre.launchVerifyCmd}); both are kept on the ledger row`);
@@ -377,4 +460,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, CODE_PATHS, VERIFY_TIMEOUT_MS, namingCandidates };
+module.exports = { parseArgs, CODE_PATHS, VERIFY_TIMEOUT_MS, namingCandidates, candidatesFor };

@@ -383,6 +383,36 @@ function isLatestDispatchDead(taskId, entries, opts = {}) {
   return Boolean(resolveDeadAttempt(taskId, entries, opts));
 }
 
+// The single newest ledger row for a task, of ANY event type — unlike
+// latestAttemptForTask (isAttemptEvent-filtered, so it never returns a
+// landed-acked/landed-before-dispatch row; see those events' own docstrings:
+// "not a job- event", deliberately outside isAttemptEvent). BRO-4076: the
+// p01-backlog watchdog needs to know a card's true newest outcome, including
+// those two events, to stop re-selecting a card ack-landed.js already marked
+// landed-acked while the Linear issue itself is still open (ack-landed.js
+// only posts a comment; it never flips Linear state).
+//
+// Exact taskId string equality — FILE ORDER, last match wins, same
+// convention as launchByRef/latestAttemptForTask/ledgerPrecondition's
+// `newest` (ack-landed-core.js:130). Deliberately NOT ack-landed-core.js's
+// rowsForRef ref-suffix matching (`tid === want || tid.endsWith(':' + want)`)
+// — that exists to accept a bare CLI ref like "BRO-N" against a full
+// "linear:BRO-N" taskId. Every caller here already has the full taskId
+// string (dispatch-watchdog-core.js's `open`/`ownerParked`/`wdParked`/
+// `claimPending` maps are all keyed the same way), so a suffix match would
+// only risk a false positive on a numeric Notion-mirror id that happens to
+// end in another task's Linear number.
+function newestRowForTask(taskId, entries) {
+  const want = String(taskId);
+  let latest = null;
+  for (const e of entries || []) {
+    if (!e || typeof e !== 'object') continue;
+    if (String(e.taskId) !== want) continue;
+    latest = e;
+  }
+  return latest;
+}
+
 // LAST-MATCH, not first (card #960: cmux recycles workspaceRef across
 // restarts/renumberings — a ref last launched onto task A months ago can be
 // re-issued onto task B today. First-match would attribute every consumer
@@ -1607,6 +1637,7 @@ module.exports = {
   // them when resolving a merge from an older branch.
   classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision,
   isDeadlikeEvent, isAttemptEvent, latestAttemptForTask, isLatestDispatchDead, resolveDeadAttempt, followRetryChain,
+  newestRowForTask,
   terminalForLaunch, terminalJobEventForLaunch,
   isWorkspaceRef, vanishEpoch, vanishEpochEntry, vanishedBreadcrumbs,
   pruneClosedEntry, isLedgerAutoDispatched, findLedgerAutoDispatchLaunch, parkedTasks, unparkEntry, selectParkedCardsForDigest,

@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT, detectLauncherOutage, detectLauncherFailureRate, countRecentLaunches, successionDepthForTask, SUCCESSION_DEPTH_CAP, classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision } = require('./dispatch-ledger.js');
+const { appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs, failedLaunchEntries, DEAD_ATTEMPT_LIMIT, detectLauncherOutage, detectLauncherFailureRate, countRecentLaunches, successionDepthForTask, SUCCESSION_DEPTH_CAP, classifyDeadAttemptsForTask, substantiveDeadAttemptsForTask, dispatchCapDecision, newestRowForTask } = require('./dispatch-ledger.js');
 const { shouldAdoptLateStart } = require('./cmux-launch.js');
 
 function tmpLedger() {
@@ -106,6 +106,33 @@ test('launchByRef is LAST-match, not first — a recycled ref attributes to the 
 
 test('DEAD_ATTEMPT_LIMIT is 2 — matches the real incident (2 dead shells existed before the 3rd)', () => {
   assert.equal(DEAD_ATTEMPT_LIMIT, 2);
+});
+
+// BRO-4076: newestRowForTask must see EVERY event type, unlike
+// latestAttemptForTask (isAttemptEvent-filtered — never returns landed-acked).
+test('newestRowForTask returns the LAST matching row in file order, across any event type', () => {
+  const entries = [
+    { ts: '2026-09-23T07:00:00Z', event: 'launch', taskId: 'linear:BRO-4066', workspaceRef: 'workspace:1' },
+    { ts: '2026-09-23T07:05:00Z', event: 'job-spawned', taskId: 'linear:BRO-4066', jobId: 'j1' },
+    { ts: '2026-09-23T07:38:55Z', event: 'landed-acked', taskId: 'linear:BRO-4066', jobId: 'j1', sha: 'abc123' },
+    { ts: '2026-09-23T07:10:00Z', event: 'launch', taskId: 'linear:BRO-9999', workspaceRef: 'workspace:2' },
+  ];
+  const newest = newestRowForTask('linear:BRO-4066', entries);
+  assert.equal(newest.event, 'landed-acked');
+  assert.equal(newest.sha, 'abc123');
+});
+
+test('newestRowForTask requires exact taskId equality, not a substring/suffix match', () => {
+  const entries = [
+    { ts: '2026-09-23T07:00:00Z', event: 'landed-acked', taskId: 'linear:BRO-40' },
+    { ts: '2026-09-23T07:05:00Z', event: 'launch', taskId: 'linear:BRO-4066', workspaceRef: 'workspace:1' },
+  ];
+  assert.equal(newestRowForTask('linear:BRO-4066', entries).event, 'launch');
+});
+
+test('newestRowForTask returns null for an unknown taskId or empty entries', () => {
+  assert.equal(newestRowForTask('linear:BRO-1', []), null);
+  assert.equal(newestRowForTask('linear:BRO-1', [{ ts: '2026-01-01T00:00:00Z', event: 'launch', taskId: 'linear:BRO-2' }]), null);
 });
 
 // Regression guard for the 2026-08-11 P0: module.exports named two functions a
