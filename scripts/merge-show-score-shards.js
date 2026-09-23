@@ -16,6 +16,7 @@ const { calculateCombinedScore, getDesignation } = require('./lib/audience-weigh
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { findConflictingShowId } = require('./lib/show-score-url-map');
 
 const USAGE = `merge-show-score-shards.js — Merges Show Score shard output files into audience-buzz.json and show-score-urls.json.
 
@@ -129,6 +130,15 @@ function main() {
         skippedUrlDupes++;
         continue;
       }
+    }
+    // BRO-4055: refuse to assign a url another showId already owns — a
+    // hand-removed wrong-production mapping must not come back via a shard
+    // merge that never re-checks cross-show collisions.
+    const conflictId = findConflictingShowId(urlData.shows, showId, url);
+    if (conflictId) {
+      console.log(`  SKIP URL ${showId}: ${url} already assigned to ${conflictId}`);
+      skippedUrlDupes++;
+      continue;
     }
     if (!urlData.shows[showId]) {
       newUrls++;

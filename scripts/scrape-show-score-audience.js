@@ -28,6 +28,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { fetchPage, isChallengeOrGarbage } = require('./lib/scraper');
+const { findConflictingShowId } = require('./lib/show-score-url-map');
 const { recordSbCall } = require('./lib/provider-telemetry');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -1062,8 +1063,18 @@ async function main() {
         urlData._discoveryAttempts[show.id] = new Date().toISOString();
 
         if (url) {
-          // Cache immediately
+          // BRO-4055: a show that just lost its mapping (a hand-removed
+          // wrong-production URL, e.g. BRO-3416) is "uncached" and lands
+          // right back in this discovery loop — without this check,
+          // slug-guessing would immediately re-match it to the same page
+          // another showId already owns, undoing the removal.
           if (!urlData.shows) urlData.shows = {};
+          const conflictId = findConflictingShowId(urlData.shows, show.id, url);
+          if (conflictId) {
+            console.log(`  [SKIP] ${url} already assigned to ${conflictId} — refusing to also assign it to ${show.id}`);
+            if (!dryRun) saveUrlCache(); // persist the attempt timestamp above
+            continue;
+          }
           urlData.shows[show.id] = url;
           if (!dryRun) saveUrlCache();
           // Update shard incrementally

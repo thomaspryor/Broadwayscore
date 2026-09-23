@@ -99,6 +99,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd, hasJsonLdType } = require('./lib/jsonld');
+const { findConflictingShowId } = require('./lib/show-score-url-map');
 
 const USAGE = `discover-new-shows.js — Broadway New Show Discovery.
 
@@ -2961,8 +2962,16 @@ async function discoverShows() {
           // Find the newly created show by matching title
           const addedShow = newShows.find(s => s.title === title);
           if (addedShow && !urlData.shows[addedShow.id]) {
-            urlData.shows[addedShow.id] = url;
-            urlsAssigned++;
+            // BRO-4055: a candidate URL can already belong to an unrelated
+            // existing show (e.g. a same-title earlier production) — refuse
+            // rather than silently creating a new wrong-production mapping.
+            const conflictId = findConflictingShowId(urlData.shows, addedShow.id, url);
+            if (conflictId) {
+              console.log(`  [SKIP] ${url} already assigned to ${conflictId} — refusing to also assign it to ${addedShow.id}`);
+            } else {
+              urlData.shows[addedShow.id] = url;
+              urlsAssigned++;
+            }
           }
         }
         if (urlsAssigned > 0) {

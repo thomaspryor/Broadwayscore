@@ -28,6 +28,7 @@ const path = require('path');
 const https = require('https');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { venuesMatch } = require('./lib/deduplication');
+const { findConflictingShowId } = require('./lib/show-score-url-map');
 
 const DATA_DIR = path.join(__dirname, '../data');
 const URLS_PATH = path.join(DATA_DIR, 'show-score-urls.json');
@@ -587,10 +588,12 @@ async function main() {
   // ── Write URL results ──
   if (newDiscoveries > 0 && !dryRun) {
     for (const d of discoveries) {
-      // Check for duplicate URL: another show already has this URL
-      const existingOwner = Object.entries(urlData.shows).find(([id, url]) => url === d.url && id !== d.showId);
-      if (existingOwner) {
-        console.log(`  [DUPLICATE URL] ${d.url} already assigned to ${existingOwner[0]}, skipping ${d.showId}`);
+      // BRO-4055: refuse to (re-)map a URL already claimed by a different
+      // showId — see lib/show-score-url-map.js's findConflictingShowId for
+      // why this must be checked here, not just at match time.
+      const conflictId = findConflictingShowId(urlData.shows, d.showId, d.url);
+      if (conflictId) {
+        console.log(`  [DUPLICATE URL] ${d.url} already assigned to ${conflictId}, skipping ${d.showId}`);
         urlConflict++;
         continue;
       }

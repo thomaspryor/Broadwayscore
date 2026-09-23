@@ -42,4 +42,30 @@ function findDuplicateUrls(urlMap) {
   return [...byNormalizedUrl.values()].filter((entry) => entry.showIds.length > 1);
 }
 
-module.exports = { findDuplicateUrls };
+// BRO-4055: the writer-side guard. A hand-removed mapping (e.g. BRO-3416
+// deleting "she-loves-me-1994" because Show Score has exactly one She Loves
+// Me page and it describes the 2016 revival, not the 1993-94 original) kept
+// coming back because every writer that assigns urlData.shows[id] = url only
+// checked "does THIS showId already have a url" — never "does this URL
+// already belong to a DIFFERENT showId". A slug-guessing discovery pass (or
+// a listings/shard merge) would then happily re-match the newly-uncached show
+// back onto the same page, recreating the exact wrong-production mapping a
+// human had just removed.
+//
+// Call this BEFORE writing urlData.shows[showId] = url. It returns the
+// OTHER showId already claiming that (normalized) url, or null if the
+// assignment is safe. Callers must skip the write when this returns
+// non-null — see scripts/scrape-show-score-audience.js,
+// scripts/discover-show-score-urls-from-listings.js,
+// scripts/merge-show-score-shards.js, scripts/discover-new-shows.js.
+function findConflictingShowId(urlMap, showId, url) {
+  if (!url) return null;
+  const key = normalizeUrl(url);
+  for (const [id, existingUrl] of Object.entries(urlMap || {})) {
+    if (id === showId || !existingUrl) continue;
+    if (normalizeUrl(existingUrl) === key) return id;
+  }
+  return null;
+}
+
+module.exports = { findDuplicateUrls, findConflictingShowId };
