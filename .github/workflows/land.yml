@@ -544,15 +544,35 @@ jobs:
             # to main; the merge script also reads it for the landed sha.
             # Committed by the ledger step below (a crash between here and
             # there loses the row, never the landing).
-            LAND_BRANCH="$BRANCH" LAND_SHA="$SHA" LAND_TIP="$TIP" LAND_BASE="${{ needs.checks.outputs.base }}" \
-            LAND_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" LAND_ATTEMPTS="${{ steps.land.outputs.attempts }}" \
-            node -e '
-              const { appendLanding } = require("./scripts/lib/landings-ledger.js");
-              const e = process.env;
-              const row = appendLanding({ repoDir: process.cwd(), branch: e.LAND_BRANCH, sha: e.LAND_SHA, tip: e.LAND_TIP, base: e.LAND_BASE, runUrl: e.LAND_RUN_URL, attempts: e.LAND_ATTEMPTS || null });
-              console.log(`landings.jsonl += ${JSON.stringify(row)}`);
-            '
-            echo "- landings.jsonl: row appended for \`${SHA:0:10}\`" >> "$GITHUB_STEP_SUMMARY"
+            # The lib from the checkout, else from the main JUST fetched: the
+            # landing that introduced this lib (2026-09-23, run 35818561142)
+            # pushed fine and then this step crashed on `require`, because
+            # the runner's main checkout predates the landing. A landed sha
+            # must never be left without its record over a missing helper.
+            LAND_LIB="scripts/lib/landings-ledger.js"
+            if [ ! -f "$LAND_LIB" ]; then
+              if git show "FETCH_HEAD:$LAND_LIB" > "$RUNNER_TEMP/landings-ledger.js" 2>/dev/null; then
+                LAND_LIB="$RUNNER_TEMP/landings-ledger.js"
+              else
+                LAND_LIB=""
+              fi
+            fi
+            # The record is best-effort by design: the sha IS on main (verified
+            # above), so a missing helper must warn loudly and still let the
+            # ref be deleted below — never redden a landing that happened.
+            if [ -n "$LAND_LIB" ]; then
+              LAND_LIB="$LAND_LIB" LAND_BRANCH="$BRANCH" LAND_SHA="$SHA" LAND_TIP="$TIP" LAND_BASE="${{ needs.checks.outputs.base }}" \
+              LAND_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" LAND_ATTEMPTS="${{ steps.land.outputs.attempts }}" \
+              node -e '
+                const { appendLanding } = require(require("path").resolve(process.env.LAND_LIB));
+                const e = process.env;
+                const row = appendLanding({ repoDir: process.cwd(), branch: e.LAND_BRANCH, sha: e.LAND_SHA, tip: e.LAND_TIP, base: e.LAND_BASE, runUrl: e.LAND_RUN_URL, attempts: e.LAND_ATTEMPTS || null });
+                console.log(`landings.jsonl += ${JSON.stringify(row)}`);
+              ' && echo "- landings.jsonl: row appended for \`${SHA:0:10}\`" >> "$GITHUB_STEP_SUMMARY" \
+                || echo "::warning::landings.jsonl row for ${SHA:0:10} could NOT be written — the landing itself is verified; check-direct-push-to-main.yml may digest this sha as unrecorded"
+            else
+              echo "::warning::scripts/lib/landings-ledger.js is neither in this checkout nor on the fetched main — landing ${SHA:0:10} is verified but unrecorded"
+            fi
             # Delete the ref ONLY if it still points at the tip this run
             # verified — a newer push to the same land/** branch has its own
             # run and must not lose its ref to this one (Codex finding).
@@ -594,7 +614,10 @@ jobs:
         # same commit — it must reach main within the direct-push
         # detector's 6-minute wait, so this step never waits on anything.
         run: |
-          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl data/audit/landings.jsonl 2>/dev/null || true
+          # Each path staged on its own (scripts/lib/git-add-existing.sh): a
+          # plain `git add A B C` stages NOTHING when any one path is absent —
+          # landings.jsonl does not exist until the first landing writes it.
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl data/audit/landings.jsonl
           if ! git diff --staged --quiet; then
             git commit -m "data: alert-router ledger + landings record (land.yml) [skip ci]"
             bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Alert-router ledger push failed — next run will recompute state"

@@ -52,6 +52,9 @@ data/audit/breaker-transitions.jsonl merge=union
 # union semantics. merge=union concatenates both sides losslessly, same as
 # the other append-only ledgers above.
 data/audit/scraper-spend-ledger.jsonl merge=union
+# BRO-3873 step 5: one row per land.yml landing (append-only); land.yml commits it
+# to main right after the fast-forward, racing every other bot push.
+data/audit/landings.jsonl merge=union
 # Newline-delimited registry of unit-test files, appended to by nearly every
 # worker that adds a test (BRO-181, BRO-2319, BRO-65 all did so this week).
 # Two branches each registering a different test past a common ancestor is a
