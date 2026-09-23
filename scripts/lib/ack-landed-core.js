@@ -46,7 +46,7 @@ const ACKABLE_TERMINAL_EVENTS = new Set([
   'job-stopped-short', 'job-stranded', 'job-blocked', 'job-failed',
   'job-orphaned', 'prune-closed', 'dead', 'vanished', 'watchdog-park',
 ]);
-const NOTHING_TO_ACK_EVENTS = new Set(['job-done', 'landed-acked']);
+const NOTHING_TO_ACK_EVENTS = new Set(['job-done', 'landed-acked', 'landed-before-dispatch']);
 const LAUNCH_EVENTS = new Set(['launch', 'job-spawned']);
 
 // Same taskId match Gate O v2 uses (`tid == i or tid.endswith(':' + i)`), in
@@ -114,7 +114,7 @@ function ledgerPrecondition(rows) {
   if (NOTHING_TO_ACK_EVENTS.has(ev)) {
     refusals.push(ev === 'job-done'
       ? 'newest ledger row is job-done — nothing to ack; Gate O already accepts it with a LANDED: line'
-      : `newest ledger row is already landed-acked (${newest.ts || '?'}) — do not double-ack`);
+      : `newest ledger row is already ${ev} (${newest.ts || '?'}) — do not double-ack`);
   } else if (!ACKABLE_TERMINAL_EVENTS.has(ev)) {
     refusals.push(`newest ledger row is ${ev || '(no event)'} (${newest.ts || '?'}) — not a terminal event; the job is still open or a relaunch superseded the one you verified`);
   }
@@ -315,6 +315,20 @@ function decideAlreadyLanded(input) {
   const { newest } = pre;
   const launch = earliestLaunch(rows);
   if (!launch) refusals.push('no launch/job-spawned row for this ref — cannot compare a sha against a dispatch that was never recorded');
+  // earliestLaunch silently SKIPS any launch/job-spawned row with an
+  // unparseable ts (never trusts a corrupt timestamp as "the earliest").
+  // That is safe on its own, but if the ledger's TRUE first launch is the
+  // corrupt one, a later, parseable launch would be picked instead — a sha
+  // authored between the two would then wrongly read as "before ANY
+  // dispatch" (ship-check adversarial review 2026-09-23). ts is always
+  // self-stamped by appendEntry() (toISOString()), so this needs corrupted
+  // ledger data to trigger — cheap to guard against anyway.
+  const malformedLaunchTs = (rows || []).some(
+    (r) => LAUNCH_EVENTS.has(String(r && r.event)) && !Number.isFinite(Date.parse((r && r.ts) || ''))
+  );
+  if (malformedLaunchTs) {
+    refusals.push("one or more launch/job-spawned rows on this ref have an unreadable ts — cannot safely determine the ref's true earliest dispatch launch");
+  }
 
   if (landing.verdict !== 'LANDED') {
     refusals.push(`${landing.sha || '<sha>'} is not an ancestor of origin/main after a fresh fetch (verdict ${landing.verdict || 'missing'}${landing.reason ? ', ' + landing.reason : ''})`);

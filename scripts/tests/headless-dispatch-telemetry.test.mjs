@@ -63,6 +63,11 @@ const NON_JOB_STATE_EVENTS = Object.freeze({
   // terminal jobId (STOPPED_SHORT/STRANDED), not a job-state transition of
   // its own, so the terminal/open fold never needs to classify it.
   'landed-acked': 'ack-landed.js audit row on an already-terminal jobId, not a job-state event',
+  // dispatch-ledger.js JOB_EVENTS.LANDED_BEFORE_DISPATCH definition
+  // (BRO-4069): the --already-landed sibling of landed-acked — same "NOT a
+  // `job-` event on purpose" rationale, an audit row asserting the ref's work
+  // predates every dispatch attempt, not a state transition of any one jobId.
+  'landed-before-dispatch': 'ack-landed.js --already-landed audit row, not a job-state event',
   // dispatch-ledger.js JOB_EVENTS.FANOUT_VERIFIED definition (BRO-3939): "Not
   // a job event: not terminal, not dead-like, not an attempt; it names refs,
   // never a jobId" — a Gate O v2 proof row, taskId 'fanout'.

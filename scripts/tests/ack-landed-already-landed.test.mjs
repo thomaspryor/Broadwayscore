@@ -17,6 +17,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const core = require('../lib/ack-landed-core.js');
+const { parseArgs } = require('../ack-landed.js');
 
 const REF = 'BRO-3471';
 const TASK = `linear:${REF}`;
@@ -173,4 +174,56 @@ test('refuse: reason shorter than 15 chars under decideAlreadyLanded', () => {
   const d = core.decideAlreadyLanded(base({ landing: REAL_LANDING, reason: 'too short' }));
   assert.equal(d.ok, false);
   assert.match(d.refusals.join('\n'), /--reason must be at least 15 characters/);
+});
+
+// Adversarial review (2026-09-23): earliestLaunch silently skips any
+// launch/job-spawned row with an unparseable ts, so a corrupt TRUE-first
+// launch row could let a later, parseable launch get picked as "earliest" —
+// decideAlreadyLanded must refuse outright rather than silently accept a sha
+// authored between the corrupt row and the picked-as-earliest one.
+test('refuse: a launch/job-spawned row with an unreadable ts makes decideAlreadyLanded refuse, even though a later launch row IS parseable', () => {
+  const corruptRows = [
+    { ts: 'not-a-real-timestamp', event: 'launch', taskId: TASK },
+    { ts: ATTEMPT1_LAUNCH_TS, event: 'job-spawned', taskId: TASK, jobId: `${TASK}-muaie1st`, cwd: '/tmp/job1' },
+    { ts: ATTEMPT1_STOP_TS, event: 'job-stopped-short', taskId: TASK, jobId: `${TASK}-muaie1st`, reason: 'x' },
+  ];
+  const d = core.decideAlreadyLanded(base({ rows: corruptRows, landing: REAL_LANDING }));
+  assert.equal(d.ok, false);
+  assert.match(d.refusals.join('\n'), /unreadable ts/);
+});
+
+test('earliestLaunch skips a row with an unparseable ts and returns the next valid one', () => {
+  const corruptRows = [
+    { ts: 'garbage', event: 'launch', taskId: TASK },
+    { ts: ATTEMPT1_LAUNCH_TS, event: 'job-spawned', taskId: TASK, jobId: `${TASK}-muaie1st` },
+  ];
+  const earliest = core.earliestLaunch(corruptRows);
+  assert.equal(earliest.ts, ATTEMPT1_LAUNCH_TS);
+});
+
+test('earliestLaunch returns null when no launch/job-spawned row exists', () => {
+  assert.equal(core.earliestLaunch([]), null);
+  assert.equal(core.earliestLaunch([{ ts: '2026-01-01T00:00:00.000Z', event: 'job-stopped-short', taskId: TASK }]), null);
+});
+
+test('refuse: newest row already landed-before-dispatch — no double-ack', () => {
+  const acked = [...rows, { ts: '2026-09-21T02:00:00.000Z', event: 'landed-before-dispatch', taskId: TASK, sha: REAL_SHA }];
+  const d = core.decideAlreadyLanded(base({ rows: acked, landing: REAL_LANDING }));
+  assert.equal(d.ok, false);
+  assert.match(d.refusals.join('\n'), /already landed-before-dispatch .* do not double-ack/);
+  const viaAck = core.decideAck(base({ rows: acked, landing: REAL_LANDING }));
+  assert.equal(viaAck.ok, false);
+  assert.match(viaAck.refusals.join('\n'), /already landed-before-dispatch .* do not double-ack/);
+});
+
+test('parseArgs: --already-landed cannot combine with --job-id', () => {
+  const err = parseArgs(['--id', 'BRO-3471', '--sha', 'abc', '--verify', 'node -e 1', '--reason', 'reasonreasonreason', '--already-landed', '--job-id', 'linear:BRO-3471-x']);
+  assert.match(err.error, /cannot be combined with --job-id/);
+});
+
+test('parseArgs: --already-landed alone parses cleanly', () => {
+  const args = parseArgs(['--id', 'BRO-3471', '--sha', 'abc', '--verify', 'node -e 1', '--reason', 'reasonreasonreason', '--already-landed']);
+  assert.equal(args.alreadyLanded, true);
+  assert.equal(args.jobId, undefined);
+  assert.equal(args.error, undefined);
 });

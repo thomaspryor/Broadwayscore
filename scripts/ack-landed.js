@@ -178,7 +178,15 @@ function main() {
   if (scoped.refusal) refuse(ref, [scoped.refusal]);
   const pre = core.ledgerPrecondition(scoped.rows);
   if (pre.refusals.length) refuse(ref, pre.refusals);
-  const earliestLaunchTs = alreadyLanded ? core.earliestLaunch(rows).ts : pre.launch.ts;
+  // core.earliestLaunch(rows) can be null (or resolve to a launch row with a
+  // malformed ts) even when ledgerPrecondition's own coarser `!launch` check
+  // above passed — that check only asks "does a launch/job-spawned row exist
+  // at all", not "does the EARLIEST one have a readable ts". Guard here so a
+  // corrupt ledger row degrades this informational log line, not a crash;
+  // decide() below still refuses cleanly either way (decideAlreadyLanded's
+  // own !launch / malformedLaunchTs checks).
+  const earliestLaunchRow = alreadyLanded ? core.earliestLaunch(rows) : null;
+  const earliestLaunchTs = alreadyLanded ? (earliestLaunchRow ? earliestLaunchRow.ts : '(none readable)') : pre.launch.ts;
   console.error(`→ ledger: newest row for ${ref}${jobId ? ` (job ${jobId})` : ''} is ${pre.newest.event} (${pre.newest.ts}); ${alreadyLanded ? 'earliest launch' : 'launch'} ${earliestLaunchTs}`);
 
   // 2. Fresh origin/main + ancestry (shallow-safe).
