@@ -41,7 +41,7 @@ const { classifyHeadlessResult } = require('./headless-result-classifier.js');
 const WRAPUP_BLOCK_PY = path.join(os.homedir(), '.claude', 'hooks', 'lib', 'wrapup_block.py');
 
 function sessionTranscriptPath(cwd, sessionId) {
-  const encoded = String(cwd).replace(/[^a-zA-Z0-9]/g, '-');
+  const encoded = String(cwd).replace(/[^a-zA-Z0-9]/g, '-'); // diacritic-guard-ok: encodes a filesystem cwd into a record filename, never a show title
   return path.join(os.homedir(), '.claude', 'projects', encoded, `${sessionId}.jsonl`);
 }
 
