@@ -31,6 +31,24 @@ const MIN_REASON_CHARS = 15;
 // dispatch-ledger.js's FUTURE_TS_GRACE_MS.
 const COMMIT_AFTER_TERMINAL_GRACE_MS = 5 * 60 * 1000;
 
+/**
+ * PURE. Does this commit message name this card?
+ *
+ * BRO-4068: extracted from decideAck so the CLI's "here are the shas that
+ * WOULD work" hint can filter with the EXACT predicate the refusal uses. The
+ * hint reaches candidates via `git log --grep`, which is an unanchored
+ * substring match: --grep=BRO-406 also matches "BRO-4066" and "BRO-4060",
+ * both of which this anchored test rejects. Two predicates that disagree
+ * would have the hint offer shas the guard then refuses — recreating exactly
+ * the confusion it exists to end. One predicate, two callers.
+ */
+function messageNamesRef(message, ref) {
+  const token = String(ref == null ? '' : ref);
+  if (!token) return false;
+  const re = new RegExp(`(?<![\\w-])${token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\w-])`, 'i');
+  return re.test(String(message == null ? '' : message));
+}
+
 // Terminal rows an ack may follow. job-done and landed-acked are terminal
 // too, but there is nothing left to ack after them (Gate O already accepts
 // job-done with a LANDED: line; a second ack would only be noise).
@@ -241,8 +259,7 @@ function decideAck(input) {
       refusals.push(`the sha was authored at ${workTsRaw}, AFTER the job's terminal ${newest.event} row (${newest.ts}) — the job had already exited, so this is not its work (only job-stranded may be acked with a later landing, via the stranded sha)`);
     }
   }
-  const refRe = new RegExp(`(?<![\\w-])${String(ref || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\w-])`, 'i');
-  const namesRef = refRe.test(String(landing.message || ''));
+  const namesRef = messageNamesRef(landing.message, ref);
   if (isStranded) {
     if (!landing.tiedToStranded) {
       refusals.push(`for a job-stranded row the sha must be the stranded sha ${stranded.sha} itself or an ancestor of it (the stranded job's own history) — got ${landing.sha || '<sha>'}`);
@@ -377,4 +394,5 @@ module.exports = {
   MIN_REASON_CHARS, COMMIT_AFTER_TERMINAL_GRACE_MS, ACKABLE_TERMINAL_EVENTS, NOTHING_TO_ACK_EVENTS,
   rowsForRef, rowsForJobId, normalizeRef, ledgerPrecondition, earliestLaunch,
   decideAck, decideAlreadyLanded, formatAckLine,
+  messageNamesRef,
 };

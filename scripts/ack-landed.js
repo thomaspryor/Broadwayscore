@@ -137,9 +137,73 @@ function gitOk(args) {
   return r.status === 0;
 }
 
-function refuse(ref, refusals) {
+// BRO-4068: the naming refusal used to say only "pass the job's own commit,
+// not an unrelated one" — true, but it never said WHICH commit would do. A
+// session hit it on BRO-4066, concluded from the bare refusal that the card
+// "can never be acked", and filed a P2 asking to relax the precondition. Two
+// of that landing's three shas named the card and would have been accepted
+// immediately; the one being passed named no card at all. A refusal that can
+// be mistaken for a dead end is how a correct guard gets argued away, so the
+// refusal now does the lookup itself and prints the shas that WOULD satisfy
+// it. Best-effort: any git failure just omits the hint, never blocks.
+function namingCandidates(ref, launchTs, terminalTs, opts = {}) {
+  if (!ref) return [];
+  // cwd/base are injectable so this can be tested against a throwaway repo.
+  // The repo's own CI checks out at actions/checkout's default depth of 1, so
+  // a test that reads real history here would pass locally and fail in CI --
+  // worse than no test. Defaults are the production values.
+  const cwd = opts.cwd || REPO;
+  const base = opts.base || 'origin/main';
+  // The window is filtered HERE, not with --since/--until: those bound the
+  // COMMIT date, while the timing precondition above judges the AUTHOR date.
+  // On a rebase-landed branch those differ by minutes, and using git's own
+  // flags silently returned zero candidates for exactly the case this hint
+  // exists to serve (BRO-4066's commits were authored inside the window and
+  // committed ~2 min after the terminal row).
+  // -z gives NUL-separated records, which is what lets %B (the FULL message)
+  // ride along: a card id is routinely in the body, not the subject, so
+  // matching on %s alone would reject the very commits this hint exists to
+  // offer. Fields stay tab-separated inside each record.
+  const args = ['log', base, '--no-merges', '-z', '--format=%h%x09%aI%x09%s%x09%B',
+    '-n', '400', `--grep=${ref}`, '-i'];
+  const r = spawnSync('git', args, { cwd, encoding: 'utf8' });
+  if (r.status !== 0 || !r.stdout) return [];
+  const lo = Date.parse(launchTs || '');
+  const hi = Date.parse(terminalTs || '');
+  const out = [];
+  for (const record of r.stdout.split('\0')) {
+    if (!record.trim()) continue;
+    const [sha, authored, subject, ...bodyParts] = record.split('\t');
+    const fullMessage = bodyParts.join('\t');
+    // --grep is an unanchored SUBSTRING match, so BRO-406 also matches
+    // BRO-4066/BRO-4060. Re-test each hit with core's own anchored predicate
+    // so the hint can never offer a sha the guard would then refuse.
+    if (!core.messageNamesRef(fullMessage, ref)) continue;
+    const rest = [subject];
+    const at = Date.parse(authored || '');
+    // Mirror decideAck's own bounds, so a suggestion can never trade the
+    // naming refusal for the timing one.
+    if (Number.isFinite(lo) && Number.isFinite(at) && at <= lo) continue;
+    if (Number.isFinite(hi) && Number.isFinite(at) && at > hi + core.COMMIT_AFTER_TERMINAL_GRACE_MS) continue;
+    out.push({ sha, authored, subject: rest.join('\t') });
+    if (out.length >= 5) break;
+  }
+  return out;
+}
+
+function refuse(ref, refusals, ctx = {}) {
   console.error(`❌ REFUSED: ${ref} not acked — ${refusals.length} failed precondition(s):`);
   for (const r of refusals) console.error(`   - ${r}`);
+  if (refusals.some(r => /does not name/.test(String(r)))) {
+    const cands = namingCandidates(ref, ctx.launchTs, ctx.terminalTs);
+    if (cands.length) {
+      console.error(`   → these commits on origin/main DO name ${ref} and fall inside this job's window — pass one as --sha:`);
+      for (const c of cands) console.error(`       ${c.sha}  ${c.authored}  ${String(c.subject).slice(0, 62)}`);
+    } else {
+      console.error(`   → no commit on origin/main names ${ref} inside this job's window. If the work really did land`);
+      console.error('     under commits that never mention the card, that is the case --job-id does not cover — say so on the card.');
+    }
+  }
   console.error('   Nothing was written to the dispatch ledger.');
   process.exit(1);
 }
@@ -233,7 +297,7 @@ function main() {
   const verify = { cmd: args.verify.trim(), safe: isSafeCheckCommand(args.verify.trim()), unsafeReason: null, exitCode: null };
   if (!verify.safe) verify.unsafeReason = (explainUnsafeCheckCommand(verify.cmd) || {}).reason || null;
   const dryRun = decide({ verify: { ...verify, exitCode: 0 } });
-  if (!dryRun.ok) refuse(ref, dryRun.refusals);
+  if (!dryRun.ok) refuse(ref, dryRun.refusals, { launchTs: pre.launch && pre.launch.ts, terminalTs: pre.newest && pre.newest.ts });
 
   console.error(`→ running verify in ${REPO}: ${verify.cmd}`);
   const run = spawnSync('bash', ['-c', verify.cmd], { cwd: REPO, encoding: 'utf8', timeout: VERIFY_TIMEOUT_MS, maxBuffer: 64 * 1024 * 1024 });
@@ -244,7 +308,7 @@ function main() {
   }
 
   const decision = decide({ verify });
-  if (!decision.ok) refuse(ref, decision.refusals);
+  if (!decision.ok) refuse(ref, decision.refusals, { launchTs: pre.launch && pre.launch.ts, terminalTs: pre.newest && pre.newest.ts });
 
   // 5. Write the row. appendEntry self-stamps ts (never backdated).
   const written = ledger.appendEntry(decision.row);
@@ -263,4 +327,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, CODE_PATHS, VERIFY_TIMEOUT_MS };
+module.exports = { parseArgs, CODE_PATHS, VERIFY_TIMEOUT_MS, namingCandidates };
