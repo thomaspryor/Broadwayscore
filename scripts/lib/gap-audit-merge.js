@@ -41,6 +41,12 @@
 // drift apart silently.
 const { MAX_FRESHNESS_SKIP_MS } = require('./gap-audit-freshness');
 const { censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./review-census');
+const {
+  CENSUS_SCHEMA,
+  isPriorProductionCitation,
+  currentRunOnly,
+  priorProductionOnly,
+} = require('./prior-production-citations');
 const RETENTION_GRACE_DAYS = 30;
 const DEFAULT_RETENTION_DAYS = Math.ceil(MAX_FRESHNESS_SKIP_MS / (24 * 3600 * 1000)) + RETENTION_GRACE_DAYS;
 
@@ -123,18 +129,42 @@ function censusVerdictFor(result, opts = {}) {
     if (!m.knownOutletId && covered.has(id)) return `${id}::${m.url || 'no-url'}`;
     return id;
   };
+  // A prior-production citation is not a CANDIDATE for this run's census
+  // either. countsFor already stops them inflating `withGap`/
+  // `missingCurrentRun`, but the census is a separate surface and it is the
+  // one that reaches people: generate-mobile-show-details.js publishes
+  // liveCount/candidateCount to the iOS app, and coverage-digest.js formats
+  // them into the owner's morning email. Measured on the live audit file
+  // (2026-09-23), 146 shows were still publishing an inflated census —
+  // hadestown-west-end-2024 said "8 of 102 known reviews live" with 101 of
+  // those candidates from earlier productions; beetlejuice-2025 said "1 of
+  // 74" with 80.
+  //
+  // It is not only a wrong number. These citations are permanently
+  // ingest-blocked, so a revival could never reach `complete` however many
+  // reviews we collected — the verdict carried no information at all. And
+  // because the digest is ratio-sorted and capped at ten, shows whose gap was
+  // ENTIRELY prior-production ("Bull Durham: 0 of 3 known reviews live, 3
+  // excluded (older production)") sorted above shows with genuinely missing,
+  // genuinely fetchable reviews, and pushed them off the list the owner reads.
+  //
+  // They stay in result.missing/flaggedMisses with their priorRun tag —
+  // dropped from the census, not from the file.
   for (const m of (result.missing || [])) {
+    if (isPriorProductionCitation(m)) continue;
     const id = identityFor(m);
     if (!id) continue;
     entries.push({ outletId: id, outlet: m.knownOutletId || m.host || id, critic: 'Unknown', stars: null, url: m.url || '' });
   }
   for (const m of (result.flaggedMisses || [])) {
+    if (isPriorProductionCitation(m)) continue;
     const id = identityFor(m);
     if (!id) continue;
     entries.push({ outletId: id, outlet: m.knownOutletId || m.host || id, critic: 'Unknown', stars: null, url: m.url || '' });
   }
   for (const c of (result.citedNoUrl || [])) {
     if (!c || !c.outletId) continue;
+    if (isPriorProductionCitation(c)) continue;
     entries.push({ outletId: c.outletId, outlet: c.outletName || c.outletId, critic: 'Unknown', stars: null, url: '' });
   }
   const hadAnySource = (Array.isArray(result.aggregatorArticles) && result.aggregatorArticles.length > 0)
@@ -142,6 +172,8 @@ function censusVerdictFor(result, opts = {}) {
   const census = { entries, count: entries.length, sourcesPresent: hadAnySource ? ['gap-audit'] : [], hadAnySource };
   const censusOpts = { suppressed: CI_UNFETCHABLE_OUTLETS, clockAnchor: result.openingDate || null, ...opts };
   const v = censusVerdict(census, covered, censusOpts);
+  // Stamped so a later run can tell a pre-v2 row from a current one.
+  v.censusSchema = CENSUS_SCHEMA;
   // PUBLIC counts are OUTLET-level, deliberately, even though `candidates` is
   // URL-level. The gap audit resolves coverage per HOST (its dirByHost map), so
   // two aggregator-listed URLs from one outlet are both stamped `live` off a
@@ -201,7 +233,16 @@ function riskStateMap(results) {
     // live/in-flight classification) over recomputing with default opts here,
     // which could disagree at the margin. Recompute only as a fallback for
     // legacy rows that predate task #906's censusVerdict stamping.
-    const cv = (r.censusVerdict && typeof r.censusVerdict.liveCount === 'number') ? r.censusVerdict : censusVerdictFor(r);
+    // A stored verdict is only usable here if the CURRENT candidate rule
+    // produced it. The blast-radius guard calls `nextCandidates <
+    // prevCandidates` risky — exactly the shape of a rule change (146 of 562
+    // shows dropped candidates when prior-production citations stopped
+    // counting) — so diffing an old-schema prev against a new-schema next
+    // would refuse the write on every run, forever. Normalise both sides and
+    // the guard goes back to catching what it is for: real coverage loss.
+    const stored = r.censusVerdict;
+    const usable = stored && typeof stored.liveCount === 'number' && stored.censusSchema === CENSUS_SCHEMA;
+    const cv = usable ? stored : censusVerdictFor(r);
     const liveCount = Number.isFinite(cv.liveCount) ? cv.liveCount : 0;
     const candidateCount = Number.isFinite(cv.candidateCount) ? cv.candidateCount : 0;
     out[r.showId] = `${cv.verdict}:${liveCount}:${candidateCount}`;
@@ -274,6 +315,20 @@ function partitionAuditedResults(results, riskyIds) {
 }
 
 /**
+ * True when a persisted row's census verdict predates the current candidate
+ * rule and must be re-derived before anyone reads or diffs it.
+ *
+ * A row with NO verdict is left alone: that is a legacy pre-#906 row, and
+ * stamping one here would invent a verdict for a show this run never looked
+ * at. riskStateMap already recomputes those in place for comparison.
+ */
+function needsCensusMigration(row) {
+  const cv = row && row.censusVerdict;
+  if (!cv || typeof cv !== 'object') return false;
+  return cv.censusSchema !== CENSUS_SCHEMA;
+}
+
+/**
  * Merge this run's results into the previously-persisted audit.
  *
  * @param {Object|null} prevAudit  parsed previous show-review-gap.json (or null)
@@ -325,7 +380,21 @@ function mergeGapAudit(prevAudit, runAudit, opts = {}) {
     // timestamp didn't parse is the wrong direction to fail on this file.
     if (!protectedIds.has(r.showId) && Number.isFinite(stampMs) && Number.isFinite(cutoffMs) && stampMs < cutoffMs) { dropped++; continue; }
     if (!byId.has(r.showId)) carried++;
-    byId.set(r.showId, stamp ? { ...r, computedAt: stamp } : { ...r });
+    // A carried-forward row keeps the verdict it was stamped with, and for a
+    // closed-and-clean show its next audit is up to 365 days away
+    // (gap-audit-freshness MAX_FRESHNESS_SKIP_MS). So when the candidate RULE
+    // changes, re-derive here rather than serving pre-fix numbers to the iOS
+    // app and the owner's digest for a year. Anchored to the row's own
+    // `stamp`, not to `now`, so live/in-flight classification stays as-of the
+    // run that produced it, and prevCandidates carries firstSeenAt forward.
+    const carriedRow = stamp ? { ...r, computedAt: stamp } : { ...r };
+    if (needsCensusMigration(carriedRow)) {
+      carriedRow.censusVerdict = censusVerdictFor(carriedRow, {
+        now: stamp || now,
+        prevCandidates: (r.censusVerdict && r.censusVerdict.candidates) || [],
+      });
+    }
+    byId.set(r.showId, carriedRow);
   }
   // 2. this run's entries win, stamped now (last write per showId wins).
   // censusVerdict (task #906) is (re)computed here — carried-forward entries
@@ -368,8 +437,13 @@ function mergeGapAudit(prevAudit, runAudit, opts = {}) {
 // catastrophically incomplete. `currentRun` keeps only actionable entries;
 // prior-production citations are tallied separately, informational only —
 // they must never feed `withGap`/`missingCurrentRun`/`--fail-on-gap`.
-const currentRun = (arr) => (Array.isArray(arr) ? arr.filter((x) => !(x && x.priorRun)) : []);
-const priorRunOnly = (arr) => (Array.isArray(arr) ? arr.filter((x) => x && x.priorRun) : []);
+// The rule itself lives in prior-production-citations.js so that every surface
+// that counts these — countsFor here, the audit's per-show summary and
+// checkpoint, the census candidate pool below, newsletter pre-send — asks the
+// same function. It was already correct in five scattered places and wrong in
+// the two a human reads; a sixth local copy is how that recurs.
+const currentRun = currentRunOnly;
+const priorRunOnly = priorProductionOnly;
 
 /** Recompute the summary counts over an arbitrary results array. */
 function countsFor(results) {
@@ -403,4 +477,4 @@ function countsFor(results) {
 // working.
 const { withFileLock } = require('./file-lock');
 
-module.exports = { mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, riskStateMap, isRiskyGapChange, partitionAuditedResults, withFileLock, DEFAULT_RETENTION_DAYS };
+module.exports = { mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, riskStateMap, isRiskyGapChange, partitionAuditedResults, withFileLock, DEFAULT_RETENTION_DAYS, CENSUS_SCHEMA, needsCensusMigration };

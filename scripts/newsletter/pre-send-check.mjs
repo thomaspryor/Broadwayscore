@@ -38,6 +38,10 @@ import { createRequire } from 'node:module';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const require_ = createRequire(import.meta.url);
+// The canonical "earlier production of this title" predicate — the same one
+// the gap auditor's headline counts use, so this message and those counts can
+// never disagree about what a gap is.
+const { currentRunOnly } = require_('../lib/prior-production-citations.js');
 const { findLedeBodyViolations } = require_('../lib/lede-body-invariant.js');
 const { buildPreSendBanner } = require_('../lib/pre-send-banner.js');
 const {
@@ -323,7 +327,7 @@ if (!Array.isArray(meta.openingShows)) {
       // priorRun rows are prior-production URLs the audit keeps report-only
       // (TKAM class) — they're excluded from checkpoint.uncollected, so they
       // must not be named in the failure message either.
-      const current = r.missing.filter(m => !m.priorRun);
+      const current = currentRunOnly(r.missing);
       if (current.length) {
         missingHostsById[r.showId] = current.map(m => m.host || m.outletId || m.url || String(m)).filter(Boolean);
       }

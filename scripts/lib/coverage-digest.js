@@ -1,5 +1,7 @@
 'use strict';
 
+const { CENSUS_SCHEMA } = require('./prior-production-citations');
+
 /**
  * coverage-digest.js — plain-English "N of M known reviews live" digest lines
  * for the owner's morning email (Coverage Verdict S3, task #905).
@@ -64,36 +66,59 @@ function coverageStatus(result) {
   // within), the whole list is reported as its own explicitly-unrelated
   // clause instead of folded into the same "N excluded" tally a reader would
   // otherwise take as a subset of "known".
+  // Is a given excluded (prior-production) citation actually INSIDE this
+  // show's candidate pool? It decides whether the citation consumes one of the
+  // un-live candidate slots or sits alongside them, and getting it wrong
+  // understates the real, actionable work — the opposite of what this digest
+  // is for. Three sources of truth, most reliable first:
+  //
+  //  1. A verdict written by the CURRENT rule (censusSchema >= 2). Since
+  //     BRO-3928's follow-through, censusVerdictFor refuses to admit a
+  //     prior-production citation as a candidate at all, so the answer is
+  //     "outside" by construction. No guessing.
+  //  2. A persisted candidate list. Exact per citation, by URL membership —
+  //     covers an older verdict that still carried its candidates.
+  //  3. Neither (a legacy row with only aggregate counts): fall back to the
+  //     original "does the excluded count FIT in the remaining slots?"
+  //     heuristic. It has to guess, but it only ever runs on rows the merge
+  //     has not migrated yet, and it is what those rows were written under.
+  //
+  // The task #907 Othello case (54 prior-production citations against 38
+  // candidates) is no longer a special case under (1) or (2): it is simply a
+  // show where all 54 are outside the pool, which is now checkable rather
+  // than inferable.
   const remaining = Math.max(0, candidateCount - liveCount);
-  const overflow = excluded.length > remaining;
-
-  const parts = [];
-  if (!overflow) {
-    const pending = Math.max(0, remaining - excluded.length);
-    if (pending > 0) parts.push(`${pending} being fetched`);
-    if (excluded.length > 0) {
-      const byReason = new Map();
-      for (const m of excluded) {
-        const label = excludedReasonLabel(m);
-        byReason.set(label, (byReason.get(label) || 0) + 1);
-      }
-      for (const [label, count] of byReason) parts.push(`${count} excluded (${label})`);
-    }
-  } else if (remaining > 0) {
-    // Every one of the remaining un-fetched slots is still unaccounted for
-    // by this (entirely-unrelated) excluded list, so it all reads as "being
-    // fetched" rather than silently vanishing from the sentence.
-    parts.push(`${remaining} being fetched`);
+  const candidateUrls = new Set(
+    (Array.isArray(cv.candidates) ? cv.candidates : []).map((c) => c && c.url).filter(Boolean),
+  );
+  let insidePool;
+  if (cv.censusSchema >= CENSUS_SCHEMA) {
+    insidePool = [];
+  } else if (candidateUrls.size > 0) {
+    insidePool = excluded.filter((m) => m && m.url && candidateUrls.has(m.url));
+  } else {
+    insidePool = excluded.length > remaining ? [] : excluded;
   }
-  let detail = `${liveCount} of ${candidateCount} known reviews live${parts.length ? ` — ${parts.join(', ')}` : ''}`;
-  if (overflow) {
+  const outsidePool = excluded.filter((m) => !insidePool.includes(m));
+  const pending = Math.max(0, remaining - insidePool.length);
+
+  const tally = (rows) => {
     const byReason = new Map();
-    for (const m of excluded) {
+    for (const m of rows) {
       const label = excludedReasonLabel(m);
       byReason.set(label, (byReason.get(label) || 0) + 1);
     }
-    const overflowParts = [...byReason].map(([label, count]) => `${count} (${label})`);
-    detail += ` — separately, ${overflowParts.join(', ')} on file from outside this run's candidate pool`;
+    return byReason;
+  };
+
+  const parts = [];
+  if (pending > 0) parts.push(`${pending} being fetched`);
+  for (const [label, count] of tally(insidePool)) parts.push(`${count} excluded (${label})`);
+
+  let detail = `${liveCount} of ${candidateCount} known reviews live${parts.length ? ` — ${parts.join(', ')}` : ''}`;
+  if (outsidePool.length > 0) {
+    const outside = [...tally(outsidePool)].map(([label, count]) => `${count} (${label})`);
+    detail += ` — separately, ${outside.join(', ')} on file from outside this run's candidate pool`;
   }
   return { liveCount, candidateCount, detail };
 }
