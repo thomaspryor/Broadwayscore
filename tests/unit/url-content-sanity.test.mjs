@@ -457,3 +457,63 @@ describe('validateContentMentionsShow — short / one-word title recovery (Sting
     assert.strictEqual(r.valid, true);
   });
 });
+
+// BRO-4058: the htmlTitleMatch===false backstop was rejecting ANY page whose
+// <title> lacks the show's own tokens — including ordinary feature/tabloid
+// headlines that never name the show at all. 45 of 163 real review-texts
+// files flagged url_content_mismatch (2026-09-22 scan) were genuine reviews
+// like this. The fix: only reject when the <title> headline LEADS WITH a
+// DIFFERENT catalog show's title (real wrong-article signal); a headline that
+// simply never mentions any show should fall back to the body-mention proof.
+describe('validateContentMentionsShow — BRO-4058 feature-headline backstop relaxation', () => {
+  const LONG_BODY = (mentions) => (
+    'By our critic. '.repeat(30) +
+    `A Life in the Theatre is a two-hander about an aging actor and his younger colleague. `.repeat(mentions) +
+    'The staging is spare and the performances are exact, one of the season\'s finer revivals. '.repeat(20)
+  );
+
+  test('WSJ-style unrelated headline ("Mamet With an Accent - WSJ") with 3+ body mentions is ACCEPTED', () => {
+    const r = validateContentMentionsShow(LONG_BODY(5), '<title>Mamet With an Accent - WSJ</title>', 'A Life in the Theatre', 'a-life-in-the-theatre-2010');
+    assert.strictEqual(r.valid, true);
+    assert.strictEqual(r.htmlTitleMatch, false);
+  });
+
+  test('NYT classic-style headline ("Christopher Walken Stars in...") with sufficient body mentions is ACCEPTED', () => {
+    const body = 'By our critic. '.repeat(30) +
+      'A Behanding in Spokane brings Christopher Walken to a seedy motel room. '.repeat(5) +
+      'The play is a black comedy that never lets up, darkly funny throughout. '.repeat(20);
+    const r = validateContentMentionsShow(body, '<title>Christopher Walken Stars in Martin McDonagh’s New Play - The New York Times</title>', 'A Behanding in Spokane', 'a-behanding-in-spokane-2010');
+    assert.strictEqual(r.valid, true);
+    assert.strictEqual(r.htmlTitleMatch, false);
+  });
+
+  test('headline that genuinely LEADS WITH a different catalog show is still REJECTED (backstop intact)', () => {
+    const r = validateContentMentionsShow(LONG_BODY(5), '<title>Company review — a dazzling revival | The Guardian</title>', 'A Life in the Theatre', 'a-life-in-the-theatre-2010');
+    assert.strictEqual(r.valid, false);
+    assert.match(r.reason, /HTML <title>/);
+  });
+
+  test('generic headline containing another show’s title only as a mid-headline substring is NOT treated as naming that show (no false reject)', () => {
+    // Real pagesonstages.com <title> from the 2026-09-22 scan (dog-day-afternoon-2026):
+    // the outlet's own post title + brand suffix. Must not false-match "broadway"
+    // (a real catalog show, broadway-1987) as a mid-headline substring of the brand name.
+    const r = validateContentMentionsShow(LONG_BODY(5), '<title>Adaptation, Not Replication – Pages on Stages</title>', 'A Life in the Theatre', 'a-life-in-the-theatre-2010');
+    assert.strictEqual(r.valid, true);
+  });
+
+  test('KNOWN EDGE CASE: a generic catalog show title ("The Heart") that coincidentally LEADS an unrelated headline is still rejected (unchanged from pre-fix behavior, not a regression)', () => {
+    // Real pagesonstages.com <title> from the scan (birthright-off-broadway-2026): the
+    // outlet's <title> element is unreliable for this domain (mismatches the actual post),
+    // and here it happens to collide with a genuine catalog show ("The Heart"). This was
+    // rejected before BRO-4058 and stays rejected after — the fix only recovers headlines
+    // that don't lead with ANY real catalog show.
+    const r = validateContentMentionsShow(LONG_BODY(5), '<title>The Heart – Pages on Stages</title>', 'A Life in the Theatre', 'a-life-in-the-theatre-2010');
+    assert.strictEqual(r.valid, false);
+  });
+
+  test('accented catalog show title in a leading headline is still correctly recognized as a DIFFERENT show (diacritic fold applied to loadBroadwayShows())', () => {
+    const r = validateContentMentionsShow(LONG_BODY(5), '<title>Les Misérables review — a triumphant return | The Times</title>', 'A Life in the Theatre', 'a-life-in-the-theatre-2010');
+    assert.strictEqual(r.valid, false);
+    assert.match(r.reason, /HTML <title>/);
+  });
+});

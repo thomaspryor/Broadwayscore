@@ -3268,15 +3268,40 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
     };
   }
 
+  // BRO-4058: htmlTitleMatch===false only proves the <title> doesn't contain
+  // THIS show's title — it says nothing about whether the page is actually
+  // about a DIFFERENT show. Tabloid/feature headlines ("The Essex girl whose
+  // debut play charmed Margot Robbie", "Mamet With an Accent - WSJ") never
+  // name the show at all, yet the backstop below was rejecting them outright
+  // even with a body that names the show 5-15 times — 45 of 163
+  // url_content_mismatch drops (2026-09-22 scan) were reviews like this, none
+  // of them wrong-article. Only reject when the <title> headline actually
+  // LEADS WITH a different catalog show's title — the same "leads with" proof
+  // titleLeadsWithShow/headlineLeadsWithShow use above to establish a
+  // dedicated review — which is what a genuinely wrong-article fetch (CDN
+  // misroute, stale cache, wrong-slug redirect) looks like. Run each catalog
+  // title through the same normalize() fold used for headlineLead/tokens above
+  // (loadBroadwayShows() only lowercases) so an accented title like "Les
+  // Misérables" isn't silently exempted from this check.
   if (htmlTitleMatch === false) {
-    return {
-      valid: false,
-      reason: `HTML <title> "${htmlTitle}" does not reference show "${showTitle || showId}"`,
-      mentionCount,
-      threshold,
-      htmlTitle,
-      htmlTitleMatch,
-    };
+    const otherShowTitles = loadBroadwayShows();
+    const namesOtherShow = !!headlineLead && otherShowTitles.some((rawOtherTitle) => {
+      const otherTitle = normalize(rawOtherTitle).toLowerCase();
+      if (otherTitle.length <= 4) return false;
+      if (otherTitle === strippedTitle) return false;
+      if (strippedTitle && (strippedTitle.includes(otherTitle) || otherTitle.includes(strippedTitle))) return false;
+      return headlineLead.startsWith(otherTitle);
+    });
+    if (namesOtherShow) {
+      return {
+        valid: false,
+        reason: `HTML <title> "${htmlTitle}" does not reference show "${showTitle || showId}"`,
+        mentionCount,
+        threshold,
+        htmlTitle,
+        htmlTitleMatch,
+      };
+    }
   }
 
   return {
