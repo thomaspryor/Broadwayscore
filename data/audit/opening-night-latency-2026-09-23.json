@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-23T11:44:33.081Z",
+  "generatedAt": "2026-09-23T15:56:49.207Z",
   "date": "2026-09-23",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 233647,
+  "entryCount": 237088,
   "shows": [
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
@@ -742,13 +742,13 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
-      "reviewCount": 15,
+      "reviewCount": 16,
       "median_e2e_ms": 1792415069,
       "p90_e2e_ms": 1792415078,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 488365,
+        "scored-to-rebuilt": 486380,
         "rebuilt-to-deployed": 1788793749
       },
       "reviews_over_15min": 7,
@@ -4831,13 +4831,13 @@
     },
     {
       "showId": "kimberly-akimbo-off-west-end-2026",
-      "reviewCount": 28,
+      "reviewCount": 29,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 9611235,
+        "scored-to-rebuilt": 9604907,
         "rebuilt-to-deployed": 1102043115
       },
       "reviews_over_15min": 0,
@@ -8403,6 +8403,36 @@
         "collected-to-scored": null,
         "scored-to-rebuilt": 2280404,
         "rebuilt-to-deployed": 3789727
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 873317,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "deep-heat-rivalry-off-west-end-2026",
+      "reviewCount": 5,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 878718,
+        "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
