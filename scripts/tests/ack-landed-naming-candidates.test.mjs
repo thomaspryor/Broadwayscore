@@ -119,3 +119,32 @@ test('BRO-4068: the predicate tolerates null/empty inputs instead of throwing', 
   assert.equal(core.messageNamesRef('BRO-1', null), false);
   assert.equal(core.messageNamesRef('BRO-1', ''), false);
 });
+
+// Raising the --grep cap to 1000 while --format carries %B (full commit bodies)
+// pushed the lookup past spawnSync's 1 MiB default maxBuffer on the real repo:
+// --grep=BRO-3 returned 817 records / 1,198,347 bytes and overflowed, so the
+// hint came back null ("could not search") for exactly the high-match ids the
+// cap was raised to serve. Overflow is at least honest (status null + ENOBUFS
+// lands in the null branch, never a short read with a missing candidate), but
+// the hint was dead. The threshold moves as history grows, so it is pinned here
+// rather than left to be rediscovered.
+test('BRO-4068: a match set far larger than 1 MiB of commit bodies still yields candidates', () => {
+  const big = fs.mkdtempSync(path.join(os.tmpdir(), 'ack-landed-big-'));
+  const saved = repo;
+  repo = big;
+  try {
+    git(['init', '-q', '-b', 'main']);
+    const filler = 'x'.repeat(40 * 1024);
+    // 40 x 40 KiB of body = ~1.6 MiB, comfortably past the 1 MiB default.
+    for (let i = 0; i < 40; i++) {
+      commit(`chore: bulk ${i}\n\nRefs ${CARD}.\n${filler}`, IN_WINDOW);
+    }
+    const rows = namingCandidates(CARD, LAUNCH, TERMINAL, { cwd: big, base: 'main' });
+    assert.notEqual(rows, null,
+      'the lookup must not collapse to "could not search" just because the match set is large');
+    assert.ok(rows.length > 0, 'and it must still return candidates');
+  } finally {
+    repo = saved;
+    try { fs.rmSync(big, { recursive: true, force: true }); } catch { /* best effort */ }
+  }
+});

@@ -145,7 +145,10 @@ function gitOk(args) {
 // immediately; the one being passed named no card at all. A refusal that can
 // be mistaken for a dead end is how a correct guard gets argued away, so the
 // refusal now does the lookup itself and prints the shas that WOULD satisfy
-// it. Best-effort: any git failure just omits the hint, never blocks.
+// it.
+//
+// Returns null = the lookup could not run, [] = it ran and matched nothing,
+// rows = candidates. Never throws, and never blocks the refusal it decorates.
 function namingCandidates(ref, launchTs, terminalTs, opts = {}) {
   if (!ref) return [];
   // cwd/base are injectable so this can be tested against a throwaway repo.
@@ -171,7 +174,14 @@ function namingCandidates(ref, launchTs, terminalTs, opts = {}) {
     // shares a prefix with noisier siblings would otherwise see the true
     // match crowded out of the window (review P2).
     '-n', '1000', `--grep=${ref}`, '-i'];
-  const r = spawnSync('git', args, { cwd, encoding: 'utf8' });
+  // maxBuffer is NOT optional here. %B pulls full commit bodies, so -n 1000
+  // can exceed spawnSync's 1 MiB default: measured on this repo, --grep=BRO-3
+  // returns 817 records / 1,198,347 bytes and overflows, while -n 400 fits at
+  // 550,319. Overflow sets status null + ENOBUFS, which lands in the null
+  // branch below -- honest, but it turns a working hint into "could not
+  // search" for exactly the high-match ids the cap was raised to serve. The
+  // threshold also moves as history grows, so this is sized well past it.
+  const r = spawnSync('git', args, { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
   // null = the lookup could not run (no origin/main, shallow clone, git
   // missing, a ref git's own regex rejects); [] = it ran and found nothing.
   // Collapsing the two let the caller print "no commit names this card" on a
@@ -191,13 +201,12 @@ function namingCandidates(ref, launchTs, terminalTs, opts = {}) {
     // BRO-4066/BRO-4060. Re-test each hit with core's own anchored predicate
     // so the hint can never offer a sha the guard would then refuse.
     if (!core.messageNamesRef(fullMessage, ref)) continue;
-    const rest = [subject];
     const at = Date.parse(authored || '');
     // Mirror decideAck's own bounds, so a suggestion can never trade the
     // naming refusal for the timing one.
     if (Number.isFinite(lo) && Number.isFinite(at) && at <= lo) continue;
     if (Number.isFinite(hi) && Number.isFinite(at) && at > hi + core.COMMIT_AFTER_TERMINAL_GRACE_MS) continue;
-    out.push({ sha, authored, subject: rest.join('\t') });
+    out.push({ sha, authored, subject });
     if (out.length >= 5) break;
   }
   return out;
