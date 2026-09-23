@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-22T18:28:36.091Z",
+  "generatedAt": "2026-09-23T18:51:00.764Z",
   "counts": {
-    "router": 145,
+    "router": 148,
     "digest": 1,
     "direct": 0,
     "humanCallerIgnoresDigest": 0
@@ -22,11 +22,18 @@
       "disposition": "auto"
     },
     {
+      "file": ".github/workflows/check-direct-push-to-main.yml",
+      "line": 141,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
       "file": ".github/workflows/check-opening-night-drift.yml",
       "line": 218,
       "kind": "routeAlert",
       "classification": "router",
-      "disposition": "human"
+      "disposition": "digest"
     },
     {
       "file": ".github/workflows/opening-night-broadcast.yml",
@@ -72,10 +79,17 @@
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 3985,
+      "line": 4038,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
+    },
+    {
+      "file": ".github/workflows/test.yml",
+      "line": 6032,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "digest"
     },
     {
       "file": ".github/workflows/update-mezzanine.yml",
@@ -219,35 +233,35 @@
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 2006,
+      "line": 2023,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 2031,
+      "line": 2048,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 2054,
+      "line": 2071,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 2255,
+      "line": 2272,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 2353,
+      "line": 2370,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -317,7 +331,7 @@
     },
     {
       "file": "scripts/bsc-reconcile.js",
-      "line": 1257,
+      "line": 1514,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
@@ -398,6 +412,13 @@
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
+    },
+    {
+      "file": "scripts/check-direct-push-to-main.js",
+      "line": 130,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
     },
     {
       "file": "scripts/check-hook-liveness.js",
@@ -597,14 +618,14 @@
     },
     {
       "file": "scripts/dispatch-watchdog.js",
-      "line": 1004,
+      "line": 1124,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/dispatch-watchdog.js",
-      "line": 1021,
+      "line": 1142,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -807,21 +828,21 @@
     },
     {
       "file": "scripts/lib/owner-alert-router.js",
-      "line": 507,
+      "line": 524,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/lib/owner-alert-router.js",
-      "line": 542,
+      "line": 559,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/lib/owner-alert-router.js",
-      "line": 893,
+      "line": 923,
       "kind": "sendAlert-direct",
       "classification": "digest",
       "severity": null
@@ -940,21 +961,21 @@
     },
     {
       "file": "scripts/reconcile-dead-completions.js",
-      "line": 256,
+      "line": 274,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/route-main-streak-signatures.js",
-      "line": 226,
+      "line": 254,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/route-main-streak-signatures.js",
-      "line": 248,
+      "line": 279,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
