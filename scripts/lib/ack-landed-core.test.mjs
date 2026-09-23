@@ -122,7 +122,7 @@ test('stranded row: --sha must be the stranded sha (or an ancestor of it); a lat
   // A commit that merely names the ref but is not the stranded sha's history is refused.
   const untied = core.decideAck(happy({ rows, landing: { ...happy().landing, commitTs: '2026-09-16T05:00:00.000Z', tiedToStranded: false } }));
   assert.equal(untied.ok, false);
-  assert.match(untied.refusals.join('\n'), /must be the stranded sha deadbeef itself or an ancestor of it/);
+  assert.match(untied.refusals.join('\n'), /must be the stranded sha deadbeef itself, an ancestor of it, or an origin\/main commit patch-identical/);
   // Landing later than the terminal row is fine for stranded (that is the whole point of the row).
   const lateButTied = core.decideAck(happy({ rows, landing: { ...happy().landing, sha: 'deadbeef', commitTs: '2026-09-16T04:05:00.000Z', message: 'x', tiedToStranded: true } }));
   assert.equal(lateButTied.ok, true);
@@ -246,4 +246,30 @@ test('ledger contract: landed-acked is neither dead-like nor a job-state event',
   // foldJobs must keep ignoring it so bsc-status/backlog-drain job views are untouched.
   const jobs = foldJobs([...rowsStoppedShort, { ts: '2026-09-16T06:00:00.000Z', event: 'landed-acked', taskId: TASK, jobId: `${TASK}-fixture` }]);
   assert.equal(jobs.get(`${TASK}-fixture`).event, 'job-stopped-short');
+});
+
+// BRO-4074: land.yml lands by REBASING, which rewrites the sha. For a stranded
+// card whose work landed normally, the stranded sha is then never an ancestor
+// of origin/main AND the sha that IS on main is not an ancestor of the stranded
+// sha — both directions refuse, so no rebase-landed stranded job could be acked
+// at all. That in turn made fanout-verified unsatisfiable for such a job, which
+// is how it surfaced (BRO-4070 and BRO-4071, 2026-09-23).
+//
+// The rebase-aware tie is patch EQUIVALENCE: the CLI computes it with
+// `git cherry` plus `git patch-id` and hands it in as tiedToStrandedByPatch. It
+// compares the diff rather than the commit prose, so it is stronger evidence
+// than the name check the non-stranded path relies on, not weaker.
+test('BRO-4074: a stranded job whose work landed REBASED is ackable via the patch tie', () => {
+  const rows = [...rowsStoppedShort.slice(0, 2), { ts: '2026-09-16T04:11:36.000Z', event: 'job-stranded', taskId: TASK, jobId: `${TASK}-fixture`, sha: 'deadbeef' }];
+  const plan = core.decideAck(happy({ rows, landing: { ...happy().landing, sha: 'cafebabe', commitTs: '2026-09-16T05:00:00.000Z', message: 'rebased twin', tiedToStranded: false, tiedToStrandedByPatch: true } }));
+  assert.equal(plan.ok, true, plan.refusals.join('\n'));
+  assert.equal(plan.row.strandedSha, 'deadbeef', 'the row still records the stranded sha, not the twin');
+});
+
+test('BRO-4074: neither tie still refuses, and the refusal names the twin as an option', () => {
+  const rows = [...rowsStoppedShort.slice(0, 2), { ts: '2026-09-16T04:11:36.000Z', event: 'job-stranded', taskId: TASK, jobId: `${TASK}-fixture`, sha: 'deadbeef' }];
+  const plan = core.decideAck(happy({ rows, landing: { ...happy().landing, sha: 'cafebabe', commitTs: '2026-09-16T05:00:00.000Z', tiedToStranded: false, tiedToStrandedByPatch: false } }));
+  assert.equal(plan.ok, false, 'the patch tie widens WHICH sha is accepted; it does not remove the requirement');
+  assert.match(plan.refusals.join('\n'), /patch-identical/,
+    'an operator who hits this must be told the rebase-landed twin is allowed, or they hit the same dead end');
 });
