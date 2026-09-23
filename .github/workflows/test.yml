@@ -184,6 +184,10 @@ on:
       # wraps (scripts/lib/** is globbed above); listed so a solo edit to the
       # CLI itself still fires CI.
       - 'scripts/ack-landed.js'
+      # BRO-4066: the --job-id fixture test lives in scripts/tests/
+      # (registered in tests/unit-test-manifest.txt) — scripts/tests/ is not
+      # scripts/lib/, so it needs its own path entry to fire CI on a solo edit.
+      - 'scripts/tests/ack-landed-job-id.test.mjs'
       # scripts/lib/fanout-verified-core.test.mjs covers the decision this
       # CLI wraps (BRO-3939); listed so a solo edit to the CLI still fires CI.
       - 'scripts/fanout-verified.js'

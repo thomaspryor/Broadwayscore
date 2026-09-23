@@ -37,11 +37,23 @@
  * the same text as a Linear comment (--no-linear to skip), and prints one
  * line:  ACKED: BRO-N — <sha> on origin/main, <verifyCmd> exit 0
  *
+ * --job-id (BRO-4066): every precondition above is normally evaluated
+ * against the ref's LATEST ledger row, which breaks when a card is
+ * re-dispatched after an EARLIER attempt had already landed — the latest
+ * attempt's own terminal row (which may itself be job-done, landed-acked, or
+ * another bad row) buries the earlier attempt's launch/terminal window, so
+ * nothing can ever tie a sha to it again. Pass --job-id <jobId> (the jobId
+ * from that attempt's own job-spawned/job-* rows) to scope every
+ * precondition to THAT attempt instead; --id still validates the jobId
+ * actually belongs to the card. Omit it for today's default (latest
+ * attempt).
+ *
  * Usage:
  *   node scripts/ack-landed.js --id BRO-3535 --sha c88cdf6c126 \
  *     --verify "node scripts/audit-workflow-concurrency.js" \
  *     --reason "owning session verified the split landed on origin/main"
- *   Options: --no-linear   skip the Linear comment
+ *   Options: --job-id X   scope preconditions to one dispatch attempt (see above)
+ *            --no-linear   skip the Linear comment
  *            --acked-by X  override the ackedBy stamp (default: $CLAUDE_CODE_SESSION_ID or 'manual')
  * Exit: 0 acked, 1 refused (every failed precondition is printed), 2 usage.
  */
@@ -65,7 +77,13 @@ const CODE_PATHS = ['scripts', 'src', '.github', 'package.json', 'next.config.js
 const USAGE = `ack-landed.js — record that a stopped-short/stranded dispatch's work landed (writes the ledger row Gate O v2 accepts).
 
 Usage:
-  node scripts/ack-landed.js --id BRO-N --sha <commit> --verify "<safe-form acceptance command>" --reason "<why you are sure, >=15 chars>" [--no-linear] [--acked-by <id>]
+  node scripts/ack-landed.js --id BRO-N --sha <commit> --verify "<safe-form acceptance command>" --reason "<why you are sure, >=15 chars>" [--job-id <jobId>] [--no-linear] [--acked-by <id>]
+
+  --job-id <jobId>  scope every precondition to ONE dispatch attempt (its own
+                     launch/job-spawned + terminal rows) instead of the ref's
+                     latest — for acking an EARLIER attempt that landed after
+                     the card was re-dispatched. Must be a jobId already on
+                     this ref's ledger rows.
 `;
 
 function parseArgs(argv) {
@@ -81,6 +99,7 @@ function parseArgs(argv) {
       case '--verify': out.verify = val(); break;
       case '--reason': out.reason = val(); break;
       case '--acked-by': out.ackedBy = val(); break;
+      case '--job-id': out.jobId = val(); break;
       case '--no-linear': out.noLinear = true; break;
       default:
         return { error: `unknown argument: ${a}` };
@@ -117,13 +136,19 @@ function main() {
     process.exit(2);
   }
   const ackedBy = args.ackedBy || process.env.CLAUDE_CODE_SESSION_ID || 'manual';
+  const jobId = args.jobId || null;
 
   // 1. Ledger precondition first — cheap, and a plainly un-ackable ref must
-  //    not trigger a fetch or a 10-minute verify run.
+  //    not trigger a fetch or a 10-minute verify run. When --job-id is given,
+  //    scope to that ONE dispatch attempt (BRO-4066) so a later attempt's own
+  //    terminal row (job-done/landed-acked/another bad row) never masks an
+  //    earlier attempt's landing.
   const rows = core.rowsForRef(ledger.readEntries(), ref);
-  const pre = core.ledgerPrecondition(rows);
+  const scoped = core.rowsForJobId(rows, jobId, ref);
+  if (scoped.refusal) refuse(ref, [scoped.refusal]);
+  const pre = core.ledgerPrecondition(scoped.rows);
   if (pre.refusals.length) refuse(ref, pre.refusals);
-  console.error(`→ ledger: newest row for ${ref} is ${pre.newest.event} (${pre.newest.ts}); launch ${pre.launch.ts}`);
+  console.error(`→ ledger: newest row for ${ref}${jobId ? ` (job ${jobId})` : ''} is ${pre.newest.event} (${pre.newest.ts}); launch ${pre.launch.ts}`);
 
   // 2. Fresh origin/main + ancestry (shallow-safe).
   try {
@@ -168,7 +193,7 @@ function main() {
   //    spending the run so an unsafe/untied ack never executes anything.
   const verify = { cmd: args.verify.trim(), safe: isSafeCheckCommand(args.verify.trim()), unsafeReason: null, exitCode: null };
   if (!verify.safe) verify.unsafeReason = (explainUnsafeCheckCommand(verify.cmd) || {}).reason || null;
-  const dryRun = core.decideAck({ ref, rows, landing, checkout, verify: { ...verify, exitCode: 0 }, reason: args.reason, ackedBy });
+  const dryRun = core.decideAck({ ref, rows, jobId, landing, checkout, verify: { ...verify, exitCode: 0 }, reason: args.reason, ackedBy });
   if (!dryRun.ok) refuse(ref, dryRun.refusals);
 
   console.error(`→ running verify in ${REPO}: ${verify.cmd}`);
@@ -179,7 +204,7 @@ function main() {
     console.error(`   | ${tail}`);
   }
 
-  const decision = core.decideAck({ ref, rows, landing, checkout, verify, reason: args.reason, ackedBy });
+  const decision = core.decideAck({ ref, rows, jobId, landing, checkout, verify, reason: args.reason, ackedBy });
   if (!decision.ok) refuse(ref, decision.refusals);
 
   // 5. Write the row. appendEntry self-stamps ts (never backdated).

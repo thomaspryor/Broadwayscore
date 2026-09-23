@@ -65,6 +65,40 @@ function normalizeRef(raw) {
 }
 
 /**
+ * Scope ref-rows (already filtered by rowsForRef) down to ONE dispatch
+ * attempt by jobId — the fix for "ack-landed keys every precondition to the
+ * LATEST dispatch" (BRO-4066). A card re-dispatched after its EARLIER
+ * attempt had already landed leaves that earlier attempt's own launch/
+ * terminal rows buried under the later attempt's — ledgerPrecondition()
+ * always reads `rows[rows.length - 1]` as "newest", so it evaluates every
+ * precondition (terminal-ness, the launch timestamp the sha is tied to)
+ * against the WRONG attempt. Real case: linear:BRO-3924's first job landed
+ * 8df620cc09d, then ended job-stopped-short only for a missing status line;
+ * a --force re-dispatch verified the landing and moved the card Done, wrote
+ * no commit of its own, and ALSO ended job-stopped-short — leaving no row
+ * whose "newest" is the first job's own landed work.
+ *
+ * When jobId is omitted this is a no-op (identical to today's
+ * latest-attempt behavior) — every existing caller that doesn't pass one
+ * keeps working unchanged.
+ * @param {object[]} rows  rows already scoped to the ref (rowsForRef output)
+ * @param {string|null} jobId
+ * @param {string} ref  for the refusal message only
+ * @returns {{rows: object[], refusal: string|null}}
+ */
+function rowsForJobId(rows, jobId, ref) {
+  if (!jobId) return { rows: rows || [], refusal: null };
+  const scoped = (rows || []).filter((r) => r && r.jobId === jobId);
+  if (!scoped.length) {
+    return {
+      rows: [],
+      refusal: `--job-id ${jobId} has no ledger rows under ${ref} — it must be a jobId from this card's own dispatch history (see the launch/job-spawned rows)`,
+    };
+  }
+  return { rows: scoped, refusal: null };
+}
+
+/**
  * Cheap ledger-only precondition, run BEFORE any git fetch or verify command
  * so a plainly un-ackable ref refuses in milliseconds.
  * @returns {{refusals: string[], newest: object|null, launch: object|null, stranded: object|null}}
@@ -100,6 +134,9 @@ function ledgerPrecondition(rows) {
  * @param {object} input
  * @param {string} input.ref            e.g. 'BRO-3535'
  * @param {object[]} input.rows         ledger rows for the ref, file order
+ * @param {string} [input.jobId]        scope every precondition to THIS
+ *   dispatch attempt (see rowsForJobId above) instead of the ref's latest.
+ *   Omitted = today's latest-attempt behavior, unchanged.
  * @param {object} input.landing        {verdict:'LANDED'|'NOT_LANDED'|'UNKNOWN', sha, commitTs, authorTs, message, tiedToStranded}
  *   commitTs: committer date (%cI); authorTs: author date (%aI), optional —
  *   when present it is the timestamp the job window is checked against,
@@ -112,9 +149,13 @@ function ledgerPrecondition(rows) {
  * @param {string} [input.ackedBy]
  */
 function decideAck(input) {
-  const { ref, rows, landing = {}, checkout = {}, verify = {}, reason, ackedBy } = input || {};
-  const pre = ledgerPrecondition(rows);
-  const refusals = [...pre.refusals];
+  const { ref, rows, jobId, landing = {}, checkout = {}, verify = {}, reason, ackedBy } = input || {};
+  const scoped = rowsForJobId(rows, jobId, ref);
+  const refusals = scoped.refusal ? [scoped.refusal] : [];
+  const pre = scoped.refusal
+    ? { refusals: [], newest: null, launch: null, launchVerifyCmd: null, stranded: null }
+    : ledgerPrecondition(scoped.rows);
+  refusals.push(...pre.refusals);
   const { newest, launch, launchVerifyCmd, stranded } = pre;
 
   if (landing.verdict !== 'LANDED') {
@@ -200,5 +241,5 @@ function formatAckLine(ref, row) {
 
 module.exports = {
   MIN_REASON_CHARS, COMMIT_AFTER_TERMINAL_GRACE_MS, ACKABLE_TERMINAL_EVENTS, NOTHING_TO_ACK_EVENTS,
-  rowsForRef, normalizeRef, ledgerPrecondition, decideAck, formatAckLine,
+  rowsForRef, rowsForJobId, normalizeRef, ledgerPrecondition, decideAck, formatAckLine,
 };
