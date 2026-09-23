@@ -3119,26 +3119,24 @@
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-09-22T23:21:22.514Z",
-      "lastNotifiedAt": "2026-09-21T23:59:40.142Z",
-      "lastSurfacedAt": "2026-09-21T23:59:40.142Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-09-23T09:13:28.953Z",
+      "lastNotifiedAt": "2026-09-23T09:13:28.953Z",
+      "lastSurfacedAt": "2026-09-23T09:13:28.953Z",
+      "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 8
+      "linearIdentifier": null
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-22T23:21:22.520Z",
-      "lastNotifiedAt": "2026-09-21T23:59:40.177Z",
-      "lastSurfacedAt": "2026-09-21T23:59:40.177Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-09-23T09:13:28.959Z",
+      "lastNotifiedAt": "2026-09-23T09:13:28.959Z",
+      "lastSurfacedAt": "2026-09-23T09:13:28.959Z",
+      "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 8
+      "linearIdentifier": null
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3511,18 +3509,16 @@
       "silentRefires": 3
     },
     "corpus-drift:orphan-show-ids": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
       "firstSeen": "2026-09-18T16:10:40.527Z",
-      "lastSeen": "2026-09-20T05:25:49.897Z",
-      "lastNotifiedAt": "2026-09-19T19:05:52.840Z",
-      "lastSurfacedAt": "2026-09-19T19:05:52.840Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-09-23T09:13:28.964Z",
+      "lastNotifiedAt": "2026-09-23T09:13:28.964Z",
+      "lastSurfacedAt": "2026-09-23T09:13:28.964Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 3,
-      "resolvedAt": "2026-09-20T09:12:27.096Z"
+      "linearIdentifier": null
     },
     "opening-night-remediation-exhausted-t1-missing:america-who-hurt-you-off-broadway-2026": {
       "status": "open",
@@ -3792,13 +3788,12 @@
       "disposition": "digest",
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-09-22T23:21:22.511Z",
-      "lastNotifiedAt": "2026-09-21T23:59:40.140Z",
-      "lastSurfacedAt": "2026-09-21T23:59:40.140Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-09-23T09:13:28.949Z",
+      "lastNotifiedAt": "2026-09-23T09:13:28.949Z",
+      "lastSurfacedAt": "2026-09-23T09:13:28.949Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 8
+      "linearIdentifier": null
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4126,13 +4121,13 @@
       "disposition": "digest",
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-09-22T23:21:22.506Z",
+      "lastSeen": "2026-09-23T09:13:28.944Z",
       "lastNotifiedAt": "2026-09-22T11:25:10.946Z",
       "lastSurfacedAt": "2026-09-22T11:25:10.946Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
