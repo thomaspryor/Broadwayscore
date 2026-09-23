@@ -1911,3 +1911,108 @@ test('BRO-3907: a health-check row still wins over a verify param if both were s
   assert.match(notes, /check-health-row-absent\.js/);
   assert.doesNotMatch(notes, /VERIFY: node scripts\/validate-data\.js/);
 });
+
+// ── BRO-4054: dispatch-at-filing (red-main signature cards) ──────────────────
+
+test('routeAlert: dispatchAtFiling files in DISPATCH mode — no PARKED sentinel, provenance marker present, dispatch stamp on the ledger condition', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    const result = await router.routeAlert({
+      conditionKey: 'test-yml:red:Unit Tests:deadbeef',
+      title: 'main test.yml red: Unit Tests / Run unit tests — "t"',
+      description: 'main is red.',
+      disposition: 'auto',
+      verify: { line: 'VERIFY: `node scripts/run-unit-tests.js`', note: null },
+      dispatchAtFiling: { runId: '424242', runUrl: 'https://github.com/x/y/actions/runs/424242' },
+    });
+    assert.equal(result.action, 'auto');
+    assert.equal(calls.createLinearIssue.length, 1);
+    const opts = calls.createLinearIssue[0];
+    assert.equal(opts.dispatch, true, 'dispatch mode, never park');
+    assert.equal(opts.park, undefined);
+    assert.doesNotMatch(opts.description, /^\s*PARKED\s*:/im, 'the sentinel headless-dispatchability.js refuses must be absent');
+    assert.match(opts.description, /Filed by owner-alert-router for dispatch-at-filing \(BRO-4054; condition: test-yml:red:Unit Tests:deadbeef\)/);
+    assert.doesNotMatch(opts.description, /Auto-filed by owner-alert-router/, 'must not be selectable by the parked drain too');
+    assert.match(opts.description, /VERIFY: `node scripts\/run-unit-tests.js`/, 'BRO-3907 VERIFY derivation stays on the card');
+    assert.deepEqual(result.dispatch, { requestedAt: result.dispatch.requestedAt, mode: 'dispatch-at-filing', runId: '424242', runUrl: 'https://github.com/x/y/actions/runs/424242' });
+    const cond = router.loadLedger().conditions['test-yml:red:Unit Tests:deadbeef'];
+    assert.equal(cond.status, 'open');
+    assert.equal(cond.dispatch.mode, 'dispatch-at-filing');
+    assert.equal(cond.dispatch.runId, '424242');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: without dispatchAtFiling the router still parks (every other auto alert is unchanged)', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    const result = await router.routeAlert({ conditionKey: 'test:still-parked', title: 't', description: 'd', disposition: 'auto' });
+    assert.equal(result.dispatch, undefined);
+    assert.ok(calls.createLinearIssue[0].park);
+    assert.equal(calls.createLinearIssue[0].dispatch, undefined);
+    assert.equal(router.loadLedger().conditions['test:still-parked'].dispatch, undefined);
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert carries dispatch/absentRunIds across BOTH ledger rewrites (second-opinion blocker: fresh-record writes dropped them)', async () => {
+  // Rewrite 1: cooldown expired + Linear dedupe match → the dedupe-match path rebuilds the record.
+  const { router, calls, restore } = loadRouterWithFakes({
+    linearSearchIssuesImpl: async () => ({ identifier: 'BRO-4100', title: 'tracked' }),
+  });
+  try {
+    const key = 'test-yml:red:Unit Tests:cafebabe';
+    const first = await router.routeAlert({ conditionKey: key, title: 't', description: 'd', disposition: 'auto', dispatchAtFiling: { runId: '1' } });
+    assert.equal(first.action, 'silent', 'dedupe match');
+    // Simulate the stamps another writer (CI filer / stale tracker) put on the open record.
+    assert.ok(router.patchCondition(key, { dispatch: { requestedAt: '2026-09-23T00:00:00.000Z', mode: 'dispatch-at-filing', runId: '1' }, absentRunIds: ['1', '2'] }));
+    // Age the record past the cooldown so the next call re-enters the dedupe-match rewrite.
+    const aged = router.loadLedger();
+    aged.conditions[key].lastNotifiedAt = new Date(Date.now() - 400 * 3600 * 1000).toISOString();
+    fs.writeFileSync(router._LEDGER_PATH, JSON.stringify(aged));
+    const second = await router.routeAlert({ conditionKey: key, title: 't', description: 'd', disposition: 'auto', dispatchAtFiling: { runId: '2' } });
+    assert.equal(second.action, 'silent');
+    const cond = router.loadLedger().conditions[key];
+    assert.deepEqual(cond.dispatch, { requestedAt: '2026-09-23T00:00:00.000Z', mode: 'dispatch-at-filing', runId: '1' });
+    assert.deepEqual(cond.absentRunIds, ['1', '2']);
+    assert.equal(calls.createLinearIssue.length, 0);
+  } finally {
+    restore();
+  }
+  // Rewrite 2: the new-incident path (no dedupe match) after a cooldown expiry keeps absentRunIds.
+  const second = loadRouterWithFakes();
+  try {
+    const key = 'test-yml:red:E2E Tests:feedface';
+    await second.router.routeAlert({ conditionKey: key, title: 't', description: 'd', disposition: 'auto', dispatchAtFiling: { runId: '1' } });
+    assert.ok(second.router.patchCondition(key, { absentRunIds: ['7'] }));
+    const aged = second.router.loadLedger();
+    aged.conditions[key].lastNotifiedAt = new Date(Date.now() - 400 * 3600 * 1000).toISOString();
+    fs.writeFileSync(second.router._LEDGER_PATH, JSON.stringify(aged));
+    const r = await second.router.routeAlert({ conditionKey: key, title: 't', description: 'd', disposition: 'auto', dispatchAtFiling: { runId: '9' } });
+    assert.equal(r.action, 'auto', 'no dedupe match → files again');
+    const cond = second.router.loadLedger().conditions[key];
+    assert.deepEqual(cond.absentRunIds, ['7'], 'carried across the new-incident rewrite');
+    assert.equal(cond.dispatch.runId, '9', 'a fresh filing takes the NEW dispatch stamp');
+  } finally {
+    second.restore();
+  }
+});
+
+test('patchCondition only touches OPEN conditions and resolveCondition records the reason', async () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    assert.equal(router.patchCondition('test:missing', { absentRunIds: ['1'] }), false);
+    await router.routeAlert({ conditionKey: 'test:patch', title: 't', description: 'd', disposition: 'auto' });
+    assert.ok(router.patchCondition('test:patch', { absentRunIds: ['1'] }));
+    assert.deepEqual(router.loadLedger().conditions['test:patch'].absentRunIds, ['1']);
+    assert.ok(router.resolveCondition('test:patch', { reason: 'stale-signature' }));
+    const cond = router.loadLedger().conditions['test:patch'];
+    assert.equal(cond.status, 'resolved');
+    assert.equal(cond.resolveReason, 'stale-signature');
+    assert.equal(router.patchCondition('test:patch', { absentRunIds: [] }), false, 'closed → no-op');
+  } finally {
+    restore();
+  }
+});
