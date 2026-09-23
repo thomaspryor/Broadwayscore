@@ -19,6 +19,9 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { isBlockedReviewUrl } from './lib/domain-filters.js';
+import outletCanonicalize from './lib/outlet-canonicalize.js';
+
+const { lookupOutletForHost } = outletCanonicalize;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,45 +38,25 @@ const shows = showsData.shows || showsData; // Handle both formats
 const reviewsData = JSON.parse(fs.readFileSync(reviewsPath, 'utf-8'));
 const reviews = reviewsData.reviews || reviewsData; // Handle both formats
 
-// domain (registered or alias) -> { id, displayName, tier } — built once at
-// module load. Lets the URL's host be matched against every outlet's known
-// domain family (e.g. dailymail.co.uk's registered alias dailymail.com),
-// not just the primary domain a submitter's subdomain might not resemble.
-const OUTLET_DOMAIN_LOOKUP = (() => {
-  const lookup = new Map();
-  try {
-    const registryData = JSON.parse(fs.readFileSync(outletRegistryPath, 'utf-8'));
-    const outlets = registryData.outlets || registryData;
-    for (const [id, o] of Object.entries(outlets)) {
-      if (!o.domain) continue;
-      const entry = { id, displayName: o.displayName || id, tier: o.tier };
-      for (const d of [o.domain, ...(o.domainAliases || [])]) {
-        lookup.set(d.toLowerCase(), entry);
-      }
-    }
-  } catch (err) {
-    console.error('Could not load outlet-registry.json for domain matching (non-fatal):', err.message);
-  }
-  return lookup;
-})();
-
-/**
- * Find the registered outlet (if any) whose domain family matches a URL's
- * host — exact match or subdomain (e.g. "newspaper.dailymail.com" matches
- * the registered alias domain "dailymail.com").
- */
+// Host -> registered outlet, exact or parent domain (newspaper.dailymail.com
+// -> daily-mail). Delegates to the same lookupOutletForHost the ingest step
+// uses (scripts/ingest-review-from-url.js), so validation and ingest can never
+// disagree about which outlet a URL belongs to.
 function findMatchingOutletByDomain(url) {
-  let hostname;
+  let outletId;
   try {
-    hostname = new URL(url).hostname.replace(/^www\./, '').toLowerCase();
+    outletId = lookupOutletForHost(new URL(url).hostname);
   } catch {
     return null;
   }
-  if (OUTLET_DOMAIN_LOOKUP.has(hostname)) return OUTLET_DOMAIN_LOOKUP.get(hostname);
-  for (const [domain, entry] of OUTLET_DOMAIN_LOOKUP) {
-    if (hostname.endsWith('.' + domain)) return entry;
+  if (!outletId) return null;
+  try {
+    const registryData = JSON.parse(fs.readFileSync(outletRegistryPath, 'utf-8'));
+    const o = (registryData.outlets || registryData)[outletId] || {};
+    return { id: outletId, displayName: o.displayName || outletId, tier: o.tier };
+  } catch {
+    return { id: outletId, displayName: outletId, tier: undefined };
   }
-  return null;
 }
 
 // Loaded once at module load — critic id/displayName -> registry entry

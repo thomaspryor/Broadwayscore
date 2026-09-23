@@ -23,7 +23,7 @@
 const path = require('path');
 const { normalizeOutlet, getOutletDisplayName, WIRE_SERVICE_OUTLETS } = require('./review-normalization');
 const { AGGREGATOR_DOMAINS } = require('./aggregator-domains');
-const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes } = require('./host-suffix-lists');
+const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes, isBareSuffix } = require('./host-suffix-lists');
 
 let _cachedRegistry = null;
 let _cachedDomainMap = null;
@@ -68,6 +68,33 @@ function buildDomainMap() {
   return { domainToOutlet: _cachedDomainMap, ambiguous: _cachedAmbiguous };
 }
 
+// Registry lookup for a URL host, exact first, then each parent domain
+// (newspaper.dailymail.com -> dailymail.com). Exact-only lookup was the
+// Golden Boy / Daily Mail miss (issue #908, 2026-09-22): the e-edition
+// subdomain matched nothing, so ingest-review-from-url.js minted a phantom
+// provisional outlet "dailymail", the critic-registry guard then flagged
+// Patrick Marmion as misattributed, and the review never scored.
+// Walk-up stops before a blog-platform suffix (someone.medium.com is NOT the
+// registered "medium" outlet) and never reaches a bare public suffix. An
+// ambiguous hit at any level returns null — the nearest registered level is
+// the only one that speaks for the host.
+function lookupOutletForHost(host, { exactOnly = false } = {}) {
+  if (!host || typeof host !== 'string') return null;
+  const { domainToOutlet, ambiguous } = buildDomainMap();
+  const h = host.toLowerCase().replace(/^www\./, '');
+  const platform = platformSuffixOf(h);
+  const parts = h.split('.').filter(Boolean);
+  for (let i = 0; i <= parts.length - 2; i++) {
+    const candidate = parts.slice(i).join('.');
+    if (i > 0 && platform && candidate === platform) break;
+    if (i > 0 && isBareSuffix(candidate)) break;
+    if (ambiguous.has(candidate)) return null;
+    if (domainToOutlet[candidate]) return domainToOutlet[candidate];
+    if (exactOnly) return null;
+  }
+  return null;
+}
+
 function parseDomain(url) {
   if (!url || typeof url !== 'string') return null;
   const m = url.match(/^https?:\/\/(?:www\.)?([^/?#]+)/i);
@@ -96,9 +123,14 @@ function resolveCanonicalOutletId({ outletArg, url }) {
   if (url) {
     const domain = parseDomain(url);
     if (domain) {
-      const { domainToOutlet, ambiguous } = buildDomainMap();
-      if (!ambiguous.has(domain) && domainToOutlet[domain]) {
-        urlResolved = domainToOutlet[domain];
+      urlResolved = lookupOutletForHost(domain);
+      // A parent-domain match is weaker evidence than an exact one: a partner
+      // subdomain (jewishchronicle.timesofisrael.com) can host a DIFFERENT
+      // registered outlet. It fills in an unregistered operator input, but
+      // never overrides a registered one.
+      if (urlResolved && aliasIsRegistered && aliasResolved !== urlResolved
+          && !lookupOutletForHost(domain, { exactOnly: true })) {
+        urlResolved = null;
       }
     }
   }
@@ -480,6 +512,7 @@ module.exports = {
   CV_STYLES: Object.freeze([...VALID_CV_STYLES]),
   isValidCvStyle,
   provisionalOutletIdFromHost,
+  lookupOutletForHost,
   sameOutletUrlVariant,
   // exposed for tests
   _buildDomainMap: buildDomainMap,

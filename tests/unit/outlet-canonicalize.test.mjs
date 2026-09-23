@@ -12,7 +12,7 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { resolveCanonicalOutletId, _buildDomainMap } = require('../../scripts/lib/outlet-canonicalize.js');
+const { resolveCanonicalOutletId, _buildDomainMap, lookupOutletForHost } = require('../../scripts/lib/outlet-canonicalize.js');
 
 describe('resolveCanonicalOutletId — 2026-04-23 Rocky Horror drift fixtures', () => {
   test('davidcote-substack + davidcote1.substack.com → cote-notices (URL wins)', () => {
@@ -222,5 +222,38 @@ describe('_buildDomainMap — same-brand-word-across-TLDs class (task #1254 / BR
       assert.strictEqual(rb.outletId, bId);
       assert.strictEqual(rb.source, 'url');
     }
+  });
+});
+
+// Issue #908 (Golden Boy, 2026-09-22): newspaper.dailymail.com is a subdomain of
+// the registered alias dailymail.com. Exact-only lookup minted a phantom
+// provisional outlet "dailymail", which tripped the critic misattribution guard
+// and kept a real Daily Mail review off the site.
+describe('lookupOutletForHost — parent-domain resolution (issue #908)', () => {
+  test('subdomain of a registered alias resolves to that outlet', () => {
+    assert.strictEqual(lookupOutletForHost('newspaper.dailymail.com'), 'daily-mail');
+    assert.strictEqual(lookupOutletForHost('www.mailplus.co.uk'), 'daily-mail');
+    assert.strictEqual(lookupOutletForHost('artsbeat.blogs.nytimes.com'), 'nytimes');
+  });
+
+  test('exactOnly refuses a parent-domain match', () => {
+    assert.strictEqual(lookupOutletForHost('newspaper.dailymail.com', { exactOnly: true }), null);
+    assert.strictEqual(lookupOutletForHost('dailymail.com', { exactOnly: true }), 'daily-mail');
+  });
+
+  test('never walks onto a blog platform or a bare public suffix', () => {
+    assert.strictEqual(lookupOutletForHost('someone.medium.com'), null, 'a medium.com blog is not the "medium" outlet');
+    assert.strictEqual(lookupOutletForHost('theater.jerryportwood.substack.com'), null);
+    assert.strictEqual(lookupOutletForHost('unregistered.co.uk'), null);
+  });
+
+  test('ingest path: unregistered operator input + subdomain URL resolves to the registered outlet', () => {
+    const r = resolveCanonicalOutletId({ outletArg: 'dailymail', url: 'https://newspaper.dailymail.com/edition/showbiz/theatre/472292/x' });
+    assert.strictEqual(r.outletId, 'daily-mail');
+  });
+
+  test('a parent-domain match never overrides a registered operator outlet', () => {
+    const r = resolveCanonicalOutletId({ outletArg: 'the-jewish-chronicle', url: 'https://jewishchronicle.timesofisrael.com/x' });
+    assert.notStrictEqual(r.outletId, 'the-times-of-israel');
   });
 });

@@ -47,7 +47,7 @@ const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
 const { stripTrailingJunk } = require('./lib/text-cleaning');
-const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
+const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost, lookupOutletForHost } = require('./lib/outlet-canonicalize');
 const { getOutletDisplayName, findExistingReviewFile, normalizeCritic } = require('./lib/review-normalization');
 const { createOrMergeReviewFile, WRITE_GUARD_REFUSED_REASONS } = require('./lib/review-file-writer');
 const { findStaleMergeFields, isPreExistingContentBad } = require('./lib/stale-merge-check');
@@ -182,9 +182,11 @@ if (!show) {
     // domain map. This is the common path for /submit-review where the
     // user provided a free-form outlet name we don't pass through.
     const domain = _parseDomain(url);
-    const { domainToOutlet, ambiguous } = _buildDomainMap();
-    if (domain && !ambiguous.has(domain) && domainToOutlet[domain]) {
-      outletId = domainToOutlet[domain];
+    const { ambiguous } = _buildDomainMap();
+    // Parent-domain aware: newspaper.dailymail.com -> daily-mail (issue #908).
+    const registeredOutlet = domain ? lookupOutletForHost(domain) : null;
+    if (registeredOutlet) {
+      outletId = registeredOutlet;
       outletName = getOutletDisplayName(outletId) || outletId;
     } else if (!ambiguous.has(domain)) {
       // Unregistered domain — derive a provisional outlet instead of bailing.

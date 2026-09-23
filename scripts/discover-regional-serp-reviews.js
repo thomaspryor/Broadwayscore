@@ -41,7 +41,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { serpQuery, calculateDateWindow } = require('./lib/url-discovery');
 const { urlLooksLikeReview } = require('./lib/review-guards');
-const { _parseDomain, _buildDomainMap } = require('./lib/outlet-canonicalize');
+const { _parseDomain, lookupOutletForHost } = require('./lib/outlet-canonicalize');
 const { validateSerpCandidate } = require('./lib/serp-candidate-validator');
 
 // Hard cap on ingest subprocess wall time. A slow/paywalled fetch (WSJ took
@@ -119,9 +119,7 @@ function looksLikeAggregationOrReaction(url, title) {
 function resolveRegisteredOutlet(url) {
   const domain = _parseDomain(url);
   if (!domain) return null;
-  const { domainToOutlet, ambiguous } = _buildDomainMap();
-  if (ambiguous.has(domain)) return null;
-  return domainToOutlet[domain] || null;
+  return lookupOutletForHost(domain);
 }
 
 function selectRegionalShows() {
