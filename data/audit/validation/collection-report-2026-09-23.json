@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-23T12:01:33.717Z",
+  "runDate": "2026-09-23T13:10:35.263Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,13 +11,13 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 66,
-    "failed": 306,
+    "processed": 68,
+    "failed": 311,
     "skipped": 0,
-    "successRate": "17.7%"
+    "successRate": "17.9%"
   },
   "tierBreakdown": {
-    "playwright": 30,
+    "playwright": 32,
     "amp": 0,
     "browserbase": 13,
     "directCookies": 0,
@@ -27,27 +27,27 @@
     "archive": 14
   },
   "statistics": {
-    "tier1Attempts": 20,
-    "tier1Success": 3,
+    "tier1Attempts": 18,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 10,
-    "tier1_5Success": 5,
-    "tier2Attempts": 19,
-    "tier2Success": 7,
-    "tier3Attempts": 12,
-    "tier3Success": 3,
-    "tier3_6Attempts": 11,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 15,
+    "tier2Success": 2,
+    "tier3Attempts": 16,
+    "tier3Success": 4,
+    "tier3_6Attempts": 13,
     "tier3_6Success": 0,
-    "tier4Attempts": 16,
+    "tier4Attempts": 17,
     "tier4Success": 1,
-    "totalFailed": 294,
-    "scrapingBeePageCredits": 107,
+    "totalFailed": 298,
+    "scrapingBeePageCredits": 85,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 10,
-    "browserbaseMinutesUsed": 3.7,
-    "urlDiscoveryAttempts": 273,
-    "urlDiscoverySuccess": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 278,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -116,7 +116,9 @@
     "white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
     "schmigadoon-2026/variety--variety-australia-staff.json",
     "just-in-time-2025/newyorker--conde-nast.json",
-    "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json"
+    "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
+    "cosi-fan-tutte-off-broadway-2026/operawire--francisco-salazar.json",
+    "two-strangers-bway-2025/playbill--margaret-hall.json"
   ],
   "failed": [
     "macbeth-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -360,7 +362,6 @@
     "two-strangers-bway-2025/daily-mail--patrick-marmion.json",
     "two-strangers-bway-2025/financialtimes--sarah-hemming.json",
     "two-strangers-bway-2025/independent--alice-saville.json",
-    "two-strangers-bway-2025/playbill--margaret-hall.json",
     "two-strangers-bway-2025/readaboutstuff--unknown.json",
     "two-strangers-bway-2025/standard--nick-curtis.json",
     "two-strangers-bway-2025/telegraph--marianka-swain.json",
@@ -424,7 +425,13 @@
     "titanique-west-end-2024/the-queer-review--james-kleinmann.json",
     "titanique-west-end-2024/thewrap--robert-hofler.json",
     "titanique-west-end-2024/wsj--charles-isherwood.json",
-    "titanique-west-end-2024/cititour--brian-scott-lipton.json"
+    "titanique-west-end-2024/cititour--brian-scott-lipton.json",
+    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+    "cosi-fan-tutte-off-broadway-2026/epoch-times--barry-bassis.json",
+    "cosi-fan-tutte-off-broadway-2026/financialtimes--virginia-webb.json",
+    "titanique-west-end-2024/nysr--david-finkle.json",
+    "titanique-west-end-2024/nysr--michael-sommers.json",
+    "titanique-west-end-2024/the-contending--frank-j-avella.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -457,7 +464,9 @@
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
       "oh-mary-west-end-2025/ew--christian-holub.json",
       "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
-      "thelma-and-louise-a-new-musical-off-west-end-2026/bestoftheatre--unknown.json"
+      "thelma-and-louise-a-new-musical-off-west-end-2026/bestoftheatre--unknown.json",
+      "cosi-fan-tutte-off-broadway-2026/operawire--francisco-salazar.json",
+      "two-strangers-bway-2025/playbill--margaret-hall.json"
     ],
     "amp": [],
     "browserbase": [
@@ -518,7 +527,7 @@
   },
   "failuresByOutlet": {
     "The Stage": {
-      "count": 6,
+      "count": 5,
       "domain": "thestage.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
@@ -527,6 +536,13 @@
     "Londontheatredirect": {
       "count": 2,
       "domain": "londontheatredirect.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Sunday Times": {
+      "count": 1,
+      "domain": "thetimes.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -552,6 +568,13 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
+    "The Times (UK)": {
+      "count": 1,
+      "domain": "thetimes.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
     "WhatsOnStage": {
       "count": 1,
       "domain": "whatsonstage.com",
@@ -560,5 +583,11 @@
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "two-strangers-bway-2025/playbill--margaret-hall.json",
+      "oldUrl": "https://playbill.com/article/what-are-the-reviews-of-broadways-two-strangers-carry-a-cake-across-new-york",
+      "newUrl": "https://playbill.com/article/watch-fall-in-love-with-new-york-all-over-again-with-two-strangers-carry-a-cake-across-new-york"
+    }
+  ]
 }
