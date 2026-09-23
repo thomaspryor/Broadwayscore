@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-23T01:41:13.391Z",
+  "generated": "2026-09-23T02:13:39.618Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 94,
+  "count": 96,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -197,6 +197,13 @@
       "loserFile": "talkinbroadway--thom-geier.json",
       "targetFile": "talkinbroadway--howard-miller.json",
       "reason": "orphaned-duplicate-heal: talkinbroadway--howard-miller.json was flagged invalid after talkinbroadway--thom-geier.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "loserFile": "whatsonstage--unknown.json",
+      "targetFile": "whatsonstage--lucinda-everett.json",
+      "reason": "orphaned-duplicate-heal: whatsonstage--lucinda-everett.json was flagged invalid after whatsonstage--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -428,6 +435,13 @@
       "loserFile": "london-theatre--unknown.json",
       "targetFile": "london-theatre--chris-omaweng.json",
       "reason": "orphaned-duplicate-heal: london-theatre--chris-omaweng.json was flagged invalid after london-theatre--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "loserFile": "vulture--unknown.json",
+      "targetFile": "vulture--kathryn-vanarendonk.json",
+      "reason": "orphaned-duplicate-heal: vulture--kathryn-vanarendonk.json was flagged invalid after vulture--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
