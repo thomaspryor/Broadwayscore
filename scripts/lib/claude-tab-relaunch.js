@@ -35,9 +35,16 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const cmuxws = require('./cmux-workspaces.js');
-const { isBusy, lastRealContentLine, detectAuthStall } = require('./cmux-auth-stall.js');
+const { isBusy, detectAuthStall } = require('./cmux-auth-stall.js');
 
-const RELAUNCH_SCRIPT = path.join(__dirname, 'relaunch-claude-tab.sh');
+// Prefer the MAIN checkout's copy when running from a worktree, so a printed
+// hint or typed command never points into a worktree that gets pruned. Falls
+// back to this copy until the file has landed on main.
+function stableScriptPath(local = path.join(__dirname, 'relaunch-claude-tab.sh'), exists = fs.existsSync) {
+  const main = local.replace(/\/\.claude\/worktrees\/[^/]+\//, '/');
+  return main !== local && exists(main) ? main : local;
+}
+const RELAUNCH_SCRIPT = stableScriptPath();
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const LOGIN_TEXT_RE = /not logged in|please run `?\/login|invalid[\s_-]?api[\s_-]?key|authentication_error/i;
 
@@ -55,7 +62,14 @@ function parseClaudeCommand(command) {
   const resume = /(?:^|\s)(?:--resume|-r)[ =]([0-9a-f-]{36})(?=\s|$)/i.exec(c);
   const sid = /(?:^|\s)--session-id[ =]([0-9a-f-]{36})(?=\s|$)/i.exec(c);
   const model = /(?:^|\s)--model[ =]([A-Za-z0-9._:\[\]-]+)(?=\s|$)/.exec(c);
+  // Keep a launch's OWN --settings (cmux-launch.js passes a deny-list there,
+  // and --dangerously-skip-permissions is only safe alongside it). Drop the
+  // per-launch temp file the cmux claude shim injects (cmux-claude-settings.*)
+  // — the shim adds a fresh one when the relaunch goes through PATH.
+  const settings = [...c.matchAll(/(?:^|\s)--settings[ =](\S+)(?=\s|$)/g)]
+    .map(m => m[1]).filter(f => !/cmux-claude-settings\./.test(f));
   return {
+    settings,
     sessionId: (resume && resume[1]) || (sid && sid[1]) || null,
     sessionFlag: resume ? 'resume' : sid ? 'session-id' : null,
     model: model ? model[1] : null,
@@ -87,8 +101,10 @@ function parseTopForClaude(tsvText) {
   const tagged = [];
   const untagged = [];
   let running = false;
+  const surfaces = new Set();
   for (const line of String(tsvText).split('\n')) {
     const c = line.split('\t');
+    if (c[3] === 'surface' && c[4]) surfaces.add(c[4]);
     if (c[3] === 'tag' && /:tag:claude_code$/.test(c[4] || '') && (c[6] || '').trim() === 'Running') running = true;
     if (c[3] !== 'process') continue;
     const pid = parseInt(c[4], 10);
@@ -96,7 +112,7 @@ function parseTopForClaude(tsvText) {
     if (/:tag:claude_code$/.test(c[5] || '')) tagged.push(pid);
     else if (/^surface:/.test(c[5] || '')) untagged.push(pid);
   }
-  return { pids: [...tagged, ...untagged], running };
+  return { pids: [...tagged, ...untagged], running, surfaceCount: surfaces.size };
 }
 
 // Pick the cmux hook record for this workspace: active one first, then the
@@ -132,7 +148,7 @@ function transcriptExists(sessionId, projectsDir = path.join(os.homedir(), '.cla
  * one that died before its first message (no transcript) restarts under the
  * same id; no id at all starts a fresh claude in the same directory. Pure.
  */
-function buildRelaunchCommand({ sessionId = null, hasTranscript = false, cwd = null, model = null, skipPermissions = false, script = RELAUNCH_SCRIPT } = {}) {
+function buildRelaunchCommand({ sessionId = null, hasTranscript = false, cwd = null, model = null, skipPermissions = false, settings = [], script = RELAUNCH_SCRIPT } = {}) {
   if (sessionId && !UUID_RE.test(sessionId)) throw new Error(`refusing to type a non-uuid session id: ${sessionId}`);
   if (cwd && (!path.isAbsolute(cwd) || /[\n\r]/.test(cwd))) throw new Error(`refusing to type a non-absolute/multiline cwd: ${cwd}`);
   if (model && !/^[A-Za-z0-9._:\[\]-]+$/.test(model)) throw new Error(`refusing to type an odd model name: ${model}`);
@@ -140,18 +156,46 @@ function buildRelaunchCommand({ sessionId = null, hasTranscript = false, cwd = n
   if (cwd) parts.push('--cwd', shQuote(cwd));
   if (sessionId) parts.push(hasTranscript ? '--resume' : '--session-id', sessionId);
   if (model) parts.push('--model', model);
+  for (const f of settings) {
+    if (/[\n\r]/.test(f)) throw new Error(`refusing to type a multiline settings path: ${f}`);
+    parts.push('--settings', shQuote(f));
+  }
   if (skipPermissions) parts.push('--dangerously-skip-permissions');
   return parts.join(' ');
 }
 
-// A healed tab draws the normal "ctx NN%" status bar (a logged-out claude
-// never does — cmux-auth-stall.js's chrome-absence contract) and its last
-// real line is not a login error. Deliberately NOT "no login text anywhere":
-// a resumed session replays its history, which can quote this exact error
-// (every BRO-4056/4065 session does). Pure.
+// A healed tab draws the normal "ctx NN%" status bar and the detector no
+// longer calls it logged out (the "Not logged in · Run /login" notice is
+// gone). Deliberately NOT "no login text anywhere": a resumed session replays
+// its history, which can end with the old "⎿ Please run /login" reply. Pure.
 function looksHealthy(screenText) {
   const t = String(screenText || '');
-  return cmuxws.hasClaudeChrome(t) && !LOGIN_TEXT_RE.test(lastRealContentLine(t));
+  return cmuxws.hasClaudeChrome(t) && !detectAuthStall(t);
+}
+
+// Per-tab mutual exclusion between the launchd watchdog and a manual
+// relaunch-claude-tab.js run (a timestamp cooldown alone is not a lock: two
+// racing repairs would each kill and type). O_EXCL create; a lock older than
+// LOCK_STALE_MS (longer than one full repair) is from a crashed run.
+const LOCK_DIR = path.join(os.homedir(), '.claude', 'state', 'auth-stall-heal', 'locks');
+const LOCK_STALE_MS = 5 * 60 * 1000;
+function acquireLock(ref) {
+  // diacritic-guard-ok: sanitizing a cmux workspace ref into a filename
+  const file = path.join(LOCK_DIR, `${String(ref).replace(/[^a-zA-Z0-9_-]/g, '_')}.lock`);
+  fs.mkdirSync(LOCK_DIR, { recursive: true });
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      fs.writeFileSync(file, JSON.stringify({ pid: process.pid, ts: Date.now() }), { flag: 'wx' });
+      return () => { try { fs.unlinkSync(file); } catch { /* already gone */ } };
+    } catch (e) {
+      if (e.code !== 'EEXIST') throw e;
+      let age = 0;
+      try { age = Date.now() - fs.statSync(file).mtimeMs; } catch { continue; }
+      if (age < LOCK_STALE_MS) return null;
+      try { fs.unlinkSync(file); } catch { /* raced another cleaner */ }
+    }
+  }
+  return null;
 }
 
 function sleepMs(ms) { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms); }
@@ -176,6 +220,11 @@ function defaultDeps() {
       return w ? { id: w.id, cwd: w.current_directory || null } : null;
     },
     transcriptExistsFn: transcriptExists,
+    dirExistsFn: (dir) => { try { return fs.statSync(dir).isDirectory(); } catch { return false; } },
+    // Same token lookup the typed wrapper will do, run BEFORE anything is
+    // killed — never stop a claude we cannot bring back logged in.
+    tokenAvailableFn: () => { try { execFileSync('bash', [RELAUNCH_SCRIPT, '--check'], { stdio: 'ignore', timeout: 5000 }); return true; } catch { return false; } },
+    lockFn: acquireLock,
     sleepFn: sleepMs,
     now: () => Date.now(),
   };
@@ -188,8 +237,16 @@ function defaultDeps() {
  * @returns {{healed: boolean, reason: string, command?: string, pid?: number}}
  */
 function healTab(ref, opts = {}) {
-  const { requireLoggedOut = true, dryRun = false, confirmTimeoutMs = 90000, exitTimeoutMs = 10000 } = opts;
   const d = { ...defaultDeps(), ...(opts.deps || {}) };
+  if (opts.dryRun) return healTabLocked(ref, opts, d);
+  let release;
+  try { release = d.lockFn(ref); } catch (e) { return { healed: false, reason: `could not take the repair lock (${e.message})` }; }
+  if (!release) return { healed: false, reason: 'another repair of this tab is already running' };
+  try { return healTabLocked(ref, opts, d); } finally { release(); }
+}
+
+function healTabLocked(ref, opts, d) {
+  const { requireLoggedOut = true, dryRun = false, allowFresh = false, confirmTimeoutMs = 90000, exitTimeoutMs = 10000 } = opts;
   const readScreen = () => d.runFn(['read-screen', '--workspace', ref]);
 
   let screen;
@@ -203,7 +260,11 @@ function healTab(ref, opts = {}) {
   let top;
   try { top = d.runFn(['top', '--workspace', ref, '--processes', '--format', 'tsv']); }
   catch (e) { return { healed: false, reason: `cannot list the tab's processes (${e.message})` }; }
-  const { pids, running } = parseTopForClaude(top);
+  const { pids, running, surfaceCount } = parseTopForClaude(top);
+  // `cmux send --workspace` types into the workspace's focused surface; with
+  // splits, the logged-out screen, the killed claude and the typed command
+  // could be three different panes. Every tab cmux-launch.js creates has one.
+  if (surfaceCount > 1) return { healed: false, reason: `tab has ${surfaceCount} panes — relaunch it by hand` };
   // The tag's Running status is NOT trusted for a screen-verified logged-out
   // tab: a prompt that failed auth never fires the Stop hook, so the tag sits
   // at Running forever (verified live 2026-09-23, BRO-4065 scratch tab). A
@@ -230,6 +291,7 @@ function healTab(ref, opts = {}) {
   let sessionId = fromPs.sessionId;
   let model = fromPs.model;
   let skipPermissions = fromPs.skipPermissions;
+  const settings = fromPs.settings;
   let cwd = null;
   try { cwd = d.cwdFn(pid); } catch { /* fall through to the hook record */ }
   if (!sessionId || !cwd) {
@@ -238,46 +300,66 @@ function healTab(ref, opts = {}) {
       const rec = ws ? pickSessionRecord(d.sessionsFn(ws.id)) : null;
       if (rec && !sessionId) { sessionId = rec.sessionId; model = model || rec.model; skipPermissions = skipPermissions || rec.skipPermissions; }
       if (!cwd) cwd = (rec && rec.cwd) || (ws && ws.cwd) || null;
-    } catch { /* no record — a fresh claude in the tab's cwd is still a heal */ }
+    } catch { /* no record */ }
   }
+
+  // A tab that died before its first message has nothing to resume: a fresh
+  // claude there would sit idle while being reported "repaired", and the
+  // original task would silently vanish. Leave it for a human unless asked.
+  const hasTranscript = !!sessionId && d.transcriptExistsFn(sessionId);
+  if (!hasTranscript && !allowFresh) {
+    return { healed: false, reason: 'the tab lost its login before doing any work, so there is nothing to resume', pid };
+  }
+  if (cwd && !d.dirExistsFn(cwd)) return { healed: false, reason: `its folder no longer exists (${cwd})`, pid };
 
   let typed;
   try {
-    typed = buildRelaunchCommand({
-      sessionId, cwd, model, skipPermissions,
-      hasTranscript: !!sessionId && d.transcriptExistsFn(sessionId),
-    });
+    typed = buildRelaunchCommand({ sessionId, cwd, model, skipPermissions, settings, hasTranscript });
   } catch (e) { return { healed: false, reason: e.message }; }
   if (dryRun) return { healed: false, reason: 'dry-run', command: typed, pid };
+  if (!d.tokenAvailableFn()) return { healed: false, reason: 'no saved login token found in .env — nothing was restarted', pid };
 
+  // Re-verify right before the destructive step: the tab may have recovered,
+  // started a turn, or had its claude replaced since the first read.
+  let recheck;
+  try { recheck = readScreen(); } catch (e) { return { healed: false, reason: `cannot re-read the tab's screen (${e.message})`, pid }; }
+  const recheckStall = detectAuthStall(recheck);
+  if (isBusy(recheck) || (requireLoggedOut && !(recheckStall && recheckStall.kind === 'logged-out'))) {
+    return { healed: false, reason: 'tab changed since the first look — left alone', pid };
+  }
+  let stillSame = '';
+  try { stillSame = d.psCommandFn(pid); } catch { /* gone */ }
+  if (stillSame !== command) return { healed: false, reason: 'its claude process changed since the first look — left alone', pid };
+
+  const killed = true;
   try { d.killFn(pid, 'SIGTERM'); } catch (e) { return { healed: false, reason: `could not stop the dead claude (${e.message})`, pid }; }
   const exitDeadline = d.now() + exitTimeoutMs;
   while (d.isAliveFn(pid) && d.now() < exitDeadline) d.sleepFn(250);
   if (d.isAliveFn(pid)) {
     try { d.killFn(pid, 'SIGKILL'); } catch { /* checked below */ }
     d.sleepFn(500);
-    if (d.isAliveFn(pid)) return { healed: false, reason: 'the dead claude would not exit', pid };
+    if (d.isAliveFn(pid)) return { healed: false, killed, reason: 'the dead claude would not exit', pid };
   }
   d.sleepFn(1000); // let the shell redraw its prompt before typing
 
   try {
     d.runFn(['send', '--workspace', ref, '--', typed]);
     d.runFn(['send-key', '--workspace', ref, 'Enter']);
-  } catch (e) { return { healed: false, reason: `could not type into the tab (${e.message})`, command: typed, pid }; }
+  } catch (e) { return { healed: false, killed, reason: `could not type into the tab (${e.message})`, command: typed, pid }; }
 
   const deadline = d.now() + confirmTimeoutMs;
   let last = '';
   while (d.now() < deadline) {
     d.sleepFn(3000);
     try { last = readScreen(); } catch { continue; }
-    if (looksHealthy(last)) return { healed: true, reason: 'relaunched in the tab and the normal prompt is back', command: typed, pid };
+    if (looksHealthy(last)) return { healed: true, killed, reason: 'relaunched in the tab and the normal prompt is back', command: typed, pid };
   }
   const why = LOGIN_TEXT_RE.test(last) ? 'still shows a login error after relaunch' : 'normal prompt never came back after relaunch';
-  return { healed: false, reason: why, command: typed, pid };
+  return { healed: false, killed, reason: why, command: typed, pid };
 }
 
 module.exports = {
-  RELAUNCH_SCRIPT, LOGIN_TEXT_RE,
+  RELAUNCH_SCRIPT, LOGIN_TEXT_RE, stableScriptPath,
   shQuote, parseClaudeCommand, isClaudeCommand, isInteractiveShellCommand,
   parseTopForClaude, pickSessionRecord, transcriptExists, buildRelaunchCommand,
   looksHealthy, healTab,

@@ -150,7 +150,14 @@ test('BRO-4065: a healthy session whose HISTORY quotes the login error is not fl
   assert.equal(detectAuthStall(screen), null);
 });
 
-test('BRO-4065: an API auth rejection as the last line WITH chrome is logged-out', () => {
-  const screen = '> hi\n  ⎿  API Error: 401 {"type":"error","error":{"type":"authentication_error"}}\n────────\n❯ \n────────\n  🔮 OPUS │ ctx 3% │ main\n';
-  assert.equal(detectAuthStall(screen).kind, 'logged-out');
+test('BRO-4065: a HEALED tab replaying the saved login-error reply is NOT logged-out (no re-kill loop)', () => {
+  // Shape right after a successful --resume of a session whose last saved
+  // turn was the logged-out reply: history replayed, no notice line.
+  const screen = '❯ say hi\n  ⎿  Not logged in · Please run /login\n✻ Crunched for 0s · done 1:34 AM\n───────\n❯ \n───────\n  🪶 HAIKU │ ctx 0% │ scratch\n';
+  assert.equal(detectAuthStall(screen), null);
+});
+
+test('BRO-4065: "· Verbing…" spinner frame is busy, a "· bullet" is not', () => {
+  assert.equal(isBusy('· Beaming… (3s)'), true);
+  assert.equal(isBusy('· first bullet point'), false);
 });

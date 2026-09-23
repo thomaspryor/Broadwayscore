@@ -21,7 +21,9 @@ const TOP_UNTAGGED = [
 ].join('\n');
 
 test('parseClaudeCommand: real ps line with a spaced --mcp-config JSON', () => {
-  assert.deepEqual(R.parseClaudeCommand(REAL_PS), { sessionId: SID, sessionFlag: 'resume', model: 'claude-opus-5', skipPermissions: true });
+  assert.deepEqual(R.parseClaudeCommand(REAL_PS), { settings: [], sessionId: SID, sessionFlag: 'resume', model: 'claude-opus-5', skipPermissions: true });
+  // a launch's own deny-list --settings is kept; the cmux shim's temp file is not
+  assert.deepEqual(R.parseClaudeCommand(`${REAL_PS} --settings /Users/x/Broadwayscore/.claude/launch-settings.json`).settings, ['/Users/x/Broadwayscore/.claude/launch-settings.json']);
   assert.equal(R.parseClaudeCommand(`claude --session-id ${SID}`).sessionFlag, 'session-id');
   assert.equal(R.parseClaudeCommand('claude').sessionId, null);
 });
@@ -35,8 +37,9 @@ test('isClaudeCommand / isInteractiveShellCommand', () => {
 
 test('parseTopForClaude: tagged first, untagged surface children, Running = busy', () => {
   const tagged = '0.8\t1\t4\ttag\tworkspace:U:tag:claude_code\tworkspace:27\tRunning\n0.8\t1\t1\tprocess\t69366\tworkspace:U:tag:claude_code\t2.1.280';
-  assert.deepEqual(R.parseTopForClaude(tagged), { pids: [69366], running: true });
-  assert.deepEqual(R.parseTopForClaude(TOP_UNTAGGED), { pids: [64577, 29965], running: false });
+  assert.deepEqual(R.parseTopForClaude(tagged), { pids: [69366], running: true, surfaceCount: 0 });
+  assert.deepEqual(R.parseTopForClaude(TOP_UNTAGGED), { pids: [64577, 29965], running: false, surfaceCount: 0 });
+  assert.equal(R.parseTopForClaude('0\t0\t1\tsurface\tsurface:5\tpane:5\t~\n0\t0\t1\tsurface\tsurface:6\tpane:6\t~').surfaceCount, 2);
 });
 
 test('pickSessionRecord: prefers the active record, parses model/flags', () => {
@@ -64,11 +67,14 @@ test('looksHealthy: chrome + last real line not a login error (history quoting i
   assert.equal(R.looksHealthy(HEALTHY), true);
   assert.equal(R.looksHealthy(LOGGED_OUT), false);
   assert.equal(R.looksHealthy('earlier: Not logged in · Please run /login\n' + HEALTHY), true);
-  assert.equal(R.looksHealthy('> hi\n  ⎿  Not logged in · Please run /login\n────────\n❯ \n────────\n🔮 OPUS │ ctx 1% │ main\n'), false);
+  // replayed history ending in the old reply is healthy (the review-found re-kill loop)
+  assert.equal(R.looksHealthy('> hi\n  ⎿  Not logged in · Please run /login\n────────\n❯ \n────────\n🔮 OPUS │ ctx 1% │ main\n'), true);
+  // the live notice above the input box is not
+  assert.equal(R.looksHealthy('> hi\n                     Not logged in · Run /login\n────────\n❯ \n────────\n🔮 OPUS │ ctx 1% │ main\n'), false);
 });
 
 // ---- healTab with fake I/O ----
-function fakeDeps({ screens = [LOGGED_OUT, HEALTHY], top = TOP_UNTAGGED, parent = '-/bin/zsh', aliveAfterTerm = false, transcript = true } = {}) {
+function fakeDeps({ screens = [LOGGED_OUT, LOGGED_OUT, HEALTHY], top = TOP_UNTAGGED, parent = '-/bin/zsh', aliveAfterTerm = false, transcript = true, token = true, lock = true } = {}) {
   const calls = { run: [], kill: [] };
   let alive = true;
   let t = 0;
@@ -90,6 +96,9 @@ function fakeDeps({ screens = [LOGGED_OUT, HEALTHY], top = TOP_UNTAGGED, parent 
       sessionsFn: () => { throw new Error('should not need the hook record'); },
       workspaceIdFn: () => null,
       transcriptExistsFn: () => transcript,
+      dirExistsFn: () => true,
+      tokenAvailableFn: () => token,
+      lockFn: () => (lock ? () => { calls.released = true; } : null),
       sleepFn: (ms) => { t += ms; },
       now: () => t,
     },
@@ -106,10 +115,50 @@ test('healTab: stops the dead claude, types the helper into the tab, confirms th
   assert.ok(f.calls.run.some(a => a[0] === 'send-key' && a.includes('Enter')));
 });
 
-test('healTab: no transcript → restarts under the same id instead of a failing --resume', () => {
+test('healTab: no transcript → refuses by default (nothing to resume), nothing killed', () => {
   const f = fakeDeps({ transcript: false });
   const r = R.healTab('workspace:test-x', { deps: f.deps });
-  assert.match(r.command, new RegExp(`--session-id ${SID}`));
+  assert.equal(r.healed, false);
+  assert.match(r.reason, /nothing to resume/);
+  assert.equal(f.calls.kill.length, 0);
+  const f2 = fakeDeps({ transcript: false });
+  assert.match(R.healTab('workspace:test-x', { deps: f2.deps, allowFresh: true }).command, new RegExp(`--session-id ${SID}`));
+});
+
+test('healTab: refuses a split tab (pane targeting would be ambiguous)', () => {
+  const f = fakeDeps({ top: TOP_UNTAGGED + '\n0\t0\t1\tsurface\tsurface:5\tpane:5\t~\n0\t0\t1\tsurface\tsurface:6\tpane:6\t~' });
+  assert.match(R.healTab('workspace:test-x', { deps: f.deps }).reason, /2 panes/);
+  assert.equal(f.calls.kill.length, 0);
+});
+
+test('healTab: no token in .env → refuses BEFORE killing anything', () => {
+  const f = fakeDeps({ token: false });
+  assert.match(R.healTab('workspace:test-x', { deps: f.deps }).reason, /no saved login token/);
+  assert.equal(f.calls.kill.length, 0);
+});
+
+test('healTab: another repair holds the lock → refuses, nothing killed', () => {
+  const f = fakeDeps({ lock: false });
+  assert.match(R.healTab('workspace:test-x', { deps: f.deps }).reason, /already running/);
+  assert.equal(f.calls.kill.length, 0);
+});
+
+test('healTab: tab recovered between first look and the kill → left alone', () => {
+  const f = fakeDeps({ screens: [LOGGED_OUT, HEALTHY] });
+  assert.match(R.healTab('workspace:test-x', { deps: f.deps }).reason, /changed since the first look/);
+  assert.equal(f.calls.kill.length, 0);
+});
+
+test('healTab: releases the lock after a repair', () => {
+  const f = fakeDeps();
+  R.healTab('workspace:test-x', { deps: f.deps });
+  assert.equal(f.calls.released, true);
+});
+
+test('stableScriptPath: worktree copy maps to the main checkout only when that file exists', () => {
+  const wt = '/Users/x/Broadwayscore/.claude/worktrees/job-1/scripts/lib/relaunch-claude-tab.sh';
+  assert.equal(R.stableScriptPath(wt, () => true), '/Users/x/Broadwayscore/scripts/lib/relaunch-claude-tab.sh');
+  assert.equal(R.stableScriptPath(wt, () => false), wt);
 });
 
 test('healTab: refuses a busy tab (spinner or Running tag) — nothing killed', () => {
@@ -183,9 +232,9 @@ test('relaunch-claude-tab.sh: re-exports the token from .env and execs claude in
   delete env.CLAUDE_CODE_OAUTH_TOKEN;
   const out = execFileSync('bash', [R.RELAUNCH_SCRIPT, '--cwd', dir, '--resume', SID], { env, encoding: 'utf8' });
   assert.equal(out.trim(), `token=tok-abc cwd=${fs.realpathSync(dir)} args=--resume ${SID}`);
-  // an already-exported token wins over .env
+  // .env wins over an inherited (possibly rotated-away) token
   const out2 = execFileSync('bash', [R.RELAUNCH_SCRIPT, 'x'], { env: { ...env, CLAUDE_CODE_OAUTH_TOKEN: 'from-env' }, encoding: 'utf8' });
-  assert.match(out2, /^token=from-env /);
+  assert.match(out2, /^token=tok-abc /);
   assert.equal(execFileSync('bash', [R.RELAUNCH_SCRIPT, '--check'], { env, encoding: 'utf8' }).trim(), 'SET');
   fs.rmSync(dir, { recursive: true, force: true });
 });

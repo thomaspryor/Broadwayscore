@@ -62,9 +62,13 @@ function isFlaglessClaudeCommand(cmd) {
 // exported for tests.
 function composeReviveCommand(originalCommand, { model = null } = {}) {
   const cmd = String(originalCommand || '').trim();
-  const idx = cmd.indexOf('claude');
-  if (idx === -1) return cmd;
-  const rest = cmd.slice(idx + 'claude'.length).trim();
+  // The claude EXECUTABLE token (bare or a path ending in /claude), not the
+  // first "claude" substring — `/Users/x/.claude/local/claude --resume ...`
+  // would otherwise split inside ".claude/" and pass "/local/claude" to claude
+  // as its prompt.
+  const m = /(?:^|\s)(?:\S*\/)?claude(?=\s|$)/.exec(cmd);
+  if (!m) return cmd;
+  const rest = cmd.slice(m.index + m[0].length).trim();
   // BRO-4065: respawn-pane runs its command in cmux's app env, which has no
   // CLAUDE_CODE_OAUTH_TOKEN — a bare `claude` here comes up "Not logged in".
   // The sanctioned wrapper re-exports the token from .env, then execs claude.

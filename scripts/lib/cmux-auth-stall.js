@@ -107,7 +107,9 @@ const BORDER_RE = /^─{5,}$/;
 // 2026-09-23 (BRO-4065): the CLI rotates its spinner through ✢ ✳ ✶ ✻ ✽, so
 // matching only two of them missed busy tabs whenever the frame landed on
 // another glyph.
-const BUSY_RE = /^[✢✳✶✻✽]/;
+// "·" is also a spinner frame, but also a common bullet, so only
+// "· Verbing…" counts.
+const BUSY_RE = /^(?:[✢✳✶✻✽]|·\s+\S+…)/;
 // ...except the COMPLETED-turn line, which reuses the same glyph in the past
 // tense: "✻ Crunched for 0s · done 1:34 AM", "✻ Worked for 3m 2s". Captured
 // live 2026-09-23 (BRO-4065) on a real logged-out tab: treating it as busy
@@ -122,10 +124,12 @@ function isBusyLine(l) { return BUSY_RE.test(l) && !DONE_LINE_RE.test(l); }
 // right-aligned notice "Not logged in · Run /login" directly above the input
 // box, and "⎿  Not logged in · Please run /login" as the reply to any
 // prompt). So the chromeless rule below alone missed every real logged-out
-// tab. With chrome present, only the LAST real content line counts — that is
-// the CLI's own notice/reply slot, never conversation history quoting it.
-const LOGGED_OUT_LINE_RE = /^(?:⎿\s*)?not logged in\b.*\/login\b/i;
-const API_AUTH_LINE_RE = /^(?:⎿\s*)?(?:api error\b.*(?:authentication_error|invalid[\s_-]?api[\s_-]?key)|invalid[\s_-]?api[\s_-]?key)/i;
+// tab. With chrome present, the signal is ONLY that right-aligned notice
+// ("Run", no "Please", no ⎿) as the last real line. The "⎿ ... Please run
+// /login" REPLY is not used: it is saved in the transcript, so a session that
+// was resumed successfully replays it as its last line — matching it would
+// re-flag (and re-kill) every healed tab (review finding, reproduced).
+const LOGGED_OUT_LINE_RE = /^not logged in\s*·\s*run\s+\/login$/i;
 const UPDATE_BANNER_RE = /^✔\s*update installed/i;
 // The input-box prompt char, WITH OR WITHOUT a draft after it — an earlier
 // version only matched a bare "❯" with nothing following, so a stalled pane
@@ -193,7 +197,6 @@ function detectAuthStall(screenText) {
   if (hasChrome) {
     const last = lastRealContentLine(text);
     if (LOGGED_OUT_LINE_RE.test(last)) return { kind: 'logged-out', reason: 'the CLI\'s own "Not logged in · Run /login" notice is its last line' };
-    if (API_AUTH_LINE_RE.test(last)) return { kind: 'logged-out', reason: 'last line is an API auth rejection' };
   }
   if (!isBusy(text) && STALLED_RESUME_RE.test(lastRealContentLine(text))) {
     return { kind: 'stalled-resume', reason: 'last rendered line is the CLI\'s "No response requested." placeholder' };

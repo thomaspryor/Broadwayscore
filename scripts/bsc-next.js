@@ -1655,7 +1655,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
         dispatchConfirmed = true;
         console.log(`[bsc-next] headless job ${r.jobId} ${r.ok ? 'DONE' : `FAILED (${r.stage})`}`);
         console.log(`  log: ${r.logFile}`);
-        if (r.sessionId) console.log(`  resume: ${require('./lib/claude-tab-relaunch.js').RELAUNCH_SCRIPT} --cwd ${r.cwd} --resume ${r.sessionId}`);
+        if (r.sessionId) console.log(`  resume: ${require('./lib/claude-tab-relaunch.js').RELAUNCH_SCRIPT} --cwd '${r.cwd}' --resume ${r.sessionId}`);
         if (r.keptWorktree) console.log(`  worktree kept (has work): ${r.cwd}`);
         if (verifyH.cmd) console.log(`  verify: ${verifyH.cmd}`);
         if (!r.ok) process.exitCode = 1;

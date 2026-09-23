@@ -43,7 +43,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { cmuxAvailable, listWorkspaces, run } = require('./lib/cmux-workspaces.js');
+const { cmuxAvailable, listWorkspaces, run, hasClaudeChrome } = require('./lib/cmux-workspaces.js');
 const { detectAuthStall } = require('./lib/cmux-auth-stall.js');
 const { isNeedsYouTitle, NEEDS_YOU_DIR } = require('./lib/needs-you-snapshot.js');
 const { healTab } = require('./lib/claude-tab-relaunch.js');
@@ -51,6 +51,12 @@ const { healTab } = require('./lib/claude-tab-relaunch.js');
 const HEAL_STATE_DIR = path.join(path.dirname(NEEDS_YOU_DIR), 'auth-stall-heal');
 const HEAL_MIN_INTERVAL_MS = 30 * 60 * 1000;
 const SOURCE = 'cmux-auth-stall-watchdog';
+// Rollback without a deploy: either switch turns the repair off and leaves
+// the BRO-4056 mark-only behaviour.
+const HEAL_OFF_FILE = path.join(path.dirname(NEEDS_YOU_DIR), 'auth-stall-heal-off');
+function healDisabled(env = process.env, exists = fs.existsSync) {
+  return env.AUTH_STALL_HEAL_OFF === '1' || exists(HEAL_OFF_FILE);
+}
 
 const USAGE = `cmux-auth-stall-watchdog — repair logged-out cmux tabs; mark the rest ❓ NEEDS YOU.
 
@@ -128,7 +134,7 @@ function scanOnce({
   writeStateFn = null, stateExistsFn = stateFileExists,
   readStateFn = readState, clearStateFn = clearOwnState,
   healFn = null, lastHealAttemptFn = lastHealAttempt, recordHealAttemptFn = recordHealAttempt,
-  now = Date.now,
+  now = Date.now, healDisabledFn = healDisabled,
 } = {}) {
   const empty = { scanned: 0, marked: [], healed: [] };
   if (!cmuxAvailableFn()) { log('[cmux-auth-stall-watchdog] cmux not found — nothing to check.'); return empty; }
@@ -136,10 +142,28 @@ function scanOnce({
   try { workspaces = listWorkspacesFn(); } catch (e) { log(`[cmux-auth-stall-watchdog] listWorkspaces failed: ${e.message}`); return empty; }
 
   const heal = healFn || ((ref) => healTab(ref, { deps: { runFn } }));
+  // Un-mark a tab this watchdog marked, but only while the mark is still
+  // ours: a Stop hook may have captured a real DECISION NEEDED on the same
+  // tab meanwhile, and its ❓ must survive (review finding).
+  function clearOwnMark(ref) {
+    const st = readStateFn(ref);
+    if (!st || st.source !== SOURCE) return false;
+    const fresh = listWorkspacesFn().find(x => x && x.ref === ref);
+    if (fresh && leadingGlyph(fresh.title) === '❓') {
+      const cleared = stripManagedGlyph(fresh.title);
+      if (cleared) runFn(['workspace-action', '--action', 'rename', '--workspace', ref, '--title', cleared]);
+    }
+    clearStateFn(ref);
+    return true;
+  }
+
   // One repair attempt per tab per HEAL_MIN_INTERVAL_MS, recorded BEFORE the
   // attempt's outcome is known so a crash mid-attempt still counts. Returns
   // null when rate-limited.
+  const healOff = healDisabledFn();
+  if (healOff) log(`[cmux-auth-stall-watchdog] repair is switched off (AUTH_STALL_HEAL_OFF=1 or ${HEAL_OFF_FILE}) — marking only`);
   function tryHeal(ref) {
+    if (healOff) return null;
     let last = null;
     try { last = lastHealAttemptFn(ref); } catch { /* unreadable → treat as never tried */ }
     if (last && now() - last < HEAL_MIN_INTERVAL_MS) {
@@ -166,18 +190,23 @@ function scanOnce({
     if (leadingGlyph(w.title) === '❓') {
       const st = readStateFn(w.ref);
       if (!st || st.source !== SOURCE || st.kind !== 'logged-out') continue;
+      // Fixed some other way since (owner relaunched it, a slow resume
+      // finished after the confirm timeout)? Clear the stale mark instead of
+      // re-attempting forever.
+      let now1;
+      try { now1 = runFn(['read-screen', '--workspace', w.ref]); } catch { continue; }
+      if (hasClaudeChrome(now1) && !detectAuthStall(now1)) {
+        if (dryRun) { log(`[cmux-auth-stall-watchdog] WOULD CLEAR stale ❓ on ${w.ref} (it is logged in now)`); continue; }
+        try { if (clearOwnMark(w.ref)) log(`[cmux-auth-stall-watchdog] ${w.ref}: logged in again — cleared its ❓`); }
+        catch (e) { log(`[cmux-auth-stall-watchdog] ${w.ref}: clearing the stale ❓ failed: ${e.message}`); }
+        continue;
+      }
       if (dryRun) { log(`[cmux-auth-stall-watchdog] WOULD RETRY REPAIR of ${w.ref} (marked logged-out earlier)`); continue; }
       const r = tryHeal(w.ref);
       if (!r || !r.healed) continue;
       healed.push({ ref: w.ref, title: w.title, reason: r.reason });
-      try {
-        const fresh = listWorkspacesFn().find(x => x && x.ref === w.ref);
-        if (fresh && leadingGlyph(fresh.title) === '❓') {
-          const cleared = stripManagedGlyph(fresh.title);
-          if (cleared) runFn(['workspace-action', '--action', 'rename', '--workspace', w.ref, '--title', cleared]);
-        }
-        clearStateFn(w.ref);
-      } catch (e) { log(`[cmux-auth-stall-watchdog] ${w.ref}: healed, but clearing the ❓ failed: ${e.message}`); }
+      try { clearOwnMark(w.ref); }
+      catch (e) { log(`[cmux-auth-stall-watchdog] ${w.ref}: healed, but clearing the ❓ failed: ${e.message}`); }
       continue;
     }
 
@@ -193,9 +222,14 @@ function scanOnce({
     const hit = detectAuthStall(screen);
     if (!hit) continue;
 
+    // Set when a repair got as far as stopping the old claude: the tab is now
+    // a bare shell (or a half-started claude) that the detector may no longer
+    // recognise, so the ❓ must not depend on re-detecting it (review finding).
+    let repairKilled = false;
     if (hit.kind === 'logged-out' && !dryRun) {
       const r = tryHeal(w.ref);
       if (r && r.healed) { healed.push({ ref: w.ref, title: w.title, reason: r.reason }); continue; }
+      repairKilled = !!(r && r.killed);
     }
 
     log(`[cmux-auth-stall-watchdog] ${dryRun ? `WOULD ${hit.kind === 'logged-out' ? 'REPAIR (or mark if that fails)' : 'MARK'}` : 'MARKING'} ${w.ref} (${hit.kind}): ${hit.reason}`);
@@ -221,7 +255,7 @@ function scanOnce({
     let freshScreen, freshHit;
     try { freshScreen = runFn(['read-screen', '--workspace', w.ref]); }
     catch (e) { log(`[cmux-auth-stall-watchdog] re-read-screen failed for ${w.ref}: ${e.message} — skipping rename`); continue; }
-    freshHit = detectAuthStall(freshScreen);
+    freshHit = detectAuthStall(freshScreen) || (repairKilled ? hit : null);
     if (!freshHit) { log(`[cmux-auth-stall-watchdog] ${w.ref}: recovered since the scan — skipping rename`); continue; }
     // Use the FRESH hit's kind/reason from here on (code-review finding): the
     // condition can change shape, not just resolve, between the two reads
@@ -275,4 +309,4 @@ function main(argv = process.argv.slice(2)) {
 
 if (require.main === module) process.exit(main());
 
-module.exports = { main, USAGE, scanOnce, leadingGlyph, stripManagedGlyph, needsYouFile, agentRemedy, QUESTIONS, NEEDS_YOU_DIR, HEAL_STATE_DIR, HEAL_MIN_INTERVAL_MS };
+module.exports = { main, USAGE, scanOnce, healDisabled, HEAL_OFF_FILE, leadingGlyph, stripManagedGlyph, needsYouFile, agentRemedy, QUESTIONS, NEEDS_YOU_DIR, HEAL_STATE_DIR, HEAL_MIN_INTERVAL_MS };

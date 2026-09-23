@@ -27,11 +27,13 @@ const { healTab } = require('./lib/claude-tab-relaunch.js');
 const USAGE = `relaunch-claude-tab — restart a cmux tab's claude in its own shell, with the login token.
 
 Usage:
-  node scripts/relaunch-claude-tab.js --workspace workspace:N [--dry-run] [--even-if-logged-in]
+  node scripts/relaunch-claude-tab.js --workspace workspace:N [--dry-run] [--even-if-logged-in] [--allow-fresh]
 
   --dry-run             print the command that would be typed; change nothing
   --even-if-logged-in   also relaunch a tab that is not showing a lost-login screen
                         (still refuses a busy tab)
+  --allow-fresh         if the session has nothing saved to resume, start a fresh claude
+                        in the same folder instead of refusing
 `;
 
 function main(argv = process.argv.slice(2)) {
@@ -42,6 +44,7 @@ function main(argv = process.argv.slice(2)) {
   const result = healTab(ref, {
     dryRun: argv.includes('--dry-run'),
     requireLoggedOut: !argv.includes('--even-if-logged-in'),
+    allowFresh: argv.includes('--allow-fresh'),
   });
   console.log(JSON.stringify({ ref, ...result }, null, 2));
   return result.healed || result.reason === 'dry-run' ? 0 : 1;

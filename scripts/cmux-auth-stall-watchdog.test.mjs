@@ -16,6 +16,7 @@ const HEAL_STUBS = {
   recordHealAttemptFn: () => {},
   readStateFn: () => null,
   clearStateFn: () => {},
+  healDisabledFn: () => false,
 };
 
 // Every ref below uses an obviously-fake "test-N" suffix, NEVER a small
@@ -259,7 +260,8 @@ test('scanOnce: cmux unavailable returns zero scanned, no throw', () => {
 
 // ---- BRO-4065: auto-heal ----
 
-function healHarness({ title = '🧭 Task', screen = 'Not logged in · Please run /login', healResult = { healed: true, reason: 'ok' }, lastAttempt = null, state = null, dryRun = false } = {}) {
+function healHarness({ title = '🧭 Task', screen = 'Not logged in · Please run /login', screens = null, healResult = { healed: true, reason: 'ok' }, lastAttempt = null, state = null, dryRun = false, healOff = false } = {}) {
+  const screenQ = screens ? [...screens] : null;
   const calls = { heal: [], rename: [], written: [], cleared: [], recorded: [] };
   const result = scanOnce({
     ...HEAL_STUBS,
@@ -268,10 +270,11 @@ function healHarness({ title = '🧭 Task', screen = 'Not logged in · Please ru
     cmuxAvailableFn: () => true,
     listWorkspacesFn: () => [{ ref: 'workspace:test-h', title }],
     runFn: (args) => {
-      if (args[0] === 'read-screen') return screen;
+      if (args[0] === 'read-screen') return screenQ ? (screenQ.length > 1 ? screenQ.shift() : screenQ[0]) : screen;
       if (args[0] === 'workspace-action') { calls.rename.push(args[args.indexOf('--title') + 1]); return ''; }
       throw new Error(`unexpected cmux call: ${args.join(' ')}`);
     },
+    healDisabledFn: () => healOff,
     writeStateFn: (ref, st) => calls.written.push(st),
     readStateFn: () => state,
     clearStateFn: (ref) => calls.cleared.push(ref),
@@ -356,4 +359,62 @@ test('heal: a repair that throws is treated as a failure and the tab is marked',
   const { result } = healHarness({ healResult: null });
   // healResult null → healFn returns null → handled as not healed
   assert.equal(result.marked.length, 1);
+});
+
+test('heal: kill switch on → never relaunches, marks as before', () => {
+  const { result, calls } = healHarness({ healOff: true });
+  assert.equal(calls.heal.length, 0);
+  assert.equal(result.marked.length, 1);
+});
+
+test('heal: a stale ❓ of ours on a tab that is logged in again is cleared, not re-repaired', () => {
+  const { calls } = healHarness({
+    title: '❓ Task',
+    screen: 'done\n────────\n❯ \n────────\n  🔮 OPUS │ ctx 4% │ main\n',
+    state: { source: 'cmux-auth-stall-watchdog', kind: 'logged-out' },
+  });
+  assert.equal(calls.heal.length, 0);
+  assert.deepEqual(calls.rename, ['Task']);
+  assert.deepEqual(calls.cleared, ['workspace:test-h']);
+});
+
+test('heal: a repair that stopped claude then failed is marked even if the screen no longer matches', () => {
+  // after the kill the tab shows a bare shell prompt: detector says null
+  const { result, calls } = healHarness({
+    screens: ['Not logged in · Please run /login', 'tompryor@Mac Broadwayscore % '],
+    healResult: { healed: false, killed: true, reason: 'normal prompt never came back after relaunch' },
+  });
+  assert.equal(result.marked.length, 1);
+  assert.equal(calls.written[0].kind, 'logged-out');
+});
+
+test('heal: a failed repair that never stopped claude still needs the fresh re-check (recovered → no mark)', () => {
+  const { calls } = healHarness({
+    screens: ['Not logged in · Please run /login', 'fine\n────────\n❯ \n────────\n  🔮 OPUS │ ctx 4% │ main\n'],
+    healResult: { healed: false, reason: 'another repair of this tab is already running' },
+  });
+  assert.equal(calls.rename.length, 0);
+  assert.equal(calls.written.length, 0);
+});
+
+test('heal: after a successful retry, a ❓ that now belongs to a DECISION NEEDED is not un-marked', () => {
+  let reads = 0;
+  const calls = { rename: [], cleared: [] };
+  scanOnce({
+    ...HEAL_STUBS,
+    log: noopLog,
+    cmuxAvailableFn: () => true,
+    listWorkspacesFn: () => [{ ref: 'workspace:test-h', title: '❓ Task' }],
+    runFn: (args) => {
+      if (args[0] === 'read-screen') return 'Not logged in · Please run /login';
+      if (args[0] === 'workspace-action') { calls.rename.push(args); return ''; }
+      throw new Error('unexpected');
+    },
+    // first read (candidate check) is ours; by the time of the clear the Stop hook owns it
+    readStateFn: () => (reads++ === 0 ? { source: 'cmux-auth-stall-watchdog', kind: 'logged-out' } : { question: 'Pick A or B' }),
+    clearStateFn: (ref) => calls.cleared.push(ref),
+    healFn: () => ({ healed: true, reason: 'ok' }),
+  });
+  assert.equal(calls.rename.length, 0);
+  assert.equal(calls.cleared.length, 0);
 });

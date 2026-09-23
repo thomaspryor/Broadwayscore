@@ -25,8 +25,10 @@ set -euo pipefail
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "$script_dir/../.." && pwd)"
 
+# .env is the source of truth and wins over an inherited token: a tab shell
+# started before a token rotation still exports the OLD one, and resuming
+# with it just fails auth again. The inherited token is only the fallback.
 load_token() {
-  [ -n "${CLAUDE_CODE_OAUTH_TOKEN:-}" ] && return 0
   local f v
   for f in "${BSC_ENV_FILE:-}" "$repo_root/.env" "$HOME/Broadwayscore/.env"; do
     [ -n "$f" ] && [ -r "$f" ] || continue
@@ -34,7 +36,7 @@ load_token() {
     v="$(grep -m1 '^CLAUDE_CODE_OAUTH_TOKEN=' "$f" 2>/dev/null | cut -d= -f2- | tr -d "\"'" || true)"
     if [ -n "$v" ]; then export CLAUDE_CODE_OAUTH_TOKEN="$v"; return 0; fi
   done
-  return 1
+  [ -n "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]
 }
 
 if [ "${1:-}" = "--check" ]; then
