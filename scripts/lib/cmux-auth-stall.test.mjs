@@ -141,6 +141,8 @@ test('BRO-4065: "✻ Crunched for 0s · done" is a finished turn, not busy', () 
   assert.equal(isBusy('✻ Worked for 3m 2s'), false);
   assert.equal(isBusy('✻ Waiting for 2 background agents to finish'), true);
   assert.equal(isBusy('✳ Thinking…'), true);
+  assert.equal(isBusy('✶ Beaming… (running Stop hooks… 12/13 · 14s)'), true);
+  assert.equal(isBusy('✽ Worked for 12s'), false);
 });
 
 test('BRO-4065: a healthy session whose HISTORY quotes the login error is not flagged', () => {

@@ -98,14 +98,18 @@ const BORDER_RE = /^─{5,}$/;
 // last line; anchored to that literal phrase (not just the glyph) since a
 // code-review finding showed a bare `/^✔/` would also skip real assistant
 // output that happens to start with a checkmark.
-const BUSY_RE = /^[✻✳]/;
+// ✶ (U+2736) "✶ Beaming… (running Stop hooks…)" also captured live on
+// 2026-09-23 (BRO-4065): the CLI rotates its spinner through ✢ ✳ ✶ ✻ ✽, so
+// matching only two of them missed busy tabs whenever the frame landed on
+// another glyph.
+const BUSY_RE = /^[✢✳✶✻✽]/;
 // ...except the COMPLETED-turn line, which reuses the same glyph in the past
 // tense: "✻ Crunched for 0s · done 1:34 AM", "✻ Worked for 3m 2s". Captured
 // live 2026-09-23 (BRO-4065) on a real logged-out tab: treating it as busy
 // made every finished-but-dead tab look mid-turn, so nothing would ever
 // touch it. In-flight spinners are present-tense ("✻ Waiting for 2
 // background agents…"), never "<verb>ed for <digit>".
-const DONE_LINE_RE = /^[✻✳]\s+\S+ed\s+for\s+\d/i;
+const DONE_LINE_RE = /^[✢✳✶✻✽]\s+\S+ed\s+for\s+\d/i;
 function isBusyLine(l) { return BUSY_RE.test(l) && !DONE_LINE_RE.test(l); }
 // A logged-out claude from Claude Code 2.1.27x+ DOES draw the "ctx NN%"
 // status bar (verified live 2026-09-23, BRO-4065 scratch tab: `env -u

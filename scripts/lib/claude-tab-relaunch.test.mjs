@@ -116,9 +116,16 @@ test('healTab: refuses a busy tab (spinner or Running tag) — nothing killed', 
   const f1 = fakeDeps({ screens: ['✻ Waiting for 2 background agents\nNot logged in · Please run /login'] });
   assert.equal(R.healTab('workspace:test-x', { deps: f1.deps }).healed, false);
   assert.equal(f1.calls.kill.length, 0);
-  const f2 = fakeDeps({ top: '0.8\t1\t4\ttag\tworkspace:U:tag:claude_code\tworkspace:27\tRunning\n' + TOP_UNTAGGED });
-  assert.match(R.healTab('workspace:test-x', { deps: f2.deps }).reason, /busy/);
+  // Running tag on a tab NOT proven logged out (forced relaunch mode) → busy
+  const f2 = fakeDeps({ screens: [HEALTHY], top: '0.8\t1\t4\ttag\tworkspace:U:tag:claude_code\tworkspace:27\tRunning\n' + TOP_UNTAGGED });
+  assert.match(R.healTab('workspace:test-x', { deps: f2.deps, requireLoggedOut: false }).reason, /busy/);
   assert.equal(f2.calls.kill.length, 0);
+});
+
+test('healTab: a stuck Running tag does not block a screen-verified logged-out tab', () => {
+  // Live 2026-09-23: the failed-auth prompt never fires Stop, tag stays Running.
+  const f = fakeDeps({ top: '0.8\t1\t4\ttag\tworkspace:U:tag:claude_code\tworkspace:27\tRunning\n' + TOP_UNTAGGED });
+  assert.equal(R.healTab('workspace:test-x', { deps: f.deps }).healed, true);
 });
 
 test('healTab: refuses a healthy tab unless requireLoggedOut=false', () => {

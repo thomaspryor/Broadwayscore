@@ -204,7 +204,13 @@ function healTab(ref, opts = {}) {
   try { top = d.runFn(['top', '--workspace', ref, '--processes', '--format', 'tsv']); }
   catch (e) { return { healed: false, reason: `cannot list the tab's processes (${e.message})` }; }
   const { pids, running } = parseTopForClaude(top);
-  if (running) return { healed: false, reason: 'tab is busy (claude reports Running) — left alone' };
+  // The tag's Running status is NOT trusted for a screen-verified logged-out
+  // tab: a prompt that failed auth never fires the Stop hook, so the tag sits
+  // at Running forever (verified live 2026-09-23, BRO-4065 scratch tab). A
+  // logged-out claude cannot be doing work (every API call fails), and a real
+  // in-flight turn draws a spinner, which isBusy() above already refused.
+  const screenSaysLoggedOut = !!(stall && stall.kind === 'logged-out');
+  if (running && !screenSaysLoggedOut) return { healed: false, reason: 'tab is busy (claude reports Running) — left alone' };
 
   let pid = null; let command = null;
   for (const p of pids) {
