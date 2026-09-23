@@ -1,46 +1,42 @@
 {
-  "generatedAt": "2026-09-22T12:06:24.361Z",
-  "subject": "BSC URGENT (day 33): 7 unresolved errors",
-  "bannerText": "7 errors, 36 warnings",
-  "consecutiveErrorDays": 33,
+  "generatedAt": "2026-09-23T12:16:08.834Z",
+  "subject": "BSC URGENT (day 34): 5 unresolved errors",
+  "bannerText": "5 errors, 37 warnings",
+  "consecutiveErrorDays": 34,
   "errors": [
     {
-      "name": "Data quality: provider spend ledger",
-      "message": "Provider spend ledger's newest entry (day=2026-09-20) is 3d old (>48h) — the daily reconciliation itself has stopped landing"
-    },
-    {
       "name": "Main: red streak",
-      "message": "main's Test Suite has had no confirmed-green run in AT LEAST 34.0h (no green run found in the runs checked — actual gap may be longer) (30 failing runs) — first red commit 949f6c5a5, job \"Unit Tests, E2E Tests, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
-    },
-    {
-      "name": "Alert Router: dispatch deadman",
-      "message": "Most recent auto-dispatch attempt failed (41/131 succeeded in the last 7d) — same failure class as the 2026-07-24 npm-ci incident. Last error: LINEAR_API_KEY not set in .env or environment"
+      "message": "main's Test Suite has had no confirmed-green run in 349.6h (11 failing runs) — first red commit 10bfadb65, job \"Unit Tests, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
     },
     {
       "name": "Push-retry deadman",
-      "message": "60 push-retry failure(s) in the last 7d across Broadwayscore:main, Broadwayscore:job/linear-BRO-2323-mu3r7v68, Broadwayscore:job/linear-BRO-3954-muanl1vw [unknown x32, Test Suite x14, Rebuild Reviews Data x8, Scrape New Aggregators x3, Batch Commercial Research x2, Opening Night Express x1]. Most recent reason: retries-exhausted."
+      "message": "32 push-retry failure(s) in the last 7d across Broadwayscore:main, Broadwayscore:job/linear-BRO-3954-muanl1vw [unknown x16, Test Suite x6, Rebuild Reviews Data x5, Scrape New Aggregators x2, Batch Commercial Research x2, Opening Night Express x1]. Most recent reason: retries-exhausted."
     },
     {
       "name": "Autofix: throughput (dispatched/passed, daily)",
-      "message": "Autofix throughput DEAD: 0 dispatches on each of the last 3 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — this is the exact 8/5-8/9 starvation shape (task #1184)."
+      "message": "Autofix throughput DEAD: 0 dispatches on each of the last 4 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — this is the exact 8/5-8/9 starvation shape (task #1184)."
     },
     {
       "name": "Infra: worktree GC log stale",
-      "message": "worktree-gc.log has no line in the last 55.6h (launchd runs gc-merged-worktrees.sh hourly) — the only automatic disk brake may have stopped firing."
+      "message": "worktree-gc.log has no line in the last 79.8h (launchd runs gc-merged-worktrees.sh hourly) — the only automatic disk brake may have stopped firing."
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
-      "message": "7 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Game of Thrones: The Mad King\" (wet-roundup — missing 42d) — 6 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+      "message": "7 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Game of Thrones: The Mad King\" (wet-roundup — missing 43d) — 6 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     }
   ],
   "warns": [
     {
+      "name": "Audience coverage: open-show gaps",
+      "message": "2 open show(s) have audience data on a source that didn't link — Mezzanine: Macbeth (326 ratings ↔ Macbeth); Mezzanine: Macbeth (108 ratings ↔ Macbeth)"
+    },
+    {
       "name": "Sync: social-pulse per-show freshness",
-      "message": "1 running show(s) with social-pulse >14d stale: Who’s Afraid of Virginia Woolf? (162d)"
+      "message": "1 running show(s) with social-pulse >14d stale: Who’s Afraid of Virginia Woolf? (163d)"
     },
     {
       "name": "Sync: baseline drift",
-      "message": "Reviews dropped: 20904 vs baseline 20986"
+      "message": "Reviews dropped: 20926 vs baseline 21009"
     },
     {
       "name": "Quality: star-vs-score mismatch",
@@ -48,11 +44,11 @@
     },
     {
       "name": "Quality: corpus drift",
-      "message": "16 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), reviews scored off an excerpt that now have fullText, never flagged for rescore, critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority), exclusion flag contradicted by its own content-verification pass (baseline-diff), cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff), critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff), a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)"
+      "message": "17 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), review-text file structure — full validator (gate = catastrophic classes + churn floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), reviews scored off an excerpt that now have fullText, never flagged for rescore, critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority), exclusion flag contradicted by its own content-verification pass (baseline-diff), cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff), critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff), a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance), public/data/shows/{id}.json existing for an id no longer in shows.json"
     },
     {
       "name": "Quality: DMARC deliverability",
-      "message": "Newest DMARC report is 24d old (reporters send daily)"
+      "message": "Newest DMARC report is 25d old (reporters send daily)"
     },
     {
       "name": "Quality: outlet domain moves",
@@ -60,27 +56,19 @@
     },
     {
       "name": "Data quality: cross-outlet attribution drift",
-      "message": "Unreviewed cross-outlet attribution suspect(s) found (23h ago)"
-    },
-    {
-      "name": "Data quality: cv-wrongproduction lifetime sweep",
-      "message": "9 NEW unhandled CV.wrongProduction review(s) since last run (946 total across 430 show(s), 23h ago)"
-    },
-    {
-      "name": "Data quality: fulltext-mentions-show lifetime sweep",
-      "message": "3 NEW unmatched review(s) since last run (644 total across 331 show(s), 23h ago)"
+      "message": "Unreviewed cross-outlet attribution suspect(s) found (1d ago)"
     },
     {
       "name": "Data quality: slug-mismatch lifetime sweep",
-      "message": "7 NEW cross-show URL mismatch(es) since last run (1637 total across 732 show(s), 23h ago)"
+      "message": "1 NEW cross-show URL mismatch(es) since last run (1638 total across 733 show(s), 1d ago)"
     },
     {
       "name": "Data quality: missed opening-night broadcasts",
-      "message": "4 show(s) opened and qualified but never emailed subscribers (0 still alertable, 4 aged out past the paging window, 23h ago)"
+      "message": "4 show(s) opened and qualified but never emailed subscribers (0 still alertable, 4 aged out past the paging window, 24h ago)"
     },
     {
       "name": "Data quality: stale announced shows",
-      "message": "1 show(s) still 'announced' after apparently opening (22 silenced by contamination, 23h ago)"
+      "message": "1 show(s) still 'announced' after apparently opening (22 silenced by contamination, 24h ago)"
     },
     {
       "name": "Coverage: SERP census recall",
@@ -104,19 +92,19 @@
     },
     {
       "name": "Cron failed: Test Suite",
-      "message": "Last run inconclusive: failure (1h ago), no success in 48h"
+      "message": "Last run inconclusive: cancelled (1h ago), no success in 48h"
     },
     {
       "name": "Main: green rate",
-      "message": "rate 19.8% (green 67 / red 272, 349 runs, 10 cancelled), 7d trend from n/a, day 0 of 14 at ≥80% → FAIL"
+      "message": "rate 12.9% (green 22 / red 148, 195 runs, 25 cancelled), 7d trend from n/a, day 0 of 14 at ≥80% → FAIL"
     },
     {
       "name": "Stuck work: paused P0/P1 cards",
-      "message": "38 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: main stays green for 24h after the 2026-08-14 red-streak rec (36d, stamp overdue 34d); BRO-235: The Stage + pages-on-stages stub extraction (36d); Monitor: verify 'exactly 1 scheduled owner email/day' holds  (36d) (3 awaiting recheck, earliest due 2026-09-20; 3 parked via tab-close, oldest 2026-09-16 — resume: node scripts/bsc-next.js --id 431 --force — not counted) [16 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "41 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: main stays green for 24h after the 2026-08-14 red-streak rec (37d, stamp overdue 35d); BRO-235: The Stage + pages-on-stages stub extraction (37d); Monitor: verify 'exactly 1 scheduled owner email/day' holds  (37d) (1 awaiting recheck, earliest due 2026-09-21; 2 parked via tab-close, oldest 2026-09-20 — resume: node scripts/bsc-next.js --id 798 --force — not counted) [16 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
-      "message": "37 In-progress card(s) untouched >48h — owning session likely dead. Oldest: P1: cmux new-workspace terminals spawn NO shell process — al (60d); P1: headless-claude fallback for the opening-night monitor l (60d); P1: register review-census carriers (audit-aggregator-gap +  (60d) [25 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "37 In-progress card(s) untouched >48h — owning session likely dead. Oldest: P1: cmux new-workspace terminals spawn NO shell process — al (61d); P1: headless-claude fallback for the opening-night monitor l (61d); P1: register review-census carriers (audit-aggregator-gap +  (61d) [25 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     },
     {
       "name": "Stuck work: paused P2/other cards",
@@ -151,143 +139,95 @@
       "message": "Cannot measure digest content-invariant failures from this environment — data/audit/digest-invariant-fail-ledger.jsonl is gitignored, per-machine, and absent here. This row cannot judge digest-content health from here."
     },
     {
-      "name": "Workflow repeat-failure: Rebuild Reviews Data",
-      "message": "Rebuild Reviews Data failed 3 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "name": "Workflow repeat-failure: Land",
+      "message": "Land failed 4 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
     },
     {
-      "name": "Workflow repeat-failure: Audit Aggregator Review Gap",
-      "message": "Audit Aggregator Review Gap failed 2 times in the last 24h — likely broken, not transient."
+      "name": "Workflow repeat-failure: Deploy to Vercel",
+      "message": "Deploy to Vercel failed 2 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Feedback: needs-manual-review backlog",
+      "message": "1 open user-feedback issue(s) awaiting manual review (oldest 0d). Newest: #919 [Review Submission] The Stage review of Thelma and Louise"
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "message": "7 discovered review(s) not reaching the composite score (4 T1). First: the-story-west-end-2026 — the-spectator-uk (unscored)"
+      "message": "3 discovered review(s) not reaching the composite score (2 T1). First: the-winters-tale-off-broadway-2026 — wsj (unscored)"
     },
     {
       "name": "Data: uncollected live review strands",
-      "message": "38 discovered review URL(s) across 28 live show(s) were never fetched. First: harry-potter-and-the-cursed-child-both-parts-west-end-2021 (3 stranded)"
+      "message": "43 discovered review URL(s) across 29 live show(s) were never fetched. First: my-neighbour-totoro-west-end-2025 (3 stranded)"
     },
     {
       "name": "Infra: notion-schedule-coupling audit",
-      "message": "5 live schedule(s) still reference the frozen Notion mirror (23h ago)"
+      "message": "5 live schedule(s) still reference the frozen Notion mirror (1d ago)"
     }
   ],
   "queued": [
     {
       "title": "Scraping spend over budget",
-      "description": "Day 2026-09-20. Over budget: brightdata $2.82 > $2.5 (293 serp + 1585 unlocker reqs); scrapingbee 37173 credits > 35000. 2026-09-20 · Browserbase: $0.72 (113 sessions, 23.41min) · 2026-09-20 · Bright Data: $2.82 (293 serp / 1585 unlocker) · ScrapingBee: 37173 credits (443792 this cycle) · ScrapingDog: 38577 credits (995838 this cycle) · Browserbase attribution: 6% attributed — top callers (covers 6% of billed calls): collect-review-texts.js 7 · ⚠️ Browserbase top-caller coverage low: 6% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · Bright Data attribution: 76% attributed — top callers (covers 66% of billed calls): opening-night-poller.js 659, gather-reviews.js 295, audit-show-review-gap.js 123, recollect-for-scores.js 109, backfill-unknown-critics.js 58 · ⚠️ Bright Data top-caller coverage low: 66% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · ScrapingBee attribution: 22% attributed — top callers (covers 20% of billed credits): gather-reviews.js 3785cr, opening-night-poller.js 1757cr, recollect-for-scores.js 1293cr, collect-outlet-reviews.js 425cr, collect-review-texts.js 204cr · ⚠️ ScrapingBee top-caller coverage low: 20% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · ScrapingDog attribution: 68% attributed — top callers (covers 52% of billed credits): gather-reviews.js 10827cr, audit-show-review-gap.js 3929cr, opening-night-poller.js 1948cr, collect-outlet-reviews.js 1890cr, recover-explicit-ratings.js 1367cr · ⚠️ ScrapingDog top-caller coverage low: 52% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight. Verification streak reset to 0.",
+      "description": "Day 2026-09-21. Over budget: scrapingbee 40991 credits > 35000. 2026-09-21 · Browserbase: $0.75 (63 sessions, 41.76min) · 2026-09-21 · Bright Data: $1.96 (120 serp / 1190 unlocker) · ScrapingBee: 40991 credits (484783 this cycle) · ScrapingDog: 23919 credits (1019757 this cycle) · Browserbase attribution: 6% attributed — top callers (covers 6% of billed calls): collect-review-texts.js 3, sweep-we-aggregators.js:the-stage 1 · ⚠️ Browserbase top-caller coverage low: 6% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · Bright Data attribution: 85% attributed — top callers (covers 78% of billed calls): opening-night-poller.js 749, fetch-show-images-auto.js 156, audit-show-review-gap.js 55, backfill-unknown-critics.js 34, collect-outlet-reviews.js 32 · ⚠️ Bright Data top-caller coverage low: 78% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · ScrapingBee attribution: 23% attributed — top callers (covers 22% of billed credits): fetch-show-images-auto.js 5976cr, opening-night-poller.js 2281cr, ob-discovery-ticket-links.js 275cr, gather-reviews.js 218cr, collect-review-texts.js 157cr · ⚠️ ScrapingBee top-caller coverage low: 22% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · ScrapingDog attribution: 54% attributed — top callers (covers 38% of billed credits): audit-show-review-gap.js 3322cr, collect-outlet-reviews.js 2690cr, opening-night-poller.js 1175cr, scrape-nyc-theatre-roundups.js 1040cr, fetch-show-images-auto.js 939cr · ⚠️ ScrapingDog top-caller coverage low: 38% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight. Verification streak reset to 0.",
       "severity": "error",
       "url": null,
       "fields": []
     },
     {
-      "title": "New bot country detected: Chile",
-      "description": "Weekly geo audit found Chile matching the bot signature (46 sessions • 4.3% engagement • 2.9s • 1.09 pages/session; thresholds: ≥25 sessions, <15% engagement, <15s avg session, <1.1 pages/session). Add to data/audit/known-bot-geos.json + memory/analytics-real-users-segment.md + the 3 PostHog Real Users insights + the GA4 Real Users comparison.",
+      "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
+      "description": "Scope: 2 opening window(s): crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026 (2026-09-22), macbeth-off-broadway-2026 (2026-09-22)\n0 review(s) still in flight.\nStage log currently starts at 2026-08-21T04:29:05.437Z.\nThis is NOT a pass — the SLA had too little to judge.",
       "severity": "warning",
       "url": null,
       "fields": []
     },
     {
-      "title": "Review-gap audit refused to write — 65.2% of shows changed coverage state — already tracked at BRO-3030",
-      "description": "This condition already has an open tracker (BRO-3030); not filing a duplicate. It will go quiet in the digest from here.\n\nreview-gap blast radius 65.2% (15/23 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: amaze-magic-off-broadway-2025, catarina-and-the-beauty-of-killing-fascists-west-end-2026, cats-the-jellicle-ball-2026, darkling-off-west-end-2026, death-of-a-salesman-2026, golden-boy-off-west-end-2026, how-the-other-half-loves-west-end-2026, jesus-christ-superstar-west-end-2026, shifters-off-broadway-2026, the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026, the-cherry-orchard-park-avenue-armory-off-broadway-2026, the-pass-off-broadway-2026, the-winters-tale-off-broadway-2026, thelma-and-louise-a-new-musical-off-west-end-2026, weve-been-here-before-a-one-woman-musical-off-broadway-2026\n\nPARTIAL write: the other 8 show(s) audited this run were NOT risky and were persisted normally. Only the 15 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+      "title": "Unhandled CV.wrongProduction on Catarina and the Beauty of Killing Fascists",
+      "description": "times-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a legitimate review of 'Catarina and the Beau — https://www.thetimes.com/culture/theatre-dance/article/catarina-and-the-beauty-of-killing-fascists-review-3grmddl3g",
       "severity": "error",
       "url": null,
       "fields": []
     },
     {
-      "title": "Deployed coverage — the site is serving stale coverage — already tracked at BRO-3030",
-      "description": "This condition already has an open tracker (BRO-3030); not filing a duplicate. It will go quiet in the digest from here.\n\n3/136 show(s) differ between internal state and what prod serves.\nscore-drift: 3\nDarkling: score-drift\nA Month in the Country: score-drift\nMuch Ado About Nothing: score-drift",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "T1 Coverage — new gaps past 24h — already tracked at BRO-3030",
-      "description": "This condition already has an open tracker (BRO-3030); not filing a duplicate. It will go quiet in the digest from here.\n\n2 T1/T2 outlet(s) still missing >24h after they became measurable.",
-      "severity": "error",
-      "url": null,
-      "fields": [
-        {
-          "name": "Just in Time — timeout (26h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"just-in-time-2025\" -f max_tier=3 -f aggregators_only=false"
-        },
-        {
-          "name": "Paranormal Activity — theatermania (29h)",
-          "value": "gh workflow run gather-reviews.yml -f shows=\"paranormal-activity-2026\" -f max_tier=3 -f aggregators_only=false"
-        }
-      ]
-    },
-    {
-      "title": "Auto-remediation gave up on cosi-fan-tutte-off-broadway-2026",
-      "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"cosi-fan-tutte-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+      "title": "Unverified revival on Catarina and the Beauty of Killing Fascists",
+      "description": "catarina-and-the-beauty-of-killing-fascists-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "severity": "warning",
       "url": null,
       "fields": []
     },
     {
-      "title": "Krapps Last Tape @ royal court — West End show live and scoring",
-      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/review-krapps-last-tape-royal-court-theatre). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-      "severity": "info",
-      "url": "https://broadwayscorecard.com/show/krapps-last-tape-west-end-2026",
+      "title": "Review gap — \"The Invention of Love\" missing 11 cited review(s)",
+      "description": "The Invention of Love (the-invention-of-love-off-broadway-2026): 11 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-invention-of-love-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
       "fields": []
     },
     {
-      "title": "Dracula @ noel coward — West End show live and scoring",
-      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/dracula-noel-coward-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-      "severity": "info",
-      "url": "https://broadwayscorecard.com/show/dracula-west-end-2026",
+      "title": "Auto-remediation gave up on catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"catarina-and-the-beauty-of-killing-fascists-west-end-2026\",\"outlet\":\"timeout-london\",\"phases\":\"0,1,2,3\"}",
+      "severity": "warning",
+      "url": null,
       "fields": []
     },
     {
-      "title": "John Proctor @ royal court — West End show live and scoring",
-      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/royal-court-john-proctor-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-      "severity": "info",
-      "url": "https://broadwayscorecard.com/show/john-proctor-west-end-2026",
-      "fields": []
-    },
-    {
-      "title": "To Maury With Love Concert @ theatre royal drury lane — West End show live and scoring",
-      "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/to-maury-with-love-concert-theatre-royal-drury-lane-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-      "severity": "info",
-      "url": "https://broadwayscorecard.com/show/to-maury-with-love-concert-west-end-2026",
-      "fields": []
-    },
-    {
-      "title": "Feedback: 1 submission(s), all handled automatically",
-      "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nBook of mormon — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Review of the guardian is positive not 45\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/905",
-      "severity": "info",
-      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35663941001",
+      "title": "Opening Night Broadcast Blocked — Checklist Errors",
+      "description": "Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.",
+      "severity": "error",
+      "url": null,
       "fields": [
         {
-          "name": "Submissions",
-          "value": "1"
-        },
-        {
-          "name": "Need you",
-          "value": "0"
-        },
-        {
-          "name": "Pipeline status",
-          "value": "success"
+          "name": "Shows",
+          "value": "catarina-and-the-beauty-of-killing-fascists-west-end-2026"
         }
       ]
     },
     {
-      "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
-      "description": "check-corpus-drift.js audit \"aggregator-archive-integrity\" (node scripts/audit-aggregator-archive-integrity.js --strict) has been drifting. Latest output:\n\nAggregator-archive integrity:\n  Scanned: 5978 files\n  Skipped (no show in shows.json): 263\n  Bad: 2\n\n❌ NEW bad archives (1):\n   - theatre-reviews/here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026\n\nEach represents a cached aggregator HTML file whose page title\ndoes not match the showId in the filename — i.e., poisoned cache.\n\nRemediate by re-fetching or quarantining the file, then re-running\nthe audit. To accept these intentionally, run --update-baseline.",
-      "severity": "error",
-      "url": null,
+      "title": "UX walkthrough: high-priority finding(s) filed",
+      "description": "- [2/3] Destructive action not clearly different. The delete icon in 'mobile__watchlist_grid' is similar in style to non-destructive icons.",
+      "severity": "info",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35762573897",
       "fields": []
     },
     {
-      "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
-      "description": "check-corpus-drift.js audit \"critic-outlets\" (node scripts/audit-critic-outlets.js --strict) has been drifting. Latest output:\n\n  Tony Marinelli at broadwayscorecard (4% share) for sukkot-off-broadway-2026\n    Primary: theater-scene (96%), total: 25 reviews\n  Pete Hempstead at whatsonstage (3% share) for the-lost-boys-2026\n    Primary: theatermania (98%), total: 40 reviews\n  Susannah Clapp at guardian (9% share) for much-ado-about-nothing-globe-off-west-end-2026\n    Primary: observer (91%), total: 32 reviews\n  Susannah Clapp at guardian (9% share) for stranger-things-the-first-shadow-west-end-2023\n    Primary: observer (91%), total: 32 reviews\n  Susannah Clapp at guardian (9% share) for sylvia-off-west-end-2026\n    Primary: observer (91%), total: 32 reviews\n  Patrick Ryan at tennessean (3% share) for gypsy-2024\n    Primary: usatoday (97%), total: 31 reviews\n  David Kaufman at nydailynews (4% share) for proof-2000\n    Primary: theater-scene (96%), total: 23 reviews\n  Emlyn Travis at amny (3% share) for cabaret-2024\n    Primary: ew (97%), total: 29 reviews\n  Shania Russell at cbsnews (10% share) for gypsy-2024\n    Primary: ew (90%), total: 21 reviews\n  Shania Russell at cbsnews (10% share) for spamalot-2005\n    Primary: ew (90%), total: 21 reviews\n  Frank J. Avella at edge-new-york (5% share) for heisenberg-2016\n    Primary: the-contending (95%), total: 21 reviews\n  Scott Matthewman at musical-theatre-review (5% share) for teeth-n-smiles-west-end-2026\n    Primary: thereviewshub (95%), total: 19 reviews\n  Markos Papadatos at truehollywoodtalk (4% share) for the-lost-boys-2026\n    Primary: digital-journal (96%), total: 28 reviews\n\n--report-only/--strict: No files written\n\n(33 baselined, 5 new)\n\n⚠️  NEW flagged review(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/critic-outlets-baseline.json):\n  David Barbour at theatermania (0% share) for the-39-steps-2008\n  Michael Dale at talkinbroadway (3% share) for benevolent-off-broadway-2026\n  Michael Dale at talkinbroadway (3% share) for camping-off-broadway-2026\n  Shania Russell at cbsnews (10% share) for gypsy-2024\n  Shania Russell at cbsnews (10% share) for spamalot-2005\n\nInvestigate the attribution, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-critic-outlets.js --update-baseline",
-      "severity": "error",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
-      "description": "check-corpus-drift.js audit \"duplicate-of-cleared-contradiction\" (node scripts/audit-duplicate-of-cleared-contradiction.js --gate --max=0) has been drifting. Latest output:\n\nDuplicate-of-cleared contradiction sweep: 44283 review file(s) scanned, 2 match(es).\n  and-juliet-2022/theatermania--pete-hempstead.json -> theatermania--jesse-green.json (both claim/deny the same URL)\n  the-cottage-2023/theater-life--paulanne-simmons.json -> theater-life--samuel-l-leiter.json (both claim/deny the same URL)\n\nFAIL: 2 review file(s) carry a duplicateOf pointer AND a _duplicateOfCleared breadcrumb for the same URL (> max 0).\nThis is the #1655 class: two contradictory verdicts about the same URL collision on one record.\nFix: node scripts/audit-duplicate-of-cleared-contradiction.js --fix (retracts the dead breadcrumb; duplicateOf already governs inclusion — see the module docblock for why this is safe in bulk).",
+      "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
+      "description": "check-corpus-drift.js audit \"url-downgrade\" (node scripts/audit-url-downgrade.js --gate) has been drifting. Latest output:\n\n  [protected] every-brilliant-thing-2026/nytimes--ben-brantley.json — url dated 2014-12-15 (before_preview, 4065d)\n  [protected] evita-2026/broadwayworld--gary-naylor.json — url dated 2026-04-29 (before_preview, 283d)\n  [protected] fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json — url dated 2024-04-12 (before_preview, 876d)\n  [protected] gigi-2015/washpost--peter-marks.json — url dated 2015-01-29 (before_preview, 28d)\n  [protected] hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json — url dated 2024-02-11 (before_preview, 777d)\n  [protected] hamlet-off-broadway-2026/nysr--david-finkle.json — url dated 2024-02-11 (before_preview, 777d)\n  [protected] hamlet-off-broadway-2026/washpost--peter-marks.json — url dated 2018-01-23 (before_preview, 2987d)\n  [protected] heathers-the-musical-off-west-end-2026/broadwayworld--jade-kops.json — url dated 2026-09-04 (after_close, 6d)\n  [protected] kenrex-off-broadway-2026/guardian--mark-fisher.json — url dated 2024-11-01 (before_preview, 510d)\n  [protected] kinky-boots-the-musical-west-end-2026/guardian--arifa-akbar.json — url dated 2025-03-13 (before_preview, 334d)\n  [protected] little-women-2005/ew--ew-staff.json — url dated 2005-06-07 (after_close, 9d)\n  [protected] macbeth-2013/ap--mark-kennedy.json — url dated 2013-04-21 (before_preview, 166d)\n  [protected] manon-off-broadway-2027/broadwayworld--steve-callahan.json — url dated 2024-01-19 (before_preview, 1127d)\n  [protected] mexodus-off-broadway-2026/nyt-theater--unknown.json — url dated 2025-10-04 (before_preview, 132d)\n  [LIVE] my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json — url dated 2024-05-08 (before_preview, 840d)\n  [protected] orlando-off-broadway-2026/guardian--unknown.json — url dated 2022-12-11 (before_preview, 452d)\n  [protected] please-please-me-west-end-2026/guardian--susannah-clapp.json — url dated 2024-08-04 (before_preview, 585d)\n  [protected] romeo-and-juliet-off-broadway-2026/guardian--clare-brennan.json — url dated 2024-09-22 (before_preview, 586d)\n  [protected] romeo-and-juliet-west-end-2026/guardian--unknown.json — url dated 2025-07-09 (before_preview, 215d)\n  [protected] seagull-true-story-off-broadway-2026/nysr--frank-scheck.json — url dated 2023-02-28 (before_preview, 1097d)\n  [protected] the-glass-menagerie-2017/chicagotribune--chris-jones.json — url dated 2013-09-26 (before_preview, 1209d)\n  [protected] the-hills-of-california-2024/guardian--arifa-akbar.json — url dated 2024-02-08 (before_preview, 195d)\n  [protected] the-seagull-2008/guardian--arifa-akbar.json — url dated 2025-03-06 (after_close, 5912d)\n  [protected] the-sound-of-music-2027/broadwayworld--anikatrina-fageol.json — url dated 2026-02-18 (before_preview, 377d)\n  [protected] the-sound-of-music-2027/broadwayworld--david-friscic.json — url dated 2025-09-15 (before_preview, 533d)\n  [protected] the-sound-of-music-2027/broadwayworld--greg-dalton-white.json — url dated 2026-08-31 (before_preview, 183d)\n  [protected] the-sound-of-music-2027/broadwayworld--jeffrey-kare.json — url dated 2025-10-08 (before_preview, 510d)\n  [protected] the-sound-of-music-2027/broadwayworld--joni-lorraine.json — url dated 2026-02-04 (before_preview, 391d)\n  [protected] the-sound-of-music-2027/broadwayworld--r-scott-reedy.json — url dated 2026-01-11 (before_preview, 415d)\n  [protected] the-sound-of-music-2027/broadwayworld--tina-st-angelo.json — url dated 2025-10-25 (before_preview, 493d)\n  [protected] the-sound-of-music-2027/broadwayworld--vickie-evans.json — url dated 2025-11-20 (before_preview, 467d)\n  [protected] the-wiz-2024/latimes--mary-mcnamara.json — url dated 2015-12-03 (before_preview, 3018d)\n  [protected] tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json — url dated 2026-06-29 (before_preview, 104d)\n  [protected] tosca-off-broadway-2026/broadwayworld--roger-catlin.json — url dated 2026-08-10 (before_preview, 62d)\n  [protected] twelfth-night-off-west-end-2026/nysr--unknown.json — url dated 2025-08-21 (before_preview, 317d)\n  [protected] vanya-off-broadway-2025/washpost--unknown.json — url dated 2013-03-14 (before_preview, 4359d)\n  [protected] weve-been-here-before-a-one-woman-musical-off-broadway-2026/broadwayworld--nicole-rosky.json — url dated 2026-07-09 (before_preview, 5d)\n\nFAIL: 1 file(s) carry a regressed (wrong-production) url with NO wrongProduction/wrongShow flag — live scoring exposure.\nFix by hand (verify the correct current-run url and restore it, or flag wrongProduction).",
       "severity": "error",
       "url": null,
       "fields": []
@@ -300,22 +240,139 @@
       "fields": []
     },
     {
-      "title": "Review gap — \"Macbeth\" missing 6 cited review(s)",
-      "description": "Macbeth (macbeth-off-broadway-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=macbeth-off-broadway-2026 --checkpoint --ingest-missing",
+      "title": "Review gap — \"Macbeth\" missing 5 cited review(s)",
+      "description": "Macbeth (macbeth-off-broadway-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=macbeth-off-broadway-2026 --checkpoint --ingest-missing",
       "severity": "warning",
       "url": null,
       "fields": []
     },
     {
-      "title": "Shipped review missing publishDate on Catarina and the Beauty of Killing Fascists",
-      "description": "london-box-office/Stuart King SHIPPED with no publishDate — cannot confirm post-opening: https://www.londonboxoffice.co.uk/news/post/catarina-and-the-beauty-of-killing-fascists-dorfman-national-theatre-review",
+      "title": "Placeholder synopsis on La Bohème",
+      "description": "synopsis for la-boheme-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
       "severity": "warning",
       "url": null,
       "fields": []
     },
     {
-      "title": "Review gap — \"A Month in the Country\" missing 3 cited review(s)",
-      "description": "A Month in the Country (a-month-in-the-country-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-month-in-the-country-west-end-2026 --checkpoint --ingest-missing",
+      "title": "Unverified revival on La Bohème",
+      "description": "la-boheme-off-broadway-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Così fan tutte\" missing 7 cited review(s)",
+      "description": "Così fan tutte (cosi-fan-tutte-off-broadway-2026): 7 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cosi-fan-tutte-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"The Last Ship\" missing 8 cited review(s)",
+      "description": "The Last Ship (the-last-ship-west-end-2026): 8 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-last-ship-west-end-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Landing blocked: rebase red on land/bro3922-watchdog-awaitingclaim-guard",
+      "description": "land.yml did not land land/bro3922-watchdog-awaitingclaim-guard: the rebase gate went red at cf96143bf2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35813003988",
+      "severity": "error",
+      "url": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/bro3922-watchdog-awaitingclaim-guard"
+        },
+        {
+          "name": "gate",
+          "value": "rebase"
+        },
+        {
+          "name": "tip",
+          "value": "cf96143bf29ff855c183807f3156bce4a991ea2c"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35813003988"
+        }
+      ]
+    },
+    {
+      "title": "Landing blocked: rebase red on land/worktree-bro-3873-c-old",
+      "description": "land.yml did not land land/worktree-bro-3873-c-old: the rebase gate went red at 25c94a79b3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35820189615",
+      "severity": "error",
+      "url": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/worktree-bro-3873-c-old"
+        },
+        {
+          "name": "gate",
+          "value": "rebase"
+        },
+        {
+          "name": "tip",
+          "value": "25c94a79b383b9b21410adf4c2560cff25880c37"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35820189615"
+        }
+      ]
+    },
+    {
+      "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4064-mudm1aiy",
+      "description": "land.yml did not land land/job/linear-BRO-4064-mudm1aiy: the unit-tests-node gate went red at b1f0a88898. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35820934247",
+      "severity": "error",
+      "url": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/job/linear-BRO-4064-mudm1aiy"
+        },
+        {
+          "name": "gate",
+          "value": "unit-tests-node"
+        },
+        {
+          "name": "tip",
+          "value": "b1f0a8889890fcd7268c3dca1f553e7a70b3616b"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35820934247"
+        }
+      ]
+    },
+    {
+      "title": "Landing blocked: scripts-lib-tests red on land/worktree-bro-3873-followup",
+      "description": "land.yml did not land land/worktree-bro-3873-followup: the scripts-lib-tests gate went red at 3468daaa60. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35822046515",
+      "severity": "error",
+      "url": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/worktree-bro-3873-followup"
+        },
+        {
+          "name": "gate",
+          "value": "scripts-lib-tests"
+        },
+        {
+          "name": "tip",
+          "value": "3468daaa60b931f5758041c3df852ce81c9fd115"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35822046515"
+        }
+      ]
+    },
+    {
+      "title": "Unverified revival on Macbeth",
+      "description": "macbeth-off-broadway-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "severity": "warning",
       "url": null,
       "fields": []
@@ -335,8 +392,8 @@
       "fields": []
     },
     {
-      "title": "Review gap — \"Catarina and the Beauty of Killing Fascists\" missing 6 cited review(s)",
-      "description": "Catarina and the Beauty of Killing Fascists (catarina-and-the-beauty-of-killing-fascists-west-end-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=catarina-and-the-beauty-of-killing-fascists-west-end-2026 --checkpoint --ingest-missing",
+      "title": "Review gap — \"Catarina and the Beauty of Killing Fascists\" missing 3 cited review(s)",
+      "description": "Catarina and the Beauty of Killing Fascists (catarina-and-the-beauty-of-killing-fascists-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=catarina-and-the-beauty-of-killing-fascists-west-end-2026 --checkpoint --ingest-missing",
       "severity": "warning",
       "url": null,
       "fields": []
@@ -419,15 +476,15 @@
       "fields": []
     },
     {
-      "title": "Review gap — \"The Cherry Orchard\" missing 2 cited review(s)",
-      "description": "The Cherry Orchard (the-cherry-orchard-park-avenue-armory-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-cherry-orchard-park-avenue-armory-off-broadway-2026 --checkpoint --ingest-missing",
+      "title": "Review gap — \"The Cherry Orchard\" missing 1 cited review(s)",
+      "description": "The Cherry Orchard (the-cherry-orchard-park-avenue-armory-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-cherry-orchard-park-avenue-armory-off-broadway-2026 --checkpoint --ingest-missing",
       "severity": "warning",
       "url": null,
       "fields": []
     },
     {
-      "title": "Review gap — \"The Hope Theory\" missing 2 cited review(s)",
-      "description": "The Hope Theory (the-hope-theory-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-hope-theory-off-broadway-2026 --checkpoint --ingest-missing",
+      "title": "Review gap — \"The Hope Theory\" missing 4 cited review(s)",
+      "description": "The Hope Theory (the-hope-theory-off-broadway-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-hope-theory-off-broadway-2026 --checkpoint --ingest-missing",
       "severity": "warning",
       "url": null,
       "fields": []
@@ -454,28 +511,142 @@
       "fields": []
     },
     {
-      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (438/250 reqs)",
-      "description": "Zone web_unlocker2 billed 438 requests today against a ceiling of 250.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n5 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: opening-night-poller.js (479), audit-show-review-gap.js (30), backfill-unknown-critics.js (16).",
-      "severity": "critical",
+      "title": "Opening night drift: Macbeth (macbeth-off-broadway-2026) — escalated after 20 notifications",
+      "description": "Filed BRO-4067 for owner triage after 20 repeats with no tracker.\n\nReview counts do not reconcile for Macbeth (macbeth-off-broadway-2026): local review-texts=7, reviews.json aggregate=0, live production=n/a, drift=7 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
+      "severity": "error",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35831480300",
+      "fields": [
+        {
+          "name": "Show",
+          "value": "Macbeth (macbeth-off-broadway-2026)",
+          "inline": false
+        },
+        {
+          "name": "Counts",
+          "value": "local=7, aggregate=0, live=n/a, drift=7",
+          "inline": false
+        },
+        {
+          "name": "Opening",
+          "value": "2026-09-22",
+          "inline": false
+        },
+        {
+          "name": "Run",
+          "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/35831480300)",
+          "inline": false
+        }
+      ]
+    },
+    {
+      "title": "Landing blocked: unit-tests-node red on land/bro4068-ack-landed-refusal-hint",
+      "description": "land.yml did not land land/bro4068-ack-landed-refusal-hint: the unit-tests-node gate went red at 56ef265ceb. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35834934350",
+      "severity": "error",
+      "url": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/bro4068-ack-landed-refusal-hint"
+        },
+        {
+          "name": "gate",
+          "value": "unit-tests-node"
+        },
+        {
+          "name": "tip",
+          "value": "56ef265ceb8eb2198e3baef5f58a1c8c2a5ac8c9"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35834934350"
+        }
+      ]
+    },
+    {
+      "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
+      "description": "check-corpus-drift.js audit \"aggregator-archive-integrity\" (node scripts/audit-aggregator-archive-integrity.js --strict) has been drifting. Latest output:\n\nAggregator-archive integrity:\n  Scanned: 5983 files\n  Skipped (no show in shows.json): 263\n  Bad: 2\n\n❌ NEW bad archives (1):\n   - theatre-reviews/here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026\n\nEach represents a cached aggregator HTML file whose page title\ndoes not match the showId in the filename — i.e., poisoned cache.\n\nRemediate by re-fetching or quarantining the file, then re-running\nthe audit. To accept these intentionally, run --update-baseline.",
+      "severity": "error",
       "url": null,
       "fields": []
     },
     {
-      "title": "T1 Coverage Scoreboard — already tracked at BRO-3030",
-      "description": "This condition already has an open tracker (BRO-3030); not filing a duplicate. It will go quiet in the digest from here.\n\nbroadway: 75.7% (365/482)\noff-broadway: 41.2% (128/311)\nwest-end: 76% (415/546)\n\nOldest gaps:\nA Midsummer Night's Dream — financialtimes (937h)\nA Midsummer Night's Dream — observer (937h)\nA Midsummer Night's Dream — standard (937h)\nABBA Voyage — independent (937h)\nAladdin — ew (937h)\n… 181 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\nBuena Vista Social Club — broadwaynews (937h)\nHeathers The Musical — dailybeast (937h)\nJust in Time — broadwaynews (937h)\nOthello — broadwaynews (937h)\nOthello — dailybeast (937h)\n… 2 more circuit-open cell(s)",
-      "severity": "warning",
+      "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
+      "description": "check-corpus-drift.js audit \"critic-outlets\" (node scripts/audit-critic-outlets.js --strict) has been drifting. Latest output:\n\n  Tony Marinelli at broadwayscorecard (4% share) for sukkot-off-broadway-2026\n    Primary: theater-scene (96%), total: 25 reviews\n  Pete Hempstead at whatsonstage (3% share) for the-lost-boys-2026\n    Primary: theatermania (98%), total: 40 reviews\n  Susannah Clapp at guardian (9% share) for much-ado-about-nothing-globe-off-west-end-2026\n    Primary: observer (91%), total: 32 reviews\n  Susannah Clapp at guardian (9% share) for stranger-things-the-first-shadow-west-end-2023\n    Primary: observer (91%), total: 32 reviews\n  Susannah Clapp at guardian (9% share) for sylvia-off-west-end-2026\n    Primary: observer (91%), total: 32 reviews\n  Patrick Ryan at tennessean (3% share) for gypsy-2024\n    Primary: usatoday (97%), total: 31 reviews\n  David Kaufman at nydailynews (4% share) for proof-2000\n    Primary: theater-scene (96%), total: 23 reviews\n  Emlyn Travis at amny (3% share) for cabaret-2024\n    Primary: ew (97%), total: 29 reviews\n  Shania Russell at cbsnews (10% share) for gypsy-2024\n    Primary: ew (90%), total: 21 reviews\n  Shania Russell at cbsnews (10% share) for spamalot-2005\n    Primary: ew (90%), total: 21 reviews\n  Frank J. Avella at edge-new-york (5% share) for heisenberg-2016\n    Primary: the-contending (95%), total: 21 reviews\n  Scott Matthewman at musical-theatre-review (5% share) for teeth-n-smiles-west-end-2026\n    Primary: thereviewshub (95%), total: 19 reviews\n  Markos Papadatos at truehollywoodtalk (4% share) for the-lost-boys-2026\n    Primary: digital-journal (96%), total: 28 reviews\n\n--report-only/--strict: No files written\n\n(33 baselined, 5 new)\n\n⚠️  NEW flagged review(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/critic-outlets-baseline.json):\n  David Barbour at theatermania (0% share) for the-39-steps-2008\n  Michael Dale at talkinbroadway (3% share) for benevolent-off-broadway-2026\n  Michael Dale at talkinbroadway (3% share) for camping-off-broadway-2026\n  Shania Russell at cbsnews (10% share) for gypsy-2024\n  Shania Russell at cbsnews (10% share) for spamalot-2005\n\nInvestigate the attribution, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-critic-outlets.js --update-baseline",
+      "severity": "error",
       "url": null,
       "fields": []
+    },
+    {
+      "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
+      "description": "check-corpus-drift.js audit \"duplicate-of-cleared-contradiction\" (node scripts/audit-duplicate-of-cleared-contradiction.js --gate --max=0) has been drifting. Latest output:\n\nDuplicate-of-cleared contradiction sweep: 44383 review file(s) scanned, 2 match(es).\n  and-juliet-2022/theatermania--pete-hempstead.json -> theatermania--jesse-green.json (both claim/deny the same URL)\n  the-cottage-2023/theater-life--paulanne-simmons.json -> theater-life--samuel-l-leiter.json (both claim/deny the same URL)\n\nFAIL: 2 review file(s) carry a duplicateOf pointer AND a _duplicateOfCleared breadcrumb for the same URL (> max 0).\nThis is the #1655 class: two contradictory verdicts about the same URL collision on one record.\nFix: node scripts/audit-duplicate-of-cleared-contradiction.js --fix (retracts the dead breadcrumb; duplicateOf already governs inclusion — see the module docblock for why this is safe in bulk).",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
+      "description": "check-corpus-drift.js audit \"orphan-show-ids\" (node scripts/audit-orphan-show-ids.js) has been drifting. Latest output:\n\n  meat-suit-or-the-stshow-of-motherhood-2026\n  mother-russia-2026\n  much-ado-about-nothing-globe-west-end-2026\n  my-joy-is-heavy-2025\n  night-side-songs-2026\n  not-nobody-2026\n  pen-pals-2025\n  perfect-crime-1987\n  pied-a-terre-2026\n  silver-manhattan-2026\n  singfeld-a-musical-about-nothing-2023\n  spare-parts-2026\n  spread-2026\n  the-25th-annual-putnam-county-spelling-bee-2025\n  the-amazing-adventures-of-kavalier-and-clay-2025\n  the-choir-of-man-west-end-2026\n  the-dinosaurs-2026\n  the-disappear-2026\n  the-infinite-wrench-2025\n  the-little-mermaid-the-musical-2026\n  the-monsters-2026\n  the-office-a-musical-parody-2018\n  the-other-place-2026\n  the-phantom-of-the-opera-off-west-end-2021\n  the-phantom-of-the-opera-west-end-2021\n  the-play-that-goes-wrong-2019\n  the-reservoir-2026\n  the-tragedy-of-coriolanus-2026\n  the-unknown-2026\n  the-waterfall-2026\n  the-winters-tale-2026\n  this-is-my-favorite-song-2024\n  touch-2026\n  ulysses-2026\n  unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026\n  what-we-did-before-our-moth-days-2026\n  you-got-older-2026\n  zack-2026\n\nRun with --fix to delete orphan slim files. audience-buzz/show-score require manual rename.",
+      "severity": "error",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Landing blocked: rebase red on land/job/linear-BRO-4078-mudwlbr7",
+      "description": "land.yml did not land land/job/linear-BRO-4078-mudwlbr7: the rebase gate went red at 1dbedadc79. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-4078-mudwlbr7 @ 1dbedadc79 (origin/land/job/linear-BRO-4078-mudwlbr7) → origin/main @ c2f35eee13 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ c2f35eee13: Rebasing (1/2) error: could not apply e973eaf4b0... test(BRO-4078): hermetic e2e coverage for the rebase-landed stranded tie hint: Resolve all conflicts manually, mark them as resolved with hint:  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35845013950",
+      "severity": "error",
+      "url": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/job/linear-BRO-4078-mudwlbr7"
+        },
+        {
+          "name": "gate",
+          "value": "rebase"
+        },
+        {
+          "name": "tip",
+          "value": "1dbedadc799fe949cb31a89dcb39e6de9dff3e53"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35845013950"
+        }
+      ]
+    },
+    {
+      "title": "Landing blocked: rebase red on land/job/linear-BRO-4075-mudw0mfp",
+      "description": "land.yml did not land land/job/linear-BRO-4075-mudw0mfp: the rebase gate went red at 9a7d06eb11. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-4075-mudw0mfp @ 9a7d06eb11 (origin/land/job/linear-BRO-4075-mudw0mfp) → origin/main @ ca8cb6f588 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ ca8cb6f588: Rebasing (1/2) Rebasing (2/2) error: could not apply 9a7d06eb11... fix(dispatch-ledger): redesign BRO-4075 fix per adversarial review (Codex + QA agent) hint: Resolve all conflicts manually, mark  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35845109343",
+      "severity": "error",
+      "url": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/job/linear-BRO-4075-mudw0mfp"
+        },
+        {
+          "name": "gate",
+          "value": "rebase"
+        },
+        {
+          "name": "tip",
+          "value": "9a7d06eb11a9a2b3f79196d4f1679ba53d2941bb"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/35845109343"
+        }
+      ]
     },
     {
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
-      "description": "check-corpus-drift.js audit \"cv-flag-contradiction\" (node scripts/audit-cv-flag-contradiction.js --window=30 --strict) has been drifting. Latest output:\n\nFlag-vs-CV contradiction sweep: 142 shows in the last 30d window, 5 contradiction(s) found.\n  [wrongProduction] tosca-off-broadway-2026/new-york-classical-review--george-grella.json (925w)\n  [wrongProduction] tosca-off-broadway-2026/operawire--chris-ruel.json (2816w)\n  [wrongProduction] miles-for-mary-off-broadway-2026/talkinbroadway--marc-miller.json (675w)\n  [wrongProduction] kimberly-akimbo-off-west-end-2026/broadwayworld--katie-kirkpatrick.json (899w)\n  [wrongProduction] the-revlon-girl-off-west-end-2026/london-box-office--stacey-tyler.json (817w)\nCoverage: examined 87 of 3054 corpus show(s) (1456 review file(s) parsed).\n  --window=30d selected 142 show(s): 41 already opened, 101 not yet opened (the window filter has no upper bound).\n  55 selected show(s) yielded no readable review file (directory missing, unreadable, empty, or every file failed to parse).\n  2967 corpus show(s) were NOT examined, of which 423 carry no usable openingDate (missing or unparseable) and are excluded at EVERY window.\n  A clean result above covers only the examined shows. It is not a statement about the corpus.\n\n(4 baselined, 1 new)\n\n⚠️  NEW flag-vs-CV contradiction(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/cv-flag-contradiction-baseline.json):\n  [wrongProduction] kimberly-akimbo-off-west-end-2026/broadwayworld--katie-kirkpatrick.json\n\nInvestigate, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-cv-flag-contradiction.js --update-baseline",
+      "description": "check-corpus-drift.js audit \"cv-flag-contradiction\" (node scripts/audit-cv-flag-contradiction.js --window=30 --strict) has been drifting. Latest output:\n\nFlag-vs-CV contradiction sweep: 142 shows in the last 30d window, 5 contradiction(s) found.\n  [wrongProduction] tosca-off-broadway-2026/new-york-classical-review--george-grella.json (925w)\n  [wrongProduction] tosca-off-broadway-2026/operawire--chris-ruel.json (2816w)\n  [wrongProduction] miles-for-mary-off-broadway-2026/talkinbroadway--marc-miller.json (675w)\n  [wrongProduction] kimberly-akimbo-off-west-end-2026/broadwayworld--katie-kirkpatrick.json (899w)\n  [wrongProduction] the-revlon-girl-off-west-end-2026/london-box-office--stacey-tyler.json (817w)\nCoverage: examined 87 of 3056 corpus show(s) (1504 review file(s) parsed).\n  --window=30d selected 142 show(s): 43 already opened, 99 not yet opened (the window filter has no upper bound).\n  55 selected show(s) yielded no readable review file (directory missing, unreadable, empty, or every file failed to parse).\n  2969 corpus show(s) were NOT examined, of which 424 carry no usable openingDate (missing or unparseable) and are excluded at EVERY window.\n  A clean result above covers only the examined shows. It is not a statement about the corpus.\n\n(4 baselined, 1 new)\n\n⚠️  NEW flag-vs-CV contradiction(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/cv-flag-contradiction-baseline.json):\n  [wrongProduction] kimberly-akimbo-off-west-end-2026/broadwayworld--katie-kirkpatrick.json\n\nInvestigate, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-cv-flag-contradiction.js --update-baseline",
       "severity": "error",
       "url": null,
       "fields": []
     }
   ],
   "autoFixedCount": 1,
-  "passedCount": 57,
-  "totalCount": 105
+  "passedCount": 60,
+  "totalCount": 106
 }
