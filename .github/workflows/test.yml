@@ -188,6 +188,11 @@ on:
       # (registered in tests/unit-test-manifest.txt) — scripts/tests/ is not
       # scripts/lib/, so it needs its own path entry to fire CI on a solo edit.
       - 'scripts/tests/ack-landed-job-id.test.mjs'
+      # BRO-4066: the reclassify-headless-endings.js backfill CLI and its
+      # scripts/tests/ test (registered in tests/unit-test-manifest.txt) —
+      # neither is covered by the globs above, so both need their own entry.
+      - 'scripts/reclassify-headless-endings.js'
+      - 'scripts/tests/reclassify-headless-endings.test.mjs'
       # scripts/lib/fanout-verified-core.test.mjs covers the decision this
       # CLI wraps (BRO-3939); listed so a solo edit to the CLI still fires CI.
       - 'scripts/fanout-verified.js'
