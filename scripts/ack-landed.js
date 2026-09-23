@@ -88,8 +88,11 @@ const CODE_PATHS = ['scripts', 'src', '.github', 'package.json', 'next.config.js
 const USAGE = `ack-landed.js — record that a stopped-short/stranded dispatch's work landed (writes the ledger row Gate O v2 accepts).
 
 Usage:
-  node scripts/ack-landed.js --id BRO-N --sha <commit> --verify "<safe-form acceptance command>" --reason "<why you are sure, >=15 chars>" [--job-id <jobId>] [--no-linear] [--acked-by <id>]
+  node scripts/ack-landed.js --id BRO-N [--sha <commit>] --verify "<safe-form acceptance command>" --reason "<why you are sure, >=15 chars>" [--job-id <jobId>] [--no-linear] [--acked-by <id>]
 
+  --sha <commit>    optional. Omitted: derived from origin/main — the newest
+                     commit naming BRO-N inside the window the chosen mode
+                     judges by; refuses if there is none (BRO-4071).
   --job-id <jobId>  scope every precondition to ONE dispatch attempt (its own
                      launch/job-spawned + terminal rows) instead of the ref's
                      latest — for acking an EARLIER attempt that landed after
@@ -219,18 +222,29 @@ function namingCandidates(ref, launchTs, terminalTs, opts = {}) {
   return out;
 }
 
+// Commits on origin/main that name `ref` inside the window the decision will
+// judge them by (ctx = main()'s hintCtx). Shared by the refusal hint and by
+// --sha derivation (BRO-4071) so the two can never disagree. undefined = no
+// sha can pass --already-landed's timing check (unreadable launch ts);
+// null = the search itself failed; [] = searched, none.
+function candidatesFor(ref, ctx, refusals = [], opts = {}) {
+  // decideAlreadyLanded refuses EVERY sha while any launch row has an
+  // unreadable ts, so offering candidates then would only trade refusals.
+  const noTiming = ctx.alreadyLanded && (!Number.isFinite(Date.parse(ctx.beforeTs || ''))
+    || refusals.some(r => /unreadable ts/.test(String(r))));
+  return noTiming ? undefined : namingCandidates(ref, ctx.launchTs, ctx.terminalTs, { ...opts, beforeTs: ctx.beforeTs });
+}
+
+function whereFor(ref, ctx) {
+  return ctx.alreadyLanded ? `before ${ref}'s earliest dispatch launch (${ctx.beforeTs})` : "inside this job's window";
+}
+
 function refuse(ref, refusals, ctx = {}) {
   console.error(`❌ REFUSED: ${ref} not acked — ${refusals.length} failed precondition(s):`);
   for (const r of refusals) console.error(`   - ${r}`);
   if (refusals.some(r => /does not name/.test(String(r)))) {
-    const where = ctx.alreadyLanded ? `before ${ref}'s earliest dispatch launch (${ctx.beforeTs})` : "inside this job's window";
-    // decideAlreadyLanded refuses EVERY sha while any launch row has an
-    // unreadable ts, so offering candidates then would only trade refusals.
-    const noTiming = ctx.alreadyLanded && (!Number.isFinite(Date.parse(ctx.beforeTs || ''))
-      || refusals.some(r => /unreadable ts/.test(String(r))));
-    const cands = noTiming
-      ? undefined
-      : namingCandidates(ref, ctx.launchTs, ctx.terminalTs, { beforeTs: ctx.beforeTs });
+    const where = whereFor(ref, ctx);
+    const cands = candidatesFor(ref, ctx, refusals);
     if (cands === undefined) {
       console.error(`   → ${ref}'s dispatch launch timestamps are not all readable, so no sha can satisfy --already-landed's timing check — no candidates offered.`);
     } else if (cands === null) {
@@ -256,8 +270,8 @@ function main() {
   const args = parseArgs(argv);
   if (args.error) { console.error(args.error); console.error(USAGE); process.exit(2); }
   const ref = core.normalizeRef(args.id);
-  if (!ref || !args.sha || !args.verify || !args.reason) {
-    console.error('missing or malformed --id/--sha/--verify/--reason (id must be BRO-N)');
+  if (!ref || !args.verify || !args.reason) {
+    console.error('missing or malformed --id/--verify/--reason (id must be BRO-N)');
     console.error(USAGE);
     process.exit(2);
   }
@@ -308,6 +322,23 @@ function main() {
     git(['fetch', '--quiet', 'origin', 'main'], { timeout: 120000 });
   } catch (e) {
     refuse(ref, [`git fetch origin main failed: ${String(e.stderr || e.message).trim()}`]);
+  }
+  // 2b. No --sha: derive it (BRO-4071) from the same candidate search the
+  //     refusal hint uses, AFTER the fetch so it sees current origin/main.
+  //     The derived sha then runs every precondition below exactly as a
+  //     typed one would — derivation only removes the guess, never a check.
+  if (!args.sha) {
+    const cands = candidatesFor(ref, hintCtx);
+    const where = whereFor(ref, hintCtx);
+    if (cands === undefined) refuse(ref, [`--sha not given and it cannot be derived: ${ref}'s dispatch launch timestamps are not all readable, so no sha can satisfy --already-landed's timing check`]);
+    if (cands === null) refuse(ref, [`--sha not given and it cannot be derived: searching origin/main for commits naming ${ref} failed (no origin/main, a shallow clone, or git refused the query) — pass --sha explicitly`]);
+    if (!cands.length) refuse(ref, [`--sha not given and no commit on origin/main names ${ref} ${where} — nothing to derive; pass --sha if the work landed under commits that never mention the card`]);
+    // namingCandidates keeps git log order (newest commit first, capped at
+    // 5), so [0] is the tip of the most recent landing. Every candidate passes the same naming + window guard,
+    // so the choice only affects which sha the ledger row cites.
+    args.sha = cands[0].sha;
+    console.error(`→ --sha not given: derived ${args.sha} — the newest of ${cands.length}${cands.length >= 5 ? '+' : ''} commit(s) on origin/main naming ${ref} ${where}`);
+    for (const c of cands.slice(1)) console.error(`     also naming it: ${c.sha}  ${c.authored}  ${String(c.subject).slice(0, 62)}`);
   }
   let sha;
   try {
@@ -428,4 +459,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, CODE_PATHS, VERIFY_TIMEOUT_MS, namingCandidates };
+module.exports = { parseArgs, CODE_PATHS, VERIFY_TIMEOUT_MS, namingCandidates, candidatesFor };
