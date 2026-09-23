@@ -55,11 +55,11 @@ test('no file for the URL is NOT landed', () => {
   assert.match(r.reason, /no review file/);
 });
 
-test('a merge into an existing file under a different URL still counts (outlet + critic match)', () => {
+test('an older listed review by the same outlet + critic does NOT vouch for an excluded submission', () => {
   const r = checkSubmissionLanded({
-    showId: SHOW.id, url: URL_OK,
-    reviews: [{ showId: SHOW.id, outletId: 'telegraph', criticName: 'tristram fane saunders', url: 'https://www.telegraph.co.uk/other-slug/' }],
+    showId: SHOW.id, url: URL_BAD,
+    reviews: [...reviews, { showId: SHOW.id, outletId: 'daily-mail', criticName: 'Patrick Marmion', url: 'https://www.dailymail.co.uk/older-piece/' }],
     reviewTextsDir: fixture(), show: SHOW,
   });
-  assert.equal(r.landed, true);
+  assert.equal(r.landed, false);
 });

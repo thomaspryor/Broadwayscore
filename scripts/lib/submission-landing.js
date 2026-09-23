@@ -12,7 +12,6 @@
 const fs = require('fs');
 const path = require('path');
 const { canonicalizeUrlForDedup, explainExclusion } = require('./review-guards');
-const { normalizeCritic } = require('./review-normalization');
 
 function findSubmissionFile(showDir, submittedUrl) {
   const want = canonicalizeUrlForDedup(submittedUrl);
@@ -35,12 +34,13 @@ function findSubmissionFile(showDir, submittedUrl) {
 function checkSubmissionLanded({ showId, url, reviews, reviewTextsDir, show }) {
   const file = findSubmissionFile(path.join(reviewTextsDir, showId), url);
   if (!file) return { landed: false, reason: 'no review file was written for this URL', file: null };
+  // URL identity only. An outlet+critic fallback would let an older, already
+  // listed review by the same critic vouch for a submission that was itself
+  // excluded (ship-check 2026-09-22). A merge that kept a different URL on the
+  // file is not found above and is reported as not landed: a maintainer look,
+  // never a false "added".
   const fileUrl = canonicalizeUrlForDedup(file.data.url);
-  const critic = normalizeCritic(file.data.criticName || '');
-  const inReviews = reviews.some((r) => r.showId === showId && (
-    (fileUrl && canonicalizeUrlForDedup(r.url) === fileUrl)
-    || (r.outletId === file.data.outletId && normalizeCritic(r.criticName || '') === critic)
-  ));
+  const inReviews = !!fileUrl && reviews.some((r) => r.showId === showId && canonicalizeUrlForDedup(r.url) === fileUrl);
   if (inReviews) return { landed: true, reason: null, file: file.path };
   const why = explainExclusion(file.data, show, file.path);
   return { landed: false, reason: why || 'excluded during rebuild (date or duplicate check)', file: file.path };

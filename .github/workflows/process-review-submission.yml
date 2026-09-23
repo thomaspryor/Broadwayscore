@@ -390,9 +390,9 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
-            const body = '## ⏳ Received — finishing by hand\n\n' +
+            const body = '## ⏳ Received — needs a manual check\n\n' +
               'Thanks! This submission was approved, but our automated pipeline could not add it to the site on its own ' +
-              '(`' + (process.env.EXCLUDED_REASON || 'unknown') + '`). A maintainer has been notified and will finish adding it.\n\n' +
+              '(`' + (process.env.EXCLUDED_REASON || 'unknown') + '`). It has been flagged for a maintainer to review by hand.\n\n' +
               '---\n*Automated check • ' + new Date().toISOString() + '*';
             await github.rest.issues.createComment({
               owner: context.repo.owner, repo: context.repo.repo, issue_number: issueNumber, body,

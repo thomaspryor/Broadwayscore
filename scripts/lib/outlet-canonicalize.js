@@ -89,10 +89,43 @@ function lookupOutletForHost(host, { exactOnly = false } = {}) {
     if (i > 0 && platform && candidate === platform) break;
     if (i > 0 && isBareSuffix(candidate)) break;
     if (ambiguous.has(candidate)) return null;
-    if (domainToOutlet[candidate]) return domainToOutlet[candidate];
+    if (domainToOutlet[candidate]) {
+      const match = domainToOutlet[candidate];
+      // A partner publication hosted on a publisher's subdomain
+      // (jewishchronicle.timesofisrael.com) is NOT the publisher. Refuse the
+      // parent match when a subdomain label spells out another registered
+      // outlet's name — the caller then falls back to its no-match path.
+      if (i > 0) {
+        const names = compactOutletNames();
+        for (const label of parts.slice(0, i)) {
+          const owner = names.get(label.replace(/[^a-z0-9]/g, ''));
+          if (owner && owner !== match) return null;
+        }
+      }
+      return match;
+    }
     if (exactOnly) return null;
   }
   return null;
+}
+
+// compact name ("jewishchronicle") -> outletId, from registered ids and display
+// names. Only names >= 8 chars: short generic words ("preview", "online") are
+// real subdomain labels and must not block a legitimate parent match.
+let _cachedCompactNames = null;
+function compactOutletNames() {
+  if (_cachedCompactNames) return _cachedCompactNames;
+  const seen = new Map();
+  for (const [id, o] of Object.entries(loadRegistry().outlets || {})) {
+    for (const raw of [id, o.displayName]) {
+      if (!raw) continue;
+      const c = String(raw).toLowerCase().replace(/^the[\s-]+/, '').replace(/[^a-z0-9]/g, '');
+      if (c.length < 8) continue;
+      seen.set(c, seen.has(c) && seen.get(c) !== id ? null : id);
+    }
+  }
+  _cachedCompactNames = new Map([...seen].filter(([, id]) => id));
+  return _cachedCompactNames;
 }
 
 function parseDomain(url) {

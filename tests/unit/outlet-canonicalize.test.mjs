@@ -256,4 +256,10 @@ describe('lookupOutletForHost — parent-domain resolution (issue #908)', () => 
     const r = resolveCanonicalOutletId({ outletArg: 'the-jewish-chronicle', url: 'https://jewishchronicle.timesofisrael.com/x' });
     assert.notStrictEqual(r.outletId, 'the-times-of-israel');
   });
+
+  test('a partner publication on a publisher subdomain is not the publisher', () => {
+    assert.strictEqual(lookupOutletForHost('jewishchronicle.timesofisrael.com'), null);
+    assert.strictEqual(lookupOutletForHost('blogs.timesofisrael.com'), 'the-times-of-israel');
+    assert.strictEqual(lookupOutletForHost('preview.ew.com'), 'ew', 'short generic labels never block');
+  });
 });
