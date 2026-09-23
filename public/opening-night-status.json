@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-23T11:01:10.101Z",
+  "generatedAt": "2026-09-23T12:11:26.674Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "opera",
       "openingDate": "2026-09-23",
-      "status": "upcoming",
+      "status": "open",
       "slug": "cosi-fan-tutte-off-broadway",
       "thumbnail": "/images/shows/cosi-fan-tutte-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -393,7 +393,7 @@
       "category": "west-end",
       "type": "musical",
       "openingDate": "2026-09-23",
-      "status": "previews",
+      "status": "open",
       "slug": "the-last-ship-west-end",
       "thumbnail": "/images/shows/the-last-ship-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -2176,6 +2176,45 @@
       "status": "previews",
       "slug": "school-girls-or-the-african-mean-girls-play",
       "thumbnail": "/images/shows/school-girls-or-the-african-mean-girls-play-2026/thumbnail.webp",
+      "daysUntil": 5,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "degenerates-off-broadway-2026",
+      "title": "Degenerates",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-09-28",
+      "status": "previews",
+      "slug": "degenerates-off-broadway",
+      "thumbnail": "/images/shows/degenerates-off-broadway-2026/thumbnail.webp",
       "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
