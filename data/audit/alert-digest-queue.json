@@ -89,30 +89,6 @@
     "queuedAt": "2026-09-22T21:57:56.073Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
-    "title": "Review gap — \"Crazy Mama: A True Story of Love and Madness\" missing 3 cited review(s)",
-    "description": "Crazy Mama: A True Story of Love and Madness (crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-22T22:44:43.212Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:macbeth-off-broadway-2026",
-    "title": "Review gap — \"Macbeth\" missing 5 cited review(s)",
-    "description": "Macbeth (macbeth-off-broadway-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=macbeth-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-22T22:44:43.227Z"
-  },
-  {
     "conditionKey": "opening-night-placeholder-synopsis-la-boheme-off-broadway-2026",
     "title": "Placeholder synopsis on La Bohème",
     "description": "synopsis for la-boheme-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
@@ -792,5 +768,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-23T19:33:16.776Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
+    "title": "Review gap — \"Crazy Mama: A True Story of Love and Madness\" missing 2 cited review(s)",
+    "description": "Crazy Mama: A True Story of Love and Madness (crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-23T21:00:37.285Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:macbeth-off-broadway-2026",
+    "title": "Review gap — \"Macbeth\" missing 2 cited review(s)",
+    "description": "Macbeth (macbeth-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=macbeth-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-23T21:00:37.307Z"
   }
 ]
