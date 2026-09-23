@@ -6,6 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   assessMainRedStreak, failingJobsFromNeeds,
   stepFailureSignature, firstFailingTestNameInJobLog, failingStepSignatures, signaturesToResolve,
+  trackSignatureAbsence, jobNameFromRedKey, STALE_ABSENT_RUN_THRESHOLD,
 } = require('./main-red-streak.js');
 
 const NOW = Date.parse('2026-08-17T15:40:00.000Z');
@@ -409,4 +410,71 @@ test('an unparseable createdAt on the anchor run reports null duration, not a si
   assert.equal(r.redRunCount, 1);
   assert.equal(r.redStreakHours, null);
   assert.equal(r.alarm, null);
+});
+
+// ── BRO-4054: stale signature tracking ───────────────────────────────────────
+
+test('jobNameFromRedKey strips the prefix and the trailing hash', () => {
+  assert.equal(jobNameFromRedKey('test-yml:red:E2E Tests:c2df710e'), 'E2E Tests');
+  assert.equal(jobNameFromRedKey('test-yml:red:Unit Tests:0858c92a'), 'Unit Tests');
+});
+
+test('trackSignatureAbsence: 3 consecutive failed runs without the signature resolve it; 2 do not', () => {
+  const key = stepFailureSignature('Unit Tests', 'Run unit tests', 'old test');
+  const otherSig = [{ conditionKey: stepFailureSignature('Unit Tests', 'Run unit tests', 'new test') }];
+  const failingRun = { jobs: [testJob('Unit Tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests')])] };
+  let cond = { [key]: { status: 'open' } };
+  const r1 = trackSignatureAbsence(cond, otherSig, failingRun, '1001');
+  assert.deepEqual(r1, { toResolve: [], updates: { [key]: ['1001'] } });
+  cond = { [key]: { status: 'open', absentRunIds: r1.updates[key] } };
+  const r2 = trackSignatureAbsence(cond, otherSig, failingRun, '1002');
+  assert.deepEqual(r2.toResolve, []);
+  assert.deepEqual(r2.updates[key], ['1001', '1002']);
+  cond = { [key]: { status: 'open', absentRunIds: r2.updates[key] } };
+  const r3 = trackSignatureAbsence(cond, otherSig, failingRun, '1003');
+  assert.deepEqual(r3.toResolve, [key]);
+  assert.equal(r3.updates[key].length, STALE_ABSENT_RUN_THRESHOLD);
+  // the same run id never counts twice (a re-run of the step in one run)
+  const dup = trackSignatureAbsence({ [key]: { status: 'open', absentRunIds: ['1001', '1002'] } }, otherSig, failingRun, '1002');
+  assert.deepEqual(dup, { toResolve: [], updates: {} });
+});
+
+test('trackSignatureAbsence: the signature reappearing resets the counter to zero', () => {
+  const key = stepFailureSignature('Unit Tests', 'Run unit tests', 'flaky test');
+  const failingRun = { jobs: [testJob('Unit Tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests')])] };
+  const r = trackSignatureAbsence({ [key]: { status: 'open', absentRunIds: ['1', '2'] } }, [{ conditionKey: key }], failingRun, '3');
+  assert.deepEqual(r, { toResolve: [], updates: { [key]: [] } });
+  // present and already at zero → no update row at all
+  assert.deepEqual(trackSignatureAbsence({ [key]: { status: 'open' } }, [{ conditionKey: key }], failingRun, '4').updates, {});
+});
+
+test('trackSignatureAbsence counts absence ONLY when the key\'s job ran and failed on a real step (skipped/green/setup-only/other job never tick)', () => {
+  const key = stepFailureSignature('E2E Tests', 'Run unit tests', 'x');
+  const cond = { [key]: { status: 'open', absentRunIds: ['1', '2'] } };
+  const none = [];
+  // skipped job → no evidence
+  assert.deepEqual(trackSignatureAbsence(cond, none, { jobs: [testJob('E2E Tests', 'skipped', [])] }, '3'), { toResolve: [], updates: {} });
+  // green job → resolve-on-green's business, not a stale tick
+  assert.deepEqual(trackSignatureAbsence(cond, none, { jobs: [testJob('E2E Tests', 'success', [okStep('Run unit tests')])] }, '3'), { toResolve: [], updates: {} });
+  // setup-only infra failure → no evidence
+  assert.deepEqual(trackSignatureAbsence(cond, none, { jobs: [testJob('E2E Tests', 'failure', [failedStep('Set up job')])] }, '3'), { toResolve: [], updates: {} });
+  // a DIFFERENT job failing says nothing about this key
+  assert.deepEqual(trackSignatureAbsence(cond, none, { jobs: [testJob('Unit Tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests')])] }, '3'), { toResolve: [], updates: {} });
+  // cancelled job (timed out) with phantom failures after the cancel → no evidence
+  assert.deepEqual(trackSignatureAbsence(cond, none, { jobs: [testJob('E2E Tests', 'cancelled', [{ name: 'Checkout', conclusion: 'cancelled' }, failedStep('Run unit tests')])] }, '3'), { toResolve: [], updates: {} });
+  // the job DID fail on a real step, but on another test → tick → stale
+  const r = trackSignatureAbsence(cond, [{ conditionKey: stepFailureSignature('E2E Tests', 'Run unit tests', 'y') }],
+    { jobs: [testJob('E2E Tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests')])] }, '3');
+  assert.deepEqual(r.toResolve, [key]);
+});
+
+test('trackSignatureAbsence: a job whose log fetch failed this run gets no absence tick (job+step-only signature must not read as "gone")', () => {
+  const key = stepFailureSignature('E2E Tests', 'Run unit tests', 'x');
+  const cond = { [key]: { status: 'open', absentRunIds: ['1', '2'] } };
+  const run = { jobs: [testJob('E2E Tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests')])] };
+  const stepOnly = [{ conditionKey: stepFailureSignature('E2E Tests', 'Run unit tests', null) }];
+  assert.deepEqual(trackSignatureAbsence(cond, stepOnly, run, '3', { unreliableJobs: new Set(['E2E Tests']) }), { toResolve: [], updates: {} });
+  // non-red keys are ignored entirely
+  assert.deepEqual(trackSignatureAbsence({ 'health-check:Cookies': { status: 'open' } }, none(), run, '3'), { toResolve: [], updates: {} });
+  function none() { return []; }
 });

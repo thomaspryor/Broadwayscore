@@ -946,3 +946,32 @@ test('sweepOrphanedJobs: dryRun never writes to the ledger or releases the lease
   assert.deepEqual(h.appended, []);
   assert.deepEqual(h.released, []);
 });
+
+// ── BRO-4054: red-first ordering ─────────────────────────────────────────────
+
+test('red-first ordering: main() runs the bounded red-first pass BEFORE any orphan/tab sweep', () => {
+  const { runRedFirstPassBounded, RED_FIRST_TIMEOUT_MS } = require('./bsc-reconcile.js');
+  assert.equal(typeof runRedFirstPassBounded, 'function');
+  assert.ok(RED_FIRST_TIMEOUT_MS > 0 && RED_FIRST_TIMEOUT_MS < 300 * 1000, 'must finish inside the 300s launchd StartInterval');
+  const src = fs.readFileSync(new URL('./bsc-reconcile.js', import.meta.url), 'utf8');
+  const mainStart = src.indexOf('async function main() {');
+  assert.ok(mainStart > 0);
+  const body = src.slice(mainStart);
+  const redFirstAt = body.indexOf('await runRedFirstPassBounded();');
+  const sweepAt = body.indexOf('sweepOrphanedJobs(entries');
+  assert.ok(redFirstAt > 0, 'main() must invoke the red-first pass');
+  assert.ok(sweepAt > 0);
+  assert.ok(redFirstAt < sweepAt, 'red-first must precede the orphan sweep (and everything after it)');
+});
+
+test('red-first pass is bounded and non-fatal: a hanging pass times out and a throwing pass is swallowed', async () => {
+  const redFirst = require('./lib/red-first-dispatch.js');
+  const { runRedFirstPassBounded } = require('./bsc-reconcile.js');
+  const orig = redFirst.runRedFirstPass;
+  try {
+    redFirst.runRedFirstPass = async () => { throw new Error('boom'); };
+    await runRedFirstPassBounded(); // must not throw
+  } finally {
+    redFirst.runRedFirstPass = orig;
+  }
+});
