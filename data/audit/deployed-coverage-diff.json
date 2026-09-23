@@ -1,15 +1,39 @@
 {
-  "generatedAt": "2026-09-23T12:29:22.645Z",
+  "generatedAt": "2026-09-23T17:46:40.462Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 140,
-  "clean": 139,
-  "defective": 1,
+  "checked": 141,
+  "clean": 125,
+  "defective": 16,
   "byType": {
-    "missing-from-prod": 1
+    "score-drift": 15,
+    "missing-from-prod": 3
   },
   "shows": [
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "title": "Macbeth",
+      "openingDate": "2026-09-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "3 scored outlet(s) absent from the deployed payload: new-york-classical-review, operawire, oxfordprospectarts"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed payload has no numeric cs (local 79.33)"
+        }
+      ],
+      "missingFromProd": [
+        "new-york-classical-review",
+        "operawire",
+        "oxfordprospectarts"
+      ],
+      "localCount": 3,
+      "deployedCount": 0
+    },
     {
       "showId": "kimberly-akimbo-off-west-end-2026",
       "title": "Kimberly Akimbo",
@@ -26,6 +50,222 @@
       ],
       "localCount": 28,
       "deployedCount": 27
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "title": "My Neighbour Totoro",
+      "openingDate": "2025-03-08",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: nytimes"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.36 vs local 84.01 (Δ0.35)"
+        }
+      ],
+      "missingFromProd": [
+        "nytimes"
+      ],
+      "localCount": 15,
+      "deployedCount": 14
+    },
+    {
+      "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
+      "title": "The Cherry Orchard",
+      "openingDate": "2026-09-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 74.64 vs local 74.79 (Δ0.15)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 11
+    },
+    {
+      "showId": "in-honor-of-jean-michel-basquiat-off-broadway-2026",
+      "title": "In Honor of Jean-Michel Basquiat",
+      "openingDate": "2026-09-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.93 vs local 78.68 (Δ0.25)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 11
+    },
+    {
+      "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
+      "title": "BLOODSPORT: After Helen of Troy",
+      "openingDate": "2026-09-13",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 73.53 vs local 73.43 (Δ0.1)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 27
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "title": "Man to Man",
+      "openingDate": "2026-09-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.89 vs local 77 (Δ0.11)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 33,
+      "deployedCount": 33
+    },
+    {
+      "showId": "a-month-in-the-country-west-end-2026",
+      "title": "A Month in the Country",
+      "openingDate": "2026-09-02",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.52 vs local 80.06 (Δ0.54)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 29,
+      "deployedCount": 29
+    },
+    {
+      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
+      "title": "Much Ado About Nothing",
+      "openingDate": "2026-06-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.15 vs local 78.5 (Δ0.35)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 22,
+      "deployedCount": 22
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "title": "Oh, Mary!",
+      "openingDate": "2025-12-18",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.36 vs local 75.42 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 28,
+      "deployedCount": 28
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "title": "Hadestown",
+      "openingDate": "2024-02-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 73.93 vs local 73.99 (Δ0.06)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 21,
+      "deployedCount": 21
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "title": "Stranger Things: The First Shadow",
+      "openingDate": "2023-12-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.57 vs local 80.95 (Δ2.38)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 26,
+      "deployedCount": 26
+    },
+    {
+      "showId": "abba-voyage-off-west-end-2026",
+      "title": "ABBA Voyage",
+      "openingDate": "2022-05-28",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.3 vs local 85.42 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 15,
+      "deployedCount": 15
+    },
+    {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "title": "Moulin Rouge! The Musical",
+      "openingDate": "2022-01-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.76 vs local 69.84 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 21,
+      "deployedCount": 21
+    },
+    {
+      "showId": "matilda-the-musical-west-end-2021",
+      "title": "Matilda The Musical",
+      "openingDate": "2011-11-24",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 89.73 vs local 89.61 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13
+    },
+    {
+      "showId": "mamma-mia-west-end-2021",
+      "title": "Mamma Mia!",
+      "openingDate": "1999-04-06",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.47 vs local 75.55 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 11
     }
   ]
 }

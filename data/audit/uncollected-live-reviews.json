@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-23T12:29:11.825Z",
+  "generatedAt": "2026-09-23T17:46:30.032Z",
   "maxAgeHours": 12,
-  "showsAffected": 29,
-  "strandedFiles": 43,
+  "showsAffected": 28,
+  "strandedFiles": 42,
   "blackoutShows": [],
   "findings": [
     {
@@ -23,6 +23,12 @@
           "ageHours": null
         },
         {
+          "file": "timeout-london--unknown.json",
+          "url": "https://www.timeout.com/london/theatre/we-made-a-different-cat-bus-a-day-for-five-days-inside-the-rscs-my-neighbour-totoro",
+          "outlet": "Time Out (Barbican)",
+          "ageHours": null
+        },
+        {
           "file": "whatsonstage--unknown.json",
           "url": "https://www.whatsonstage.com/news/the-rscs-wendy-and-peter-pan-at-the-barbican-theatre-review_1700152/",
           "outlet": "WhatsOnStage (Barbican)",
@@ -30,35 +36,35 @@
         }
       ],
       "usable": 34,
-      "discovered": 46,
+      "discovered": 47,
       "totalBlackout": false
     },
     {
-      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
-      "title": "Harry Potter And The Cursed Child: Both Parts",
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "title": "Stranger Things: The First Shadow",
       "status": "open",
       "stranded": [
         {
-          "file": "daily-mail--unknown.json",
-          "url": "https://www.dailymail.com/tvshowbiz/article-3716404/J-K-Rowling-supports-Harry-Potter-Cursed-Child-cast-London-press-preview.html",
-          "outlet": "Daily Mail",
-          "ageHours": 41.256254722222224
+          "file": "independent--unknown.json",
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/stranger-things-the-first-shadow-review-b2464017.html",
+          "outlet": "The Independent",
+          "ageHours": null
         },
         {
-          "file": "nytimes--unknown.json",
-          "url": "https://www.nytimes.com/2016/07/26/theater/review-harry-potter-and-the-cursed-child-casts-a-spell-onstage.html",
-          "outlet": "The New York Times",
-          "ageHours": 41.259100277777776
+          "file": "thestage--unknown.json",
+          "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
+          "outlet": "The Stage",
+          "ageHours": null
         },
         {
-          "file": "variety--unknown.json",
-          "url": "https://variety.com/2016/legit/reviews/harry-potter-and-the-cursed-child-review-play-london-1201822087/",
-          "outlet": "Variety",
-          "ageHours": 41.25806166666667
+          "file": "times-uk--unknown.json",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/stranger-things-the-first-shadow-review-strange-and-staggeringly-good-klckxpnk5",
+          "outlet": "The Times",
+          "ageHours": null
         }
       ],
-      "usable": 27,
-      "discovered": 36,
+      "usable": 52,
+      "discovered": 72,
       "totalBlackout": false
     },
     {
@@ -98,7 +104,7 @@
           "file": "bloomberg--unknown.json",
           "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
           "outlet": "Bloomberg",
-          "ageHours": 1221.3867683333333
+          "ageHours": 1226.6751591666666
         },
         {
           "file": "philadelphia-edge--unknown.json",
@@ -164,61 +170,17 @@
           "file": "thereviewshub--unknown.json",
           "url": "https://www.thereviewshub.com/the-mousetrap-the-alexandra-birmingham-3/",
           "outlet": "The Reviews Hub",
-          "ageHours": 309.75240083333335
+          "ageHours": 315.0407916666667
         },
         {
           "file": "west-end-best-friend--unknown.json",
           "url": "https://www.westendbestfriend.co.uk/news/review-the-mousetrap-the-alexandra-tour",
           "outlet": "West End Best Friend",
-          "ageHours": 189.11532055555554
+          "ageHours": 194.4037113888889
         }
       ],
       "usable": 27,
       "discovered": 35,
-      "totalBlackout": false
-    },
-    {
-      "showId": "paranormal-activity-west-end-2025",
-      "title": "Paranormal Activity",
-      "status": "open",
-      "stranded": [
-        {
-          "file": "guardian--unknown.json",
-          "url": "https://www.theguardian.com/stage/2025/dec/16/paranormal-activity-review-ambassadors-theatre-london",
-          "outlet": "The Guardian",
-          "ageHours": null
-        },
-        {
-          "file": "whatsonstage--unknown.json",
-          "url": "https://www.whatsonstage.com/news/paranormal-activity-west-end-review-a-hauntingly-good-stage-adaptation_1706645/",
-          "outlet": "WhatsOnStage",
-          "ageHours": null
-        }
-      ],
-      "usable": 26,
-      "discovered": 41,
-      "totalBlackout": false
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "title": "Stranger Things: The First Shadow",
-      "status": "open",
-      "stranded": [
-        {
-          "file": "independent--unknown.json",
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/stranger-things-the-first-shadow-review-b2464017.html",
-          "outlet": "The Independent",
-          "ageHours": null
-        },
-        {
-          "file": "thestage--unknown.json",
-          "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
-          "outlet": "The Stage",
-          "ageHours": null
-        }
-      ],
-      "usable": 51,
-      "discovered": 71,
       "totalBlackout": false
     },
     {
@@ -230,17 +192,39 @@
           "file": "north-west-end--unknown.json",
           "url": "https://northwestend.com/burlesque-the-musical-regent-theatre/",
           "outlet": "North West End",
-          "ageHours": 501.6410505555556
+          "ageHours": 506.9294413888889
         },
         {
           "file": "thereviewshub--unknown.json",
           "url": "https://www.thereviewshub.com/burlesque-the-musical-kings-theatre-glasgow/",
           "outlet": "The Reviews Hub",
-          "ageHours": 189.12242194444445
+          "ageHours": 194.41081277777778
         }
       ],
       "usable": 22,
       "discovered": 32,
+      "totalBlackout": false
+    },
+    {
+      "showId": "abba-voyage-off-west-end-2026",
+      "title": "ABBA Voyage",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "standard--unknown.json",
+          "url": "https://www.standard.co.uk/culture/music/abba-voyage-concert-experience-review-london-arena-b1002718.html",
+          "outlet": "Evening Standard",
+          "ageHours": null
+        },
+        {
+          "file": "times-uk--unknown.json",
+          "url": "https://www.thetimes.com/uk/article/abba-voyage-review-holograms-are-fine-but-the-real-thing-is-still-best-skrzc5nsh",
+          "outlet": "The Times",
+          "ageHours": null
+        }
+      ],
+      "usable": 24,
+      "discovered": 33,
       "totalBlackout": false
     },
     {
@@ -258,7 +242,7 @@
           "file": "londonlivinglarge--unknown.json",
           "url": "https://www.londonlivinglarge.com/2026/09/kimberly-akimbo-hampstead-theatre-aug.html",
           "outlet": "Londonlivinglarge",
-          "ageHours": 94.31697722222222
+          "ageHours": 99.60536805555556
         }
       ],
       "usable": 44,
@@ -274,7 +258,7 @@
           "file": "londontheatredirect--unknown.json",
           "url": "https://www.londontheatredirect.com/musical/operation-mincemeat-tickets?srsltid=AfmBOopqWn5X2urH_T_Hz9GwTJM8i1dpD9JO1oThOWl6728AThvffVun",
           "outlet": "Londontheatredirect",
-          "ageHours": 262.58334916666666
+          "ageHours": 267.87174
         }
       ],
       "usable": 35,
@@ -290,7 +274,7 @@
           "file": "radio-times--unknown.json",
           "url": "https://www.radiotimes.com/going-out/oh-mary-hbo-streaming-newsupdate/",
           "outlet": "Radio Times",
-          "ageHours": 211.70642166666667
+          "ageHours": 216.9948125
         }
       ],
       "usable": 70,
@@ -306,11 +290,11 @@
           "file": "all-that-dazzles-uk--unknown.json",
           "url": "https://www.allthatdazzles.co.uk/post/review-sh-t-faced-shakespeare-romeo-juliet-leicester-square-theatre",
           "outlet": "All That Dazzles  (UK)",
-          "ageHours": 639.6061513888889
+          "ageHours": 644.8945422222222
         }
       ],
       "usable": 45,
-      "discovered": 68,
+      "discovered": 69,
       "totalBlackout": false
     },
     {
@@ -322,27 +306,11 @@
           "file": "musical-theatre-review--unknown.json",
           "url": "https://musicaltheatrereview.com/hadestown-new-cast-announced/",
           "outlet": "Musical Theatre Review",
-          "ageHours": 94.37371777777778
+          "ageHours": 99.66210861111111
         }
       ],
       "usable": 74,
       "discovered": 73,
-      "totalBlackout": false
-    },
-    {
-      "showId": "book-of-mormon-2011",
-      "title": "The Book of Mormon",
-      "status": "open",
-      "stranded": [
-        {
-          "file": "washpost--unknown.json",
-          "url": "http://www.washingtonpost.com/entertainment/theater_dance/book-of-mormon-restores-faith-in-musicals/2013/07/11/f965037a-ea68-11e2-818e-aa29e855f3ab_story.html",
-          "outlet": "The Washington Post",
-          "ageHours": 51.15218222222222
-        }
-      ],
-      "usable": 38,
-      "discovered": 49,
       "totalBlackout": false
     },
     {
@@ -383,14 +351,14 @@
       "status": "open",
       "stranded": [
         {
-          "file": "plays-international--unknown.json",
-          "url": "https://playsinternational.org.uk/twenty-thousand-streets-under-the-sky-southwark-playhouse-borough/",
-          "outlet": "Plays International",
-          "ageHours": 43.75657555555556
+          "file": "independent--unknown.json",
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/hamilton-victoria-palace-theatre-london-review-a-magnificent-achievement-thomas-kail-the-book-of-mormon-a8122091.html",
+          "outlet": "Independent",
+          "ageHours": null
         }
       ],
       "usable": 38,
-      "discovered": 55,
+      "discovered": 56,
       "totalBlackout": false
     },
     {
@@ -402,7 +370,7 @@
           "file": "variety--unknown.json",
           "url": "https://variety.com/2024/music/global/elton-john-not-able-to-see-devil-wears-prada-infection-1236232089/",
           "outlet": "Variety",
-          "ageHours": 95.4973263888889
+          "ageHours": 100.78571722222222
         }
       ],
       "usable": 45,
@@ -418,7 +386,7 @@
           "file": "north-west-end--unknown.json",
           "url": "https://northwestend.com/mamma-mia-sheffield-lyceum-theatre/",
           "outlet": "North West End",
-          "ageHours": 70.03580805555555
+          "ageHours": 75.32419888888889
         }
       ],
       "usable": 29,
@@ -450,11 +418,27 @@
           "file": "nytimes--unknown.json",
           "url": "https://www.nytimes.com/2026/08/28/theater/les-miserables-review-hudson-valley-shakespeare.html",
           "outlet": "The New York Times",
-          "ageHours": 573.3260772222222
+          "ageHours": 578.6144680555556
         }
       ],
       "usable": 29,
       "discovered": 31,
+      "totalBlackout": false
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "title": "Paranormal Activity",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "whatsonstage--unknown.json",
+          "url": "https://www.whatsonstage.com/news/paranormal-activity-west-end-review-a-hauntingly-good-stage-adaptation_1706645/",
+          "outlet": "WhatsOnStage",
+          "ageHours": null
+        }
+      ],
+      "usable": 27,
+      "discovered": 41,
       "totalBlackout": false
     },
     {
@@ -474,19 +458,19 @@
       "totalBlackout": false
     },
     {
-      "showId": "wicked-west-end-2021",
-      "title": "Wicked",
+      "showId": "man-to-man-west-end-2026",
+      "title": "Man to Man",
       "status": "open",
       "stranded": [
         {
-          "file": "stagedtheatre--unknown.json",
-          "url": "https://stagedtheatre.co.uk/blogs/off-stage/the-royal-mint-releases-limited-edition-wicked-50p-coin?srsltid=AU7gw4UYeiKKSr049-_neva7Cc6lovnIGDbSiH9E4jgj4x89a1k2F6Ad",
-          "outlet": "Staged Theatre",
-          "ageHours": 21.212217222222222
+          "file": "thestage--sam-marlowe.json",
+          "url": "https://www.thestage.co.uk/reviews/man-to-man-review-jerwood-theatre-downstairs-royal-court-london-tilda-swinton",
+          "outlet": "The Stage",
+          "ageHours": null
         }
       ],
-      "usable": 31,
-      "discovered": 38,
+      "usable": 54,
+      "discovered": 67,
       "totalBlackout": false
     },
     {
@@ -514,7 +498,7 @@
           "file": "times-square-chronicles--unknown.json",
           "url": "https://t2conline.com/theatre-and-film-review-from-a-cramped-bombay-apartment-to-a-1977-disability-rights-occupation-in-san-francisco-two-stories-make-history-feel-remarkably-close/",
           "outlet": "Times Square Chronicles",
-          "ageHours": 70.03219138888889
+          "ageHours": 75.32058222222223
         }
       ],
       "usable": 67,
@@ -522,19 +506,19 @@
       "totalBlackout": false
     },
     {
-      "showId": "abba-voyage-off-west-end-2026",
-      "title": "ABBA Voyage",
+      "showId": "the-comedy-about-spies-west-end-2026",
+      "title": "The Comedy About Spies",
       "status": "open",
       "stranded": [
         {
-          "file": "standard--unknown.json",
-          "url": "https://www.standard.co.uk/culture/music/abba-voyage-concert-experience-review-london-arena-b1002718.html",
-          "outlet": "Evening Standard",
+          "file": "all-that-dazzles-uk--unknown.json",
+          "url": "https://www.allthatdazzles.co.uk/post/review-the-comedy-about-spies-adelphi-theatre",
+          "outlet": "All That Dazzles (2025)",
           "ageHours": null
         }
       ],
-      "usable": 23,
-      "discovered": 32,
+      "usable": 62,
+      "discovered": 65,
       "totalBlackout": false
     },
     {
@@ -546,7 +530,7 @@
           "file": "thestage--the-stage.json",
           "url": "https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays",
           "outlet": "The Stage",
-          "ageHours": 26.527448055555556
+          "ageHours": 31.815838888888887
         }
       ],
       "usable": 46,

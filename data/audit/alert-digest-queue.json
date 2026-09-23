@@ -137,18 +137,6 @@
     "queuedAt": "2026-09-23T00:41:01.718Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:cosi-fan-tutte-off-broadway-2026",
-    "title": "Review gap — \"Così fan tutte\" missing 7 cited review(s)",
-    "description": "Così fan tutte (cosi-fan-tutte-off-broadway-2026): 7 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cosi-fan-tutte-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-23T01:14:29.157Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:the-last-ship-west-end-2026",
     "title": "Review gap — \"The Last Ship\" missing 8 cited review(s)",
     "description": "The Last Ship (the-last-ship-west-end-2026): 8 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-last-ship-west-end-2026 --checkpoint --ingest-missing",
@@ -455,18 +443,6 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-23T06:56:57.711Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-cherry-orchard-park-avenue-armory-off-broadway-2026",
-    "title": "Review gap — \"The Cherry Orchard\" missing 1 cited review(s)",
-    "description": "The Cherry Orchard (the-cherry-orchard-park-avenue-armory-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-cherry-orchard-park-avenue-armory-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-23T06:56:57.713Z"
   },
   {
     "conditionKey": "review-gap:opening-window:the-hope-theory-off-broadway-2026",
@@ -792,5 +768,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-23T17:08:23.161Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:america-who-hurt-you-off-broadway-2026",
+    "title": "Review gap — \"America, Who Hurt You?\" missing 1 cited review(s)",
+    "description": "America, Who Hurt You? (america-who-hurt-you-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=america-who-hurt-you-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-23T17:46:27.702Z"
   }
 ]
