@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-23T17:54:49.092Z",
+  "generatedAt": "2026-09-23T20:24:51.018Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,23 +13,23 @@
       "slug": "cosi-fan-tutte-off-broadway",
       "thumbnail": "/images/shows/cosi-fan-tutte-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 90,
+      "liveScore": null,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 5,
       "siteFileExists": true,
-      "total": 1,
-      "t1": 1,
+      "total": 0,
+      "t1": 0,
       "t2": 0,
       "t3": 0,
-      "positive": 1,
+      "positive": 0,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/12 total",
-          "T1:1/3",
+          "0/12 total",
+          "T1:0/3",
           "T2:0/3",
           "hi-conf:0/8"
         ],
@@ -331,6 +331,10 @@
         {
           "name": "The Spectator  (UK)",
           "isDualMarket": false
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
         },
         {
           "name": "Evening Standard",
@@ -1354,25 +1358,23 @@
       "status": "open",
       "slug": "catarina-and-the-beauty-of-killing-fascists-west-end",
       "thumbnail": "/images/shows/catarina-and-the-beauty-of-killing-fascists-west-end-2026/thumbnail.jpg",
-      "siteScore": 63.43,
-      "liveScore": 63,
-      "scoreDrift": -0.4299999999999997,
+      "siteScore": 63.57,
+      "liveScore": 64,
+      "scoreDrift": 0.4299999999999997,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 15,
+      "total": 17,
       "t1": 6,
       "t2": 7,
-      "t3": 2,
-      "positive": 5,
-      "mixed": 7,
+      "t3": 4,
+      "positive": 6,
+      "mixed": 8,
       "negative": 3,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "hi-conf:5/6"
-        ],
-        "highConfidence": 5,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1382,7 +1384,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -1566,6 +1568,18 @@
           "t3": 2,
           "p": 5,
           "m": 7,
+          "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-23T20:24:51.018Z",
+          "rc": 17,
+          "s": 63.57,
+          "t1": 6,
+          "t2": 7,
+          "t3": 4,
+          "p": 6,
+          "m": 8,
           "n": 3,
           "bc": "waiting"
         }
