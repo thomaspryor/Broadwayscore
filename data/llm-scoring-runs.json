@@ -1,37 +1,5 @@
 [
   {
-    "startedAt": "2026-09-21T08:29:25.982Z",
-    "completedAt": "2026-09-21T08:36:02.187Z",
-    "totalReviews": 178,
-    "processed": 178,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 459514,
-      "output": 41170,
-      "total": 500684
-    },
-    "costUsd": 1.2861947,
-    "runId": "35576406353",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-21T09:03:27.462Z",
-    "completedAt": "2026-09-21T09:03:49.291Z",
-    "totalReviews": 44240,
-    "processed": 0,
-    "skipped": 44236,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 16029,
-      "output": 494,
-      "total": 46406
-    },
-    "costUsd": 0.08190855,
-    "runId": "35578768139",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-21T09:03:51.218Z",
     "completedAt": "2026-09-21T09:10:20.707Z",
     "totalReviews": 178,
@@ -257011,6 +256979,44 @@
     },
     "costUsd": 1.2660193,
     "runId": "35803439872",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-23T01:46:16.281Z",
+    "completedAt": "2026-09-23T01:46:38.640Z",
+    "totalReviews": 44374,
+    "processed": 0,
+    "skipped": 44367,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 26179,
+      "output": 831,
+      "total": 72722
+    },
+    "costUsd": 0.13028489999999998,
+    "runId": "35805844844",
+    "errorDetails": [
+      {
+        "showId": "cosi-fan-tutte-off-broadway-2026",
+        "outletId": "bachtrack",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-23T01:46:40.590Z",
+    "completedAt": "2026-09-23T01:53:06.651Z",
+    "totalReviews": 175,
+    "processed": 175,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 451764,
+      "output": 41547,
+      "total": 493311
+    },
+    "costUsd": 1.2743543,
+    "runId": "35805844844",
     "errorDetails": []
   }
 ]
