@@ -585,7 +585,13 @@ function validateDates(shows) {
 
     // Logic checks
     if (show.status === 'closed' && show.closingDate && show.closingDate > today) {
-      error(`Show "${show.title}" marked closed but closingDate is future: ${show.closingDate}`);
+      // Show id in parens (not just the title) so validation-setdiff.js's
+      // per-show attribution (task #1439) can hold back just this show
+      // instead of falling back to blocking the whole discovery batch
+      // (BRO-4099 — this exact error was unattributable and, worse, the
+      // update-show-status.yml pre-validate snapshot ran AFTER the writer
+      // that introduces it, so it read as "pre-existing" every time).
+      error(`Show "${show.title}" (${show.id}) marked closed but closingDate is future: ${show.closingDate}`);
       issues++;
     }
 
