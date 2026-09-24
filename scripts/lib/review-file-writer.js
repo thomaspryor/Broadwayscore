@@ -428,6 +428,41 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     return { action: 'skipped', reason: 'suspicious-outlet-id' };
   }
 
+  // --- Guard: named non-review URL pattern (BRO-4101) ---
+  // non-review-url-patterns.js's NAMED_NON_REVIEW_URL_PATTERNS (ticketing/
+  // venue/event-listing host+path pairs, e.g. londontheatre.co.uk/show/NNNN)
+  // was already consulted by the S5 coverage probe's classifyNonReviewUrl()
+  // and audit-show-review-gap.js's discovery-time isReviewUrl() — but NOT by
+  // this shared write chokepoint, so SERP discovery could still ingest and
+  // score one of these pages as a "review". Confirmed live: the-last-ship-
+  // west-end-2026's londontheatre.co.uk/show/47207-the-last-ship (a ticketing
+  // page — synopsis + "Book tickets" copy + anonymous audience comments, no
+  // critic byline) was ingested via serp-discovery, LLM-scored 82, and shipped
+  // to prod before a human caught it. Checked before the aggregator-URL guard
+  // below since a named non-review host is never a review regardless of what
+  // outlet name/domain it happens to share.
+  //
+  // Scoped to isUnvettedSerpSource(input.source) — the SAME scope as
+  // review-guards.js's namedNonReviewUrl rebuild-time rule, for the SAME
+  // reason (ship-check adversarial review, ×2 independent reviewers): this
+  // guard runs before the merge-vs-create fork below, so an UNSCOPED version
+  // would silently refuse forever any future re-merge/refresh write to a
+  // file like burn-this-2019/new-york-city-theatre--nicola-quinn.json — a
+  // real, scored, contentTier:complete review (source: show-score-playwright)
+  // whose citation URL happens to sit on a host-wide named pattern
+  // (newyorkcitytheatre.com). Every OTHER source this function serves
+  // (aggregator scrapers, submit-review-form) already carries its own
+  // vetting elsewhere in this file (or, for submissions, in
+  // validate-review-submission.js's LLM gate) — this guard's job is
+  // specifically to close the gap SERP discovery had.
+  if (input.url && require('./unvetted-serp-sources').isUnvettedSerpSource(input.source)) {
+    const namedReason = require('./non-review-url-patterns').namedNonReviewReason(input.url);
+    if (namedReason) {
+      console.warn(`  ⛔ Skipping named non-review URL: ${input.url} (${namedReason})`);
+      return { action: 'skipped', reason: `named-non-review-url: ${namedReason}` };
+    }
+  }
+
   // --- Guard: aggregator URL on a real outlet (2026-08-09) ---
   // An aggregator-domain URL (theatre.reviews, show-score.com, stagedoor.com, …)
   // is a ROUNDUP page citing other outlets — not `outletId`'s own review. A file

@@ -3522,6 +3522,44 @@ function explainExclusion(data, show, filePath) {
   // (2026-07-09, Notion 39a637c5-416f-813a). Canonical-guard rule:
   // memory/feedback_includability_predicates_must_be_canonical.md.
   if (data.url && require('./domain-filters').isBlockedReviewUrl(data.url)) return 'blockedReviewUrl';
+  // Named non-review URL patterns (BRO-4101), scoped to unvetted-SERP-sourced
+  // records only (isUnvettedSerpSource — the canonical SUSPECT_SOURCES set
+  // also used by audit-corpus-contamination.js's wrong-production audit).
+  // non-review-url-patterns.js's NAMED_NON_REVIEW_URL_PATTERNS was curated
+  // purely as a DISCOVERY-time reject (skipping a candidate that was never
+  // fetched costs nothing) — several entries are host-wide (e.g.
+  // newyorkcitytheatre.com) rather than path-scoped, which is NOT safe as an
+  // unconditional SCORING-time exclusion: burn-this-2019's new-york-city-
+  // theatre--nicola-quinn.json (source: show-score-playwright, a real named
+  // critic, contentTier: complete, scored 93) legitimately carries a citation
+  // URL on that host and would be silently dropped by an unscoped check
+  // (verified against the full corpus before landing this). Scoping to
+  // isUnvettedSerpSource targets exactly the bug's shape — a raw SERP hit on
+  // a named ticketing/listing host with no aggregator/human vetting, the same
+  // class as the-last-ship-west-end-2026's londontheatre.co.uk/show/47207
+  // ticket page (source: serp-discovery, Unknown critic, LLM-scored 82,
+  // shipped live) — while leaving aggregator/submission-sourced content
+  // alone. review-file-writer.js's own named-non-review-url guard (added
+  // alongside this one, identically scoped for the identical reason: an
+  // unscoped ingest-time version would permanently refuse any future
+  // re-merge/refresh write to a file like the burn-this-2019 one above)
+  // only ever blocks a WRITE going forward — it never re-evaluates
+  // already-scored content on disk, so this rule is the one that needs the
+  // narrow scope to avoid a retroactive regression.
+  //
+  // namedNonReviewUrlManualClear escape hatch (ship-check adversarial
+  // review): unlike isNonReview/wrongProduction, this rule has no boolean
+  // flag a human can just flip to false — it's a live URL-pattern + source
+  // check recomputed every rebuild. Without an override field, a human who
+  // verifies a specific unvetted-SERP file IS a genuine review despite
+  // matching a named pattern has no way to keep it scored short of lying
+  // about the URL or source. Same direct-check pattern as
+  // wrongProductionManualClear elsewhere in this file.
+  if (
+    data.url && data.namedNonReviewUrlManualClear !== true &&
+    require('./unvetted-serp-sources').isUnvettedSerpSource(data.source) &&
+    require('./non-review-url-patterns').namedNonReviewReason(data.url)
+  ) return 'namedNonReviewUrl';
   if (
     (data.isNonReview === true && !isNonReviewDemotedByFreshCV(data)) ||
     data.isNotReview === true ||

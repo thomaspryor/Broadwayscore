@@ -101,6 +101,7 @@ test('each exclusion rule name fires for its own trigger', () => {
     ['fullTextWrongAuthorNoExcerpt', { fullText: text, fullTextWrongAuthor: true }],
     ['noTextOrScoreSignal', { url: 'https://example.com/review' }],
     ['blockedReviewUrl', { fullText: text, url: 'https://www.google.com/url?q=https://example.com' }],
+    ['namedNonReviewUrl', { fullText: text, source: 'serp-discovery', url: 'https://www.londontheatre.co.uk/show/47207-the-last-ship' }],
     ['previewPlaceholder', { fullText: text, isPreviewPlaceholder: true }],
     ['previewPlaceholder', { aggregatorStars: 4, isPreviewPlaceholder: true }],
     // wrongShow survives its own rule (manually cleared) but still blocks the
@@ -113,6 +114,34 @@ test('each exclusion rule name fires for its own trigger', () => {
     assert.strictEqual(got, expected, `expected rule "${expected}" for ${JSON.stringify(data)?.slice(0, 120)}, got "${got}"`);
     assert.strictEqual(isIncludableForRebuild(data, null, undefined), false);
   }
+});
+
+test('namedNonReviewUrl (BRO-4101) is scoped to serp-discovery sources only — a real review whose citation URL happens to sit on a named-pattern host must not be dropped just for sharing a source label', () => {
+  const text = 'A perfectly ordinary review body with more than enough words to pass the text gate.';
+  // broadwayworld.com/shows/.../cast is a NAMED_NON_REVIEW_URL_PATTERNS entry
+  // (venue-production-page) not also covered by domain-filters' blockedReviewUrl
+  // list, so this exercises the namedNonReviewUrl branch specifically rather
+  // than being pre-excluded by an earlier rule in the chain.
+  const named = { fullText: text, url: 'https://www.broadwayworld.com/shows/Some-Show-123456/cast', criticName: 'A Real Critic' };
+  const nonSerpSources = [undefined, 'show-score-playwright', 'bww-roundup', 'submit-review-form'];
+  for (const source of nonSerpSources) {
+    const data = source === undefined ? { ...named } : { ...named, source };
+    assert.notStrictEqual(explainExclusion(data, null, undefined), 'namedNonReviewUrl', `source=${source} must not trigger namedNonReviewUrl`);
+  }
+  for (const source of ['serp-discovery', 'serp-discovery-per-critic', 'outlet-serp-discovery', 'broad-web-serp', 'site-search', 'opening-night-discovery']) {
+    assert.strictEqual(explainExclusion({ ...named, source }, null, undefined), 'namedNonReviewUrl', `source=${source} should trigger namedNonReviewUrl`);
+  }
+});
+
+test('namedNonReviewUrlManualClear escape hatch lets a human-verified file through', () => {
+  const text = 'A perfectly ordinary review body with more than enough words to pass the text gate.';
+  const data = {
+    fullText: text,
+    source: 'serp-discovery',
+    url: 'https://www.broadwayworld.com/shows/Some-Show-123456/cast',
+    namedNonReviewUrlManualClear: true,
+  };
+  assert.notStrictEqual(explainExclusion(data, null, undefined), 'namedNonReviewUrl');
 });
 
 test('previewPlaceholder — BRO-931 #3 escape hatches let a genuinely-cleared file through', () => {

@@ -33,6 +33,7 @@ const { sanitizeCriticName } = require('./lib/byline-normalization');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { validateUrlDomain, serpQuery } = require('./lib/url-discovery');
 const { safeWriteReview, preserveFlaggedFields } = require('./lib/review-write-guard');
+const { namedNonReviewReason } = require('./lib/non-review-url-patterns');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
