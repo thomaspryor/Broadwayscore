@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-09-23T12:25:53.755Z",
-  "scanned": 2104,
+  "updatedAt": "2026-09-24T12:23:33.058Z",
+  "scanned": 2108,
   "showsWithViolations": 332,
-  "totalViolations": 645,
+  "totalViolations": 646,
   "newSinceLastRun": 1,
   "newViolationKeys": [
-    "godspell-2011::bloomberg--jeremy-gerard.json"
+    "godspell-2011::northjerseycom--robert-feldberg.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -412,6 +412,7 @@
     "private-lives-2011::backstage--erik-haagensen.json",
     "venus-in-fur-2011::ap--mark-kennedy.json",
     "godspell-2011::bloomberg--jeremy-gerard.json",
+    "godspell-2011::northjerseycom--robert-feldberg.json",
     "other-desert-cities-2011::northjerseycom--robert-feldberg.json",
     "chinglish-2011::ap--mark-kennedy.json",
     "chinglish-2011::newsday--linda-winer.json",
@@ -5371,7 +5372,7 @@
       "showId": "godspell-2011",
       "title": "Godspell",
       "openingDate": "2011-11-07",
-      "message": "bloomberg/Jeremy Gerard (bloomberg--jeremy-gerard.json) SHIPPED but fullText never mentions 'Godspell' (350 chars): http://www.businessweek.com/news/2011-11-07/creepy-godspell-sounds-off-key-quarterback-s-a-girl-review.html\n⚠️  faster-times/Jonathan Mandell (faster-times--jonathan-mandell.json) also too short to assess (0 chars): http://www.thefastertimes.com/newyorktheater/2011/11/07/godspell-review/",
+      "message": "bloomberg/Jeremy Gerard (bloomberg--jeremy-gerard.json) SHIPPED but fullText never mentions 'Godspell' (350 chars): http://www.businessweek.com/news/2011-11-07/creepy-godspell-sounds-off-key-quarterback-s-a-girl-review.html\nnorthjerseycom/Robert Feldberg (northjerseycom--robert-feldberg.json) SHIPPED but fullText never mentions 'Godspell' (403 chars): http://www.northjersey.com/arts_entertainment/133418228_Imaginative__fast-paced__Godspell__returns_to_Broadway.html",
       "violations": [
         {
           "filename": "bloomberg--jeremy-gerard.json",
@@ -5379,6 +5380,14 @@
           "outletId": "bloomberg",
           "criticName": "Jeremy Gerard",
           "haystackLength": 350,
+          "textIssuesFlag": false
+        },
+        {
+          "filename": "northjerseycom--robert-feldberg.json",
+          "url": "http://www.northjersey.com/arts_entertainment/133418228_Imaginative__fast-paced__Godspell__returns_to_Broadway.html",
+          "outletId": "northjerseycom",
+          "criticName": "Robert Feldberg",
+          "haystackLength": 403,
           "textIssuesFlag": false
         }
       ]
@@ -7707,7 +7716,7 @@
       "showId": "man-to-man-west-end-2026",
       "title": "Man to Man",
       "openingDate": "2026-09-11",
-      "message": "financialtimes/Tim Bano (financialtimes--tim-bano.json) SHIPPED but fullText never mentions 'Man to Man' (3410 chars): https://www.ft.com/content/340eb1e7-e089-452f-b84a-5c4c67bfac9c\n⚠️  financialtimes/Unknown (financialtimes--unknown.json) also too short to assess (0 chars): https://www.ft.com/content/340eb1e7-e089-452f-b84a-5c4c67bfac9c\n⚠️  thestage/Matt Barton (thestage--matt-barton.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse",
+      "message": "financialtimes/Tim Bano (financialtimes--tim-bano.json) SHIPPED but fullText never mentions 'Man to Man' (3410 chars): https://www.ft.com/content/340eb1e7-e089-452f-b84a-5c4c67bfac9c\n⚠️  financialtimes/Unknown (financialtimes--unknown.json) also too short to assess (0 chars): https://www.ft.com/content/340eb1e7-e089-452f-b84a-5c4c67bfac9c\n⚠️  thestage/Matt Barton (thestage--matt-barton.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse\n⚠️  thestage/Sam Marlowe (thestage--sam-marlowe.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/man-to-man-review-jerwood-theatre-downstairs-royal-court-london-tilda-swinton\n⚠️  thestage/The Stage (thestage--the-stage.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/man-to-man-review-jerwood-theatre-downstairs-royal-court-london-tilda-swinton",
       "violations": [
         {
           "filename": "financialtimes--tim-bano.json",
