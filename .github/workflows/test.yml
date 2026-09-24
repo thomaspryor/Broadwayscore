@@ -1069,6 +1069,12 @@ on:
       # so a solo edit to either triggers CI.
       - 'scripts/audit-flagged-file-contamination.js'
       - 'scripts/audit-flagged-file-contamination.test.mjs'
+      # BRO-1361: top-level scripts/ file (no scripts/** glob) with a colocated
+      # test registered explicitly in tests/unit-test-manifest.txt (root-level
+      # scripts/*.test.mjs files are NOT globbed) — both need their own entry
+      # so a solo edit to either triggers CI.
+      - 'scripts/audit-transfer-review-gaps.js'
+      - 'scripts/audit-transfer-review-gaps.test.mjs'
       # BRO-547: top-level scripts/ file (no scripts/** glob) with a colocated
       # test registered explicitly in tests/unit-test-manifest.txt (root-level
       # scripts/*.test.mjs files are NOT globbed) — both need their own entry
