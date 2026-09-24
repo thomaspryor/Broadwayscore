@@ -529,7 +529,22 @@ async function refreshShowScoreStatuses(data, updates, ttActiveIds) {
           to: 'closed',
           note: `ShowScore says "${ssData.raw}", TodayTix not active`
         });
-        if (!dryRun) show.status = 'closed';
+        if (!dryRun) {
+          show.status = 'closed';
+          // ShowScore reporting "Closed" means the run ended before its
+          // announced date — a stored future closingDate is now stale and
+          // contradicts status=closed (BRO-4099: slam-frank-off-broadway-2026
+          // sat closed with closingDate 2026-11-30 for a day, tripping
+          // pre-deploy-check.js's integrity gate and blocking every deploy).
+          // Clear it here so the writer never produces the contradiction;
+          // the true closing date is unknown, same as the stale-open
+          // auto-close path above.
+          const todayStr = new Date().toISOString().slice(0, 10);
+          if (show.closingDate && show.closingDate > todayStr && canWriteClosingDate(show)) {
+            const staleDate = show.closingDate;
+            writeClosingDate(show, null, `update-show-status ShowScore refresh: cleared stale future closingDate on closure (was ${staleDate})`, { todayStr });
+          }
+        }
         statusChanges++;
       }
     }
