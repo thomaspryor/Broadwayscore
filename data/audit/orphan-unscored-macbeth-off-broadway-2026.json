@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "macbeth-off-broadway-2026",
   "openingDate": "2026-09-22",
-  "detectedAt": "2026-09-24T19:59:45.448Z",
+  "detectedAt": "2026-09-24T20:15:21.771Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "financialtimes--unknown.json",
-      "outletId": "financialtimes",
-      "criticName": "Unknown",
-      "url": "https://www.ft.com/content/33b320ce-c28d-451b-8f29-f2a6312ba9c9",
-      "fullTextLen": 4347,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "talkclassical--unknown.json",
       "outletId": "talkclassical",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }

@@ -1,5 +1,53 @@
 [
   {
+    "startedAt": "2026-09-23T02:20:51.733Z",
+    "completedAt": "2026-09-23T02:27:20.212Z",
+    "totalReviews": 175,
+    "processed": 175,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 451764,
+      "output": 41376,
+      "total": 493140
+    },
+    "costUsd": 1.2757768,
+    "runId": "35808154163",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-23T02:53:56.808Z",
+    "completedAt": "2026-09-23T02:54:11.017Z",
+    "totalReviews": 44374,
+    "processed": 0,
+    "skipped": 44370,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 16044,
+      "output": 562,
+      "total": 46410
+    },
+    "costUsd": 0.0954058,
+    "runId": "35810439682",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-23T02:54:13.046Z",
+    "completedAt": "2026-09-23T03:00:27.930Z",
+    "totalReviews": 175,
+    "processed": 175,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 451764,
+      "output": 40715,
+      "total": 492479
+    },
+    "costUsd": 1.2652893,
+    "runId": "35810439682",
+    "errorDetails": []
+  },
+  {
     "startedAt": "2026-09-23T03:27:14.981Z",
     "completedAt": "2026-09-23T03:27:35.283Z",
     "totalReviews": 44374,
@@ -210802,46 +210850,19 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-09-24T19:54:15.123Z",
-    "completedAt": "2026-09-24T19:55:00.105Z",
-    "totalReviews": 44510,
-    "processed": 7,
-    "skipped": 44497,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 56844,
-      "output": 2584,
-      "total": 148180
-    },
-    "costUsd": 0.2484,
-    "runId": "36046352734",
-    "errorDetails": [
-      {
-        "showId": "elf-lyons-the-woman-on-the-edge-off-broadway-2026",
-        "outletId": "mickperrin",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "elf-lyons-the-woman-on-the-edge-off-broadway-2026",
-        "outletId": "one4review",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-09-24T19:55:01.659Z",
-    "completedAt": "2026-09-24T20:01:25.717Z",
-    "totalReviews": 176,
-    "processed": 176,
+    "startedAt": "2026-09-24T20:29:28.722Z",
+    "completedAt": "2026-09-24T20:29:28.736Z",
+    "totalReviews": 0,
+    "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 459118,
-      "output": 40769,
-      "total": 499887
+      "input": 0,
+      "output": 0,
+      "total": 0
     },
-    "costUsd": 1.2801088999999999,
-    "runId": "36046352734",
+    "costUsd": 0,
+    "runId": "36048647694",
     "errorDetails": []
   }
 ]
