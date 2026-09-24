@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-09-23T12:45:55.883Z",
+    "lastUpdated": "2026-09-24T19:00:34.002Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -11298,6 +11298,17 @@
         "oxfordprospectarts"
       ],
       "domain": "oxfordprospectarts.com"
+    },
+    "beyondthecurtain": {
+      "displayName": "Beyondthecurtain",
+      "tier": 3,
+      "aliases": [
+        "beyondthecurtain"
+      ],
+      "domain": "beyondthecurtain.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-09-24T19:00:34.002Z"
     }
   },
   "_aliasIndex": {
