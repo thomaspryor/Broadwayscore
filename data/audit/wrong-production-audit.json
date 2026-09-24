@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-24T15:39:53.867Z",
+  "timestamp": "2026-09-24T15:59:13.775Z",
   "stats": {
-    "totalReviews": 44061,
-    "alreadyFlagged": 18208,
+    "totalReviews": 44085,
+    "alreadyFlagged": 18213,
     "dateGuardCatches": 246,
     "directorMismatch": 1050,
-    "tvFilmSignals": 1306,
-    "londonSignals": 1170,
+    "tvFilmSignals": 1307,
+    "londonSignals": 1171,
     "offBroadwaySignals": 510,
     "yearMismatch": 95,
-    "noPublishDate": 3852
+    "noPublishDate": 3862
   },
   "findings": [
     {
@@ -7639,6 +7639,19 @@
       "score": 86,
       "publishDate": "2026-09-17",
       "url": "https://www.londontheatre.co.uk/reviews/deep-heat-rivalry-review-the-other-palace",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "deep-heat-rivalry-off-west-end-2026",
+      "file": "north-west-end--paul-ackroyd.json",
+      "publishDate": "2026-09-17",
+      "url": "https://northwestend.com/deep-heat-rivalry-the-other-palace/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -38481,6 +38494,19 @@
       "file": "guardian--philip-oltermann.json",
       "publishDate": "2026-08-27",
       "url": "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "file": "liamodell--liam-odell.json",
+      "publishDate": "2026-09-24",
+      "url": "https://liamodell.com/2026/09/24/catarina-and-the-beauty-of-killing-fascists-review-national-theatre-dorfman-festival-davignon-tiago-rodrigues/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
