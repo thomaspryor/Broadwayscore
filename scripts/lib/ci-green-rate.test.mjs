@@ -271,3 +271,21 @@ test('formatReport ends with the verdict line and never says "fixed"', () => {
   assert.doesNotMatch(text, /fixed/i);
   assert.match(text, /red→green latency median: 60 min \(1 sample\)/);
 });
+
+test('a cancel that ran >= HUNG_CANCEL_MIN is a hung job-timeout → RED; a short or undated cancel stays neutral (2026-09-23..24 hidden hang)', () => {
+  const at = (hoursAgo, mins) => new Date(NOW - hoursAgo * H + mins * 60000).toISOString();
+  const rows = [
+    ...greens(10, 30),
+    run(5, 'cancelled', { updatedAt: at(5, 20) }), // a job's timeout-minutes hit
+    run(4, 'cancelled', { updatedAt: at(4, 2) }),  // mid-setup cancel
+    run(3, 'cancelled'),                           // no updatedAt → unknown → neutral
+  ];
+  const res = core.computeGreenRate(rows, { now: NOW });
+  assert.equal(core.classifyConclusion('cancelled', core.HUNG_CANCEL_MIN * 60000), 'red');
+  assert.equal(core.classifyConclusion('cancelled', core.HUNG_CANCEL_MIN * 60000 - 1), 'cancelled');
+  assert.equal(res.counts.red, 1);
+  assert.equal(res.counts.cancelled, 2);
+  assert.equal(res.hungCancelled, 1);
+  assert.deepEqual(res.currentStreak, { color: 'red', length: 1 }, 'a hang breaks the green streak');
+  assert.match(core.verdictLine(res), /, 1 hung \(cancelled >= 15 min, counted red\)\)/);
+});
