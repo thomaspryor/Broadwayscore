@@ -1,18 +1,48 @@
 {
-  "updatedAt": "2026-09-24T08:36:10.534Z",
-  "processed": 4,
-  "failed": 39,
-  "successRate": "9.3%",
+  "updatedAt": "2026-09-24T10:21:09.118Z",
+  "processed": 34,
+  "failed": 129,
+  "successRate": "20.9%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 20,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 8,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 6
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-09-24T10:03:36.718Z",
+      "event": "bb-session",
+      "session": "4aa13e56",
+      "url": "https://thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oco"
+    },
+    {
+      "t": "2026-09-24T10:03:37.602Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-24T10:06:33.895Z",
+      "event": "bb-session",
+      "session": "4e3a6b95",
+      "url": "http://www.thisislondon.co.uk/theatre/review-23927559-million-dollar-quartet-doe"
+    },
+    {
+      "t": "2026-09-24T10:10:03.620Z",
+      "event": "bb-session",
+      "session": "f6c8d5a7",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
+    },
+    {
+      "t": "2026-09-24T10:10:13.741Z",
+      "event": "bb-session",
+      "session": "b40fcd82",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    }
+  ]
 }
