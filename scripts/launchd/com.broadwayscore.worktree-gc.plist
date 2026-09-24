@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Worktree GC (BRO-2608). Runs scripts/gc-merged-worktrees.sh hourly —
+         the only automated brake on disk growth from abandoned worktrees.
+         data/audit/worktree-gc.log's freshness is watched by
+         scripts/lib/worktree-gc-freshness.js (health-check.js's "Infra:
+         worktree GC log stale" row); a silent stop here previously ran 5
+         days before anyone noticed, disk falling from 88Gi to 26Gi free.
+
+         Was untracked (only ever lived in ~/Library/LaunchAgents) until
+         BRO-3635: the plist was not recoverable from the repo, and the
+         health-check hint told an operator to "check launchctl print" and
+         "run the script manually" — neither of which fixes a launchd job
+         whose StartInterval timer has stopped firing (confirmed BRO-3635:
+         the job was loaded, `last exit code = 0`, the Mac had not slept or
+         rebooted in 24 days, and it simply had not fired in ~4 days —
+         `launchctl print` alone does not reveal this, and running the
+         script by hand refreshes the log without fixing the recurring
+         schedule). A bootout+bootstrap reload immediately restored hourly
+         firing; the fix below is that reload, tracked here so it survives
+         a lost plist and is one copy-paste away next time.
+
+         StartInterval (3600s) is the primary cadence; StartCalendarInterval
+         04:00 local is a daily backstop in case the interval timer gets
+         wedged again — an array of dicts is unneeded here since there's
+         only one entry, but see claude-auth-health.plist for that pattern.
+
+         Install:  cp scripts/launchd/com.broadwayscore.worktree-gc.plist ~/Library/LaunchAgents/
+                   launchctl bootout gui/$(id -u)/com.broadwayscore.worktree-gc 2>/dev/null
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.worktree-gc.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.worktree-gc
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.worktree-gc
+         If the "Infra: worktree GC log stale" health-check row fires again
+         and the job is loaded but simply not firing (the BRO-3635 case —
+         not a disabled/missing job), the fix is the reload above, not just
+         a manual script run. -->
+    <key>Label</key>
+    <string>com.broadwayscore.worktree-gc</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/tompryor/Broadwayscore/scripts/gc-merged-worktrees.sh</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/Users/tompryor/Broadwayscore</string>
+    <key>StartInterval</key>
+    <integer>3600</integer>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>4</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/Users/tompryor/Broadwayscore/data/audit/worktree-gc.launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/tompryor/Broadwayscore/data/audit/worktree-gc.launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+</dict>
+</plist>
