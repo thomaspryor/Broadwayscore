@@ -2794,6 +2794,12 @@ on:
       # (data/cast-changes.json's day-shaped lastUpdated sits on a 72h warn bar).
       # Same scripts/tests/ path-listing rationale as the entry directly above.
       - 'scripts/tests/health-check-hours-ago.test.mjs'
+      # BRO-467: checkAutofixCanary()/checkAutofixThroughput() CI-skip gate —
+      # scripts/health-check.js is already path-listed above, but this test
+      # lives in scripts/tests/ (registered in tests/unit-test-manifest.txt,
+      # not globbed), so it's path-listed here too so a solo edit to just the
+      # test still triggers CI.
+      - 'scripts/tests/health-check-autofix-ci-gate.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
       # validate-show-venue.js already path-listed above (line ~180).

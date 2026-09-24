@@ -2707,7 +2707,35 @@ function readJsonlLedgerOrNull(absPath) {
   return out;
 }
 
-function checkAutofixCanary() {
+// BRO-467 root cause: both rows below need data that is structurally,
+// permanently unavailable to a GitHub-hosted CI runner, not just "absent
+// this run" — autofix-canary-ledger.jsonl and backlog-drain-ledger.jsonl are
+// gitignored/Mac-local (never checked out in CI, ever), and
+// digest-autofix-ledger.jsonl, while tracked, only reaches origin
+// OPPORTUNISTICALLY (scripts/lib/sync-audit-checkout.sh's own header: "the
+// next time ANY worktree session runs merge-worktree-to-main.sh... an
+// acceptable, self-limiting wait" — there is no scheduled pusher), so its
+// committed content can lag live Mac state by an UNBOUNDED number of days.
+// assessThroughputRow's zero-dispatch/zero-pass streaks
+// (ZERO_DISPATCH_ERROR_DAYS=2, ZERO_PASS_ERROR_DAYS=3) assume the ledger
+// reflects "today" — an assumption CI can never satisfy. Reproduced
+// 2026-09-24: CI's committed snapshot (last digest-autofix-ledger.jsonl
+// commit 5 days old, backlog-drain always null) reported "0 dispatches on
+// each of the last 5 day(s)" while the SAME check run against live Mac data
+// showed real dispatch activity on every one of those days. The row's own
+// design (task #1221) refuses to ever report 'pass' while backlogLedger is
+// null (partial blindness must never look healthy) — combined with CI's
+// permanent blindness to that ledger, that means this row can NEVER read
+// 'pass' from CI, only perpetual 'warn'/'error' regardless of true fleet
+// health. planAutofix files a card for 'warn' rows too (not error-only), so
+// left as-is this becomes an unfalsifiable, permanently-recurring false
+// alarm every time nobody happens to merge-to-main for 2+ days — exactly
+// what filed BRO-467. Both signals are only ever trustworthy computed live
+// on the Mac (send-morning-digest.js's own read of these same files, with
+// both ledgers real-time) — CI simply has no honest answer to give, so it
+// gives none rather than a false one.
+function checkAutofixCanary(isCI) {
+  if (isCI) return [];
   const { assessCanaryRow } = require('./lib/autofix-canary.js');
   const dispatchLedger = require('./lib/dispatch-ledger.js');
   const canaryLedgerEntries = readJsonlLedgerOrNull(path.join(AUDIT_DIR, 'autofix-canary-ledger.jsonl'));
@@ -2716,7 +2744,8 @@ function checkAutofixCanary() {
   return [assessCanaryRow({ canaryLedgerEntries, dispatchLedgerEntries })];
 }
 
-function checkAutofixThroughput() {
+function checkAutofixThroughput(isCI) {
+  if (isCI) return [];
   const { assessThroughputRow } = require('./lib/autofix-canary.js');
   const digestLedgerEntries = readJsonlLedgerOrNull(path.join(AUDIT_DIR, 'digest-autofix-ledger.jsonl'));
   const backlogLedgerEntries = readJsonlLedgerOrNull(path.join(AUDIT_DIR, 'backlog-drain-ledger.jsonl'));
@@ -5067,8 +5096,8 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkDispatchHealth(),
     ...(await checkCmuxReachability()),
     ...checkAutofixEffectiveness(),
-    ...checkAutofixCanary(),
-    ...checkAutofixThroughput(),
+    ...checkAutofixCanary(isCI),
+    ...checkAutofixThroughput(isCI),
     ...checkDigestInvariantFail(),
     ...checkStuckPipelineItems(),
   ];
@@ -5319,4 +5348,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems };
+module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput };
