@@ -64,7 +64,8 @@
     "the-last-ship-west-end-2026/telegraph--dominic-cavendish.json",
     "macbeth-off-broadway-2026/vulture--justin-davidson.json",
     "the-story-west-end-2026/hollywood-reporter--jackie-strause.json",
-    "the-story-west-end-2026/rollingstone--elisabeth-garber-paul.json"
+    "the-story-west-end-2026/rollingstone--elisabeth-garber-paul.json",
+    "spandex-off-broadway-2026/recast--unknown.json"
   ],
   "failed": [
     "macbeth-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -331,9 +332,18 @@
     "delirium-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
     "the-last-ship-west-end-2026/times-uk--dominic-maxwell.json",
     "macbeth-off-broadway-2026/talkclassical--unknown.json",
-    "spandex-off-broadway-2026/recast--unknown.json",
     "america-who-hurt-you-off-broadway-2026/vulture--jackson-mchenry.json",
-    "man-to-man-west-end-2026/thestage--sam-marlowe.json"
+    "man-to-man-west-end-2026/thestage--sam-marlowe.json",
+    "cosi-fan-tutte-off-broadway-2026/times-uk--unknown.json",
+    "the-hope-theory-off-broadway-2026/nytg--bridget-gross.json",
+    "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
+    "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json",
+    "pre-existing-condition-off-broadway-2026/nytimes--unknown.json",
+    "pre-existing-condition-off-broadway-2026/guardian--unknown.json",
+    "pre-existing-condition-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "pre-existing-condition-off-broadway-2026/airmail--air-mail.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/new-york-sun--ar-hoffman.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -387,7 +397,10 @@
       "the-story-west-end-2026/times-uk--clive-davis.json",
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
-      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json"
+      "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
+      "data/review-texts/spandex-off-broadway-2026/recast--unknown.json",
+      "spandex-off-broadway-2026/recast--unknown.json",
+      "data/review-texts/the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -425,7 +438,7 @@
     ]
   },
   "startTime": "2026-09-23T21:17:54.294Z",
-  "lastProcessed": "sinatra-the-musical-west-end-2026/express-uk--west-end-theatre.json",
+  "lastProcessed": "midnight-off-broadway-2026/chicagotribune--unknown.json",
   "log": [
     {
       "t": "2026-09-23T22:26:50.209Z",
@@ -517,6 +530,33 @@
       "event": "bb-session",
       "session": "3c5941bb",
       "url": "https://www.londontheatredirect.com/booking/paranormal-activity-tickets/11-2026/"
+    },
+    {
+      "t": "2026-09-24T02:14:22.503Z",
+      "event": "bb-session",
+      "session": "b59a073a",
+      "url": "https://www.recast.show/shows/spandex-the-musical-off-broadway/2026-09-22"
+    },
+    {
+      "t": "2026-09-24T02:17:11.136Z",
+      "event": "bb-session",
+      "session": "ee1b8c49",
+      "url": "https://exeuntnyc.com/reviews/review-in-honor-of-jean-michel-basquiat-at-new-yor"
+    },
+    {
+      "t": "2026-09-24T02:17:19.288Z",
+      "event": "bb-session",
+      "session": "6a6bf175",
+      "url": "https://exeuntnyc.com/reviews/review-in-honor-of-jean-michel-basquiat-at-new-yor"
+    },
+    {
+      "t": "2026-09-24T02:18:08.125Z",
+      "event": "bb-session",
+      "session": "64753ef1",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
     }
+  ],
+  "recoveredAfterFailure": [
+    "spandex-off-broadway-2026/recast--unknown.json"
   ]
 }
