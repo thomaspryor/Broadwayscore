@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-23T12:25:50.546Z",
+  "generatedAt": "2026-09-24T12:23:29.863Z",
   "linearIssue": "BRO-80",
   "scannedShows": 3056,
-  "flaggedShows": 48,
-  "flaggedFiles": 182,
+  "flaggedShows": 47,
+  "flaggedFiles": 181,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
@@ -11,7 +11,7 @@
   "unreadableFiles": 0,
   "byVerdict": {
     "likely-contamination": 27,
-    "needs-human-review": 21
+    "needs-human-review": 20
   },
   "shows": [
     {
@@ -2486,6 +2486,55 @@
       ]
     },
     {
+      "showId": "miss-saigon-west-end-2026",
+      "title": "Miss Saigon",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Prince Edward Theatre",
+      "previewsStartDate": "2027-05-13",
+      "openingDate": "2027-05-27",
+      "verdict": "likely-contamination",
+      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 2,
+        "distinctYears": [
+          2014
+        ],
+        "spanDays": 9,
+        "flaggedCount": 2,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--phil-willmott.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
+          "outletId": "london-box-office",
+          "criticName": "Phil Willmott",
+          "publishDate": "2014-05-30",
+          "url": "https://www.londonboxoffice.co.uk/news/post/miss-saigon-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "timeout-london--tim-byrne.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
+          "outletId": "timeout-london",
+          "criticName": "Tim Byrne",
+          "publishDate": "2014-05-21",
+          "url": "https://www.timeout.com/london/theatre/miss-saigon",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "girls-off-west-end-2026",
       "title": "Girls",
       "market": "west-end",
@@ -2579,55 +2628,6 @@
           "criticName": "Phil Willmott",
           "publishDate": "2016-10-31",
           "url": "https://www.londonboxoffice.co.uk/news/post/review-amadeus",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "aida-off-broadway-2027",
-      "title": "Aida",
-      "market": "broadway",
-      "status": "upcoming",
-      "venue": "Metropolitan Opera House",
-      "previewsStartDate": null,
-      "openingDate": "2027-03-09",
-      "verdict": "likely-contamination",
-      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 2,
-        "distinctYears": [
-          2025
-        ],
-        "spanDays": 3,
-        "flaggedCount": 2,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "financialtimes--george-grella.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "financialtimes",
-          "criticName": "George Grella",
-          "publishDate": "2025-01-03",
-          "url": "https://www.ft.com/content/152651f3-758e-4742-ae99-7197699ca7ce",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--kevin-ng.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Kevin Ng",
-          "publishDate": "2025-01-06",
-          "url": "https://www.thetimes.com/culture/classical-opera/article/aida-review-the-met-dpkkr7tmf",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -2927,42 +2927,6 @@
       ]
     },
     {
-      "showId": "miss-saigon-west-end-2026",
-      "title": "Miss Saigon",
-      "market": "west-end",
-      "status": "upcoming",
-      "venue": "Prince Edward Theatre",
-      "previewsStartDate": "2027-05-13",
-      "openingDate": "2027-05-27",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Prince Edward Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2014
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--phil-willmott.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "previewPlaceholder",
-          "afterReason": "previewPlaceholder",
-          "outletId": "london-box-office",
-          "criticName": "Phil Willmott",
-          "publishDate": "2014-05-30",
-          "url": "https://www.londonboxoffice.co.uk/news/post/miss-saigon-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "michael-off-west-end-2026",
       "title": "Michael",
       "market": "west-end",
@@ -2992,6 +2956,42 @@
           "criticName": "Stuart King",
           "publishDate": "2024-07-31",
           "url": "https://www.londonboxoffice.co.uk/news/post/death-of-england-michael-delroy-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "aida-off-broadway-2027",
+      "title": "Aida",
+      "market": "broadway",
+      "status": "upcoming",
+      "venue": "Metropolitan Opera House",
+      "previewsStartDate": null,
+      "openingDate": "2027-03-09",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Metropolitan Opera House\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2025
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "financialtimes--george-grella.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "financialtimes",
+          "criticName": "George Grella",
+          "publishDate": "2025-01-03",
+          "url": "https://www.ft.com/content/152651f3-758e-4742-ae99-7197699ca7ce",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -3100,42 +3100,6 @@
           "criticName": "Stuart King",
           "publishDate": "2025-01-22",
           "url": "https://www.londonboxoffice.co.uk/news/post/under-the-table-barons-court-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "the-sound-of-music-2027",
-      "title": "The Sound of Music",
-      "market": "broadway",
-      "status": "upcoming",
-      "venue": "Vivian Beaumont Theater - Lincoln Center Theater",
-      "previewsStartDate": "2027-03-23",
-      "openingDate": "2027-04-15",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Vivian Beaumont Theater - Lincoln Center Theater\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2025
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "broadwayworld--paul-batterson.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "broadwayworld",
-          "criticName": "David Friscic",
-          "publishDate": "2025-09-24",
-          "url": "https://www.broadwayworld.com/reviews/The-Sound-of-Music",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
