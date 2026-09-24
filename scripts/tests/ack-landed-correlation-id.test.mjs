@@ -117,3 +117,50 @@ test('a jobId match still wins over a correlationId fallback (attempt 3, unaffec
   assert.equal(d.ok, true, d.refusals.join('\n'));
   assert.equal(d.row.jobId, JOB3);
 });
+
+// Adversarial review (Codex + a subagent) found that a first version of this
+// fix bounded a correlationId match positionally ("up to the next launch or
+// job-spawned row"), which broke two real shapes:
+
+test('adjacency: attempt A\'s terminal row arriving AFTER attempt B\'s launch is still found via workspaceRef, not misattributed to B', () => {
+  const corrA = 'aaaa1111';
+  const corrB = 'bbbb2222';
+  const launchA = '2026-09-16T01:00:00.000Z';
+  const launchB = '2026-09-16T02:00:00.000Z';
+  const terminalA = '2026-09-16T03:00:00.000Z'; // AFTER B's launch — delayed/out-of-order
+  const outOfOrderRows = [
+    { ts: launchA, event: 'launch', taskId: TASK, correlationId: corrA, workspaceRef: 'workspace:601' },
+    { ts: launchB, event: 'launch', taskId: TASK, correlationId: corrB, workspaceRef: 'workspace:602' },
+    { ts: terminalA, event: 'prune-closed', taskId: TASK, workspaceRef: 'workspace:601' },
+  ];
+  const scoped = core.rowsForJobId(outOfOrderRows, corrA, REF);
+  assert.equal(scoped.refusal, null);
+  // A's own launch + its own (delayed) terminal row, NOT B's launch.
+  assert.deepEqual(scoped.rows.map((r) => r.ts), [launchA, terminalA]);
+});
+
+test('a headless launch matched by correlationId still reaches its own job-spawned/terminal rows (job-spawned is not a window boundary)', () => {
+  const corrH = 'headless99';
+  const hLaunchTs = '2026-09-21T00:30:40.000Z';
+  const hSpawnedTs = '2026-09-21T00:30:45.000Z';
+  const hStoppedTs = '2026-09-21T02:08:32.000Z';
+  const headlessRows = [
+    { ts: hLaunchTs, event: 'launch', taskId: TASK, correlationId: corrH, workspaceRef: 'headless:linear:BRO-3471' },
+    { ts: hSpawnedTs, event: 'job-spawned', taskId: TASK, jobId: 'linear:BRO-3471-someid' },
+    { ts: hStoppedTs, event: 'job-stopped-short', taskId: TASK, jobId: 'linear:BRO-3471-someid' },
+  ];
+  const scoped = core.rowsForJobId(headlessRows, corrH, REF);
+  assert.equal(scoped.refusal, null);
+  assert.deepEqual(scoped.rows.map((r) => r.ts), [hLaunchTs, hSpawnedTs, hStoppedTs]);
+});
+
+test('idempotency: a landed-acked row from a correlationId-scoped ack carries the launch\'s workspaceRef, so a re-ack attempt refuses (do not double-ack)', () => {
+  const first = core.decideAck(base({ jobId: CORR1, landing: ATTEMPT1_LANDING }));
+  assert.equal(first.ok, true, first.refusals.join('\n'));
+  assert.equal(first.row.workspaceRef, 'workspace:501');
+
+  const rowsAfterAck = [...rows, { ...first.row, ts: '2026-09-24T12:00:00.000Z' }];
+  const second = core.decideAck(base({ rows: rowsAfterAck, jobId: CORR1, landing: ATTEMPT1_LANDING }));
+  assert.equal(second.ok, false);
+  assert.match(second.refusals.join('\n'), /already landed-acked.*do not double-ack/);
+});

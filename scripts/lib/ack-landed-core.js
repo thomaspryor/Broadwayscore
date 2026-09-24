@@ -107,12 +107,39 @@ function normalizeRef(raw) {
  * first attempt at all — --job-id refused it (not a jobId), --already-landed
  * refused it too (the work postdates the first launch, so it isn't "before
  * ANY dispatch" either). When `jobId` matches no row's `jobId`, fall back to
- * treating it as a correlationId: find the `launch` row that carries it and
- * scope to that ONE attempt's window — the launch row through (but excluding)
- * the next launch/job-spawned row for this ref, which is where the next
- * attempt begins. That window still runs through ledgerPrecondition() exactly
- * like a jobId-scoped one, so the same terminal-event and sha-timing checks
- * apply unchanged.
+ * treating it as a correlationId and find the `launch` row that carries it.
+ *
+ * How the matched launch's OWN rows are then found differs by attempt shape
+ * (adversarial review, BRO-4133 — a first cut here bounded every
+ * correlationId match by "the next launch OR job-spawned row", which broke
+ * two ways a plain positional window can't fix at once):
+ *
+ *   - A cmux launch's workspaceRef ('workspace:N') is the one thing genuinely
+ *     constant across its own launch + terminal rows (dead/vanished/
+ *     prune-closed all carry the SAME workspaceRef — dispatch-ledger.js's own
+ *     launchByRef/terminalForLaunch already key on this). Scoping by that
+ *     workspaceRef finds the attempt's terminal row regardless of file-order
+ *     adjacency to a LATER re-dispatch's launch: e.g. launch(A), launch(B),
+ *     then A's own (delayed) terminal row — a positional "up to the next
+ *     launch" window would misattribute A's terminal to B's scope (or drop it
+ *     entirely), where workspaceRef matching still finds it correctly.
+ *   - A headless launch's workspaceRef ('headless:<taskId>') is NOT shared by
+ *     its own job-spawned/job-* rows — those carry only jobId, which is what
+ *     --job-id should really be given for a headless attempt. correlationId
+ *     is still accepted as a fallback here, positionally: the launch through
+ *     (but excluding) the next literal 'launch' row for this ref. job-spawned
+ *     is deliberately NOT a boundary, unlike a first version of this fix —
+ *     bsc-runner.js always writes job-spawned as the immediate continuation
+ *     of the launch that started it, never as the start of a new attempt
+ *     (linear-next.js's dispatch order: launch, then invoke the runner, which
+ *     writes job-spawned itself), so treating it as a boundary cut a headless
+ *     attempt's own job-spawned/terminal rows out of its own window.
+ *
+ * The emitted `landed-acked` row for a cmux (workspaceRef-scoped) ack carries
+ * that same workspaceRef (decideAck's row-building, below) so a later
+ * re-ack attempt's workspaceRef filter sees it as this attempt's newest row
+ * and refuses the double-ack — the same idempotency jobId scoping already
+ * gets for free by matching on an identifier the row itself carries.
  *
  * When jobId is omitted this is a no-op (identical to today's
  * latest-attempt behavior) — every existing caller that doesn't pass one
@@ -128,12 +155,29 @@ function rowsForJobId(rows, jobId, ref) {
   const byJobId = list.filter((r) => r && r.jobId === jobId);
   if (byJobId.length) return { rows: byJobId, refusal: null };
 
-  const launchIdx = list.findIndex((r) => r && String(r.event) === 'launch' && r.correlationId === jobId);
-  if (launchIdx !== -1) {
-    const window = [list[launchIdx]];
-    for (let i = launchIdx + 1; i < list.length; i++) {
-      if (LAUNCH_EVENTS.has(String(list[i].event))) break;
-      window.push(list[i]);
+  const launchRow = list.find((r) => r && String(r.event) === 'launch' && r.correlationId === jobId);
+  if (launchRow) {
+    const isHeadless = typeof launchRow.workspaceRef === 'string' && launchRow.workspaceRef.startsWith('headless:');
+    let window;
+    if (launchRow.workspaceRef && !isHeadless) {
+      const launchTs = Date.parse(launchRow.ts || '');
+      window = list.filter((r) => {
+        if (!r || r.workspaceRef !== launchRow.workspaceRef) return false;
+        if (r === launchRow) return true;
+        const ts = Date.parse(r.ts || '');
+        // Unorderable rows are kept, not dropped — an unreadable ts must
+        // never silently exclude a row that genuinely belongs to this
+        // attempt (same bias dispatch-ledger.js's own timestamp handling
+        // documents elsewhere in this file).
+        return !Number.isFinite(launchTs) || !Number.isFinite(ts) || ts >= launchTs;
+      });
+    } else {
+      const idx = list.indexOf(launchRow);
+      window = [launchRow];
+      for (let i = idx + 1; i < list.length; i++) {
+        if (String(list[i].event) === 'launch') break;
+        window.push(list[i]);
+      }
     }
     return { rows: window, refusal: null };
   }
@@ -313,6 +357,12 @@ function decideAck(input) {
     event: 'landed-acked',
     taskId: (newest && newest.taskId) || `linear:${ref}`,
     jobId: (newest && newest.jobId) || (launch && launch.jobId) || null,
+    // BRO-4133: carried through so a correlationId-scoped (no jobId) ack's
+    // idempotency guard has something to match on — rowsForJobId's
+    // workspaceRef-based window picks this row up as the attempt's own newest
+    // row on a later re-ack attempt, same as jobId already does for headless
+    // attempts.
+    workspaceRef: (launch && launch.workspaceRef) || undefined,
     sha: landing.sha,
     strandedSha: isStranded ? stranded.sha : undefined,
     verifyCmd: verify.cmd,
