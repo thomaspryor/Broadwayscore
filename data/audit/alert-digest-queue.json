@@ -101,18 +101,6 @@
     "queuedAt": "2026-09-23T00:41:01.718Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-last-ship-west-end-2026",
-    "title": "Review gap — \"The Last Ship\" missing 8 cited review(s)",
-    "description": "The Last Ship (the-last-ship-west-end-2026): 8 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-last-ship-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-23T01:14:29.196Z"
-  },
-  {
     "conditionKey": "land:land/bro3922-watchdog-awaitingclaim-guard",
     "title": "Landing blocked: rebase red on land/bro3922-watchdog-awaitingclaim-guard",
     "description": "land.yml did not land land/bro3922-watchdog-awaitingclaim-guard: the rebase gate went red at cf96143bf2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35813003988",
@@ -792,5 +780,41 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-23T23:23:00.163Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:cosi-fan-tutte-off-broadway-2026",
+    "title": "Review gap — \"Così fan tutte\" missing 7 cited review(s)",
+    "description": "Così fan tutte (cosi-fan-tutte-off-broadway-2026): 7 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cosi-fan-tutte-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-24T00:16:09.711Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026",
+    "title": "Review gap — \"Elf Lyons: The Woman on the Edge\" missing 9 cited review(s)",
+    "description": "Elf Lyons: The Woman on the Edge (elf-lyons-the-woman-on-the-edge-off-broadway-2026): 9 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=elf-lyons-the-woman-on-the-edge-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-24T00:16:09.719Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-last-ship-west-end-2026",
+    "title": "Review gap — \"The Last Ship\" missing 6 cited review(s)",
+    "description": "The Last Ship (the-last-ship-west-end-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-last-ship-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-24T00:16:09.762Z"
   }
 ]

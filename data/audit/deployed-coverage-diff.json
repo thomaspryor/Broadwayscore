@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-09-23T21:00:48.330Z",
+  "generatedAt": "2026-09-24T00:16:20.822Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 141,
-  "clean": 128,
-  "defective": 13,
+  "clean": 123,
+  "defective": 18,
   "byType": {
-    "score-drift": 12,
-    "missing-from-prod": 4
+    "score-drift": 16,
+    "missing-from-prod": 9
   },
   "shows": [
     {
@@ -59,6 +59,65 @@
       "deployedCount": 15
     },
     {
+      "showId": "the-invention-of-love-off-broadway-2026",
+      "title": "The Invention of Love",
+      "openingDate": "2026-09-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: la-voce-di-new-york"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.81 vs local 84 (Δ1.19)"
+        }
+      ],
+      "missingFromProd": [
+        "la-voce-di-new-york"
+      ],
+      "localCount": 9,
+      "deployedCount": 8
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "title": "Golden Boy",
+      "openingDate": "2026-09-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: cultural-capital"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.61 vs local 78.86 (Δ0.25)"
+        }
+      ],
+      "missingFromProd": [
+        "cultural-capital"
+      ],
+      "localCount": 24,
+      "deployedCount": 23
+    },
+    {
+      "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
+      "title": "BLOODSPORT: After Helen of Troy",
+      "openingDate": "2026-09-13",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: cultural-capital"
+        }
+      ],
+      "missingFromProd": [
+        "cultural-capital"
+      ],
+      "localCount": 28,
+      "deployedCount": 27
+    },
+    {
       "showId": "kimberly-akimbo-off-west-end-2026",
       "title": "Kimberly Akimbo",
       "openingDate": "2026-09-09",
@@ -67,6 +126,10 @@
         {
           "type": "missing-from-prod",
           "detail": "1 scored outlet(s) absent from the deployed payload: matineemouse"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 80.82 vs local 80.72 (Δ0.1)"
         }
       ],
       "missingFromProd": [
@@ -74,6 +137,44 @@
       ],
       "localCount": 28,
       "deployedCount": 27
+    },
+    {
+      "showId": "a-month-in-the-country-west-end-2026",
+      "title": "A Month in the Country",
+      "openingDate": "2026-09-02",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: cultural-capital"
+        }
+      ],
+      "missingFromProd": [
+        "cultural-capital"
+      ],
+      "localCount": 30,
+      "deployedCount": 29
+    },
+    {
+      "showId": "sinatra-the-musical-west-end-2026",
+      "title": "Sinatra The Musical",
+      "openingDate": "2026-06-24",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: jonathan-baz"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 65.71 vs local 65.92 (Δ0.21)"
+        }
+      ],
+      "missingFromProd": [
+        "jonathan-baz"
+      ],
+      "localCount": 39,
+      "deployedCount": 38
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
@@ -127,19 +228,19 @@
       "deployedCount": 11
     },
     {
-      "showId": "death-note-the-musical-west-end-2026",
-      "title": "Death Note: The Musical",
-      "openingDate": "2026-08-11",
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "title": "Million Dollar Quartet",
+      "openingDate": "2026-09-14",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 72.92 vs local 72.79 (Δ0.13)"
+          "detail": "deployed cs 74.68 vs local 74.6 (Δ0.08)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 35,
-      "deployedCount": 35
+      "localCount": 21,
+      "deployedCount": 21
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
@@ -149,12 +250,27 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 78.15 vs local 78.32 (Δ0.17)"
+          "detail": "deployed cs 78.15 vs local 78.4 (Δ0.25)"
         }
       ],
       "missingFromProd": [],
       "localCount": 22,
       "deployedCount": 22
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "title": "Oh, Mary!",
+      "openingDate": "2025-12-18",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.36 vs local 75.51 (Δ0.15)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 28,
+      "deployedCount": 28
     },
     {
       "showId": "hadestown-west-end-2024",
@@ -164,7 +280,7 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 73.93 vs local 74.03 (Δ0.1)"
+          "detail": "deployed cs 73.93 vs local 73.99 (Δ0.06)"
         }
       ],
       "missingFromProd": [],
@@ -185,21 +301,6 @@
       "missingFromProd": [],
       "localCount": 26,
       "deployedCount": 26
-    },
-    {
-      "showId": "operation-mincemeat-west-end-2024",
-      "title": "Operation Mincemeat",
-      "openingDate": "2023-05-09",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 88.14 vs local 88.02 (Δ0.12)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23
     },
     {
       "showId": "abba-voyage-off-west-end-2026",
