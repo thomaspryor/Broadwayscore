@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-09-23T12:17:25.355Z",
-  "bannerText": "45/57 Done(14d) verified on main · 3 FAILED · 2 vacuous · 105 stuck-but-done",
+  "generatedAt": "2026-09-24T12:16:58.693Z",
+  "bannerText": "25/27 Done(14d) verified on main · 0 FAILED · 2 vacuous · 107 stuck-but-done",
   "items": [
     {
-      "title": "FAILED BRO-3894 — main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\"",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/venue-complex-slugs.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3894/main-testyml-red-unit-tests-run-unit-tests-no-data-dependency-no-off"
-    },
-    {
-      "title": "FAILED BRO-3864 — P1: duplicate Time Out URL on the-producers-west-end-2025 reds Commercial RSS Poll hourly (7+ runs)",
-      "detail": "⚠️ WARNING: 90 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 33 Off-Bro…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3864/p1-duplicate-time-out-url-on-the-producers-west-end-2025-reds"
-    },
-    {
-      "title": "FAILED BRO-3622 — Rage clicks on /off-broadway 'All' filter (2 occurrences)",
-      "detail": "TAP version 13 # node:internal/modules/esm/get_format:189 # throw new ERR_UNKNOWN_FILE_EXTENSION(ext, filepath); # ^ # TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extensi…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3622/rage-clicks-on-off-broadway-all-filter-2-occurrences"
-    },
-    {
-      "title": "STUCK BRO-4058 — P1: headline-mismatch backstop hides ~45 real reviews (url_content_mismatch 'HTML <title> does not reference show')",
+      "title": "STUCK BRO-3828 — BSC Daily: Stuck pipeline items (card #794)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4058/p1-headline-mismatch-backstop-hides-45-real-reviews-url-content"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3828/bsc-daily-stuck-pipeline-items-card-794"
     },
     {
-      "title": "STUCK BRO-4055 — P1: an hourly job silently re-added the wrong Show Score mapping BRO-3416 hand-removed — 21 of 22 review files in she-loves-me-1994 are the wrong production again, and the guard was made non-blocking the day before",
+      "title": "STUCK BRO-3826 — BSC Daily: Data freshness: shows missing poster/synopsis/tickets (#795)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4055/p1-an-hourly-job-silently-re-added-the-wrong-show-score-mapping-bro"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3826/bsc-daily-data-freshness-shows-missing-postersynopsistickets-795"
     },
     {
-      "title": "STUCK BRO-4052 — Submission bot said 'added' but Golden Boy Daily Mail review never reached site (issue #908 follow-up)",
+      "title": "STUCK BRO-3717 — BSC Daily: Alert Router: dispatch deadman",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4052/submission-bot-said-added-but-golden-boy-daily-mail-review-never"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3717/bsc-daily-alert-router-dispatch-deadman"
     },
     {
-      "title": "STUCK BRO-3961 — main CI red: Test Suite failing pre-existing (audit-venue-write-guard baseline + BRO-2462 dispatch-stall test), unrelated to BRO-3920",
+      "title": "STUCK BRO-3633 — BSC Daily: Dispatch: board targeting",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3961/main-ci-red-test-suite-failing-pre-existing-audit-venue-write-guard"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3633/bsc-daily-dispatch-board-targeting"
     },
     {
-      "title": "STUCK BRO-3913 — Backlog drain R0-R6: watchdog restart, cancel mirror-park trackers, arm 73 unarmed Urgent/High cards (plan-review 2026-09-20)",
+      "title": "STUCK BRO-3540 — Decide: build the general Linear P1 drain, or not — measured funnel + 3 hand-dispatch trial",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3913/backlog-drain-r0-r6-watchdog-restart-cancel-mirror-park-trackers-arm"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3540/decide-build-the-general-linear-p1-drain-or-not-measured-funnel-3-hand"
+    },
+    {
+      "title": "STUCK BRO-3535 — P1: split test.yml Data Validation by intent — code-vs-corpus guards stay on push, corpus-state audits move to the post-rebuild schedule (BRO-3425 option A, part 2)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3535/p1-split-testyml-data-validation-by-intent-code-vs-corpus-guards-stay"
+    },
+    {
+      "title": "STUCK BRO-3496 — tests/unit/validate-review-texts.test.js re-copies validation logic instead of require()-ing validate-review-texts.js",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3496/testsunitvalidate-review-textstestjs-re-copies-validation-logic"
+    },
+    {
+      "title": "STUCK BRO-3438 — Raise DISPATCH_CAP 3 -> 8 (owner-approved 2026-09-15, 'A then B') — blocked on BRO-3428, BRO-3427, BRO-3412",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3438/raise-dispatch-cap-3-8-owner-approved-2026-09-15-a-then-b-blocked-on"
     }
   ],
-  "moreCount": 102
+  "moreCount": 101
 }
