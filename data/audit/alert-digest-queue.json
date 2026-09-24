@@ -421,18 +421,6 @@
     "queuedAt": "2026-09-23T11:50:39.864Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-invention-of-love-off-broadway-2026",
-    "title": "Review gap — \"The Invention of Love\" missing 7 cited review(s)",
-    "description": "The Invention of Love (the-invention-of-love-off-broadway-2026): 7 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-invention-of-love-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-23T12:29:09.528Z"
-  },
-  {
     "conditionKey": "feedback-outcomes:2026-09-23T12:33:37.363288+00:00",
     "title": "Feedback: 1 submission(s), all handled automatically",
     "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nDeep Heat Rivalry — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Deep Heat Rivalry at The Other Palace is listed as closed but it is running until Oct 11, 2026\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/925",
@@ -857,5 +845,17 @@
       }
     ],
     "queuedAt": "2026-09-24T08:33:12.249Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-invention-of-love-off-broadway-2026",
+    "title": "Review gap — \"The Invention of Love\" missing 5 cited review(s)",
+    "description": "The Invention of Love (the-invention-of-love-off-broadway-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-invention-of-love-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-24T10:49:33.246Z"
   }
 ]
