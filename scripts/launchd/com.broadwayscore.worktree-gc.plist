@@ -13,19 +13,29 @@
          BRO-3635: the plist was not recoverable from the repo, and the
          health-check hint told an operator to "check launchctl print" and
          "run the script manually" — neither of which fixes a launchd job
-         whose StartInterval timer has stopped firing (confirmed BRO-3635:
-         the job was loaded, `last exit code = 0`, the Mac had not slept or
-         rebooted in 24 days, and it simply had not fired in ~4 days —
-         `launchctl print` alone does not reveal this, and running the
-         script by hand refreshes the log without fixing the recurring
-         schedule). A bootout+bootstrap reload immediately restored hourly
-         firing; the fix below is that reload, tracked here so it survives
-         a lost plist and is one copy-paste away next time.
+         that has stopped firing (BRO-3635: `launchctl print` showed the job
+         loaded with `last exit code = 0`, the Mac had not slept or rebooted
+         in 24 days, yet NEITHER trigger had fired in ~4 days — not just the
+         hourly StartInterval but also the independent 04:00
+         StartCalendarInterval backstop, confirmed absent from the log across
+         three consecutive 04:00 windows. Both triggers going dark points at
+         the whole job/session having gone stale in launchd's bookkeeping,
+         not a StartInterval-specific bug — `launchctl print` does not surface
+         this, and running the script by hand only refreshes the log without
+         restoring either schedule). A bootout+bootstrap reload immediately
+         let a forced `kickstart` produce a real run again; that proves the
+         reload unwedged it, but only an UNFORCED run on the next natural
+         trigger (top of the hour, or the next 04:00) proves the schedule
+         itself is restored — check data/audit/worktree-gc.log for one before
+         considering a recurrence closed. The fix is tracked here so it
+         survives a lost plist and is one copy-paste away next time.
 
          StartInterval (3600s) is the primary cadence; StartCalendarInterval
-         04:00 local is a daily backstop in case the interval timer gets
-         wedged again — an array of dicts is unneeded here since there's
-         only one entry, but see claude-auth-health.plist for that pattern.
+         04:00 local is a daily backstop — though BRO-3635 shows a wedge can
+         take out both at once, so the backstop is not a substitute for
+         verifying the freshness check itself stays green. An array of dicts
+         is unneeded here since there's only one entry, but see
+         claude-auth-health.plist for that pattern.
 
          Install:  cp scripts/launchd/com.broadwayscore.worktree-gc.plist ~/Library/LaunchAgents/
                    launchctl bootout gui/$(id -u)/com.broadwayscore.worktree-gc 2>/dev/null
