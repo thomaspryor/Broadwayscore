@@ -1499,13 +1499,13 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-09-23T15:54:24.066Z",
+      "lastSeen": "2026-09-24T16:18:58.235Z",
       "lastNotifiedAt": "2026-09-21T17:36:41.780Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-2864",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1622,13 +1622,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-09-23T15:54:24.063Z",
-      "lastNotifiedAt": "2026-09-16T15:54:33.667Z",
+      "lastSeen": "2026-09-24T16:18:57.029Z",
+      "lastNotifiedAt": "2026-09-24T16:18:57.029Z",
       "lastSurfacedAt": null,
-      "notifyCount": 4,
+      "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": "BRO-3656",
-      "silentRefires": 7
+      "linearIdentifier": "BRO-3656"
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -2616,7 +2615,7 @@
       "silentRefires": 14
     },
     "cron-health:Audit Aggregator Review Gap": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Audit Aggregator Review Gap",
@@ -2626,7 +2625,8 @@
       "lastSurfacedAt": "2026-09-21T17:36:41.697Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-24T16:18:58.319Z"
     },
     "opening-night-cv-wrongproduction-unhandled-jane-eyre-off-west-end-2026": {
       "status": "open",
@@ -2662,7 +2662,7 @@
       "linearIdentifier": null
     },
     "cron-health-chronic:Audit Aggregator Review Gap": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Audit Aggregator Review Gap",
       "firstSeen": "2026-09-10T15:38:37.584Z",
@@ -2672,7 +2672,8 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-3150",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-09-24T16:18:58.322Z"
     },
     "gap:the-story-west-end-2026/the-spectator-uk--unknown.json": {
       "status": "resolved",
@@ -4800,6 +4801,19 @@
       "lastSeen": "2026-09-24T15:49:31.517Z",
       "lastNotifiedAt": "2026-09-24T15:49:31.517Z",
       "lastSurfacedAt": "2026-09-24T15:49:31.517Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health:Update Show Score": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Update Show Score",
+      "firstSeen": "2026-09-24T16:18:56.934Z",
+      "lastSeen": "2026-09-24T16:18:56.934Z",
+      "lastNotifiedAt": "2026-09-24T16:18:56.934Z",
+      "lastSurfacedAt": "2026-09-24T16:18:56.934Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
