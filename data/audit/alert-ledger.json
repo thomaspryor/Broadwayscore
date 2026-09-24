@@ -3122,24 +3122,26 @@
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-09-24T11:08:33.783Z",
+      "lastSeen": "2026-09-24T11:58:47.908Z",
       "lastNotifiedAt": "2026-09-24T11:08:33.783Z",
       "lastSurfacedAt": "2026-09-24T11:08:33.783Z",
       "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-24T11:08:33.787Z",
+      "lastSeen": "2026-09-24T11:58:47.914Z",
       "lastNotifiedAt": "2026-09-24T11:08:33.787Z",
       "lastSurfacedAt": "2026-09-24T11:08:33.787Z",
       "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3517,12 +3519,13 @@
       "disposition": "digest",
       "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
       "firstSeen": "2026-09-18T16:10:40.527Z",
-      "lastSeen": "2026-09-24T11:08:33.792Z",
+      "lastSeen": "2026-09-24T11:58:47.918Z",
       "lastNotifiedAt": "2026-09-24T11:08:33.792Z",
       "lastSurfacedAt": "2026-09-24T11:08:33.792Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:america-who-hurt-you-off-broadway-2026": {
       "status": "open",
@@ -3792,12 +3795,13 @@
       "disposition": "digest",
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-09-24T11:08:33.780Z",
+      "lastSeen": "2026-09-24T11:58:47.905Z",
       "lastNotifiedAt": "2026-09-24T11:08:33.780Z",
       "lastSurfacedAt": "2026-09-24T11:08:33.780Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4144,13 +4148,12 @@
       "disposition": "digest",
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-09-24T11:08:33.774Z",
-      "lastNotifiedAt": "2026-09-23T11:50:39.863Z",
-      "lastSurfacedAt": "2026-09-23T11:50:39.863Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-09-24T11:58:47.899Z",
+      "lastNotifiedAt": "2026-09-24T11:58:47.899Z",
+      "lastSurfacedAt": "2026-09-24T11:58:47.899Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 5
+      "linearIdentifier": null
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -4689,13 +4692,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Run data validation",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-24T09:20:45.992Z",
+      "lastSeen": "2026-09-24T11:23:05.487Z",
       "lastNotifiedAt": "2026-09-23T19:33:16.776Z",
       "lastSurfacedAt": "2026-09-23T19:33:16.776Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",

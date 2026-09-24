@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "macbeth-off-broadway-2026",
   "openingDate": "2026-09-22",
-  "detectedAt": "2026-09-24T10:55:45.903Z",
+  "detectedAt": "2026-09-24T12:08:20.069Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,29 +21,12 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
-    },
-    {
-      "file": "theatermania--zachary-stewart.json",
-      "outletId": "theatermania",
-      "criticName": "Zachary Stewart",
-      "url": "https://www.theatermania.com/news/review-macbeth-a-tale-of-halting-ambition-at-the-metropolitan-opera_1854763/",
-      "fullTextLen": 5959,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
