@@ -121,6 +121,47 @@ test('maybeUpgradeUrl write path clears stale wrongProduction/contentVerificatio
   fs.rmSync(reviewTextsDir, { recursive: true, force: true });
 });
 
+test('BRO-4130: a fresh originalScore arriving in the SAME write as a fresh url survives the url swap', () => {
+  const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-paired-score-'));
+  const showId = 'hamilton-test-fixture';
+  // No score on disk yet — a paywalled stub with no fullText, no url-derived
+  // state to protect other than the fact it's badContent (no fullText).
+  makeFixture(reviewTextsDir, showId, 'thestage--unknown.json', {
+    showId,
+    outletId: 'thestage',
+    outlet: 'The Stage',
+    criticName: 'Unknown',
+    url: 'https://www.thestage.co.uk/reviews/hamilton-old-broken-scrape',
+    source: 'gather-reviews',
+    sources: ['gather-reviews'],
+    fullText: null,
+    needsRefetch: true,
+    contentTier: 'stub',
+  });
+
+  // A SERP-recovery style write: fetches a fresh (non-roundup) url AND
+  // extracts a fresh star rating from it in the same call — the _mergeIntoExisting
+  // field-merge loop plants originalScore/originalScoreSource onto `existing`
+  // BEFORE maybeUpgradeUrl runs, so without the pre-merge snapshot fix the
+  // invariant sees them as "unchanged old-url state" and wipes them.
+  const result = quiet(() => createOrMergeReviewFile(showId, {
+    outlet: 'The Stage',
+    criticName: 'Unknown',
+    url: 'https://www.thestage.co.uk/reviews/hamilton-corrected-review',
+    source: 'serp-discovery',
+    fields: { originalScore: '4', originalScoreSource: 'stage-star-svg' },
+  }, { reviewTextsDir }));
+
+  assert.equal(result.action, 'updated');
+  const after = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+
+  assert.equal(after.url, 'https://www.thestage.co.uk/reviews/hamilton-corrected-review');
+  assert.equal(after.originalScore, '4', 'a score paired with its own new url in the same write must not be wiped');
+  assert.equal(after.originalScoreSource, 'stage-star-svg');
+
+  fs.rmSync(reviewTextsDir, { recursive: true, force: true });
+});
+
 test('maybeUpgradeUrl refuses to touch a locked/urlVerified file', () => {
   const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-locked-'));
   const showId = 'hamilton-test-fixture';
