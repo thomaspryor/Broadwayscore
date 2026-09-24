@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-24T08:44:23.538Z",
+  "generatedAt": "2026-09-24T08:59:43.665Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1186,28 +1186,28 @@
       "status": "open",
       "slug": "the-last-ship-west-end",
       "thumbnail": "/images/shows/the-last-ship-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 66,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 66.63,
+      "liveScore": 67,
+      "scoreDrift": 0.37000000000000455,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 4,
+      "total": 5,
       "t1": 2,
       "t2": 2,
-      "t3": 0,
+      "t3": 1,
       "positive": 1,
-      "mixed": 3,
+      "mixed": 4,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/8 total",
+          "5/8 total",
           "T1:2/3",
           "T2:1/2",
-          "hi-conf:1/6"
+          "hi-conf:2/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1309,6 +1309,18 @@
           "t3": 0,
           "p": 1,
           "m": 3,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-24T08:59:43.665Z",
+          "rc": 5,
+          "s": 66.63,
+          "t1": 2,
+          "t2": 2,
+          "t3": 1,
+          "p": 1,
+          "m": 4,
           "n": 0,
           "bc": "waiting"
         }
@@ -2172,17 +2184,17 @@
       "status": "open",
       "slug": "catarina-and-the-beauty-of-killing-fascists-west-end",
       "thumbnail": "/images/shows/catarina-and-the-beauty-of-killing-fascists-west-end-2026/thumbnail.jpg",
-      "siteScore": 64.61,
-      "liveScore": 65,
-      "scoreDrift": 0.39000000000000057,
+      "siteScore": 63.66,
+      "liveScore": 64,
+      "scoreDrift": 0.3400000000000034,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 19,
+      "total": 18,
       "t1": 6,
       "t2": 7,
-      "t3": 6,
-      "positive": 7,
+      "t3": 5,
+      "positive": 6,
       "mixed": 9,
       "negative": 3,
       "readiness": {
@@ -2441,6 +2453,18 @@
           "t2": 7,
           "t3": 6,
           "p": 7,
+          "m": 9,
+          "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-24T08:59:43.665Z",
+          "rc": 18,
+          "s": 63.66,
+          "t1": 6,
+          "t2": 7,
+          "t3": 5,
+          "p": 6,
           "m": 9,
           "n": 3,
           "bc": "waiting"
