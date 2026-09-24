@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-09-24T13:04:48.274Z",
+  "updatedAt": "2026-09-24T13:35:57.652Z",
   "processed": 67,
-  "failed": 307,
-  "successRate": "17.9%",
+  "failed": 309,
+  "successRate": "17.8%",
   "tierBreakdown": {
     "playwright": 34,
     "amp": 2,
@@ -15,6 +15,17 @@
   },
   "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-09-24T10:03:36.718Z",
+      "event": "bb-session",
+      "session": "4aa13e56",
+      "url": "https://thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oco"
+    },
+    {
+      "t": "2026-09-24T10:03:37.602Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
     {
       "t": "2026-09-24T10:06:33.895Z",
       "event": "bb-session",
@@ -111,24 +122,6 @@
       "t": "2026-09-24T11:57:06.086Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-09-24T12:16:54.993Z",
-      "event": "bb-session",
-      "session": "71f6fd1a",
-      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
-    },
-    {
-      "t": "2026-09-24T12:17:11.659Z",
-      "event": "bb-session",
-      "session": "55fcea70",
-      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
-    },
-    {
-      "t": "2026-09-24T12:18:28.996Z",
-      "event": "bb-session",
-      "session": "50849ea0",
-      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
     }
   ]
 }
