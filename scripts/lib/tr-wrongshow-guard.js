@@ -54,15 +54,23 @@ function computeMentionCounts(show, fullText) {
 // Times, Spectator), Avenue Q, Beetlejuice, The Children this way, because a
 // 3-letter word ("Boy", "Q") left them on the single-word 2-mention floor.
 const OPENING_CHARS = 400;
+// Single-word titles ("Company", "Chicago") are ordinary words in a review's
+// opening ("Royal Shakespeare Company", "Chicago-born"), so they only count
+// when set apart: ALL CAPS or in quotes. Multi-word titles may also match in
+// exact title case. A match followed by "-" or "'s" never counts. Punctuation
+// and diacritics are ignored on both sides ("Oh, Mary!" vs "Oh Mary!").
 function hasProperNameTitleInOpening(show, fullText) {
-  const title = String(show.title || '').trim();
+  const title = foldDiacritics(String(show.title || '')).trim();
   if (title.replace(/[^a-z0-9]/gi, '').length < 6) return false;
-  const opening = String(fullText || '').slice(0, OPENING_CHARS);
-  const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+');
+  const opening = foldDiacritics(String(fullText || '').slice(0, OPENING_CHARS));
+  const words = title.split(/[^A-Za-z0-9]+/).filter(Boolean);
+  const pattern = (w) => w.map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('[^A-Za-z0-9]+');
   const edge = '(?<![A-Za-z0-9])';
-  const end = '(?![A-Za-z0-9])';
-  return new RegExp(`${edge}${esc(title)}${end}`).test(opening)
-    || new RegExp(`${edge}${esc(title.toUpperCase())}${end}`).test(opening);
+  const end = "(?![A-Za-z0-9]|-|['’]s\\b)";
+  const caps = new RegExp(`${edge}${pattern(words.map((w) => w.toUpperCase()))}${end}`);
+  if (caps.test(opening)) return true;
+  if (words.length >= 2) return new RegExp(`${edge}${pattern(words)}${end}`).test(opening);
+  return new RegExp(`["'‘“]${pattern(words)}["'’”]`).test(opening);
 }
 
 function checkWrongShowMentionGuard(show, fullText) {

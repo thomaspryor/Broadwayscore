@@ -129,12 +129,11 @@ test('end-to-end shape: Barcelona guardian review fails the raw guard but is res
 // 2026-09-24: the daily TR run dropped real Golden Boy (Daily Mail, Times,
 // Spectator), Avenue Q, Beetlejuice and The Children reviews as "wrong-show
 // (only 1 title mention)". A proper-name title in the opening now suffices.
-test('proper-name title in the opening passes with one mention (Golden Boy / Avenue Q / The Children / Barcelona)', () => {
+test('proper-name title in the opening passes with one mention (Golden Boy / Avenue Q / The Children)', () => {
   const cases = [
     ['Golden Boy', "PATRICK MARMION. JOSH O'Connor has an unusual conflict of interest in Clifford Odets' 1937 drama Golden Boy: play the violin or become a prize boxer."],
     ['Avenue Q', 'AVENUE Q, Shaftesbury Theatre. The puppets are back and ruder than ever.'],
     ['The Children', "Lucy Kirkwood's The Children returns to the stage with a nuclear engineer couple."],
-    ['Barcelona', BARCELONA_REVIEW],
   ];
   for (const [title, text] of cases) {
     const r = checkWrongShowMentionGuard({ title }, text);
@@ -148,4 +147,15 @@ test('proper-name rule does not rescue short titles, generic lowercase prose, or
   assert.equal(checkWrongShowMentionGuard({ title: 'The Children' }, 'A Matilda review: the children steal it.').fails, true);
   const late = 'A boxing drama. ' + 'The cast is strong. '.repeat(30) + 'Golden Boy it is not.';
   assert.equal(checkWrongShowMentionGuard({ title: 'Golden Boy' }, late).fails, true);
+});
+
+test('single-word titles need ALL CAPS or quotes; hyphen/possessive and punctuation handled', () => {
+  const g = (title, text) => checkWrongShowMentionGuard({ title }, text).fails;
+  assert.equal(g('Company', 'The Royal Shakespeare Company revival of Twelfth Night is fun.'), true);
+  assert.equal(g('Chicago', 'This Chicago-born playwright returns.'), true);
+  assert.equal(g('Beetlejuice', 'BEETLEJUICE, Prince Edward Theatre. Loud and silly.'), false);
+  assert.equal(g('Beetlejuice', "The musical 'Beetlejuice' arrives in London."), false);
+  assert.equal(g('Golden Boy', "Golden Boy's revival at the Almeida is a knockout."), true);
+  assert.equal(g('Oh, Mary!', 'Oh Mary! transfers from Broadway with Cole Escola.'), false);
+  assert.equal(g('Les Misérables', 'LES MISERABLES at the Sondheim is as grand as ever.'), false);
 });
