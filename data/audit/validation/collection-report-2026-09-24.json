@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-24T11:59:09.306Z",
+  "runDate": "2026-09-24T13:43:32.080Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 64,
-    "failed": 308,
+    "processed": 67,
+    "failed": 309,
     "skipped": 0,
-    "successRate": "17.2%"
+    "successRate": "17.8%"
   },
   "tierBreakdown": {
-    "playwright": 32,
-    "amp": 0,
+    "playwright": 34,
+    "amp": 2,
     "browserbase": 7,
     "directCookies": 1,
-    "scrapingbee": 11,
+    "scrapingbee": 12,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 19
   },
   "statistics": {
-    "tier1Attempts": 17,
-    "tier1Success": 5,
-    "ampAttempts": 0,
-    "ampSuccess": 0,
-    "tier1_5Attempts": 5,
-    "tier1_5Success": 4,
-    "tier2Attempts": 14,
-    "tier2Success": 3,
+    "tier1Attempts": 23,
+    "tier1Success": 8,
+    "ampAttempts": 2,
+    "ampSuccess": 2,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 16,
+    "tier2Success": 4,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 10,
+    "tier3_6Attempts": 14,
     "tier3_6Success": 0,
-    "tier4Attempts": 17,
+    "tier4Attempts": 15,
     "tier4Success": 1,
-    "totalFailed": 298,
-    "scrapingBeePageCredits": 84,
+    "totalFailed": 297,
+    "scrapingBeePageCredits": 95,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 5,
-    "browserbaseMinutesUsed": 1.1,
-    "urlDiscoveryAttempts": 276,
-    "urlDiscoverySuccess": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 274,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -114,12 +114,14 @@
     "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
-    "just-in-time-2025/newyorker--conde-nast.json"
+    "just-in-time-2025/newyorker--conde-nast.json",
+    "the-last-ship-west-end-2026/timeout--unknown.json",
+    "the-last-ship-west-end-2026/jackstage--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/1883magazine--unknown.json"
   ],
   "failed": [
     "cosi-fan-tutte-off-broadway-2026/nytimes--james-barron.json",
     "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
-    "the-last-ship-west-end-2026/timeout--unknown.json",
     "cosi-fan-tutte-off-broadway-2026/epoch-times--barry-bassis.json",
     "cosi-fan-tutte-off-broadway-2026/financialtimes--virginia-webb.json",
     "cosi-fan-tutte-off-broadway-2026/seen-and-heard-international--michael-cookson.json",
@@ -424,7 +426,9 @@
     "buena-vista-social-club-2025/new-york-city-theatre--unknown.json",
     "buena-vista-social-club-2025/observer--david-cote.json",
     "my-neighbour-totoro-west-end-2025/nytimes--matt-wolf.json",
-    "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json"
+    "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
+    "schmigadoon-2026/timeout--unknown.json",
+    "oh-mary-west-end-2025/i-paper--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -459,9 +463,14 @@
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "oh-mary-west-end-2025/ew--christian-holub.json",
       "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
-      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json"
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+      "the-last-ship-west-end-2026/timeout--unknown.json",
+      "the-last-ship-west-end-2026/jackstage--unknown.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
+      "data/review-texts/man-to-man-west-end-2026/deadline--unknown.json"
+    ],
     "browserbase": [
       "data/review-texts/million-dollar-quartet-off-west-end-2026/standard--henry-hitchings.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
@@ -485,7 +494,8 @@
       "the-story-west-end-2026/ground--unknown.json",
       "a-month-in-the-country-west-end-2026/ents24--unknown.json",
       "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json",
-      "a-month-in-the-country-west-end-2026/theartsdispatch--the-arts-dispatch.json"
+      "a-month-in-the-country-west-end-2026/theartsdispatch--the-arts-dispatch.json",
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/1883magazine--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -513,7 +523,7 @@
   },
   "failuresByOutlet": {
     "The Stage": {
-      "count": 7,
+      "count": 5,
       "domain": "thestage.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
@@ -527,6 +537,13 @@
       "isKnownBlocked": false
     },
     "The Times (UK)": {
+      "count": 2,
+      "domain": "thetimes.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Sunday Times": {
       "count": 1,
       "domain": "thetimes.com",
       "hasCredentials": false,
@@ -548,5 +565,11 @@
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-last-ship-west-end-2026/timeout--unknown.json",
+      "oldUrl": "http://www.timeout.com/chicago/theater/the-last-ship",
+      "newUrl": "https://www.timeout.com/london/news/review-the-last-ship-theatre-royal-drury-lane-sting-092426"
+    }
+  ]
 }
