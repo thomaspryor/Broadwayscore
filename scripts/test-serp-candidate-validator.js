@@ -328,6 +328,50 @@ t('SERP_PREFETCH_VALIDATOR=off env gate disables all checks (source check)', () 
 });
 
 // ----------------------------------------------------------------------------
+// Named non-review URL patterns (BRO-4101)
+// ----------------------------------------------------------------------------
+console.log('\nNamed non-review URL patterns (BRO-4101):');
+
+t('rejects londontheatre.co.uk/show/NNNN ticket page (the-last-ship contamination)', () => {
+  const result = validateSerpCandidate({
+    show: hamlet,
+    candidate: {
+      url: 'https://www.londontheatre.co.uk/show/47207-the-last-ship',
+      title: 'The Last Ship | London Theatre',
+      snippet: 'Book The Last Ship tickets on London Theatre.',
+    },
+  });
+  assertReject(result, 'named-non-review-url', 'londontheatre.co.uk ticket page');
+});
+
+t('accepts londontheatre.co.uk/reviews/ (same host, real reviews path)', () => {
+  const result = validateSerpCandidate({
+    show: hamlet,
+    candidate: {
+      url: 'https://www.londontheatre.co.uk/reviews/hamlet-bam-harvey',
+      title: 'Hamlet Review',
+      snippet: 'A bold new Hamlet at BAM Harvey.',
+    },
+  });
+  assertAccept(result, 'londontheatre.co.uk/reviews/ accept');
+});
+
+t('rejects named pattern before cross-market check runs', () => {
+  // nationaltheatre.org.uk/productions/ is a venue-production-page named
+  // pattern AND would also fire the UK cross-market marker for a US target —
+  // confirms named-non-review-url is checked first, not masked by it.
+  const result = validateSerpCandidate({
+    show: hamlet,
+    candidate: {
+      url: 'https://www.nationaltheatre.org.uk/productions/hamlet',
+      title: 'Hamlet — National Theatre',
+      snippet: 'Book tickets for Hamlet at the National Theatre, London.',
+    },
+  });
+  assertReject(result, 'named-non-review-url', 'nationaltheatre.org.uk/productions/');
+});
+
+// ----------------------------------------------------------------------------
 // Summary
 // ----------------------------------------------------------------------------
 console.log(`\n${pass} passed, ${fail} failed`);

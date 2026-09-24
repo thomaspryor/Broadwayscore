@@ -90,6 +90,7 @@ const { isRunningInCI } = require('./lib/regression-guard');
 // firstSeenAt stamp + review-first-seen emit are centralized in review-file-writer
 // (S2-T4) so this direct-write path and the shared writer behave identically.
 const { stampFirstSeen, emitReviewFirstSeen } = require('./lib/review-file-writer');
+const { namedNonReviewReason } = require('./lib/non-review-url-patterns');
 const {
   llmFallbackExtract,
   hasStructuralMarkers,
@@ -3082,6 +3083,23 @@ function createReviewFile(showId, reviewData, options = {}) {
   if (isSuspiciousOutletId(normalizedOutletId)) {
     console.log(`    ✗ Skipping suspicious outlet ID: "${normalizedOutletId}" (likely sentence fragment)`);
     return 'suspiciousOutlet';
+  }
+
+  // NAMED NON-REVIEW URL GUARD (BRO-4101): this function is gather-reviews.js's
+  // OWN write chokepoint — a separate implementation from review-file-writer.js's
+  // createOrMergeReviewFile (which carries the same check), NOT a caller of it.
+  // discoverCorrectUrl()/validateSerpCandidate() already reject a named-pattern
+  // URL before searchForReviewViaSERP() ever returns one, but this is the last
+  // stop before disk for every OTHER path that reaches createReviewFile with a
+  // pre-populated url (merges, RSS items, historical backfills) — belt-and-
+  // suspenders for the same contamination class as the-last-ship-west-end-2026's
+  // londontheatre.co.uk/show/47207 ticket page.
+  if (reviewData.url) {
+    const namedReason = namedNonReviewReason(reviewData.url);
+    if (namedReason) {
+      console.log(`    ✗ Skipping ${filename}: named non-review URL (${namedReason}): ${reviewData.url}`);
+      return 'namedNonReviewUrl';
+    }
   }
 
   // NON-BROADWAY GUARD: Reject tours, off-Broadway, film/TV, streaming, West End

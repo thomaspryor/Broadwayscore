@@ -60,19 +60,13 @@ const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { isSerpUrlWrongProductionForOpeningNight } = require('./lib/opening-night-discovery');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
-
-const CANONICAL_REPO = '/Users/tompryor/Broadwayscore';
-
 // `source` values written by paths that historically used the -3y-grace
 // isUrlYearOutsideWindow guard (see file header for the per-source mapping).
-const SUSPECT_SOURCES = new Set([
-  'serp-discovery',
-  'serp-discovery-per-critic',
-  'site-search',
-  'broad-web-serp',
-  'outlet-serp-discovery',
-  'opening-night-discovery',
-]);
+// Canonical set lives in lib/ (BRO-4101) — review-guards.js's namedNonReviewUrl
+// rule and scripts/sweep-named-non-review-urls.js share this exact list.
+const { SUSPECT_SOURCES } = require('./lib/unvetted-serp-sources');
+
+const CANONICAL_REPO = '/Users/tompryor/Broadwayscore';
 
 function loadShows() {
   const local = path.join(__dirname, '..', 'data', 'shows.json');

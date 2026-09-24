@@ -1824,6 +1824,12 @@ on:
       # file would otherwise ship with zero CI (same class as scripts/discover-new-shows.js
       # + .test.mjs above).
       - 'scripts/gather-reviews.test.mjs'
+      # Colocated test for createReviewFile's BRO-4101 named-non-review-url
+      # guard — same allow-list reasoning as gather-reviews.test.mjs directly
+      # above (root-level scripts/*.test.mjs isn't globbed; registered in
+      # tests/unit-test-manifest.txt but ALSO needs a push-path entry or a
+      # solo edit ships with zero CI).
+      - 'scripts/gather-reviews-named-non-review.test.mjs'
       - 'scripts/llm-scoring/comparative-rescore.ts'
       - 'scripts/llm-scoring/config.ts'
       - 'scripts/outlet-listing-poller.js'
