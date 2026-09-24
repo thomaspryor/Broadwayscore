@@ -2761,7 +2761,21 @@ function checkAutofixThroughput(isCI) {
 // future violation surfaces as a health.errors row instead of hiding behind
 // a launchd stderr log nobody tails. Same null-means-absent contract as the
 // push-retry/autofix-canary ledgers above.
-function checkDigestInvariantFail() {
+//
+// BRO-467 sibling fix: data/audit/digest-invariant-fail-ledger.jsonl is
+// gitignored/Mac-local (same as the autofix-canary/backlog-drain ledgers
+// above) and therefore ALWAYS reads null in CI — assessDigestInvariantFailRow
+// then ALWAYS returns the identical static 'warn' ("cannot measure from this
+// environment"), every run, forever. Task #1648's own fix already added the
+// real, live-data fold into send-morning-digest.js's sections.health.errors
+// (see that file, right after the autofix-canary fold this same card added)
+// specifically so a genuine violation is never silently missed — this CI row
+// was never the mechanism that achieves that; it can't be, structurally.
+// Left in place it did exactly what BRO-467's throughput row did: filed and
+// re-files BRO-3370 ("BSC Daily: Digest: content-invariant check") off a
+// message that can never say anything else. Skip here for the same reason.
+function checkDigestInvariantFail(isCI) {
+  if (isCI) return [];
   const { assessDigestInvariantFailRow } = require('./lib/digest-invariant-fail-monitor.js');
   const entries = readJsonlLedgerOrNull(path.join(AUDIT_DIR, 'digest-invariant-fail-ledger.jsonl'));
   return [assessDigestInvariantFailRow(entries)];
@@ -5098,7 +5112,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkAutofixEffectiveness(),
     ...checkAutofixCanary(isCI),
     ...checkAutofixThroughput(isCI),
-    ...checkDigestInvariantFail(),
+    ...checkDigestInvariantFail(isCI),
     ...checkStuckPipelineItems(),
   ];
 }
@@ -5348,4 +5362,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput };
+module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail };
