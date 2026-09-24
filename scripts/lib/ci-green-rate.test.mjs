@@ -276,15 +276,20 @@ test('a cancel that ran >= HUNG_CANCEL_MIN is a hung job-timeout → RED; a shor
   const at = (hoursAgo, mins) => new Date(NOW - hoursAgo * H + mins * 60000).toISOString();
   const rows = [
     ...greens(10, 30),
-    run(5, 'cancelled', { updatedAt: at(5, 20) }), // a job's timeout-minutes hit
-    run(4, 'cancelled', { updatedAt: at(4, 2) }),  // mid-setup cancel
-    run(3, 'cancelled'),                           // no updatedAt → unknown → neutral
+    run(5, 'cancelled', { runStartedAt: at(5, 0), updatedAt: at(5, 20) }),  // a job's timeout-minutes hit
+    run(4, 'cancelled', { runStartedAt: at(4, 0), updatedAt: at(4, 2) }),   // mid-setup cancel
+    run(3.5, 'cancelled', { runStartedAt: at(3.5, 25), updatedAt: at(3.5, 27) }), // queued 25 min, ran 2 → not hung
+    run(3, 'cancelled', { updatedAt: at(3, 30) }), // no run_started_at → unknown → neutral
   ];
+  // Another branch/workflow: a late cancel can be a supersede — never red there.
+  const other = core.computeGreenRate(rows, { now: NOW, branch: 'land/x' });
+  assert.equal(other.hungCancelled, 0);
+  assert.equal(other.counts.red, 0);
   const res = core.computeGreenRate(rows, { now: NOW });
   assert.equal(core.classifyConclusion('cancelled', core.HUNG_CANCEL_MIN * 60000), 'red');
   assert.equal(core.classifyConclusion('cancelled', core.HUNG_CANCEL_MIN * 60000 - 1), 'cancelled');
   assert.equal(res.counts.red, 1);
-  assert.equal(res.counts.cancelled, 2);
+  assert.equal(res.counts.cancelled, 3);
   assert.equal(res.hungCancelled, 1);
   assert.deepEqual(res.currentStreak, { color: 'red', length: 1 }, 'a hang breaks the green streak');
   assert.match(core.verdictLine(res), /, 1 hung \(cancelled >= 15 min, counted red\)\)/);

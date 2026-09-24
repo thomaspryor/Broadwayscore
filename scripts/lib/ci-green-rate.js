@@ -43,7 +43,10 @@
  *              which Actions reports as `cancelled`, not `timed_out`. Counting
  *              it neutral hid a hung fixture for 36 h (2026-09-23..24: 27 runs
  *              cancelled at ~20 min, rate + streak frozen, no alert).
- *              Reported separately as res.hungCancelled.
+ *              Reported separately as res.hungCancelled. Duration is
+ *              run_started_at → updated_at. Applied ONLY to test.yml on main
+ *              (the per-sha group); other --workflow/--branch readings keep
+ *              every cancel neutral, since there a late supersede is normal.
  *   cancelled  conclusion === 'cancelled' and shorter than that — NOT green, excluded from the
  *              denominator, but counted and reported. Cancels say nothing
  *              about the code (scripts/ci-health-check.sh measures the mid-
@@ -125,9 +128,11 @@ function classifyConclusion(conclusion, durationMs = null) {
  * of rows the sha collapse removed.
  *
  * @param {Array<object>} rows
- * @returns {{runs: Array<{id, headSha, conclusion, createdAt, t, color}>, rerunsCollapsed: number}}
+ * @param {{hungRule?: boolean}} [o]  count long cancels as red — only valid
+ *   where a cancel can't be a supersede (test.yml on main; see "hung" above)
+ * @returns {{runs: Array<{id, headSha, conclusion, createdAt, t, color, hung}>, rerunsCollapsed: number}}
  */
-function normalizeRunsDetailed(rows) {
+function normalizeRunsDetailed(rows, { hungRule = false } = {}) {
   const out = [];
   const seenIds = new Set();
   for (const r of Array.isArray(rows) ? rows : []) {
@@ -144,8 +149,12 @@ function normalizeRunsDetailed(rows) {
     }
     const conclusion = r.conclusion ?? null;
     const headSha = r.headSha ?? r.head_sha ?? null;
+    // Duration from the attempt's START (run_started_at, not created_at) so
+    // runner-queue time and a days-later re-run attempt don't read as a hang.
+    const tStart = Date.parse(r.runStartedAt ?? r.run_started_at ?? null);
     const tEnd = Date.parse(r.updatedAt ?? r.updated_at ?? null);
-    const color = classifyConclusion(conclusion, Number.isFinite(tEnd) ? tEnd - t : null);
+    const durationMs = hungRule && Number.isFinite(tStart) && Number.isFinite(tEnd) ? tEnd - tStart : null;
+    const color = classifyConclusion(conclusion, durationMs);
     const hung = conclusion === 'cancelled' && color === 'red';
     out.push({ id, headSha, conclusion, createdAt: new Date(t).toISOString(), t, color, hung });
   }
@@ -272,7 +281,8 @@ function computeGreenRate(rows, opts = {}) {
   const truncated = !!opts.truncated;
   const sinceMs = now - days * DAY_MS;
 
-  const normalized = normalizeRunsDetailed(rows);
+  const hungRule = (opts.workflow || DEFAULTS.workflow) === DEFAULTS.workflow && (opts.branch || DEFAULTS.branch) === DEFAULTS.branch;
+  const normalized = normalizeRunsDetailed(rows, { hungRule });
   const runs = normalized.runs.filter((r) => r.t >= sinceMs && r.t <= now);
 
   const counts = { total: runs.length, green: 0, red: 0, cancelled: 0, other: 0 };

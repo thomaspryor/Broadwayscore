@@ -45,7 +45,7 @@ const core = require('./lib/ci-green-rate.js');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const LEDGER_PATH = path.join(REPO_ROOT, 'data', 'audit', 'ci-green-rate.jsonl');
-const JQ = '.workflow_runs | map({databaseId: .id, headSha: .head_sha, createdAt: .created_at, updatedAt: .updated_at, conclusion: .conclusion, status: .status})';
+const JQ = '.workflow_runs | map({databaseId: .id, headSha: .head_sha, createdAt: .created_at, updatedAt: .updated_at, runStartedAt: .run_started_at, conclusion: .conclusion, status: .status})';
 
 function usage() {
   return [
