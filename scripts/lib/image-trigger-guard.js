@@ -198,8 +198,8 @@ async function executeSelfHealDispatch({ plan, dispatch, nowMs, onAlert, log = (
 }
 
 /**
- * Ids that were tracked in the PREVIOUS run's ledger but no longer appear in
- * THIS run's flagged list — i.e. a show self-healed (its image landed) since
+ * Ids tracked in the PREVIOUS run's ledger that now have POSITIVE proof of a
+ * real image (hasImageById.get(id) === true) — i.e. a show self-healed since
  * the last cycle. Pure — no I/O.
  *
  * BRO-2765/BRO-2651: the caller uses this to resolveCondition() any
@@ -210,14 +210,25 @@ async function executeSelfHealDispatch({ plan, dispatch, nowMs, onAlert, log = (
  * forever, because nothing else was ever going to call resolveCondition()
  * for it.
  *
+ * Deliberately requires POSITIVE evidence (=== true), not merely "absent
+ * from flagged" — adversarial pre-ship review (2026-09-24) caught that an id
+ * can drop out of `flagged` for reasons that are NOT "image landed": a
+ * malformed/unreadable shows.json or reviews.json read falls back to an
+ * empty list (loadJson's catch), a show's review count can drop to 0, or its
+ * dates can become unresolvable. Any of those would silently mark every
+ * open incident "resolved" with a fabricated "image landed on disk" reason
+ * while the real problem (missing image, or broken data) persists. Keying
+ * off hasImageById instead means a data-read failure just produces an empty
+ * map — nothing gets falsely resolved, it only gets skipped for a cycle.
+ *
  * @param {Map<string, object>} prevById ids tracked in the previous run's ledger
- * @param {Array<{id: string}>} flagged ids still imageless THIS run
- * @returns {Array<string>} ids that dropped out (self-healed)
+ * @param {Map<string, boolean>|Object<string, boolean>} hasImageById id -> hasRealImage() this run
+ * @returns {Array<string>} ids with confirmed real images now (self-healed)
  */
-function idsClearedSinceLastRun(prevById, flagged) {
-  const flaggedIds = new Set((flagged || []).map((f) => f.id));
+function idsClearedSinceLastRun(prevById, hasImageById) {
   const prev = prevById instanceof Map ? prevById : new Map(Object.entries(prevById || {}));
-  return [...prev.keys()].filter((id) => !flaggedIds.has(id));
+  const hasImage = hasImageById instanceof Map ? hasImageById : new Map(Object.entries(hasImageById || {}));
+  return [...prev.keys()].filter((id) => hasImage.get(id) === true);
 }
 
 module.exports = {

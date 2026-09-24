@@ -115,13 +115,16 @@ async function main() {
     return;
   }
 
-  // Self-heal landed: resolveCondition() any escalation alert for an id that
-  // dropped out of the ledger since the previous run (BRO-2765/BRO-2651: the
-  // image landed via the twice-weekly archive cron, independent of this
-  // script's own dispatch loop, and without this call the alert-ledger entry
-  // — and the Linear card it filed — stayed open forever with nothing left
-  // to clear it).
-  for (const clearedId of idsClearedSinceLastRun(prevById, flagged)) {
+  // Self-heal landed: resolveCondition() any escalation alert for a
+  // previously-tracked id that now has a CONFIRMED real image (BRO-2765/
+  // BRO-2651: the image landed via the twice-weekly archive cron, independent
+  // of this script's own dispatch loop, and without this call the
+  // alert-ledger entry — and the Linear card it filed — stayed open forever
+  // with nothing left to clear it). Keyed off hasImageById (positive
+  // hasRealImage() evidence), not "dropped out of `flagged`" — the latter
+  // would also fire on a malformed data read or a review-count drop to 0.
+  const hasImageById = new Map(normalized.map((s) => [s.id, s.hasImages]));
+  for (const clearedId of idsClearedSinceLastRun(prevById, hasImageById)) {
     try {
       const { resolveCondition } = require('./lib/owner-alert-router.js');
       resolveCondition(`imageless-scored-show:still-imageless:${clearedId}`, { reason: 'image landed on disk' });
