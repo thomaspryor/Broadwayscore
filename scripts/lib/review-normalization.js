@@ -2094,6 +2094,12 @@ function slugLooksLikeDifferentShow(newUrl, { showTitle, refUrl } = {}) {
  *   a candidate URL whose own url-path date falls outside the show's
  *   current-run window is refused (task #1416) — "shares a slug token" only
  *   rules out a different SHOW, not a prior PRODUCTION of the same show.
+ * @param {object} [opts.preMergeScore] - {originalScore, aggregatorStars} snapshot
+ *   taken BEFORE the caller merged incoming fields onto existingData (BRO-4128).
+ *   Without it, the score-loss guard below would judge staleness from
+ *   existingData's score even when the incoming write just planted that same
+ *   score alongside newUrl — refusing to ever apply a freshly-discovered
+ *   (score, url) pair together.
  */
 function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   if (!newUrl || existingData.url === newUrl) return false;
@@ -2125,6 +2131,52 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
     || (existingData.contentTier && existingData.contentTier !== 'complete')
     || existingData.needsRefetch;
   if (!badContent) return false;
+
+  // Roundup-page guard (BRO-4128): a candidate that is itself a roundup/
+  // aggregation page (e.g. The Stage's /review-round-ups/ section) must never
+  // replace an individual outlet review. badContent above is satisfied by a
+  // perfectly normal paywalled review STUB (no fullText, but a real
+  // originalScore lifted from the outlet's own star markup) — swapping that
+  // stub's url onto the outlet's roundup page doesn't refetch a better
+  // individual review, it points the file at a multi-critic compilation and
+  // (via applyUrlChangeInvariant below) wipes the real score along with it.
+  // Reuses the same isRoundupUrl() predicate the write path already trusts to
+  // keep roundup pages from being ingested as reviews at all.
+  const { isRoundupUrl } = require('./review-guards');
+  if (isRoundupUrl(newUrl).isRoundup) {
+    console.warn(`[maybeUpgradeUrl] refused roundup-page swap for ${existingData.outletId || source || '?'}: ${newUrl}`);
+    return false;
+  }
+
+  // Score-loss guard: never let a URL swap discard a real preservable score
+  // (originalScore or aggregatorStars — hasPreservableAggregatorScore is the
+  // canonical predicate three other call sites already share, ship-check/
+  // Codex adversarial finding: a hand-rolled `originalScore != null` here
+  // would silently miss the aggregatorStars-only shape) unless the existing
+  // record is already flagged wrong (wrongProduction/wrongShow/duplicateOf) —
+  // in that case swapping to a fresh url in search of a recovery is the
+  // point. An unflagged, scored stub is exactly the state a paywalled review
+  // sits in permanently; badContent (missing fullText) alone is not evidence
+  // the score itself is wrong, so it's not grounds to erase it via a URL swap
+  // whose candidate isn't independently verified as the SAME individual
+  // review.
+  //
+  // opts.preMergeScore (ship-check/Codex adversarial finding): the write
+  // path's field merge runs BEFORE this function, so `existingData` may
+  // already carry a score the INCOMING write itself just supplied alongside
+  // this very newUrl — checking existingData directly would refuse to ever
+  // apply a freshly-discovered (score, url) pair together, stranding the new
+  // score on the old, still-bad url. When the caller supplies a pre-merge
+  // snapshot, judge staleness from that instead; callers that don't (direct
+  // tests, other callers) fall back to existingData, preserving prior
+  // behavior.
+  const { hasPreservableAggregatorScore } = require('./aggregator-domains');
+  const scoreState = opts.preMergeScore || existingData;
+  if (hasPreservableAggregatorScore(scoreState)
+    && !existingData.wrongProduction && !existingData.wrongShow && !existingData.duplicateOf) {
+    console.warn(`[maybeUpgradeUrl] refused swap for ${existingData.outletId || source || '?'}: would discard score (originalScore=${JSON.stringify(scoreState.originalScore)}, aggregatorStars=${JSON.stringify(scoreState.aggregatorStars)})`);
+    return false;
+  }
 
   // Cross-show guard: never replace a URL with one that points at a DIFFERENT
   // show. A combined theatre.reviews roundup (War Horse + Equus) supplied an
