@@ -120,47 +120,6 @@ jobs:
       - name: Setup Playwright
         uses: ./.github/actions/setup-playwright
 
-      # Self-heal shared ibdbUrls BEFORE validation. A revival stub that
-      # inherited the original production's ibdbUrl hard-fails validate-data
-      # ("Shared ibdbUrl ... null the stale url on the revival entry") and
-      # blocked the discovery commit daily 2026-07-03→05 (Sound of Music,
-      # A Few Good Men). This applies the validator's prescribed remedy
-      # automatically: earliest production keeps the URL, later entries are
-      # nulled; enrichment re-adds the revival's own URL later. Runs before
-      # BOTH "Update show statuses" and the pre-validate snapshot below so
-      # this known, pre-existing issue never counts as a new error either
-      # gate has to reason about.
-      - name: Self-heal shared ibdbUrls
-        run: node scripts/fix-shared-ibdb-urls.js
-
-      # Pre-run validation snapshot (BRO-4099, moved 2026-09-24). MUST run
-      # BEFORE "Update show statuses" — previously this snapshot was taken
-      # AFTER that step, so any contradiction the status writer itself
-      # introduced (ShowScore's weekly refresh closing a show while leaving
-      # its old future closingDate in place — slam-frank-off-broadway-2026,
-      # 2026-09-23) read as "pre-existing" by the time the set-diff gate ran
-      # near the end of this job, and was never attributed to a show or
-      # reverted — it rode straight into the commit and blocked EVERY
-      # Vercel deploy behind pre-deploy-check.js's integrity gate for over
-      # 12 hours. The commit below is one batched commit for every writer
-      # in this job (status update, discovery, enrichment); this baseline
-      # now genuinely predates all of them, so the existing set-diff +
-      # per-show attribution + revert machinery (task #1439, further down in
-      # this job) covers status-update's own writes the same way it already
-      # covers discovery's.
-      - name: Pre-validate existing data (baseline error snapshot)
-        id: pre-validate
-        continue-on-error: true
-        run: |
-          set -o pipefail
-          if node scripts/validate-data.js 2>&1 | tee /tmp/pre-validate-output.txt; then
-            echo "status=ok" >> $GITHUB_OUTPUT
-            echo "Pre-run validation: OK"
-          else
-            echo "status=broken" >> $GITHUB_OUTPUT
-            echo "::warning::Data validation already failing BEFORE this run — peripheral data file has an unrelated error. The run will still proceed; the commit is only blocked (or partially blocked, per-show) if this run introduces a NEW validation error (task #649 / #1439 set-diff)."
-          fi
-
       # Step 1: Update existing show statuses
       # ShowScore refresh runs on weekly Wed schedule or manual include_showscore=true
       - name: Update show statuses
@@ -203,10 +162,9 @@ jobs:
       # BRO-3428). Deliberately not reordered to run later and catch that case
       # same-run: that would put this step's own write past every validation
       # step in the job, so a hypothetical bug here would ship completely
-      # unvalidated. Early placement — same idea as the "Self-heal shared
-      # ibdbUrls (post-discovery)" step further below — keeps it inside that
-      # day's validate-data.js coverage at the cost of the extra day on that
-      # one edge case. Supersedes the
+      # unvalidated. Early placement — same spot as "Self-heal shared
+      # ibdbUrls" below — keeps it inside that day's validate-data.js coverage
+      # at the cost of the extra day on that one edge case. Supersedes the
       # kind:'alert'-only decision recorded on that check's own remediation
       # stanza (owner review gate, rule 18, task #1132) — that decision
       # predates this cost evidence (BRO-3427: 14 stale-tag rows were 16% of
@@ -219,6 +177,33 @@ jobs:
       - name: Fix stale upcoming tags
         continue-on-error: true
         run: node scripts/fix-stale-upcoming-tags.js --apply
+
+      # Self-heal shared ibdbUrls BEFORE validation. A revival stub that
+      # inherited the original production's ibdbUrl hard-fails validate-data
+      # ("Shared ibdbUrl ... null the stale url on the revival entry") and
+      # blocked the discovery commit daily 2026-07-03→05 (Sound of Music,
+      # A Few Good Men). This applies the validator's prescribed remedy
+      # automatically: earliest production keeps the URL, later entries are
+      # nulled; enrichment re-adds the revival's own URL later.
+      - name: Self-heal shared ibdbUrls
+        run: node scripts/fix-shared-ibdb-urls.js
+
+      # Pre-discovery validation snapshot. Runs the same validator that gates
+      # the commit below, but warn-only, and captures full output so the
+      # post-discovery step can set-diff errors (task #649) — a pre-existing,
+      # unrelated error here must not discard today's discovery commit.
+      - name: Pre-validate existing data (baseline error snapshot)
+        id: pre-validate
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          if node scripts/validate-data.js 2>&1 | tee /tmp/pre-validate-output.txt; then
+            echo "status=ok" >> $GITHUB_OUTPUT
+            echo "Pre-discovery validation: OK"
+          else
+            echo "status=broken" >> $GITHUB_OUTPUT
+            echo "::warning::Data validation already failing BEFORE discovery — peripheral data file has an unrelated error. Discovery will still run; the commit is only blocked if discovery introduces a NEW validation error (task #649 set-diff)."
+          fi
 
       # Step 2a: Discover ShowScore URLs and generate candidates for new show discovery
       - name: Discover ShowScore URLs and candidates
