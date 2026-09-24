@@ -65,7 +65,9 @@
     "macbeth-off-broadway-2026/vulture--justin-davidson.json",
     "the-story-west-end-2026/hollywood-reporter--jackie-strause.json",
     "the-story-west-end-2026/rollingstone--elisabeth-garber-paul.json",
-    "spandex-off-broadway-2026/recast--unknown.json"
+    "spandex-off-broadway-2026/recast--unknown.json",
+    "delirium-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "cosi-fan-tutte-off-broadway-2026/times-uk--unknown.json"
   ],
   "failed": [
     "macbeth-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -328,13 +330,11 @@
     "two-strangers-bway-2025/playbill--margaret-hall.json",
     "two-strangers-bway-2025/readaboutstuff--unknown.json",
     "two-strangers-bway-2025/standard--nick-curtis.json",
-    "delirium-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
     "delirium-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
     "the-last-ship-west-end-2026/times-uk--dominic-maxwell.json",
     "macbeth-off-broadway-2026/talkclassical--unknown.json",
     "america-who-hurt-you-off-broadway-2026/vulture--jackson-mchenry.json",
     "man-to-man-west-end-2026/thestage--sam-marlowe.json",
-    "cosi-fan-tutte-off-broadway-2026/times-uk--unknown.json",
     "the-hope-theory-off-broadway-2026/nytg--bridget-gross.json",
     "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
     "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json",
@@ -402,7 +402,11 @@
       "data/review-texts/as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
       "data/review-texts/spandex-off-broadway-2026/recast--unknown.json",
       "spandex-off-broadway-2026/recast--unknown.json",
-      "data/review-texts/the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json"
+      "data/review-texts/the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json",
+      "data/review-texts/delirium-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "delirium-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "data/review-texts/cosi-fan-tutte-off-broadway-2026/times-uk--unknown.json",
+      "cosi-fan-tutte-off-broadway-2026/times-uk--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -441,7 +445,7 @@
     ]
   },
   "startTime": "2026-09-23T21:17:54.294Z",
-  "lastProcessed": "pre-existing-condition-off-broadway-2026/airmail--air-mail.json",
+  "lastProcessed": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/front-row-center--sarah-downs.json",
   "log": [
     {
       "t": "2026-09-23T22:26:50.209Z",
@@ -563,9 +567,63 @@
       "event": "bb-session",
       "session": "9d3cdae5",
       "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
+    },
+    {
+      "t": "2026-09-24T04:57:28.237Z",
+      "event": "bb-session",
+      "session": "4eb4877c",
+      "url": "https://www.nytimes.com/2026/09/21/theater/chulpan-khamatova-delirium-eugene-ion"
+    },
+    {
+      "t": "2026-09-24T04:57:29.187Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-24T04:59:04.549Z",
+      "event": "bb-session",
+      "session": "ade626bd",
+      "url": "https://www.thetimes.com/culture/classical-opera/article/cosi-fan-tutte-review-r"
+    },
+    {
+      "t": "2026-09-24T04:59:05.516Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-24T05:00:59.115Z",
+      "event": "bb-session",
+      "session": "a9599d10",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+    },
+    {
+      "t": "2026-09-24T05:01:26.230Z",
+      "event": "bb-session",
+      "session": "5c55a311",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+    },
+    {
+      "t": "2026-09-24T05:03:32.896Z",
+      "event": "bb-session",
+      "session": "4f39af65",
+      "url": "https://exeuntnyc.com/reviews/review-in-honor-of-jean-michel-basquiat-at-new-yor"
+    },
+    {
+      "t": "2026-09-24T05:03:44.236Z",
+      "event": "bb-session",
+      "session": "036ca8bc",
+      "url": "https://exeuntnyc.com/reviews/review-in-honor-of-jean-michel-basquiat-at-new-yor"
+    },
+    {
+      "t": "2026-09-24T05:04:16.984Z",
+      "event": "bb-session",
+      "session": "f7fb48ec",
+      "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
     }
   ],
   "recoveredAfterFailure": [
-    "spandex-off-broadway-2026/recast--unknown.json"
+    "spandex-off-broadway-2026/recast--unknown.json",
+    "delirium-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "cosi-fan-tutte-off-broadway-2026/times-uk--unknown.json"
   ]
 }
