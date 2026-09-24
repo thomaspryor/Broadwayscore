@@ -470,18 +470,6 @@
     "queuedAt": "2026-09-23T23:23:00.163Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-last-ship-west-end-2026",
-    "title": "Review gap — \"The Last Ship\" missing 6 cited review(s)",
-    "description": "The Last Ship (the-last-ship-west-end-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-last-ship-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-24T00:16:09.762Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:alvin-ailey-american-dance-theater-new-works-west-end-2026",
     "title": "Review gap — \"Alvin Ailey American Dance Theater - New Works\" missing 3 cited review(s)",
     "description": "Alvin Ailey American Dance Theater - New Works (alvin-ailey-american-dance-theater-new-works-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=alvin-ailey-american-dance-theater-new-works-west-end-2026 --checkpoint --ingest-missing",
@@ -958,5 +946,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-24T22:29:33.647Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:cosi-fan-tutte-off-broadway-2026",
+    "title": "Review gap — \"Così fan tutte\" missing 3 cited review(s)",
+    "description": "Così fan tutte (cosi-fan-tutte-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cosi-fan-tutte-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-24T23:04:10.124Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-last-ship-west-end-2026",
+    "title": "Review gap — \"The Last Ship\" missing 5 cited review(s)",
+    "description": "The Last Ship (the-last-ship-west-end-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-last-ship-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-24T23:04:10.185Z"
   }
 ]
