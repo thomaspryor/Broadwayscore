@@ -159,3 +159,10 @@ test('single-word titles need ALL CAPS or quotes; hyphen/possessive and punctuat
   assert.equal(g('Oh, Mary!', 'Oh Mary! transfers from Broadway with Cole Escola.'), false);
   assert.equal(g('Les Misérables', 'LES MISERABLES at the Sondheim is as grand as ever.'), false);
 });
+
+test('review round 2: caps possessive, quoted-with-comma, words split across lines', () => {
+  const g = (title, text) => checkWrongShowMentionGuard({ title }, text).fails;
+  assert.equal(g('Golden Boy', "GOLDEN BOY'S revival is loud."), true);
+  assert.equal(g('Beetlejuice', '“Beetlejuice,” the new musical, arrives.'), false);
+  assert.equal(g('Golden Boy', 'Golden.\n\n\n\nBoy was the old headline.'), true);
+});

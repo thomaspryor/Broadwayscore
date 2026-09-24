@@ -64,13 +64,13 @@ function hasProperNameTitleInOpening(show, fullText) {
   if (title.replace(/[^a-z0-9]/gi, '').length < 6) return false;
   const opening = foldDiacritics(String(fullText || '').slice(0, OPENING_CHARS));
   const words = title.split(/[^A-Za-z0-9]+/).filter(Boolean);
-  const pattern = (w) => w.map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('[^A-Za-z0-9]+');
+  const pattern = (w) => w.map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('[^A-Za-z0-9]{1,3}');
   const edge = '(?<![A-Za-z0-9])';
-  const end = "(?![A-Za-z0-9]|-|['’]s\\b)";
+  const end = "(?![A-Za-z0-9]|-|['’][sS]\\b)";
   const caps = new RegExp(`${edge}${pattern(words.map((w) => w.toUpperCase()))}${end}`);
   if (caps.test(opening)) return true;
   if (words.length >= 2) return new RegExp(`${edge}${pattern(words)}${end}`).test(opening);
-  return new RegExp(`["'‘“]${pattern(words)}["'’”]`).test(opening);
+  return new RegExp(`(?<![A-Za-z0-9])["'‘“]${pattern(words)}[,.]?["'’”]`).test(opening);
 }
 
 function checkWrongShowMentionGuard(show, fullText) {
