@@ -3985,7 +3985,7 @@ function worktreeGcFreshnessResults(lastLineTimestamp, nowMs) {
     name: 'Infra: worktree GC log stale',
     status: stale.severity,
     message: `worktree-gc.log has no line in the last ${stale.hoursStale.toFixed(1)}h (launchd runs gc-merged-worktrees.sh hourly) — the only automatic disk brake may have stopped firing.`,
-    hint: 'launchctl print gui/501/com.broadwayscore.worktree-gc — check "last exit code" and whether runs have advanced; run scripts/gc-merged-worktrees.sh manually if stuck. BRO-2608.',
+    hint: 'BRO-3635: a stopped StartInterval timer does not show up in `launchctl print` (job stays "loaded", last exit code 0) and running the script by hand only refreshes the log without fixing the schedule — reload the agent instead: launchctl bootout gui/$(id -u)/com.broadwayscore.worktree-gc 2>/dev/null; launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.worktree-gc.plist; launchctl kickstart -k gui/$(id -u)/com.broadwayscore.worktree-gc. Plist tracked at scripts/launchd/com.broadwayscore.worktree-gc.plist. BRO-2608.',
   }];
 }
 

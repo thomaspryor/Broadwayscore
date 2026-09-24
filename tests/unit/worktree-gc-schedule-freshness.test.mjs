@@ -131,7 +131,7 @@ test('worktreeGcFreshnessResults: stale log warns with an actionable hint', () =
   assert.equal(results.length, 1);
   assert.equal(results[0].status, 'warn');
   assert.match(results[0].message, /10\.0h/);
-  assert.match(results[0].hint, /launchctl print/);
+  assert.match(results[0].hint, /launchctl bootstrap/);
 });
 
 test('worktreeGcFreshnessResults: five-day-stale log (this incident) is error severity', () => {
