@@ -280,6 +280,47 @@ test('safeWriteReview write chokepoint blocks a flip-flop swap-back and pins url
   fs.rmSync(reviewTextsDir, { recursive: true, force: true });
 });
 
+test('BRO-4130: a flip-flop-rejected swap does not leave its own paired score misattributed to the pinned url', () => {
+  const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-flipflop-score-'));
+  const showId = 'hamilton-test-fixture';
+  const urlA = 'https://www.thestage.co.uk/reviews/hamilton-review-a';
+  const urlB = 'https://www.thestage.co.uk/reviews/hamilton-review-b';
+  // File currently at A, badContent (no fullText), with a breadcrumb saying
+  // it was corrected FROM B to A previously.
+  makeFixture(reviewTextsDir, showId, 'thestage--unknown.json', {
+    showId, outletId: 'thestage', outlet: 'The Stage', criticName: 'Unknown',
+    url: urlA,
+    source: 'gather-reviews',
+    fullText: null,
+    needsRefetch: true,
+    contentTier: 'stub',
+    _urlChangedClear: { from: urlB, to: urlA, at: '2026-08-01T00:00:00.000Z', cleared: ['fullText'] },
+  });
+
+  // A write proposes swapping back to B (the flip-flop half of the cycle),
+  // WITH a fresh score paired with that same url in the same call. The BRO-4130
+  // fix correctly lets maybeUpgradeUrl preserve the paired score through its
+  // own applyUrlChangeInvariant call — but safeWriteReview's flip-flop guard
+  // downstream then rejects the url swap itself and pins the file back to A.
+  // The score arrived describing article B; it must not end up stranded on A.
+  const result = quiet(() => createOrMergeReviewFile(showId, {
+    outlet: 'The Stage',
+    criticName: 'Unknown',
+    url: urlB,
+    source: 'serp-discovery',
+    fields: { originalScore: '4', originalScoreSource: 'stage-star-svg' },
+  }, { reviewTextsDir }));
+
+  assert.equal(result.action, 'updated');
+  const after = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+
+  assert.equal(after.url, urlA, 'flip-flop swap-back must be refused, keeping the pinned url');
+  assert.equal(after.originalScore, undefined, 'a score paired with the REJECTED url must not survive misattributed to the pinned url');
+  assert.equal(after.originalScoreSource, undefined);
+
+  fs.rmSync(reviewTextsDir, { recursive: true, force: true });
+});
+
 // ── BRO-2740: provenance must not outlive the flag ────────────────────────
 //
 // Corpus signature (measured 2026-09-02 over 42,520 review files): 204 files
