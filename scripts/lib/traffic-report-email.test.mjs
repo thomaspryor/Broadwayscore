@@ -102,3 +102,51 @@ test('markdownToHtml renders _italic_ lines and leaves underscores inside words 
   assert.match(html, /<em>The full tables are attached\.<\/em>/);
   assert.match(html, /snake_case_word stays/);
 });
+
+// ---- GA-style tiles + inline charts (BRO-4136) ----
+const { tilesHtml, renderChartPng, renderCharts } = require('./traffic-report-email.js');
+const TILES = [
+  { label: 'Visits, week of Sep 14', value: '4,509', lines: ['+35% vs week before', '−14% vs 4-week average'] },
+  { label: 'September so far', value: '11,999', lines: ['Sep 1–22'] },
+  { label: 'Year over year', value: 'Not yet', lines: ['Available from March 2027'] },
+  { label: 'Top referrer', value: '<script>', lines: [] },
+];
+
+test('tilesHtml: 3 per row, padded last row, deltas coloured, values escaped', () => {
+  const h = tilesHtml(TILES);
+  assert.equal((h.match(/<tr>/g) || []).length, 2);
+  assert.match(h, /color:#047857;font-weight:600;">\+35%/);
+  assert.match(h, /color:#b91c1c;font-weight:600;">−14%/);
+  assert.doesNotMatch(h, /<script>/);
+  assert.match(h, /&lt;script&gt;/);
+  assert.equal(tilesHtml([]), '');
+});
+
+test('buildHtml puts tiles and charts between the title and "In short", then the dashboard link', () => {
+  const md = '# Your traffic, week of Sep 14\n\n**In short.** Last week the site had 4,509 visits.\n\n## What\'s working\n\n- x\n';
+  const h = buildHtml(md, { tiles: TILES, images: [{ cid: 'traffic-weekly', alt: 'Visits' }], dashboardUrl: 'https://broadwayscorecard.com/admin/traffic' });
+  const iTitle = h.indexOf('Your traffic');
+  const iTile = h.indexOf('4,509</div>');
+  const iImg = h.indexOf('src="cid:traffic-weekly"');
+  const iShort = h.indexOf('In short');
+  const iDash = h.indexOf('See the dashboard');
+  assert.ok(iTitle < iTile && iTile < iImg && iImg < iShort && iShort < iDash, JSON.stringify({ iTitle, iTile, iImg, iShort, iDash }));
+  // no tiles given: identical to the old body
+  assert.doesNotMatch(buildHtml(md), /cid:|See the dashboard/);
+});
+
+test('renderChartPng returns null (never throws) on a down or non-PNG QuickChart', async () => {
+  const png = Buffer.concat([Buffer.from([0x89, 0x50, 0x4e, 0x47]), Buffer.alloc(200)]);
+  const ok = async () => ({ ok: true, arrayBuffer: async () => png });
+  const html200 = async () => ({ ok: true, arrayBuffer: async () => Buffer.from('<html>error</html>'.repeat(20)) });
+  const down = async () => { throw new Error('ENOTFOUND quickchart.io'); };
+  const s500 = async () => ({ ok: false, status: 500 });
+  assert.ok(await renderChartPng({}, { fetchImpl: ok }));
+  assert.equal(await renderChartPng({}, { fetchImpl: html200 }), null);
+  assert.equal(await renderChartPng({}, { fetchImpl: down }), null);
+  assert.equal(await renderChartPng({}, { fetchImpl: s500 }), null);
+  const r = await renderCharts({ weekly: {}, topPages: {} }, { fetchImpl: ok });
+  assert.deepEqual(r.images.map((i) => i.cid), ['traffic-weekly', 'traffic-top-pages']);
+  assert.deepEqual(r.attachments.map((a) => a.content_id), ['traffic-weekly', 'traffic-top-pages']);
+  assert.deepEqual((await renderCharts({ weekly: {}, topPages: null }, { fetchImpl: down })).images, []);
+});
