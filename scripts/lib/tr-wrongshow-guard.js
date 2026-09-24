@@ -44,8 +44,32 @@ function computeMentionCounts(show, fullText) {
   return { mentions, minMentions, showWords, coreWords };
 }
 
+// The title written as a proper name (exact casing or ALL CAPS, the way TR
+// and papers print headlines) inside the review's opening. Critics name the
+// show once up top and then say "the play"; column contamination from a
+// neighbouring review never sits in THIS review's opening lines. Proper-name
+// casing keeps generic prose ("the children were...") from counting, and
+// titles under 6 chars (Cats, Sting) keep the 2-mention floor.
+// 2026-09-24: daily TR run dropped real reviews of Golden Boy (Daily Mail,
+// Times, Spectator), Avenue Q, Beetlejuice, The Children this way, because a
+// 3-letter word ("Boy", "Q") left them on the single-word 2-mention floor.
+const OPENING_CHARS = 400;
+function hasProperNameTitleInOpening(show, fullText) {
+  const title = String(show.title || '').trim();
+  if (title.replace(/[^a-z0-9]/gi, '').length < 6) return false;
+  const opening = String(fullText || '').slice(0, OPENING_CHARS);
+  const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+');
+  const edge = '(?<![A-Za-z0-9])';
+  const end = '(?![A-Za-z0-9])';
+  return new RegExp(`${edge}${esc(title)}${end}`).test(opening)
+    || new RegExp(`${edge}${esc(title.toUpperCase())}${end}`).test(opening);
+}
+
 function checkWrongShowMentionGuard(show, fullText) {
   const { mentions, minMentions } = computeMentionCounts(show, fullText);
+  if (mentions < minMentions && mentions >= 1 && hasProperNameTitleInOpening(show, fullText)) {
+    return { fails: false, reason: null, mentions, minMentions, openingProperName: true };
+  }
   if (mentions < minMentions) {
     return { fails: true, reason: `wrong-show (only ${mentions} title mention(s) in review)`, mentions, minMentions };
   }
