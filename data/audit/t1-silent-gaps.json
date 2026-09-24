@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-24T15:49:34.875Z",
+  "generatedAt": "2026-09-24T19:52:30.126Z",
   "windowDays": 45,
   "showsScanned": 79,
   "gaps": [
@@ -17,9 +17,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-winters-tale-off-broadway-2026",
       "firstSeen": "2026-08-13T10:48:31.706Z",
-      "fileAgeHours": 1013.0169986111111,
+      "fileAgeHours": 1017.0631775,
       "gapSeenAt": "2026-09-20T22:08:26.926Z",
-      "nonTerminalAgeHours": 89.6855413888889
+      "nonTerminalAgeHours": 93.73422222222223
     },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
@@ -34,9 +34,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 189.8117025,
+      "fileAgeHours": 193.8578813888889,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 189.73118472222222
+      "nonTerminalAgeHours": 193.77986555555555
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -51,30 +51,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays --outlet=thestage --critic=\"Dave Fargnoli\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T17:56:44.755Z",
-      "fileAgeHours": 189.88014166666667,
+      "fileAgeHours": 193.927475,
       "gapSeenAt": "2026-09-21T21:33:52.974Z",
-      "nonTerminalAgeHours": 66.26163916666667
-    },
-    {
-      "showId": "deep-heat-rivalry-off-west-end-2026",
-      "title": "Deep Heat Rivalry",
-      "openingDate": "2026-09-17",
-      "file": "british-theatre--unknown.json",
-      "outletId": "british-theatre",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.britishtheatre.com/shows/deep-heat-rivalry",
-      "recovery": {
-        "attempted": true,
-        "ok": true,
-        "reason": null
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=deep-heat-rivalry-off-west-end-2026 --url=https://www.britishtheatre.com/shows/deep-heat-rivalry --outlet=british-theatre   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-09-24T15:46:48.406Z",
-      "fileAgeHours": 0.04615777777777778,
-      "gapSeenAt": "2026-09-24T15:49:34.875Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 70.31032
     }
   ],
   "contradictions": []
