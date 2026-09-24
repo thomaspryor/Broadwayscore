@@ -934,5 +934,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-24T20:32:02.024Z"
+  },
+  {
+    "conditionKey": "opening-night-slug-mismatch-cosi-fan-tutte-off-broadway-2026",
+    "title": "Review URL cross-show mismatch on Così fan tutte",
+    "description": "Review URL for new-york-classical-review/Rick Perdian does not mention show slug (checked: cosi-fan-tutte-off-broadway, cos-fan-tutte, tutte): https://newyorkclassicalreview.com/2026/09/lombardi-and-hankey-lift-the-musical-values-in-mets-frenetic-coney-island-cosi/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-24T22:29:30.075Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:the-secret-circus-musical-off-broadway-2026",
+    "title": "Auto-remediation gave up on the-secret-circus-musical-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"the-secret-circus-musical-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-24T22:29:33.647Z"
   }
 ]
