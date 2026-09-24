@@ -2,43 +2,9 @@
   "version": 1,
   "showId": "the-holes-off-broadway-2026",
   "openingDate": "2026-09-23",
-  "detectedAt": "2026-09-24T16:06:31.475Z",
+  "detectedAt": "2026-09-24T16:31:12.782Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "eventbrite--unknown.json",
-      "outletId": "eventbrite",
-      "criticName": "Unknown",
-      "url": "https://www.eventbrite.com/cc/the-holes-a-new-play-by-max-wolf-friedlich-4858160",
-      "fullTextLen": 7921,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
-    {
-      "file": "vogue--juan-a-ramirez.json",
-      "outletId": "vogue",
-      "criticName": "Juan A. Ramírez",
-      "url": "https://www.vogue.com/article/max-wolf-friedlich-the-holes-preview",
-      "fullTextLen": 11989,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "vulture--jackson-mchenry.json",
       "outletId": "vulture",
@@ -57,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 3,
-  "dispatchableOrphanCount": 2,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
