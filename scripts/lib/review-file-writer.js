@@ -1155,6 +1155,18 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // metadata merge.
   const fullTextBefore = existing.fullText || '';
 
+  // Snapshot the score BEFORE the field merge too (BRO-4128 ship-check/Codex
+  // finding): the merge loop below can plant fields.originalScore/
+  // aggregatorStars onto `existing` when the file was previously unscored,
+  // and that happens BEFORE maybeUpgradeUrl runs below. Without this
+  // snapshot, maybeUpgradeUrl's score-loss guard would see its own incoming
+  // score and refuse to also apply the incoming url — stranding a
+  // freshly-discovered score on the file's OLD, still-bad url.
+  const scoreBeforeMerge = {
+    originalScore: existing.originalScore,
+    aggregatorStars: existing.aggregatorStars,
+  };
+
   // Clear a stored JSON-LD pullQuote/excerpt BEFORE the field merge. The merge
   // below only copies an incoming field when `!existing[key]`; a JSON-LD blob is
   // truthy, so it would block a clean incoming quote from landing — and then
@@ -1276,6 +1288,8 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     // instead — the swap would duplicate the URL and wipe this file.
     showDir: path.dirname(filepath),
     selfFilename: path.basename(filepath),
+    // BRO-4128: pre-merge score snapshot — see maybeUpgradeUrl's docstring.
+    preMergeScore: scoreBeforeMerge,
   })) {
     changed = true;
   }
