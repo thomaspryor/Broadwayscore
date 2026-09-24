@@ -422,15 +422,26 @@ async function main() {
     }
 
     // Guard 4: sample pipeline health (classifier / text fetch). Kept from
-    // the Apify era but on the SAMPLE, not volume: >30% of shows with zero
-    // relevant classified mentions means the classifier or both text
-    // sources broke.
+    // the Apify era, but the 30% cutoff was inherited unchanged from when
+    // this checked raw VOLUME === 0 (a hard "the actor is broken" signal).
+    // It now checks relevantCount === 0 (post-classification), a much
+    // noisier metric on a Hidden-tier-majority fleet — low-buzz shows
+    // routinely classify to zero relevant mentions in a given week. BRO-2756
+    // (2026-09-24): 9 consecutive real runs Aug31-Sep8 all had 67-73/N shows
+    // fetch successfully (0 fetch failures) yet tripped this guard at
+    // 31-34%, discarding a full week of good data each time and going
+    // chronically stale; the two weeks either side passed at 27-29%. 30%
+    // sits inside the fleet's normal noise band, not above it. Raised to
+    // 50% — still well below what a genuine classifier/text-source outage
+    // would produce (Guard 4's original threshold was calibrated against a
+    // total-actor-failure case, i.e. near 100%), but with real margin over
+    // the observed steady-state ceiling (34%).
     const zeroSample = ok.filter((r) => r.relevantCount === 0).length;
     // When Reddit is ABSENT fleet-wide (Guard 6b degraded mode), samples come
     // from Bluesky alone — zero-relevant is expected for quiet shows, so the
     // threshold relaxes; the guard still catches a Bluesky/classifier break.
     const redditAbsentFleetWide = redditNull / ok.length > 0.9;
-    const zeroSampleThreshold = redditAbsentFleetWide ? 0.6 : 0.3;
+    const zeroSampleThreshold = redditAbsentFleetWide ? 0.6 : 0.5;
     if (zeroSample / ok.length > zeroSampleThreshold) {
       console.error(
         `HEALTH CHECK FAILED: ${zeroSample}/${ok.length} shows returned 0 relevant sample mentions (${Math.round((zeroSample / ok.length) * 100)}%${redditAbsentFleetWide ? ', degraded threshold 60% — Reddit absent' : ''}).`,
