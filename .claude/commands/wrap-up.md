@@ -314,6 +314,7 @@ The user pastes the prompt into a fresh session and it works with zero extra con
 DONE        <what shipped, and how it was verified — one line>
 CONTINUING  <none | workspace:N ("exact tab title") — what it's doing>
 NEEDS YOU   <nothing | answer the DECISION NEEDED in the chat>
+PREVENTION: <what now catches this class> ; cousins: <where you looked, what you found>   (required after code edits; NO-PREVENTION: <reason> only for a non-fix change)
 DISPATCHED: / LANDED: / OWNED BY: / EXECUTED: / NO-EXECUTE: / NO-SHIP-CHECK: lines as applicable
 THIS SESSION: KEEP OPEN | CLOSE ME | IDLE — <one-line reason>
 ──────────────────────────────────────────
