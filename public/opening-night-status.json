@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-24T14:47:21.031Z",
+  "generatedAt": "2026-09-24T15:59:22.855Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1377,28 +1377,28 @@
       "status": "open",
       "slug": "the-holes-off-broadway",
       "thumbnail": "/images/shows/the-holes-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 73.2,
-      "liveScore": 73,
-      "scoreDrift": -0.20000000000000284,
+      "siteScore": 69.69,
+      "liveScore": 70,
+      "scoreDrift": 0.3100000000000023,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 4,
       "t1": 1,
-      "t2": 2,
+      "t2": 3,
       "t3": 0,
       "positive": 2,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/12 total",
+          "4/12 total",
           "T1:1/3",
           "T2:2/3",
-          "hi-conf:2/8"
+          "hi-conf:3/8"
         ],
-        "highConfidence": 2,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1411,10 +1411,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "Vulture",
-          "isDualMarket": false
-        },
         {
           "name": "Variety",
           "isDualMarket": true
@@ -1638,10 +1634,6 @@
           "isDualMarket": false
         },
         {
-          "name": "Exeunt Magazine",
-          "isDualMarket": false
-        },
-        {
           "name": "Parade",
           "isDualMarket": false
         },
@@ -1760,6 +1752,18 @@
           "t3": 0,
           "p": 2,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-24T15:40:01.727Z",
+          "rc": 4,
+          "s": 69.69,
+          "t1": 1,
+          "t2": 3,
+          "t3": 0,
+          "p": 2,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }
@@ -2378,10 +2382,6 @@
           "isDualMarket": false
         },
         {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
           "name": "HuffPost",
           "isDualMarket": false
         },
@@ -2631,17 +2631,17 @@
       "status": "open",
       "slug": "catarina-and-the-beauty-of-killing-fascists-west-end",
       "thumbnail": "/images/shows/catarina-and-the-beauty-of-killing-fascists-west-end-2026/thumbnail.jpg",
-      "siteScore": 63.76,
-      "liveScore": 64,
-      "scoreDrift": 0.240000000000002,
+      "siteScore": 64.67,
+      "liveScore": 65,
+      "scoreDrift": 0.3299999999999983,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 20,
+      "total": 21,
       "t1": 6,
       "t2": 7,
-      "t3": 7,
-      "positive": 7,
+      "t3": 8,
+      "positive": 8,
       "mixed": 10,
       "negative": 3,
       "readiness": {
@@ -2963,6 +2963,18 @@
           "m": 10,
           "n": 3,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-24T15:40:01.727Z",
+          "rc": 21,
+          "s": 64.67,
+          "t1": 6,
+          "t2": 7,
+          "t3": 8,
+          "p": 8,
+          "m": 10,
+          "n": 3,
+          "bc": "waiting"
         }
       ]
     },
@@ -3158,10 +3170,6 @@
         },
         {
           "name": "Billboard",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theater Scene",
           "isDualMarket": false
         },
         {

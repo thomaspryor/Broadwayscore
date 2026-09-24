@@ -446,18 +446,6 @@
     "queuedAt": "2026-09-23T17:08:23.161Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:america-who-hurt-you-off-broadway-2026",
-    "title": "Review gap — \"America, Who Hurt You?\" missing 1 cited review(s)",
-    "description": "America, Who Hurt You? (america-who-hurt-you-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=america-who-hurt-you-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-23T17:46:27.702Z"
-  },
-  {
     "conditionKey": "test-yml:data-validation-red",
     "title": "Data audits failing (non-blocking): Run data validation",
     "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35909504008",
@@ -468,30 +456,6 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-23T19:33:16.776Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
-    "title": "Review gap — \"Crazy Mama: A True Story of Love and Madness\" missing 2 cited review(s)",
-    "description": "Crazy Mama: A True Story of Love and Madness (crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-23T21:00:37.285Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:macbeth-off-broadway-2026",
-    "title": "Review gap — \"Macbeth\" missing 2 cited review(s)",
-    "description": "Macbeth (macbeth-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=macbeth-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-23T21:00:37.307Z"
   },
   {
     "conditionKey": "corpus-drift:url-downgrade",
@@ -516,18 +480,6 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-24T00:16:09.711Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026",
-    "title": "Review gap — \"Elf Lyons: The Woman on the Edge\" missing 9 cited review(s)",
-    "description": "Elf Lyons: The Woman on the Edge (elf-lyons-the-woman-on-the-edge-off-broadway-2026): 9 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=elf-lyons-the-woman-on-the-edge-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-24T00:16:09.719Z"
   },
   {
     "conditionKey": "review-gap:opening-window:the-last-ship-west-end-2026",
@@ -910,5 +862,41 @@
       }
     ],
     "queuedAt": "2026-09-24T13:56:40.798Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:america-who-hurt-you-off-broadway-2026",
+    "title": "Review gap — \"America, Who Hurt You?\" missing 1 cited review(s)",
+    "description": "America, Who Hurt You? (america-who-hurt-you-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=america-who-hurt-you-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-24T15:49:31.456Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:deep-heat-rivalry-off-west-end-2026",
+    "title": "Review gap — \"Deep Heat Rivalry\" missing 4 cited review(s)",
+    "description": "Deep Heat Rivalry (deep-heat-rivalry-off-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=deep-heat-rivalry-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-24T15:49:31.474Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-holes-off-broadway-2026",
+    "title": "Review gap — \"The Holes\" missing 2 cited review(s)",
+    "description": "The Holes (the-holes-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-holes-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-24T15:49:31.518Z"
   }
 ]
