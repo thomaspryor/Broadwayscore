@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-09-24T15:48:36.386Z",
-  "processed": 96,
-  "failed": 770,
-  "successRate": "11.1%",
+  "updatedAt": "2026-09-24T16:15:04.920Z",
+  "processed": 116,
+  "failed": 960,
+  "successRate": "10.8%",
   "tierBreakdown": {
-    "playwright": 48,
+    "playwright": 57,
     "amp": 2,
-    "browserbase": 9,
+    "browserbase": 11,
     "directCookies": 1,
-    "scrapingbee": 17,
-    "brightdata": 0,
+    "scrapingbee": 25,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 28
+    "archive": 31
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-09-24T11:55:24.728Z",
-      "event": "bb-session",
-      "session": "bc5c1298",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
-    },
-    {
-      "t": "2026-09-24T11:55:25.746Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
     {
       "t": "2026-09-24T11:57:05.156Z",
       "event": "bb-session",
@@ -126,6 +115,17 @@
       "t": "2026-09-24T15:45:22.057Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-24T15:50:28.020Z",
+      "event": "bb-session",
+      "session": "1babf2ff",
+      "url": "https://www.thetimes.com/culture/music/article/opera-review-aida-opera-north-pau"
+    },
+    {
+      "t": "2026-09-24T15:50:28.727Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
