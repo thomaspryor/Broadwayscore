@@ -30,6 +30,7 @@ const {
   DEFAULT_THRESHOLD_HOURS,
   planSelfHealDispatch,
   executeSelfHealDispatch,
+  idsClearedSinceLastRun,
 } = require('./lib/image-trigger-guard.js');
 const { dispatchImageFetch } = require('./lib/dispatch-image-fetch.js');
 
@@ -112,6 +113,22 @@ async function main() {
   if (dryRun) {
     for (const f of flagged) console.log(`  - ${f.id} (${f.title}), reviewCount=${f.reviewCount}`);
     return;
+  }
+
+  // Self-heal landed: resolveCondition() any escalation alert for an id that
+  // dropped out of the ledger since the previous run (BRO-2765/BRO-2651: the
+  // image landed via the twice-weekly archive cron, independent of this
+  // script's own dispatch loop, and without this call the alert-ledger entry
+  // — and the Linear card it filed — stayed open forever with nothing left
+  // to clear it).
+  for (const clearedId of idsClearedSinceLastRun(prevById, flagged)) {
+    try {
+      const { resolveCondition } = require('./lib/owner-alert-router.js');
+      resolveCondition(`imageless-scored-show:still-imageless:${clearedId}`, { reason: 'image landed on disk' });
+      resolveCondition(`imageless-scored-show:dispatch-failed:${clearedId}`, { reason: 'image landed on disk' });
+    } catch (err) {
+      console.error(`resolveCondition (self-heal cleared) failed for ${clearedId}: ${err.message}`);
+    }
   }
 
   // Newest-first: a just-published show is the actual target of this card;

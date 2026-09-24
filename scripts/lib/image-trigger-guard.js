@@ -197,10 +197,34 @@ async function executeSelfHealDispatch({ plan, dispatch, nowMs, onAlert, log = (
   return { dispatchCalls, ok, dispatched };
 }
 
+/**
+ * Ids that were tracked in the PREVIOUS run's ledger but no longer appear in
+ * THIS run's flagged list — i.e. a show self-healed (its image landed) since
+ * the last cycle. Pure — no I/O.
+ *
+ * BRO-2765/BRO-2651: the caller uses this to resolveCondition() any
+ * escalation alert that fired for the id. Without it, a show whose image
+ * lands via a path OTHER than this script's own dispatch loop (e.g. the
+ * twice-weekly archive cron) self-prunes out of this ledger silently, but the
+ * alert-ledger.json entry — and the Linear card it filed — stays open
+ * forever, because nothing else was ever going to call resolveCondition()
+ * for it.
+ *
+ * @param {Map<string, object>} prevById ids tracked in the previous run's ledger
+ * @param {Array<{id: string}>} flagged ids still imageless THIS run
+ * @returns {Array<string>} ids that dropped out (self-healed)
+ */
+function idsClearedSinceLastRun(prevById, flagged) {
+  const flaggedIds = new Set((flagged || []).map((f) => f.id));
+  const prev = prevById instanceof Map ? prevById : new Map(Object.entries(prevById || {}));
+  return [...prev.keys()].filter((id) => !flaggedIds.has(id));
+}
+
 module.exports = {
   buildImageDispatchInputs,
   planSelfHealDispatch,
   executeSelfHealDispatch,
   findImagelessScoredShows,
+  idsClearedSinceLastRun,
   DEFAULT_THRESHOLD_HOURS,
 };

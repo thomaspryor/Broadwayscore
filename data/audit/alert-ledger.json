@@ -2270,7 +2270,7 @@
       "silentRefires": 3
     },
     "imageless-scored-show:still-imageless:the-lonely-few-off-broadway-2024": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "The Lonely Few still has no image after 8 self-heal attempts",
       "firstSeen": "2026-09-04T18:41:02.359Z",
@@ -2278,7 +2278,9 @@
       "lastNotifiedAt": "2026-09-10T01:53:40.907Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": "BRO-2765"
+      "linearIdentifier": "BRO-2765",
+      "resolvedAt": "2026-09-24T18:39:47.914Z",
+      "resolveReason": "image landed on disk (commit 1f87fea3cb7, 2026-09-10); verified via hasRealImage()"
     },
     "opening-night-cv-wrongproduction-unhandled-the-story-west-end-2026": {
       "status": "open",

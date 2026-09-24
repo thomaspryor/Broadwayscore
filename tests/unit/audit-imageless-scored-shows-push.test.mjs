@@ -9,6 +9,7 @@ import {
   stagedPathsPerCall,
   auditWorkflowText,
 } from '../../scripts/lib/audit-push-retry-budgets.js';
+import { idsClearedSinceLastRun } from '../../scripts/lib/image-trigger-guard.js';
 
 // BRO-2942 (reverting BRO-2683). audit-imageless-scored-shows.yml's single
 // "Commit audit ledger" step was split in two on the theory that bundling the
@@ -147,6 +148,46 @@ test('workflow: the commit step keeps the raised push deadline and is not retry-
   assert.ok(
     !site.flags.includes('deadline-cannot-fund-retries'),
     `step must not be retry-starved; flags: ${JSON.stringify(site.flags)}`,
+  );
+});
+
+// ── BRO-2765: the-lonely-few's alert never auto-resolved ──────────────────
+// A show whose image lands via a path OTHER than this script's own dispatch
+// loop (e.g. the twice-weekly archive cron) self-prunes out of the
+// imageless-scored-shows.json ledger silently, but nothing ever called
+// resolveCondition() on the escalation alert it may have filed — the
+// alert-ledger.json entry, and the Linear card, stayed open forever.
+test('idsClearedSinceLastRun: an id present in the previous ledger but absent from this run\'s flagged list is reported cleared', () => {
+  const prevById = new Map([
+    ['the-lonely-few-off-broadway-2024', { dispatchAttempts: 8 }],
+    ['still-imageless-show', { dispatchAttempts: 1 }],
+  ]);
+  const flagged = [{ id: 'still-imageless-show' }];
+  assert.deepEqual(idsClearedSinceLastRun(prevById, flagged), ['the-lonely-few-off-broadway-2024']);
+});
+
+test('idsClearedSinceLastRun: nothing cleared when every previous id is still flagged', () => {
+  const prevById = new Map([['still-imageless-show', { dispatchAttempts: 1 }]]);
+  const flagged = [{ id: 'still-imageless-show' }];
+  assert.deepEqual(idsClearedSinceLastRun(prevById, flagged), []);
+});
+
+test('idsClearedSinceLastRun: accepts a plain object in place of a Map (caller compat)', () => {
+  const prevById = { 'a-show': { dispatchAttempts: 3 } };
+  assert.deepEqual(idsClearedSinceLastRun(prevById, []), ['a-show']);
+});
+
+test('caller resolves the escalation alert via idsClearedSinceLastRun, not an inline recomputation', () => {
+  assert.match(
+    callerText,
+    /idsClearedSinceLastRun\s*\(\s*prevById\s*,\s*flagged\s*\)/,
+    'audit-imageless-scored-shows.js must derive cleared ids from the shared, tested predicate — ' +
+      'a hand-rolled Set diff here would silently drift from the one under test',
+  );
+  assert.match(
+    callerText,
+    /resolveCondition\(`imageless-scored-show:still-imageless:\$\{clearedId\}`/,
+    'audit-imageless-scored-shows.js must resolveCondition() the still-imageless key for every cleared id (BRO-2765)',
   );
 });
 
