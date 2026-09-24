@@ -1,17 +1,57 @@
 {
   "processed": [
-    "the-last-ship-west-end-2026/london-theatre--unknown.json"
+    "cosi-fan-tutte-off-broadway-2026/operawire--francisco-salazar.json",
+    "macbeth-off-broadway-2026/playbill--dan-meyer.json",
+    "macbeth-off-broadway-2026/playbill--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/theatreboard--unknown.json"
   ],
   "failed": [
+    "cosi-fan-tutte-off-broadway-2026/nytimes--james-barron.json",
+    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
     "the-last-ship-west-end-2026/timeout--unknown.json",
+    "cosi-fan-tutte-off-broadway-2026/epoch-times--barry-bassis.json",
+    "cosi-fan-tutte-off-broadway-2026/financialtimes--virginia-webb.json",
+    "cosi-fan-tutte-off-broadway-2026/seen-and-heard-international--michael-cookson.json",
+    "cosi-fan-tutte-off-broadway-2026/seen-and-heard-international--rick-perdian.json",
+    "cosi-fan-tutte-off-broadway-2026/times-uk--unknown.json",
     "the-last-ship-west-end-2026/around-the-town-chicago--unknown.json",
     "the-last-ship-west-end-2026/chicago-sun-times--unknown.json",
-    "the-last-ship-west-end-2026/times-uk--dominic-maxwell.json"
+    "macbeth-off-broadway-2026/hollywood-reporter--unknown.json",
+    "macbeth-off-broadway-2026/abc-news--unknown.json",
+    "macbeth-off-broadway-2026/ew--leah-greenblatt.json",
+    "macbeth-off-broadway-2026/newsday--linda-winer.json",
+    "macbeth-off-broadway-2026/newsday--unknown.json",
+    "macbeth-off-broadway-2026/thewrap--robert-hofler.json",
+    "macbeth-off-broadway-2026/thewrap--unknown.json",
+    "macbeth-off-broadway-2026/timeout--naveen-kumar.json",
+    "macbeth-off-broadway-2026/timeout--unknown.json",
+    "macbeth-off-broadway-2026/amny--unknown.json",
+    "macbeth-off-broadway-2026/chicagotribune--chris-jones.json",
+    "macbeth-off-broadway-2026/chicagotribune--unknown.json",
+    "macbeth-off-broadway-2026/daily-mail--patrick-marmion.json",
+    "macbeth-off-broadway-2026/financialtimes--shirley-apthorp.json",
+    "macbeth-off-broadway-2026/huffpost--gazelle-emami.json",
+    "macbeth-off-broadway-2026/huffpost--unknown.json",
+    "macbeth-off-broadway-2026/i-paper--fiona-mountford.json",
+    "macbeth-off-broadway-2026/independent--alice-saville.json",
+    "macbeth-off-broadway-2026/seen-and-heard-international--clive-peacock.json",
+    "macbeth-off-broadway-2026/standard--nick-curtis.json",
+    "macbeth-off-broadway-2026/talkclassical--unknown.json",
+    "macbeth-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "macbeth-off-broadway-2026/thestage--unknown.json",
+    "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json",
+    "the-invention-of-love-off-broadway-2026/nytg--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/london-unattached--madeleine-morrow.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/thestage--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
+    "the-invention-of-love-off-broadway-2026/thestage--ian-shine.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "the-last-ship-west-end-2026/london-theatre--unknown.json"
+      "macbeth-off-broadway-2026/playbill--dan-meyer.json",
+      "macbeth-off-broadway-2026/playbill--unknown.json",
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/theatreboard--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -19,21 +59,11 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "cosi-fan-tutte-off-broadway-2026/operawire--francisco-salazar.json"
+    ]
   },
-  "startTime": "2026-09-24T05:54:18.214Z",
-  "lastProcessed": "the-last-ship-west-end-2026/london-theatre--unknown.json",
-  "log": [
-    {
-      "t": "2026-09-24T05:55:54.419Z",
-      "event": "bb-session",
-      "session": "fb046ba4",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-last-ship-review-stin"
-    },
-    {
-      "t": "2026-09-24T05:55:55.108Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    }
-  ]
+  "startTime": "2026-09-24T08:26:07.381Z",
+  "lastProcessed": "the-invention-of-love-off-broadway-2026/thestage--ian-shine.json",
+  "log": []
 }
