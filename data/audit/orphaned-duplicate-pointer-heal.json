@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-24T08:55:50.639Z",
+  "generated": "2026-09-24T10:52:44.996Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 96,
+  "count": 98,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -253,6 +253,13 @@
       "loserFile": "nytimes--ben-brantley.json",
       "targetFile": "nytimes--matt-wolf.json",
       "reason": "orphaned-duplicate-heal: nytimes--matt-wolf.json was flagged invalid after nytimes--ben-brantley.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "loserFile": "londontheatre1--unknown.json",
+      "targetFile": "londontheatre1--chris-omaweng.json",
+      "reason": "orphaned-duplicate-heal: londontheatre1--chris-omaweng.json was flagged invalid after londontheatre1--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -674,6 +681,13 @@
       "targetFile": "theatermania--hayley-levitt.json",
       "reason": "orphaned-duplicate-heal: theatermania--hayley-levitt.json was flagged invalid after theatermania--zachary-stewart.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "loserFile": "londontheatre1--unknown.json",
+      "targetFile": "londontheatre1--chris-omaweng.json",
+      "reason": "orphaned-duplicate-heal: londontheatre1--chris-omaweng.json was flagged invalid after londontheatre1--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
