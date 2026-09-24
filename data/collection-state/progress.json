@@ -63,12 +63,14 @@
     "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
     "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
-    "just-in-time-2025/newyorker--conde-nast.json"
+    "just-in-time-2025/newyorker--conde-nast.json",
+    "the-last-ship-west-end-2026/timeout--unknown.json",
+    "the-last-ship-west-end-2026/jackstage--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/1883magazine--unknown.json"
   ],
   "failed": [
     "cosi-fan-tutte-off-broadway-2026/nytimes--james-barron.json",
     "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
-    "the-last-ship-west-end-2026/timeout--unknown.json",
     "cosi-fan-tutte-off-broadway-2026/epoch-times--barry-bassis.json",
     "cosi-fan-tutte-off-broadway-2026/financialtimes--virginia-webb.json",
     "cosi-fan-tutte-off-broadway-2026/seen-and-heard-international--michael-cookson.json",
@@ -416,9 +418,14 @@
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "oh-mary-west-end-2025/ew--christian-holub.json",
       "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
-      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json"
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+      "the-last-ship-west-end-2026/timeout--unknown.json",
+      "the-last-ship-west-end-2026/jackstage--unknown.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
+      "data/review-texts/man-to-man-west-end-2026/deadline--unknown.json"
+    ],
     "browserbase": [
       "data/review-texts/million-dollar-quartet-off-west-end-2026/standard--henry-hitchings.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
@@ -443,7 +450,8 @@
       "the-story-west-end-2026/ground--unknown.json",
       "a-month-in-the-country-west-end-2026/ents24--unknown.json",
       "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json",
-      "a-month-in-the-country-west-end-2026/theartsdispatch--the-arts-dispatch.json"
+      "a-month-in-the-country-west-end-2026/theartsdispatch--the-arts-dispatch.json",
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/1883magazine--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -470,7 +478,7 @@
     ]
   },
   "startTime": "2026-09-24T08:26:07.381Z",
-  "lastProcessed": "pre-existing-condition-off-broadway-2026/guardian--unknown.json",
+  "lastProcessed": "the-story-west-end-2026/new-york-sun--elysa-gardner.json",
   "log": [
     {
       "t": "2026-09-24T10:03:36.718Z",
@@ -598,5 +606,8 @@
       "session": "50849ea0",
       "url": "https://www.recast.show/shows/the-body-of-mary-a-play-in-three-acts-of-god-off-b"
     }
+  ],
+  "recoveredAfterFailure": [
+    "the-last-ship-west-end-2026/timeout--unknown.json"
   ]
 }
