@@ -96,24 +96,52 @@ function normalizeRef(raw) {
  * no commit of its own, and ALSO ended job-stopped-short — leaving no row
  * whose "newest" is the first job's own landed work.
  *
+ * BRO-4133: jobId is only ever written by the headless runner
+ * (job-spawned/job-* rows) — a legacy cmux dispatch attempt carries no jobId
+ * anywhere on its own rows, only a `correlationId` on its `launch` row
+ * (linear-next.js's generateCorrelationId(), stamped on every launch whether
+ * cmux or headless). Real case: linear:BRO-3471's first attempt landed
+ * d275bfaef0c under correlationId e403e845 and ended prune-closed with no
+ * jobId ever recorded; two later mistaken re-dispatches buried that attempt's
+ * launch/terminal pair under their own job-* rows, and nothing could name the
+ * first attempt at all — --job-id refused it (not a jobId), --already-landed
+ * refused it too (the work postdates the first launch, so it isn't "before
+ * ANY dispatch" either). When `jobId` matches no row's `jobId`, fall back to
+ * treating it as a correlationId: find the `launch` row that carries it and
+ * scope to that ONE attempt's window — the launch row through (but excluding)
+ * the next launch/job-spawned row for this ref, which is where the next
+ * attempt begins. That window still runs through ledgerPrecondition() exactly
+ * like a jobId-scoped one, so the same terminal-event and sha-timing checks
+ * apply unchanged.
+ *
  * When jobId is omitted this is a no-op (identical to today's
  * latest-attempt behavior) — every existing caller that doesn't pass one
  * keeps working unchanged.
  * @param {object[]} rows  rows already scoped to the ref (rowsForRef output)
- * @param {string|null} jobId
+ * @param {string|null} jobId  a jobId OR a launch row's correlationId
  * @param {string} ref  for the refusal message only
  * @returns {{rows: object[], refusal: string|null}}
  */
 function rowsForJobId(rows, jobId, ref) {
   if (!jobId) return { rows: rows || [], refusal: null };
-  const scoped = (rows || []).filter((r) => r && r.jobId === jobId);
-  if (!scoped.length) {
-    return {
-      rows: [],
-      refusal: `--job-id ${jobId} has no ledger rows under ${ref} — it must be a jobId from this card's own dispatch history (see the launch/job-spawned rows)`,
-    };
+  const list = rows || [];
+  const byJobId = list.filter((r) => r && r.jobId === jobId);
+  if (byJobId.length) return { rows: byJobId, refusal: null };
+
+  const launchIdx = list.findIndex((r) => r && String(r.event) === 'launch' && r.correlationId === jobId);
+  if (launchIdx !== -1) {
+    const window = [list[launchIdx]];
+    for (let i = launchIdx + 1; i < list.length; i++) {
+      if (LAUNCH_EVENTS.has(String(list[i].event))) break;
+      window.push(list[i]);
+    }
+    return { rows: window, refusal: null };
   }
-  return { rows: scoped, refusal: null };
+
+  return {
+    rows: [],
+    refusal: `--job-id ${jobId} has no ledger rows under ${ref} — it must be a jobId from this card's own dispatch history (see the launch/job-spawned rows), or a correlationId on one of its launch rows`,
+  };
 }
 
 /**

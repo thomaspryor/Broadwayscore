@@ -48,6 +48,14 @@
  * actually belongs to the card. Omit it for today's default (latest
  * attempt).
  *
+ * --job-id also accepts a correlationId (BRO-4133): a legacy cmux dispatch
+ * attempt never had a jobId at all — only a correlationId on its own
+ * `launch` row. When the value passed doesn't match any row's jobId,
+ * ack-landed-core.js's rowsForJobId falls back to treating it as a
+ * correlationId and scopes to that launch row's own window (through the
+ * next launch for this ref) — so a card whose real work landed under a
+ * pre-jobId cmux attempt is no longer structurally unackable.
+ *
  * --already-landed (BRO-4069): the sibling case --job-id cannot fix — the
  * ref's real work landed BEFORE ANY dispatch attempt on its ledger even
  * launched (every attempt was a mistaken re-dispatch of an already-done
@@ -97,7 +105,8 @@ Usage:
                      launch/job-spawned + terminal rows) instead of the ref's
                      latest — for acking an EARLIER attempt that landed after
                      the card was re-dispatched. Must be a jobId already on
-                     this ref's ledger rows.
+                     this ref's ledger rows, OR a correlationId on one of its
+                     launch rows (legacy cmux attempts have no jobId at all).
   --already-landed  assert the sha was authored BEFORE the ref's EARLIEST
                      dispatch launch (the opposite of the default tie) —
                      for a card whose work already existed before it was
