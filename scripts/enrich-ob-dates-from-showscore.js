@@ -121,7 +121,17 @@ async function main() {
       statusChanges++;
     } else if (show.status === 'open' && ssData.ssStatus === 'closed') {
       changes.push(`status: open → closed`);
-      if (!dryRun) show.status = 'closed';
+      if (!dryRun) {
+        show.status = 'closed';
+        // Same class of bug as update-show-status.js's ShowScore refresh
+        // (BRO-4099): a stored future closingDate now contradicts
+        // status=closed and trips pre-deploy-check.js's integrity gate.
+        const todayStr = new Date().toISOString().slice(0, 10);
+        if (show.closingDate && show.closingDate > todayStr && canWriteClosingDate(show)) {
+          const staleDate = show.closingDate;
+          writeClosingDate(show, null, `enrich-ob-dates-from-showscore: cleared stale future closingDate on closure (was ${staleDate})`, { todayStr });
+        }
+      }
       statusChanges++;
     } else if (show.status === 'open' && ssData.ssStatus === 'previews') {
       // ShowScore says still in previews but we have it as open — correct to previews
