@@ -754,6 +754,41 @@ async function main() {
     console.error(`[digest] WARN could not read local digest-invariant-fail ledger: ${String(err.message).slice(0, 120)}`);
   }
 
+  // BRO-467 follow-up: same cross-machine gap as the two folds above, for
+  // health-check.js's "Autofix: daily canary" row. That CI row's own header
+  // comment ("Tomorrow's health-check reads the ledger this writes" —
+  // scripts/send-morning-digest.js:1132-1136 below) assumed data-health-
+  // check.yml could see data/audit/autofix-canary-ledger.jsonl — it's
+  // gitignored/Mac-local, so that assumption never held and the CI row could
+  // only ever read 'warn' ("cannot measure here"), never the confirmed
+  // 'error' a genuine end-to-end pipeline break produces. checkAutofixCanary
+  // is now CI-skipped entirely (BRO-467) rather than emitting that
+  // permanently-uninformative warn, so this local, live-data fold is what
+  // keeps a REAL canary failure from going silent — same as task #1648 did
+  // for the invariant-fail row just above.
+  try {
+    const { assessCanaryRow } = require('./lib/autofix-canary.js');
+    const dispatchLedger = require('./lib/dispatch-ledger.js');
+    const canaryLedgerPath = path.join(REPO, 'data', 'audit', 'autofix-canary-ledger.jsonl');
+    let canaryLedgerEntries = null;
+    if (fs.existsSync(canaryLedgerPath)) {
+      canaryLedgerEntries = fs.readFileSync(canaryLedgerPath, 'utf8').split('\n')
+        .map((l) => l.trim()).filter(Boolean)
+        .map((l) => { try { return JSON.parse(l); } catch { return null; } })
+        .filter(Boolean);
+    }
+    let dispatchLedgerEntries = [];
+    try { dispatchLedgerEntries = dispatchLedger.readEntries(); } catch { /* stage folding degrades to card-filed-only, same as checkAutofixCanary */ }
+    const row = assessCanaryRow({ canaryLedgerEntries, dispatchLedgerEntries });
+    if (row.status === 'error') {
+      if (!sections.health) sections.health = {};
+      if (!Array.isArray(sections.health.errors)) sections.health.errors = [];
+      sections.health.errors.push({ name: row.name, message: row.message, hint: row.hint });
+    }
+  } catch (err) {
+    console.error(`[digest] WARN could not read local autofix-canary ledger: ${String(err.message).slice(0, 120)}`);
+  }
+
   // Data freshness (task #689) — separate file/dir from the SNAPSHOTS fold
   // above, read directly. Fail-soft: a broken read degrades to one missing
   // section, never blocks the send (same rule as every other section here).
