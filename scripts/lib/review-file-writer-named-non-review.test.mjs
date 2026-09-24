@@ -14,13 +14,30 @@
  * on a host-wide named pattern (verified against the full corpus, see
  * review-guards.js's identically-scoped namedNonReviewUrl rule). Runs via
  * the scripts/lib/*.test.mjs CI glob; dryRun only.
+ *
+ * BRO-4125: reviewTextsDir is pinned to a throwaway temp dir, NOT the real
+ * data/review-texts corpus (the default createOrMergeReviewFile falls back
+ * to). the-last-ship-west-end-2026 is a REAL, currently-running West End
+ * show (opened 2026-09-23) — once its real London Theatre/Marianka Swain
+ * review lands in the live corpus, the "accepts" test's identical
+ * outlet/critic/url/source input has nothing left to merge, so `changed`
+ * stays false and _mergeIntoExisting returns skipped/'no-changes' — a false
+ * failure of an unrelated later guard, not of the named-non-review-url gate
+ * this file exists to test. dryRun:true means nothing is ever written to
+ * this temp dir; it only needs to exist so findExistingReviewFile/
+ * findCrossShowOwners see an empty corpus instead of the real one.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { createOrMergeReviewFile } = require('./review-file-writer.js');
+
+const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'review-file-writer-named-non-review-'));
 
 const quiet = (fn) => {
   const w = console.warn, l = console.log;
@@ -31,7 +48,7 @@ const quiet = (fn) => {
 const call = (outlet, critic, url, source = 'serp-discovery') => quiet(() => createOrMergeReviewFile(
   'the-last-ship-west-end-2026',
   { outlet, criticName: critic, url, source, fields: {} },
-  { dryRun: true }
+  { dryRun: true, reviewTextsDir }
 ));
 
 test('rejects londontheatre.co.uk/show/NNNN ticket page (serp-discovery)', () => {
