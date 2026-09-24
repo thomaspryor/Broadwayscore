@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-09-23T01:13:15.739Z",
-    "completedAt": "2026-09-23T01:19:34.670Z",
-    "totalReviews": 175,
-    "processed": 175,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 451764,
-      "output": 40776,
-      "total": 492540
-    },
-    "costUsd": 1.2660193,
-    "runId": "35803439872",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-23T01:46:16.281Z",
-    "completedAt": "2026-09-23T01:46:38.640Z",
-    "totalReviews": 44374,
-    "processed": 0,
-    "skipped": 44367,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 26179,
-      "output": 831,
-      "total": 72722
-    },
-    "costUsd": 0.13028489999999998,
-    "runId": "35805844844",
-    "errorDetails": [
-      {
-        "showId": "cosi-fan-tutte-off-broadway-2026",
-        "outletId": "bachtrack",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-09-23T01:46:40.590Z",
     "completedAt": "2026-09-23T01:53:06.651Z",
     "totalReviews": 175,
@@ -210869,6 +210831,38 @@
     },
     "costUsd": 1.2847188999999999,
     "runId": "36027187764",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-24T17:25:47.277Z",
+    "completedAt": "2026-09-24T17:25:55.166Z",
+    "totalReviews": 44497,
+    "processed": 1,
+    "skipped": 44495,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 9669,
+      "output": 402,
+      "total": 25841
+    },
+    "costUsd": 0.06041115,
+    "runId": "36031135087",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-24T17:25:57.145Z",
+    "completedAt": "2026-09-24T17:32:13.154Z",
+    "totalReviews": 176,
+    "processed": 176,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 459118,
+      "output": 41243,
+      "total": 500361
+    },
+    "costUsd": 1.2854813999999999,
+    "runId": "36031135087",
     "errorDetails": []
   }
 ]
