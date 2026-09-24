@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-23T10:16:30.866Z",
+  "generatedAt": "2026-09-24T10:23:16.307Z",
   "total": 300,
   "armedCount": 300,
   "refusedCount": 0,
@@ -682,6 +682,69 @@
       ]
     },
     {
+      "id": "3e4637c5-416f-810b-9454-c7ad940a2dfa",
+      "name": "[Review Submission] Cultural Capital review of Electra/Persona",
+      "url": "https://app.notion.com/p/Review-Submission-Cultural-Capital-review-of-Electra-Persona-3e4637c5416f810b9454c7ad940a2dfa",
+      "cmd": "node --test tests/unit/review-submission-validation.test.mjs",
+      "missingPaths": [
+        "tests/unit/review-submission-validation.test.mjs"
+      ]
+    },
+    {
+      "id": "3e4637c5-416f-817f-a92d-e80ec1692104",
+      "name": "[Review Submission] The Reviews Hub review of Deep Heat Rivalry",
+      "url": "https://app.notion.com/p/Review-Submission-The-Reviews-Hub-review-of-Deep-Heat-Rivalry-3e4637c5416f817fa92de80ec1692104",
+      "cmd": "node --test tests/unit/reviews-hub-deep-heat-rivalry.test.mjs",
+      "missingPaths": [
+        "tests/unit/reviews-hub-deep-heat-rivalry.test.mjs"
+      ]
+    },
+    {
+      "id": "3e4637c5-416f-81cb-921e-c90feaad79df",
+      "name": "[Review Submission] West End Best Friend review of Deep Heat Rivalry",
+      "url": "https://app.notion.com/p/Review-Submission-West-End-Best-Friend-review-of-Deep-Heat-Rivalry-3e4637c5416f81cb921ec90feaad79df",
+      "cmd": "node --test tests/unit/review-submission-west-end-best-friend.test.mjs",
+      "missingPaths": [
+        "tests/unit/review-submission-west-end-best-friend.test.mjs"
+      ]
+    },
+    {
+      "id": "3e4637c5-416f-813f-bec3-cb5d144837dc",
+      "name": "[Review Submission] All That Dazzles review of Deep Heat Rivalry",
+      "url": "https://app.notion.com/p/Review-Submission-All-That-Dazzles-review-of-Deep-Heat-Rivalry-3e4637c5416f813fbec3cb5d144837dc",
+      "cmd": "node --test tests/unit/review-submission-all-that-dazzles.test.mjs",
+      "missingPaths": [
+        "tests/unit/review-submission-all-that-dazzles.test.mjs"
+      ]
+    },
+    {
+      "id": "3e4637c5-416f-8172-8ecb-feb908d8170a",
+      "name": "[Review Submission] London Theatre review of Deep Heat Rivalry",
+      "url": "https://app.notion.com/p/Review-Submission-London-Theatre-review-of-Deep-Heat-Rivalry-3e4637c5416f81728ecbfeb908d8170a",
+      "cmd": "node --test tests/unit/review-submission-london-theatre.test.mjs",
+      "missingPaths": [
+        "tests/unit/review-submission-london-theatre.test.mjs"
+      ]
+    },
+    {
+      "id": "3e4637c5-416f-8166-8b3d-eb5ec69a453c",
+      "name": "[Review Submission] The Stage review of Deep Heat Rivalry",
+      "url": "https://app.notion.com/p/Review-Submission-The-Stage-review-of-Deep-Heat-Rivalry-3e4637c5416f81668b3deb5ec69a453c",
+      "cmd": "node --test tests/unit/deep-heat-rivalry-review.test.mjs",
+      "missingPaths": [
+        "tests/unit/deep-heat-rivalry-review.test.mjs"
+      ]
+    },
+    {
+      "id": "3e4637c5-416f-817b-8905-e200b48515b5",
+      "name": "[Content Error] — Deep Heat Rivalry Deep Heat Rivalry at The Other Palace is listed as closed but it is running unt…",
+      "url": "https://app.notion.com/p/Content-Error-Deep-Heat-Rivalry-Deep-Heat-Rivalry-at-The-Other-Palace-is-listed-as-closed-but-it--3e4637c5416f817b8905e200b48515b5",
+      "cmd": "node --test tests/unit/deep-heat-rivalry-closure.test.mjs",
+      "missingPaths": [
+        "tests/unit/deep-heat-rivalry-closure.test.mjs"
+      ]
+    },
+    {
       "id": "3e3637c5-416f-81a2-994d-ec11d2646058",
       "name": "[Review Submission] The Jewish Chronicle review of Golden Boy",
       "url": "https://app.notion.com/p/Review-Submission-The-Jewish-Chronicle-review-of-Golden-Boy-3e3637c5416f81a2994dec11d2646058",
@@ -706,87 +769,6 @@
       "cmd": "node --test tests/unit/review-submission-golden-boy.test.mjs",
       "missingPaths": [
         "tests/unit/review-submission-golden-boy.test.mjs"
-      ]
-    },
-    {
-      "id": "3e3637c5-416f-816a-a9c9-cb44cbc03f13",
-      "name": "[Review Submission] The Sunday Times review of Golden Boy",
-      "url": "https://app.notion.com/p/Review-Submission-The-Sunday-Times-review-of-Golden-Boy-3e3637c5416f816aa9c9cb44cbc03f13",
-      "cmd": "node --test tests/unit/review-submission-golden-boy.test.mjs",
-      "missingPaths": [
-        "tests/unit/review-submission-golden-boy.test.mjs"
-      ]
-    },
-    {
-      "id": "3e2637c5-416f-814f-9d9b-f4af608e6d90",
-      "name": "[Content Error] — Book of mormon Review of the guardian is positive not 45",
-      "url": "https://app.notion.com/p/Content-Error-Book-of-mormon-Review-of-the-guardian-is-positive-not-45-3e2637c5416f814f9d9bf4af608e6d90",
-      "cmd": "node --test tests/unit/book-of-mormon-guardian-review.test.mjs",
-      "missingPaths": [
-        "tests/unit/book-of-mormon-guardian-review.test.mjs"
-      ]
-    },
-    {
-      "id": "3e0637c5-416f-81ca-9fe9-e3678533178d",
-      "name": "[Review Submission] The New York Stage Review review of The Cherry Orchard",
-      "url": "https://app.notion.com/p/Review-Submission-The-New-York-Stage-Review-review-of-The-Cherry-Orchard-3e0637c5416f81ca9fe9e3678533178d",
-      "cmd": "node --test tests/unit/review-submission.test.mjs",
-      "missingPaths": [
-        "tests/unit/review-submission.test.mjs"
-      ]
-    },
-    {
-      "id": "3e0637c5-416f-81ad-9d30-e21fbd4f068f",
-      "name": "[Review Submission] The New York Stage Review review of America who hurt you",
-      "url": "https://app.notion.com/p/Review-Submission-The-New-York-Stage-Review-review-of-America-who-hurt-you-3e0637c5416f81ad9d30e21fbd4f068f",
-      "cmd": "node --test tests/unit/review-submission-validation.test.mjs",
-      "missingPaths": [
-        "tests/unit/review-submission-validation.test.mjs"
-      ]
-    },
-    {
-      "id": "3df637c5-416f-819b-a747-d2a9c347a052",
-      "name": "[Review Submission] The Verdict review of Two Strangers (Carry a Cake Across New York)",
-      "url": "https://app.notion.com/p/Review-Submission-The-Verdict-review-of-Two-Strangers-Carry-a-Cake-Across-New-York-3df637c5416f819ba747d2a9c347a052",
-      "cmd": "node --test tests/unit/the-verdict-two-strangers-review.test.mjs",
-      "missingPaths": [
-        "tests/unit/the-verdict-two-strangers-review.test.mjs"
-      ]
-    },
-    {
-      "id": "3db637c5-416f-8196-a623-d50a2a05959c",
-      "name": "Search used as site navigation — no browse/nav alternative surfaced",
-      "url": "https://app.notion.com/p/Search-used-as-site-navigation-no-browse-nav-alternative-surfaced-3db637c5416f8196a623d50a2a05959c",
-      "cmd": "node --test tests/unit/search-navigation-ratio.test.mjs",
-      "missingPaths": [
-        "tests/unit/search-navigation-ratio.test.mjs"
-      ]
-    },
-    {
-      "id": "3d4637c5-416f-8108-8eab-edf6251a4fa8",
-      "name": "Traffic down to 3,473 users — 13% below ~4k weekly baseline",
-      "url": "https://app.notion.com/p/Traffic-down-to-3-473-users-13-below-4k-weekly-baseline-3d4637c5416f81088eabedf6251a4fa8",
-      "cmd": "node --test scripts/traffic-investigation.test.mjs",
-      "missingPaths": [
-        "scripts/traffic-investigation.test.mjs"
-      ]
-    },
-    {
-      "id": "3d1637c5-416f-8153-a865-c950e41e4e20",
-      "name": "[Other] Hi Tom — I came across your recent scraper cost report and noticed the combinat…",
-      "url": "https://app.notion.com/p/Other-Hi-Tom-I-came-across-your-recent-scraper-cost-report-and-noticed-the-combinat-3d1637c5416f8153a865c950e41e4e20",
-      "cmd": "node --test tests/unit/scraper-cost-diagnostic.test.mjs",
-      "missingPaths": [
-        "tests/unit/scraper-cost-diagnostic.test.mjs"
-      ]
-    },
-    {
-      "id": "3cd637c5-416f-812f-9826-c3e6fe6ba1ce",
-      "name": "Ride the Cyclone — missing production returning zero results",
-      "url": "https://app.notion.com/p/Ride-the-Cyclone-missing-production-returning-zero-results-3cd637c5416f812f9826c3e6fe6ba1ce",
-      "cmd": "node --test tests/unit/ride-the-cyclone-search.test.mjs",
-      "missingPaths": [
-        "tests/unit/ride-the-cyclone-search.test.mjs"
       ]
     }
   ],
