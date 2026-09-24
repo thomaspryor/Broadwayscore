@@ -156,6 +156,16 @@ const EXPECTED_REJECTION_REASONS = [
   // review of this production — the refusal is correct and permanent, same
   // footing as cross-market.
   'tour-review',
+  // BRO-4101: the URL structurally matches a NAMED_NON_REVIEW_URL_PATTERNS
+  // entry (non-review-url-patterns.js) — a ticketing/venue-production/
+  // event-listing page on a host that may ALSO publish real reviews under a
+  // different path (e.g. londontheatre.co.uk/show/NNNN is a ticket page;
+  // /reviews/ on the same host is not). This specific URL shape never was a
+  // review to begin with, so the refusal is correct and permanent — same
+  // footing as tour-review/cross-market. Stays visible per-occurrence: a
+  // caller producing these in bulk means an upstream SERP-discovery query is
+  // surfacing junk it should be filtering before ever reaching ingest.
+  'named-non-review-url',
   // The byline is a CREATIVE TEAM member of this same show
   // (review-file-writer.js Guard F2, BRO-2915) — a mis-parsed roundup row, not
   // a review. validate-data.js ERRORS on the same shape, so writing it would
@@ -266,6 +276,9 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'tour-review') {
     return `${showId}: ${url} looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js.`;
+  }
+  if (reason === 'named-non-review-url') {
+    return `${showId}: ${url} was refused because its URL structurally matches a known non-review page shape${detail ? ` (${detail})` : ''} (ticketing/venue-production/event-listing) — refused by the named-non-review-url guard. Expected rejection; if this host genuinely publishes reviews at a different path, that path is unaffected — only this exact URL shape is blocked. If this pattern is now wrong (the host changed what it publishes there), fix the entry in scripts/lib/non-review-url-patterns.js.`;
   }
   if (reason === 'credited-person-as-critic') {
     return `${showId}: ${url} was refused because its byline is a creative team member of this same show${detail ? ` (${detail})` : ''} — the mis-parsed-roundup-row shape validate-data.js errors on. Expected rejection; if this person genuinely reviewed the show, ingest it with scripts/ingest-manual-review.js (operator entries are exempt). If the name is wrong on the SHOW side instead, fix that credit in shows.json.`;
