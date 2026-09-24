@@ -150,6 +150,15 @@ test('empty-unknown with its real prose tail classifies — the grep used to rej
   assert.equal(got.detail, null, 'prose after ": " is not a machine-readable detail');
 });
 
+// BRO-4101: named-non-review-url (ticketing/venue-listing URL shape) is an
+// expected, permanent rejection — same footing as cross-market/tour-review.
+test('named-non-review-url is an expected rejection, not a conflict', () => {
+  const got = classifyIngestSkip('⚠️  Skipped: named-non-review-url: ticketing-listing');
+  assert.equal(got.kind, 'expected');
+  assert.equal(got.reason, 'named-non-review-url');
+  assert.equal(got.detail, null, 'prose after ": " is not a machine-readable detail');
+});
+
 test('the three reason lists are pairwise disjoint', () => {
   const lists = { CONFLICT_REASONS, EXPECTED_REJECTION_REASONS, BENIGN_REASONS };
   for (const [aName, a] of Object.entries(lists)) {
