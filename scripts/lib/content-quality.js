@@ -42,7 +42,11 @@ const PAYWALL_PATTERNS = [
   /free\s+trial/i,
   /unlock\s+(this\s+)?(story|article|content)/i,
   /exclusive\s+(content|access)/i,
-  /paywall/i,
+  // \b prevents "paywalling"/"paywalled" prose-metaphor FPs (BRO-4124: Vulture's
+  // "the paywalling of everything" mid-review) while still matching the bare
+  // word, e.g. "...full text behind paywall.)" — same technique as
+  // AD_BLOCKER_PATTERNS::0's \bad\s*block(er)?/i fix for "roadblock".
+  /\bpaywall\b/i,
   /continue\s+reading\s+(your\s+)?article\s+with\s+a/i,
   /with\s+a\s+\w+\s+subscription/i,
   // NYT bot-detection / JS-loader artifact appended after partial article text.

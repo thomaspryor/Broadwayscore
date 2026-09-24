@@ -106,3 +106,46 @@ test('content-quality: NYT chrome appended to real review prose flags isGarbage 
   assert.equal(result.isGarbage, true,
     `expected garbage when JS-loader chrome dominates a short bait, got: ${result.reason}`);
 });
+
+// BRO-4124: bare /paywall/i matched the substring "paywall" inside "paywalling"
+// used as prose metaphor mid-review (Vulture's "The Holes", Jackson McHenry:
+// "...gentrification, the paywalling of everything, how to grow a members'
+// club..." at 45% through a 5942-char complete review). isGarbageContent
+// rejected the whole file because the match wasn't in trailing junk, which
+// starved ensemble scoring (selectScorableText -> null) and kept the review
+// off prod. Fixed with \bpaywall\b, same technique as AD_BLOCKER_PATTERNS::0's
+// \bad\s*block(er)?/i fix for the "roadblock" substring FP.
+test('content-quality: "paywalling" used as prose metaphor is NOT detected as paywall', () => {
+  const text = 'Friedlich has handed himself a stretchy metaphor that touches on '
+    + 'of-the-moment anxieties: gentrification, the paywalling of everything, '
+    + 'how to grow a members’ club.';
+  const p = detectPaywall(text);
+  assert.equal(p.detected, false, '"paywalling" should not match the bare paywall pattern');
+});
+
+test('content-quality: bare "paywall." (word boundary) is still detected as paywall', () => {
+  const text = 'Bachtrack subscriber-only — full text behind paywall.';
+  const p = detectPaywall(text);
+  assert.equal(p.detected, true, 'standalone "paywall" should still be detected');
+});
+
+test('content-quality: real-world Vulture prose mention of "paywalling" does not flag a substantial review as garbage', () => {
+  const text = [
+    'The Holes is a play about a gentrifying downtown, its self-important ',
+    'residents and the eternal hole in the middle of everything they build. ',
+    'Friedlich has handed himself a stretchy, amoebic metaphor that touches on ',
+    'all sorts of of-the-moment anxieties: gentrification, the paywalling of ',
+    'everything, how to grow a members’ club. He has a lot of fun bouncing ',
+    'concepts against a wall like Flubber. The direction keeps the play moving ',
+    'briskly through its two acts on a modest Off Broadway stage, and the cast ',
+    'commits fully to the production’s theatrical conceit. The performances ',
+    'anchor an evening that otherwise threatens to spin off into abstraction, ',
+    'and the design team’s minimal set does a lot of heavy lifting for a show ',
+    'about absence. It’s a solid production with a script still finding its ',
+    'shape, staged with real theatrical craft by a director who trusts his ',
+    'actors and his audience in equal measure across a tight ninety minutes.',
+  ].join('');
+  const result = isGarbageContent(text);
+  assert.equal(result.isGarbage, false,
+    `expected a substantial review mentioning "paywalling" in prose to pass, but was rejected: ${result.reason}`);
+});
