@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-09-24T05:40:09.820Z",
+  "generatedAt": "2026-09-24T10:49:33.081Z",
   "windowDays": 1095,
-  "targets": 275,
-  "auditedThisRun": 7,
-  "carriedForward": 556,
+  "targets": 279,
+  "auditedThisRun": 6,
+  "carriedForward": 557,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 314,
-    "missingCurrentRun": 463,
+    "missingCurrentRun": 452,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 819,
+    "totalFlaggedMisses": 828,
     "totalRecoverable": 8,
-    "totalRecovered": 8,
-    "priorProductionCitations": 2524
+    "totalRecovered": 9,
+    "priorProductionCitations": 2521
   },
   "results": [
     {
@@ -26534,7 +26534,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -26575,12 +26575,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 37,
+        "count": 35,
         "byReason": {
-          "aggregator-internal-nav": 6,
+          "aggregator-internal-nav": 5,
           "non-review-host": 27,
           "venue-production-page": 1,
-          "merch-store": 3
+          "merch-store": 2
         }
       },
       "dedupedVariants": [],
@@ -26676,7 +26676,7 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-09-24T00:16:09.587Z"
+      "computedAt": "2026-09-24T10:49:33.081Z"
     },
     {
       "showId": "crazy-mama-off-broadway-2026",
@@ -32058,43 +32058,85 @@
         "https://www.clintonandgreene.com/p/critically-acclaimed-delirium-comes",
         "https://www.theatermirror.net/delirium-strikes-all-the-right-raw-notes/"
       ],
-      "dirFiles": 0,
-      "dirClean": 0,
+      "dirFiles": 5,
+      "dirClean": 1,
       "inReviewsJson": 0,
-      "missing": [
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [
         {
           "url": "https://www.nytimes.com/2026/09/21/theater/chulpan-khamatova-delirium-eugene-ionesco.html",
           "host": "nytimes.com",
           "knownOutletId": "nytimes",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.arlekinplayers.com/works/delirium",
-          "host": "arlekinplayers.com",
-          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--elisabeth-vincentelli.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.nytimes.com/2026/09/21/theater/chulpan-khamatova-delirium-eugene-ionesco.html"
+            }
+          ],
           "serpCensus": true
         },
         {
           "url": "https://brooklyneagle.com/408527/new-york-premiere-of-delirium/",
           "host": "brooklyneagle.com",
           "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "brooklyneagle--brooklyn-eagle-staff.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://brooklyneagle.com/408527/new-york-premiere-of-delirium/"
+            }
+          ],
           "serpCensus": true
         },
         {
           "url": "https://www.clintonandgreene.com/p/critically-acclaimed-delirium-comes",
           "host": "clintonandgreene.com",
           "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "clintonandgreene--clinton-and-greene.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.clintonandgreene.com/p/critically-acclaimed-delirium-comes"
+            }
+          ],
           "serpCensus": true
         },
         {
           "url": "https://www.theatermirror.net/delirium-strikes-all-the-right-raw-notes/",
           "host": "theatermirror.net",
           "knownOutletId": "theater-mirror",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theater-mirror--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermirror.net/delirium-strikes-all-the-right-raw-notes/"
+            }
+          ],
           "serpCensus": true
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -32128,7 +32170,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -32158,7 +32200,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           }
@@ -32169,77 +32211,16 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 36,
+        "count": 40,
         "byReason": {
-          "aggregator-internal-nav": 6,
-          "non-review-host": 28,
-          "non-review-path": 2
+          "aggregator-internal-nav": 5,
+          "non-review-host": 32,
+          "roundup-page": 1,
+          "ticketing-reseller": 1,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://www.nytimes.com/2026/09/21/theater/chulpan-khamatova-delirium-eugene-ionesco.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.arlekinplayers.com/works/delirium",
-          "host": "arlekinplayers.com",
-          "outletId": "arlekinplayers",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://brooklyneagle.com/408527/new-york-premiere-of-delirium/",
-          "host": "brooklyneagle.com",
-          "outletId": "brooklyneagle",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.clintonandgreene.com/p/critically-acclaimed-delirium-comes",
-          "host": "clintonandgreene.com",
-          "outletId": "clintonandgreene",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.theatermirror.net/delirium-strikes-all-the-right-raw-notes/",
-          "host": "theatermirror.net",
-          "outletId": "theater-mirror",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -32249,13 +32230,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.nytimes.com/2026/09/21/theater/chulpan-khamatova-delirium-eugene-ionesco.html"
-          },
-          {
-            "outletId": "arlekinplayers.com",
-            "outlet": "arlekinplayers.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.arlekinplayers.com/works/delirium"
           },
           {
             "outletId": "brooklyneagle.com",
@@ -32282,15 +32256,14 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.nytimes.com/2026/09/21/theater/chulpan-khamatova-delirium-eugene-ionesco.html",
-            "outletId": "nytimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "url": "https://www.arlekinplayers.com/works/delirium",
+            "outletId": "arlekinplayers.com",
+            "state": "live",
             "firstSeenAt": "2026-09-24T00:16:09.587Z"
           },
           {
-            "url": "https://www.arlekinplayers.com/works/delirium",
-            "outletId": "arlekinplayers.com",
+            "url": "https://www.nytimes.com/2026/09/21/theater/chulpan-khamatova-delirium-eugene-ionesco.html",
+            "outletId": "nytimes",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-09-24T00:16:09.587Z"
@@ -32318,10 +32291,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 0,
+        "liveCount": 1,
         "candidateCount": 5
       },
-      "computedAt": "2026-09-24T00:16:09.587Z"
+      "computedAt": "2026-09-24T10:49:33.081Z"
     },
     {
       "showId": "dinosaur-world-live-off-west-end-2026",
@@ -35847,61 +35820,26 @@
         "https://www.sohoplayhouse.com/see-a-show/elf-lyons-the-woman-on-the-edge",
         "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/",
         "https://sohotheatre.com/events/elf-lyons-is-the-woman-on-the-edge/",
-        "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
-        "https://broadwaybaby.com/shows/elf-lyons-is-the-woman-on-the-edge/832666",
-        "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
+        "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
         "https://www.voicemag.uk/review/16817/elf-lyons-is-the-woman-on-the-edge",
-        "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
-        "https://www.mickperrin.com/tours/elf-lyons-is-the-woman-on-the-edge/",
+        "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
+        "https://broadwaybaby.com/shows/elf-lyons-is-the-woman-on-the-edge/832666",
+        "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
         "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
+        "https://www.mickperrin.com/tours/elf-lyons-is-the-woman-on-the-edge/",
+        "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
         "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/",
         "https://one4review.co.uk/2026/08/elf-lyons-is-the-woman-on-the-edge-4/",
         "https://snackmag.co.uk/elf-lyons-is-the-woman-on-the-edge-fringe-review-5-stars"
       ],
-      "dirFiles": 0,
-      "dirClean": 0,
+      "dirFiles": 5,
+      "dirClean": 1,
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://todolist.london/elf-lyons-is-the-woman-on-the-edge-at-edinburgh-fringe-2026/",
-          "host": "todolist.london",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.sohoplayhouse.com/see-a-show/elf-lyons-the-woman-on-the-edge",
-          "host": "sohoplayhouse.com",
-          "knownOutletId": "sohoplayhouse",
-          "serpCensus": true
-        },
-        {
-          "url": "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "serpCensus": true
-        },
-        {
-          "url": "https://sohotheatre.com/events/elf-lyons-is-the-woman-on-the-edge/",
-          "host": "sohotheatre.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
-          "host": "rolandcat.substack.com",
-          "knownOutletId": "rolandcat",
-          "serpCensus": true
-        },
-        {
-          "url": "https://broadwaybaby.com/shows/elf-lyons-is-the-woman-on-the-edge/832666",
-          "host": "broadwaybaby.com",
-          "knownOutletId": "broadway-baby",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
-          "host": "chortle.co.uk",
-          "knownOutletId": "chortle",
+          "url": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
           "serpCensus": true
         },
         {
@@ -35911,9 +35849,21 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
-          "host": "beyondthejoke.co.uk",
-          "knownOutletId": null,
+          "url": "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
+          "host": "chortle.co.uk",
+          "knownOutletId": "chortle",
+          "serpCensus": true
+        },
+        {
+          "url": "https://broadwaybaby.com/shows/elf-lyons-is-the-woman-on-the-edge/832666",
+          "host": "broadwaybaby.com",
+          "knownOutletId": "broadway-baby",
+          "serpCensus": true
+        },
+        {
+          "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
+          "host": "fringereview.co.uk",
+          "knownOutletId": "fringereview",
           "serpCensus": true
         },
         {
@@ -35923,9 +35873,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
-          "host": "fringereview.co.uk",
-          "knownOutletId": "fringereview",
+          "url": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
+          "host": "beyondthejoke.co.uk",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -35948,7 +35898,80 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://todolist.london/elf-lyons-is-the-woman-on-the-edge-at-edinburgh-fringe-2026/",
+          "host": "todolist.london",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "todolist--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://todolist.london/elf-lyons-is-the-woman-on-the-edge-at-edinburgh-fringe-2026/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.sohoplayhouse.com/see-a-show/elf-lyons-the-woman-on-the-edge",
+          "host": "sohoplayhouse.com",
+          "knownOutletId": "sohoplayhouse",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "sohoplayhouse--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.sohoplayhouse.com/see-a-show/elf-lyons-the-woman-on-the-edge"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--ethan-shanfeld.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
+          "host": "rolandcat.substack.com",
+          "knownOutletId": "rolandcat",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "rolandcat--roviews.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -35962,8 +35985,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 8,
+            "accepted": 0,
             "error": null
           },
           {
@@ -35983,7 +36006,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -36013,44 +36036,31 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 6,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 14,
+        "resultCount": 15,
         "error": null
       },
       "candidatesRejected": {
-        "count": 37,
+        "count": 38,
         "byReason": {
-          "aggregator-internal-nav": 1,
-          "non-review-host": 30,
-          "non-review-path": 1,
+          "aggregator-internal-nav": 2,
+          "non-review-host": 31,
           "venue-production-page": 3,
           "merch-store": 1,
-          "static-asset": 1
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://todolist.london/elf-lyons-is-the-woman-on-the-edge-at-edinburgh-fringe-2026/",
-          "host": "todolist.london",
-          "outletId": "todolist",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.sohoplayhouse.com/see-a-show/elf-lyons-the-woman-on-the-edge",
-          "host": "sohoplayhouse.com",
-          "outletId": "sohoplayhouse",
+          "url": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
+          "host": "theatreandtonic.co.uk",
+          "outletId": "theatreandtonic",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -36060,9 +36070,9 @@
           "reason": null
         },
         {
-          "url": "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/",
-          "host": "variety.com",
-          "outletId": "variety",
+          "url": "https://www.voicemag.uk/review/16817/elf-lyons-is-the-woman-on-the-edge",
+          "host": "voicemag.uk",
+          "outletId": "voice-magazine",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -36072,10 +36082,10 @@
           "reason": null
         },
         {
-          "url": "https://sohotheatre.com/events/elf-lyons-is-the-woman-on-the-edge/",
-          "host": "sohotheatre.com",
-          "outletId": "sohotheatre",
-          "provisional": true,
+          "url": "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
+          "host": "chortle.co.uk",
+          "outletId": "chortle",
+          "provisional": false,
           "ok": true,
           "noop": false,
           "conflict": false,
@@ -36084,9 +36094,21 @@
           "reason": null
         },
         {
-          "url": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
-          "host": "rolandcat.substack.com",
-          "outletId": "rolandcat",
+          "url": "https://broadwaybaby.com/shows/elf-lyons-is-the-woman-on-the-edge/832666",
+          "host": "broadwaybaby.com",
+          "outletId": "broadway-baby",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
+          "host": "fringereview.co.uk",
+          "outletId": "fringereview",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -36098,34 +36120,14 @@
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://broadwaybaby.com/shows/elf-lyons-is-the-woman-on-the-edge/832666",
-          "host": "broadwaybaby.com",
-          "outletId": "broadway-baby"
-        },
-        {
-          "url": "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
-          "host": "chortle.co.uk",
-          "outletId": "chortle"
-        },
-        {
-          "url": "https://www.voicemag.uk/review/16817/elf-lyons-is-the-woman-on-the-edge",
-          "host": "voicemag.uk",
-          "outletId": "voice-magazine"
-        },
-        {
-          "url": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
-          "host": "beyondthejoke.co.uk",
-          "outletId": "beyondthejoke"
-        },
-        {
           "url": "https://www.mickperrin.com/tours/elf-lyons-is-the-woman-on-the-edge/",
           "host": "mickperrin.com",
           "outletId": "mickperrin"
         },
         {
-          "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
-          "host": "fringereview.co.uk",
-          "outletId": "fringereview"
+          "url": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
+          "host": "beyondthejoke.co.uk",
+          "outletId": "beyondthejoke"
         },
         {
           "url": "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/",
@@ -36146,6 +36148,76 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "theatreandtonic",
+            "outlet": "theatreandtonic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review"
+          },
+          {
+            "outletId": "voice-magazine",
+            "outlet": "voice-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.voicemag.uk/review/16817/elf-lyons-is-the-woman-on-the-edge"
+          },
+          {
+            "outletId": "chortle",
+            "outlet": "chortle",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge"
+          },
+          {
+            "outletId": "broadway-baby",
+            "outlet": "broadway-baby",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwaybaby.com/shows/elf-lyons-is-the-woman-on-the-edge/832666"
+          },
+          {
+            "outletId": "fringereview",
+            "outlet": "fringereview",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/"
+          },
+          {
+            "outletId": "mickperrin.com",
+            "outlet": "mickperrin.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.mickperrin.com/tours/elf-lyons-is-the-woman-on-the-edge/"
+          },
+          {
+            "outletId": "beyondthejoke.co.uk",
+            "outlet": "beyondthejoke.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge"
+          },
+          {
+            "outletId": "theqr",
+            "outlet": "theqr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/"
+          },
+          {
+            "outletId": "one4review.co.uk",
+            "outlet": "one4review.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://one4review.co.uk/2026/08/elf-lyons-is-the-woman-on-the-edge-4/"
+          },
+          {
+            "outletId": "snackmag.co.uk",
+            "outlet": "snackmag.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://snackmag.co.uk/elf-lyons-is-the-woman-on-the-edge-fringe-review-5-stars"
+          },
           {
             "outletId": "todolist.london",
             "outlet": "todolist.london",
@@ -36168,123 +36240,31 @@
             "url": "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/"
           },
           {
-            "outletId": "sohotheatre.com",
-            "outlet": "sohotheatre.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://sohotheatre.com/events/elf-lyons-is-the-woman-on-the-edge/"
-          },
-          {
             "outletId": "rolandcat",
             "outlet": "rolandcat",
             "critic": "Unknown",
             "stars": null,
             "url": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the"
-          },
-          {
-            "outletId": "broadway-baby",
-            "outlet": "broadway-baby",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaybaby.com/shows/elf-lyons-is-the-woman-on-the-edge/832666"
-          },
-          {
-            "outletId": "chortle",
-            "outlet": "chortle",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge"
-          },
-          {
-            "outletId": "voice-magazine",
-            "outlet": "voice-magazine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.voicemag.uk/review/16817/elf-lyons-is-the-woman-on-the-edge"
-          },
-          {
-            "outletId": "beyondthejoke.co.uk",
-            "outlet": "beyondthejoke.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge"
-          },
-          {
-            "outletId": "mickperrin.com",
-            "outlet": "mickperrin.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.mickperrin.com/tours/elf-lyons-is-the-woman-on-the-edge/"
-          },
-          {
-            "outletId": "fringereview",
-            "outlet": "fringereview",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/"
-          },
-          {
-            "outletId": "theqr",
-            "outlet": "theqr",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/"
-          },
-          {
-            "outletId": "one4review.co.uk",
-            "outlet": "one4review.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://one4review.co.uk/2026/08/elf-lyons-is-the-woman-on-the-edge-4/"
-          },
-          {
-            "outletId": "snackmag.co.uk",
-            "outlet": "snackmag.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://snackmag.co.uk/elf-lyons-is-the-woman-on-the-edge-fringe-review-5-stars"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://todolist.london/elf-lyons-is-the-woman-on-the-edge-at-edinburgh-fringe-2026/",
-            "outletId": "todolist.london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-24T00:16:09.587Z"
-          },
-          {
-            "url": "https://www.sohoplayhouse.com/see-a-show/elf-lyons-the-woman-on-the-edge",
-            "outletId": "sohoplayhouse",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-24T00:16:09.587Z"
-          },
-          {
-            "url": "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/",
-            "outletId": "variety",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-24T00:16:09.587Z"
-          },
-          {
             "url": "https://sohotheatre.com/events/elf-lyons-is-the-woman-on-the-edge/",
             "outletId": "sohotheatre.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "live",
             "firstSeenAt": "2026-09-24T00:16:09.587Z"
           },
           {
-            "url": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
-            "outletId": "rolandcat",
+            "url": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
+            "outletId": "theatreandtonic",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-09-24T00:16:09.587Z"
+            "firstSeenAt": "2026-09-24T10:49:33.081Z"
           },
           {
-            "url": "https://broadwaybaby.com/shows/elf-lyons-is-the-woman-on-the-edge/832666",
-            "outletId": "broadway-baby",
+            "url": "https://www.voicemag.uk/review/16817/elf-lyons-is-the-woman-on-the-edge",
+            "outletId": "voice-magazine",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-09-24T00:16:09.587Z"
@@ -36297,15 +36277,15 @@
             "firstSeenAt": "2026-09-24T00:16:09.587Z"
           },
           {
-            "url": "https://www.voicemag.uk/review/16817/elf-lyons-is-the-woman-on-the-edge",
-            "outletId": "voice-magazine",
+            "url": "https://broadwaybaby.com/shows/elf-lyons-is-the-woman-on-the-edge/832666",
+            "outletId": "broadway-baby",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-09-24T00:16:09.587Z"
           },
           {
-            "url": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
-            "outletId": "beyondthejoke.co.uk",
+            "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
+            "outletId": "fringereview",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-09-24T00:16:09.587Z"
@@ -36318,8 +36298,8 @@
             "firstSeenAt": "2026-09-24T00:16:09.587Z"
           },
           {
-            "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
-            "outletId": "fringereview",
+            "url": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
+            "outletId": "beyondthejoke.co.uk",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-09-24T00:16:09.587Z"
@@ -36344,13 +36324,41 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-09-24T00:16:09.587Z"
+          },
+          {
+            "url": "https://todolist.london/elf-lyons-is-the-woman-on-the-edge-at-edinburgh-fringe-2026/",
+            "outletId": "todolist.london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-24T00:16:09.587Z"
+          },
+          {
+            "url": "https://www.sohoplayhouse.com/see-a-show/elf-lyons-the-woman-on-the-edge",
+            "outletId": "sohoplayhouse",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-24T00:16:09.587Z"
+          },
+          {
+            "url": "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/",
+            "outletId": "variety",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-24T00:16:09.587Z"
+          },
+          {
+            "url": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
+            "outletId": "rolandcat",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-24T00:16:09.587Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 0,
-        "candidateCount": 14
+        "liveCount": 1,
+        "candidateCount": 15
       },
-      "computedAt": "2026-09-24T00:16:09.587Z"
+      "computedAt": "2026-09-24T10:49:33.081Z"
     },
     {
       "showId": "encores-la-cage-aux-folles-off-broadway-2026",
@@ -69233,7 +69241,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-24T05:40:09.820Z"
+      "computedAt": "2026-09-24T10:49:33.081Z"
     },
     {
       "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
@@ -72598,14 +72606,15 @@
         "https://www.theguardian.com/film/2015/may/23/macbeth-review-fassbender-and-cotillard-full-of-sound-and-fury-in-significant-shakespeare-adaptation",
         "http://www.screendaily.com/reviews/macbeth-review/5087418.article",
         "https://www.broadwayworld.com/bwwopera/article/Review-Making-Scotland-Great-Again-with-Thrilling-Davidsen-and-Kelsey-in-Mets-New-MACBETH-20260923",
+        "https://www.vulture.com/article/the-mets-macbeth-is-a-bubbling-cauldron-of-operatic-fun.html",
         "https://www.rottentomatoes.com/m/the_metropolitan_opera_macbeth",
         "https://www.classicalsource.com/concert/the-metropolitan-opera-macbeth-2/",
         "https://www.opera-online.com/en/items/productions/macbeth-metropolitan-opera-2026-louisa-proske-2026",
-        "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+        "https://www.operabase.com/productions/macbeth-476049/en"
       ],
-      "dirFiles": 52,
-      "dirClean": 5,
-      "inReviewsJson": 5,
+      "dirFiles": 56,
+      "dirClean": 8,
+      "inReviewsJson": 7,
       "missing": [
         {
           "url": "https://nystagereview.com/2022/04/29/macbeth-loud-sound-intermittent-fury-signifying-nothing/",
@@ -72706,13 +72715,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.vulture.com/2019/10/reviews-a-doyle-macbeth-ashtons-for-all-the-women.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "http://nystagereview.com/2019/10/27/macbeth-a-slimmed-down-version-of-the-scottish-play/",
           "host": "nystagereview.com",
           "knownOutletId": "nysr",
@@ -72741,13 +72743,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.vulture.com/2022/04/theater-review-daniel-craig-and-ruth-negga-in-macbeth.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-hawke-is-a-broody-monarch-in-macbeth/2013/11/21/4ece31fe-531b-11e3-9ee6-2580086d8254_story.html",
           "host": "washingtonpost.com",
           "knownOutletId": "washpost",
@@ -72758,13 +72753,6 @@
           "url": "http://www.usatoday.com/story/life/theater/2013/11/21/broadway-review-macbeth/3641633/",
           "host": "usatoday.com",
           "knownOutletId": "usatoday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.vulture.com/2013/11/theater-review-macbeth-ethan-hawke-commons-pensacola.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -72818,20 +72806,14 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.broadwayworld.com/bwwopera/article/Review-Making-Scotland-Great-Again-with-Thrilling-Davidsen-and-Kelsey-in-Mets-New-MACBETH-20260923",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-macbeth-2/",
           "host": "classicalsource.com",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/",
-          "host": "talkclassical.com",
+          "url": "https://www.operabase.com/productions/macbeth-476049/en",
+          "host": "operabase.com",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -72847,6 +72829,10 @@
         },
         {
           "host": "parterre.com",
+          "count": 1
+        },
+        {
+          "host": "talkclassical.com",
           "count": 1
         }
       ],
@@ -73542,7 +73528,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -73561,7 +73547,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -73571,8 +73557,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -73598,16 +73584,16 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 7,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 2228,
+        "count": 2222,
         "byReason": {
-          "aggregator-internal-nav": 1594,
+          "aggregator-internal-nav": 1595,
           "not-http-url": 406,
           "aggregator-section-root": 37,
-          "non-review-host": 174,
+          "non-review-host": 167,
           "roundup-page": 16,
           "ticketing-reseller": 1
         }
@@ -73733,12 +73719,6 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://www.vulture.com/2019/10/reviews-a-doyle-macbeth-ashtons-for-all-the-women.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
           "url": "http://nystagereview.com/2019/10/27/macbeth-a-slimmed-down-version-of-the-scottish-play/",
           "host": "nystagereview.com",
           "priorRun": true,
@@ -73763,12 +73743,6 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://www.vulture.com/2022/04/theater-review-daniel-craig-and-ruth-negga-in-macbeth.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
           "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-hawke-is-a-broody-monarch-in-macbeth/2013/11/21/4ece31fe-531b-11e3-9ee6-2580086d8254_story.html",
           "host": "washingtonpost.com",
           "priorRun": true,
@@ -73777,12 +73751,6 @@
         {
           "url": "http://www.usatoday.com/story/life/theater/2013/11/21/broadway-review-macbeth/3641633/",
           "host": "usatoday.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.vulture.com/2013/11/theater-review-macbeth-ethan-hawke-commons-pensacola.html",
-          "host": "vulture.com",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -73831,18 +73799,6 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.broadwayworld.com/bwwopera/article/Review-Making-Scotland-Great-Again-with-Thrilling-Davidsen-and-Kelsey-in-Mets-New-MACBETH-20260923",
-          "host": "broadwayworld.com",
-          "outletId": "broadwayworld",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
           "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-macbeth-2/",
           "host": "classicalsource.com",
           "outletId": "classicalsource",
@@ -73855,29 +73811,36 @@
           "reason": "⚠️  provisional outlet \"classicalsource\" (not in registry) — onboard to outlet-registry.json after r"
         },
         {
-          "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/",
-          "host": "talkclassical.com",
-          "outletId": "talkclassical",
+          "url": "https://www.operabase.com/productions/macbeth-476049/en",
+          "host": "operabase.com",
+          "outletId": "operabase",
           "provisional": true,
-          "ok": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": null
+          "reason": "⚠️  provisional outlet \"operabase\" (not in registry) — onboard to outlet-registry.json after review."
         }
       ],
       "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.theatermania.com/news/review-macbeth-a-tale-of-halting-ambition-at-the-metropolitan-opera_1854763/",
+          "host": "theatermania.com",
+          "file": "theatermania--zachary-stewart.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "broadwayworld",
-            "outlet": "broadwayworld",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.broadwayworld.com/bwwopera/article/Review-Making-Scotland-Great-Again-with-Thrilling-Davidsen-and-Kelsey-in-Mets-New-MACBETH-20260923"
-          },
           {
             "outletId": "classicalsource.com",
             "outlet": "classicalsource.com",
@@ -73886,11 +73849,11 @@
             "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-macbeth-2/"
           },
           {
-            "outletId": "talkclassical.com",
-            "outlet": "talkclassical.com",
+            "outletId": "operabase.com",
+            "outlet": "operabase.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+            "url": "https://www.operabase.com/productions/macbeth-476049/en"
           },
           {
             "outletId": "slippedisc",
@@ -73942,16 +73905,34 @@
             "firstSeenAt": "2026-09-24T00:16:09.587Z"
           },
           {
+            "url": "https://www.vulture.com/2019/10/reviews-a-doyle-macbeth-ashtons-for-all-the-women.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-24T10:49:33.081Z"
+          },
+          {
             "url": "https://www.nytimes.com/2019/10/27/theater/macbeth-review-corey-stoll.html",
             "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-09-24T00:16:09.587Z"
           },
           {
+            "url": "https://www.vulture.com/2022/04/theater-review-daniel-craig-and-ruth-negga-in-macbeth.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-24T10:49:33.081Z"
+          },
+          {
             "url": "http://www.nytimes.com/2013/11/22/theater/reviews/macbeth-with-ethan-hawke-at-the-vivian-beaumont.html",
             "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-09-24T00:16:09.587Z"
+          },
+          {
+            "url": "http://www.vulture.com/2013/11/theater-review-macbeth-ethan-hawke-commons-pensacola.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-24T10:49:33.081Z"
           },
           {
             "url": "http://www.nytimes.com/2014/06/06/theater/a-fast-and-furious-macbeth-at-park-avenue-armory.html",
@@ -73961,10 +73942,15 @@
           },
           {
             "url": "https://www.broadwayworld.com/bwwopera/article/Review-Making-Scotland-Great-Again-with-Thrilling-Davidsen-and-Kelsey-in-Mets-New-MACBETH-20260923",
-            "outletId": "broadwayworld",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "broadwayworld.com",
+            "state": "live",
             "firstSeenAt": "2026-09-24T00:16:09.587Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/the-mets-macbeth-is-a-bubbling-cauldron-of-operatic-fun.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-24T10:49:33.081Z"
           },
           {
             "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-macbeth-2/",
@@ -73974,11 +73960,11 @@
             "firstSeenAt": "2026-09-22T00:36:35.717Z"
           },
           {
-            "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/",
-            "outletId": "talkclassical.com",
+            "url": "https://www.operabase.com/productions/macbeth-476049/en",
+            "outletId": "operabase.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-24T00:16:09.587Z"
+            "firstSeenAt": "2026-09-24T10:49:33.081Z"
           },
           {
             "url": "https://slippedisc.com/2026/09/which-witch-first-review-of-macbeth-at-the-met/",
@@ -74010,10 +73996,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 2,
-        "candidateCount": 9
+        "liveCount": 4,
+        "candidateCount": 10
       },
-      "computedAt": "2026-09-24T00:16:09.587Z"
+      "computedAt": "2026-09-24T10:49:33.081Z"
     },
     {
       "showId": "madama-butterfly-off-broadway-2024",
@@ -112951,20 +112937,13 @@
       "aggregatorListedUrls": [
         "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html",
         "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/",
-        "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197751",
+        "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-195815",
         "https://www.recast.show/shows/spandex-the-musical-off-broadway/2026-09-22"
       ],
-      "dirFiles": 4,
+      "dirFiles": 5,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.recast.show/shows/spandex-the-musical-off-broadway/2026-09-22",
-          "host": "recast.show",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [
         {
@@ -113009,7 +112988,7 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197751",
+          "url": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-195815",
           "host": "tixr.com",
           "knownOutletId": null,
           "recoverable": false,
@@ -113022,6 +113001,24 @@
               "file": "tixr--unknown.json",
               "flag": "clean",
               "urlInDir": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197747"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.recast.show/shows/spandex-the-musical-off-broadway/2026-09-22",
+          "host": "recast.show",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "recast--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.recast.show/shows/spandex-the-musical-off-broadway/2026-09-22"
             }
           ],
           "serpCensus": true
@@ -113093,37 +113090,15 @@
       "candidatesRejected": {
         "count": 32,
         "byReason": {
-          "aggregator-internal-nav": 4,
-          "non-review-host": 25,
+          "aggregator-internal-nav": 3,
+          "non-review-host": 26,
           "merch-store": 3
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://www.recast.show/shows/spandex-the-musical-off-broadway/2026-09-22",
-          "host": "recast.show",
-          "outletId": "recast",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "recast.show",
-            "outlet": "recast.show",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.recast.show/shows/spandex-the-musical-off-broadway/2026-09-22"
-          },
           {
             "outletId": "nytimes",
             "outlet": "nytimes",
@@ -113143,18 +113118,18 @@
             "outlet": "tixr.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197751"
+            "url": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-195815"
+          },
+          {
+            "outletId": "recast.show",
+            "outlet": "recast.show",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.recast.show/shows/spandex-the-musical-off-broadway/2026-09-22"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://www.recast.show/shows/spandex-the-musical-off-broadway/2026-09-22",
-            "outletId": "recast.show",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-24T00:16:09.587Z"
-          },
           {
             "url": "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html",
             "outletId": "nytimes",
@@ -113170,18 +113145,25 @@
             "firstSeenAt": "2026-09-21T05:44:22.707Z"
           },
           {
-            "url": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197751",
+            "url": "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-195815",
             "outletId": "tixr.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-22T22:44:43.064Z"
+            "firstSeenAt": "2026-09-24T10:49:33.081Z"
+          },
+          {
+            "url": "https://www.recast.show/shows/spandex-the-musical-off-broadway/2026-09-22",
+            "outletId": "recast.show",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-24T00:16:09.587Z"
           }
         ],
         "censusSchema": 2,
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-09-24T00:16:09.587Z"
+      "computedAt": "2026-09-24T10:49:33.081Z"
     },
     {
       "showId": "spare-parts-off-broadway-2026",
