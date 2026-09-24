@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-24T00:48:42.283Z",
+  "runDate": "2026-09-24T02:11:02.916Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 58,
-    "failed": 260,
+    "processed": 68,
+    "failed": 308,
     "skipped": 0,
-    "successRate": "18.2%"
+    "successRate": "18.1%"
   },
   "tierBreakdown": {
-    "playwright": 35,
+    "playwright": 40,
     "amp": 0,
     "browserbase": 9,
     "directCookies": 0,
-    "scrapingbee": 10,
-    "brightdata": 4,
+    "scrapingbee": 13,
+    "brightdata": 6,
     "archiveToday": 0,
     "archive": 8
   },
   "statistics": {
-    "tier1Attempts": 57,
-    "tier1Success": 34,
-    "ampAttempts": 0,
+    "tier1Attempts": 23,
+    "tier1Success": 7,
+    "ampAttempts": 1,
     "ampSuccess": 0,
-    "tier1_5Attempts": 10,
-    "tier1_5Success": 7,
-    "tier2Attempts": 27,
-    "tier2Success": 11,
-    "tier3Attempts": 17,
-    "tier3Success": 7,
-    "tier3_6Attempts": 12,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 21,
+    "tier2Success": 6,
+    "tier3Attempts": 19,
+    "tier3Success": 6,
+    "tier3_6Attempts": 14,
     "tier3_6Success": 0,
-    "tier4Attempts": 53,
-    "tier4Success": 7,
-    "totalFailed": 249,
-    "scrapingBeePageCredits": 124,
+    "tier4Attempts": 23,
+    "tier4Success": 1,
+    "totalFailed": 290,
+    "scrapingBeePageCredits": 107,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 10,
-    "browserbaseMinutesUsed": 2.5,
-    "urlDiscoveryAttempts": 229,
-    "urlDiscoverySuccess": 5,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 264,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -108,7 +108,17 @@
     "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
     "oh-mary-west-end-2025/ew--christian-holub.json",
     "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
-    "oh-mary-west-end-2025/lbc--johnny-jenkins.json"
+    "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
+    "delirium-off-broadway-2026/arlekinplayers--unknown.json",
+    "delirium-off-broadway-2026/clintonandgreene--clinton-and-greene.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json",
+    "the-last-ship-west-end-2026/telegraph--dominic-cavendish.json",
+    "macbeth-off-broadway-2026/vulture--justin-davidson.json",
+    "the-story-west-end-2026/hollywood-reporter--jackie-strause.json",
+    "the-story-west-end-2026/rollingstone--elisabeth-garber-paul.json",
+    "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
+    "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+    "just-in-time-2025/newyorker--conde-nast.json"
   ],
   "failed": [
     "macbeth-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -370,7 +380,55 @@
     "two-strangers-bway-2025/independent--alice-saville.json",
     "two-strangers-bway-2025/playbill--margaret-hall.json",
     "two-strangers-bway-2025/readaboutstuff--unknown.json",
-    "two-strangers-bway-2025/standard--nick-curtis.json"
+    "two-strangers-bway-2025/standard--nick-curtis.json",
+    "delirium-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+    "delirium-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
+    "the-last-ship-west-end-2026/times-uk--dominic-maxwell.json",
+    "macbeth-off-broadway-2026/talkclassical--unknown.json",
+    "spandex-off-broadway-2026/recast--unknown.json",
+    "america-who-hurt-you-off-broadway-2026/vulture--jackson-mchenry.json",
+    "man-to-man-west-end-2026/thestage--sam-marlowe.json",
+    "two-strangers-bway-2025/telegraph--marianka-swain.json",
+    "two-strangers-bway-2025/thestage--paul-vale.json",
+    "two-strangers-bway-2025/times-uk--clive-davis.json",
+    "two-strangers-bway-2025/times-uk--dominic-cavendish.json",
+    "two-strangers-bway-2025/whatsonstage--alex-wood.json",
+    "the-hunger-games-on-stage-west-end-2025/buy-tickets-direct-from-the-theatre--unknown.json",
+    "the-hunger-games-on-stage-west-end-2025/londontheatredirect--london-theatre-direct-limited.json",
+    "masquerade-off-broadway-2025/theater-life--david-sheward.json",
+    "the-traitors-live-experience-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "burlesque-west-end-2026/thereviewshub--the-reviews-hub-scotland.json",
+    "burlesque-west-end-2026/a-youngish-perspective--unknown.json",
+    "burlesque-west-end-2026/broadwayworld--unknown.json",
+    "burlesque-west-end-2026/frontmezzjunkies--unknown.json",
+    "burlesque-west-end-2026/north-west-end--greg-holstead.json",
+    "burlesque-west-end-2026/north-west-end--leanne-rushton.json",
+    "burlesque-west-end-2026/people--unknown.json",
+    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "burlesque-west-end-2026/times-uk--clive-davis.json",
+    "heathers-the-musical-off-broadway-2025/nypost--elisabeth-vincentelli.json",
+    "heathers-the-musical-off-broadway-2025/thereviewshub--clare-doyle.json",
+    "heathers-the-musical-off-broadway-2025/thereviewshub--unknown.json",
+    "heathers-the-musical-off-broadway-2025/all-that-dazzles-uk--unknown.json",
+    "heathers-the-musical-off-broadway-2025/londontheatre1--unknown.json",
+    "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json",
+    "heathers-the-musical-off-broadway-2025/theupcoming--unknown.json",
+    "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
+    "heathers-the-musical-off-broadway-2025/west-end-wilma--unknown.json",
+    "heathers-the-musical-off-broadway-2025/nyt-theater--jonathan-mandell.json",
+    "stranger-things-2024/telegraph--dominic-cavendish.json",
+    "stranger-things-2024/times-uk--clive-davis.json",
+    "austentatious-an-improvised-jane-austen-novel-west-end-2025/thereviewshub--the-reviews-hub-scotland.json",
+    "austentatious-an-improvised-jane-austen-novel-west-end-2025/london-theatre--unknown.json",
+    "murder-she-didnt-write-west-end-2025/a-youngish-perspective--unknown.json",
+    "murder-she-didnt-write-west-end-2025/allthingstheatre--unknown.json",
+    "murder-she-didnt-write-west-end-2025/london-box-office--phil-willmott.json",
+    "murder-she-didnt-write-west-end-2025/london-box-office--stacey-tyler.json",
+    "murder-she-didnt-write-west-end-2025/the-journal--harriet-macdonald.json",
+    "operation-mincemeat-2025/musical-theatre-review--unknown.json",
+    "operation-mincemeat-2025/thereviewshub--mike-wells.json",
+    "operation-mincemeat-2025/thereviewshub--unknown.json",
+    "operation-mincemeat-2025/all-that-dazzles-uk--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -408,7 +466,12 @@
       "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
       "avenue-q-west-end-2026/reviewsgate--william-russell.json",
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
-      "oh-mary-west-end-2025/ew--christian-holub.json"
+      "oh-mary-west-end-2025/ew--christian-holub.json",
+      "delirium-off-broadway-2026/arlekinplayers--unknown.json",
+      "delirium-off-broadway-2026/clintonandgreene--clinton-and-greene.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json",
+      "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -433,13 +496,18 @@
       "a-month-in-the-country-west-end-2026/ents24--unknown.json",
       "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json",
       "a-month-in-the-country-west-end-2026/theartsdispatch--the-arts-dispatch.json",
-      "weve-been-here-before-a-one-woman-musical-off-broadway-2026/broadwayworld--nicole-rosky.json"
+      "weve-been-here-before-a-one-woman-musical-off-broadway-2026/broadwayworld--nicole-rosky.json",
+      "the-last-ship-west-end-2026/telegraph--dominic-cavendish.json",
+      "the-story-west-end-2026/rollingstone--elisabeth-garber-paul.json",
+      "just-in-time-2025/newyorker--conde-nast.json"
     ],
     "brightdata": [
       "in-honor-of-jean-michel-basquiat-off-broadway-2026/broadwayworld--fred-mason.json",
       "electra-persona-west-end-2026/vocaleyes--unknown.json",
       "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
-      "schmigadoon-2026/thewrap--robert-hofler.json"
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "macbeth-off-broadway-2026/vulture--justin-davidson.json",
+      "the-story-west-end-2026/hollywood-reporter--jackie-strause.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -454,30 +522,23 @@
     ]
   },
   "failuresByOutlet": {
-    "The Stage": {
-      "count": 4,
-      "domain": "thestage.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Daily Mail": {
-      "count": 1,
-      "domain": "newspaper.dailymail.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
     "The Times (UK)": {
-      "count": 1,
-      "domain": "thetimes.co.uk",
+      "count": 2,
+      "domain": "thetimes.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Exeunt Magazine": {
+    "talkclassical": {
       "count": 1,
-      "domain": "exeuntnyc.com",
+      "domain": "talkclassical.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Stage": {
+      "count": 7,
+      "domain": "thestage.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -489,16 +550,16 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "The Telegraph": {
+    "vocaleyes": {
       "count": 1,
-      "domain": "telegraph.co.uk",
+      "domain": "vocaleyes.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Londonlivinglarge": {
+    "The Sunday Times": {
       "count": 1,
-      "domain": "londonlivinglarge.com",
+      "domain": "thetimes.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -509,33 +570,14 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
+    },
+    "BroadwayWorld": {
+      "count": 1,
+      "domain": "unknown",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "million-dollar-quartet-off-west-end-2026/londontheatredirect--hay-brunsdon.json",
-      "oldUrl": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-million-dollar-quartet-at-the-arts-at-marble-arch-theatre?srsltid=AU7gw4V48K7eJyq7bppQZRK1q2x-nx2NRhLzusF4cp5dPUDVjkjy_fPO",
-      "newUrl": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-million-dollar-quartet-at-the-arts-at-marble-arch-theatre?srsltid=AU7gw4X_ThiIENrL_eZ6_ZE_d691nvxDehn5ITSMNgYtdS0wXsCwFzHP"
-    },
-    {
-      "reviewId": "man-to-man-west-end-2026/deadline--pete-hammond.json",
-      "oldUrl": "https://deadline.com/2026/08/the-whisper-man-review-robert-de-niro-adam-scott-netflix-1237050683/",
-      "newUrl": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
-    },
-    {
-      "reviewId": "the-comedy-about-spies-west-end-2026/all-that-dazzles-uk--unknown.json",
-      "oldUrl": "https://www.allthatdazzles.co.uk/post/review-the-comedy-about-spies-adelphi-theatre",
-      "newUrl": "https://www.allthatdazzles.co.uk/post/review-the-comedy-about-spies-no%C3%ABl-coward-theatre"
-    },
-    {
-      "reviewId": "weve-been-here-before-a-one-woman-musical-off-broadway-2026/broadwayworld--nicole-rosky.json",
-      "oldUrl": "https://www.broadwayworld.com/article/Video-Lindsey-Kraft-Ben-Folds-Give-a-Sneak-Peek-of-WEVE-BEEN-HERE-BEFORE-20260727",
-      "newUrl": "https://www.broadwayworld.com/article/Lindsey-Kraft-Will-Premiere-One-Woman-Musical-WEVE-BEEN-HERE-BEFORE-Music-Directed-By-Ben-Folds-20260709"
-    },
-    {
-      "reviewId": "oh-mary-west-end-2025/ew--christian-holub.json",
-      "oldUrl": "https://ew.com/maya-rudolph-broadway-debut-oh-mary-11924597?srsltid=AU7gw4VHkqgdDhGlGmLlKemmUJ-GWZJfZ0frF03eN0UUcwFFf5NjBMYR",
-      "newUrl": "https://ew.com/maya-rudolph-broadway-debut-oh-mary-11924597?srsltid=AU7gw4UfAuTG6U3AGLCZ4x3bWW05ZMz3kGBm68DgPTS0Dh4HglXpZ3cX"
-    }
-  ]
+  "urlDiscoveries": []
 }
