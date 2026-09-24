@@ -1,8 +1,26 @@
 {
-  "generatedAt": "2026-09-24T19:52:30.126Z",
+  "generatedAt": "2026-09-24T23:04:12.455Z",
   "windowDays": 45,
   "showsScanned": 79,
   "gaps": [
+    {
+      "showId": "truly-howard-hughes-off-broadway-2026",
+      "title": "Truly, Howard Hughes",
+      "openingDate": null,
+      "file": "cititour--unknown.json",
+      "outletId": "cititour",
+      "tier": 2,
+      "type": "unscored",
+      "dispatchable": false,
+      "url": "https://cititour.com/NYC_Events/Truly-Howard-Hughes/34944",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=truly-howard-hughes-off-broadway-2026",
+      "firstSeen": "2026-09-09T14:56:32.660Z",
+      "fileAgeHours": 368.12748166666665,
+      "gapSeenAt": "2026-09-24T23:04:12.455Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "the-winters-tale-off-broadway-2026",
       "title": "The Winter's Tale",
@@ -17,9 +35,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-winters-tale-off-broadway-2026",
       "firstSeen": "2026-08-13T10:48:31.706Z",
-      "fileAgeHours": 1017.0631775,
+      "fileAgeHours": 1020.2610994444444,
       "gapSeenAt": "2026-09-20T22:08:26.926Z",
-      "nonTerminalAgeHours": 93.73422222222223
+      "nonTerminalAgeHours": 96.92931361111111
     },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
@@ -34,9 +52,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 193.8578813888889,
+      "fileAgeHours": 197.05580527777778,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 193.77986555555555
+      "nonTerminalAgeHours": 196.97495694444444
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -51,9 +69,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays --outlet=thestage --critic=\"Dave Fargnoli\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T17:56:44.755Z",
-      "fileAgeHours": 193.927475,
+      "fileAgeHours": 197.12425444444443,
       "gapSeenAt": "2026-09-21T21:33:52.974Z",
-      "nonTerminalAgeHours": 70.31032
+      "nonTerminalAgeHours": 73.50541138888889
     }
   ],
   "contradictions": []
