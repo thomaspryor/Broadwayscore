@@ -444,7 +444,10 @@ function extractTheatreWeeklyBody(html) {
   const cleaned = removeBalancedDivBlocks(html, ['jnews_inline_related_post_wrapper']);
   const inner = extractBalancedDivByClass(cleaned, 'entry-content');
   if (!inner) return null;
-  const cut = inner.split(/<div[^>]+class="[^"]*jnews_author_box_container[^"]*"/)[0];
+  // Quote-flexible, matching extractBalancedDivByClass above — a single-quoted
+  // author-box div would otherwise never match and its bio text (plus
+  // whatever sits between it and entry-content's own close) would leak in.
+  const cut = inner.split(/<div[^>]+class=(?:"[^"]*jnews_author_box_container[^"]*"|'[^']*jnews_author_box_container[^']*')/i)[0];
   return stripHtml(cut);
 }
 
@@ -730,10 +733,15 @@ function extractArticleText(html, hostname, criticHint) {
     if (lsaText && lsaText.length >= 300) return lsaText;
   }
 
-  // theatreweekly.com — see extractTheatreWeeklyBody above.
+  // theatreweekly.com — see extractTheatreWeeklyBody above. Returns null
+  // explicitly on failure (not falls through to the generic <article>/<main>
+  // patterns below), same reasoning as Stage/Times/LaVoce above: this site's
+  // OWN <article> tags are the teaser cards that caused BRO-4155 in the first
+  // place, so falling through to the PATTERNS loop on the raw, uncleaned HTML
+  // risks grabbing exactly that contamination again instead of failing loud.
   if (host.includes('theatreweekly.com')) {
     const twText = extractTheatreWeeklyBody(html);
-    if (twText && twText.length >= 300) return twText;
+    return twText && twText.length >= 300 ? twText : null;
   }
 
   // stagebuddy.com — review body lives in <div class="articleblock">, not any
@@ -773,6 +781,18 @@ function extractArticleText(html, hostname, criticHint) {
     // <div class="entry-content">. Comparing/gating on STRIPPED text (like every
     // other fallback in this file already does) instead of raw markup fixes this
     // without touching the well-established per-outlet minLen convention below.
+    //
+    // Trade-off (ship-check adversarial review flagged this): this raises the
+    // effective floor for a genuinely-short review caught ONLY by the generic
+    // <article>/<main> fallback from ~100 stripped chars to minLen (300/500).
+    // Deliberate, not incidental — extractByCommonClass and
+    // extractByParagraphDensity below already require 300 stripped chars; the
+    // old 100-char floor was this one path's own inconsistency, not a
+    // calibrated design choice, and a lower floor is exactly what let a
+    // 169-char teaser headline masquerade as a successful extraction here. A
+    // review that's genuinely 100-299 chars with no other fallback finding it
+    // now returns null (ingest treats <200 as a hard failure anyway, so the
+    // 100-199 slice of that range was already unusable downstream).
     if (hostMatch == null) {
       const reGlobal = new RegExp(re.source, re.flags.includes('g') ? re.flags : re.flags + 'g');
       let bestText = null;
