@@ -1002,6 +1002,32 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     } catch { /* unreadable — fall through to create */ }
   }
 
+  // --- Guard: non-review page submitted through the review form (NEW files only) ---
+  // validate-review-submission.js's LLM gate let through ticket resellers
+  // (tickpick, eventticketscenter, stuborder), venue "what's on" pages,
+  // listing pages, a DVD review and press releases; each became a review
+  // file a human later had to flag (≈60 of 1,887 submission-created files on
+  // 2026-09-25). Deliberately narrow: the CURATED named patterns plus ticket
+  // resellers only. classifyReviewUrl's broader non-review-host /
+  // non-review-path rules would have refused real scored reviews (wbur.org
+  // /news/ reviews, blogcritics.org, theaterscene.org). NEW files only, like
+  // Guard F2 below, so a merge into an existing vetted file is never blocked
+  // (the burn-this-2019 lesson noted at the named-non-review-url guard above).
+  // Human escape hatch: fields.allowNonReviewUrl.
+  if (input.source === 'submit-review-form' && input.url && fields.allowNonReviewUrl !== true) {
+    const nrp = require('./non-review-url-patterns');
+    // ugc-platform is excluded: a vocal.media "critique" submitted for
+    // the-bathroom-attendant-off-broadway-2026 is a real named critic's
+    // review (Robert M. Massimi), scored 64.
+    const named = nrp.namedNonReviewReason(input.url);
+    const submissionReason = (named && named !== 'ugc-platform' ? named : null)
+      || (nrp.classifyReviewUrl(input.url).reason === 'ticketing-reseller' ? 'ticketing-reseller' : null);
+    if (submissionReason) {
+      console.warn(`  ⛔ Refusing submitted non-review page: ${input.url} (${submissionReason})`);
+      return { action: 'skipped', reason: `submitted-non-review-url: ${submissionReason}`, guardRefused: true };
+    }
+  }
+
   // --- Guard F2: credited-person-as-critic rejection (BRO-2915) ---
   // A byline that is a CREATIVE TEAM member of this same show is not a review;
   // it is a mis-parsed roundup row. how-to-dance-in-ohio-2023 produced exactly
