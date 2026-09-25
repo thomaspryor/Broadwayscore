@@ -58,6 +58,15 @@ test('readFreshSnapshot: a snapshot within the staleness window is returned', ()
   });
 });
 
+test('readFreshSnapshot: a fresh snapshot with no donePerDay (a failed digest run) falls back to null, not a stuck "fresh" cache miss', () => {
+  withTmpDir((dir) => {
+    const snapshotPath = path.join(dir, 'snapshot.json');
+    const nowMs = Date.now();
+    fs.writeFileSync(snapshotPath, JSON.stringify({ computedAt: new Date(nowMs - 1000).toISOString(), donePerDay: null, windowDays: null }));
+    assert.equal(readFreshSnapshot(snapshotPath, nowMs), null);
+  });
+});
+
 test('readFreshSnapshot: a snapshot past SNAPSHOT_MAX_AGE_MS is treated as missing (null)', () => {
   withTmpDir((dir) => {
     const snapshotPath = path.join(dir, 'snapshot.json');

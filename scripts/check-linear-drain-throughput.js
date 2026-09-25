@@ -6,10 +6,13 @@
  *
  *   node scripts/check-linear-drain-throughput.js --min-done-per-day 15
  *
- * Exit codes: 0 = at/above the bar, 1 = below the bar, 2 = could not be
- * measured (no snapshot and no live fetch succeeded) — kept distinguishable
- * from a genuine failure, same "unverifiable is not failed" convention
- * acceptance-check-core.js's exit-3 uses.
+ * Exit codes: 0 = at/above the bar, 1 = below the bar, 2 = bad CLI usage
+ * (missing/invalid --min-done-per-day), 3 = could not be measured (no
+ * snapshot and no live fetch succeeded) — matches acceptance-check-core.js's
+ * own exit-3 "unverifiable, not failed" convention (ship-check/Codex
+ * finding, BRO-4135), so this command reads correctly if it is ever run
+ * through that same sandboxed runner (autonomous-acceptance-recheck.js) —
+ * exit 2 there is an ordinary failure, not the unverifiable case.
  *
  * DOES NOT re-fetch Linear on every run. scripts/lib/linear-drain-
  * throughput.js's own header explicitly rejected a second live query for
@@ -48,7 +51,7 @@ Usage:
   --live                skip the snapshot, always fetch fresh from Linear
   --help/-h             show this message, do nothing else
 
-Exit codes: 0 = at/above the bar, 1 = below the bar, 2 = could not be measured.`;
+Exit codes: 0 = at/above the bar, 1 = below the bar, 2 = bad usage, 3 = could not be measured.`;
 
 function parseArgs(argv) {
   const a = {};
@@ -99,6 +102,16 @@ function readFreshSnapshot(snapshotPath = SNAPSHOT_PATH, nowMs = Date.now()) {
     console.error(`[check-linear-drain-throughput] snapshot is stale or unparseable (computedAt=${snapshot.computedAt}), falling back to a live fetch`);
     return null;
   }
+  // ship-check/Codex finding (BRO-4135): a digest run that itself failed to
+  // measure donePerDay still writes a fresh timestamp (send-morning-digest.js
+  // catches its own fetch error and records `donePerDay: null` rather than
+  // skipping the write). Treating that as "fresh" would silently block a
+  // live fetch for up to SNAPSHOT_MAX_AGE_MS even after Linear recovers —
+  // a snapshot is only useful here if it actually carries a number.
+  if (!Number.isFinite(snapshot.donePerDay)) {
+    console.error('[check-linear-drain-throughput] snapshot is fresh but carries no donePerDay (the digest itself could not measure it), falling back to a live fetch');
+    return null;
+  }
   return snapshot;
 }
 
@@ -137,7 +150,7 @@ async function main(argv = process.argv.slice(2)) {
   const verdict = evaluateThroughputGate(donePerDay, minDonePerDay);
   if (verdict.ok === null) {
     console.error(`[check-linear-drain-throughput] UNVERIFIABLE: ${verdict.reason}`);
-    return 2;
+    return 3;
   }
   if (verdict.ok) {
     console.log(`[check-linear-drain-throughput] PASS: ${verdict.reason}`);
@@ -149,8 +162,11 @@ async function main(argv = process.argv.slice(2)) {
 
 if (require.main === module) {
   main().then(code => { process.exitCode = code; }).catch(err => {
+    // An unexpected crash mid-fetch is "no answer", not "definitely below
+    // the bar" — exit 3, the same unverifiable code as the handled
+    // live-fetch-failure path above, not exit 1 (fail) or exit 2 (usage).
     console.error(`[check-linear-drain-throughput] fatal: ${err.message}`);
-    process.exitCode = 2;
+    process.exitCode = 3;
   });
 }
 
