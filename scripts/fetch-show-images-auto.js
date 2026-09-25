@@ -818,9 +818,12 @@ async function fetchFromIBDB(show) {
 // ShowScore hosts poster images on CloudFront. We scrape the OG image or poster from the page.
 async function fetchFromShowScore(show) {
   const category = show.category || 'broadway';
-  const ssCategory = category === 'off-broadway' ? 'off-broadway-shows'
-    : category === 'west-end' ? 'london-shows'
-    : 'broadway-shows';
+  // NYC categories only. The old fallthrough sent off-west-end and regional
+  // shows to the NYC /broadway-shows/<title> page — the same-title NYC
+  // production's poster — and west-end to a non-existent /london-shows/ path.
+  // Same class as showScoreUrlForShow in lib/show-score-discover.js.
+  if (category !== 'broadway' && category !== 'off-broadway') return null;
+  const ssCategory = category === 'off-broadway' ? 'off-broadway-shows' : 'broadway-shows';
 
   // ShowScore slugs: lowercase, hyphens, no special chars
   const slug = show.title.toLowerCase()
