@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-25T14:30:30.176Z",
+  "generatedAt": "2026-09-25T19:11:42.912Z",
   "windowDays": 1095,
   "targets": 263,
-  "auditedThisRun": 11,
-  "carriedForward": 553,
+  "auditedThisRun": 7,
+  "carriedForward": 557,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
@@ -13,7 +13,7 @@
     "totalFlaggedMisses": 789,
     "totalRecoverable": 7,
     "totalRecovered": 8,
-    "priorProductionCitations": 2532
+    "priorProductionCitations": 2526
   },
   "results": [
     {
@@ -7010,10 +7010,11 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
+        "censusSchema": 2,
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-27T01:23:51.910Z"
+      "computedAt": "2026-09-25T19:11:42.912Z"
     },
     {
       "showId": "art-2025",
@@ -40360,8 +40361,8 @@
         "https://www.nydailynews.com/2026/03/23/broadway-review-giant-john-lithgow-music-box-theatre/"
       ],
       "dirFiles": 52,
-      "dirClean": 26,
-      "inReviewsJson": 25,
+      "dirClean": 25,
+      "inReviewsJson": 24,
       "missing": [
         {
           "url": "http://www.westport-news.com/entertainment/article/Review-Giant-is-sprawling-eloquent-new-musical-4042256.php",
@@ -40382,10 +40383,6 @@
         },
         {
           "host": "theaterlife.com",
-          "count": 1
-        },
-        {
-          "host": "wsj.com",
           "count": 1
         }
       ],
@@ -40546,12 +40543,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 839,
+        "count": 863,
         "byReason": {
-          "non-review-host": 69,
-          "aggregator-internal-nav": 555,
           "not-http-url": 198,
-          "aggregator-section-root": 17
+          "non-review-host": 75,
+          "aggregator-internal-nav": 571,
+          "aggregator-section-root": 19
         }
       },
       "dedupedVariants": [],
@@ -40758,7 +40755,7 @@
         "liveCount": 21,
         "candidateCount": 23
       },
-      "computedAt": "2026-08-27T01:23:51.910Z"
+      "computedAt": "2026-09-25T19:11:42.912Z"
     },
     {
       "showId": "giant-royal-court-off-west-end-2024",
@@ -51264,11 +51261,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 490,
+        "count": 504,
         "byReason": {
-          "non-review-host": 57,
-          "aggregator-internal-nav": 365,
           "not-http-url": 56,
+          "non-review-host": 63,
+          "aggregator-internal-nav": 373,
           "aggregator-section-root": 12
         }
       },
@@ -51292,11 +51289,11 @@
           "outletId": "dailybeast",
           "provisional": false,
           "ok": false,
-          "noop": true,
+          "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
         },
         {
           "url": "https://deadline.com/2019/12/harry-connick-jr-broadway-review-celebration-of-cole-porter-1202807583/",
@@ -51304,11 +51301,11 @@
           "outletId": "deadline",
           "provisional": false,
           "ok": false,
-          "noop": true,
+          "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
         },
         {
           "url": "http://nystagereview.com/2019/12/12/harry-connick-jr-a-celebration-of-cole-porter-where-anything-goes/",
@@ -51570,7 +51567,7 @@
         "liveCount": 0,
         "candidateCount": 10
       },
-      "computedAt": "2026-08-30T07:41:12.140Z"
+      "computedAt": "2026-09-25T19:11:42.912Z"
     },
     {
       "showId": "hate-radio-off-broadway-2026",
@@ -75823,7 +75820,7 @@
     },
     {
       "showId": "mas-sabe-el-saulo-por-viejo-off-broadway-2025",
-      "title": "MÁS SABE EL SAULO POR VIEJO...",
+      "title": "Más sabe el Saulo por viejo...",
       "openingDate": null,
       "status": "previews",
       "category": "off-broadway",
@@ -75851,10 +75848,11 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
+        "censusSchema": 2,
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-27T01:23:51.910Z"
+      "computedAt": "2026-09-25T19:11:42.912Z"
     },
     {
       "showId": "masquerade-off-broadway-2025",
@@ -102832,12 +102830,11 @@
         "https://playbill.com/article/what-are-the-reviews-for-shakespeare-in-the-parks-romeo-and-juliet",
         "https://playbill.com/article/reviews-did-critics-love-the-tom-holland-led-romeo-juliet-in-the-west-end",
         "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-Starring-Rachel-Zegler-and-Kit-Connor-Opens-On-Broadway-20241024",
+        "https://www.broadwayworld.com/article/Review-Roundup-The-Public-Theaters-Free-Shakespeare-in-the-Park-Production-of-ROMEO-JULIET-20260612",
         "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-AND-JULIET-Opens-on-Broadway-All-the-Reviews-20130920",
         "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-at-ART-20240914",
         "https://www.broadwayworld.com/article/Review-Roundup-ROMEO-JULIET-Starring-Tom-Holland-Francesca-Amewudah-Rivers-20240523",
-        "https://www.broadwayworld.com/article/Review-Roundup-The-Public-Theaters-Free-Shakespeare-in-the-Park-Production-of-ROMEO-JULIET-20260612",
-        "https://www.broadwayworld.com/article/Review-Roundup-What-Do-Critics-Think-of-the-New-JULIET-ROMEO-Pop-Musical-20250509",
-        "https://www.broadwayworld.com/article/Review-Roundup-CSCs-ROMEO-JULIET-20131017"
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Do-Critics-Think-of-the-New-JULIET-ROMEO-Pop-Musical-20250509"
       ],
       "aggregatorListedUrls": [
         "https://www.theguardian.com/stage/2026/apr/01/romeo-and-juliet-review-overbearing-directorial-stamp-is-saved-by-dazzling-cast",
@@ -102888,6 +102885,7 @@
         "https://www.newyorktheatreguide.com/reviews/romeo-and-juliet-broadway-review-kit-connor-rachel-zegler",
         "https://culturesauce.com/2024/10/24/romeo-juliet-broadway-review-kit-connor-rachel-zegler/",
         "https://cititour.com/NYC_Broadway/Romeo-Juliet/1260",
+        "https://1minutecritic.com/romeo-juliet-free-shakespeare-in-the-park-2026-review/",
         "http://theater.nytimes.com/2013/09/20/theater/reviews/orlando-bloom-and-condola-rashad-in-romeo-and-juliet.html",
         "http://www.therepublic.com/view/story/a79faa21eaad4a53a813a9c4f375fdb3/US-Theater-Review-Romeo-and-Juliet",
         "http://variety.com/2013/legit/reviews/broadway-review-romeo-and-juliet-1200643078/",
@@ -102910,7 +102908,6 @@
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/romeo-and-juliet-review-tom-holland-london-b2550337.html",
         "https://www.thetimes.co.uk/article/romeo-and-juliet-review-tom-holland-spiderman-theatre-london-zjjr6wjwg",
         "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-at-duke-of-yorks-theatre-london-jamie-lloyd-tom-holland-and-francesca-amewudah-rivers",
-        "https://1minutecritic.com/romeo-juliet-free-shakespeare-in-the-park-2026-review/",
         "https://variety.com/2025/film/reviews/juliet-amp-romeo-review-1236390550/",
         "https://www.thewrap.com/juliet-romeo-review-william-shakespeare-clara-rugaard/",
         "https://www.nytimes.com/2025/05/08/movies/juliet-romeo-review.html",
@@ -102918,18 +102915,11 @@
         "https://screenrant.com/juliet-and-romeo-movie-review/",
         "https://movieweb.com/juliet-and-romeo-review/",
         "https://www.newsday.com/entertainment/movies/juliet-and-romeo-review-myl16xz6",
-        "http://www.nytimes.com/2013/10/17/theater/reviews/romeo-and-juliet-with-a-twist-at-classic-stage-company.html",
-        "http://www.newsday.com/entertainment/theater/romeo-and-juliet-review-playful-streak-1.6260499",
-        "http://www.nbcnewyork.com/entertainment/the-scene/csc-romeo-juliet-review-227860751.html",
-        "http://www.nydailynews.com/entertainment/music-arts/theater-review-romeo-juliet-julius-caesar-article-1.1487478",
-        "http://www.amny.com/urbanite-1.812039/theater-review-romeo-and-juliet-2-5-stars-1.6267214",
-        "http://www.northjersey.com/arts_entertainment/theater/228131781_Theater_review___Romeo_and_Juliet_.html",
-        "http://newyorktheater.me/2013/10/16/romeo-and-juliet-off-broadway-review-elizabeth-olsen-as-juliet-at-csc/",
         "http://www.villagevoice.com/arts/bryant-park-shakespeare-s-summertime-romeo-and-juliet-is-hot-stuff-7396735"
       ],
       "dirFiles": 61,
-      "dirClean": 16,
-      "inReviewsJson": 25,
+      "dirClean": 18,
+      "inReviewsJson": 27,
       "missing": [
         {
           "url": "https://www.thestage.co.uk/reviews/romeo-and-juliet-review-harold-pinter-theatre-london",
@@ -103086,20 +103076,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.northjersey.com/arts_entertainment/theater/228131781_Theater_review___Romeo_and_Juliet_.html",
-          "host": "northjersey.com",
-          "knownOutletId": "northjerseycom",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://newyorktheater.me/2013/10/16/romeo-and-juliet-off-broadway-review-elizabeth-olsen-as-juliet-at-csc/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "http://www.villagevoice.com/arts/bryant-park-shakespeare-s-summertime-romeo-and-juliet-is-hot-stuff-7396735",
           "host": "villagevoice.com",
           "knownOutletId": "village-voice"
@@ -103116,6 +103092,10 @@
         },
         {
           "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
           "count": 1
         },
         {
@@ -103693,82 +103673,6 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/romeo-and-juliet-review-playful-streak-1.6260499",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "newsday--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.newsday.com/entertainment/theater/romeo-and-juliet-review-not-in-bloom-1.6098455"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nbcnewyork.com/entertainment/the-scene/csc-romeo-juliet-review-227860751.html",
-          "host": "nbcnewyork.com",
-          "knownOutletId": "nbcny",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nbcny--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.nbcnewyork.com/entertainment/the-scene/review-romeo-and-juliet-224447471.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/music-arts/theater-review-romeo-juliet-julius-caesar-article-1.1487478",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.nydailynews.com/entertainment/music-arts/romeo-juliet-theater-review-article-1.1461244"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.amny.com/urbanite-1.812039/theater-review-romeo-and-juliet-2-5-stars-1.6267214",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "amny--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.amny.com/urbanite-1.812039/theater-review-romeo-and-juliet-2-stars-1.6106386"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
         }
       ],
       "citedNoUrl": [],
@@ -103778,12 +103682,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 2362,
+        "count": 2069,
         "byReason": {
-          "non-review-host": 166,
-          "aggregator-internal-nav": 1751,
-          "not-http-url": 402,
-          "aggregator-section-root": 42,
+          "not-http-url": 321,
+          "non-review-host": 160,
+          "aggregator-internal-nav": 1547,
+          "aggregator-section-root": 40,
           "roundup-page": 1
         }
       },
@@ -103816,10 +103720,6 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-Critics-Think-of-the-New-JULIET-ROMEO-Pop-Musical-20250509",
           "publishDate": "2025-05-09"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-CSCs-ROMEO-JULIET-20131017",
-          "publishDate": "2013-10-17"
         }
       ],
       "weIngestBlocked": [
@@ -103954,18 +103854,6 @@
           "host": "movieweb.com",
           "priorRun": true,
           "reason": "prior-run"
-        },
-        {
-          "url": "http://www.northjersey.com/arts_entertainment/theater/228131781_Theater_review___Romeo_and_Juliet_.html",
-          "host": "northjersey.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://newyorktheater.me/2013/10/16/romeo-and-juliet-off-broadway-review-elizabeth-olsen-as-juliet-at-csc/",
-          "host": "newyorktheater.me",
-          "priorRun": true,
-          "reason": "prior-run"
         }
       ],
       "ingestResults": [
@@ -103979,7 +103867,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=villagevoice.com): Scrapingdog HTTP 404: {\"message\":\"T"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=villagevoice.com): Scrapingdog HTTP 400: Oops! Somethi"
         }
       ],
       "ingestSkippedByCap": [],
@@ -104123,6 +104011,12 @@
             "firstSeenAt": "2026-08-03T15:20:26.661Z"
           },
           {
+            "url": "https://1minutecritic.com/romeo-juliet-free-shakespeare-in-the-park-2026-review/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T15:20:26.661Z"
+          },
+          {
             "url": "http://theater.nytimes.com/2013/09/20/theater/reviews/orlando-bloom-and-condola-rashad-in-romeo-and-juliet.html",
             "outletId": "theater.nytimes.com",
             "state": "live",
@@ -104147,19 +104041,7 @@
             "firstSeenAt": "2026-08-03T15:20:26.661Z"
           },
           {
-            "url": "https://1minutecritic.com/romeo-juliet-free-shakespeare-in-the-park-2026-review/",
-            "outletId": "1minutecritic.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T15:20:26.661Z"
-          },
-          {
             "url": "https://www.nytimes.com/2025/05/08/movies/juliet-romeo-review.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-27T01:23:51.910Z"
-          },
-          {
-            "url": "http://www.nytimes.com/2013/10/17/theater/reviews/romeo-and-juliet-with-a-twist-at-classic-stage-company.html",
             "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-27T01:23:51.910Z"
@@ -104176,7 +104058,7 @@
         "liveCount": 12,
         "candidateCount": 13
       },
-      "computedAt": "2026-08-27T01:23:51.910Z"
+      "computedAt": "2026-09-25T19:11:42.912Z"
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
@@ -137129,7 +137011,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-25T14:30:30.176Z"
+      "computedAt": "2026-09-25T19:11:42.912Z"
     },
     {
       "showId": "the-seven-deadly-sins-the-human-voice-off-west-end-2026",
@@ -152311,7 +152193,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-27T01:23:51.910Z"
+      "computedAt": "2026-09-25T19:11:42.912Z"
     },
     {
       "showId": "zack-off-broadway-2026",

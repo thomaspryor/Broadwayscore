@@ -1,11 +1,29 @@
 {
-  "generatedAt": "2026-09-25T14:30:39.663Z",
+  "generatedAt": "2026-09-25T19:12:05.031Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 145,
-  "clean": 145,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 144,
+  "defective": 1,
+  "byType": {
+    "unreachable": 1
+  },
+  "shows": [
+    {
+      "showId": "gimme-a-sign-off-broadway-2026",
+      "title": "Gimme a Sign!",
+      "openingDate": "2026-09-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "unreachable",
+          "detail": "HTTP 404"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 0,
+      "deployedCount": null
+    }
+  ]
 }
