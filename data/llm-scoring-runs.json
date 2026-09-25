@@ -1,21 +1,5 @@
 [
   {
-    "startedAt": "2026-09-23T22:44:57.354Z",
-    "completedAt": "2026-09-23T22:45:13.330Z",
-    "totalReviews": 44419,
-    "processed": 1,
-    "skipped": 44414,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 25502,
-      "output": 838,
-      "total": 66338
-    },
-    "costUsd": 0.1276102,
-    "runId": "35928219273",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-23T22:45:14.608Z",
     "completedAt": "2026-09-23T22:51:43.476Z",
     "totalReviews": 175,
@@ -257627,6 +257611,44 @@
     },
     "costUsd": 1.2792999,
     "runId": "36149078383",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-25T15:45:50.447Z",
+    "completedAt": "2026-09-25T15:45:55.832Z",
+    "totalReviews": 44681,
+    "processed": 0,
+    "skipped": 44678,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 7771,
+      "output": 231,
+      "total": 22760
+    },
+    "costUsd": 0.052448350000000005,
+    "runId": "36153339359",
+    "errorDetails": [
+      {
+        "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
+        "outletId": "recast",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-25T15:45:57.822Z",
+    "completedAt": "2026-09-25T15:52:24.524Z",
+    "totalReviews": 177,
+    "processed": 177,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 463954,
+      "output": 41934,
+      "total": 505888
+    },
+    "costUsd": 1.3003434,
+    "runId": "36153339359",
     "errorDetails": []
   }
 ]
