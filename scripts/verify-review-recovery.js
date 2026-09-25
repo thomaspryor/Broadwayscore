@@ -37,6 +37,9 @@
  *   0 = all checks pass
  *   1 = at least one check failed
  *   2 = show not found or bad arguments
+ *   3 = inconclusive: every check passed, but the local review-texts copy
+ *       differs from (or could not be compared to) origin/main. Local only —
+ *       skipped in CI and under --pre-merge.
  */
 
 const fs = require('fs');
@@ -113,24 +116,40 @@ if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
 // coverage session re-dispatching scoring runs that had already succeeded
 // (kimberly-akimbo-off-west-end-2026). Fetch (refs only, never touches the
 // working tree) and diff just this show's directory against origin/main.
-let localCopyStale = null; // null = unknown, true/false = checked
-{
+// Compares the WORKING TREE (what the checks below actually read, including
+// uncommitted and untracked files) to origin/main, so local edits can't pass as
+// "current". Skipped in CI (fresh checkout per run; the poller's own unpushed
+// commits would read as drift every run) and under --pre-merge (HEAD is a
+// candidate branch by design, and a fetch there would write the shared clone's
+// refs from a worktree).
+let localCopyStale = null; // null = unknown/unchecked, true/false = checked
+const freshnessCheckApplies = !process.env.CI && !preMerge;
+if (freshnessCheckApplies) {
   const rtRoot = path.join(ROOT, 'data', 'review-texts');
   try {
     const { execFileSync } = require('child_process');
-    const git = (args) => execFileSync('git', ['-C', rtRoot, ...args], { encoding: 'utf8', timeout: 60000, stdio: ['ignore', 'pipe', 'pipe'] });
+    const git = (args, timeout = 20000) => execFileSync('git', ['-C', rtRoot, ...args], { encoding: 'utf8', timeout, stdio: ['ignore', 'pipe', 'pipe'] });
+    // setup-local-data.sh strips review-texts' .git on fresh/cloud setups; git -C
+    // would then silently answer for the PARENT web repo (where this path is
+    // gitignored, so every diff is empty) and certify a false "current".
+    const top = fs.realpathSync(git(['rev-parse', '--show-toplevel']).trim());
+    if (top !== fs.realpathSync(rtRoot)) {
+      throw new Error('data/review-texts is not its own git clone');
+    }
     git(['fetch', '--quiet', 'origin', 'main']);
-    const changed = git(['diff', '--name-only', 'HEAD', 'origin/main', '--', showId]).trim().split('\n').filter(Boolean);
-    localCopyStale = changed.length > 0;
-    if (changed.length > 0) {
-      warn(`LOCAL COPY IS STALE for this show: ${changed.length} file(s) differ on origin/main — results below may be wrong. `
-        + `Check origin directly (git -C data/review-texts show origin/main:<path>) before acting on any failure.`);
-      for (const c of changed.slice(0, 10)) console.log(`      ${c}`);
+    const differing = git(['diff', '--name-only', 'origin/main', '--', showId]).trim().split('\n').filter(Boolean);
+    const untracked = git(['ls-files', '--others', '--exclude-standard', '--', showId]).trim().split('\n').filter(Boolean);
+    const all = [...differing, ...untracked.map((u) => `${u} (untracked)`)];
+    localCopyStale = all.length > 0;
+    if (localCopyStale) {
+      warn(`LOCAL COPY DIFFERS FROM ORIGIN for this show: ${all.length} file(s) — results below may be wrong. `
+        + `Check origin directly (git -C data/review-texts show origin/main:<path>) before acting on any result.`);
+      for (const c of all.slice(0, 10)) console.log(`      ${c}`);
     } else {
-      pass('Local review-texts for this show match origin/main');
+      pass('Local review-texts for this show match origin/main (working tree, incl. untracked)');
     }
   } catch (e) {
-    warn(`Could not confirm local review-texts are current (${(e.message || '').split('\n')[0]}) — failures below may be stale-clone artifacts`);
+    warn(`Could not confirm local review-texts match origin (${(e.message || '').split('\n')[0]}) — results below may be stale-clone artifacts`);
   }
 }
 
@@ -397,7 +416,7 @@ console.log(`Files: ${allFiles.length} total, ${includable.length} includable, $
 
 if (totalFail > 0) {
   console.log(`\n${FAIL} ${BOLD}Recovery incomplete — ${totalFail} issue(s) to fix${RESET}`);
-  if (localCopyStale !== false) {
+  if (freshnessCheckApplies && localCopyStale !== false) {
     console.log(`  ${WARN} ${BOLD}INCONCLUSIVE:${RESET} local review-texts ${localCopyStale ? 'differ from origin for this show' : 'could not be compared to origin'} — re-check against origin before re-dispatching anything.`);
   }
 
@@ -427,6 +446,12 @@ if (totalFail > 0) {
   console.log('');
   process.exit(1);
 } else {
+  if (freshnessCheckApplies && localCopyStale !== false) {
+    // A clean pass over a copy that differs from origin (or couldn't be
+    // compared) proves nothing: origin may hold a newly unscored review.
+    console.log(`\n${WARN} ${BOLD}INCONCLUSIVE — all local checks passed, but the local copy ${localCopyStale ? 'differs from' : 'could not be compared to'} origin${RESET}\n`);
+    process.exit(3);
+  }
   console.log(`\n${PASS} ${BOLD}Recovery complete — all checks passed${RESET}\n`);
   process.exit(0);
 }

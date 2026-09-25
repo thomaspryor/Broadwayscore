@@ -171,7 +171,14 @@ async function processShow(show) {
   const dateRange = calculateDateWindow(show);
   const results = await serpQuery(query, { nbResults: 10, dateRange, preferSpeed: false });
 
-  if (!results || results.length === 0) {
+  if (results === null || results === undefined) {
+    // serpQuery returns null when every provider failed (revoked key,
+    // exhausted quota) and [] for a real empty search. Recording null as
+    // "0 candidates" would read as a searched-and-empty week.
+    console.log('  ✗ SERP provider chain returned nothing (provider failure, not an empty search)');
+    return { showId: show.id, query, serpFailed: true, ingested: [], newOutletCandidates: [] };
+  }
+  if (results.length === 0) {
     console.log('  (no SERP results)');
     return { showId: show.id, query, candidates: 0, ingested: [], newOutletCandidates: [] };
   }
@@ -282,6 +289,14 @@ async function main() {
   const totalIngested = perShow.reduce((n, s) => n + (s.ingested ? s.ingested.length : 0), 0);
   const totalCandidateOutlets = perShow.reduce((n, s) => n + (s.newOutletCandidates ? s.newOutletCandidates.length : 0), 0);
   console.log(`\nDone. ${totalIngested} review(s) ingested across ${shows.length} show(s). ${totalCandidateOutlets} unregistered-outlet candidate(s) logged.`);
+
+  const searched = perShow.filter((r) => !r.skipped && !r.error);
+  const serpFailed = searched.filter((r) => r.serpFailed);
+  if (searched.length > 0 && serpFailed.length === searched.length) {
+    console.error(`::error::SERP provider chain failed for all ${searched.length} regional show(s) — not writing the audit log (it would read as an empty week).`);
+    process.exit(1);
+  }
+  if (serpFailed.length > 0) console.warn(`::warning::SERP provider failure for ${serpFailed.length}/${searched.length} regional show(s): ${serpFailed.map((r) => r.showId).join(', ')}`);
 
   if (!dryRun) {
     fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });

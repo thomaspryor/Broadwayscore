@@ -83,3 +83,13 @@ test('disableVar: null means NO keyless opt-out — no switch, however spelled, 
   }
   assert.equal(serpCensusPreflight({ BRIGHTDATA_TOKEN: 'x' }, { disableVar: null }).ok, true);
 });
+
+test('SERP_NO_SB=1 makes a ScrapingBee-only env unusable (probe/recall workflows set it)', () => {
+  assert.equal(serpCensusPreflight({ SCRAPINGBEE_API_KEY: 'k', SERP_NO_SB: '1' }, { disableVar: null }).ok, false);
+  assert.equal(serpCensusPreflight({ SCRAPINGBEE_API_KEY: 'k', BRIGHTDATA_TOKEN: 'b', SERP_NO_SB: '1' }, { disableVar: null }).ok, true);
+});
+
+test('Scrapingdog counts unless SCRAPER_USE_SCRAPINGDOG=0 (mirrors url-discovery.js)', () => {
+  assert.equal(serpCensusPreflight({ SCRAPINGDOG_API_KEY: 'd' }, { disableVar: null }).ok, true);
+  assert.equal(serpCensusPreflight({ SCRAPINGDOG_API_KEY: 'd', SCRAPER_USE_SCRAPINGDOG: '0' }, { disableVar: null }).ok, false);
+});
