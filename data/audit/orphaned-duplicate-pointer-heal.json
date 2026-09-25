@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-25T08:33:16.222Z",
+  "generated": "2026-09-25T08:47:13.189Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 96,
+  "count": 97,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -519,6 +519,13 @@
       "loserFile": "theater-pizzazz--ron-fassler.json",
       "targetFile": "theater-pizzazz--brian-scott-lipton.json",
       "reason": "orphaned-duplicate-heal: theater-pizzazz--brian-scott-lipton.json was flagged invalid after theater-pizzazz--ron-fassler.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "the-holes-off-broadway-2026",
+      "loserFile": "broadwayworld--unknown.json",
+      "targetFile": "broadwayworld--stephi-wild.json",
+      "reason": "orphaned-duplicate-heal: broadwayworld--stephi-wild.json was flagged invalid after broadwayworld--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
