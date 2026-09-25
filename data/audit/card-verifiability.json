@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-24T10:23:16.307Z",
+  "generatedAt": "2026-09-25T10:28:50.361Z",
   "total": 300,
   "armedCount": 300,
   "refusedCount": 0,
@@ -682,6 +682,33 @@
       ]
     },
     {
+      "id": "3e5637c5-416f-81c2-85fb-c44a82d0b80b",
+      "name": "[Review Submission] The Morning Star review of The Story",
+      "url": "https://app.notion.com/p/Review-Submission-The-Morning-Star-review-of-The-Story-3e5637c5416f81c285fbc44a82d0b80b",
+      "cmd": "node --test tests/unit/morning-star-review-submission.test.mjs",
+      "missingPaths": [
+        "tests/unit/morning-star-review-submission.test.mjs"
+      ]
+    },
+    {
+      "id": "3e5637c5-416f-8177-9e35-f0e4b92074a4",
+      "name": "[Review Submission] The Morning Star review of Man to Man",
+      "url": "https://app.notion.com/p/Review-Submission-The-Morning-Star-review-of-Man-to-Man-3e5637c5416f81779e35f0e4b92074a4",
+      "cmd": "node --test tests/unit/morning-star-man-to-man-review.test.mjs",
+      "missingPaths": [
+        "tests/unit/morning-star-man-to-man-review.test.mjs"
+      ]
+    },
+    {
+      "id": "3e5637c5-416f-8104-8eac-f828fe933ce3",
+      "name": "[Review Submission] The Morning Star review of Golden Boy",
+      "url": "https://app.notion.com/p/Review-Submission-The-Morning-Star-review-of-Golden-Boy-3e5637c5416f81048eacf828fe933ce3",
+      "cmd": "node --test tests/unit/morning-star-golden-boy-review.test.mjs",
+      "missingPaths": [
+        "tests/unit/morning-star-golden-boy-review.test.mjs"
+      ]
+    },
+    {
       "id": "3e4637c5-416f-810b-9454-c7ad940a2dfa",
       "name": "[Review Submission] Cultural Capital review of Electra/Persona",
       "url": "https://app.notion.com/p/Review-Submission-Cultural-Capital-review-of-Electra-Persona-3e4637c5416f810b9454c7ad940a2dfa",
@@ -742,33 +769,6 @@
       "cmd": "node --test tests/unit/deep-heat-rivalry-closure.test.mjs",
       "missingPaths": [
         "tests/unit/deep-heat-rivalry-closure.test.mjs"
-      ]
-    },
-    {
-      "id": "3e3637c5-416f-81a2-994d-ec11d2646058",
-      "name": "[Review Submission] The Jewish Chronicle review of Golden Boy",
-      "url": "https://app.notion.com/p/Review-Submission-The-Jewish-Chronicle-review-of-Golden-Boy-3e3637c5416f81a2994dec11d2646058",
-      "cmd": "node --test tests/unit/review-submission-golden-boy.test.mjs",
-      "missingPaths": [
-        "tests/unit/review-submission-golden-boy.test.mjs"
-      ]
-    },
-    {
-      "id": "3e3637c5-416f-81ef-bebb-e45fe6f215d8",
-      "name": "[Review Submission] West End Best Friend review of Golden Boy",
-      "url": "https://app.notion.com/p/Review-Submission-West-End-Best-Friend-review-of-Golden-Boy-3e3637c5416f81efbebbe45fe6f215d8",
-      "cmd": "node --test tests/unit/review-submission-validation.test.mjs",
-      "missingPaths": [
-        "tests/unit/review-submission-validation.test.mjs"
-      ]
-    },
-    {
-      "id": "3e3637c5-416f-8149-8259-f5da6f2db6cb",
-      "name": "[Review Submission] The Daily Mail review of Golden Boy",
-      "url": "https://app.notion.com/p/Review-Submission-The-Daily-Mail-review-of-Golden-Boy-3e3637c5416f81498259f5da6f2db6cb",
-      "cmd": "node --test tests/unit/review-submission-golden-boy.test.mjs",
-      "missingPaths": [
-        "tests/unit/review-submission-golden-boy.test.mjs"
       ]
     }
   ],
