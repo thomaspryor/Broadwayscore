@@ -359,6 +359,18 @@ fi
 # blocking EVERY session's push through run-push-audits.sh (task #863 class), so
 # the waiver is deliberate, not a bypass — if a workflow ever calls this, take
 # the flags from scripts/lib/shallow-fetch-args.js and delete this comment.
+# BRO-4141 (W1): every merge/rebase below targets whatever branch is checked
+# out. This runs unattended every 30 min (checkout-sync.plist), so if a
+# session ever leaves ~/Broadwayscore on a feature branch, fast-forwarding or
+# rebasing THAT branch onto origin/main would silently rewrite someone's
+# work. Refuse unless the checkout is on main (detached HEAD included).
+CUR_BRANCH=$(git symbolic-ref --quiet --short HEAD 2>/dev/null || echo "(detached)")
+if [ "$CUR_BRANCH" != "main" ]; then
+  echo "::error::[$TAG] checkout is on '$CUR_BRANCH', not main — refusing to sync (would move a non-main branch)"
+  write_refused_snapshot "not-on-main:$CUR_BRANCH" "" ""
+  exit 1
+fi
+
 # W4: this fetch runs while holding the push mutex; a hung fetch would block
 # every other session's push. Hard wall-clock deadline via perl alarm (macOS
 # has no coreutils `timeout`; SIGALRM kills git), plus git's own low-speed
