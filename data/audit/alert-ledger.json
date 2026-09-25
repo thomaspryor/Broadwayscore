@@ -4706,13 +4706,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Audit cast-changes.json",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-25T02:44:31.824Z",
+      "lastSeen": "2026-09-25T03:27:19.802Z",
       "lastNotifiedAt": "2026-09-25T00:12:28.830Z",
       "lastSurfacedAt": "2026-09-25T00:12:28.830Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -4963,7 +4963,7 @@
       ]
     },
     "land:land/worktree-fix-land-fixture-hang": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: scripts-lib-tests red on land/worktree-fix-land-fixture-hang",
       "firstSeen": "2026-09-25T01:47:33.918Z",
@@ -4972,7 +4972,8 @@
       "lastSurfacedAt": "2026-09-25T02:47:24.662Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-25T03:23:38.340Z"
     },
     "test-yml:red:Unit Tests:86254087": {
       "status": "open",
