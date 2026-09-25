@@ -21,6 +21,12 @@ const {
   checkSubmissionLanded, decideAwaitingSubmission, findShowForSubmission, AWAITING_SCORE_MAX_HOURS,
 } = require('./lib/submission-landing');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `Usage: node scripts/sweep-awaiting-score-submissions.js [--dry-run]
+  Closes awaiting-score review-submission issues whose review is live;
+  relabels ones stuck past ${AWAITING_SCORE_MAX_HOURS}h as needs-manual-review.
+  --dry-run   print the decision per issue, change nothing`;
 const DRY = process.argv.includes('--dry-run');
 const dataDir = path.join(__dirname, '..', 'data');
 const reviewTextsDir = path.join(dataDir, 'review-texts');
@@ -30,6 +36,7 @@ function gh(args) {
 }
 
 function main() {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   let issues;
   try {
     issues = JSON.parse(gh(['issue', 'list', '--label', 'awaiting-score', '--state', 'open', '--limit', '100', '--json', 'number,body,createdAt']));
