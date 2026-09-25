@@ -4,7 +4,10 @@ name: Analyze Traffic Sources
 # (BRO-3419). PostHog/GA4 credentials exist only as repo secrets, so this runs
 # in CI (weekly, or dispatched on demand) rather than from a local shell. The
 # markdown report renders on the run's Summary page; the raw JSON is an
-# artifact, and the summary is emailed to the owner. No commits, no pushes.
+# artifact, and the summary is emailed to the owner. The one write: the
+# visit-history store + /admin/traffic payload go to the PRIVATE core-data
+# repo (analytics/, BRO-4136) — never this public repo, and only after a
+# fully successful history refresh.
 # Scheduled after posthog-monday.yml (08:00)
 # so the two Monday analytics runs don't contend for PostHog query capacity.
 on:
@@ -30,13 +33,17 @@ jobs:
     runs-on: ubuntu-latest
     # A healthy run finishes the queries in ~6s (GHA 35020178309), but a PostHog
     # 504 takes ~5 min to come back (35021340158) and the script retries once.
-    timeout-minutes: 20
+    # The history refresh (BRO-4136) adds ~4 queries a week (~11 on the first
+    # backfill) under its own 12-minute budget, hence 30.
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/setup-node
       # shows.json gives the summary real show titles and open/closed status
       # ("Electra / Persona (West End) page", "the show closed, so expected").
       # Optional: without it the summary falls back to names built from slugs.
+      # The same clone carries analytics/traffic-history.json (the visit
+      # history the tiles and dashboard read), refreshed and pushed back below.
       - name: Checkout core data (show titles for the summary)
         continue-on-error: true
         uses: ./.github/actions/checkout-core-data
@@ -49,7 +56,7 @@ jobs:
           GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
           GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
           POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
-        run: node scripts/analyze-traffic-sources.js --days="$DAYS" --out=traffic-analysis
+        run: node scripts/analyze-traffic-sources.js --days="$DAYS" --out=traffic-analysis --history=/tmp/core-data-checkout/analytics/traffic-history.json
 
       - name: Render report on the run summary
         if: always()
@@ -70,7 +77,45 @@ jobs:
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-        run: node scripts/email-traffic-report.js --report=traffic-analysis/traffic-sources-report.md --summary=traffic-analysis/traffic-sources-summary.md --run-url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        run: node scripts/email-traffic-report.js --report=traffic-analysis/traffic-sources-report.md --summary=traffic-analysis/traffic-sources-summary.md --metrics=traffic-analysis/traffic-metrics.json --dashboard-url=https://broadwayscorecard.com/admin/traffic --run-url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+      # The script writes traffic-history.json ONLY when every history query
+      # succeeded, so a failed Monday never overwrites good history. The
+      # dashboard route (/api/admin/traffic-stats) reads the pushed payload at
+      # request time; no deploy is involved.
+      # hygiene-push-ok: pushes to the external private-repo checkout in /tmp —
+      # push-with-retry.sh targets the main workspace checkout and can't be reused here.
+      - name: Save visit history + dashboard data (private repo)
+        if: always()
+        run: |
+          if [ ! -f traffic-analysis/traffic-history.json ] || [ ! -f traffic-analysis/traffic-dashboard.json ]; then
+            echo "No refreshed history this run (see the query step) — private repo left as is."
+            exit 0
+          fi
+          if [ ! -d /tmp/core-data-checkout/.git ]; then
+            echo "::error::history refreshed but the core-data clone is missing — cannot save it"
+            exit 1
+          fi
+          mkdir -p /tmp/core-data-checkout/analytics
+          cp traffic-analysis/traffic-history.json traffic-analysis/traffic-dashboard.json /tmp/core-data-checkout/analytics/
+          cd /tmp/core-data-checkout
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add analytics/traffic-history.json analytics/traffic-dashboard.json
+          if git diff --staged --quiet; then
+            echo "History unchanged."
+            exit 0
+          fi
+          git commit -m "analytics: traffic history + dashboard ($(date -u +%Y-%m-%d))"
+          for i in 1 2 3 4 5; do
+            if git push origin HEAD:main; then exit 0; fi
+            if [ "$i" = "5" ]; then echo "::error::push failed after 5 attempts"; exit 1; fi
+            sleep $((i * 3 + RANDOM % 5))
+            # Only analytics/ is ours; other writers touch root-level files, so
+            # the rebase is conflict-free. -X theirs keeps OUR analytics on the
+            # impossible overlap (same policy as push-with-retry.sh).
+            git pull --rebase -X theirs origin main
+          done
 
       - name: Upload report + raw data
         if: always()

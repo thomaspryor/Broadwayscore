@@ -365,6 +365,7 @@ function buildDashboardData({ history, ph, startDate, endDate, currentWeek, nami
     dataStart: metrics.dataStart,
     source: 'PostHog visits (sessions), Real Users lens: owner and known bot countries excluded',
     metrics,
+    tiles: buildTiles(metrics), // the same nine tiles as the email, so the two never disagree
     weeks,
     months,
     channelGroups: [...CHANNEL_GROUPS.map(([g]) => g), 'Other'],
