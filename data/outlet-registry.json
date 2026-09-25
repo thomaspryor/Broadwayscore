@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-09-24T19:00:34.002Z",
+    "lastUpdated": "2026-09-25T01:23:56.958Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -11309,6 +11309,17 @@
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-09-24T19:00:34.002Z"
+    },
+    "londonatlarge": {
+      "displayName": "Londonatlarge",
+      "tier": 3,
+      "aliases": [
+        "londonatlarge"
+      ],
+      "domain": "londonatlarge.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-09-25T01:23:56.958Z"
     }
   },
   "_aliasIndex": {
