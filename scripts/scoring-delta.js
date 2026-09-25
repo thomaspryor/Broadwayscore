@@ -1020,6 +1020,9 @@ function decideInclusion(review, show, guards) {
   }
 
   // Mirrors rebuild-all-reviews.js's skippedNamedNonReviewUrl (same predicate).
+  // The predicate reads review.url, review.source and
+  // review.namedNonReviewUrlManualClear — which is why those three are in
+  // FLAG_FIELDS (scoring-delta-autoclear-coverage.test.mjs checks the names).
   if (typeof guards.isNamedNonReviewUrlRecord === 'function' && guards.isNamedNonReviewUrlRecord(review)) {
     return { included: false, reason: 'namedNonReviewUrl' };
   }
