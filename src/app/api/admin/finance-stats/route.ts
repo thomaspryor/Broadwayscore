@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAdmin } from '@/lib/admin-auth';
+import { fetchPrivateJson } from '@/lib/private-data-repo';
 // Pure P&L rollup shared with scripts (same server-only pattern as
 // affiliate-stats — keeps the module out of the Next.js client bundle graph).
 import { createRequire } from 'module';
@@ -28,9 +29,6 @@ const { computeFinanceStats } = require('../../../../../scripts/lib/finance-stat
 
 export const dynamic = 'force-dynamic';
 
-const GH_API_BASE = 'https://api.github.com';
-const PRIVATE_REPO = 'thomaspryor/broadway-scorecard-data';
-
 interface CachedEntry {
   data: unknown;
   expiresAt: number;
@@ -38,22 +36,6 @@ interface CachedEntry {
 
 const CACHE_TTL_MS = 5 * 60 * 1000;
 const cache = new Map<number, CachedEntry>();
-
-async function fetchPrivateJson<T>(path: string, token: string, fallback: T): Promise<T> {
-  const res = await fetch(
-    `${GH_API_BASE}/repos/${PRIVATE_REPO}/contents/${path}?ref=main`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/vnd.github.raw+json',
-      },
-      cache: 'no-store',
-    },
-  );
-  if (res.status === 404) return fallback; // not created yet — empty ledger
-  if (!res.ok) throw new Error(`GitHub ${res.status} reading ${path}`);
-  return (await res.json()) as T;
-}
 
 export async function GET(request: NextRequest) {
   if (!isAdmin()) {
