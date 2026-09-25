@@ -200,6 +200,17 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // news of later revivals; a westendtheatre-sourced Mousetrap stub) plus a
   // Disruption file holding an Edinburgh Fringe "travel disruption" news item.
   { host: /(^|\.)thestage\.co\.uk$/, path: /^\/news\//, reason: 'news-article' },
+  // Census auto-ingest junk, 2026-09-25 backlog pass (each read at file level):
+  // NYTG /show/<id>-<slug> is a ticket listing ("La Traviata Tickets ... 90%") —
+  // three were LIVE scored "reviews" (la-traviata-off-broadway-2026 90,
+  // the-infinite-wrench-off-broadway-2025 82, the-house-of-the-negro-insane 49);
+  // its reviews live under /reviews/. The rest: 0 live reviews each.
+  { host: /(^|\.)newyorktheatreguide\.com$/, path: /^\/show\//, reason: 'ticketing-listing' },
+  { host: /(^|\.)gigantic\.com$/, reason: 'ticketing-reseller' },
+  { host: /(^|\.)concordtheatricals\.com$/, reason: 'licensing-listing' },
+  { host: /(^|\.)abouttheartists\.com$/, reason: 'production-database-listing' },
+  { host: /(^|\.)traverse\.co\.uk$/, path: /^\/whats-on\//, reason: 'venue-production-page' },
+  { host: /(^|\.)artsatmarblearch\.com$/, path: /^\/events\//, reason: 'venue-production-page' },
   // Seventh wave (2026-08-06 — Cats/NYSM/I'm Every Woman OWE opening audit,
   // first live exercise of #1073): ticketing/listing hosts that reached the
   // census "missing" lists — groupon deal pages and one was auto-INGESTED as a

@@ -178,6 +178,15 @@ test('classifyReviewUrl: myreviewer home-video (DVD/Blu-ray) reviews rejected, o
   assert.equal(classifyReviewUrl('https://www.myreviewer.com/Theatre/1/x/2/Review').ok, true);
   assert.deepEqual(classifyReviewUrl('https://www.thestage.co.uk/news/mamma-mia-to-return-to-broadway-after-10-years-away'), { ok: false, reason: 'news-article' });
   assert.equal(classifyReviewUrl('https://www.thestage.co.uk/reviews/night-city-southwark-playhouse-review').ok, true);
+  for (const u of [
+    'https://www.newyorktheatreguide.com/show/25619-la-traviata',
+    'https://www.gigantic.com/deep-heat-rivalry-tickets',
+    'https://www.concordtheatricals.com/p/99588/mrs-stern-wanders-the-prussian-state-library',
+    'https://www.abouttheartists.com/productions/208936-pre-existing-condition-at-greenwich-house-theater-2026-2027',
+    'https://www.traverse.co.uk/whats-on/mrs-stern-wanders-the-prussian-state-library',
+    'https://www.artsatmarblearch.com/events/million-dollar-quartet',
+  ]) assert.equal(classifyReviewUrl(u).ok, false, u);
+  assert.equal(classifyReviewUrl('https://www.newyorktheatreguide.com/reviews/space-dogs-off-broadway-review').ok, true);
 });
 
 test('classifyReviewUrl: BWW hub + cast/shows pages rejected, BWW article reviews pass', () => {
