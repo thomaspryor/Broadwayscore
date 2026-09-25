@@ -499,18 +499,6 @@
     "queuedAt": "2026-09-24T08:33:12.249Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-invention-of-love-off-broadway-2026",
-    "title": "Review gap — \"The Invention of Love\" missing 5 cited review(s)",
-    "description": "The Invention of Love (the-invention-of-love-off-broadway-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-invention-of-love-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-24T10:49:33.246Z"
-  },
-  {
     "conditionKey": "corpus-drift:aggregator-archive-integrity",
     "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
     "description": "check-corpus-drift.js audit \"aggregator-archive-integrity\" (node scripts/audit-aggregator-archive-integrity.js --strict) has been drifting. Latest output:\n\nAggregator-archive integrity:\n  Scanned: 5986 files\n  Skipped (no show in shows.json): 263\n  Bad: 2\n\n❌ NEW bad archives (1):\n   - theatre-reviews/here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026\n\nEach represents a cached aggregator HTML file whose page title\ndoes not match the showId in the filename — i.e., poisoned cache.\n\nRemediate by re-fetching or quarantining the file, then re-running\nthe audit. To accept these intentionally, run --update-baseline.",
@@ -933,18 +921,6 @@
     "queuedAt": "2026-09-25T02:12:11.592Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:catarina-and-the-beauty-of-killing-fascists-west-end-2026",
-    "title": "Review gap — \"Catarina and the Beauty of Killing Fascists\" missing 1 cited review(s)",
-    "description": "Catarina and the Beauty of Killing Fascists (catarina-and-the-beauty-of-killing-fascists-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=catarina-and-the-beauty-of-killing-fascists-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-25T02:12:11.595Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:darkling-off-west-end-2026",
     "title": "Review gap — \"Darkling\" missing 2 cited review(s)",
     "description": "Darkling (darkling-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=darkling-off-west-end-2026 --checkpoint --ingest-missing",
@@ -1015,18 +991,6 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-25T02:12:11.624Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:la-boheme-off-broadway-2026",
-    "title": "Review gap — \"La Bohème\" missing 6 cited review(s)",
-    "description": "La Bohème (la-boheme-off-broadway-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=la-boheme-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-25T02:12:11.627Z"
   },
   {
     "conditionKey": "review-gap:opening-window:lean-to-off-broadway-2026",
@@ -1334,5 +1298,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-25T05:38:29.859Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:la-boheme-off-broadway-2026",
+    "title": "Review gap — \"La Bohème\" missing 6 cited review(s)",
+    "description": "La Bohème (la-boheme-off-broadway-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=la-boheme-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-25T08:29:36.878Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-invention-of-love-off-broadway-2026",
+    "title": "Review gap — \"The Invention of Love\" missing 6 cited review(s)",
+    "description": "The Invention of Love (the-invention-of-love-off-broadway-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-invention-of-love-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-25T08:29:36.903Z"
   }
 ]
