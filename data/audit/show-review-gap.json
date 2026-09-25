@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-09-25T19:11:42.912Z",
+  "generatedAt": "2026-09-25T23:07:29.288Z",
   "windowDays": 1095,
-  "targets": 263,
-  "auditedThisRun": 7,
-  "carriedForward": 557,
+  "targets": 258,
+  "auditedThisRun": 10,
+  "carriedForward": 554,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 305,
-    "missingCurrentRun": 430,
+    "missingCurrentRun": 429,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 789,
+    "totalFlaggedMisses": 791,
     "totalRecoverable": 7,
     "totalRecovered": 8,
-    "priorProductionCitations": 2526
+    "priorProductionCitations": 2514
   },
   "results": [
     {
@@ -24805,14 +24805,20 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/",
         "https://broadwaylog.app/shows/crazy-mama-a-true-story-of-love-and-madness-2026",
-        "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/",
-        "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/"
+        "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/"
       ],
       "dirFiles": 2,
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [
+        {
+          "url": "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/",
+          "host": "stageraw.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
         {
           "url": "https://broadwaylog.app/shows/crazy-mama-a-true-story-of-love-and-madness-2026",
           "host": "broadwaylog.app",
@@ -24822,12 +24828,6 @@
         {
           "url": "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/",
           "host": "openingnight.online",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/",
-          "host": "stageraw.com",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -24873,7 +24873,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -24883,7 +24883,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -24903,15 +24903,28 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 38,
+        "count": 35,
         "byReason": {
           "aggregator-internal-nav": 6,
-          "non-review-host": 29,
-          "merch-store": 3
+          "non-review-host": 27,
+          "ticketing-listing": 1,
+          "merch-store": 1
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
+        {
+          "url": "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/",
+          "host": "stageraw.com",
+          "outletId": "stageraw",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"stageraw\" (not in registry) — onboard to outlet-registry.json after review.\n"
+        },
         {
           "url": "https://broadwaylog.app/shows/crazy-mama-a-true-story-of-love-and-madness-2026",
           "host": "broadwaylog.app",
@@ -24935,24 +24948,19 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=openingnight.online): Scrapingdog HTTP 404: {\"message\""
-        },
-        {
-          "url": "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/",
-          "host": "stageraw.com",
-          "outletId": "stageraw",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  provisional outlet \"stageraw\" (not in registry) — onboard to outlet-registry.json after review.\n"
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "stageraw.com",
+            "outlet": "stageraw.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/"
+          },
           {
             "outletId": "broadwaylog.app",
             "outlet": "broadwaylog.app",
@@ -24966,17 +24974,17 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://openingnight.online/crazy-mama-crazy-mama-a-true-story-of-love-and-madness-is-coming-to-59e59-theaters/"
-          },
-          {
-            "outletId": "stageraw.com",
-            "outlet": "stageraw.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/",
+            "outletId": "stageraw.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-24T19:52:14.230Z"
+          },
           {
             "url": "https://broadwaylog.app/shows/crazy-mama-a-true-story-of-love-and-madness-2026",
             "outletId": "broadwaylog.app",
@@ -24990,20 +24998,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-24T19:52:14.230Z"
-          },
-          {
-            "url": "https://stageraw.com/crazy-mama-a-true-story-of-love-madnes/",
-            "outletId": "stageraw.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-24T19:52:14.230Z"
           }
         ],
         "censusSchema": 2,
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-09-25T14:30:30.176Z"
+      "computedAt": "2026-09-25T23:07:29.288Z"
     },
     {
       "showId": "crazy-mama-off-broadway-2026",
@@ -58189,7 +58190,7 @@
         "https://theartsdesk.com/theatre/im-sorry-prime-minister-apollo-theatre-review-genial-farewell-great-comedy-double-act"
       ],
       "dirFiles": 23,
-      "dirClean": 13,
+      "dirClean": 15,
       "inReviewsJson": 17,
       "missing": [],
       "dirOnly": [
@@ -58207,6 +58208,14 @@
         },
         {
           "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
           "count": 1
         },
         {
@@ -58315,7 +58324,7 @@
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-30T07:41:12.140Z"
+      "computedAt": "2026-09-25T23:07:29.288Z"
     },
     {
       "showId": "in-honor-of-jean-michel-basquiat-off-broadway-2026",
@@ -70579,9 +70588,7 @@
         "https://www.broadwayworld.com/article/Review-Roundup-MACBETH-Opens-On-Broadway-Starring-Daniel-Craig-and-Ruth-Negg-20220429",
         "https://www.broadwayworld.com/article/Review-Roundup-MACBETH-Opens-on-Broadway-All-the-Reviews-20131121",
         "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-MACBETH-At-the-National-Theatre-20180308",
-        "https://www.broadwayworld.com/article/Review-Roundup-See-What-Critics-Thought-of-MACBETH-20191028",
-        "https://www.broadwayworld.com/article/Review-Roundup-Kenneth-Branaghs-MACBETH-20140606",
-        "https://www.broadwayworld.com/article/Review-Roundup-MACBETH-Premieres-at-Cannes-Film-Festival-Starring-Michael-Fassbender-20150523"
+        "https://www.broadwayworld.com/article/Review-Roundup-See-What-Critics-Thought-of-MACBETH-20191028"
       ],
       "aggregatorListedUrls": [
         "https://www.nytimes.com/2026/09/23/arts/music/macbeth-review-met-opera-nyc.html",
@@ -70641,23 +70648,11 @@
         "https://www.timeout.com/london/theatre/macbeth-review",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/macbeth-national-theatre-review-rory-kinnear-annemarie-duff-a8244476.html",
         "https://www.telegraph.co.uk/theatre/what-to-see/dud-see-macbeth-national-theatre-review/",
-        "http://www.nytimes.com/2014/06/06/theater/a-fast-and-furious-macbeth-at-park-avenue-armory.html",
-        "http://www.hollywoodreporter.com/review/theater-review-kenneth-branagh-macbeth-709618",
-        "http://variety.com/2014/legit/reviews/review-macbeth-kenneth-branagh-park-avenue-armory-1201214914/",
-        "http://www.timeout.com/newyork/theater/macbeth",
-        "http://www.nydailynews.com/entertainment/music-arts/macbeth-theater-review-article-1.1818400",
-        "http://online.wsj.com/articles/theater-review-macbeth-and-the-dance-of-death-1402014721",
-        "https://www.theguardian.com/stage/2014/jun/05/kenneth-branagh-macbeth-park-avenue-armory-review",
-        "http://www.telegraph.co.uk/film/macbeth/review/",
-        "http://www.hollywoodreporter.com/review/macbeth-cannes-review-797690",
-        "http://variety.com/2015/film/festivals/macbeth-review-michael-fassbender-marion-cotillard-1201500514/",
-        "http://www.indiewire.com/article/cannes-review-michael-fassbender-and-marion-cotillard-salvage-justin-kurzels-macbeth-20150523",
-        "https://www.theguardian.com/film/2015/may/23/macbeth-review-fassbender-and-cotillard-full-of-sound-and-fury-in-significant-shakespeare-adaptation",
-        "http://www.screendaily.com/reviews/macbeth-review/5087418.article",
+        "https://www.broadwayworld.com/bwwopera/article/Review-Making-Scotland-Great-Again-with-Thrilling-Davidsen-and-Kelsey-in-Mets-New-MACBETH-20260923",
         "https://www.wsj.com/arts-culture/theater/macbeth-review-a-ferocious-start-to-the-met-operas-season-491640f2",
+        "https://www.classicalsource.com/concert/the-metropolitan-opera-macbeth-2/",
         "https://www.rottentomatoes.com/m/the_metropolitan_opera_macbeth",
         "https://www.opera-online.com/en/items/productions/macbeth-metropolitan-opera-2026-louisa-proske-2026",
-        "https://www.classicalsource.com/concert/the-metropolitan-opera-macbeth-2/",
         "https://www.operabase.com/productions/macbeth-476049/en"
       ],
       "dirFiles": 59,
@@ -70819,34 +70814,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://variety.com/2014/legit/reviews/review-macbeth-kenneth-branagh-park-avenue-armory-1201214914/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://variety.com/2015/film/festivals/macbeth-review-michael-fassbender-marion-cotillard-1201500514/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.indiewire.com/article/cannes-review-michael-fassbender-and-marion-cotillard-salvage-justin-kurzels-macbeth-20150523",
-          "host": "indiewire.com",
-          "knownOutletId": "indiewire",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.screendaily.com/reviews/macbeth-review/5087418.article",
-          "host": "screendaily.com",
-          "knownOutletId": "screen-daily",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-macbeth-2/",
           "host": "classicalsource.com",
           "knownOutletId": null,
@@ -70860,10 +70827,6 @@
         }
       ],
       "dirOnly": [
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
         {
           "host": "ft.com",
           "count": 1
@@ -71389,144 +71352,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.hollywoodreporter.com/review/theater-review-kenneth-branagh-macbeth-709618",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "hollywood-reporter--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.hollywoodreporter.com/review/macbeth-theater-review-658859"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/macbeth",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout--naveen-kumar.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/newyork/theater/macbeth-22"
-            },
-            {
-              "file": "timeout--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.timeout.com/newyork/theater/macbeth-22"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/music-arts/macbeth-theater-review-article-1.1818400",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.nydailynews.com/entertainment/music-arts/macbeth-theater-review-article-1.1523606"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2014/jun/05/kenneth-branagh-macbeth-park-avenue-armory-review",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--arifa-akbar.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2023/dec/16/macbeth-review-david-tennant-thrills-in-this-high-concept-production"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.telegraph.co.uk/film/macbeth/review/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "telegraph--dominic-cavendish.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/macbeth-chichester-festival-theatre-review-muted-john-simm-dervla/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/macbeth-cannes-review-797690",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "hollywood-reporter--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.hollywoodreporter.com/review/macbeth-theater-review-658859"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/film/2015/may/23/macbeth-review-fassbender-and-cotillard-full-of-sound-and-fury-in-significant-shakespeare-adaptation",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--arifa-akbar.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2023/dec/16/macbeth-review-david-tennant-thrills-in-this-high-concept-production"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_macbeth",
           "host": "rottentomatoes.com",
           "knownOutletId": null,
@@ -71577,7 +71402,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           },
           {
@@ -71587,7 +71412,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -71597,7 +71422,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -71633,16 +71458,16 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 10,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
-        "count": 2228,
+        "count": 1673,
         "byReason": {
-          "aggregator-internal-nav": 1595,
-          "not-http-url": 406,
-          "aggregator-section-root": 37,
-          "non-review-host": 173,
+          "aggregator-internal-nav": 1161,
+          "not-http-url": 325,
+          "aggregator-section-root": 29,
+          "non-review-host": 141,
           "roundup-page": 16,
           "ticketing-reseller": 1
         }
@@ -71672,14 +71497,6 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-See-What-Critics-Thought-of-MACBETH-20191028",
           "publishDate": "2019-10-28"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Kenneth-Branaghs-MACBETH-20140606",
-          "publishDate": "2014-06-06"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-MACBETH-Premieres-at-Cannes-Film-Festival-Starring-Michael-Fassbender-20150523",
-          "publishDate": "2015-05-23"
         }
       ],
       "weIngestBlocked": [
@@ -71814,30 +71631,6 @@
           "host": "nypost.com",
           "priorRun": true,
           "reason": "prior-run"
-        },
-        {
-          "url": "http://variety.com/2014/legit/reviews/review-macbeth-kenneth-branagh-park-avenue-armory-1201214914/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://variety.com/2015/film/festivals/macbeth-review-michael-fassbender-marion-cotillard-1201500514/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.indiewire.com/article/cannes-review-michael-fassbender-and-marion-cotillard-salvage-justin-kurzels-macbeth-20150523",
-          "host": "indiewire.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.screendaily.com/reviews/macbeth-review/5087418.article",
-          "host": "screendaily.com",
-          "priorRun": true,
-          "reason": "prior-run"
         }
       ],
       "ingestResults": [
@@ -71851,7 +71644,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  provisional outlet \"classicalsource\" (not in registry) — onboard to outlet-registry.json after r"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=classicalsource.com): Scrapingdog HTTP 400: Oops! Some"
         },
         {
           "url": "https://www.operabase.com/productions/macbeth-476049/en",
@@ -71976,16 +71769,10 @@
             "firstSeenAt": "2026-09-25T08:29:36.594Z"
           },
           {
-            "url": "http://www.nytimes.com/2014/06/06/theater/a-fast-and-furious-macbeth-at-park-avenue-armory.html",
-            "outletId": "nytimes.com",
+            "url": "https://www.broadwayworld.com/bwwopera/article/Review-Making-Scotland-Great-Again-with-Thrilling-Davidsen-and-Kelsey-in-Mets-New-MACBETH-20260923",
+            "outletId": "broadwayworld.com",
             "state": "live",
-            "firstSeenAt": "2026-09-25T08:29:36.594Z"
-          },
-          {
-            "url": "http://online.wsj.com/articles/theater-review-macbeth-and-the-dance-of-death-1402014721",
-            "outletId": "online.wsj.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-25T14:30:30.176Z"
+            "firstSeenAt": "2026-09-25T23:07:29.288Z"
           },
           {
             "url": "https://www.wsj.com/arts-culture/theater/macbeth-review-a-ferocious-start-to-the-met-operas-season-491640f2",
@@ -72040,7 +71827,7 @@
         "liveCount": 6,
         "candidateCount": 12
       },
-      "computedAt": "2026-09-25T14:30:30.176Z"
+      "computedAt": "2026-09-25T23:07:29.288Z"
     },
     {
       "showId": "madama-butterfly-off-broadway-2024",
@@ -77944,19 +77731,17 @@
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/what-do-the-reviews-say-about-mexodus-off-broadway",
         "https://www.broadwayworld.com/article/Review-Roundup-MEXODUS-Opens-at-Audible-Theater-20250918"
       ],
       "aggregatorListedUrls": [
-        "https://culturesauce.com/2025/09/18/mexodus-off-broadway-review/",
         "https://www.thedailybeast.com/obsessed/mexodus-review-could-this-show-be-the-next-hamilton/",
-        "https://nystagereview.com/2025/09/18/mexodus-significant-take-on-todays-immigrant-situation/",
-        "https://www.newyorktheatreguide.com/reviews/mexodus-off-broadway-review",
-        "https://www.nytimes.com/2025/09/19/theater/mexodus-review-audible.html",
-        "https://www.theatrely.com/post/history-you-wont-find-in-your-textbook-in-mexodus-review",
-        "https://www.theatermania.com/news/review-mexodus-a-hip-hop-musical-about-an-enslaved-persons-journey-south-to-freedom_1803967/",
         "https://www.thewrap.com/mexodus-off-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/mexodus-off-broadway-review",
+        "https://nystagereview.com/2025/09/18/mexodus-significant-take-on-todays-immigrant-situation/",
+        "https://www.theatrely.com/post/history-you-wont-find-in-your-textbook-in-mexodus-review",
+        "https://www.nytimes.com/2025/09/19/theater/mexodus-review-audible.html",
         "https://www.timeout.com/newyork/news/theater-review-two-friends-makes-a-great-escape-in-mexodus-032826",
+        "https://www.theatermania.com/news/review-mexodus-a-hip-hop-musical-about-an-enslaved-persons-journey-south-to-freedom_1803967/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TR2K57",
         "https://www.talkinbroadway.com/page/ob/09_18_25b.html",
         "https://www.theaterscene.net/musicals/offbway/mexodus/victor-gluck/",
@@ -77973,25 +77758,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://culturesauce.com/2025/09/18/mexodus-off-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "culturesauce--thom-geier.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://culturesauce.com/2025/09/18/mexodus-off-broadway-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
         {
           "url": "https://www.thedailybeast.com/obsessed/mexodus-review-could-this-show-be-the-next-hamilton/",
           "host": "thedailybeast.com",
@@ -78012,9 +77778,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://nystagereview.com/2025/09/18/mexodus-significant-take-on-todays-immigrant-situation/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
+          "url": "https://www.thewrap.com/mexodus-off-broadway-review/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -78022,9 +77788,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nysr--david-finkle.json",
+              "file": "thewrap--robert-hofler.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/09/18/mexodus-significant-take-on-todays-immigrant-situation/"
+              "urlInDir": "https://www.thewrap.com/mexodus-off-broadway-review/"
             }
           ],
           "priorRun": true,
@@ -78055,9 +77821,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.nytimes.com/2025/09/19/theater/mexodus-review-audible.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
+          "url": "https://nystagereview.com/2025/09/18/mexodus-significant-take-on-todays-immigrant-situation/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -78065,9 +77831,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nytimes--brittani-samuel.json",
+              "file": "nysr--david-finkle.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2025/09/19/theater/mexodus-review-audible.html"
+              "urlInDir": "https://nystagereview.com/2025/09/18/mexodus-significant-take-on-todays-immigrant-situation/"
             }
           ],
           "priorRun": true,
@@ -78093,6 +77859,25 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://www.nytimes.com/2025/09/19/theater/mexodus-review-audible.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--brittani-samuel.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2025/09/19/theater/mexodus-review-audible.html"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://www.theatermania.com/news/review-mexodus-a-hip-hop-musical-about-an-enslaved-persons-journey-south-to-freedom_1803967/",
           "host": "theatermania.com",
           "knownOutletId": "theatermania",
@@ -78107,28 +77892,7 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.theatermania.com/news/review-mexodus-a-hip-hop-musical-about-an-enslaved-persons-journey-south-to-freedom_1803967/"
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/mexodus-off-broadway-review/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thewrap--robert-hofler.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thewrap.com/mexodus-off-broadway-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
           "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TR2K57",
@@ -78196,7 +77960,9 @@
               "flag": "wrongProduction",
               "urlInDir": "https://thefrontrowcenter.com/2025/09/mexodus/"
             }
-          ]
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
         }
       ],
       "citedNoUrl": [],
@@ -78206,20 +77972,16 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 413,
+        "count": 302,
         "byReason": {
-          "non-review-host": 35,
-          "aggregator-internal-nav": 304,
-          "not-http-url": 66,
-          "aggregator-section-root": 8
+          "aggregator-internal-nav": 223,
+          "not-http-url": 60,
+          "aggregator-section-root": 4,
+          "non-review-host": 15
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/what-do-the-reviews-say-about-mexodus-off-broadway",
-          "publishDate": "2025-09-19"
-        },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-MEXODUS-Opens-at-Audible-Theater-20250918",
           "publishDate": "2025-09-18"
@@ -78228,6 +77990,13 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/review-mexodus-a-hip-hop-musical-about-an-enslaved-persons-journey-south-to-freedom_1803967/"
+          },
           {
             "outletId": "lighting-and-sound-america",
             "outlet": "lighting-and-sound-america",
@@ -78248,13 +78017,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theaterscene.net/musicals/offbway/mexodus/victor-gluck/"
-          },
-          {
-            "outletId": "front-row-center",
-            "outlet": "front-row-center",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thefrontrowcenter.com/2025/09/mexodus/"
           }
         ],
         "suppressedMissing": [],
@@ -78264,6 +78026,13 @@
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-08-12T00:59:38.238Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-mexodus-a-hip-hop-musical-about-an-enslaved-persons-journey-south-to-freedom_1803967/",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-25T23:07:29.288Z"
           },
           {
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TR2K57",
@@ -78285,20 +78054,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-12T00:59:38.238Z"
-          },
-          {
-            "url": "https://thefrontrowcenter.com/2025/09/mexodus/",
-            "outletId": "front-row-center",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-12T00:59:38.238Z"
           }
         ],
         "censusSchema": 2,
         "liveCount": 1,
         "candidateCount": 5
       },
-      "computedAt": "2026-08-27T01:23:51.910Z"
+      "computedAt": "2026-09-25T23:07:29.288Z"
     },
     {
       "showId": "michael-r-jackson-wake-up-call-off-broadway-2026",
@@ -100972,7 +100734,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-30T07:41:12.140Z"
+      "computedAt": "2026-09-25T23:07:29.288Z"
     },
     {
       "showId": "ragtime-2025",
@@ -100982,7 +100744,9 @@
       "category": "broadway",
       "aggregatorArticles": [
         "https://playbill.com/article/read-the-reviews-for-the-ragtime-revival-on-broadway",
-        "https://playbill.com/article/critics-sound-off-on-city-center-ragtime-get-a-1st-look-at-the-gala-staging"
+        "https://playbill.com/article/critics-sound-off-on-city-center-ragtime-get-a-1st-look-at-the-gala-staging",
+        "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-Returns-to-Broadway-20251016",
+        "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-at-New-York-City-Center-20241031"
       ],
       "aggregatorListedUrls": [
         "https://1minutecritic.com/ragtime-broadway-revival-review-2025/",
@@ -101015,7 +100779,9 @@
         "https://nystagereview.com/2024/11/01/ragtime-simple-and-somehow-sublime/",
         "https://nystagereview.com/2024/11/01/ragtime-e-l-doctorows-musicalized-masterpiece-masterfully-revived/",
         "https://www.nytimes.com/2024/10/31/theater/ragtime-review-city-center.html",
-        "https://www.theatermania.com/news/review-ragtime-at-new-york-city-center-shows-us-america_1754497/"
+        "https://www.theatermania.com/news/review-ragtime-at-new-york-city-center-shows-us-america_1754497/",
+        "https://www.chicagotribune.com/2025/10/16/review-ragtime-broadway/",
+        "https://nypost.com/2025/10/16/entertainment/ragtime-review-broadway-revival-still-misses-but-has-sensational-singing/"
       ],
       "dirFiles": 47,
       "dirClean": 32,
@@ -101033,10 +100799,6 @@
           "count": 1
         },
         {
-          "host": "chicagotribune.com",
-          "count": 1
-        },
-        {
           "host": "dctheaterarts.org",
           "count": 1
         },
@@ -101050,10 +100812,6 @@
         },
         {
           "host": "lavocedinewyork.com",
-          "count": 1
-        },
-        {
-          "host": "nypost.com",
           "count": 1
         },
         {
@@ -101095,18 +100853,22 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 230,
+        "count": 908,
         "byReason": {
-          "non-review-host": 45,
-          "aggregator-internal-nav": 165,
-          "not-http-url": 12,
-          "aggregator-section-root": 8
+          "aggregator-internal-nav": 615,
+          "not-http-url": 190,
+          "aggregator-section-root": 16,
+          "non-review-host": 87
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
           "url": "https://playbill.com/article/critics-sound-off-on-city-center-ragtime-get-a-1st-look-at-the-gala-staging",
+          "publishDate": "2024-10-31"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-RAGTIME-at-New-York-City-Center-20241031",
           "publishDate": "2024-10-31"
         }
       ],
@@ -101121,7 +100883,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  provisional outlet \"open\" (not in registry) — onboard to outlet-registry.json after review.\nArti"
+          "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://ope"
         }
       ],
       "ingestSkippedByCap": [],
@@ -101320,6 +101082,18 @@
             "firstSeenAt": "2026-08-04T16:42:46.829Z"
           },
           {
+            "url": "https://www.chicagotribune.com/2025/10/16/review-ragtime-broadway/",
+            "outletId": "chicagotribune.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-25T23:07:29.288Z"
+          },
+          {
+            "url": "https://nypost.com/2025/10/16/entertainment/ragtime-review-broadway-revival-still-misses-but-has-sensational-singing/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-25T23:07:29.288Z"
+          },
+          {
             "url": "https://open.substack.com/pub/newyorknotebook/p/ragtime",
             "outletId": "open.substack.com",
             "state": "GAP",
@@ -101335,10 +101109,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 21,
-        "candidateCount": 23
+        "liveCount": 23,
+        "candidateCount": 25
       },
-      "computedAt": "2026-08-30T07:41:12.140Z"
+      "computedAt": "2026-09-25T23:07:29.288Z"
     },
     {
       "showId": "red-riding-hood-off-broadway-2026",
@@ -110792,22 +110566,17 @@
         "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html",
         "https://asylumnyc.com/tiffany-in-spandex-the-musical/",
         "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/",
-        "https://people.com/tiffany-to-make-new-york-theater-debut-in-spandex-the-musical-exclusive-12018545"
+        "https://people.com/tiffany-to-make-new-york-theater-debut-in-spandex-the-musical-exclusive-12018545",
+        "https://www.nbcnewyork.com/video/entertainment/the-scene/new-york-live/tiffany-talks-spandex-the-musical-cooking-soundtracking-stranger-things/6529115/"
       ],
-      "dirFiles": 5,
+      "dirFiles": 7,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://asylumnyc.com/tiffany-in-spandex-the-musical/",
-          "host": "asylumnyc.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://people.com/tiffany-to-make-new-york-theater-debut-in-spandex-the-musical-exclusive-12018545",
-          "host": "people.com",
-          "knownOutletId": "people",
+          "url": "https://www.nbcnewyork.com/video/entertainment/the-scene/new-york-live/tiffany-talks-spandex-the-musical-cooking-soundtracking-stranger-things/6529115/",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny",
           "serpCensus": true
         }
       ],
@@ -110837,6 +110606,24 @@
           "serpCensus": true
         },
         {
+          "url": "https://asylumnyc.com/tiffany-in-spandex-the-musical/",
+          "host": "asylumnyc.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "asylumnyc--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://asylumnyc.com/tiffany-in-spandex-the-musical/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/",
           "host": "picturethispost.com",
           "knownOutletId": "picture-this-post",
@@ -110850,6 +110637,24 @@
               "file": "picture-this-post--unknown.json",
               "flag": "wrongProduction",
               "urlInDir": "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://people.com/tiffany-to-make-new-york-theater-debut-in-spandex-the-musical-exclusive-12018545",
+          "host": "people.com",
+          "knownOutletId": "people",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "people--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://people.com/tiffany-to-make-new-york-theater-debut-in-spandex-the-musical-exclusive-12018545"
             }
           ],
           "serpCensus": true
@@ -110909,49 +110714,37 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 33,
+        "count": 34,
         "byReason": {
           "aggregator-internal-nav": 3,
-          "non-review-host": 25,
-          "venue-production-page": 2,
+          "non-review-host": 24,
+          "venue-production-page": 4,
           "merch-store": 3
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://asylumnyc.com/tiffany-in-spandex-the-musical/",
-          "host": "asylumnyc.com",
-          "outletId": "asylumnyc",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://people.com/tiffany-to-make-new-york-theater-debut-in-spandex-the-musical-exclusive-12018545",
-          "host": "people.com",
-          "outletId": "people",
+          "url": "https://www.nbcnewyork.com/video/entertainment/the-scene/new-york-live/tiffany-talks-spandex-the-musical-cooking-soundtracking-stranger-things/6529115/",
+          "host": "nbcnewyork.com",
+          "outletId": "nbcny",
           "provisional": false,
-          "ok": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": null
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
         }
       ],
       "ingestSkippedByCap": [],
@@ -110959,18 +110752,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "asylumnyc.com",
-            "outlet": "asylumnyc.com",
+            "outletId": "nbcny",
+            "outlet": "nbcny",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://asylumnyc.com/tiffany-in-spandex-the-musical/"
-          },
-          {
-            "outletId": "people",
-            "outlet": "people",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://people.com/tiffany-to-make-new-york-theater-debut-in-spandex-the-musical-exclusive-12018545"
+            "url": "https://www.nbcnewyork.com/video/entertainment/the-scene/new-york-live/tiffany-talks-spandex-the-musical-cooking-soundtracking-stranger-things/6529115/"
           },
           {
             "outletId": "nytimes",
@@ -110980,28 +110766,35 @@
             "url": "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html"
           },
           {
+            "outletId": "asylumnyc.com",
+            "outlet": "asylumnyc.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://asylumnyc.com/tiffany-in-spandex-the-musical/"
+          },
+          {
             "outletId": "picture-this-post",
             "outlet": "picture-this-post",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/"
+          },
+          {
+            "outletId": "people",
+            "outlet": "people",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://people.com/tiffany-to-make-new-york-theater-debut-in-spandex-the-musical-exclusive-12018545"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://asylumnyc.com/tiffany-in-spandex-the-musical/",
-            "outletId": "asylumnyc.com",
+            "url": "https://www.nbcnewyork.com/video/entertainment/the-scene/new-york-live/tiffany-talks-spandex-the-musical-cooking-soundtracking-stranger-things/6529115/",
+            "outletId": "nbcny",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-25T14:30:30.176Z"
-          },
-          {
-            "url": "https://people.com/tiffany-to-make-new-york-theater-debut-in-spandex-the-musical-exclusive-12018545",
-            "outletId": "people",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-25T14:30:30.176Z"
+            "firstSeenAt": "2026-09-25T23:07:29.288Z"
           },
           {
             "url": "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html",
@@ -111011,18 +110804,32 @@
             "firstSeenAt": "2026-09-24T19:52:14.230Z"
           },
           {
+            "url": "https://asylumnyc.com/tiffany-in-spandex-the-musical/",
+            "outletId": "asylumnyc.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-25T14:30:30.176Z"
+          },
+          {
             "url": "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/",
             "outletId": "picture-this-post",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-24T19:52:14.230Z"
+          },
+          {
+            "url": "https://people.com/tiffany-to-make-new-york-theater-debut-in-spandex-the-musical-exclusive-12018545",
+            "outletId": "people",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-25T14:30:30.176Z"
           }
         ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 4
+        "candidateCount": 5
       },
-      "computedAt": "2026-09-25T14:30:30.176Z"
+      "computedAt": "2026-09-25T23:07:29.288Z"
     },
     {
       "showId": "spare-parts-off-broadway-2026",
@@ -125837,7 +125644,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -125847,7 +125654,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -125887,13 +125694,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 406,
+        "count": 402,
         "byReason": {
-          "aggregator-internal-nav": 265,
+          "aggregator-internal-nav": 264,
           "not-http-url": 71,
           "aggregator-section-root": 11,
-          "non-review-host": 53,
-          "roundup-page": 5,
+          "non-review-host": 49,
+          "roundup-page": 6,
           "venue-production-page": 1
         }
       },
@@ -125995,7 +125802,7 @@
         "liveCount": 5,
         "candidateCount": 8
       },
-      "computedAt": "2026-09-25T14:30:30.176Z"
+      "computedAt": "2026-09-25T23:07:29.288Z"
     },
     {
       "showId": "the-hope-theory-off-broadway-2026",
@@ -136771,14 +136578,10 @@
         "https://www.theaterscene.net/plays/offbway-plays/the-saviors/victor-gluck/"
       ],
       "dirFiles": 30,
-      "dirClean": 21,
-      "inReviewsJson": 21,
+      "dirClean": 20,
+      "inReviewsJson": 20,
       "missing": [],
       "dirOnly": [
-        {
-          "host": "acsntn.substack.com",
-          "count": 1
-        },
         {
           "host": "nysun.com",
           "count": 1
@@ -136855,12 +136658,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 373,
+        "count": 392,
         "byReason": {
-          "non-review-host": 34,
-          "aggregator-internal-nav": 247,
-          "not-http-url": 83,
-          "aggregator-section-root": 9
+          "aggregator-internal-nav": 259,
+          "not-http-url": 85,
+          "aggregator-section-root": 11,
+          "non-review-host": 37
         }
       },
       "dedupedVariants": [],
@@ -136975,7 +136778,7 @@
         "liveCount": 11,
         "candidateCount": 13
       },
-      "computedAt": "2026-08-30T07:41:12.140Z"
+      "computedAt": "2026-09-25T23:07:29.288Z"
     },
     {
       "showId": "the-secret-circus-musical-off-broadway-2026",
@@ -137011,7 +136814,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-25T19:11:42.912Z"
+      "computedAt": "2026-09-25T23:07:29.288Z"
     },
     {
       "showId": "the-seven-deadly-sins-the-human-voice-off-west-end-2026",
