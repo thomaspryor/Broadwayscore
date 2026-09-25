@@ -1500,6 +1500,20 @@ function safeWriteReview(filePath, newData, options = {}) {
           console.warn(`[review-write-guard] blocked url flip-flop on ${path.basename(filePath)}: ${existing.url} <-> ${newData.url} — pinning urlVerified`);
           const flippedFromUrl = newData.url;
           newData.url = existing.url;
+          // BRO-4130: maybeUpgradeUrl (upstream, in _mergeIntoExisting) may
+          // already have merged URL_DERIVED_FIELDS (originalScore, etc.) that
+          // arrived paired with flippedFromUrl in THIS write — those values
+          // describe the article at flippedFromUrl, not the pinned
+          // existing.url the write is being forced back onto. Since the url
+          // change itself is being rejected, roll those fields back to their
+          // genuine on-disk (existing) state too, or a score/flag that
+          // belongs to the rejected url gets misattributed to the pinned one.
+          const { URL_DERIVED_FIELDS } = require('./url-change-invariant');
+          for (const field of URL_DERIVED_FIELDS) {
+            if (newData[field] === existing[field]) continue;
+            if (existing[field] === undefined) delete newData[field];
+            else newData[field] = existing[field];
+          }
           if (!newData.urlVerified) {
             newData.urlVerified = true;
             newData.urlVerifiedAuto = true;

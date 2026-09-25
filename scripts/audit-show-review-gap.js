@@ -172,6 +172,7 @@ const {
   currentRunCount,
   splitGapCounts,
 } = require('./lib/prior-production-citations');
+const { serpCensusPreflight } = require('./lib/serp-census-preflight');
 const { recordGateObservation, evaluateProving, emptyTracker, aggregatorAccuracy, lowTrustSources } = require('./lib/we-gate-proving');
 const WE_PROVING_PATH = path.join(ROOT, 'data', 'audit', 'we-gate-proving.json');
 function loadWeProving() {
@@ -1576,6 +1577,21 @@ function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null) {
 // actions off the module-level parse, not the passed argv.
 async function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+
+  // Precondition, checked ONCE before any show is audited: can the SERP census
+  // actually run? Without a key, url-discovery's serpSearch early-returns null
+  // and every show gets written with a 0-live/0-candidate verdict plus a fresh
+  // zero-gap checkpoint entry that newsletter-preflight reads as VERIFIED
+  // COMPLETE — while page fetches keep succeeding, so nothing looks wrong.
+  // Checked here rather than thrown at the call site because serpSearch's
+  // callers catch and continue by design (one failed query must not kill a
+  // 26-show run), so a throw there would be swallowed and rerouted.
+  const preflight = serpCensusPreflight(process.env);
+  if (!preflight.ok) {
+    console.error(`::error::gap audit preflight failed — ${preflight.reason}`);
+    process.exit(1);
+  }
+
   const allShows = loadShows();
   let targets;
   if (showFilter) {

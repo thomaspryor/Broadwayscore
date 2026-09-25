@@ -121,6 +121,47 @@ test('maybeUpgradeUrl write path clears stale wrongProduction/contentVerificatio
   fs.rmSync(reviewTextsDir, { recursive: true, force: true });
 });
 
+test('BRO-4130: a fresh originalScore arriving in the SAME write as a fresh url survives the url swap', () => {
+  const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-paired-score-'));
+  const showId = 'hamilton-test-fixture';
+  // No score on disk yet — a paywalled stub with no fullText, no url-derived
+  // state to protect other than the fact it's badContent (no fullText).
+  makeFixture(reviewTextsDir, showId, 'thestage--unknown.json', {
+    showId,
+    outletId: 'thestage',
+    outlet: 'The Stage',
+    criticName: 'Unknown',
+    url: 'https://www.thestage.co.uk/reviews/hamilton-old-broken-scrape',
+    source: 'gather-reviews',
+    sources: ['gather-reviews'],
+    fullText: null,
+    needsRefetch: true,
+    contentTier: 'stub',
+  });
+
+  // A SERP-recovery style write: fetches a fresh (non-roundup) url AND
+  // extracts a fresh star rating from it in the same call — the _mergeIntoExisting
+  // field-merge loop plants originalScore/originalScoreSource onto `existing`
+  // BEFORE maybeUpgradeUrl runs, so without the pre-merge snapshot fix the
+  // invariant sees them as "unchanged old-url state" and wipes them.
+  const result = quiet(() => createOrMergeReviewFile(showId, {
+    outlet: 'The Stage',
+    criticName: 'Unknown',
+    url: 'https://www.thestage.co.uk/reviews/hamilton-corrected-review',
+    source: 'serp-discovery',
+    fields: { originalScore: '4', originalScoreSource: 'stage-star-svg' },
+  }, { reviewTextsDir }));
+
+  assert.equal(result.action, 'updated');
+  const after = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+
+  assert.equal(after.url, 'https://www.thestage.co.uk/reviews/hamilton-corrected-review');
+  assert.equal(after.originalScore, '4', 'a score paired with its own new url in the same write must not be wiped');
+  assert.equal(after.originalScoreSource, 'stage-star-svg');
+
+  fs.rmSync(reviewTextsDir, { recursive: true, force: true });
+});
+
 test('maybeUpgradeUrl refuses to touch a locked/urlVerified file', () => {
   const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-locked-'));
   const showId = 'hamilton-test-fixture';
@@ -235,6 +276,47 @@ test('safeWriteReview write chokepoint blocks a flip-flop swap-back and pins url
   assert.equal(after.urlVerified, true, 'file must be pinned after a detected flip-flop');
   assert.equal(after.urlVerifiedAuto, true, 'auto-pin must be distinguishable from a real human urlVerified decision');
   assert.ok(after.urlVerifiedNote && after.urlVerifiedNote.includes('flip-flop'));
+
+  fs.rmSync(reviewTextsDir, { recursive: true, force: true });
+});
+
+test('BRO-4130: a flip-flop-rejected swap does not leave its own paired score misattributed to the pinned url', () => {
+  const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-flipflop-score-'));
+  const showId = 'hamilton-test-fixture';
+  const urlA = 'https://www.thestage.co.uk/reviews/hamilton-review-a';
+  const urlB = 'https://www.thestage.co.uk/reviews/hamilton-review-b';
+  // File currently at A, badContent (no fullText), with a breadcrumb saying
+  // it was corrected FROM B to A previously.
+  makeFixture(reviewTextsDir, showId, 'thestage--unknown.json', {
+    showId, outletId: 'thestage', outlet: 'The Stage', criticName: 'Unknown',
+    url: urlA,
+    source: 'gather-reviews',
+    fullText: null,
+    needsRefetch: true,
+    contentTier: 'stub',
+    _urlChangedClear: { from: urlB, to: urlA, at: '2026-08-01T00:00:00.000Z', cleared: ['fullText'] },
+  });
+
+  // A write proposes swapping back to B (the flip-flop half of the cycle),
+  // WITH a fresh score paired with that same url in the same call. The BRO-4130
+  // fix correctly lets maybeUpgradeUrl preserve the paired score through its
+  // own applyUrlChangeInvariant call — but safeWriteReview's flip-flop guard
+  // downstream then rejects the url swap itself and pins the file back to A.
+  // The score arrived describing article B; it must not end up stranded on A.
+  const result = quiet(() => createOrMergeReviewFile(showId, {
+    outlet: 'The Stage',
+    criticName: 'Unknown',
+    url: urlB,
+    source: 'serp-discovery',
+    fields: { originalScore: '4', originalScoreSource: 'stage-star-svg' },
+  }, { reviewTextsDir }));
+
+  assert.equal(result.action, 'updated');
+  const after = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+
+  assert.equal(after.url, urlA, 'flip-flop swap-back must be refused, keeping the pinned url');
+  assert.equal(after.originalScore, undefined, 'a score paired with the REJECTED url must not survive misattributed to the pinned url');
+  assert.equal(after.originalScoreSource, undefined);
 
   fs.rmSync(reviewTextsDir, { recursive: true, force: true });
 });

@@ -2100,6 +2100,18 @@ function slugLooksLikeDifferentShow(newUrl, { showTitle, refUrl } = {}) {
  *   existingData's score even when the incoming write just planted that same
  *   score alongside newUrl — refusing to ever apply a freshly-discovered
  *   (score, url) pair together.
+ * @param {object} [opts.preMergeSnapshot] - Full copy of the review record as
+ *   it existed on disk BEFORE the caller's field-merge loop ran (BRO-4130).
+ *   Used as applyUrlChangeInvariant's "before" instead of a fresh copy of
+ *   `existingData` taken here — by this point in the write pipeline,
+ *   `existingData` may already carry fields THIS SAME incoming write just
+ *   merged in (e.g. a fresh originalScore arriving alongside this very
+ *   newUrl in one call). A copy taken here would make that fresh value look
+ *   identical on both sides of the invariant's "did this ride along
+ *   unchanged from the old record" check and wipe it as stale old-url state,
+ *   even though it's brand new. Callers that don't pre-merge fields (direct
+ *   tests, other call sites) omit this and fall back to `existingData`,
+ *   preserving prior behavior.
  */
 function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   if (!newUrl || existingData.url === newUrl) return false;
@@ -2241,7 +2253,12 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   // wrongShow/contentVerification survived this upgrade because nothing
   // cleared them — this function only ever wiped the body fields directly,
   // which the shared invariant never saw).
-  const before = { ...existingData };
+  //
+  // BRO-4130: prefer opts.preMergeSnapshot over a fresh `{...existingData}`
+  // copy taken here. See the opts.preMergeSnapshot doc above — existingData
+  // may already carry this same write's own merged-in fields by this point,
+  // and a copy taken now would wrongly present them as pre-existing.
+  const before = opts.preMergeSnapshot ? { ...opts.preMergeSnapshot } : { ...existingData };
 
   existingData.urlCorrectedFrom = existingData.url;
   existingData.urlCorrectedReason = `Replaced with ${source} URL — original had bad/missing content`;

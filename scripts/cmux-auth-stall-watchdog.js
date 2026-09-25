@@ -71,10 +71,12 @@ Detection: scripts/lib/cmux-auth-stall.js (BRO-4056). Repair: scripts/lib/claude
 `;
 
 // Same glyph set/priority as workspace-mark-done.js's MANAGED_GLYPHS: ❓
-// (needs you) always wins and replaces whichever of ✅/🧭 already
-// led the title, so a logged-out tab that happened to be ✅-marked before
-// it died doesn't keep reading as done.
-const MANAGED_GLYPH_RE = /^([^\p{L}\p{N}[]*?)[✅❓🧭]\s*/u;
+// (needs you) always wins and replaces whichever of ✅/🧭/🏁 already
+// led the title, so a logged-out tab that happened to be ✅-marked (done) or
+// 🏁-marked (owner tab ready to close) before it died doesn't keep reading
+// that way. Kept in sync by a parity tripwire test in
+// ~/.claude/hooks/tests/workspace-mark-done/lib.test.mjs.
+const MANAGED_GLYPH_RE = /^([^\p{L}\p{N}[]*?)[✅❓🧭🏁]\s*/u;
 
 // Delegates to isNeedsYouTitle (imported above from needs-you-snapshot.js —
 // the SAME glyph-zone check the sidebar/digest actually read) instead of

@@ -4710,15 +4710,15 @@
     "test-yml:data-validation-red": {
       "status": "open",
       "disposition": "digest",
-      "title": "Data audits failing (non-blocking): Run data validation",
+      "title": "Data audits failing (non-blocking): Audit cast-changes.json",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-24T12:48:50.855Z",
-      "lastNotifiedAt": "2026-09-23T19:33:16.776Z",
-      "lastSurfacedAt": "2026-09-23T19:33:16.776Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-25T00:20:42.385Z",
+      "lastNotifiedAt": "2026-09-25T00:12:28.830Z",
+      "lastSurfacedAt": "2026-09-25T00:12:28.830Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 1
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -4901,7 +4901,7 @@
       "linearIdentifier": null
     },
     "land:land/job/linear-BRO-4130-mug4swrf": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: rebase red on land/job/linear-BRO-4130-mug4swrf",
       "firstSeen": "2026-09-24T23:41:12.713Z",
@@ -4910,7 +4910,8 @@
       "lastSurfacedAt": "2026-09-24T23:41:12.713Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-25T00:15:46.954Z"
     }
   }
 }

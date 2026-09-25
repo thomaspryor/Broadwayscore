@@ -1150,6 +1150,12 @@ function createOrMergeReviewFile(showId, input, options = {}) {
 function _mergeIntoExisting(filepath, existing, ctx) {
   const { showId, input, fields, criticName, dryRun, onMerge } = ctx;
   let changed = false;
+  // Full snapshot BEFORE any merge mutation runs (BRO-4130). Handed to
+  // maybeUpgradeUrl below as opts.preMergeSnapshot so applyUrlChangeInvariant
+  // judges staleness against the true on-disk state, not a copy taken after
+  // the field-merge loop already blended this write's own incoming fields
+  // into `existing` — see maybeUpgradeUrl's opts.preMergeSnapshot doc.
+  const preMergeSnapshot = { ...existing };
   // Snapshot the body BEFORE the field merge so the reclassify step below can
   // tell "this merge just filled/replaced the text" apart from an unrelated
   // metadata merge.
@@ -1290,6 +1296,9 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     selfFilename: path.basename(filepath),
     // BRO-4128: pre-merge score snapshot — see maybeUpgradeUrl's docstring.
     preMergeScore: scoreBeforeMerge,
+    // BRO-4130: full pre-merge snapshot, used as applyUrlChangeInvariant's
+    // "before" — see maybeUpgradeUrl's opts.preMergeSnapshot docstring.
+    preMergeSnapshot,
   })) {
     changed = true;
   }
