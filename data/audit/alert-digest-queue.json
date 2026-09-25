@@ -909,35 +909,6 @@
     "queuedAt": "2026-09-25T01:25:36.572Z"
   },
   {
-    "conditionKey": "land:land/worktree-fix-land-fixture-hang",
-    "title": "Landing blocked: push red on land/worktree-fix-land-fixture-hang",
-    "description": "land.yml did not land land/worktree-fix-land-fixture-hang: the push gate went red at cbbb1c45ed. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/worktree-fix-land-fixture-hang @ cbbb1c45ed (origin/land/worktree-fix-land-fixture-hang) → origin/main @ 2d733f0467 [land] attempt 1/3: rebased onto 2d733f0467, 12 file(s) changed — running checks [land] linked 17 gitignored path(s) into the worktree (node_modules/core data) [land] verified-base: main moved bfc7dd6ea1 → 2d733f0467 across 19 inert path(s) only — reusing the upstream ver Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36082230032",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/worktree-fix-land-fixture-hang"
-      },
-      {
-        "name": "gate",
-        "value": "push"
-      },
-      {
-        "name": "tip",
-        "value": "cbbb1c45ede0c78a87365e70a9e3706ea77f3401"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36082230032"
-      }
-    ],
-    "queuedAt": "2026-09-25T01:47:33.919Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:alvin-ailey-american-dance-theater-new-works-west-end-2026",
     "title": "Review gap — \"Alvin Ailey American Dance Theater - New Works\" missing 3 cited review(s)",
     "description": "Alvin Ailey American Dance Theater - New Works (alvin-ailey-american-dance-theater-new-works-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=alvin-ailey-american-dance-theater-new-works-west-end-2026 --checkpoint --ingest-missing",
@@ -1152,5 +1123,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-25T02:12:11.660Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-fix-land-fixture-hang",
+    "title": "Landing blocked: scripts-lib-tests red on land/worktree-fix-land-fixture-hang",
+    "description": "land.yml did not land land/worktree-fix-land-fixture-hang: the scripts-lib-tests gate went red at 5206f619e2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36086772997",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-fix-land-fixture-hang"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "5206f619e21748f05ceed7a6b80bddceae6bd627"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36086772997"
+      }
+    ],
+    "queuedAt": "2026-09-25T02:47:24.662Z"
   }
 ]
