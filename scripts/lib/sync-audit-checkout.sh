@@ -338,7 +338,22 @@ fi
 # blocking EVERY session's push through run-push-audits.sh (task #863 class), so
 # the waiver is deliberate, not a bypass — if a workflow ever calls this, take
 # the flags from scripts/lib/shallow-fetch-args.js and delete this comment.
-if ! git fetch origin main --quiet; then
+# BRO-4141 (W1): every merge/rebase below targets whatever branch is checked
+# out. This runs unattended every 30 min (checkout-sync.plist), so if a
+# session ever leaves ~/Broadwayscore on a feature branch, fast-forwarding or
+# rebasing THAT branch onto origin/main would silently rewrite someone's
+# work. Refuse unless the checkout is on main (detached HEAD included).
+CUR_BRANCH=$(git symbolic-ref --quiet --short HEAD 2>/dev/null || echo "(detached)")
+if [ "$CUR_BRANCH" != "main" ]; then
+  echo "::error::[$TAG] checkout is on '$CUR_BRANCH', not main — refusing to sync (would move a non-main branch)"
+  write_refused_snapshot "not-on-main:$CUR_BRANCH" "" ""
+  exit 1
+fi
+
+# W4: this fetch runs while holding the push mutex; a hung transfer would
+# block every other session's push. git has no wall-clock flag, so abort any
+# transfer that stays under 1 KB/s for 60s (covers the stalled-socket case).
+if ! git -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=60 fetch origin main --quiet; then
   # Must leave a refusal snapshot (ship-check finding, BRO-3393). This exit
   # used to be silent, and morning-digest.plist runs the digest with `;` even
   # when this script fails - so a failed fetch produced NO sync-refused-digest

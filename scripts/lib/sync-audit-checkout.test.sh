@@ -397,6 +397,25 @@ else
   fi
 fi
 
+# ── case 13 (BRO-4141 W1): never sync a checkout that is not on main ───────
+# checkout-sync.plist runs this every 30 min unattended; fast-forwarding or
+# rebasing a feature branch someone left checked out would rewrite their work.
+O13="$TMP/origin13"; C13="$TMP/clone13"
+setup_pair "$O13" "$C13"
+git -C "$C13" checkout -q -b feature-x
+echo local > "$C13/feature.txt"; git -C "$C13" add -A; git -C "$C13" commit -q -m feature
+before13=$(git -C "$C13" rev-parse HEAD)
+out13=$(SYNC_TAG=case13 bash "$LIB" "$C13" 2>&1); rc13=$?
+if [ "$rc13" -eq 0 ]; then
+  echo "FAIL[13]: syncing a non-main branch must refuse. Output:"; echo "$out13"; fail=1
+elif [ "$(git -C "$C13" rev-parse HEAD)" != "$before13" ] || [ "$(git -C "$C13" symbolic-ref --short HEAD)" != "feature-x" ]; then
+  echo "FAIL[13]: the feature branch was moved"; fail=1
+elif ! grep -q '"reason": "not-on-main:feature-x"' "$C13/data/audit/sync-refused-case13.json" 2>/dev/null; then
+  echo "FAIL[13]: expected a not-on-main refusal snapshot. Output:"; echo "$out13"; fail=1
+else
+  echo "PASS[13]: a non-main checkout is refused and left untouched ($rc13)"
+fi
+
 if [ "$fail" -ne 0 ]; then
   echo "sync-audit-checkout test: FAILED"; exit 1
 fi
