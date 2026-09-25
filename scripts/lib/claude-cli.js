@@ -281,13 +281,24 @@ function worseAuthPingReason(a, b) {
   return AUTH_PING_REASONS.AUTH_REJECTED;
 }
 
+const AUTH_PING_SETTINGS = JSON.stringify({ disableAllHooks: true });
+
+// Pure — exported so the test pins the hooks-off flag (BRO-4141).
+function authPingArgs() {
+  return ['-p', 'Reply with exactly: pong', '--model', 'sonnet', '--output-format', 'json', '--settings', AUTH_PING_SETTINGS];
+}
+
 function authPing(extraEnv) {
   // Same effective-env-before-resolve fix as runClaudeCli (task #1780): probe
   // the SAME binary the real spawn would use, including any CLAUDE_BIN pin
   // passed via extraEnv — resolving against bare process.env would silently
   // ping a different binary than the one the pass actually runs.
   const pingEnv = { ...process.env, ...resolveAuthEnv(), ...extraEnv };
-  const r = spawnSync(resolveClaudeBin(pingEnv), ['-p', 'Reply with exactly: pong', '--model', 'sonnet', '--output-format', 'json'],
+  // disableAllHooks (BRO-4141): the ping tests credentials only. With hooks on,
+  // the global Stop hook's `claude-sync push` (a ~200s hook test suite) ran
+  // after the pong, so the process outlived the 120s timeout and the
+  // opening-night monitor emailed "auth preflight failed" with working auth.
+  const r = spawnSync(resolveClaudeBin(pingEnv), authPingArgs(),
     // resolveAuthEnv() sits above process.env for the same reason as in
     // strippedEnv: under launchd the keys are absent, and the probe has to
     // exercise the SAME credentials the real spawn will get or it proves
@@ -744,7 +755,7 @@ function runClaudeCli(opts) {
 
 module.exports = {
   runClaudeCli, parseEnvelope, strippedEnv, STAGES, FORBIDDEN_MODEL_RE,
-  authPing, resolvePassAuth, preflightAuth, resolveAuthEnv, AUTH_KEYS,
+  authPing, authPingArgs, resolvePassAuth, preflightAuth, resolveAuthEnv, AUTH_KEYS,
   classifyAuthPingFailure, AUTH_PING_REASONS, worseAuthPingReason,
   parseStreamLine, addUsage, estimateCostUSD, APPROX_MODEL_RATES_PER_MTOK,
   resolveClaudeBin, pathWithClaudeBinDir,
