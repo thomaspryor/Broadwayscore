@@ -143,7 +143,7 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-25T02:06:30.238Z",
+      "lastSeen": "2026-09-25T02:13:06.311Z",
       "lastNotifiedAt": "2026-09-25T01:38:28.250Z",
       "lastSurfacedAt": "2026-09-25T01:38:28.250Z",
       "notifyCount": 101,
@@ -3718,7 +3718,7 @@
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
       "firstSeen": "2026-09-20T19:22:49.867Z",
-      "lastSeen": "2026-09-25T02:06:30.206Z",
+      "lastSeen": "2026-09-25T02:13:05.764Z",
       "lastNotifiedAt": "2026-09-25T01:38:27.752Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
@@ -4482,7 +4482,7 @@
       "silentRefires": 1,
       "absentRunIds": [
         "35817798383",
-        "36083765218"
+        "36084309752"
       ]
     },
     "test-yml:red:Unit Tests:eb9a92ac": {
@@ -4497,7 +4497,7 @@
       "cardId": null,
       "linearIdentifier": "BRO-4063",
       "absentRunIds": [
-        "36083765218"
+        "36084309752"
       ]
     },
     "land:land/worktree-bro-3873-c-old": {
@@ -4952,7 +4952,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4146",
-      "silentRefires": 1
+      "absentRunIds": [
+        "36084309752"
+      ]
     },
     "land:land/worktree-fix-land-fixture-hang": {
       "status": "open",
@@ -4966,17 +4968,17 @@
       "cardId": null,
       "linearIdentifier": null
     },
-    "review-gap:opening-window:la-boheme-off-broadway-2026": {
+    "test-yml:red:Unit Tests:86254087": {
       "status": "open",
-      "disposition": "digest",
-      "title": "Review gap — \"La Bohème\" missing 6 cited review(s)",
-      "firstSeen": "2026-09-25T02:12:11.627Z",
-      "lastSeen": "2026-09-25T02:12:11.627Z",
-      "lastNotifiedAt": "2026-09-25T02:12:11.627Z",
-      "lastSurfacedAt": "2026-09-25T02:12:11.627Z",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run push-with-retry stranded-commit-cascade test (bash integration) — \"foo returns the contracted value\"",
+      "firstSeen": "2026-09-25T02:13:05.904Z",
+      "lastSeen": "2026-09-25T02:13:05.904Z",
+      "lastNotifiedAt": "2026-09-25T02:13:05.904Z",
+      "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": "BRO-4149"
     }
   }
 }
