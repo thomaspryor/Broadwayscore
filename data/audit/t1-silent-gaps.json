@@ -1,43 +1,8 @@
 {
-  "generatedAt": "2026-09-25T08:29:38.639Z",
+  "generatedAt": "2026-09-25T14:30:31.889Z",
   "windowDays": 45,
   "showsScanned": 80,
   "gaps": [
-    {
-      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
-      "title": "My Son’s A Queer (But What Can You Do?)",
-      "openingDate": "2026-09-17",
-      "file": "thestage--paul-vale.json",
-      "outletId": "thestage",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-review-at-ambassadors-london-by-rob-madge",
-      "recovery": null,
-      "recoveryCount": 3,
-      "fix": "node scripts/ingest-review-from-url.js --show=my-sons-a-queer-but-what-can-you-do-west-end-2026 --url=https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-review-at-ambassadors-london-by-rob-madge --outlet=thestage --critic=\"Paul Vale\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-09-17T00:46:30.887Z",
-      "fileAgeHours": 199.7185725,
-      "gapSeenAt": "2026-09-25T08:29:38.639Z",
-      "nonTerminalAgeHours": 0
-    },
-    {
-      "showId": "truly-howard-hughes-off-broadway-2026",
-      "title": "Truly, Howard Hughes",
-      "openingDate": null,
-      "file": "cititour--unknown.json",
-      "outletId": "cititour",
-      "tier": 2,
-      "type": "unscored",
-      "dispatchable": false,
-      "url": "https://cititour.com/NYC_Events/Truly-Howard-Hughes/34944",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=truly-howard-hughes-off-broadway-2026",
-      "firstSeen": "2026-09-09T14:56:32.660Z",
-      "fileAgeHours": 377.55148,
-      "gapSeenAt": "2026-09-24T23:04:12.455Z",
-      "nonTerminalAgeHours": 9.42394
-    },
     {
       "showId": "the-winters-tale-off-broadway-2026",
       "title": "The Winter's Tale",
@@ -52,9 +17,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-winters-tale-off-broadway-2026",
       "firstSeen": "2026-08-13T10:48:31.706Z",
-      "fileAgeHours": 1029.6850980555555,
+      "fileAgeHours": 1035.6999147222223,
       "gapSeenAt": "2026-09-20T22:08:26.926Z",
-      "nonTerminalAgeHours": 106.35325361111111
+      "nonTerminalAgeHours": 112.368045
     },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
@@ -69,9 +34,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 206.47979805555556,
+      "fileAgeHours": 212.49461194444444,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 206.39889694444443
+      "nonTerminalAgeHours": 212.41368833333334
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -86,27 +51,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays --outlet=thestage --critic=\"Dave Fargnoli\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T17:56:44.755Z",
-      "fileAgeHours": 206.54822083333335,
+      "fileAgeHours": 212.56302277777777,
       "gapSeenAt": "2026-09-21T21:33:52.974Z",
-      "nonTerminalAgeHours": 82.92935138888889
-    },
-    {
-      "showId": "million-dollar-quartet-off-west-end-2026",
-      "title": "Million Dollar Quartet",
-      "openingDate": "2026-09-14",
-      "file": "broadwayworld--michael-major.json",
-      "outletId": "broadwayworld",
-      "tier": 2,
-      "type": "unscored",
-      "dispatchable": false,
-      "url": "https://www.broadwayworld.com/westend/article/Video-MILLION-DOLLAR-QUARTET-Trailer-Released-Ahead-of-2026-London-Return-20260909",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=million-dollar-quartet-off-west-end-2026",
-      "firstSeen": "2026-09-17T08:13:24.884Z",
-      "fileAgeHours": 192.27047166666668,
-      "gapSeenAt": "2026-09-25T08:29:38.639Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 88.94414277777778
     }
   ],
   "contradictions": []

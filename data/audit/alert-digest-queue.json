@@ -27,5 +27,29 @@
       }
     ],
     "queuedAt": "2026-09-25T14:00:42.208Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:america-who-hurt-you-off-broadway-2026",
+    "title": "Review gap — \"America, Who Hurt You?\" missing 1 cited review(s)",
+    "description": "America, Who Hurt You? (america-who-hurt-you-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=america-who-hurt-you-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-25T14:30:30.261Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:deep-heat-rivalry-off-west-end-2026",
+    "title": "Review gap — \"Deep Heat Rivalry\" missing 4 cited review(s)",
+    "description": "Deep Heat Rivalry (deep-heat-rivalry-off-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=deep-heat-rivalry-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-25T14:30:30.296Z"
   }
 ]
