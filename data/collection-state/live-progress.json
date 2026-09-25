@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-25T10:40:54.064Z",
-  "processed": 37,
-  "failed": 105,
-  "successRate": "26.1%",
+  "updatedAt": "2026-09-25T11:13:04.325Z",
+  "processed": 61,
+  "failed": 191,
+  "successRate": "24.2%",
   "tierBreakdown": {
-    "playwright": 24,
+    "playwright": 38,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingbee": 9,
+    "scrapingbee": 16,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 5
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-09-25T08:29:14.799Z",
@@ -94,6 +94,40 @@
       "event": "bb-session",
       "session": "19e5efde",
       "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-09-25T10:49:39.065Z",
+      "event": "bb-session",
+      "session": "c0706334",
+      "url": "https://www.londonatlarge.com/kimberly-akimbo-hampstead-theatre-review/"
+    },
+    {
+      "t": "2026-09-25T10:50:06.165Z",
+      "event": "bb-session",
+      "session": "5bc983de",
+      "url": "https://www.londonatlarge.com/kimberly-akimbo-hampstead-theatre-review/"
+    },
+    {
+      "t": "2026-09-25T11:01:31.259Z",
+      "event": "bb-session",
+      "session": "a8af7d3b",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-09-25T11:01:32.026Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-25T11:04:21.114Z",
+      "event": "bb-session",
+      "session": "66743ad7",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-25T11:04:21.940Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
