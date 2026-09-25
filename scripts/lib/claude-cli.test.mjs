@@ -4,7 +4,18 @@
 // require()d directly per CLAUDE.md rule 15 — never re-implemented here.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { resolvePassAuth } from './claude-cli.js';
+import { resolvePassAuth, authPingArgs } from './claude-cli.js';
+
+// BRO-4141: with hooks on, the global Stop hook's claude-sync push (~200s)
+// kept the ping process alive past its 120s timeout, so the opening-night
+// monitor paged "auth preflight failed" while auth worked.
+test('authPingArgs: the auth ping runs with every hook disabled', () => {
+  const args = authPingArgs();
+  const i = args.indexOf('--settings');
+  assert.ok(i >= 0, 'ping must pass --settings');
+  assert.equal(JSON.parse(args[i + 1]).disableAllHooks, true);
+  assert.ok(args.includes('-p'));
+});
 
 test('resolvePassAuth: stored login OK wins regardless of API key state', () => {
   assert.deepEqual(

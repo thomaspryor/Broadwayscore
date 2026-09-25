@@ -9,7 +9,120 @@ const {
   renderHealthDigestBlock, healthIssueCount, renderAutofixBlock, autofixLoopDeadMessage,
   renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock, renderRedditDigestBlock,
   filterForbiddenQueued,
+  buildOwnerView, renderOwnerTopBlock, renderNeedsAttentionBlock, ownerFixStatus,
 } = require('./autonomous-email-render.js');
+
+// ── Owner-first view (2026-09-24 digest rework) ─────────────────────────────
+test('buildOwnerView: splits visitor vs internal rows; unknown names count as visitor', () => {
+  const v = buildOwnerView({
+    health: {
+      errors: [{ name: 'Main: red streak' }, { name: 'Brand new check' }],
+      warns: [{ name: 'Stuck work: paused P0/P1 cards' }, { name: 'SEO: health' }],
+      autoFixedCount: 2,
+    },
+    autofixRows: [{ state: 'in-progress' }, { state: 'dispatched' }, { state: 'queued' }, { state: 'decision' }],
+  });
+  assert.equal(v.siteState, 'affected');
+  assert.deepEqual(v.visitorErrors.map(r => r.name), ['Brand new check']);
+  assert.equal(v.internalCount, 2);
+  assert.equal(v.tracked, 3); // decision rows are not "maintenance"
+  // Only the liveness-checked row is "in progress"; a dispatch is unconfirmed.
+  assert.equal(v.inProgress, 1);
+  assert.equal(v.launched, 1);
+  assert.equal(v.autoFixed, 2);
+});
+
+// Codex P1-1: no "already working on this" without row-level evidence.
+test('ownerFixStatus: every state reports its own verified execution status, never blanket reassurance', () => {
+  const row = { name: 'Data: reviewed shows missing from shows.json' };
+  const st = (state) => ownerFixStatus(row, [{ name: row.name, state }]);
+  assert.equal(st('in-progress'), 'a fix session is working on it now');
+  assert.match(st('dispatched'), /not confirmed yet/);
+  assert.match(st('card-failed'), /not being fixed automatically yet/);
+  assert.match(st('parked'), /not being fixed automatically/);
+  assert.match(st('no-live-session'), /not confirmed/);
+  assert.match(st('queued'), /not started yet/);
+  assert.equal(ownerFixStatus(row, null), 'no automatic fix confirmed');
+  assert.equal(ownerFixStatus(row, [{ name: 'other', state: 'in-progress' }]), 'no automatic fix confirmed');
+  // Folded row: matched through `affected`.
+  assert.equal(ownerFixStatus(row, [{ name: 'x', state: 'in-progress', affected: [{ name: row.name }] }]), 'a fix session is working on it now');
+  // Fleet-wide dead loop overrides a stale in-progress claim.
+  assert.match(ownerFixStatus(row, [{ name: row.name, state: 'in-progress' }], true), /not being fixed automatically/);
+});
+
+test('renderOwnerTopBlock: a failed visitor row never reads "already working on this"', () => {
+  const health = { errors: [{ name: 'Data: reviewed shows missing from shows.json' }], warns: [] };
+  const v = buildOwnerView({ health, autofixRows: [{ name: 'Data: reviewed shows missing from shows.json', state: 'card-failed' }] });
+  const html = renderOwnerTopBlock(v, {});
+  assert.match(html, /Reviewed shows missing from the site/);
+  assert.match(html, /not being fixed automatically yet/);
+  assert.doesNotMatch(html, /already working|being fixed automatically right now/);
+});
+
+test('renderOwnerTopBlock: a dead loop is stated once, and no row claims a fix', () => {
+  const health = { errors: [{ name: 'Data: reviewed shows missing from shows.json' }], warns: [{ name: 'SEO: health' }] };
+  const v = buildOwnerView({ health, autofixRows: [{ name: 'SEO: health', state: 'in-progress' }], loopDead: true });
+  const html = renderOwnerTopBlock(v, {});
+  assert.equal(html.split('Automatic fixing looks stalled').length - 1, 1);
+  assert.doesNotMatch(html, /working on it now/);
+});
+
+// Codex P1-2: parked-in-review work is owner work, deduped against approvals.
+test('buildOwnerView: review-queue items count as decisions, de-duplicated against awaitingOwner', () => {
+  const same = { title: 'BRO-9: approve homepage', url: 'https://linear.app/x/BRO-9' };
+  const v = buildOwnerView({
+    health: { errors: [], warns: [] },
+    awaitingOwner: { items: [same] },
+    inReviewBacklog: { items: [same, { title: 'BRO-10: finished fix', url: 'https://linear.app/x/BRO-10' }], moreCount: 3 },
+  });
+  assert.equal(v.decisions, 1 + 1 + 3);
+  assert.deepEqual(v.reviewQueue.items.map(i => i.title), ['BRO-10: finished fix']);
+  const onlyDupes = buildOwnerView({ health: { errors: [], warns: [] }, awaitingOwner: { items: [same] }, inReviewBacklog: { items: [same], moreCount: 0 } });
+  assert.equal(onlyDupes.reviewQueue, null);
+  assert.equal(onlyDupes.decisions, 1);
+});
+
+// Codex P1-3: a visitor warning is never an all-clear.
+test('buildOwnerView/renderOwnerTopBlock: visitor warnings show at the top with their plain description', () => {
+  const health = { errors: [{ name: 'Main: red streak' }], warns: [{ name: 'Sync: social-pulse per-show freshness' }] };
+  const v = buildOwnerView({ health, autofixRows: [] });
+  assert.equal(v.siteState, 'minor');
+  const html = renderOwnerTopBlock(v, {});
+  assert.match(html, /Site mostly OK\. 1 minor issue visitors could notice/);
+  assert.match(html, /Social buzz hidden on some show pages/);
+  assert.match(html, /no automatic fix confirmed/);
+  assert.doesNotMatch(html, /working normally|tidied up automatically/);
+});
+
+test('buildOwnerView: without autofix rows only decision:true queued rows are decisions', () => {
+  const v = buildOwnerView({
+    health: { errors: [], warns: [], queued: [{ title: 'A', decision: true }, { title: 'B' }, { title: 'T1 Coverage Scoreboard', decision: true }] },
+    autofixRows: null,
+  });
+  assert.equal(v.siteState, 'ok');
+  assert.deepEqual(v.decisionQueued.map(q => q.title), ['A']);
+  assert.deepEqual(v.otherQueued.map(q => q.title), ['B']);
+  assert.equal(v.decisions, 1);
+});
+
+test('buildOwnerView: no health snapshot is "unknown", never "ok"', () => {
+  assert.equal(buildOwnerView({ health: null }).siteState, 'unknown');
+});
+
+test('renderOwnerTopBlock: escapes names and never renders a red X', () => {
+  const v = buildOwnerView({ health: { errors: [{ name: '<b>x</b>' }], warns: [] } });
+  const html = renderOwnerTopBlock(v, {});
+  assert.match(html, /&lt;b&gt;x&lt;\/b&gt;/);
+  assert.ok(!html.includes('❌'));
+  assert.match(html, /No decisions needed from you/);
+});
+
+test('renderNeedsAttentionBlock: empty input renders nothing; items keep their one-click link', () => {
+  assert.equal(renderNeedsAttentionBlock([]), '');
+  const html = renderNeedsAttentionBlock([{ title: 'Pick one', actionUrl: 'https://broadwayscorecard.com/api/autonomous-action?sig=a' }]);
+  assert.match(html, /Needs your attention/);
+  assert.match(html, /Dispatch a fix/);
+});
 const { buildDispatchUrl, verifyDispatchSignature, selectOpenDispatchCard, attachHealthFixUrls } = require('./dispatch-link.js');
 const { CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./autofix-effectiveness.js');
 

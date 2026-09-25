@@ -61,6 +61,14 @@ function countFixThisButtons(html) {
 // HTML-invariant scope only.
 const FORBIDDEN_HEADINGS = ['Closing soon', 'Score drift', 'Backlog drain', 'T1 Coverage Scoreboard', 'Deployed coverage', 'Fixes &amp; features merged'];
 
+// Markers of internal telemetry that must never appear in the owner-first
+// top of the email (2026-09-24 rework) — only under "Technical details".
+// '❌' is the scoreboard's red X; 'consecutive errors' is the streak
+// counter; 'Automation queue' is the per-row fix report.
+const OWNER_TOP_FORBIDDEN = ['❌', 'consecutive errors', 'Automation queue'];
+// Jargon the owner explicitly could not parse; never in the subject again.
+const SUBJECT_FORBIDDEN_RE = /known\/managed|new\/regressing/;
+
 /**
  * Assert content invariants on an assembled digest email.
  * @param {string} html - the full email HTML about to be sent
@@ -108,6 +116,19 @@ function assertDigestInvariants(html, { health = null, subject, verifySecret } =
     const block = html.slice(html.indexOf('Needs your attention'));
     if (!/<a\b[^>]*href=/.test(block)) {
       violations.push('"Needs your attention" section has no clickable action — prose-only asks are banned (owner mandate 2026-08-02)');
+    }
+  }
+
+  // 2026-09-24 owner-first rework: the part of the email ABOVE the
+  // "Technical details" heading is what the owner reads. Internal-machinery
+  // telemetry (the red ❌ scoreboard, the consecutive-error-day streak) must
+  // stay below it. Anchored to the heading's rendered text node so the
+  // phrase in prose elsewhere cannot split the email in the wrong place.
+  const techIdx = html.indexOf('>Technical details<');
+  const ownerTop = techIdx === -1 ? html : html.slice(0, techIdx);
+  for (const marker of OWNER_TOP_FORBIDDEN) {
+    if (ownerTop.includes(marker)) {
+      violations.push(`"${marker}" rendered above Technical details — internal telemetry belongs below the owner-first top block`);
     }
   }
 
@@ -159,9 +180,12 @@ function assertDigestInvariants(html, { health = null, subject, verifySecret } =
   if (subject !== undefined) {
     if (typeof subject !== 'string' || !subject.trim()) violations.push('subject is empty');
     else if (subject.length >= 120) violations.push(`subject is ${subject.length} chars, must be < 120`);
+    if (typeof subject === 'string' && SUBJECT_FORBIDDEN_RE.test(subject)) {
+      violations.push('subject carries "known/managed"/"new/regressing" jargon — replaced by plain English 2026-09-24');
+    }
   }
 
   return { ok: violations.length === 0, violations };
 }
 
-module.exports = { assertDigestInvariants, extractActionUrls, countFixThisButtons, DISPATCH_HOST, FORBIDDEN_HEADINGS };
+module.exports = { assertDigestInvariants, extractActionUrls, countFixThisButtons, DISPATCH_HOST, FORBIDDEN_HEADINGS, OWNER_TOP_FORBIDDEN };

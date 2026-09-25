@@ -22,9 +22,11 @@ import { isBlockedReviewUrl } from './lib/domain-filters.js';
 import outletCanonicalize from './lib/outlet-canonicalize.js';
 
 import reviewGuards from './lib/review-guards.js';
+import submissionShowMatch from './lib/submission-show-match.js';
 
 const { lookupOutletForHost } = outletCanonicalize;
 const { canonicalizeUrlForDedup } = reviewGuards;
+const { findMatchingShows: findMatchingShowsIn } = submissionShowMatch;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -161,23 +163,7 @@ function checkDuplicateReview(url, showId) {
  * entries), so callers need every candidate rather than an arbitrary first hit.
  */
 function findMatchingShows(showName) {
-  if (!showName) return [];
-
-  const normalizedInput = showName.toLowerCase().trim();
-
-  // Exact title match
-  let matches = shows.filter(s => s.title.toLowerCase() === normalizedInput);
-  if (matches.length) return matches;
-
-  // Check if input matches slug
-  matches = shows.filter(s => s.id === normalizedInput || s.slug === normalizedInput);
-  if (matches.length) return matches;
-
-  // Partial match
-  return shows.filter(s =>
-    s.title.toLowerCase().includes(normalizedInput) ||
-    normalizedInput.includes(s.title.toLowerCase())
-  );
+  return findMatchingShowsIn(showName, shows);
 }
 
 /**
