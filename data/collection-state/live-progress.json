@@ -1,28 +1,39 @@
 {
-  "updatedAt": "2026-09-25T16:19:31.861Z",
-  "processed": 31,
-  "failed": 133,
-  "successRate": "18.9%",
+  "updatedAt": "2026-09-25T16:50:12.854Z",
+  "processed": 59,
+  "failed": 285,
+  "successRate": "17.2%",
   "tierBreakdown": {
-    "playwright": 19,
+    "playwright": 36,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 8,
+    "scrapingbee": 13,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 7
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-09-25T15:23:14.211Z",
+      "t": "2026-09-25T14:49:36.847Z",
       "event": "bb-session",
-      "session": "6036e5b1",
+      "session": "36515b3f",
+      "url": "https://www.thetimes.com/culture/classical-opera/article/cosi-fan-tutte-review-r"
+    },
+    {
+      "t": "2026-09-25T14:49:37.566Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-25T14:52:32.818Z",
+      "event": "bb-session",
+      "session": "9614f6cc",
       "url": "https://www.wsj.com/arts-culture/theater/macbeth-review-a-ferocious-start-to-the"
     },
     {
-      "t": "2026-09-25T15:23:15.204Z",
+      "t": "2026-09-25T14:52:33.548Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
@@ -49,6 +60,17 @@
       "event": "bb-session",
       "session": "ce8f7913",
       "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-09-25T16:29:06.938Z",
+      "event": "bb-session",
+      "session": "5dfc2cc4",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-09-25T16:29:07.691Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
