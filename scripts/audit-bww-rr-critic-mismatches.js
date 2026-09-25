@@ -186,8 +186,10 @@ function main() {
 }
 
 if (require.main === module) {
-  const code = main();
-  if (code) process.exit(code);
+  // process.exitCode (not process.exit()) — a forced exit can truncate a large
+  // --json write to a piped stdout before it fully flushes; setting exitCode
+  // lets Node exit naturally once the event loop drains (Codex review catch).
+  process.exitCode = main();
 }
 
 module.exports = { extractAuthorPairs, main };
