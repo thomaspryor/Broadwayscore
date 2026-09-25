@@ -1019,12 +1019,16 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     // ugc-platform is excluded: a vocal.media "critique" submitted for
     // the-bathroom-attendant-off-broadway-2026 is a real named critic's
     // review (Robert M. Massimi), scored 64.
-    // A ticket-seller host that also publishes reviews under a /review(s)/
-    // path is not refused (newyorkcitytheatre.com/reviews/NNNN and
-    // /news/reviews/NNNN are real reviews, e.g. burn-this-2019 Nicola Quinn).
+    // newyorkcitytheatre.com sells tickets but its /reviews/NNNN pages are
+    // single reviews (burn-this-2019 Nicola Quinn). Scoped to that host and
+    // shape only: its /news/reviews/ pages are critic-quote roundups, and a
+    // generic /reviews/ exemption would admit reseller customer-review pages.
     const named = nrp.namedNonReviewReason(input.url);
     let reviewPath = false;
-    try { reviewPath = /\/reviews?\//i.test(new URL(input.url).pathname); } catch { /* unparseable: no exemption */ }
+    try {
+      const u = new URL(input.url);
+      reviewPath = /(^|\.)newyorkcitytheatre\.com$/i.test(u.hostname) && /^\/reviews\/\d+/.test(u.pathname);
+    } catch { /* unparseable: no exemption */ }
     const submissionReason = reviewPath ? null
       : ((named && named !== 'ugc-platform' ? named : null)
         || (nrp.classifyReviewUrl(input.url).reason === 'ticketing-reseller' ? 'ticketing-reseller' : null));

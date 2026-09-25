@@ -58,7 +58,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, hasStructuralStarScore } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isNamedNonReviewUrlRecord, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, hasStructuralStarScore } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
@@ -3139,6 +3139,17 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Named non-review URL shape on an unvetted SERP record (ticket/listing
+      // page, news item). Same predicate as explainExclusion, which until
+      // 2026-09-25 was the ONLY place it ran, so it never reached reviews.json.
+      // Placed here, same order as explainExclusion and before any branch
+      // below that writes flags back to disk.
+      if (isNamedNonReviewUrlRecord(data)) {
+        logExclusion("skippedNamedNonReviewUrl", showId, file, data);
+        stats.skippedNamedNonReviewUrl = (stats.skippedNamedNonReviewUrl || 0) + 1;
+        return;
+      }
+
       // Skip wrong-show reviews (review content is for a different show)
       // OVERRIDE: If this is a London show AND the review URL is from a UK/major outlet domain,
       // the wrongShow flag is often a false positive from LLM classification —
@@ -5863,6 +5874,7 @@ console.log(`  Allowed (multi-critic same URL): ${stats.allowedMultiCriticUrl ||
 console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletDuplicateUrl || 0}`);
 console.log(`  Allowed (multi-critic cross-outlet URL): ${stats.allowedMultiCriticUrlCrossOutlet || 0}`);
 console.log(`  Skipped (corrupted/invalid JSON): ${stats.skippedCorrupted || 0}`);
+console.log(`  Skipped (named non-review URL): ${stats.skippedNamedNonReviewUrl || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
 console.log(`  Skipped (premature pre-opening): ${stats.skippedPrematurePreOpening || 0}`);
 if (stats.contentVerificationPromoted > 0) {

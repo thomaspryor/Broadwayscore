@@ -1092,7 +1092,11 @@ function _writeQuarantine(pendingPath, content) {
  */
 function writeReviewOrThrow(filePath, newData, options = {}) {
   const r = safeWriteReview(filePath, newData, options);
-  if (!r || r.wrote === false) {
+  // A quarantine (date-implausible, cross-market, recreated-excluded-url)
+  // saved the payload to _pending/, so the move DID complete; throwing there
+  // would turn a finished move into a retry + error on every rebuild (review
+  // round 3). Only a refusal that saved the payload nowhere keeps the source.
+  if (!r || (r.wrote === false && !r.quarantinedPath)) {
     throw new Error(`write to ${path.basename(filePath)} did not land (${(r && r.skipped) || 'no result'}) — source kept`);
   }
   return r;

@@ -44,7 +44,7 @@ test('does not refuse real reviews the broad classifier would have rejected', ()
       ['wbur', 'https://www.wbur.org/news/2026/08/25/american-repertory-theater-rhinoceros-review'],
       ['vocal', 'https://vocal.media/critique/bathroom-attendant'],
       ['new-york-city-theatre', 'https://www.newyorkcitytheatre.com/reviews/22099'],
-      ['new-york-city-theatre', 'https://www.newyorkcitytheatre.com/news/reviews/494799'],
+
     ]) {
       const r = submit(dir, outlet, url);
       assert.doesNotMatch(String(r.reason || ''), /submitted-non-review-url/, url);

@@ -3278,6 +3278,23 @@ function buildMultiProdYearGuard(shows) {
  * referenced entry is also excluded; mirroring that precisely requires context
  * this predicate doesn't have.
  */
+/**
+ * Named non-review URL rule (BRO-4101), as a pure predicate shared by
+ * explainExclusion() AND rebuild-all-reviews.js's inline loop. Until
+ * 2026-09-25 only explainExclusion had it, so the rule never reached
+ * reviews.json (nytg /show/ listings and Stage /news/ items stayed live).
+ * Scope and escape hatch are documented at its call site in explainExclusion.
+ * @param {object} data review-text record
+ * @returns {boolean}
+ */
+function isNamedNonReviewUrlRecord(data) {
+  return Boolean(
+    data && data.url && data.namedNonReviewUrlManualClear !== true &&
+    require('./unvetted-serp-sources').isUnvettedSerpSource(data.source) &&
+    require('./non-review-url-patterns').namedNonReviewReason(data.url)
+  );
+}
+
 function explainExclusion(data, show, filePath) {
   if (!data) return 'no-data';
 
@@ -3555,11 +3572,7 @@ function explainExclusion(data, show, filePath) {
   // matching a named pattern has no way to keep it scored short of lying
   // about the URL or source. Same direct-check pattern as
   // wrongProductionManualClear elsewhere in this file.
-  if (
-    data.url && data.namedNonReviewUrlManualClear !== true &&
-    require('./unvetted-serp-sources').isUnvettedSerpSource(data.source) &&
-    require('./non-review-url-patterns').namedNonReviewReason(data.url)
-  ) return 'namedNonReviewUrl';
+  if (isNamedNonReviewUrlRecord(data)) return 'namedNonReviewUrl';
   if (
     (data.isNonReview === true && !isNonReviewDemotedByFreshCV(data)) ||
     data.isNotReview === true ||
@@ -4561,6 +4574,7 @@ module.exports = {
   resolveStaleWrongProductionRecovery,
   pickRerouteTarget,
   isIncludableForRebuild,
+  isNamedNonReviewUrlRecord,
   explainExclusion,
   duplicateOfInheritedFlag,
   hasStructuralStarScore,

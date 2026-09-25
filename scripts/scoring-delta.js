@@ -235,6 +235,7 @@ const FLAG_FIELDS = new Set([
   'wrongAttribution', 'isNonReview', 'fabricatedEntry', 'contentTier',
   'rejectedAt', 'incompleteReason', 'duplicateOf', 'assignedScore',
   'wrongProductionManualClear', 'humanReviewedWrongProduction',
+  'namedNonReviewUrlManualClear', 'source', 'url',
   'wrongProductionOverride', 'allowCrossMarket', 'allowEarlyDate',
   // BRO-3338 (ship-check finding): load-bearing for the 6 new auto-clear
   // predicates' outer gates (DatelessRevival/StaleDateGuard match on
@@ -991,6 +992,10 @@ function decideInclusion(review, show, guards) {
     }
   }
 
+  // Mirrors rebuild-all-reviews.js's skippedNamedNonReviewUrl (same predicate).
+  if (typeof guards.isNamedNonReviewUrlRecord === 'function' && guards.isNamedNonReviewUrlRecord(review)) {
+    return { included: false, reason: 'namedNonReviewUrl' };
+  }
   if (review.wrongShow === true && !wrongShowCleared) return { included: false, reason: 'wrongShow' };
   if (review.wrongProduction === true && !wrongProductionCleared) return { included: false, reason: 'wrongProduction' };
   // Flat/unconditional, matching isIncludableForRebuild (review-guards.js) and
@@ -1267,6 +1272,10 @@ function main() {
         // from this identity list — same blind-spot class as the canonical
         // predicate omission fixed 2026-07-21.
         && (baseline.isRoundupPageAsReview?.toString() || '') === (working.isRoundupPageAsReview?.toString() || '')
+        // Named non-review URL rule (wired into the rebuild loop 2026-09-25).
+        // Edits inside non-review-url-patterns.js / unvetted-serp-sources.js are
+        // NOT visible here — use a direct corpus scan for those.
+        && (baseline.isNamedNonReviewUrlRecord?.toString() || '') === (working.isNamedNonReviewUrlRecord?.toString() || '')
         // Pre-window predicate + its THRESHOLD CONSTANTS. Constants are compared
         // by value, not via toString() — the function body reads free variables
         // (PRE_WINDOW_DAYS), so a constant-only edit leaves the source identical.

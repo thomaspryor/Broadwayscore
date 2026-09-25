@@ -257,6 +257,11 @@ function processCandidate(c) {
     // any non-protected fields we had. Don't unlink source (operator triage).
     return { showDir, oldFile, newFile: newFilename, action: 'merge-dest-locked-partial', preserved: writeResult.preserved };
   }
+  if (writeResult.wrote === false && !writeResult.quarantinedPath) {
+    // Refused and saved nowhere (sparse-hidden / conflict-marked dest): keep
+    // the source, or its content is lost.
+    return { showDir, oldFile, newFile: newFilename, action: 'merge-dest-refused', reason: writeResult.skipped };
+  }
 
   const sister = moveLlmScoreSidecar(showDir, oldFile, newFilename);
   const pointers = updateDuplicateTextOfPointers(showDir, oldFile, newFilename);
