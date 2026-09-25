@@ -292,5 +292,5 @@ test('a cancel that ran >= HUNG_CANCEL_MIN is a hung job-timeout → RED; a shor
   assert.equal(res.counts.cancelled, 3);
   assert.equal(res.hungCancelled, 1);
   assert.deepEqual(res.currentStreak, { color: 'red', length: 1 }, 'a hang breaks the green streak');
-  assert.match(core.verdictLine(res), /, 1 hung \(cancelled >= 15 min, counted red\)\)/);
+  assert.match(core.verdictLine(res), /, 1 hung \(cancelled >= 10 min, counted red\)\)/);
 });

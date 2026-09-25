@@ -97,11 +97,11 @@ const RED_CONCLUSIONS = new Set(['failure', 'timed_out', 'startup_failure']);
 
 // A cancelled run that lasted at least this long hit a job timeout (hung) —
 // see "hung" in the header. A mid-setup cancel lasts a minute or two.
-const HUNG_CANCEL_MIN = 15;
+const HUNG_CANCEL_MIN = 10;   // below test.yml job timeouts that matter (unit-tests 15); setup cancels are 1-2 min
 
 /**
  * @param {string|null|undefined} conclusion
- * @param {number|null} [durationMs]  createdAt → updatedAt, when known
+ * @param {number|null} [durationMs]  run_started_at → updated_at, when known
  * @returns {'green'|'red'|'cancelled'|'other'}
  */
 function classifyConclusion(conclusion, durationMs = null) {
