@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-09-24T23:04:09.984Z",
+  "generatedAt": "2026-09-25T02:12:11.469Z",
   "windowDays": 1095,
-  "targets": 268,
-  "auditedThisRun": 13,
-  "carriedForward": 551,
+  "targets": 263,
+  "auditedThisRun": 10,
+  "carriedForward": 554,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 308,
-    "missingCurrentRun": 437,
+    "withGap": 309,
+    "missingCurrentRun": 441,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 803,
     "totalRecoverable": 7,
     "totalRecovered": 8,
-    "priorProductionCitations": 2492
+    "priorProductionCitations": 2501
   },
   "results": [
     {
@@ -25196,35 +25196,10 @@
         "https://theartsdesk.com/theatre/cowbois-royal-court-review-fabulously-queer-extravaganza",
         "https://lostintheatreland.co.uk/cowbois-review-royal-court-theatre/"
       ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 5,
+      "dirClean": 5,
+      "inReviewsJson": 5,
       "missing": [
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/cowbois-review-royal-court",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre"
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-COWBOIS-Royal-Court-Theatre-20240118",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld"
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/cowbois-royal-court-review-charlie-josephine-b1133031.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/cowbois-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london"
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cowbois-review-royal-court-charlie-josephine-b2480780.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent"
-        },
         {
           "url": "https://www.allthatdazzles.co.uk/post/review-cowbois-royal-court",
           "host": "allthatdazzles.co.uk",
@@ -25256,121 +25231,46 @@
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://www.londontheatre.co.uk/reviews/cowbois-review-royal-court",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
+          "url": "https://www.allthatdazzles.co.uk/post/review-cowbois-royal-court",
+          "host": "allthatdazzles.co.uk",
+          "outletId": "all-that-dazzles-uk",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/cowbois-royal-court-review-fabulously-queer-extravaganza",
+          "host": "theartsdesk.com",
+          "outletId": "artsdesk",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://lostintheatreland.co.uk/cowbois-review-royal-court-theatre/",
+          "host": "lostintheatreland.co.uk",
+          "outletId": "lost-in-theatreland",
           "provisional": false,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-COWBOIS-Royal-Court-Theatre-20240118",
-          "host": "broadwayworld.com",
-          "outletId": "broadwayworld",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/cowbois-royal-court-review-charlie-josephine-b1133031.html",
-          "host": "standard.co.uk",
-          "outletId": "standard",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/cowbois-review",
-          "host": "timeout.com",
-          "outletId": "timeout-london",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cowbois-review-royal-court-charlie-josephine-b2480780.html",
-          "host": "independent.co.uk",
-          "outletId": "independent",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
+          "reason": "Fetch returned no usable HTML (got 252 chars)"
         }
       ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-cowbois-royal-court",
-          "host": "allthatdazzles.co.uk",
-          "outletId": "all-that-dazzles-uk"
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/cowbois-royal-court-review-fabulously-queer-extravaganza",
-          "host": "theartsdesk.com",
-          "outletId": "artsdesk"
-        },
-        {
-          "url": "https://lostintheatreland.co.uk/cowbois-review-royal-court-theatre/",
-          "host": "lostintheatreland.co.uk",
-          "outletId": "lost-in-theatreland"
-        }
-      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/cowbois-review-royal-court"
-          },
-          {
-            "outletId": "broadwayworld",
-            "outlet": "broadwayworld",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.broadwayworld.com/westend/article/Review-COWBOIS-Royal-Court-Theatre-20240118"
-          },
-          {
-            "outletId": "standard",
-            "outlet": "standard",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.standard.co.uk/culture/theatre/cowbois-royal-court-review-charlie-josephine-b1133031.html"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/cowbois-review"
-          },
-          {
-            "outletId": "independent",
-            "outlet": "independent",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cowbois-review-royal-court-charlie-josephine-b2480780.html"
-          },
           {
             "outletId": "all-that-dazzles-uk",
             "outlet": "all-that-dazzles-uk",
@@ -25397,37 +25297,32 @@
         "candidates": [
           {
             "url": "https://www.londontheatre.co.uk/reviews/cowbois-review-royal-court",
-            "outletId": "london-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
             "firstSeenAt": "2026-08-27T01:23:51.910Z"
           },
           {
             "url": "https://www.broadwayworld.com/westend/article/Review-COWBOIS-Royal-Court-Theatre-20240118",
-            "outletId": "broadwayworld",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "broadwayworld.com",
+            "state": "live",
             "firstSeenAt": "2026-08-27T01:23:51.910Z"
           },
           {
             "url": "https://www.standard.co.uk/culture/theatre/cowbois-royal-court-review-charlie-josephine-b1133031.html",
-            "outletId": "standard",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "standard.co.uk",
+            "state": "live",
             "firstSeenAt": "2026-08-27T01:23:51.910Z"
           },
           {
             "url": "https://www.timeout.com/london/theatre/cowbois-review",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "timeout.com",
+            "state": "live",
             "firstSeenAt": "2026-08-27T01:23:51.910Z"
           },
           {
             "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cowbois-review-royal-court-charlie-josephine-b2480780.html",
-            "outletId": "independent",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "independent.co.uk",
+            "state": "live",
             "firstSeenAt": "2026-08-27T01:23:51.910Z"
           },
           {
@@ -25453,10 +25348,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 0,
+        "liveCount": 5,
         "candidateCount": 8
       },
-      "computedAt": "2026-08-27T01:23:51.910Z"
+      "computedAt": "2026-09-25T02:12:11.469Z"
     },
     {
       "showId": "crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
@@ -25564,10 +25459,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 38,
+        "count": 39,
         "byReason": {
-          "aggregator-internal-nav": 5,
-          "non-review-host": 30,
+          "aggregator-internal-nav": 4,
+          "non-review-host": 32,
           "merch-store": 3
         }
       },
@@ -25664,7 +25559,7 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-09-24T19:52:14.230Z"
+      "computedAt": "2026-09-25T02:12:11.469Z"
     },
     {
       "showId": "crazy-mama-off-broadway-2026",
@@ -31449,11 +31344,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 38,
+        "count": 40,
         "byReason": {
-          "aggregator-internal-nav": 5,
+          "aggregator-internal-nav": 7,
           "non-review-host": 31,
-          "non-review-path": 2
+          "ticketing-reseller": 1,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -31501,36 +31397,36 @@
           {
             "url": "https://www.nytimes.com/2026/09/21/theater/chulpan-khamatova-delirium-eugene-ionesco.html",
             "outletId": "nytimes",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-24T19:52:14.230Z"
           },
           {
             "url": "https://www.arlekinplayers.com/works/delirium",
             "outletId": "arlekinplayers.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-24T19:52:14.230Z"
           },
           {
             "url": "https://brooklyneagle.com/408527/new-york-premiere-of-delirium/",
             "outletId": "brooklyneagle.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-24T19:52:14.230Z"
           },
           {
             "url": "https://www.clintonandgreene.com/p/critically-acclaimed-delirium-comes",
             "outletId": "clintonandgreene.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-24T19:52:14.230Z"
           },
           {
             "url": "https://www.theatermirror.net/delirium-strikes-all-the-right-raw-notes/",
             "outletId": "theater-mirror",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-24T19:52:14.230Z"
           }
         ],
@@ -31538,7 +31434,7 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-09-24T19:52:14.230Z"
+      "computedAt": "2026-09-25T02:12:11.469Z"
     },
     {
       "showId": "dinosaur-world-live-off-west-end-2026",
@@ -35714,12 +35610,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 393,
+        "count": 405,
         "byReason": {
-          "non-review-host": 35,
-          "aggregator-internal-nav": 253,
-          "not-http-url": 96,
-          "aggregator-section-root": 9
+          "aggregator-internal-nav": 261,
+          "not-http-url": 98,
+          "aggregator-section-root": 11,
+          "non-review-host": 35
         }
       },
       "dedupedVariants": [],
@@ -35817,7 +35713,7 @@
         "liveCount": 9,
         "candidateCount": 10
       },
-      "computedAt": "2026-08-27T01:23:51.910Z"
+      "computedAt": "2026-09-25T02:12:11.469Z"
     },
     {
       "showId": "encores-the-wild-party-off-broadway-2026",
@@ -54275,11 +54171,12 @@
       "showId": "hercules-west-end-2025",
       "title": "Hercules",
       "openingDate": "2025-07-10",
-      "status": "open",
+      "status": "closed",
       "category": "west-end",
       "aggregatorArticles": [
         "https://playbill.com/article/what-do-the-reviews-say-about-disneys-hercules-in-londons-west-end-watch-luke-bradys-go-the-distance",
         "https://playbill.com/article/reviews-what-did-critics-think-of-hercules-at-paper-mill-playhouse",
+        "https://playbill.com/article/what-do-critics-think-of-hercules-in-central-park",
         "https://www.broadwayworld.com/article/Review-Roundup-HERCULES-Opens-at-Theatre-Royal-Drury-Lane-20250624",
         "https://www.broadwayworld.com/article/Review-Roundup-Disneys-HERCULES-Musical-Opens-at-Paper-Mill-Playhouse-20230302",
         "https://www.broadwayworld.com/article/Review-Roundup-Public-Works-HERCULES-in-Central-Park-20190902"
@@ -54308,22 +54205,25 @@
         "https://www.nytimes.com/2023/03/03/theater/hercules-review-paper-mill-playhouse.html",
         "https://www.theatrely.com/post/hercules-has-just-enough-strength-to-match-its-heart-review",
         "https://www.theaterpizzazz.com/hercules-paper-mill-playhouse/",
+        "https://www.amny.com/entertainment/hercules-public-theater-review-1.35791376",
+        "https://deadline.com/2019/09/hercules-off-broadway-review-disney-public-works-central-park-1202709466/",
+        "https://ew.com/theater-reviews/2019/09/02/hercules-musical-review/",
+        "https://www.hollywoodreporter.com/review/hercules-1236066",
+        "https://www.vulture.com/2019/09/theater-review-the-strengths-of-a-free-public-hercules.html",
+        "http://nystagereview.com/2019/09/02/hercules-the-strong-man-and-huge-cast-sing-lustily-on-stage/",
+        "https://www.nytimes.com/2019/09/02/theater/hercules-review-public-works-delacorte.html",
+        "https://www.thewrap.com/hercules-theater-review-can-disneys-animated-hero-go-the-distance-to-broadway/",
+        "https://playbill.com/article/stage-adaptation-of-disneys-hercules-is-in-the-works",
         "https://inews.co.uk/culture/hercules-musical-awful-review-3767364",
         "https://www.slashfilm.com/1209464/disneys-hercules-musical-review-i-wont-say-im-in-love-but-theres-potential/",
-        "https://www.nytimes.com/2019/09/02/theater/hercules-review-public-works-delacorte.html",
-        "https://www.hollywoodreporter.com/review/hercules-1236066",
-        "https://www.thewrap.com/hercules-theater-review-can-disneys-animated-hero-go-the-distance-to-broadway/",
-        "https://www.amny.com/entertainment/hercules-public-theater-review-1.35791376",
-        "http://nystagereview.com/2019/09/02/hercules-the-strong-man-and-huge-cast-sing-lustily-on-stage/",
         "http://nystagereview.com/2019/09/03/hercules-a-heroic-new-musical-and-thats-the-gospel-truth/",
-        "https://deadline.com/2019/09/hercules-off-broadway-review-disney-public-works-central-park-1202709466/",
         "https://variety.com/2019/legit/reviews/hercules-review-musical-public-works-central-park-1203321731/",
         "https://www.thetimes.com/article/994bbfa4-4903-4fff-8632-1c2c08a56201",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/hercules-musical-review-disney-west-end-b2776526.html",
         "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays"
       ],
       "dirFiles": 39,
-      "dirClean": 23,
+      "dirClean": 22,
       "inReviewsJson": 22,
       "missing": [
         {
@@ -54334,9 +54234,16 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.slashfilm.com/1209464/disneys-hercules-musical-review-i-wont-say-im-in-love-but-theres-potential/",
-          "host": "slashfilm.com",
-          "knownOutletId": "slash-film",
+          "url": "https://www.amny.com/entertainment/hercules-public-theater-review-1.35791376",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/2019/09/hercules-off-broadway-review-disney-public-works-central-park-1202709466/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -54355,16 +54262,16 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.amny.com/entertainment/hercules-public-theater-review-1.35791376",
-          "host": "amny.com",
-          "knownOutletId": "amny",
+          "url": "https://playbill.com/article/stage-adaptation-of-disneys-hercules-is-in-the-works",
+          "host": "playbill.com",
+          "knownOutletId": "playbill",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://deadline.com/2019/09/hercules-off-broadway-review-disney-public-works-central-park-1202709466/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
+          "url": "https://www.slashfilm.com/1209464/disneys-hercules-musical-review-i-wont-say-im-in-love-but-theres-potential/",
+          "host": "slashfilm.com",
+          "knownOutletId": "slash-film",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         }
@@ -54521,9 +54428,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.nytimes.com/2019/09/02/theater/hercules-review-public-works-delacorte.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
+          "url": "https://ew.com/theater-reviews/2019/09/02/hercules-musical-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -54531,9 +54438,28 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nytimes--matt-wolf.json",
+              "file": "ew--httpswwwfacebookcomentertainmentweekly.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-lane.html"
+              "urlInDir": "https://ew.com/theater-reviews/2019/09/02/hercules-musical-review/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2019/09/theater-review-the-strengths-of-a-free-public-hercules.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vulture--sara-holdren.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.vulture.com/2019/09/theater-review-the-strengths-of-a-free-public-hercules.html"
             }
           ],
           "priorRun": true,
@@ -54553,6 +54479,25 @@
               "file": "nysr--roma-torre.json",
               "flag": "wrongProduction",
               "urlInDir": "https://nystagereview.com/2023/03/02/disneys-hercules-olympian-musical-takes-the-stage-at-paper-mill/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/09/02/theater/hercules-review-public-works-delacorte.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--matt-wolf.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2025/06/25/theater/hercules-disney-theatre-royal-drury-lane.html"
             }
           ],
           "priorRun": true,
@@ -54585,12 +54530,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1081,
+        "count": 1210,
         "byReason": {
-          "non-review-host": 84,
-          "aggregator-internal-nav": 822,
-          "not-http-url": 164,
-          "non-review-path": 11
+          "aggregator-internal-nav": 907,
+          "not-http-url": 169,
+          "aggregator-section-root": 26,
+          "non-review-host": 106,
+          "non-review-path": 2
         }
       },
       "dedupedVariants": [
@@ -54606,6 +54552,10 @@
         {
           "url": "https://playbill.com/article/reviews-what-did-critics-think-of-hercules-at-paper-mill-playhouse",
           "publishDate": "2023-03-03"
+        },
+        {
+          "url": "https://playbill.com/article/what-do-critics-think-of-hercules-in-central-park",
+          "publishDate": "2019-09-02"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Disneys-HERCULES-Musical-Opens-at-Paper-Mill-Playhouse-20230302",
@@ -54624,8 +54574,14 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://www.slashfilm.com/1209464/disneys-hercules-musical-review-i-wont-say-im-in-love-but-theres-potential/",
-          "host": "slashfilm.com",
+          "url": "https://www.amny.com/entertainment/hercules-public-theater-review-1.35791376",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://deadline.com/2019/09/hercules-off-broadway-review-disney-public-works-central-park-1202709466/",
+          "host": "deadline.com",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -54642,14 +54598,14 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://www.amny.com/entertainment/hercules-public-theater-review-1.35791376",
-          "host": "amny.com",
+          "url": "https://playbill.com/article/stage-adaptation-of-disneys-hercules-is-in-the-works",
+          "host": "playbill.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://deadline.com/2019/09/hercules-off-broadway-review-disney-public-works-central-park-1202709466/",
-          "host": "deadline.com",
+          "url": "https://www.slashfilm.com/1209464/disneys-hercules-musical-review-i-wont-say-im-in-love-but-theres-potential/",
+          "host": "slashfilm.com",
           "priorRun": true,
           "reason": "prior-run"
         }
@@ -54829,7 +54785,7 @@
         "liveCount": 17,
         "candidateCount": 20
       },
-      "computedAt": "2026-08-25T22:17:08.499Z"
+      "computedAt": "2026-09-25T02:12:11.469Z"
     },
     {
       "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
@@ -68101,7 +68057,16 @@
       "aggregatorListedUrls": [
         "https://www.nytimes.com/2023/04/23/arts/music/la-boheme-yannick-nezet-seguin-met-opera-review.html",
         "https://www.nytimes.com/2021/11/10/arts/music/boheme-met-opera-review.html",
-        "https://thefrontrowcenter.com/2022/06/la-boheme-by-the-metropolitan-opera-at-lincoln-center-an-audience-member-chimes-in/"
+        "https://thefrontrowcenter.com/2022/06/la-boheme-by-the-metropolitan-opera-at-lincoln-center-an-audience-member-chimes-in/",
+        "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/",
+        "https://www.opera.hu/en/programme/2026-2027/la-boheme/hungarian-state-opera-2027-01-10-1100/",
+        "https://bachtrack.com/opera-event/la-boheme-metropolitan-opera-16-april-2027/436177",
+        "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
+        "https://www.rottentomatoes.com/m/the_metropolitan_opera_la_boheme_2025",
+        "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
+        "https://www.classicalsource.com/concert/the-metropolitan-opera-la-boheme/",
+        "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
+        "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
       ],
       "dirFiles": 0,
       "dirClean": 0,
@@ -68127,6 +68092,60 @@
           "knownOutletId": "front-row-center",
           "priorRun": true,
           "priorRunSource": "show-score-url-year"
+        },
+        {
+          "url": "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/",
+          "host": "kcindependent.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.opera.hu/en/programme/2026-2027/la-boheme/hungarian-state-opera-2027-01-10-1100/",
+          "host": "opera.hu",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://bachtrack.com/opera-event/la-boheme-metropolitan-opera-16-april-2027/436177",
+          "host": "bachtrack.com",
+          "knownOutletId": "bachtrack",
+          "serpCensus": true
+        },
+        {
+          "url": "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
+          "host": "operamylove.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_la_boheme_2025",
+          "host": "rottentomatoes.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
+          "host": "newcriterion.com",
+          "knownOutletId": "the-new-criterion",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-la-boheme/",
+          "host": "classicalsource.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "serpCensus": true
         }
       ],
       "dirOnly": [],
@@ -68134,12 +68153,73 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"La Bohème\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"La Bohème\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"La Bohème\" review metropolitan",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "La Bohème Metropolitan Opera House review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "La Bohème Metropolitan Opera House review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "La Bohème Metropolitan Opera House review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 9,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 27,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "non-review-host": 23,
+          "ticketing-reseller": 3
+        }
       },
       "dedupedVariants": [],
       "weIngestBlocked": [
@@ -68162,18 +68242,229 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
+      "ingestResults": [
+        {
+          "url": "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/",
+          "host": "kcindependent.com",
+          "outletId": "kcindependent",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.opera.hu/en/programme/2026-2027/la-boheme/hungarian-state-opera-2027-01-10-1100/",
+          "host": "opera.hu",
+          "outletId": "opera",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://bachtrack.com/opera-event/la-boheme-metropolitan-opera-16-april-2027/436177",
+          "host": "bachtrack.com",
+          "outletId": "bachtrack",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Fetch returned no usable HTML (got 175 chars)"
+        },
+        {
+          "url": "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
+          "host": "operamylove.com",
+          "outletId": "operamylove",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"operamylove\" (not in registry) — onboard to outlet-registry.json after revie"
+        },
+        {
+          "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_la_boheme_2025",
+          "host": "rottentomatoes.com",
+          "outletId": "rottentomatoes",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
+          "host": "newcriterion.com",
+          "outletId": "the-new-criterion"
+        },
+        {
+          "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-la-boheme/",
+          "host": "classicalsource.com",
+          "outletId": "classicalsource"
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
+          "host": "britishtheatreguide.info",
+          "outletId": "british-theatre"
+        },
+        {
+          "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
+          "host": "wsj.com",
+          "outletId": "wsj"
+        }
+      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
-        "suppressedMissing": [],
-        "candidates": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "kcindependent.com",
+            "outlet": "kcindependent.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/"
+          },
+          {
+            "outletId": "opera.hu",
+            "outlet": "opera.hu",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.opera.hu/en/programme/2026-2027/la-boheme/hungarian-state-opera-2027-01-10-1100/"
+          },
+          {
+            "outletId": "bachtrack",
+            "outlet": "bachtrack",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://bachtrack.com/opera-event/la-boheme-metropolitan-opera-16-april-2027/436177"
+          },
+          {
+            "outletId": "operamylove.com",
+            "outlet": "operamylove.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/"
+          },
+          {
+            "outletId": "rottentomatoes.com",
+            "outlet": "rottentomatoes.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_la_boheme_2025"
+          },
+          {
+            "outletId": "the-new-criterion",
+            "outlet": "the-new-criterion",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/"
+          },
+          {
+            "outletId": "classicalsource.com",
+            "outlet": "classicalsource.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-la-boheme/"
+          },
+          {
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976"
+          }
+        ],
+        "suppressedMissing": [
+          {
+            "outletId": "wsj",
+            "outlet": "wsj",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
+          }
+        ],
+        "candidates": [
+          {
+            "url": "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/",
+            "outletId": "kcindependent.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-25T02:12:11.469Z"
+          },
+          {
+            "url": "https://www.opera.hu/en/programme/2026-2027/la-boheme/hungarian-state-opera-2027-01-10-1100/",
+            "outletId": "opera.hu",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-25T02:12:11.469Z"
+          },
+          {
+            "url": "https://bachtrack.com/opera-event/la-boheme-metropolitan-opera-16-april-2027/436177",
+            "outletId": "bachtrack",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-25T02:12:11.469Z"
+          },
+          {
+            "url": "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
+            "outletId": "operamylove.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-25T02:12:11.469Z"
+          },
+          {
+            "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_la_boheme_2025",
+            "outletId": "rottentomatoes.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-25T02:12:11.469Z"
+          },
+          {
+            "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
+            "outletId": "the-new-criterion",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-25T02:12:11.469Z"
+          },
+          {
+            "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-la-boheme/",
+            "outletId": "classicalsource.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-25T02:12:11.469Z"
+          },
+          {
+            "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
+            "outletId": "british-theatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-25T02:12:11.469Z"
+          },
+          {
+            "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
+            "outletId": "wsj",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-09-25T02:12:11.469Z"
+          }
+        ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 9
       },
-      "computedAt": "2026-09-24T19:52:14.230Z"
+      "computedAt": "2026-09-25T02:12:11.469Z"
     },
     {
       "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
@@ -74975,10 +75266,11 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
+        "censusSchema": 2,
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-08-27T01:23:51.910Z"
+      "computedAt": "2026-09-25T02:12:11.469Z"
     },
     {
       "showId": "marjorie-prime-2025",
@@ -111447,7 +111739,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           }
@@ -111458,10 +111750,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 36,
+        "count": 32,
         "byReason": {
           "aggregator-internal-nav": 3,
-          "non-review-host": 30,
+          "non-review-host": 26,
           "merch-store": 3
         }
       },
@@ -111533,7 +111825,7 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-09-24T19:52:14.230Z"
+      "computedAt": "2026-09-25T02:12:11.469Z"
     },
     {
       "showId": "spare-parts-off-broadway-2026",
@@ -131671,7 +131963,9 @@
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-the-maids-off-broadway"
+        "https://playbill.com/article/read-the-reviews-for-the-maids-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-Kip-Williams-THE-MAIDS-Transfers-Off-Broadway-20260527",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-MAIDS-at-Lincoln-Center-Festival-20140809"
       ],
       "aggregatorListedUrls": [
         "https://www.newyorktheatreguide.com/reviews/the-maids-off-broadway-review",
@@ -131681,12 +131975,27 @@
         "https://www.nytimes.com/2026/05/26/theater/the-maids-play-nyc-genet-yerin-ha-kip-williams.html",
         "https://www.theatermania.com/news/review-the-maids-class-war-in-the-age-of-social-media_1838297/",
         "https://www.vulture.com/article/video-killed-the-maids.html",
+        "http://www.nytimes.com/2014/08/10/theater/cate-blanchett-and-isabelle-huppert-in-the-maids.html",
+        "http://variety.com/2014/legit/reviews/theater-review-the-maids-cate-blanchett-isabelle-huppert-1201279258/",
+        "http://www.usatoday.com/story/life/theater/2014/08/09/the-maids-theater-review/13822565/",
+        "http://www.timeout.com/newyork/theater/the-maids-2",
+        "http://www.nydailynews.com/blogs/showandtell/cate-blanchett-sweeps-spell-jean-genet-maids-blog-entry-1.1898097",
+        "http://nypost.com/2014/08/10/blanchett-and-huppert-are-deliciously-devious-maids/",
+        "http://www.thewrap.com/the-maids-theater-review-cate-blanchett-enters-the-camp-pantheon-wearing-alexander-mcqueen/",
         "https://www.theaterscene.net/plays/offbway-plays/the-maids-2/victor-gluck/"
       ],
       "dirFiles": 40,
-      "dirClean": 13,
-      "inReviewsJson": 13,
-      "missing": [],
+      "dirClean": 14,
+      "inReviewsJson": 14,
+      "missing": [
+        {
+          "url": "http://nypost.com/2014/08/10/blanchett-and-huppert-are-deliciously-devious-maids/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
       "dirOnly": [
         {
           "host": "4columns.org",
@@ -131736,6 +132045,106 @@
           ]
         },
         {
+          "url": "http://variety.com/2014/legit/reviews/theater-review-the-maids-cate-blanchett-isabelle-huppert-1201279258/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--marilyn-stasio.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://variety.com/2014/legit/reviews/theater-review-the-maids-cate-blanchett-isabelle-huppert-1201279258/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2014/08/09/the-maids-theater-review/13822565/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "usatoday--elysa-gardner.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.usatoday.com/story/life/theater/2014/08/09/the-maids-theater-review/13822565/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/the-maids-2",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--david-cote.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.timeout.com/newyork/theater/the-maids-2"
+            },
+            {
+              "file": "timeout--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.timeout.com/newyork/theater/the-maids-2"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/blogs/showandtell/cate-blanchett-sweeps-spell-jean-genet-maids-blog-entry-1.1898097",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--joe-dziemianowicz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nydailynews.com/blogs/showandtell/cate-blanchett-sweeps-spell-jean-genet-maids-blog-entry-1.1898097"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thewrap.com/the-maids-theater-review-cate-blanchett-enters-the-camp-pantheon-wearing-alexander-mcqueen/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--robert-hofler.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.thewrap.com/the-maids-theater-review-cate-blanchett-enters-the-camp-pantheon-wearing-alexander-mcqueen/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://www.theaterscene.net/plays/offbway-plays/the-maids-2/victor-gluck/",
           "host": "theaterscene.net",
           "knownOutletId": "theater-scene",
@@ -131760,14 +132169,32 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 87,
+        "count": 662,
         "byReason": {
-          "aggregator-internal-nav": 46,
-          "non-review-host": 21,
-          "not-http-url": 20
+          "aggregator-internal-nav": 468,
+          "not-http-url": 125,
+          "aggregator-section-root": 15,
+          "non-review-host": 52,
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-MAIDS-at-Lincoln-Center-Festival-20140809",
+          "publishDate": "2014-08-09"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "http://nypost.com/2014/08/10/blanchett-and-huppert-are-deliciously-devious-maids/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -131825,6 +132252,12 @@
             "firstSeenAt": "2026-08-11T23:28:14.993Z"
           },
           {
+            "url": "http://www.nytimes.com/2014/08/10/theater/cate-blanchett-and-isabelle-huppert-in-the-maids.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-25T02:12:11.469Z"
+          },
+          {
             "url": "https://www.nytimes.com/2026/05/26/theater/the-maids-play-nyc-genet-yerin-ha-kip-williams.html",
             "outletId": "nytimes",
             "state": "GAP",
@@ -131840,10 +132273,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 6,
-        "candidateCount": 8
+        "liveCount": 7,
+        "candidateCount": 9
       },
-      "computedAt": "2026-08-26T16:26:36.457Z"
+      "computedAt": "2026-09-25T02:12:11.469Z"
     },
     {
       "showId": "the-misanthrope-west-end-2026",
@@ -137573,10 +138006,11 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
+        "censusSchema": 2,
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-23T01:14:28.989Z"
+      "computedAt": "2026-09-25T02:12:11.469Z"
     },
     {
       "showId": "the-seven-deadly-sins-the-human-voice-off-west-end-2026",
