@@ -52,6 +52,12 @@ const { parseOriginalScore } = require('./lib/score-parsers');
 // ── Parse args ──────────────────────────────────────────────────────────────
 
 const args = process.argv.slice(2);
+// --help/-h before any real work (the review-texts freshness check below runs git fetch).
+if (require('./lib/cli-help.js').hasHelpFlag(args)) {
+  console.log('Usage: node scripts/verify-review-recovery.js --show=SHOW_ID [--file=FILE] [--production] [--pre-merge] [--verbose]\n'
+    + 'Exit: 0 pass, 1 check failed, 2 bad args, 3 inconclusive (local review-texts differ from origin).');
+  process.exit(0);
+}
 const flags = {};
 args.forEach(a => {
   const m = a.match(/^--([a-z-]+)(?:=(.+))?$/);
