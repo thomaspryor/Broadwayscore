@@ -51,5 +51,68 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-25T14:30:30.296Z"
+  },
+  {
+    "conditionKey": "arm-yield:workflow:scoring-audit",
+    "title": "Scoring Audit has stopped updating (190 days)",
+    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since null, 190 days ago. It has never before gone quiet for more than null day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 30d, from 0 productive day(s) / 0 item(s) between 2026-03-19 and 2026-09-25.)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Last yield",
+        "value": null
+      },
+      {
+        "name": "Silent for",
+        "value": "190 days (threshold 30)"
+      }
+    ],
+    "queuedAt": "2026-09-25T17:20:35.164Z"
+  },
+  {
+    "conditionKey": "arm-yield:workflow:scrape-westendtheatre",
+    "title": "Scrape WestEndTheatre has stopped updating (54 days)",
+    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since 2026-08-02, 54 days ago. It has never before gone quiet for more than 20 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 22d, from 4 productive day(s) / 4 item(s) between 2026-06-14 and 2026-08-02.)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Last yield",
+        "value": "2026-08-02"
+      },
+      {
+        "name": "Silent for",
+        "value": "54 days (threshold 22)"
+      }
+    ],
+    "queuedAt": "2026-09-25T17:20:35.168Z"
+  },
+  {
+    "conditionKey": "arm-yield:outlet:nypost",
+    "title": "New York Post (reviews collected) has stopped updating (8 days)",
+    "description": "The site may be missing new reviews from this outlet. Nothing new since 2026-09-17, 8 days ago. It has never before gone quiet for more than 6 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 8d, from 6 productive day(s) / 8 item(s) between 2026-08-19 and 2026-09-17.)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Last yield",
+        "value": "2026-09-17"
+      },
+      {
+        "name": "Silent for",
+        "value": "8 days (threshold 8)"
+      }
+    ],
+    "queuedAt": "2026-09-25T17:20:35.172Z"
   }
 ]
