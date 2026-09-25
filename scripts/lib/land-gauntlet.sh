@@ -33,6 +33,14 @@
 #     zero-parsed-failures fail-safe of its own, never hidden behind the other
 #     batch's unchanged failure set)
 #   lint-workflows (actionlint + the audit script list)   (test.yml lint-workflows)
+#   bash-integration (every scripts/lib/*.test.sh test.yml (test.yml unit-tests —
+#     invokes, via bash-integration-test-list.js)          bash integration steps)
+#     BRO-4150: land.yml never ran these — a regression in one landed clean and
+#     only turned main red afterwards (BRO-3873 step 4 hung a merge-worktree-
+#     to-main test for 36h; BRO-4135/BRO-4149 landed a push-with-retry
+#     regression the same way). The file list is DERIVED from test.yml's own
+#     `run:` text (bash-integration-test-list.js), not hardcoded here, so a
+#     bash test added to test.yml is covered automatically — no second edit.
 # Env: LAND_BASE — the origin/main sha the tree was rebased onto (tony-loso
 #   gate diffs against it; unset/empty → that gate is skipped with a note).
 #   GH_TOKEN — for the audits that read the API. BSC_STAGE_LATENCY_MUTE=1 set
@@ -120,6 +128,86 @@ scripts_lib_tests() {
   node --test --test-reporter=tap --test-timeout 300000 "${tests[@]}"
 }
 gate scripts-lib-tests scripts_lib_tests
+
+# ── Bash Integration Tests: every scripts/lib/*.test.sh test.yml invokes ───
+# Each runs as its own labelled sub-check (same shape as lint_workflows below)
+# so land-gate-delta.js can key a failure by FILE and diff it against the
+# base — a file that's red on both sides is pre-existing, one that's newly
+# red on the branch refuses the landing. `timeout 180`: same hang bound
+# test.yml itself applies to the merge-worktree-to-main.* steps (2026-09-23/24
+# incident — a hang without it cancels the whole job instead of failing one
+# step); applied here uniformly to every file, including the handful test.yml
+# does not currently wrap, since a hang here has no per-step GH Actions
+# cancellation boundary to fall back on.
+#
+# Total wall-clock budget (Codex + second-opinion review, BRO-4150): 26 files
+# x 180s each is ~78min worst case, well past land.yml's `checks` job's
+# 40-minute timeout-minutes — and this suite deliberately exercises hangs/
+# deadlines/stalls, so several genuinely-slow files hitting their per-file
+# ceiling back to back is the realistic case, not the pathological one. Left
+# unbounded, that kills the WHOLE job with zero gate diagnostics — exactly
+# the opaque failure BRO-4150 exists to eliminate.
+#
+# The budget is JOB-WIDE-AWARE, not a flat per-invocation constant (Codex:
+# "base and branch run sequentially within one 40-minute job... allocate a
+# job-wide deadline and cap each invocation by remaining time"): it deducts
+# T0's elapsed-so-far (every earlier gate in THIS invocation: tsc, lint,
+# both unit-test batches) and reserves headroom for lint-workflows, the one
+# gate that still has to run after this one. GAUNTLET_DEADLINE_SEC (default
+# 1800s/30min) is deliberately under the job's 40-minute ceiling, leaving
+# ~10min for checkout/npm-ci/setup steps that happen OUTSIDE this script.
+#
+# Once the resulting budget is spent, every file that didn't get a chance to
+# run is recorded FAIL-CLOSED (as if it had timed out) rather than silently
+# skipped — but keyed with a per-run NONCE, not the bare file path (Codex:
+# "if base and branch exhaust their budgets before the same tail, those
+# never-executed tests become 'pre-existing', and the gate passes" — a real
+# branch regression in a base-skipped file would be silently forgiven). The
+# nonce guarantees a budget-cut key can never coincide with a base-run's
+# equivalent key, so land-gate-delta.js's diff always treats it as NEW —
+# unconditionally blocking, never silently "pre-existing", exactly the same
+# fail-closed direction as the existing "unlocated TAP failures are always
+# NEW" rule for the TAP gates.
+bash_integration() {
+  local -a tests
+  mapfile -t tests < <(node scripts/lib/bash-integration-test-list.js --list)
+  if [ ${#tests[@]} -eq 0 ]; then echo "::error::bash-integration-test-list.js derived ZERO scripts/lib/*.test.sh files from test.yml — broken matcher?"; return 1; fi
+  echo "# bash integration: ${#tests[@]} files (derived from test.yml)"
+  local deadline="${GAUNTLET_DEADLINE_SEC:-1800}"
+  local reserve="${LINT_WORKFLOWS_RESERVE_SEC:-300}"
+  local elapsed_so_far=$(( ($(node -p 'Date.now()') - T0) / 1000 ))
+  local budget="${BASH_INTEGRATION_BUDGET_SEC:-$(( deadline - elapsed_so_far - reserve ))}"
+  [ "$budget" -lt 60 ] && budget=60  # floor: always give this gate a real chance, even under a tight deadline
+  echo "# bash-integration budget: ${budget}s (deadline ${deadline}s - ${elapsed_so_far}s already spent on earlier gates - ${reserve}s reserved for lint-workflows)"
+  local nonce; nonce="$$-$(date +%s)"
+  local start; start=$(date +%s)
+  local FAILED="" f rf rc i=0 elapsed
+  for f in "${tests[@]}"; do
+    i=$((i + 1))
+    elapsed=$(( $(date +%s) - start ))
+    if [ "$elapsed" -ge "$budget" ]; then
+      echo "::error::bash-integration total budget (${budget}s) exceeded after ${elapsed}s — $(( ${#tests[@]} - i + 1 )) file(s) never ran"
+      for rf in "${tests[@]:$((i - 1))}"; do
+        echo "::error::bash-integration gate failed: $rf [budget-exceeded-${nonce}] (exit 124)"
+        FAILED="$FAILED\n  - $rf (not run — budget exceeded)"
+      done
+      break
+    fi
+    echo "── $f"
+    timeout 180 bash "$f"
+    rc=$?
+    if [ "$rc" -ne 0 ]; then
+      echo "::error::bash-integration gate failed: $f (exit $rc)"
+      FAILED="$FAILED\n  - $f"
+    fi
+  done
+  if [ -n "$FAILED" ]; then
+    printf "::error::bash-integration failures:%b\n" "$FAILED"
+    return 1
+  fi
+  echo "bash-integration: all files green"
+}
+gate bash-integration bash_integration
 
 # ── Lint Workflows: actionlint + test.yml's lint-workflows audit list ──────
 # ALL of them run (a failure does not short-circuit the rest) and every red
