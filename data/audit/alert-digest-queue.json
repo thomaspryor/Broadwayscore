@@ -511,18 +511,6 @@
     "queuedAt": "2026-09-24T11:08:33.792Z"
   },
   {
-    "conditionKey": "corpus-drift:cv-flag-contradiction",
-    "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
-    "description": "check-corpus-drift.js audit \"cv-flag-contradiction\" (node scripts/audit-cv-flag-contradiction.js --window=30 --strict) has been drifting. Latest output:\n\nFlag-vs-CV contradiction sweep: 141 shows in the last 30d window, 6 contradiction(s) found.\n  [wrongProduction] macbeth-off-broadway-2026/slippedisc--susan-hall.json (468w)\n  [wrongProduction] tosca-off-broadway-2026/new-york-classical-review--george-grella.json (925w)\n  [wrongProduction] tosca-off-broadway-2026/operawire--chris-ruel.json (2816w)\n  [wrongProduction] miles-for-mary-off-broadway-2026/talkinbroadway--marc-miller.json (675w)\n  [wrongProduction] kimberly-akimbo-off-west-end-2026/broadwayworld--katie-kirkpatrick.json (899w)\n  [wrongProduction] the-revlon-girl-off-west-end-2026/london-box-office--stacey-tyler.json (817w)\nCoverage: examined 88 of 3056 corpus show(s) (1488 review file(s) parsed).\n  --window=30d selected 141 show(s): 43 already opened, 98 not yet opened (the window filter has no upper bound).\n  53 selected show(s) yielded no readable review file (directory missing, unreadable, empty, or every file failed to parse).\n  2968 corpus show(s) were NOT examined, of which 423 carry no usable openingDate (missing or unparseable) and are excluded at EVERY window.\n  A clean result above covers only the examined shows. It is not a statement about the corpus.\n\n(4 baselined, 2 new)\n\n⚠️  NEW flag-vs-CV contradiction(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/cv-flag-contradiction-baseline.json):\n  [wrongProduction] macbeth-off-broadway-2026/slippedisc--susan-hall.json\n  [wrongProduction] kimberly-akimbo-off-west-end-2026/broadwayworld--katie-kirkpatrick.json\n\nInvestigate, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-cv-flag-contradiction.js --update-baseline",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-24T11:58:47.900Z"
-  },
-  {
     "conditionKey": "opening-night-cv-wrongproduction-unhandled-the-last-ship-west-end-2026",
     "title": "Unhandled CV.wrongProduction on The Last Ship",
     "description": "jackstage/Eddie Slattery (jackstage--eddie-slattery.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This review evaluates the International Tour producti — https://www.jackstage.co.uk/post/the-last-ship-review-sting-s-musical-voyage-in-need-of-tighter-dramatic-architecture",
@@ -1322,5 +1310,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-25T11:52:22.346Z"
+  },
+  {
+    "conditionKey": "corpus-drift:cv-flag-contradiction",
+    "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
+    "description": "check-corpus-drift.js audit \"cv-flag-contradiction\" (node scripts/audit-cv-flag-contradiction.js --window=30 --strict) has been drifting. Latest output:\n\nFlag-vs-CV contradiction sweep: 143 shows in the last 30d window, 7 contradiction(s) found.\n  [wrongProduction] macbeth-off-broadway-2026/slippedisc--susan-hall.json (468w)\n  [wrongProduction] tosca-off-broadway-2026/new-york-classical-review--george-grella.json (925w)\n  [wrongProduction] tosca-off-broadway-2026/operawire--chris-ruel.json (2816w)\n  [wrongProduction] miles-for-mary-off-broadway-2026/talkinbroadway--marc-miller.json (675w)\n  [wrongProduction] the-last-ship-west-end-2026/timeout--andrzej-lukowski.json (976w)\n  [wrongProduction] kimberly-akimbo-off-west-end-2026/broadwayworld--katie-kirkpatrick.json (899w)\n  [wrongProduction] the-revlon-girl-off-west-end-2026/london-box-office--stacey-tyler.json (817w)\nCoverage: examined 92 of 3057 corpus show(s) (1597 review file(s) parsed).\n  --window=30d selected 143 show(s): 45 already opened, 98 not yet opened (the window filter has no upper bound).\n  51 selected show(s) yielded no readable review file (directory missing, unreadable, empty, or every file failed to parse).\n  2965 corpus show(s) were NOT examined, of which 422 carry no usable openingDate (missing or unparseable) and are excluded at EVERY window.\n  A clean result above covers only the examined shows. It is not a statement about the corpus.\n\n(4 baselined, 3 new)\n\n⚠️  NEW flag-vs-CV contradiction(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/cv-flag-contradiction-baseline.json):\n  [wrongProduction] macbeth-off-broadway-2026/slippedisc--susan-hall.json\n  [wrongProduction] the-last-ship-west-end-2026/timeout--andrzej-lukowski.json\n  [wrongProduction] kimberly-akimbo-off-west-end-2026/broadwayworld--katie-kirkpatrick.json\n\nInvestigate, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-cv-flag-contradiction.js --update-baseline",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-25T12:03:01.550Z"
   }
 ]
