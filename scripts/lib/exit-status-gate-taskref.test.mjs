@@ -42,7 +42,14 @@ const HOOK_PATH = path.join(REAL_HOME, '.claude', 'hooks', 'exit-status-gate.sh'
 // os.path.expanduser('~'), which follows $HOME — so a sandboxed caller
 // (checksEnv() above) must have the REAL HOME threaded through the whole
 // bash→python3 chain, not just used to locate this script.
-const HOOK_ENV = { ...process.env, HOME: REAL_HOME };
+// BRO-4162: this spawns via the CURRENT process's full env (`...process.env`
+// below), which inherits ESG_HEADLESS=1 whenever the test itself is run by a
+// headless bsc-runner.js job (scripts/lib/bsc-runner.js, BRO-3442) — that
+// silently forced Gate H's headless rules onto every Gate T case here (none
+// of which exercise headless behavior), producing 3 false failures. Reset it
+// so the gate's cwd/env-independent default (non-headless) applies unless a
+// specific case opts in via extraEnv.
+const HOOK_ENV = { ...process.env, HOME: REAL_HOME, ESG_HEADLESS: '' };
 
 // The hook lives in the owner's PRIVATE ~/.claude repo, which a CI runner does
 // not check out — spawnSync('bash', [missing path]) exits 127, and every case
