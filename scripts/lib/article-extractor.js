@@ -58,8 +58,13 @@ function stripHtml(s) {
 function removeBalancedDivBlocks(html, classNeedles) {
   let out = html;
   for (const needle of classNeedles) {
+    const escaped = needle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // Class attrs can be single- OR double-quoted — Blogger/Blogspot templates
+    // (interestedbystander.com et al.) use single quotes, and a double-quote-only
+    // regex silently never matches, so this whole helper (and its balanced-capture
+    // sibling extractBalancedDivByClass below) always returned null on them.
     const openRe = new RegExp(
-      '<div[^>]*class="[^"]*' + needle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[^"]*"[^>]*>',
+      '<div[^>]*class=(?:"[^"]*' + escaped + '[^"]*"|\'[^\']*' + escaped + '[^\']*\')[^>]*>',
       'i'
     );
     let guard = 0;
@@ -105,8 +110,11 @@ const GENERIC_CONTENT_CLASSES = [
  * Returns the first match's raw inner HTML, or null.
  */
 function extractBalancedDivByClass(html, classNeedle) {
+  const escaped = classNeedle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // Single- and double-quoted class attrs both occur in the wild (Blogger
+  // templates use single quotes) — see removeBalancedDivBlocks above.
   const openRe = new RegExp(
-    '<div[^>]*class="[^"]*\\b' + classNeedle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b[^"]*"[^>]*>',
+    '<div[^>]*class=(?:"[^"]*\\b' + escaped + '\\b[^"]*"|\'[^\']*\\b' + escaped + '\\b[^\']*\')[^>]*>',
     'i'
   );
   const openM = html.match(openRe);
@@ -421,6 +429,26 @@ function extractTalkinBroadwayBody(html, criticHint) {
 }
 
 /**
+ * theatreweekly.com — JNews WordPress theme. `entry-content` opens with an
+ * inline "You might also like" related-post widget
+ * (`jnews_inline_related_post_wrapper`) injected BEFORE the real review prose,
+ * and every teaser card inside it is itself wrapped in its own `<article>` tag
+ * — so the generic `<article>` PATTERNS fallback below can grab a two-line
+ * teaser headline (~100-170 chars) instead of ever reaching entry-content
+ * (BRO-4155, Jeezus review gap-audit 2026-09-25: 169 chars, just two related
+ * headlines). Strip the widget by balanced-div class first (it nests deeply
+ * and can appear more than once), then take entry-content up to the
+ * author-box marker, which always sits right after the real prose ends.
+ */
+function extractTheatreWeeklyBody(html) {
+  const cleaned = removeBalancedDivBlocks(html, ['jnews_inline_related_post_wrapper']);
+  const inner = extractBalancedDivByClass(cleaned, 'entry-content');
+  if (!inner) return null;
+  const cut = inner.split(/<div[^>]+class="[^"]*jnews_author_box_container[^"]*"/)[0];
+  return stripHtml(cut);
+}
+
+/**
  * Per-outlet patterns. Order matters: most specific first.
  * Each entry: [hostnameMatch, regex, minLength].
  * minLength gates against accidental shell-match (e.g. matching 200 chars of nav).
@@ -628,7 +656,7 @@ const PATTERNS = [
 const DEDICATED_EXTRACTOR_HOSTS = [
   'wsj.com', 'variety.com', 'lavocedinewyork.com', 'thestage.co.uk',
   'thetimes.co.uk', 'thetimes.com', 'lightingandsoundamerica.com',
-  'talkinbroadway.com',
+  'talkinbroadway.com', 'theatreweekly.com',
 ];
 
 function extractArticleText(html, hostname, criticHint) {
@@ -702,6 +730,29 @@ function extractArticleText(html, hostname, criticHint) {
     if (lsaText && lsaText.length >= 300) return lsaText;
   }
 
+  // theatreweekly.com — see extractTheatreWeeklyBody above.
+  if (host.includes('theatreweekly.com')) {
+    const twText = extractTheatreWeeklyBody(html);
+    if (twText && twText.length >= 300) return twText;
+  }
+
+  // stagebuddy.com — review body lives in <div class="articleblock">, not any
+  // of the common WordPress class names, and pages have no <article>/<main>
+  // wrapper either — every review fell through to the noisy paragraph-density
+  // last resort, which happens to work on template pages with no stray <p>
+  // tags elsewhere but has no guardrail against picking up nav/sidebar prose on
+  // a page that does (BRO-4155). Not added to DEDICATED_EXTRACTOR_HOSTS: a
+  // miss here (e.g. an /event/ listing page with no review at all) should
+  // still fall through to that existing paragraph-density fallback rather than
+  // return null outright.
+  if (host.includes('stagebuddy.com')) {
+    const sbInner = extractBalancedDivByClass(html, 'articleblock');
+    if (sbInner) {
+      const sbText = stripHtml(sbInner);
+      if (sbText.length >= 300) return sbText;
+    }
+  }
+
   let matchedDedicatedPattern = false;
   for (const [hostMatch, re, minLen] of PATTERNS) {
     if (hostMatch && !host.includes(hostMatch)) continue;
@@ -711,18 +762,31 @@ function extractArticleText(html, hostname, criticHint) {
     // the first <article> on the page is often a teaser (Joe Turner 2026-04-26
     // NY Sun incident: 8 sidebar teasers shadowed the real story). For
     // host-specific patterns we trust the selector to be unique enough.
-    const reGlobal = hostMatch == null ? new RegExp(re.source, re.flags.includes('g') ? re.flags : re.flags + 'g') : null;
-    let best = null;
-    if (reGlobal) {
+    //
+    // BRO-4155: "largest" used to mean largest RAW HTML match, gated by minLen
+    // on that same raw length. A JNews-theme related-post widget (theatreweekly.com
+    // et al) wraps each teaser CARD in its own <article> — no <article> wraps the
+    // real body at all — and a teaser's image/srcset/noscript markup alone clears
+    // 300 raw chars while its stripped text is a two-line headline (~100-170
+    // chars). That teaser then "won" here and the function returned immediately,
+    // never reaching extractByCommonClass below, which would have found the real
+    // <div class="entry-content">. Comparing/gating on STRIPPED text (like every
+    // other fallback in this file already does) instead of raw markup fixes this
+    // without touching the well-established per-outlet minLen convention below.
+    if (hostMatch == null) {
+      const reGlobal = new RegExp(re.source, re.flags.includes('g') ? re.flags : re.flags + 'g');
+      let bestText = null;
       for (const m of html.matchAll(reGlobal)) {
-        if (m[1] && m[1].length >= minLen && (!best || m[1].length > best.length)) best = m[1];
+        if (!m[1]) continue;
+        const t = stripHtml(m[1]);
+        if (t.length >= minLen && (!bestText || t.length > bestText.length)) bestText = t;
       }
-    } else {
-      const m = html.match(re);
-      if (m && m[1] && m[1].length >= minLen) best = m[1];
+      if (bestText) return bestText;
+      continue;
     }
-    if (best) {
-      const text = stripHtml(best);
+    const m = html.match(re);
+    if (m && m[1] && m[1].length >= minLen) {
+      const text = stripHtml(m[1]);
       if (text.length >= 100) return text;
     }
   }
