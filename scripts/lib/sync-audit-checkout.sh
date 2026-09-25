@@ -364,8 +364,8 @@ fi
 # has no coreutils `timeout`; SIGALRM kills git), plus git's own low-speed
 # abort for a stalled socket. A timed-out fetch takes the fetch-failed path.
 SYNC_FETCH_DEADLINE_SEC="${SYNC_FETCH_DEADLINE_SEC:-180}"
-if ! perl -e 'alarm shift; exec @ARGV or die "exec: $!"' "$SYNC_FETCH_DEADLINE_SEC" \
-     git -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=60 fetch origin main --quiet; then
+# unbounded-fetch-ok: local launchd/full-clone only, no workflow caller (waiver above).
+if ! perl -e 'alarm shift; exec @ARGV or die "exec: $!"' "$SYNC_FETCH_DEADLINE_SEC" git -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=60 fetch origin main --quiet; then
   # Must leave a refusal snapshot (ship-check finding, BRO-3393). This exit
   # used to be silent, and morning-digest.plist runs the digest with `;` even
   # when this script fails - so a failed fetch produced NO sync-refused-digest
