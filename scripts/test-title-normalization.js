@@ -140,6 +140,21 @@ assert(titlesMatch('A Dolls House', "A Doll's House"),
 assert(titlesMatch('Back to the Future: The Musical', 'Back to the Future'),
   'Colon + The Musical stripped');
 
+// BRO-4152 (2026-09-24): TR sweep found 3 shows whose real production page
+// was rejected because TR's listed title diverges from ours by a bare format
+// word, a parenthetical, or a dash-subtitle — plus 2 guard-preservation cases
+// that must keep failing.
+assert(titlesMatch('The Enormous Crocodile', 'The Enormous Crocodile Musical'),
+  'Bare trailing format word (no "the"/dash) still matches');
+assert(titlesMatch('Tartuffe Remixed', 'Tartuffe (Remixed)'),
+  'Parenthetical content that IS the title still matches unparenthesized form');
+assert(titlesMatch("I'm Every Woman", "I'm Every Woman - The Chaka Khan Musical"),
+  'Dash-subtitle ending in a format word still matches the base title');
+assert(!titlesMatch("A Doll's House", "A Doll's House - Part 2"),
+  'Dash-subtitle guard: a Part-number split must NOT match (different work)');
+assert(!titlesMatch('World’s Greatest Lover', 'World’s Greatest Lover - Edinburgh Fringe 2025'),
+  'Dash-subtitle guard: a venue/festival/date qualifier must NOT match (different production/run)');
+
 // ============================================================================
 // cleanSearchTitle
 // ============================================================================

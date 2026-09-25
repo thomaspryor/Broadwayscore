@@ -84,13 +84,64 @@ function hasPartSuffix(normalized) {
   return m ? m[0] : null;
 }
 
+// Bare format-descriptor word with no separator ("Crocodile Musical", "Oscar
+// Show") is a much weaker signal than the same word after "the"/a dash
+// (stripSuffix already handles those) — 60+ real shows.json titles end in a
+// bare "Play"/"Show"/"Opera" as genuine title content (Slave Play, Side Show,
+// The Beggar's Opera), so this must never feed the exact-equality checks
+// above. It's only tried as a last-resort EXACT match after everything else
+// fails (BRO-4152: TR listed "The Enormous Crocodile Musical" for our "The
+// Enormous Crocodile" — a 69% length ratio, just under the 70% contains-match
+// floor).
+const BARE_FORMAT_SUFFIX = /\s+(musical|play|show|revue|opera|concert|experience)$/i;
+function stripBareFormatSuffix(s) {
+  return s.replace(BARE_FORMAT_SUFFIX, '');
+}
+
 /**
- * Check if two titles match — exact first, then strip suffixes/prefixes,
- * then allow prefix/suffix substring match at ≥70% length.
+ * Un-parenthesize instead of stripping: "Tartuffe (Remixed)" → "tartuffe
+ * remixed". normalizeTitle() drops trailing parentheticals as venue
+ * qualifiers ("Blueberries (Theatre Royal Stratford East)"), which loses
+ * genuine title content when the parenthetical IS the title (BRO-4152: TR's
+ * "Tartuffe (Remixed)" vs our "Tartuffe Remixed"). Tried as a fallback
+ * variant, never replacing normalizeTitle's own qualifier-stripping.
  */
-function titlesMatch(a, b) {
-  const na = normalizeTitle(a);
-  const nb = normalizeTitle(b);
+function normalizeTitleKeepParens(t) {
+  return String(t).toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/&/g, 'and')
+    .replace(/^the\s+/, '')
+    .replace(/[()]/g, ' ')
+    .replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * The portion of a title before a " - subtitle" / " – subtitle" split, for
+ * titles like "I'm Every Woman - The Chaka Khan Musical" where the aggregator
+ * appends a descriptive subtitle our own title omits (BRO-4152). Returns null
+ * when there's no dash-with-spaces split, or when the trailing part is a
+ * sequel/part marker ("A Doll's House - Part 2") — that split must stay a
+ * distinct-work signal, not a strippable subtitle.
+ */
+function beforeDashVariant(t) {
+  const m = String(t).match(/^(.+?)\s+[-–—]\s+(.+)$/);
+  if (!m) return null;
+  const after = m[2].trim();
+  if (/^(both\s+)?parts?\s*(\d+|[ivx]+|one|two|three|four|five)?$/i.test(after)) return null;
+  // Only treat the dash-suffix as a strippable descriptive subtitle when it
+  // ends in a known format/genre word ("The Chaka Khan Musical") — a bare
+  // venue/festival/date qualifier ("Edinburgh Fringe 2025") signals a
+  // DIFFERENT production (a tryout/regional run), not a subtitle of this
+  // one, and must keep failing the match (BRO-4152: World's Greatest Lover
+  // only has a 2025 Edinburgh Fringe TR page, not the West End transfer).
+  if (!/\b(musical|play|show|revue|opera|concert|experience|version)\s*$/i.test(after)) return null;
+  return m[1];
+}
+
+/**
+ * Core match logic against two already-normalized (normalizeTitle-shaped) strings.
+ */
+function coreMatch(na, nb) {
   if (na === nb) return true;
 
   // Strip suffixes/prefixes, but guard against sequel mismatches:
@@ -121,6 +172,40 @@ function titlesMatch(a, b) {
         : longer.slice(0, longer.length - shorter.length).trim();
       if (/^parts?\s*(\d+|[ivx]+|one|two|three|four|five)$/i.test(remainder)) return false;
       return true;
+    }
+  }
+
+  // Last resort: exact match once a bare trailing format word is dropped.
+  const bareA = stripBareFormatSuffix(spa);
+  const bareB = stripBareFormatSuffix(spb);
+  if (bareA === bareB && (bareA !== spa || bareB !== spb)) return true;
+
+  return false;
+}
+
+/**
+ * Check if two titles match — exact first, then strip suffixes/prefixes,
+ * then allow prefix/suffix substring match at ≥70% length. Also tries
+ * paren-keeping and before-dash-subtitle variants of each title (BRO-4152).
+ */
+function titlesMatch(a, b) {
+  const variantsOf = (t) => {
+    const forms = [normalizeTitle(t)];
+    const keepParens = normalizeTitleKeepParens(t);
+    if (!forms.includes(keepParens)) forms.push(keepParens);
+    const beforeDash = beforeDashVariant(t);
+    if (beforeDash) {
+      const nd = normalizeTitle(beforeDash);
+      if (!forms.includes(nd)) forms.push(nd);
+    }
+    return forms;
+  };
+
+  const variantsA = variantsOf(a);
+  const variantsB = variantsOf(b);
+  for (const va of variantsA) {
+    for (const vb of variantsB) {
+      if (coreMatch(va, vb)) return true;
     }
   }
   return false;
@@ -165,4 +250,4 @@ function shortTitleCandidate(title) {
   return (short && short !== title) ? short : null;
 }
 
-module.exports = { normalizeTitle, titlesMatch, cleanSearchTitle, stripSuffix, stripPrefix, shortTitleCandidate };
+module.exports = { normalizeTitle, titlesMatch, cleanSearchTitle, stripSuffix, stripPrefix, shortTitleCandidate, normalizeTitleKeepParens, beforeDashVariant };
