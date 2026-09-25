@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-25T12:47:15.827Z",
+  "runDate": "2026-09-25T14:04:20.536Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,42 +11,42 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 75,
-    "failed": 318,
+    "processed": 76,
+    "failed": 319,
     "skipped": 0,
-    "successRate": "19.1%"
+    "successRate": "19.2%"
   },
   "tierBreakdown": {
-    "playwright": 46,
-    "amp": 0,
+    "playwright": 47,
+    "amp": 2,
     "browserbase": 6,
     "directCookies": 1,
     "scrapingbee": 10,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 10
+    "archive": 11
   },
   "statistics": {
-    "tier1Attempts": 18,
-    "tier1Success": 3,
-    "ampAttempts": 0,
-    "ampSuccess": 0,
-    "tier1_5Attempts": 5,
-    "tier1_5Success": 4,
-    "tier2Attempts": 18,
-    "tier2Success": 4,
+    "tier1Attempts": 17,
+    "tier1Success": 2,
+    "ampAttempts": 2,
+    "ampSuccess": 2,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 17,
+    "tier2Success": 1,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 13,
+    "tier3_6Attempts": 14,
     "tier3_6Success": 0,
     "tier4Attempts": 17,
-    "tier4Success": 1,
-    "totalFailed": 297,
-    "scrapingBeePageCredits": 95,
+    "tier4Success": 3,
+    "totalFailed": 299,
+    "scrapingBeePageCredits": 84,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 5,
-    "browserbaseMinutesUsed": 1,
-    "urlDiscoveryAttempts": 276,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 278,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -125,7 +125,8 @@
     "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
     "the-last-ship-west-end-2026/bestoftheatre--unknown.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-    "just-in-time-2025/newyorker--conde-nast.json"
+    "just-in-time-2025/newyorker--conde-nast.json",
+    "electra-persona-west-end-2026/whatsonstage--alex-wood.json"
   ],
   "failed": [
     "delirium-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
@@ -181,7 +182,6 @@
     "school-girls-or-the-african-mean-girls-play-2026/thestage--unknown.json",
     "school-girls-or-the-african-mean-girls-play-2026/times-uk--rachel-halliburton.json",
     "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
-    "macbeth-off-broadway-2026/wsj--heidi-waleson.json",
     "the-invention-of-love-off-broadway-2026/nytg--unknown.json",
     "catarina-and-the-beauty-of-killing-fascists-west-end-2026/london-unattached--madeleine-morrow.json",
     "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
@@ -270,7 +270,6 @@
     "the-story-west-end-2026/talkinbroadway--unknown.json",
     "the-story-west-end-2026/the-spectator-uk--the-spectator.json",
     "electra-persona-west-end-2026/vocaleyes--unknown.json",
-    "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
     "paranormal-activity-2026/thereviewshub--unknown.json",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/theatermania--david-gordon.json",
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
@@ -445,7 +444,10 @@
     "murder-she-didnt-write-west-end-2025/the-journal--harriet-macdonald.json",
     "operation-mincemeat-2025/musical-theatre-review--unknown.json",
     "operation-mincemeat-2025/thereviewshub--mike-wells.json",
-    "operation-mincemeat-2025/thereviewshub--unknown.json"
+    "operation-mincemeat-2025/thereviewshub--unknown.json",
+    "macbeth-off-broadway-2026/wsj--heidi-waleson.json",
+    "operation-mincemeat-2025/all-that-dazzles-uk--unknown.json",
+    "operation-mincemeat-2025/british-theatre--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -494,9 +496,13 @@
       "oh-mary-west-end-2025/ew--christian-holub.json",
       "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
       "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
-      "the-last-ship-west-end-2026/bestoftheatre--unknown.json"
+      "the-last-ship-west-end-2026/bestoftheatre--unknown.json",
+      "delirium-off-broadway-2026/theater-mirror--michele-markarian.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
+      "data/review-texts/man-to-man-west-end-2026/deadline--unknown.json"
+    ],
     "browserbase": [
       "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--unknown.json",
@@ -520,7 +526,9 @@
       "bloodsport-after-helen-of-troy-off-west-end-2026/ground--unknown.json",
       "cosi-fan-tutte-off-broadway-2026/times-uk--unknown.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "macbeth-off-broadway-2026/wsj--heidi-waleson.json"
+    ],
     "archiveToday": [],
     "archive": [
       "delirium-off-broadway-2026/arlekinplayers--unknown.json",
@@ -532,20 +540,21 @@
       "avenue-q-west-end-2026/reviewsgate--william-russell.json",
       "avenue-q-west-end-2026/theatre-vibe--malcolm-beckett.json",
       "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
-      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+      "electra-persona-west-end-2026/whatsonstage--alex-wood.json"
     ]
   },
   "failuresByOutlet": {
-    "The Stage": {
-      "count": 5,
-      "domain": "thestage.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+    "The Wall Street Journal": {
+      "count": 1,
+      "domain": "wsj.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
     },
-    "WhatsOnStage": {
-      "count": 2,
-      "domain": "whatsonstage.com",
+    "The Stage": {
+      "count": 6,
+      "domain": "thestage.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -560,6 +569,13 @@
     "vocaleyes": {
       "count": 1,
       "domain": "vocaleyes.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Sunday Times": {
+      "count": 1,
+      "domain": "thetimes.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
