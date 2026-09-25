@@ -24,6 +24,7 @@ const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingRe
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { checkWrongShowMentionGuard, checkFilmTvGuard, isCorroboratedByRoundup } = require('./lib/tr-wrongshow-guard');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
+const { isPreExistingContentBad } = require('./lib/stale-merge-check');
 
 // ─── PDF review parser ───
 // Parses reviews from pdftotext output. Reviews follow pattern:
@@ -949,10 +950,17 @@ async function main() {
         // Merge: preserve existing fields (especially url), add TR-specific fields
         const existing = JSON.parse(fs.readFileSync(filepath, 'utf8'));
         const merged = { ...existing };
-        // Add TR-sourced data without overwriting outlet-sourced data
-        if (!merged.fullText && reviewData.fullText) merged.fullText = reviewData.fullText;
-        if (!merged.textWordCount && reviewData.textWordCount) merged.textWordCount = reviewData.textWordCount;
-        if (!merged.contentTier || merged.contentTier === 'stub' || merged.contentTier === 'excerpt' || merged.contentTier === 'invalid') {
+        // TR full text should REPLACE a paywall stub / invalid-tier body, not
+        // just fill a blank field — a bare "!merged.fullText" check leaves a
+        // non-blank-but-bad body (paywall stub, wrong tier, needsRefetch) on
+        // disk forever even after TR's complete text is available, while the
+        // contentTier label silently gets bumped to "complete" alongside it
+        // (BRO-4152 #3: golden-boy's Mail+ stub, importance-of-being-oscar's
+        // stale body). isPreExistingContentBad mirrors the writer's own
+        // url-upgrade gate: replace tier + text together, or neither.
+        if (isPreExistingContentBad({ data: existing }) && reviewData.fullText) {
+          merged.fullText = reviewData.fullText;
+          merged.textWordCount = reviewData.textWordCount;
           merged.contentTier = reviewData.contentTier;
           merged.contentTierReason = reviewData.contentTierReason;
         }
