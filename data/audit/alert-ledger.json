@@ -3714,18 +3714,16 @@
       "linearIdentifier": null
     },
     "test-yml:red:Lint Workflows:1ff49e04": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
       "firstSeen": "2026-09-20T19:22:49.867Z",
-      "lastSeen": "2026-09-20T19:38:05.160Z",
-      "lastNotifiedAt": "2026-09-20T19:22:49.867Z",
+      "lastSeen": "2026-09-25T01:30:44.047Z",
+      "lastNotifiedAt": "2026-09-25T01:30:44.047Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-3879",
-      "silentRefires": 1,
-      "resolvedAt": "2026-09-20T23:16:07.404Z"
+      "linearIdentifier": "BRO-4147"
     },
     "test-yml:red:Data Validation:9e7c89b2": {
       "status": "resolved",
@@ -4427,26 +4425,26 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on La Bohème",
       "firstSeen": "2026-09-23T00:41:01.715Z",
-      "lastSeen": "2026-09-24T22:29:30.070Z",
+      "lastSeen": "2026-09-25T01:35:26.589Z",
       "lastNotifiedAt": "2026-09-23T00:41:01.715Z",
       "lastSurfacedAt": "2026-09-23T00:41:01.715Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "opening-night-revival-unverified-la-boheme-off-broadway-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Unverified revival on La Bohème",
       "firstSeen": "2026-09-23T00:41:01.718Z",
-      "lastSeen": "2026-09-24T22:29:30.072Z",
+      "lastSeen": "2026-09-25T01:35:26.592Z",
       "lastNotifiedAt": "2026-09-23T00:41:01.718Z",
       "lastSurfacedAt": "2026-09-23T00:41:01.718Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "review-gap:opening-window:cosi-fan-tutte-off-broadway-2026": {
       "status": "open",
@@ -4713,13 +4711,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Audit cast-changes.json",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-25T00:42:39.143Z",
+      "lastSeen": "2026-09-25T01:24:39.619Z",
       "lastNotifiedAt": "2026-09-25T00:12:28.830Z",
       "lastSurfacedAt": "2026-09-25T00:12:28.830Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 7
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -4894,12 +4892,13 @@
       "disposition": "digest",
       "title": "Auto-remediation gave up on the-secret-circus-musical-off-broadway-2026",
       "firstSeen": "2026-09-24T22:29:33.647Z",
-      "lastSeen": "2026-09-24T22:29:33.647Z",
+      "lastSeen": "2026-09-25T01:35:26.930Z",
       "lastNotifiedAt": "2026-09-24T22:29:33.647Z",
       "lastSurfacedAt": "2026-09-24T22:29:33.647Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/job/linear-BRO-4130-mug4swrf": {
       "status": "resolved",
@@ -4928,7 +4927,7 @@
       "resolvedAt": "2026-09-25T00:54:22.690Z"
     },
     "land:land/job/linear-BRO-4133-mug61u71": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: push red on land/job/linear-BRO-4133-mug61u71",
       "firstSeen": "2026-09-25T00:41:41.715Z",
@@ -4937,7 +4936,8 @@
       "lastSurfacedAt": "2026-09-25T00:41:41.715Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-25T01:12:51.158Z"
     },
     "direct-push:b4743baef7d233216b8b3d08b1d1efafe34c0a45": {
       "status": "open",
@@ -4950,6 +4950,18 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:db4d5abd": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"BRO-3887: gather-reviews.js daily scraper credits are back under control\"",
+      "firstSeen": "2026-09-25T01:30:47.726Z",
+      "lastSeen": "2026-09-25T01:30:47.726Z",
+      "lastNotifiedAt": "2026-09-25T01:30:47.726Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4146"
     }
   }
 }

@@ -52,6 +52,14 @@ const REPO_ROOT = path.resolve(new URL('.', import.meta.url).pathname, '..', '..
 const REAL_HOME = os.homedir();
 const RUN_ID = randomUUID().slice(0, 8);
 
+// The hooks under test append NO-SHIP-CHECK bypass rows to the owner's real
+// ~/.claude/logs/finish-line-bypass.log unless CLAUDE_LOG_DIR points elsewhere;
+// every spawn below inherits process.env, so set it once here (BRO-4134).
+process.env.CLAUDE_LOG_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'merge-gate-hook-logs-'));
+// Same for the push hook's direct-push-attempt rows, which otherwise land in
+// the real data/audit/dispatch-ledger.jsonl that Gate O and digests read.
+process.env.DIRECT_PUSH_LEDGER_PATH = path.join(process.env.CLAUDE_LOG_DIR, 'dispatch-ledger.jsonl');
+
 // ── every subprocess in this file is bounded ────────────────────────────────
 //
 // `node --test` applies --test-timeout to the FILE-level subtest, so one
@@ -273,7 +281,13 @@ before(() => {
   gitOk(CANONICAL_ROOT, ['branch', PROBE_BRANCH, BASE_REF]);
   probeWorktree = makeTmpDir('probe-wt');
   fs.rmSync(probeWorktree, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
-  if (!gitOk(CANONICAL_ROOT, ['worktree', 'add', '-q', '--detach', probeWorktree, PROBE_BRANCH])) {
+  // --no-checkout + read-tree: the fixture only commits one new file, and a
+  // full checkout of this repo takes ~45s on a busy machine — longer than
+  // GIT_TIMEOUT_MS, which failed 7 tests locally (BRO-4134). read-tree fills
+  // the index from HEAD so the probe commit ADDS a file instead of deleting
+  // every file the empty working tree lacks.
+  if (!gitOk(CANONICAL_ROOT, ['worktree', 'add', '-q', '--no-checkout', '--detach', probeWorktree, PROBE_BRANCH])
+      || !gitOk(probeWorktree, ['read-tree', 'HEAD'])) {
     probeWorktree = null;
     return;
   }
@@ -313,7 +327,7 @@ before(() => {
   git(CANONICAL_ROOT, ['branch', '-D', NONMAIN_BRANCH]);
   nonmainWorktree = makeTmpDir('nonmain-wt');
   fs.rmSync(nonmainWorktree, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
-  if (!gitOk(CANONICAL_ROOT, ['worktree', 'add', '-q', '-b', NONMAIN_BRANCH, nonmainWorktree, BASE_REF])) {
+  if (!gitOk(CANONICAL_ROOT, ['worktree', 'add', '-q', '--no-checkout', '-b', NONMAIN_BRANCH, nonmainWorktree, BASE_REF])) {  // cwd-only fixture: no files needed (see probe above)
     nonmainWorktree = null;
   }
 });
@@ -549,6 +563,9 @@ test('push-gate leaves an unrelated command untouched', skipNoGates, () => {
 test('push-gate: NO-SHIP-CHECK in-command comment bypasses the block', skipNoProbe, () => {
   const r = runHook(PUSH_HOOK, {
     command: `git push origin ${PROBE_BRANCH}:main  # NO-SHIP-CHECK: docs-only revert of an accidental commit`,
+    // Direct pushes to main are refused before the review gate since BRO-3425;
+    // the logged rollback switch reaches the review gate this test exercises.
+    env: { LAND_ENFORCE_OFF: '1' },
   });
   assertAllowed(r, 'NO-SHIP-CHECK bypass');
 });

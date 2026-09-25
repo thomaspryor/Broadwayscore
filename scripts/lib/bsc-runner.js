@@ -254,7 +254,14 @@ function buildBudgetPreamble(timeoutMs) {
     // prepended to EVERY headless prompt, whatever the task.
     + `Background work does not survive the end of your turn: anything still running when you stop is killed, `
     + `so never finish a turn planning to "pick it back up when it completes". Either stay in the turn until it `
-    + `finishes, or split it into turn-sized batches and commit after each.\n\n`;
+    + `finishes, or split it into turn-sized batches and commit after each.\n\n`
+    // Owner rule 2026-09-24 (fix it, find its cousins, fix the cause):
+    // interactive sessions are held to it by finish-line Gate 6, which is
+    // headless-exempt, so the record would otherwise be missing from every
+    // job's final block (BRO-4134).
+    + `When you fix a defect, look for the same bug elsewhere and fix what causes it, then include in your final `
+    + `status block: PREVENTION: <the test/lint/gate/guard that now catches this class> ; cousins: <where you `
+    + `looked, what you found> (or NO-PREVENTION: <reason> for a feature, docs or revert).\n\n`;
 }
 
 async function runJob(opts) {

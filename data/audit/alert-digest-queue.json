@@ -1082,5 +1082,63 @@
       }
     ],
     "queuedAt": "2026-09-25T00:46:10.920Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-fix-land-fixture-hang",
+    "title": "Landing blocked: push red on land/worktree-fix-land-fixture-hang",
+    "description": "land.yml did not land land/worktree-fix-land-fixture-hang: the push gate went red at 5544a215a7. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/worktree-fix-land-fixture-hang @ 5544a215a7 (origin/land/worktree-fix-land-fixture-hang) → origin/main @ 503d2e1028 [land] attempt 1/3: rebased onto 503d2e1028, 8 file(s) changed — running checks [land] verified-base: main moved 01f8096596 → 503d2e1028 across 89 file(s), substantive — running the full gauntlet [land] linked 17 gitignored path(s) into the worktree (node_modules/core dat Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36079555045",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-fix-land-fixture-hang"
+      },
+      {
+        "name": "gate",
+        "value": "push"
+      },
+      {
+        "name": "tip",
+        "value": "5544a215a7fb27a11c171216320f9ae4e39d97e3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36079555045"
+      }
+    ],
+    "queuedAt": "2026-09-25T01:17:06.119Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-bro-4141-email-noise-r2",
+    "title": "Landing blocked: unit-tests-node red on land/worktree-bro-4141-email-noise-r2",
+    "description": "land.yml did not land land/worktree-bro-4141-email-noise-r2: the unit-tests-node gate went red at 687544da74. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36080384360",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-bro-4141-email-noise-r2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "687544da74b1ee8b48ed9a008853706327f8eeed"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36080384360"
+      }
+    ],
+    "queuedAt": "2026-09-25T01:25:36.572Z"
   }
 ]

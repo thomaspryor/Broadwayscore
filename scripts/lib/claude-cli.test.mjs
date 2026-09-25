@@ -437,6 +437,10 @@ test('buildBudgetPreamble warns against run_in_background for needed results (BR
     'must state that background work dies at end of turn'
   );
   assert.match(preamble, /turn-sized batches/, 'must give the worker somewhere to go instead');
+  // Gate 6 (fix it, fix its cousins, fix the cause) is headless-exempt, so the
+  // preamble is the only thing asking jobs for the record (BRO-4134).
+  assert.match(preamble, /PREVENTION: <[^>]+> ; cousins: </, 'must ask headless jobs for the PREVENTION line');
+  assert.match(preamble, /NO-PREVENTION: <reason>/, 'must name the non-fix escape');
 
   // The properties that actually matter are the two things it must NOT do, and
   // they are what a future edit is most likely to break.
