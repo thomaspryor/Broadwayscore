@@ -134,6 +134,13 @@ const STRONG_ERROR_PAGE_PATTERNS = [
   /\b404\s+(?:error|not\s+found)\b/i,
   /\berror\s+404\b/i,
   /the\s+page\s+you('re|\s+are)\s+looking\s+for/i,
+  // Anubis proof-of-work bot wall (myreviewer.com and other small sites). Its
+  // interstitial was stored as the whole "review" for
+  // as-you-like-it-globe-west-end-2026/myreviewer--unknown.json (43 words,
+  // tier 'truncated', so it sat in the scoring queue as includable-but-unscored).
+  // Both phrases are Anubis chrome only; 0 hits on real review text.
+  /\bprotected\s+by\s+anubis\b/i,
+  /making\s+sure\s+you(?:'|&#39;|’)re\s+not\s+a\s+bot/i,
 ];
 
 /**
