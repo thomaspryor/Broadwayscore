@@ -1,20 +1,25 @@
 {
   "system": "workflow repeat-failure",
-  "status": "warn",
-  "lastChecked": "2026-09-23T12:15:49.653Z",
+  "status": "error",
+  "lastChecked": "2026-09-25T12:18:19.914Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
       "name": "Workflow repeat-failure: Land",
-      "status": "warn",
-      "message": "Land failed 4 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "status": "error",
+      "message": "Land failed 4 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Deploy to Vercel",
+      "name": "Workflow repeat-failure: Test Suite",
+      "status": "error",
+      "message": "Test Suite failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Process Review Submission",
       "status": "warn",
-      "message": "Deploy to Vercel failed 2 times in the last 24h — likely broken, not transient."
+      "message": "Process Review Submission failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
     }
   ]
 }
