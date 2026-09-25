@@ -1111,5 +1111,34 @@
       }
     ],
     "queuedAt": "2026-09-25T01:17:06.119Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-bro-4141-email-noise-r2",
+    "title": "Landing blocked: unit-tests-node red on land/worktree-bro-4141-email-noise-r2",
+    "description": "land.yml did not land land/worktree-bro-4141-email-noise-r2: the unit-tests-node gate went red at 687544da74. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36080384360",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-bro-4141-email-noise-r2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "687544da74b1ee8b48ed9a008853706327f8eeed"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36080384360"
+      }
+    ],
+    "queuedAt": "2026-09-25T01:25:36.572Z"
   }
 ]
