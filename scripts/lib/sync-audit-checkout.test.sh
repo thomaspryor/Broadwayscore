@@ -416,6 +416,29 @@ else
   echo "PASS[13]: a non-main checkout is refused and left untouched ($rc13)"
 fi
 
+# ── case 14 (BRO-4141 review): a feature branch MID-CONFLICT is untouched ──
+# The self-heal steps (merge --abort, checkout of unmerged paths) used to run
+# before the branch guard, destroying in-progress conflict resolution.
+O14="$TMP/origin14"; C14="$TMP/clone14"
+setup_pair "$O14" "$C14"
+git -C "$C14" checkout -q -b feature-y
+echo feature > "$C14/other.txt"; git -C "$C14" commit -qam feature
+git -C "$C14" checkout -q -b side main
+echo side > "$C14/other.txt"; git -C "$C14" commit -qam side
+git -C "$C14" checkout -q feature-y
+git -C "$C14" merge side >/dev/null 2>&1   # conflicts, leaves MERGE_HEAD
+echo "resolved-by-human" > "$C14/other.txt"
+out14=$(SYNC_TAG=case14 bash "$LIB" "$C14" 2>&1); rc14=$?
+if [ "$rc14" -eq 0 ]; then
+  echo "FAIL[14]: must refuse. Output:"; echo "$out14"; fail=1
+elif ! git -C "$C14" rev-parse -q --verify MERGE_HEAD >/dev/null; then
+  echo "FAIL[14]: the in-progress merge on feature-y was aborted"; fail=1
+elif [ "$(cat "$C14/other.txt")" != "resolved-by-human" ]; then
+  echo "FAIL[14]: the human's conflict resolution was overwritten"; fail=1
+else
+  echo "PASS[14]: a non-main branch mid-merge is refused before any self-heal ($rc14)"
+fi
+
 if [ "$fail" -ne 0 ]; then
   echo "sync-audit-checkout test: FAILED"; exit 1
 fi

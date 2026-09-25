@@ -164,6 +164,25 @@ function isCoverageComplete(windows, shows) {
 
 function nightStatePath(key) { return path.join(MON_DIR, `night-state-${key}.json`); }
 
+// Consecutive spawn-starved auth preflights (BRO-4141). Deliberately NOT in
+// night-state: carryForwardNightState() rebuilds that object from a fixed
+// field list (so an extra field never survived a tick), and the preflight
+// runs BEFORE the lock — writing night-state there could clobber a running
+// pass's attempts/spend. This tiny file is written only here, atomically.
+// ON_MONITOR_STARVED_DIR: test override only (CI has no /Users/tompryor).
+function starvedCountPath(key) { return path.join(process.env.ON_MONITOR_STARVED_DIR || MON_DIR, `auth-starved-${key}.json`); }
+function readStarvedCount(key) {
+  try { return Number(JSON.parse(fs.readFileSync(starvedCountPath(key), 'utf8')).count) || 0; } catch { return 0; }
+}
+function writeStarvedCount(key, count) {
+  try {
+    if (!count) { fs.rmSync(starvedCountPath(key), { force: true }); return; }
+    const tmp = `${starvedCountPath(key)}.${process.pid}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify({ count, at: new Date().toISOString() }) + '\n');
+    fs.renameSync(tmp, starvedCountPath(key));
+  } catch (e) { log(`could not persist starved-preflight count: ${e.message}`); }
+}
+
 // ── Did this pass actually do anything? ──────────────────────────────────
 // Two consumers, deliberately different strictness:
 //   - the alert path asks "was this worth waking the owner over?" and must be
@@ -313,6 +332,52 @@ function preflightAuth() {
     allowApiKeyFallback,
     log: msg => log(`${msg} (spend hard-capped by NIGHTLY_USD_CAP $${NIGHTLY_USD_CAP}/night, disable with ON_MONITOR_NO_API_FALLBACK=1)`),
   });
+}
+
+/**
+ * One failed auth preflight tick (BRO-4141): bump/clear the starved counter,
+ * route the alert, return the routing verdict. Extracted so a test can drive
+ * several real consecutive ticks through the persisted counter.
+ */
+async function handleAuthFailure({ auth, key, windows, now }) {
+  // Key off the stored-login probe (the credential the pass uses): a revoked
+  // login must page as auth even if the API-key probe happened to time out.
+  const failReason = auth.storedReason || auth.reason;
+  const isStarved = authFailureRouting({ reason: failReason, consecutiveStarved: 0 }).kind === 'starved';
+  const consecutiveStarved = isStarved ? readStarvedCount(key) + 1 : 0;
+  writeStarvedCount(key, consecutiveStarved);
+  const route = authFailureRouting({ reason: failReason, consecutiveStarved });
+  log(`auth preflight failed (${failReason || 'unknown'}${isStarved ? `, ${consecutiveStarved} in a row` : ''}) — ${route.page ? 'paging owner' : 'digest only, next tick retries'}`);
+  const shows = windows.map(w => w.showId).join(', ');
+  if (route.kind === 'auth') {
+    await alert({
+      conditionKey: `on-monitor-auth-failed-${now.toISOString().slice(0, 10)}`,
+      title: 'Opening-night monitor: claude auth preflight failed — no session launched',
+      description: `Ping failed (${auth.reason}): ${auth.detail}. A show is in its opening-night window (${shows}). ` +
+        'Stored login is Keychain-only (unreachable from launchd) and no working ANTHROPIC_API_KEY fallback. ' +
+        'Fix: `claude setup-token` and put CLAUDE_CODE_OAUTH_TOKEN in .env; the next 20-min tick retries automatically.',
+      severity: 'error', disposition: 'human', cooldownHours: 6,
+    });
+  } else {
+    // Its own page-worthy prefix once it has persisted an hour — NOT the
+    // auth-failed key, whose 6h cooldown would then swallow a real
+    // revocation page later the same day. Digest-only key otherwise.
+    await alert({
+      conditionKey: route.page
+        ? `on-monitor-auth-starved-sustained-${now.toISOString().slice(0, 10)}`
+        : `on-monitor-auth-starved-${now.toISOString().slice(0, 10)}`,
+      title: route.page
+        ? `Opening-night monitor: Mac too overloaded to start a monitor pass for ${consecutiveStarved} ticks in a row`
+        : 'Opening-night monitor: auth ping timed out (machine busy) — retrying next tick',
+      description: `Ping did not complete (${failReason}): ${auth.detail}. ` +
+        (failReason === 'spawn-error'
+          ? 'The claude program could not be started (missing or crashing binary), not a revoked login. '
+          : 'This is the Mac being starved (load/memory), not a revoked login. ') +
+        `Show(s) in window: ${shows}. ${route.page ? (failReason === 'spawn-error' ? 'No pass has started for about an hour; check `which claude` under launchd.' : 'No pass has started for about an hour; free memory / close idle Claude tabs.') : 'The next 20-min tick retries automatically.'}`,
+      severity: route.page ? 'error' : 'info', disposition: route.page ? 'human' : 'digest', cooldownHours: 6,
+    });
+  }
+  return route;
 }
 
 // How many consecutive spawn-starved/spawn-error preflights (one per 20-min
@@ -538,46 +603,10 @@ async function main(argv = process.argv.slice(2)) {
 
   const auth = preflightAuth();
   if (!auth.ok) {
-    // Key off the stored-login probe (the credential the pass uses): a revoked
-    // login must page as auth even if the API-key probe happened to time out.
-    const failReason = auth.storedReason || auth.reason;
-    const isStarved = authFailureRouting({ reason: failReason, consecutiveStarved: 0 }).kind === 'starved';
-    const consecutiveStarved = isStarved ? (nightState.consecutiveStarvedPreflights || 0) + 1 : 0;
-    writeNightState(key, { ...nightState, consecutiveStarvedPreflights: consecutiveStarved });
-    const route = authFailureRouting({ reason: failReason, consecutiveStarved });
-    log(`auth preflight failed (${failReason || 'unknown'}${isStarved ? `, ${consecutiveStarved} in a row` : ''}) — ${route.page ? 'paging owner' : 'digest only, next tick retries'}`);
-    const shows = windows.map(w => w.showId).join(', ');
-    if (route.kind === 'auth') {
-      await alert({
-        conditionKey: `on-monitor-auth-failed-${now.toISOString().slice(0, 10)}`,
-        title: 'Opening-night monitor: claude auth preflight failed — no session launched',
-        description: `Ping failed (${auth.reason}): ${auth.detail}. A show is in its opening-night window (${shows}). ` +
-          'Stored login is Keychain-only (unreachable from launchd) and no working ANTHROPIC_API_KEY fallback. ' +
-          'Fix: `claude setup-token` and put CLAUDE_CODE_OAUTH_TOKEN in .env; the next 20-min tick retries automatically.',
-        severity: 'error', disposition: 'human', cooldownHours: 6,
-      });
-    } else {
-      // Its own page-worthy prefix once it has persisted an hour — NOT the
-      // auth-failed key, whose 6h cooldown would then swallow a real
-      // revocation page later the same day. Digest-only key otherwise.
-      await alert({
-        conditionKey: route.page
-          ? `on-monitor-auth-starved-sustained-${now.toISOString().slice(0, 10)}`
-          : `on-monitor-auth-starved-${now.toISOString().slice(0, 10)}`,
-        title: route.page
-          ? `Opening-night monitor: Mac too overloaded to start a monitor pass for ${consecutiveStarved} ticks in a row`
-          : 'Opening-night monitor: auth ping timed out (machine busy) — retrying next tick',
-        description: `Ping did not complete (${auth.reason}): ${auth.detail}. This is the Mac being starved (load/memory), not a revoked login. ` +
-          `Show(s) in window: ${shows}. ${route.page ? 'No pass has started for about an hour; free memory / close idle Claude tabs.' : 'The next 20-min tick retries automatically.'}`,
-        severity: route.page ? 'error' : 'info', disposition: route.page ? 'human' : 'digest', cooldownHours: 6,
-      });
-    }
+    await handleAuthFailure({ auth, key, windows, now });
     return 1;
   }
-  if (nightState.consecutiveStarvedPreflights) {
-    nightState = { ...nightState, consecutiveStarvedPreflights: 0 };
-    writeNightState(key, nightState);
-  }
+  if (readStarvedCount(key)) writeStarvedCount(key, 0);
 
   // Atomic lock: mkdir is the test-and-set. A concurrent tick (launchd
   // overlap after a slow tick) loses the race here and exits — the
@@ -764,7 +793,7 @@ async function main(argv = process.argv.slice(2)) {
   return 0;
 }
 
-module.exports = { parseArgs, monitorCandidates, buildSeed, resolvePassAuth, authFailureRouting, STARVED_PREFLIGHT_PAGE_AFTER, alert, main };
+module.exports = { parseArgs, monitorCandidates, buildSeed, resolvePassAuth, authFailureRouting, STARVED_PREFLIGHT_PAGE_AFTER, readStarvedCount, writeStarvedCount, handleAuthFailure, alert, main };
 
 if (require.main === module) {
   main().then(code => process.exit(code)).catch(e => {

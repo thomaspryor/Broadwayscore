@@ -146,6 +146,27 @@ clear_refused_snapshot() {
   rm -f "$SNAPSHOT_FILE" 2>/dev/null || true
 }
 
+# BRO-4141 (W1): every step below — self-healing an interrupted rebase/merge,
+# replaying ledger backups, fast-forward, rebase — mutates whatever branch is
+# checked out. This runs unattended every 30 min (checkout-sync.plist), so if
+# a session ever leaves ~/Broadwayscore on a feature branch (possibly mid-
+# conflict-resolution), touching it would destroy their work. Refuse BEFORE
+# any mutation unless the checkout is on main. Mid-rebase HEAD is detached,
+# so read the branch being rebased from the rebase state dir.
+CUR_BRANCH=$(git symbolic-ref --quiet --short HEAD 2>/dev/null || true)
+if [ -z "$CUR_BRANCH" ]; then
+  for d in rebase-merge rebase-apply; do
+    hn="$(git rev-parse --git-path "$d/head-name" 2>/dev/null)"
+    [ -f "$hn" ] && CUR_BRANCH="$(sed 's#^refs/heads/##' "$hn")" && break
+  done
+fi
+CUR_BRANCH="${CUR_BRANCH:-(detached)}"
+if [ "$CUR_BRANCH" != "main" ]; then
+  echo "::error::[$TAG] checkout is on '$CUR_BRANCH', not main — refusing to sync (would move a non-main branch)"
+  write_refused_snapshot "not-on-main:$CUR_BRANCH" "" ""
+  exit 1
+fi
+
 # ── merge=union ledger recovery scaffolding (BRO-2314) ───────────────────────
 # Backups of a dirty append-only ledger, taken for the few hundred ms the
 # ledger has to be clean for `git merge --ff-only` to run. They live under the
@@ -338,22 +359,13 @@ fi
 # blocking EVERY session's push through run-push-audits.sh (task #863 class), so
 # the waiver is deliberate, not a bypass — if a workflow ever calls this, take
 # the flags from scripts/lib/shallow-fetch-args.js and delete this comment.
-# BRO-4141 (W1): every merge/rebase below targets whatever branch is checked
-# out. This runs unattended every 30 min (checkout-sync.plist), so if a
-# session ever leaves ~/Broadwayscore on a feature branch, fast-forwarding or
-# rebasing THAT branch onto origin/main would silently rewrite someone's
-# work. Refuse unless the checkout is on main (detached HEAD included).
-CUR_BRANCH=$(git symbolic-ref --quiet --short HEAD 2>/dev/null || echo "(detached)")
-if [ "$CUR_BRANCH" != "main" ]; then
-  echo "::error::[$TAG] checkout is on '$CUR_BRANCH', not main — refusing to sync (would move a non-main branch)"
-  write_refused_snapshot "not-on-main:$CUR_BRANCH" "" ""
-  exit 1
-fi
-
-# W4: this fetch runs while holding the push mutex; a hung transfer would
-# block every other session's push. git has no wall-clock flag, so abort any
-# transfer that stays under 1 KB/s for 60s (covers the stalled-socket case).
-if ! git -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=60 fetch origin main --quiet; then
+# W4: this fetch runs while holding the push mutex; a hung fetch would block
+# every other session's push. Hard wall-clock deadline via perl alarm (macOS
+# has no coreutils `timeout`; SIGALRM kills git), plus git's own low-speed
+# abort for a stalled socket. A timed-out fetch takes the fetch-failed path.
+SYNC_FETCH_DEADLINE_SEC="${SYNC_FETCH_DEADLINE_SEC:-180}"
+if ! perl -e 'alarm shift; exec @ARGV or die "exec: $!"' "$SYNC_FETCH_DEADLINE_SEC" \
+     git -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=60 fetch origin main --quiet; then
   # Must leave a refusal snapshot (ship-check finding, BRO-3393). This exit
   # used to be silent, and morning-digest.plist runs the digest with `;` even
   # when this script fails - so a failed fetch produced NO sync-refused-digest

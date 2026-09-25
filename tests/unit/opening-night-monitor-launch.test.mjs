@@ -394,3 +394,49 @@ test('auth failure routing keys off storedReason; sustained starvation has its o
   // merged reason says starved, which is why the launcher must not use it alone
   assert.equal(worseAuthPingReason('auth-rejected', 'spawn-starved'), 'spawn-starved');
 });
+
+// BRO-4141 (Codex review): the unit routing test passed while the counter
+// could never exceed 1 in production (carryForwardNightState dropped it).
+// Drive REAL consecutive ticks through the persisted counter file.
+test('handleAuthFailure: 3 consecutive starved ticks page once; auth-rejected pages at once; success clears', async () => {
+  const require = createRequire(import.meta.url);
+  const routerPath = require.resolve('../../scripts/lib/owner-alert-router.js');
+  const launcherPath = require.resolve('../../scripts/opening-night-monitor-launch.js');
+  const realRouter = require(routerPath);
+  const calls = [];
+  require.cache[routerPath].exports = { ...realRouter,
+    ledgerPath: () => '/dev/null', isLocalLedger: () => true,
+    routeAlert: async o => { calls.push(o); return { action: 'stub' }; } };
+  delete require.cache[launcherPath];
+  const L = require(launcherPath);
+  const { mkdtempSync, rmSync } = require('node:fs');
+  const tmpDir = mkdtempSync(require('node:path').join(require('node:os').tmpdir(), 'on-starved-'));
+  process.env.ON_MONITOR_STARVED_DIR = tmpDir;
+  const key = `test-bro4141-${process.pid}`;
+  const windows = [{ showId: 'x-show' }];
+  const now = new Date('2026-09-25T04:00:00Z');
+  const starved = { ok: false, reason: 'spawn-starved', storedReason: 'spawn-starved', detail: 'ETIMEDOUT' };
+  try {
+    L.writeStarvedCount(key, 0);
+    const r1 = await L.handleAuthFailure({ auth: starved, key, windows, now });
+    const r2 = await L.handleAuthFailure({ auth: starved, key, windows, now });
+    const r3 = await L.handleAuthFailure({ auth: starved, key, windows, now });
+    assert.deepEqual([r1.page, r2.page, r3.page], [false, false, true]);
+    assert.equal(L.readStarvedCount(key), 3);
+    assert.deepEqual(calls.map(c => c.disposition), ['digest', 'digest', 'human']);
+    assert.match(calls[2].conditionKey, /^on-monitor-auth-starved-sustained-2026-09-25$/);
+    // revoked stored login + timed-out key probe: merged reason says starved,
+    // but it must page as AUTH immediately and reset the starved streak.
+    calls.length = 0;
+    const r4 = await L.handleAuthFailure({ auth: { ok: false, reason: 'spawn-starved', storedReason: 'auth-rejected', detail: 'Not logged in' }, key, windows, now });
+    assert.equal(r4.kind, 'auth');
+    assert.equal(calls[0].conditionKey, 'on-monitor-auth-failed-2026-09-25');
+    assert.equal(L.readStarvedCount(key), 0);
+  } finally {
+    L.writeStarvedCount(key, 0);
+    delete process.env.ON_MONITOR_STARVED_DIR;
+    rmSync(tmpDir, { recursive: true, force: true });
+    require.cache[routerPath].exports = realRouter;
+    delete require.cache[launcherPath];
+  }
+});
