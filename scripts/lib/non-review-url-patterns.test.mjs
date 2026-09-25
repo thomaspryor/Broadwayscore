@@ -163,6 +163,32 @@ test('classifyReviewUrl: stagebuddy REVIEW paths still pass (path-scoped, not ho
   assert.equal(classifyReviewUrl('https://stagebuddy.com/theater/reviews/disruption-review').ok, true);
 });
 
+test('classifyReviewUrl: news-announcement slugs rejected; "first-look" reviews still pass', () => {
+  assert.equal(classifyReviewUrl('https://www.westwaleschronicle.co.uk/blog/2026/07/29/dog-man-the-musical-releases-production-photos-and-announces-new-tour-dates-for-2027/').ok, false);
+  assert.equal(classifyReviewUrl('https://www.thereviewshub.com/initial-casting-announced-for-burlesque-uk-tour/').ok, false);
+  assert.equal(classifyReviewUrl('https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/').ok, true);
+  assert.equal(classifyReviewUrl('https://www.thereviewshub.com/burlesque-the-musical-savoy-theatre-london/').ok, true);
+  assert.equal(classifyReviewUrl('https://openingnight.online/photos-becoming-hamlet-celebrates-opening-night-off-broadway/').ok, false);
+});
+
+test('classifyReviewUrl: myreviewer home-video (DVD/Blu-ray) reviews rejected, other sections pass', () => {
+  const dvd = classifyReviewUrl('https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington');
+  assert.deepEqual(dvd, { ok: false, reason: 'home-video-review' });
+  assert.equal(classifyReviewUrl('https://www.myreviewer.com/Blu-ray/1/x/2/Review').ok, false);
+  assert.equal(classifyReviewUrl('https://www.myreviewer.com/Theatre/1/x/2/Review').ok, true);
+  assert.deepEqual(classifyReviewUrl('https://www.thestage.co.uk/news/mamma-mia-to-return-to-broadway-after-10-years-away'), { ok: false, reason: 'news-article' });
+  assert.equal(classifyReviewUrl('https://www.thestage.co.uk/reviews/night-city-southwark-playhouse-review').ok, true);
+  for (const u of [
+    'https://www.newyorktheatreguide.com/show/25619-la-traviata',
+    'https://www.gigantic.com/deep-heat-rivalry-tickets',
+    'https://www.concordtheatricals.com/p/99588/mrs-stern-wanders-the-prussian-state-library',
+    'https://www.abouttheartists.com/productions/208936-pre-existing-condition-at-greenwich-house-theater-2026-2027',
+    'https://www.traverse.co.uk/whats-on/mrs-stern-wanders-the-prussian-state-library',
+    'https://www.artsatmarblearch.com/events/million-dollar-quartet',
+  ]) assert.equal(classifyReviewUrl(u).ok, false, u);
+  assert.equal(classifyReviewUrl('https://www.newyorktheatreguide.com/reviews/space-dogs-off-broadway-review').ok, true);
+});
+
 test('classifyReviewUrl: BWW hub + cast/shows pages rejected, BWW article reviews pass', () => {
   assert.equal(classifyReviewUrl('https://www.broadwayworld.com/reviews/disruption').ok, false);
   assert.equal(classifyReviewUrl('https://www.broadwayworld.com/reviews/the-vessel').ok, false);

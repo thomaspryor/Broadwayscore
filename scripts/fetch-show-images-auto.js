@@ -817,19 +817,15 @@ async function fetchFromIBDB(show) {
 // Fetch show poster from ShowScore (show-score.com)
 // ShowScore hosts poster images on CloudFront. We scrape the OG image or poster from the page.
 async function fetchFromShowScore(show) {
-  const category = show.category || 'broadway';
-  const ssCategory = category === 'off-broadway' ? 'off-broadway-shows'
-    : category === 'west-end' ? 'london-shows'
-    : 'broadway-shows';
-
-  // ShowScore slugs: lowercase, hyphens, no special chars
-  const slug = show.title.toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/['']/g, '').replace(/&/g, 'and')
-    .replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-
-  const ssUrl = `https://www.show-score.com/${ssCategory}/${slug}`;
+  // Same resolver the gap audit uses (lib/show-score-discover.js): curated
+  // entries first (incl. London pages under /uk/london/), constructed urls for
+  // NYC categories only, and never a constructed url another show already owns
+  // (a same-title revival's page). The old inline slug sent off-west-end and
+  // regional shows to the NYC production's page, and west-end to a
+  // non-existent /london-shows/ path.
+  const { showScoreUrlForShow, loadShowScoreUrlMap } = require('./lib/show-score-discover');
+  const ssUrl = showScoreUrlForShow(show, loadShowScoreUrlMap(path.join(__dirname, '..')));
+  if (!ssUrl) return null;
   console.log(`   Trying ShowScore: ${ssUrl}`);
 
   try {
@@ -1283,7 +1279,9 @@ function savePlaybillUrls(data) {
 let playbillUrlCache = null;
 
 function slugify(str) {
-  return str.toLowerCase()
+  // Fold diacritics first: "Les Misérables" must slug to les-miserables, not
+  // shred at the accent (tests/unit/sibling-matchers-diacritics.test.mjs).
+  return require('./lib/title-match').foldDiacritics(str).toLowerCase()
     .replace(/['']/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');

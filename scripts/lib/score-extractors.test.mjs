@@ -352,3 +352,13 @@ test('extractNYPostScore: no widget, no grade, no numeric stars → null (no ful
   const html = '<div class="entry-content">Just a plain review with no rating markers.</div>';
   assert.equal(extractNYPostScore(html, 'Just a plain review with no rating markers.'), null);
 });
+
+test('The Stage star SVGs are ignored on a /news/ page (sidebar ratings belong to other reviews)', () => {
+  const { extractUKStarRating } = require('./score-extractors.js');
+  const stars = '<div class="StarRating x"><img src="/stageStar.svg"><img src="/stageStar.svg"><img src="/stageStar.svg"><img src="/stageStar.svg"><img src="/stageNoStar.svg"></div>';
+  assert.equal(extractUKStarRating('<link rel="canonical" href="https://www.thestage.co.uk/news/kiss-of-the-spider-woman-to-be-revived-at-curve">' + stars, ''), null);
+  assert.equal(extractUKStarRating('<link href="https://thestage.co.uk/news/x" rel="canonical">' + stars, ''), null, 'href before rel, no www');
+  assert.equal(extractUKStarRating("<meta content='https://www.thestage.co.uk/news/x' property='og:url'>" + stars, ''), null, 'content before property, single quotes');
+  const review = extractUKStarRating('<link rel="canonical" href="https://www.thestage.co.uk/reviews/night-city-review">' + stars, '');
+  assert.equal(review.originalScore, '4/5 stars');
+});

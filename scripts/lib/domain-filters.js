@@ -52,6 +52,11 @@ const TICKET_DOMAINS = new Set([
   // scoring candidate held back only by having no score yet. Same shape as the
   // BRO-2712 southbankcentre finding.
   'thelondoner.com',
+  // US resellers stored as "reviews" via submit-review-form (2026-09-25):
+  // disruption-off-broadway-2026 scorebig/boxofficeticketsales event pages and
+  // the-gin-game-2026 stuborder. Content-level backstop for resellers not on
+  // this list: RESELLER_BOILERPLATE in content-quality.js.
+  'scorebig.com', 'boxofficeticketsales.com', 'stuborder.com',
   'ticketsource.co.uk', 'fromtheboxoffice.com', 'encoretickets.co.uk',
   'ticketek.co.uk', 'seetickets.com',
   // ticketline.co.uk (2026-09-01): same class as the UK sellers above and the

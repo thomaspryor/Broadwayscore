@@ -157,4 +157,4 @@ function classifyAggregatorByline(aggregatorReview, siblingReviews) {
   return { classification: 'staff-critic', reason: 'no matching content found in any sibling real-outlet review — treated as the aggregator\'s own staff/contributing-critic content' };
 }
 
-module.exports = { classifyAggregatorByline, STAFF_CRITIC_AGGREGATOR_OUTLET_IDS, wordShingles, normalizeForShingles };
+module.exports = { classifyAggregatorByline, STAFF_CRITIC_AGGREGATOR_OUTLET_IDS, wordShingles, normalizeForShingles, stripQuotedSpans, stripBoilerplate, isCastListLike };

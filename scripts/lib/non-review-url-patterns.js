@@ -136,6 +136,20 @@ const NON_REVIEW_PATH_PATTERNS = [
   // reviews under /whats-on/ sections. The ticket-page cases are host-scoped
   // in NAMED_NON_REVIEW_URL_PATTERNS below (westendtheatre.com show pages,
   // londonboxoffice.co.uk root ticket slugs).
+  //
+  // News-announcement slugs (2026-09-25): a West Wales Chronicle
+  // "dog-man-the-musical-releases-production-photos-and-announces-new-tour-dates"
+  // post sat in dog-man-the-musical-west-end-2026 as an includable, forever-
+  // unscored "review". Measured against all 21,083 reviews.json URLs: 0 hits
+  // for each of these three shapes (bare "first-look" had 1 real review, so it
+  // is deliberately NOT here).
+  /(^|[-/])announc(es|ed|ement)([-/]|$)/i,
+  /production-photos/i,
+  /new-tour-dates/i,
+  // Photo galleries: openingnight.online/photos-becoming-hamlet-celebrates-
+  // opening-night-off-broadway/ was Becoming Hamlet's residual census "gap".
+  // 0 of 21,083 reviews.json URLs have a path segment starting "photo(s)-".
+  /(^|\/)photos?-/i,
 ];
 
 /**
@@ -176,6 +190,27 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // theater-feature section is previews/features, not reviews (Disruption
   // census counted one as a missing review, 2026-08-05).
   { host: /(^|\.)stagebuddy\.com$/, path: /^\/theater\/theater-feature\//, reason: 'feature-not-review' },
+  // MyReviewer's /DVD/ and /Blu-ray/ sections review home-video releases — for
+  // theatre, a filmed earlier production (the Globe's As You Like It DVD was
+  // ingested onto the 2026 Globe run, 2026-08-15). Never a live-run review.
+  { host: /(^|\.)myreviewer\.com$/, path: /^\/(dvd|blu-?ray|4k)\//i, reason: 'home-video-review' },
+  // The Stage's /news/ section is news; its reviews live under /reviews/.
+  // Found 2026-09-25: three live "reviews" carried /news/ URLs (serp-discovery
+  // star stubs on kiss-of-the-spider-woman-1993 and mamma-mia-2001 pointing at
+  // news of later revivals; a westendtheatre-sourced Mousetrap stub) plus a
+  // Disruption file holding an Edinburgh Fringe "travel disruption" news item.
+  { host: /(^|\.)thestage\.co\.uk$/, path: /^\/news\//, reason: 'news-article' },
+  // Census auto-ingest junk, 2026-09-25 backlog pass (each read at file level):
+  // NYTG /show/<id>-<slug> is a ticket listing ("La Traviata Tickets ... 90%") —
+  // three were LIVE scored "reviews" (la-traviata-off-broadway-2026 90,
+  // the-infinite-wrench-off-broadway-2025 82, the-house-of-the-negro-insane 49);
+  // its reviews live under /reviews/. The rest: 0 live reviews each.
+  { host: /(^|\.)newyorktheatreguide\.com$/, path: /^\/show\//, reason: 'ticketing-listing' },
+  { host: /(^|\.)gigantic\.com$/, reason: 'ticketing-reseller' },
+  { host: /(^|\.)concordtheatricals\.com$/, reason: 'licensing-listing' },
+  { host: /(^|\.)abouttheartists\.com$/, reason: 'production-database-listing' },
+  { host: /(^|\.)traverse\.co\.uk$/, path: /^\/whats-on\//, reason: 'venue-production-page' },
+  { host: /(^|\.)artsatmarblearch\.com$/, path: /^\/events\//, reason: 'venue-production-page' },
   // Seventh wave (2026-08-06 — Cats/NYSM/I'm Every Woman OWE opening audit,
   // first live exercise of #1073): ticketing/listing hosts that reached the
   // census "missing" lists — groupon deal pages and one was auto-INGESTED as a

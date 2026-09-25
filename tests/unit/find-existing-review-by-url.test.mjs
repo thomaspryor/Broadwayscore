@@ -64,3 +64,23 @@ test('same roundup URL, DIFFERENT outlet: does NOT merge (aggregator many-to-one
     'https://www.show-score.com/off-broadway-shows/roundup-xyz');
   assert.equal(res, null, 'cross-outlet shared roundup URL must not merge');
 });
+
+// Adversarial review 2026-09-24 (P1-a): after a Theatre Record Unknown→Alice
+// merge the file keeps its "--unknown" filename. A filename-slug match must be
+// revalidated against the STORED byline, or Bob at the same outlet merges into
+// Alice's review.
+test('stale "--unknown" filename holding a named critic is not a merge target for a DIFFERENT critic', () => {
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'rev-stale-unk-'));
+  try {
+    fs.writeFileSync(path.join(d, 'british-theatre--unknown.json'),
+      JSON.stringify({ outletId: 'british-theatre', criticName: 'Alice Smith', url: 'https://www.britishtheatreguide.info/reviews/x-1', fullText: 'body' }));
+    assert.equal(findExistingReviewFile(d, 'british-theatre', 'Bob Jones'), null, 'Bob must not merge into Alice');
+    const same = findExistingReviewFile(d, 'british-theatre', 'Alice Smith');
+    assert.ok(same, 'the same critic still finds it');
+    assert.equal(same.filename, 'british-theatre--unknown.json');
+    // An unattributed incoming write keeps the legacy filename-match behaviour.
+    assert.ok(findExistingReviewFile(d, 'british-theatre', 'Unknown'));
+  } finally {
+    fs.rmSync(d, { recursive: true, force: true });
+  }
+});

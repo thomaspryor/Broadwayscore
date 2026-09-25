@@ -788,7 +788,13 @@ function extractUKStarRating(html, text) {
 
   // 2b. The Stage: stageStar.svg (filled) vs stageNoStar.svg (empty)
   // Extract from FIRST StarRating block only (page has related articles with their own ratings)
-  if (html.includes('StarRating') || html.includes('stageStar.svg')) {
+  // Never on a /news/ page: its only StarRating blocks belong to related
+  // reviews in the sidebar, which is how kiss-of-the-spider-woman-1993 and
+  // mamma-mia-2001 got 4/5 and 3/5 from news of later revivals (2026-09-25).
+  const stageNewsPage = (html.match(/<(?:link|meta)\b[^>]*>/gi) || []).some((tag) =>
+    /\b(?:rel=["']canonical["']|property=["']og:url["'])/i.test(tag)
+    && /\b(?:href|content)=["']https?:\/\/(?:www\.)?thestage\.co\.uk\/news\//i.test(tag));
+  if (!stageNewsPage && (html.includes('StarRating') || html.includes('stageStar.svg'))) {
     const blockMatch = html.match(/StarRating[^"]*">((?:<img[^>]*>[\s]*){1,5})/);
     if (blockMatch) {
       const block = blockMatch[1];

@@ -1548,6 +1548,17 @@ function criticIsCompatibleMergeTarget(incomingCritic, fileCritic) {
     areCriticsSimilar(incomingCritic, fileCritic.replace(/-/g, ' '));
 }
 
+// True when BOTH the incoming critic and the file's STORED criticName name a
+// real person and they are not the same person (normalized / known alias).
+// Used to revalidate filename-slug matches in findExistingReviewFile, whose
+// slug can lag the stored byline (an "--unknown" file whose byline was filled).
+function storedCriticConflicts(incomingCritic, data) {
+  const stored = data && typeof data.criticName === 'string' ? data.criticName.trim() : '';
+  const isUnk = (n) => !n || /^(unknown|unnamed)$/i.test(String(n).trim());
+  if (isUnk(incomingCritic) || isUnk(stored)) return false;
+  return !criticIsCompatibleMergeTarget(incomingCritic, stored);
+}
+
 // True only when BOTH sides name a real, specific critic and they actually
 // match (or are a known pseudonym/typo pair) — the strongest identity
 // signal findExistingReviewFile ever has short of an exact URL. Used to
@@ -1666,6 +1677,14 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
         // rejection with no URL to hand — weaker evidence (both unknown)
         // does not qualify.
         if (isFlaggedMergeTarget(data) && !isExemptFlaggedMergeTarget(data, criticName, fileCritic)) continue;
+        // The filename slug can be stale: an "--unknown" file whose byline was
+        // later filled (Theatre Record Unknown→Alice merge; the rebuild's rename
+        // runs only afterwards) still matches every incoming critic by filename.
+        // Revalidate against the STORED byline — a file that already names a
+        // DIFFERENT real critic is never a merge target for this one (adversarial
+        // review 2026-09-24: Bob at the same outlet would otherwise merge into
+        // Alice's review).
+        if (storedCriticConflicts(criticName, data)) continue;
         return { path: filePath, filename: file, data };
       } catch {
         return { path: filePath, filename: file, data: null };
@@ -1768,6 +1787,8 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
       }
       if (!data) continue;
       if (isFlaggedMergeTarget(data) && !isExemptFlaggedMergeTarget(data, criticName, parts[1])) continue;
+      // Same stale-filename-slug revalidation as pass 1.
+      if (storedCriticConflicts(criticName, data)) continue;
 
       // Verify via URL resolution: does this file's URL resolve to the incoming outlet?
       // Without URL confirmation, different regional editions on the same domain would
@@ -2313,6 +2334,7 @@ module.exports = {
   findExistingReviewFile,
   isFlaggedMergeTarget,
   criticIsCompatibleMergeTarget,
+  storedCriticConflicts,
   isConfirmedNamedCriticMatch,
   isExemptFlaggedMergeTarget,
   maybeUpgradeUrl,

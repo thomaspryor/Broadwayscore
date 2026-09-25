@@ -233,30 +233,38 @@ jobs:
           fi
           echo "✓ No demo-only flags leaked to production"
 
-      - name: Cache Next.js build + prebuild artifacts
-        uses: actions/cache@v5
+      - name: Restore Next.js build + prebuild artifacts cache
+        uses: actions/cache/restore@v5
         with:
           # .next/cache: Next.js webpack/module incremental cache (kept across
           # deploys after 2026-05-23 workflow fix — see 3191971fd5).
           # data/cache/: prebuild hash gates (e.g. mobile-show-details/last-hash.json)
           # that skip regen when inputs unchanged.
           #
-          # hygiene-cache-runid-ok: deliberate, and small enough not to matter.
-          # NOTE (ship-check correction): restore-keys do NOT collapse entries —
-          # the primary key below still carries github.run_id, so this DOES mint a
-          # new entry per deploy, exactly like the pattern BRO-3887 removed. It is
-          # exempt on SIZE, not on shape: .next/cache + data/cache is tens of MB
-          # against checkout-core-data's 3.4 GiB, so it cannot exhaust the 10 GiB
-          # repo budget on its own. The run_id is required here for the reason the
-          # original comment below gives. If this ever grows past ~1 GiB, it needs
-          # the same treatment core-data got.
-          # Key includes github.run_id so every deploy gets a UNIQUE primary key.
-          # Without this, actions/cache@v5 sees a primary-key hit on restore and
-          # SKIPS the save step at job end — meaning per-deploy cache updates
-          # (like a freshly-written last-hash.json) are never persisted.
-          # The restore-keys fallback (no run_id) finds the previous deploy's
-          # cache. GHA auto-evicts old caches via LRU when the 10GB repo cap
-          # is reached. See: github.com/actions/cache#cache-version
+          # hygiene-cache-runid-ok: deliberate — the run_id is required for the
+          # reason the "Save" step below gives, not an oversight.
+          # NOT exempt on size anymore (BRO-4146, corrects the prior "tens of MB"
+          # note): measured 2026-09-25 at 24 live entries / 5.3 GiB (~221 MB/entry)
+          # — the SAME failure mode BRO-3887 fixed in checkout-core-data, from a
+          # different cache. Past the repo's 10 GiB cap, GitHub LRU-evicts the
+          # WHOLE namespace, including the unrelated ~KB-sized bd-serp-cache-*
+          # entries gather-reviews.js depends on for cross-run SERP dedup — that
+          # eviction reproduced BRO-3887's exact symptom
+          # (tests/unit/bro3887-cache-fix-acceptance.test.mjs went red again).
+          # Unlike checkout-core-data this cache has a measured build-time win
+          # (~2-3 min with .next/cache persisted, see 3191971fd5), so instead of
+          # dropping it, the explicit "Save"/"Prune" steps below (placed after
+          # Build, not before it) keep only the newest 2 entries for this key
+          # prefix after every deploy.
+          #
+          # Split into restore/save (was the combined actions/cache@v5 action,
+          # ship-check correction 2026-09-25): that action's save step is a
+          # POST hook that runs at job end, AFTER every later step including a
+          # prune placed right here — so a prune step immediately following the
+          # combined action would run BEFORE this run's own entry even exists,
+          # leaving 3 live entries per run instead of the claimed 2 (worse
+          # under overlapping concurrent deploys). Explicit save + prune,
+          # ordered after Build, makes "keep newest 2" true as written.
           path: |
             .next/cache
             data/cache
@@ -333,6 +341,55 @@ jobs:
             exit 1
           fi
           echo "Build completed in ${BUILD_SECS}s"
+
+      - name: Save Next.js build + prebuild artifacts cache
+        # hygiene-cache-runid-ok: deliberate, see the "Restore" step earlier
+        # in this job for the full BRO-4146 reasoning — the run_id is
+        # required so every deploy saves (a primary-key hit would skip this
+        # step), and the "Prune stale Next.js cache entries" step right after
+        # this one bounds the resulting entry count.
+        # Explicit save (paired with the explicit restore step above), placed
+        # after Build so it captures the same post-build .next/cache and
+        # data/cache contents the old combined actions/cache@v5 action's
+        # post-job save hook used to — nothing after Build writes into either
+        # path. if: always() so a failed build still persists whatever
+        # prebuild artifacts were produced (matches the old action's
+        # behavior, which saved regardless of later step outcomes).
+        if: always()
+        uses: actions/cache/save@v5
+        with:
+          path: |
+            .next/cache
+            data/cache
+          key: nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.run_id }}
+
+      - name: Prune stale Next.js cache entries
+        # BRO-4146: the key above carries github.run_id, so the save step
+        # just above mints a brand-new immutable entry every deploy and never
+        # deletes the old ones on its own — see the incident notes on the
+        # restore step earlier in this job. Runs AFTER the save step (not
+        # before, see that step's comment) so "keep newest 2" is accurate.
+        # Prefix omits the lockfile hash — restore-keys above falls back
+        # across hash families (`nextjs-cache-${{ runner.os }}-`), so a
+        # package-lock.json bump must not strand the old hash's entries
+        # unpruned; this targets the same broader family restore-keys does.
+        # --ref is REQUIRED (ship-check correction, BRO-4146): this prefix is
+        # generic enough to collide with vercel-preview.yml's own (differently
+        # scoped) `nextjs-cache-...` key on the `staging` ref — GH Actions
+        # caches are per-ref, and an unscoped `gh cache list`/`delete` search
+        # all refs. `${{ github.ref }}` pins this to only the ref THIS run
+        # triggered on, never a sibling workflow's branch.
+        # Selection logic is a pure, unit-tested function
+        # (scripts/lib/actions-cache-prune.js); this just wires it to `gh cache`.
+        # if: always() so a failed/skipped build still trims the backlog
+        # rather than compounding it; continue-on-error so a prune failure
+        # never fails a deploy — worst case is a return to today's status
+        # quo, not a regression.
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/prune-github-actions-cache.js "nextjs-cache-${{ runner.os }}-" --ref="${{ github.ref }}" --keep=2
 
       - name: Deploy to Production
         id: deploy

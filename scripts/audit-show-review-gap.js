@@ -343,12 +343,7 @@ function getKnownDomainMap() {
 let _showScoreUrlMap = null;
 function getShowScoreUrlMap() {
   if (_showScoreUrlMap) return _showScoreUrlMap;
-  try {
-    const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'show-score-urls.json'), 'utf8'));
-    _showScoreUrlMap = raw.shows || raw || {};
-  } catch {
-    _showScoreUrlMap = {};
-  }
+  _showScoreUrlMap = require('./lib/show-score-discover').loadShowScoreUrlMap(ROOT);
   return _showScoreUrlMap;
 }
 

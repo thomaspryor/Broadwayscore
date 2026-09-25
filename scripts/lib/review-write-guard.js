@@ -1488,10 +1488,12 @@ function safeWriteReview(filePath, newData, options = {}) {
         if (existingUrlReal && incomingUrlGarbage && newData.url !== existing.url) {
           console.warn(`[review-write-guard] rejecting garbage url ${JSON.stringify(newData.url)} on ${path.basename(filePath)}: keeping ${existing.url}`);
           newData.url = existing.url;
-        } else if (normalizedUrlDiffers && (lockedOverride || existing.urlVerified === true || existing.urlManualOverride === true)) {
+        } else if (normalizedUrlDiffers && (lockedOverride || existing.urlManualOverride === true
+          || (existing.urlVerified === true && !(existing.urlVerifiedAuto === true && _flipFlopShouldTakeIncoming(existing.url, newData.url))))) {
           console.warn(`[review-write-guard] blocked url change on ${path.basename(filePath)} (${lockedOverride ? '_locked' : 'urlVerified/urlManualOverride'}): keeping ${existing.url}`);
           newData.url = existing.url;
-        } else if (normalizedUrlDiffers && isUrlFlipFlop(existing, newData.url)) {
+        } else if (normalizedUrlDiffers && isUrlFlipFlop(existing, newData.url)
+          && !_flipFlopShouldTakeIncoming(existing.url, newData.url)) {
           // Flip-flop breaker (BRO-121): newData.url matches the url this file
           // held before its last URL-change clear (_urlChangedClear.from) — a
           // poller/aggregator is oscillating between two url variants
@@ -1520,7 +1522,20 @@ function safeWriteReview(filePath, newData, options = {}) {
             newData.urlVerifiedNote = `Auto-pinned ${new Date().toISOString().slice(0, 10)}: url flip-flopped back to a prior value (poller alternates ${existing.url} <-> ${flippedFromUrl}) — locked against further automated changes (BRO-121).`;
           }
         } else if (urlCanonicallyChanged(existing.url, newData.url)) {
+          const liftAutoPin = existing.urlVerifiedAuto === true && _flipFlopShouldTakeIncoming(existing.url, newData.url);
+          if (liftAutoPin) {
+            // The auto-pin belonged to the non-review url being replaced; it must
+            // not lock in the incoming url (its note names the old one).
+            delete newData.urlVerified; delete newData.urlVerifiedAuto; delete newData.urlVerifiedNote;
+          }
           const inv = applyUrlChangeInvariant(existing, newData, { fileLabel: path.basename(filePath) });
+          if (liftAutoPin && newData._urlChangedClear && Array.isArray(newData._urlChangedClear.cleared)) {
+            // Breadcrumb so restore-protected-fields.js treats the lifted pin as an
+            // intentional clear, not a loss to restore (urlVerified* are PROTECTED).
+            for (const f of ['urlVerified', 'urlVerifiedAuto', 'urlVerifiedNote']) {
+              if (!newData._urlChangedClear.cleared.includes(f)) newData._urlChangedClear.cleared.push(f);
+            }
+          }
           for (const f of inv.cleared) {
             const i = preserved.indexOf(f);
             if (i !== -1) preserved.splice(i, 1);
@@ -2893,4 +2908,23 @@ function protectStagedDeletions(cwd, options = {}) {
   return restored;
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS };
+/**
+ * A url flip-flop between a named NON-review page (e.g. a The Stage /news/
+ * item, a ticket listing) and a real review url must resolve to the review,
+ * not to whichever side the file happened to hold when the breaker fired.
+ * my-sons-a-queer-but-what-can-you-do-west-end-2026 and
+ * white-rabbit-red-rabbit-west-end-2026 were auto-pinned (BRO-121) onto
+ * thestage.co.uk/news/ urls while the /reviews/ url kept arriving (2026-09-25).
+ * Also lets an AUTO pin (urlVerifiedAuto) on such a url be corrected; a human
+ * pin (urlManualOverride / urlVerified without Auto) is never overridden.
+ */
+function _flipFlopShouldTakeIncoming(existingUrl, incomingUrl) {
+  const { namedNonReviewReason } = require('./non-review-url-patterns');
+  if (!namedNonReviewReason(existingUrl || '') || namedNonReviewReason(incomingUrl || '')) return false;
+  // Same site only: a host-wide named pattern can sit over real reviews
+  // elsewhere, so never let this hop an auto-pin to a different outlet.
+  const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, '').toLowerCase(); } catch { return null; } };
+  return !!host(existingUrl) && host(existingUrl) === host(incomingUrl);
+}
+
+module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming };

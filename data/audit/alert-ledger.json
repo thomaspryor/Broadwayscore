@@ -143,13 +143,12 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-25T02:13:06.311Z",
-      "lastNotifiedAt": "2026-09-25T01:38:28.250Z",
-      "lastSurfacedAt": "2026-09-25T01:38:28.250Z",
-      "notifyCount": 101,
+      "lastSeen": "2026-09-25T02:52:48.085Z",
+      "lastNotifiedAt": "2026-09-25T02:52:48.085Z",
+      "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
+      "notifyCount": 102,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 1
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3714,7 +3713,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Lint Workflows:1ff49e04": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
       "firstSeen": "2026-09-20T19:22:49.867Z",
@@ -3724,7 +3723,9 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-4147",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-09-25T02:52:48.059Z",
+      "resolveReason": "job-green"
     },
     "test-yml:red:Data Validation:9e7c89b2": {
       "status": "resolved",
@@ -4469,7 +4470,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:158d55b0": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every JOB_EVENTS value is exactly terminal, open, or a named non-job-state exemption\"",
       "firstSeen": "2026-09-23T03:53:03.115Z",
@@ -4482,8 +4483,11 @@
       "silentRefires": 1,
       "absentRunIds": [
         "35817798383",
-        "36084309752"
-      ]
+        "36084309752",
+        "36087172520"
+      ],
+      "resolvedAt": "2026-09-25T02:52:48.071Z",
+      "resolveReason": "stale-signature"
     },
     "test-yml:red:Unit Tests:eb9a92ac": {
       "status": "open",
@@ -4497,7 +4501,8 @@
       "cardId": null,
       "linearIdentifier": "BRO-4063",
       "absentRunIds": [
-        "36084309752"
+        "36084309752",
+        "36087172520"
       ]
     },
     "land:land/worktree-bro-3873-c-old": {
@@ -4701,13 +4706,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Audit cast-changes.json",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-25T02:03:47.877Z",
+      "lastSeen": "2026-09-25T02:44:31.824Z",
       "lastNotifiedAt": "2026-09-25T00:12:28.830Z",
       "lastSurfacedAt": "2026-09-25T00:12:28.830Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 11
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -4953,18 +4958,19 @@
       "cardId": null,
       "linearIdentifier": "BRO-4146",
       "absentRunIds": [
-        "36084309752"
+        "36084309752",
+        "36087172520"
       ]
     },
     "land:land/worktree-fix-land-fixture-hang": {
       "status": "open",
       "disposition": "digest",
-      "title": "Landing blocked: push red on land/worktree-fix-land-fixture-hang",
+      "title": "Landing blocked: scripts-lib-tests red on land/worktree-fix-land-fixture-hang",
       "firstSeen": "2026-09-25T01:47:33.918Z",
-      "lastSeen": "2026-09-25T01:47:33.918Z",
-      "lastNotifiedAt": "2026-09-25T01:47:33.918Z",
-      "lastSurfacedAt": "2026-09-25T01:47:33.918Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-25T02:47:24.662Z",
+      "lastNotifiedAt": "2026-09-25T02:47:24.662Z",
+      "lastSurfacedAt": "2026-09-25T02:47:24.662Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -4973,12 +4979,13 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run push-with-retry stranded-commit-cascade test (bash integration) — \"foo returns the contracted value\"",
       "firstSeen": "2026-09-25T02:13:05.904Z",
-      "lastSeen": "2026-09-25T02:13:05.904Z",
+      "lastSeen": "2026-09-25T02:52:48.082Z",
       "lastNotifiedAt": "2026-09-25T02:13:05.904Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-4149"
+      "linearIdentifier": "BRO-4149",
+      "silentRefires": 1
     }
   }
 }

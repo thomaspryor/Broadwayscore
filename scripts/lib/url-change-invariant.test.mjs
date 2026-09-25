@@ -813,3 +813,31 @@ test('BRO-2877: a DATELESS record clears the date-based wrongProduction flag (le
   assert.ok(res.cleared.includes('wrongProduction'),
     `expected wrongProduction cleared on a dateless record, got ${JSON.stringify(res.cleared)}`);
 });
+
+test('flip-flop between a named non-review url and a review url resolves to the review, even over an AUTO pin', () => {
+  const { safeWriteReview } = require('./review-write-guard.js');
+  const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-flipflop-news-'));
+  const showId = 'white-rabbit-test-fixture';
+  const news = 'https://www.thestage.co.uk/news/some-unrelated-news-item';
+  const review = 'https://www.thestage.co.uk/reviews/white-rabbit-red-rabbit-review';
+  const target = makeFixture(reviewTextsDir, showId, 'thestage--dave-fargnoli.json', {
+    showId, outletId: 'thestage', outlet: 'The Stage', criticName: 'Dave Fargnoli',
+    url: news, source: 'show-score', contentTier: 'excerpt',
+    urlVerified: true, urlVerifiedAuto: true, urlVerifiedNote: 'Auto-pinned: url flip-flopped (BRO-121)',
+    _urlChangedClear: { from: review, to: news, at: '2026-08-01T00:00:00.000Z', cleared: [] },
+  });
+  quiet(() => safeWriteReview(target, { criticName: 'Dave Fargnoli', url: review, source: 'show-score' }));
+  const after = JSON.parse(fs.readFileSync(target, 'utf8'));
+  assert.equal(after.url, review, 'the review url must win over a /news/ url');
+  assert.equal(after.urlVerifiedAuto, undefined, 'the stale auto-pin must not carry over onto the new url');
+  assert.ok(after._urlChangedClear && after._urlChangedClear.cleared.includes('urlVerified'), 'lifted pin is breadcrumbed as an intentional clear');
+
+  // A HUMAN pin is never overridden.
+  const human = makeFixture(reviewTextsDir, showId, 'thestage--human.json', {
+    showId, outletId: 'thestage', outlet: 'The Stage', criticName: 'Human Pin',
+    url: news, source: 'show-score', urlVerified: true,
+  });
+  quiet(() => safeWriteReview(human, { criticName: 'Human Pin', url: review, source: 'show-score' }));
+  assert.equal(JSON.parse(fs.readFileSync(human, 'utf8')).url, news);
+  fs.rmSync(reviewTextsDir, { recursive: true, force: true });
+});
