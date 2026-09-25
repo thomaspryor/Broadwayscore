@@ -89,6 +89,25 @@ function hostnameOf(url) {
  * Returns false for: non-aggregator URLs, aggregator URLs whose outletId is
  * itself an aggregator (legit), missing url/outletId, and unparseable URLs.
  */
+/**
+ * BRO-4155: provisionalOutletIdFromHost(host) returns null for two very
+ * different reasons — a genuinely unparseable/missing host, and a host that
+ * DID resolve but is a known aggregator domain (correctly rejected there so
+ * ingest doesn't mint a phantom outlet — see outlet-canonicalize.js). A
+ * caller that reports both as the same "unknown-outlet-no-host" string can't
+ * tell a Show Score self-referential/pagination URL (audit-show-review-gap.js
+ * ingest logs) from a truly malformed URL. Names the actual host so the two
+ * are distinguishable.
+ *
+ * @param {string|null} host - registrable host, or null if unparseable.
+ * @returns {string} a reason string for a failed provisional-outlet lookup.
+ */
+function describeUnresolvedProvisionalOutlet(host) {
+  if (!host) return 'unknown-outlet-no-host';
+  if (AGGREGATOR_DOMAINS.has(host)) return `unknown-outlet-aggregator-host (${host})`;
+  return `unknown-outlet-no-provisional-slug (${host})`;
+}
+
 function isAggregatorUrlMismatch(url, outletId) {
   if (!outletId) return false;
   const hostname = hostnameOf(url);
@@ -309,6 +328,7 @@ module.exports = {
   SHARED_DOMAIN_OUTLETS,
   hostnameOf,
   isAggregatorUrlMismatch,
+  describeUnresolvedProvisionalOutlet,
   hasPreservableAggregatorScore,
   hasSubstantiveReviewText,
 };
