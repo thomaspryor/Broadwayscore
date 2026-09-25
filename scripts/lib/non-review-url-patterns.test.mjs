@@ -163,6 +163,13 @@ test('classifyReviewUrl: stagebuddy REVIEW paths still pass (path-scoped, not ho
   assert.equal(classifyReviewUrl('https://stagebuddy.com/theater/reviews/disruption-review').ok, true);
 });
 
+test('classifyReviewUrl: news-announcement slugs rejected; "first-look" reviews still pass', () => {
+  assert.equal(classifyReviewUrl('https://www.westwaleschronicle.co.uk/blog/2026/07/29/dog-man-the-musical-releases-production-photos-and-announces-new-tour-dates-for-2027/').ok, false);
+  assert.equal(classifyReviewUrl('https://www.thereviewshub.com/initial-casting-announced-for-burlesque-uk-tour/').ok, false);
+  assert.equal(classifyReviewUrl('https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/').ok, true);
+  assert.equal(classifyReviewUrl('https://www.thereviewshub.com/burlesque-the-musical-savoy-theatre-london/').ok, true);
+});
+
 test('classifyReviewUrl: myreviewer home-video (DVD/Blu-ray) reviews rejected, other sections pass', () => {
   const dvd = classifyReviewUrl('https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington');
   assert.deepEqual(dvd, { ok: false, reason: 'home-video-review' });
