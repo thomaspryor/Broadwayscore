@@ -693,13 +693,17 @@ test('pruneDone: a readLedgerEntries failure fails closed (title-only detection,
 // so the handoff typed into the wrong workspace, and the sender's own
 // follow-up claudeMidTurnIn('13') check resolved to that SAME wrong tab and
 // "confirmed" a delivery that never happened.
-test('isValidWorkspaceRef: accepts workspace:N and a UUID; rejects bare numbers and indices', () => {
+// UUID refs (listWorkspacesWithCwd's `w.id`) are deliberately NOT accepted
+// here (adversarial review, BRO-4140): nothing in this codebase has ever
+// verified cmux's CLI accepts a raw UUID as `--workspace`, and every real
+// lookup (dispatch-ledger.js's own WORKSPACE_REF_RE, sendToWorkspace's title
+// check) only ever indexes by `workspace:N`.
+test('isValidWorkspaceRef: accepts workspace:N; rejects bare numbers, indices, and UUIDs', () => {
   assert.equal(isValidWorkspaceRef('workspace:13'), true);
   assert.equal(isValidWorkspaceRef('workspace:0'), true);
-  assert.equal(isValidWorkspaceRef('4647CB3E-3E38-402F-9743-6E136DCE8557'), true);
-  assert.equal(isValidWorkspaceRef('4647cb3e-3e38-402f-9743-6e136dce8557'), true); // lowercase UUID
   assert.equal(isValidWorkspaceRef('13'), false, 'bare number — the exact BRO-4140 misdelivery shape');
   assert.equal(isValidWorkspaceRef(13), false, 'bare number as a JS number, not just a string');
+  assert.equal(isValidWorkspaceRef('4647CB3E-3E38-402F-9743-6E136DCE8557'), false, 'a workspace UUID is not an accepted --workspace form here');
   assert.equal(isValidWorkspaceRef('workspace:'), false);
   assert.equal(isValidWorkspaceRef('workspace:abc'), false);
   assert.equal(isValidWorkspaceRef(''), false);
@@ -737,23 +741,54 @@ test('claudeMidTurnIn/claudeAliveIn: an invalid ref throws — it is NOT swallow
   assert.throws(() => cw.claudeMidTurnIn('13'), /invalid workspace ref/);
 });
 
-test('checkLiveness: an invalid ref throws instead of being absorbed by its own fail-safe try/catch', () => {
+// checkLiveness deliberately does NOT validate the ref itself (adversarial
+// review, BRO-4140): its pre-existing "any error = fail safe" contract must
+// stay intact for computeClaudeAlive(), whose meta.workspaceRef can
+// legitimately be dispatch-ledger.js's `headless:<taskId>` convention (a
+// real, non-cmux value) — the incident this ticket fixes was a DIRECT
+// claudeMidTurnIn/sendToWorkspace call with a hand-typed ref, not a
+// checkLiveness sweep, so those functions carry the throwing guard instead.
+test('checkLiveness: an aliveFn that throws (e.g. the real claudeAliveIn rejecting a bad ref) is absorbed as fail-safe alive, not rethrown', () => {
   const cw = require('./cmux-workspaces.js');
-  let called = false;
-  assert.throws(() => cw.checkLiveness('13', () => { called = true; return false; }, () => false), /invalid workspace ref/);
-  assert.equal(called, false, 'aliveFn must never run for an invalid ref');
+  const { dead, disagreement } = cw.checkLiveness('headless:1234', () => { throw new Error('invalid workspace ref'); }, () => false);
+  assert.equal(dead, false);
+  assert.equal(disagreement, false);
 });
 
 test('sendToWorkspace: expectedTitle mismatch refuses to send (BRO-4140 delivery confirmation)', () => {
   const cw = require('./cmux-workspaces.js');
-  const calls = [];
-  const fakeRun = (args) => { calls.push(args); return ''; };
   assert.throws(
     () => cw.sendToWorkspace('workspace:15', 'crown handoff', {
       expectedTitle: '👑 OWNER — every show has every review, scored right',
       listWorkspacesFn: () => [{ ref: 'workspace:15', title: 'Stop making me hunt tabs', selected: false }],
     }),
     /does not match the expected title/,
+  );
+});
+
+// P2 adversarial-review catch: cmux's text listing prepends a changing
+// activity-glyph/spinner prefix (isDoneTitle's own header comment documents
+// this). A naive exact-string compare would misfire on that routine churn
+// instead of on an actual wrong tab.
+test('sendToWorkspace: expectedTitle tolerates a leading activity-glyph/spinner mismatch but still catches a real content mismatch', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  cw.sendToWorkspace('workspace:15', 'crown handoff', {
+    expectedTitle: '👑 OWNER — every show has every review, scored right',
+    listWorkspacesFn: () => [{ ref: 'workspace:15', title: '⠂ OWNER — every show has every review, scored right', selected: true }],
+    runFn: (args) => { calls.push(args); return ''; },
+  });
+  assert.deepEqual(calls, [
+    ['send', '--workspace', 'workspace:15', '--', 'crown handoff'],
+    ['send-key', '--workspace', 'workspace:15', 'Enter'],
+  ]);
+  assert.throws(
+    () => cw.sendToWorkspace('workspace:16', 'crown handoff', {
+      expectedTitle: '👑 OWNER — every show has every review, scored right',
+      listWorkspacesFn: () => [{ ref: 'workspace:16', title: '⠂ Stop making me hunt tabs', selected: true }],
+    }),
+    /does not match the expected title/,
+    'a differing glyph prefix must not mask a genuinely different title',
   );
 });
 
