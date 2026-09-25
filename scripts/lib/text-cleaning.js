@@ -338,6 +338,31 @@ function stripTrailingJunk(text) {
 }
 
 /**
+ * Strip a raw leading HTML tag left behind when the article's first child is
+ * an image (e.g. a WordPress star-rating graphic) and the extractor's
+ * HTML-to-text pass didn't convert it. Found in Theatre Weekly's Dog Man
+ * review (BRO-4154 punctuation-bug recovery, 2026-09-25): fullText started
+ * with a full `<img ... srcset="...">` tag before any review prose. Only
+ * strips void/self-closing tags that never wrap real prose (img/source/
+ * picture/br/meta/link), so genuine text starting with "<" is untouched.
+ *
+ * @param {string} text
+ * @returns {string}
+ */
+function stripLeadingHtmlArtifacts(text) {
+  if (!text) return text;
+  let out = text;
+  for (let i = 0; i < 8; i++) {
+    // Void/self-closing image tags, plus open/close of pure-presentational
+    // wrapper elements (<picture>, <figure>) that only ever contain images.
+    const next = out.replace(/^\s*(?:<(?:img|source|br|meta|link)\b[^>]*\/?>|<\/?(?:picture|figure)\b[^>]*>)\s*/i, '');
+    if (next === out) break;
+    out = next;
+  }
+  return out;
+}
+
+/**
  * Strip leading navigation junk from scraped review text.
  * Many sites (TheWrap, BroadwayNews, NY Daily News, Chicago Tribune) include
  * "Skip to content" followed by site navigation menus, whitespace, and other
@@ -416,6 +441,9 @@ function cleanText(text) {
   // Step 2: Strip control characters (keep \n, \r, \t)
   cleaned = cleaned.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
 
+  // Step 2a: Strip a raw leading <img>/<picture>/<source> tag artifact
+  cleaned = stripLeadingHtmlArtifacts(cleaned);
+
   // Step 2b: Strip leading navigation junk ("Skip to content" + nav menus)
   cleaned = stripLeadingNavigation(cleaned);
 
@@ -446,6 +474,7 @@ function cleanText(text) {
 
 module.exports = {
   decodeHtmlEntities,
+  stripLeadingHtmlArtifacts,
   stripLeadingNavigation,
   stripTrailingJunk,
   stripCrossReferences,
