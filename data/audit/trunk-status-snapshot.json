@@ -1,22 +1,48 @@
 {
-  "generatedAt": "2026-09-24T12:23:45.194Z",
+  "generatedAt": "2026-09-25T12:20:26.398Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "172415b319a6e7b630539c22d6d3c354ca044b70",
-  "state": "GREEN",
-  "consecutiveFailures": 0,
-  "consecutiveSuccesses": 3,
-  "greenSince": "2026-09-23T04:22:40Z",
-  "greenForHours": 32.01810944444444,
+  "latestRunHeadSha": "5a1b5e3eb003007eae3fdbb13b9c3618dd7bafe5",
+  "state": "RED",
+  "consecutiveFailures": 3,
+  "consecutiveSuccesses": 0,
+  "greenSince": null,
+  "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": null,
-  "redForHours": null,
+  "redSince": "2026-09-25T05:44:16Z",
+  "redForHours": 6.6028883333333335,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-09-23T04:31:14Z",
-  "latestFailedRunId": null,
-  "latestFailedRunUrl": null,
-  "decidedRuns": 75,
-  "failingJobs": [],
-  "failingPaths": [],
-  "topFailingJob": null
+  "lastSuccessAt": "2026-09-25T05:12:16Z",
+  "latestFailedRunId": "36129090878",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36129090878",
+  "decidedRuns": 64,
+  "failingJobs": [
+    {
+      "name": "Data Validation",
+      "steps": [
+        "Audit outlet-registry gaps"
+      ]
+    },
+    {
+      "name": "Unit Tests",
+      "steps": [
+        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
+      ]
+    },
+    {
+      "name": "Test Summary",
+      "steps": [
+        "Check results"
+      ]
+    }
+  ],
+  "failingPaths": [
+    {
+      "path": "scripts/lib/fallback-attribution.test.mjs",
+      "job": "Unit Tests",
+      "step": "Run scripts/lib tests (visual-qa transcript-scan etc.)",
+      "evidence": "not ok 3280 - TRIPPED breaker: the Bright Data ledger row carries fallback_from \"sd-breaker\""
+    }
+  ],
+  "topFailingJob": "Unit Tests"
 }

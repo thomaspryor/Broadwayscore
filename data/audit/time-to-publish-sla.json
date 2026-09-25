@@ -1,39 +1,100 @@
 {
-  "generatedAt": "2026-09-24T12:23:49.241Z",
-  "scope": "2 opening window(s): delirium-off-broadway-2026 (2026-09-24), elf-lyons-the-woman-on-the-edge-off-broadway-2026 (2026-09-24)",
+  "generatedAt": "2026-09-25T12:20:37.811Z",
+  "scope": "2 opening window(s): la-boheme-off-broadway-2026 (2026-09-25), delirium-off-broadway-2026 (2026-09-24)",
   "degraded": null,
   "windows": [
     {
-      "showId": "delirium-off-broadway-2026",
-      "openingDate": "2026-09-24",
-      "from": "2026-09-23T00:00:00.000Z",
-      "to": "2026-09-28T23:59:59.999Z"
+      "showId": "la-boheme-off-broadway-2026",
+      "openingDate": "2026-09-25",
+      "from": "2026-09-24T00:00:00.000Z",
+      "to": "2026-09-29T23:59:59.999Z"
     },
     {
-      "showId": "elf-lyons-the-woman-on-the-edge-off-broadway-2026",
+      "showId": "delirium-off-broadway-2026",
       "openingDate": "2026-09-24",
       "from": "2026-09-23T00:00:00.000Z",
       "to": "2026-09-28T23:59:59.999Z"
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 245132,
+  "logEntryCount": 256135,
   "logOldestEntryAt": "2026-08-21T04:29:05.437Z",
   "publishTimesLoaded": 0,
   "verdict": {
     "verdict": "insufficient-data",
     "pass": false,
-    "evaluated": 0,
+    "evaluated": 2,
     "inFlight": 0,
     "compliant": 0,
-    "compliancePct": null,
-    "p50Ms": null,
-    "p90Ms": null,
+    "compliancePct": 0,
+    "p50Ms": 6973673,
+    "p90Ms": 8835889,
     "targetMinutes": 15,
     "targetPct": 90,
     "minSample": 5,
-    "breaches": [],
-    "byBasis": {}
+    "breaches": [
+      {
+        "showId": "delirium-off-broadway-2026",
+        "reviewKey": "culturesauce:thom-geier:https://culturesauce.com/ionesco-delirium-off-broadway-review/",
+        "outletId": "culturesauce",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-09-25T02:07:37.111Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-09-25T02:47:21.657Z",
+        "liveAt": "2026-09-25T04:24:53.000Z",
+        "pipelineMs": 8235889,
+        "publishedToLiveMs": 8835889,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      },
+      {
+        "showId": "delirium-off-broadway-2026",
+        "reviewKey": "nytg:unknown:https://www.newyorktheatreguide.com/reviews/delirium-off-broadway-review",
+        "outletId": "nytg",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-09-25T02:38:39.327Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-09-25T02:47:21.657Z",
+        "liveAt": "2026-09-25T04:24:53.000Z",
+        "pipelineMs": 6373673,
+        "publishedToLiveMs": 6973673,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      }
+    ],
+    "byBasis": {
+      "poller-bounded": {
+        "evaluated": 2,
+        "compliant": 0
+      }
+    }
   },
-  "records": []
+  "records": [
+    {
+      "showId": "delirium-off-broadway-2026",
+      "outletId": "culturesauce",
+      "reviewKey": "culturesauce:thom-geier:https://culturesauce.com/ionesco-delirium-off-broadway-review/",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-09-25T02:07:37.111Z",
+      "liveAt": "2026-09-25T04:24:53.000Z",
+      "pipelineMinutes": 137.3,
+      "publishedToLiveMinutes": 147.3,
+      "stuckAtStage": null
+    },
+    {
+      "showId": "delirium-off-broadway-2026",
+      "outletId": "nytg",
+      "reviewKey": "nytg:unknown:https://www.newyorktheatreguide.com/reviews/delirium-off-broadway-review",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-09-25T02:38:39.327Z",
+      "liveAt": "2026-09-25T04:24:53.000Z",
+      "pipelineMinutes": 106.2,
+      "publishedToLiveMinutes": 116.2,
+      "stuckAtStage": null
+    }
+  ]
 }
