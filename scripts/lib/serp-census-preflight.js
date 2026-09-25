@@ -44,7 +44,23 @@
  */
 
 /** Env vars serpSearch() actually reads before deciding it cannot search. */
-const SERP_KEY_VARS = ['SCRAPINGBEE_API_KEY', 'BRIGHTDATA_TOKEN'];
+const SERP_KEY_VARS = ['SCRAPINGBEE_API_KEY', 'BRIGHTDATA_TOKEN', 'SCRAPINGDOG_API_KEY'];
+
+/**
+ * Keys that serpQuery's provider chain will actually USE in this env — mirrors
+ * the switches in lib/url-discovery.js: SERP_NO_SB=1 drops ScrapingBee
+ * (_effectiveSerpSkips), SCRAPER_USE_SCRAPINGDOG=0 drops Scrapingdog. The
+ * census-recall and adversarial-probe workflows set SERP_NO_SB=1, so an
+ * SB-only env there searches NOTHING even though a key is "present".
+ */
+function usableSerpKeys(env = {}) {
+  const has = (k) => env[k] && String(env[k]).trim();
+  const out = [];
+  if (has('SCRAPINGBEE_API_KEY') && env.SERP_NO_SB !== '1') out.push('SCRAPINGBEE_API_KEY');
+  if (has('BRIGHTDATA_TOKEN')) out.push('BRIGHTDATA_TOKEN');
+  if (has('SCRAPINGDOG_API_KEY') && env.SCRAPER_USE_SCRAPINGDOG !== '0') out.push('SCRAPINGDOG_API_KEY');
+  return out;
+}
 
 function envTrue(v) {
   return v === '1' || String(v).toLowerCase() === 'true';
@@ -79,7 +95,7 @@ function serpCensusPreflight(env = {}, opts = {}) {
   if (disableVar && envTrue(env[disableVar])) {
     return { ok: true, reason: `SERP census explicitly disabled via ${disableVar} — a zero census is an expected consequence of that choice, not an accident` };
   }
-  const present = SERP_KEY_VARS.filter((k) => env[k] && String(env[k]).trim());
+  const present = usableSerpKeys(env);
   if (present.length > 0) {
     return { ok: true, reason: `SERP census can run (${present.join(', ')} present)` };
   }
@@ -91,7 +107,7 @@ function serpCensusPreflight(env = {}, opts = {}) {
   return {
     ok: false,
     reason:
-      'No SERP API key in the environment (need SCRAPINGBEE_API_KEY or BRIGHTDATA_TOKEN). '
+      'No usable SERP API key in the environment (need BRIGHTDATA_TOKEN, SCRAPINGDOG_API_KEY, or SCRAPINGBEE_API_KEY without SERP_NO_SB=1). '
       + consequence + '\n'
       + '  Locally: the keys live in .env, which fetchPage loads internally but this path does not — '
       + 'export them into the shell first, e.g. `set -a; . ./.env; set +a`.\n'
@@ -100,4 +116,4 @@ function serpCensusPreflight(env = {}, opts = {}) {
   };
 }
 
-module.exports = { serpCensusPreflight, SERP_KEY_VARS };
+module.exports = { serpCensusPreflight, usableSerpKeys, SERP_KEY_VARS };

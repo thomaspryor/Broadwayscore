@@ -249,14 +249,16 @@ async function main() {
     disableVar: null,
     consequence:
       'Every arm would return zero results — indistinguishable, downstream, '
-      + 'from a genuine recall regression. Skipping this run rather than '
-      + 'recording a flat-zero measurement.',
+      + 'from a genuine recall regression. Refusing to record a flat-zero measurement.',
     workflowHint: '.github/workflows/audit-census-recall.yml',
   });
   if (!preflight.ok) {
-    console.warn(`census recall preflight: ${preflight.reason}`);
-    console.warn('Skipping this run — no trend entry, no report written.');
-    return 0;
+    // Explicit kill switches already returned 0 above, so reaching here keyless
+    // is an accident (dropped secret). Exit non-zero so the workflow's failure
+    // notification fires instead of a green run over stale measurements.
+    console.error(`::error::census recall preflight failed — ${preflight.reason}`);
+    console.error('No trend entry, no report written.');
+    return 1;
   }
 
   const shows = loadShows();

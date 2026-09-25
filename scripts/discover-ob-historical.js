@@ -320,7 +320,12 @@ async function main() {
     }
   }
 
-  if (!dryRun) {
+  if (!dryRun && venuesSkipped.length > 0) {
+    // A partial run would replace the last complete candidate list with one
+    // missing whole venues (nothing downstream reads venuesSkipped), so leave
+    // the file untouched; candidates found this run are printed above.
+    console.warn(`Not writing ${OUT_PATH}: SERP venue(s) skipped (${venuesSkipped.join(', ')}) — previous complete result kept.`);
+  } else if (!dryRun) {
     fs.mkdirSync(path.dirname(OUT_PATH), { recursive: true });
     fs.writeFileSync(OUT_PATH, JSON.stringify({
       generatedAt: new Date().toISOString(),

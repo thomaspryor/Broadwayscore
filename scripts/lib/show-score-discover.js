@@ -159,8 +159,25 @@ async function fetchAllShowScoreReviewUrls(pageUrl, fetchHtml) {
   return [...all];
 }
 
+/**
+ * Curated show → Show Score page map (data/show-score-urls.json). Callers pass
+ * their repo root so worktrees/tests can point elsewhere. Missing or unreadable
+ * file → {} (constructed urls still work for NYC shows).
+ */
+function loadShowScoreUrlMap(root) {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const raw = JSON.parse(fs.readFileSync(path.join(root, 'data', 'show-score-urls.json'), 'utf8'));
+    return raw.shows || raw || {};
+  } catch {
+    return {};
+  }
+}
+
 module.exports = {
   showScoreUrlForShow,
+  loadShowScoreUrlMap,
   extractShowScoreReviewUrls,
   extractReadMoreUrls,
   parseShowScorePagination,
