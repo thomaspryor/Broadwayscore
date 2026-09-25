@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-09-25T14:13:16.959Z",
+  "timestamp": "2026-09-25T14:38:05.836Z",
   "stats": {
-    "totalReviews": 44256,
-    "alreadyFlagged": 18291,
+    "totalReviews": 44264,
+    "alreadyFlagged": 18294,
     "dateGuardCatches": 247,
     "directorMismatch": 1050,
     "tvFilmSignals": 1313,
-    "londonSignals": 1188,
+    "londonSignals": 1189,
     "offBroadwaySignals": 510,
     "yearMismatch": 95,
     "noPublishDate": 3847
@@ -55875,6 +55875,19 @@
       "score": 79,
       "publishDate": "2026-09-18",
       "url": "https://www.broadwayworld.com/westend/article/Review-THELMA-LOUISE-Young-Vic-20260918",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "file": "carlwoodward--carl-woodward.json",
+      "publishDate": "2026-09-25",
+      "url": "https://carlwoodward.substack.com/p/thelma-and-louise-a-new-musical",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
