@@ -1529,9 +1529,15 @@ function safeWriteReview(filePath, newData, options = {}) {
             delete newData.urlVerified; delete newData.urlVerifiedAuto; delete newData.urlVerifiedNote;
           }
           const inv = applyUrlChangeInvariant(existing, newData, { fileLabel: path.basename(filePath) });
-          if (liftAutoPin && newData._urlChangedClear && Array.isArray(newData._urlChangedClear.cleared)) {
-            // Breadcrumb so restore-protected-fields.js treats the lifted pin as an
-            // intentional clear, not a loss to restore (urlVerified* are PROTECTED).
+          if (liftAutoPin) {
+            // Breadcrumb so the push-review-texts action's PROTECTED_FIELDS restore
+            // (isIntentionalClear) treats the lifted pin as intentional. The
+            // invariant only writes a fresh _urlChangedClear when it cleared
+            // something else, so build one for THIS swap when it didn't.
+            const bc = newData._urlChangedClear;
+            if (!(inv.changed && bc && bc.to === newData.url && Array.isArray(bc.cleared))) {
+              newData._urlChangedClear = { from: existing.url, to: newData.url, at: new Date().toISOString(), cleared: [] };
+            }
             for (const f of ['urlVerified', 'urlVerifiedAuto', 'urlVerifiedNote']) {
               if (!newData._urlChangedClear.cleared.includes(f)) newData._urlChangedClear.cleared.push(f);
             }
