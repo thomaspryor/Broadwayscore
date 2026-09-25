@@ -1071,6 +1071,17 @@ function preserveFlaggedFields(filePath, review) {
  * @param {boolean} [options.merge=true] - If true, merge with existing; if false, replace (still protected)
  * @returns {{ wrote: boolean, preserved: string[] }} Which protected fields were preserved
  */
+// Quarantine writes to _pending/<show>/ bypass safeWriteReview, so they need
+// the same sparse-checkout check: in a sparse clone a tracked _pending file
+// outside the sparse set would otherwise be replaced wholesale.
+function _writeQuarantine(pendingPath, content) {
+  if (require('./sparse-checkout-guard').isPathHiddenBySparseCheckout(pendingPath)) {
+    console.error(`[review-write-guard] NOT quarantining to ${pendingPath}: tracked but outside this sparse checkout`);
+    return;
+  }
+  fs.writeFileSync(pendingPath, content);
+}
+
 function safeWriteReview(filePath, newData, options = {}) {
   const { force = false, merge = true } = options;
   // A file missing only because this checkout is sparse is not new: writing it
@@ -1079,6 +1090,19 @@ function safeWriteReview(filePath, newData, options = {}) {
   if (require('./sparse-checkout-guard').isPathHiddenBySparseCheckout(filePath)) {
     console.error(`[review-write-guard] BLOCKED write to ${path.basename(filePath)}: tracked in git but outside this sparse checkout`);
     return { wrote: false, skipped: 'hidden-by-sparse-checkout' };
+  }
+  // An on-disk file with committed conflict markers can't be parsed, so the
+  // preserve/merge logic below would see "no existing record" and overwrite it
+  // with whichever side the caller read, silently dropping the other side's
+  // fields (e.g. a newer human override). Refuse; a person resolves it, then
+  // any writer works again. Deliberate repair flows pass overwriteConflicted.
+  if (!options.overwriteConflicted) {
+    let onDiskRaw = null;
+    try { onDiskRaw = fs.readFileSync(filePath, 'utf8'); } catch { /* absent/unreadable: nothing to protect */ }
+    if (onDiskRaw && require('./conflict-markers').hasConflictMarkers(onDiskRaw)) {
+      console.error(`[review-write-guard] BLOCKED write to ${path.basename(filePath)}: file on disk has git conflict markers — resolve it first`);
+      return { wrote: false, skipped: 'on-disk-conflict-markers' };
+    }
   }
   const preserved = [];
   let lockedSkipped = false;
@@ -1284,7 +1308,7 @@ function safeWriteReview(filePath, newData, options = {}) {
               pendingReason: 'date_implausible',
               _dateImplausibleDetail: `publishDate ${newData.publishDate} is ${verdict.daysBefore}d before earliest show date ${verdict.earliestDate}`,
             };
-            fs.writeFileSync(pendingPath, JSON.stringify(quarantined, null, 2) + '\n');
+            _writeQuarantine(pendingPath, JSON.stringify(quarantined, null, 2) + '\n');
             console.warn(`[review-write-guard] date-implausible: ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${verdict.daysBefore}d before earliest date, not within priorRuns)`);
             return { wrote: false, skipped: 'date_implausible', quarantinedPath: pendingPath, daysBefore: verdict.daysBefore };
           }
@@ -1329,7 +1353,7 @@ function safeWriteReview(filePath, newData, options = {}) {
                 const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
                 fs.mkdirSync(pendingDir, { recursive: true });
                 const pendingPath = path.join(pendingDir, path.basename(filePath));
-                fs.writeFileSync(pendingPath, JSON.stringify({
+                _writeQuarantine(pendingPath, JSON.stringify({
                   ...newData,
                   pendingReason: 'cross_market_contamination',
                   _crossMarketDetail: detail,
@@ -1629,7 +1653,7 @@ function safeWriteReview(filePath, newData, options = {}) {
         const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
         fs.mkdirSync(pendingDir, { recursive: true });
         const pendingPath = path.join(pendingDir, path.basename(filePath));
-        fs.writeFileSync(pendingPath, JSON.stringify({
+        _writeQuarantine(pendingPath, JSON.stringify({
           ...newData,
           pendingReason: 'recreated_previously_excluded_url',
           _recreatedPreviouslyExcludedUrlDetail: `url previously carried ${clearedOrphan.clearedFields.join('/')} on ${clearedOrphan.filename}, cleared ${clearedOrphan.at || 'at an unknown date'} when that file's own url changed away from this one`,

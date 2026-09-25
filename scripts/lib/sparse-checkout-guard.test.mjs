@@ -71,6 +71,34 @@ test('safeWriteReview refuses to "create" a tracked file hidden by sparse checko
   } finally { fs.rmSync(base, { recursive: true, force: true }); }
 });
 
+test('a file deleted by hand INSIDE the sparse set stays writable (not "hidden")', () => {
+  const { base, sparse } = makeRepos();
+  try {
+    const fp = path.join(sparse, 'visible-show-2026', 'a--b.json');
+    fs.rmSync(fp);
+    assert.equal(isPathHiddenBySparseCheckout(fp), false);
+    const r = safeWriteReview(fp, { showId: 'visible-show-2026', outletId: 'a', criticName: 'B' }, { merge: false });
+    assert.notEqual(r.skipped, 'hidden-by-sparse-checkout');
+    assert.equal(fs.existsSync(fp), true);
+  } finally { fs.rmSync(base, { recursive: true, force: true }); }
+});
+
+test('safeWriteReview refuses to overwrite a file whose on-disk copy has conflict markers', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'conflict-guard-'));
+  try {
+    const fp = path.join(dir, 'show-2026', 'thestage--unknown.json');
+    fs.mkdirSync(path.dirname(fp), { recursive: true });
+    const conflicted = '{\n  "showId": "show-2026",\n<<<<<<< HEAD\n  "a": 1\n=======\n  "a": 2,\n  "humanReviewScore": 80\n>>>>>>> x\n}\n';
+    fs.writeFileSync(fp, conflicted);
+    const r = safeWriteReview(fp, { showId: 'show-2026', a: 1 }, { force: true });
+    assert.equal(r.wrote, false);
+    assert.equal(r.skipped, 'on-disk-conflict-markers');
+    assert.equal(fs.readFileSync(fp, 'utf8'), conflicted, 'untouched');
+    const r2 = safeWriteReview(fp, { showId: 'show-2026', a: 2, humanReviewScore: 80 }, { overwriteConflicted: true });
+    assert.notEqual(r2.skipped, 'on-disk-conflict-markers', 'explicit repair allowed');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
 test('createOrMergeReviewFile refuses (guardRefused) instead of creating over a hidden show dir', () => {
   const { base, sparse } = makeRepos();
   try {

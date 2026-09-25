@@ -33,8 +33,8 @@ function _git(dir, args) {
 /**
  * @param {string} reviewTextsDir root of the review-texts checkout
  * @param {string} showId
- * @returns {boolean} true when the checkout is sparse AND HEAD tracks showId/
- *   while the directory is absent on disk
+ * @returns {boolean} true when the checkout is sparse AND files under showId/
+ *   carry the skip-worktree bit (outside the sparse set)
  */
 function isShowDirHiddenBySparseCheckout(reviewTextsDir, showId) {
   if (!reviewTextsDir || !showId) return false;
@@ -42,17 +42,23 @@ function isShowDirHiddenBySparseCheckout(reviewTextsDir, showId) {
   try {
     if (_git(reviewTextsDir, ['config', '--bool', 'core.sparseCheckout']) !== 'true') return false;
   } catch { return false; }
-  try {
-    // `./` resolves relative to -C, so this also works when reviewTextsDir
-    // is a subdirectory of the repo rather than its root.
-    _git(reviewTextsDir, ['cat-file', '-e', `HEAD:./${showId}`]);
-    return true;
-  } catch { return false; }
+  return _anySkipWorktree(reviewTextsDir, `./${showId}/`);
+}
+
+// The skip-worktree bit (`S` in `git ls-files -v`) is what sparse checkout
+// sets on paths outside the sparse set. Keying on it, not on "tracked at HEAD
+// but absent", keeps a file deleted by hand INSIDE the sparse set writable
+// (review 2026-09-25: the HEAD test refused delete-then-recreate).
+// Pathspecs are relative to -C, so a subdirectory review-texts root works.
+function _anySkipWorktree(dir, pathspec) {
+  let out;
+  try { out = _git(dir, ['ls-files', '-v', '--', pathspec]); } catch { return false; }
+  return out.split('\n').some(line => line.startsWith('S '));
 }
 
 /**
  * File-level form for the low-level write choke point (safeWriteReview):
- * true when filePath is absent on disk but HEAD tracks it in a sparse
+ * true when filePath is absent on disk and git marks it skip-worktree in a sparse
  * checkout, so "create" would really be "replace the committed version".
  * Callers mkdir the show directory before writing, so the directory test
  * above can't catch that path; this one checks the file itself.
@@ -66,10 +72,7 @@ function isPathHiddenBySparseCheckout(filePath) {
   try {
     if (_git(dir, ['config', '--bool', 'core.sparseCheckout']) !== 'true') return false;
   } catch { return false; }
-  try {
-    _git(dir, ['cat-file', '-e', `HEAD:./${path.basename(filePath)}`]);
-    return true;
-  } catch { return false; }
+  return _anySkipWorktree(dir, `./${path.basename(filePath)}`);
 }
 
 module.exports = { isShowDirHiddenBySparseCheckout, isPathHiddenBySparseCheckout };

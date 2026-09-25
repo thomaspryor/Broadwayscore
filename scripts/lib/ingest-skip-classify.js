@@ -105,6 +105,12 @@ const CONFLICT_REASONS = [
   // the bug to fix (two reviews cannot share one outlet--critic slot).
   // Retrying never resolves it on its own.
   'flagged-filename-collision',
+  // The target show directory is tracked but outside this SPARSE review-texts
+  // checkout (sparse-checkout-guard.js, 2026-09-25): creating it would replace
+  // origin's files wholesale. Not a data problem, an environment one: re-run
+  // from a full checkout (or add the show to the sparse set). Conflict so it
+  // stays visible rather than silently looking like an expected rejection.
+  'show-dir-outside-sparse-checkout',
   // BRO-3182: safeWriteReview() quarantined the write to `_pending/` instead
   // of landing it — the publish date looked implausible for this show's
   // run window. A human must look at the quarantined file: either correct
@@ -166,6 +172,10 @@ const EXPECTED_REJECTION_REASONS = [
   // caller producing these in bulk means an upstream SERP-discovery query is
   // surfacing junk it should be filtering before ever reaching ingest.
   'named-non-review-url',
+  // A NEW review-form submission on a curated non-review page or ticket
+  // reseller (review-file-writer.js, 2026-09-25). Correct and permanent, same
+  // footing as named-non-review-url.
+  'submitted-non-review-url',
   // The byline is a CREATIVE TEAM member of this same show
   // (review-file-writer.js Guard F2, BRO-2915) — a mis-parsed roundup row, not
   // a review. validate-data.js ERRORS on the same shape, so writing it would
@@ -292,6 +302,12 @@ function describeSkip(showId, url, { reason, detail }) {
     return `${showId}: ${url} sits on an aggregator's roundup domain, so it is not that outlet's own review — the write was refused rather than silently refiled as the aggregator's review. `
       + `Find the outlet's own article URL (the roundup links to it) and ingest that. `
       + `A legitimate aggregator star-stub (aggregatorStars/originalScore present) is NOT refused — it lands under its true outlet instead (task #1325); this refusal only fires when there is no score to preserve.`;
+  }
+  if (reason === 'show-dir-outside-sparse-checkout') {
+    return `${showId}: ${url} was routed to a show whose folder is outside this sparse review-texts checkout — refused so it can't replace that show's files on origin. Re-run from a full checkout (or add the show to the sparse set); nothing is wrong with the data.`;
+  }
+  if (reason === 'submitted-non-review-url') {
+    return `${showId}: ${url} was submitted through the review form but is a ticket, venue, listing or press-release page${detail ? ` (${detail})` : ''} — expected rejection, no action needed. If it really is a review, re-ingest with allowNonReviewUrl.`;
   }
   if (reason === 'flagged-filename-collision') {
     return `${showId}: ${url} could not be filed — the canonical outlet--critic filename for this write already belongs to a flagged/rejected file (wrongProduction/duplicateOf/rejectionReason) with no confirmed critic match (BRO-3182). `

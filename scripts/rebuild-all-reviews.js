@@ -33,6 +33,16 @@ const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normali
 const { decideUnknownTwinUrlCarry, decideDuplicateTwinUrlCarry } = require('./lib/review-text-identity');
 const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
 const { parseConflictedJson } = require('./lib/conflict-markers');
+// Pre-pass readers (sort metadata, dup-cycle siblings) must see the same
+// record the main loop keeps for a conflict-marked file, or the dedup
+// tie-break ranks it from defaults and can still drop it (review, 2026-09-25).
+function parseReviewFileText(raw) {
+  try { return JSON.parse(raw); } catch (e) {
+    const resolved = parseConflictedJson(raw);
+    if (resolved) return resolved.data;
+    throw e;
+  }
+}
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
@@ -2186,7 +2196,7 @@ showDirs.forEach(showId => {
   const _loadDupCycleSibling = (name) => {
     if (Object.prototype.hasOwnProperty.call(_dupCycleCache, name)) return _dupCycleCache[name];
     try {
-      _dupCycleCache[name] = JSON.parse(fs.readFileSync(path.join(showDir, name), 'utf8'));
+      _dupCycleCache[name] = parseReviewFileText(fs.readFileSync(path.join(showDir, name), 'utf8'));
     } catch {
       _dupCycleCache[name] = null;
     }
@@ -2206,7 +2216,7 @@ showDirs.forEach(showId => {
     // pre-#1406 behavior for the parse-failure fallback path below.
     const meta = { isDupe: 0, isVerified: 1, hasEnsemble: 1, isOutletAsCritic: 0, hasScore: 0, isUnknown: /unknown|unnamed/i.test(f) ? 1 : 0 };
     try {
-      const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+      const d = parseReviewFileText(fs.readFileSync(path.join(showDir, f), 'utf8'));
       meta.isDupe = (d.isDuplicate || d.duplicateOf || d.duplicateTextOf) ? 1 : 0;
       meta.isVerified = d.contentVerification?.isValid ? 0 : 1;
       meta.hasEnsemble = d.ensembleData ? 0 : 1;
