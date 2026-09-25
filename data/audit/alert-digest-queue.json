@@ -1,1 +1,31 @@
-[]
+[
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:tru-off-west-end-2026",
+    "title": "Auto-remediation gave up on tru-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"tru-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-25T13:53:34.900Z"
+  },
+  {
+    "conditionKey": "broadcast-gate:checklist:the-last-ship-west-end-2026",
+    "title": "Opening Night Broadcast Blocked — Checklist Errors",
+    "description": "Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Shows",
+        "value": "the-last-ship-west-end-2026"
+      }
+    ],
+    "queuedAt": "2026-09-25T14:00:42.208Z"
+  }
+]
