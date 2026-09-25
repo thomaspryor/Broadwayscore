@@ -726,10 +726,13 @@ function drainDigestQueue() {
 // are fixed buckets from the epoch, capped at Resend's 24h key lifetime, so a
 // send near a bucket edge can repeat once. The ledger cooldown still does the
 // long-window work.
-function alertIdempotencyKey(conditionKey, cooldownHours, nowMs) {
-  const windowMs = Math.max(1, Math.min(Number(cooldownHours) || 24, 24)) * 3600e3;
+// `incident` (the prior resolvedAt when a resolved condition re-fires) makes a
+// red -> green -> red recurrence inside one bucket a new email, not a dupe.
+function alertIdempotencyKey(conditionKey, cooldownHours, nowMs, incident = '') {
+  const h = Number(cooldownHours);
+  const windowMs = Math.max(1, Math.min(Number.isFinite(h) ? h : 24, 24)) * 3600e3;
   // Hashed so a long conditionKey can't push the bucket past Resend's 256 chars.
-  const id = require('crypto').createHash('sha1').update(String(conditionKey)).digest('hex').slice(0, 20);
+  const id = require('crypto').createHash('sha1').update(`${conditionKey}|${incident}`).digest('hex').slice(0, 20);
   return `owner-alert:${id}:${Math.floor(nowMs / windowMs)}`;
 }
 
@@ -934,7 +937,8 @@ async function routeAlert(opts) {
   } else if (effectiveDisposition === 'human') {
     const delivered = await sendAlert({
       title, description, severity, fields, url, email: true,
-      idempotencyKey: alertIdempotencyKey(conditionKey, cooldownHours, Date.now()),
+      idempotencyKey: alertIdempotencyKey(conditionKey, cooldownHours, Date.now(),
+        existing && existing.status === 'resolved' ? existing.resolvedAt || '' : ''),
     });
     result.delivered = delivered;
     notifyOk = delivered;

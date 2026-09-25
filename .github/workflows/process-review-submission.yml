@@ -404,8 +404,8 @@ jobs:
             });
 
       # BRO-4141: a review that only lacks a score goes live once the
-      # llm-ensemble-score cron scores it, so thank the submitter and close
-      # instead of flagging a maintainer and emailing the owner.
+      # llm-ensemble-score cron scores it, so thank the submitter and label it
+      # awaiting-score instead of flagging a maintainer and emailing the owner.
       - name: Post awaiting-score comment
         if: success() && steps.landed.outputs.landed != 'true' && steps.landed.outputs.pending_score == 'true'
         uses: actions/github-script@v7
@@ -422,9 +422,12 @@ jobs:
             await github.rest.issues.createComment({
               owner: context.repo.owner, repo: context.repo.repo, issue_number: issueNumber, body,
             });
-            await github.rest.issues.update({
+            // Left open: scripts/sweep-awaiting-score-submissions.js (run by
+            // rebuild-fast.yml) closes it once the review is live, or relabels
+            // it needs-manual-review if it is never scored.
+            await github.rest.issues.addLabels({
               owner: context.repo.owner, repo: context.repo.repo, issue_number: issueNumber,
-              state: 'closed', state_reason: 'completed',
+              labels: ['awaiting-score'],
             });
 
       - name: Post not-landed comment

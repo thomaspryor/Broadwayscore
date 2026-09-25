@@ -50,7 +50,11 @@ function findMatchingShows(showName, shows) {
     const title = normalizeTitle(s.title);
     if (!title) return false;
     if (specificEnough(input) && wordContains(title, input)) return true;
-    return specificEnough(title) && wordContains(input, title);
+    if (specificEnough(title) && wordContains(input, title)) return true;
+    // Shorthand: "Les Mis" -> "Les Miserables" (input is the start of the title).
+    if (input.length >= 3 && title.startsWith(input)) return true;
+    // Short title as the first word: "Six on Broadway", "Cats West End".
+    return input.startsWith(`${title} `);
   });
 }
 

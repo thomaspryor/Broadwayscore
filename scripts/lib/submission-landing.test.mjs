@@ -47,10 +47,32 @@ test('scored but still missing from reviews.json: a real miss, not pending', () 
   assert.ok(!r.pendingScore);
 });
 
+test('unscored but blocked by a past text-gate failure: a real miss, not pending', () => {
+  const dir = fixture({ fullText: 'Subscribe to read the full review.', contentTier: 'stub' });
+  const r = checkSubmissionLanded({ showId: SHOW.id, url: URL, reviews: [], reviewTextsDir: dir, show: SHOW });
+  assert.equal(r.landed, false);
+  assert.ok(!r.pendingScore, `a file the scorer will skip must not be pending: ${r.reason}`);
+});
+
 test('an assignedScore counts as scored', () => {
   const dir = fixture({ assignedScore: 80 });
   const r = checkSubmissionLanded({ showId: SHOW.id, url: URL, reviews: [], reviewTextsDir: dir, show: SHOW });
   assert.ok(!r.pendingScore);
+});
+
+test('awaiting-score sweep: landed closes, stuck escalates, fresh waits', () => {
+  const { decideAwaitingSubmission, AWAITING_SCORE_MAX_HOURS } = require('./submission-landing.js');
+  assert.equal(decideAwaitingSubmission({ landed: true, ageHours: 1 }), 'close');
+  assert.equal(decideAwaitingSubmission({ landed: true, ageHours: 999 }), 'close');
+  assert.equal(decideAwaitingSubmission({ landed: false, ageHours: 2 }), 'wait');
+  assert.equal(decideAwaitingSubmission({ landed: false, ageHours: AWAITING_SCORE_MAX_HOURS }), 'escalate');
+});
+
+test('findShowForSubmission locates the show by the submitted URL', () => {
+  const { findShowForSubmission } = require('./submission-landing.js');
+  const dir = fixture({});
+  assert.equal(findShowForSubmission(URL, [{ id: 'other-show' }, SHOW], dir).id, SHOW.id);
+  assert.equal(findShowForSubmission('https://example.com/nope', [SHOW], dir), null);
 });
 
 test('an excluded review keeps its exclusion reason even when unscored', () => {

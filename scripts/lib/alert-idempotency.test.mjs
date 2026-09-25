@@ -28,6 +28,15 @@ test('windows are capped at Resend\'s 24h key lifetime', () => {
   assert.notEqual(alertIdempotencyKey('x', 168, T), alertIdempotencyKey('x', 168, T + 25 * 3600e3));
 });
 
+test('a condition that resolved and re-fired in the same bucket gets a new key', () => {
+  const k = 'test-yml:main-streak-escalation';
+  assert.notEqual(alertIdempotencyKey(k, 24, T), alertIdempotencyKey(k, 24, T, '2026-09-23T03:00:00Z'));
+});
+
+test('cooldown 0 means a 1h window, not 24h', () => {
+  assert.notEqual(alertIdempotencyKey('x', 0, T), alertIdempotencyKey('x', 0, T + 3600e3));
+});
+
 test('a missing or zero cooldown still yields a usable key', () => {
   assert.match(alertIdempotencyKey('x', undefined, T), /^owner-alert:[0-9a-f]{20}:\d+$/);
   assert.match(alertIdempotencyKey('x', 0, T), /^owner-alert:[0-9a-f]{20}:\d+$/);

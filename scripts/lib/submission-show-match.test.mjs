@@ -52,6 +52,19 @@ test('a short title only matches as a whole word, never inside another word', ()
   assert.deepEqual(ids('Mama Mia'), []);
 });
 
+test('shorthand and short-title-first names still match (ship-check)', () => {
+  const shows = [
+    { id: 'six-2021', title: 'Six' },
+    { id: 'broadway-1987', title: 'Broadway' },
+    { id: 'les-miserables-2014', title: 'Les Misérables' },
+    { id: 'cats-west-end-2014', title: 'Cats' },
+  ];
+  const got = (n) => findMatchingShows(n, shows).map((s) => s.id);
+  assert.ok(got('Six on Broadway').includes('six-2021'));
+  assert.deepEqual(got('Les Mis'), ['les-miserables-2014']);
+  assert.deepEqual(got('Cats West End'), ['cats-west-end-2014']);
+});
+
 test('empty input matches nothing', () => {
   assert.deepEqual(ids(''), []);
   assert.deepEqual(ids(null), []);
