@@ -105,6 +105,35 @@ if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
   process.exit(2);
 }
 
+// ── Check 0b: is THIS show's local copy current? ────────────────────────────
+// Every check below reads data/review-texts from disk. That clone is shared and
+// routinely behind origin (CI scoring/refresh jobs commit to origin, not here),
+// so a file scored on origin minutes ago still reads "has content but NO LLM
+// score" locally — a false "Recovery incomplete" that sent the 2026-09-25
+// coverage session re-dispatching scoring runs that had already succeeded
+// (kimberly-akimbo-off-west-end-2026). Fetch (refs only, never touches the
+// working tree) and diff just this show's directory against origin/main.
+let localCopyStale = null; // null = unknown, true/false = checked
+{
+  const rtRoot = path.join(ROOT, 'data', 'review-texts');
+  try {
+    const { execFileSync } = require('child_process');
+    const git = (args) => execFileSync('git', ['-C', rtRoot, ...args], { encoding: 'utf8', timeout: 60000, stdio: ['ignore', 'pipe', 'pipe'] });
+    git(['fetch', '--quiet', 'origin', 'main']);
+    const changed = git(['diff', '--name-only', 'HEAD', 'origin/main', '--', showId]).trim().split('\n').filter(Boolean);
+    localCopyStale = changed.length > 0;
+    if (changed.length > 0) {
+      warn(`LOCAL COPY IS STALE for this show: ${changed.length} file(s) differ on origin/main — results below may be wrong. `
+        + `Check origin directly (git -C data/review-texts show origin/main:<path>) before acting on any failure.`);
+      for (const c of changed.slice(0, 10)) console.log(`      ${c}`);
+    } else {
+      pass('Local review-texts for this show match origin/main');
+    }
+  } catch (e) {
+    warn(`Could not confirm local review-texts are current (${(e.message || '').split('\n')[0]}) — failures below may be stale-clone artifacts`);
+  }
+}
+
 const allFiles = fs.readdirSync(REVIEW_TEXTS_DIR).filter(f => f.endsWith('.json'));
 const filesToCheck = specificFile ? [specificFile] : allFiles;
 
@@ -368,6 +397,9 @@ console.log(`Files: ${allFiles.length} total, ${includable.length} includable, $
 
 if (totalFail > 0) {
   console.log(`\n${FAIL} ${BOLD}Recovery incomplete — ${totalFail} issue(s) to fix${RESET}`);
+  if (localCopyStale !== false) {
+    console.log(`  ${WARN} ${BOLD}INCONCLUSIVE:${RESET} local review-texts ${localCopyStale ? 'differ from origin for this show' : 'could not be compared to origin'} — re-check against origin before re-dispatching anything.`);
+  }
 
   // Actionable next steps
   if (conflictCount > 0) {
