@@ -168,6 +168,7 @@ test('classifyReviewUrl: news-announcement slugs rejected; "first-look" reviews 
   assert.equal(classifyReviewUrl('https://www.thereviewshub.com/initial-casting-announced-for-burlesque-uk-tour/').ok, false);
   assert.equal(classifyReviewUrl('https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/').ok, true);
   assert.equal(classifyReviewUrl('https://www.thereviewshub.com/burlesque-the-musical-savoy-theatre-london/').ok, true);
+  assert.equal(classifyReviewUrl('https://openingnight.online/photos-becoming-hamlet-celebrates-opening-night-off-broadway/').ok, false);
 });
 
 test('classifyReviewUrl: myreviewer home-video (DVD/Blu-ray) reviews rejected, other sections pass', () => {
