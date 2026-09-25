@@ -1,17 +1,17 @@
 {
-  "updatedAt": "2026-09-25T08:41:29.615Z",
-  "processed": 11,
-  "failed": 41,
-  "successRate": "21.2%",
+  "updatedAt": "2026-09-25T10:40:54.064Z",
+  "processed": 37,
+  "failed": 105,
+  "successRate": "26.1%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 24,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 1,
-    "brightdata": 2,
+    "scrapingbee": 9,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 3
   },
   "browserbaseSessions": 5,
   "recentActivity": [
@@ -59,6 +59,41 @@
       "event": "bb-session",
       "session": "55d7d6ab",
       "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+    },
+    {
+      "t": "2026-09-25T10:13:15.764Z",
+      "event": "bb-session",
+      "session": "59b842d1",
+      "url": "https://www.wsj.com/arts-culture/theater/macbeth-review-a-ferocious-start-to-the"
+    },
+    {
+      "t": "2026-09-25T10:13:16.675Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-25T10:33:13.460Z",
+      "event": "bb-session",
+      "session": "e445e238",
+      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-09-25T10:33:32.429Z",
+      "event": "bb-session",
+      "session": "c1c04217",
+      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-09-25T10:39:12.732Z",
+      "event": "bb-session",
+      "session": "ec262a38",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
+    },
+    {
+      "t": "2026-09-25T10:39:23.061Z",
+      "event": "bb-session",
+      "session": "19e5efde",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
     }
   ]
 }
