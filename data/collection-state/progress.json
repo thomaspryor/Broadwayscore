@@ -91,7 +91,10 @@
     "hamilton-west-end-2021/variety--kj-yossman.json",
     "the-last-ship-west-end-2026/timeout--unknown.json",
     "deep-heat-rivalry-off-west-end-2026/bestoftheatre--unknown.json",
-    "darkling-off-west-end-2026/guardian--unknown.json"
+    "darkling-off-west-end-2026/guardian--unknown.json",
+    "the-holes-off-broadway-2026/broadwayworld--stephi-wild.json",
+    "the-holes-off-broadway-2026/playbill--unknown.json",
+    "america-who-hurt-you-off-broadway-2026/playbill--unknown.json"
   ],
   "failed": [
     "cosi-fan-tutte-off-broadway-2026/nytimes--james-barron.json",
@@ -148,7 +151,6 @@
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/timeout-london--tom-wicker.json",
     "the-cherry-orchard-park-avenue-armory-off-broadway-2026/theatermania--unknown.json",
     "the-cherry-orchard-park-avenue-armory-off-broadway-2026/thereviewshub--unknown.json",
-    "america-who-hurt-you-off-broadway-2026/playbill--unknown.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/east-midlands-theatre--unknown.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/everything-theatre--sara-west.json",
@@ -688,7 +690,8 @@
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/all-that-dazzles-uk--unknown.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/everything-theatre--unknown.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/standard--nick-curtis.json",
-    "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--charlotte-vickers.json"
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--charlotte-vickers.json",
+    "kevin-off-broadway-2026/independent--tom-murray.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -738,7 +741,9 @@
       "harry-potter-2021/melindas-malarky--melinda-pressler.json",
       "the-last-ship-west-end-2026/timeout--unknown.json",
       "deep-heat-rivalry-off-west-end-2026/bestoftheatre--unknown.json",
-      "darkling-off-west-end-2026/guardian--unknown.json"
+      "darkling-off-west-end-2026/guardian--unknown.json",
+      "the-holes-off-broadway-2026/playbill--unknown.json",
+      "america-who-hurt-you-off-broadway-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -782,7 +787,8 @@
       "hadestown-west-end-2024/shy-strange-manic--kariss-ainsworth.json",
       "and-juliet-2022/daily-mail--robert-gore-langton.json",
       "hadestown-2019/theatrely--theatrely-staff.json",
-      "harry-potter-2021/cititour--brian-scott-lipton.json"
+      "harry-potter-2021/cititour--brian-scott-lipton.json",
+      "the-holes-off-broadway-2026/broadwayworld--stephi-wild.json"
     ],
     "brightdata": [
       "hamilton-west-end-2021/variety--kj-yossman.json"
@@ -813,7 +819,7 @@
     ]
   },
   "startTime": "2026-09-24T08:26:07.381Z",
-  "lastProcessed": "darkling-off-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "the-rocky-horror-show-2026/cititour--unknown.json",
   "log": [
     {
       "t": "2026-09-24T10:03:36.718Z",
@@ -986,10 +992,46 @@
       "event": "bb-session",
       "session": "c328297d",
       "url": "https://therecs.co.uk/the-last-ship-theatre-royal-drury-lane/"
+    },
+    {
+      "t": "2026-09-25T00:25:38.093Z",
+      "event": "bb-session",
+      "session": "141e9e9e",
+      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-09-25T00:25:57.024Z",
+      "event": "bb-session",
+      "session": "a0085f70",
+      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-09-25T00:29:52.352Z",
+      "event": "bb-session",
+      "session": "94afb161",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
+    },
+    {
+      "t": "2026-09-25T00:30:03.485Z",
+      "event": "bb-session",
+      "session": "e84322f7",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-09-25T00:36:32.561Z",
+      "event": "bb-session",
+      "session": "e7156b44",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-25T00:36:33.273Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ],
   "recoveredAfterFailure": [
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/theatre-weekly--greg-stewart.json",
-    "the-last-ship-west-end-2026/timeout--unknown.json"
+    "the-last-ship-west-end-2026/timeout--unknown.json",
+    "america-who-hurt-you-off-broadway-2026/playbill--unknown.json"
   ]
 }
