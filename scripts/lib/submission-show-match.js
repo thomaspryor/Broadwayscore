@@ -83,11 +83,21 @@ function pageMentionsShowTitle(html, title) {
     if (next === decoded) break;
     decoded = next;
   }
-  const page = normalizeTitle(decoded);
-  const full = normalizeTitle(title);
+  const page = strictNorm(decoded);
+  const full = strictNorm(title);
   if (full && wordContains(page, full)) return true;
-  const main = normalizeTitle(title.split(/[:(]/)[0]);
+  const main = strictNorm(title.split(/[:(]/)[0]);
   return Boolean(main) && main !== full && specificEnough(main) && wordContains(page, main);
+}
+
+// Deliberately NOT normalizeTitle(): that drops a leading "The" and
+// parenthesized text, so "The Audience" became "audience" and matched any
+// page saying "its audience" (Codex review). Keep every word; only fold
+// case, diacritics, & -> and, apostrophes, and punctuation.
+function strictNorm(s) {
+  return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().replace(/&/g, ' and ').replace(/['\u2018\u2019]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
 module.exports = { findMatchingShows, pageMentionsShowTitle };

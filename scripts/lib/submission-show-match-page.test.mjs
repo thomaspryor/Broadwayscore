@@ -19,6 +19,10 @@ test('pageMentionsShowTitle: still refuses the wrong show', () => {
   assert.equal(pageMentionsShowTitle('Louise alone', 'Thelma & Louise: A New Musical'), false);
   assert.equal(pageMentionsShowTitle('nothing here', 'Macbeth'), false);
   assert.equal(pageMentionsShowTitle('', 'Macbeth'), false);
+  // Codex review: a leading "The" is part of the title, not noise.
+  assert.equal(pageMentionsShowTitle('<h1>Hamlet review</h1><p>leaves its audience breathless</p>', 'The Audience'), false);
+  assert.equal(pageMentionsShowTitle('Hamlet grieves for his father', 'The Father'), false);
+  assert.equal(pageMentionsShowTitle('<h1>The Father review</h1>', 'The Father'), true);
 });
 
 test('ingest-review-from-url.js uses the shared guard, not an inline normalizer', async () => {
