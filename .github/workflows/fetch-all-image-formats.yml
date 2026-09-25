@@ -213,6 +213,9 @@ jobs:
           title: 'Image Fetch Failed'
           severity: 'critical'
           email: 'true'
+          # BRO-4141: one-off failures of this job are not owner-actionable; email
+          # only when it keeps failing (streak mode re-pages every 4th failure after).
+          min_consecutive_failures: '2'
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
 
