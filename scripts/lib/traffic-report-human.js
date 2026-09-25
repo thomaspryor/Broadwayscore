@@ -471,4 +471,4 @@ function utmName(k) {
   return sourceName(src) + (medium ? ` (${medium})` : '');
 }
 
-module.exports = { buildHumanSummary, pageName, sourceName, isSearch, isOwnTooling, mergeSeries, channelName, utmName, loadShows };
+module.exports = { buildHumanSummary, pageName, sourceName, isSearch, isOwnTooling, isDirect, mergeSeries, channelName, utmName, loadShows };
