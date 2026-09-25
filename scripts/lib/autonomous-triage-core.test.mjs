@@ -796,9 +796,18 @@ test('generic audit-/lint- shape rejects free-form args, combined flags, and tra
   ]) assert.equal(isSafeCheckCommand(bad), false, `${bad} must be refused`);
 });
 
-test('bash form accepts ONLY the individually-vetted sync-audit-checkout.test.sh, not every *.test.sh (ship-check finding, task #1827)', () => {
-  const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+test('bash form accepts ONLY the individually-vetted allowlist, not every *.test.sh (ship-check finding, task #1827; widened BRO-4151)', () => {
+  const { isSafeCheckCommand, BASH_INTEGRATION_TEST_SH_ALLOWED } = require('./autonomous-triage-core.js');
   assert.equal(isSafeCheckCommand('bash scripts/lib/sync-audit-checkout.test.sh'), true);
+  // BRO-4151: widened to admit this second, individually-vetted bash
+  // integration test (confirmed sandboxed the same way — see the allowlist's
+  // own comment) so its red-first card can arm instead of degrading to
+  // owner-judgment (BRO-4149).
+  assert.equal(isSafeCheckCommand('bash scripts/lib/push-with-retry.stranded-commit-cascade.test.sh'), true);
+  assert.deepEqual(BASH_INTEGRATION_TEST_SH_ALLOWED, new Set([
+    'sync-audit-checkout.test.sh',
+    'push-with-retry.stranded-commit-cascade.test.sh',
+  ]));
   for (const bad of [
     // Other REAL .test.sh files in this repo were never individually vetted
     // for this purpose — a blanket *.test.sh rule would admit them sight
@@ -813,6 +822,16 @@ test('bash form accepts ONLY the individually-vetted sync-audit-checkout.test.sh
     'bash scripts/lib/sync-audit-checkout.sh', // not a .test.sh
     'bash scripts/lib/sync-audit-checkout.test.sh; rm -rf /',
     'sh scripts/lib/sync-audit-checkout.test.sh', // wrong interpreter token
+  ]) assert.equal(isSafeCheckCommand(bad), false, `${bad} must be refused`);
+});
+
+test('lint-committed-pii.js is admitted bare-only (BRO-4151) — its read-only `git ls-files` spawn cannot go through the generic audit-/lint- form', () => {
+  const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+  assert.equal(isSafeCheckCommand('node scripts/lint-committed-pii.js'), true);
+  for (const bad of [
+    'node scripts/lint-committed-pii.js --gate', // no flags accepted
+    'node scripts/lint-committed-pii.js; rm -rf /',
+    'node scripts/lint-committed-pii.js extra-arg',
   ]) assert.equal(isSafeCheckCommand(bad), false, `${bad} must be refused`);
 });
 
