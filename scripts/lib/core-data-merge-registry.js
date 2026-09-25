@@ -251,6 +251,15 @@ const CORE_DATA_MERGE_REGISTRY = [
     note: 'the nightly CI green-rate reading (the machine PASS/FAIL on "is main green" — the only thing allowed to say so); health-check.js\'s "Main: green rate" row reads it back for the "7d trend from Y%, day D of 14" line. Registered the day it was added, because staging it unregistered in the apiFallbackSafe step disqualified that step\'s Git Data API fallback (audit-push-retry-budgets advisory, run 35531905889).',
   },
   {
+    file: 'audit/open-backlog-acceptance-sweep.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-09-25: grepped .github/ and scripts/ for the literal filename — the only writer is scripts/sweep-open-backlog-acceptance.js, invoked only by data-health-check.yml ("Commit open backlog acceptance sweep" step, BRO-4135); scripts/dispatch-watchdog.js and scripts/lib/linear-watchdog-source.js only READ it. That workflow declares concurrency: {group: data-health-check, cancel-in-progress: false}.',
+    note: 'nightly open-backlog acceptance sweep report (BRO-4135). Its commit step is not the last push-with-retry step, so staging it unregistered failed push-with-retry.stranded-commit-cascade.test.sh Part B and turned main red (test.yml run 36083765218, BRO-4149).',
+  },
+  {
     file: 'audit/imageless-scored-shows.json',
     surface: 'public-repo',
     status: 'single-writer',
