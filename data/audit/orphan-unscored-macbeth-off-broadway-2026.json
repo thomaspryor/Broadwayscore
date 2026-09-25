@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "macbeth-off-broadway-2026",
   "openingDate": "2026-09-22",
-  "detectedAt": "2026-09-25T06:00:52.761Z",
+  "detectedAt": "2026-09-25T08:37:01.638Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,12 +21,29 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
+    },
+    {
+      "file": "wsj--heidi-waleson.json",
+      "outletId": "wsj",
+      "criticName": "Heidi Waleson",
+      "url": "https://www.wsj.com/arts-culture/theater/macbeth-review-a-ferocious-start-to-the-met-operas-season-491640f2",
+      "fullTextLen": 608,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-09-25T08:37:01.638Z"
 }
