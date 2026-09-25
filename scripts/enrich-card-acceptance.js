@@ -1446,7 +1446,7 @@ async function runLinearLeg(args, { dryRun, limit }) {
   let attempts = 0; // every action EXCEPT 'skipped' — see SCAN_CEILING comment above
   for (const [i, identifier] of scanCandidates.entries()) {
     if (attempts >= limit) {
-      console.error(`[enrich-card-acceptance] linear: --limit ${limit} enrichment attempt(s) reached at candidate ${i}/${scanCandidates.length}; ${scanCandidates.length - i} left for a later run`);
+      console.error(`[enrich-card-acceptance] linear: --limit ${limit} enrichment attempt(s) reached after ${i}/${scanCandidates.length} scanned; ${scanCandidates.length - i} left for a later run`);
       break;
     }
     let full;
@@ -1491,7 +1491,13 @@ async function runLinearLeg(args, { dryRun, limit }) {
     const result = await enrichOneCard(card, { callLLM, writeCard, dryRun, force: !!args.force });
     result.source = 'linear';
     results.push(result);
-    attempts++;
+    // enrichOneCard can itself return action:'skipped' (already armed,
+    // already tagged auto-enriched — idempotency checks internal to that
+    // function, not the two pre-checks above) — those must not count against
+    // the budget either, for the same reason the pre-checks don't (live-run
+    // caught this: BRO-3595 "already tagged auto-enriched" was consuming a
+    // budget slot before this fix).
+    if (result.action !== 'skipped') attempts++;
     console.error(`[enrich-card-acceptance] linear ${i + 1}/${scanCandidates.length} ${card.identifier} ${card.name} → ${result.action}${result.detail ? ` (${truncateDetail(result.detail)})` : ''}`);
     if (result.action === 'llm-enriched' || result.action === 'failed') await new Promise(r => setTimeout(r, 1000));
   }
