@@ -136,6 +136,16 @@ const NON_REVIEW_PATH_PATTERNS = [
   // reviews under /whats-on/ sections. The ticket-page cases are host-scoped
   // in NAMED_NON_REVIEW_URL_PATTERNS below (westendtheatre.com show pages,
   // londonboxoffice.co.uk root ticket slugs).
+  //
+  // News-announcement slugs (2026-09-25): a West Wales Chronicle
+  // "dog-man-the-musical-releases-production-photos-and-announces-new-tour-dates"
+  // post sat in dog-man-the-musical-west-end-2026 as an includable, forever-
+  // unscored "review". Measured against all 21,083 reviews.json URLs: 0 hits
+  // for each of these three shapes (bare "first-look" had 1 real review, so it
+  // is deliberately NOT here).
+  /(^|[-/])announc(es|ed|ement)([-/]|$)/i,
+  /production-photos/i,
+  /new-tour-dates/i,
 ];
 
 /**
