@@ -346,7 +346,7 @@ jobs:
       # GH_DISPATCH_TOKEN = the owner PAT that opened the issues, so the owner
       # isn't emailed about the closes. Writes no repo files.
       - name: Sweep awaiting-score review submissions
-        if: always() && steps.rebuild.outcome == 'success'
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
         env:
           GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
         run: node scripts/sweep-awaiting-score-submissions.js
