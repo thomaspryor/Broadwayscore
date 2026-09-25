@@ -37,10 +37,9 @@
 const fs = require('fs');
 const path = require('path');
 const { extractRunBlocks } = require('../audit-orphan-tests.js');
-const { NODE_RUNNABLE_TEST_EXTENSIONS } = require('./test-manifest.js');
+const { NODE_RUNNABLE_TEST_EXTENSIONS, testReferenceRegex } = require('./test-manifest.js');
 
 const ROOT = path.join(__dirname, '..', '..');
-const LIB_DIR = path.join(ROOT, 'scripts', 'lib');
 const WORKFLOWS_DIR = path.join(ROOT, '.github', 'workflows');
 
 /**
@@ -98,15 +97,27 @@ function isInvokedIn(runText, relPath, ext) {
  * scripts/lib/*.test.sh files (top-level only — none live deeper today, and
  * isInvokedIn's job-position matcher assumes a literal `scripts/lib/<file>`)
  * that `runText` actually invokes via a `run:` step, sorted, repo-relative.
+ *
+ * Deliberately NOT filtered to files that exist on disk (Codex adversarial
+ * review, BRO-4150): reading scripts/lib/ first and checking each existing
+ * file against isInvokedIn would silently DROP a file that test.yml still
+ * invokes but that was deleted (or never existed — a typo'd new addition).
+ * test.yml itself does not get that free pass — `bash <missing-path>` fails
+ * loudly there — so the candidate universe here is instead every bare
+ * `*.test.sh` filename testReferenceRegex() finds anywhere in the workflow
+ * text (a superset — comments and mentions included), each then confirmed
+ * as a genuine invocation via the same isInvokedIn() the coverage guard
+ * uses. A candidate that isInvokedIn confirms but that doesn't exist on disk
+ * is still returned; land-gauntlet.sh's `bash <path>` will fail on it with
+ * its own real "No such file or directory", exactly mirroring test.yml.
  */
-function listInvokedBashIntegrationTests({ libDir = LIB_DIR, workflowsDir = WORKFLOWS_DIR, runText = null } = {}) {
+function listInvokedBashIntegrationTests({ workflowsDir = WORKFLOWS_DIR, runText = null } = {}) {
   const text = runText != null ? runText : executableWorkflowText(workflowsDir);
-  return fs
-    .readdirSync(libDir)
-    .filter((f) => f.endsWith('.test.sh'))
-    .map((f) => `scripts/lib/${f}`)
-    .filter((relPath) => isInvokedIn(text, relPath, 'sh'))
-    .sort();
+  const candidates = new Set();
+  for (const m of text.matchAll(testReferenceRegex())) {
+    if (m[0].endsWith('.test.sh')) candidates.add(`scripts/lib/${m[0]}`);
+  }
+  return [...candidates].filter((relPath) => isInvokedIn(text, relPath, 'sh')).sort();
 }
 
 module.exports = {
@@ -115,7 +126,6 @@ module.exports = {
   isInvokedIn,
   listInvokedBashIntegrationTests,
   WORKFLOWS_DIR,
-  LIB_DIR,
 };
 
 if (require.main === module) {

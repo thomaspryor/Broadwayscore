@@ -140,22 +140,46 @@ gate scripts-lib-tests scripts_lib_tests
 # does not currently wrap, since a hang here has no per-step GH Actions
 # cancellation boundary to fall back on.
 #
-# Total wall-clock budget (second-opinion review, BRO-4150): 26 files x 180s
-# each is ~78min worst case, well past land.yml's `checks` job's 40-minute
-# timeout-minutes — and this suite deliberately exercises hangs/deadlines/
-# stalls, so several genuinely-slow files hitting their per-file ceiling back
-# to back is the realistic case, not the pathological one. Left unbounded,
-# that kills the WHOLE job with zero gate diagnostics — exactly the opaque
-# failure BRO-4150 exists to eliminate. Once BASH_INTEGRATION_BUDGET_SEC is
-# spent, every file that didn't get a chance to run is recorded FAIL-CLOSED
-# (as if it had timed out) rather than silently skipped, so land-gate-delta.js
-# still sees a parseable, conservative result instead of a job-level timeout.
+# Total wall-clock budget (Codex + second-opinion review, BRO-4150): 26 files
+# x 180s each is ~78min worst case, well past land.yml's `checks` job's
+# 40-minute timeout-minutes — and this suite deliberately exercises hangs/
+# deadlines/stalls, so several genuinely-slow files hitting their per-file
+# ceiling back to back is the realistic case, not the pathological one. Left
+# unbounded, that kills the WHOLE job with zero gate diagnostics — exactly
+# the opaque failure BRO-4150 exists to eliminate.
+#
+# The budget is JOB-WIDE-AWARE, not a flat per-invocation constant (Codex:
+# "base and branch run sequentially within one 40-minute job... allocate a
+# job-wide deadline and cap each invocation by remaining time"): it deducts
+# T0's elapsed-so-far (every earlier gate in THIS invocation: tsc, lint,
+# both unit-test batches) and reserves headroom for lint-workflows, the one
+# gate that still has to run after this one. GAUNTLET_DEADLINE_SEC (default
+# 1800s/30min) is deliberately under the job's 40-minute ceiling, leaving
+# ~10min for checkout/npm-ci/setup steps that happen OUTSIDE this script.
+#
+# Once the resulting budget is spent, every file that didn't get a chance to
+# run is recorded FAIL-CLOSED (as if it had timed out) rather than silently
+# skipped — but keyed with a per-run NONCE, not the bare file path (Codex:
+# "if base and branch exhaust their budgets before the same tail, those
+# never-executed tests become 'pre-existing', and the gate passes" — a real
+# branch regression in a base-skipped file would be silently forgiven). The
+# nonce guarantees a budget-cut key can never coincide with a base-run's
+# equivalent key, so land-gate-delta.js's diff always treats it as NEW —
+# unconditionally blocking, never silently "pre-existing", exactly the same
+# fail-closed direction as the existing "unlocated TAP failures are always
+# NEW" rule for the TAP gates.
 bash_integration() {
   local -a tests
   mapfile -t tests < <(node scripts/lib/bash-integration-test-list.js --list)
   if [ ${#tests[@]} -eq 0 ]; then echo "::error::bash-integration-test-list.js derived ZERO scripts/lib/*.test.sh files from test.yml — broken matcher?"; return 1; fi
   echo "# bash integration: ${#tests[@]} files (derived from test.yml)"
-  local budget="${BASH_INTEGRATION_BUDGET_SEC:-1200}"
+  local deadline="${GAUNTLET_DEADLINE_SEC:-1800}"
+  local reserve="${LINT_WORKFLOWS_RESERVE_SEC:-300}"
+  local elapsed_so_far=$(( ($(node -p 'Date.now()') - T0) / 1000 ))
+  local budget="${BASH_INTEGRATION_BUDGET_SEC:-$(( deadline - elapsed_so_far - reserve ))}"
+  [ "$budget" -lt 60 ] && budget=60  # floor: always give this gate a real chance, even under a tight deadline
+  echo "# bash-integration budget: ${budget}s (deadline ${deadline}s - ${elapsed_so_far}s already spent on earlier gates - ${reserve}s reserved for lint-workflows)"
+  local nonce; nonce="$$-$(date +%s)"
   local start; start=$(date +%s)
   local FAILED="" f rf rc i=0 elapsed
   for f in "${tests[@]}"; do
@@ -164,7 +188,7 @@ bash_integration() {
     if [ "$elapsed" -ge "$budget" ]; then
       echo "::error::bash-integration total budget (${budget}s) exceeded after ${elapsed}s — $(( ${#tests[@]} - i + 1 )) file(s) never ran"
       for rf in "${tests[@]:$((i - 1))}"; do
-        echo "::error::bash-integration gate failed: $rf (exit 124)"
+        echo "::error::bash-integration gate failed: $rf [budget-exceeded-${nonce}] (exit 124)"
         FAILED="$FAILED\n  - $rf (not run — budget exceeded)"
       done
       break

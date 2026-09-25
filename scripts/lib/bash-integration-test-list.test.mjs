@@ -8,7 +8,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
@@ -18,38 +17,26 @@ const { listInvokedBashIntegrationTests, isInvokedIn, stripShellComments } = req
 
 const CLI = path.join(path.dirname(new URL(import.meta.url).pathname), 'bash-integration-test-list.js');
 
-function withTempLibDir(files, fn) {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bash-int-test-'));
-  try {
-    for (const f of files) fs.writeFileSync(path.join(dir, f), '');
-    return fn(dir);
-  } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
-  }
-}
+test('lists only scripts/lib/*.test.sh files actually invoked in runText, sorted', () => {
+  const runText = [
+    'timeout 180 bash scripts/lib/b.test.sh',
+    'bash scripts/lib/a.test.sh',
+    'echo "see scripts/lib/c.test.sh"', // named, not invoked
+  ].join('\n');
+  assert.deepEqual(listInvokedBashIntegrationTests({ runText }), ['scripts/lib/a.test.sh', 'scripts/lib/b.test.sh']);
+});
 
-test('lists only .test.sh files actually invoked in runText, sorted', () => {
-  withTempLibDir(['a.test.sh', 'b.test.sh', 'c.test.sh', 'not-a-test.sh'], (dir) => {
-    const runText = [
-      'timeout 180 bash scripts/lib/b.test.sh',
-      'bash scripts/lib/a.test.sh',
-      'echo "see scripts/lib/c.test.sh"', // named, not invoked
-    ].join('\n');
-    const result = listInvokedBashIntegrationTests({ libDir: dir, runText });
-    assert.deepEqual(result, ['scripts/lib/a.test.sh', 'scripts/lib/b.test.sh']);
-  });
+test('a file invoked in a run: step but missing from disk is STILL derived (Codex adversarial review, BRO-4150): mirrors test.yml, which fails loudly ("No such file or directory") on a deleted-but-still-invoked file rather than silently skipping it', () => {
+  const runText = 'timeout 180 bash scripts/lib/deleted-test.test.sh';
+  assert.deepEqual(listInvokedBashIntegrationTests({ runText }), ['scripts/lib/deleted-test.test.sh']);
 });
 
 test('empty runText → empty list, not a crash', () => {
-  withTempLibDir(['a.test.sh'], (dir) => {
-    assert.deepEqual(listInvokedBashIntegrationTests({ libDir: dir, runText: '' }), []);
-  });
+  assert.deepEqual(listInvokedBashIntegrationTests({ runText: '' }), []);
 });
 
-test('a directory with no .test.sh files → empty list', () => {
-  withTempLibDir(['helper.js'], (dir) => {
-    assert.deepEqual(listInvokedBashIntegrationTests({ libDir: dir, runText: 'bash scripts/lib/helper.js' }), []);
-  });
+test('a bare mention (not invoked) contributes no candidate', () => {
+  assert.deepEqual(listInvokedBashIntegrationTests({ runText: 'echo "see scripts/lib/helper.test.sh"' }), []);
 });
 
 test('CLI --list against the REAL repo: every printed path exists, ends .test.sh, and is actually invoked', () => {

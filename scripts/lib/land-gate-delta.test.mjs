@@ -234,6 +234,22 @@ test('bash-integration: a file that stops failing on the branch is reported fixe
   assert.deepEqual(keys(d.fixed), ['bash-integration::scripts/lib/a.test.sh']);
 });
 
+test('bash-integration: a budget-exceeded (never-ran) file is keyed with a per-run nonce, so it can NEVER be silently read as pre-existing (Codex adversarial review, BRO-4150)', () => {
+  // land-gauntlet.sh embeds `[budget-exceeded-<pid>-<epoch>]` in the failing
+  // line for a file that didn't get a chance to run before the total budget
+  // was spent — a DIFFERENT nonce every run, by construction. Without that,
+  // a base run and a branch run that both exhaust their budget at the same
+  // file would key identically and the gate would read the branch's
+  // never-verified tail as "pre-existing", forgiving a real regression in it.
+  const base = '::error::bash-integration gate failed: scripts/lib/z.test.sh [budget-exceeded-111-1] (exit 124)\n';
+  const branch = '::error::bash-integration gate failed: scripts/lib/z.test.sh [budget-exceeded-222-2] (exit 124)\n';
+  const d = decideGateDelta({ gate: 'bash-integration', base: { exit: 1, text: base }, branch: { exit: 1, text: branch } });
+  assert.equal(d.verdict, 'fail');
+  assert.deepEqual(keys(d.newFailures), ['bash-integration::scripts/lib/z.test.sh [budget-exceeded-222-2]']);
+  assert.deepEqual(keys(d.preExisting), []);
+  assert.deepEqual(keys(d.fixed), ['bash-integration::scripts/lib/z.test.sh [budget-exceeded-111-1]']);
+});
+
 test('multiplicity: a second identical tsc diagnostic in the same file is a NEW key (base had one, branch has two)', () => {
   const one = "src/a.ts(3,1): error TS2322: bad.\n";
   const two = `${one}src/a.ts(9,1): error TS2322: bad.\n`;
