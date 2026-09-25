@@ -1043,21 +1043,42 @@ async function main() {
       }
     } catch { /* heartbeat missing/stale/unreadable — renders as n/a below, not a thrown error */ }
 
+    const donePerDay = inflowCounts
+      ? doneRatePerDay(inflowCounts.completed, inflowCounts.windowDays, {
+          // A truncated `completed` count is a FLOOR (backlog-inflow-ratio.js's
+          // fetchInflowCounts), not the real number — must render n/a, not an
+          // understated rate presented as exact (ship-check/Codex finding).
+          truncated: Array.isArray(inflowCounts.truncatedCounts) && inflowCounts.truncatedCounts.includes('completed'),
+        })
+      : null;
     drainThroughputLine = formatDrainThroughputLine({
-      donePerDay: inflowCounts
-        ? doneRatePerDay(inflowCounts.completed, inflowCounts.windowDays, {
-            // A truncated `completed` count is a FLOOR (backlog-inflow-ratio.js's
-            // fetchInflowCounts), not the real number — must render n/a, not an
-            // understated rate presented as exact (ship-check/Codex finding).
-            truncated: Array.isArray(inflowCounts.truncatedCounts) && inflowCounts.truncatedCounts.includes('completed'),
-          })
-        : null,
+      donePerDay,
       windowDays: inflowCounts ? inflowCounts.windowDays : null,
       eligible,
       eligibleOk,
       unarmedCount: unarmed.ok ? unarmed.count : null,
     });
     console.log(`[digest] ${drainThroughputLine}`);
+
+    // BRO-4135: persist the one number this block already computed daily so
+    // scripts/check-linear-drain-throughput.js (the RECHECK command on
+    // BRO-3913) can read it instead of issuing its OWN live Linear query —
+    // linear-drain-throughput.js's own header explicitly rejected a second
+    // live source for this exact number ("reusing that avoids a THIRD live
+    // Linear query for a number that process already computes"). Per-machine
+    // only (this script is launchd-scheduled, not CI — see
+    // com.broadwayscore.morning-digest.plist) — gitignored, same convention
+    // as the dispatch-watchdog heartbeat and predispatch-queue-audit
+    // snapshot files.
+    try {
+      fs.mkdirSync(path.join(REPO, 'data', 'audit'), { recursive: true });
+      fs.writeFileSync(
+        path.join(REPO, 'data', 'audit', 'linear-drain-throughput-snapshot.json'),
+        JSON.stringify({ computedAt: new Date().toISOString(), donePerDay, windowDays: inflowCounts ? inflowCounts.windowDays : null }, null, 2) + '\n',
+      );
+    } catch (snapshotErr) {
+      console.error(`[digest] WARN could not write linear-drain-throughput-snapshot.json (non-fatal): ${snapshotErr.message}`);
+    }
   } catch (err) {
     const why = String(err.message).slice(0, 120);
     console.error(`[digest] WARN linear drain throughput failed: ${why}`);
