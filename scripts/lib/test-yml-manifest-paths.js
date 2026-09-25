@@ -141,6 +141,19 @@ const UNREGISTERED_TEST_QUARANTINE = new Map([
     'tests/unit/dmarc-deliverability.test.mjs',
     'BRO-2600 — DOES run in CI at its own advisory step ("Run slow network-dependent unit tests", continue-on-error: true). It does a live dns.resolveTxt() of _dmarc.broadwayscorecard.com; registering it in the main manifest would put a real network call in the no-continue-on-error batch, gating unrelated PRs on a resolver hiccup. Must stay unregistered.',
   ],
+  // BRO-3425 (2026-09-24): live-DATA assertions, moved out of test.yml's
+  // no-data unit batch because they reddened main with no code change (test.yml
+  // run 36077865497). They run in check-corpus-drift.yml's "Live-data
+  // assertions" step (the data-health workflow) — scripts/audit-orphan-tests.js
+  // verifies that run: line exists.
+  [
+    'tests/unit/cast-changes-real-data.test.mjs',
+    'BRO-3425 — runs in check-corpus-drift.yml (data-health), not test.yml: asserts on data/cast-changes.json state (stale [AUTO-FLAGGED] > 30 d), which bots rewrite daily. In the unit batch it turned main red with no code change.',
+  ],
+  [
+    'tests/unit/bro3887-cache-fix-acceptance.test.mjs',
+    'BRO-3425 — runs in check-corpus-drift.yml (data-health), not test.yml: a deferred-effect probe on data/audit/scraper-spend-ledger.jsonl (gather-reviews credits/day). A live spend reading is not a code fact; in the unit batch it turned main red on 2026-09-24 (7,054 credits).',
+  ],
 ]);
 
 /** Repo-relative paths of every test file under SCANNED_TEST_DIRS. */

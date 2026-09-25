@@ -153,12 +153,14 @@ function executedGlobExtensions(runText) {
  * be reintroduced through the branch that now carries the most weight.
  *
  * Deliberately anchored at a command position (line start or after ;, &&, ||, |)
- * so a path inside a quoted echo argument cannot pass.
+ * so a path inside a quoted echo argument cannot pass. An optional
+ * `timeout <duration>` prefix is allowed: it is how test.yml bounds a bash
+ * test so a hang fails its step instead of cancelling the job (2026-09-24).
  */
 function isInvokedIn(runText, relPath, ext) {
   if (NODE_RUNNABLE_TEST_EXTENSIONS.includes(ext)) return runText.includes(relPath);
   const escaped = relPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const invocation = new RegExp(`(?:^|[;&|])\\s*(?:bash|sh|zsh)\\s+(?:-\\S+\\s+)*${escaped}(?![\\w./-])`, 'm');
+  const invocation = new RegExp(`(?:^|[;&|])\\s*(?:timeout\\s+\\d+[smh]?\\s+)?(?:bash|sh|zsh)\\s+(?:-\\S+\\s+)*${escaped}(?![\\w./-])`, 'm');
   return invocation.test(runText);
 }
 
@@ -304,6 +306,8 @@ test('a shell test only counts as covered when a run: body actually invokes it',
     `foo; bash ${P}`,
     `a || bash ${P}`,
     `bash ${P}\nnext line`,
+    `timeout 180 bash ${P}`, // test.yml's hang bound (2026-09-24)
+    `timeout 3m bash ${P}`,
   ];
   for (const runText of covered) {
     assert.ok(isInvokedIn(runText, P, 'sh'), `should count as invoked: ${JSON.stringify(runText)}`);
@@ -317,6 +321,7 @@ test('a shell test only counts as covered when a run: body actually invokes it',
     `bash scripts/lib/other-${P.slice('scripts/lib/'.length)}`,
     `cat ${P}`,
     `ls ${P}`,
+    `echo timeout 180 bash ${P}`, // the timeout prefix must still sit at a command position
     P,
     '',
   ];
