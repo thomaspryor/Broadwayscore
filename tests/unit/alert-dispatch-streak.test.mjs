@@ -65,3 +65,20 @@ test('empty and malformed input never renders NaN into an owner-facing subject',
   assert.equal(bad.consecutiveFailures, 1);
   assert.ok(!/NaN/.test(bad.forHowLong), `rendered "${bad.forHowLong}"`);
 });
+
+// BRO-4141: the deadman paged on "5h (1 consecutive)". Only a sustained
+// outage (>=3 failures spanning >=24h) may page; shorter goes to the digest.
+test('deadmanShouldPage: blips digest, a day-long multi-attempt outage pages', () => {
+  const { deadmanShouldPage } = require('../../scripts/lib/alert-dispatch-streak.js');
+  assert.equal(deadmanShouldPage({ consecutiveFailures: 1, streakHours: 5 }), false);
+  assert.equal(deadmanShouldPage({ consecutiveFailures: 2, streakHours: 30 }), false);
+  assert.equal(deadmanShouldPage({ consecutiveFailures: 30, streakHours: 23 }), false);
+  assert.equal(deadmanShouldPage({ consecutiveFailures: 3, streakHours: 24 }), true);
+  assert.equal(deadmanShouldPage({ consecutiveFailures: 18, streakHours: 29 }), true);
+});
+
+test('health-check deadman gates the page key on deadmanShouldPage', () => {
+  const src = require('node:fs').readFileSync(new URL('../../scripts/health-check.js', import.meta.url), 'utf8');
+  assert.match(src, /deadmanShouldPage\(\{ consecutiveFailures, streakHours \}\)/);
+  assert.match(src, /pageOwner \? 'alert-router:deadman' : 'alert-router:deadman-early'/);
+});
