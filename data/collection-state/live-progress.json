@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-09-25T11:27:09.418Z",
-  "processed": 72,
-  "failed": 280,
-  "successRate": "20.5%",
+  "updatedAt": "2026-09-25T12:27:49.809Z",
+  "processed": 73,
+  "failed": 287,
+  "successRate": "20.3%",
   "tierBreakdown": {
-    "playwright": 45,
+    "playwright": 46,
     "amp": 0,
     "browserbase": 5,
     "directCookies": 0,
@@ -13,7 +13,7 @@
     "archiveToday": 0,
     "archive": 9
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-09-25T08:29:14.799Z",
@@ -105,6 +105,29 @@
       "t": "2026-09-25T11:09:02.418Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-25T12:13:55.056Z",
+      "event": "bb-session",
+      "session": "24877b1a",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
+    },
+    {
+      "t": "2026-09-25T12:14:05.573Z",
+      "event": "bb-session",
+      "session": "72b4f336",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-09-25T12:22:11.034Z",
+      "event": "bb-session",
+      "session": "705710ed",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-25T12:22:11.854Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
