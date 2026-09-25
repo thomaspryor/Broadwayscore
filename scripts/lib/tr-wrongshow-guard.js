@@ -76,15 +76,34 @@ const OPENING_CHARS = 400;
 // position 0 for literally any show — doesn't slide through. Real reviews in
 // this house style write a full clause ("Mass is a blistering hour of new
 // writing...", "Crazy For You is for Golden Age musical junkies.").
+//
+// A word-count-only continuation check (3+ words) is not enough: "Mass
+// unemployment dominates this bleak new drama" also has a 4+ word
+// continuation after "Mass", but "unemployment" is a common noun forming an
+// unrelated compound, not the review naming its subject (adversarial review,
+// BRO-4152). Require the word immediately after the title to be a
+// copula/reporting verb from the house style actually observed in saved
+// Daily Mail/TR reviews ("X is...", "X opens...", "X remains...") — this is
+// a precision/recall tradeoff: it won't rescue every real opening, but it
+// can't be fooled by the title being an ordinary noun mid-phrase.
+const LEADING_VERBS = new Set([
+  'is', 'was', 'are', 'were', 'remains', 'returns', 'return', 'opens', 'open',
+  'comes', 'come', 'arrives', 'arrive', 'proves', 'prove', 'feels', 'feel',
+  'offers', 'offer', 'gives', 'give', 'makes', 'make', 'delivers', 'deliver',
+  'revives', 'revive', 'turns', 'turn', 'has', 'have', 'does', 'do', 'brings',
+  'bring', 'gets', 'get', 'finds', 'find', 'lands', 'land', 'runs', 'run',
+  'plays', 'play', 'tells', 'tell', 'follows', 'follow', 'charts', 'chart',
+  'explores', 'explore', 'examines', 'examine', 'captures', 'capture',
+  'unfolds', 'unfold', 'channels', 'channel', 'embraces', 'embrace',
+  'celebrates', 'celebrate', 'marks', 'mark', 'showcases', 'showcase',
+]);
 function startsWithTitle(words, fullText) {
   const opening = foldDiacritics(String(fullText || '')).replace(/^[\s"'‘’“”(]+/, '');
   const pattern = words.map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('[^A-Za-z0-9]{1,3}');
   const end = "(?![A-Za-z0-9]|-|['’][sS]\\b)";
-  const m = opening.match(new RegExp(`^${pattern}${end}([\\s\\S]{0,200})`));
+  const m = opening.match(new RegExp(`^${pattern}${end}\\s*([a-zA-Z]+)`));
   if (!m) return false;
-  const restOfSentence = m[1].split(/[.!?\n]/)[0];
-  const restWords = restOfSentence.trim().split(/\s+/).filter(Boolean);
-  return restWords.length >= 3;
+  return LEADING_VERBS.has(m[1].toLowerCase());
 }
 
 function hasProperNameTitleInOpening(show, fullText) {

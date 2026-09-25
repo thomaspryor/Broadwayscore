@@ -76,11 +76,22 @@ function stripPrefix(s) {
 }
 
 /**
- * Detect if a normalized title ends with a part/sequel indicator (e.g. "part 2", "part ii").
+ * Detect if a normalized title ends with a part/sequel indicator (e.g. "part 2", "part ii"),
+ * optionally followed by a trailing format-descriptor phrase ("part 2 the play").
  * Returns the part indicator string or null.
+ *
+ * The optional trailing-format-word allowance matters because stripSuffix()
+ * chain-strips a trailing "the play"/"the musical"/etc BEFORE its own
+ * part-number strip runs — so a title like "A Doll's House - Part 2: The
+ * Play" normalizes to "a dolls house part 2 the play", where a part marker
+ * check anchored to the literal string end ($) would miss the "part 2"
+ * sitting just before "the play" and silently match it against the
+ * part-less original (adversarial review, BRO-4152: caught via the new
+ * beforeDashVariant guard's own part-marker check, which found this
+ * pre-existing gap in the two-step sa===sb / spa===spb comparison above).
  */
 function hasPartSuffix(normalized) {
-  const m = normalized.match(/\bparts?\s*(\d+|[ivx]+|one|two|three|four|five)$/i);
+  const m = normalized.match(/\bparts?\s*(\d+|[ivx]+|one|two|three|four|five)\b(?:\s+(?:the\s+)?(?:musical|play|show|revue|opera|concert|experience))?$/i);
   return m ? m[0] : null;
 }
 
@@ -92,10 +103,18 @@ function hasPartSuffix(normalized) {
 // above. It's only tried as a last-resort EXACT match after everything else
 // fails (BRO-4152: TR listed "The Enormous Crocodile Musical" for our "The
 // Enormous Crocodile" — a 69% length ratio, just under the 70% contains-match
-// floor).
+// floor). titlesMatch is shared by ~15 other callers (Gold Derby odds
+// matching, Wikipedia synopsis matching) with no TR-style corroboration
+// backstop, so the stripped remainder must have 2+ words — a single-word
+// remainder ("slave" from "Slave Play", "side" from "Side Show") is common
+// and generic enough to collide with an unrelated show of that bare name
+// (adversarial review, BRO-4152); "enormous crocodile" is specific enough
+// that an exact match is still a strong signal.
 const BARE_FORMAT_SUFFIX = /\s+(musical|play|show|revue|opera|concert|experience)$/i;
 function stripBareFormatSuffix(s) {
-  return s.replace(BARE_FORMAT_SUFFIX, '');
+  const stripped = s.replace(BARE_FORMAT_SUFFIX, '');
+  if (stripped === s) return s;
+  return stripped.trim().split(/\s+/).length >= 2 ? stripped : s;
 }
 
 /**
@@ -127,14 +146,22 @@ function beforeDashVariant(t) {
   const m = String(t).match(/^(.+?)\s+[-–—]\s+(.+)$/);
   if (!m) return null;
   const after = m[2].trim();
-  if (/^(both\s+)?parts?\s*(\d+|[ivx]+|one|two|three|four|five)?$/i.test(after)) return null;
+  // Check for a part/sequel marker ANYWHERE in the after-dash text, not just
+  // as its entire content — "Part 2: The Play" still ends in a format word
+  // ("play") and would otherwise pass the check below, silently defeating
+  // this exact guard (adversarial review, BRO-4152).
+  if (/\b(both\s+)?parts?\s*(\d+|[ivx]+|one|two|three|four|five)\b/i.test(after)) return null;
   // Only treat the dash-suffix as a strippable descriptive subtitle when it
   // ends in a known format/genre word ("The Chaka Khan Musical") — a bare
   // venue/festival/date qualifier ("Edinburgh Fringe 2025") signals a
   // DIFFERENT production (a tryout/regional run), not a subtitle of this
   // one, and must keep failing the match (BRO-4152: World's Greatest Lover
   // only has a 2025 Edinburgh Fringe TR page, not the West End transfer).
-  if (!/\b(musical|play|show|revue|opera|concert|experience|version)\s*$/i.test(after)) return null;
+  // "version" deliberately excluded — unlike the others it commonly marks a
+  // DELIBERATELY distinct production ("Concert Version", "Studio Version"),
+  // not a cosmetic aggregator label, and none of BRO-4152's real cases needed
+  // it (adversarial review).
+  if (!/\b(musical|play|show|revue|opera|concert|experience)\s*$/i.test(after)) return null;
   return m[1];
 }
 

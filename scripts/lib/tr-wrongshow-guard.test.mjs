@@ -190,4 +190,9 @@ test('leading-position rule still rejects bare headline labels and non-leading m
   assert.equal(g('Mass', 'A blistering hour of new writing. Mass is what they call it.'), true);
   // Possessive directly after the title at position 0 still excluded.
   assert.equal(g('Mass', "Mass's revival at the Almeida is a knockout of a play tonight."), true);
+  // Adversarial review (BRO-4152): "Mass" as an ordinary noun opening an
+  // unrelated compound phrase, with a 4+ word continuation, must NOT be
+  // mistaken for the review naming its subject — a word-count-only check
+  // would have wrongly rescued this.
+  assert.equal(g('Mass', 'Mass unemployment dominates this bleak new drama about a factory town.'), true);
 });

@@ -155,6 +155,20 @@ assert(!titlesMatch("A Doll's House", "A Doll's House - Part 2"),
 assert(!titlesMatch('World’s Greatest Lover', 'World’s Greatest Lover - Edinburgh Fringe 2025'),
   'Dash-subtitle guard: a venue/festival/date qualifier must NOT match (different production/run)');
 
+// Adversarial review findings (BRO-4152, 2026-09-24): titlesMatch is shared
+// by ~15 other callers (awards-odds matching, Wikipedia synopsis matching)
+// with no TR-style corroboration backstop, so the new fallback paths must not
+// create fresh false positives for common single-word titles or buried
+// sequel markers.
+assert(!titlesMatch("A Doll's House", "A Doll's House - Part 2: The Play"),
+  'Dash-subtitle guard: a part marker BEFORE a trailing format word must still be caught (pre-existing hasPartSuffix gap)');
+assert(!titlesMatch('Slave Play', 'Slave'),
+  'Bare-format-suffix fallback: single-word remainder must NOT match a different show of that bare name');
+assert(!titlesMatch('Side Show', 'Side'),
+  'Bare-format-suffix fallback: single-word remainder must NOT match (Side Show vs Side)');
+assert(!titlesMatch('Show - Concert Version', 'Show'),
+  '"version" excluded from dash-subtitle format words — it usually marks a genuinely distinct production');
+
 // ============================================================================
 // cleanSearchTitle
 // ============================================================================
