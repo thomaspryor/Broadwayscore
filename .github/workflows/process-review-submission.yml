@@ -1,5 +1,10 @@
 name: Process Review Submission
 
+# Issue comments/labels/closes below use GH_DISPATCH_TOKEN (BRO-4141). The
+# /api/submit-review route opens these issues with that same owner PAT, so the
+# owner is the issue author and was emailed for every github-actions[bot]
+# comment and close. GitHub doesn't notify you of your own actions. Only
+# `opened` triggers any workflow here, so PAT-authored comments trigger nothing.
 on:
   issues:
     types: [opened]
@@ -90,7 +95,7 @@ jobs:
         env:
           ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
             const commentFile = '.github-comment.md';
@@ -117,7 +122,7 @@ jobs:
         env:
           ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             await github.rest.issues.addLabels({
@@ -162,7 +167,7 @@ jobs:
         env:
           ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             await github.rest.issues.addLabels({
@@ -214,7 +219,7 @@ jobs:
         env:
           ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             await github.rest.issues.addLabels({
@@ -372,7 +377,7 @@ jobs:
         env:
           ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             const now = new Date().toISOString();
@@ -407,7 +412,7 @@ jobs:
         env:
           ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             const body = '## ✅ Review received\n\n' +
@@ -429,7 +434,7 @@ jobs:
           ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
           EXCLUDED_REASON: ${{ steps.landed.outputs.excluded_reason }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             const body = '## ⏳ Received — needs a manual check\n\n' +
@@ -480,7 +485,7 @@ jobs:
         env:
           ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             const now = new Date().toISOString();
