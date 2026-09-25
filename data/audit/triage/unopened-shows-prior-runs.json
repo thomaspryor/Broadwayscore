@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-24T12:23:29.863Z",
+  "generatedAt": "2026-09-25T12:20:10.912Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3056,
-  "flaggedShows": 47,
-  "flaggedFiles": 181,
+  "scannedShows": 3057,
+  "flaggedShows": 48,
+  "flaggedFiles": 182,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
@@ -11,7 +11,7 @@
   "unreadableFiles": 0,
   "byVerdict": {
     "likely-contamination": 27,
-    "needs-human-review": 20
+    "needs-human-review": 21
   },
   "shows": [
     {
@@ -2999,6 +2999,42 @@
       ]
     },
     {
+      "showId": "la-boheme-off-broadway-2026",
+      "title": "La Bohème",
+      "market": "broadway",
+      "status": "upcoming",
+      "venue": "Metropolitan Opera House",
+      "previewsStartDate": "2026-09-25",
+      "openingDate": "2026-09-25",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Metropolitan Opera House\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2022
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "front-row-center--elizabeth-ann-foster.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "front-row-center",
+          "criticName": "Elizabeth Ann Foster",
+          "publishDate": "2022-06-17",
+          "url": "https://thefrontrowcenter.com/2022/06/la-boheme-by-the-metropolitan-opera-at-lincoln-center-an-audience-member-chimes-in/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "448-psychosis-off-west-end-2026",
       "title": "448 Psychosis",
       "market": "west-end",
@@ -3256,7 +3292,7 @@
       "market": "west-end",
       "status": "announced",
       "venue": "Young Vic (Main House)",
-      "previewsStartDate": null,
+      "previewsStartDate": "2027-01-22",
       "openingDate": null,
       "verdict": "needs-human-review",
       "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Young Vic (Main House)\") — too little evidence to call this a prior run on its own; read the review before deciding.",

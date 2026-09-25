@@ -1,7 +1,7 @@
 {
   "system": "push-retry deadman",
   "status": "error",
-  "lastChecked": "2026-09-23T12:15:49.652Z",
+  "lastChecked": "2026-09-25T12:18:19.913Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Push-retry deadman",
       "status": "error",
-      "message": "32 push-retry failure(s) in the last 7d across Broadwayscore:main, Broadwayscore:job/linear-BRO-3954-muanl1vw [unknown x16, Test Suite x6, Rebuild Reviews Data x5, Scrape New Aggregators x2, Batch Commercial Research x2, Opening Night Express x1]. Most recent reason: retries-exhausted."
+      "message": "27 push-retry failure(s) in the last 7d across Broadwayscore:main, Broadwayscore:job/linear-BRO-3954-muanl1vw [unknown x15, Rebuild Reviews Data x4, Test Suite x3, Batch Commercial Research x2, Opening Night Express x2, Scrape New Aggregators x1]. Most recent reason: retries-exhausted."
     }
   ]
 }
