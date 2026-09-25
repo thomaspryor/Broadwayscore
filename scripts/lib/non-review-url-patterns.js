@@ -194,6 +194,12 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // theatre, a filmed earlier production (the Globe's As You Like It DVD was
   // ingested onto the 2026 Globe run, 2026-08-15). Never a live-run review.
   { host: /(^|\.)myreviewer\.com$/, path: /^\/(dvd|blu-?ray|4k)\//i, reason: 'home-video-review' },
+  // The Stage's /news/ section is news; its reviews live under /reviews/.
+  // Found 2026-09-25: three live "reviews" carried /news/ URLs (serp-discovery
+  // star stubs on kiss-of-the-spider-woman-1993 and mamma-mia-2001 pointing at
+  // news of later revivals; a westendtheatre-sourced Mousetrap stub) plus a
+  // Disruption file holding an Edinburgh Fringe "travel disruption" news item.
+  { host: /(^|\.)thestage\.co\.uk$/, path: /^\/news\//, reason: 'news-article' },
   // Seventh wave (2026-08-06 — Cats/NYSM/I'm Every Woman OWE opening audit,
   // first live exercise of #1073): ticketing/listing hosts that reached the
   // census "missing" lists — groupon deal pages and one was auto-INGESTED as a
