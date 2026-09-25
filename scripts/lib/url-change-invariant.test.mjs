@@ -829,6 +829,7 @@ test('flip-flop between a named non-review url and a review url resolves to the 
   quiet(() => safeWriteReview(target, { criticName: 'Dave Fargnoli', url: review, source: 'show-score' }));
   const after = JSON.parse(fs.readFileSync(target, 'utf8'));
   assert.equal(after.url, review, 'the review url must win over a /news/ url');
+  assert.equal(after.urlVerifiedAuto, undefined, 'the stale auto-pin must not carry over onto the new url');
 
   // A HUMAN pin is never overridden.
   const human = makeFixture(reviewTextsDir, showId, 'thestage--human.json', {

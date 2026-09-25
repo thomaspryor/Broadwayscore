@@ -1522,6 +1522,11 @@ function safeWriteReview(filePath, newData, options = {}) {
             newData.urlVerifiedNote = `Auto-pinned ${new Date().toISOString().slice(0, 10)}: url flip-flopped back to a prior value (poller alternates ${existing.url} <-> ${flippedFromUrl}) — locked against further automated changes (BRO-121).`;
           }
         } else if (urlCanonicallyChanged(existing.url, newData.url)) {
+          if (existing.urlVerifiedAuto === true && _flipFlopShouldTakeIncoming(existing.url, newData.url)) {
+            // The auto-pin belonged to the non-review url being replaced; it must
+            // not lock in the incoming url (its note names the old one).
+            delete newData.urlVerified; delete newData.urlVerifiedAuto; delete newData.urlVerifiedNote;
+          }
           const inv = applyUrlChangeInvariant(existing, newData, { fileLabel: path.basename(filePath) });
           for (const f of inv.cleared) {
             const i = preserved.indexOf(f);
@@ -2907,7 +2912,11 @@ function protectStagedDeletions(cwd, options = {}) {
  */
 function _flipFlopShouldTakeIncoming(existingUrl, incomingUrl) {
   const { namedNonReviewReason } = require('./non-review-url-patterns');
-  return !!namedNonReviewReason(existingUrl || '') && !namedNonReviewReason(incomingUrl || '');
+  if (!namedNonReviewReason(existingUrl || '') || namedNonReviewReason(incomingUrl || '')) return false;
+  // Same site only: a host-wide named pattern can sit over real reviews
+  // elsewhere, so never let this hop an auto-pin to a different outlet.
+  const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, '').toLowerCase(); } catch { return null; } };
+  return !!host(existingUrl) && host(existingUrl) === host(incomingUrl);
 }
 
 module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming };
