@@ -22,9 +22,18 @@
 
 const { execFileSync } = require('node:child_process');
 const { selectCacheEntriesToPrune } = require('./lib/actions-cache-prune');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = 'Usage: node scripts/prune-github-actions-cache.js <key-prefix> --ref=<ref> [--keep=N] [--dry-run]';
 
 function main() {
   const args = process.argv.slice(2);
+  // Checked BEFORE any side effect (task #498 pattern) — this script deletes
+  // real GitHub Actions caches, so --help must never fall through to gh CLI.
+  if (hasHelpFlag(args)) {
+    console.log(USAGE);
+    return;
+  }
   const prefix = args.find((a) => !a.startsWith('--'));
   const keepArg = args.find((a) => a.startsWith('--keep='));
   const keepNewest = keepArg ? Number(keepArg.split('=')[1]) : 2;
@@ -33,9 +42,7 @@ function main() {
   const dryRun = args.includes('--dry-run');
 
   if (!prefix || !ref) {
-    console.error(
-      'Usage: node scripts/prune-github-actions-cache.js <key-prefix> --ref=<ref> [--keep=N] [--dry-run]',
-    );
+    console.error(USAGE);
     process.exit(1);
   }
 
