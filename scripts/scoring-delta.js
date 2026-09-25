@@ -174,6 +174,10 @@ const INCLUSION_FILES = [
   // actually added, so the Check-2 generic-idWords bug (2 wrong-show recoveries,
   // task #914 live incident) shipped without tripping this gate.
   'scripts/lib/content-quality.js',
+  // Shared show-title variant matcher (2026-09-24) consumed by content-quality.js
+  // validateShowMentioned/validateContentMentionsShow and by rebuild-all-reviews.js's
+  // showNotMentioned auto-clear — an inclusion decision, same shape as above.
+  'scripts/lib/show-title-variants.js',
   // Historical miss (2026-08-14): rebuild-all-reviews.js consumes
   // shouldWithholdStaleExclusionFlag from here at ten producer sites to decide
   // whether a guard may write an exclusion flag at all — an inclusion decision
