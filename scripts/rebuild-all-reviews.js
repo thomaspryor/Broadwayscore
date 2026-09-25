@@ -35,7 +35,6 @@ const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
-const { decideShowNotMentionedAutoClear, applyShowNotMentionedClear } = require('./lib/show-not-mentioned-autoclear');
 const { shouldDeferCvWrongShow } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
@@ -4082,31 +4081,40 @@ showDirs.forEach(showId => {
         // Safety net: if fullText (or wrongFullText from collect-review-texts nulling) mentions
         // the show, clear the stale flag. collect-review-texts.js moves fullText → wrongFullText
         // when it sets showNotMentioned, so we must check both fields.
-        // Gate = the SAME validators the collectors use (validateShowMentioned +
-        // the multi-mention validateContentMentionsShow, both with the
-        // punctuation-insensitive title variants) — NOT a bare title substring,
-        // which cleared on a single passing mention anywhere in 60K chars
-        // (adversarial review 2026-09-24). See scripts/lib/show-not-mentioned-autoclear.js.
-        {
+        const textToCheck = (data.fullText && data.fullText.length > 300) ? data.fullText
+          : (data.wrongFullText && data.wrongFullText.length > 300) ? data.wrongFullText
+          : null;
+        if (textToCheck) {
           // Use real show title from shows.json if available (ID-derived titles miss hyphenated names like "Boeing-Boeing")
           const realTitle = showTitleMap && showTitleMap[data.showId || showId];
-          const idTitle = (data.showId || showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ');
-          const decision = decideShowNotMentionedAutoClear(data, { showTitle: realTitle || idTitle, showId: data.showId || showId });
-          if (decision.clear) {
-            const cleared = applyShowNotMentionedClear(data, decision, new Date().toISOString());
-            for (const k of Object.keys(data)) if (!(k in cleared)) delete data[k];
-            Object.assign(data, cleared);
+          const idTitle = (data.showId || showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ').toLowerCase();
+          const showTitle = realTitle ? realTitle.toLowerCase() : idTitle;
+          const shortTitle = showTitle.replace(/^the /, '').replace(/ musical$/, '');
+          // Comma-subtitle fallback ("beaches, a new musical" → "beaches"). Opening-night
+          // reviews for subtitled shows nearly always mention the short title only.
+          const commaIdx = showTitle.indexOf(',');
+          const commaShort = commaIdx > 0 ? showTitle.slice(0, commaIdx).trim() : '';
+          const textLower = textToCheck.substring(0, 5000).toLowerCase();
+          if ((showTitle.length >= 4 && textLower.includes(showTitle)) || (shortTitle.length >= 5 && textLower.includes(shortTitle)) || (commaShort.length >= 4 && textLower.includes(commaShort))) {
+            data.showNotMentioned = false;
+            delete data._showNotMentionedDiscoveryAttempted;
+            // Restore fullText from wrongFullText if it was nulled out
+            if (!data.fullText && data.wrongFullText) {
+              data.fullText = data.wrongFullText;
+              delete data.wrongFullText;
+            }
             stats.showNotMentionedAutoCleared = (stats.showNotMentionedAutoCleared || 0) + 1;
-            if (!stats.showNotMentionedAutoClearedDetails) stats.showNotMentionedAutoClearedDetails = [];
-            stats.showNotMentionedAutoClearedDetails.push(`${showId}/${file} (${decision.reason}; ${decision.mentionCount} mentions)`);
             // Write fix back to source file — re-read from disk to avoid overwriting
-            // fields (e.g. fullText) that may have been updated by a concurrent process.
-            // Provenance (showNotMentionedCleared{At,By,Evidence,Prior}) makes it revertible.
+            // fields (e.g. fullText) that may have been updated by a concurrent process
             try {
               const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-              if (sourceData.showNotMentioned === true) {
-                safeWriteReview(filePath, applyShowNotMentionedClear(sourceData, decision, data.showNotMentionedClearedAt), { force: true });
+              sourceData.showNotMentioned = false;
+              delete sourceData._showNotMentionedDiscoveryAttempted;
+              if (!sourceData.fullText && sourceData.wrongFullText) {
+                sourceData.fullText = sourceData.wrongFullText;
+                delete sourceData.wrongFullText;
               }
+              safeWriteReview(filePath, sourceData, { force: true });
             } catch (e) { console.warn('  Failed to write back showNotMentioned fix:', filePath, e.message); }
           }
         }

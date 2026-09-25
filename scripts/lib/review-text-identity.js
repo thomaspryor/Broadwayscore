@@ -34,7 +34,8 @@ const DEFAULT_MIN_SHARED_SHINGLES = MIN_SHARED_WINDOWS;
 // transcription must not break a match). Keeps the raw token so the cast-list
 // density check can still see commas.
 function identityTokens(text) {
-  const cleaned = normalizeForShingles(stripBoilerplate(stripQuotedSpans(text)));
+  // Fold diacritics first so 'Misérables' tokenizes whole, not as 'misrables'.
+  const cleaned = require('./title-match').foldDiacritics(normalizeForShingles(stripBoilerplate(stripQuotedSpans(text)))).toLowerCase();
   const out = [];
   for (const raw of cleaned.split(' ')) {
     const w = raw.replace(/[^a-z0-9]+/g, '');

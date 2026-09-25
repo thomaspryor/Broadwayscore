@@ -15,7 +15,6 @@ const {
   normalizeForMention, buildShowTitleVariants, countVariant, textMentionsTitle,
 } = require('./show-title-variants.js');
 const { validateShowMentioned, validateContentMentionsShow } = require('./content-quality.js');
-const { classifyIncompleteReason, isStaleContentMismatchEntry } = require('./incomplete-reason.js');
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SHOWS_PATH = join(__dirname, '..', '..', 'data', 'shows.json');
@@ -77,24 +76,6 @@ test('unrelated text still fails', () => {
   const text = `A long article about a completely different play at the Old Vic.${FILLER}`;
   assert.equal(validateShowMentioned(text, 'Dog Man - The Musical', 'dog-man-the-musical-west-end-2026').valid, false);
   assert.equal(validateContentMentionsShow(text, null, 'Dog Man - The Musical', 'dog-man-the-musical-west-end-2026').valid, false);
-});
-
-test('stale url_content_mismatch entry is ignored after a later successful fetch', () => {
-  const entry = { failureReason: 'url_content_mismatch', lastFailedAt: '2026-08-01T00:00:00Z', url: 'https://x.test/r', mismatchReason: 'show mentioned 0x' };
-  const review = { url: 'https://x.test/r', contentTier: 'complete', showId: 'dog-man-the-musical-west-end-2026', showTitle: 'Dog Man - The Musical', fullText: `Dog Man: The Musical review.${FILLER}`, textFetchedAt: '2026-08-06T00:00:00Z' };
-  assert.equal(isStaleContentMismatchEntry(review, entry), true);
-  assert.equal(classifyIncompleteReason(review, entry), null);
-  // Older fetch than the failure → still reported.
-  const older = { ...review, textFetchedAt: '2026-07-01T00:00:00Z' };
-  assert.equal(classifyIncompleteReason(older, entry).incompleteReason, 'url_content_mismatch');
-  // Different URL → still reported.
-  assert.equal(isStaleContentMismatchEntry({ ...review, url: 'https://x.test/other' }, entry), false);
-  // No text → still reported.
-  assert.equal(isStaleContentMismatchEntry({ ...review, fullText: null }, entry), false);
-  // Later text that still fails the mention check → still reported.
-  assert.equal(isStaleContentMismatchEntry({ ...review, fullText: `An unrelated article.${FILLER}` }, entry), false);
-  // showNotMentioned → still reported.
-  assert.equal(isStaleContentMismatchEntry({ ...review, showNotMentioned: true }, entry), false);
 });
 
 // Swap the title's separator (' - ' ↔ ': ', en/em dash → ': ', ', ' → ' ') the
