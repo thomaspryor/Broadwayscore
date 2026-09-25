@@ -106,7 +106,7 @@ function parseConflictedJson(text) {
 
 // Keys that are fetch/retry bookkeeping, never editorial truth. Two sides that
 // differ ONLY in these describe the same review.
-const OPERATIONAL_KEY_RE = /retry|recovery|attempt|fetch|incomplete|checkedAt|lastChecked|textFetchedAt/i;
+const OPERATIONAL_KEY_RE = /retry|recovery|attempt|fetch|incompleteDetail|checkedAt|lastChecked/i;
 
 /**
  * Conflict-marked REVIEW record the rebuild may safely publish: both sides

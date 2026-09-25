@@ -564,6 +564,31 @@ function printCannotAutoVerifyBanner(rebuildLoopTouch) {
 
 // ─── Load two versions of review-guards ──────────────────────────────────────
 
+/**
+ * Every `require('./x')` in a materialized baseline file that was NOT itself
+ * materialized gets a one-line shim forwarding to the working-tree module, so
+ * a lazy require inside a baseline predicate can never throw MODULE_NOT_FOUND
+ * (BRO-39 hit this with failed-fetch-policy.js; 2026-09-25 ship-check found
+ * isNamedNonReviewUrlRecord's unvetted-serp-sources / non-review-url-patterns).
+ * Shimmed deps behave like the working tree on the baseline side — the same
+ * documented trade-off as the materialized deps' missing-at-BASE_REF fallback.
+ * Only real modules are shimmed; the shim itself adds no new requires.
+ */
+function shimMissingBaselineRequires(baselineLibDir) {
+  const workingLib = path.join(REPO_ROOT, 'scripts', 'lib');
+  for (const f of fs.readdirSync(baselineLibDir)) {
+    if (!f.endsWith('.js')) continue;
+    const src = fs.readFileSync(path.join(baselineLibDir, f), 'utf8');
+    for (const m of src.matchAll(/require\(\s*['"]\.\/([\w.-]+?)(?:\.js)?['"]\s*\)/g)) {
+      const dep = `${m[1]}.js`;
+      const target = path.join(baselineLibDir, dep);
+      const real = path.join(workingLib, dep);
+      if (fs.existsSync(target) || !fs.existsSync(real)) continue;
+      fs.writeFileSync(target, `module.exports = require(${JSON.stringify(real)});\n`);
+    }
+  }
+}
+
 function loadBaselineGuards() {
   // Dump HEAD's version of review-guards.js + date-utils.js to a temp dir so we
   // can require() them independently from the working-tree version.
@@ -622,6 +647,8 @@ function loadBaselineGuards() {
       );
     }
   }
+
+  shimMissingBaselineRequires(baselineLibDir);
 
   // Clear require cache and load baseline
   const baselinePath = path.join(baselineLibDir, 'review-guards.js');
