@@ -1019,9 +1019,15 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     // ugc-platform is excluded: a vocal.media "critique" submitted for
     // the-bathroom-attendant-off-broadway-2026 is a real named critic's
     // review (Robert M. Massimi), scored 64.
+    // A ticket-seller host that also publishes reviews under a /review(s)/
+    // path is not refused (newyorkcitytheatre.com/reviews/NNNN and
+    // /news/reviews/NNNN are real reviews, e.g. burn-this-2019 Nicola Quinn).
     const named = nrp.namedNonReviewReason(input.url);
-    const submissionReason = (named && named !== 'ugc-platform' ? named : null)
-      || (nrp.classifyReviewUrl(input.url).reason === 'ticketing-reseller' ? 'ticketing-reseller' : null);
+    let reviewPath = false;
+    try { reviewPath = /\/reviews?\//i.test(new URL(input.url).pathname); } catch { /* unparseable: no exemption */ }
+    const submissionReason = reviewPath ? null
+      : ((named && named !== 'ugc-platform' ? named : null)
+        || (nrp.classifyReviewUrl(input.url).reason === 'ticketing-reseller' ? 'ticketing-reseller' : null));
     if (submissionReason) {
       console.warn(`  ⛔ Refusing submitted non-review page: ${input.url} (${submissionReason})`);
       return { action: 'skipped', reason: `submitted-non-review-url: ${submissionReason}`, guardRefused: true };

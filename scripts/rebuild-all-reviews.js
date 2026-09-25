@@ -93,7 +93,8 @@ const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
-const { safeWriteReview, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
+const { safeWriteReview, writeReviewOrThrow, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
+const { isPathHiddenBySparseCheckout } = require('./lib/sparse-checkout-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 const { writeShowExclusionsFile } = require('./lib/rebuild-exclusion-audit');
@@ -1801,7 +1802,7 @@ const crossShowFingerprints = new Map();
           const mergeResult = mergeUniqueReviewFields(existingData, d);
           if (mergeResult.action === 'skip-flagged-source') { skippedFlaggedCount++; continue; }
           if (mergeResult.changed) {
-            safeWriteReview(expectedPath, existingData);
+            writeReviewOrThrow(expectedPath, existingData);
           }
           // Clear any sibling files that point at this file via duplicateOf —
           // otherwise the audit-duplicate-of-url-mismatch CI gate flags them
@@ -1811,6 +1812,7 @@ const crossShowFingerprints = new Map();
           mergedCount++;
         } else {
           // No named file — just rename
+          if (isPathHiddenBySparseCheckout(expectedPath)) throw new Error(`rename target ${path.basename(expectedPath)} is outside this sparse checkout — source kept`);
           fs.renameSync(filePath, expectedPath);
           renamedCount++;
         }
@@ -1867,7 +1869,7 @@ const crossShowFingerprints = new Map();
           const mergeResult = mergeUniqueReviewFields(existingData, d);
           if (mergeResult.action === 'skip-flagged-source') { skippedFlaggedCount++; continue; }
           if (mergeResult.changed) {
-            safeWriteReview(expectedPath, existingData);
+            writeReviewOrThrow(expectedPath, existingData);
           }
           // Cascade-clear duplicateOf siblings before unlinking (see Pass 1).
           cascadeClearDuplicateRefs(sDir, f);
@@ -1875,6 +1877,7 @@ const crossShowFingerprints = new Map();
           mergedCount++;
         } else {
           // No correctly-named file — just rename
+          if (isPathHiddenBySparseCheckout(expectedPath)) throw new Error(`rename target ${path.basename(expectedPath)} is outside this sparse checkout — source kept`);
           fs.renameSync(filePath, expectedPath);
           renamedCount++;
         }
@@ -3902,7 +3905,7 @@ showDirs.forEach(showId => {
             sourceData.routedFromShowId = showId;
             sourceData.routedReason = `${yearSource}=${detectedYear} closer to ${targetShowId} (${decision.targetYear}) than ${showId} (${guard.showYear})`;
             sourceData.routedAt = new Date().toISOString();
-            safeWriteReview(targetPath, sourceData);
+            writeReviewOrThrow(targetPath, sourceData);
             targetWritten = true;
             fs.unlinkSync(sourcePath);
             console.log(`  [REROUTE] ${showId}/${file} → ${targetShowId}/${file} (${yearSource}=${detectedYear}, dist ${decision.distance})`);

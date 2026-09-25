@@ -1082,6 +1082,22 @@ function _writeQuarantine(pendingPath, content) {
   fs.writeFileSync(pendingPath, content);
 }
 
+/**
+ * safeWriteReview for MOVE/MERGE-then-delete callers: throws when the write
+ * did not land, so the caller's following unlink of the source never runs.
+ * safeWriteReview reports refusals (locked, quarantined, sparse-hidden target,
+ * conflict-marked target) as {wrote:false}; callers that ignored the result
+ * and deleted the source lost the review (review 2026-09-25: rebuild reroute,
+ * merge-slug-directories, audit-we-market-misroutes).
+ */
+function writeReviewOrThrow(filePath, newData, options = {}) {
+  const r = safeWriteReview(filePath, newData, options);
+  if (!r || r.wrote === false) {
+    throw new Error(`write to ${path.basename(filePath)} did not land (${(r && r.skipped) || 'no result'}) — source kept`);
+  }
+  return r;
+}
+
 function safeWriteReview(filePath, newData, options = {}) {
   const { force = false, merge = true } = options;
   // A file missing only because this checkout is sparse is not new: writing it
@@ -2628,6 +2644,11 @@ function safeRenameReview(srcPath, dstPath, options = {}) {
     return { wrote: false, skipped: 'noop' };
   }
 
+  if (require('./sparse-checkout-guard').isPathHiddenBySparseCheckout(dstPath)) {
+    console.error(`[review-write-guard] Refusing rename onto ${path.basename(dstPath)}: tracked but outside this sparse checkout`);
+    return { wrote: false, skipped: 'hidden-by-sparse-checkout' };
+  }
+
   if (fs.existsSync(dstPath)) {
     return { wrote: false, skipped: 'conflict', conflictPath: dstPath };
   }
@@ -2964,4 +2985,4 @@ function _flipFlopShouldTakeIncoming(existingUrl, incomingUrl) {
   return !!host(existingUrl) && host(existingUrl) === host(incomingUrl);
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming };
+module.exports = { safeWriteReview, writeReviewOrThrow, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming };

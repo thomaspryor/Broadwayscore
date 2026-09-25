@@ -78,6 +78,7 @@ const dryRun = hasFlag('dry-run');
 const reviewTextsDir = getArg('data-dir')
   || path.join(__dirname, '..', 'data', 'review-texts');
 const forceClearStale = hasFlag('force-clear-stale-flag');
+const allowNonReviewUrl = hasFlag('allow-non-review-url');
 // Provisional onboarding: use --outlet verbatim as a slug WITHOUT fuzzy alias
 // resolution. For aggregator-cited outlets not yet in the registry (the ctvoice /
 // New York Notebook class, girl-interrupted 2026-06-05), normalizeOutlet() can
@@ -91,7 +92,7 @@ const forceClearStale = hasFlag('force-clear-stale-flag');
 let provisional = hasFlag('provisional');
 
 if (!showId || !url) {
-  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--dry-run] [--data-dir=PATH]');
+  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--dry-run] [--data-dir=PATH] [--allow-non-review-url]');
   process.exit(1);
 }
 
@@ -375,6 +376,10 @@ if (!show) {
     publishDate: publishDate,
     operatorTrust: false,
   });
+  // Human override for review-file-writer's submitted-non-review-url guard
+  // (a real review on a ticket/listing host). Persists on the file as a
+  // record of the override.
+  if (allowNonReviewUrl) fields.allowNonReviewUrl = true;
   if (recoveredScore) {
     // Route through setExtractedScore, never hand-set originalScore: an
     // extractor whose source is an aggregator tag (e.g. lbo-css-stars) must

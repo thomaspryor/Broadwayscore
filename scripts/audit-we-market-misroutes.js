@@ -33,7 +33,7 @@ const fs = require('fs');
 const path = require('path');
 const { classifyMarketRouting, buildSiblingIndex } = require('./lib/market-routing');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { writeReviewOrThrow } = require('./lib/review-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -194,7 +194,7 @@ function main() {
           wrongProductionNote: undefined,
         };
         const targetPath = path.join(targetDir, f);
-        safeWriteReview(targetPath, migrated, { merge: false });
+        writeReviewOrThrow(targetPath, migrated, { merge: false });
         fs.unlinkSync(filepath);
       } catch (e) {
         summary.errors++;
