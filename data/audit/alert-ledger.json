@@ -143,12 +143,13 @@
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-25T02:52:48.085Z",
+      "lastSeen": "2026-09-25T03:35:12.501Z",
       "lastNotifiedAt": "2026-09-25T02:52:48.085Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
       "notifyCount": 102,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -4490,7 +4491,7 @@
       "resolveReason": "stale-signature"
     },
     "test-yml:red:Unit Tests:eb9a92ac": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every scripts/ root file with the shred signature and no fold is in the frozen baseline\"",
       "firstSeen": "2026-09-23T04:33:50.096Z",
@@ -4502,8 +4503,11 @@
       "linearIdentifier": "BRO-4063",
       "absentRunIds": [
         "36084309752",
-        "36087172520"
-      ]
+        "36087172520",
+        "36089959426"
+      ],
+      "resolvedAt": "2026-09-25T03:35:12.482Z",
+      "resolveReason": "stale-signature"
     },
     "land:land/worktree-bro-3873-c-old": {
       "status": "resolved",
@@ -4947,7 +4951,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:db4d5abd": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"BRO-3887: gather-reviews.js daily scraper credits are back under control\"",
       "firstSeen": "2026-09-25T01:38:28.056Z",
@@ -4959,8 +4963,11 @@
       "linearIdentifier": "BRO-4146",
       "absentRunIds": [
         "36084309752",
-        "36087172520"
-      ]
+        "36087172520",
+        "36089959426"
+      ],
+      "resolvedAt": "2026-09-25T03:35:12.488Z",
+      "resolveReason": "stale-signature"
     },
     "land:land/worktree-fix-land-fixture-hang": {
       "status": "resolved",
@@ -4980,13 +4987,13 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run push-with-retry stranded-commit-cascade test (bash integration) — \"foo returns the contracted value\"",
       "firstSeen": "2026-09-25T02:13:05.904Z",
-      "lastSeen": "2026-09-25T02:52:48.082Z",
+      "lastSeen": "2026-09-25T03:35:12.498Z",
       "lastNotifiedAt": "2026-09-25T02:13:05.904Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4149",
-      "silentRefires": 1
+      "silentRefires": 2
     }
   }
 }
