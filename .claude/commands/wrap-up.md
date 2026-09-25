@@ -26,7 +26,7 @@ Summarize in 3-5 bullet points. Be specific — include file names, feature name
 
 ### Phase 2: What Else? (full sessions only)
 
-**Skip this phase if `/ship-check` already ran this session** — ship-check chains into `/what-else` automatically, so the discoveries are already captured.
+**Skip this phase only if `/what-else` itself already ran this session** (a real Skill invocation). `/ship-check` does NOT run it for you: it only tells you to run it next, and finish-line Gate 4 counts real invocations only (owner 2026-09-24: "Every session like this should still run what-else. We catch a lot of improvements there").
 
 **Otherwise**, run `/what-else` now to find adjacent improvements before context fades. This catches pattern reuse, cousin bugs, data quality issues, and compounding improvements that would be expensive to rediscover in a future session.
 
