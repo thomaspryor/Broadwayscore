@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-25T19:15:13.082Z",
+  "generated": "2026-09-25T23:07:37.569Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 97,
+  "count": 98,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -337,6 +337,13 @@
       "loserFile": "broadwayworld--unknown.json",
       "targetFile": "broadwayworld--gary-naylor.json",
       "reason": "orphaned-duplicate-heal: broadwayworld--gary-naylor.json was flagged invalid after broadwayworld--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "loserFile": "everything-theatre--unknown.json",
+      "targetFile": "everything-theatre--sara-west.json",
+      "reason": "orphaned-duplicate-heal: everything-theatre--sara-west.json was flagged invalid after everything-theatre--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
