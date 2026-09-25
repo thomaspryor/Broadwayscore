@@ -69,7 +69,10 @@ test('a card with no NO-DISPATCH marker is still mirrorable (no false-positive e
 
 const REAL_HOME = os.userInfo().homedir;
 const HOOK_PATH = path.join(REAL_HOME, '.claude', 'hooks', 'exit-status-gate.sh');
-const HOOK_ENV = { ...process.env, HOME: REAL_HOME };
+// DISPATCH_WATCHDOG_DISABLED: these fixtures isolate Gate P. Gate O (owned
+// dispatches, 2026-09-16) also fires on a DISPATCHED:+CLOSE ME ending and made
+// the pass-case fixtures exit 2 for the wrong gate (BRO-4134).
+const HOOK_ENV = { ...process.env, HOME: REAL_HOME, DISPATCH_WATCHDOG_DISABLED: '1' };
 const HOOK_PRESENT = existsSync(HOOK_PATH);
 const skipIfNoHook = HOOK_PRESENT
   ? false
@@ -172,7 +175,7 @@ test('Gate P BLOCKS a DISPATCHED: line whose quoted title matches no live cmux w
     ].join('\n');
     const { status, stderr } = runGate(msg, { CMUX_BIN: cmuxBin });
     assert.equal(status, 2, `expected block (exit 2), got ${status}\nstderr:\n${stderr}`);
-    assert.match(stderr, /no live cmux workspace title matches/i);
+    assert.match(stderr, /Gate P: .*matches no live cmux\s+workspace/i);
   } finally {
     rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
@@ -254,7 +257,7 @@ test('Gate P BLOCKS a DISPATCHED: claim when cmux is reachable but reports ZERO 
     ].join('\n');
     const { status, stderr } = runGate(msg, { CMUX_BIN: cmuxBin });
     assert.equal(status, 2, `expected block (exit 2), got ${status}\nstderr:\n${stderr}`);
-    assert.match(stderr, /no live cmux workspace title matches/i);
+    assert.match(stderr, /Gate P: .*matches no live cmux\s+workspace/i);
   } finally {
     rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }

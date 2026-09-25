@@ -1,5 +1,10 @@
 name: Process Review Submission
 
+# Issue comments/labels/closes below use GH_DISPATCH_TOKEN (BRO-4141). The
+# /api/submit-review route opens these issues with that same owner PAT, so the
+# owner is the issue author and was emailed for every github-actions[bot]
+# comment and close. GitHub doesn't notify you of your own actions. Only
+# `opened` triggers any workflow here, so PAT-authored comments trigger nothing.
 on:
   issues:
     types: [opened]
@@ -90,7 +95,7 @@ jobs:
         env:
           ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
             const commentFile = '.github-comment.md';
@@ -117,7 +122,7 @@ jobs:
         env:
           ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             await github.rest.issues.addLabels({
@@ -162,7 +167,7 @@ jobs:
         env:
           ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             await github.rest.issues.addLabels({
@@ -214,7 +219,7 @@ jobs:
         env:
           ISSUE_NUMBER: ${{ steps.resolve.outputs.issue_number }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             await github.rest.issues.addLabels({
@@ -290,6 +295,24 @@ jobs:
           # scripts/ingest-manual-review.js.
           node scripts/ingest-review-from-url.js --show="$SHOW_ID" --url="$REVIEW_URL"
 
+      # BRO-4141: score the new review before the rebuild. Without a score the
+      # rebuild leaves it out, the landed check below reported "not on the
+      # site", and the owner got an Action email for every submission (11 in
+      # two days, 9/23-9/24). The llm-ensemble-score cron scored each one about
+      # 45 min later and it went live on its own. Same call as
+      # opening-night-poller.yml "Score reviews inline". A scoring failure
+      # falls through to the landed check, which still reports it.
+      - name: Score review inline
+        if: success()
+        continue-on-error: true
+        timeout-minutes: 10
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SHOW_ID: ${{ needs.validate.outputs.show_id }}
+        run: npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble --limit=10
+
       - name: Rebuild reviews.json
         if: success()
         run: node scripts/rebuild-all-reviews.js
@@ -354,7 +377,7 @@ jobs:
         env:
           ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             const now = new Date().toISOString();
@@ -380,14 +403,41 @@ jobs:
               state_reason: 'completed'
             });
 
+      # BRO-4141: a review that only lacks a score goes live once the
+      # llm-ensemble-score cron scores it, so thank the submitter and label it
+      # awaiting-score instead of flagging a maintainer and emailing the owner.
+      - name: Post awaiting-score comment
+        if: success() && steps.landed.outputs.landed != 'true' && steps.landed.outputs.pending_score == 'true'
+        uses: actions/github-script@v7
+        env:
+          ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
+        with:
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const issueNumber = parseInt(process.env.ISSUE_NUMBER);
+            const body = '## ✅ Review received\n\n' +
+              'The review has been added to our database and will appear on the site once it has been scored (usually within the hour).\n\n' +
+              'Thank you for your contribution to Broadway Scorecard! 🎭\n\n' +
+              '---\n*Automated check • ' + new Date().toISOString() + '*';
+            await github.rest.issues.createComment({
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: issueNumber, body,
+            });
+            // Left open: scripts/sweep-awaiting-score-submissions.js (run by
+            // rebuild-fast.yml) closes it once the review is live, or relabels
+            // it needs-manual-review if it is never scored.
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner, repo: context.repo.repo, issue_number: issueNumber,
+              labels: ['awaiting-score'],
+            });
+
       - name: Post not-landed comment
-        if: success() && steps.landed.outputs.landed != 'true'
+        if: success() && steps.landed.outputs.landed != 'true' && steps.landed.outputs.pending_score != 'true'
         uses: actions/github-script@v7
         env:
           ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
           EXCLUDED_REASON: ${{ steps.landed.outputs.excluded_reason }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             const body = '## ⏳ Received — needs a manual check\n\n' +
@@ -403,7 +453,7 @@ jobs:
             });
 
       - name: Email owner - approved submission not on site
-        if: success() && steps.landed.outputs.landed != 'true'
+        if: success() && steps.landed.outputs.landed != 'true' && steps.landed.outputs.pending_score != 'true'
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -438,7 +488,7 @@ jobs:
         env:
           ISSUE_NUMBER: ${{ needs.validate.outputs.issue_number }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
           script: |
             const issueNumber = parseInt(process.env.ISSUE_NUMBER);
             const now = new Date().toISOString();

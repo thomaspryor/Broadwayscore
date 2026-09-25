@@ -305,7 +305,7 @@ test('stop hook: an EMPTY linear-issue-claimed sentinel does not satisfy the gat
   try {
     const r = runStopHook({ sessionId, transcriptPath });
     assert.equal(r.status, 2, `expected BLOCKED (empty sentinel must not satisfy the gate), got exit ${r.status}. stderr: ${r.stderr.slice(0, 300)}`);
-    assert.match(r.stderr, /SESSION ENDING WITHOUT NOTION CARD/);
+    assert.match(r.stderr, /BOARD CARD GATE/);
   } finally {
     cleanupSentinels([claimPath]);
     fs.rmSync(path.dirname(transcriptPath), { recursive: true, force: true });

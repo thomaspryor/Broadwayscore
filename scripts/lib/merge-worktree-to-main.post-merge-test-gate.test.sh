@@ -29,6 +29,7 @@
 
 set -uo pipefail
 export LAND_LEGACY_DIRECT=1   # BRO-3873 step 4: this fixture exercises the legacy direct merge+push path
+export MERGE_SCRIPT_NO_REEXEC=1   # test THIS copy; the origin/main version check fetches the real remote (30 s stall in CI, 2026-09-24)
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 SCRIPT="$REPO_ROOT/scripts/merge-worktree-to-main.sh"
