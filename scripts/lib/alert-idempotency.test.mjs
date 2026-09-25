@@ -50,3 +50,10 @@ test('other failures are still failures', () => {
   assert.equal(isIdempotentDuplicate(422, 'invalid_idempotency_key'), false);
   assert.equal(isIdempotentDuplicate(500, ''), false);
 });
+
+test('direct senders without a key: same title in the same hour shares a default key', () => {
+  const { defaultIdempotencyKey } = require('./discord-notify.js');
+  assert.equal(defaultIdempotencyKey('Image Fetch Failed', T), defaultIdempotencyKey('Image Fetch Failed', T + 30 * 60e3));
+  assert.notEqual(defaultIdempotencyKey('Image Fetch Failed', T), defaultIdempotencyKey('Deploy Failed', T));
+  assert.notEqual(defaultIdempotencyKey('Image Fetch Failed', T), defaultIdempotencyKey('Image Fetch Failed', T + 3600e3));
+});

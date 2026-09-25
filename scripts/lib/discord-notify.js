@@ -112,6 +112,10 @@ async function sendEmailAlert({ title, description, severity = 'error', fields =
     </div>
   `;
 
+  // Callers that don't pass a key (the direct sendAlert({email:true}) senders)
+  // still get one email per identical title per hour across all runners.
+  idempotencyKey = idempotencyKey || defaultIdempotencyKey(title, Date.now());
+
   return new Promise((resolve) => {
     try {
       const data = JSON.stringify({
@@ -162,6 +166,11 @@ async function sendEmailAlert({ title, description, severity = 'error', fields =
       resolve(false);
     }
   });
+}
+
+function defaultIdempotencyKey(title, nowMs) {
+  const digest = require('crypto').createHash('sha1').update(String(title)).digest('hex').slice(0, 16);
+  return `owner-alert-title:${digest}:${Math.floor(nowMs / 3600e3)}`;
 }
 
 // Resend answers a reused Idempotency-Key with 409 invalid_idempotent_request
@@ -222,6 +231,7 @@ module.exports = {
   sendEmailAlert, // resolves true/false — for callers that must act on delivery failure
   shouldEmailAlert, // pure policy predicate — unit-tested in alert-email-policy.test.mjs
   isIdempotentDuplicate,
+  defaultIdempotencyKey,
   sendReport,
   sendNewShowNotification,
   sendMessage,
