@@ -463,6 +463,38 @@ function makeFilename(outletId, criticName) {
   return generateReviewFilename(outletId, criticName || 'unknown');
 }
 
+/**
+ * Resolve the TR write target from the CURRENT disk state (called right
+ * before writing — see the P2 note at the call site). Re-reads the exact file
+ * and re-runs findExistingReviewFile, so a merge target is one that still
+ * exists and still matches (stored byline + text) at write time.
+ * Returns resolveTheatreRecordWriteTarget's decision plus `data` (the fresh
+ * parsed merge target) and `variantPath` (for logging).
+ */
+function resolveFreshTheatreRecordTarget(showDir, outletId, filepath, review) {
+  const readJson = (p) => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; } };
+  const exactExists = fs.existsSync(filepath);
+  const exactData = exactExists ? readJson(filepath) : null;
+  const variant = exactExists ? null : findExistingReviewFile(showDir, outletId, review.critic);
+  const target = resolveTheatreRecordWriteTarget({
+    exactPath: filepath,
+    exactExists,
+    exactData,
+    variant,
+    incomingCritic: review.critic,
+    incomingText: review.fullText,
+  });
+  const variantPath = variant && variant.path ? variant.path : null;
+  if (target.action !== 'merge') return { ...target, variantPath };
+  const data = target.path === filepath ? exactData : (variant && variant.data);
+  if (!data || !fs.existsSync(target.path)) {
+    // Unreadable exact file / variant vanished between lookup and now: never
+    // blind-overwrite — skip this row (the next run re-evaluates).
+    return { action: 'skip', path: target.path, fillCritic: false, reason: 'merge-target-unreadable-or-gone', variantPath };
+  }
+  return { ...target, data, variantPath };
+}
+
 function parseDate(dateStr) {
   // "03 April 2026" → "2026-04-03" or "21.12.17" → "2017-12-21"
   if (!dateStr) return null;
@@ -951,18 +983,20 @@ async function main() {
       // twin of the same article found by findExistingReviewFile — instead of
       // writing a second, URL-less named file beside it (that twin shape made
       // the rebuild drop the URL: 27 url:null rows, 2026-09-24).
-      const target = resolveTheatreRecordWriteTarget({
-        exactPath: filepath,
-        exactExists: fileExists,
-        variant: existingVariant,
-        incomingCritic: review.critic,
-        incomingText: review.fullText,
-      });
+      //
+      // Re-resolve from disk HERE, not from the fileExists/existingVariant
+      // read at the top of the loop: the awaited roundup discovery above can
+      // run long, and a concurrent writer may have created, renamed (the
+      // rebuild's --unknown cleanup) or re-attributed the file meanwhile.
+      const target = resolveFreshTheatreRecordTarget(showDir, outletId, filepath, review);
+      if (target.action === 'skip') {
+        console.log(`    SKIP: ${filename} — ${target.reason} (${path.basename(target.path)})`);
+        skippedCount++;
+        continue;
+      }
       if (target.action === 'merge') {
         const targetName = path.basename(target.path);
-        const existing = target.path === filepath
-          ? JSON.parse(fs.readFileSync(filepath, 'utf8'))
-          : existingVariant.data;
+        const existing = target.data;
         const merged = mergeTheatreRecordIntoExisting(existing, reviewData, { fillCritic: target.fillCritic });
         if (dryRun) {
           console.log(`    MERGE: ${filename} -> ${targetName} (${target.reason}; adding TR data to existing review)`);
@@ -971,10 +1005,10 @@ async function main() {
           console.log(`    MERGED: ${filename} -> ${targetName} (${target.reason}; preserved url=${!!merged.url}, critic=${merged.criticName})`);
         }
       } else if (dryRun) {
-        console.log(`    NEW: ${filename} (${review.fullText.length} chars, ${reviewData.textWordCount} words${existingVariant ? `; not merged into ${path.basename(existingVariant.path)}: ${target.reason}` : ''})`);
+        console.log(`    NEW: ${filename} (${review.fullText.length} chars, ${reviewData.textWordCount} words${target.variantPath ? `; not merged into ${path.basename(target.variantPath)}: ${target.reason}` : ''})`);
       } else {
         safeWriteReview(filepath, reviewData);
-        console.log(`    SAVED: ${filename} (${reviewData.textWordCount} words${existingVariant ? `; not merged into ${path.basename(existingVariant.path)}: ${target.reason}` : ''})`);
+        console.log(`    SAVED: ${filename} (${reviewData.textWordCount} words${target.variantPath ? `; not merged into ${path.basename(target.variantPath)}: ${target.reason}` : ''})`);
       }
       newCount++;
     }
