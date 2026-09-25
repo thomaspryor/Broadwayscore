@@ -104,7 +104,33 @@ function parseConflictedJson(text) {
   return null;
 }
 
-module.exports = { findConflictMarkers, hasConflictMarkers, conflictSides, parseConflictedJson, CONFLICT_MARKER_RE };
+// Keys that are fetch/retry bookkeeping, never editorial truth. Two sides that
+// differ ONLY in these describe the same review.
+const OPERATIONAL_KEY_RE = /retry|recovery|attempt|fetch|incomplete|checkedAt|lastChecked|textFetchedAt/i;
+
+/**
+ * Conflict-marked REVIEW record the rebuild may safely publish: both sides
+ * must parse and agree on every non-operational field (score, flags, url,
+ * critic, human overrides). Otherwise null, and the rebuild skips the file as
+ * before: picking a side by git order could resurrect a rejected review or
+ * publish the wrong score (Codex ship-check 2026-09-25).
+ * @param {string} text
+ * @returns {{data: object, side: 'ours'} | null}
+ */
+function parseAgreeingConflictedReview(text) {
+  const sides = conflictSides(text);
+  if (!sides) return null;
+  let ours; let theirs;
+  try { ours = JSON.parse(sides.ours); theirs = JSON.parse(sides.theirs); } catch { return null; }
+  if (!ours || !theirs || typeof ours !== 'object' || typeof theirs !== 'object') return null;
+  for (const k of new Set([...Object.keys(ours), ...Object.keys(theirs)])) {
+    if (OPERATIONAL_KEY_RE.test(k)) continue;
+    if (JSON.stringify(ours[k]) !== JSON.stringify(theirs[k])) return null;
+  }
+  return { data: ours, side: 'ours' };
+}
+
+module.exports = { findConflictMarkers, hasConflictMarkers, conflictSides, parseConflictedJson, parseAgreeingConflictedReview, CONFLICT_MARKER_RE };
 
 if (require.main === module) {
   const fs = require('fs');

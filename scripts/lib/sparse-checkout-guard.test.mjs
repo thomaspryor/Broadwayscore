@@ -71,6 +71,21 @@ test('safeWriteReview refuses to "create" a tracked file hidden by sparse checko
   } finally { fs.rmSync(base, { recursive: true, force: true }); }
 });
 
+test('rename into a hidden show whose folder does not exist on disk is refused and keeps the source', () => {
+  const { base, sparse } = makeRepos();
+  try {
+    const dst = path.join(sparse, 'hidden-show-2017', 'wsj--edward-rothstein.json');
+    assert.equal(fs.existsSync(path.dirname(dst)), false, 'fixture: folder absent');
+    assert.equal(isPathHiddenBySparseCheckout(dst), true);
+    const src = path.join(sparse, 'visible-show-2026', 'a--b.json');
+    const { safeRenameReview } = require('./review-write-guard.js');
+    const r = safeRenameReview(src, dst);
+    assert.equal(r.wrote, false);
+    assert.equal(r.skipped, 'hidden-by-sparse-checkout');
+    assert.equal(fs.existsSync(src), true, 'source kept');
+  } finally { fs.rmSync(base, { recursive: true, force: true }); }
+});
+
 test('a file deleted by hand INSIDE the sparse set stays writable (not "hidden")', () => {
   const { base, sparse } = makeRepos();
   try {

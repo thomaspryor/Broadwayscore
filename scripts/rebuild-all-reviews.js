@@ -32,13 +32,13 @@ const crypto = require('crypto');
 const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry, outletOwnsUrlDomain } = require('./lib/review-normalization');
 const { decideUnknownTwinUrlCarry, decideDuplicateTwinUrlCarry } = require('./lib/review-text-identity');
 const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
-const { parseConflictedJson } = require('./lib/conflict-markers');
+const { parseAgreeingConflictedReview } = require('./lib/conflict-markers');
 // Pre-pass readers (sort metadata, dup-cycle siblings) must see the same
 // record the main loop keeps for a conflict-marked file, or the dedup
 // tie-break ranks it from defaults and can still drop it (review, 2026-09-25).
 function parseReviewFileText(raw) {
   try { return JSON.parse(raw); } catch (e) {
-    const resolved = parseConflictedJson(raw);
+    const resolved = parseAgreeingConflictedReview(raw);
     if (resolved) return resolved.data;
     throw e;
   }
@@ -2341,14 +2341,14 @@ showDirs.forEach(showId => {
       // Guard: git merge conflict markers. A bad rebase committing markers must
       // not silently drop the review from the site (deep-heat-rivalry
       // thestage--unknown.json, 2026-09-25): read one valid side in memory
-      // (conflict-markers.js parseConflictedJson) and still list it loudly in
+      // (parseAgreeingConflictedReview: only when both sides agree on every non-operational field) and list it loudly in
       // the CORRUPTED summary. If a later step in this run writes the record
       // back, that persists the chosen side and so repairs the file.
       // Only when neither side parses is the file skipped.
       let data;
       if (/^<{7}\s|^={7}$|^>{7}\s/m.test(rawContent)) {
         if (!stats.corruptedFiles) stats.corruptedFiles = [];
-        const resolved = parseConflictedJson(rawContent);
+        const resolved = parseAgreeingConflictedReview(rawContent);
         if (!resolved) {
           console.error(`  [CORRUPTED] ${showId}/${file}: contains git merge conflict markers — SKIPPING`);
           logExclusion("skippedCorrupted", showId, file, null, { reason: "git merge conflict markers in file" });

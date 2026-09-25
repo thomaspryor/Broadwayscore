@@ -3,7 +3,23 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { conflictSides, parseConflictedJson } = require('./conflict-markers.js');
+const { conflictSides, parseConflictedJson, parseAgreeingConflictedReview } = require('./conflict-markers.js');
+
+test('rebuild reader: sides differing only in retry bookkeeping are published', () => {
+  const r = parseAgreeingConflictedReview(DEEP_HEAT_TEXT());
+  assert.ok(r, 'deep-heat differs only in incompleteDetail/fetchRetryAfter/aggUrlRecoveryCount');
+  assert.equal(r.data.showId, 'deep-heat-rivalry-off-west-end-2026');
+});
+
+test('rebuild reader: sides that disagree on a flag or score are NOT published', () => {
+  const flag = '{\n  "url": "u",\n<<<<<<< HEAD\n  "assignedScore": 70\n=======\n  "assignedScore": 70,\n  "wrongProduction": true\n>>>>>>> x\n}\n';
+  assert.equal(parseAgreeingConflictedReview(flag), null);
+  const score = '{\n  "url": "u",\n<<<<<<< HEAD\n  "humanReviewScore": 60\n=======\n  "humanReviewScore": 80\n>>>>>>> x\n}\n';
+  assert.equal(parseAgreeingConflictedReview(score), null);
+});
+
+// Hoisted accessor so the tests above can use the fixture declared below.
+function DEEP_HEAT_TEXT() { return DEEP_HEAT; }
 
 // Real committed shape: deep-heat-rivalry-off-west-end-2026/thestage--unknown.json
 // (broadway-review-texts 1e2ed770e, 2026-09-25). rebuild-all-reviews.js must

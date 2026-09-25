@@ -67,12 +67,19 @@ function _anySkipWorktree(dir, pathspec) {
  */
 function isPathHiddenBySparseCheckout(filePath) {
   if (!filePath || fs.existsSync(filePath)) return false;
-  const dir = path.dirname(filePath);
-  if (!fs.existsSync(dir)) return false;
+  // Walk up to the nearest existing ancestor: a destination whose whole show
+  // folder is outside the sparse set has no directory on disk yet (Codex
+  // ship-check: safeRenameReview checks before creating it).
+  let dir = path.dirname(path.resolve(filePath));
+  while (!fs.existsSync(dir)) {
+    const up = path.dirname(dir);
+    if (up === dir) return false;
+    dir = up;
+  }
   try {
     if (_git(dir, ['config', '--bool', 'core.sparseCheckout']) !== 'true') return false;
   } catch { return false; }
-  return _anySkipWorktree(dir, `./${path.basename(filePath)}`);
+  return _anySkipWorktree(dir, `./${path.relative(dir, path.resolve(filePath))}`);
 }
 
 module.exports = { isShowDirHiddenBySparseCheckout, isPathHiddenBySparseCheckout };

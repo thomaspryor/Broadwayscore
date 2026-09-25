@@ -1077,10 +1077,16 @@ function preserveFlaggedFields(filePath, review) {
 function _writeQuarantine(pendingPath, content) {
   if (require('./sparse-checkout-guard').isPathHiddenBySparseCheckout(pendingPath)) {
     console.error(`[review-write-guard] NOT quarantining to ${pendingPath}: tracked but outside this sparse checkout`);
-    return;
+    return false;
   }
   fs.writeFileSync(pendingPath, content);
+  return true;
 }
+
+// A quarantine that could not be saved must not be reported with a
+// quarantinedPath: writeReviewOrThrow treats that as a completed move and the
+// caller would delete the source (Codex ship-check 2026-09-25).
+const QUARANTINE_NOT_SAVED = { wrote: false, skipped: 'hidden-by-sparse-checkout' };
 
 /**
  * safeWriteReview for MOVE/MERGE-then-delete callers: throws when the write
@@ -1328,7 +1334,7 @@ function safeWriteReview(filePath, newData, options = {}) {
               pendingReason: 'date_implausible',
               _dateImplausibleDetail: `publishDate ${newData.publishDate} is ${verdict.daysBefore}d before earliest show date ${verdict.earliestDate}`,
             };
-            _writeQuarantine(pendingPath, JSON.stringify(quarantined, null, 2) + '\n');
+            if (!_writeQuarantine(pendingPath, JSON.stringify(quarantined, null, 2) + '\n')) return { ...QUARANTINE_NOT_SAVED };
             console.warn(`[review-write-guard] date-implausible: ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${verdict.daysBefore}d before earliest date, not within priorRuns)`);
             return { wrote: false, skipped: 'date_implausible', quarantinedPath: pendingPath, daysBefore: verdict.daysBefore };
           }
@@ -1373,11 +1379,11 @@ function safeWriteReview(filePath, newData, options = {}) {
                 const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
                 fs.mkdirSync(pendingDir, { recursive: true });
                 const pendingPath = path.join(pendingDir, path.basename(filePath));
-                _writeQuarantine(pendingPath, JSON.stringify({
+                if (!_writeQuarantine(pendingPath, JSON.stringify({
                   ...newData,
                   pendingReason: 'cross_market_contamination',
                   _crossMarketDetail: detail,
-                }, null, 2) + '\n');
+                }, null, 2) + '\n')) return { ...QUARANTINE_NOT_SAVED };
                 console.warn(`[review-write-guard] cross-market (class A): ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${detail})`);
                 return {
                   wrote: false,
@@ -1673,11 +1679,11 @@ function safeWriteReview(filePath, newData, options = {}) {
         const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
         fs.mkdirSync(pendingDir, { recursive: true });
         const pendingPath = path.join(pendingDir, path.basename(filePath));
-        _writeQuarantine(pendingPath, JSON.stringify({
+        if (!_writeQuarantine(pendingPath, JSON.stringify({
           ...newData,
           pendingReason: 'recreated_previously_excluded_url',
           _recreatedPreviouslyExcludedUrlDetail: `url previously carried ${clearedOrphan.clearedFields.join('/')} on ${clearedOrphan.filename}, cleared ${clearedOrphan.at || 'at an unknown date'} when that file's own url changed away from this one`,
-        }, null, 2) + '\n');
+        }, null, 2) + '\n')) return { ...QUARANTINE_NOT_SAVED };
         console.warn(`[review-write-guard] ${path.basename(filePath)}: quarantined to _pending/${parentDirName}/${path.basename(filePath)} — url previously excluded (${clearedOrphan.clearedFields.join(', ')}) on ${clearedOrphan.filename}, cleared via url change, no live verdict to rescue`);
         return { wrote: false, skipped: 'recreated_previously_excluded_url', quarantinedPath: pendingPath };
       }
