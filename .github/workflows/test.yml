@@ -4431,7 +4431,13 @@ jobs:
     # number only buys room for the suite to keep growing honestly. If this job
     # starts timing out again, find the hung test before raising it further —
     # `# duration_ms` on the failing file in the TAP output names it directly.
-    timeout-minutes: 15
+    # 15 → 20 (2026-09-24): the last green run before BRO-3873 step 4 already
+    # took 13.9 of 15 min with no hang (run 35818664133); step 4 then added
+    # 30-60 s per landing-script fixture (a real-remote version-check fetch,
+    # now disabled there via MERGE_SCRIPT_NO_REEXEC=1) and every main run was
+    # cancelled at the ceiling. Each fixture step has its own 3-min timeout,
+    # so a hang there fails its step instead of eating this budget.
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v5
