@@ -20,11 +20,13 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { isBlockedReviewUrl } from './lib/domain-filters.js';
 import outletCanonicalize from './lib/outlet-canonicalize.js';
+import reviewNormalization from './lib/review-normalization.js';
 
 import reviewGuards from './lib/review-guards.js';
 import submissionShowMatch from './lib/submission-show-match.js';
 
 const { lookupOutletForHost } = outletCanonicalize;
+const { resolveOutletFromUrlIfPathInformed } = reviewNormalization;
 const { canonicalizeUrlForDedup } = reviewGuards;
 const { findMatchingShows: findMatchingShowsIn } = submissionShowMatch;
 
@@ -49,7 +51,11 @@ const reviews = reviewsData.reviews || reviewsData; // Handle both formats
 function findMatchingOutletByDomain(url) {
   let outletId;
   try {
-    outletId = lookupOutletForHost(new URL(url).hostname);
+    // Path-informed edition splits (timeout.com/london vs /newyork) first —
+    // lookupOutletForHost only ever sees a bare hostname and would otherwise
+    // report a shared host as unresolvable (BRO-4153).
+    const pathResolved = resolveOutletFromUrlIfPathInformed(url);
+    outletId = pathResolved ? pathResolved.outletId : lookupOutletForHost(new URL(url).hostname);
   } catch {
     return null;
   }
