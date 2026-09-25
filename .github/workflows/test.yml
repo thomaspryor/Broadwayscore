@@ -4960,8 +4960,8 @@ jobs:
         # PUSH_SKIP_CONTENT_SURVIVAL_CHECK kill switch still suppresses it.
         # Verified 3/9 failing against the pre-fix script, 9/9 after.
         if: always()  # independent suite — don't let an earlier red step skip it
-        timeout-minutes: 3  # a hang here is a named RED step, not a silent whole-job cancel (2026-09-23..24: 36 h of cancelled main runs)
-        run: bash scripts/lib/merge-worktree-to-main.content-drop.test.sh
+        # `timeout 180` (not step timeout-minutes, which reports `cancelled` and skips failure alerts — workflows/CLAUDE.md): a hang is a named RED step (2026-09-23..24: 36 h of cancelled main runs). Normal runtime 1-4 s.
+        run: timeout 180 bash scripts/lib/merge-worktree-to-main.content-drop.test.sh
 
       - name: Run merge-worktree-to-main checkout-fail regression test (task #819)
         # Notion card 3b0637c5416f819fb6f8d4565acc7760: "merge-worktree-to-main.sh
@@ -4975,8 +4975,8 @@ jobs:
         # Fault-injecting that exact swap and re-running this test confirms it
         # catches it (script proceeds past the abort and prints a bogus ✅).
         if: always()  # independent suite — don't let an earlier red step skip it
-        timeout-minutes: 3  # a hang here is a named RED step, not a silent whole-job cancel (2026-09-23..24: 36 h of cancelled main runs)
-        run: bash scripts/lib/merge-worktree-to-main.checkout-fail.test.sh
+        # `timeout 180` (not step timeout-minutes, which reports `cancelled` and skips failure alerts — workflows/CLAUDE.md): a hang is a named RED step (2026-09-23..24: 36 h of cancelled main runs). Normal runtime 1-4 s.
+        run: timeout 180 bash scripts/lib/merge-worktree-to-main.checkout-fail.test.sh
 
       - name: Run merge-worktree-to-main conflict-resolution regression test (task #888)
         # Task #888 (2026-08-02): while landing #732, restore_stash()'s
@@ -5001,8 +5001,8 @@ jobs:
         # stash-pop with no branch-merge conflict involved — asserts the
         # script does NOT wedge and completes normally.
         if: always()  # independent suite — don't let an earlier red step skip it
-        timeout-minutes: 3  # a hang here is a named RED step, not a silent whole-job cancel (2026-09-23..24: 36 h of cancelled main runs)
-        run: bash scripts/lib/merge-worktree-to-main.conflict-resolution.test.sh
+        # `timeout 180` (not step timeout-minutes, which reports `cancelled` and skips failure alerts — workflows/CLAUDE.md): a hang is a named RED step (2026-09-23..24: 36 h of cancelled main runs). Normal runtime 1-4 s.
+        run: timeout 180 bash scripts/lib/merge-worktree-to-main.conflict-resolution.test.sh
 
       - name: Run merge-worktree-to-main stash-pop-head-missing-path regression test (BRO-3595)
         # BRO-3595: same bug class as BRO-2364 (scripts/lib/sync-audit-checkout.sh)
@@ -5021,8 +5021,8 @@ jobs:
         # unmerged index entry, the working-tree file is cleanly removed (not
         # left half-conflicted), and the stash is dropped.
         if: always()  # independent suite — don't let an earlier red step skip it
-        timeout-minutes: 3  # a hang here is a named RED step, not a silent whole-job cancel (2026-09-23..24: 36 h of cancelled main runs)
-        run: bash scripts/lib/merge-worktree-to-main.stash-pop-head-missing-path.test.sh
+        # `timeout 180` (not step timeout-minutes, which reports `cancelled` and skips failure alerts — workflows/CLAUDE.md): a hang is a named RED step (2026-09-23..24: 36 h of cancelled main runs). Normal runtime 1-4 s.
+        run: timeout 180 bash scripts/lib/merge-worktree-to-main.stash-pop-head-missing-path.test.sh
 
       - name: Run merge-worktree-to-main retry-merge-error regression test (task #1511)
         # Task #1511 (Notion 3bc637c5416f8183aa89fecafdc5cbc6): the push-retry
@@ -5037,8 +5037,8 @@ jobs:
         # push fires) and asserts the die() message includes git's own
         # conflict text, not the old bare message.
         if: always()  # independent suite — don't let an earlier red step skip it
-        timeout-minutes: 3  # a hang here is a named RED step, not a silent whole-job cancel (2026-09-23..24: 36 h of cancelled main runs)
-        run: bash scripts/lib/merge-worktree-to-main.retry-merge-error.test.sh
+        # `timeout 180` (not step timeout-minutes, which reports `cancelled` and skips failure alerts — workflows/CLAUDE.md): a hang is a named RED step (2026-09-23..24: 36 h of cancelled main runs). Normal runtime 1-4 s.
+        run: timeout 180 bash scripts/lib/merge-worktree-to-main.retry-merge-error.test.sh
 
       - name: Run disk-floor pre-flight test (bash integration)
         # BRO-2751: this test existed since task #968 and ran in ZERO CI jobs —
@@ -5071,8 +5071,8 @@ jobs:
         # merge is treated as landed, plus that gate's kill switch; both are
         # load-bearing for every worktree merge this fleet performs.
         if: always()  # independent suite — don't let an earlier red step skip it
-        timeout-minutes: 3  # a hang here is a named RED step, not a silent whole-job cancel (2026-09-23..24: 36 h of cancelled main runs)
-        run: bash scripts/lib/merge-worktree-to-main.post-merge-test-gate.test.sh
+        # `timeout 180` (not step timeout-minutes, which reports `cancelled` and skips failure alerts — workflows/CLAUDE.md): a hang is a named RED step (2026-09-23..24: 36 h of cancelled main runs). Normal runtime 1-4 s.
+        run: timeout 180 bash scripts/lib/merge-worktree-to-main.post-merge-test-gate.test.sh
 
       - name: Run scraper-cookie-wiring tests (direct exec, no --test wrapper)
         # This file globally monkey-patches `https.get` and `https.request`
