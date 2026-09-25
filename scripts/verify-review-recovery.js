@@ -323,7 +323,25 @@ try {
 if (reviewsData) {
   const reviews = reviewsData.reviews || [];
   const showReviews = reviews.filter(r => r.showId === showId);
-  const reviewKeys = new Set(showReviews.map(r => `${r.outletId}||${(r.criticName || '').toLowerCase()}`));
+  // Match the way the rebuild merges, not by exact outlet+critic string: the
+  // rebuild resolves an "Unknown" byline from a same-outlet twin (a URL-less
+  // aggregator stub carrying the name) and folds the two into ONE entry, so
+  // british-theatre--unknown.json reaches reviews.json as critic "Vera Liber".
+  // Exact-string matching reported those as "scored but MISSING" (4 false
+  // failures on how-the-other-half-loves-west-end-2026, 2026-09-25).
+  const normCritic = (c) => String(c || '').toLowerCase().replace(/[^a-z]/g, '');
+  const isUnknownCritic = (c) => !normCritic(c) || normCritic(c) === 'unknown';
+  const normUrl = (u) => String(u || '').toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
+  const byOutlet = new Map();
+  for (const r of showReviews) {
+    if (!byOutlet.has(r.outletId)) byOutlet.set(r.outletId, []);
+    byOutlet.get(r.outletId).push(r);
+  }
+  const fileInReviews = (data) => (byOutlet.get(data.outletId) || []).some((r) =>
+    (data.url && r.url && normUrl(data.url) === normUrl(r.url))
+    || normCritic(r.criticName) === normCritic(data.criticName)
+    || isUnknownCritic(data.criticName)
+    || isUnknownCritic(r.criticName));
 
   console.log(`  Reviews in reviews.json for ${showId}: ${showReviews.length}`);
 
@@ -342,8 +360,7 @@ if (reviewsData) {
     const hasParseableRating = data.originalScore
       && parseOriginalScore(data.originalScore, data.outletId) !== null;
     if (data.assignedScore == null && !hasParseableRating) continue;
-    const key = `${data.outletId}||${(data.criticName || '').toLowerCase()}`;
-    if (reviewKeys.has(key)) {
+    if (fileInReviews(data)) {
       inReviews++;
       info(`${file} — found in reviews.json`);
     } else {
