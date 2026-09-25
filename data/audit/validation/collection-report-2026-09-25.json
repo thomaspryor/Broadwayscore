@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-25T18:06:39.818Z",
+  "runDate": "2026-09-25T23:01:56.957Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 76,
-    "failed": 298,
+    "processed": 83,
+    "failed": 307,
     "skipped": 0,
-    "successRate": "20.3%"
+    "successRate": "21.3%"
   },
   "tierBreakdown": {
-    "playwright": 48,
-    "amp": 0,
+    "playwright": 53,
+    "amp": 2,
     "browserbase": 12,
     "directCookies": 0,
-    "scrapingbee": 16,
+    "scrapingbee": 18,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 7
   },
   "statistics": {
-    "tier1Attempts": 33,
-    "tier1Success": 13,
-    "ampAttempts": 0,
-    "ampSuccess": 0,
-    "tier1_5Attempts": 9,
-    "tier1_5Success": 5,
-    "tier2Attempts": 22,
-    "tier2Success": 8,
+    "tier1Attempts": 22,
+    "tier1Success": 8,
+    "ampAttempts": 2,
+    "ampSuccess": 2,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 16,
+    "tier2Success": 5,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 16,
+    "tier3_6Attempts": 12,
     "tier3_6Success": 0,
-    "tier4Attempts": 20,
+    "tier4Attempts": 16,
     "tier4Success": 1,
-    "totalFailed": 283,
-    "scrapingBeePageCredits": 108,
+    "totalFailed": 293,
+    "scrapingBeePageCredits": 77,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 9,
-    "browserbaseMinutesUsed": 3,
-    "urlDiscoveryAttempts": 260,
-    "urlDiscoverySuccess": 1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 274,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -126,7 +126,14 @@
     "kimberly-akimbo-off-west-end-2026/jonathan-baz--unknown.json",
     "the-story-west-end-2026/musical-theatre-review--unknown.json",
     "the-story-west-end-2026/jonathan-baz--unknown.json",
-    "the-story-west-end-2026/times-uk--clive-davis.json"
+    "the-story-west-end-2026/times-uk--clive-davis.json",
+    "the-last-ship-west-end-2026/ground--unknown.json",
+    "the-last-ship-west-end-2026/seatplan--unknown.json",
+    "the-urmetazoan-off-west-end-2026/london-box-office--stuart-king.json",
+    "golden-boy-off-west-end-2026/daily-mail--patrick-marmion.json",
+    "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
+    "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "delirium-off-broadway-2026/artsfuse--bill-marx.json",
@@ -214,8 +221,6 @@
     "crazy-mama-off-broadway-2026/blogcritics--unknown.json",
     "darkling-off-west-end-2026/thestage--unknown.json",
     "thelma-and-louise-a-new-musical-off-west-end-2026/thestage--holly-o.json",
-    "golden-boy-off-west-end-2026/daily-mail--patrick-marmion.json",
-    "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json",
     "golden-boy-off-west-end-2026/thestage--dave-fargnoli.json",
     "golden-boy-off-west-end-2026/whatsonstage--unknown.json",
     "pre-existing-condition-off-broadway-2026/new-york-sun--elysa-gardner.json",
@@ -283,7 +288,6 @@
     "the-story-west-end-2026/talkinbroadway--unknown.json",
     "the-story-west-end-2026/the-spectator-uk--the-spectator.json",
     "electra-persona-west-end-2026/vocaleyes--unknown.json",
-    "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
     "paranormal-activity-2026/thereviewshub--unknown.json",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/theatermania--david-gordon.json",
     "as-you-like-it-globe-west-end-2026/nytg--joe-dziemianowicz.json",
@@ -426,7 +430,19 @@
     "table-17-off-west-end-2026/thestage--unknown.json",
     "in-honor-of-jean-michel-basquiat-off-broadway-2026/theater-life--unknown.json",
     "kimberly-akimbo-off-west-end-2026/londonatlarge--laladmin.json",
-    "the-story-west-end-2026/theatermania--unknown.json"
+    "the-story-west-end-2026/theatermania--unknown.json",
+    "burlesque-west-end-2026/people--unknown.json",
+    "burlesque-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "burlesque-west-end-2026/times-uk--clive-davis.json",
+    "heathers-the-musical-off-broadway-2025/nypost--elisabeth-vincentelli.json",
+    "heathers-the-musical-off-broadway-2025/thereviewshub--clare-doyle.json",
+    "heathers-the-musical-off-broadway-2025/thereviewshub--unknown.json",
+    "heathers-the-musical-off-broadway-2025/all-that-dazzles-uk--unknown.json",
+    "heathers-the-musical-off-broadway-2025/londontheatre1--unknown.json",
+    "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json",
+    "heathers-the-musical-off-broadway-2025/theupcoming--unknown.json",
+    "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
+    "heathers-the-musical-off-broadway-2025/west-end-wilma--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -477,9 +493,17 @@
       "table-17-off-west-end-2026/theatre-weekly--unknown.json",
       "pre-existing-condition-off-broadway-2026/off-off-online--unknown.json",
       "kimberly-akimbo-off-west-end-2026/jonathan-baz--unknown.json",
-      "the-story-west-end-2026/jonathan-baz--unknown.json"
+      "the-story-west-end-2026/jonathan-baz--unknown.json",
+      "the-last-ship-west-end-2026/seatplan--unknown.json",
+      "the-urmetazoan-off-west-end-2026/london-box-office--stuart-king.json",
+      "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json",
+      "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
+      "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
+      "data/review-texts/man-to-man-west-end-2026/deadline--unknown.json"
+    ],
     "browserbase": [
       "data/review-texts/cosi-fan-tutte-off-broadway-2026/times-uk--unknown.json",
       "cosi-fan-tutte-off-broadway-2026/times-uk--unknown.json",
@@ -511,7 +535,9 @@
       "weve-been-here-before-a-one-woman-musical-off-broadway-2026/broadwayworld--nicole-rosky.json",
       "in-honor-of-jean-michel-basquiat-off-broadway-2026/theater-life--unknown.json",
       "the-children-off-west-end-2026/telegraph--fiona-mountford.json",
-      "the-story-west-end-2026/musical-theatre-review--unknown.json"
+      "the-story-west-end-2026/musical-theatre-review--unknown.json",
+      "the-last-ship-west-end-2026/ground--unknown.json",
+      "golden-boy-off-west-end-2026/daily-mail--patrick-marmion.json"
     ],
     "brightdata": [
       "macbeth-off-broadway-2026/wsj--heidi-waleson.json"
@@ -531,20 +557,6 @@
     "The Stage": {
       "count": 4,
       "domain": "thestage.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Londonlivinglarge": {
-      "count": 1,
-      "domain": "londonlivinglarge.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "WhatsOnStage": {
-      "count": 2,
-      "domain": "whatsonstage.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -592,11 +604,5 @@
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "the-last-ship-west-end-2026/bestoftheatre--unknown.json",
-      "oldUrl": "https://www.bestoftheatre.co.uk/the-last-ship",
-      "newUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-the-last-ship-theatre-royal-drury-lane"
-    }
-  ]
+  "urlDiscoveries": []
 }
