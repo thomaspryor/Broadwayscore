@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T09:19:40.037Z",
+  "generatedAt": "2026-09-25T11:37:14.125Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -396,23 +396,23 @@
       "status": "open",
       "slug": "delirium-off-broadway",
       "thumbnail": "/images/shows/delirium-off-broadway-2026/thumbnail.webp",
-      "siteScore": 84.22,
-      "liveScore": 84,
-      "scoreDrift": -0.21999999999999886,
+      "siteScore": 88.71,
+      "liveScore": 89,
+      "scoreDrift": 0.29000000000000625,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 3,
       "t1": 0,
-      "t2": 3,
-      "t3": 2,
-      "positive": 4,
-      "mixed": 1,
+      "t2": 2,
+      "t3": 1,
+      "positive": 3,
+      "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/12 total",
+          "3/12 total",
           "T1:0/3",
           "T2:2/3",
           "hi-conf:1/8"
@@ -503,6 +503,10 @@
         {
           "name": "New York Post",
           "isDualMarket": false
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
         },
         {
           "name": "amNewYork",
@@ -803,6 +807,18 @@
           "t3": 2,
           "p": 4,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-25T11:37:14.125Z",
+          "rc": 3,
+          "s": 88.71,
+          "t1": 0,
+          "t2": 2,
+          "t3": 1,
+          "p": 3,
+          "m": 0,
           "n": 0,
           "bc": "waiting"
         }
