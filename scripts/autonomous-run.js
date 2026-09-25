@@ -57,7 +57,7 @@ const {
   scorecardDataRoot, reviewTextsRoot,
 } = require('./lib/autonomous-data-workdir.js');
 const { verifierArgvFor } = require('./lib/autonomous-data-verify.js');
-const { resolveClaudeBin, pathWithClaudeBinDir } = require('./lib/claude-cli.js');
+const { resolveClaudeBin, pathWithClaudeBinDir, AUTH_PING_SETTINGS } = require('./lib/claude-cli.js');
 
 const REPO = path.join(__dirname, '..');
 const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
@@ -404,6 +404,9 @@ function preflightAuth() {
       '-p', 'Reply with exactly: pong',
       '--model', model,
       '--output-format', 'json',
+      // BRO-4141: hooks off — the global Stop hook's claude-sync push ran
+      // ~200s after the pong and blew this 90s timeout on a healthy login.
+      '--settings', AUTH_PING_SETTINGS,
     ], { cwd: REPO, encoding: 'utf8', timeout: 90e3, maxBuffer: 4 * 1024 * 1024, env: implementerEnv() });
     verdict = preflightVerdict({ error: r.error, status: r.status, stdout: r.stdout, stderr: r.stderr });
     if (verdict.ok || verdict.kind === 'auth') return verdict;

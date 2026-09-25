@@ -224,7 +224,37 @@ test('resolvePassAuth: falls back to api-key only when the key ping actually suc
 test('pass env forwards the API key only under auth.mode api-key', () => {
   const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
   assert.match(src, /ANTHROPIC_API_KEY:\s*auth\.mode === 'api-key'/, 'pass env must branch on auth.mode');
-  assert.match(src, /authPing\(\{ ANTHROPIC_API_KEY: '' \}\)/, 'preflight must probe the stored-login path in the pass\'s own env shape');
+  // BRO-4141: the stored-login probe lives in scripts/lib/claude-cli.js
+  // (authPing({ ANTHROPIC_API_KEY: '' }) with hooks disabled). A local fork
+  // here is exactly how the hooks-off fix never reached this launcher.
+  assert.match(src, /cliAuth\.preflightAuth\(/, 'preflight must delegate to the shared claude-cli.js probe');
+  assert.doesNotMatch(src, /Reply with exactly: pong/, 'no forked auth ping in the launcher');
+});
+
+// BRO-4141: a ping that times out because the Mac is overloaded is not a
+// revoked login. Owner is paged at once only for auth-rejected; starved /
+// spawn-error pages only after STARVED_PREFLIGHT_PAGE_AFTER ticks in a row.
+test('authFailureRouting: auth-rejected pages immediately, starvation only when sustained', async () => {
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const { authFailureRouting, STARVED_PREFLIGHT_PAGE_AFTER: N } = req('../../scripts/opening-night-monitor-launch.js');
+  assert.deepEqual(authFailureRouting({ reason: 'auth-rejected', consecutiveStarved: 0 }), { page: true, kind: 'auth' });
+  assert.deepEqual(authFailureRouting({ reason: undefined, consecutiveStarved: 0 }), { page: true, kind: 'auth' });
+  for (const reason of ['spawn-starved', 'spawn-error']) {
+    assert.deepEqual(authFailureRouting({ reason, consecutiveStarved: 1 }), { page: false, kind: 'starved' });
+    assert.deepEqual(authFailureRouting({ reason, consecutiveStarved: N - 1 }), { page: false, kind: 'starved' });
+    assert.deepEqual(authFailureRouting({ reason, consecutiveStarved: N }), { page: true, kind: 'starved' });
+  }
+});
+
+// The real timeout shape: spawnSync kills at 120s with SIGTERM -> starved.
+test('a 120s ping timeout classifies as spawn-starved (digest), not auth-rejected (page)', async () => {
+  const { createRequire } = await import('node:module');
+  const { classifyAuthPingFailure } = createRequire(import.meta.url)('../../scripts/lib/claude-cli.js');
+  const e = Object.assign(new Error('spawnSync claude ETIMEDOUT'), { code: 'ETIMEDOUT' });
+  assert.equal(classifyAuthPingFailure({ error: e, status: null, signal: 'SIGTERM' }), 'spawn-starved');
+  assert.equal(classifyAuthPingFailure({ status: 143, signal: null }), 'spawn-starved');
+  assert.equal(classifyAuthPingFailure({ status: 1, signal: null }), 'auth-rejected');
 });
 
 // Card #693: this launcher runs under launchd in the SHARED ~/Broadwayscore

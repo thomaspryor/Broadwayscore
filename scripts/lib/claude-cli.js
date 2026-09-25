@@ -755,7 +755,7 @@ function runClaudeCli(opts) {
 
 module.exports = {
   runClaudeCli, parseEnvelope, strippedEnv, STAGES, FORBIDDEN_MODEL_RE,
-  authPing, authPingArgs, resolvePassAuth, preflightAuth, resolveAuthEnv, AUTH_KEYS,
+  authPing, authPingArgs, AUTH_PING_SETTINGS, resolvePassAuth, preflightAuth, resolveAuthEnv, AUTH_KEYS,
   classifyAuthPingFailure, AUTH_PING_REASONS, worseAuthPingReason,
   parseStreamLine, addUsage, estimateCostUSD, APPROX_MODEL_RATES_PER_MTOK,
   resolveClaudeBin, pathWithClaudeBinDir,
