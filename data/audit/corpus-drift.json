@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-24T23:52:51.715Z",
+    "generatedAt": "2026-09-25T00:02:04.506Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
     "auditsRun": 33,
-    "driftCount": 16,
+    "driftCount": 18,
     "crashCount": 0,
     "anyDrift": true,
     "anyCrashed": false
@@ -78,10 +78,10 @@
       "name": "churn-merge-coverage",
       "label": "high-churn tracked files lacking a .gitattributes merge driver",
       "command": "node scripts/audit-churn-merge-coverage.js",
-      "exitCode": 0,
-      "ok": true,
+      "exitCode": 1,
+      "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 0 flagged, 0 exempt, 0 covered (DEGRADED: incomplete git history)\n  ✅ all high-churn tracked files are covered or exempt\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 3 flagged, 38 exempt, 19 covered\n  ⚠️   136  data/audit/guard-escalation-state.json  — no merge driver; needs a decision\n  ⚠️    81  data/audit/orphaned-duplicate-pointer-heal.json  — no merge driver; needs a decision\n  ⚠️    45  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
@@ -105,10 +105,10 @@
       "name": "cast-changes",
       "label": "cast-changes.json integrity — full --strict (gate = cross-show conflict / spike)",
       "command": "node scripts/audit-cast-changes.js --strict",
-      "exitCode": 0,
-      "ok": true,
+      "exitCode": 1,
+      "ok": false,
       "crashed": false,
-      "detail": "Audit summary:\n  Shows examined:                              29\n  Stale closure dates repaired (vs shows.json):0\n  Closure groups reclassified:                 0\n  Per-actor departures collapsed into closure: 0\n  Contradicted closures dropped (stale):       0\n  Contradicting arrivals dropped (stale):      0\n  Ended absences dropped:                      0\n  Stale [AUTO-FLAGGED] entries dropped:        0\n  Name-variant dedupes:                        0\n  Redundant in-cast arrivals dropped:          0\n  Duplicate currentCast entries flagged:       0\n  Cross-show overlap conflicts flagged:        0\n\n(dry-run; pass --write to persist)"
+      "detail": "Audit summary:\n  Shows examined:                              29\n  Stale closure dates repaired (vs shows.json):0\n  Closure groups reclassified:                 0\n  Per-actor departures collapsed into closure: 0\n  Contradicted closures dropped (stale):       0\n  Contradicting arrivals dropped (stale):      0\n  Ended absences dropped:                      0\n  Stale [AUTO-FLAGGED] entries dropped:        231\n  Name-variant dedupes:                        0\n  Redundant in-cast arrivals dropped:          0\n  Duplicate currentCast entries flagged:       0\n  Cross-show overlap conflicts flagged:        0\n\n(dry-run; pass --write to persist)\n\n✗ strict mode: 231 issue(s) found"
     },
     {
       "name": "non-reviews",
@@ -225,7 +225,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "Flag-vs-CV contradiction sweep: 143 shows in the last 30d window, 7 contradiction(s) found.\n  [wrongProduction] macbeth-off-broadway-2026/slippedisc--susan-hall.json (468w)\n  [wrongProduction] tosca-off-broadway-2026/new-york-classical-review--george-grella.json (925w)\n  [wrongProduction] tosca-off-broadway-2026/operawire--chris-ruel.json (2816w)\n  [wrongProduction] miles-for-mary-off-broadway-2026/talkinbroadway--marc-miller.json (675w)\n  [wrongProduction] the-last-ship-west-end-2026/timeout--andrzej-lukowski.json (976w)\n  [wrongProduction] kimberly-akimbo-off-west-end-2026/broadwayworld--katie-kirkpatrick.json (899w)\n  [wrongProduction] the-revlon-girl-off-west-end-2026/london-box-office--stacey-tyler.json (817w)\nCoverage: examined 91 of 3057 corpus show(s) (1551 review file(s) parsed).\n  --window=30d selected 143 show(s): 44 already opened, 99 not yet opened (the window filter has no upper bound).\n  52 selected show(s) yielded no readable review file (directory missing, unreadable, empty, or every file failed to parse).\n  2966 corpus show(s) were NOT examined, of which 422 carry no usable openingDate (missing or unparseable) and are excluded at EVERY window.\n  A clean result above covers only the examined shows. It is not a statement about the corpus.\n\n(4 baselined, 3 new)\n\n⚠️  NEW flag-vs-CV contradiction(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/cv-flag-contradiction-baseline.json):\n  [wrongProduction] macbeth-off-broadway-2026/slippedisc--susan-hall.json\n  [wrongProduction] the-last-ship-west-end-2026/timeout--andrzej-lukowski.json\n  [wrongProduction] kimberly-akimbo-off-west-end-2026/broadwayworld--katie-kirkpatrick.json\n\nInvestigate, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-cv-flag-contradiction.js --update-baseline"
+      "detail": "Flag-vs-CV contradiction sweep: 143 shows in the last 30d window, 7 contradiction(s) found.\n  [wrongProduction] macbeth-off-broadway-2026/slippedisc--susan-hall.json (468w)\n  [wrongProduction] tosca-off-broadway-2026/new-york-classical-review--george-grella.json (925w)\n  [wrongProduction] tosca-off-broadway-2026/operawire--chris-ruel.json (2816w)\n  [wrongProduction] miles-for-mary-off-broadway-2026/talkinbroadway--marc-miller.json (675w)\n  [wrongProduction] the-last-ship-west-end-2026/timeout--andrzej-lukowski.json (976w)\n  [wrongProduction] kimberly-akimbo-off-west-end-2026/broadwayworld--katie-kirkpatrick.json (899w)\n  [wrongProduction] the-revlon-girl-off-west-end-2026/london-box-office--stacey-tyler.json (817w)\nCoverage: examined 91 of 3057 corpus show(s) (1551 review file(s) parsed).\n  --window=30d selected 143 show(s): 45 already opened, 98 not yet opened (the window filter has no upper bound).\n  52 selected show(s) yielded no readable review file (directory missing, unreadable, empty, or every file failed to parse).\n  2966 corpus show(s) were NOT examined, of which 422 carry no usable openingDate (missing or unparseable) and are excluded at EVERY window.\n  A clean result above covers only the examined shows. It is not a statement about the corpus.\n\n(4 baselined, 3 new)\n\n⚠️  NEW flag-vs-CV contradiction(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/cv-flag-contradiction-baseline.json):\n  [wrongProduction] macbeth-off-broadway-2026/slippedisc--susan-hall.json\n  [wrongProduction] the-last-ship-west-end-2026/timeout--andrzej-lukowski.json\n  [wrongProduction] kimberly-akimbo-off-west-end-2026/broadwayworld--katie-kirkpatrick.json\n\nInvestigate, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-cv-flag-contradiction.js --update-baseline"
     },
     {
       "name": "self-contradictory-clears",

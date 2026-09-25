@@ -1,19 +1,281 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-24T23:51:52.037Z",
+    "generatedAt": "2026-09-25T00:00:49.133Z",
     "windowDays": 3,
     "minChurn": 30,
-    "degraded": true,
+    "degraded": false,
     "note": "Churn-vs-merge-attribute coverage monitor. Non-blocking; surfaced via health-check.js digest. Flagged = high-churn tracked file with no merge driver and no merge-coverage=exempt mark in .gitattributes."
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 0,
-    "exemptCount": 0,
-    "coveredCount": 0,
-    "highChurnTracked": 0
+    "flaggedCount": 3,
+    "exemptCount": 38,
+    "coveredCount": 19,
+    "highChurnTracked": 60
   },
-  "flagged": [],
-  "exempt": [],
-  "covered": []
+  "flagged": [
+    {
+      "path": "data/audit/guard-escalation-state.json",
+      "churn": 136
+    },
+    {
+      "path": "data/audit/orphaned-duplicate-pointer-heal.json",
+      "churn": 81
+    },
+    {
+      "path": "data/audit/pipeline-health/test.last-success",
+      "churn": 45
+    }
+  ],
+  "exempt": [
+    {
+      "path": "data/audit/alert-ledger.json",
+      "churn": 146
+    },
+    {
+      "path": "public/data/admin/critic-coverage.json",
+      "churn": 143
+    },
+    {
+      "path": "public/data/admin/locks.json",
+      "churn": 143
+    },
+    {
+      "path": "public/data/mobile-shows.json",
+      "churn": 143
+    },
+    {
+      "path": "data/llm-scoring-runs.json",
+      "churn": 139
+    },
+    {
+      "path": "public/data/stats-reviews.json",
+      "churn": 110
+    },
+    {
+      "path": "public/data/shows/kimberly-akimbo-off-west-end-2026.json",
+      "churn": 96
+    },
+    {
+      "path": "public/data/shows/a-month-in-the-country-west-end-2026.json",
+      "churn": 83
+    },
+    {
+      "path": "public/data/shows/man-to-man-west-end-2026.json",
+      "churn": 83
+    },
+    {
+      "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
+      "churn": 82
+    },
+    {
+      "path": "public/data/shows/much-ado-about-nothing-globe-off-west-end-2026.json",
+      "churn": 81
+    },
+    {
+      "path": "public/data/shows/oh-mary-west-end-2025.json",
+      "churn": 81
+    },
+    {
+      "path": "public/opening-night-status.json",
+      "churn": 81
+    },
+    {
+      "path": "public/data/shows/archduke-west-end-2026.json",
+      "churn": 80
+    },
+    {
+      "path": "public/data/shows/into-the-woods-west-end-2025.json",
+      "churn": 80
+    },
+    {
+      "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
+      "churn": 79
+    },
+    {
+      "path": "public/data/shows/equus-west-end-2026.json",
+      "churn": 78
+    },
+    {
+      "path": "public/data/shows/hadestown-west-end-2024.json",
+      "churn": 77
+    },
+    {
+      "path": "public/data/shows/manic-street-creature-west-end-2026.json",
+      "churn": 77
+    },
+    {
+      "path": "public/data/shows/bloodsport-after-helen-of-troy-off-west-end-2026.json",
+      "churn": 76
+    },
+    {
+      "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
+      "churn": 76
+    },
+    {
+      "path": "public/data/shows/loves-labours-lost-globe-west-end-2026.json",
+      "churn": 75
+    },
+    {
+      "path": "public/data/shows/care-west-end-2026.json",
+      "churn": 74
+    },
+    {
+      "path": "public/data/shows/mass-west-end-2026.json",
+      "churn": 74
+    },
+    {
+      "path": "public/data/shows/are-you-watching-west-end-2026.json",
+      "churn": 72
+    },
+    {
+      "path": "public/data/shows/moulin-rouge-the-musical-west-end-2021.json",
+      "churn": 71
+    },
+    {
+      "path": "public/data/shows/golden-boy-off-west-end-2026.json",
+      "churn": 65
+    },
+    {
+      "path": "public/data/shows/catarina-and-the-beauty-of-killing-fascists-west-end-2026.json",
+      "churn": 64
+    },
+    {
+      "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
+      "churn": 62
+    },
+    {
+      "path": "public/data/shows/all-my-sons-west-end-2025.json",
+      "churn": 56
+    },
+    {
+      "path": "data/audit/alert-digest-queue.json",
+      "churn": 54
+    },
+    {
+      "path": "public/data/shows/million-dollar-quartet-off-west-end-2026.json",
+      "churn": 48
+    },
+    {
+      "path": "public/data/shows/the-last-ship-west-end-2026.json",
+      "churn": 47
+    },
+    {
+      "path": "public/data/shows/operation-mincemeat-west-end-2024.json",
+      "churn": 35
+    },
+    {
+      "path": "public/data/shows/the-invention-of-love-off-broadway-2026.json",
+      "churn": 34
+    },
+    {
+      "path": "public/data/shows/how-the-other-half-loves-west-end-2026.json",
+      "churn": 33
+    },
+    {
+      "path": "public/data/shows/macbeth-off-broadway-2026.json",
+      "churn": 33
+    },
+    {
+      "path": "public/data/shows/hit-machine-off-west-end-2026.json",
+      "churn": 32
+    }
+  ],
+  "covered": [
+    {
+      "path": "data/audit/scraper-spend-ledger.jsonl",
+      "churn": 296,
+      "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/deploy-watermark.json",
+      "churn": 285,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/stage-latency.jsonl",
+      "churn": 278,
+      "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/cross-show-fingerprint-collisions.json",
+      "churn": 265,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/needs-human-review.json",
+      "churn": 265,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/rebuild-score-drift.json",
+      "churn": 265,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/opening-night-completeness-state.json",
+      "churn": 179,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/verify-all-scored-state.json",
+      "churn": 143,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/scoring-progress.json",
+      "churn": 141,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/progress.json",
+      "churn": 110,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/live-progress.json",
+      "churn": 109,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/pre2005-wrong-production.json",
+      "churn": 81,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/syndicated-duplicates.json",
+      "churn": 81,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/wrong-production-audit.json",
+      "churn": 81,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/browserbase-usage.json",
+      "churn": 77,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
+      "churn": 68,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/orphan-unscored-macbeth-off-broadway-2026.json",
+      "churn": 52,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/landings.jsonl",
+      "churn": 34,
+      "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/url-collision-report.json",
+      "churn": 30,
+      "mergeAttr": "ours"
+    }
+  ]
 }
