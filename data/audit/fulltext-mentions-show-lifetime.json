@@ -1,11 +1,14 @@
 {
-  "updatedAt": "2026-09-24T12:23:33.058Z",
-  "scanned": 2108,
-  "showsWithViolations": 332,
+  "updatedAt": "2026-09-25T12:20:14.077Z",
+  "scanned": 2111,
+  "showsWithViolations": 331,
   "totalViolations": 646,
-  "newSinceLastRun": 1,
+  "newSinceLastRun": 4,
   "newViolationKeys": [
-    "godspell-2011::northjerseycom--robert-feldberg.json"
+    "the-price-off-west-end-2026::guardian--arifa-akbar.json",
+    "the-price-off-west-end-2026::thestage--dave-fargnoli.json",
+    "la-boheme-off-broadway-2024::the-new-criterion--unknown.json",
+    "kimberly-akimbo-off-west-end-2026::londonatlarge--laladmin.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -348,9 +351,7 @@
     "the-winslow-boy-2013::amny--matt-windman.json",
     "big-fish-2013::northjerseycom--robert-feldberg.json",
     "big-fish-2013::wsj--terry-teachout.json",
-    "the-glass-menagerie-2013::bloomberg--jeremy-gerard.json",
     "first-date-2013::northjerseycom--robert-feldberg.json",
-    "jekyll-and-hyde-2013::bloomberg--philip-boroff.json",
     "jekyll-and-hyde-2013::talkinbroadway--matthew-murray.json",
     "orphans-2013::theater-life--eric-march.json",
     "orphans-2013::washpost--peter-marks.json",
@@ -424,7 +425,6 @@
     "the-mountaintop-2011::yonkers-tribune--john-simon.json",
     "man-and-boy-2011::yonkers-tribune--john-simon.json",
     "master-class-2011::ew--melissa-rose-bernardo.json",
-    "the-people-in-the-picture-2011::backstage--david-sheward.json",
     "baby-its-you-2011::backstage--david-sheward.json",
     "baby-its-you-2011::ew--thom-geier.json",
     "the-normal-heart-2011::timeout--david-cote.json",
@@ -464,7 +464,6 @@
     "a-life-in-the-theatre-2010::nytheatre--martin-denton.json",
     "a-life-in-the-theatre-2010::village-voice--michael-feingold.json",
     "mrs-warrens-profession-2010::nytimes--ben-brantley.json",
-    "the-pitmen-painters-2010::bloomberg--john-simon.json",
     "the-pitmen-painters-2010::nytimes--charles-isherwood.json",
     "the-pitmen-painters-2010::village-voice--michael-feingold.json",
     "brief-encounter-2010::newyorker--uncredited.json",
@@ -633,7 +632,9 @@
     "labelless-off-broadway-2026::culturesauce--thom-geier.json",
     "labelless-off-broadway-2026::one-minute-critic--matthew-wexler.json",
     "labelless-off-broadway-2026::theatermania--zachary-stewart.json",
+    "the-price-off-west-end-2026::guardian--arifa-akbar.json",
     "the-price-off-west-end-2026::guardian--unknown.json",
+    "the-price-off-west-end-2026::thestage--dave-fargnoli.json",
     "the-price-off-west-end-2026::thestage--unknown.json",
     "evita-west-end-2025::thestage--sam-marlowe.json",
     "la-boheme-off-broadway-2025::new-york-classical-review--rick-perdian.json",
@@ -650,7 +651,9 @@
     "matilda-the-musical-theatre-row-off-broadway-2026::timeout--unknown.json",
     "the-winters-tale-off-broadway-2026::talkinbroadway--unknown.json",
     "la-boheme-off-broadway-2024::operawire--jennifer-e-pyron.json",
+    "la-boheme-off-broadway-2024::the-new-criterion--unknown.json",
     "the-children-off-west-end-2026::thestage--dave-fargnoli.json",
+    "kimberly-akimbo-off-west-end-2026::londonatlarge--laladmin.json",
     "golden-boy-off-west-end-2026::plays-to-see--unknown.json",
     "barcelona-west-end-2024::times-uk--clive-davis.json",
     "high-society-west-end-2026::guardian--arifa-akbar.json"
@@ -4569,22 +4572,6 @@
       ]
     },
     {
-      "showId": "the-glass-menagerie-2013",
-      "title": "The Glass Menagerie",
-      "openingDate": "2013-09-26",
-      "message": "bloomberg/Jeremy Gerard (bloomberg--jeremy-gerard.json) SHIPPED but fullText never mentions 'The Glass Menagerie' (500 chars, textIssues flag set): http://origin-www.bloomberg.com/news/2013-09-27/zachary-quinto-s-five-star-menagerie-arguendo-stage.html",
-      "violations": [
-        {
-          "filename": "bloomberg--jeremy-gerard.json",
-          "url": "http://origin-www.bloomberg.com/news/2013-09-27/zachary-quinto-s-five-star-menagerie-arguendo-stage.html",
-          "outletId": "bloomberg",
-          "criticName": "Jeremy Gerard",
-          "haystackLength": 500,
-          "textIssuesFlag": true
-        }
-      ]
-    },
-    {
       "showId": "first-date-2013",
       "title": "First Date",
       "openingDate": "2013-08-08",
@@ -4604,16 +4591,8 @@
       "showId": "jekyll-and-hyde-2013",
       "title": "Jekyll & Hyde",
       "openingDate": "2013-04-18",
-      "message": "bloomberg/Philip Boroff (bloomberg--philip-boroff.json) SHIPPED but fullText never mentions 'Jekyll & Hyde' (303 chars, textIssues flag set): http://www.bloomberg.com/news/2013-04-19/skinny-baldwin-pales-in-orphans-booming-hyde-stage.html\ntalkinbroadway/Matthew Murray (talkinbroadway--matthew-murray.json) SHIPPED but fullText never mentions 'Jekyll & Hyde' (411 chars, textIssues flag set): https://www.talkinbroadway.com/world/JekyllHyde.html",
+      "message": "talkinbroadway/Matthew Murray (talkinbroadway--matthew-murray.json) SHIPPED but fullText never mentions 'Jekyll & Hyde' (411 chars, textIssues flag set): https://www.talkinbroadway.com/world/JekyllHyde.html",
       "violations": [
-        {
-          "filename": "bloomberg--philip-boroff.json",
-          "url": "http://www.bloomberg.com/news/2013-04-19/skinny-baldwin-pales-in-orphans-booming-hyde-stage.html",
-          "outletId": "bloomberg",
-          "criticName": "Philip Boroff",
-          "haystackLength": 303,
-          "textIssuesFlag": true
-        },
         {
           "filename": "talkinbroadway--matthew-murray.json",
           "url": "https://www.talkinbroadway.com/world/JekyllHyde.html",
@@ -5521,22 +5500,6 @@
       ]
     },
     {
-      "showId": "the-people-in-the-picture-2011",
-      "title": "The People in the Picture",
-      "openingDate": "2011-04-28",
-      "message": "backstage/David Sheward (backstage--david-sheward.json) SHIPPED but fullText never mentions 'The People in the Picture' (481 chars, textIssues flag set): https://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3ie38262039b8e6e8646888b94ce1d0e9a",
-      "violations": [
-        {
-          "filename": "backstage--david-sheward.json",
-          "url": "https://www.backstage.com/bso/content_display/reviews/ny-theatre-reviews/e3ie38262039b8e6e8646888b94ce1d0e9a",
-          "outletId": "backstage",
-          "criticName": "David Sheward",
-          "haystackLength": 481,
-          "textIssuesFlag": true
-        }
-      ]
-    },
-    {
       "showId": "baby-its-you-2011",
       "title": "Baby It's You!",
       "openingDate": "2011-04-27",
@@ -6044,16 +6007,8 @@
       "showId": "the-pitmen-painters-2010",
       "title": "The Pitmen Painters",
       "openingDate": "2010-09-30",
-      "message": "bloomberg/John Simon (bloomberg--john-simon.json) SHIPPED but fullText never mentions 'The Pitmen Painters' (438 chars, textIssues flag set): https://www.bloomberg.com/news/2010-10-01/miners-morph-into-painters-in-play-by-billy-elliot-author-john-simon.html\nnytimes/Charles Isherwood (nytimes--charles-isherwood.json) SHIPPED but fullText never mentions 'The Pitmen Painters' (198 chars): https://www.nytimes.com/2010/12/08/theater/reviews/08pitmen.html\nvillage-voice/Michael Feingold (village-voice--michael-feingold.json) SHIPPED but fullText never mentions 'The Pitmen Painters' (496 chars): https://www.villagevoice.com/2010-10-06/theater/cherry-jones-sails-through-mrs-warren-s-profession-lee-hall-mines-the-pitmen-painters/1/",
+      "message": "nytimes/Charles Isherwood (nytimes--charles-isherwood.json) SHIPPED but fullText never mentions 'The Pitmen Painters' (198 chars): https://www.nytimes.com/2010/12/08/theater/reviews/08pitmen.html\nvillage-voice/Michael Feingold (village-voice--michael-feingold.json) SHIPPED but fullText never mentions 'The Pitmen Painters' (496 chars): https://www.villagevoice.com/2010-10-06/theater/cherry-jones-sails-through-mrs-warren-s-profession-lee-hall-mines-the-pitmen-painters/1/",
       "violations": [
-        {
-          "filename": "bloomberg--john-simon.json",
-          "url": "https://www.bloomberg.com/news/2010-10-01/miners-morph-into-painters-in-play-by-billy-elliot-author-john-simon.html",
-          "outletId": "bloomberg",
-          "criticName": "John Simon",
-          "haystackLength": 438,
-          "textIssuesFlag": true
-        },
         {
           "filename": "nytimes--charles-isherwood.json",
           "url": "https://www.nytimes.com/2010/12/08/theater/reviews/08pitmen.html",
@@ -6946,9 +6901,9 @@
     },
     {
       "showId": "tru-off-broadway-2026",
-      "title": "TRU",
+      "title": "Tru",
       "openingDate": "2026-03-19",
-      "message": "nysr/David Finkle (nysr--david-finkle.json) SHIPPED but fullText never mentions 'TRU' (649 chars): https://nystagereview.com/2026/03/19/tru-gossipy-truman-capote-on-the-uproarious-warpath/",
+      "message": "nysr/David Finkle (nysr--david-finkle.json) SHIPPED but fullText never mentions 'Tru' (649 chars): https://nystagereview.com/2026/03/19/tru-gossipy-truman-capote-on-the-uproarious-warpath/",
       "violations": [
         {
           "filename": "nysr--david-finkle.json",
@@ -8044,7 +7999,7 @@
       "showId": "under-the-shadow-off-west-end-2026",
       "title": "Under the Shadow",
       "openingDate": "2026-06-09",
-      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED but fullText never mentions 'Under the Shadow' (2337 chars): https://www.theguardian.com/stage/2026/jun/10/under-the-shadow-review-leila-farzad-tehran-almeida-theatre\n⚠️  thestage/Sam Marlowe (thestage--sam-marlowe.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/under-the-shadow-review-almeida-theatre-london",
+      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED but fullText never mentions 'Under the Shadow' (2337 chars): https://www.theguardian.com/stage/2026/jun/10/under-the-shadow-review-leila-farzad-tehran-almeida-theatre",
       "violations": [
         {
           "filename": "guardian--unknown.json",
@@ -8204,14 +8159,30 @@
       "showId": "the-price-off-west-end-2026",
       "title": "The Price",
       "openingDate": "2026-04-23",
-      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED but fullText never mentions 'The Price' (2542 chars): https://www.theguardian.com/stage/2026/apr/24/the-price-review-marylebone-theatre-london-arthur-miller-henry-goodman\nthestage/Unknown (thestage--unknown.json) SHIPPED but fullText never mentions 'The Price' (3242 chars): https://www.thestage.co.uk/reviews/the-price-review-marylebone-theatre-london-arthur-miller\n⚠️  whatsonstage/Alun Hood (whatsonstage--alun-hood.json) also too short to assess (0 chars): https://www.whatsonstage.com/news/the-price-at-marylebone-theatre-review_1719472/",
+      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'The Price' (2501 chars): https://www.theguardian.com/stage/2026/apr/24/the-price-review-marylebone-theatre-london-arthur-miller-henry-goodman\nguardian/Unknown (guardian--unknown.json) SHIPPED but fullText never mentions 'The Price' (2542 chars): https://www.theguardian.com/stage/2026/apr/24/the-price-review-marylebone-theatre-london-arthur-miller-henry-goodman\nthestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED but fullText never mentions 'The Price' (2942 chars): https://www.thestage.co.uk/reviews/the-price-review-marylebone-theatre-london-arthur-miller\nthestage/Unknown (thestage--unknown.json) SHIPPED but fullText never mentions 'The Price' (3242 chars): https://www.thestage.co.uk/reviews/the-price-review-marylebone-theatre-london-arthur-miller",
       "violations": [
+        {
+          "filename": "guardian--arifa-akbar.json",
+          "url": "https://www.theguardian.com/stage/2026/apr/24/the-price-review-marylebone-theatre-london-arthur-miller-henry-goodman",
+          "outletId": "guardian",
+          "criticName": "Arifa Akbar",
+          "haystackLength": 2501,
+          "textIssuesFlag": false
+        },
         {
           "filename": "guardian--unknown.json",
           "url": "https://www.theguardian.com/stage/2026/apr/24/the-price-review-marylebone-theatre-london-arthur-miller-henry-goodman",
           "outletId": "guardian",
           "criticName": "Unknown",
           "haystackLength": 2542,
+          "textIssuesFlag": false
+        },
+        {
+          "filename": "thestage--dave-fargnoli.json",
+          "url": "https://www.thestage.co.uk/reviews/the-price-review-marylebone-theatre-london-arthur-miller",
+          "outletId": "thestage",
+          "criticName": "Dave Fargnoli",
+          "haystackLength": 2942,
           "textIssuesFlag": false
         },
         {
@@ -8404,7 +8375,7 @@
       "showId": "la-boheme-off-broadway-2024",
       "title": "La Bohème",
       "openingDate": "2024-11-13",
-      "message": "operawire/Jennifer E. Pyron (operawire--jennifer-e-pyron.json) SHIPPED but fullText never mentions 'La Bohème' (5788 chars): https://operawire.com/metropolitan-opera-2024-25-review-la-boheme/",
+      "message": "operawire/Jennifer E. Pyron (operawire--jennifer-e-pyron.json) SHIPPED but fullText never mentions 'La Bohème' (5788 chars): https://operawire.com/metropolitan-opera-2024-25-review-la-boheme/\nthe-new-criterion/Unknown (the-new-criterion--unknown.json) SHIPPED but fullText never mentions 'La Bohème' (5314 chars): https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
       "violations": [
         {
           "filename": "operawire--jennifer-e-pyron.json",
@@ -8412,6 +8383,14 @@
           "outletId": "operawire",
           "criticName": "Jennifer E. Pyron",
           "haystackLength": 5788,
+          "textIssuesFlag": false
+        },
+        {
+          "filename": "the-new-criterion--unknown.json",
+          "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
+          "outletId": "the-new-criterion",
+          "criticName": "Unknown",
+          "haystackLength": 5314,
           "textIssuesFlag": false
         }
       ]
@@ -8428,6 +8407,22 @@
           "outletId": "thestage",
           "criticName": "Dave Fargnoli",
           "haystackLength": 2996,
+          "textIssuesFlag": false
+        }
+      ]
+    },
+    {
+      "showId": "kimberly-akimbo-off-west-end-2026",
+      "title": "Kimberly Akimbo",
+      "openingDate": "2026-09-09",
+      "message": "londonatlarge/LALadmin (londonatlarge--laladmin.json) SHIPPED but fullText never mentions 'Kimberly Akimbo' (1756 chars): https://www.londonatlarge.com/kimberly-akimbo-hampstead-theatre-review/",
+      "violations": [
+        {
+          "filename": "londonatlarge--laladmin.json",
+          "url": "https://www.londonatlarge.com/kimberly-akimbo-hampstead-theatre-review/",
+          "outletId": "londonatlarge",
+          "criticName": "LALadmin",
+          "haystackLength": 1756,
           "textIssuesFlag": false
         }
       ]

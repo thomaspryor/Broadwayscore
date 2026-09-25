@@ -1,10 +1,12 @@
 {
-  "updatedAt": "2026-09-24T12:23:38.386Z",
-  "scanned": 2108,
-  "showsWithViolations": 42,
-  "totalViolations": 42,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-09-25T12:20:19.350Z",
+  "scanned": 2111,
+  "showsWithViolations": 43,
+  "totalViolations": 43,
+  "newSinceLastRun": 1,
+  "newViolationKeys": [
+    "cosi-fan-tutte-off-broadway-2026"
+  ],
   "violationKeys": [
     "the-lost-boys-2026",
     "schmigadoon-2026",
@@ -40,6 +42,7 @@
     "paranormal-activity-2026",
     "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
     "la-boheme-off-broadway-2026",
+    "cosi-fan-tutte-off-broadway-2026",
     "macbeth-off-broadway-2026",
     "tosca-off-broadway-2026",
     "the-smile-of-her-off-west-end-2026",
@@ -279,7 +282,7 @@
       "showId": "man-to-man-west-end-2026",
       "title": "Man to Man",
       "openingDate": "2026-09-11",
-      "message": "man-to-man-west-end-2026 review text mentions \"revival\" 50x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "man-to-man-west-end-2026 review text mentions \"revival\" 57x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -324,7 +327,7 @@
       "showId": "the-story-west-end-2026",
       "title": "The Story",
       "openingDate": "2026-09-03",
-      "message": "the-story-west-end-2026 review text mentions \"revival\" 22x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-story-west-end-2026 review text mentions \"revival\" 25x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -342,7 +345,7 @@
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "title": "Catarina and the Beauty of Killing Fascists",
       "openingDate": "2026-09-21",
-      "message": "catarina-and-the-beauty-of-killing-fascists-west-end-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "catarina-and-the-beauty-of-killing-fascists-west-end-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -352,6 +355,15 @@
       "title": "La Bohème",
       "openingDate": "2026-09-25",
       "message": "la-boheme-off-broadway-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "cosi-fan-tutte-off-broadway-2026",
+      "title": "Così fan tutte",
+      "openingDate": "2026-09-23",
+      "message": "cosi-fan-tutte-off-broadway-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
