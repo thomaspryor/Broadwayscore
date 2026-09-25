@@ -1088,7 +1088,8 @@ function buildDraftSection(parsed, bareCommand, pathCheck, sanitizedNotes) {
 
 /**
  * Enrich one card. Returns { id, name, action, detail }.
- * action: 'skipped' | 'owner-judgment' | 'llm-enriched' | 'failed'
+ * action: 'skipped' | 'refused' | 'owner-judgment' | 'llm-enriched' | 'failed'
+ * ('refused' only reachable with opts.rearm — BRO-3395, line ~1108)
  * opts.callLLM is injected (real provider-fallback callLLM in the CLI, a stub in tests).
  */
 async function enrichOneCard(card, opts = {}) {
@@ -1496,7 +1497,12 @@ async function runLinearLeg(args, { dryRun, limit }) {
     // function, not the two pre-checks above) — those must not count against
     // the budget either, for the same reason the pre-checks don't (live-run
     // caught this: BRO-3595 "already tagged auto-enriched" was consuming a
-    // budget slot before this fix).
+    // budget slot before this fix). The call above never passes opts.rearm,
+    // so action:'refused' (BRO-3395, only reachable in rearm mode) can never
+    // reach this line — if a future edit threads rearm through this call
+    // path, a refusal is real work (a Linear fetch happened) and should
+    // count, so leaving it un-excluded here is correct by construction, not
+    // an oversight.
     if (result.action !== 'skipped') attempts++;
     console.error(`[enrich-card-acceptance] linear ${i + 1}/${scanCandidates.length} ${card.identifier} ${card.name} → ${result.action}${result.detail ? ` (${truncateDetail(result.detail)})` : ''}`);
     if (result.action === 'llm-enriched' || result.action === 'failed') await new Promise(r => setTimeout(r, 1000));
