@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { parseWorkspaces, parseWorkspacesJson, parseWorkspacesWithFailures, listWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude, hasClaudeChrome, isNotFoundError, _resetRunWarnings } = require('./cmux-workspaces.js');
+const { parseWorkspaces, parseWorkspacesJson, parseWorkspacesWithFailures, listWorkspaces, isDoneTitle, hasRunningClaude, hasLiveClaude, hasClaudeChrome, isNotFoundError, isValidWorkspaceRef, assertValidWorkspaceRef, _resetRunWarnings } = require('./cmux-workspaces.js');
 
 // Captured from `cmux list-workspaces` 2026-07-12 (cmux 0.64.6)
 const LIST_SAMPLE = `  workspace:2  ⠂ Box office card improvements
@@ -685,6 +685,116 @@ test('pruneDone: a readLedgerEntries failure fails closed (title-only detection,
   });
   assert.deepEqual(calls, []);
   assert.deepEqual(skipped.map(w => w.ref), ['workspace:1']);
+});
+
+// ── BRO-4140: bare-number workspace refs must be rejected, not silently ────
+// resolved. Incident: sendToWorkspace('13', <crown handoff>) — cmux treated
+// '13' as a list INDEX (a different, unrelated live tab) instead of refusing,
+// so the handoff typed into the wrong workspace, and the sender's own
+// follow-up claudeMidTurnIn('13') check resolved to that SAME wrong tab and
+// "confirmed" a delivery that never happened.
+test('isValidWorkspaceRef: accepts workspace:N and a UUID; rejects bare numbers and indices', () => {
+  assert.equal(isValidWorkspaceRef('workspace:13'), true);
+  assert.equal(isValidWorkspaceRef('workspace:0'), true);
+  assert.equal(isValidWorkspaceRef('4647CB3E-3E38-402F-9743-6E136DCE8557'), true);
+  assert.equal(isValidWorkspaceRef('4647cb3e-3e38-402f-9743-6e136dce8557'), true); // lowercase UUID
+  assert.equal(isValidWorkspaceRef('13'), false, 'bare number — the exact BRO-4140 misdelivery shape');
+  assert.equal(isValidWorkspaceRef(13), false, 'bare number as a JS number, not just a string');
+  assert.equal(isValidWorkspaceRef('workspace:'), false);
+  assert.equal(isValidWorkspaceRef('workspace:abc'), false);
+  assert.equal(isValidWorkspaceRef(''), false);
+  assert.equal(isValidWorkspaceRef(null), false);
+  assert.equal(isValidWorkspaceRef(undefined), false);
+});
+
+test('assertValidWorkspaceRef: throws a clear, actionable error on a bare number; passes through a valid ref', () => {
+  assert.equal(assertValidWorkspaceRef('workspace:13'), 'workspace:13');
+  assert.throws(() => assertValidWorkspaceRef('13'), /invalid workspace ref/);
+  assert.throws(() => assertValidWorkspaceRef('13'), /BRO-4140/);
+  assert.throws(() => assertValidWorkspaceRef('13'), /list INDEX/);
+});
+
+test('closeWorkspace/sendToWorkspace/claudeMidTurnIn/claudeAliveIn/terminalSurfaceAliveIn/terminalSurfaceConfirmedMissing: all reject a bare-number ref before touching the socket', () => {
+  const cw = require('./cmux-workspaces.js');
+  // closeWorkspace has no injectable run seam, so this also proves the guard
+  // fires BEFORE the real (uninjectable) run() call — a missing guard here
+  // would attempt to spawn the real cmux binary and fail differently.
+  for (const [name, invoke] of [
+    ['closeWorkspace', () => cw.closeWorkspace('13')],
+    ['sendToWorkspace', () => cw.sendToWorkspace('13', 'hello')],
+    ['claudeMidTurnIn', () => cw.claudeMidTurnIn('13')],
+    ['claudeAliveIn', () => cw.claudeAliveIn('13')],
+    ['terminalSurfaceAliveIn', () => cw.terminalSurfaceAliveIn('13')],
+    ['terminalSurfaceConfirmedMissing', () => cw.terminalSurfaceConfirmedMissing('13')],
+  ]) {
+    assert.throws(invoke, /invalid workspace ref/, `${name} should reject bare "13"`);
+  }
+});
+
+test('claudeMidTurnIn/claudeAliveIn: an invalid ref throws — it is NOT swallowed by the fail-safe catch that treats transient cmux errors as alive/mid-turn', () => {
+  const cw = require('./cmux-workspaces.js');
+  assert.throws(() => cw.claudeAliveIn('13'), /invalid workspace ref/);
+  assert.throws(() => cw.claudeMidTurnIn('13'), /invalid workspace ref/);
+});
+
+test('checkLiveness: an invalid ref throws instead of being absorbed by its own fail-safe try/catch', () => {
+  const cw = require('./cmux-workspaces.js');
+  let called = false;
+  assert.throws(() => cw.checkLiveness('13', () => { called = true; return false; }, () => false), /invalid workspace ref/);
+  assert.equal(called, false, 'aliveFn must never run for an invalid ref');
+});
+
+test('sendToWorkspace: expectedTitle mismatch refuses to send (BRO-4140 delivery confirmation)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  const fakeRun = (args) => { calls.push(args); return ''; };
+  assert.throws(
+    () => cw.sendToWorkspace('workspace:15', 'crown handoff', {
+      expectedTitle: '👑 OWNER — every show has every review, scored right',
+      listWorkspacesFn: () => [{ ref: 'workspace:15', title: 'Stop making me hunt tabs', selected: false }],
+    }),
+    /does not match the expected title/,
+  );
+});
+
+test('sendToWorkspace: expectedTitle match sends normally', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  cw.sendToWorkspace('workspace:15', 'crown handoff', {
+    expectedTitle: '👑 OWNER — every show has every review, scored right',
+    listWorkspacesFn: () => [{ ref: 'workspace:15', title: '👑 OWNER — every show has every review, scored right', selected: true }],
+    runFn: (args) => { calls.push(args); return ''; },
+  });
+  assert.deepEqual(calls, [
+    ['send', '--workspace', 'workspace:15', '--', 'crown handoff'],
+    ['send-key', '--workspace', 'workspace:15', 'Enter'],
+  ]);
+});
+
+test('sendToWorkspace: expectedTitle against a ref missing from the fresh listing refuses to send', () => {
+  const cw = require('./cmux-workspaces.js');
+  assert.throws(
+    () => cw.sendToWorkspace('workspace:999', 'text', {
+      expectedTitle: 'anything',
+      listWorkspacesFn: () => [],
+    }),
+    /not found in the current workspace listing/,
+  );
+});
+
+test('sendToWorkspace: no expectedTitle passed skips the title check but still sends (backward compatible)', () => {
+  const cw = require('./cmux-workspaces.js');
+  const calls = [];
+  let listCalled = false;
+  cw.sendToWorkspace('workspace:15', 'no title check', {
+    listWorkspacesFn: () => { listCalled = true; return []; },
+    runFn: (args) => { calls.push(args); return ''; },
+  });
+  assert.equal(listCalled, false, 'no expectedTitle means listWorkspaces is never consulted');
+  assert.deepEqual(calls, [
+    ['send', '--workspace', 'workspace:15', '--', 'no title check'],
+    ['send-key', '--workspace', 'workspace:15', 'Enter'],
+  ]);
 });
 
 test('hasRunningClaude: column-exact — no substring false positives', () => {
