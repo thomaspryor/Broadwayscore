@@ -2521,9 +2521,10 @@ async function checkMainRedStreak(isCI) {
     // failing test", it's "nobody's per-signature card is stemming a
     // long-running red trunk", the same severity class as the
     // 'test-yml:main-streak-escalation' human page below. 'test-yml:main-
-    // streak' is on scripts/lib/page-worthy-alerts.js's allowlist so
-    // 'human' actually pages rather than being silently downgraded to
-    // digest. cooldownHours matches the escalation tier's 24h (NOT the old
+    // streak' was REMOVED from scripts/lib/page-worthy-alerts.js's
+    // allowlist 2026-09-23 (owner email-noise complaint), so this 'human'
+    // disposition is downgraded to the digest by the router — a red trunk is
+    // for the automated fixers, not an owner page. cooldownHours matches the escalation tier's 24h (NOT the old
     // 6h — under 'auto' this key only ever paged once, since
     // findLinearDuplicate's tracker dedupe made every later hit
     // action:'silent' with no email at all; under 'human' there is no such
