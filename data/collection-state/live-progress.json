@@ -1,18 +1,64 @@
 {
-  "updatedAt": "2026-09-25T08:32:59.529Z",
-  "processed": 2,
-  "failed": 1,
-  "successRate": "66.7%",
+  "updatedAt": "2026-09-25T08:41:29.615Z",
+  "processed": 11,
+  "failed": 41,
+  "successRate": "21.2%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 7,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 1,
-    "brightdata": 0,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-09-25T08:29:14.799Z",
+      "event": "bb-session",
+      "session": "a951e6ae",
+      "url": "https://www.nytimes.com/2026/09/23/theater/the-holes-review-max-wolf-friedlich.h"
+    },
+    {
+      "t": "2026-09-25T08:29:15.168Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-25T08:29:32.103Z",
+      "event": "bb-session",
+      "session": "8e451ab2",
+      "url": "https://www.nytimes.com/2026/09/23/theater/the-holes-review-max-wolf-friedlich.h"
+    },
+    {
+      "t": "2026-09-25T08:29:32.477Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-25T08:36:39.788Z",
+      "event": "bb-session",
+      "session": "3da0486a",
+      "url": "https://www.thestage.co.uk/reviews/the-last-ship-review-theatre-royal-drury-lane"
+    },
+    {
+      "t": "2026-09-25T08:36:40.182Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-25T08:41:03.641Z",
+      "event": "bb-session",
+      "session": "431ed916",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+    },
+    {
+      "t": "2026-09-25T08:41:26.012Z",
+      "event": "bb-session",
+      "session": "55d7d6ab",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+    }
+  ]
 }
