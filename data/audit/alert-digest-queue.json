@@ -1057,5 +1057,30 @@
       }
     ],
     "queuedAt": "2026-09-25T00:41:41.715Z"
+  },
+  {
+    "conditionKey": "direct-push:b4743baef7d233216b8b3d08b1d1efafe34c0a45",
+    "title": "Direct push to main: b4743baef7 by thomaspryor",
+    "description": "b4743baef7 reached main WITHOUT going through land.yml (no row in data/audit/landings.jsonl). Pushed by thomaspryor (committer Tom Pryor <thomas.pryor@gmail.com>). Head commit: Merge branch 'job/linear-BRO-4135-mug6ldli' Direct pushes skip the delta-vs-base gates; sessions must land via scripts/merge-worktree-to-main.sh (BRO-3425). Compare: https://github.com/thomaspryor/Broadwayscore/compare/326f9a58c8a6ea3ce4f2e1c9584f9fd53da2768b...b4743baef7d233216b8b3d08b1d1efafe34c0a45 Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36078455403",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "sha",
+        "value": "b4743baef7d233216b8b3d08b1d1efafe34c0a45"
+      },
+      {
+        "name": "actor",
+        "value": "thomaspryor"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36078455403"
+      }
+    ],
+    "queuedAt": "2026-09-25T00:46:10.920Z"
   }
 ]
