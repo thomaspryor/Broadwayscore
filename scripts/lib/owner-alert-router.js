@@ -721,6 +721,16 @@ function drainDigestQueue() {
  *
  * Returns { action: 'silent'|'auto'|'digest'|'human', conditionKey, cardId? }.
  */
+// BRO-4141: one Resend Idempotency-Key per condition per cooldown window, so
+// parallel runners that all read a stale ledger still send one email. Windows
+// are fixed buckets from the epoch, capped at Resend's 24h key lifetime, so a
+// send near a bucket edge can repeat once. The ledger cooldown still does the
+// long-window work.
+function alertIdempotencyKey(conditionKey, cooldownHours, nowMs) {
+  const windowMs = Math.max(1, Math.min(Number(cooldownHours) || 24, 24)) * 3600e3;
+  return `owner-alert:${conditionKey}:${Math.floor(nowMs / windowMs)}`.slice(0, 256);
+}
+
 async function routeAlert(opts) {
   const {
     conditionKey,
@@ -920,7 +930,10 @@ async function routeAlert(opts) {
     // this is the field the resurface decision actually depends on).
     // notifyCount/lastSeen/lastNotifiedAt still advance normally below.
   } else if (effectiveDisposition === 'human') {
-    const delivered = await sendAlert({ title, description, severity, fields, url, email: true });
+    const delivered = await sendAlert({
+      title, description, severity, fields, url, email: true,
+      idempotencyKey: alertIdempotencyKey(conditionKey, cooldownHours, Date.now()),
+    });
     result.delivered = delivered;
     notifyOk = delivered;
     if (delivered) result.lastSurfacedAt = now;
@@ -1037,6 +1050,7 @@ function readDispatchAttempts({ days = 7 } = {}) {
 
 module.exports = {
   routeAlert,
+  alertIdempotencyKey,
   // BRO-3881: exported so the test asserts the REAL card body every filed
   // issue gets, rather than a copy of the template (CLAUDE.md rule 15). The
   // bug it guards — prose-only acceptance criteria that no dispatch will

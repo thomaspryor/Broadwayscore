@@ -73,7 +73,12 @@ function shouldEmailAlert(severity) {
  * Send an email alert via Resend (for truly critical issues)
  * Requires RESEND_API_KEY and OWNER_EMAIL env vars.
  */
-async function sendEmailAlert({ title, description, severity = 'error', fields = [], url }) {
+// idempotencyKey (BRO-4141): Resend's Idempotency-Key makes the FIRST send
+// with a key win for 24h; a repeat returns the original id (200) or 409 if the
+// body changed. This is the only cross-runner dedup that holds when parallel
+// CI jobs each read a stale cooldown ledger (7 identical "main test.yml STILL
+// red" emails in 20 min on 2026-09-23 through a 24h cooldown).
+async function sendEmailAlert({ title, description, severity = 'error', fields = [], url, idempotencyKey }) {
   if (!shouldEmailAlert(severity)) {
     console.log(`[Alert policy] email suppressed for severity=${severity} — "${title}" (actionable-only policy; see BSC Daily / run logs)`);
     if (process.env.GITHUB_STEP_SUMMARY) {
@@ -124,12 +129,17 @@ async function sendEmailAlert({ title, description, severity = 'error', fields =
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${apiKey}`,
           'Content-Length': Buffer.byteLength(data),
+          ...(idempotencyKey ? { 'Idempotency-Key': idempotencyKey } : {}),
         },
       }, (res) => {
         let body = '';
         res.on('data', (chunk) => body += chunk);
         res.on('end', () => {
-          if (res.statusCode >= 200 && res.statusCode < 300) {
+          if (idempotencyKey && isIdempotentDuplicate(res.statusCode, body)) {
+            // Another runner already sent this alert: the owner WAS told.
+            console.log(`[Email] Duplicate suppressed by Idempotency-Key ${idempotencyKey}`);
+            resolve(true);
+          } else if (res.statusCode >= 200 && res.statusCode < 300) {
             console.log('[Email] Alert email sent successfully');
             logOwnerEmailSent({ title, severity });
             resolve(true);
@@ -154,15 +164,21 @@ async function sendEmailAlert({ title, description, severity = 'error', fields =
   });
 }
 
-async function sendAlert({ title, description, severity = 'error', fields = [], url, email = false }) {
+// Resend answers a reused Idempotency-Key with 409 invalid_idempotent_request
+// (body differed) or concurrent_idempotent_requests (first still in flight).
+function isIdempotentDuplicate(statusCode, body) {
+  return statusCode === 409 && /idempotent/i.test(String(body || ''));
+}
+
+async function sendAlert({ title, description, severity = 'error', fields = [], url, email = false, idempotencyKey }) {
   console.log(`[Alert] ${title}: ${description}`);
   if (email) {
     // Policy suppression is not a delivery failure — sendEmailAlert logs it
     // and returns false; don't fire the ::error:: delivery-failed annotation.
     if (!shouldEmailAlert(severity)) {
-      return sendEmailAlert({ title, description, severity, fields, url });
+      return sendEmailAlert({ title, description, severity, fields, url, idempotencyKey });
     }
-    const delivered = await sendEmailAlert({ title, description, severity, fields, url });
+    const delivered = await sendEmailAlert({ title, description, severity, fields, url, idempotencyKey });
     if (!delivered) {
       // A requested-but-failed alert is itself a critical failure: this exact
       // silent path is why months of completeness alerts reached nobody
@@ -205,6 +221,7 @@ module.exports = {
   sendAlert,
   sendEmailAlert, // resolves true/false — for callers that must act on delivery failure
   shouldEmailAlert, // pure policy predicate — unit-tested in alert-email-policy.test.mjs
+  isIdempotentDuplicate,
   sendReport,
   sendNewShowNotification,
   sendMessage,
