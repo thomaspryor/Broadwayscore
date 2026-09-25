@@ -141,6 +141,14 @@ const STRONG_ERROR_PAGE_PATTERNS = [
   // Both phrases are Anubis chrome only; 0 hits on real review text.
   /\bprotected\s+by\s+anubis\b/i,
   /making\s+sure\s+you(?:'|&#39;|’)re\s+not\s+a\s+bot/i,
+  // Ticket-reseller event-page boilerplate (RESELLER_BOILERPLATE): scorebig,
+  // boxofficeticketsales and stuborder event pages were stored as Disruption /
+  // The Gin Game "reviews" (contentTier complete, includable, never scored).
+  // Domain lists can't keep up with resellers, so catch the page itself.
+  // Corpus 2026-09-25: each phrase hits exactly its reseller page, 0 reviews.
+  /resale\s+ticket\s+prices\s+may\s+be\s+above\s+face\s+value/i,
+  /whether\s+you\s+are\s+buying\s+or\s+selling\s+tickets\s+on\s+our\s+site/i,
+  /\bresale\b[^.]{0,40}\bprices\s+(?:are\s+)?set\s+by\s+(?:the\s+)?sellers/i,
 ];
 
 /**

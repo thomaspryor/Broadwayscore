@@ -56,6 +56,16 @@ test('Anubis bot-wall interstitial stored as a review is garbage (myreviewer, As
   assert.equal(isGarbageContent(text).isGarbage, true);
 });
 
+test('ticket-reseller event pages stored as reviews are garbage (scorebig, boxofficeticketsales, stuborder)', () => {
+  for (const text of [
+    'Resale ticket prices may be above face value. Disruption The Romulus Linney Courtyard Theatre at Signature Theatre, New York',
+    'Whether you are buying or selling tickets on our site, we safeguard your transaction. You will receive a 100% refund',
+    'Tickets for The Gin Game you can still buy seats for. Resale musical / play prices are set by sellers and move with demand',
+  ]) {
+    assert.equal(isGarbageContent(text).isGarbage, true, text.slice(0, 40));
+  }
+});
+
 test('FP guard: a real review is never flagged by the strong error-page scan', () => {
   const text = 'The revival is a triumph. The performance by the lead actor anchors a production whose staging, lighting and ensemble work all land. '.repeat(6);
   const r = isGarbageContent(text);
