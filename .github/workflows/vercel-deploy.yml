@@ -241,15 +241,20 @@ jobs:
           # data/cache/: prebuild hash gates (e.g. mobile-show-details/last-hash.json)
           # that skip regen when inputs unchanged.
           #
-          # hygiene-cache-runid-ok: deliberate, and small enough not to matter.
-          # NOTE (ship-check correction): restore-keys do NOT collapse entries —
-          # the primary key below still carries github.run_id, so this DOES mint a
-          # new entry per deploy, exactly like the pattern BRO-3887 removed. It is
-          # exempt on SIZE, not on shape: .next/cache + data/cache is tens of MB
-          # against checkout-core-data's 3.4 GiB, so it cannot exhaust the 10 GiB
-          # repo budget on its own. The run_id is required here for the reason the
-          # original comment below gives. If this ever grows past ~1 GiB, it needs
-          # the same treatment core-data got.
+          # hygiene-cache-runid-ok: deliberate — the run_id is required for the
+          # reason the original comment below gives, not an oversight.
+          # NOT exempt on size anymore (BRO-4146, corrects the prior "tens of MB"
+          # note): measured 2026-09-25 at 24 live entries / 5.3 GiB (~221 MB/entry)
+          # — the SAME failure mode BRO-3887 fixed in checkout-core-data, from a
+          # different cache. Past the repo's 10 GiB cap, GitHub LRU-evicts the
+          # WHOLE namespace, including the unrelated ~KB-sized bd-serp-cache-*
+          # entries gather-reviews.js depends on for cross-run SERP dedup — that
+          # eviction reproduced BRO-3887's exact symptom
+          # (tests/unit/bro3887-cache-fix-acceptance.test.mjs went red again).
+          # Unlike checkout-core-data this cache has a measured build-time win
+          # (~2-3 min with .next/cache persisted, see 3191971fd5), so instead of
+          # dropping it, the "Prune stale Next.js cache entries" step below keeps
+          # only the newest 2 entries for this key prefix after every deploy.
           # Key includes github.run_id so every deploy gets a UNIQUE primary key.
           # Without this, actions/cache@v5 sees a primary-key hit on restore and
           # SKIPS the save step at job end — meaning per-deploy cache updates
@@ -264,6 +269,22 @@ jobs:
           restore-keys: |
             nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
             nextjs-cache-${{ runner.os }}-
+
+      - name: Prune stale Next.js cache entries
+        # BRO-4146: the primary key above carries github.run_id, so the save
+        # step above mints a brand-new immutable entry every deploy and never
+        # deletes the old ones — see the comment on that step for the incident
+        # this caused. Selection logic is a pure, unit-tested function
+        # (scripts/lib/actions-cache-prune.js); this just wires it to `gh cache`.
+        # if: always() so a failed/skipped build still trims the backlog rather
+        # than compounding it; continue-on-error so a prune failure never fails
+        # a deploy — worst case is a return to today's status quo, not a
+        # regression.
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/prune-github-actions-cache.js "nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-" --keep=2
 
       - name: Check if data changed
         id: check-data
