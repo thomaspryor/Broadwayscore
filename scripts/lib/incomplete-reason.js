@@ -5,7 +5,21 @@
  * Uses detectPaywall from content-quality.js for paywall text detection.
  */
 
-const { detectPaywall, TRUNCATION_SIGNALS } = require('./content-quality');
+const { detectPaywall, TRUNCATION_SIGNALS, validateContentMentionsShow } = require('./content-quality');
+
+let _showTitleById = null;
+function lookupShowTitle(showId) {
+  if (!showId) return null;
+  if (!_showTitleById) {
+    _showTitleById = new Map();
+    try {
+      const fs = require('fs');
+      const raw = JSON.parse(fs.readFileSync(require('path').join(__dirname, '../../data/shows.json'), 'utf8'));
+      for (const s of (raw.shows || raw)) if (s && s.id && s.title) _showTitleById.set(s.id, s.title);
+    } catch { /* core data not checked out — callers fall back to review.showTitle */ }
+  }
+  return _showTitleById.get(showId) || null;
+}
 
 // Known hard-paywall domains where incomplete content is almost certainly paywall-truncated.
 const KNOWN_PAYWALL_DOMAINS = new Set([
@@ -24,7 +38,39 @@ const KNOWN_PAYWALL_DOMAINS = new Set([
  * @returns {{ incompleteReason: string, incompleteDetail: string } | null}
  *   Returns null if contentTier is 'complete'.
  */
+/**
+ * True when a url_content_mismatch failed-fetch entry is older than a later
+ * SUCCESSFUL fetch of the same URL. failed-fetches.json entries are not removed
+ * when a re-fetch succeeds, so without this check a review whose text was
+ * re-collected (and now mentions the show) kept re-deriving the old
+ * url_content_mismatch reason on every rebuild (Dog Man / Oh, Mary!, 2026-09-24).
+ * Conservative: only this one failure reason, only when the review holds real
+ * text (≥300 chars), is not flagged showNotMentioned, the entry is for the same
+ * URL, the review's textFetchedAt is strictly after the entry's lastFailedAt,
+ * AND the CURRENT text passes validateContentMentionsShow — a later fetch by a
+ * path that skips the sanity check (subscriber session, url-ingest) must not
+ * clear a mismatch its text would still fail.
+ *
+ * @param {Object} review
+ * @param {Object|null} failedFetchEntry
+ * @returns {boolean}
+ */
+function isStaleContentMismatchEntry(review, failedFetchEntry) {
+  if (!review || !failedFetchEntry || failedFetchEntry.failureReason !== 'url_content_mismatch') return false;
+  if (review.showNotMentioned === true || review.wrongShow || review.wrongProduction) return false;
+  if (typeof review.fullText !== 'string' || review.fullText.length < 300) return false;
+  if (failedFetchEntry.url && review.url && failedFetchEntry.url !== review.url) return false;
+  const fetchedAt = Date.parse(review.textFetchedAt || '');
+  const failedAt = Date.parse(failedFetchEntry.lastFailedAt || '');
+  if (!Number.isFinite(fetchedAt) || !Number.isFinite(failedAt)) return false;
+  if (!(fetchedAt > failedAt)) return false;
+  const title = review.showTitle || lookupShowTitle(review.showId);
+  if (!title) return false;
+  return validateContentMentionsShow(review.fullText, null, title, review.showId).valid === true;
+}
+
 function classifyIncompleteReason(review, failedFetchEntry) {
+  if (isStaleContentMismatchEntry(review, failedFetchEntry)) failedFetchEntry = null;
   const tier = review.contentTier;
   // url_content_mismatch can occur even on previously-complete reviews (CDN misroutes, content swaps).
   // Always surface it regardless of contentTier so Browserbase escalation fires on next run.
@@ -197,5 +243,6 @@ function classifyIncompleteReason(review, failedFetchEntry) {
 
 module.exports = {
   classifyIncompleteReason,
+  isStaleContentMismatchEntry,
   KNOWN_PAYWALL_DOMAINS,
 };

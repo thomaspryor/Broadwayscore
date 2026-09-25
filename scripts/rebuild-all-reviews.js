@@ -34,6 +34,7 @@ const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
+const { textMentionsTitle } = require('./lib/show-title-variants');
 const { shouldDeferCvWrongShow } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
@@ -4078,8 +4079,15 @@ showDirs.forEach(showId => {
           // reviews for subtitled shows nearly always mention the short title only.
           const commaIdx = showTitle.indexOf(',');
           const commaShort = commaIdx > 0 ? showTitle.slice(0, commaIdx).trim() : '';
-          const textLower = textToCheck.substring(0, 5000).toLowerCase();
-          if ((showTitle.length >= 4 && textLower.includes(showTitle)) || (shortTitle.length >= 5 && textLower.includes(shortTitle)) || (commaShort.length >= 4 && textLower.includes(commaShort))) {
+          // Whole text (was first 5000 chars — long reviews that name the show only
+          // after a long lede never cleared). Capped at 60K chars for pathological pages.
+          const textLower = textToCheck.substring(0, 60000).toLowerCase();
+          // Punctuation-insensitive variants (scripts/lib/show-title-variants.js):
+          // shows.json "Dog Man - The Musical" vs review "Dog Man: The Musical",
+          // "Oh, Mary!" vs "Oh Mary!", curly apostrophes, dashes, accents. The literal
+          // checks alone left real reviews stuck showNotMentioned (2026-09-24).
+          const variantMatch = textMentionsTitle(textToCheck.substring(0, 60000), realTitle || idTitle);
+          if (variantMatch || (showTitle.length >= 4 && textLower.includes(showTitle)) || (shortTitle.length >= 5 && textLower.includes(shortTitle)) || (commaShort.length >= 4 && textLower.includes(commaShort))) {
             data.showNotMentioned = false;
             delete data._showNotMentionedDiscoveryAttempted;
             // Restore fullText from wrongFullText if it was nulled out
