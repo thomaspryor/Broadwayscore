@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Keep the shared ~/Broadwayscore checkout current (BRO-4141).
+
+         16 launchd jobs on this Mac run code straight from ~/Broadwayscore
+         (opening-night monitor every 20 min, claude-auth-health, pr-supervisor,
+         ...). Only the once-a-day jobs ran sync-audit-checkout.sh first, so on
+         2026-09-24 the checkout sat 163 commits behind origin/main and fixes
+         that had landed never reached the jobs that page the owner: the
+         opening-night monitor kept running week-old claude-cli.js and kept
+         failing its auth preflight.
+
+         This job runs the same sync every 30 minutes and does nothing else.
+         sync-audit-checkout.sh takes the push mutex, fast-forwards (or commits
+         + rebases union-merge ledgers), and on refusal writes
+         data/audit/sync-refused-checkout-sync.json, which the morning digest
+         already surfaces (digest-snapshots.js reads every sync-refused-*.json).
+
+         Install:  cp scripts/launchd/com.broadwayscore.checkout-sync.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.checkout-sync.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.checkout-sync
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.checkout-sync -->
+    <key>Label</key>
+    <string>com.broadwayscore.checkout-sync</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; SYNC_TAG=checkout-sync bash scripts/lib/sync-audit-checkout.sh</string>
+    </array>
+    <key>StartInterval</key>
+    <integer>1800</integer>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/tmp/checkout-sync-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/checkout-sync-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>

@@ -163,8 +163,8 @@ test('isPageWorthyLiteralPrefix is false for an unrelated key', () => {
   assert.equal(isPageWorthyLiteralPrefix('cron-health-chronic:'), false);
 });
 
-test('isPageWorthyLiteralPrefix matches test-yml:main-streak-escalation (BRO-1333)', () => {
-  assert.equal(isPageWorthyLiteralPrefix('test-yml:main-streak-escalation'), true);
+test('test-yml:main-streak-escalation no longer pages the owner (BRO-4141: red trunk goes to the digest)', () => {
+  assert.equal(isPageWorthyLiteralPrefix('test-yml:main-streak-escalation'), false);
 });
 
 // --- findUnreachableAlerts: the 3 acceptance-criteria fixture cases ----------

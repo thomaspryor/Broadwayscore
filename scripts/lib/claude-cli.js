@@ -385,7 +385,10 @@ function preflightAuth({ allowApiKeyFallback = true, log = () => {} } = {}) {
     return { ok: true, mode: 'api-key', envForMode: {}, storedDetail: stored.detail, storedReason: stored.reason };
   }
   const reason = worseAuthPingReason(stored.reason, keyed.reason);
-  return { ok: false, mode: 'fail', envForMode: {}, reason, detail: `stored-login: ${stored.detail} | api-key: ${keyed.detail}` };
+  // storedReason (BRO-4141): the stored-login probe is the primary credential,
+  // so a caller deciding "revoked vs machine busy" should key off it — the
+  // merged `reason` prefers spawn-starved if EITHER probe timed out.
+  return { ok: false, mode: 'fail', envForMode: {}, reason, storedReason: stored.reason, detail: `stored-login: ${stored.detail} | api-key: ${keyed.detail}` };
 }
 
 function parseEnvelope(raw) {
@@ -755,7 +758,7 @@ function runClaudeCli(opts) {
 
 module.exports = {
   runClaudeCli, parseEnvelope, strippedEnv, STAGES, FORBIDDEN_MODEL_RE,
-  authPing, authPingArgs, resolvePassAuth, preflightAuth, resolveAuthEnv, AUTH_KEYS,
+  authPing, authPingArgs, AUTH_PING_SETTINGS, resolvePassAuth, preflightAuth, resolveAuthEnv, AUTH_KEYS,
   classifyAuthPingFailure, AUTH_PING_REASONS, worseAuthPingReason,
   parseStreamLine, addUsage, estimateCostUSD, APPROX_MODEL_RATES_PER_MTOK,
   resolveClaudeBin, pathWithClaudeBinDir,

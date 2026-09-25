@@ -632,6 +632,9 @@ jobs:
           title: 'Deploy to Vercel Failed'
           severity: 'critical'
           email: 'true'
+          # BRO-4141: one-off failures of this job are not owner-actionable; email
+          # only when it keeps failing (streak mode re-pages every 4th failure after).
+          min_consecutive_failures: '3'
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
@@ -714,11 +717,13 @@ jobs:
 
           # Fire exactly at 3 — the first-failure alert covers streak 1.
           # Streak 3 = ~15 min of broken deploys on the 5-min cron.
-          if [ "$STREAK" -eq 3 ]; then
-            echo "Streak hit 3 — dispatching escalation alert"
+          # BRO-4141: notify-failure itself now pages at streak 3 (with its own
+          # investigation), so this "still broken" escalation moves to 6 (~30 min).
+          if [ "$STREAK" -eq 6 ]; then
+            echo "Streak hit 6 — dispatching escalation alert"
             gh workflow run investigate-alert.yml \
               -f alert_type=vercel_deploy_fail \
-              -f alert_title="Deploy still broken: 3rd consecutive failure (~15 min)" \
+              -f alert_title="Deploy still broken: 6th consecutive failure (~30 min)" \
               -f alert_context="{\"streak\":$STREAK,\"note\":\"Deploys have been failing for ~15 min across all parallel sessions. Check Actions tab.\"}" \
               -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           else

@@ -224,7 +224,37 @@ test('resolvePassAuth: falls back to api-key only when the key ping actually suc
 test('pass env forwards the API key only under auth.mode api-key', () => {
   const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
   assert.match(src, /ANTHROPIC_API_KEY:\s*auth\.mode === 'api-key'/, 'pass env must branch on auth.mode');
-  assert.match(src, /authPing\(\{ ANTHROPIC_API_KEY: '' \}\)/, 'preflight must probe the stored-login path in the pass\'s own env shape');
+  // BRO-4141: the stored-login probe lives in scripts/lib/claude-cli.js
+  // (authPing({ ANTHROPIC_API_KEY: '' }) with hooks disabled). A local fork
+  // here is exactly how the hooks-off fix never reached this launcher.
+  assert.match(src, /cliAuth\.preflightAuth\(/, 'preflight must delegate to the shared claude-cli.js probe');
+  assert.doesNotMatch(src, /Reply with exactly: pong/, 'no forked auth ping in the launcher');
+});
+
+// BRO-4141: a ping that times out because the Mac is overloaded is not a
+// revoked login. Owner is paged at once only for auth-rejected; starved /
+// spawn-error pages only after STARVED_PREFLIGHT_PAGE_AFTER ticks in a row.
+test('authFailureRouting: auth-rejected pages immediately, starvation only when sustained', async () => {
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const { authFailureRouting, STARVED_PREFLIGHT_PAGE_AFTER: N } = req('../../scripts/opening-night-monitor-launch.js');
+  assert.deepEqual(authFailureRouting({ reason: 'auth-rejected', consecutiveStarved: 0 }), { page: true, kind: 'auth' });
+  assert.deepEqual(authFailureRouting({ reason: undefined, consecutiveStarved: 0 }), { page: true, kind: 'auth' });
+  for (const reason of ['spawn-starved', 'spawn-error']) {
+    assert.deepEqual(authFailureRouting({ reason, consecutiveStarved: 1 }), { page: false, kind: 'starved' });
+    assert.deepEqual(authFailureRouting({ reason, consecutiveStarved: N - 1 }), { page: false, kind: 'starved' });
+    assert.deepEqual(authFailureRouting({ reason, consecutiveStarved: N }), { page: true, kind: 'starved' });
+  }
+});
+
+// The real timeout shape: spawnSync kills at 120s with SIGTERM -> starved.
+test('a 120s ping timeout classifies as spawn-starved (digest), not auth-rejected (page)', async () => {
+  const { createRequire } = await import('node:module');
+  const { classifyAuthPingFailure } = createRequire(import.meta.url)('../../scripts/lib/claude-cli.js');
+  const e = Object.assign(new Error('spawnSync claude ETIMEDOUT'), { code: 'ETIMEDOUT' });
+  assert.equal(classifyAuthPingFailure({ error: e, status: null, signal: 'SIGTERM' }), 'spawn-starved');
+  assert.equal(classifyAuthPingFailure({ status: 143, signal: null }), 'spawn-starved');
+  assert.equal(classifyAuthPingFailure({ status: 1, signal: null }), 'auth-rejected');
 });
 
 // Card #693: this launcher runs under launchd in the SHARED ~/Broadwayscore
@@ -345,5 +375,68 @@ test('alert(): a second launch-failure inside the cooldown is suppressed, and th
     if (priorEnv === undefined) delete process.env.ALERT_LEDGER_PATH; else process.env.ALERT_LEDGER_PATH = priorEnv;
     if (priorAttemptsLogEnv === undefined) delete process.env.ALERT_ATTEMPTS_LOG_PATH; else process.env.ALERT_ATTEMPTS_LOG_PATH = priorAttemptsLogEnv;
     fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+});
+
+// BRO-4141 review: route on the STORED-login probe's reason. A revoked login
+// plus an API-key probe that timed out must still page as auth at once, and a
+// sustained starvation page must use its own key (not auth-failed's cooldown).
+test('auth failure routing keys off storedReason; sustained starvation has its own page key', async () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  assert.match(src, /const failReason = auth\.storedReason \|\| auth\.reason;/);
+  assert.match(src, /on-monitor-auth-starved-sustained-\$\{/);
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const { isPageWorthy } = req('../../scripts/lib/page-worthy-alerts.js');
+  assert.equal(isPageWorthy('on-monitor-auth-starved-sustained-2026-09-25'), true);
+  assert.equal(isPageWorthy('on-monitor-auth-starved-2026-09-25'), false);
+  const { worseAuthPingReason } = req('../../scripts/lib/claude-cli.js');
+  // merged reason says starved, which is why the launcher must not use it alone
+  assert.equal(worseAuthPingReason('auth-rejected', 'spawn-starved'), 'spawn-starved');
+});
+
+// BRO-4141 (Codex review): the unit routing test passed while the counter
+// could never exceed 1 in production (carryForwardNightState dropped it).
+// Drive REAL consecutive ticks through the persisted counter file.
+test('handleAuthFailure: 3 consecutive starved ticks page once; auth-rejected pages at once; success clears', async () => {
+  const require = createRequire(import.meta.url);
+  const routerPath = require.resolve('../../scripts/lib/owner-alert-router.js');
+  const launcherPath = require.resolve('../../scripts/opening-night-monitor-launch.js');
+  const realRouter = require(routerPath);
+  const calls = [];
+  require.cache[routerPath].exports = { ...realRouter,
+    ledgerPath: () => '/dev/null', isLocalLedger: () => true,
+    routeAlert: async o => { calls.push(o); return { action: 'stub' }; } };
+  delete require.cache[launcherPath];
+  const L = require(launcherPath);
+  const { mkdtempSync, rmSync } = require('node:fs');
+  const tmpDir = mkdtempSync(require('node:path').join(require('node:os').tmpdir(), 'on-starved-'));
+  process.env.ON_MONITOR_STARVED_DIR = tmpDir;
+  const key = `test-bro4141-${process.pid}`;
+  const windows = [{ showId: 'x-show' }];
+  const now = new Date('2026-09-25T04:00:00Z');
+  const starved = { ok: false, reason: 'spawn-starved', storedReason: 'spawn-starved', detail: 'ETIMEDOUT' };
+  try {
+    L.writeStarvedCount(key, 0);
+    const r1 = await L.handleAuthFailure({ auth: starved, key, windows, now });
+    const r2 = await L.handleAuthFailure({ auth: starved, key, windows, now });
+    const r3 = await L.handleAuthFailure({ auth: starved, key, windows, now });
+    assert.deepEqual([r1.page, r2.page, r3.page], [false, false, true]);
+    assert.equal(L.readStarvedCount(key), 3);
+    assert.deepEqual(calls.map(c => c.disposition), ['digest', 'digest', 'human']);
+    assert.match(calls[2].conditionKey, /^on-monitor-auth-starved-sustained-2026-09-25$/);
+    // revoked stored login + timed-out key probe: merged reason says starved,
+    // but it must page as AUTH immediately and reset the starved streak.
+    calls.length = 0;
+    const r4 = await L.handleAuthFailure({ auth: { ok: false, reason: 'spawn-starved', storedReason: 'auth-rejected', detail: 'Not logged in' }, key, windows, now });
+    assert.equal(r4.kind, 'auth');
+    assert.equal(calls[0].conditionKey, 'on-monitor-auth-failed-2026-09-25');
+    assert.equal(L.readStarvedCount(key), 0);
+  } finally {
+    L.writeStarvedCount(key, 0);
+    delete process.env.ON_MONITOR_STARVED_DIR;
+    rmSync(tmpDir, { recursive: true, force: true });
+    require.cache[routerPath].exports = realRouter;
+    delete require.cache[launcherPath];
   }
 });

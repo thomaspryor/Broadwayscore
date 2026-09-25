@@ -73,7 +73,7 @@ const USAGE = `route-main-streak-signatures.js — BRO-3865 per-breakage alert r
     --exclude-job  a job NAME to drop before computing signatures; repeatable (test.yml passes its own
                    "Test Summary" and the non-blocking "Data Validation")
     --dispatch     file an 'auto' card for each currently-failing signature (caller gates this on streak>=2)
-    --escalate     also send/resurface the 'test-yml:main-streak-escalation' human page (caller gates this on streak>=4)
+    --escalate     also raise 'test-yml:main-streak-escalation' (caller gates this on streak>=4; digest-only since BRO-4141)
     --prev-url     previous failed run's URL, folded into the escalation email's fields
     --streak       consecutive-failure count, folded into alert fields/description
   Resolution (closing signatures whose job went green on THIS run) always runs, independent of the flags above.

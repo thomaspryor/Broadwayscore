@@ -17,6 +17,29 @@ test('authPingArgs: the auth ping runs with every hook disabled', () => {
   assert.ok(args.includes('-p'));
 });
 
+// BRO-4141 prevention: the hooks-off fix above never reached
+// opening-night-monitor-launch.js because it carried a forked ping. Every
+// file that spawns its own pong ping must pass AUTH_PING_SETTINGS; the
+// preferred shape is calling preflightAuth()/authPing() from this module.
+test('no script forks a hooks-on auth ping', async () => {
+  const { readdirSync, readFileSync, statSync } = await import('node:fs');
+  const { join } = await import('node:path');
+  const root = new URL('../', import.meta.url).pathname;
+  const offenders = [];
+  const walk = dir => {
+    for (const name of readdirSync(dir)) {
+      const p = join(dir, name);
+      if (name === 'node_modules' || name.startsWith('.')) continue;
+      if (statSync(p).isDirectory()) { walk(p); continue; }
+      if (!/\.(c|m)?js$/.test(name) || /\.test\./.test(name) || p.endsWith('lib/claude-cli.js')) continue;
+      const src = readFileSync(p, 'utf8');
+      if (src.includes('Reply with exactly: pong') && !src.includes('AUTH_PING_SETTINGS')) offenders.push(p.slice(root.length));
+    }
+  };
+  walk(root);
+  assert.deepEqual(offenders, [], `forked auth ping without AUTH_PING_SETTINGS: ${offenders.join(', ')}`);
+});
+
 test('resolvePassAuth: stored login OK wins regardless of API key state', () => {
   assert.deepEqual(
     resolvePassAuth({ storedLoginOk: true, apiKeyPresent: true, apiKeyPingOk: false }),

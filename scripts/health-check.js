@@ -35,7 +35,7 @@ const { execSync, execFileSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
 const { routeAlert, readDispatchAttempts, peekDigestQueue, clearDigestQueue } = require('./lib/owner-alert-router.js');
-const { summarizeFailureStreak } = require('./lib/alert-dispatch-streak.js');
+const { summarizeFailureStreak, deadmanShouldPage } = require('./lib/alert-dispatch-streak.js');
 const { readOwnerEmailLog } = require('./lib/discord-notify.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
@@ -2373,7 +2373,8 @@ async function checkAlertRouterDeadman(isCI) {
   // on "7 days of failures" — but the alert title said "for 7 days"
   // unconditionally, so on 2026-08-31 it reported a 7-day outage for a breakage
   // ~12h old and sent triage looking through the wrong window.
-  const { consecutiveFailures, forHowLong } = summarizeFailureStreak(attempts);
+  const { consecutiveFailures, streakHours, forHowLong } = summarizeFailureStreak(attempts);
+  const pageOwner = deadmanShouldPage({ consecutiveFailures, streakHours });
 
   // Self-page via disposition='human' directly from here — that path calls
   // sendAlert() (Resend) and never shells out to notion-brain.js, so it
@@ -2383,14 +2384,17 @@ async function checkAlertRouterDeadman(isCI) {
   // isCI-gated: never page from a local/dev run (see function header comment).
   if (isCI) {
     try {
+      // BRO-4141: a short streak is a blip that usually heals on the next
+      // attempt — digest it under its own key so it never touches the page
+      // key's cooldown; page only once deadmanShouldPage() says it persisted.
       await routeAlert({
-        conditionKey: 'alert-router:deadman',
+        conditionKey: pageOwner ? 'alert-router:deadman' : 'alert-router:deadman-early',
         // conditionKey (not the title) is what the ledger dedups on, so making
         // this title dynamic does not re-page or break the existing cooldown.
         title: `Alert Router: auto-dispatch silently failing for ${forHowLong} (${consecutiveFailures} consecutive)`,
         description: message,
-        severity: 'critical',
-        disposition: 'human',
+        severity: pageOwner ? 'critical' : 'warning',
+        disposition: pageOwner ? 'human' : 'digest',
         cooldownHours: 24,
       });
     } catch (err) {
@@ -2521,9 +2525,10 @@ async function checkMainRedStreak(isCI) {
     // failing test", it's "nobody's per-signature card is stemming a
     // long-running red trunk", the same severity class as the
     // 'test-yml:main-streak-escalation' human page below. 'test-yml:main-
-    // streak' is on scripts/lib/page-worthy-alerts.js's allowlist so
-    // 'human' actually pages rather than being silently downgraded to
-    // digest. cooldownHours matches the escalation tier's 24h (NOT the old
+    // streak' was REMOVED from scripts/lib/page-worthy-alerts.js's
+    // allowlist 2026-09-23 (owner email-noise complaint), so this 'human'
+    // disposition is downgraded to the digest by the router — a red trunk is
+    // for the automated fixers, not an owner page. cooldownHours matches the escalation tier's 24h (NOT the old
     // 6h — under 'auto' this key only ever paged once, since
     // findLinearDuplicate's tracker dedupe made every later hit
     // action:'silent' with no email at all; under 'human' there is no such
@@ -5362,4 +5367,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail };
+module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman };

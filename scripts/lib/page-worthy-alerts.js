@@ -46,6 +46,7 @@
 const PAGE_WORTHY_PREFIXES = [
   'on-monitor-launch-failed-', // opening-night-monitor-launch.js: the launcher could not start a monitor session tonight
   'on-monitor-auth-failed-', // opening-night-monitor-launch.js: claude auth preflight failed — zero coverage tonight
+  'on-monitor-auth-starved-sustained-', // opening-night-monitor-launch.js: Mac too starved to start ANY pass for 3 ticks (~1h) in an opening window (BRO-4141; single blips go to digest as on-monitor-auth-starved-)
   'on-monitor-attempts-exhausted-', // opening-night-monitor-launch.js: 3 launch attempts died tonight, falling back to the standing pipeline
   'broadcast:draft-creation-failed:', // send-opening-night-broadcast.js: the time-sensitive opening-night email draft failed to create
   // BRO-886: the draft itself was created and tracked fine — only the
@@ -111,15 +112,13 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // check-claude-auth-health.js (launchd, runs on the Mac — the token never
   // reaches CI).
   'claude-auth:revoked',
-  // BRO-2971: same launch-gate-dead severity as the entry above, but for the
-  // OS/jetsam resource-starvation shape (spawn ETIMEDOUT/ENOMEM/signal kill)
-  // that check-claude-auth-health.js used to misreport as 'claude-auth:revoked'
-  // — kept as its own key so the alert body's remediation (free memory / prune
-  // cmux sessions) never gets overwritten by the auth-revocation one's.
-  'claude-spawn-starved',
-  // BRO-2971: same rationale as the entry above, for the missing/unexecutable
-  // `claude` binary shape (spawn-error) — also NOT a credential problem.
-  'claude-spawn-error',
+  // 'claude-spawn-starved' / 'claude-spawn-error' (BRO-2971) were listed here
+  // and REMOVED 2026-09-25 (BRO-4141, owner: "confusing and un-actionable").
+  // They mean the Mac is overloaded or the claude binary is missing, not that
+  // the owner must do something: re-login is 'claude-auth:revoked' above.
+  // The owner received "[CRITICAL] Claude spawn failing from resource
+  // starvation" twice in two days with nothing they could do. They still
+  // route (downgraded to the morning digest), so nothing goes silent.
 
   // Not one of the 3 owner-approved categories above, but a deliberate
   // carve-out (BRO-1699 ship-check finding): this was a direct sendAlert()
@@ -153,7 +152,17 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   'guard-escalation:ensemble-scoring-pipeline-crashed', // scripts/run-ensemble-scoring-guard.js: scripts/llm-scoring/index.ts itself is crashing — new reviews stop getting scored
   'guard-escalation:review-count-drift-strict-breach', // scripts/check-review-count-drift-guard.js: check-review-count-drift.yml's daily --strict run keeps blocking (stale reviews.json or opening-window reviews silently missing)
 
-  // Category 3 carve-out (BRO-1333): main's Test Suite went undetected-red for
+  // 'test-yml:main-streak-escalation' was listed below and REMOVED 2026-09-25
+  // (BRO-4141). The history is kept for context. Its "24h cooldown caps this
+  // to one email per day" claim was false in practice: test.yml's "Resolve
+  // escalation alert on failing-job-set change" step resolves the condition
+  // whenever the red job set flickers (e.g. "Lint Workflows, Unit Tests" ->
+  // "Unit Tests"), so each flicker re-paged. The ledger shows notifyCount 102;
+  // the owner got it at 22:46 and 22:52 on 2026-09-24. A red trunk is for the
+  // automated fixers (the 2-failure 'auto' tier files the card), not the
+  // non-technical owner; it still reaches the digest's "trunk: RED" line.
+  //
+  // (was) Category 3 carve-out (BRO-1333): main's Test Suite went undetected-red for
   // ~2 days (2026-06-13 → 06-15) because the only signal was a daily digest
   // line nobody read in time — direct pushes to main are not gated by
   // required checks (memory/feedback_branch_protection_direct_push.md), so
@@ -169,7 +178,6 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // fix-main tracker) — i.e. the exact "digest line nobody reads" failure
   // mode this card exists to close. 24h cooldown (routeAlert call site) caps
   // this to at most one email per day while main stays red.
-  'test-yml:main-streak-escalation',
   // 'test-yml:main-streak' (health-check.js's "no confirmed-green run in Nh"
   // backstop) was listed here by BRO-3865 and REMOVED 2026-09-23 (owner
   // email-noise complaint). It paged the SAME condition as
