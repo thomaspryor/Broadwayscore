@@ -148,7 +148,9 @@ test('buildAlertPayload: spawn-starved gets its OWN conditionKey, no auth-login 
   assert.doesNotMatch(payload.description, new RegExp(REPAIR_STEPS.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), 'must not print the auth REPAIR_STEPS for a resource-starvation failure');
   assert.match(payload.description, /do NOT re-run `claude auth login`/);
   const { isPageWorthy } = require('../../scripts/lib/page-worthy-alerts.js');
-  assert.equal(isPageWorthy(payload.conditionKey), true);
+  // BRO-4141: an overloaded Mac is not something the owner can act on; the
+  // router downgrades it to the morning digest. Only claude-auth:revoked pages.
+  assert.equal(isPageWorthy(payload.conditionKey), false);
 });
 
 test('buildAlertPayload: spawn-error gets its OWN conditionKey, distinct from both spawn-starved and revoked', () => {
@@ -163,7 +165,9 @@ test('buildAlertPayload: spawn-error gets its OWN conditionKey, distinct from bo
   assert.notEqual(payload.conditionKey, 'claude-auth:revoked');
   assert.match(payload.description, /do NOT re-run `claude auth login`/);
   const { isPageWorthy } = require('../../scripts/lib/page-worthy-alerts.js');
-  assert.equal(isPageWorthy(payload.conditionKey), true);
+  // BRO-4141: an overloaded Mac is not something the owner can act on; the
+  // router downgrades it to the morning digest. Only claude-auth:revoked pages.
+  assert.equal(isPageWorthy(payload.conditionKey), false);
 });
 
 test('buildBillingFallbackAlertPayload: a spawn-starved stored-probe blip is NOT reported as a confirmed revoked credential', () => {
