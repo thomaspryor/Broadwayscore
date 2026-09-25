@@ -87,3 +87,18 @@ test('diacritics are folded before slugging (Les Misérables)', () => {
   const show = { id: 'les-miserables-2014', title: 'Les Misérables', category: 'broadway' };
   assert.equal(showScoreUrlForShow(show, {}), 'https://www.show-score.com/broadway-shows/les-miserables');
 });
+
+test('London and regional shows never get a constructed NYC url', () => {
+  // space-dogs-off-west-end-2026 slugged to the NYC /broadway-shows/space-dogs
+  // page and pulled MCC's 2022 Off-Broadway notices in as current-run misses.
+  for (const category of ['west-end', 'off-west-end', 'regional', '', undefined]) {
+    const show = { id: `space-dogs-${category}`, title: 'Space Dogs', category };
+    assert.equal(showScoreUrlForShow(show, {}), null, `category=${category}`);
+  }
+});
+
+test('a curated London entry is still returned for a West End show', () => {
+  const url = 'https://www.show-score.com/uk/london/west-end-shows/hadestown-west-end';
+  const show = { id: 'hadestown-west-end-2024', title: 'Hadestown', category: 'west-end' };
+  assert.equal(showScoreUrlForShow(show, { 'hadestown-west-end-2024': url }), url);
+});
