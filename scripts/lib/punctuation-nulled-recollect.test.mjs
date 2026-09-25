@@ -97,6 +97,31 @@ test('excludes a duplicateOf / LLM-verified-wrong-article file even on a punctua
   assert.equal(isPunctuationNulledCandidate(cv, DOG_MAN_TITLE).candidate, false);
 });
 
+// P1 found by ship-check adversarial review: wrongShow/wrongProduction booleans
+// are the canonical "confirmed wrong show" signal used elsewhere in this repo
+// (review-guards.js documents them existing WITHOUT wrongShowReason) and can
+// sit alongside a stale incompleteReason: 'url_content_mismatch' that was
+// never re-classified after the wrong-show finding landed.
+test('excludes wrongShow/wrongProduction=true even when incompleteReason still says url_content_mismatch', () => {
+  const wrongShow = { ...DOG_MAN_THEATRE_WEEKLY, wrongShow: true };
+  assert.equal(isPunctuationNulledCandidate(wrongShow, DOG_MAN_TITLE).candidate, false);
+
+  const wrongProduction = { ...DOG_MAN_THEATRE_WEEKLY, wrongProduction: true };
+  assert.equal(isPunctuationNulledCandidate(wrongProduction, DOG_MAN_TITLE).candidate, false);
+
+  const cvWrongProduction = {
+    ...DOG_MAN_THEATRE_WEEKLY,
+    contentVerification: { verifiedBy: 'llm:gemini', wrongProduction: true },
+  };
+  assert.equal(isPunctuationNulledCandidate(cvWrongProduction, DOG_MAN_TITLE).candidate, false);
+
+  const cvFilmTv = {
+    ...DOG_MAN_THEATRE_WEEKLY,
+    contentVerification: { verifiedBy: 'llm:gemini', isFilmTv: true },
+  };
+  assert.equal(isPunctuationNulledCandidate(cvFilmTv, DOG_MAN_TITLE).candidate, false);
+});
+
 test('showNotMentioned/wrongFullText schema: only selects when the variant matcher actually finds the show', () => {
   const matches = {
     ...DOG_MAN_THEATRE_WEEKLY,

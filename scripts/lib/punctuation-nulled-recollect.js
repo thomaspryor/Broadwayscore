@@ -58,8 +58,17 @@ function isPunctuationNulledCandidate(data, showTitle) {
   // punctuation-driven mention-count miss. Leave these alone.
   if (data.duplicateOf) return { candidate: false, reason: 'duplicateOf set' };
   if (data.wrongShowReason) return { candidate: false, reason: 'wrongShowReason set' };
-  if (data.contentVerification && data.contentVerification.wrongArticle === true) {
-    return { candidate: false, reason: 'LLM-verified wrong article' };
+  // wrongShow/wrongProduction booleans are the canonical "confirmed wrong
+  // show/production" signal used across the repo (review-guards.js, classify-
+  // wrong-show.js, etc.) and commonly exist WITHOUT wrongShowReason — a stale
+  // incompleteReason: 'url_content_mismatch' can sit alongside a fresh,
+  // correct wrongShow: true if incompleteReason was never re-classified.
+  if (data.wrongShow === true) return { candidate: false, reason: 'wrongShow set' };
+  if (data.wrongProduction === true) return { candidate: false, reason: 'wrongProduction set' };
+  if (data.contentVerification && (data.contentVerification.wrongArticle === true
+    || data.contentVerification.wrongProduction === true
+    || data.contentVerification.isFilmTv === true)) {
+    return { candidate: false, reason: 'LLM-verified wrong article/production/film-tv' };
   }
   if (data.incompleteReason === 'wrong_content') {
     return { candidate: false, reason: 'wrong_content (manual/LLM flag, not a mention-count miss)' };
