@@ -72,7 +72,9 @@
     "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
     "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
     "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
-    "the-last-ship-west-end-2026/bestoftheatre--unknown.json"
+    "the-last-ship-west-end-2026/bestoftheatre--unknown.json",
+    "delirium-off-broadway-2026/theater-mirror--michele-markarian.json",
+    "macbeth-off-broadway-2026/wsj--heidi-waleson.json"
   ],
   "failed": [
     "delirium-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
@@ -128,7 +130,6 @@
     "school-girls-or-the-african-mean-girls-play-2026/thestage--unknown.json",
     "school-girls-or-the-african-mean-girls-play-2026/times-uk--rachel-halliburton.json",
     "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
-    "macbeth-off-broadway-2026/wsj--heidi-waleson.json",
     "the-invention-of-love-off-broadway-2026/nytg--unknown.json",
     "catarina-and-the-beauty-of-killing-fascists-west-end-2026/london-unattached--madeleine-morrow.json",
     "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
@@ -361,7 +362,11 @@
     "the-children-off-west-end-2026/theater-pizzazz--carol-rocamora.json",
     "the-children-off-west-end-2026/theatre-is-easy--keith-paul-medelis.json",
     "the-children-off-west-end-2026/times-uk--unknown.json",
-    "the-children-off-west-end-2026/village-voice--michael-feingold.json"
+    "the-children-off-west-end-2026/village-voice--michael-feingold.json",
+    "cosi-fan-tutte-off-broadway-2026/times-uk--unknown.json",
+    "la-boheme-off-broadway-2026/nytimes--anthony-tommasini.json",
+    "la-boheme-off-broadway-2026/front-row-center--elizabeth-ann-foster.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -411,7 +416,8 @@
       "oh-mary-west-end-2025/ew--christian-holub.json",
       "oh-mary-west-end-2025/lbc--johnny-jenkins.json",
       "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
-      "the-last-ship-west-end-2026/bestoftheatre--unknown.json"
+      "the-last-ship-west-end-2026/bestoftheatre--unknown.json",
+      "delirium-off-broadway-2026/theater-mirror--michele-markarian.json"
     ],
     "amp": [],
     "browserbase": [
@@ -434,7 +440,9 @@
       "bloodsport-after-helen-of-troy-off-west-end-2026/ground--unknown.json",
       "cosi-fan-tutte-off-broadway-2026/times-uk--unknown.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "macbeth-off-broadway-2026/wsj--heidi-waleson.json"
+    ],
     "archiveToday": [],
     "archive": [
       "delirium-off-broadway-2026/arlekinplayers--unknown.json",
@@ -449,7 +457,7 @@
     ]
   },
   "startTime": "2026-09-25T08:26:34.174Z",
-  "lastProcessed": "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
+  "lastProcessed": "la-boheme-off-broadway-2026/opera--unknown.json",
   "log": [
     {
       "t": "2026-09-25T08:29:14.799Z",
@@ -564,9 +572,33 @@
       "t": "2026-09-25T12:22:11.854Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-25T12:40:58.484Z",
+      "event": "bb-session",
+      "session": "df14ea86",
+      "url": "https://www.wsj.com/arts-culture/theater/macbeth-review-a-ferocious-start-to-the"
+    },
+    {
+      "t": "2026-09-25T12:40:59.234Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-25T12:43:51.249Z",
+      "event": "bb-session",
+      "session": "17cb4bee",
+      "url": "https://exeuntnyc.com/reviews/review-in-honor-of-jean-michel-basquiat-at-new-yor"
+    },
+    {
+      "t": "2026-09-25T12:43:59.802Z",
+      "event": "bb-session",
+      "session": "5e1ca2b2",
+      "url": "https://exeuntnyc.com/reviews/review-in-honor-of-jean-michel-basquiat-at-new-yor"
     }
   ],
   "recoveredAfterFailure": [
-    "cosi-fan-tutte-off-broadway-2026/times-uk--unknown.json"
+    "cosi-fan-tutte-off-broadway-2026/times-uk--unknown.json",
+    "macbeth-off-broadway-2026/wsj--heidi-waleson.json"
   ]
 }

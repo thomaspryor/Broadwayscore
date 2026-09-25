@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-09-25T12:27:49.809Z",
-  "processed": 73,
-  "failed": 287,
-  "successRate": "20.3%",
+  "updatedAt": "2026-09-25T12:46:44.501Z",
+  "processed": 75,
+  "failed": 290,
+  "successRate": "20.5%",
   "tierBreakdown": {
-    "playwright": 46,
+    "playwright": 47,
     "amp": 0,
     "browserbase": 5,
     "directCookies": 0,
     "scrapingbee": 10,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 9
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-09-25T08:29:14.799Z",
-      "event": "bb-session",
-      "session": "a951e6ae",
-      "url": "https://www.nytimes.com/2026/09/23/theater/the-holes-review-max-wolf-friedlich.h"
-    },
-    {
-      "t": "2026-09-25T08:29:15.168Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-25T08:29:32.103Z",
-      "event": "bb-session",
-      "session": "8e451ab2",
-      "url": "https://www.nytimes.com/2026/09/23/theater/the-holes-review-max-wolf-friedlich.h"
-    },
-    {
-      "t": "2026-09-25T08:29:32.477Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-09-25T08:36:39.788Z",
       "event": "bb-session",
@@ -128,6 +106,29 @@
       "t": "2026-09-25T12:22:11.854Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-25T12:40:58.484Z",
+      "event": "bb-session",
+      "session": "df14ea86",
+      "url": "https://www.wsj.com/arts-culture/theater/macbeth-review-a-ferocious-start-to-the"
+    },
+    {
+      "t": "2026-09-25T12:40:59.234Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-25T12:43:51.249Z",
+      "event": "bb-session",
+      "session": "17cb4bee",
+      "url": "https://exeuntnyc.com/reviews/review-in-honor-of-jean-michel-basquiat-at-new-yor"
+    },
+    {
+      "t": "2026-09-25T12:43:59.802Z",
+      "event": "bb-session",
+      "session": "5e1ca2b2",
+      "url": "https://exeuntnyc.com/reviews/review-in-honor-of-jean-michel-basquiat-at-new-yor"
     }
   ]
 }
