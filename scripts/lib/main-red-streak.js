@@ -297,6 +297,30 @@ function firstFailingTestNameInJobLog(jobLogText) {
   return null;
 }
 
+// BRO-4151: `testNameByJob` is a JOB-wide scan (firstFailingTestNameInJobLog
+// finds the first TAP `not ok` line ANYWHERE in the job's concatenated log,
+// not within the specific failing step's own output — the per-job REST logs
+// endpoint returns one text blob for every step, with no reliable boundary
+// this file's own per-line scan can key on). That is a fine approximation
+// when the failing step itself is a `node --test` batch (the TAP line really
+// is that step's own output), but test.yml's `bash <path>.test.sh` "bash
+// integration" steps never print TAP output at all (grep-confirmed: none of
+// scripts/lib/*.test.sh emit `not ok`) — so any `not ok` line found in a job
+// whose FAILING step is one of these belongs to some OTHER step in the same
+// job (e.g. an earlier `node --test` batch step) and must never be
+// attributed to it. Observed live on BRO-4149: a bash integration test's
+// filed card was titled with an unrelated node test's name this way. Every
+// such step in test.yml is named with this exact suffix by convention (see
+// the "(bash integration)" comment convention next to each `run: bash
+// scripts/lib/*.test.sh` line) — the same "match test.yml's own naming
+// convention" idiom NON_BLOCKING_JOB_NAMES and JOB_PROXY_COMMANDS already use
+// elsewhere in this file family, since the GH API exposes no more stable a
+// handle than the display name.
+const BASH_INTEGRATION_STEP_RE = /\(bash integration\)\s*$/i;
+function isBashIntegrationStep(stepName) {
+  return BASH_INTEGRATION_STEP_RE.test(String(stepName || '').trim());
+}
+
 /**
  * One entry per job that failed on a REAL step in `run` (excludes setup-
  * job-only infra hiccups and benign supersessions/phantom-cancel steps —
@@ -314,7 +338,7 @@ function failingStepSignatures(run, testNameByJob) {
     if (isSetupJobOnlyFailure(job)) continue;
     const step = firstFailingStepEntry(job);
     if (!step) continue; // no real failing step — nothing to attribute
-    const testName = testNameByJob?.get(job.name || '') || null;
+    const testName = isBashIntegrationStep(step.name) ? null : (testNameByJob?.get(job.name || '') || null);
     out.push({
       job: job.name || 'unknown',
       step: step.name || 'unknown',
@@ -429,6 +453,7 @@ module.exports = {
   RED_SIGNATURE_PREFIX,
   stepFailureSignature,
   firstFailingTestNameInJobLog,
+  isBashIntegrationStep,
   failingStepSignatures,
   signaturesToResolve,
 };

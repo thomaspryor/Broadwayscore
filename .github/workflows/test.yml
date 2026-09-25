@@ -2007,6 +2007,7 @@ on:
       # otherwise trigger zero CI.
       - 'scripts/route-main-streak-signatures.js'
       - 'scripts/red-first-dispatch.js'
+      - 'scripts/red-first-dispatch.test.mjs'
       # Launchd auth preflight (task #1107) — cheap exit-code gate wrapping
       # preflightAuth() for bash/python wrappers. Same "scripts/tests/ is not
       # scripts/lib/" gap as the block above: without these entries a push
