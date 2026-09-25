@@ -21,6 +21,7 @@
 
 const { CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./autofix-effectiveness.js');
 const { BSC_DAILY_TITLE_PREFIX } = require('./autofix-filed-marker.js');
+const { splitHealthByAudience } = require('./digest-audience.js');
 
 function esc(s) {
   return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -241,6 +242,31 @@ const PLAIN_HEALTH = [
   [/^Secrets/, () => 'An API key or login may be expiring'],
   [/^Data freshness/, () => 'Some open shows are missing a poster, synopsis, or ticket link'],
   [/^Stuck pipeline/, () => 'A data pipeline looks stalled'],
+  // Visitor-facing rows the owner-first top block names (2026-09-24 digest
+  // rework). Each regex is SPECIFIC to one check: renderAutofixBlock dedups
+  // on this function's output, so a broad family regex would collapse
+  // distinct rows into one "(xN)" line.
+  // Kept short: the first one also becomes the subject-line name.
+  [/^Data: reviewed shows missing from shows\.json/, () => 'Reviewed shows missing from the site'],
+  [/^Data: T1\/T2 silent review gaps/, () => 'Major-outlet reviews not counted in scores yet'],
+  [/^Data: uncollected live review strands/, () => 'Found reviews of running shows not fetched yet'],
+  [/^Data: live show with zero critic reviews/, () => 'A running show has no critic reviews on the site'],
+  [/^Data: OB closing candidates/, () => 'An Off-Broadway show may have closed'],
+  [/^Deploy: production freshness/, () => 'Site updates not reaching the live site'],
+  // health-check.js: stale files are hidden from show pages + /trending.
+  [/^Sync: social-pulse per-show freshness/, () => 'Social buzz hidden on some show pages (out of date)'],
+  [/^Quality: outlet domain moves/, () => 'A review outlet moved to a new web address'],
+  [/^Data quality: cross-outlet attribution drift/, () => 'Some reviews may be credited to the wrong outlet'],
+  [/^Data quality: cv-wrongproduction lifetime sweep/, () => 'A review may belong to a different production'],
+  [/^Data quality: fulltext-mentions-show lifetime sweep/, () => 'A review may be listed under the wrong show'],
+  [/^Data quality: slug-mismatch lifetime sweep/, () => 'Some review links point at a different show'],
+  [/^Data quality: revival-unverified lifetime sweep/, () => 'Some shows are not yet confirmed as revivals'],
+  [/^Data quality: missed opening-night broadcasts/, () => 'Opening-night emails to subscribers were missed'],
+  [/^Data quality: stale announced shows/, () => 'A show still says "announced" after opening'],
+  [/^Coverage: adversarial probe/, () => 'A published review has not been picked up yet'],
+  [/^Quality: DMARC deliverability/, () => 'Email deliverability reports stopped arriving'],
+  [/^Coverage: SERP census recall/, () => 'Finding fewer published reviews than usual'],
+  [/^Feedback: needs-manual-review backlog/, () => 'Visitor feedback waiting for a manual look'],
 ];
 function plainHealthLine(name) {
   for (const [re2, fn] of PLAIN_HEALTH) { const m = String(name).match(re2); if (m) return fn(m); }
@@ -428,26 +454,22 @@ function filterForbiddenQueued(queued) {
   return (queued || []).filter((q) => q && !QUEUED_TELEMETRY_BLOCKLIST.some((re) => re.test(String(q.title || ''))));
 }
 
-function renderHealthDigestBlock(health, autofixRows = null, loopDeadMessageOverride = null) {
-  if (!health) return '';
-  const errors = Array.isArray(health.errors) ? health.errors : [];
-  const warns = Array.isArray(health.warns) ? health.warns : [];
-  const queued = Array.isArray(health.queued) ? health.queued : [];
-  const urgent = errors.length > 0;
-  const autoFixedNote = health.autoFixedCount > 0
-    ? `<div style="font-size:12px;color:#16a34a;margin-top:8px;">${health.autoFixedCount} auto-fixed overnight</div>` : '';
-  const asOf = health.generatedAt
-    ? `<div style="font-size:11px;color:#999;margin-top:6px;">as of ${esc(String(health.generatedAt).slice(0, 16).replace('T', ' '))} UTC</div>` : '';
+// "Needs your attention" cards — queued rows that are genuine owner
+// decisions. Extracted from renderHealthDigestBlock (2026-09-24 digest
+// rework) so send-morning-digest.js can lift owner decisions to the TOP of
+// the email while the rest of the health block moves under "Technical
+// details". Same markup, same mandates as before.
+function renderNeedsAttentionBlock(queued) {
+  const validQueued = filterForbiddenQueued((Array.isArray(queued) ? queued : []).filter(Boolean));
   const safeUrl = (u) => (typeof u === 'string' && /^https?:\/\//i.test(u) ? u : null);
   const clip = (s2, n) => { const t = String(s2); return t.length > n ? `${t.slice(0, n - 1)}\u2026` : t; };
-  const validQueued = filterForbiddenQueued(queued.filter(Boolean));
   // Owner mandate 2026-08-02 (second half, stated twice): anything that still
   // needs the human MUST carry a one-click action — "If something TRULY needs
   // approval, give me a link to click Approve so I can move on with my life."
   // composeDigestEmail attaches q.actionUrl (signed dispatch link, same HMAC
   // machinery as the API's approve/dispatch flow); prose-only cards are a
   // regression the content invariant now catches.
-  const queuedHtml = validQueued.length
+  return validQueued.length
     ? `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
         <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Needs your attention</div>
         ${validQueued.map(q => {
@@ -465,6 +487,19 @@ function renderHealthDigestBlock(health, autofixRows = null, loopDeadMessageOver
           </div>`;
         }).join('')}</div>`
     : '';
+}
+
+function renderHealthDigestBlock(health, autofixRows = null, loopDeadMessageOverride = null, { omitQueued = false } = {}) {
+  if (!health) return '';
+  const errors = Array.isArray(health.errors) ? health.errors : [];
+  const warns = Array.isArray(health.warns) ? health.warns : [];
+  const queued = Array.isArray(health.queued) ? health.queued : [];
+  const urgent = errors.length > 0;
+  const autoFixedNote = health.autoFixedCount > 0
+    ? `<div style="font-size:12px;color:#16a34a;margin-top:8px;">${health.autoFixedCount} auto-fixed overnight</div>` : '';
+  const asOf = health.generatedAt
+    ? `<div style="font-size:11px;color:#999;margin-top:6px;">as of ${esc(String(health.generatedAt).slice(0, 16).replace('T', ' '))} UTC</div>` : '';
+  const queuedHtml = omitQueued ? '' : renderNeedsAttentionBlock(queued);
 
   const header = `<div style="border:1px solid ${urgent ? '#fca5a5' : '#e5e5e5'};background:${urgent ? '#fef2f2' : '#fff'};border-radius:10px;padding:14px 16px;margin:0 0 14px;">
     <div style="font-size:15px;font-weight:700;${urgent ? 'color:#dc2626;' : ''}">${errors.length} error${errors.length === 1 ? '' : 's'}, ${warns.length} warning${warns.length === 1 ? '' : 's'}${health.consecutiveErrorDays > 1 ? ` <span style="color:#999;font-weight:400;font-size:12px;">(day ${health.consecutiveErrorDays} of consecutive errors)</span>` : ''}</div>
@@ -485,6 +520,222 @@ function renderHealthDigestBlock(health, autofixRows = null, loopDeadMessageOver
   // can never contradict each other.
   const loopDeadMessage = loopDeadMessageOverride || autofixLoopDeadMessage(health);
   return `${header}${renderHealthScoreboard(health)}${renderAutofixBlock(plan, loopDeadMessage)}${queuedHtml}`;
+}
+
+// ── Owner-first view (2026-09-24 digest rework) ─────────────────────────────
+// Owner: "they're almost all confusing and un-actionable and annoying" and
+// "Clearly our site is not a strong system ... if I get updates like this
+// every morning!" The email led with red rows that were the automation fleet
+// monitoring itself. The owner needs three answers, in this order:
+//   1. Is the site working for visitors?  (visitor-facing health rows only,
+//      classified by lib/digest-audience.js; unknown checks count as visitor)
+//   2. Is there anything only I can decide?  (decisions with one-click links,
+//      approvals, and finished work parked for review)
+//   3. Briefly, what did the automation do?
+// Everything else collapses to ONE neutral "Behind the scenes" line, and the
+// full technical report moves below a "Technical details" heading.
+// Pure; send-morning-digest.js's buildSubject and buildHtml both read it so
+// the subject line and the top block can never disagree.
+//
+// Honesty rules (adversarial review of the first cut):
+//   - Visitor WARNINGS are shown with their plain description too; some of
+//     them hide content from visitors (stale social buzz is hidden from show
+//     pages and /trending). A warning-only day is "mostly OK", never "OK".
+//   - Any "being fixed" claim is per ROW, from that row's verified execution
+//     state (same vocabulary as AUTOFIX_STATE_LABEL above): only a
+//     liveness-checked 'in-progress' row may be called "being worked on"; a
+//     'dispatched' launch is an unconfirmed attempt; failed/parked/
+//     no-live-session rows say plainly that nothing is fixing them.
+const OWNER_TOP_MAX_ROWS = 5;
+const OWNER_FIX_STATUS = {
+  'in-progress': 'a fix session is working on it now',
+  'dispatched': 'fix attempt launched, not confirmed yet',
+  'queued': 'queued for an automatic fix, not started yet',
+  'card-filed': 'queued for an automatic fix, not started yet',
+  'acknowledged': 'already tracked, with a known fix date',
+  'card-failed': 'not being fixed automatically yet',
+  'parked': 'automatic fixes kept failing; not being fixed automatically',
+  'no-live-session': 'fix attempt not confirmed (no live session found)',
+};
+
+function findAutofixRow(row, autofixRows) {
+  if (!Array.isArray(autofixRows) || !row || !row.name) return null;
+  return autofixRows.find((r) => r && (r.name === row.name
+    || (Array.isArray(r.affected) && r.affected.some((a) => a && a.name === row.name)))) || null;
+}
+
+// Plain status for one visitor row. Never optimistic without row evidence.
+function ownerFixStatus(row, autofixRows, loopDead = false) {
+  if (loopDead) return 'not being fixed automatically right now (automatic fixing looks stalled)';
+  const r = findAutofixRow(row, autofixRows);
+  if (!r) return 'no automatic fix confirmed';
+  return OWNER_FIX_STATUS[r.state] || 'no automatic fix confirmed';
+}
+
+function countSectionItems(section) {
+  if (!section) return 0;
+  const items = (Array.isArray(section.items) ? section.items : []).filter(Boolean).length;
+  const more = Number(section.moreCount) > 0 ? Number(section.moreCount) : 0;
+  return items + more;
+}
+
+// Identity for de-duplicating one Linear issue that shows up in more than
+// one owner channel (an awaiting-owner issue can also sit In Review).
+function ownerItemKey(it) {
+  return String((it && (it.url || it.title)) || '');
+}
+
+function buildOwnerView({
+  health = null, autofixRows = null, needsYou = null, awaitingOwner = null, inReviewBacklog = null, loopDead = false,
+} = {}) {
+  const split = splitHealthByAudience(health);
+  const queued = filterForbiddenQueued(Array.isArray(health?.queued) ? health.queued : []);
+  // With autofix rows, main() has already narrowed health.queued to genuine
+  // decisions (state:'decision'). Without them (autofix failed before
+  // compose) only rows explicitly marked decision:true are decisions; the
+  // rest are technical and stay under Technical details.
+  const decisionQueued = Array.isArray(autofixRows) ? queued : queued.filter((q) => q.decision === true);
+  const otherQueued = Array.isArray(autofixRows) ? [] : queued.filter((q) => q.decision !== true);
+  // Parked in review (BRO-3376): finished work waiting on the owner WITHOUT
+  // an opt-in marker. It is owner work, so it counts toward "N for you";
+  // items already listed under awaitingOwner are dropped so one issue is
+  // never counted (or shown) twice.
+  let reviewQueue = null;
+  if (inReviewBacklog) {
+    const seen = new Set((Array.isArray(awaitingOwner?.items) ? awaitingOwner.items : []).filter(Boolean).map(ownerItemKey));
+    const items = (Array.isArray(inReviewBacklog.items) ? inReviewBacklog.items : [])
+      .filter((it) => it && !seen.has(ownerItemKey(it)));
+    const moreCount = Number(inReviewBacklog.moreCount) > 0 ? Number(inReviewBacklog.moreCount) : 0;
+    if (items.length || moreCount) reviewQueue = { ...inReviewBacklog, items, moreCount };
+  }
+  const decisions = decisionQueued.length + countSectionItems(needsYou) + countSectionItems(awaitingOwner)
+    + countSectionItems(reviewQueue);
+  const staleApprovals = Array.isArray(awaitingOwner?.items) ? awaitingOwner.items.filter((i) => i && i.stale).length : 0;
+  const rows = Array.isArray(autofixRows) ? autofixRows.filter((r) => r && r.state !== 'decision') : null;
+  const internalCount = split.internal.errors.length + split.internal.warns.length;
+  const visitorCount = split.visitors.errors.length + split.visitors.warns.length;
+  // Errors first, then warnings; plain names de-duplicated (two rows that
+  // share a plain-English line read as one problem).
+  const visitorItems = [];
+  const seenPlain = new Set();
+  for (const [severity, list] of [['error', split.visitors.errors], ['warn', split.visitors.warns]]) {
+    for (const r of list) {
+      const plain = plainHealthLine(r.name);
+      if (seenPlain.has(plain)) continue;
+      seenPlain.add(plain);
+      visitorItems.push({ name: r.name, plain, severity, status: ownerFixStatus(r, autofixRows, loopDead) });
+    }
+  }
+  let siteState = 'ok';
+  if (!health) siteState = 'unknown';
+  else if (split.visitors.errors.length) siteState = 'affected';
+  else if (split.visitors.warns.length) siteState = 'minor';
+  return {
+    siteState,
+    visitorItems,
+    visitorErrors: split.visitors.errors,
+    visitorWarns: split.visitors.warns,
+    internalErrors: split.internal.errors,
+    internalWarns: split.internal.warns,
+    internalCount,
+    decisionQueued,
+    otherQueued,
+    reviewQueue,
+    decisions,
+    staleApprovals,
+    loopDead: !!loopDead,
+    tracked: rows ? rows.length : internalCount + visitorCount,
+    // Only liveness-checked rows count as "being worked on"; a 'dispatched'
+    // launch is an unconfirmed attempt (AUTOFIX_STATE_LABEL, BRO-286).
+    inProgress: rows ? rows.filter((r) => r.state === 'in-progress').length : 0,
+    launched: rows ? rows.filter((r) => r.state === 'dispatched').length : 0,
+    autoFixed: Number(health?.autoFixedCount) > 0 ? Number(health.autoFixedCount) : 0,
+  };
+}
+
+// Plain, de-duplicated names of visitor-facing rows: errors when there are
+// any, otherwise warnings (used by the subject line).
+function visitorProblemNames(view) {
+  const items = (view && view.visitorItems) || [];
+  const errs = items.filter((i) => i.severity === 'error');
+  return (errs.length ? errs : items).map((i) => i.plain);
+}
+
+function renderVisitorItems(view) {
+  const shown = view.visitorItems.slice(0, OWNER_TOP_MAX_ROWS);
+  const rest = view.visitorItems.length - shown.length;
+  // A dead loop gives every row the same status; say it once, not per row.
+  return shown.map((i) => `<div style="margin:0 0 5px;">
+        <div style="font-size:13px;color:#333;">• ${esc(i.plain)}</div>
+        ${view.loopDead ? '' : `<div style="font-size:11px;color:#777;margin:1px 0 0 12px;">${esc(i.status)}</div>`}
+      </div>`).join('')
+    + (rest > 0 ? `<div style="font-size:11px;color:#777;margin-top:4px;">+${rest} more (listed under Technical details)</div>` : '')
+    + (view.loopDead ? `<div style="font-size:12px;color:#92400e;margin-top:6px;">Automatic fixing looks stalled right now, so none of these is being fixed automatically.</div>` : '');
+}
+
+// The top of the email: site status for visitors, owner decisions, one line
+// of what the automation did, one neutral "Behind the scenes" line.
+// `decisionBlocksHtml` is pre-rendered by the caller (Needs your attention
+// cards with their one-click links, Needs your decision, Waiting on your
+// approval, Review queue) so every existing block keeps its own markup and
+// mandates.
+function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = null } = {}) {
+  const parts = [];
+  if (view.siteState === 'affected' || view.siteState === 'minor') {
+    const affected = view.siteState === 'affected';
+    const n = view.visitorItems.length;
+    const heading = affected
+      ? '⚠️ Visitors may notice a problem'
+      : `Site mostly OK. ${n} minor issue${n === 1 ? '' : 's'} visitors could notice`;
+    parts.push(`<div style="border:1px solid ${affected ? '#fcd34d' : '#e5e5e5'};background:${affected ? '#fffbeb' : '#fff'};border-radius:10px;padding:12px 16px;margin:0 0 12px;">
+      <div style="font-size:14px;font-weight:700;color:${affected ? '#92400e' : '#333'};margin-bottom:6px;">${esc(heading)}</div>
+      ${renderVisitorItems(view)}
+    </div>`);
+  } else if (view.siteState === 'ok') {
+    parts.push(`<p style="font-size:14px;font-weight:700;color:#15803d;margin:0 0 12px;">✅ The site is working normally for visitors.</p>`);
+  } else {
+    parts.push(`<p style="font-size:13px;color:#666;margin:0 0 12px;">The overnight site check did not report in, so site status is unknown this morning.</p>`);
+  }
+
+  if (view.decisions > 0) {
+    parts.push(`<p style="font-size:14px;font-weight:700;color:#1d4ed8;margin:4px 0 8px;">${view.decisions} decision${view.decisions === 1 ? '' : 's'} for you</p>`);
+    if (decisionBlocksHtml) parts.push(decisionBlocksHtml);
+  } else if (view.siteState !== 'affected') {
+    // About the OWNER's attention only (no decisions waiting); the visitor
+    // status above stays honest on its own.
+    parts.push(`<p style="font-size:13px;font-weight:700;color:#15803d;margin:0 0 12px;">Nothing needs your attention this morning.</p>`);
+  } else {
+    parts.push(`<p style="font-size:13px;color:#666;margin:0 0 12px;">No decisions needed from you.</p>`);
+  }
+
+  // overnightLine is pre-built plain text from send-morning-digest.js (the
+  // "Overnight: N new shows added" sentence); escape it here.
+  const did = [];
+  if (overnightLine) did.push(String(overnightLine));
+  if (view.autoFixed) did.push(`${view.autoFixed} problem${view.autoFixed === 1 ? ' was' : 's were'} fixed automatically overnight.`);
+  if (did.length) parts.push(`<p style="font-size:12px;color:#444;margin:0 0 8px;">${esc(did.join(' '))}</p>`);
+
+  const items = `${view.tracked} maintenance item${view.tracked === 1 ? '' : 's'} tracked`;
+  let behind;
+  if (view.loopDead) {
+    behind = `Behind the scenes: ${items}; automatic fixing looks stalled (see Technical details).`;
+  } else {
+    behind = `Behind the scenes: ${items}, ${view.inProgress} confirmed in progress right now`
+      + (view.launched ? `, ${view.launched} launched but not confirmed yet` : '') + '.';
+  }
+  parts.push(`<p style="font-size:12px;color:#888;margin:0 0 16px;">${esc(behind)}</p>`);
+  return parts.join('\n');
+}
+
+// Heading that demotes the full technical report (kept for debugging) below
+// the owner-first top block. It deliberately does NOT claim "nothing below
+// needs you": the PR supervisor and other machinery alarms render there.
+const TECHNICAL_DETAILS_HEADING = 'Technical details';
+function renderTechnicalDetailsHeading() {
+  return `<div style="border-top:1px solid #e5e5e5;margin:18px 0 10px;padding-top:10px;">
+    <div style="font-size:11px;color:#999;text-transform:uppercase;letter-spacing:0.04em;">${TECHNICAL_DETAILS_HEADING}</div>
+    <div style="font-size:11px;color:#999;margin-top:2px;">For debugging.</div>
+  </div>`;
 }
 
 // Count of health-digest errors+warnings — folded into renderSummaryLine's
@@ -829,4 +1080,6 @@ module.exports = {
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
   renderParkedCardsBlock,
   filterForbiddenQueued,
+  renderNeedsAttentionBlock, buildOwnerView, renderOwnerTopBlock, visitorProblemNames,
+  renderTechnicalDetailsHeading, TECHNICAL_DETAILS_HEADING, ownerFixStatus,
 };

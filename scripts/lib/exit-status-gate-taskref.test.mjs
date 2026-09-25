@@ -105,7 +105,7 @@ const TITLED_MSG = [
 test('Gate T BLOCKS a final message with "task #1152" and no nearby title', { skip: skipIfNoHook }, () => {
   const { status, stderr } = runGate(NO_TITLE_MSG);
   assert.equal(status, 2, `expected block (exit 2), got ${status}\nstderr:\n${stderr}`);
-  assert.match(stderr, /task\/card by bare number/i);
+  assert.match(stderr, /Gate T: bare task\/card\/issue number/i);
 });
 
 test('Gate T PASSES the same message once a quoted title is added on that line', { skip: skipIfNoHook }, () => {

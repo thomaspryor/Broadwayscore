@@ -1,23 +1,25 @@
 {
-  "totalCandidates": 55,
-  "cdxFound": 5,
-  "cdxNotFound": 3,
+  "totalCandidates": 48,
+  "cdxFound": 9,
+  "cdxNotFound": 7,
   "recovered": 2,
   "recoveredByTier": {
-    "1": 0,
+    "1": 1,
     "2": 0,
-    "3": 2
+    "3": 1
   },
   "recoveredByDomain": {
-    "londontheatre.co.uk": 1,
-    "nystagereview.com": 1
+    "variety.com": 1,
+    "radiotimes.com": 1
   },
-  "tooShort": 7,
+  "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 47,
-  "notInArchive": 3,
-  "domainSkipped": 0,
-  "circuitBrokenDomains": []
+  "errors": 31,
+  "notInArchive": 7,
+  "domainSkipped": 1,
+  "circuitBrokenDomains": [
+    "variety.com"
+  ]
 }

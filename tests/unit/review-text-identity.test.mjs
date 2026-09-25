@@ -21,6 +21,7 @@ const {
   resolveTheatreRecordWriteTarget,
   mergeTheatreRecordIntoExisting,
   decideUnknownTwinUrlCarry,
+  decideDuplicateTwinUrlCarry,
 } = require('../../scripts/lib/review-text-identity.js');
 
 // Real shape: the outlet copy carries a page header prefix; the TR copy is the
@@ -142,4 +143,80 @@ test('rebuild: ambiguous (two URL-less same-text twins) → no carry', () => {
   const r = decideUnknownTwinUrlCarry(dropped(), [{ url: null, fullText: TR_TEXT }, { url: null, fullText: TR_TEXT }]);
   assert.equal(r.carry, false);
   assert.equal(r.reason, 'ambiguous-multiple-twins');
+});
+
+// ─── Adversarial review 2026-09-24 ───
+
+// A long review body and a second, DIFFERENT review sharing one synopsis sentence.
+const SYNOPSIS = 'The play follows two couples whose dinner parties overlap on one stage across a single long evening in suburban London.';
+const REVIEW_A = `${SYNOPSIS} Alan Ayckbourn wrote this comedy in 1969 and the director has trusted its clockwork completely, letting the overlapping scenes breathe instead of rushing them for laughs. The cast is uniformly sharp, with the lead couple finding real melancholy under the farce, and the set design lets both living rooms share every piece of furniture without a moment of confusion. By the second act the evening has become a small masterpiece of timing, and the audience around me was helpless with laughter at the final collision of the two dinners. It is the best revival of the play in a generation and deserves a transfer.`;
+const REVIEW_B = `${SYNOPSIS} This production never finds its rhythm, and the performers seem to be acting in separate plays rather than one shared machine of comic misunderstanding. Much of the first half drags, the jokes are signposted well before they land, and the famous double dinner scene feels more like a technical exercise than a comic climax. There are pleasures in the supporting cast, but a revival this tentative makes the old farce look dated rather than timeless, and I left wondering why the theatre chose it at all this season.`;
+
+test('P1-c: identical article → true; one shared synopsis sentence → false', () => {
+  assert.equal(textsShareVerbatimPassage(REVIEW_A, 'Header junk. ' + REVIEW_A + ' Footer.'), true);
+  assert.equal(textsShareVerbatimPassage(REVIEW_A, REVIEW_B), false);
+  assert.equal(textsShareVerbatimPassage(REVIEW_B, REVIEW_A), false);
+});
+
+test("P1-c: a review that QUOTES another review's passage → false (quotes stripped on BOTH sides)", () => {
+  const quoted = REVIEW_A.split('. ').slice(1, 3).join('. ');
+  const quoting = `${REVIEW_B} As another critic put it, "${quoted}." I cannot agree.`;
+  assert.equal(textsShareVerbatimPassage(quoting, REVIEW_A), false);
+  assert.equal(textsShareVerbatimPassage(REVIEW_A, quoting), false);
+});
+
+test('P1-c: one ~20-word shared passage cannot count twice (non-overlapping windows)', () => {
+  const shared = 'one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty';
+  assert.equal(textsShareVerbatimPassage(`${shared} ${REVIEW_A}`, `${shared} ${REVIEW_B}`), false);
+});
+
+test('P1-c: punctuation / apostrophe-style differences do not break a true match', () => {
+  const variant = REVIEW_A.replace(/,/g, ' ,').replace(/'/g, '’');
+  assert.equal(textsShareVerbatimPassage(REVIEW_A, variant), true);
+});
+
+test('P1-a: variant whose STORED critic is a different named person is never a merge target (Bob vs Alice in "--unknown")', () => {
+  const variant = { path: '/d/bt--unknown.json', data: { criticName: 'Alice Smith', url: URL, fullText: OUTLET_TEXT } };
+  const r = resolveTheatreRecordWriteTarget({ exactPath: '/d/bt--bob-jones.json', exactExists: false, variant, incomingCritic: 'Bob Jones', incomingText: TR_TEXT });
+  assert.equal(r.action, 'create');
+  assert.equal(r.reason, 'variant-different-stored-critic');
+});
+
+test("P1-a: exact filename whose stored critic differs → skip (never merge into another critic's review)", () => {
+  const r = resolveTheatreRecordWriteTarget({ exactPath: '/d/bt--unknown.json', exactExists: true, exactData: { criticName: 'Alice Smith', fullText: OUTLET_TEXT }, variant: null, incomingCritic: 'Bob Jones', incomingText: TR_TEXT });
+  assert.equal(r.action, 'skip');
+});
+
+test('P1-a: unattributed TR review vs "--unknown" file now holding Alice → merge only with same text', () => {
+  const same = resolveTheatreRecordWriteTarget({ exactPath: '/d/bt--unknown.json', exactExists: true, exactData: { criticName: 'Alice Smith', fullText: OUTLET_TEXT }, variant: null, incomingCritic: 'Unknown', incomingText: TR_TEXT });
+  assert.equal(same.action, 'merge');
+  const diff = resolveTheatreRecordWriteTarget({ exactPath: '/d/bt--unknown.json', exactExists: true, exactData: { criticName: 'Alice Smith', fullText: REVIEW_B }, variant: null, incomingCritic: 'Unknown', incomingText: TR_TEXT });
+  assert.equal(diff.action, 'skip');
+});
+
+test('P1-a: named variant + unattributed incoming → merge only with same text, never fill critic', () => {
+  const variant = { path: '/d/bt--alice-smith.json', data: { criticName: 'Alice Smith', url: URL, fullText: OUTLET_TEXT } };
+  const same = resolveTheatreRecordWriteTarget({ exactPath: '/d/bt--unknown.json', exactExists: false, variant, incomingCritic: 'Unknown', incomingText: TR_TEXT });
+  assert.deepEqual([same.action, same.fillCritic], ['merge', false]);
+  const diff = resolveTheatreRecordWriteTarget({ exactPath: '/d/bt--unknown.json', exactExists: false, variant: { ...variant, data: { ...variant.data, fullText: REVIEW_B } }, incomingCritic: 'Unknown', incomingText: TR_TEXT });
+  assert.equal(diff.action, 'create');
+});
+
+// ─── P1-b: within-show identical-text duplicate exit ───
+
+test('P1-b: identical URL-bearing twin dropped at the fingerprint exit → carry url onto the kept URL-less match', () => {
+  const r = decideDuplicateTwinUrlCarry(dropped({ fullText: TR_TEXT, data: { criticName: 'Vera Liber', url: URL } }), [{ url: null, fullText: TR_TEXT, file: 'bt--vera-liber.json' }], 'bt--vera-liber.json');
+  assert.deepEqual([r.carry, r.index, r.url], [true, 0, URL]);
+});
+
+test('P1-b: guards — flagged, foreign domain, already-kept, not the fingerprint match, ambiguous, kept has url', () => {
+  const kept = [{ url: null, fullText: TR_TEXT, file: 'bt--vera-liber.json' }];
+  const d = (o) => dropped({ fullText: TR_TEXT, ...o });
+  assert.equal(decideDuplicateTwinUrlCarry(d({ data: { wrongShow: true } }), kept, 'bt--vera-liber.json').carry, false);
+  assert.equal(decideDuplicateTwinUrlCarry(d({ urlOwnedByOutlet: false }), kept, 'bt--vera-liber.json').carry, false);
+  assert.equal(decideDuplicateTwinUrlCarry(d({ urlAlreadyKept: true }), kept, 'bt--vera-liber.json').carry, false);
+  assert.equal(decideDuplicateTwinUrlCarry(d({}), kept, 'bt--someone-else.json').carry, false);
+  const two = [...kept, { url: null, fullText: REVIEW_A, file: 'bt--other.json' }];
+  assert.equal(decideDuplicateTwinUrlCarry(d({}), two, 'bt--vera-liber.json').reason, 'ambiguous-multiple-urlless');
+  assert.equal(decideDuplicateTwinUrlCarry(d({}), [{ url: 'https://x/y', fullText: TR_TEXT, file: 'bt--vera-liber.json' }], 'bt--vera-liber.json').carry, false);
 });

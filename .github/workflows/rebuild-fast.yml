@@ -39,6 +39,7 @@ on:
 permissions:
   contents: write
   actions: write
+  issues: write  # awaiting-score sweep fallback when GH_DISPATCH_TOKEN is unset
 
 jobs:
   rebuild-fast:
@@ -337,6 +338,18 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/verify-all-scored.js
+        continue-on-error: true
+
+      # BRO-4141: close reader submissions labelled awaiting-score once their
+      # review is in the freshly rebuilt reviews.json; relabel ones stuck past
+      # 36h as needs-manual-review (surfaced in the morning digest, no email).
+      # GH_DISPATCH_TOKEN = the owner PAT that opened the issues, so the owner
+      # isn't emailed about the closes. Writes no repo files.
+      - name: Sweep awaiting-score review submissions
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN || secrets.GITHUB_TOKEN }}
+        run: node scripts/sweep-awaiting-score-submissions.js
         continue-on-error: true
 
       - name: Check for changes
