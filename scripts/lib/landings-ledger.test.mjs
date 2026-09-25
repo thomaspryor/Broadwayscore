@@ -75,5 +75,9 @@ test('buildDirectPushAlert: stable conditionKey per sha, digest disposition', ()
   assert.equal(a.disposition, 'digest');
   assert.match(a.description, /fix: thing/);
   assert.ok(!a.description.includes('body'));
+  // The queue it lands in is public; lint-committed-pii.js reddens main on an email (BRO-4147).
+  const real = buildDirectPushAlert({ sha: SHA, committerName: 'Tom Pryor', committerEmail: 'someone@example.com' });
+  assert.ok(!/@/.test(real.description + real.title), 'no email-shaped text in the alert');
+  assert.match(real.description, /committer Tom Pryor/);
   assert.throws(() => buildDirectPushAlert({}), /requires sha/);
 });

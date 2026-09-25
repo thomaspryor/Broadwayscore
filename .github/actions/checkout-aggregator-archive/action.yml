@@ -9,61 +9,114 @@ inputs:
 runs:
   using: composite
   steps:
-    # hygiene-cache-runid-ok: same SHAPE as the BRO-3887 core-data bug, but ~28x
-    # smaller per entry (~100x in live total) and deliberately NOT changed on a
-    # guess. Measured 2026-09-20 in run 35525599209: 132 MB per entry, 2 live
-    # entries = 0.26 GiB, ~3s restore + ~3s save against "Aggregator archive
-    # updated from cache in 2s" — versus core-data's 3,634 MB per entry, 8 live
-    # entries = 27 GiB, and 57s of overhead. The cold sparse-clone time was NOT
-    # measured (no cache miss in the sample), so this is left alone rather than
-    # changed blind.
-    # NOTE (ship-check correction): rule (m) matches run-id KEYS only — it does
-    # NOT measure entry size or total occupancy, so nothing here will page you if
-    # this grows. Re-measure by hand (`gh cache list --json key,sizeInBytes`) if
-    # SERP cache misses climb again.
-    - name: Restore aggregator-archive cache
-      uses: actions/cache/restore@v5
-      with:
-        path: /tmp/aggregator-archive-checkout
-        key: aggregator-archive-${{ runner.os }}-${{ github.run_id }}
-        restore-keys: |
-          aggregator-archive-${{ runner.os }}-
-
-    - name: Clone or update aggregator-archive
+    # NO actions/cache HERE, DELIBERATELY (BRO-4146) — do not "restore" this.
+    #
+    # This action used to wrap the sparse clone in actions/cache restore+save
+    # keyed on `aggregator-archive-${{ runner.os }}-${{ github.run_id }}`, on
+    # the theory it was exempt from the BRO-3887 treatment on size: measured
+    # 2026-09-20 in run 35525599209 at 132 MB/entry, 2 live entries = 0.26 GiB,
+    # versus core-data's 3,634 MB/entry, 8 live entries = 27 GiB. That
+    # comment's own caveat came true: "rule (m) does NOT measure entry size or
+    # total occupancy, so nothing here will page you if this grows." By
+    # 2026-09-25 it had grown to 22 live entries / 4.18 GiB (~190 MB/entry,
+    # ~16x the measured occupancy) — called here because this action is
+    # invoked by 22 different workflows, several without `actions: write` in
+    # their permissions block, so a prune-in-place step (the fix used for
+    # vercel-deploy.yml's nextjs-cache, which is invoked by exactly one
+    # workflow with actions: write already granted) would silently no-op on
+    # most callers. Past the repo's 10 GiB cache cap, GitHub LRU-evicts the
+    # WHOLE cache namespace, including the unrelated ~KB-sized bd-serp-cache-*
+    # entries gather-reviews.js depends on for cross-run SERP dedup — the
+    # exact BRO-3887 symptom, from a second source
+    # (tests/unit/bro3887-cache-fix-acceptance.test.mjs went red again).
+    #
+    # Following the same precedent checkout-core-data/action.yml chose:
+    # always clone fresh, no cache. A shallow, blob-filtered, sparse clone of
+    # just the aggregator-archive/ subtree is cheap, and dropping the cache
+    # frees this key's whole share of the namespace permanently instead of
+    # needing an ongoing prune step across 21 call sites.
+    - name: Clone aggregator-archive repo
       shell: bash
       env:
         REPO_TOKEN: ${{ inputs.token }}
       run: |
-        START=$(date +%s)
+        # --branch main pinned explicitly (ship-check correction, BRO-4146) —
+        # checkout-core-data/action.yml:78-87 documents why this is
+        # load-bearing, not decoration: an unpinned clone silently serves
+        # whatever the remote's default branch is. This action's cold-clone
+        # path used to be the RARE fallback behind a cache hit; now it is the
+        # ONLY path on every one of 22 callers, so the same risk applies.
+        #
+        # 3-attempt retry with rate-limit-aware backoff, same helper and
+        # reasoning as checkout-core-data/action.yml:55-61 (BRO-66):
+        # REVIEW_TEXTS_TOKEN's 5000 req/hr quota is shared across every
+        # workflow that checks out core-data OR aggregator-archive, and an
+        # opening-night burst can exhaust it mid-run. This clone used to run
+        # only on a cache miss ("no cache miss in the sample" per the removed
+        # comment above — i.e. untested under real conditions); it is now
+        # unconditional on all 22 callers, including the blocking
+        # data-safety-guards job in test.yml, so a single-attempt clone here
+        # is a bigger CI-red risk than before this change.
+        MAX_RETRIES=3
+        STDERR_FILE=$(mktemp)
+        for ATTEMPT in $(seq 1 $MAX_RETRIES); do
+          START=$(date +%s)
+          SUCCESS=false
+          : > "$STDERR_FILE"
 
-        if [ -d "/tmp/aggregator-archive-checkout/.git" ]; then
-          cd /tmp/aggregator-archive-checkout
-          git remote set-url origin "https://x-access-token:${REPO_TOKEN}@github.com/thomaspryor/broadway-review-texts.git"
-          if git fetch origin main --depth 1 2>/dev/null && git reset --hard origin/main 2>/dev/null; then
-            ELAPSED=$(($(date +%s) - START))
-            echo "Aggregator archive updated from cache in ${ELAPSED}s"
-          else
-            echo "::warning::Cache update failed - falling back to fresh clone"
-            cd /tmp
-            rm -rf /tmp/aggregator-archive-checkout
-            git clone --depth 1 --filter=blob:none --sparse \
+          rm -rf /tmp/aggregator-archive-checkout
+          if git clone --depth 1 --filter=blob:none --sparse --branch main \
               "https://x-access-token:${REPO_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" \
-              /tmp/aggregator-archive-checkout
-            cd /tmp/aggregator-archive-checkout
-            git sparse-checkout set aggregator-archive
+              /tmp/aggregator-archive-checkout 2>>"$STDERR_FILE" \
+            && (cd /tmp/aggregator-archive-checkout && git sparse-checkout set aggregator-archive) 2>>"$STDERR_FILE"; then
             ELAPSED=$(($(date +%s) - START))
             echo "Aggregator archive cloned fresh (sparse) in ${ELAPSED}s"
+            SUCCESS=true
           fi
-        else
+
+          if [ "$SUCCESS" = "true" ]; then
+            break
+          fi
+
+          cat "$STDERR_FILE" >&2
+
+          # Guarded with `|| DECISION=stop:decision-error`, same fix/reason as
+          # checkout-core-data/action.yml and push-core-data/action.yml
+          # (task #1911) — an unguarded command substitution here would trip
+          # errexit on attempt 1 if the inner node -e throws.
+          DECISION=$(STDERR_FILE="$STDERR_FILE" ATTEMPT="$ATTEMPT" MAX_RETRIES="$MAX_RETRIES" node -e "
+            const fs = require('fs');
+            const { shouldRetry, retryDelayMs } = require('${GITHUB_WORKSPACE}/scripts/lib/github-rate-limit-retry.js');
+            const stderr = fs.readFileSync(process.env.STDERR_FILE, 'utf8');
+            const attempt = Number(process.env.ATTEMPT);
+            const r = shouldRetry({ attempt, exitCode: 1, stderr, maxAttempts: Number(process.env.MAX_RETRIES) });
+            console.log(r.retry ? ('retry:' + retryDelayMs(attempt)) : ('stop:' + r.reason));
+          ") || DECISION="stop:decision-error"
+
           rm -rf /tmp/aggregator-archive-checkout
-          git clone --depth 1 --filter=blob:none --sparse \
-            "https://x-access-token:${REPO_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" \
-            /tmp/aggregator-archive-checkout
-          cd /tmp/aggregator-archive-checkout
-          git sparse-checkout set aggregator-archive
-          ELAPSED=$(($(date +%s) - START))
-          echo "Aggregator archive cloned fresh (sparse) in ${ELAPSED}s"
-        fi
+
+          case "$DECISION" in
+            retry:*)
+              DELAY_MS="${DECISION#retry:}"
+              DELAY_S=$(( (DELAY_MS + 999) / 1000 ))
+              echo "::warning::Aggregator archive checkout hit a GitHub API rate limit (attempt $ATTEMPT/$MAX_RETRIES) — backing off ${DELAY_S}s before retry"
+              sleep "$DELAY_S"
+              ;;
+            stop:max-attempts-reached)
+              echo "::error::Aggregator archive checkout still rate-limited after $MAX_RETRIES attempts — giving up"
+              exit 1
+              ;;
+            stop:not-rate-limit|*)
+              if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+                echo "::warning::Aggregator archive checkout failed (attempt $ATTEMPT/$MAX_RETRIES, non-rate-limit) — retrying in 10s"
+                sleep 10
+              else
+                echo "::error::Aggregator archive checkout failed after $MAX_RETRIES attempts"
+                exit 1
+              fi
+              ;;
+          esac
+        done
 
     - name: Copy aggregator-archive to data/
       shell: bash
@@ -88,12 +141,3 @@ runs:
         if [ -d "data/aggregator-archive" ]; then
           cp -r data/aggregator-archive/. /tmp/aggregator-archive-snapshot/ 2>/dev/null || true
         fi
-
-    # hygiene-cache-runid-ok: see the restore step above — 132 MB per entry,
-    # measured, deliberately unchanged. Step-scoped marker (BRO-3887 ship-check).
-    - name: Save aggregator-archive cache
-      uses: actions/cache/save@v5
-      if: always()
-      with:
-        path: /tmp/aggregator-archive-checkout
-        key: aggregator-archive-${{ runner.os }}-${{ github.run_id }}
