@@ -47,3 +47,30 @@ test('a non-truthy opt-out value does NOT opt out', () => {
     assert.equal(serpCensusPreflight({ SERP_GAP_CENSUS_DISABLED: v }).ok, false, `${JSON.stringify(v)} must not opt out`);
   }
 });
+
+// BRO-4139: five more callers share this predicate via opts.disableVar/
+// consequence/workflowHint (e.g. coverage-adversarial-probe.js,
+// audit-serp-census-recall.js) — a typo'd disableVar would silently disable
+// the WRONG switch, and a caller's custom reason text must actually reach
+// the operator reading it during an incident.
+test('opts.disableVar names a DIFFERENT opt-out switch — the default one no longer works', () => {
+  const r = serpCensusPreflight({ SERP_GAP_CENSUS_DISABLED: '1' }, { disableVar: 'CUSTOM_DISABLED' });
+  assert.equal(r.ok, false, 'the default switch must not opt out once disableVar is overridden');
+  const custom = serpCensusPreflight({ CUSTOM_DISABLED: '1' }, { disableVar: 'CUSTOM_DISABLED' });
+  assert.equal(custom.ok, true);
+  assert.match(custom.reason, /CUSTOM_DISABLED/);
+});
+
+test('opts.consequence and opts.workflowHint reach the caller-facing reason text', () => {
+  const r = serpCensusPreflight({}, {
+    consequence: 'UNIQUE_MARKER_CONSEQUENCE_TEXT',
+    workflowHint: 'unique-workflow-marker.yml',
+  });
+  assert.equal(r.ok, false);
+  assert.match(r.reason, /UNIQUE_MARKER_CONSEQUENCE_TEXT/);
+  assert.match(r.reason, /unique-workflow-marker\.yml/);
+  // The gap-audit's own consequence text (VERIFIED COMPLETE) must NOT leak
+  // into a caller that supplied its own — that would be actively misleading
+  // during an incident on a script this text doesn't describe.
+  assert.doesNotMatch(r.reason, /VERIFIED COMPLETE/);
+});
