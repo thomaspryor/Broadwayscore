@@ -4995,7 +4995,8 @@
       "linearIdentifier": "BRO-4149",
       "silentRefires": 2,
       "absentRunIds": [
-        "36099810506"
+        "36099810506",
+        "36101146871"
       ]
     },
     "land:land/job/linear-BRO-4150-mugdffki": {
@@ -5072,6 +5073,24 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:9fec3ca6": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"TRIPPED breaker: the Bright Data ledger row carries fallback_from \"sd-breaker\"\"",
+      "firstSeen": "2026-09-25T06:17:55.524Z",
+      "lastSeen": "2026-09-25T06:17:55.524Z",
+      "lastNotifiedAt": "2026-09-25T06:17:55.524Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4166",
+      "dispatch": {
+        "requestedAt": "2026-09-25T06:17:55.524Z",
+        "mode": "dispatch-at-filing",
+        "runId": "36101146871",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36101146871"
+      }
     }
   }
 }
