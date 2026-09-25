@@ -81,6 +81,11 @@ jobs:
         # skipped without any history fetch; an unreadable range leaves the
         # list empty, which the CLI treats as "unknown → judged as code".
         run: |
+          # pipefail (BRO-4157): GHA's bash default already sets this, made
+          # explicit given what this step gates — a crashed detector must fail
+          # loud, not have the tee'd pipe swallow it while the JSON parse below
+          # coincidentally throws on a truncated file.
+          set -o pipefail
           printf '%s' "$HEAD_MESSAGE" > /tmp/head-message.txt
           : > /tmp/changed-files.txt
           if ! printf '%s' "$BEFORE" | grep -Eq '^0+$'; then

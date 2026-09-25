@@ -457,6 +457,19 @@ function validateShowTitles(shows) {
     error(`Show "${show.title}" (${show.id}) has a scrape artifact in its title (${how}). Expected: "${result.title}". Fix with: node scripts/fix-show-titles.js --apply. If the current title is genuinely correct, widen the exemptions in scripts/lib/title-venue-suffix.js for the parenthetical case.`);
   }
 
+  // titleCaseNormalizedAt/From were written by fix-shouted-titles.js, deleted
+  // under BRO-3920 when the algorithmic title-caser was retired (BRO-4157).
+  // Nothing reads them; the current provenance record for a title change is
+  // titleNormalizedFrom/titleNormalizedAt (see fix-show-titles.js). If this
+  // fires, something reintroduced the retired fields — strip them again
+  // rather than reviving the deleted writer.
+  for (const show of shows) {
+    if (show.titleCaseNormalizedAt || show.titleCaseNormalizedFrom) {
+      bad++;
+      error(`Show "${show.title}" (${show.id}) has titleCaseNormalizedAt/From — these fields have no reader and their writer was deleted under BRO-3920. Strip them (write via scripts/lib/shows-write-guard.js).`);
+    }
+  }
+
   if (bad === 0) ok('No scrape artifacts in show titles');
 }
 

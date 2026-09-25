@@ -62,9 +62,17 @@ jobs:
           if [ -n "$SINCE" ]; then FLAGS="$FLAGS --since=$SINCE"; fi
           if [ -n "$SHOW" ]; then FLAGS="$FLAGS --show=$SHOW"; fi
           echo "Running: node scripts/audit-bww-rr-critic-mismatches.js $FLAGS"
+          # BRO-4157: this used to run the script TWICE — once with --json
+          # (captured to $RC), once in text mode piped through tee to
+          # /tmp/audit.txt for a human-readable log. Only $RC gated the step,
+          # but the script's own exit(2) check only ran on the text-mode path
+          # (fixed at the source), so $RC could never actually be 2 — a
+          # structurally dead check, not just an unread one. audit.txt was
+          # never read downstream either (only audit.json is uploaded/parsed
+          # below), so the second invocation added cost without adding safety.
+          # One --json run now gives both a real exit code and the artifact.
           node scripts/audit-bww-rr-critic-mismatches.js $FLAGS --json > /tmp/audit.json
           RC=$?
-          node scripts/audit-bww-rr-critic-mismatches.js $FLAGS | tee /tmp/audit.txt
           # Exit code 2 means "found new candidates" — surface as workflow warning
           # but don't fail the run (non-blocking advisory).
           if [ "$RC" -eq 2 ]; then

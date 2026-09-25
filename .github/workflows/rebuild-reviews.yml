@@ -560,6 +560,13 @@ jobs:
           # in 2026-04-30 (Notion 351637c5-416f-8177); their counts now aggregate
           # in that workflow's separate run.
           #
+          # BRO-4157 triage note: none of those tee'd steps (here or in
+          # enrich-reviews.yml/rebuild-fast.yml) need an explicit `set -o
+          # pipefail` — every one carries `continue-on-error: true`, so the
+          # step's own exit code (pipefail-corrected or not) never gates job
+          # success. This aggregation step (`if: always()`) is what actually
+          # surfaces a stuck/crashed enricher, via the locked-skip counts.
+          #
           # Synthetic-test override: set LOCKED_SKIP_TEST_LOG_OVERRIDE in the env
           # to a path with hand-crafted [LOCKED-SKIP-COUNT] lines for dry-run
           # validation of the warning threshold.

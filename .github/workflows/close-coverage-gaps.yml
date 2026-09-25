@@ -118,6 +118,10 @@ jobs:
       - name: Run coverage audit
         id: audit
         run: |
+          # pipefail (BRO-4157): GHA's bash default already sets this, made
+          # explicit — a crashed audit must not fall through to reading a
+          # missing/stale aggregator-coverage.json below as if it succeeded.
+          set -o pipefail
           node scripts/audit-aggregator-coverage.js --output-gaps 2>&1 | tee /tmp/audit-output.txt
 
           # Extract truly missing count

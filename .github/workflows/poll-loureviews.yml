@@ -53,6 +53,10 @@ jobs:
       - name: Poll LouReviews
         id: poll
         run: |
+          # pipefail (BRO-4157): GHA's bash default already sets this, made
+          # explicit — a crashed poller must fail the step, not report new=0
+          # (the grep below) as if it genuinely found nothing this run.
+          set -o pipefail
           # Wide default (400d ≈ 750 posts, under the poller's 10-page/1000-post cap).
           # 14d missed MJ The Musical + All My Sons: Louise reviewed them Oct/Nov 2025,
           # but both shows only entered shows.json on 2026-03-02 — ~4mo later, long

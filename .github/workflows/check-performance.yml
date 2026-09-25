@@ -50,6 +50,10 @@ jobs:
       - name: Build and check bundle sizes
         id: check
         run: |
+          # pipefail (BRO-4157): GHA's bash default already sets this, made
+          # explicit — a crashed check-bundle-size.js must fail this step, not
+          # report a green bundle-size gate off of tee's own exit code.
+          set -o pipefail
           if [ "${{ inputs.update_baseline }}" = "true" ]; then
             node scripts/check-bundle-size.js --update-baseline 2>&1 | tee /tmp/bundle-report.txt
           else

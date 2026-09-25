@@ -55,6 +55,10 @@ jobs:
           IMPACT_ACCOUNT_SID: ${{ secrets.IMPACT_ACCOUNT_SID }}
           IMPACT_AUTH_TOKEN: ${{ secrets.IMPACT_AUTH_TOKEN }}
         run: |
+          # pipefail (BRO-4157): GHA's bash default already sets this, made
+          # explicit so a crashed analyze-ab-test.js fails the step instead of
+          # leaving an empty readout.txt for the render step below to shrug at.
+          set -o pipefail
           node scripts/analyze-ab-test.js --flag "$FLAG" --days "$DAYS" | tee readout.txt
 
       - name: Render report on the run summary
