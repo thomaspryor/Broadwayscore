@@ -830,6 +830,7 @@ test('flip-flop between a named non-review url and a review url resolves to the 
   const after = JSON.parse(fs.readFileSync(target, 'utf8'));
   assert.equal(after.url, review, 'the review url must win over a /news/ url');
   assert.equal(after.urlVerifiedAuto, undefined, 'the stale auto-pin must not carry over onto the new url');
+  assert.ok(after._urlChangedClear && after._urlChangedClear.cleared.includes('urlVerified'), 'lifted pin is breadcrumbed as an intentional clear');
 
   // A HUMAN pin is never overridden.
   const human = makeFixture(reviewTextsDir, showId, 'thestage--human.json', {
