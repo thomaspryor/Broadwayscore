@@ -43,7 +43,18 @@ function checkSubmissionLanded({ showId, url, reviews, reviewTextsDir, show }) {
   const inReviews = !!fileUrl && reviews.some((r) => r.showId === showId && canonicalizeUrlForDedup(r.url) === fileUrl);
   if (inReviews) return { landed: true, reason: null, file: file.path };
   const why = explainExclusion(file.data, show, file.path);
-  return { landed: false, reason: why || 'excluded during rebuild (date or duplicate check)', file: file.path };
+  if (why) return { landed: false, reason: why, file: file.path };
+  // BRO-4141: an unscored review is left out of the rebuild and goes live when
+  // the llm-ensemble-score cron scores it. That is a wait, not a failure: all
+  // 11 "not on the site" owner emails of 9/23-9/24 were this case.
+  if (awaitingScore(file.data)) {
+    return { landed: false, pendingScore: true, reason: 'not scored yet (goes live once the scoring cron scores it)', file: file.path };
+  }
+  return { landed: false, reason: 'excluded during rebuild (date or duplicate check)', file: file.path };
+}
+
+function awaitingScore(data) {
+  return !(data.llmScore && data.llmScore.score != null) && data.assignedScore == null;
 }
 
 module.exports = { checkSubmissionLanded, findSubmissionFile };
