@@ -1073,6 +1073,13 @@ function preserveFlaggedFields(filePath, review) {
  */
 function safeWriteReview(filePath, newData, options = {}) {
   const { force = false, merge = true } = options;
+  // A file missing only because this checkout is sparse is not new: writing it
+  // replaces the committed review wholesale on the next commit (2026-09-25,
+  // the-children-2017 WSJ; sparse-checkout-guard.js). Not bypassable by force.
+  if (require('./sparse-checkout-guard').isPathHiddenBySparseCheckout(filePath)) {
+    console.error(`[review-write-guard] BLOCKED write to ${path.basename(filePath)}: tracked in git but outside this sparse checkout`);
+    return { wrote: false, skipped: 'hidden-by-sparse-checkout' };
+  }
   const preserved = [];
   let lockedSkipped = false;
   // Set true by the date-plausibility/cross-market write-time guard (card

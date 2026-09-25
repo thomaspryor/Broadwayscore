@@ -34,6 +34,7 @@ const {
   loadOutletRegistry,
 } = require('./review-normalization');
 const { findSiblingUrlOwner } = require('./review-url-collision');
+const { isShowDirHiddenBySparseCheckout } = require('./sparse-checkout-guard');
 const { validateUrlDomain } = require('./url-discovery');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
@@ -949,6 +950,16 @@ function createOrMergeReviewFile(showId, input, options = {}) {
 
   const showDir = path.join(reviewTextsDir, showId);
 
+  // --- Guard: show directory hidden by a sparse checkout ---
+  // Nothing on disk to merge into does not mean nothing exists: in a sparse
+  // clone the show's real files are on origin, and a create here would
+  // replace them wholesale on the next commit (2026-09-25, the-children-2017
+  // WSJ review; see sparse-checkout-guard.js). Refuse instead of guessing.
+  if (isShowDirHiddenBySparseCheckout(reviewTextsDir, showId)) {
+    console.warn(`  ⛔ Refusing write: ${showId}/ is tracked but outside this sparse checkout — add it to the sparse set and re-run`);
+    return { action: 'skipped', reason: 'show-dir-outside-sparse-checkout', guardRefused: true };
+  }
+
   // --- Try to find existing file ---
   // Use the (possibly URL-refined) outletId for the filename, not the raw input.outletId
   const filename = generateReviewFilename(outletId, criticName);
@@ -1450,6 +1461,7 @@ const WRITE_GUARD_REFUSED_REASONS = new Set([
   'date_implausible',
   'cross_market_contamination',
   'flagged-filename-collision',
+  'show-dir-outside-sparse-checkout',
 ]);
 
 module.exports = { createOrMergeReviewFile, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS };

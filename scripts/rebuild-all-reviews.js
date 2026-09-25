@@ -32,6 +32,7 @@ const crypto = require('crypto');
 const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry, outletOwnsUrlDomain } = require('./lib/review-normalization');
 const { decideUnknownTwinUrlCarry, decideDuplicateTwinUrlCarry } = require('./lib/review-text-identity');
 const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
+const { parseConflictedJson } = require('./lib/conflict-markers');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
@@ -2324,17 +2325,31 @@ showDirs.forEach(showId => {
       const filePath = path.join(showDir, file);
       const rawContent = fs.readFileSync(filePath, 'utf8');
 
-      // Guard: detect git merge conflict markers (silent data corruption)
+      // Guard: git merge conflict markers. A bad rebase committing markers must
+      // not silently drop the review from the site (deep-heat-rivalry
+      // thestage--unknown.json, 2026-09-25): read one valid side in memory
+      // (conflict-markers.js parseConflictedJson) and still list it loudly in
+      // the CORRUPTED summary. If a later step in this run writes the record
+      // back, that persists the chosen side and so repairs the file.
+      // Only when neither side parses is the file skipped.
+      let data;
       if (/^<{7}\s|^={7}$|^>{7}\s/m.test(rawContent)) {
-        console.error(`  [CORRUPTED] ${showId}/${file}: contains git merge conflict markers — SKIPPING`);
-        logExclusion("skippedCorrupted", showId, file, null, { reason: "git merge conflict markers in file" });
-        stats.skippedCorrupted = (stats.skippedCorrupted || 0) + 1;
         if (!stats.corruptedFiles) stats.corruptedFiles = [];
-        stats.corruptedFiles.push(`${showId}/${file}`);
-        return;
+        const resolved = parseConflictedJson(rawContent);
+        if (!resolved) {
+          console.error(`  [CORRUPTED] ${showId}/${file}: contains git merge conflict markers — SKIPPING`);
+          logExclusion("skippedCorrupted", showId, file, null, { reason: "git merge conflict markers in file" });
+          stats.skippedCorrupted = (stats.skippedCorrupted || 0) + 1;
+          stats.corruptedFiles.push(`${showId}/${file}`);
+          return;
+        }
+        console.error(`  [CONFLICT-MARKERS] ${showId}/${file}: read the "${resolved.side}" side in memory — FIX THE FILE`);
+        stats.conflictReadInMemory = (stats.conflictReadInMemory || 0) + 1;
+        stats.corruptedFiles.push(`${showId}/${file} (conflict markers; read "${resolved.side}" side in memory)`);
+        data = resolved.data;
+      } else {
+        data = JSON.parse(rawContent);
       }
-
-      const data = JSON.parse(rawContent);
 
       // Region-backfill evidence (BRO-133) — record BEFORE any skip/exclusion check
       // below so an outlet whose reviews are currently excluded still contributes
@@ -5817,10 +5832,10 @@ try {
 // Print summary
 console.log('\n=== SUMMARY ===\n');
 // LOUD WARNING for corrupted files — these represent silent data loss
-if (stats.skippedCorrupted > 0) {
+if (stats.skippedCorrupted > 0 || stats.conflictReadInMemory > 0) {
   console.error(`\n${'!'.repeat(60)}`);
-  console.error(`!! CORRUPTED FILES FOUND: ${stats.skippedCorrupted} files skipped due to corruption`);
-  console.error(`!! These files have merge conflicts or invalid JSON — reviews are LOST`);
+  console.error(`!! CORRUPTED FILES FOUND: ${stats.skippedCorrupted || 0} skipped, ${stats.conflictReadInMemory || 0} conflict-marked but read in memory`);
+  console.error(`!! Skipped files are LOST from reviews.json; conflict-marked ones were kept via one side. Fix every file listed.`);
   stats.corruptedFiles.forEach(f => console.error(`!!   ${f}`));
   console.error(`${'!'.repeat(60)}\n`);
 }

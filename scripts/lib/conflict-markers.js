@@ -48,7 +48,63 @@ function hasConflictMarkers(text) {
   return findConflictMarkers(text).length > 0;
 }
 
-module.exports = { findConflictMarkers, hasConflictMarkers, CONFLICT_MARKER_RE };
+/**
+ * Split a conflicted file into its two whole-file readings: every conflict
+ * block resolved to the "ours" side, and every block resolved to "theirs"
+ * (diff3 `|||||||` base sections are dropped). Lets a READER keep a record
+ * whose file a bad rebase committed with markers, instead of dropping the
+ * review from the site until someone hand-fixes it (deep-heat-rivalry
+ * thestage--unknown.json, 2026-09-25: both sides were valid JSON and differed
+ * only in retry metadata). Never used to rewrite the file.
+ *
+ * @param {string} text
+ * @returns {{ours: string, theirs: string} | null} null when the text has no
+ *   markers or the blocks are malformed (unclosed / out of order)
+ */
+function conflictSides(text) {
+  if (!hasConflictMarkers(text)) return null;
+  const ours = [];
+  const theirs = [];
+  let state = 'both'; // both | ours | base | theirs
+  for (const line of text.split('\n')) {
+    if (/^<{7}(?:\s|$)/.test(line)) {
+      if (state !== 'both') return null;
+      state = 'ours';
+    } else if (/^\|{7}(?:\s|$)/.test(line) && state === 'ours') {
+      state = 'base';
+    } else if (/^={7}$/.test(line) && (state === 'ours' || state === 'base')) {
+      state = 'theirs';
+    } else if (/^>{7}(?:\s|$)/.test(line)) {
+      if (state !== 'theirs') return null;
+      state = 'both';
+    } else if (state === 'both') {
+      ours.push(line); theirs.push(line);
+    } else if (state === 'ours') {
+      ours.push(line);
+    } else if (state === 'theirs') {
+      theirs.push(line);
+    }
+  }
+  if (state !== 'both') return null;
+  return { ours: ours.join('\n'), theirs: theirs.join('\n') };
+}
+
+/**
+ * Best-effort parse of a conflict-marked JSON file: the "ours" reading if it
+ * parses, else "theirs". Returns null when neither side is valid JSON.
+ * @param {string} text
+ * @returns {{data: object, side: 'ours'|'theirs'} | null}
+ */
+function parseConflictedJson(text) {
+  const sides = conflictSides(text);
+  if (!sides) return null;
+  for (const side of ['ours', 'theirs']) {
+    try { return { data: JSON.parse(sides[side]), side }; } catch { /* try next */ }
+  }
+  return null;
+}
+
+module.exports = { findConflictMarkers, hasConflictMarkers, conflictSides, parseConflictedJson, CONFLICT_MARKER_RE };
 
 if (require.main === module) {
   const fs = require('fs');
