@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-09-25T02:02:18.670Z",
+  "timestamp": "2026-09-25T02:17:20.723Z",
   "stats": {
-    "totalReviews": 44124,
-    "alreadyFlagged": 18234,
+    "totalReviews": 44170,
+    "alreadyFlagged": 18251,
     "dateGuardCatches": 246,
     "directorMismatch": 1050,
-    "tvFilmSignals": 1307,
-    "londonSignals": 1173,
+    "tvFilmSignals": 1308,
+    "londonSignals": 1179,
     "offBroadwaySignals": 510,
     "yearMismatch": 95,
     "noPublishDate": 3856
@@ -3199,6 +3199,19 @@
       "score": 82,
       "publishDate": "December 19, 2022",
       "url": "https://www.thewrap.com/between-riverside-and-crazy-broadway-review-common-stephen-mckinley-henderson/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "between-the-river-and-the-sea-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2026-04-21",
+      "url": "https://www.standard.co.uk/culture/theatre/between-the-river-and-the-sea-review-b1279502.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -39373,6 +39386,32 @@
     },
     {
       "showId": "cowbois-west-end-2024",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "publishDate": "2024-01-18",
+      "url": "https://www.allthatdazzles.co.uk/post/review-cowbois-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "cowbois-west-end-2024",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/cowbois-royal-court-review-fabulously-queer-extravaganza",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "cowbois-west-end-2024",
       "file": "broadwayworld--cindy-marcolina.json",
       "score": 56,
       "publishDate": "2024-01-18",
@@ -45810,6 +45849,19 @@
     },
     {
       "showId": "man-and-boy-west-end-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2026-02-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "man-and-boy-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 36,
       "publishDate": "2026-02-11",
@@ -45828,6 +45880,19 @@
       "score": 43,
       "publishDate": "2026-02-11",
       "url": "https://www.theguardian.com/stage/2026/feb/11/man-and-boy-review-terence-rattigan-father-son-drama",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "man-and-boy-west-end-2026",
+      "file": "london-theatre--anya-ryan.json",
+      "publishDate": "February 11th, 2026",
+      "url": "https://www.londontheatre.co.uk/reviews/man-and-boy-review-national-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -51535,6 +51600,19 @@
     },
     {
       "showId": "the-authenticator-west-end-2026",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "publishDate": "2026-04-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
       "file": "thesetheatrethoughts--unknown.json",
       "score": 62,
       "publishDate": "2026-05-02",
@@ -54648,6 +54726,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-rat-trap-west-end-2026",
+      "file": "everything-theatre--lucy-carter.json",
+      "publishDate": "2026-02-05",
+      "url": "https://everything-theatre.co.uk/2026/02/review-the-rat-trap-park-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
