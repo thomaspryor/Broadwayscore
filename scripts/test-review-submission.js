@@ -14,6 +14,9 @@ import { Anthropic } from '@anthropic-ai/sdk';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
+
+const { findMatchingShows } = createRequire(import.meta.url)('./lib/submission-show-match.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -65,28 +68,10 @@ function checkDuplicateReview(url, showId) {
 }
 
 /**
- * Find matching show in database
+ * Find matching show in database (shared matcher, BRO-4141)
  */
 function findMatchingShow(showName) {
-  if (!showName) return null;
-
-  const normalizedInput = showName.toLowerCase().trim();
-
-  // Exact title match
-  let match = shows.find(s => s.title.toLowerCase() === normalizedInput);
-  if (match) return match;
-
-  // Check if input matches slug
-  match = shows.find(s => s.id === normalizedInput || s.slug === normalizedInput);
-  if (match) return match;
-
-  // Partial match
-  match = shows.find(s =>
-    s.title.toLowerCase().includes(normalizedInput) ||
-    normalizedInput.includes(s.title.toLowerCase())
-  );
-
-  return match;
+  return findMatchingShows(showName, shows)[0] || null;
 }
 
 /**
