@@ -74,3 +74,12 @@ test('opts.consequence and opts.workflowHint reach the caller-facing reason text
   // during an incident on a script this text doesn't describe.
   assert.doesNotMatch(r.reason, /VERIFIED COMPLETE/);
 });
+
+test('disableVar: null means NO keyless opt-out — no switch, however spelled, unlocks it', () => {
+  for (const env of [{}, { SERP_GAP_CENSUS_DISABLED: '1' }, { SERP_GAP_CENSUS_DISABLED: 'yes' }, { null: '1' }]) {
+    const r = serpCensusPreflight(env, { disableVar: null });
+    assert.equal(r.ok, false, JSON.stringify(env));
+    assert.doesNotMatch(r.reason, /say so:/, 'no opt-out remedy is offered when none exists');
+  }
+  assert.equal(serpCensusPreflight({ BRIGHTDATA_TOKEN: 'x' }, { disableVar: null }).ok, true);
+});

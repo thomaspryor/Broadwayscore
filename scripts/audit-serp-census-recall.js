@@ -244,6 +244,9 @@ async function main() {
   // the whole run before spending anything: "no key" means "no new data this
   // run," not "recall regressed," and there's nothing this run can measure.
   const preflight = serpCensusPreflight(process.env, {
+    // Kill switches were honoured (strictly) above; the preflight gets no
+    // opt-out of its own, so a loosely-spelled switch can't unlock a keyless run.
+    disableVar: null,
     consequence:
       'Every arm would return zero results — indistinguishable, downstream, '
       + 'from a genuine recall regression. Skipping this run rather than '

@@ -62,8 +62,11 @@ function envTrue(v) {
  *
  * @param {object} env  process.env (or a fixture)
  * @param {object} [opts]
- * @param {string} [opts.disableVar]  Env var name that opts out (default
- *   'SERP_GAP_CENSUS_DISABLED' — the gap audit's own switch).
+ * @param {string|null} [opts.disableVar]  Env var name that opts out (default
+ *   'SERP_GAP_CENSUS_DISABLED' — the gap audit's own switch). Pass null for a
+ *   caller with NO keyless opt-out: callers that already honour their own
+ *   kill switches before this check, or that only skip (never write) when
+ *   keyless, must not have a second switch that unlocks a keyless run.
  * @param {string} [opts.consequence]  What happens downstream when this
  *   caller silently proceeds keyless. Defaults to the gap-audit's own
  *   VERIFIED-COMPLETE consequence text.
@@ -72,8 +75,8 @@ function envTrue(v) {
  * @returns {{ok: boolean, reason: string}}
  */
 function serpCensusPreflight(env = {}, opts = {}) {
-  const disableVar = opts.disableVar || 'SERP_GAP_CENSUS_DISABLED';
-  if (envTrue(env[disableVar])) {
+  const disableVar = opts.disableVar === undefined ? 'SERP_GAP_CENSUS_DISABLED' : opts.disableVar;
+  if (disableVar && envTrue(env[disableVar])) {
     return { ok: true, reason: `SERP census explicitly disabled via ${disableVar} — a zero census is an expected consequence of that choice, not an accident` };
   }
   const present = SERP_KEY_VARS.filter((k) => env[k] && String(env[k]).trim());
@@ -92,8 +95,8 @@ function serpCensusPreflight(env = {}, opts = {}) {
       + consequence + '\n'
       + '  Locally: the keys live in .env, which fetchPage loads internally but this path does not — '
       + 'export them into the shell first, e.g. `set -a; . ./.env; set +a`.\n'
-      + `  In CI: check the env: block of ${workflowHint} and the repo secrets.\n`
-      + `  To run deliberately WITHOUT the census, say so: ${disableVar}=1`,
+      + `  In CI: check the env: block of ${workflowHint} and the repo secrets.`
+      + (disableVar ? `\n  To run deliberately WITHOUT the census, say so: ${disableVar}=1` : ''),
   };
 }
 
