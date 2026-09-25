@@ -59,6 +59,7 @@ const {
   sameOutletUrlVariant,
   _buildDomainMap,
 } = require('./lib/outlet-canonicalize');
+const { describeUnresolvedProvisionalOutlet } = require('./lib/aggregator-domains');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { execErrorDetail } = require('./lib/exec-error-detail');
@@ -1242,8 +1243,12 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     // New York Notebook class). The host is still recorded in
     // unknown-aggregator-outlets.json so it can be promoted to a real registry
     // entry; --provisional skips fuzzy alias resolution so the slug is written as-is.
-    const provId = provisionalOutletIdFromHost(hostOf(url));
-    if (!provId) return { ok: false, reason: 'unknown-outlet-no-host', provisional: true };
+    const provHost = hostOf(url);
+    const provId = provisionalOutletIdFromHost(provHost);
+    // BRO-4155 — "show-score ingest logs unknown-outlet-no-host": see
+    // describeUnresolvedProvisionalOutlet for why a single reason string
+    // collapsed two very different failures into one misleading message.
+    if (!provId) return { ok: false, reason: describeUnresolvedProvisionalOutlet(provHost), provisional: true };
     args.push(`--outlet=${provId}`, '--provisional');
     provisional = true;
   }
