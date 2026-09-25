@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T02:24:40.052Z",
+  "generatedAt": "2026-09-25T02:58:41.638Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -397,27 +397,27 @@
       "slug": "delirium-off-broadway",
       "thumbnail": "/images/shows/delirium-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 82,
+      "liveScore": 88,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 1,
-      "positive": 1,
+      "positive": 2,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/12 total",
+          "2/12 total",
           "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
+          "T2:1/3",
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -547,10 +547,6 @@
         {
           "name": "The Daily Beast",
           "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
         },
         {
           "name": "New York Theater",
@@ -778,6 +774,18 @@
           "t2": 0,
           "t3": 1,
           "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-25T02:58:41.638Z",
+          "rc": 2,
+          "s": 88,
+          "t1": 0,
+          "t2": 1,
+          "t3": 1,
+          "p": 2,
           "m": 0,
           "n": 0,
           "bc": "waiting"
