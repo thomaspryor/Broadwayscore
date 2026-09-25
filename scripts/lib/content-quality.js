@@ -8,6 +8,8 @@
  * @module content-quality
  */
 
+const { buildShowTitleVariants, normalizeForMention, countVariant, findVariantSpans, textMentionsTitle } = require('./show-title-variants');
+
 /**
  * Patterns that indicate ad blocker messages
  * @type {RegExp[]}
@@ -727,6 +729,16 @@ function validateShowMentioned(text, showTitle, showId) {
     const withoutThe = titleLower.replace(/^the\s+/, '');
     if (withoutThe.length > 3 && lower.includes(withoutThe)) {
       return { valid: true, confidence: 'high', reason: 'Show title (without "The") found' };
+    }
+
+    // Punctuation-insensitive title variants (shared helper): shows.json "Dog Man -
+    // The Musical" vs review "Dog Man: The Musical", "Oh, Mary!" vs "Oh Mary!",
+    // curly apostrophes, en/em dashes, accents, and the pre-subtitle short title
+    // ("Dog Man", "Dolly"). The literal checks above missed all of these, and
+    // backfill-review-flags.js set showNotMentioned on real reviews (2026-09-24).
+    const matchedVariant = textMentionsTitle(text, showTitle);
+    if (matchedVariant) {
+      return { valid: true, confidence: 'high', reason: `Show title variant found ("${matchedVariant}")` };
     }
   }
 
@@ -3158,7 +3170,9 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
     }
   }
 
-  let mentionCount = 0;
+  // Literal count (pre-2026-09-24 behavior, kept so no page ever counts FEWER
+  // mentions than before).
+  let literalCount = 0;
   for (const token of tokens) {
     if (!token) continue;
     // Count non-overlapping occurrences, word-boundary when single word.
@@ -3168,8 +3182,43 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
       ? new RegExp(`\\b${escaped}\\b`, 'gi')
       : new RegExp(escaped, 'gi');
     const matches = lower.match(re);
-    if (matches) mentionCount += matches.length;
+    if (matches) literalCount += matches.length;
   }
+
+  // Punctuation-insensitive count (scripts/lib/show-title-variants.js). shows.json
+  // "Dog Man - The Musical" vs prose "Dog Man: The Musical"/"Dog Man", and "Oh,
+  // Mary!" vs "Oh Mary!", never matched the literal tokens above, so real reviews
+  // counted 0 mentions and were nulled as url_content_mismatch (2026-09-24).
+  // The same token set is re-counted in the normalized space; the pre-subtitle
+  // short title ("dog man") adds ONLY occurrences not already covered by another
+  // token's match, so one "Les Misérables" in a roundup is not double-counted as
+  // prefix + ID word (keeps the roundup single-mention rejection intact).
+  const normMentionText = normalizeForMention(text);
+  const baseVariants = new Set(
+    (showTitle && showTitle.length > 2) ? buildShowTitleVariants(showTitle, { includePrefix: false }) : [],
+  );
+  for (const tok of tokens) {
+    const nt = normalizeForMention(tok);
+    if (nt) baseVariants.add(nt);
+  }
+  const prefixVariants = ((showTitle && showTitle.length > 2) ? buildShowTitleVariants(showTitle) : [])
+    .filter((v) => !baseVariants.has(v));
+  const titleVariants = [...baseVariants, ...prefixVariants];
+  let normalizedCount = 0;
+  const coveredSpans = [];
+  for (const v of baseVariants) {
+    const spans = findVariantSpans(normMentionText, v);
+    normalizedCount += spans.length;
+    coveredSpans.push(...spans);
+  }
+  for (const v of prefixVariants) {
+    for (const [a, b] of findVariantSpans(normMentionText, v)) {
+      if (coveredSpans.some(([c, d]) => a < d && c < b)) continue;
+      normalizedCount++;
+      coveredSpans.push([a, b]);
+    }
+  }
+  const mentionCount = Math.max(literalCount, normalizedCount);
 
   // HTML <title> check (optional — only when html is provided)
   let htmlTitle = null;
@@ -3194,6 +3243,12 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
             htmlTitleMatch = true;
             break;
           }
+        }
+        // Same punctuation-insensitive variants the body count uses ("Dog Man: The
+        // Musical review" <title> vs shows.json "Dog Man - The Musical").
+        if (!htmlTitleMatch) {
+          const normHtml = normalizeForMention(htmlTitle);
+          if (titleVariants.some((v) => countVariant(normHtml, v) > 0)) htmlTitleMatch = true;
         }
       }
     }
@@ -3222,8 +3277,16 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   // ("...and more", "shows to see", "5 shows", "this week") — handles the "leads with
   // show A then lists B, C" comparison-piece case Codex raised in re-review.
   const ROUNDUP_HEADLINE_MARKERS = /\b(roundup|shows? to see|things to do|what to see|best (?:plays|musicals|shows|of)|this week|and more|top \d+|\d+ shows)\b/i;
+  // Full title in the punctuation-insensitive space ("dog man the musical") — the
+  // literal strippedTitle keeps " - " and so never matched a "Dog Man: The Musical"
+  // headline or body.
+  const fullMentionTitle = normalizeForMention(showTitle || '');
+  const mentionLeadForLong = htmlTitle
+    ? normalizeForMention(htmlTitle).replace(/^(?:review\s+)?/, '')
+    : '';
   const titleLeadsWithShow = isLongTitle && !!normHtmlTitle
-    && headlineLead.startsWith(strippedTitle)
+    && (headlineLead.startsWith(strippedTitle)
+      || (!!fullMentionTitle && (mentionLeadForLong === fullMentionTitle || mentionLeadForLong.startsWith(`${fullMentionTitle} `))))
     && !ROUNDUP_HEADLINE_MARKERS.test(normHtmlTitle);
   if (titleLeadsWithShow) {
     return {
@@ -3239,7 +3302,8 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   // NOT an early return — the htmlTitleMatch===false backstop below still rejects a
   // page whose <title> is about a DIFFERENT show even if it name-drops this title
   // once in passing.
-  const bodyHasLongTitlePhrase = isLongTitle && lower.includes(strippedTitle);
+  const bodyHasLongTitlePhrase = isLongTitle
+    && (lower.includes(strippedTitle) || (!!fullMentionTitle && countVariant(normMentionText, fullMentionTitle) > 0));
 
   // When the HTML <title> matches the show, the URL is provably correct — relax
   // the body-mention threshold by 1 (but require at least 1 body mention so a
@@ -3265,8 +3329,11 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   // the same proof titleLeadsWithShow uses for long titles. A review headline opens with
   // the show name; an unrelated article that merely contains the word does not. Reuses
   // headlineLead (computed above, "review:"-prefix stripped).
-  const headlineLeadsWithShow = !!headlineLead
-    && [...tokens].some((tok) => tok && headlineLead.startsWith(tok));
+  const mentionHeadlineLead = mentionLeadForLong;
+  const headlineLeadsWithShow = (!!headlineLead
+    && [...tokens].some((tok) => tok && headlineLead.startsWith(tok)))
+    || (!!mentionHeadlineLead && titleVariants.some((v) => v
+      && (mentionHeadlineLead === v || mentionHeadlineLead.startsWith(`${v} `))));
   const titleProvesShow = htmlTitleMatch === true && !htmlTitleIsRoundup && headlineLeadsWithShow;
   const effectiveThreshold = bodyHasLongTitlePhrase
     ? 1
