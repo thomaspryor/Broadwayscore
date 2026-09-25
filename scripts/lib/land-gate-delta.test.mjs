@@ -15,7 +15,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   GATES, decideGateDelta, decideAllGates, firstFailingGate, parseGateFailures, parseTscFailures,
-  parseNextLintFailures, parseLintWorkflowsFailures, computeCodeTreeHash, formatSummary, main, addWithMultiplicity, isCacheKeyRelevant,
+  parseNextLintFailures, parseLintWorkflowsFailures, parseBashIntegrationFailures, computeCodeTreeHash, formatSummary, main, addWithMultiplicity, isCacheKeyRelevant,
 } = require('./land-gate-delta.js');
 
 const CLI = path.join(path.dirname(new URL(import.meta.url).pathname), 'land-gate-delta.js');
@@ -212,7 +212,26 @@ test('parseGateFailures dispatches per gate and refuses an unknown gate', () => 
   assert.equal(parseLintWorkflowsFailures('unrelated ::error:: line').size, 0);
   for (const g of ['unit-tests-node', 'unit-tests-tsx', 'scripts-lib-tests']) assert.equal(parseGateFailures(g, tap(ROOT, [['t.test.mjs', 'n']]), ROOT).size, 1);
   assert.equal(GATES.includes('unit-tests'), false, 'the two unit batches are separate gates');
+  assert.equal(GATES.includes('bash-integration'), true, 'BRO-4150: land.yml must run test.yml\'s bash integration tests too');
+  assert.equal(parseGateFailures('bash-integration', '::error::bash-integration gate failed: scripts/lib/x.test.sh (exit 1)').size, 1);
   assert.throws(() => parseGateFailures('nope', ''), /no parser/);
+});
+
+test('bash-integration (BRO-4150): keyed by failing FILE, so a NEW file failing on the branch refuses even while base is red on a different file', () => {
+  const base = '── scripts/lib/a.test.sh\nboom\n::error::bash-integration gate failed: scripts/lib/a.test.sh (exit 1)\n::error::bash-integration failures:\n  - scripts/lib/a.test.sh\n';
+  const branch = '── scripts/lib/a.test.sh\nboom\n::error::bash-integration gate failed: scripts/lib/a.test.sh (exit 1)\n── scripts/lib/b.test.sh\nboom\n::error::bash-integration gate failed: scripts/lib/b.test.sh (exit 1)\n::error::bash-integration failures:\n  - scripts/lib/a.test.sh\n  - scripts/lib/b.test.sh\n';
+  assert.deepEqual([...parseBashIntegrationFailures(base).keys()], ['bash-integration::scripts/lib/a.test.sh']);
+  const d = decideGateDelta({ gate: 'bash-integration', base: { exit: 1, text: base }, branch: { exit: 1, text: branch } });
+  assert.equal(d.verdict, 'fail');
+  assert.deepEqual(keys(d.newFailures), ['bash-integration::scripts/lib/b.test.sh']);
+  assert.deepEqual(keys(d.preExisting), ['bash-integration::scripts/lib/a.test.sh']);
+});
+
+test('bash-integration: a file that stops failing on the branch is reported fixed, not new', () => {
+  const base = '::error::bash-integration gate failed: scripts/lib/a.test.sh (exit 1)\n';
+  const d = decideGateDelta({ gate: 'bash-integration', base: { exit: 1, text: base }, branch: { exit: 0, text: '' } });
+  assert.equal(d.verdict, 'pass');
+  assert.deepEqual(keys(d.fixed), ['bash-integration::scripts/lib/a.test.sh']);
 });
 
 test('multiplicity: a second identical tsc diagnostic in the same file is a NEW key (base had one, branch has two)', () => {
