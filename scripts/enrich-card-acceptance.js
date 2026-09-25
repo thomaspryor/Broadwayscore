@@ -1088,7 +1088,8 @@ function buildDraftSection(parsed, bareCommand, pathCheck, sanitizedNotes) {
 
 /**
  * Enrich one card. Returns { id, name, action, detail }.
- * action: 'skipped' | 'owner-judgment' | 'llm-enriched' | 'failed'
+ * action: 'skipped' | 'refused' | 'owner-judgment' | 'llm-enriched' | 'failed'
+ * ('refused' only reachable with opts.rearm — BRO-3395, line ~1108)
  * opts.callLLM is injected (real provider-fallback callLLM in the CLI, a stub in tests).
  */
 async function enrichOneCard(card, opts = {}) {
@@ -1407,12 +1408,25 @@ async function runLinearLeg(args, { dryRun, limit }) {
     const shown = dropped.slice(0, 20).join(',') + (dropped.length > 20 ? `,… (+${dropped.length - 20} more)` : '');
     console.error(`[enrich-card-acceptance] linear: --identifiers gave ${identifiers.length} ids; ${selected.length} selected, ${dropped.length} dropped (already armed or not an open issue)${dropped.length ? `: ${shown}` : ''}`);
   }
-  const refusedIdentifiers = selected.slice(0, limit);
-  if (selected.length > refusedIdentifiers.length) {
-    console.error(`[enrich-card-acceptance] linear: --limit ${limit} truncates ${selected.length} selected issue(s) to ${refusedIdentifiers.length}; ${selected.length - refusedIdentifiers.length} left for a later run`);
+  // BRO-4135 (ship-check/Codex finding): --limit bounds ENRICHMENT ATTEMPTS,
+  // not raw candidates. selectRefusedLinearIdentifiers is description-only
+  // (the list query carries no comments), so a card already armed via a
+  // LATER comment (BRO-3395's rearm path, or a human's own comment) still
+  // shows up here and only resolves to 'skipped' once the loop below fetches
+  // its full issue. The old `selected.slice(0, limit)` spent the whole
+  // budget on the same P0/P1-sorted prefix every run — if that prefix is
+  // comment-armed, every scheduled run reprocesses and skips the identical
+  // cards and NEVER reaches the genuinely unarmed ones behind it. Scanning
+  // (not slicing) fixes that; SCAN_CEILING bounds the worst case (every
+  // candidate turns out to be a cheap comment-check skip) so a pathological
+  // run still can't turn into an unbounded Linear-API sweep.
+  const SCAN_CEILING = Math.max(limit * 4, 100);
+  const scanCandidates = selected.slice(0, SCAN_CEILING);
+  if (selected.length > scanCandidates.length) {
+    console.error(`[enrich-card-acceptance] linear: ${selected.length} selected issue(s), scanning at most ${scanCandidates.length} this run (SCAN_CEILING) toward a --limit ${limit} enrichment-attempt budget`);
   }
-  console.error(`[enrich-card-acceptance] linear: ${refusedIdentifiers.length} refused issue(s) to process (mode=${dryRun ? 'dry-run' : 'LIVE'}, model=${MODEL})`);
-  if (!refusedIdentifiers.length) return [];
+  console.error(`[enrich-card-acceptance] linear: up to ${scanCandidates.length} candidate(s) to scan, budget ${limit} enrichment attempt(s) (mode=${dryRun ? 'dry-run' : 'LIVE'}, model=${MODEL})`);
+  if (!scanCandidates.length) return [];
 
   // Team id is only needed to tag the 'auto-enriched' label on a real write —
   // resolved once per run, not per card. dryRun never reaches writeCard() (see
@@ -1430,14 +1444,20 @@ async function runLinearLeg(args, { dryRun, limit }) {
   }
 
   const results = [];
-  for (const [i, identifier] of refusedIdentifiers.entries()) {
+  let attempts = 0; // every action EXCEPT 'skipped' — see SCAN_CEILING comment above
+  for (const [i, identifier] of scanCandidates.entries()) {
+    if (attempts >= limit) {
+      console.error(`[enrich-card-acceptance] linear: --limit ${limit} enrichment attempt(s) reached after ${i}/${scanCandidates.length} scanned; ${scanCandidates.length - i} left for a later run`);
+      break;
+    }
     let full;
     try {
       full = await linear.getIssue(identifier);
     } catch (e) {
       const failResult = { id: identifier, name: identifier, action: 'failed', detail: `Linear fetch failed: ${e.message}`, source: 'linear' };
       results.push(failResult);
-      console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${identifier} → failed (${truncateDetail(failResult.detail)})`);
+      attempts++;
+      console.error(`[enrich-card-acceptance] linear ${i + 1}/${scanCandidates.length} ${identifier} → failed (${truncateDetail(failResult.detail)})`);
       continue;
     }
     if (!full) continue;
@@ -1456,7 +1476,7 @@ async function runLinearLeg(args, { dryRun, limit }) {
         detail: `issue reached a terminal state ("${(full.state && full.state.name) || stateType}") since the sweep`,
       };
       results.push(skipResult);
-      console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${identifier} → skipped (${skipResult.detail})`);
+      console.error(`[enrich-card-acceptance] linear ${i + 1}/${scanCandidates.length} ${identifier} → skipped (${skipResult.detail})`);
       continue;
     }
     if (isArmedIncludingComments(full)) {
@@ -1465,14 +1485,26 @@ async function runLinearLeg(args, { dryRun, limit }) {
         detail: 'already armed via a comment (linear-next reads comments; a description rewrite would add a second, conflicting command)',
       };
       results.push(skipResult);
-      console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${identifier} → skipped (${skipResult.detail})`);
+      console.error(`[enrich-card-acceptance] linear ${i + 1}/${scanCandidates.length} ${identifier} → skipped (${skipResult.detail})`);
       continue;
     }
     const card = normalizeLinearIssue(full);
     const result = await enrichOneCard(card, { callLLM, writeCard, dryRun, force: !!args.force });
     result.source = 'linear';
     results.push(result);
-    console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${card.identifier} ${card.name} → ${result.action}${result.detail ? ` (${truncateDetail(result.detail)})` : ''}`);
+    // enrichOneCard can itself return action:'skipped' (already armed,
+    // already tagged auto-enriched — idempotency checks internal to that
+    // function, not the two pre-checks above) — those must not count against
+    // the budget either, for the same reason the pre-checks don't (live-run
+    // caught this: BRO-3595 "already tagged auto-enriched" was consuming a
+    // budget slot before this fix). The call above never passes opts.rearm,
+    // so action:'refused' (BRO-3395, only reachable in rearm mode) can never
+    // reach this line — if a future edit threads rearm through this call
+    // path, a refusal is real work (a Linear fetch happened) and should
+    // count, so leaving it un-excluded here is correct by construction, not
+    // an oversight.
+    if (result.action !== 'skipped') attempts++;
+    console.error(`[enrich-card-acceptance] linear ${i + 1}/${scanCandidates.length} ${card.identifier} ${card.name} → ${result.action}${result.detail ? ` (${truncateDetail(result.detail)})` : ''}`);
     if (result.action === 'llm-enriched' || result.action === 'failed') await new Promise(r => setTimeout(r, 1000));
   }
   return results;

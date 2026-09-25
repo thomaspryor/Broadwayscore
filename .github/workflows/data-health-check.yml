@@ -133,7 +133,17 @@ jobs:
     # net-neutral at 3 — the same count this comment's ~90min budget already
     # assumes, just composed of different steps than when that budget was
     # written. timeout-minutes stays at 180.
-    timeout-minutes: 180
+    #
+    # Raised 180->210 (BRO-4135): two new capped steps, "Open backlog
+    # acceptance sweep (shadow mode)" (timeout-minutes: 8) and "Commit open
+    # backlog acceptance sweep" (timeout-minutes: 17), positioned immediately
+    # after "Commit acceptance recheck ledger" — same shape and same
+    # immediately-after-its-own-write-step placement as that pair, for the
+    # same BRO-471 git-reset-hard-collision reason. +25min added to the
+    # explicit capped-step sum this comment tracks; 210 keeps real margin
+    # above the new total, still nowhere near GitHub Actions' 360-min hard
+    # job ceiling.
+    timeout-minutes: 210
     permissions:
       contents: write
       issues: write
@@ -537,6 +547,55 @@ jobs:
             echo "No recheck ledger changes"
           else
             git commit -m "data: Update acceptance recheck ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
+      # Open backlog acceptance sweep (BRO-4135, closing BRO-3551's R3 gap):
+      # scripts/sweep-open-backlog-acceptance.js existed as working code but
+      # had no scheduled caller anywhere (grep of .github/workflows and
+      # ~/Library/LaunchAgents found it only in test.yml's unit-test path
+      # trigger) — data/audit/open-backlog-acceptance-sweep.json never
+      # existed in the main checkout, so linear-watchdog-source.js's
+      # `alreadyPasses` gate always saw an empty set. SHADOW/report-only
+      # (never closes, comments on, or mutates a Linear issue — see that
+      # script's own header) — continue-on-error so a crash here can never
+      # block this job's other commits. Modeled directly on "Acceptance
+      # recheck (shadow mode)" above: same 5min internal script deadline
+      # inside an 8min step-timeout backstop for the same reason (a hung
+      # check command inside the verify loop wouldn't hit the internal
+      # deadline until the NEXT iteration).
+      - name: Open backlog acceptance sweep (shadow mode)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 8
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/sweep-open-backlog-acceptance.js --time-budget-min 5
+
+      # Commit immediately after the step that writes it, before any other
+      # push-with-retry.sh call later in this job — same BRO-471 lesson
+      # "Commit acceptance recheck ledger" above already documents: a later
+      # step's push-with-retry.sh fallback prep does an unconditional `git
+      # reset --hard $RESTORE_BASE_HEAD` that would wipe this file's
+      # uncommitted content if this commit ran any later. Same budget/env
+      # values as that sibling step — this file is also single-writer
+      # (only this cron writes it) and apiFallbackSafe for the same reason.
+      - name: Commit open backlog acceptance sweep
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 17
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/open-backlog-acceptance-sweep.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No open backlog acceptance sweep changes"
+          else
+            git commit -m "data: Update open backlog acceptance sweep [skip ci]"
             bash scripts/lib/push-with-retry.sh 25 main
           fi
 

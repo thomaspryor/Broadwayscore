@@ -2760,6 +2760,13 @@ on:
       # they're path-listed here so a solo edit triggers CI (task #1745 gap).
       - 'scripts/sweep-open-backlog-acceptance.js'
       - 'scripts/sweep-open-backlog-acceptance.test.mjs'
+      # BRO-4135: the BRO-3913 RECHECK command. Reads scripts/lib/linear-
+      # drain-throughput.js (rides the 'scripts/lib/**' glob above) plus
+      # scripts/lib/backlog-inflow-ratio.js and scripts/lib/linear-client.js
+      # (same glob); this top-level CLI + its colocated test do not ride
+      # that glob, so path-listed here so a solo edit triggers CI.
+      - 'scripts/check-linear-drain-throughput.js'
+      - 'scripts/check-linear-drain-throughput.test.mjs'
       # BRO-386: the recheck ledger's commit+push is a SEPARATE step from the
       # bulk health-check commit in data-health-check.yml (a lost bulk-commit
       # push race was silently discarding every RECHECK-AFTER verdict for the

@@ -29,13 +29,25 @@ name: Card Verifiability Audit
 # built-in provider fallback — all four confirmed present via `gh secret
 # list`.
 #
-# Deliberately Notion-only (--from-report, no --source flag): matches this
-# script's own documented history (enrich-card-acceptance.js's main() picked
-# 'notion' as the unflagged default specifically because every prior
-# invocation — manual or otherwise — was Notion-only; defaulting to 'both'
-# would silently start writing to live Linear issues too). Revisit once the
-# Notion->Linear migration (Phase 1, CLAUDE.md rule 6) finishes and Notion
-# stops taking new cards entirely.
+# BRO-4135: now --source both, not Notion-only. R1 of BRO-3913's backlog
+# drain plan assumed this workflow already armed Linear Urgent/High cards
+# with acceptance criteria — it never did: the migration (task #1830) added
+# enrich-card-acceptance.js's Linear leg as CODE, but this was, and until
+# this fix remained, the only scheduled caller, and it never passed
+# --source linear/both. Measured 09-24: the Linear leg's own P0/P1-first
+# default ordering (priorityTierRank in enrich-card-acceptance.js) was never
+# exercised in production. --limit 25 caps BOTH legs (main()'s `limit` is one
+# value shared across runNotionLeg and runLinearLeg — --from-report only
+# changes where the Notion leg's CANDIDATE LIST comes from, not its cap) —
+# down from the Notion leg's own previous unflagged DEFAULT_LIMIT=100, and
+# deliberately conservative for the brand-new Linear leg, which previously
+# made zero live Linear writes. Inside the same 20-minute job ceiling this
+# workflow already ran within for the larger Notion-only-at-100 leg alone
+# (raised below to give the new Linear leg's LLM-call volume real margin
+# regardless). Keeps the
+# Notion leg running too (not yet retired — Phase 1 of the CLAUDE.md rule 6
+# migration is still mid-flight per project memory); drop --source back to
+# implicit 'notion', or the whole Notion leg, once Notion stops taking cards.
 
 on:
   schedule:
@@ -52,7 +64,14 @@ concurrency:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # Raised 20->35 (BRO-4135): the new Linear leg (--source both) roughly
+    # doubles the LLM-drafting work this step does — up to 25 more Haiku
+    # calls, each followed by a 1s pacing sleep on enrich/fail
+    # (enrich-card-acceptance.js's runLinearLeg) — inside the same step that
+    # also runs the Notion leg and both audit passes. 35 gives real margin
+    # without needing a live-cost measurement against production Linear to
+    # pin an exact number.
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v5
         with:
@@ -95,7 +114,7 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: |
           node scripts/audit-card-verifiability.js
-          node scripts/enrich-card-acceptance.js --from-report
+          node scripts/enrich-card-acceptance.js --from-report --source both --limit 25
           node scripts/audit-card-verifiability.js
 
       - name: Commit refreshed report
