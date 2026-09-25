@@ -1165,5 +1165,34 @@
       }
     ],
     "queuedAt": "2026-09-25T01:58:31.835Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-coverage-backlog-0925",
+    "title": "Landing blocked: unit-tests-node red on land/worktree-coverage-backlog-0925",
+    "description": "land.yml did not land land/worktree-coverage-backlog-0925: the unit-tests-node gate went red at a92effa405. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36083907002",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-coverage-backlog-0925"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "a92effa405d22dafa9de2b6d1782b76819bcea44"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36083907002"
+      }
+    ],
+    "queuedAt": "2026-09-25T02:07:00.288Z"
   }
 ]
