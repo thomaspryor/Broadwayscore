@@ -51,30 +51,49 @@ function envTrue(v) {
 }
 
 /**
- * Decide whether the gap audit may proceed.
+ * Decide whether a SERP-dependent script may proceed.
+ *
+ * Generalized (BRO-4139) from the gap-audit-only version so the other five
+ * callers of serpQuery()/serpSearch() can share one predicate instead of each
+ * re-deriving "is a key present" by hand. Every default reproduces the
+ * original gap-audit behavior exactly (existing tests assert on the default
+ * reason text), so this is additive: pass `opts` to customize the opt-out env
+ * var and the downstream-consequence text for a different caller.
  *
  * @param {object} env  process.env (or a fixture)
+ * @param {object} [opts]
+ * @param {string} [opts.disableVar]  Env var name that opts out (default
+ *   'SERP_GAP_CENSUS_DISABLED' — the gap audit's own switch).
+ * @param {string} [opts.consequence]  What happens downstream when this
+ *   caller silently proceeds keyless. Defaults to the gap-audit's own
+ *   VERIFIED-COMPLETE consequence text.
+ * @param {string} [opts.workflowHint]  Path named in the "check CI" remedy
+ *   line (default: audit-aggregator-gap.yml).
  * @returns {{ok: boolean, reason: string}}
  */
-function serpCensusPreflight(env = {}) {
-  if (envTrue(env.SERP_GAP_CENSUS_DISABLED)) {
-    return { ok: true, reason: 'SERP census explicitly disabled — a zero census is an expected consequence of that choice, not an accident' };
+function serpCensusPreflight(env = {}, opts = {}) {
+  const disableVar = opts.disableVar || 'SERP_GAP_CENSUS_DISABLED';
+  if (envTrue(env[disableVar])) {
+    return { ok: true, reason: `SERP census explicitly disabled via ${disableVar} — a zero census is an expected consequence of that choice, not an accident` };
   }
   const present = SERP_KEY_VARS.filter((k) => env[k] && String(env[k]).trim());
   if (present.length > 0) {
     return { ok: true, reason: `SERP census can run (${present.join(', ')} present)` };
   }
+  const consequence = opts.consequence
+    || 'The census would contribute zero candidates and every show audited would be written with a '
+      + '0-live/0-candidate verdict and a fresh zero-gap checkpoint entry, which downstream reads as '
+      + 'VERIFIED COMPLETE. Refusing to run.';
+  const workflowHint = opts.workflowHint || '.github/workflows/audit-aggregator-gap.yml';
   return {
     ok: false,
     reason:
       'No SERP API key in the environment (need SCRAPINGBEE_API_KEY or BRIGHTDATA_TOKEN). '
-      + 'The census would contribute zero candidates and every show audited would be written with a '
-      + '0-live/0-candidate verdict and a fresh zero-gap checkpoint entry, which downstream reads as '
-      + 'VERIFIED COMPLETE. Refusing to run.\n'
+      + consequence + '\n'
       + '  Locally: the keys live in .env, which fetchPage loads internally but this path does not — '
       + 'export them into the shell first, e.g. `set -a; . ./.env; set +a`.\n'
-      + '  In CI: check the env: block of .github/workflows/audit-aggregator-gap.yml and the repo secrets.\n'
-      + '  To run deliberately WITHOUT the census, say so: SERP_GAP_CENSUS_DISABLED=1',
+      + `  In CI: check the env: block of ${workflowHint} and the repo secrets.\n`
+      + `  To run deliberately WITHOUT the census, say so: ${disableVar}=1`,
   };
 }
 

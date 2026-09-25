@@ -70,6 +70,7 @@ const { buildCensusQueries, buildCensusPlan, buildNaiveCensusQuery, censusGeoFor
 const { acceptSerpCensusResult, normalizeReviewUrl, isReviewUrl } = require('./audit-show-review-gap.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { loadEnv } = require('./lib/load-env.js');
+const { serpCensusPreflight } = require('./lib/serp-census-preflight.js');
 const {
   classifySample, detectProviderOutage, detectRecallRegression, parseTrendJsonl,
   perArmRecall, perCategoryRecall, summarizeRun,
@@ -235,6 +236,25 @@ async function main() {
   // first cadence smoke run — the provider-outage guard below is the second
   // half of that fix, for the case where the keys exist but the chain is down.)
   loadEnv(ROOT);
+
+  // Precondition (BRO-4139): a missing key is indistinguishable, downstream,
+  // from a real regression — detectProviderOutage() below already refuses to
+  // feed a keyless run's flat zeros into the trend, but only AFTER every arm
+  // has already run and the raw report has been assembled. WARN here and skip
+  // the whole run before spending anything: "no key" means "no new data this
+  // run," not "recall regressed," and there's nothing this run can measure.
+  const preflight = serpCensusPreflight(process.env, {
+    consequence:
+      'Every arm would return zero results — indistinguishable, downstream, '
+      + 'from a genuine recall regression. Skipping this run rather than '
+      + 'recording a flat-zero measurement.',
+    workflowHint: '.github/workflows/audit-census-recall.yml',
+  });
+  if (!preflight.ok) {
+    console.warn(`census recall preflight: ${preflight.reason}`);
+    console.warn('Skipping this run — no trend entry, no report written.');
+    return 0;
+  }
 
   const shows = loadShows();
   const selection = pickShows(shows);

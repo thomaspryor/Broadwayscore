@@ -60,6 +60,7 @@ const { classifySample } = require('./lib/census-recall.js');
 const { classifyCandidate, summarizeShow, summarizeRun, evaluateAcceptance } = require('./lib/coverage-adversarial-probe.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { loadEnv } = require('./lib/load-env.js');
+const { serpCensusPreflight } = require('./lib/serp-census-preflight.js');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -255,6 +256,27 @@ async function main() {
   // real gap (nothing found ⇒ nothing to classify ⇒ trivially 'clean'), which
   // would be worse than not probing at all (same lesson as census-recall.js).
   loadEnv(ROOT);
+
+  // Precondition (BRO-4139): a keyless run doesn't just probe less — every
+  // sampled show returns zero candidates, which classifyCandidate/
+  // summarizeShow reads as 'clean' (no gap found), and a clean run feeds
+  // evaluateAcceptance()'s "two consecutive clean weeks" gate for Coverage
+  // Verdict S5 (#903). A rotated/dropped SERP secret would silently
+  // manufacture that acceptance bar instead of failing loudly — unlike the
+  // DISABLED switches above, which are an operator's deliberate choice, this
+  // is an accident and must REFUSE.
+  const preflight = serpCensusPreflight(process.env, {
+    consequence:
+      'Every sampled show would return zero candidates, which reads as a clean '
+      + 'PASS and feeds evaluateAcceptance()\'s "two consecutive clean weeks" '
+      + 'gate for Coverage Verdict S5 (#903) — a rotated/missing secret would '
+      + 'silently manufacture that acceptance bar. Refusing to run.',
+    workflowHint: '.github/workflows/coverage-adversarial-probe.yml',
+  });
+  if (!preflight.ok) {
+    console.error(`::error::coverage adversarial probe preflight failed — ${preflight.reason}`);
+    return 1;
+  }
 
   const shows = loadShows();
   const sampleSize = parseInt(getArg('sample', String(DEFAULT_SAMPLE)), 10);
