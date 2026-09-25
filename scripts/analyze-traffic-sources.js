@@ -646,6 +646,18 @@ async function main() {
   const sd = fromRaw ? fromRaw.startDate : startDate;
   const ed = fromRaw ? fromRaw.endDate : endDate;
 
+  // The report and the owner summary are written FIRST, before the history
+  // refresh: if a slow PostHog day eats the job's time during the refresh,
+  // the always() email step still has a complete summary to send.
+  const { md, problems, spikes } = buildReport({ ga, ph, startDate: sd, endDate: ed, weeks, currentWeek: cw });
+  fs.mkdirSync(outDir, { recursive: true });
+  fs.writeFileSync(path.join(outDir, 'traffic-sources-report.md'), md);
+  // The owner-facing summary (what the email body is made of).
+  const { buildHumanSummary, loadShows, pageName, sourceName, isOwnTooling, isDirect } = require('./lib/traffic-report-human');
+  const showsPath = typeof args.shows === 'string' ? args.shows : [path.join(__dirname, '..', 'data', 'shows.json'), '/tmp/core-data-checkout/shows.json'].find((p) => fs.existsSync(p));
+  const summary = buildHumanSummary({ ga, ph, weeks, currentWeek: cw, problems, showsPath });
+  fs.writeFileSync(path.join(outDir, 'traffic-sources-summary.md'), summary);
+
   // ---- long-running visit history (tiles, charts, /admin/traffic; BRO-4136) ----
   // --history=<store.json>: the store kept in the private data repo. It is
   // refreshed (last 6 weeks re-queried) and the merged store is written to
@@ -673,15 +685,6 @@ async function main() {
     }
   }
 
-  const { md, problems, spikes } = buildReport({ ga, ph, startDate: sd, endDate: ed, weeks, currentWeek: cw });
-  fs.mkdirSync(outDir, { recursive: true });
-  fs.writeFileSync(path.join(outDir, 'traffic-sources-report.md'), md);
-  // The owner-facing summary (what the email body is made of).
-  const { buildHumanSummary, loadShows, pageName, sourceName, isOwnTooling, isDirect } = require('./lib/traffic-report-human');
-  const showsPath = typeof args.shows === 'string' ? args.shows : [path.join(__dirname, '..', 'data', 'shows.json'), '/tmp/core-data-checkout/shows.json'].find((p) => fs.existsSync(p));
-  const summary = buildHumanSummary({ ga, ph, weeks, currentWeek: cw, problems, showsPath });
-  fs.writeFileSync(path.join(outDir, 'traffic-sources-summary.md'), summary);
-
   // Headline tiles + chart configs for the email, and the dashboard payload.
   const TM = require('./lib/traffic-metrics');
   const shows = loadShows(showsPath);
@@ -693,12 +696,19 @@ async function main() {
     topPages: metrics.top.pages.length ? TM.topPagesChartConfig(metrics.top.pages, { weekStart: metrics.week.start }) : null,
   };
   fs.writeFileSync(path.join(outDir, 'traffic-metrics.json'), JSON.stringify({ metrics, tiles: TM.buildTiles(metrics), charts, historyErrors }, null, 1));
-  if (historyRefreshed || (fromRaw && history)) {
+  // Only a successful live refresh produces a store for the workflow to push back.
+  if (historyRefreshed) fs.writeFileSync(path.join(outDir, 'traffic-history.json'), JSON.stringify(history));
+  // The dashboard's top-10 lists come from this run's page / referrer /
+  // country queries. If any of them failed, publishing would replace last
+  // week's good lists with empty ones, so the dashboard keeps last week's
+  // payload instead (the history store above is independent and still saved).
+  const topQueriesFailed = !ph || ph.skipped || ['landing', 'referringDomain', 'country'].some((k) => ph.errors && ph.errors[k]);
+  if ((historyRefreshed || (fromRaw && history)) && !topQueriesFailed) {
     const dash = TM.buildDashboardData({ ...mctx, naming, metrics, generatedAt: new Date().toISOString() });
     fs.writeFileSync(path.join(outDir, 'traffic-dashboard.json'), JSON.stringify(dash));
-    // Only a successful live refresh produces a store for the workflow to push back.
-    if (historyRefreshed) fs.writeFileSync(path.join(outDir, 'traffic-history.json'), JSON.stringify(history));
     console.log(`Wrote traffic-dashboard.json (${dash.weeks.length} weeks, ${dash.months.length} months)${historyRefreshed ? ' + traffic-history.json' : ''}`);
+  } else if (historyRefreshed) {
+    console.log('Wrote traffic-history.json; dashboard NOT rewritten (a page/referrer/country query failed)');
   }
 
   fs.writeFileSync(path.join(outDir, 'traffic-sources-raw.json'), JSON.stringify({ startDate: sd, endDate: ed, weeks, currentWeek: cw, spikes, ga, ph, history, historyErrors }, null, 1));

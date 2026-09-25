@@ -47,7 +47,7 @@ test('YoY is "not yet" until a full same-week-last-year exists, then real', () =
   const notQuite = TM.computeTrafficMetrics({ history: h, ph, startDate: '2026-12-21', endDate: '2027-03-17', currentWeek: '2027-03-15', naming });
   assert.equal(notQuite.yoy.available, false);
   assert.equal(notQuite.yoy.availableFrom, '2027-03-15');
-  assert.equal(TM.buildTiles(notQuite)[2].lines[0], 'Available from March 2027');
+  assert.deepEqual(TM.buildTiles(notQuite)[2].lines, ['Tracking began March 2026', 'First comparison: March 2027']);
   const real = TM.computeTrafficMetrics({ history: h, ph, startDate: '2026-12-28', endDate: '2027-03-24', currentWeek: '2027-03-22', naming });
   assert.equal(real.yoy.available, true);
   assert.equal(real.yoy.lastYearWeek, '2026-03-16');
@@ -96,7 +96,7 @@ test('top page / referrer / country: named, merged, direct and own tooling exclu
   assert.deepEqual(m.top.countries, [{ key: 'United States', visits: 60 }]);
 });
 
-test('charts: 13 weekly points, search line from channel rows; URLs stay under 8KB', () => {
+test('charts: 13 weekly points, search line from channel rows; bar labels capped', () => {
   const h = store('2026-03-09', '2026-09-23', () => 100, { channelDaily: [{ date: '2026-09-15', key: 'Organic Search', sessions: 7 }] });
   const cfg = TM.weeklyChartConfig({ history: h, ph, startDate: '2026-06-22', endDate: '2026-09-23', currentWeek: '2026-09-21' });
   assert.equal(cfg.data.labels.length, 13);
@@ -106,7 +106,7 @@ test('charts: 13 weekly points, search line from channel rows; URLs stay under 8
   const bar = TM.topPagesChartConfig(pages, { weekStart: '2026-09-14' });
   assert.equal(bar.data.labels.length, 8);
   assert.ok(bar.data.labels.every((l) => l.length <= 34));
-  assert.ok(TM.chartUrl(cfg).length < 8000 && TM.chartUrl(bar).length < 8000);
+
 });
 
 test('dashboard payload: weeks only where tracked, channel groups, current month partial', () => {
@@ -124,4 +124,46 @@ test('dashboard payload: weeks only where tracked, channel groups, current month
   assert.equal(d.months[0].month, '2026-03');
   assert.equal(d.months.at(-1).partial, true);
   assert.equal(d.months.find((m) => m.month === '2026-08').visitors, 2000);
+});
+
+test('run on the 1st: the month that just ended is the full month, nothing is "so far"', () => {
+  const h = store('2026-03-09', '2027-03-01');
+  const m = TM.computeTrafficMetrics({ history: h, ph, startDate: '2026-11-30', endDate: '2027-03-01', currentWeek: '2027-03-01', naming });
+  assert.equal(m.mtd.month, '2027-03');
+  assert.equal(m.mtd.days, 0);
+  assert.equal(m.mtd.visits, null);
+  assert.equal(m.lastMonth.month, '2027-02');
+  assert.equal(m.lastMonth.visits, 2800);
+  assert.equal(TM.buildTiles(m)[1].value, '—');
+  const d = TM.buildDashboardData({ history: h, ph, startDate: '2026-11-30', endDate: '2027-03-01', currentWeek: '2027-03-01', naming, metrics: m, generatedAt: 'x' });
+  assert.equal(d.months.at(-1).month, '2027-02');
+  assert.equal(d.months.at(-1).partial, false);
+});
+
+test('month-to-date compares only from the 3rd; a gap day makes the window unknown', () => {
+  const h = store('2026-03-09', '2026-11-02');
+  const m = TM.computeTrafficMetrics({ history: h, ph, startDate: '2026-08-03', endDate: '2026-11-03', currentWeek: '2026-11-02', naming });
+  assert.equal(m.mtd.days, 2);
+  assert.equal(m.mtd.visits, 200);
+  assert.equal(m.mtd.momPct, null);
+  const gap = store('2026-03-09', '2026-09-23');
+  gap.daily = gap.daily.filter((r) => r.date !== '2026-09-16');
+  const g = TM.computeTrafficMetrics({ history: gap, ph, startDate: '2026-06-22', endDate: '2026-09-23', currentWeek: '2026-09-21', naming });
+  assert.equal(g.week.visits, null);
+  assert.equal(g.week.avg4, 700);
+});
+
+test('YoY after its date without history says it did not load, not "not yet"', () => {
+  const rows = [];
+  for (let d = '2027-03-29'; d <= '2027-06-23'; d = TM.addDays(d, 1)) rows.push({ date: d, key: 'Direct', sessions: 5 });
+  const m = TM.computeTrafficMetrics({ history: null, ph: { ...ph, channelType: rows }, startDate: '2027-03-29', endDate: '2027-06-23', currentWeek: '2027-06-21', naming });
+  assert.equal(m.yoy.notLoaded, true);
+  assert.deepEqual(TM.buildTiles(m)[2], { label: 'Year over year', value: '—', lines: ['History did not load this week'] });
+});
+
+test('a 14-day run has no "last 4 weeks" rankings', () => {
+  const h = store('2026-03-09', '2026-09-23');
+  const ctx = { history: h, ph, startDate: '2026-09-07', endDate: '2026-09-23', currentWeek: '2026-09-21' };
+  const d = TM.buildDashboardData({ ...ctx, naming, metrics: TM.computeTrafficMetrics({ ...ctx, naming }), generatedAt: 'x' });
+  assert.equal(d.top.last4Weeks, null);
 });

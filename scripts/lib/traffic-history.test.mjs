@@ -93,3 +93,26 @@ test('time budget skips the remaining series instead of running past the job tim
   assert.equal(r.refreshed, false);
   assert.match(Object.values(r.errors).join(' '), /time budget/);
 });
+
+test('a malformed store is refused before any query; a shrinking merge is not saved', async () => {
+  const { phQuery, calls } = fakePh();
+  for (const bad of [{ endDate: '2026-09-16', daily: [] }, { endDate: 'x', daily: [], channelDaily: [], weeklyVisitors: [], monthlyVisitors: [] }, [], 'str']) {
+    const r = await H.refreshHistory({ store: bad, endDate: '2026-09-23', phQuery, withRetry, where: '1=1' });
+    assert.equal(r.refreshed, false);
+    assert.match(r.errors.store, /malformed store/);
+  }
+  assert.equal(calls.length, 0);
+  // a store whose daily rows lie AFTER its endDate would be cut by the merge
+  const odd = { startDate: '2026-03-09', endDate: '2026-09-16', daily: Array.from({ length: 400 }, (_, i) => ({ date: `2030-01-${String(i % 28 + 1).padStart(2, '0')}`, sessions: 1, pageviews: 1 })), channelDaily: [], weeklyVisitors: [], monthlyVisitors: [] };
+  const r = await H.refreshHistory({ store: odd, endDate: '2026-09-23', phQuery, withRetry, where: '1=1' });
+  assert.equal(r.refreshed, false);
+  assert.match(r.errors.merge, /shrink/);
+});
+
+test('the time budget is checked per chunk inside a series', async () => {
+  const { phQuery, calls } = fakePh();
+  let t = 0;
+  const r = await H.refreshHistory({ store: null, endDate: '2026-09-23', phQuery, withRetry, where: '1=1', timeBudgetMs: 1000, now: () => (t += 400) });
+  assert.equal(r.refreshed, false);
+  assert.ok(calls.length < 3, `ran ${calls.length} queries past the budget`);
+});

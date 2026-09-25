@@ -18,7 +18,8 @@ interface Payload {
   weeks: Week[];
   months: Month[];
   channelGroups: string[];
-  top: { lastWeek: TopSet; last4Weeks: TopSet & { from: string } };
+  // null when the run's window was shorter than 4 weeks (a manual 14-day run)
+  top: { lastWeek: TopSet; last4Weeks: (TopSet & { from: string }) | null };
   cached?: boolean;
 }
 
@@ -57,14 +58,14 @@ function Card({ title, children, right }: { title: string; children: React.React
 function TileCard({ t }: { t: Tile }) {
   return (
     <div className="bg-surface-raised border border-white/[0.06] rounded-lg p-3 sm:p-4 min-w-0">
-      <div className="text-xs uppercase tracking-wide text-gray-500">{t.label}</div>
+      <div className="text-xs uppercase tracking-wide text-gray-400">{t.label}</div>
       <div className={`${t.value.length > 12 ? 'text-lg sm:text-xl leading-tight' : 'text-2xl sm:text-3xl'} font-extrabold tabular-nums mt-1 text-white break-words`}>
         {t.value}
       </div>
       {t.lines.map((l, i) => {
         const m = l.match(/^([+−-]\d+%)(.*)$/);
         return (
-          <div key={i} className="text-xs text-gray-500 mt-0.5">
+          <div key={i} className="text-xs text-gray-400 mt-0.5">
             {m ? (
               <>
                 <span className={`font-semibold ${m[1].startsWith('+') ? 'text-status-open' : 'text-score-skip'}`}>{m[1]}</span>
@@ -113,14 +114,14 @@ function Axes({ w, max, labels }: { w: number; max: number; labels: string[] }) 
       {ticks.map((f) => (
         <g key={f}>
           <line x1={PAD.l} x2={w - PAD.r} y1={PAD.t + ih * (1 - f)} y2={PAD.t + ih * (1 - f)} className="stroke-white/10" />
-          <text x={PAD.l - 6} y={PAD.t + ih * (1 - f) + 4} textAnchor="end" className="fill-gray-500 text-[11px]">{fmtN(max * f)}</text>
+          <text x={PAD.l - 6} y={PAD.t + ih * (1 - f) + 4} textAnchor="end" className="fill-gray-400 text-[11px]">{fmtN(max * f)}</text>
         </g>
       ))}
       {labels.map((l, i) => {
         if (i % every !== 0) return null;
         // First/last labels sit on the plot edge: anchor them inward so they are not clipped.
         const anchor = labels.length > 1 && i === 0 ? 'start' : labels.length > 1 && i === labels.length - 1 ? 'end' : 'middle';
-        return <text key={i} x={PAD.l + (labels.length === 1 ? iw / 2 : (iw * i) / (labels.length - 1))} y={H - 8} textAnchor={anchor} className="fill-gray-500 text-[11px]">{l}</text>;
+        return <text key={i} x={PAD.l + (labels.length === 1 ? iw / 2 : (iw * i) / (labels.length - 1))} y={H - 8} textAnchor={anchor} className="fill-gray-400 text-[11px]">{l}</text>;
       })}
     </g>
   );
@@ -149,6 +150,10 @@ function LineChart({ labels, series }: { labels: string[]; series: { name: strin
             const pts = s.values.map((v, i) => (v == null ? null : `${x(i)},${y(v)}`)).filter(Boolean).join(' ');
             return <polyline key={s.name} points={pts} fill="none" strokeWidth={2} className={s.stroke} />;
           })}
+          {/* A single week draws no line; show its point instead. */}
+          {labels.length === 1 && series.map((s) => (s.values[0] == null ? null : (
+            <circle key={`one-${s.name}`} cx={x(0)} cy={y(s.values[0] as number)} r={4} className={s.stroke.replace('stroke-', 'fill-')} />
+          )))}
           {hover != null && <line x1={x(hover)} x2={x(hover)} y1={PAD.t} y2={PAD.t + ih} className="stroke-white/30" />}
           {hover != null && series.map((s) => (s.values[hover] == null ? null : (
             <circle key={s.name} cx={x(hover)} cy={y(s.values[hover] as number)} r={4} className={s.stroke.replace('stroke-', 'fill-')} />
@@ -169,7 +174,7 @@ function LineChart({ labels, series }: { labels: string[]; series: { name: strin
           ))}
         </div>
       )}
-      <div className="flex gap-4 flex-wrap text-xs text-gray-500 mt-2">
+      <div className="flex gap-4 flex-wrap text-xs text-gray-400 mt-2">
         {series.map((s) => (
           <span key={s.name}><span className={`inline-block w-2 h-2 rounded-sm mr-1 ${s.dot}`} />{s.name}</span>
         ))}
@@ -212,7 +217,7 @@ function ChannelChart({ weeks, groups }: { weeks: Week[]; groups: string[] }) {
             );
           })}
           {labels.map((l, i) => (i % Math.max(1, Math.ceil(labels.length / Math.max(2, Math.floor(iw / 70)))) === 0 ? (
-            <text key={i} x={PAD.l + slot * i + slot / 2} y={H - 8} textAnchor="middle" className="fill-gray-500 text-[11px]">{l}</text>
+            <text key={i} x={PAD.l + slot * i + slot / 2} y={H - 8} textAnchor="middle" className="fill-gray-400 text-[11px]">{l}</text>
           ) : null))}
         </svg>
       )}
@@ -230,7 +235,7 @@ function ChannelChart({ weeks, groups }: { weeks: Week[]; groups: string[] }) {
           ))}
         </div>
       )}
-      <div className="flex gap-4 flex-wrap text-xs text-gray-500 mt-2">
+      <div className="flex gap-4 flex-wrap text-xs text-gray-400 mt-2">
         {present.map((g) => (
           <span key={g}><span className={`inline-block w-2 h-2 rounded-sm mr-1 ${CHANNEL_STYLE[g]?.dot || 'bg-status-closed'}`} />{g}</span>
         ))}
@@ -240,7 +245,7 @@ function ChannelChart({ weeks, groups }: { weeks: Week[]; groups: string[] }) {
 }
 
 function BarTable({ rows, unit = 'visits' }: { rows: { label: string; visits: number }[]; unit?: string }) {
-  if (!rows.length) return <div className="text-sm text-gray-500">No data.</div>;
+  if (!rows.length) return <div className="text-sm text-gray-400">No data.</div>;
   const max = rows[0].visits || 1;
   return (
     <div className="space-y-1.5">
@@ -253,7 +258,7 @@ function BarTable({ rows, unit = 'visits' }: { rows: { label: string; visits: nu
           </div>
         </div>
       ))}
-      <div className="text-xs text-gray-500 pt-1">{unit}</div>
+      <div className="text-xs text-gray-400 pt-1">{unit}</div>
     </div>
   );
 }
@@ -286,9 +291,11 @@ export default function Dashboard() {
 
   useEffect(() => { load(); }, [load]);
 
-  const top = data ? data.top[range] : null;
+  const last4 = data?.top.last4Weeks ?? null;
+  const effRange: Range = range === 'last4Weeks' && last4 ? 'last4Weeks' : 'lastWeek';
+  const top = !data ? null : effRange === 'last4Weeks' && last4 ? last4 : data.top.lastWeek;
   const lastWeek = data?.weeks[data.weeks.length - 1]?.week;
-  const rangeLabel = !data ? '' : range === 'lastWeek' ? (lastWeek ? `Week of ${fmtDay(lastWeek)}` : '') : `4 weeks from ${fmtDay(data.top.last4Weeks.from)}`;
+  const rangeLabel = !data ? '' : effRange === 'lastWeek' ? (lastWeek ? `Week of ${fmtDay(lastWeek)}` : '') : last4 ? `4 weeks from ${fmtDay(last4.from)}` : '';
   const fullMonths = data ? data.months.filter((m) => !m.partial) : [];
   const monthMax = data ? Math.max(1, ...data.months.map((m) => m.visits)) : 1;
   const hasVisitors = !!data && data.weeks.some((w) => w.visitors != null);
@@ -304,7 +311,7 @@ export default function Dashboard() {
           {loading ? 'Loading…' : 'Refresh'}
         </button>
         {data && (
-          <span className="text-xs text-gray-500 ml-auto">
+          <span className="text-xs text-gray-400 ml-auto">
             Numbers through {fmtDay(data.through)} · updated {new Date(data.generatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           </span>
         )}
@@ -318,7 +325,10 @@ export default function Dashboard() {
             {data.tiles.map((t) => <TileCard key={t.label} t={t} />)}
           </div>
 
-          <Card title={`Visits per week — last ${data.weeks.length} weeks`}>
+          {data.weeks.length === 0 ? (
+            <Card title="Visits per week"><div className="text-sm text-gray-400">No full week of data yet.</div></Card>
+          ) : (<>
+          <Card title={`Visits per week — last ${data.weeks.length} week${data.weeks.length === 1 ? '' : 's'}`}>
             <LineChart
               labels={data.weeks.map((w) => fmtDay(w.week))}
               series={[
@@ -326,12 +336,13 @@ export default function Dashboard() {
                 ...(hasVisitors ? [{ name: 'Visitors (people)', stroke: 'stroke-sky-400', dot: 'bg-sky-400', values: data.weeks.map((w) => w.visitors) }] : []),
               ]}
             />
-            {data.weeks[0]?.partialStart && <div className="text-xs text-gray-500 mt-1">The first week is partial: tracking began {fmtDay(data.dataStart || data.weeks[0].week)}.</div>}
+            {data.weeks[0]?.partialStart && <div className="text-xs text-gray-400 mt-1">The first week is partial: tracking began {fmtDay(data.dataStart || data.weeks[0].week)}.</div>}
           </Card>
 
           <Card title="Where visits came from, by week">
             <ChannelChart weeks={data.weeks} groups={data.channelGroups} />
           </Card>
+          </>)}
 
           <Card title="Visits per month">
             <div className="space-y-1">
@@ -341,34 +352,36 @@ export default function Dashboard() {
                 const p = !m.partial && prev ? pct(m.visits, prev.visits) : null;
                 return (
                   <div key={m.month} className="grid grid-cols-[4rem_1fr_5rem_3.5rem] items-center gap-2 text-sm py-1">
-                    <span className="text-gray-500 text-xs">{fmtMonth(m.month)}</span>
+                    <span className="text-gray-400 text-xs">{fmtMonth(m.month)}</span>
                     <div className="h-2.5 rounded-sm bg-white/[0.06] overflow-hidden">
                       <div className={`h-full ${m.partial ? 'bg-brand/40' : 'bg-brand'}`} style={{ width: `${(m.visits / monthMax) * 100}%` }} />
                     </div>
                     <span className="text-right tabular-nums text-white font-semibold">{fmtN(m.visits)}</span>
                     <span className={`text-right tabular-nums text-xs ${p == null ? 'text-gray-600' : p >= 0 ? 'text-status-open' : 'text-score-skip'}`}>
-                      {m.partial ? 'so far' : p == null ? '' : `${p > 0 ? '+' : ''}${p}%`}
+                      {/* The last row is the unfinished current month; an earlier partial row is the month tracking began. */}
+                      {m.partial ? (m.month === data.months[data.months.length - 1].month ? 'so far' : 'part month') : p == null ? '' : `${p > 0 ? '+' : ''}${p}%`}
                     </span>
                   </div>
                 );
               })}
             </div>
-            <div className="text-xs text-gray-500 mt-2">Change is against the month before. Part-months (the current month, and the month tracking began) are shaded.</div>
+            <div className="text-xs text-gray-400 mt-2">Change is against the month before. Part-months (the current month, and the month tracking began) are shaded.</div>
           </Card>
 
           <div className="flex items-center gap-2">
             <div className="inline-flex rounded-lg border border-white/[0.06] overflow-hidden">
-              {(['lastWeek', 'last4Weeks'] as Range[]).map((r) => (
+              {(last4 ? (['lastWeek', 'last4Weeks'] as Range[]) : (['lastWeek'] as Range[])).map((r) => (
                 <button
                   key={r}
                   onClick={() => setRange(r)}
-                  className={`px-4 py-2 text-sm font-medium transition-colors ${range === r ? 'bg-brand/10 text-brand' : 'text-gray-400 hover:text-white'}`}
+                  aria-pressed={effRange === r}
+                  className={`px-4 py-2 text-sm font-medium transition-colors ${effRange === r ? 'bg-brand/10 text-brand' : 'text-gray-400 hover:text-white'}`}
                 >
                   {r === 'lastWeek' ? 'Last week' : 'Last 4 weeks'}
                 </button>
               ))}
             </div>
-            <span className="text-xs text-gray-500">{rangeLabel}</span>
+            <span className="text-xs text-gray-400">{rangeLabel}</span>
           </div>
 
           {top && (
@@ -385,7 +398,7 @@ export default function Dashboard() {
             </div>
           )}
 
-          <p className="text-xs text-gray-500">{data.source}. Direct visits are not a referrer, so they are not in the referrer list.</p>
+          <p className="text-xs text-gray-400">{data.source}. Direct visits are not a referrer, so they are not in the referrer list.</p>
         </>
       )}
     </div>

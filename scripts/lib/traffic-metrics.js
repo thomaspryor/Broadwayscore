@@ -82,15 +82,16 @@ function firstNonZero(daily) {
 }
 
 function sumRange(daily, from, to) {
-  // inclusive range; null when any part of it is before coverage
-  let visits = 0; let pageviews = 0; let pvKnown = true;
+  // inclusive range; `missing` counts days with no row at all (an ingestion or
+  // query gap), which span() treats as unknown rather than as zero traffic.
+  let visits = 0; let pageviews = 0; let pvKnown = true; let missing = 0;
   for (let d = from; d <= to; d = addDays(d, 1)) {
     const v = daily.get(d);
-    if (!v) continue;
+    if (!v) { missing++; continue; }
     visits += v.visits;
     if (v.pageviews == null) pvKnown = false; else pageviews += v.pageviews;
   }
-  return { visits, pageviews: pvKnown ? pageviews : null };
+  return { visits, pageviews: pvKnown ? pageviews : null, missing };
 }
 /**
  * A window [from, to] counts only when the data covers all of it: the query
@@ -125,7 +126,11 @@ function computeTrafficMetrics({ history, ph, startDate, endDate, currentWeek, n
   const cov = dailySeries({ history, ph, startDate, endDate });
   const { daily, dataStart, hasHistory } = cov;
   const lastWeek = addDays(currentWeek, -7);
-  const span = (from, to) => (covered(cov, from, to) ? sumRange(daily, from, to) : null);
+  const span = (from, to) => {
+    if (!covered(cov, from, to)) return null;
+    const r = sumRange(daily, from, to);
+    return r.missing ? null : r;
+  };
   const weekTotal = (w) => span(w, addDays(w, 6));
   const visitorsByWeek = new Map((history && history.weeklyVisitors || []).map((r) => [r.week, r.visitors]));
   const visitorsByMonth = new Map((history && history.monthlyVisitors || []).map((r) => [r.month, r.visitors]));
@@ -156,30 +161,35 @@ function computeTrafficMetrics({ history, ph, startDate, endDate, currentWeek, n
   // the 13-week window's first day is not when tracking began.
   const trackedFrom = hasHistory && dataStart ? dataStart : TRACKING_START;
   const firstFullWeek = mondayOf(trackedFrom) === trackedFrom ? trackedFrom : addDays(mondayOf(trackedFrom), 7);
+  const availableFrom = addDays(firstFullWeek, 364);
   const yoy = ly && ly.visits > 0
     ? { available: true, lastYearWeek: lyWeek, lastYearVisits: ly.visits, pct: pct(week.visits, ly.visits) }
-    : { available: false, availableFrom: firstFullWeek ? addDays(firstFullWeek, 364) : null };
+    // Past the date but no history this run (refresh failed): unknown, not "not yet".
+    : { available: false, availableFrom, notLoaded: lastWeek >= availableFrom };
 
   // ---- month to date (through yesterday; today is partial) ----
+  // The month is the RUN date's month; yesterday is only the cutoff. On the
+  // 1st, the month so far has 0 days and the month that just ended is the
+  // "last full month" (a Mar 1 run must not call February "so far").
   const through = addDays(endDate, -1);
-  const thisMonth = monthOf(through);
-  const dayN = Number(through.slice(8, 10));
+  const thisMonth = monthOf(endDate);
+  const dayN = through >= `${thisMonth}-01` ? Number(through.slice(8, 10)) : 0;
   const prevMonth = addMonths(thisMonth, -1);
-  const prevDayN = Math.min(dayN, daysInMonth(prevMonth));
-  const mtdNow = span(`${thisMonth}-01`, through);
-  const mtdPrevTo = `${prevMonth}-${String(prevDayN).padStart(2, '0')}`;
-  const mtdPrev = span(`${prevMonth}-01`, mtdPrevTo);
+  const pad = (n) => String(n).padStart(2, '0');
+  const mtdNow = dayN ? span(`${thisMonth}-01`, through) : null;
+  const mtdPrev = dayN ? span(`${prevMonth}-01`, `${prevMonth}-${pad(Math.min(dayN, daysInMonth(prevMonth)))}`) : null;
   const lyMonth = addMonths(thisMonth, -12);
-  const lyMtdTo = `${lyMonth}-${String(Math.min(dayN, daysInMonth(lyMonth))).padStart(2, '0')}`;
-  const mtdLy = span(`${lyMonth}-01`, lyMtdTo);
+  const mtdLy = dayN ? span(`${lyMonth}-01`, `${lyMonth}-${pad(Math.min(dayN, daysInMonth(lyMonth)))}`) : null;
+  // One or two days make a noisy percentage; compare from the 3rd on.
+  const MIN_MTD_DAYS = 3;
   const mtd = {
     month: thisMonth, days: dayN, through,
     visits: mtdNow ? mtdNow.visits : null,
     prevMonth, prevVisits: mtdPrev ? mtdPrev.visits : null,
-    momPct: pct(mtdNow && mtdNow.visits, mtdPrev && mtdPrev.visits),
+    momPct: dayN >= MIN_MTD_DAYS ? pct(mtdNow && mtdNow.visits, mtdPrev && mtdPrev.visits) : null,
     lastYearVisits: mtdLy && mtdLy.visits > 0 ? mtdLy.visits : null,
   };
-  mtd.yoyPct = pct(mtd.visits, mtd.lastYearVisits);
+  mtd.yoyPct = dayN >= MIN_MTD_DAYS ? pct(mtd.visits, mtd.lastYearVisits) : null;
 
   // ---- last full month vs the month before ----
   const monthTotal = (ym) => span(`${ym}-01`, `${ym}-${daysInMonth(ym)}`);
@@ -232,12 +242,20 @@ function vs(p, what) { return p == null ? null : `${fmtPct(p)} vs ${what}`; }
 function buildTiles(m) {
   const t = [];
   t.push({ label: `Visits, week of ${fmtDay(m.week.start)}`, value: fmtN(m.week.visits), lines: [vs(m.week.wowPct, 'week before'), vs(m.week.vsAvg4Pct, '4-week average')].filter(Boolean) });
-  t.push({ label: `${fmtMonthName(m.mtd.month)} so far`, value: fmtN(m.mtd.visits), lines: [`${fmtMonthName(m.mtd.month, { month: 'short' })} 1–${m.mtd.days}`, vs(m.mtd.momPct, `${fmtMonthName(m.mtd.prevMonth, { month: 'short' })} 1–${Math.min(m.mtd.days, daysInMonth(m.mtd.prevMonth))}`)].filter(Boolean) });
+  if (!m.mtd.days) {
+    t.push({ label: `${fmtMonthName(m.mtd.month)} so far`, value: '—', lines: ['The month starts today'] });
+  } else {
+    const range = m.mtd.days === 1 ? `${fmtMonthName(m.mtd.month, { month: 'short' })} 1` : `${fmtMonthName(m.mtd.month, { month: 'short' })} 1–${m.mtd.days}`;
+    t.push({ label: `${fmtMonthName(m.mtd.month)} so far`, value: fmtN(m.mtd.visits), lines: [range, vs(m.mtd.momPct, `${fmtMonthName(m.mtd.prevMonth, { month: 'short' })} 1–${Math.min(m.mtd.days, daysInMonth(m.mtd.prevMonth))}`)].filter(Boolean) });
+  }
   if (m.yoy.available) {
     t.push({ label: 'Same week last year', value: fmtN(m.yoy.lastYearVisits), lines: [vs(m.yoy.pct, `week of ${fmtDay(m.yoy.lastYearWeek)}, ${m.yoy.lastYearWeek.slice(0, 4)}`)].filter(Boolean) });
+  } else if (m.yoy.notLoaded) {
+    t.push({ label: 'Year over year', value: '—', lines: ['History did not load this week'] });
   } else {
-    const when = m.yoy.availableFrom ? fmtMonthName(monthOf(m.yoy.availableFrom), { month: 'long', year: 'numeric' }) : 'next year';
-    t.push({ label: 'Year over year', value: 'Not yet', lines: [`Available from ${when}`, `Tracking began ${fmtMonthName(monthOf(m.trackedFrom), { month: 'short', year: 'numeric' })}`] });
+    const when = fmtMonthName(monthOf(m.yoy.availableFrom), { month: 'long', year: 'numeric' });
+    // Reason first, so "Not yet" reads as expected rather than broken (UX review).
+    t.push({ label: 'Year over year', value: 'Not yet', lines: [`Tracking began ${fmtMonthName(monthOf(m.trackedFrom), { month: 'long', year: 'numeric' })}`, `First comparison: ${when}`] });
   }
   t.push({ label: 'Visitors (people)', value: fmtN(m.week.visitors), lines: [vs(m.week.visitorsWowPct, 'week before') || (m.week.visitors == null ? 'Not in this data' : null)].filter(Boolean) });
   t.push({ label: 'Pages per visit', value: m.week.pagesPerVisit == null ? '—' : String(m.week.pagesPerVisit), lines: [m.week.pagesPerVisit == null ? 'Not in this data' : 'Last week'] });
@@ -257,14 +275,9 @@ function tilesMarkdown(tiles) {
 
 // ---------- charts (QuickChart renders Chart.js to a PNG; no JS needed in the inbox) ----------
 
-const QUICKCHART = 'https://quickchart.io/chart';
 const INK = '#111827';
 const BLUE = '#2563eb';
 const GOLD = '#b8956a';
-
-function chartUrl(config, { w = 640, h = 260 } = {}) {
-  return `${QUICKCHART}?w=${w}&h=${h}&bkg=white&devicePixelRatio=2&c=${encodeURIComponent(JSON.stringify(config))}`;
-}
 
 /** Weekly visits for the last `n` full weeks: all visits + visits from search. */
 function weeklyChartConfig({ history, ph, startDate, endDate, currentWeek, n = 13 }) {
@@ -351,14 +364,17 @@ function buildDashboardData({ history, ph, startDate, endDate, currentWeek, nami
     const from = `${ym}-01`;
     const to = ym === monthOf(through) ? through : `${ym}-${daysInMonth(ym)}`;
     const s = sumRange(daily, from, to);
-    months.push({ month: ym, visits: s.visits, pageviews: s.pageviews, visitors: ym === monthOf(through) ? null : visitorsByMonth.get(ym) ?? null, partial: ym === monthOf(through) || (metrics.dataStart && from < metrics.dataStart) || from < coverFrom });
+    const current = ym === monthOf(endDate); // the run's month is unfinished; a month that ended yesterday is not
+    months.push({ month: ym, visits: s.visits, pageviews: s.pageviews, visitors: current ? null : visitorsByMonth.get(ym) ?? null, partial: current || (metrics.dataStart && from < metrics.dataStart) || from < coverFrom });
   }
   const phOk = ph && !ph.skipped;
   const last4From = addDays(currentWeek, -28);
+  // A short --days run (14) does not hold 4 full weeks: no "last 4 weeks" rankings then.
+  const has4 = phOk && startDate <= last4From;
   const last4To = addDays(currentWeek, -1);
   const merge = (rows) => { const o = {}; for (const r of rows) { const k = naming.sourceName(r.key); o[k] = (o[k] || 0) + r.visits; } return Object.entries(o).sort((a, b) => b[1] - a[1]).map(([key, visits]) => ({ key, visits })); };
   const refExclude = { exclude: (k) => naming.isDirect(k) || naming.isOwnTooling(k) };
-  const pages4 = phOk ? topOf(ph.landing, last4From, last4To) : [];
+  const pages4 = has4 ? topOf(ph.landing, last4From, last4To) : [];
   return {
     generatedAt,
     through,
@@ -371,17 +387,17 @@ function buildDashboardData({ history, ph, startDate, endDate, currentWeek, nami
     channelGroups: [...CHANNEL_GROUPS.map(([g]) => g), 'Other'],
     top: {
       lastWeek: metrics.top,
-      last4Weeks: {
+      last4Weeks: has4 ? {
         from: last4From,
         pages: pages4.slice(0, 15).map((p) => ({ path: p.key, name: naming.pageName(p.key), visits: p.visits })),
-        referrers: phOk ? merge(topOf(ph.referringDomain, last4From, last4To, refExclude)).slice(0, 15) : [],
-        countries: phOk ? topOf(ph.country, last4From, last4To, { exclude: (k) => k === '(unknown)' }).slice(0, 15) : [],
-      },
+        referrers: merge(topOf(ph.referringDomain, last4From, last4To, refExclude)).slice(0, 15),
+        countries: topOf(ph.country, last4From, last4To, { exclude: (k) => k === '(unknown)' }).slice(0, 15),
+      } : null,
     },
   };
 }
 
 module.exports = {
-  computeTrafficMetrics, buildTiles, tilesMarkdown, chartUrl, weeklyChartConfig, topPagesChartConfig,
+  computeTrafficMetrics, buildTiles, tilesMarkdown, weeklyChartConfig, topPagesChartConfig,
   buildDashboardData, channelGroup, addDays, mondayOf, addMonths, daysInMonth, TRACKING_START,
 };

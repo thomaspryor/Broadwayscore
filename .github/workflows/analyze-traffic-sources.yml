@@ -88,7 +88,9 @@ jobs:
       - name: Save visit history + dashboard data (private repo)
         if: always()
         run: |
-          if [ ! -f traffic-analysis/traffic-history.json ] || [ ! -f traffic-analysis/traffic-dashboard.json ]; then
+          # traffic-dashboard.json is optional: the script skips it when a
+          # page/referrer/country query failed, keeping last week's lists.
+          if [ ! -f traffic-analysis/traffic-history.json ]; then
             echo "No refreshed history this run (see the query step) — private repo left as is."
             exit 0
           fi
@@ -97,11 +99,12 @@ jobs:
             exit 1
           fi
           mkdir -p /tmp/core-data-checkout/analytics
-          cp traffic-analysis/traffic-history.json traffic-analysis/traffic-dashboard.json /tmp/core-data-checkout/analytics/
+          cp traffic-analysis/traffic-history.json /tmp/core-data-checkout/analytics/
+          if [ -f traffic-analysis/traffic-dashboard.json ]; then cp traffic-analysis/traffic-dashboard.json /tmp/core-data-checkout/analytics/; fi
           cd /tmp/core-data-checkout
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git add analytics/traffic-history.json analytics/traffic-dashboard.json
+          git add analytics/
           if git diff --staged --quiet; then
             echo "History unchanged."
             exit 0
@@ -113,8 +116,16 @@ jobs:
             sleep $((i * 3 + RANDOM % 5))
             # Only analytics/ is ours; other writers touch root-level files, so
             # the rebase is conflict-free. -X theirs keeps OUR analytics on the
-            # impossible overlap (same policy as push-with-retry.sh).
-            git pull --rebase -X theirs origin main
+            # impossible overlap (same policy as push-with-retry.sh; the only
+            # other analytics/ writer is this workflow, serialized by its
+            # concurrency group). A rebase that still stops must not fall
+            # through to a no-op "successful" push of the remote tip.
+            if ! git pull --rebase -X theirs origin main; then
+              git rebase --abort 2>/dev/null || true
+              git reset --hard "@{u}" 2>/dev/null || true
+              echo "::error::rebase onto the new private main failed; history not saved this run"
+              exit 1
+            fi
           done
 
       - name: Upload report + raw data

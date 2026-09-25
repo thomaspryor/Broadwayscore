@@ -19,7 +19,10 @@
  *   monthlyVisitors per calendar month: distinct people     — 3-month, month-aligned
  * Sessions are bucketed by session START but filtered by event time, so a
  * session crossing a chunk edge shows up in both chunks; every chunk keeps
- * only buckets inside its own range, which counts each one once.
+ * only buckets inside its own range, which counts each SESSION once. The
+ * pageviews such a session had after midnight fall in the next chunk and are
+ * dropped with its row: a handful at each 91-day edge, which only the first
+ * backfill has (a weekly refresh is one chunk).
  *
  * The store is replaced wholesale for every bucket at or after the refresh
  * start, and only when ALL four refreshes succeeded (mergeHistory refuses a
@@ -90,7 +93,7 @@ const d = (v) => String(v).slice(0, 10);
  * Query one series over [from, to]. `phQuery` and `withRetry` are injected
  * (the ones analyze-traffic-sources.js uses) so this is testable offline.
  */
-async function fetchSeries(name, { from, to, phQuery, withRetry, where }) {
+async function fetchSeries(name, { from, to, phQuery, withRetry, where, deadline = Infinity, now = () => Date.now() }) {
   const DAY_BUCKET = 'toDate(session.$start_timestamp)';
   const specs = {
     daily: {
@@ -122,6 +125,9 @@ async function fetchSeries(name, { from, to, phQuery, withRetry, where }) {
   const spec = specs[name];
   const out = [];
   for (const c of spec.chunks) {
+    // Checked per chunk, not per series: a backfill series is several chunks,
+    // each of which can take minutes on a slow PostHog day.
+    if (now() > deadline) throw new Error(`skipped at ${c.startDate}: history time budget used up`);
     const rows = await withRetry(() => phQuery(spec.q(c)));
     if (rows.length >= 100000) throw new Error(`${name} ${c.startDate}..${c.endDate} hit the 100000-row limit`);
     // Keep only buckets that START inside this chunk (see header): a session
@@ -139,25 +145,46 @@ async function fetchSeries(name, { from, to, phQuery, withRetry, where }) {
 const SERIES = ['daily', 'channelDaily', 'weeklyVisitors', 'monthlyVisitors'];
 
 /**
+ * Shape check for a stored file: a store that parses but is not four arrays
+ * (hand edit, truncated write) must be refused, not merged — merging keeps
+ * only rows before the refresh start, so a missing `daily` would silently
+ * replace months of history with six weeks. Returns an error string or null.
+ */
+function validateStore(store) {
+  if (store == null) return null; // first run
+  if (typeof store !== 'object' || Array.isArray(store)) return 'store is not an object';
+  if (typeof store.endDate !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(store.endDate)) return 'store.endDate missing or not YYYY-MM-DD';
+  for (const k of SERIES) if (!Array.isArray(store[k])) return `store.${k} is not a list`;
+  return null;
+}
+
+/**
  * Refresh the store. Returns { store, refreshed, errors, from }.
  * `store` is the merged store when every series refreshed, else the old one
  * untouched (and `errors` names what failed). Series run sequentially: each
  * joins sessions + persons, and parallel queries are how HogQL timeouts happen.
  */
 async function refreshHistory({ store, endDate, phQuery, withRetry, where, timeBudgetMs = 12 * 60000, now = () => Date.now() }) {
+  const bad = validateStore(store);
+  if (bad) return { store, refreshed: false, errors: { store: `refusing to merge into a malformed store (${bad}); fix or restore analytics/traffic-history.json` }, from: null };
   const from = refreshStart(store, endDate);
   const monthFrom = monthStart(from);
-  const started = now();
+  const deadline = now() + timeBudgetMs;
   const fresh = {};
   const errors = {};
   for (const name of SERIES) {
-    if (now() - started > timeBudgetMs) { errors[name] = `skipped: history time budget (${Math.round(timeBudgetMs / 60000)} min) used up`; continue; }
+    if (now() > deadline) { errors[name] = `skipped: history time budget (${Math.round(timeBudgetMs / 60000)} min) used up`; continue; }
     try {
-      fresh[name] = await fetchSeries(name, { from: name === 'monthlyVisitors' ? monthFrom : from, to: endDate, phQuery, withRetry, where });
+      fresh[name] = await fetchSeries(name, { from: name === 'monthlyVisitors' ? monthFrom : from, to: endDate, phQuery, withRetry, where, deadline, now });
     } catch (e) { errors[name] = String(e.message || e).split('\n')[0].slice(0, 300); }
   }
   if (Object.keys(errors).length) return { store, refreshed: false, errors, from };
-  return { store: mergeHistory(store, fresh, { from, monthFrom, endDate }), refreshed: true, errors, from };
+  const merged = mergeHistory(store, fresh, { from, monthFrom, endDate });
+  // Last line of defence: a refresh can add days, never lose them.
+  if (store && merged.daily.length < store.daily.length) {
+    return { store, refreshed: false, errors: { merge: `merged store would shrink from ${store.daily.length} to ${merged.daily.length} days; not saved` }, from };
+  }
+  return { store: merged, refreshed: true, errors, from };
 }
 
 /**
@@ -183,4 +210,4 @@ function mergeHistory(store, fresh, { from, monthFrom, endDate }) {
   return merged;
 }
 
-module.exports = { refreshHistory, mergeHistory, refreshStart, dayChunks, weekChunks, monthChunks, fetchSeries, TRACKING_FLOOR, REFRESH_DAYS };
+module.exports = { refreshHistory, mergeHistory, validateStore, refreshStart, dayChunks, weekChunks, monthChunks, fetchSeries, TRACKING_FLOOR, REFRESH_DAYS };
