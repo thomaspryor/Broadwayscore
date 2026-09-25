@@ -29,11 +29,13 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry } = require('./lib/review-normalization');
+const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry, outletOwnsUrlDomain } = require('./lib/review-normalization');
+const { decideUnknownTwinUrlCarry } = require('./lib/review-text-identity');
 const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
+const { textMentionsTitle } = require('./lib/show-title-variants');
 const { shouldDeferCvWrongShow } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
@@ -2302,6 +2304,10 @@ showDirs.forEach(showId => {
   const seenFingerprintsByOutlet = new Map();
   // Track content fingerprints globally (cross-outlet) to catch same article under different outlet variations
   const seenFingerprintsGlobal = new Map();
+  // Kept named-critic output entries per outlet (with their source fullText),
+  // so the unknown-critic dedup below can hand a dropped Unknown twin's URL
+  // to the URL-less named copy of the SAME review (decideUnknownTwinUrlCarry).
+  const keptNamedByOutlet = new Map();
 
   files.forEach(file => {
     try {
@@ -4078,8 +4084,15 @@ showDirs.forEach(showId => {
           // reviews for subtitled shows nearly always mention the short title only.
           const commaIdx = showTitle.indexOf(',');
           const commaShort = commaIdx > 0 ? showTitle.slice(0, commaIdx).trim() : '';
-          const textLower = textToCheck.substring(0, 5000).toLowerCase();
-          if ((showTitle.length >= 4 && textLower.includes(showTitle)) || (shortTitle.length >= 5 && textLower.includes(shortTitle)) || (commaShort.length >= 4 && textLower.includes(commaShort))) {
+          // Whole text (was first 5000 chars — long reviews that name the show only
+          // after a long lede never cleared). Capped at 60K chars for pathological pages.
+          const textLower = textToCheck.substring(0, 60000).toLowerCase();
+          // Punctuation-insensitive variants (scripts/lib/show-title-variants.js):
+          // shows.json "Dog Man - The Musical" vs review "Dog Man: The Musical",
+          // "Oh, Mary!" vs "Oh Mary!", curly apostrophes, dashes, accents. The literal
+          // checks alone left real reviews stuck showNotMentioned (2026-09-24).
+          const variantMatch = textMentionsTitle(textToCheck.substring(0, 60000), realTitle || idTitle);
+          if (variantMatch || (showTitle.length >= 4 && textLower.includes(showTitle)) || (shortTitle.length >= 5 && textLower.includes(shortTitle)) || (commaShort.length >= 4 && textLower.includes(commaShort))) {
             data.showNotMentioned = false;
             delete data._showNotMentionedDiscoveryAttempted;
             // Restore fullText from wrongFullText if it was nulled out
@@ -4298,6 +4311,30 @@ showDirs.forEach(showId => {
           }
         }
         if (namedCriticExists) {
+          // URL carry (2026-09-24): Theatre Record ingest used to write a
+          // URL-less named file beside a URL-bearing Unknown twin of the same
+          // review; dropping the twin here left the kept entry with url:null
+          // (27 rows / 22 shows). Carry ONLY the url — never score/text/flags —
+          // and only onto a URL-less kept entry proven to be the same article.
+          if (data.url) {
+            const keptCandidates = keptNamedByOutlet.get(outletKey) || [];
+            const carry = decideUnknownTwinUrlCarry({
+              url: data.url,
+              fullText: data.fullText,
+              data,
+              urlOwnedByOutlet: outletOwnsUrlDomain(outletKey, data.url),
+              urlAlreadyKept: seenUrlsGlobal.has(canonicalizeUrlForDedup(data.url)),
+            }, keptCandidates.map(k => ({ url: k.review.url, fullText: k.fullText })));
+            if (carry.carry) {
+              const target = keptCandidates[carry.index];
+              target.review.url = carry.url;
+              const carriedUrl = canonicalizeUrlForDedup(carry.url);
+              seenUrlsByOutlet.set(`${outletKey}|${carriedUrl}`, { file: target.file, critic: (target.review.criticName || '').toLowerCase().trim() });
+              seenUrlsGlobal.set(carriedUrl, { file: target.file, critic: (target.review.criticName || '').toLowerCase().trim() });
+              stats.unknownTwinUrlCarried = (stats.unknownTwinUrlCarried || 0) + 1;
+              console.log(`  [UNKNOWN-TWIN URL CARRY] ${showId}/${file} -> ${target.file}: ${carry.url}`);
+            }
+          }
           logExclusion("skippedUnknownCriticDedup", showId, file, data);
           stats.skippedUnknownCriticDedup = (stats.skippedUnknownCriticDedup || 0) + 1;
           return;
@@ -4803,6 +4840,10 @@ showDirs.forEach(showId => {
       }
 
       allReviews.push(review);
+      if (!/^(unknown|unnamed)$/.test(criticKey)) {
+        if (!keptNamedByOutlet.has(outletKey)) keptNamedByOutlet.set(outletKey, []);
+        keptNamedByOutlet.get(outletKey).push({ review, fullText: data.fullText, file });
+      }
       stats.byShow[showId].reviews++;
       stats.totalReviews++;
 
@@ -5399,6 +5440,7 @@ const output = {
       skippedDuplicateText: stats.skippedDuplicateText || 0,
       skippedFingerprintDedup: stats.skippedFingerprintDedup || 0,
       skippedUnknownCriticDedup: stats.skippedUnknownCriticDedup || 0,
+      unknownTwinUrlCarried: stats.unknownTwinUrlCarried || 0,
       skippedUnknownOutletDedup: stats.skippedUnknownOutletDedup || 0,
       skippedWrongProduction: stats.skippedWrongProduction || 0,
       skippedPrematurePreOpening: stats.skippedPrematurePreOpening || 0,
@@ -5847,6 +5889,7 @@ if (stats.staleContentVerificationCleared > 0) {
 }
 console.log(`  Resolved (default critic from outlet registry): ${stats.resolvedDefaultCritic || 0}`);
 console.log(`  Skipped (unknown critic dedup): ${stats.skippedUnknownCriticDedup || 0}`);
+console.log(`  Unknown-twin URL carried to named entry: ${stats.unknownTwinUrlCarried || 0}`);
 console.log(`  Skipped (unknown outlet dedup): ${stats.skippedUnknownOutletDedup || 0}`);
 console.log(`  Skipped (fingerprint dedup): ${stats.skippedFingerprintDedup || 0}`);
 console.log(`  Skipped (cross-show duplicate text): ${stats.skippedCrossShowDupe || 0}`);

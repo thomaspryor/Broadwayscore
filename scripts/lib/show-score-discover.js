@@ -40,6 +40,16 @@ function showScoreUrlForShow(show, urlMap) {
     .replace(/^-+|-+$/g, '');
   if (!slug) return null;
   const cat = String(show.category || '').toLowerCase();
+  // Only NYC categories get a CONSTRUCTED url. The two NYC sections below are
+  // Show Score's New York pages; London shows live under a different path
+  // (/uk/london/west-end-shows/<slug> with inconsistent -london / -west-end
+  // suffixes) and regional shows have no page at all. Constructing a NYC url
+  // for a London/regional show fetched the same-title NYC production's page
+  // and fed its critic links into the gap audit as current-run misses
+  // (space-dogs-off-west-end-2026 listed MCC's 2022 Off-Broadway reviews,
+  // two of which were ingested and then flagged wrongProduction). Non-NYC
+  // shows get Show Score only via an explicit curated entry above.
+  if (cat !== 'broadway' && cat !== 'off-broadway') return null;
   const section = cat === 'off-broadway' ? 'off-broadway-shows' : 'broadway-shows';
   const constructed = `https://www.show-score.com/${section}/${slug}`;
 
@@ -149,8 +159,25 @@ async function fetchAllShowScoreReviewUrls(pageUrl, fetchHtml) {
   return [...all];
 }
 
+/**
+ * Curated show → Show Score page map (data/show-score-urls.json). Callers pass
+ * their repo root so worktrees/tests can point elsewhere. Missing or unreadable
+ * file → {} (constructed urls still work for NYC shows).
+ */
+function loadShowScoreUrlMap(root) {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const raw = JSON.parse(fs.readFileSync(path.join(root, 'data', 'show-score-urls.json'), 'utf8'));
+    return raw.shows || raw || {};
+  } catch {
+    return {};
+  }
+}
+
 module.exports = {
   showScoreUrlForShow,
+  loadShowScoreUrlMap,
   extractShowScoreReviewUrls,
   extractReadMoreUrls,
   parseShowScorePagination,

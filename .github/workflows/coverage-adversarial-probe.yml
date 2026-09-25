@@ -115,6 +115,9 @@ jobs:
           PROBE_DAYS: ${{ inputs.days || '45' }}
           PROBE_NO_TREND: ${{ inputs.no_trend && 'true' || '' }}
         run: |
+          # pipefail: without it the step takes tee's exit code, so a refused
+          # (keyless) or crashed probe still shows green (BRO-4139 review).
+          set -o pipefail
           TREND_FLAG="--trend"
           if [ -n "$PROBE_NO_TREND" ]; then TREND_FLAG=""; fi
           node scripts/coverage-adversarial-probe.js \

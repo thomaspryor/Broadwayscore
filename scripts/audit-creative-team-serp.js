@@ -45,6 +45,7 @@ const { serpQuery } = require('./lib/url-discovery');
 const { roleVerbVariants, serpTextConfirms } = require('./lib/creative-team-verify');
 const { CLAUDE_OPUS } = require('./lib/models');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { serpCensusPreflight } = require('./lib/serp-census-preflight');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -202,6 +203,33 @@ Is ${member.name} credibly credited as ${member.role} on THIS specific productio
 async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+
+  // Precondition (BRO-4139): unlike the other five SERP callers, this script
+  // already can't mistake "no key" for "hallucinated" — coOccurs() treats a
+  // null serpQuery result as `{error: true}`, so a keyless run produces
+  // 'error' verdicts (excluded from REMOVABLE, excluded from the circuit
+  // breaker, re-audited on the next run) rather than false removals. WARN and
+  // skip the whole run anyway: every member would just audit as 'error' at
+  // zero benefit, and skipping avoids churning the checkpoint file with a
+  // run's worth of entries that carry no new information.
+  const preflight = serpCensusPreflight(process.env, {
+    // No opt-out: this caller only skips when keyless, so a switch could
+    // only unlock a keyless run that silently finds nothing.
+    disableVar: null,
+    consequence:
+      'Every member would audit as \'error\' (no SERP evidence either way) — '
+      + 'not a false hallucination finding, but no new information either. '
+      + 'Skipping this run.',
+    // Not wired into any scheduled workflow today — dispatched manually or
+    // ad hoc — so there is no env: block to point at.
+    workflowHint: 'wherever this run was dispatched from (no scheduled CI workflow runs this script)',
+  });
+  if (!preflight.ok) {
+    console.warn(`creative-team SERP audit preflight: ${preflight.reason}`);
+    console.warn('Skipping this run — checkpoint and shows.json untouched.');
+    return;
+  }
+
   const showsData = loadShows();
   const checkpoint = loadCheckpoint();
 

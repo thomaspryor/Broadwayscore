@@ -39,7 +39,9 @@ const path = require('path');
 
 const { fetchPage } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
+const { serpCensusPreflight } = require('./lib/serp-census-preflight');
 const { normalizeTitle, canonicalVenue } = require('./lib/title-match');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -47,7 +49,27 @@ const OUT_PATH = path.join(ROOT, 'data', 'audit', 'ob-historical-candidates.json
 
 const MONTH_LONG = ['january','february','march','april','may','june','july','august','september','october','november','december'];
 
+const USAGE = `Usage: node scripts/discover-ob-historical.js [options]
+
+Discover Off-Broadway productions from venue archive pages and surface the
+ones NOT already in shows.json. Discovery only — never writes shows.json.
+
+Options:
+  --venue=NAME    atlantic | vineyard | mcc | all (default: all)
+  --months=N      Only keep productions within the last N months (default: 18)
+  --limit=N       Cap production URLs scanned per venue
+  --dry-run       Discover and print, but do not write the candidates file
+  --verbose       Log skipped/filtered URLs
+  --help, -h      Show this message`;
+
 const args = process.argv.slice(2);
+// --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js):
+// this script previously had no guard at all, so `--help` ran the full venue
+// scan (real BD/SB/SERP calls + a real ob-historical-candidates.json write)
+// instead of printing usage (found 2026-09-25 while adding the BRO-4139
+// preflight — reproduced live: a `--help` invocation wrote a scraper-spend
+// ledger entry before being interrupted).
+if (hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
 const venueArg = (args.find(a => a.startsWith('--venue=')) || '').split('=')[1] || 'all';
 const monthsBack = parseInt((args.find(a => a.startsWith('--months=')) || '').split('=')[1] || '18', 10);
 const limit = parseInt((args.find(a => a.startsWith('--limit=')) || '').split('=')[1] || '0', 10);
@@ -211,7 +233,29 @@ async function main() {
     }
   }
 
+  // Precondition (BRO-4139): vineyard/mcc discovery goes entirely through
+  // serpQuery (site: searches) — atlantic's archive-page scrape does not.
+  // Without a key, serpQuery returns null and discoverViaSerp reads that the
+  // same as "searched, found nothing" (0 production URLs). WARN once up
+  // front and skip only the SERP-dependent venues, rather than writing a
+  // candidates file that looks identical to a genuine zero-discovery week.
+  const preflight = serpCensusPreflight(process.env, {
+    // No opt-out: this caller only skips when keyless, so a switch could
+    // only unlock a keyless run that silently finds nothing.
+    disableVar: null,
+    consequence:
+      'Vineyard/MCC discovery (serpQuery site: searches) would return zero '
+      + 'production URLs — indistinguishable from a genuine "nothing new" '
+      + 'week. Skipping those venues; Atlantic (archive-page scrape, no SERP '
+      + 'key needed) still runs.',
+    // Not wired into any scheduled workflow today — dispatched manually or
+    // ad hoc — so there is no env: block to point at.
+    workflowHint: 'wherever this run was dispatched from (no scheduled CI workflow runs this script)',
+  });
+  if (!preflight.ok) console.warn(`discover-ob-historical preflight: ${preflight.reason}`);
+
   const allCandidates = [];
+  const venuesSkipped = [];
 
   for (const vKey of venuesToScan) {
     const cfg = VENUES[vKey];
@@ -219,6 +263,10 @@ async function main() {
     let productionUrls;
     if (cfg.archiveUrls) {
       productionUrls = await discoverAtlantic();
+    } else if (!preflight.ok) {
+      productionUrls = [];
+      venuesSkipped.push(vKey);
+      console.log(`  SKIPPED — no SERP key available (see preflight warning above)`);
     } else {
       productionUrls = await discoverViaSerp(cfg);
     }
@@ -272,12 +320,18 @@ async function main() {
     }
   }
 
-  if (!dryRun) {
+  if (!dryRun && venuesSkipped.length > 0) {
+    // A partial run would replace the last complete candidate list with one
+    // missing whole venues (nothing downstream reads venuesSkipped), so leave
+    // the file untouched; candidates found this run are printed above.
+    console.warn(`Not writing ${OUT_PATH}: SERP venue(s) skipped (${venuesSkipped.join(', ')}) — previous complete result kept.`);
+  } else if (!dryRun) {
     fs.mkdirSync(path.dirname(OUT_PATH), { recursive: true });
     fs.writeFileSync(OUT_PATH, JSON.stringify({
       generatedAt: new Date().toISOString(),
       filter: { venue: venueArg, monthsBack, limit: limit || null },
       counts: { total: allCandidates.length, inWindow: inWindow.length },
+      venuesSkipped, // BRO-4139: SERP-dependent venues skipped this run for lack of a key — 0 candidates from these is NOT "checked, found none"
       candidates: allCandidates,
     }, null, 2));
     console.log(`Wrote ${OUT_PATH}`);
