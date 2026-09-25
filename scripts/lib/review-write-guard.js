@@ -1522,12 +1522,20 @@ function safeWriteReview(filePath, newData, options = {}) {
             newData.urlVerifiedNote = `Auto-pinned ${new Date().toISOString().slice(0, 10)}: url flip-flopped back to a prior value (poller alternates ${existing.url} <-> ${flippedFromUrl}) — locked against further automated changes (BRO-121).`;
           }
         } else if (urlCanonicallyChanged(existing.url, newData.url)) {
-          if (existing.urlVerifiedAuto === true && _flipFlopShouldTakeIncoming(existing.url, newData.url)) {
+          const liftAutoPin = existing.urlVerifiedAuto === true && _flipFlopShouldTakeIncoming(existing.url, newData.url);
+          if (liftAutoPin) {
             // The auto-pin belonged to the non-review url being replaced; it must
             // not lock in the incoming url (its note names the old one).
             delete newData.urlVerified; delete newData.urlVerifiedAuto; delete newData.urlVerifiedNote;
           }
           const inv = applyUrlChangeInvariant(existing, newData, { fileLabel: path.basename(filePath) });
+          if (liftAutoPin && newData._urlChangedClear && Array.isArray(newData._urlChangedClear.cleared)) {
+            // Breadcrumb so restore-protected-fields.js treats the lifted pin as an
+            // intentional clear, not a loss to restore (urlVerified* are PROTECTED).
+            for (const f of ['urlVerified', 'urlVerifiedAuto', 'urlVerifiedNote']) {
+              if (!newData._urlChangedClear.cleared.includes(f)) newData._urlChangedClear.cleared.push(f);
+            }
+          }
           for (const f of inv.cleared) {
             const i = preserved.indexOf(f);
             if (i !== -1) preserved.splice(i, 1);
