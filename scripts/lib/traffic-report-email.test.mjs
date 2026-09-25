@@ -112,9 +112,12 @@ const TILES = [
   { label: 'Top referrer', value: '<script>', lines: [] },
 ];
 
-test('tilesHtml: 3 per row, padded last row, deltas coloured, values escaped', () => {
+test('tilesHtml: one wrapping block per tile, deltas coloured, values escaped', () => {
   const h = tilesHtml(TILES);
-  assert.equal((h.match(/<tr>/g) || []).length, 2);
+  assert.equal((h.match(/class="bwsc-tile"/g) || []).length, 4);
+  // wraps on a phone instead of a fixed-width table that overflowed 390px
+  assert.doesNotMatch(h, /<table/);
+  assert.match(h, /display:inline-block;[^"]*min-width:150px/);
   assert.match(h, /color:#047857;font-weight:600;">\+35%/);
   assert.match(h, /color:#b91c1c;font-weight:600;">−14%/);
   assert.doesNotMatch(h, /<script>/);

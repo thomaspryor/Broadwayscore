@@ -122,12 +122,15 @@ function buildHumanSubject(md) {
 
 const attr = (v) => escapeHtml(v).replace(/"/g, '&quot;'); // escapeHtml skips quotes
 
-/** Nine tiles as a 3-column table of big numbers (inline styles only: Gmail strips <style>). Exported for tests. */
+/**
+ * The tiles as wrapping inline-blocks ("fluid hybrid"): 3 across in a desktop
+ * inbox, 2 across on a phone, no media queries (Gmail apps ignore many). A
+ * fixed 3-column table overflowed a 390px iPhone screen. Inline styles only.
+ * Exported for tests.
+ */
 function tilesHtml(tiles) {
   if (!Array.isArray(tiles) || !tiles.length) return '';
-  const rows = [];
-  for (let i = 0; i < tiles.length; i += 3) rows.push(tiles.slice(i, i + 3));
-  const td = (t) => {
+  const tile = (t) => {
     const lines = (t.lines || []).map((l) => {
       // Colour only the leading change figure: green up, red down.
       const m = String(l).match(/^([+−-]\d+%)(.*)$/);
@@ -135,14 +138,13 @@ function tilesHtml(tiles) {
       const color = m[1].startsWith('+') ? '#047857' : '#b91c1c';
       return `<div style="font-size:12px;color:#6b7280;"><span style="color:${color};font-weight:600;">${escapeHtml(m[1])}</span>${escapeHtml(m[2])}</div>`;
     }).join('');
-    const size = String(t.value).length > 12 ? 16 : 26;
-    return `<td valign="top" width="33%" style="padding:10px 12px;border:1px solid #e5e7eb;border-radius:6px;background:#f9fafb;">`
+    const size = String(t.value).length > 12 ? 16 : 24;
+    return `<div class="bwsc-tile" style="display:inline-block;box-sizing:border-box;width:31.3%;min-width:150px;min-height:96px;margin:0 1% 8px 0;padding:10px 12px;border:1px solid #e5e7eb;border-radius:6px;background:#f9fafb;vertical-align:top;font-size:14px;line-height:1.35;">`
       + `<div style="font-size:11px;letter-spacing:0.04em;text-transform:uppercase;color:#6b7280;">${escapeHtml(t.label)}</div>`
-      + `<div style="font-size:${size}px;font-weight:700;color:#111827;margin:4px 0 2px;line-height:1.2;">${escapeHtml(t.value)}</div>${lines}</td>`;
+      + `<div style="font-size:${size}px;font-weight:700;color:#111827;margin:4px 0 2px;line-height:1.2;">${escapeHtml(t.value)}</div>${lines}</div>`;
   };
-  return `<table role="presentation" width="100%" cellspacing="6" cellpadding="0" style="border-collapse:separate;margin:8px -6px 12px;max-width:732px;">`
-    + rows.map((r) => `<tr>${r.map(td).join('')}${'<td></td>'.repeat(3 - r.length)}</tr>`).join('')
-    + `</table>`;
+  // font-size:0 removes the whitespace gaps between inline-blocks.
+  return `<div style="font-size:0;margin:8px 0 12px;">${tiles.map(tile).join('')}</div>`;
 }
 
 /** Inline chart images; `images` is [{ cid, alt }] for charts that rendered. */
