@@ -290,3 +290,15 @@ jobs:
           severity: 'warning'
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      # Live-data node:test files moved OUT of test.yml's no-data unit batch
+      # (2026-09-24, BRO-3425): both assert on data state (stale AUTO-FLAGGED
+      # cast entries; gather-reviews scraper credits/day), so they turned main's
+      # code CI red with no code change (test.yml run 36077865497). Here a red
+      # result reds this data-health workflow, which the digest's
+      # "Workflow repeat-failure" row escalates. Placed AFTER "Notify on
+      # failure" on purpose: that email means "audit could not run", which is
+      # not what a data finding here means.
+      - name: Live-data assertions (moved from test.yml unit batch)
+        if: always()
+        run: node --test tests/unit/cast-changes-real-data.test.mjs tests/unit/bro3887-cache-fix-acceptance.test.mjs
