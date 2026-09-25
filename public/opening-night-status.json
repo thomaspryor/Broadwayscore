@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T02:17:28.405Z",
+  "generatedAt": "2026-09-25T02:24:40.052Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -397,22 +397,22 @@
       "slug": "delirium-off-broadway",
       "thumbnail": "/images/shows/delirium-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 82,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 4,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
       "t2": 0,
-      "t3": 0,
-      "positive": 0,
+      "t3": 1,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "1/12 total",
           "T1:0/3",
           "T2:0/3",
           "hi-conf:0/8"
@@ -767,6 +767,20 @@
         {
           "name": "The Tennessean",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-09-25T02:24:40.052Z",
+          "rc": 1,
+          "s": 82,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
