@@ -49,6 +49,13 @@ test('404 marker buried past the 300-char window is flagged (original contaminat
   assert.equal(r.isGarbage, true, `expected garbage, got: ${r.reason}`);
 });
 
+test('Anubis bot-wall interstitial stored as a review is garbage (myreviewer, As You Like It Globe)', () => {
+  // Verbatim body of as-you-like-it-globe-west-end-2026/myreviewer--unknown.json.
+  const text = "Making sure you&#39;re not a bot! Loading... Please wait a moment while we ensure the security of your connection. Protected by Anubis From Techaro . Made with ❤️ in 🇨🇦. Mascot design by CELPHASE . This website is running Anubis version 1.23.1 .";
+  assert.equal(detectStrongErrorPageAnywhere(text).detected, true);
+  assert.equal(isGarbageContent(text).isGarbage, true);
+});
+
 test('FP guard: a real review is never flagged by the strong error-page scan', () => {
   const text = 'The revival is a triumph. The performance by the lead actor anchors a production whose staging, lighting and ensemble work all land. '.repeat(6);
   const r = isGarbageContent(text);

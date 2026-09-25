@@ -176,6 +176,10 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // theater-feature section is previews/features, not reviews (Disruption
   // census counted one as a missing review, 2026-08-05).
   { host: /(^|\.)stagebuddy\.com$/, path: /^\/theater\/theater-feature\//, reason: 'feature-not-review' },
+  // MyReviewer's /DVD/ and /Blu-ray/ sections review home-video releases — for
+  // theatre, a filmed earlier production (the Globe's As You Like It DVD was
+  // ingested onto the 2026 Globe run, 2026-08-15). Never a live-run review.
+  { host: /(^|\.)myreviewer\.com$/, path: /^\/(dvd|blu-?ray|4k)\//i, reason: 'home-video-review' },
   // Seventh wave (2026-08-06 — Cats/NYSM/I'm Every Woman OWE opening audit,
   // first live exercise of #1073): ticketing/listing hosts that reached the
   // census "missing" lists — groupon deal pages and one was auto-INGESTED as a

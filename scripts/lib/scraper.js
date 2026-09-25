@@ -133,7 +133,10 @@ function _isChallengeOrGarbage(content) {
     content.includes('cf_chl_opt') ||
     content.includes('challenge-platform') ||
     content.includes('Enable JavaScript and cookies to continue') ||
-    content.includes('Attention Required!')
+    content.includes('Attention Required!') ||
+    // Anubis proof-of-work bot wall — a 200 whose body is only the interstitial.
+    content.includes('Protected by Anubis') ||
+    content.includes('anubis_challenge')
   );
 }
 
