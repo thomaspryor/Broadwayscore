@@ -377,3 +377,20 @@ test('alert(): a second launch-failure inside the cooldown is suppressed, and th
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }
 });
+
+// BRO-4141 review: route on the STORED-login probe's reason. A revoked login
+// plus an API-key probe that timed out must still page as auth at once, and a
+// sustained starvation page must use its own key (not auth-failed's cooldown).
+test('auth failure routing keys off storedReason; sustained starvation has its own page key', async () => {
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  assert.match(src, /const failReason = auth\.storedReason \|\| auth\.reason;/);
+  assert.match(src, /on-monitor-auth-starved-sustained-\$\{/);
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const { isPageWorthy } = req('../../scripts/lib/page-worthy-alerts.js');
+  assert.equal(isPageWorthy('on-monitor-auth-starved-sustained-2026-09-25'), true);
+  assert.equal(isPageWorthy('on-monitor-auth-starved-2026-09-25'), false);
+  const { worseAuthPingReason } = req('../../scripts/lib/claude-cli.js');
+  // merged reason says starved, which is why the launcher must not use it alone
+  assert.equal(worseAuthPingReason('auth-rejected', 'spawn-starved'), 'spawn-starved');
+});

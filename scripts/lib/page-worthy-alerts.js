@@ -46,6 +46,7 @@
 const PAGE_WORTHY_PREFIXES = [
   'on-monitor-launch-failed-', // opening-night-monitor-launch.js: the launcher could not start a monitor session tonight
   'on-monitor-auth-failed-', // opening-night-monitor-launch.js: claude auth preflight failed — zero coverage tonight
+  'on-monitor-auth-starved-sustained-', // opening-night-monitor-launch.js: Mac too starved to start ANY pass for 3 ticks (~1h) in an opening window (BRO-4141; single blips go to digest as on-monitor-auth-starved-)
   'on-monitor-attempts-exhausted-', // opening-night-monitor-launch.js: 3 launch attempts died tonight, falling back to the standing pipeline
   'broadcast:draft-creation-failed:', // send-opening-night-broadcast.js: the time-sensitive opening-night email draft failed to create
   // BRO-886: the draft itself was created and tracked fine — only the

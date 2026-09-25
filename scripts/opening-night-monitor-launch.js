@@ -538,11 +538,14 @@ async function main(argv = process.argv.slice(2)) {
 
   const auth = preflightAuth();
   if (!auth.ok) {
-    const isStarved = authFailureRouting({ reason: auth.reason, consecutiveStarved: 0 }).kind === 'starved';
+    // Key off the stored-login probe (the credential the pass uses): a revoked
+    // login must page as auth even if the API-key probe happened to time out.
+    const failReason = auth.storedReason || auth.reason;
+    const isStarved = authFailureRouting({ reason: failReason, consecutiveStarved: 0 }).kind === 'starved';
     const consecutiveStarved = isStarved ? (nightState.consecutiveStarvedPreflights || 0) + 1 : 0;
     writeNightState(key, { ...nightState, consecutiveStarvedPreflights: consecutiveStarved });
-    const route = authFailureRouting({ reason: auth.reason, consecutiveStarved });
-    log(`auth preflight failed (${auth.reason || 'unknown'}${isStarved ? `, ${consecutiveStarved} in a row` : ''}) — ${route.page ? 'paging owner' : 'digest only, next tick retries'}`);
+    const route = authFailureRouting({ reason: failReason, consecutiveStarved });
+    log(`auth preflight failed (${failReason || 'unknown'}${isStarved ? `, ${consecutiveStarved} in a row` : ''}) — ${route.page ? 'paging owner' : 'digest only, next tick retries'}`);
     const shows = windows.map(w => w.showId).join(', ');
     if (route.kind === 'auth') {
       await alert({
@@ -554,11 +557,12 @@ async function main(argv = process.argv.slice(2)) {
         severity: 'error', disposition: 'human', cooldownHours: 6,
       });
     } else {
-      // Same page-worthy prefix when it has persisted an hour, so the router
-      // allowlist still lets it through; digest-only key otherwise.
+      // Its own page-worthy prefix once it has persisted an hour — NOT the
+      // auth-failed key, whose 6h cooldown would then swallow a real
+      // revocation page later the same day. Digest-only key otherwise.
       await alert({
         conditionKey: route.page
-          ? `on-monitor-auth-failed-${now.toISOString().slice(0, 10)}`
+          ? `on-monitor-auth-starved-sustained-${now.toISOString().slice(0, 10)}`
           : `on-monitor-auth-starved-${now.toISOString().slice(0, 10)}`,
         title: route.page
           ? `Opening-night monitor: Mac too overloaded to start a monitor pass for ${consecutiveStarved} ticks in a row`
