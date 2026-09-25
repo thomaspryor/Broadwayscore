@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-25T15:40:21.346Z",
-  "processed": 23,
-  "failed": 127,
-  "successRate": "15.3%",
+  "updatedAt": "2026-09-25T16:19:31.861Z",
+  "processed": 31,
+  "failed": 133,
+  "successRate": "18.9%",
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 19,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 8,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-09-25T15:23:14.211Z",
@@ -25,6 +25,30 @@
       "t": "2026-09-25T15:23:15.204Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-25T16:04:25.836Z",
+      "event": "bb-session",
+      "session": "4b84d58d",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+    },
+    {
+      "t": "2026-09-25T16:04:38.697Z",
+      "event": "bb-session",
+      "session": "6708cb1a",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+    },
+    {
+      "t": "2026-09-25T16:12:50.441Z",
+      "event": "bb-session",
+      "session": "04eb20f4",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
+    },
+    {
+      "t": "2026-09-25T16:13:00.613Z",
+      "event": "bb-session",
+      "session": "ce8f7913",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
     }
   ]
 }
