@@ -48,6 +48,9 @@ const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 // the field unset (never a confident false empty) when serpQuery itself
 // returns nothing to verify against.
 const SERP_PREFLIGHT = serpCensusPreflight(process.env, {
+  // Own opt-out var: the default (SERP_GAP_CENSUS_DISABLED) is the gap audit's
+  // switch, and inheriting it would let a keyless run proceed silently here.
+  disableVar: 'AUTO_FIX_SERP_DISABLED',
   consequence:
     'Creative-team IBDB/LLM fixes would be skipped entirely for every show '
     + 'this run (the field is left unset, never written as a confident '
