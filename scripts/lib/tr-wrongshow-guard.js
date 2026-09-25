@@ -59,11 +59,42 @@ const OPENING_CHARS = 400;
 // when set apart: ALL CAPS or in quotes. Multi-word titles may also match in
 // exact title case. A match followed by "-" or "'s" never counts. Punctuation
 // and diacritics are ignored on both sides ("Oh, Mary!" vs "Oh Mary!").
+//
+// BRO-4152 (2026-09-24): the daily TR sweep dropped real Daily Mail reviews of
+// Mass, Pride, Relics and Arcadia this way — all four open with the title as
+// the review's literal first word(s) in ordinary title case ("Crazy For You
+// is for Golden Age musical junkies", "The Story is a newspaper drama..." are
+// the same house style from confirmed real Daily Mail/TR reviews). That
+// leading position is a stronger signal than "anywhere in the opening 400
+// chars": the RSC/Chicago-born false positives that motivated the ALL
+// CAPS/quotes restriction above both occur mid-sentence, never as the review's
+// very first word, so anchoring to position 0 recovers short/common-word
+// titles (including under-6-char ones like "Mass") without reopening those
+// false positives.
+// Requires a substantive continuation (3+ words before the first sentence
+// break) so a bare headline label like "Cats review." — which would match
+// position 0 for literally any show — doesn't slide through. Real reviews in
+// this house style write a full clause ("Mass is a blistering hour of new
+// writing...", "Crazy For You is for Golden Age musical junkies.").
+function startsWithTitle(words, fullText) {
+  const opening = foldDiacritics(String(fullText || '')).replace(/^[\s"'‘’“”(]+/, '');
+  const pattern = words.map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('[^A-Za-z0-9]{1,3}');
+  const end = "(?![A-Za-z0-9]|-|['’][sS]\\b)";
+  const m = opening.match(new RegExp(`^${pattern}${end}([\\s\\S]{0,200})`));
+  if (!m) return false;
+  const restOfSentence = m[1].split(/[.!?\n]/)[0];
+  const restWords = restOfSentence.trim().split(/\s+/).filter(Boolean);
+  return restWords.length >= 3;
+}
+
 function hasProperNameTitleInOpening(show, fullText) {
   const title = foldDiacritics(String(show.title || '')).trim();
+  const words = title.split(/[^A-Za-z0-9]+/).filter(Boolean);
+  if (words.length === 0) return false;
+  if (startsWithTitle(words, fullText)) return true;
+
   if (title.replace(/[^a-z0-9]/gi, '').length < 6) return false;
   const opening = foldDiacritics(String(fullText || '').slice(0, OPENING_CHARS));
-  const words = title.split(/[^A-Za-z0-9]+/).filter(Boolean);
   const pattern = (w) => w.map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('[^A-Za-z0-9]{1,3}');
   const edge = '(?<![A-Za-z0-9])';
   const end = "(?![A-Za-z0-9]|-|['’][sS]\\b)";

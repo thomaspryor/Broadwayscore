@@ -166,3 +166,28 @@ test('review round 2: caps possessive, quoted-with-comma, words split across lin
   assert.equal(g('Beetlejuice', '“Beetlejuice,” the new musical, arrives.'), false);
   assert.equal(g('Golden Boy', 'Golden.\n\n\n\nBoy was the old headline.'), true);
 });
+
+// BRO-4152 (2026-09-24 TR sweep): under-6-char and single-word titles were
+// dropped even when the review opens "[Title] is/opens/remains ..." — the
+// exact Daily Mail/Theatre Record house style confirmed in real saved
+// reviews (Crazy For You, The Story). A leading-position match now rescues
+// these regardless of title length, gated on a substantive continuation so
+// a bare headline label can't slide through under the same rule.
+test('title as the review\'s literal first word(s) rescues under-6-char and single-word titles', () => {
+  const g = (title, text) => checkWrongShowMentionGuard({ title }, text).fails;
+  assert.equal(g('Mass', 'Mass is a blistering hour of new writing at the Almeida.'), false);
+  assert.equal(g('Pride', 'Pride opens with a burst of colour and noise on the Southbank.'), false);
+  assert.equal(g('Relics', 'Relics is a haunting exploration of grief and memory.'), false);
+  assert.equal(g('Arcadia', "Arcadia remains one of Stoppard's finest achievements."), false);
+});
+
+test('leading-position rule still rejects bare headline labels and non-leading mentions', () => {
+  const g = (title, text) => checkWrongShowMentionGuard({ title }, text).fails;
+  // "Cats review." is a bare headline label (1-word continuation) — must not
+  // rescue just because the title happens to lead the text.
+  assert.equal(g('Cats', 'Cats review. The show purrs along.'), true);
+  // Title present but not leading — the fallback still requires position 0.
+  assert.equal(g('Mass', 'A blistering hour of new writing. Mass is what they call it.'), true);
+  // Possessive directly after the title at position 0 still excluded.
+  assert.equal(g('Mass', "Mass's revival at the Almeida is a knockout of a play tonight."), true);
+});
