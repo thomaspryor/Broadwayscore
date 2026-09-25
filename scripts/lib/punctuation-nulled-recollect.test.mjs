@@ -97,6 +97,70 @@ test('isPunctuationNulledCandidate: reason other than url_content_mismatch/showN
   assert.equal(isPunctuationNulledCandidate(otherReason, SHOW_TITLES['dog-man-the-musical-west-end-2026']), false);
 });
 
+test('isPunctuationNulledCandidate: showNotMentioned:true with a scraper cross-attribution marker is excluded', () => {
+  // Real corpus example (a-behanding-in-spokane-2010/backstage--david-sheward.json):
+  // URL correctly names the show, but the FETCHED text was cross-attributed to
+  // a different production — a distinct, already-diagnosed bug, not punctuation.
+  const crossAttributed = {
+    showId: 'a-behanding-in-spokane-2010',
+    url: 'https://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-a-behanding-in-spokane-1004072691.story',
+    fullText: null,
+    showNotMentioned: true,
+    wrongShow: true,
+    contentTier: 'invalid',
+    incompleteReason: 'wrong_content',
+    crossAttributionAudit: { detectedShowId: 'everyday-rapture-2010' },
+  };
+  assert.equal(
+    isPunctuationNulledCandidate(crossAttributed, 'A Behanding in Spokane'),
+    false,
+  );
+});
+
+test('isPunctuationNulledCandidate: showNotMentioned:true from a scraper-garbage fetch is excluded', () => {
+  // Real corpus example (aladdin-2014/ap--mark-kennedy.json): AP news-feed
+  // garbage scraped instead of the review; URL still names the show.
+  const garbage = {
+    showId: 'aladdin-2014',
+    url: 'https://hosted.ap.org/dynamic/stories/U/US_THEATER_REVIEW_ALADDIN',
+    fullText: null,
+    showNotMentioned: true,
+    garbageFullText: 'British soccer union wants fewer headers for pros...',
+    contentTier: 'complete',
+  };
+  assert.equal(isPunctuationNulledCandidate(garbage, 'Aladdin'), false);
+});
+
+test('isPunctuationNulledCandidate: partial_text (genuinely short fetch) is excluded', () => {
+  const shortFetch = {
+    showId: 'a-free-man-of-color-2010',
+    url: 'https://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-a-free-man-of-color-1004128010.story',
+    fullText: null,
+    showNotMentioned: true,
+    incompleteReason: 'partial_text',
+    contentTier: 'excerpt',
+  };
+  assert.equal(isPunctuationNulledCandidate(shortFetch, 'A Free Man of Color'), false);
+});
+
+test('isPunctuationNulledCandidate: titleMatch=true in incompleteDetail means already re-checked, excluded', () => {
+  // Real corpus example (and-juliet-2022/guardian--unknown.json): a "Romeo and
+  // Juliet" review whose URL slug coincidentally contains "and juliet", the
+  // "&Juliet" full-title variant. incompleteDetail's titleMatch=true proves
+  // validateContentMentionsShow already re-ran current (punctuation-tolerant)
+  // logic against the real fetched page and still rejected it — genuinely too
+  // few mentions, not a stale pre-fix artifact recollection could fix.
+  const alreadyRechecked = {
+    showId: 'and-juliet-2022',
+    url: 'https://www.theguardian.com/stage/2026/sep/23/romeo-and-juliet-review-russell-kane-natalie-casey',
+    fullText: null,
+    incompleteReason: 'url_content_mismatch',
+    incompleteDetail: 'show mentioned 1× (below 2 threshold for 2729-char text, titleMatch=true)',
+    contentTier: 'stub',
+  };
+  assert.equal(isPunctuationNulledCandidate(alreadyRechecked, '&Juliet'), false);
+});
+
 test('isPunctuationNulledCandidate: showNotMentioned:true with a URL-matching slug also selects', () => {
   const showNotMentioned = {
     showId: 'dog-man-the-musical-west-end-2026',

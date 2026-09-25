@@ -21,6 +21,17 @@ const { textMentionsTitle } = require('./show-title-variants');
 
 const NULLING_REASONS = new Set(['url_content_mismatch']);
 
+// Other diagnosed root causes that also leave showNotMentioned:true set as a
+// secondary flag but are NOT the punctuation-title-matching bug: a cross-
+// attributed/tour-vs-Broadway review (wrongShow, crossAttributionAudit), a
+// scraper that fetched an unrelated page (garbageFullText/_invalidatedFullText,
+// contentTier 'invalid'), or a genuinely short/incomplete fetch (partial_text,
+// paywall, scraper_garbage). Real audit of the 2026-09-24 corpus found all of
+// these co-occurring with showNotMentioned:true and a URL that happens to
+// name the right show — recollecting them would be a no-op or, for the
+// cross-attribution cases, actively wrong.
+const OTHER_ROOT_CAUSE_REASONS = new Set(['wrong_content', 'partial_text', 'paywall', 'scraper_garbage']);
+
 /**
  * @param {string} url
  * @returns {string} the URL path with slug separators turned into spaces,
@@ -51,7 +62,24 @@ function urlToSlugText(url) {
 function isPunctuationNulledCandidate(review, showTitle) {
   if (!review || !showTitle) return false;
   if (review.fullText) return false; // text present — not nulled, out of scope
-  const nulledByMismatch = NULLING_REASONS.has(review.incompleteReason) || review.showNotMentioned === true;
+  // A different, already-diagnosed root cause owns this file — never the
+  // punctuation bug even when showNotMentioned:true is also set.
+  if (review.wrongShow === true) return false;
+  if (review.crossAttributionAudit) return false;
+  if (review.garbageFullText || review._invalidatedFullText) return false;
+  if (review.contentTier === 'invalid') return false;
+  if (review.incompleteReason && OTHER_ROOT_CAUSE_REASONS.has(review.incompleteReason)) return false;
+  // "titleMatch=true" in incompleteDetail means validateContentMentionsShow
+  // already re-ran its full (HTML <title> + punctuation-tolerant body mention)
+  // check on the real fetched page and STILL rejected it for too few body
+  // mentions — a genuine low-mention-count case, not a stale pre-fix literal-
+  // match miss. Recollecting cannot rescue these (real corpus example:
+  // and-juliet-2022/guardian--unknown.json is a "Romeo and Juliet" review
+  // whose URL slug happens to contain "and juliet").
+  if (/titleMatch=true/.test(review.incompleteDetail || '')) return false;
+
+  const nulledByMismatch = NULLING_REASONS.has(review.incompleteReason)
+    || (review.showNotMentioned === true && !review.incompleteReason);
   if (!nulledByMismatch) return false;
   const slugText = urlToSlugText(review.url);
   if (!slugText) return false;

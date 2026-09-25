@@ -1,53 +1,53 @@
 {
-  "runDate": "2026-09-25T02:10:04.236Z",
+  "runDate": "2026-09-25T04:06:49.322Z",
   "config": {
-    "batchSize": 10,
-    "maxReviews": 300,
+    "batchSize": 5,
+    "maxReviews": 5,
     "priority": "all",
-    "showFilter": "",
+    "showFilter": "1536-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 98,
-    "failed": 598,
+    "processed": 111,
+    "failed": 611,
     "skipped": 0,
-    "successRate": "14.1%"
+    "successRate": "15.4%"
   },
   "tierBreakdown": {
-    "playwright": 49,
+    "playwright": 59,
     "amp": 2,
-    "browserbase": 12,
+    "browserbase": 14,
     "directCookies": 2,
-    "scrapingbee": 24,
+    "scrapingbee": 27,
     "brightdata": 2,
     "archiveToday": 0,
     "archive": 21
   },
   "statistics": {
-    "tier1Attempts": 19,
-    "tier1Success": 3,
-    "ampAttempts": 1,
-    "ampSuccess": 1,
+    "tier1Attempts": 4,
+    "tier1Success": 4,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 20,
-    "tier2Success": 4,
-    "tier3Attempts": 17,
-    "tier3Success": 5,
-    "tier3_6Attempts": 14,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 18,
-    "tier4Success": 3,
-    "totalFailed": 297,
-    "scrapingBeePageCredits": 96,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 274,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 3,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -148,7 +148,20 @@
     "america-who-hurt-you-off-broadway-2026/playbill--unknown.json",
     "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
     "the-story-west-end-2026/huffpost--elyse-wanshel.json",
-    "a-month-in-the-country-west-end-2026/londonlivinglarge--london-living-large.json"
+    "a-month-in-the-country-west-end-2026/londonlivinglarge--london-living-large.json",
+    "the-holes-off-broadway-2026/nytimes--unknown.json",
+    "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "la-boheme-off-broadway-2026/nytimes--anthony-tommasini.json",
+    "la-boheme-off-broadway-2026/front-row-center--elizabeth-ann-foster.json",
+    "dog-man-the-musical-west-end-2026/musical-theatre-review--unknown.json",
+    "dog-man-the-musical-west-end-2026/muddystilettos--unknown.json",
+    "dog-man-the-musical-west-end-2026/southbank--unknown.json",
+    "dog-man-the-musical-west-end-2026/theatre-weekly--unknown.json",
+    "1536-west-end-2026/timeout--andrjez-lukowski.json",
+    "1536-west-end-2026/timeout-london--andrjez-lukowski.json",
+    "1536-west-end-2026/artsdesk--helen-hawkins.json",
+    "1536-west-end-2026/artsdesk--rachel-halliburton.json"
   ],
   "failed": [
     "cosi-fan-tutte-off-broadway-2026/nytimes--james-barron.json",
@@ -748,7 +761,20 @@
     "burlesque-west-end-2026/jackstage--jack-davey.json",
     "kimberly-akimbo-off-west-end-2026/jonathan-baz--unknown.json",
     "kimberly-akimbo-off-west-end-2026/londonatlarge--laladmin.json",
-    "the-story-west-end-2026/hollywood-reporter--erin-lassner.json"
+    "the-story-west-end-2026/hollywood-reporter--erin-lassner.json",
+    "the-hope-theory-off-broadway-2026/nytg--bridget-gross.json",
+    "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
+    "in-honor-of-jean-michel-basquiat-off-broadway-2026/exeunt-magazine--unknown.json",
+    "pre-existing-condition-off-broadway-2026/nytimes--unknown.json",
+    "pre-existing-condition-off-broadway-2026/guardian--unknown.json",
+    "pre-existing-condition-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "pre-existing-condition-off-broadway-2026/airmail--air-mail.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/new-york-sun--ar-hoffman.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/plays-to-see--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "dog-man-the-musical-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "1536-west-end-2026/independent--ella-duggan.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -800,7 +826,17 @@
       "darkling-off-west-end-2026/guardian--unknown.json",
       "the-holes-off-broadway-2026/playbill--unknown.json",
       "america-who-hurt-you-off-broadway-2026/playbill--unknown.json",
-      "a-month-in-the-country-west-end-2026/londonlivinglarge--london-living-large.json"
+      "a-month-in-the-country-west-end-2026/londonlivinglarge--london-living-large.json",
+      "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "la-boheme-off-broadway-2026/front-row-center--elizabeth-ann-foster.json",
+      "dog-man-the-musical-west-end-2026/musical-theatre-review--unknown.json",
+      "dog-man-the-musical-west-end-2026/muddystilettos--unknown.json",
+      "dog-man-the-musical-west-end-2026/southbank--unknown.json",
+      "dog-man-the-musical-west-end-2026/theatre-weekly--unknown.json",
+      "1536-west-end-2026/timeout--andrjez-lukowski.json",
+      "1536-west-end-2026/timeout-london--andrjez-lukowski.json",
+      "1536-west-end-2026/artsdesk--helen-hawkins.json",
+      "1536-west-end-2026/artsdesk--rachel-halliburton.json"
     ],
     "amp": [
       "data/review-texts/the-story-west-end-2026/huffpost--elyse-wanshel.json",
@@ -818,7 +854,9 @@
       "stranger-things-the-first-shadow-west-end-2023/deadline--baz-bamigboye.json",
       "data/review-texts/stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
       "stranger-things-the-first-shadow-west-end-2023/deadline--greg-evans.json",
-      "data/review-texts/abba-voyage-off-west-end-2026/sunday-express--callum-crumlish.json"
+      "data/review-texts/abba-voyage-off-west-end-2026/sunday-express--callum-crumlish.json",
+      "data/review-texts/the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json",
+      "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json"
     ],
     "directCookies": [
       "just-in-time-2025/newyorker--conde-nast.json",
@@ -848,7 +886,10 @@
       "and-juliet-2022/daily-mail--robert-gore-langton.json",
       "hadestown-2019/theatrely--theatrely-staff.json",
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "the-holes-off-broadway-2026/broadwayworld--stephi-wild.json"
+      "the-holes-off-broadway-2026/broadwayworld--stephi-wild.json",
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
+      "the-holes-off-broadway-2026/nytimes--unknown.json",
+      "la-boheme-off-broadway-2026/nytimes--anthony-tommasini.json"
     ],
     "brightdata": [
       "hamilton-west-end-2021/variety--kj-yossman.json",
@@ -879,56 +920,17 @@
       "hadestown-2019/theater-life--isa-goldberg.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Stage": {
-      "count": 5,
-      "domain": "thestage.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+  "failuresByOutlet": {},
+  "urlDiscoveries": [
+    {
+      "reviewId": "1536-west-end-2026/timeout-london--andrjez-lukowski.json",
+      "oldUrl": "https://www.timeout.com/london/theatre/shucked-review",
+      "newUrl": "https://www.timeout.com/london/theatre/1536-review-1"
     },
-    "WhatsOnStage": {
-      "count": 1,
-      "domain": "whatsonstage.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Londontheatredirect": {
-      "count": 2,
-      "domain": "londontheatredirect.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Jonathan Baz": {
-      "count": 1,
-      "domain": "jonathanbaz.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Times (UK)": {
-      "count": 1,
-      "domain": "thetimes.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Reviews Hub": {
-      "count": 1,
-      "domain": "thereviewshub.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "BroadwayWorld": {
-      "count": 1,
-      "domain": "unknown",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
+    {
+      "reviewId": "1536-west-end-2026/artsdesk--rachel-halliburton.json",
+      "oldUrl": "https://theartsdesk.com/theatre/1536-almeida-theatre-review-fast-and-furious-portrayal-women-henry-viiis-england",
+      "newUrl": "https://theartsdesk.com/theatre/1536-ambassadors-theatre-review-three-essex-girls-take-patriarchy"
     }
-  },
-  "urlDiscoveries": []
+  ]
 }
