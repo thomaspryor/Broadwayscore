@@ -728,7 +728,9 @@ function drainDigestQueue() {
 // long-window work.
 function alertIdempotencyKey(conditionKey, cooldownHours, nowMs) {
   const windowMs = Math.max(1, Math.min(Number(cooldownHours) || 24, 24)) * 3600e3;
-  return `owner-alert:${conditionKey}:${Math.floor(nowMs / windowMs)}`.slice(0, 256);
+  // Hashed so a long conditionKey can't push the bucket past Resend's 256 chars.
+  const id = require('crypto').createHash('sha1').update(String(conditionKey)).digest('hex').slice(0, 20);
+  return `owner-alert:${id}:${Math.floor(nowMs / windowMs)}`;
 }
 
 async function routeAlert(opts) {
