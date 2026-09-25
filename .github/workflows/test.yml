@@ -201,11 +201,26 @@ on:
       # scripts/tests/ - same scripts/tests/ situation, so it needs its own
       # entry too.
       - 'scripts/tests/ack-landed-stranded-rebased.test.mjs'
+      # BRO-4133: --job-id correlationId fallback fixture test, same
+      # scripts/tests/ situation as the five entries above — scripts/lib/
+      # ack-landed-core.test.mjs (globbed) covers the decision, but this file
+      # itself needs its own entry to fire CI on a solo edit.
+      - 'scripts/tests/ack-landed-correlation-id.test.mjs'
       # BRO-4066: the reclassify-headless-endings.js backfill CLI and its
       # scripts/tests/ test (registered in tests/unit-test-manifest.txt) —
       # neither is covered by the globs above, so both need their own entry.
       - 'scripts/reclassify-headless-endings.js'
       - 'scripts/tests/reclassify-headless-endings.test.mjs'
+      # BRO-4133: three more scripts/tests/ files found unregistered by the
+      # same audit gap (audit-orphan-tests.js had never scanned this
+      # directory at all) — same scripts/tests/ situation as the entries
+      # above. A scripts/tests/** glob (mirroring scripts/lib/** above) would
+      # be the more durable fix given this hand-list is now 66+ entries deep
+      # (plan-reviewed 2026-09-25); deferred to a follow-up card since a safe
+      # migration needs its own out-of-glob dependency audit first.
+      - 'scripts/tests/batch-drain-decision.test.mjs'
+      - 'scripts/tests/verify-edits-cloud-session-gates.test.mjs'
+      - 'scripts/tests/watchdog-skips-landed-acked.test.mjs'
       # scripts/lib/fanout-verified-core.test.mjs covers the decision this
       # CLI wraps (BRO-3939); listed so a solo edit to the CLI still fires CI.
       - 'scripts/fanout-verified.js'

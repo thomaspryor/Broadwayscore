@@ -4,10 +4,19 @@
  * .github/workflows/*.yml. Wired into test.yml's lint-workflows job so a forgotten
  * registration blocks the PR instead of silently going un-tested.
  *
- * Scans BOTH tests/unit/ AND the top level of scripts/ (a test placed directly in
- * scripts/ — not scripts/lib/, which runs via its own glob step — otherwise falls
- * in a gap: no glob covers it and the old audit never looked there, so it ran
- * locally but never in CI. Hit 2026-07-12 with notion-tasks-sync/bsc-next tests.)
+ * Scans tests/unit/, the top level of scripts/, AND scripts/tests/ (a test placed
+ * directly in scripts/ — not scripts/lib/, which runs via its own glob step —
+ * otherwise falls in a gap: no glob covers it and the old audit never looked
+ * there, so it ran locally but never in CI. Hit 2026-07-12 with notion-tasks-
+ * sync/bsc-next tests.)
+ *
+ * scripts/tests/ joined the scan BRO-4133 (2026-09-25): 6 files there had
+ * accumulated with zero manifest/path-list registration — one of them was
+ * this very fix's own acceptance test, caught only by a manual audit run, not
+ * by this script, because it never looked in that directory. Two of the six
+ * were legitimately unregistrable (a future-state Linear-backlog probe and a
+ * per-machine-ledger recheck-after probe) and moved to EXEMPT_NEVER_CI below;
+ * the rest were wired into tests/unit-test-manifest.txt.
  *
  * Notion 362637c5-416f-81f4 — discovered 59 orphans (33% of the suite) during the
  * Stuart King Fixes v2 session. The orphan that triggered the audit (bulk-import-
@@ -44,6 +53,7 @@ const { MANIFESTS, NODE_RUNNABLE_TEST_EXTENSIONS, testFileRegex, testReferenceRe
 const ROOT = path.resolve(__dirname, '..');
 const TESTS_DIR = path.join(ROOT, 'tests', 'unit');
 const SCRIPTS_DIR = path.join(ROOT, 'scripts'); // top level only; scripts/lib/ runs via its own glob
+const SCRIPTS_TESTS_DIR = path.join(ROOT, 'scripts', 'tests'); // BRO-4133: was unscanned entirely
 const WORKFLOWS_DIR = path.join(ROOT, '.github', 'workflows');
 // test.yml's main runner reads file lists from these manifests (task #763 —
 // replaced a single 15,987-char inline `node --test <368 files>` line, which
@@ -112,6 +122,18 @@ const EXEMPT_NEVER_CI = {
   // entry above — both were left off this map by their authoring sessions
   // and both blocked every push-with-retry.sh push repo-wide.
   'verify-update-show-status-no-cancellations.test.mjs': 'task-1814',
+  // BRO-2718: asserts the Linear backlog's refused-command ratio has
+  // materially improved over a hardcoded pre-remediation baseline — a
+  // FUTURE-state claim that fails against today's live Linear board by
+  // design (the file's own header says so). Exists to be run directly as
+  // BRO-2718's acceptance command once that sweep lands, never by CI.
+  'linear-backlog-verifiability.test.mjs': 'BRO-2718',
+  // task #1564: reads the per-machine, gitignored dispatch-ledger.jsonl at a
+  // hardcoded absolute path (/Users/tompryor/Broadwayscore/data/audit/) —
+  // cannot run in CI (no such file in a fresh checkout) or on any other
+  // machine. A RECHECK-AFTER acceptance probe for autonomous-acceptance-
+  // recheck.js, same pattern as the entries above.
+  'verify-watchdog-claim-loop-gone.test.mjs': 'task-1564',
 };
 
 const EXEMPT_KNOWN_BROKEN = {
@@ -161,7 +183,7 @@ function listTestFiles() {
     .filter(f => TEST_FILE_REGEX.test(f))
     .filter(f => !f.startsWith('_skip-'))     // explicit opt-out prefix
     .map(f => ({ name: f, rel: `${prefix}/${f}` }));
-  return [...fromDir(TESTS_DIR, 'tests/unit'), ...fromDir(SCRIPTS_DIR, 'scripts')]
+  return [...fromDir(TESTS_DIR, 'tests/unit'), ...fromDir(SCRIPTS_DIR, 'scripts'), ...fromDir(SCRIPTS_TESTS_DIR, 'scripts/tests')]
     .sort((a, b) => a.rel.localeCompare(b.rel));
 }
 
