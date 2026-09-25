@@ -213,9 +213,9 @@ async function main() {
   // zero benefit, and skipping avoids churning the checkpoint file with a
   // run's worth of entries that carry no new information.
   const preflight = serpCensusPreflight(process.env, {
-    // Own opt-out var: the default (SERP_GAP_CENSUS_DISABLED) is the gap audit's
-    // switch, and inheriting it would let a keyless run proceed silently here.
-    disableVar: 'CREATIVE_TEAM_SERP_DISABLED',
+    // No opt-out: this caller only skips when keyless, so a switch could
+    // only unlock a keyless run that silently finds nothing.
+    disableVar: null,
     consequence:
       'Every member would audit as \'error\' (no SERP evidence either way) — '
       + 'not a false hallucination finding, but no new information either. '

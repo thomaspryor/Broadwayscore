@@ -252,8 +252,8 @@ async function main() {
     }
   }
 
-  // Without this the SERP chain runs keyless: every candidate reads as a
-  // real gap (nothing found ⇒ nothing to classify ⇒ trivially 'clean'), which
+  // Without this the SERP chain runs keyless: nothing is found, so every
+  // sampled show reads as trivially 'clean' (no candidate to classify), which
   // would be worse than not probing at all (same lesson as census-recall.js).
   loadEnv(ROOT);
 
@@ -266,6 +266,9 @@ async function main() {
   // DISABLED switches above, which are an operator's deliberate choice, this
   // is an accident and must REFUSE.
   const preflight = serpCensusPreflight(process.env, {
+    // Kill switches were honoured (strictly) above; the preflight gets no
+    // opt-out of its own, so a loosely-spelled switch can't unlock a keyless run.
+    disableVar: null,
     consequence:
       'Every sampled show would return zero candidates, which reads as a clean '
       + 'PASS and feeds evaluateAcceptance()\'s "two consecutive clean weeks" '

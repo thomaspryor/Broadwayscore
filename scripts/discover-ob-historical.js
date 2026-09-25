@@ -240,9 +240,9 @@ async function main() {
   // front and skip only the SERP-dependent venues, rather than writing a
   // candidates file that looks identical to a genuine zero-discovery week.
   const preflight = serpCensusPreflight(process.env, {
-    // Own opt-out var: the default (SERP_GAP_CENSUS_DISABLED) is the gap audit's
-    // switch, and inheriting it would let a keyless run proceed silently here.
-    disableVar: 'OB_HISTORICAL_SERP_DISABLED',
+    // No opt-out: this caller only skips when keyless, so a switch could
+    // only unlock a keyless run that silently finds nothing.
+    disableVar: null,
     consequence:
       'Vineyard/MCC discovery (serpQuery site: searches) would return zero '
       + 'production URLs — indistinguishable from a genuine "nothing new" '

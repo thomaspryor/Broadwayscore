@@ -43,6 +43,7 @@ const { serpQuery, calculateDateWindow } = require('./lib/url-discovery');
 const { urlLooksLikeReview } = require('./lib/review-guards');
 const { _parseDomain, lookupOutletForHost } = require('./lib/outlet-canonicalize');
 const { validateSerpCandidate } = require('./lib/serp-candidate-validator');
+const { serpCensusPreflight } = require('./lib/serp-census-preflight');
 
 // Hard cap on ingest subprocess wall time. A slow/paywalled fetch (WSJ took
 // ~2min in testing) must not be allowed to eat the workflow's 20-min budget
@@ -241,6 +242,23 @@ async function processShow(show) {
 }
 
 async function main() {
+  // Precondition (BRO-4139 cousin): keyless, serpQuery returns null for every
+  // show, processShow records `candidates: 0`, and the audit log is rewritten
+  // with a fresh lastRun, identical to a real "searched, found nothing" week.
+  // Refuse instead; the scheduled workflow passes both keys, so a keyless run
+  // there means a dropped secret and should go red.
+  const preflight = serpCensusPreflight(process.env, {
+    disableVar: null,
+    consequence:
+      'Every regional show would record 0 SERP candidates and the audit log would be '
+      + 'rewritten with a fresh lastRun, indistinguishable from a real empty week. Refusing to run.',
+    workflowHint: '.github/workflows/discover-regional-serp-reviews.yml',
+  });
+  if (!preflight.ok) {
+    console.error(`::error::regional SERP discovery preflight failed — ${preflight.reason}`);
+    process.exit(1);
+  }
+
   const shows = selectRegionalShows();
   console.log(`Regional SERP discovery — ${shows.length} show(s) in pool${dryRun ? ' (dry-run)' : ''}`);
   if (shows.length === 0) {
