@@ -1210,5 +1210,30 @@
       }
     ],
     "queuedAt": "2026-09-25T04:07:58.269Z"
+  },
+  {
+    "conditionKey": "direct-push:609c5948140c98980d4ee34a801a6ffe8a245c03",
+    "title": "Direct push to main: 609c594814 by thomaspryor",
+    "description": "609c594814 reached main WITHOUT going through land.yml (no row in data/audit/landings.jsonl). Pushed by thomaspryor (committer Tom Pryor). Head commit: fix: bash-integration step detection was name-convention-only (ship-check) Direct pushes skip the delta-vs-base gates; sessions must land via scripts/merge-worktree-to-main.sh (BRO-3425). Compare: https://github.com/thomaspryor/Broadwayscore/compare/51dfef2ff1a538b2ba7aa7f8f893731db6a991da...609c5948140c98980d4ee34a801a6ffe8a245c03 Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36096229242",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "sha",
+        "value": "609c5948140c98980d4ee34a801a6ffe8a245c03"
+      },
+      {
+        "name": "actor",
+        "value": "thomaspryor"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36096229242"
+      }
+    ],
+    "queuedAt": "2026-09-25T05:00:24.772Z"
   }
 ]
