@@ -2342,9 +2342,10 @@ showDirs.forEach(showId => {
       // not silently drop the review from the site (deep-heat-rivalry
       // thestage--unknown.json, 2026-09-25): read one valid side in memory
       // (parseAgreeingConflictedReview: only when both sides agree on every non-operational field) and list it loudly in
-      // the CORRUPTED summary. If a later step in this run writes the record
-      // back, that persists the chosen side and so repairs the file.
-      // Only when neither side parses is the file skipped.
+      // the CORRUPTED summary every run until a person resolves it:
+      // safeWriteReview refuses to overwrite a conflict-marked file, so the
+      // rebuild never "repairs" it by persisting one side. When the sides
+      // disagree (or don't parse) the file is skipped, as before.
       let data;
       if (/^<{7}\s|^={7}$|^>{7}\s/m.test(rawContent)) {
         if (!stats.corruptedFiles) stats.corruptedFiles = [];
