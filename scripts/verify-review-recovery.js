@@ -346,8 +346,10 @@ if (reviewsData) {
   const fileInReviews = (data) => (byOutlet.get(data.outletId) || []).some((r) =>
     (data.url && r.url && normUrl(data.url) === normUrl(r.url))
     || normCritic(r.criticName) === normCritic(data.criticName)
-    || isUnknownCritic(data.criticName)
-    || isUnknownCritic(r.criticName));
+    // File-side Unknown only: the rebuild drops an Unknown file when a named
+    // critic exists at the outlet. Never the reverse — an Unknown/null entry
+    // in reviews.json must not vouch for a different named review.
+    || isUnknownCritic(data.criticName));
 
   console.log(`  Reviews in reviews.json for ${showId}: ${showReviews.length}`);
 

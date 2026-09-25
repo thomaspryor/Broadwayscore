@@ -148,7 +148,7 @@ const STRONG_ERROR_PAGE_PATTERNS = [
   // Corpus 2026-09-25: each phrase hits exactly its reseller page, 0 reviews.
   /resale\s+ticket\s+prices\s+may\s+be\s+above\s+face\s+value/i,
   /whether\s+you\s+are\s+buying\s+or\s+selling\s+tickets\s+on\s+our\s+site/i,
-  /\bresale\b[^.]{0,40}\bprices\s+(?:are\s+)?set\s+by\s+(?:the\s+)?sellers/i,
+  /\bresale\b[^.]{0,40}\bprices\s+are\s+set\s+by\s+sellers\s+and\s+move\s+with\s+demand/i,
 ];
 
 /**

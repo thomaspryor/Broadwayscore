@@ -176,6 +176,8 @@ test('classifyReviewUrl: myreviewer home-video (DVD/Blu-ray) reviews rejected, o
   assert.deepEqual(dvd, { ok: false, reason: 'home-video-review' });
   assert.equal(classifyReviewUrl('https://www.myreviewer.com/Blu-ray/1/x/2/Review').ok, false);
   assert.equal(classifyReviewUrl('https://www.myreviewer.com/Theatre/1/x/2/Review').ok, true);
+  assert.deepEqual(classifyReviewUrl('https://www.thestage.co.uk/news/mamma-mia-to-return-to-broadway-after-10-years-away'), { ok: false, reason: 'news-article' });
+  assert.equal(classifyReviewUrl('https://www.thestage.co.uk/reviews/night-city-southwark-playhouse-review').ok, true);
 });
 
 test('classifyReviewUrl: BWW hub + cast/shows pages rejected, BWW article reviews pass', () => {
