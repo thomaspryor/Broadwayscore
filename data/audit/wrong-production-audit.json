@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-25T02:58:33.806Z",
+  "timestamp": "2026-09-25T04:32:16.269Z",
   "stats": {
-    "totalReviews": 44237,
-    "alreadyFlagged": 18255,
-    "dateGuardCatches": 246,
+    "totalReviews": 44239,
+    "alreadyFlagged": 18280,
+    "dateGuardCatches": 245,
     "directorMismatch": 1050,
-    "tvFilmSignals": 1312,
+    "tvFilmSignals": 1313,
     "londonSignals": 1187,
     "offBroadwaySignals": 510,
     "yearMismatch": 95,
-    "noPublishDate": 3856
+    "noPublishDate": 3849
   },
   "findings": [
     {
@@ -20426,20 +20426,6 @@
     },
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
-      "file": "thestage--paul-vale.json",
-      "score": 92,
-      "publishDate": "February 2nd, 2023",
-      "url": "https://www.thestage.co.uk/news/production-news/my-sons-a-queer-but-what-can-you-do-lands-new-york-premiere",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1322d before show (February 2nd, 2023 vs 2026-09-16)"
-        }
-      ]
-    },
-    {
-      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "score": 60,
       "publishDate": "2022-10-24",
@@ -23516,6 +23502,19 @@
       "score": 78,
       "publishDate": "2026-05-29",
       "url": "https://loureviews.blog/2026/05/29/musical-review-redcliffe-at-southwark-playhouse-borough/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "redcliffe-off-west-end-2026",
+      "file": "whatsonstage--sophia-a-jackson.json",
+      "publishDate": "2026-05-28",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -43701,7 +43700,7 @@
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
-      "file": "london-theatre--cheryl-markoski.json",
+      "file": "london-theatre--cheryl-markosky.json",
       "score": 88,
       "publishDate": "2026-08-12",
       "url": "https://www.londontheatre.co.uk/reviews/how-the-other-half-loves-review-old-vic",
