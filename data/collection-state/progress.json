@@ -73,7 +73,9 @@
     "pre-existing-condition-off-broadway-2026/off-off-online--unknown.json",
     "the-children-off-west-end-2026/telegraph--fiona-mountford.json",
     "kimberly-akimbo-off-west-end-2026/jonathan-baz--unknown.json",
-    "the-story-west-end-2026/musical-theatre-review--unknown.json"
+    "the-story-west-end-2026/musical-theatre-review--unknown.json",
+    "the-story-west-end-2026/jonathan-baz--unknown.json",
+    "the-story-west-end-2026/times-uk--clive-davis.json"
   ],
   "failed": [
     "delirium-off-broadway-2026/artsfuse--bill-marx.json",
@@ -424,7 +426,8 @@
       "the-urmetazoan-off-west-end-2026/londontheatre1--unknown.json",
       "table-17-off-west-end-2026/theatre-weekly--unknown.json",
       "pre-existing-condition-off-broadway-2026/off-off-online--unknown.json",
-      "kimberly-akimbo-off-west-end-2026/jonathan-baz--unknown.json"
+      "kimberly-akimbo-off-west-end-2026/jonathan-baz--unknown.json",
+      "the-story-west-end-2026/jonathan-baz--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -437,7 +440,9 @@
       "data/review-texts/la-boheme-off-broadway-2026/seen-and-heard-international--daniel-meyer.json",
       "la-boheme-off-broadway-2026/seen-and-heard-international--daniel-meyer.json",
       "data/review-texts/la-boheme-off-broadway-2026/seen-and-heard-international--robert-beattie.json",
-      "la-boheme-off-broadway-2026/seen-and-heard-international--robert-beattie.json"
+      "la-boheme-off-broadway-2026/seen-and-heard-international--robert-beattie.json",
+      "data/review-texts/the-story-west-end-2026/times-uk--clive-davis.json",
+      "the-story-west-end-2026/times-uk--clive-davis.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -473,7 +478,7 @@
     ]
   },
   "startTime": "2026-09-25T14:47:17.559Z",
-  "lastProcessed": "the-story-west-end-2026/huffpost--elyse-wanshel.json",
+  "lastProcessed": "burlesque-west-end-2026/frontmezzjunkies--unknown.json",
   "log": [
     {
       "t": "2026-09-25T14:49:36.847Z",
@@ -579,6 +584,17 @@
       "event": "bb-session",
       "session": "7083f2ea",
       "url": "https://www.londonatlarge.com/kimberly-akimbo-hampstead-theatre-review/"
+    },
+    {
+      "t": "2026-09-25T17:51:02.085Z",
+      "event": "bb-session",
+      "session": "9b79bbd6",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-story-review-hectorin"
+    },
+    {
+      "t": "2026-09-25T17:51:02.638Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ],
   "recoveredAfterFailure": [
