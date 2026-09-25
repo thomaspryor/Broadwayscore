@@ -253,7 +253,17 @@ const PLAIN_HEALTH = [
   [/^Data: live show with zero critic reviews/, () => 'A running show has no critic reviews on the site'],
   [/^Data: OB closing candidates/, () => 'An Off-Broadway show may have closed'],
   [/^Deploy: production freshness/, () => 'Site updates not reaching the live site'],
-  [/^Sync: social-pulse per-show freshness/, () => 'Social buzz out of date for a running show'],
+  // health-check.js: stale files are hidden from show pages + /trending.
+  [/^Sync: social-pulse per-show freshness/, () => 'Social buzz hidden on some show pages (out of date)'],
+  [/^Quality: outlet domain moves/, () => 'A review outlet moved to a new web address'],
+  [/^Data quality: cross-outlet attribution drift/, () => 'Some reviews may be credited to the wrong outlet'],
+  [/^Data quality: cv-wrongproduction lifetime sweep/, () => 'A review may belong to a different production'],
+  [/^Data quality: fulltext-mentions-show lifetime sweep/, () => 'A review may be listed under the wrong show'],
+  [/^Data quality: slug-mismatch lifetime sweep/, () => 'Some review links point at a different show'],
+  [/^Data quality: revival-unverified lifetime sweep/, () => 'Some shows are not yet confirmed as revivals'],
+  [/^Data quality: missed opening-night broadcasts/, () => 'Opening-night emails to subscribers were missed'],
+  [/^Data quality: stale announced shows/, () => 'A show still says "announced" after opening'],
+  [/^Coverage: adversarial probe/, () => 'A published review has not been picked up yet'],
   [/^Quality: DMARC deliverability/, () => 'Email deliverability reports stopped arriving'],
   [/^Coverage: SERP census recall/, () => 'Finding fewer published reviews than usual'],
   [/^Feedback: needs-manual-review backlog/, () => 'Visitor feedback waiting for a manual look'],
@@ -519,12 +529,49 @@ function renderHealthDigestBlock(health, autofixRows = null, loopDeadMessageOver
 // monitoring itself. The owner needs three answers, in this order:
 //   1. Is the site working for visitors?  (visitor-facing health rows only,
 //      classified by lib/digest-audience.js; unknown checks count as visitor)
-//   2. Is there anything only I can decide?  (decisions with one-click links)
+//   2. Is there anything only I can decide?  (decisions with one-click links,
+//      approvals, and finished work parked for review)
 //   3. Briefly, what did the automation do?
 // Everything else collapses to ONE neutral "Behind the scenes" line, and the
 // full technical report moves below a "Technical details" heading.
 // Pure; send-morning-digest.js's buildSubject and buildHtml both read it so
 // the subject line and the top block can never disagree.
+//
+// Honesty rules (adversarial review of the first cut):
+//   - Visitor WARNINGS are shown with their plain description too; some of
+//     them hide content from visitors (stale social buzz is hidden from show
+//     pages and /trending). A warning-only day is "mostly OK", never "OK".
+//   - Any "being fixed" claim is per ROW, from that row's verified execution
+//     state (same vocabulary as AUTOFIX_STATE_LABEL above): only a
+//     liveness-checked 'in-progress' row may be called "being worked on"; a
+//     'dispatched' launch is an unconfirmed attempt; failed/parked/
+//     no-live-session rows say plainly that nothing is fixing them.
+const OWNER_TOP_MAX_ROWS = 5;
+const OWNER_FIX_STATUS = {
+  'in-progress': 'a fix session is working on it now',
+  'dispatched': 'fix attempt launched, not confirmed yet',
+  'queued': 'queued for an automatic fix, not started yet',
+  'card-filed': 'queued for an automatic fix, not started yet',
+  'acknowledged': 'already tracked, with a known fix date',
+  'card-failed': 'not being fixed automatically yet',
+  'parked': 'automatic fixes kept failing; not being fixed automatically',
+  'no-live-session': 'fix attempt not confirmed (no live session found)',
+};
+
+function findAutofixRow(row, autofixRows) {
+  if (!Array.isArray(autofixRows) || !row || !row.name) return null;
+  return autofixRows.find((r) => r && (r.name === row.name
+    || (Array.isArray(r.affected) && r.affected.some((a) => a && a.name === row.name)))) || null;
+}
+
+// Plain status for one visitor row. Never optimistic without row evidence.
+function ownerFixStatus(row, autofixRows, loopDead = false) {
+  if (loopDead) return 'not being fixed automatically right now (automatic fixing looks stalled)';
+  const r = findAutofixRow(row, autofixRows);
+  if (!r) return 'no automatic fix confirmed';
+  return OWNER_FIX_STATUS[r.state] || 'no automatic fix confirmed';
+}
+
 function countSectionItems(section) {
   if (!section) return 0;
   const items = (Array.isArray(section.items) ? section.items : []).filter(Boolean).length;
@@ -532,7 +579,15 @@ function countSectionItems(section) {
   return items + more;
 }
 
-function buildOwnerView({ health = null, autofixRows = null, needsYou = null, awaitingOwner = null } = {}) {
+// Identity for de-duplicating one Linear issue that shows up in more than
+// one owner channel (an awaiting-owner issue can also sit In Review).
+function ownerItemKey(it) {
+  return String((it && (it.url || it.title)) || '');
+}
+
+function buildOwnerView({
+  health = null, autofixRows = null, needsYou = null, awaitingOwner = null, inReviewBacklog = null, loopDead = false,
+} = {}) {
   const split = splitHealthByAudience(health);
   const queued = filterForbiddenQueued(Array.isArray(health?.queued) ? health.queued : []);
   // With autofix rows, main() has already narrowed health.queued to genuine
@@ -541,13 +596,43 @@ function buildOwnerView({ health = null, autofixRows = null, needsYou = null, aw
   // rest are technical and stay under Technical details.
   const decisionQueued = Array.isArray(autofixRows) ? queued : queued.filter((q) => q.decision === true);
   const otherQueued = Array.isArray(autofixRows) ? [] : queued.filter((q) => q.decision !== true);
-  const decisions = decisionQueued.length + countSectionItems(needsYou) + countSectionItems(awaitingOwner);
+  // Parked in review (BRO-3376): finished work waiting on the owner WITHOUT
+  // an opt-in marker. It is owner work, so it counts toward "N for you";
+  // items already listed under awaitingOwner are dropped so one issue is
+  // never counted (or shown) twice.
+  let reviewQueue = null;
+  if (inReviewBacklog) {
+    const seen = new Set((Array.isArray(awaitingOwner?.items) ? awaitingOwner.items : []).filter(Boolean).map(ownerItemKey));
+    const items = (Array.isArray(inReviewBacklog.items) ? inReviewBacklog.items : [])
+      .filter((it) => it && !seen.has(ownerItemKey(it)));
+    const moreCount = Number(inReviewBacklog.moreCount) > 0 ? Number(inReviewBacklog.moreCount) : 0;
+    if (items.length || moreCount) reviewQueue = { ...inReviewBacklog, items, moreCount };
+  }
+  const decisions = decisionQueued.length + countSectionItems(needsYou) + countSectionItems(awaitingOwner)
+    + countSectionItems(reviewQueue);
   const staleApprovals = Array.isArray(awaitingOwner?.items) ? awaitingOwner.items.filter((i) => i && i.stale).length : 0;
   const rows = Array.isArray(autofixRows) ? autofixRows.filter((r) => r && r.state !== 'decision') : null;
   const internalCount = split.internal.errors.length + split.internal.warns.length;
   const visitorCount = split.visitors.errors.length + split.visitors.warns.length;
+  // Errors first, then warnings; plain names de-duplicated (two rows that
+  // share a plain-English line read as one problem).
+  const visitorItems = [];
+  const seenPlain = new Set();
+  for (const [severity, list] of [['error', split.visitors.errors], ['warn', split.visitors.warns]]) {
+    for (const r of list) {
+      const plain = plainHealthLine(r.name);
+      if (seenPlain.has(plain)) continue;
+      seenPlain.add(plain);
+      visitorItems.push({ name: r.name, plain, severity, status: ownerFixStatus(r, autofixRows, loopDead) });
+    }
+  }
+  let siteState = 'ok';
+  if (!health) siteState = 'unknown';
+  else if (split.visitors.errors.length) siteState = 'affected';
+  else if (split.visitors.warns.length) siteState = 'minor';
   return {
-    siteState: !health ? 'unknown' : (split.visitors.errors.length ? 'affected' : 'ok'),
+    siteState,
+    visitorItems,
     visitorErrors: split.visitors.errors,
     visitorWarns: split.visitors.warns,
     internalErrors: split.internal.errors,
@@ -555,48 +640,59 @@ function buildOwnerView({ health = null, autofixRows = null, needsYou = null, aw
     internalCount,
     decisionQueued,
     otherQueued,
+    reviewQueue,
     decisions,
     staleApprovals,
+    loopDead: !!loopDead,
     tracked: rows ? rows.length : internalCount + visitorCount,
-    working: rows ? rows.filter((r) => r.state === 'dispatched' || r.state === 'in-progress').length : 0,
+    // Only liveness-checked rows count as "being worked on"; a 'dispatched'
+    // launch is an unconfirmed attempt (AUTOFIX_STATE_LABEL, BRO-286).
+    inProgress: rows ? rows.filter((r) => r.state === 'in-progress').length : 0,
+    launched: rows ? rows.filter((r) => r.state === 'dispatched').length : 0,
     autoFixed: Number(health?.autoFixedCount) > 0 ? Number(health.autoFixedCount) : 0,
   };
 }
 
-// Plain, de-duplicated names for the visitor-facing ERROR rows.
+// Plain, de-duplicated names of visitor-facing rows: errors when there are
+// any, otherwise warnings (used by the subject line).
 function visitorProblemNames(view) {
-  const seen = new Set();
-  const out = [];
-  for (const r of (view && view.visitorErrors) || []) {
-    const n = plainHealthLine(r.name);
-    if (!seen.has(n)) { seen.add(n); out.push(n); }
-  }
-  return out;
+  const items = (view && view.visitorItems) || [];
+  const errs = items.filter((i) => i.severity === 'error');
+  return (errs.length ? errs : items).map((i) => i.plain);
+}
+
+function renderVisitorItems(view) {
+  const shown = view.visitorItems.slice(0, OWNER_TOP_MAX_ROWS);
+  const rest = view.visitorItems.length - shown.length;
+  // A dead loop gives every row the same status; say it once, not per row.
+  return shown.map((i) => `<div style="margin:0 0 5px;">
+        <div style="font-size:13px;color:#333;">• ${esc(i.plain)}</div>
+        ${view.loopDead ? '' : `<div style="font-size:11px;color:#777;margin:1px 0 0 12px;">${esc(i.status)}</div>`}
+      </div>`).join('')
+    + (rest > 0 ? `<div style="font-size:11px;color:#777;margin-top:4px;">+${rest} more (listed under Technical details)</div>` : '')
+    + (view.loopDead ? `<div style="font-size:12px;color:#92400e;margin-top:6px;">Automatic fixing looks stalled right now, so none of these is being fixed automatically.</div>` : '');
 }
 
 // The top of the email: site status for visitors, owner decisions, one line
 // of what the automation did, one neutral "Behind the scenes" line.
 // `decisionBlocksHtml` is pre-rendered by the caller (Needs your attention
 // cards with their one-click links, Needs your decision, Waiting on your
-// approval) so every existing block keeps its own markup and mandates.
-function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = null, loopDead = false } = {}) {
+// approval, Review queue) so every existing block keeps its own markup and
+// mandates.
+function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = null } = {}) {
   const parts = [];
-  const names = visitorProblemNames(view);
-  if (view.siteState === 'affected') {
-    const followUp = loopDead
-      ? 'Automatic fixing looks stalled right now, so this may not fix itself. Details are under Technical details below.'
-      : 'The automation is already working on this. Nothing for you to do unless it is still here tomorrow.';
-    parts.push(`<div style="border:1px solid #fcd34d;background:#fffbeb;border-radius:10px;padding:12px 16px;margin:0 0 12px;">
-      <div style="font-size:14px;font-weight:700;color:#92400e;margin-bottom:6px;">⚠️ Visitors may notice a problem</div>
-      ${names.map((n) => `<div style="font-size:13px;color:#333;margin:0 0 4px;">• ${esc(n)}</div>`).join('')}
-      <div style="font-size:12px;color:#666;margin-top:6px;">${esc(followUp)}</div>
+  if (view.siteState === 'affected' || view.siteState === 'minor') {
+    const affected = view.siteState === 'affected';
+    const n = view.visitorItems.length;
+    const heading = affected
+      ? '⚠️ Visitors may notice a problem'
+      : `Site mostly OK. ${n} minor issue${n === 1 ? '' : 's'} visitors could notice`;
+    parts.push(`<div style="border:1px solid ${affected ? '#fcd34d' : '#e5e5e5'};background:${affected ? '#fffbeb' : '#fff'};border-radius:10px;padding:12px 16px;margin:0 0 12px;">
+      <div style="font-size:14px;font-weight:700;color:${affected ? '#92400e' : '#333'};margin-bottom:6px;">${esc(heading)}</div>
+      ${renderVisitorItems(view)}
     </div>`);
   } else if (view.siteState === 'ok') {
-    const minor = view.visitorWarns.length;
-    parts.push(`<p style="font-size:14px;font-weight:700;color:#15803d;margin:0 0 4px;">✅ The site is working normally for visitors.</p>`);
-    parts.push(minor
-      ? `<p style="font-size:12px;color:#666;margin:0 0 12px;">${minor} minor site-data item${minor === 1 ? ' is' : 's are'} being tidied up automatically.</p>`
-      : `<div style="margin:0 0 12px;"></div>`);
+    parts.push(`<p style="font-size:14px;font-weight:700;color:#15803d;margin:0 0 12px;">✅ The site is working normally for visitors.</p>`);
   } else {
     parts.push(`<p style="font-size:13px;color:#666;margin:0 0 12px;">The overnight site check did not report in, so site status is unknown this morning.</p>`);
   }
@@ -604,10 +700,12 @@ function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = nu
   if (view.decisions > 0) {
     parts.push(`<p style="font-size:14px;font-weight:700;color:#1d4ed8;margin:4px 0 8px;">${view.decisions} decision${view.decisions === 1 ? '' : 's'} for you</p>`);
     if (decisionBlocksHtml) parts.push(decisionBlocksHtml);
-  } else if (view.siteState === 'affected') {
-    parts.push(`<p style="font-size:13px;color:#666;margin:0 0 12px;">No decisions needed from you.</p>`);
-  } else {
+  } else if (view.siteState !== 'affected') {
+    // About the OWNER's attention only (no decisions waiting); the visitor
+    // status above stays honest on its own.
     parts.push(`<p style="font-size:13px;font-weight:700;color:#15803d;margin:0 0 12px;">Nothing needs your attention this morning.</p>`);
+  } else {
+    parts.push(`<p style="font-size:13px;color:#666;margin:0 0 12px;">No decisions needed from you.</p>`);
   }
 
   // overnightLine is pre-built plain text from send-morning-digest.js (the
@@ -618,20 +716,25 @@ function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = nu
   if (did.length) parts.push(`<p style="font-size:12px;color:#444;margin:0 0 8px;">${esc(did.join(' '))}</p>`);
 
   const items = `${view.tracked} maintenance item${view.tracked === 1 ? '' : 's'} tracked`;
-  const behind = loopDead
-    ? `Behind the scenes: ${items}; automatic fixing looks stalled (see Technical details).`
-    : `Behind the scenes: ${items}, ${view.working} being fixed automatically right now.`;
+  let behind;
+  if (view.loopDead) {
+    behind = `Behind the scenes: ${items}; automatic fixing looks stalled (see Technical details).`;
+  } else {
+    behind = `Behind the scenes: ${items}, ${view.inProgress} confirmed in progress right now`
+      + (view.launched ? `, ${view.launched} launched but not confirmed yet` : '') + '.';
+  }
   parts.push(`<p style="font-size:12px;color:#888;margin:0 0 16px;">${esc(behind)}</p>`);
   return parts.join('\n');
 }
 
 // Heading that demotes the full technical report (kept for debugging) below
-// the owner-first top block.
+// the owner-first top block. It deliberately does NOT claim "nothing below
+// needs you": the PR supervisor and other machinery alarms render there.
 const TECHNICAL_DETAILS_HEADING = 'Technical details';
 function renderTechnicalDetailsHeading() {
   return `<div style="border-top:1px solid #e5e5e5;margin:18px 0 10px;padding-top:10px;">
     <div style="font-size:11px;color:#999;text-transform:uppercase;letter-spacing:0.04em;">${TECHNICAL_DETAILS_HEADING}</div>
-    <div style="font-size:11px;color:#999;margin-top:2px;">For debugging. Nothing below needs you.</div>
+    <div style="font-size:11px;color:#999;margin-top:2px;">For debugging.</div>
   </div>`;
 }
 
@@ -978,5 +1081,5 @@ module.exports = {
   renderParkedCardsBlock,
   filterForbiddenQueued,
   renderNeedsAttentionBlock, buildOwnerView, renderOwnerTopBlock, visitorProblemNames,
-  renderTechnicalDetailsHeading, TECHNICAL_DETAILS_HEADING,
+  renderTechnicalDetailsHeading, TECHNICAL_DETAILS_HEADING, ownerFixStatus,
 };

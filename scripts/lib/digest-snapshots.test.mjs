@@ -175,7 +175,7 @@ test('buildSubject: internal-only errors read "Site OK · nothing needs you" —
     health: {
       subject: 'BSC URGENT (day 35): 5 unresolved errors',
       errors: [{ name: 'Main: red streak' }, { name: 'Push-retry deadman' }, { name: 'Autofix: throughput (dispatched/passed, daily)' }],
-      warns: [{ name: 'Stuck work: paused P0/P1 cards' }, { name: 'SEO: health' }],
+      warns: [{ name: 'Stuck work: paused P0/P1 cards' }],
     },
     autofixRows: [{ state: 'in-progress', wasNew: false }, { state: 'queued', wasNew: true }],
     now: new Date('2026-09-24T11:30:00Z'),
@@ -183,6 +183,35 @@ test('buildSubject: internal-only errors read "Site OK · nothing needs you" —
   assert.equal(s, 'Morning digest — Thu, Sep 24 · Site OK · nothing needs you');
   assert.doesNotMatch(s, /known\/managed|new\/regressing|⛔|error|warning/);
   assert.equal(classifySubject(s)?.key, 'morning-digest');
+});
+
+// Codex P1-3: a visitor WARNING is never an all-clear in the subject.
+test('buildSubject: visitor warnings read "site mostly OK · N minor visitor issues", never "Site OK"', () => {
+  const s = buildSubject({
+    health: {
+      errors: [{ name: 'Main: red streak' }],
+      warns: [{ name: 'SEO: health' }, { name: 'Sync: social-pulse per-show freshness' }, { name: 'Stuck work: paused P0/P1 cards' }],
+    },
+    autofixRows: [],
+    now: new Date('2026-09-24T11:30:00Z'),
+  });
+  assert.equal(s, 'Morning digest — Thu, Sep 24 · site mostly OK · 2 minor visitor issues · nothing needs you');
+  assert.doesNotMatch(s, /Site OK/);
+});
+
+// Codex P1-2: parked-in-review work must stop the subject saying "nothing needs you".
+test('buildSubject: review-queue items count toward decisions (deduped against approvals)', () => {
+  const same = { title: 'BRO-9: x', url: 'https://linear.app/x/BRO-9' };
+  const s = buildSubject({
+    health: { errors: [], warns: [] },
+    awaitingOwner: { items: [same] },
+    inReviewBacklog: { items: [same, { title: 'BRO-10: y', url: 'https://linear.app/x/BRO-10' }], moreCount: 0 },
+    now: new Date('2026-09-24T11:30:00Z'),
+  });
+  assert.match(s, /Site OK · 2 decisions for you$/);
+  const reviewOnly = buildSubject({ health: { errors: [], warns: [] }, inReviewBacklog: { items: [same], moreCount: 4 }, now: new Date('2026-09-24T11:30:00Z') });
+  assert.doesNotMatch(reviewOnly, /nothing needs you/);
+  assert.match(reviewOnly, /5 decisions for you$/);
 });
 
 test('buildSubject: a visitor-facing error is named in plain English; decisions are counted', () => {
@@ -303,24 +332,23 @@ test('buildHtml: internal-only failures (the 2026-09-24 shape) read calm at the 
     sections: { health: {
       generatedAt: '2026-09-24T09:00:00Z', consecutiveErrorDays: 35, autoFixedCount: 1,
       errors: [{ name: 'Main: red streak' }, { name: 'Push-retry deadman' }, { name: 'Infra: worktree GC log stale' }],
-      warns: [{ name: 'cmux socket: reachability (unmeasurable here)' }, { name: 'SEO: health' }],
+      warns: [{ name: 'cmux socket: reachability (unmeasurable here)' }],
       queued: [],
     } },
     autofixRows: [
-      { name: 'Main: red streak', state: 'in-progress' }, { name: 'Push-retry deadman', state: 'queued' },
-      { name: 'Infra: worktree GC log stale', state: 'queued' }, { name: 'SEO: health', state: 'queued' },
+      { name: 'Main: red streak', state: 'in-progress' }, { name: 'Push-retry deadman', state: 'dispatched' },
+      { name: 'Infra: worktree GC log stale', state: 'queued' },
     ],
     now: new Date('2026-09-24T11:30:00Z'),
   });
   const top = html.slice(0, html.indexOf('Technical details'));
   assert.match(top, /The site is working normally for visitors/);
-  assert.match(top, /1 minor site-data item is being tidied up automatically/);
   assert.match(top, /Nothing needs your attention this morning/);
   assert.match(top, /1 problem was fixed automatically overnight/);
   // The tail depends on this machine's real autofix ledger (buildHtml reads
-  // it via localLoopDeadMessage): "1 being fixed automatically right now" on
-  // a healthy loop, "automatic fixing looks stalled" on a dead one.
-  assert.match(top, /Behind the scenes: 4 maintenance items tracked(, 1 being fixed automatically right now|; automatic fixing looks stalled)/);
+  // it via localLoopDeadMessage). A 'dispatched' row is an unconfirmed
+  // launch, never counted as in progress (codex P1-1).
+  assert.match(top, /Behind the scenes: 3 maintenance items tracked(, 1 confirmed in progress right now, 1 launched but not confirmed yet\.|; automatic fixing looks stalled)/);
   for (const banned of ['Main', 'Push-retry', 'consecutive errors', '❌', 'site error']) {
     assert.ok(!top.includes(banned), `top block must not contain "${banned}"`);
   }
@@ -348,6 +376,26 @@ test('buildHtml: owner decisions render at the TOP with their one-click links', 
   assert.match(top, /Waiting on your approval/);
   assert.match(top, /href="https:\/\/linear\.app\/x\/BRO-9"/);
   assert.doesNotMatch(html, /Nothing needs your attention/);
+});
+
+// Codex P1-2: the Review queue renders at the TOP (deduped), not buried.
+test('buildHtml: review-queue items render at the top, de-duplicated, and are counted', () => {
+  const same = { title: 'BRO-9: approve new homepage', url: 'https://linear.app/x/BRO-9' };
+  const html = buildHtml({
+    sections: {
+      health: { errors: [], warns: [], queued: [] },
+      awaitingOwner: { bannerText: '1 waiting', items: [same] },
+      inReviewBacklog: { bannerText: '2 parked', items: [same, { title: 'BRO-10: finished fix', url: 'https://linear.app/x/BRO-10' }], moreCount: 0 },
+    },
+    autofixRows: [],
+    now: new Date('2026-09-24T11:30:00Z'),
+  });
+  const top = html.slice(0, html.indexOf('>Technical details<') === -1 ? html.length : html.indexOf('>Technical details<'));
+  assert.match(top, /2 decisions for you/);
+  assert.match(top, /Review queue/);
+  assert.match(top, /BRO-10: finished fix/);
+  assert.equal(html.split('BRO-9: approve new homepage').length - 1, 1, 'duplicate issue listed once');
+  assert.doesNotMatch(html, /Nothing needs your attention|Nothing below needs you/);
 });
 
 // ── data/freshness-report.json consumer (task #689) — the generator existed

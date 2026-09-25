@@ -404,17 +404,22 @@ function autofixShouldDryRun({ dryRun = false, syncRefused = null, ownTag = DIGE
 // automation's own machinery (CI, dispatch, cmux ...) the owner can neither
 // see nor act on; those counts now live in the email's Technical details.
 const SUBJECT_NAME_MAX = 42;
-function buildSubject({ health = null, autofixRows = null, awaitingOwner = null, needsYou = null, now = new Date() } = {}) {
+function buildSubject({ health = null, autofixRows = null, awaitingOwner = null, needsYou = null, inReviewBacklog = null, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric',
   }).format(now);
-  const view = buildOwnerView({ health, autofixRows, needsYou, awaitingOwner });
+  const view = buildOwnerView({ health, autofixRows, needsYou, awaitingOwner, inReviewBacklog });
   let site;
   if (view.siteState === 'affected') {
     const names = visitorProblemNames(view);
     const first = names[0] || 'site problem';
     const clipped = first.length > SUBJECT_NAME_MAX ? `${first.slice(0, SUBJECT_NAME_MAX - 1).trimEnd()}…` : first;
     site = `⚠️ visitors affected: ${clipped}${names.length > 1 ? ` (+${names.length - 1} more)` : ''}`;
+  } else if (view.siteState === 'minor') {
+    // Visitor warnings are never an all-clear (some hide content from
+    // visitors), but they are not an outage either.
+    const n = view.visitorItems.length;
+    site = `site mostly OK · ${n} minor visitor issue${n === 1 ? '' : 's'}`;
   } else if (view.siteState === 'ok') {
     site = 'Site OK';
   } else {
@@ -501,6 +506,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // 2026-08-02); everything else follows under "Technical details".
   const view = buildOwnerView({
     health: sections.health, autofixRows, needsYou: sections.needsYou, awaitingOwner: sections.awaitingOwner,
+    inReviewBacklog: sections.inReviewBacklog, loopDead: !!loopDeadMsg,
   });
   // Without autofix rows the fallback count also folds freshness/stuck in,
   // exactly like the technical "issues detected" line below.
@@ -515,8 +521,11 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
     // above (session-scoped cmux state, dies with the tab): this is
     // issue-scoped and survives the originating session closing.
     sections.awaitingOwner ? renderNamedDigestBlock('Waiting on your approval', sections.awaitingOwner) : '',
+    // Parked in review (BRO-3376) — finished work waiting on the owner with
+    // no opt-in marker; de-duplicated against awaitingOwner in buildOwnerView.
+    view.reviewQueue ? renderNamedDigestBlock('Review queue', view.reviewQueue) : '',
   ].filter(Boolean).join('\n');
-  head.push(renderOwnerTopBlock(view, { decisionBlocksHtml, overnightLine, loopDead: !!loopDeadMsg }));
+  head.push(renderOwnerTopBlock(view, { decisionBlocksHtml, overnightLine }));
 
   // Technical report starts here. The raw error names stay (debugging), but
   // are no longer called "site errors": most are the automation's own
@@ -609,16 +618,15 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   if (drainThroughputLine) {
     blocks.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(drainThroughputLine)}</p>`);
   }
-  // "Needs your decision" and "Waiting on your approval" moved to the
-  // owner-first top block (2026-09-24 rework) — see decisionBlocksHtml above.
-  // Parked in review (BRO-282's residual half, BRO-3376) — Linear issues in
-  // the `In Review` state, which is where linear-dispatch.js's seed prompt
-  // tells every finished session to park. The two blocks above only fire when
-  // a session opts in (a ❓ tab mark, an awaiting-owner label); this one needs
-  // no opt-in, which is why it is the block that would have caught the actual
-  // leak: 120 finished items, 100 of them 14+ days old, were sitting here
-  // unread on 2026-09-15 — including BRO-282 itself, for 28 days.
-  if (sections.inReviewBacklog) blocks.push(renderNamedDigestBlock('Review queue', sections.inReviewBacklog));
+  // "Needs your decision", "Waiting on your approval" and "Review queue"
+  // moved to the owner-first top block (2026-09-24 rework) — see
+  // decisionBlocksHtml above. The Review queue (BRO-282's residual half,
+  // BRO-3376) is Linear issues in the `In Review` state, which is where
+  // linear-dispatch.js's seed prompt tells every finished session to park.
+  // It needs no opt-in, which is why it is the block that would have caught
+  // the actual leak: 120 finished items, 100 of them 14+ days old, were
+  // sitting unread on 2026-09-15 — including BRO-282 itself, for 28 days.
+  // It must therefore count toward the subject's "N decisions for you".
   if (sections.providerSpend) blocks.push(renderNamedDigestBlock('Scraping spend', sections.providerSpend));
   // Coverage Verdict (task #905) — same {generatedAt, bannerText, items,
   // moreCount} shape, no new render code.
@@ -713,7 +721,7 @@ function composeDigestEmail({
     }
   }
 
-  const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, needsYou: sections.needsYou, now });
+  const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, needsYou: sections.needsYou, inReviewBacklog: sections.inReviewBacklog, now });
   const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, now });
   return { subject, html };
 }
