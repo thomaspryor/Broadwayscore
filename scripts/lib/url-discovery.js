@@ -20,6 +20,7 @@ const { domainMatchesExpected, setRegistryDomainAliases } = scraper;
 const { isUrlYearOutsideWindow, hasTryoutUrlMarker } = require('./content-filters');
 const { isLondonMarket } = require('./venue-classification');
 const { urlLooksLikeReview, isSluglessReviewUrl } = require('./review-guards');
+const { resolveOutletFromUrlIfPathInformed } = require('./review-normalization');
 const { validateSerpCandidate } = require('./serp-candidate-validator');
 const { isBlockedReviewUrl } = require('./domain-filters');
 const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
@@ -1265,6 +1266,19 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     if (!targetDomain) continue; // vacuous guard — never trust a host with nothing to check it against
     if (!domainMatchesExpected(targetDomain.replace(/^www\./, ''), urlDomain)) continue;
 
+    // Path-split edition guard (BRO-4153): the bare-domain check above cannot
+    // tell timeout.com/london from timeout.com/newyork apart — both satisfy
+    // "domain matches timeout.com" for EITHER outletId, which is exactly how
+    // a timeout-london rediscovery run once accepted a Time Out NEW YORK URL
+    // as its "corrected" review (school-girls-or-the-african-mean-girls-play-2026).
+    // Reject a candidate whose path resolves to a DIFFERENT declared edition
+    // than the outlet this discovery run is trying to fill.
+    const pathResolved = resolveOutletFromUrlIfPathInformed(url);
+    if (pathResolved && pathResolved.outletId !== outletId) {
+      log(`    ✗ Path-split edition mismatch (expected "${outletId}", URL resolves to "${pathResolved.outletId}"): ${url.substring(0, 80)}`);
+      continue;
+    }
+
     const title = (result.title || '').toLowerCase();
 
     // Token-based match against the CANONICAL title (not a showId-derived
@@ -1585,6 +1599,14 @@ function validateUrlDomain(url, outletId) {
     const urlDomain = new URL(url).hostname.replace(/^www\./, '');
     if (!domainMatchesExpected(expectedDomain.replace(/^www\./, ''), urlDomain)) {
       return { valid: false, reason: `URL domain ${urlDomain} doesn't match outlet ${outletId} (expected ${expectedDomain})` };
+    }
+    // Path-split edition guard (BRO-4153): the bare-domain check above cannot
+    // tell timeout.com/london from timeout.com/newyork apart — both satisfy
+    // "domain matches timeout.com" for EITHER outlet. Reject a URL whose path
+    // resolves to a DIFFERENT declared edition than outletId itself.
+    const pathResolved = resolveOutletFromUrlIfPathInformed(url);
+    if (pathResolved && pathResolved.outletId !== String(outletId).toLowerCase()) {
+      return { valid: false, reason: `URL ${url} is a path-split edition of "${pathResolved.outletId}", not "${outletId}"` };
     }
     return { valid: true };
   } catch {

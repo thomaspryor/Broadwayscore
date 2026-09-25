@@ -1083,6 +1083,46 @@ function outletOwnsUrlDomainIgnoringPath(outletId, url) {
   return true;
 }
 
+// Hosts where resolveOutletFromUrl's path check ALWAYS determines the outlet
+// — for every URL on the host, including one with no distinguishing path at
+// all (a bare timeout.com URL still deterministically means "not /london",
+// i.e. Time Out New York). Kept in sync with the path-aware block at the top
+// of resolveOutletFromUrl below; currently just the one declared path-split
+// edition pair (see outlet-registry-domain-collisions.js's EDITION_PAIRS).
+const PATH_SPLIT_EDITION_HOSTS = new Set(['timeout.com', 'timeout.co.uk']);
+
+/**
+ * Resolve an outlet from a URL ONLY when its host is a DECLARED path-split
+ * edition domain (currently timeout.com/timeout.co.uk) — where the path,
+ * including its absence, always decides the outlet on its own.
+ *
+ * Returns null for every other domain, including an UNDECLARED collision
+ * like telegraph.co.uk/express.co.uk: those editions have no path signal at
+ * all (the bare origin and any path resolve to the same eponymous-wins
+ * outlet), so they are deliberately left unresolved by URL — byline/section
+ * data disambiguates them downstream instead (see the collision-rule comment
+ * in buildDomainToOutletIndex above).
+ *
+ * BRO-4153: this is the ONE shared path-aware check. outlet-canonicalize.js's
+ * resolveCanonicalOutletId/lookupOutletForHost only ever see a bare hostname
+ * (or mark a shared host fully "ambiguous"), so without this a timeout.com
+ * URL routed through operator-supplied outlet input, or through the
+ * no-outlet-supplied ingest branch, could silently resolve to the wrong
+ * edition — in either direction (a generic "timeout" input with a /london
+ * URL, or a "timeout-london" input with a /newyork URL).
+ */
+function resolveOutletFromUrlIfPathInformed(url) {
+  if (!url) return null;
+  let hostname;
+  try {
+    hostname = new URL(url).hostname.replace(/^www\./, '').toLowerCase();
+  } catch {
+    return null;
+  }
+  if (!PATH_SPLIT_EDITION_HOSTS.has(hostname)) return null;
+  return resolveOutletFromUrl(url);
+}
+
 function getOutletFromRegistry(outletId) {
   const registry = loadOutletRegistry();
   if (!registry || !registry.outlets) return null;
@@ -2344,6 +2384,7 @@ module.exports = {
   resolveOutletFromCritic,
   clearCriticRegistryCache,
   resolveOutletFromUrl,
+  resolveOutletFromUrlIfPathInformed,
   outletOwnsUrlDomain,
   outletOwnsUrlDomainIgnoringPath,
   isCrossOutletUrl,

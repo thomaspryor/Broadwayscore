@@ -14,9 +14,14 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'module';
+import { spawnSync } from 'node:child_process';
+import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { extractAuthorPairs } = require('../../scripts/audit-bww-rr-critic-mismatches.js');
+const SCRIPT_PATH = require.resolve('../../scripts/audit-bww-rr-critic-mismatches.js');
 
 function mkHtml(author, headline = 'Test headline') {
   return `<script type="application/ld+json">
@@ -85,5 +90,53 @@ describe('extractAuthorPairs — author format recognition', () => {
 </script>`;
     const r = extractAuthorPairs(html);
     assert.strictEqual(r.length, 0);
+  });
+});
+
+// BRO-4157: JSON_OUTPUT used to `return` before the `newCount > 0` exit-code
+// check ran, so `--json` could never report a real mismatch — the workflow's
+// own $RC check was reading an exit code that was structurally always 0/1,
+// never 2. Regression-test the CLI directly (not just extractAuthorPairs) so
+// this can't silently regress again.
+describe('CLI exit code — findings must surface the same way in both output modes', () => {
+  function runCli(args, archiveDir) {
+    return spawnSync(process.execPath, [SCRIPT_PATH, ...args], {
+      env: { ...process.env, BWW_RR_ARCHIVE_DIR_OVERRIDE: archiveDir },
+      encoding: 'utf8',
+    });
+  }
+
+  function mkFixtureDir(authorName) {
+    const dir = mkdtempSync(join(tmpdir(), 'bww-rr-audit-fixture-'));
+    writeFileSync(join(dir, 'test-show.html'), `<script type="application/ld+json">
+{"@type": "BlogPosting", "author": {"name": ${JSON.stringify(authorName)}}, "headline": "Test", "articleBody": "x"}
+</script>`);
+    return dir;
+  }
+
+  test('a real mismatch exits 2 in --json mode (previously always 0)', () => {
+    // cote-notices is a real single-author outlet (defaultCritic: "David Cote").
+    const dir = mkFixtureDir('Wrong Name, Cote Notices');
+    try {
+      const jsonRun = runCli(['--json'], dir);
+      assert.strictEqual(jsonRun.status, 2, `--json run: ${jsonRun.stderr}`);
+      const parsed = JSON.parse(jsonRun.stdout);
+      assert.strictEqual(parsed.findings.filter((f) => !f.alreadyInCanonMap).length, 1);
+
+      const textRun = runCli([], dir);
+      assert.strictEqual(textRun.status, 2, `text run: ${textRun.stderr}`);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test('no mismatch exits 0 in both modes', () => {
+    const dir = mkFixtureDir('David Cote, Cote Notices');
+    try {
+      assert.strictEqual(runCli(['--json'], dir).status, 0);
+      assert.strictEqual(runCli([], dir).status, 0);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });

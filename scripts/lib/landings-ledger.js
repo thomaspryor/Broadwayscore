@@ -133,7 +133,10 @@ function buildDirectPushAlert({ sha, actor = '', committerName = '', committerEm
   const short = String(sha).slice(0, 10);
   const parts = [
     `${short} reached main WITHOUT going through land.yml (no row in data/audit/landings.jsonl).`,
-    `Pushed by ${actor || 'unknown actor'}${committerName || committerEmail ? ` (committer ${committerName || ''} ${committerEmail ? `<${committerEmail}>` : ''})`.replace(/\s+>/, '>') : ''}.`,
+    // Committer NAME only, never the email: this text is written to the
+    // public-repo alert queue, where scripts/lint-committed-pii.js (test.yml)
+    // turns main red on any email-shaped string (2026-09-25, BRO-4147).
+    `Pushed by ${actor || 'unknown actor'}${committerName ? ` (committer ${committerName})` : ''}.`,
     message ? `Head commit: ${String(message).split('\n')[0].slice(0, 120)}` : '',
     'Direct pushes skip the delta-vs-base gates; sessions must land via scripts/merge-worktree-to-main.sh (BRO-3425).',
     compareUrl ? `Compare: ${compareUrl}` : '',

@@ -48,7 +48,7 @@ const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
 const { stripTrailingJunk } = require('./lib/text-cleaning');
 const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost, lookupOutletForHost } = require('./lib/outlet-canonicalize');
-const { getOutletDisplayName, findExistingReviewFile, normalizeCritic } = require('./lib/review-normalization');
+const { getOutletDisplayName, findExistingReviewFile, normalizeCritic, resolveOutletFromUrlIfPathInformed } = require('./lib/review-normalization');
 const { createOrMergeReviewFile, WRITE_GUARD_REFUSED_REASONS } = require('./lib/review-file-writer');
 const { findStaleMergeFields, isPreExistingContentBad } = require('./lib/stale-merge-check');
 const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual-review-fields');
@@ -182,10 +182,15 @@ if (!show) {
     // No --outlet supplied — derive from URL domain via the registry's
     // domain map. This is the common path for /submit-review where the
     // user provided a free-form outlet name we don't pass through.
+    // Path-informed edition splits (timeout.com/london vs /newyork) first:
+    // the domain map below can only ever call a shared host "ambiguous" and
+    // bail, which used to mean a bare timeout.com submission with no
+    // --outlet needlessly refused instead of resolving by path (BRO-4153).
+    const pathResolved = resolveOutletFromUrlIfPathInformed(url);
     const domain = _parseDomain(url);
     const { ambiguous } = _buildDomainMap();
     // Parent-domain aware: newspaper.dailymail.com -> daily-mail (issue #908).
-    const registeredOutlet = domain ? lookupOutletForHost(domain) : null;
+    const registeredOutlet = pathResolved ? pathResolved.outletId : (domain ? lookupOutletForHost(domain) : null);
     if (registeredOutlet) {
       outletId = registeredOutlet;
       outletName = getOutletDisplayName(outletId) || outletId;

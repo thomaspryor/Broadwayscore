@@ -21,7 +21,7 @@
  */
 
 const path = require('path');
-const { normalizeOutlet, getOutletDisplayName, WIRE_SERVICE_OUTLETS } = require('./review-normalization');
+const { normalizeOutlet, getOutletDisplayName, WIRE_SERVICE_OUTLETS, resolveOutletFromUrlIfPathInformed } = require('./review-normalization');
 const { AGGREGATOR_DOMAINS } = require('./aggregator-domains');
 const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes, isBareSuffix } = require('./host-suffix-lists');
 
@@ -155,16 +155,29 @@ function resolveCanonicalOutletId({ outletArg, url }) {
 
   let urlResolved = null;
   if (url) {
-    const domain = parseDomain(url);
-    if (domain) {
-      urlResolved = lookupOutletForHost(domain);
-      // A parent-domain match is weaker evidence than an exact one: a partner
-      // subdomain (jewishchronicle.timesofisrael.com) can host a DIFFERENT
-      // registered outlet. It fills in an unregistered operator input, but
-      // never overrides a registered one.
-      if (urlResolved && aliasIsRegistered && aliasResolved !== urlResolved
-          && !lookupOutletForHost(domain, { exactOnly: true })) {
-        urlResolved = null;
+    // Path-informed edition splits (timeout.com/london vs /newyork) are a
+    // STRONGER signal than the bare-domain map below can ever give — that map
+    // only sees a hostname and marks a shared host fully "ambiguous" (BRO-4153:
+    // a timeout.com URL with operator input "timeout" was trusting the alias
+    // and silently discarding the /london path). Check this first; it returns
+    // null for undeclared collisions like telegraph.co.uk (same outlet either
+    // way — see resolveOutletFromUrlIfPathInformed) so those keep falling
+    // through to the ambiguous-domain-map behavior below, unchanged.
+    const pathResolved = resolveOutletFromUrlIfPathInformed(url);
+    if (pathResolved) {
+      urlResolved = pathResolved.outletId;
+    } else {
+      const domain = parseDomain(url);
+      if (domain) {
+        urlResolved = lookupOutletForHost(domain);
+        // A parent-domain match is weaker evidence than an exact one: a partner
+        // subdomain (jewishchronicle.timesofisrael.com) can host a DIFFERENT
+        // registered outlet. It fills in an unregistered operator input, but
+        // never overrides a registered one.
+        if (urlResolved && aliasIsRegistered && aliasResolved !== urlResolved
+            && !lookupOutletForHost(domain, { exactOnly: true })) {
+          urlResolved = null;
+        }
       }
     }
   }

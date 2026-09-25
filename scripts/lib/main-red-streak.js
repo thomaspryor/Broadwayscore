@@ -297,6 +297,44 @@ function firstFailingTestNameInJobLog(jobLogText) {
   return null;
 }
 
+// BRO-4151: `testNameByJob` is a JOB-wide scan (firstFailingTestNameInJobLog
+// finds the first TAP `not ok` line ANYWHERE in the job's concatenated log,
+// not within the specific failing step's own output — the per-job REST logs
+// endpoint returns one text blob for every step, with no reliable boundary
+// this file's own per-line scan can key on). That is a fine approximation
+// when the failing step itself is a `node --test` batch (the TAP line really
+// is that step's own output), but a step whose `run:` is a bare `bash
+// <path>.test.sh` (optionally `timeout N bash <path>.test.sh`) never prints
+// TAP output at all (grep-confirmed: none of scripts/lib/*.test.sh emit `not
+// ok`) — so any `not ok` line found in a job whose FAILING step is one of
+// these belongs to some OTHER step in the same job (e.g. an earlier `node
+// --test` batch step) and must never be attributed to it. Observed live on
+// BRO-4149.
+//
+// The step's own `run:` command is the ground truth (findStepRunCommandInWorkflow,
+// scripts/lib/red-signature-verify-cmd.js, wired in by route-main-streak-
+// signatures.js's caller below via `resolveRunCommand`) — checked FIRST. A
+// step-name suffix convention ("... (bash integration)") is kept only as a
+// fallback for callers that can't resolve the workflow text (tests, or a
+// caller lacking test.yml). It is NOT reliable on its own: a live scan of
+// this repo's OWN test.yml (2026-09-24) found 4 steps that run a bare `bash
+// scripts/lib/*.test.sh` and print no TAP output, yet are named "(bash
+// unit)" or with a bare task/card reference instead of "(bash integration)"
+// — e.g. "Run github-remote-parse test (bash unit)" and "Run
+// merge-worktree-to-main checkout-fail regression test (task #819)". The
+// run-command check catches those too; the suffix fallback alone would not.
+const BASH_INTEGRATION_STEP_RE = /\(bash integration\)\s*$/i;
+const BASH_TEST_SH_RUN_RE = /^(?:timeout\s+\d+\s+)?bash\s+[\w./-]+\.test\.sh$/;
+
+function isBashTestStepCommand(runCmd) {
+  return BASH_TEST_SH_RUN_RE.test(String(runCmd || '').trim());
+}
+
+function isBashIntegrationStep(stepName, runCmd) {
+  if (isBashTestStepCommand(runCmd)) return true;
+  return BASH_INTEGRATION_STEP_RE.test(String(stepName || '').trim());
+}
+
 /**
  * One entry per job that failed on a REAL step in `run` (excludes setup-
  * job-only infra hiccups and benign supersessions/phantom-cancel steps —
@@ -304,9 +342,13 @@ function firstFailingTestNameInJobLog(jobLogText) {
  * function is called on should already be known-red at the run level).
  * @param {{jobs?: Array}} run
  * @param {Map<string,string>} [testNameByJob] job name -> firstFailingTestNameInJobLog() result, from the caller's per-job log fetch
+ * @param {(jobName:string, stepName:string)=>string|null} [resolveRunCommand] optional —
+ *   the step's own `run:` command from test.yml (see findStepRunCommandInWorkflow
+ *   in red-signature-verify-cmd.js). Omitted callers (and existing tests) fall
+ *   back to the step-name-suffix heuristic only.
  * @returns {Array<{job:string, step:string, testName:string|null, conditionKey:string}>}
  */
-function failingStepSignatures(run, testNameByJob) {
+function failingStepSignatures(run, testNameByJob, resolveRunCommand) {
   const jobs = (run && run.jobs) || [];
   const out = [];
   for (const job of jobs) {
@@ -314,7 +356,8 @@ function failingStepSignatures(run, testNameByJob) {
     if (isSetupJobOnlyFailure(job)) continue;
     const step = firstFailingStepEntry(job);
     if (!step) continue; // no real failing step — nothing to attribute
-    const testName = testNameByJob?.get(job.name || '') || null;
+    const runCmd = typeof resolveRunCommand === 'function' ? resolveRunCommand(job.name, step.name) : null;
+    const testName = isBashIntegrationStep(step.name, runCmd) ? null : (testNameByJob?.get(job.name || '') || null);
     out.push({
       job: job.name || 'unknown',
       step: step.name || 'unknown',
@@ -429,6 +472,8 @@ module.exports = {
   RED_SIGNATURE_PREFIX,
   stepFailureSignature,
   firstFailingTestNameInJobLog,
+  isBashIntegrationStep,
+  isBashTestStepCommand,
   failingStepSignatures,
   signaturesToResolve,
 };

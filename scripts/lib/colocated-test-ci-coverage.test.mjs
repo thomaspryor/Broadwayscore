@@ -42,8 +42,12 @@ import { execFileSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const { MANIFESTS, TEST_FILE_EXTENSIONS, NODE_RUNNABLE_TEST_EXTENSIONS, testFileRegex } = require('./test-manifest.js');
-// Guarded by `if (require.main === module)`, so requiring it does not run the CLI.
-const { extractRunBlocks } = require('../audit-orphan-tests.js');
+// isInvokedIn/stripShellComments/executableWorkflowText moved to
+// bash-integration-test-list.js (BRO-4150) so land-gauntlet.sh's
+// bash-integration gate reads the SAME matcher this guard does, rather than a
+// second hand-maintained copy. Guarded by `if (require.main === module)`, so
+// requiring it does not run either file's CLI.
+const { stripShellComments, executableWorkflowText, isInvokedIn } = require('./bash-integration-test-list.js');
 
 const LIB_DIR = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(LIB_DIR, '..', '..');
@@ -62,48 +66,6 @@ const WORKFLOWS_DIR = path.join(ROOT, '.github', 'workflows');
 // scripts/audit-orphan-tests.js via scripts/lib/test-manifest.js so the two
 // guards cannot drift apart again.
 const TEST_FILE_RE = testFileRegex();
-
-/**
- * Strip SHELL comments from a run: body.
- *
- * extractRunBlocks() keeps every line of a `run: |` block, which is correct for
- * YAML but not for shell: a `#` line inside the block is a shell comment, not
- * code. test.yml documents this very glob in ~12 comments, several of them
- * INSIDE the run block, so without this step deleting the real glob line still
- * left a dozen matches and the guard passed. That was verified, not theorised —
- * mutation case 1 of the battery in the commit message.
- *
- * Quote state is tracked per line so a `#` inside 'single' or "double" quotes
- * is left alone.
- */
-function stripShellComments(text) {
-  return text
-    .split('\n')
-    .map((line) => {
-      let quote = null;
-      for (let i = 0; i < line.length; i++) {
-        const c = line[i];
-        if (quote) {
-          if (c === quote) quote = null;
-        } else if (c === "'" || c === '"') {
-          quote = c;
-        } else if (c === '#' && (i === 0 || /\s/.test(line[i - 1]))) {
-          return line.slice(0, i);
-        }
-      }
-      return line;
-    })
-    .join('\n');
-}
-
-/** Executable shell of every workflow: `run:` bodies, shell comments removed. */
-function executableWorkflowText() {
-  return fs
-    .readdirSync(WORKFLOWS_DIR)
-    .filter((f) => /\.ya?ml$/.test(f))
-    .map((f) => stripShellComments(extractRunBlocks(fs.readFileSync(path.join(WORKFLOWS_DIR, f), 'utf8'))))
-    .join('\n');
-}
 
 // A glob only counts when it appears where this repo actually RUNS tests:
 // collected into a shell array (`tests=(scripts/lib/*.test.mjs)`, the form
@@ -135,37 +97,8 @@ function executedGlobExtensions(runText) {
   return extensions;
 }
 
-/**
- * Does `runText` actually INVOKE relPath, as opposed to merely naming it?
- *
- * For a node test this stays the historical `includes()` check: the repo runs
- * those a dozen different ways (`node --test a b c`, a manifest expansion, a
- * repeat loop) and a stricter rule would produce false REDs on real coverage.
- *
- * For a shell test it does NOT. There is exactly one way a *.test.sh runs here
- * — an interpreter followed by the literal path — so the loose check bought
- * nothing and cost real assurance: with `sh` newly policed, `includes()` is the
- * SOLE coverage proof for all 17 colocated bash tests, and it would have
- * accepted `run: echo "see scripts/lib/x.test.sh"`, a commented-out step
- * resurrected as a string, or the path appearing as an argument to something
- * else entirely. That is the same forge-a-mention false-all-clear this file's
- * header describes task #1643 fixing in audit-orphan-tests.js, so it should not
- * be reintroduced through the branch that now carries the most weight.
- *
- * Deliberately anchored at a command position (line start or after ;, &&, ||, |)
- * so a path inside a quoted echo argument cannot pass. An optional
- * `timeout <duration>` prefix is allowed: it is how test.yml bounds a bash
- * test so a hang fails its step instead of cancelling the job (2026-09-24).
- */
-function isInvokedIn(runText, relPath, ext) {
-  if (NODE_RUNNABLE_TEST_EXTENSIONS.includes(ext)) return runText.includes(relPath);
-  const escaped = relPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const invocation = new RegExp(`(?:^|[;&|])\\s*(?:timeout\\s+\\d+[smh]?\\s+)?(?:bash|sh|zsh)\\s+(?:-\\S+\\s+)*${escaped}(?![\\w./-])`, 'm');
-  return invocation.test(runText);
-}
-
 test('every scripts/lib/*.test.* file is executed by CI (glob, consumed manifest or literal run:)', () => {
-  const runText = executableWorkflowText();
+  const runText = executableWorkflowText(WORKFLOWS_DIR);
   const globExts = executedGlobExtensions(runText);
 
   // The glob is the primary mechanism. If it ever disappears, every colocated
