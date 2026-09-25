@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-25T00:56:20.762Z",
+  "runDate": "2026-09-25T02:10:04.236Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 95,
-    "failed": 596,
+    "processed": 98,
+    "failed": 598,
     "skipped": 0,
-    "successRate": "13.7%"
+    "successRate": "14.1%"
   },
   "tierBreakdown": {
-    "playwright": 48,
-    "amp": 0,
+    "playwright": 49,
+    "amp": 2,
     "browserbase": 12,
     "directCookies": 2,
     "scrapingbee": 24,
-    "brightdata": 1,
+    "brightdata": 2,
     "archiveToday": 0,
     "archive": 21
   },
   "statistics": {
-    "tier1Attempts": 16,
-    "tier1Success": 5,
-    "ampAttempts": 0,
-    "ampSuccess": 0,
-    "tier1_5Attempts": 5,
-    "tier1_5Success": 3,
-    "tier2Attempts": 14,
+    "tier1Attempts": 19,
+    "tier1Success": 3,
+    "ampAttempts": 1,
+    "ampSuccess": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 20,
     "tier2Success": 4,
-    "tier3Attempts": 10,
-    "tier3Success": 1,
-    "tier3_6Attempts": 10,
+    "tier3Attempts": 17,
+    "tier3Success": 5,
+    "tier3_6Attempts": 14,
     "tier3_6Success": 0,
-    "tier4Attempts": 14,
-    "tier4Success": 1,
+    "tier4Attempts": 18,
+    "tier4Success": 3,
     "totalFailed": 297,
-    "scrapingBeePageCredits": 65,
+    "scrapingBeePageCredits": 96,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 5,
-    "browserbaseMinutesUsed": 1.8,
-    "urlDiscoveryAttempts": 279,
-    "urlDiscoverySuccess": 2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 274,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -145,7 +145,10 @@
     "darkling-off-west-end-2026/guardian--unknown.json",
     "the-holes-off-broadway-2026/broadwayworld--stephi-wild.json",
     "the-holes-off-broadway-2026/playbill--unknown.json",
-    "america-who-hurt-you-off-broadway-2026/playbill--unknown.json"
+    "america-who-hurt-you-off-broadway-2026/playbill--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
+    "the-story-west-end-2026/huffpost--elyse-wanshel.json",
+    "a-month-in-the-country-west-end-2026/londonlivinglarge--london-living-large.json"
   ],
   "failed": [
     "cosi-fan-tutte-off-broadway-2026/nytimes--james-barron.json",
@@ -184,7 +187,6 @@
     "the-invention-of-love-off-broadway-2026/nytg--unknown.json",
     "catarina-and-the-beauty-of-killing-fascists-west-end-2026/london-unattached--madeleine-morrow.json",
     "catarina-and-the-beauty-of-killing-fascists-west-end-2026/thestage--unknown.json",
-    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
     "the-invention-of-love-off-broadway-2026/thestage--ian-shine.json",
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
     "kevin-off-broadway-2026/guardian--unknown.json",
@@ -743,7 +745,10 @@
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/standard--nick-curtis.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--charlotte-vickers.json",
     "kevin-off-broadway-2026/independent--tom-murray.json",
-    "burlesque-west-end-2026/jackstage--jack-davey.json"
+    "burlesque-west-end-2026/jackstage--jack-davey.json",
+    "kimberly-akimbo-off-west-end-2026/jonathan-baz--unknown.json",
+    "kimberly-akimbo-off-west-end-2026/londonatlarge--laladmin.json",
+    "the-story-west-end-2026/hollywood-reporter--erin-lassner.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -794,9 +799,13 @@
       "deep-heat-rivalry-off-west-end-2026/bestoftheatre--unknown.json",
       "darkling-off-west-end-2026/guardian--unknown.json",
       "the-holes-off-broadway-2026/playbill--unknown.json",
-      "america-who-hurt-you-off-broadway-2026/playbill--unknown.json"
+      "america-who-hurt-you-off-broadway-2026/playbill--unknown.json",
+      "a-month-in-the-country-west-end-2026/londonlivinglarge--london-living-large.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/the-story-west-end-2026/huffpost--elyse-wanshel.json",
+      "the-story-west-end-2026/huffpost--elyse-wanshel.json"
+    ],
     "browserbase": [
       "data/review-texts/million-dollar-quartet-off-west-end-2026/standard--henry-hitchings.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
@@ -842,7 +851,8 @@
       "the-holes-off-broadway-2026/broadwayworld--stephi-wild.json"
     ],
     "brightdata": [
-      "hamilton-west-end-2021/variety--kj-yossman.json"
+      "hamilton-west-end-2021/variety--kj-yossman.json",
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -871,8 +881,15 @@
   },
   "failuresByOutlet": {
     "The Stage": {
-      "count": 6,
+      "count": 5,
       "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "WhatsOnStage": {
+      "count": 1,
+      "domain": "whatsonstage.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -880,6 +897,13 @@
     "Londontheatredirect": {
       "count": 2,
       "domain": "londontheatredirect.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Jonathan Baz": {
+      "count": 1,
+      "domain": "jonathanbaz.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -906,16 +930,5 @@
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "the-holes-off-broadway-2026/broadwayworld--stephi-wild.json",
-      "oldUrl": "https://www.broadwayworld.com/article/Zack-Villere-to-Compose-Original-Music-for-THE-HOLES-Off-Broadway-20260901",
-      "newUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-HOLES-Off-Broadway-at-The-Wild-Project-20260924"
-    },
-    {
-      "reviewId": "america-who-hurt-you-off-broadway-2026/playbill--unknown.json",
-      "oldUrl": "https://playbill.com/article/in-her-new-show-sarah-jones-is-asking-america-who-hurt-you",
-      "newUrl": "https://playbill.com/article/reviews-what-do-the-critics-think-of-america-who-hurt-you-off-broadway"
-    }
-  ]
+  "urlDiscoveries": []
 }
