@@ -167,3 +167,28 @@ test('against the REAL test.yml: a known-stable step resolves to its own command
   const cmd = findStepRunCommandInWorkflow(realYml, 'Data Validation', 'Run data validation');
   assert.equal(cmd, 'node scripts/validate-data.js');
 });
+
+// ── BRO-4151: two real steps that used to degrade to owner-judgment ────────
+//
+// Both step commands were already resolvable (findStepRunCommandInWorkflow
+// found them fine) but failed safe-form validation, so verifyForSignature
+// went straight to owner-judgment with no job-level fallback — the red-first
+// pass then skipped these cards outright (no-safe-verify) instead of
+// dispatching them. Fixed by admitting each step's own command into
+// SAFE_CHECK_FORMS (autonomous-triage-core.js), not by changing this file.
+
+test('against the REAL test.yml: the PII audit step (BRO-4147) now arms its own command', () => {
+  const dirname = path.dirname(new URL(import.meta.url).pathname);
+  const realYml = fs.readFileSync(path.join(dirname, '..', '..', '.github', 'workflows', 'test.yml'), 'utf8');
+  const v = verifyForSignature({ job: 'Lint Workflows', step: 'Audit — no submitter PII in committed data/audit files' }, realYml);
+  assert.equal(v.line, 'VERIFY: node scripts/lint-committed-pii.js');
+  assert.equal(v.note, null);
+});
+
+test('against the REAL test.yml: the stranded-commit-cascade bash integration step (BRO-4149) now arms its own command', () => {
+  const dirname = path.dirname(new URL(import.meta.url).pathname);
+  const realYml = fs.readFileSync(path.join(dirname, '..', '..', '.github', 'workflows', 'test.yml'), 'utf8');
+  const v = verifyForSignature({ job: 'Unit Tests', step: 'Run push-with-retry stranded-commit-cascade test (bash integration)' }, realYml);
+  assert.equal(v.line, 'VERIFY: bash scripts/lib/push-with-retry.stranded-commit-cascade.test.sh');
+  assert.equal(v.note, null);
+});

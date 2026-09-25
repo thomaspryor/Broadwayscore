@@ -97,6 +97,20 @@ function countDispatchesToday(journal, now = Date.now()) {
   return (journal || []).filter((r) => r && r.event === 'dispatch' && utcDay(r.ts) === today).length;
 }
 
+// BRO-4151: which skip reasons mean "already being handled, stay quiet" vs
+// "this card got NO job this tick and nothing is coming without a human
+// looking at it". A live job, a very recent dispatch (still within
+// ATTEMPT_COOLDOWN_MS of actually being requested), or an unresolved
+// "Dispatched ..." comment from another machine are all already in flight.
+// Everything else — no-safe-verify, cap-reached, human-gated, a card whose
+// state moved out from under us, a refused/follow-up attempt now cooling
+// down — got skipped with nobody told, which is exactly how BRO-4147 and
+// BRO-4149 sat for 40+ minutes with no job and no alert.
+function isSilentSkipReason(reason) {
+  const r = String(reason || '');
+  return r === 'live-job' || r === 'dispatched-comment' || r.startsWith('recent-attempt:dispatch');
+}
+
 function conditionKeyFromIssue(issue) {
   const m = CONDITION_KEY_RE.exec(String((issue && issue.description) || ''));
   return m ? m[1].trim() : null;
@@ -233,6 +247,7 @@ function updateIssueViaBrain(identifier, args) {
 function defaultDeps() {
   const linearClient = require('./linear-client.js');
   const { dispatchDetached } = require('./digest-autofix.js');
+  const { routeAlert } = require('./owner-alert-router.js');
   return {
     listOpenIssues: () => linearClient.listOpenIssuesWithDescriptions(),
     getIssue: (id) => linearClient.getIssue(id),
@@ -242,7 +257,32 @@ function defaultDeps() {
     readTrackedLedger: readTrackedLedgerFromOrigin,
     dispatch: (identifier, log, staggerSec) => dispatchDetached(`linear:${identifier}`, log, staggerSec, null, {}),
     updateIssue: updateIssueViaBrain,
+    routeSkipAlert: (opts) => routeAlert(opts),
   };
+}
+
+// BRO-4151: one 'digest' routeAlert per non-silently-skipped card this tick —
+// routeAlert's own per-conditionKey cooldown (7 days by default) means a
+// still-stuck card is only actually queued into the morning digest once, not
+// re-queued every 5-minute tick until someone fixes it.
+async function surfaceSkip(d, { identifier, reason }, issueByIdentifier, log) {
+  const iss = issueByIdentifier.get(identifier);
+  const title = (iss && iss.title) || identifier;
+  try {
+    await d.routeSkipAlert({
+      conditionKey: `red-first-skip:${identifier}`,
+      title: `Red-first dispatch skipped ${identifier} — no job spawned (${reason})`,
+      description: `The BRO-4054 red-first pass skipped "${title}" (${identifier}) this tick with reason "${reason}" — no dispatch was attempted and no job was spawned. Unless this reason clears on its own (e.g. the daily cap resetting), the card will keep sitting here with nobody looking at it.`,
+      severity: 'warning',
+      disposition: 'digest',
+      fields: [
+        { name: 'Card', value: identifier },
+        { name: 'Skip reason', value: reason },
+      ],
+    });
+  } catch (err) {
+    log(`[red-first] skip-alert failed for ${identifier} (${reason}): ${err.message}`);
+  }
 }
 
 // ── the pass ────────────────────────────────────────────────────────────────
@@ -288,6 +328,17 @@ async function runRedFirstPass({ dryRun = false, log = console.log, now = Date.n
     d.appendJournal({ event: 'dispatch', identifier: id, conditionKey: conditionKeyFromIssue(fresh) });
     summary.dispatched.push(id);
     log(`[red-first] dispatched ${id} (${fresh.title})`);
+  }
+
+  // BRO-4151: surface every skip this tick that isn't already-being-handled
+  // (a live job, a very recent dispatch, an unresolved dispatched-comment) —
+  // dry-run mutates nothing, so it never routes an alert either.
+  if (!dryRun) {
+    const issueByIdentifier = new Map((issues || []).map((i) => [i.identifier, i]));
+    for (const skip of summary.skipped) {
+      if (isSilentSkipReason(skip.reason)) continue;
+      await surfaceSkip(d, skip, issueByIdentifier, log);
+    }
   }
 
   // ── follow-up phase ──
@@ -354,7 +405,7 @@ async function runRedFirstPass({ dryRun = false, log = console.log, now = Date.n
 
 module.exports = {
   DAILY_CAP, ATTEMPT_COOLDOWN_MS, FOLLOW_UP_WINDOW_MS, MAX_FOLLOW_UPS_PER_TICK, FOLLOW_UP_MARKER, JOURNAL_PATH,
-  utcDay, countDispatchesToday, conditionKeyFromIssue, isRedFirstCandidateIssue,
+  utcDay, countDispatchesToday, conditionKeyFromIssue, isRedFirstCandidateIssue, isSilentSkipReason,
   selectRedFirstCandidates, decideCardFollowUp, followUpCommentBody,
   readJournal, appendJournal, readTrackedLedgerFromOrigin, runRedFirstPass,
 };

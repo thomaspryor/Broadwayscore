@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   assessMainRedStreak, failingJobsFromNeeds,
-  stepFailureSignature, firstFailingTestNameInJobLog, failingStepSignatures, signaturesToResolve,
+  stepFailureSignature, firstFailingTestNameInJobLog, isBashIntegrationStep, failingStepSignatures, signaturesToResolve,
   trackSignatureAbsence, jobNameFromRedKey, STALE_ABSENT_RUN_THRESHOLD,
 } = require('./main-red-streak.js');
 
@@ -394,6 +394,45 @@ test('stepFailureSignature: same job+step, different first-failing-test names pr
 test('failingStepSignatures skips setup-job-only infra failures (no signature manufactured from zero test evidence)', () => {
   const run = { jobs: [testJob('unit-tests', 'failure', [failedStep('Set up job')])] };
   assert.deepEqual(failingStepSignatures(run), []);
+});
+
+// ── BRO-4151: a bash integration step never gets a testName from the job's
+// whole-log TAP scan, even when the map has one for that job ──────────────
+
+test('isBashIntegrationStep matches test.yml\'s "(bash integration)" naming convention only', () => {
+  assert.equal(isBashIntegrationStep('Run push-with-retry stranded-commit-cascade test (bash integration)'), true);
+  assert.equal(isBashIntegrationStep('Run unit tests (no-data-dependency)'), false);
+  assert.equal(isBashIntegrationStep('Lint workflow files'), false);
+  assert.equal(isBashIntegrationStep(''), false);
+  assert.equal(isBashIntegrationStep(undefined), false);
+});
+
+test('failingStepSignatures never attributes a testName to a bash-integration step, even when the job-log TAP scan found one from a different step', () => {
+  // BRO-4149: "Unit Tests" job log contains a real `not ok` line from an
+  // EARLIER `node --test` batch step, but the job's own FIRST FAILING step is
+  // the bash integration test (which never prints TAP output at all — the
+  // whole-job-log scan cannot distinguish which step a `not ok` line actually
+  // belongs to). Attributing it anyway titled the filed card with an
+  // unrelated test's name.
+  const run = {
+    jobs: [testJob('Unit Tests', 'failure', [
+      okStep('Set up job'),
+      okStep('Run unit tests (no-data-dependency)'),
+      failedStep('Run push-with-retry stranded-commit-cascade test (bash integration)'),
+    ])],
+  };
+  const testNameByJob = new Map([['Unit Tests', 'foo returns the contracted value']]);
+  const sigs = failingStepSignatures(run, testNameByJob);
+  assert.equal(sigs.length, 1);
+  assert.equal(sigs[0].step, 'Run push-with-retry stranded-commit-cascade test (bash integration)');
+  assert.equal(sigs[0].testName, null, 'a bash-integration step must never inherit an unrelated TAP name');
+});
+
+test('failingStepSignatures still attributes a testName to a non-bash-integration failing step', () => {
+  const run = { jobs: [testJob('Unit Tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests (no-data-dependency)')])] };
+  const testNameByJob = new Map([['Unit Tests', 'a real node --test failure']]);
+  const sigs = failingStepSignatures(run, testNameByJob);
+  assert.equal(sigs[0].testName, 'a real node --test failure');
 });
 
 test('an unparseable createdAt on the anchor run reports null duration, not a silent pass (code-review finding)', () => {
