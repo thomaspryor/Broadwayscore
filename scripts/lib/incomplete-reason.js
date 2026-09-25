@@ -5,7 +5,7 @@
  * Uses detectPaywall from content-quality.js for paywall text detection.
  */
 
-const { detectPaywall, TRUNCATION_SIGNALS, validateContentMentionsShow } = require('./content-quality');
+const { detectPaywall, TRUNCATION_SIGNALS } = require('./content-quality');
 
 let _showTitleById = null;
 function lookupShowTitle(showId) {
@@ -66,7 +66,9 @@ function isStaleContentMismatchEntry(review, failedFetchEntry) {
   if (!(fetchedAt > failedAt)) return false;
   const title = review.showTitle || lookupShowTitle(review.showId);
   if (!title) return false;
-  return validateContentMentionsShow(review.fullText, null, title, review.showId).valid === true;
+  // Same stored-text gate as the rebuild's showNotMentioned auto-clear
+  // (collection validators; long-title discount only for a lede mention).
+  return require('./show-not-mentioned-autoclear').passesStoredTextMentionGate(review.fullText, title, review.showId).pass === true;
 }
 
 function classifyIncompleteReason(review, failedFetchEntry) {
