@@ -173,6 +173,7 @@ scripts/rebuild-all-reviews.test.mjs
 scripts/reconcile-broadcast-state.test.mjs
 scripts/reconcile-dead-completions.test.mjs
 scripts/recover-serp-text.test.mjs
+scripts/red-first-dispatch.test.mjs
 scripts/score-reviews-calibrated.test.mjs
 scripts/scoring-delta-autoclear-coverage.test.mjs
 scripts/scoring-delta-rebuild-loop-touch.test.mjs
@@ -185,6 +186,7 @@ scripts/send-opening-night-broadcast.test.mjs
 scripts/sweep-open-backlog-acceptance.test.mjs
 scripts/telegraph-reviews-index.test.mjs
 scripts/tests/ack-landed-already-landed.test.mjs
+scripts/tests/ack-landed-correlation-id.test.mjs
 scripts/tests/ack-landed-derive-sha.test.mjs
 scripts/tests/ack-landed-job-id.test.mjs
 scripts/tests/ack-landed-naming-candidates.test.mjs
@@ -194,6 +196,7 @@ scripts/tests/alert-sender-bypass.test.mjs
 scripts/tests/analyze-traffic-sources.test.mjs
 scripts/tests/audit-card-relevance.test.mjs
 scripts/tests/autonomous-acceptance-recheck-linear.test.mjs
+scripts/tests/batch-drain-decision.test.mjs
 scripts/tests/brightdata-daily-spend.test.mjs
 scripts/tests/bsc-reconcile-linear-started.test.mjs
 scripts/tests/bsc-runner-headless-classify.test.mjs
@@ -246,8 +249,10 @@ scripts/tests/stuck-work-linear-reconcile.test.mjs
 scripts/tests/test-data-write-guard.test.mjs
 scripts/tests/tracked-and-ignored-guard.test.mjs
 scripts/tests/trunk-status.test.mjs
+scripts/tests/verify-edits-cloud-session-gates.test.mjs
 scripts/tests/verify-edits-heredoc.test.mjs
 scripts/tests/verify-gate-ts-runner.test.mjs
+scripts/tests/watchdog-skips-landed-acked.test.mjs
 scripts/trace-connect-phase.test.mjs
 scripts/verify-addams-wsj-dedup-held.test.mjs
 scripts/verify-contamination-gate.test.mjs
