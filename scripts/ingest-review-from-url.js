@@ -55,6 +55,7 @@ const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isStalePublishDate } = require('./lib/stale-publish-date');
 const { extractByline } = require('./lib/byline-extraction');
+const { pageMentionsShowTitle } = require('./lib/submission-show-match');
 
 const args = process.argv.slice(2);
 function getArg(name) {
@@ -249,8 +250,7 @@ if (!show) {
     // accepting a score-only ingest — this path is reachable from the public
     // /submit-review form and automated SERP ingest.
     if (recoveredScore) {
-      const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-      if (!norm(html).includes(norm(show.title))) {
+      if (!pageMentionsShowTitle(html, show.title)) {
         console.error(`Score-only fallback refused: show title "${show.title}" not found in page HTML — cannot verify this is the right show without body text.`);
         process.exit(1);
       }
