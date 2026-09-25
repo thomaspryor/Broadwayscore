@@ -156,6 +156,15 @@ test('BRO-4153: telegraph/express Sunday-paper collisions are declared edition p
  * legitimately retain a stale edition's URL as an audit trail once corrected —
  * see back-to-the-future-west-end-2021/timeout--adam-feldman.json).
  *
+ * Classifies via resolveOutletFromUrlIfPathInformed() itself — the same
+ * production resolver every caller in this ticket was wired to — rather than
+ * a hand-rolled regex, so this assertion can never drift out of sync with
+ * what the real path-split rule (timeout.com/co.uk, /london vs default)
+ * actually decides (a Codex review of this ticket's first draft flagged the
+ * duplicated-regex version as a real divergence risk: an unanchored `/london\//`
+ * match doesn't agree with production's `pathname.startsWith('/london')` on
+ * inputs like `/london-fringe/...`).
+ *
  * @returns {Array<{file: string, outletId: string, url: string, expected: string}>}
  */
 function findTimeoutLondonMisattributions(reviewTextsDir) {
@@ -179,13 +188,10 @@ function findTimeoutLondonMisattributions(reviewTextsDir) {
         continue;
       }
       if (!data || !data.url) continue;
-      const isLondonUrl = /timeout\.(com|co\.uk)\/london\//i.test(data.url);
-      const isTimeoutHost = /timeout\.(com|co\.uk)\//i.test(data.url);
-      if (data.outletId === 'timeout' && isLondonUrl) {
-        violations.push({ file: `${showDir}/${file}`, outletId: data.outletId, url: data.url, expected: 'timeout-london' });
-      }
-      if (data.outletId === 'timeout-london' && isTimeoutHost && !isLondonUrl) {
-        violations.push({ file: `${showDir}/${file}`, outletId: data.outletId, url: data.url, expected: 'timeout' });
+      if (data.outletId !== 'timeout' && data.outletId !== 'timeout-london') continue;
+      const resolved = resolveOutletFromUrlIfPathInformed(data.url);
+      if (resolved && resolved.outletId !== data.outletId) {
+        violations.push({ file: `${showDir}/${file}`, outletId: data.outletId, url: data.url, expected: resolved.outletId });
       }
     }
   }

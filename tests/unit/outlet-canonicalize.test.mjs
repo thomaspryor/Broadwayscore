@@ -93,17 +93,40 @@ describe('resolveCanonicalOutletId — edge cases', () => {
     assert.throws(() => resolveCanonicalOutletId({ url: null }));
   });
 
-  test('ambiguous domain (timeout.com hosts timeout-ny AND timeout-london) falls through to alias', () => {
-    // timeout.com is an AMBIGUOUS_DOMAINS fixture — multiple outlets share it.
-    // URL can't disambiguate; input string must.
+  test('BRO-4153: timeout.com (hosts timeout AND timeout-london) now resolves by URL PATH, not alias', () => {
+    // timeout.com is a DECLARED path-split edition domain (timeout vs
+    // timeout-london — see outlet-registry-domain-collisions.js's
+    // EDITION_PAIRS): unlike a genuinely undecidable collision, the path
+    // itself IS positive evidence (BRO-4153's resolveOutletFromUrlIfPathInformed),
+    // so the URL now wins over a generic operator input rather than falling
+    // through to alias resolution. A /newyork path resolves to "timeout".
     const r = resolveCanonicalOutletId({
       outletArg: 'timeout',
       url: 'https://www.timeout.com/newyork/theater/rocky-horror-review',
     });
-    // Should fall through to alias resolution (timeout → some canonical), not
-    // pick one of the shared canonicals from URL.
+    assert.strictEqual(r.source, 'url');
+    assert.strictEqual(r.outletId, 'timeout');
+  });
+
+  test('BRO-4153: a /london path on timeout.com overrides a generic "timeout" operator input', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'timeout',
+      url: 'https://www.timeout.com/london/theatre/rocky-horror-review',
+    });
+    assert.strictEqual(r.source, 'url');
+    assert.strictEqual(r.outletId, 'timeout-london');
+    assert.match(r.warning || '', /drift detected/);
+  });
+
+  test('an undeclared collision (no path signal) still falls through to alias, unlike timeout.com', () => {
+    // Contrast case: telegraph.co.uk (telegraph/sunday-telegraph) has no path
+    // split — the URL truly cannot disambiguate, so operator input still wins.
+    const r = resolveCanonicalOutletId({
+      outletArg: 'sunday-telegraph',
+      url: 'https://www.telegraph.co.uk/theatre/2026/09/24/some-review/',
+    });
     assert.notStrictEqual(r.source, 'url');
-    assert.ok(r.outletId, 'resolves to some canonical via alias');
+    assert.strictEqual(r.outletId, 'sunday-telegraph');
   });
 });
 
