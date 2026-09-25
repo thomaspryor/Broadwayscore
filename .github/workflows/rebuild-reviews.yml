@@ -560,6 +560,18 @@ jobs:
           # in 2026-04-30 (Notion 351637c5-416f-8177); their counts now aggregate
           # in that workflow's separate run.
           #
+          # BRO-4157 triage note: none of those tee'd steps (here or in
+          # enrich-reviews.yml/rebuild-fast.yml) need an explicit `set -o
+          # pipefail` — every one carries `continue-on-error: true`, so the
+          # step's own exit code (pipefail-corrected or not) never gates job
+          # success. This is a real, pre-existing gap, not one pipefail can
+          # close: a script that crashes BEFORE it logs its own
+          # [LOCKED-SKIP-COUNT] line contributes nothing here, so the
+          # aggregation below only catches an abnormal skip RATIO in scripts
+          # that ran to completion — not a step that died mid-run (confirmed
+          # via Codex adversarial review, which caught an earlier draft of
+          # this comment overclaiming crash coverage).
+          #
           # Synthetic-test override: set LOCKED_SKIP_TEST_LOG_OVERRIDE in the env
           # to a path with hand-crafted [LOCKED-SKIP-COUNT] lines for dry-run
           # validation of the warning threshold.
