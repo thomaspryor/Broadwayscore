@@ -9,7 +9,56 @@ const {
   renderHealthDigestBlock, healthIssueCount, renderAutofixBlock, autofixLoopDeadMessage,
   renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock, renderRedditDigestBlock,
   filterForbiddenQueued,
+  buildOwnerView, renderOwnerTopBlock, renderNeedsAttentionBlock,
 } = require('./autonomous-email-render.js');
+
+// ── Owner-first view (2026-09-24 digest rework) ─────────────────────────────
+test('buildOwnerView: splits visitor vs internal rows; unknown names count as visitor', () => {
+  const v = buildOwnerView({
+    health: {
+      errors: [{ name: 'Main: red streak' }, { name: 'Brand new check' }],
+      warns: [{ name: 'Stuck work: paused P0/P1 cards' }, { name: 'SEO: health' }],
+      autoFixedCount: 2,
+    },
+    autofixRows: [{ state: 'in-progress' }, { state: 'dispatched' }, { state: 'queued' }, { state: 'decision' }],
+  });
+  assert.equal(v.siteState, 'affected');
+  assert.deepEqual(v.visitorErrors.map(r => r.name), ['Brand new check']);
+  assert.equal(v.internalCount, 2);
+  assert.equal(v.tracked, 3); // decision rows are not "maintenance"
+  assert.equal(v.working, 2);
+  assert.equal(v.autoFixed, 2);
+});
+
+test('buildOwnerView: without autofix rows only decision:true queued rows are decisions', () => {
+  const v = buildOwnerView({
+    health: { errors: [], warns: [], queued: [{ title: 'A', decision: true }, { title: 'B' }, { title: 'T1 Coverage Scoreboard', decision: true }] },
+    autofixRows: null,
+  });
+  assert.equal(v.siteState, 'ok');
+  assert.deepEqual(v.decisionQueued.map(q => q.title), ['A']);
+  assert.deepEqual(v.otherQueued.map(q => q.title), ['B']);
+  assert.equal(v.decisions, 1);
+});
+
+test('buildOwnerView: no health snapshot is "unknown", never "ok"', () => {
+  assert.equal(buildOwnerView({ health: null }).siteState, 'unknown');
+});
+
+test('renderOwnerTopBlock: escapes names and never renders a red X', () => {
+  const v = buildOwnerView({ health: { errors: [{ name: '<b>x</b>' }], warns: [] } });
+  const html = renderOwnerTopBlock(v, {});
+  assert.match(html, /&lt;b&gt;x&lt;\/b&gt;/);
+  assert.ok(!html.includes('❌'));
+  assert.match(html, /No decisions needed from you/);
+});
+
+test('renderNeedsAttentionBlock: empty input renders nothing; items keep their one-click link', () => {
+  assert.equal(renderNeedsAttentionBlock([]), '');
+  const html = renderNeedsAttentionBlock([{ title: 'Pick one', actionUrl: 'https://broadwayscorecard.com/api/autonomous-action?sig=a' }]);
+  assert.match(html, /Needs your attention/);
+  assert.match(html, /Dispatch a fix/);
+});
 const { buildDispatchUrl, verifyDispatchSignature, selectOpenDispatchCard, attachHealthFixUrls } = require('./dispatch-link.js');
 const { CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./autofix-effectiveness.js');
 

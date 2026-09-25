@@ -159,34 +159,59 @@ test('buildSubject output classifies as the morning-digest scheduled sender', ()
     now: new Date('2026-07-28T11:30:00Z'),
   });
   assert.equal(classifySubject(noisy)?.key, 'morning-digest');
-  assert.match(noisy, /⛔ site health: 2 errors, 1 warning/);
+  // 2026-09-24 rework: unknown check names are visitor-facing (fail-safe), so
+  // two unknown errors read as "visitors affected", named, never counted.
+  assert.match(noisy, /⚠️ visitors affected: a \(\+1 more\)/);
   // Never a bare count that can degrade to "0 items" (owner feedback).
   assert.doesNotMatch(quiet, /\d+ items?/);
 });
 
-// BRO-232 S4: digest truthfulness — the subject splits known/managed
-// (already tracked, day over day) from new/regressing (first sighting)
-// instead of a flat error/warning count that conflates the two.
-test('buildSubject: with autofixRows, splits known/managed vs new/regressing and preserves the urgent/streak flag', () => {
-  const autofixRows = [
-    { state: 'in-progress', wasNew: false },
-    { state: 'queued', wasNew: false },
-    { state: 'dispatched', wasNew: true },
-    { state: 'decision', wasNew: undefined }, // excluded from both buckets
-  ];
+// 2026-09-24 rework (owner: "confusing and un-actionable and annoying"): the
+// subject is plain English — site status for VISITORS plus decisions. It
+// replaces BRO-232 S4's "⛔ site health: N known/managed, M new/regressing"
+// split, which counted the automation's own machinery.
+test('buildSubject: internal-only errors read "Site OK · nothing needs you" — no jargon, no ⛔', () => {
   const s = buildSubject({
-    health: { subject: 'BSC URGENT (day 5): 2 unresolved errors' },
-    autofixRows,
-    now: new Date('2026-07-28T11:30:00Z'),
+    health: {
+      subject: 'BSC URGENT (day 35): 5 unresolved errors',
+      errors: [{ name: 'Main: red streak' }, { name: 'Push-retry deadman' }, { name: 'Autofix: throughput (dispatched/passed, daily)' }],
+      warns: [{ name: 'Stuck work: paused P0/P1 cards' }, { name: 'SEO: health' }],
+    },
+    autofixRows: [{ state: 'in-progress', wasNew: false }, { state: 'queued', wasNew: true }],
+    now: new Date('2026-09-24T11:30:00Z'),
   });
-  assert.match(s, /⛔ site health: 2 known\/managed, 1 new\/regressing/);
+  assert.equal(s, 'Morning digest — Thu, Sep 24 · Site OK · nothing needs you');
+  assert.doesNotMatch(s, /known\/managed|new\/regressing|⛔|error|warning/);
   assert.equal(classifySubject(s)?.key, 'morning-digest');
 });
 
-test('buildSubject: autofixRows omitted or empty — behavior is byte-identical to the pre-BRO-232 error/warning count', () => {
-  const health = { subject: 'x', errors: ['a'], warns: [] };
-  assert.match(buildSubject({ health, now: new Date('2026-07-28T11:30:00Z') }), /1 error, 0 warnings/);
-  assert.match(buildSubject({ health, autofixRows: [], now: new Date('2026-07-28T11:30:00Z') }), /1 error, 0 warnings/);
+test('buildSubject: a visitor-facing error is named in plain English; decisions are counted', () => {
+  const s = buildSubject({
+    health: {
+      errors: [{ name: 'Main: red streak' }, { name: 'Data: reviewed shows missing from shows.json' }],
+      warns: [],
+      queued: [{ title: 'Pick a venue', decision: true }],
+    },
+    autofixRows: [{ state: 'decision' }],
+    now: new Date('2026-09-24T11:30:00Z'),
+  });
+  assert.equal(s, 'Morning digest — Thu, Sep 24 · ⚠️ visitors affected: Reviewed shows missing from the site · 1 decision for you');
+  assert.ok(s.length < 120);
+});
+
+test('buildSubject: health snapshot missing says so instead of claiming the site is OK', () => {
+  const s = buildSubject({ health: null, now: new Date('2026-07-28T11:30:00Z') });
+  assert.match(s, /site check missing · nothing needs you$/);
+  assert.doesNotMatch(s, /Site OK/);
+});
+
+test('buildSubject: a long plain name is clipped so the subject stays short', () => {
+  const s = buildSubject({
+    health: { errors: [{ name: 'Some brand new check with an extremely long descriptive name that goes on' }], warns: [] },
+    now: new Date('2026-07-28T11:30:00Z'),
+  });
+  assert.match(s, /visitors affected: .{1,41}…/);
+  assert.ok(s.length < 120, s);
 });
 
 // BRO-2425 (BRO-420 follow-up): a 48h+ stale "waiting on your approval" item
@@ -202,6 +227,8 @@ test('buildSubject: stale awaiting-owner item escalates the subject line', () =>
   };
   const s = buildSubject({ health: null, awaitingOwner: staleAwaitingOwner, now });
   assert.match(s, /⚠️ 1 approval waiting 48h\+/);
+  // Both awaiting items are decisions for the owner.
+  assert.match(s, /2 decisions for you/);
   assert.equal(classifySubject(s)?.key, 'morning-digest');
 });
 
@@ -211,21 +238,28 @@ test('buildSubject: fresh-only or empty awaiting-owner items do not escalate the
     health: null, awaitingOwner: { items: [{ title: 'BRO-1: fresh', stale: false }] }, now,
   });
   assert.doesNotMatch(freshOnly, /approval waiting/);
+  assert.match(freshOnly, /1 decision for you/);
   const none = buildSubject({ health: null, awaitingOwner: null, now });
   assert.doesNotMatch(none, /approval waiting/);
   const emptyItems = buildSubject({ health: null, awaitingOwner: { items: [] }, now });
   assert.doesNotMatch(emptyItems, /approval waiting/);
 });
 
-test('buildSubject: stale awaiting-owner suffix is additive to the health suffix, not a replacement', () => {
+test('buildSubject: stale awaiting-owner suffix is PREPENDED before the site status, not a replacement', () => {
   const now = new Date('2026-07-28T11:30:00Z');
   const s = buildSubject({
     health: { subject: 'BSC URGENT (day 3): 2 unresolved errors', errors: ['a', 'b'], warns: ['c'] },
     awaitingOwner: { items: [{ title: 'BRO-2: stale', stale: true }, { title: 'BRO-3: stale', stale: true }] },
     now,
   });
-  assert.match(s, /⛔ site health: 2 errors, 1 warning/);
+  assert.match(s, /⚠️ visitors affected: a \(\+1 more\)/);
   assert.match(s, /⚠️ 2 approvals waiting 48h\+/);
+  assert.ok(s.indexOf('approvals waiting') < s.indexOf('visitors affected'));
+});
+
+test('buildSubject: needsYou items count as decisions', () => {
+  const s = buildSubject({ health: { errors: [], warns: [] }, needsYou: { items: [{ title: 'x' }], moreCount: 2 }, now: new Date('2026-07-28T11:30:00Z') });
+  assert.match(s, /Site OK · 3 decisions for you$/);
 });
 
 test('buildHtml never renders loop language; empty day reads calm, not broken', () => {
@@ -242,16 +276,77 @@ test('buildHtml never renders loop language; empty day reads calm, not broken', 
 // headline, plus a single "N issues detected — queued for automated fix
 // sessions" line (errors+warns+freshness+stuck folded together) — the system
 // fixes, the email reports.
-test('buildHtml: top verdict NAMES the failing check; issue count folds errors+warnings (Digest v3)', () => {
+// 2026-09-24 rework: the raw-name line moved under "Technical details" and
+// was renamed from "N site error(s)" to "N health-check error(s)" (most rows
+// are automation machinery, not the site); the top names visitor problems in
+// plain English instead.
+test('buildHtml: visitor error is named at the top in plain English; raw names stay in Technical details', () => {
   const html = buildHtml({
     sections: { health: { generatedAt: '2026-07-28T09:00:00Z', errors: [{ name: 'Sync: cast coverage', message: '29 empty casts' }], warns: ['w1', 'w2'], checks: [] } },
     problemsNote: "didn't update overnight: Reddit engagement (no data)",
     changesHtml: null,
     now: new Date('2026-07-28T11:30:00Z'),
   });
-  assert.match(html, /1 site error: Sync: cast coverage/);
+  assert.match(html, /Visitors may notice a problem/);
+  assert.match(html, /Some shows are missing cast lists/);
+  assert.match(html, /1 health-check error: Sync: cast coverage/);
   assert.match(html, /3 issues detected/);
   assert.match(html, /didn't update overnight: Reddit engagement/);
+  assert.doesNotMatch(html, /Nothing needs your attention/);
+  // The plain-English top comes before the technical report.
+  assert.ok(html.indexOf('Visitors may notice') < html.indexOf('Technical details'));
+  assert.ok(html.indexOf('Technical details') < html.indexOf('1 health-check error'));
+});
+
+test('buildHtml: internal-only failures (the 2026-09-24 shape) read calm at the top, machinery demoted below', () => {
+  const html = buildHtml({
+    sections: { health: {
+      generatedAt: '2026-09-24T09:00:00Z', consecutiveErrorDays: 35, autoFixedCount: 1,
+      errors: [{ name: 'Main: red streak' }, { name: 'Push-retry deadman' }, { name: 'Infra: worktree GC log stale' }],
+      warns: [{ name: 'cmux socket: reachability (unmeasurable here)' }, { name: 'SEO: health' }],
+      queued: [],
+    } },
+    autofixRows: [
+      { name: 'Main: red streak', state: 'in-progress' }, { name: 'Push-retry deadman', state: 'queued' },
+      { name: 'Infra: worktree GC log stale', state: 'queued' }, { name: 'SEO: health', state: 'queued' },
+    ],
+    now: new Date('2026-09-24T11:30:00Z'),
+  });
+  const top = html.slice(0, html.indexOf('Technical details'));
+  assert.match(top, /The site is working normally for visitors/);
+  assert.match(top, /1 minor site-data item is being tidied up automatically/);
+  assert.match(top, /Nothing needs your attention this morning/);
+  assert.match(top, /1 problem was fixed automatically overnight/);
+  // The tail depends on this machine's real autofix ledger (buildHtml reads
+  // it via localLoopDeadMessage): "1 being fixed automatically right now" on
+  // a healthy loop, "automatic fixing looks stalled" on a dead one.
+  assert.match(top, /Behind the scenes: 4 maintenance items tracked(, 1 being fixed automatically right now|; automatic fixing looks stalled)/);
+  for (const banned of ['Main', 'Push-retry', 'consecutive errors', '❌', 'site error']) {
+    assert.ok(!top.includes(banned), `top block must not contain "${banned}"`);
+  }
+  // Nothing lost: the full technical report is still there below.
+  const below = html.slice(html.indexOf('Technical details'));
+  assert.match(below, /day 35 of consecutive errors/);
+  assert.match(below, /Push-retry deadman/);
+  assert.match(below, /Automation queue/);
+});
+
+test('buildHtml: owner decisions render at the TOP with their one-click links', () => {
+  const html = buildHtml({
+    sections: {
+      health: { errors: [], warns: [], queued: [{ title: 'Approve the venue change', decision: true, actionUrl: 'https://broadwayscorecard.com/api/autonomous-action?sig=x' }] },
+      awaitingOwner: { bannerText: '1 waiting', items: [{ title: 'BRO-9: approve new homepage', url: 'https://linear.app/x/BRO-9', stale: false }] },
+    },
+    autofixRows: [{ state: 'decision' }],
+    now: new Date('2026-09-24T11:30:00Z'),
+  });
+  const cut = html.indexOf('Technical details');
+  const top = cut === -1 ? html : html.slice(0, cut);
+  assert.match(top, /2 decisions for you/);
+  assert.match(top, /Needs your attention/);
+  assert.match(top, /Dispatch a fix/);
+  assert.match(top, /Waiting on your approval/);
+  assert.match(top, /href="https:\/\/linear\.app\/x\/BRO-9"/);
   assert.doesNotMatch(html, /Nothing needs your attention/);
 });
 

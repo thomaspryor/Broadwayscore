@@ -63,6 +63,11 @@ const {
   renderRedditDigestBlock,
   renderNamedDigestBlock,
   autofixLoopDeadMessage,
+  renderNeedsAttentionBlock,
+  buildOwnerView,
+  visitorProblemNames,
+  renderOwnerTopBlock,
+  renderTechnicalDetailsHeading,
 } = require('./lib/autonomous-email-render.js');
 const { assessAutofixEffectiveness, readLedgerRows } = require('./lib/autofix-effectiveness.js');
 const { assessThroughputRow, throughputDeathMessage } = require('./lib/autofix-canary.js');
@@ -387,57 +392,42 @@ function autofixShouldDryRun({ dryRun = false, syncRefused = null, ownTag = DIGE
 // Subject contract: MUST match SCHEDULED_SENDERS['morning-digest'].pattern in
 // scripts/lib/scheduled-email-count-rules.js — the one-email-per-day monitor
 // classifies by this prefix, and the parity test in digest-snapshots.test.mjs
-// enforces it. Never a count ("0 items" reads as broken, owner feedback
-// 2026-07-27); the site-health escalation suffix is the only variable part.
-function buildSubject({ health = null, autofixRows = null, awaitingOwner = null, now = new Date() } = {}) {
+// enforces it. Never a count of "items" ("0 items" reads as broken, owner
+// feedback 2026-07-27).
+//
+// 2026-09-24 rework (owner: "confusing and un-actionable and annoying"): the
+// subject answers the owner's two questions in plain English, and nothing
+// else. "Site OK" / "⚠️ visitors affected: <name>" comes ONLY from
+// visitor-facing health rows (lib/digest-audience.js; unknown checks count as
+// visitor-facing), then "N decisions for you" / "nothing needs you". The old
+// "⛔ site health: 69 known/managed, 14 new/regressing" suffix counted the
+// automation's own machinery (CI, dispatch, cmux ...) the owner can neither
+// see nor act on; those counts now live in the email's Technical details.
+const SUBJECT_NAME_MAX = 42;
+function buildSubject({ health = null, autofixRows = null, awaitingOwner = null, needsYou = null, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric',
   }).format(now);
-  // The urgent/⛔ escalation flag is driven by health-check.js's own
-  // consecutiveErrorDays streak logic ("BSC URGENT (day N): ..." in
-  // health.subject) — unchanged by the split below, so the streak counter's
-  // identity (what makes the subject scream vs stay calm) is preserved.
-  const urgent = health && /URGENT/.test(health.subject || '');
-  let suffix = '';
-  if (Array.isArray(autofixRows) && autofixRows.length) {
-    // Digest truthfulness (BRO-232 S4): a flat error/warning count conflates
-    // "we've seen this every morning and it's tracked/dispatched" with
-    // "brand-new this run" — the exact conflation the owner flagged. `wasNew`
-    // (set by digest-autofix.js's planAutofix/runAutofix) is the real signal:
-    // false = already covered by a card/dispatch (or explicitly acknowledged),
-    // true = first sighting of this row's family. Decision rows are excluded
-    // from both buckets — they're a genuine judgment call, not a fix status,
-    // and already render in their own "Needs your decision" section.
-    const known = autofixRows.filter(r => r && !r.wasNew && r.state !== 'decision').length;
-    const regressing = autofixRows.filter(r => r && r.wasNew && r.state !== 'decision').length;
-    if (known || regressing) {
-      suffix = ` · ${urgent ? '⛔' : '⚠️'} site health: ${known} known/managed, ${regressing} new/regressing`;
-    }
+  const view = buildOwnerView({ health, autofixRows, needsYou, awaitingOwner });
+  let site;
+  if (view.siteState === 'affected') {
+    const names = visitorProblemNames(view);
+    const first = names[0] || 'site problem';
+    const clipped = first.length > SUBJECT_NAME_MAX ? `${first.slice(0, SUBJECT_NAME_MAX - 1).trimEnd()}…` : first;
+    site = `⚠️ visitors affected: ${clipped}${names.length > 1 ? ` (+${names.length - 1} more)` : ''}`;
+  } else if (view.siteState === 'ok') {
+    site = 'Site OK';
   } else {
-    // Fallback (autofixRows unavailable — e.g. autofix failed before compose,
-    // see main()'s WARN autofix failed branch): byte-identical to pre-BRO-232
-    // behavior.
-    const errs = health ? (health.errors?.length || 0) : 0;
-    const warns = health ? (health.warns?.length || 0) : 0;
-    if (errs || warns) {
-      suffix = ` · ${urgent ? '⛔' : '⚠️'} site health: ${errs} error${errs === 1 ? '' : 's'}, ${warns} warning${warns === 1 ? '' : 's'}`;
-    }
+    site = 'site check missing';
   }
+  const ask = view.decisions ? `${view.decisions} decision${view.decisions === 1 ? '' : 's'} for you` : 'nothing needs you';
   // BRO-2425 (BRO-420 follow-up): a 48h+ stale awaiting-owner item is
-  // otherwise invisible unless the owner opens the email and scrolls to that
-  // block — the same "trains the eye to skip it" failure mode BRO-282/BRO-420
-  // fix at the body level, one level up at the subject line. Additive to the
-  // health suffix above (both can be true in the same digest) but PREPENDED,
-  // not appended: mobile/notification previews truncate long subjects, and
-  // this is the owner-actionable one — it must not be the part that gets cut
-  // off behind a routine site-health count (ship-check review).
-  const staleApprovals = Array.isArray(awaitingOwner?.items)
-    ? awaitingOwner.items.filter((i) => i && i.stale).length
-    : 0;
-  if (staleApprovals) {
-    suffix = ` · ⚠️ ${staleApprovals} approval${staleApprovals === 1 ? '' : 's'} waiting 48h+` + suffix;
-  }
-  return `Morning digest — ${dateLabel}${suffix}`;
+  // PREPENDED, not appended — mobile/notification previews truncate long
+  // subjects, and this is the owner-actionable part that must not be cut off.
+  const stale = view.staleApprovals
+    ? ` · ⚠️ ${view.staleApprovals} approval${view.staleApprovals === 1 ? '' : 's'} waiting 48h+`
+    : '';
+  return `Morning digest — ${dateLabel}${stale} · ${site} · ${ask}`;
 }
 
 // Sections render via the SAME exported block renderers the old email used —
@@ -447,15 +437,25 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
   }).format(now);
+  // 2026-09-24 rework: the email is two layers. `head` is the owner-first
+  // top (site status for visitors, decisions, what the automation did, one
+  // "Behind the scenes" line; see renderOwnerTopBlock). `parts` below is the
+  // full technical report, unchanged in content, rendered under a "Technical
+  // details" heading so nothing is lost for debugging. Internal-machinery
+  // alarms (trunk red, dead loop, PR supervisor, Cyrus, runners, watchdog)
+  // all live in `parts` now: the owner can neither see nor act on them.
+  const head = [];
+  head.push(`<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:18px 14px;color:#111;">`);
+  head.push(`<p style="font-size:15px;font-weight:700;margin:0 0 12px;">Morning digest · ${esc(dateLabel)}</p>`);
   const parts = [];
-  parts.push(`<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:18px 14px;color:#111;">`);
-  parts.push(`<p style="font-size:15px;font-weight:700;margin:0 0 12px;">Morning digest · ${esc(dateLabel)}</p>`);
 
   // Trunk status (task #1003) — a standing line, always rendered when the
   // snapshot exists, so aggregate CI redness can never again sit unnoticed
   // for days (2026-08-04: red on ~96% of main runs, four separate causes).
-  // Past 24h red it takes the HEADLINE slot, above the site-health verdict:
-  // at that point it is the most important thing in the email.
+  // Past 24h red it takes the headline slot of the TECHNICAL report (the
+  // 2026-09-24 rework moved it out of the owner-first top: CI red does not
+  // by itself affect visitors; "Deploy: production freshness" does, and that
+  // row is classified visitor-facing).
   const trunkLine = (() => {
     try { return renderTrunkDigestLine(sections.trunk); }
     catch { return null; }
@@ -496,10 +496,34 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // fall back to scanning health.errors only for the hypothetical case that
   // check ever runs somewhere the ledger is actually visible.
   const loopDeadMsg = localLoopDeadMessage({ pendingIssues: fixing }) || autofixLoopDeadMessage(sections.health);
+  // Owner-first top block (2026-09-24 rework). Decisions render here, at the
+  // top, with their one-click action links intact (owner mandate
+  // 2026-08-02); everything else follows under "Technical details".
+  const view = buildOwnerView({
+    health: sections.health, autofixRows, needsYou: sections.needsYou, awaitingOwner: sections.awaitingOwner,
+  });
+  // Without autofix rows the fallback count also folds freshness/stuck in,
+  // exactly like the technical "issues detected" line below.
+  if (!Array.isArray(autofixRows)) view.tracked = fixing;
+  const decisionBlocksHtml = [
+    renderNeedsAttentionBlock(view.decisionQueued),
+    // "Needs You" tab triage (card #870) — the owner's own pending decisions.
+    sections.needsYou ? renderNamedDigestBlock('Needs your decision', sections.needsYou) : '',
+    // Waiting on your approval (BRO-282) — Linear issues carrying the
+    // 'awaiting-owner' label (work finished, blocked on a plain-language yes,
+    // e.g. the /visual-qa pre-push gate). Distinct from "Needs your decision"
+    // above (session-scoped cmux state, dies with the tab): this is
+    // issue-scoped and survives the originating session closing.
+    sections.awaitingOwner ? renderNamedDigestBlock('Waiting on your approval', sections.awaitingOwner) : '',
+  ].filter(Boolean).join('\n');
+  head.push(renderOwnerTopBlock(view, { decisionBlocksHtml, overnightLine, loopDead: !!loopDeadMsg }));
+
+  // Technical report starts here. The raw error names stay (debugging), but
+  // are no longer called "site errors": most are the automation's own
+  // machinery, and the visitor-facing ones are already named in plain
+  // English at the top.
   if (errs) {
-    parts.push(`<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 6px;">${esc(`${errs} site error${errs === 1 ? '' : 's'}: ${errNames.slice(0, 3).join('; ')}${errNames.length > 3 ? ` (+${errNames.length - 3} more)` : ''}`)}</p>`);
-  } else {
-    parts.push(`<p style="font-size:13px;font-weight:700;color:#15803d;margin:0 0 6px;">Nothing needs your attention this morning.</p>`);
+    parts.push(`<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 6px;">${esc(`${errs} health-check error${errs === 1 ? '' : 's'}: ${errNames.slice(0, 3).join('; ')}${errNames.length > 3 ? ` (+${errNames.length - 3} more)` : ''}`)}</p>`);
   }
   if (loopDeadMsg) {
     parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(fixing)} issue${fixing === 1 ? '' : 's'} detected, but the auto-fix loop looks DEAD — don't count on these getting fixed automatically. ${esc(loopDeadMsg)}</p>`);
@@ -534,7 +558,12 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // changed, then scores/Reddit. The opening-night radar left this email
   // 2026-07-30 — it's a standalone daily send again (send-opening-digest.js).
   const blocks = [];
-  if (sections.health) blocks.push(renderHealthDigestBlock(sections.health, autofixRows, loopDeadMsg));
+  // omitQueued: owner decisions already rendered at the top. Any non-decision
+  // queued rows (only when autofix failed before compose) stay here.
+  if (sections.health) {
+    blocks.push(renderHealthDigestBlock(sections.health, autofixRows, loopDeadMsg, { omitQueued: true })
+      + renderNeedsAttentionBlock(view.otherQueued));
+  }
   // Data freshness (task #689) — high-severity data gaps (missing poster,
   // missing tickets on open shows) that used to be computed daily and thrown
   // away. Same {generatedAt, bannerText, items, moreCount} shape as
@@ -580,13 +609,8 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   if (drainThroughputLine) {
     blocks.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(drainThroughputLine)}</p>`);
   }
-  if (sections.needsYou) blocks.push(renderNamedDigestBlock('Needs your decision', sections.needsYou));
-  // Waiting on your approval (BRO-282) — Linear issues carrying the
-  // 'awaiting-owner' label (work finished, blocked on a plain-language yes,
-  // e.g. the /visual-qa pre-push gate). Distinct from "Needs your decision"
-  // above (session-scoped cmux state, dies with the tab): this is
-  // issue-scoped and survives the originating session closing.
-  if (sections.awaitingOwner) blocks.push(renderNamedDigestBlock('Waiting on your approval', sections.awaitingOwner));
+  // "Needs your decision" and "Waiting on your approval" moved to the
+  // owner-first top block (2026-09-24 rework) — see decisionBlocksHtml above.
   // Parked in review (BRO-282's residual half, BRO-3376) — Linear issues in
   // the `In Review` state, which is where linear-dispatch.js's seed prompt
   // tells every finished session to park. The two blocks above only fire when
@@ -631,18 +655,23 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // here) — silent on a normal morning, unlike the always-on blocks above.
   if (sections.syncRefused) blocks.push(renderNamedDigestBlock('Launchd sync blocked (stale checkout)', sections.syncRefused));
   // Digest v3 (owner mandate 2026-08-02): the old "What changed" block —
-  // commit messages, slugs, counters — is gone. One plain sentence remains.
-  if (overnightLine) blocks.push(`<div style="font-size:12px;color:#666;margin:0 0 14px;">${overnightLine}</div>`);
+  // commit messages, slugs, counters — is gone. One plain sentence remains,
+  // and since the 2026-09-24 rework it sits in the owner-first top block
+  // ("what the automation did"), not down here.
 
   if (blocks.length) {
     parts.push(blocks.join('\n'));
-  } else {
-    parts.push(`<p style="font-size:13px;color:#666;margin:0 0 12px;">All quiet — no overnight changes to report.</p>`);
+  } else if (!overnightLine) {
+    head.push(`<p style="font-size:13px;color:#666;margin:0 0 12px;">All quiet — no overnight changes to report.</p>`);
+  }
+  if (parts.length) {
+    head.push(renderTechnicalDetailsHeading());
+    head.push(...parts);
   }
 
-  parts.push(`<p style="color:#999;font-size:11px;margin-top:16px;text-align:center;">Broadway Scorecard morning digest</p>`);
-  parts.push(`</div>`);
-  return parts.join('\n');
+  head.push(`<p style="color:#999;font-size:11px;margin-top:16px;text-align:center;">Broadway Scorecard morning digest</p>`);
+  head.push(`</div>`);
+  return head.join('\n');
 }
 
 // Composes the subject+html the SAME way the real send does: attach Fix-this
@@ -684,7 +713,7 @@ function composeDigestEmail({
     }
   }
 
-  const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, now });
+  const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, needsYou: sections.needsYou, now });
   const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, now });
   return { subject, html };
 }
