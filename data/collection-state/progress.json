@@ -94,7 +94,9 @@
     "darkling-off-west-end-2026/guardian--unknown.json",
     "the-holes-off-broadway-2026/broadwayworld--stephi-wild.json",
     "the-holes-off-broadway-2026/playbill--unknown.json",
-    "america-who-hurt-you-off-broadway-2026/playbill--unknown.json"
+    "america-who-hurt-you-off-broadway-2026/playbill--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
+    "table-17-off-west-end-2026/london-box-office--eve-jawara.json"
   ],
   "failed": [
     "cosi-fan-tutte-off-broadway-2026/nytimes--james-barron.json",
@@ -133,7 +135,6 @@
     "the-invention-of-love-off-broadway-2026/nytg--unknown.json",
     "catarina-and-the-beauty-of-killing-fascists-west-end-2026/london-unattached--madeleine-morrow.json",
     "catarina-and-the-beauty-of-killing-fascists-west-end-2026/thestage--unknown.json",
-    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
     "the-invention-of-love-off-broadway-2026/thestage--ian-shine.json",
     "fly-you-fools-off-broadway-2026/west-end-best-friend--unknown.json",
     "kevin-off-broadway-2026/guardian--unknown.json",
@@ -692,7 +693,8 @@
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/standard--nick-curtis.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--charlotte-vickers.json",
     "kevin-off-broadway-2026/independent--tom-murray.json",
-    "burlesque-west-end-2026/jackstage--jack-davey.json"
+    "darkling-off-west-end-2026/voice-magazine--unknown.json",
+    "golden-boy-off-west-end-2026/ntlive--powster.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -744,7 +746,8 @@
       "deep-heat-rivalry-off-west-end-2026/bestoftheatre--unknown.json",
       "darkling-off-west-end-2026/guardian--unknown.json",
       "the-holes-off-broadway-2026/playbill--unknown.json",
-      "america-who-hurt-you-off-broadway-2026/playbill--unknown.json"
+      "america-who-hurt-you-off-broadway-2026/playbill--unknown.json",
+      "table-17-off-west-end-2026/london-box-office--eve-jawara.json"
     ],
     "amp": [],
     "browserbase": [
@@ -789,7 +792,8 @@
       "and-juliet-2022/daily-mail--robert-gore-langton.json",
       "hadestown-2019/theatrely--theatrely-staff.json",
       "harry-potter-2021/cititour--brian-scott-lipton.json",
-      "the-holes-off-broadway-2026/broadwayworld--stephi-wild.json"
+      "the-holes-off-broadway-2026/broadwayworld--stephi-wild.json",
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json"
     ],
     "brightdata": [
       "hamilton-west-end-2021/variety--kj-yossman.json"
@@ -820,7 +824,7 @@
     ]
   },
   "startTime": "2026-09-24T08:26:07.381Z",
-  "lastProcessed": "operation-mincemeat-2025/standard--nick-curtis.json",
+  "lastProcessed": "golden-boy-off-west-end-2026/ntlive--powster.json",
   "log": [
     {
       "t": "2026-09-24T10:03:36.718Z",
@@ -1028,11 +1032,24 @@
       "t": "2026-09-25T00:36:33.273Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-25T00:55:31.676Z",
+      "event": "bb-session",
+      "session": "6acda5c5",
+      "url": "https://therecs.co.uk/the-last-ship-theatre-royal-drury-lane/"
+    },
+    {
+      "t": "2026-09-25T00:55:39.837Z",
+      "event": "bb-session",
+      "session": "1abba050",
+      "url": "https://therecs.co.uk/the-last-ship-theatre-royal-drury-lane/"
     }
   ],
   "recoveredAfterFailure": [
     "my-sons-a-queer-but-what-can-you-do-west-end-2026/theatre-weekly--greg-stewart.json",
     "the-last-ship-west-end-2026/timeout--unknown.json",
-    "america-who-hurt-you-off-broadway-2026/playbill--unknown.json"
+    "america-who-hurt-you-off-broadway-2026/playbill--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json"
   ]
 }
