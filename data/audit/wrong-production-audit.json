@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-25T01:03:55.456Z",
+  "timestamp": "2026-09-25T02:02:18.670Z",
   "stats": {
-    "totalReviews": 44122,
-    "alreadyFlagged": 18230,
-    "dateGuardCatches": 247,
+    "totalReviews": 44124,
+    "alreadyFlagged": 18234,
+    "dateGuardCatches": 246,
     "directorMismatch": 1050,
     "tvFilmSignals": 1307,
     "londonSignals": 1173,
     "offBroadwaySignals": 510,
     "yearMismatch": 95,
-    "noPublishDate": 3857
+    "noPublishDate": 3856
   },
   "findings": [
     {
@@ -8083,20 +8083,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "disruption-off-broadway-2026",
-      "file": "thestage--dave-fargnoli.json",
-      "score": 78,
-      "publishDate": "July 14th, 2023",
-      "url": "https://www.thestage.co.uk/news/edinburgh-fringe-organisers-very-concerned-about-travel-disruption-after-fire",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1104d before show (July 14th, 2023 vs 2026-07-22)"
         }
       ]
     },

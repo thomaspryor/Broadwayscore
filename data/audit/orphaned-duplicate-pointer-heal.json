@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-25T01:01:20.667Z",
+  "generated": "2026-09-25T01:58:28.370Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 96,
+  "count": 97,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -330,6 +330,13 @@
       "loserFile": "broadwayworld--unknown.json",
       "targetFile": "broadwayworld--gary-naylor.json",
       "reason": "orphaned-duplicate-heal: broadwayworld--gary-naylor.json was flagged invalid after broadwayworld--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "oh-mary-2024",
+      "loserFile": "radio-times--unknown.json",
+      "targetFile": "radio-times--olivia-garrett.json",
+      "reason": "orphaned-duplicate-heal: radio-times--olivia-garrett.json was flagged invalid after radio-times--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
