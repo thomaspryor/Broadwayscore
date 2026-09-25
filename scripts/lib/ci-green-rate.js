@@ -36,7 +36,18 @@
  *              count only `failure` — so this rate can read lower than the
  *              streak detectors on a day with timeouts. Deliberate: a rate
  *              meant to end "it's fixed" claims must not launder timeouts.
- *   cancelled  conclusion === 'cancelled' — NOT green, excluded from the
+ *   hung       conclusion === 'cancelled' AND the run lasted >= HUNG_CANCEL_MIN
+ *              minutes → RED. On main a cancel is never a supersede (test.yml's
+ *              concurrency group is per-sha with cancel-in-progress off since
+ *              2026-07-12), so a long cancel is a job hitting timeout-minutes,
+ *              which Actions reports as `cancelled`, not `timed_out`. Counting
+ *              it neutral hid a hung fixture for 36 h (2026-09-23..24: 27 runs
+ *              cancelled at ~20 min, rate + streak frozen, no alert).
+ *              Reported separately as res.hungCancelled. Duration is
+ *              run_started_at → updated_at. Applied ONLY to test.yml on main
+ *              (the per-sha group); other --workflow/--branch readings keep
+ *              every cancel neutral, since there a late supersede is normal.
+ *   cancelled  conclusion === 'cancelled' and shorter than that — NOT green, excluded from the
  *              denominator, but counted and reported. Cancels say nothing
  *              about the code (scripts/ci-health-check.sh measures the mid-
  *              setup-cancel rate separately) — BUT a cancel STORM (more
@@ -84,14 +95,21 @@ const MIN_SCORED_RUNS = 10;
 
 const RED_CONCLUSIONS = new Set(['failure', 'timed_out', 'startup_failure']);
 
+// A cancelled run that lasted at least this long hit a job timeout (hung) —
+// see "hung" in the header. A mid-setup cancel lasts a minute or two.
+const HUNG_CANCEL_MIN = 10;   // below test.yml job timeouts that matter (unit-tests 15); setup cancels are 1-2 min
+
 /**
  * @param {string|null|undefined} conclusion
+ * @param {number|null} [durationMs]  run_started_at → updated_at, when known
  * @returns {'green'|'red'|'cancelled'|'other'}
  */
-function classifyConclusion(conclusion) {
+function classifyConclusion(conclusion, durationMs = null) {
   if (conclusion === 'success') return 'green';
   if (RED_CONCLUSIONS.has(conclusion)) return 'red';
-  if (conclusion === 'cancelled') return 'cancelled';
+  if (conclusion === 'cancelled') {
+    return Number.isFinite(durationMs) && durationMs >= HUNG_CANCEL_MIN * 60000 ? 'red' : 'cancelled';
+  }
   return 'other';
 }
 
@@ -110,9 +128,11 @@ function classifyConclusion(conclusion) {
  * of rows the sha collapse removed.
  *
  * @param {Array<object>} rows
- * @returns {{runs: Array<{id, headSha, conclusion, createdAt, t, color}>, rerunsCollapsed: number}}
+ * @param {{hungRule?: boolean}} [o]  count long cancels as red — only valid
+ *   where a cancel can't be a supersede (test.yml on main; see "hung" above)
+ * @returns {{runs: Array<{id, headSha, conclusion, createdAt, t, color, hung}>, rerunsCollapsed: number}}
  */
-function normalizeRunsDetailed(rows) {
+function normalizeRunsDetailed(rows, { hungRule = false } = {}) {
   const out = [];
   const seenIds = new Set();
   for (const r of Array.isArray(rows) ? rows : []) {
@@ -129,7 +149,14 @@ function normalizeRunsDetailed(rows) {
     }
     const conclusion = r.conclusion ?? null;
     const headSha = r.headSha ?? r.head_sha ?? null;
-    out.push({ id, headSha, conclusion, createdAt: new Date(t).toISOString(), t, color: classifyConclusion(conclusion) });
+    // Duration from the attempt's START (run_started_at, not created_at) so
+    // runner-queue time and a days-later re-run attempt don't read as a hang.
+    const tStart = Date.parse(r.runStartedAt ?? r.run_started_at ?? null);
+    const tEnd = Date.parse(r.updatedAt ?? r.updated_at ?? null);
+    const durationMs = hungRule && Number.isFinite(tStart) && Number.isFinite(tEnd) ? tEnd - tStart : null;
+    const color = classifyConclusion(conclusion, durationMs);
+    const hung = conclusion === 'cancelled' && color === 'red';
+    out.push({ id, headSha, conclusion, createdAt: new Date(t).toISOString(), t, color, hung });
   }
   out.sort((a, b) => a.t - b.t || String(a.id).localeCompare(String(b.id)));
 
@@ -254,7 +281,8 @@ function computeGreenRate(rows, opts = {}) {
   const truncated = !!opts.truncated;
   const sinceMs = now - days * DAY_MS;
 
-  const normalized = normalizeRunsDetailed(rows);
+  const hungRule = (opts.workflow || DEFAULTS.workflow) === DEFAULTS.workflow && (opts.branch || DEFAULTS.branch) === DEFAULTS.branch;
+  const normalized = normalizeRunsDetailed(rows, { hungRule });
   const runs = normalized.runs.filter((r) => r.t >= sinceMs && r.t <= now);
 
   const counts = { total: runs.length, green: 0, red: 0, cancelled: 0, other: 0 };
@@ -329,6 +357,7 @@ function computeGreenRate(rows, opts = {}) {
     truncated,
     rerunsCollapsed: normalized.rerunsCollapsed,
     counts,
+    hungCancelled: runs.filter((r) => r.hung).length,
     rate,
     longestGreenStreak: longestGreen,
     longestRedStreak: longestRed,
@@ -370,7 +399,7 @@ function ledgerRow(res) {
 function verdictLine(res) {
   const pct = (v) => (v === null || v === undefined ? 'n/a' : `${v}%`);
   const c = res.counts;
-  const runs = `green ${c.green} / red ${c.red}, ${c.total} run${c.total === 1 ? '' : 's'}${c.cancelled ? `, ${c.cancelled} cancelled` : ''}`;
+  const runs = `green ${c.green} / red ${c.red}, ${c.total} run${c.total === 1 ? '' : 's'}${c.cancelled ? `, ${c.cancelled} cancelled` : ''}${res.hungCancelled ? `, ${res.hungCancelled} hung (cancelled >= ${HUNG_CANCEL_MIN} min, counted red)` : ''}`;
   const tr = res.trend || { fromRate: null, streakDays: 0, target: DEFAULTS.streakTargetDays };
   const base = `CI-GREEN-RATE: rate ${pct(res.rate)} (${runs}), ${res.days}d trend from ${pct(tr.fromRate)}, day ${tr.streakDays} of ${tr.target} at ≥${res.min}% → ${res.verdict}`;
   return res.reason ? `${base} (${res.reason})` : base;
@@ -456,6 +485,7 @@ module.exports = {
   DEFAULTS,
   DAY_MS,
   MIN_SCORED_RUNS,
+  HUNG_CANCEL_MIN,
   classifyConclusion,
   normalizeRuns,
   normalizeRunsDetailed,

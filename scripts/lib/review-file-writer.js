@@ -1150,10 +1150,28 @@ function createOrMergeReviewFile(showId, input, options = {}) {
 function _mergeIntoExisting(filepath, existing, ctx) {
   const { showId, input, fields, criticName, dryRun, onMerge } = ctx;
   let changed = false;
+  // Full snapshot BEFORE any merge mutation runs (BRO-4130). Handed to
+  // maybeUpgradeUrl below as opts.preMergeSnapshot so applyUrlChangeInvariant
+  // judges staleness against the true on-disk state, not a copy taken after
+  // the field-merge loop already blended this write's own incoming fields
+  // into `existing` — see maybeUpgradeUrl's opts.preMergeSnapshot doc.
+  const preMergeSnapshot = { ...existing };
   // Snapshot the body BEFORE the field merge so the reclassify step below can
   // tell "this merge just filled/replaced the text" apart from an unrelated
   // metadata merge.
   const fullTextBefore = existing.fullText || '';
+
+  // Snapshot the score BEFORE the field merge too (BRO-4128 ship-check/Codex
+  // finding): the merge loop below can plant fields.originalScore/
+  // aggregatorStars onto `existing` when the file was previously unscored,
+  // and that happens BEFORE maybeUpgradeUrl runs below. Without this
+  // snapshot, maybeUpgradeUrl's score-loss guard would see its own incoming
+  // score and refuse to also apply the incoming url — stranding a
+  // freshly-discovered score on the file's OLD, still-bad url.
+  const scoreBeforeMerge = {
+    originalScore: existing.originalScore,
+    aggregatorStars: existing.aggregatorStars,
+  };
 
   // Clear a stored JSON-LD pullQuote/excerpt BEFORE the field merge. The merge
   // below only copies an incoming field when `!existing[key]`; a JSON-LD blob is
@@ -1276,6 +1294,11 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     // instead — the swap would duplicate the URL and wipe this file.
     showDir: path.dirname(filepath),
     selfFilename: path.basename(filepath),
+    // BRO-4128: pre-merge score snapshot — see maybeUpgradeUrl's docstring.
+    preMergeScore: scoreBeforeMerge,
+    // BRO-4130: full pre-merge snapshot, used as applyUrlChangeInvariant's
+    // "before" — see maybeUpgradeUrl's opts.preMergeSnapshot docstring.
+    preMergeSnapshot,
   })) {
     changed = true;
   }

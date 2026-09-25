@@ -446,18 +446,6 @@
     "queuedAt": "2026-09-23T17:08:23.161Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run data validation",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/35909504008",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-23T19:33:16.776Z"
-  },
-  {
     "conditionKey": "corpus-drift:url-downgrade",
     "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
     "description": "check-corpus-drift.js audit \"url-downgrade\" (node scripts/audit-url-downgrade.js --gate) has been drifting. Latest output:\n\n  [protected] every-brilliant-thing-2026/nytimes--ben-brantley.json — url dated 2014-12-15 (before_preview, 4065d)\n  [protected] evita-2026/broadwayworld--gary-naylor.json — url dated 2026-04-29 (before_preview, 283d)\n  [protected] fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json — url dated 2024-04-12 (before_preview, 876d)\n  [protected] gigi-2015/washpost--peter-marks.json — url dated 2015-01-29 (before_preview, 28d)\n  [protected] hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json — url dated 2024-02-11 (before_preview, 777d)\n  [protected] hamlet-off-broadway-2026/nysr--david-finkle.json — url dated 2024-02-11 (before_preview, 777d)\n  [protected] hamlet-off-broadway-2026/washpost--peter-marks.json — url dated 2018-01-23 (before_preview, 2987d)\n  [protected] heathers-the-musical-off-west-end-2026/broadwayworld--jade-kops.json — url dated 2026-09-04 (after_close, 6d)\n  [protected] kenrex-off-broadway-2026/guardian--mark-fisher.json — url dated 2024-11-01 (before_preview, 510d)\n  [protected] kinky-boots-the-musical-west-end-2026/guardian--arifa-akbar.json — url dated 2025-03-13 (before_preview, 334d)\n  [protected] little-women-2005/ew--ew-staff.json — url dated 2005-06-07 (after_close, 9d)\n  [protected] macbeth-2013/ap--mark-kennedy.json — url dated 2013-04-21 (before_preview, 166d)\n  [protected] manon-off-broadway-2027/broadwayworld--steve-callahan.json — url dated 2024-01-19 (before_preview, 1127d)\n  [protected] mexodus-off-broadway-2026/nyt-theater--unknown.json — url dated 2025-10-04 (before_preview, 132d)\n  [LIVE] my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json — url dated 2025-06-05 (before_preview, 447d)\n  [protected] orlando-off-broadway-2026/guardian--unknown.json — url dated 2022-12-11 (before_preview, 452d)\n  [protected] please-please-me-west-end-2026/guardian--susannah-clapp.json — url dated 2024-08-04 (before_preview, 585d)\n  [protected] romeo-and-juliet-off-broadway-2026/guardian--clare-brennan.json — url dated 2024-09-22 (before_preview, 586d)\n  [protected] romeo-and-juliet-west-end-2026/guardian--unknown.json — url dated 2025-07-09 (before_preview, 215d)\n  [protected] seagull-true-story-off-broadway-2026/nysr--frank-scheck.json — url dated 2023-02-28 (before_preview, 1097d)\n  [protected] the-glass-menagerie-2017/chicagotribune--chris-jones.json — url dated 2013-09-26 (before_preview, 1209d)\n  [protected] the-hills-of-california-2024/guardian--arifa-akbar.json — url dated 2024-02-08 (before_preview, 195d)\n  [protected] the-seagull-2008/guardian--arifa-akbar.json — url dated 2025-03-06 (after_close, 5912d)\n  [protected] the-sound-of-music-2027/broadwayworld--anikatrina-fageol.json — url dated 2026-02-18 (before_preview, 377d)\n  [protected] the-sound-of-music-2027/broadwayworld--david-friscic.json — url dated 2025-09-15 (before_preview, 533d)\n  [protected] the-sound-of-music-2027/broadwayworld--greg-dalton-white.json — url dated 2026-08-31 (before_preview, 183d)\n  [protected] the-sound-of-music-2027/broadwayworld--jeffrey-kare.json — url dated 2025-10-08 (before_preview, 510d)\n  [protected] the-sound-of-music-2027/broadwayworld--joni-lorraine.json — url dated 2026-02-04 (before_preview, 391d)\n  [protected] the-sound-of-music-2027/broadwayworld--paul-batterson.json — url dated 2023-10-25 (before_preview, 1224d)\n  [protected] the-sound-of-music-2027/broadwayworld--r-scott-reedy.json — url dated 2026-01-11 (before_preview, 415d)\n  [protected] the-sound-of-music-2027/broadwayworld--tina-st-angelo.json — url dated 2025-10-25 (before_preview, 493d)\n  [protected] the-sound-of-music-2027/broadwayworld--vickie-evans.json — url dated 2025-11-20 (before_preview, 467d)\n  [protected] the-wiz-2024/latimes--mary-mcnamara.json — url dated 2015-12-03 (before_preview, 3018d)\n  [protected] tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json — url dated 2026-06-29 (before_preview, 104d)\n  [protected] tosca-off-broadway-2026/broadwayworld--roger-catlin.json — url dated 2026-08-10 (before_preview, 62d)\n  [protected] twelfth-night-off-west-end-2026/nysr--unknown.json — url dated 2025-08-21 (before_preview, 317d)\n  [protected] vanya-off-broadway-2025/washpost--unknown.json — url dated 2013-03-14 (before_preview, 4359d)\n\nFAIL: 1 file(s) carry a regressed (wrong-production) url with NO wrongProduction/wrongShow flag — live scoring exposure.\nFix by hand (verify the correct current-run url and restore it, or flag wrongProduction).",
@@ -468,18 +456,6 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-23T23:23:00.163Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-last-ship-west-end-2026",
-    "title": "Review gap — \"The Last Ship\" missing 6 cited review(s)",
-    "description": "The Last Ship (the-last-ship-west-end-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-last-ship-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-24T00:16:09.762Z"
   },
   {
     "conditionKey": "review-gap:opening-window:alvin-ailey-american-dance-theater-new-works-west-end-2026",
@@ -958,5 +934,128 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-24T22:29:33.647Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:cosi-fan-tutte-off-broadway-2026",
+    "title": "Review gap — \"Così fan tutte\" missing 3 cited review(s)",
+    "description": "Così fan tutte (cosi-fan-tutte-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cosi-fan-tutte-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-24T23:04:10.124Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-last-ship-west-end-2026",
+    "title": "Review gap — \"The Last Ship\" missing 5 cited review(s)",
+    "description": "The Last Ship (the-last-ship-west-end-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-last-ship-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-24T23:04:10.185Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-4130-mug4swrf",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-4130-mug4swrf",
+    "description": "land.yml did not land land/job/linear-BRO-4130-mug4swrf: the rebase gate went red at 523f6b7dc6. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-4130-mug4swrf @ 523f6b7dc6 (origin/land/job/linear-BRO-4130-mug4swrf) → origin/main @ 5f2470f647 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 5f2470f647: Rebasing (1/2) error: could not apply a8e03db9ec... fix(BRO-4130): maybeUpgradeUrl uses pre-merge snapshot for applyUrlChangeInvariant hint: Resolve all conflicts manually, mark them as resolved w Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36072273307",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4130-mug4swrf"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "523f6b7dc60565827287c5ee84f197f1a86205f9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36072273307"
+      }
+    ],
+    "queuedAt": "2026-09-24T23:41:12.713Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Audit cast-changes.json",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36076073854",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-25T00:12:28.831Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-4133-mug61u71",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4133-mug61u71",
+    "description": "land.yml did not land land/job/linear-BRO-4133-mug61u71: the unit-tests-node gate went red at b62f0537f4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36074943802",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4133-mug61u71"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "b62f0537f40779b6dc731ad4621f82ec240847d9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36074943802"
+      }
+    ],
+    "queuedAt": "2026-09-25T00:13:56.188Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-4135-mug6ldli",
+    "title": "Landing blocked: push red on land/job/linear-BRO-4135-mug6ldli",
+    "description": "land.yml did not land land/job/linear-BRO-4135-mug6ldli: the push gate went red at 598a171b20. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-4135-mug6ldli @ 598a171b20 (origin/land/job/linear-BRO-4135-mug6ldli) → origin/main @ 28314efb3e [land] attempt 1/3: rebased onto 28314efb3e, 9 file(s) changed — running checks [land] verified-base: main moved 340a71dfea → 28314efb3e across 27 file(s), substantive — running the full gauntlet [land] linked 17 gitignored path(s) into the worktree (node_modules/core data) [ Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36076470337",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4135-mug6ldli"
+      },
+      {
+        "name": "gate",
+        "value": "push"
+      },
+      {
+        "name": "tip",
+        "value": "598a171b20967ae5e8a0e3a4f575c46b1bec889d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36076470337"
+      }
+    ],
+    "queuedAt": "2026-09-25T00:34:01.684Z"
   }
 ]

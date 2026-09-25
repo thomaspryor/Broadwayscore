@@ -4947,6 +4947,7 @@ jobs:
         # PUSH_SKIP_CONTENT_SURVIVAL_CHECK kill switch still suppresses it.
         # Verified 3/9 failing against the pre-fix script, 9/9 after.
         if: always()  # independent suite — don't let an earlier red step skip it
+        timeout-minutes: 3  # a hang here is a named RED step, not a silent whole-job cancel (2026-09-23..24: 36 h of cancelled main runs)
         run: bash scripts/lib/merge-worktree-to-main.content-drop.test.sh
 
       - name: Run merge-worktree-to-main checkout-fail regression test (task #819)
@@ -4961,6 +4962,7 @@ jobs:
         # Fault-injecting that exact swap and re-running this test confirms it
         # catches it (script proceeds past the abort and prints a bogus ✅).
         if: always()  # independent suite — don't let an earlier red step skip it
+        timeout-minutes: 3  # a hang here is a named RED step, not a silent whole-job cancel (2026-09-23..24: 36 h of cancelled main runs)
         run: bash scripts/lib/merge-worktree-to-main.checkout-fail.test.sh
 
       - name: Run merge-worktree-to-main conflict-resolution regression test (task #888)
@@ -4986,6 +4988,7 @@ jobs:
         # stash-pop with no branch-merge conflict involved — asserts the
         # script does NOT wedge and completes normally.
         if: always()  # independent suite — don't let an earlier red step skip it
+        timeout-minutes: 3  # a hang here is a named RED step, not a silent whole-job cancel (2026-09-23..24: 36 h of cancelled main runs)
         run: bash scripts/lib/merge-worktree-to-main.conflict-resolution.test.sh
 
       - name: Run merge-worktree-to-main stash-pop-head-missing-path regression test (BRO-3595)
@@ -5005,6 +5008,7 @@ jobs:
         # unmerged index entry, the working-tree file is cleanly removed (not
         # left half-conflicted), and the stash is dropped.
         if: always()  # independent suite — don't let an earlier red step skip it
+        timeout-minutes: 3  # a hang here is a named RED step, not a silent whole-job cancel (2026-09-23..24: 36 h of cancelled main runs)
         run: bash scripts/lib/merge-worktree-to-main.stash-pop-head-missing-path.test.sh
 
       - name: Run merge-worktree-to-main retry-merge-error regression test (task #1511)
@@ -5020,6 +5024,7 @@ jobs:
         # push fires) and asserts the die() message includes git's own
         # conflict text, not the old bare message.
         if: always()  # independent suite — don't let an earlier red step skip it
+        timeout-minutes: 3  # a hang here is a named RED step, not a silent whole-job cancel (2026-09-23..24: 36 h of cancelled main runs)
         run: bash scripts/lib/merge-worktree-to-main.retry-merge-error.test.sh
 
       - name: Run disk-floor pre-flight test (bash integration)
@@ -5053,6 +5058,7 @@ jobs:
         # merge is treated as landed, plus that gate's kill switch; both are
         # load-bearing for every worktree merge this fleet performs.
         if: always()  # independent suite — don't let an earlier red step skip it
+        timeout-minutes: 3  # a hang here is a named RED step, not a silent whole-job cancel (2026-09-23..24: 36 h of cancelled main runs)
         run: bash scripts/lib/merge-worktree-to-main.post-merge-test-gate.test.sh
 
       - name: Run scraper-cookie-wiring tests (direct exec, no --test wrapper)

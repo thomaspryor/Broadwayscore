@@ -121,6 +121,47 @@ test('maybeUpgradeUrl write path clears stale wrongProduction/contentVerificatio
   fs.rmSync(reviewTextsDir, { recursive: true, force: true });
 });
 
+test('BRO-4130: a fresh originalScore arriving in the SAME write as a fresh url survives the url swap', () => {
+  const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-paired-score-'));
+  const showId = 'hamilton-test-fixture';
+  // No score on disk yet — a paywalled stub with no fullText, no url-derived
+  // state to protect other than the fact it's badContent (no fullText).
+  makeFixture(reviewTextsDir, showId, 'thestage--unknown.json', {
+    showId,
+    outletId: 'thestage',
+    outlet: 'The Stage',
+    criticName: 'Unknown',
+    url: 'https://www.thestage.co.uk/reviews/hamilton-old-broken-scrape',
+    source: 'gather-reviews',
+    sources: ['gather-reviews'],
+    fullText: null,
+    needsRefetch: true,
+    contentTier: 'stub',
+  });
+
+  // A SERP-recovery style write: fetches a fresh (non-roundup) url AND
+  // extracts a fresh star rating from it in the same call — the _mergeIntoExisting
+  // field-merge loop plants originalScore/originalScoreSource onto `existing`
+  // BEFORE maybeUpgradeUrl runs, so without the pre-merge snapshot fix the
+  // invariant sees them as "unchanged old-url state" and wipes them.
+  const result = quiet(() => createOrMergeReviewFile(showId, {
+    outlet: 'The Stage',
+    criticName: 'Unknown',
+    url: 'https://www.thestage.co.uk/reviews/hamilton-corrected-review',
+    source: 'serp-discovery',
+    fields: { originalScore: '4', originalScoreSource: 'stage-star-svg' },
+  }, { reviewTextsDir }));
+
+  assert.equal(result.action, 'updated');
+  const after = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+
+  assert.equal(after.url, 'https://www.thestage.co.uk/reviews/hamilton-corrected-review');
+  assert.equal(after.originalScore, '4', 'a score paired with its own new url in the same write must not be wiped');
+  assert.equal(after.originalScoreSource, 'stage-star-svg');
+
+  fs.rmSync(reviewTextsDir, { recursive: true, force: true });
+});
+
 test('maybeUpgradeUrl refuses to touch a locked/urlVerified file', () => {
   const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-locked-'));
   const showId = 'hamilton-test-fixture';
@@ -235,6 +276,47 @@ test('safeWriteReview write chokepoint blocks a flip-flop swap-back and pins url
   assert.equal(after.urlVerified, true, 'file must be pinned after a detected flip-flop');
   assert.equal(after.urlVerifiedAuto, true, 'auto-pin must be distinguishable from a real human urlVerified decision');
   assert.ok(after.urlVerifiedNote && after.urlVerifiedNote.includes('flip-flop'));
+
+  fs.rmSync(reviewTextsDir, { recursive: true, force: true });
+});
+
+test('BRO-4130: a flip-flop-rejected swap does not leave its own paired score misattributed to the pinned url', () => {
+  const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-flipflop-score-'));
+  const showId = 'hamilton-test-fixture';
+  const urlA = 'https://www.thestage.co.uk/reviews/hamilton-review-a';
+  const urlB = 'https://www.thestage.co.uk/reviews/hamilton-review-b';
+  // File currently at A, badContent (no fullText), with a breadcrumb saying
+  // it was corrected FROM B to A previously.
+  makeFixture(reviewTextsDir, showId, 'thestage--unknown.json', {
+    showId, outletId: 'thestage', outlet: 'The Stage', criticName: 'Unknown',
+    url: urlA,
+    source: 'gather-reviews',
+    fullText: null,
+    needsRefetch: true,
+    contentTier: 'stub',
+    _urlChangedClear: { from: urlB, to: urlA, at: '2026-08-01T00:00:00.000Z', cleared: ['fullText'] },
+  });
+
+  // A write proposes swapping back to B (the flip-flop half of the cycle),
+  // WITH a fresh score paired with that same url in the same call. The BRO-4130
+  // fix correctly lets maybeUpgradeUrl preserve the paired score through its
+  // own applyUrlChangeInvariant call — but safeWriteReview's flip-flop guard
+  // downstream then rejects the url swap itself and pins the file back to A.
+  // The score arrived describing article B; it must not end up stranded on A.
+  const result = quiet(() => createOrMergeReviewFile(showId, {
+    outlet: 'The Stage',
+    criticName: 'Unknown',
+    url: urlB,
+    source: 'serp-discovery',
+    fields: { originalScore: '4', originalScoreSource: 'stage-star-svg' },
+  }, { reviewTextsDir }));
+
+  assert.equal(result.action, 'updated');
+  const after = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+
+  assert.equal(after.url, urlA, 'flip-flop swap-back must be refused, keeping the pinned url');
+  assert.equal(after.originalScore, undefined, 'a score paired with the REJECTED url must not survive misattributed to the pinned url');
+  assert.equal(after.originalScoreSource, undefined);
 
   fs.rmSync(reviewTextsDir, { recursive: true, force: true });
 });
@@ -485,6 +567,228 @@ test('BRO-2877: a CARRIED-OVER publishDate still clears the date-based wrongProd
     `expected wrongProduction cleared, got ${JSON.stringify(res.cleared)}`);
   assert.ok(res.cleared.includes('publishDate'),
     `expected publishDate cleared, got ${JSON.stringify(res.cleared)}`);
+});
+
+// ── BRO-4128: maybeUpgradeUrl must not swap a scored paywall stub for a
+// roundup page ──────────────────────────────────────────────────────────
+//
+// SERP discovery on the-last-ship-west-end-2026 found The Stage's own
+// review-round-ups article and offered it to maybeUpgradeUrl as an
+// "upgrade" for a paywalled thestage--unknown.json stub carrying a real
+// originalScore (3/5, extracted from the outlet's stage-star-svg star
+// markup). The stub has no fullText, which satisfies maybeUpgradeUrl's
+// badContent check — that's the normal, permanent shape of a paywalled
+// star-only review, not evidence the score is wrong. The swap replaced the
+// url with the roundup page, and applyUrlChangeInvariant(force:true) wiped
+// originalScore along with the rest of the old-url-derived state, dropping
+// the show from 21 scored reviews to 20.
+test('BRO-4128: maybeUpgradeUrl refuses to swap a scored paywall stub for a roundup page (The Stage / The Last Ship)', () => {
+  const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-roundup-'));
+  const showId = 'the-last-ship-west-end-2026';
+  const fixture = {
+    showId,
+    outletId: 'thestage',
+    outlet: 'The Stage',
+    criticName: 'Unknown',
+    url: 'https://www.thestage.co.uk/reviews/the-last-ship-review-sting',
+    source: 'gather-reviews',
+    fullText: null,
+    contentTier: 'stub',
+    originalScore: '3',
+    originalScoreSource: 'stage-star-svg',
+    originalScoreNormalized: 60,
+  };
+  makeFixture(reviewTextsDir, showId, 'thestage--unknown.json', fixture);
+
+  const result = quiet(() => createOrMergeReviewFile(showId, {
+    outlet: 'The Stage',
+    criticName: 'Unknown',
+    url: 'https://www.thestage.co.uk/review-round-ups/the-last-ship-starring-sting-review-round-up',
+    source: 'serp-discovery',
+    fields: {},
+  }, { reviewTextsDir }));
+
+  const after = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+  assert.equal(after.url, fixture.url, 'roundup-page candidate must be refused; original review url must survive');
+  assert.equal(after.originalScore, '3', 'the real star score must survive — this is the BRO-4128 regression');
+  assert.equal(after.originalScoreSource, 'stage-star-svg');
+  assert.equal(after.urlCorrectedFrom, undefined, 'no swap should have been recorded at all');
+
+  fs.rmSync(reviewTextsDir, { recursive: true, force: true });
+});
+
+test('BRO-4128: maybeUpgradeUrl refuses to swap ANY unflagged scored stub, not just roundup-URL-matched ones', () => {
+  const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-scoreloss-'));
+  const showId = 'the-last-ship-west-end-2026';
+  const fixture = {
+    showId,
+    outletId: 'thestage',
+    outlet: 'The Stage',
+    criticName: 'Unknown',
+    url: 'https://www.thestage.co.uk/reviews/the-last-ship-review-sting',
+    source: 'gather-reviews',
+    fullText: null,
+    contentTier: 'stub',
+    originalScore: '3',
+    originalScoreSource: 'stage-star-svg',
+  };
+  makeFixture(reviewTextsDir, showId, 'thestage--unknown.json', fixture);
+
+  // A candidate that is NOT a recognized roundup-URL pattern, but would still
+  // discard the real score on an unflagged file — the general score-loss
+  // guard must catch this even when isRoundupUrl doesn't recognize the shape.
+  const result = quiet(() => createOrMergeReviewFile(showId, {
+    outlet: 'The Stage',
+    criticName: 'Unknown',
+    url: 'https://www.thestage.co.uk/some-other-article-entirely',
+    source: 'serp-discovery',
+    fields: {},
+  }, { reviewTextsDir }));
+
+  const after = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+  assert.equal(after.url, fixture.url, 'swap that would discard originalScore on an unflagged file must be refused');
+  assert.equal(after.originalScore, '3');
+
+  fs.rmSync(reviewTextsDir, { recursive: true, force: true });
+});
+
+test('BRO-4128: maybeUpgradeUrl still allows a score-discarding swap when the existing file is already flagged wrong', () => {
+  const reviewTextsDir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-flagged-swap-'));
+  const showId = 'the-last-ship-west-end-2026';
+  // Named critic (not "Unknown") and slugs sharing the "last-ship" token with
+  // showTitle so this exercises ONLY the score-loss exemption under test —
+  // an unresolved-critic wrongProduction record hits an unrelated, earlier
+  // "flagged/rejected record" refusal in review-file-writer.js regardless of
+  // maybeUpgradeUrl, and a slug with no shared token trips the pre-existing
+  // cross-show guard (slugLooksLikeDifferentShow) instead.
+  const fixture = {
+    showId,
+    outletId: 'thestage',
+    outlet: 'The Stage',
+    criticName: 'John Smith',
+    url: 'https://www.thestage.co.uk/reviews/the-last-ship-wrong-production',
+    source: 'gather-reviews',
+    fullText: null,
+    contentTier: 'stub',
+    originalScore: '3',
+    originalScoreSource: 'stage-star-svg',
+    wrongProduction: true,
+    wrongProductionReason: 'Pre-opening guard: dated before earliest known preview',
+  };
+  makeFixture(reviewTextsDir, showId, 'thestage--john-smith.json', fixture);
+
+  const result = quiet(() => createOrMergeReviewFile(showId, {
+    outlet: 'The Stage',
+    criticName: 'John Smith',
+    url: 'https://www.thestage.co.uk/reviews/the-last-ship-sting-review',
+    source: 'serp-discovery',
+    fields: {},
+  }, { reviewTextsDir }));
+
+  const after = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+  assert.equal(after.url, 'https://www.thestage.co.uk/reviews/the-last-ship-sting-review', 'a flagged file may still recover onto a fresh individual-review url');
+  assert.equal(after.originalScore, undefined, 'the stale score describing the wrong-production article is discarded, as intended');
+
+  fs.rmSync(reviewTextsDir, { recursive: true, force: true });
+});
+
+test('BRO-4128: the roundup-URL guard refuses the swap even when the existing stub carries NO score at all', () => {
+  // Isolates guard #1 (roundup-URL predicate) from guard #2 (score-loss):
+  // an unscored stub must still be refused a roundup-page url — a roundup
+  // page can never be a genuine "upgrade" for an individual review,
+  // independent of whether there's a score to lose.
+  const { maybeUpgradeUrl } = require('./review-normalization.js');
+  const existing = {
+    outletId: 'thestage',
+    url: 'https://www.thestage.co.uk/reviews/the-last-ship-broken-scrape',
+    fullText: null,
+    contentTier: 'stub',
+  };
+  const result = quiet(() => maybeUpgradeUrl(
+    existing,
+    'https://www.thestage.co.uk/review-round-ups/the-last-ship-starring-sting-review-round-up',
+    'serp-discovery',
+    { showTitle: 'The Last Ship' },
+  ));
+  assert.equal(result, false, 'roundup-page candidate must be refused even with nothing to lose');
+  assert.equal(existing.url, 'https://www.thestage.co.uk/reviews/the-last-ship-broken-scrape');
+});
+
+test('BRO-4128: score-loss guard also covers wrongShow and duplicateOf, not just wrongProduction', () => {
+  const { maybeUpgradeUrl } = require('./review-normalization.js');
+  for (const flagField of ['wrongShow', 'duplicateOf']) {
+    const existing = {
+      outletId: 'thestage',
+      url: 'https://www.thestage.co.uk/reviews/the-last-ship-flagged',
+      fullText: null,
+      contentTier: 'stub',
+      originalScore: '3',
+      [flagField]: true,
+    };
+    const result = quiet(() => maybeUpgradeUrl(
+      existing,
+      'https://www.thestage.co.uk/reviews/the-last-ship-sting-review',
+      'serp-discovery',
+      { showTitle: 'The Last Ship' },
+    ));
+    assert.equal(result, true, `${flagField}=true must still exempt the swap from the score-loss guard`);
+  }
+});
+
+test('BRO-4128: score-loss guard also refuses on aggregatorStars, not just originalScore', () => {
+  const { maybeUpgradeUrl } = require('./review-normalization.js');
+  const existing = {
+    outletId: 'thestage',
+    url: 'https://www.thestage.co.uk/reviews/the-last-ship-broken-scrape',
+    fullText: null,
+    contentTier: 'stub',
+    aggregatorStars: 4,
+  };
+  const result = quiet(() => maybeUpgradeUrl(
+    existing,
+    'https://www.thestage.co.uk/reviews/the-last-ship-sting-review',
+    'serp-discovery',
+    { showTitle: 'The Last Ship' },
+  ));
+  assert.equal(result, false, 'an aggregatorStars-only score must be protected the same as originalScore');
+});
+
+// ship-check/Codex adversarial finding: review-file-writer.js's field-merge
+// loop runs BEFORE maybeUpgradeUrl, so a single incoming write that supplies
+// BOTH a fresh score AND a fresh url for a previously-unscored stub would
+// otherwise see its OWN incoming score reflected on existingData and refuse
+// to also apply its own url — stranding the new score on the old url. The
+// opts.preMergeScore snapshot (wired in review-file-writer.js's
+// _mergeIntoExisting) fixes this: it tells the guard the score didn't exist
+// before this write, so there's nothing stale to protect.
+test('BRO-4128: opts.preMergeScore stops the guard from blocking a url paired with its OWN freshly-supplied score', () => {
+  const { maybeUpgradeUrl } = require('./review-normalization.js');
+  // Simulates existingData AFTER the caller's field-merge already planted the
+  // incoming score (the exact shape review-file-writer.js hands in).
+  const existing = {
+    outletId: 'thestage',
+    url: 'https://www.thestage.co.uk/reviews/the-last-ship-broken-scrape',
+    fullText: null,
+    contentTier: 'stub',
+    originalScore: '4', // just planted by THIS write's own fields, not pre-existing
+    originalScoreSource: 'stage-star-svg',
+  };
+  const result = quiet(() => maybeUpgradeUrl(
+    existing,
+    'https://www.thestage.co.uk/reviews/the-last-ship-sting-review',
+    'serp-discovery',
+    {
+      showTitle: 'The Last Ship',
+      preMergeScore: { originalScore: null, aggregatorStars: null }, // no score before this write
+    },
+  ));
+  assert.equal(result, true, 'a score supplied by THIS SAME write must not block applying its own paired url');
+});
+
+test('BRO-4128: isRoundupUrl matches The Stage review-round-ups path directly', () => {
+  const { isRoundupUrl } = require('./review-guards.js');
+  const verdict = isRoundupUrl('https://www.thestage.co.uk/review-round-ups/the-last-ship-starring-sting-review-round-up');
+  assert.equal(verdict.isRoundup, true);
 });
 
 test('BRO-2877: a DATELESS record clears the date-based wrongProduction flag (leg 281 mergedHasPublishDate conjunct)', () => {
