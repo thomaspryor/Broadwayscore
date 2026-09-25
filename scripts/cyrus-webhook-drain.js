@@ -60,6 +60,13 @@ const MAX_REJECT_ATTEMPTS = 5;
 // notice Cyrus has been silent for a day.
 const BACKLOG_WARN_AGE_SECONDS = 300;
 
+// The relay's GET /api/drain does a Vercel Blob list() every call, billed as an
+// "advanced operation" — at the 2s default this polls ~1.3M times/month even
+// though Linear webhooks are sparse (confirmed root cause of a growing Vercel
+// Blob line item, 2026-09-25). Back off while the queue is empty; any non-empty
+// poll snaps straight back to INTERVAL_MS so real events stay low-latency.
+const IDLE_MAX_MS = 20000;
+
 const attemptsByUrl = new Map();
 
 const args = process.argv.slice(2);
@@ -232,18 +239,21 @@ async function main() {
   }
 
   let backoff = INTERVAL_MS;
+  let idle = INTERVAL_MS;
   for (;;) {
     try {
-      await drainOnce(secret, port);
+      const processed = await drainOnce(secret, port);
       backoff = INTERVAL_MS;
+      idle = processed > 0 ? INTERVAL_MS : Math.min(Math.max(idle, INTERVAL_MS) * 2, IDLE_MAX_MS);
     } catch (err) {
       log(`ERROR ${err.message}`);
       // Record the failure too: a status file that only updates on success is
       // indistinguishable from a stopped process.
       writeStatus({ ok: false, error: err.message });
       backoff = Math.min(backoff * 2, 60000);
+      idle = INTERVAL_MS;
     }
-    await new Promise((resolve) => setTimeout(resolve, backoff));
+    await new Promise((resolve) => setTimeout(resolve, Math.max(backoff, idle)));
   }
 }
 
