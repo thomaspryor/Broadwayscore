@@ -126,6 +126,10 @@ const NAME_PREFIXES = new Set(['o', 'd', 'l']);
 // a human instead — CLAUDE.md's "never guess or fake data".
 const MANUAL_REVIEW_IDS = new Set([
   'mas-sabe-el-saulo-por-viejo-off-broadway-2025',
+  // BRO-3915 2026-09-25: sources split, no decisive producer evidence.
+  'the-listening-off-broadway-2026', // AKS og:title caps but AKS caps its own name (house style); Playbill "The Listening"
+  'vida-off-broadway-2026',          // Repertorio caps is house style; Spanish press mostly "VIDA"
+  'isla-off-broadway-2026',          // WP page unreachable; interview transcription "ISLA", TheaterMania "Isla"
 ]);
 
 // Titles whose ALL-CAPS *is* the branding, where the 3-word minimum is not
@@ -162,6 +166,25 @@ const MANUAL_REVIEW_IDS = new Set([
 // case. The stored title is correct; no exemption needed.
 const KEEP_SHOUTED_IDS = new Set([
   'god-is-a-woman-the-musical-off-west-end-2026',
+  // BRO-3915 source pass, 2026-09-25 (venue/producer raw HTML + editorial
+  // prose; venue all-caps HOUSE STYLE was checked and discounted):
+  //   kenrex — production's own prose + Theatre Weekly/London Theatre running text "KENREX"
+  //   care — Alexander Zeldin Company site "AZC — CARE" while its other titles are mixed case
+  //   flyby — flybymusical.com og:title "FLYBY new musical..."
+  //   yoah — New Victory/juggle.org prose "YOAH", character written "Yoah"
+  //   jeezus — creator's own site "Their show JEEZUS! won..."
+  //   360-allstars — Sadler's Wells og:title mixed-case company, caps title
+  //   chat-noir — chatnoirlondon.com "CHAT NOIR!" beside mixed-case "Le Chat Noir"
+  'kenrex-off-broadway-2026',
+  'care-west-end-2026',
+  'flyby-off-west-end-2026',
+  'yoah-off-broadway-2026',
+  'jeezus-off-west-end-2026',
+  '360-allstars-off-west-end-2026',
+  'chat-noir-off-west-end-2026',
+  // Established stylised trademarks (handoff decision, not artifacts).
+  'smash-2025', 'job-2024', 'kpop-2022', 'six-2021', 'qed-2001',
+  'bigfoot-off-broadway-2026', 'kevin-off-broadway-2026',
 ]);
 
 // The ingestion paths normalise a title BEFORE the row has an id — the id is
