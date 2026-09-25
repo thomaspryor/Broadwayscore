@@ -66,6 +66,12 @@
 //     each diagnostic `<file>: <message> [rule]` with line:col dropped and the
 //     multiplicity rule — so a new workflow error is new even while base is
 //     already red on some other actionlint finding.
+//   bash-integration (BRO-4150): the failing FILE's path (`::error::bash-
+//     integration gate failed: <file> (exit N)`) — same one-key-per-check
+//     shape as lint-workflows' label key, deliberately coarser than the TAP
+//     gates: these are opaque shell scripts, not `node --test` output, so
+//     there is no sub-assertion name to key on. A file red on both sides is
+//     pre-existing; newly red on the branch is a refusal.
 //   KNOWN LIMIT (same as merge-post-merge-test-gate.js): an audit keyed by
 //   its label alone masks a NEW violation of that same audit while base is
 //   already red on it. Do not read a green delta as proof while main is red.
@@ -91,7 +97,7 @@ const { isInertForVerification } = require('./land-branch.js');
 
 // The gates land.yml's checks job runs, in verdict order (the first failing
 // one names the digest line). Keep in step with scripts/lib/land-gauntlet.sh.
-const GATES = ['tsc', 'tsc-llm-scoring', 'next-lint', 'unit-tests-node', 'unit-tests-tsx', 'scripts-lib-tests', 'lint-workflows'];
+const GATES = ['tsc', 'tsc-llm-scoring', 'next-lint', 'unit-tests-node', 'unit-tests-tsx', 'scripts-lib-tests', 'bash-integration', 'lint-workflows'];
 const TAP_GATES = new Set(['unit-tests-node', 'unit-tests-tsx', 'scripts-lib-tests']);
 const TSC_GATES = new Set(['tsc', 'tsc-llm-scoring']);
 
@@ -156,6 +162,17 @@ function parseLintWorkflowsFailures(text) {
   return out;
 }
 
+// bash-integration (BRO-4150): keyed by the failing test file's path, same
+// one-line-per-check shape land-gauntlet.sh's bash_integration() emits.
+function parseBashIntegrationFailures(text) {
+  const out = new Map();
+  for (const raw of stripAnsi(text).split('\n')) {
+    const m = /^::error::bash-integration gate failed: (.+?) \(exit \d+\)$/.exec(raw.trimEnd());
+    if (m) out.set(`bash-integration::${m[1]}`, { file: 'bash-integration', name: m[1] });
+  }
+  return out;
+}
+
 // TAP failures re-keyed with their failureType (see KEYS above). A plain
 // assertion failure keys `file::name [testCodeFailure]` on both sides — same
 // key, same verdict; only a CHANGE of failure kind (subtests failed → file
@@ -176,6 +193,7 @@ function parseGateFailures(gate, text, treeRoot) {
   if (TSC_GATES.has(gate)) return parseTscFailures(text);
   if (gate === 'next-lint') return parseNextLintFailures(text);
   if (gate === 'lint-workflows') return parseLintWorkflowsFailures(text);
+  if (gate === 'bash-integration') return parseBashIntegrationFailures(text);
   throw new Error(`land-gate-delta: no parser for gate ${JSON.stringify(gate)}`);
 }
 
@@ -388,6 +406,7 @@ module.exports = {
   parseTscFailures,
   parseNextLintFailures,
   parseLintWorkflowsFailures,
+  parseBashIntegrationFailures,
   parseTapGateFailures,
   addWithMultiplicity,
   isCacheKeyRelevant,
