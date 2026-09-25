@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   assessMainRedStreak, failingJobsFromNeeds,
-  stepFailureSignature, firstFailingTestNameInJobLog, isBashIntegrationStep, failingStepSignatures, signaturesToResolve,
+  stepFailureSignature, firstFailingTestNameInJobLog, isBashIntegrationStep, isBashTestStepCommand, failingStepSignatures, signaturesToResolve,
   trackSignatureAbsence, jobNameFromRedKey, STALE_ABSENT_RUN_THRESHOLD,
 } = require('./main-red-streak.js');
 
@@ -433,6 +433,65 @@ test('failingStepSignatures still attributes a testName to a non-bash-integratio
   const testNameByJob = new Map([['Unit Tests', 'a real node --test failure']]);
   const sigs = failingStepSignatures(run, testNameByJob);
   assert.equal(sigs[0].testName, 'a real node --test failure');
+});
+
+// ── BRO-4151 ship-check finding: the "(bash integration)" name suffix alone
+// is not reliable — a live scan of the REAL test.yml found bash-test.sh
+// steps named "(bash unit)" or with a bare task reference instead. The
+// run-command check (isBashTestStepCommand / resolveRunCommand) must catch
+// those too, not just the ones that follow the naming convention.
+
+test('isBashTestStepCommand matches bare and timeout-wrapped `bash <path>.test.sh`, not node --test or arbitrary bash', () => {
+  assert.equal(isBashTestStepCommand('bash scripts/lib/github-remote-parse.test.sh'), true);
+  assert.equal(isBashTestStepCommand('timeout 180 bash scripts/lib/merge-worktree-to-main.checkout-fail.test.sh'), true);
+  assert.equal(isBashTestStepCommand('node --test scripts/lib/x.test.mjs'), false);
+  assert.equal(isBashTestStepCommand('bash scripts/lib/some-script.sh'), false, 'not a .test.sh file');
+  assert.equal(isBashTestStepCommand('bash scripts/lib/x.test.sh extra-arg'), false, 'no trailing args admitted');
+  assert.equal(isBashTestStepCommand(null), false);
+});
+
+test('isBashIntegrationStep: the run-command check catches real test.yml steps the name-suffix convention misses', () => {
+  // "Run github-remote-parse test (bash unit)" — real step name in test.yml,
+  // does NOT end in "(bash integration)".
+  assert.equal(isBashIntegrationStep('Run github-remote-parse test (bash unit)'), false, 'name alone: convention miss');
+  assert.equal(isBashIntegrationStep('Run github-remote-parse test (bash unit)', 'bash scripts/lib/github-remote-parse.test.sh'), true, 'run-command check catches it');
+  // "Run merge-worktree-to-main checkout-fail regression test (task #819)" —
+  // real step name, no "(bash ...)" tag of any kind.
+  assert.equal(isBashIntegrationStep('Run merge-worktree-to-main checkout-fail regression test (task #819)'), false);
+  assert.equal(isBashIntegrationStep('Run merge-worktree-to-main checkout-fail regression test (task #819)', 'timeout 180 bash scripts/lib/merge-worktree-to-main.checkout-fail.test.sh'), true);
+  // Still true via the name-suffix fallback alone when no run command is available.
+  assert.equal(isBashIntegrationStep('Run push-with-retry deadline-guard test (bash integration)'), true);
+});
+
+test('failingStepSignatures suppresses testName via resolveRunCommand even when the step name does not follow the "(bash integration)" convention', () => {
+  const run = {
+    jobs: [testJob('Unit Tests', 'failure', [
+      okStep('Set up job'),
+      failedStep('Run github-remote-parse test (bash unit)'),
+    ])],
+  };
+  const testNameByJob = new Map([['Unit Tests', 'foo returns the contracted value']]);
+  const resolveRunCommand = (job, step) => (step === 'Run github-remote-parse test (bash unit)' ? 'bash scripts/lib/github-remote-parse.test.sh' : null);
+  const sigs = failingStepSignatures(run, testNameByJob, resolveRunCommand);
+  assert.equal(sigs[0].testName, null);
+});
+
+test('against the REAL test.yml: findStepRunCommandInWorkflow + isBashIntegrationStep correctly flags every non-conventionally-named bash-test.sh step', () => {
+  const fs = require('fs');
+  const path = require('path');
+  const { findStepRunCommandInWorkflow } = require('./red-signature-verify-cmd.js');
+  const dirname = path.dirname(new URL(import.meta.url).pathname);
+  const realYml = fs.readFileSync(path.join(dirname, '..', '..', '.github', 'workflows', 'test.yml'), 'utf8');
+  const cases = [
+    { job: 'Unit Tests', step: 'Run github-remote-parse test (bash unit)' },
+    { job: 'Unit Tests', step: 'Run merge-worktree-to-main checkout-fail regression test (task #819)' },
+  ];
+  for (const { job, step } of cases) {
+    const cmd = findStepRunCommandInWorkflow(realYml, job, step);
+    assert.ok(cmd, `expected a resolvable run: command for "${step}"`);
+    assert.equal(isBashIntegrationStep(step, cmd), true, `"${step}" (run: ${cmd}) must be classified as a bash-integration step`);
+    assert.equal(isBashIntegrationStep(step), false, `"${step}" is a live example of the name-suffix convention NOT holding — pins the regression this test guards`);
+  }
 });
 
 test('an unparseable createdAt on the anchor run reports null duration, not a silent pass (code-review finding)', () => {

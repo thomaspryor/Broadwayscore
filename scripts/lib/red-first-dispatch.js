@@ -102,13 +102,18 @@ function countDispatchesToday(journal, now = Date.now()) {
 // looking at it". A live job, a very recent dispatch (still within
 // ATTEMPT_COOLDOWN_MS of actually being requested), or an unresolved
 // "Dispatched ..." comment from another machine are all already in flight.
-// Everything else — no-safe-verify, cap-reached, human-gated, a card whose
-// state moved out from under us, a refused/follow-up attempt now cooling
-// down — got skipped with nobody told, which is exactly how BRO-4147 and
-// BRO-4149 sat for 40+ minutes with no job and no alert.
+// 'state-moved' means the card is no longer sitting in backlog/unstarted at
+// all — it moved to 'started' (someone's attended work), a terminal state
+// (already resolved), or the re-fetch failed (transient, retried next tick)
+// — never "silently stuck", so surfacing it would be actively misleading
+// (ship-check finding: the alert copy claims "nobody is looking at it",
+// which is false for all three of those cases). Everything else —
+// no-safe-verify, cap-reached, human-gated, a refused/follow-up attempt now
+// cooling down — got skipped with nobody told, which is exactly how
+// BRO-4147 and BRO-4149 sat for 40+ minutes with no job and no alert.
 function isSilentSkipReason(reason) {
   const r = String(reason || '');
-  return r === 'live-job' || r === 'dispatched-comment' || r.startsWith('recent-attempt:dispatch');
+  return r === 'live-job' || r === 'dispatched-comment' || r === 'state-moved' || r.startsWith('recent-attempt:dispatch');
 }
 
 function conditionKeyFromIssue(issue) {

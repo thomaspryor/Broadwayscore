@@ -49,10 +49,14 @@ test('isSilentSkipReason: only already-being-handled reasons are silent', () => 
   assert.equal(isSilentSkipReason('live-job'), true);
   assert.equal(isSilentSkipReason('dispatched-comment'), true);
   assert.equal(isSilentSkipReason('recent-attempt:dispatch'), true);
+  // 'state-moved' means the card left backlog/unstarted entirely (attended
+  // 'started' work, already terminal, or a transient re-fetch failure) —
+  // never "silently stuck", so it stays quiet too (ship-check finding: the
+  // alert copy would otherwise falsely claim nobody is looking at it).
+  assert.equal(isSilentSkipReason('state-moved'), true);
   // Anything else got no job this tick and nothing is coming without help.
   assert.equal(isSilentSkipReason('no-safe-verify'), false);
   assert.equal(isSilentSkipReason('cap-reached'), false);
-  assert.equal(isSilentSkipReason('state-moved'), false);
   assert.equal(isSilentSkipReason('human-gated:owner-judgment'), false);
   assert.equal(isSilentSkipReason('recent-attempt:refused'), false);
   assert.equal(isSilentSkipReason('recent-attempt:follow-up'), false);
@@ -128,6 +132,23 @@ test('a dispatched-comment skip never calls routeSkipAlert (another machine alre
   const summary = await runRedFirstPass({ now: NOW, log: () => {}, deps });
   assert.ok(summary.skipped.some((s) => s.identifier === 'BRO-4201' && s.reason === 'dispatched-comment'));
   assert.equal(called, false);
+});
+
+test('a state-moved skip (card already resolved or attended elsewhere between selection and fetch) never calls routeSkipAlert', async () => {
+  const card = redCard(4210, { verify: 'VERIFY: `node scripts/run-unit-tests.js`' });
+  // getIssue's fresh fetch reports the card has already moved to a terminal
+  // state (e.g. someone closed it by hand right after selection) — not the
+  // 'unstarted'/'backlog' PARKED_STATE_TYPES selectRedFirstCandidates saw.
+  const freshResolved = { ...card, state: { name: 'Done', type: 'completed' } };
+  let called = false;
+  const deps = baseDeps({
+    listOpenIssues: async () => [card],
+    getIssue: async () => freshResolved,
+    routeSkipAlert: async () => { called = true; },
+  });
+  const summary = await runRedFirstPass({ now: NOW, log: () => {}, deps });
+  assert.ok(summary.skipped.some((s) => s.identifier === 'BRO-4210' && s.reason === 'state-moved'));
+  assert.equal(called, false, 'a resolved-or-attended card is not "stuck" — alerting would falsely claim nobody is looking at it');
 });
 
 test('a very recent dispatch attempt never calls routeSkipAlert (still cooling down, already requested)', async () => {

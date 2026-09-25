@@ -63,7 +63,7 @@ const { routeAlert, loadLedger, resolveCondition, patchCondition } = require('./
 // refuses that outright, so every one of these cards sat undispatchable. This
 // resolves the failing step's own `run:` command out of test.yml (or a
 // job-level proxy) into a `VERIFY:` line dispatch can actually arm.
-const { verifyForSignature } = require('./lib/red-signature-verify-cmd.js');
+const { verifyForSignature, findStepRunCommandInWorkflow } = require('./lib/red-signature-verify-cmd.js');
 
 const TEST_YML_PATH = path.join(__dirname, '..', '.github', 'workflows', 'test.yml');
 
@@ -188,6 +188,25 @@ async function main() {
     .filter(([key, c]) => c && c.status === 'open' && key.startsWith(RED_SIGNATURE_PREFIX)));
   const openRedKeys = Object.keys(openRedConditions);
 
+  // BRO-4151: read test.yml up front (moved from the --dispatch-only block
+  // below) so failingStepSignatures() can check each failing step's own
+  // `run:` command — the reliable way to tell a bash-integration step (never
+  // prints TAP output) from a `node --test` batch, instead of trusting the
+  // "(bash integration)" step-name suffix convention alone, which a live
+  // scan of THIS repo's own test.yml found several real steps don't follow
+  // (e.g. "... (bash unit)", "... (task #819)"). Best-effort: a missing/
+  // unreadable test.yml (should be impossible in a checkout that just ran
+  // it) must not block dispatch — failingStepSignatures() falls back to the
+  // step-name heuristic, and verifyForSignature's --dispatch use below falls
+  // back to VERIFY: owner-judgment.
+  let testYmlText = '';
+  try {
+    testYmlText = fs.readFileSync(TEST_YML_PATH, 'utf8');
+  } catch (err) {
+    console.error(`[route-main-streak-signatures] could not read ${TEST_YML_PATH} (${err.message}); bash-integration step detection falls back to the step-name heuristic, and (if --dispatch) every signature this run falls back to VERIFY: owner-judgment.`);
+  }
+  const resolveStepRunCommand = (jobName, stepName) => findStepRunCommandInWorkflow(testYmlText, jobName, stepName);
+
   // Test names matter for --dispatch (sharpening which card gets filed/
   // titled) AND, since BRO-4054, for judging whether an OPEN signature is
   // still present — a job+step-only signature never equals a job+step+test
@@ -206,7 +225,7 @@ async function main() {
       if (testName) testNameByJob.set(job.name || '', testName);
     }
   }
-  const currentSignatures = failingStepSignatures(run, testNameByJob);
+  const currentSignatures = failingStepSignatures(run, testNameByJob, resolveStepRunCommand);
 
   // Resolve first, independent of --dispatch: a signature whose job is
   // CONFIRMED green must close even on a run where the streak dropped below
@@ -235,17 +254,6 @@ async function main() {
   }
 
   if (!opts.dispatch) return;
-
-  // Best-effort: a missing/unreadable test.yml (should be impossible in a
-  // checkout that just ran it) must not block dispatch — every signature
-  // just falls to verifyForSignature's "no known run: command" branch, which
-  // arms VERIFY: owner-judgment rather than throwing.
-  let testYmlText = '';
-  try {
-    testYmlText = fs.readFileSync(TEST_YML_PATH, 'utf8');
-  } catch (err) {
-    console.error(`[route-main-streak-signatures] could not read ${TEST_YML_PATH} (${err.message}); every signature this run falls back to VERIFY: owner-judgment.`);
-  }
 
   const runUrl = runUrlFor(opts.runId);
   for (const sig of currentSignatures) {
