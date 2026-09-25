@@ -1279,7 +1279,9 @@ function savePlaybillUrls(data) {
 let playbillUrlCache = null;
 
 function slugify(str) {
-  return str.toLowerCase()
+  // Fold diacritics first: "Les Misérables" must slug to les-miserables, not
+  // shred at the accent (tests/unit/sibling-matchers-diacritics.test.mjs).
+  return require('./lib/title-match').foldDiacritics(str).toLowerCase()
     .replace(/['']/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');

@@ -335,7 +335,8 @@ if (reviewsData) {
   // british-theatre--unknown.json reaches reviews.json as critic "Vera Liber".
   // Exact-string matching reported those as "scored but MISSING" (4 false
   // failures on how-the-other-half-loves-west-end-2026, 2026-09-25).
-  const normCritic = (c) => String(c || '').toLowerCase().replace(/[^a-z]/g, '');
+  const { foldDiacritics } = require('./lib/title-match');
+  const normCritic = (c) => foldDiacritics(String(c || '')).toLowerCase().replace(/[^a-z]/g, '');
   const isUnknownCritic = (c) => !normCritic(c) || normCritic(c) === 'unknown';
   const normUrl = (u) => String(u || '').toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
   const byOutlet = new Map();
