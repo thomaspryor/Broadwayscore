@@ -1154,9 +1154,9 @@
     "queuedAt": "2026-09-25T02:47:24.662Z"
   },
   {
-    "conditionKey": "land:land/job/linear-BRO-4152-mugdw2r8",
-    "title": "Landing blocked: rebase red on land/job/linear-BRO-4152-mugdw2r8",
-    "description": "land.yml did not land land/job/linear-BRO-4152-mugdw2r8: the rebase gate went red at 004c8522d1. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36091499812",
+    "conditionKey": "land:land/job/linear-BRO-4150-mugdffki",
+    "title": "Landing blocked: bash-integration red on land/job/linear-BRO-4150-mugdffki",
+    "description": "land.yml did not land land/job/linear-BRO-4150-mugdffki: the bash-integration gate went red at 904b788d26. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36089925455",
     "severity": "error",
     "url": null,
     "decision": false,
@@ -1165,21 +1165,21 @@
     "fields": [
       {
         "name": "branch",
-        "value": "land/job/linear-BRO-4152-mugdw2r8"
+        "value": "land/job/linear-BRO-4150-mugdffki"
       },
       {
         "name": "gate",
-        "value": "rebase"
+        "value": "bash-integration"
       },
       {
         "name": "tip",
-        "value": "004c8522d149a2da22f31a370d7e61881010615d"
+        "value": "904b788d2695c1b07de4df51c88ddea537f658aa"
       },
       {
         "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36091499812"
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36089925455"
       }
     ],
-    "queuedAt": "2026-09-25T03:45:00.132Z"
+    "queuedAt": "2026-09-25T03:45:12.316Z"
   }
 ]
