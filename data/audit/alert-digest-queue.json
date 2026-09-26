@@ -260,39 +260,6 @@
     "queuedAt": "2026-09-26T13:41:46.181Z"
   },
   {
-    "conditionKey": "opening-night-drift:the-secret-circus-musical-off-broadway-2026",
-    "title": "Opening night drift: The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
-    "description": "Review counts do not reconcile for The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): local review-texts=3, reviews.json aggregate=0, live production=n/a, drift=3 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36252189141",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Show",
-        "value": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
-        "inline": false
-      },
-      {
-        "name": "Counts",
-        "value": "local=3, aggregate=0, live=n/a, drift=3",
-        "inline": false
-      },
-      {
-        "name": "Opening",
-        "value": "2026-09-26",
-        "inline": false
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/36252189141)",
-        "inline": false
-      }
-    ],
-    "queuedAt": "2026-09-26T15:33:02.089Z"
-  },
-  {
     "conditionKey": "opening-night-fulltext-mentions-show:short:the-urmetazoan-off-west-end-2026",
     "title": "Shipped review too short to verify on The Urmetazoan",
     "description": "thestage/Holly O'Mahony (thestage--holly-omahony.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://thestage.co.uk/reviews/the-urmetazoan-review-hampstead-theatre-london-alex-rugman",
@@ -604,5 +571,38 @@
       }
     ],
     "queuedAt": "2026-09-26T21:20:44.936Z"
+  },
+  {
+    "conditionKey": "opening-night-drift:the-secret-circus-musical-off-broadway-2026",
+    "title": "Opening night drift: The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
+    "description": "Review counts do not reconcile for The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): local review-texts=3, reviews.json aggregate=0, live production=n/a, drift=3 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36275089164",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
+        "inline": false
+      },
+      {
+        "name": "Counts",
+        "value": "local=3, aggregate=0, live=n/a, drift=3",
+        "inline": false
+      },
+      {
+        "name": "Opening",
+        "value": "2026-09-26",
+        "inline": false
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/36275089164)",
+        "inline": false
+      }
+    ],
+    "queuedAt": "2026-09-26T22:07:21.441Z"
   }
 ]
