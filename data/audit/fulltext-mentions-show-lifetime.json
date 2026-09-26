@@ -1,14 +1,11 @@
 {
-  "updatedAt": "2026-09-25T12:20:14.077Z",
-  "scanned": 2111,
-  "showsWithViolations": 331,
-  "totalViolations": 646,
-  "newSinceLastRun": 4,
+  "updatedAt": "2026-09-26T11:54:58.365Z",
+  "scanned": 2113,
+  "showsWithViolations": 332,
+  "totalViolations": 647,
+  "newSinceLastRun": 1,
   "newViolationKeys": [
-    "the-price-off-west-end-2026::guardian--arifa-akbar.json",
-    "the-price-off-west-end-2026::thestage--dave-fargnoli.json",
-    "la-boheme-off-broadway-2024::the-new-criterion--unknown.json",
-    "kimberly-akimbo-off-west-end-2026::londonatlarge--laladmin.json"
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026::standard--nick-curtis.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -637,6 +634,7 @@
     "the-price-off-west-end-2026::thestage--dave-fargnoli.json",
     "the-price-off-west-end-2026::thestage--unknown.json",
     "evita-west-end-2025::thestage--sam-marlowe.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026::standard--nick-curtis.json",
     "la-boheme-off-broadway-2025::new-york-classical-review--rick-perdian.json",
     "la-boheme-off-broadway-2025::operawire--david-salazar.json",
     "the-smile-of-her-off-west-end-2026::thestage--dave-fargnoli.json",
@@ -8207,6 +8205,22 @@
           "outletId": "thestage",
           "criticName": "Sam Marlowe",
           "haystackLength": 6173,
+          "textIssuesFlag": false
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "title": "My Son’s A Queer (But What Can You Do?)",
+      "openingDate": "2026-09-17",
+      "message": "standard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'My Son’s A Queer (But What Can You Do?)' (3049 chars): https://www.standard.co.uk/culture/theatre/my-sons-a-queer-but-what-can-you-do-garrick-theatre-review-west-end-b1034714.html",
+      "violations": [
+        {
+          "filename": "standard--nick-curtis.json",
+          "url": "https://www.standard.co.uk/culture/theatre/my-sons-a-queer-but-what-can-you-do-garrick-theatre-review-west-end-b1034714.html",
+          "outletId": "standard",
+          "criticName": "Nick Curtis",
+          "haystackLength": 3049,
           "textIssuesFlag": false
         }
       ]
