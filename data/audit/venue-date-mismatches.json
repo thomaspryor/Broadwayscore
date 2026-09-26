@@ -1,105 +1,20 @@
 {
-  "generatedAt": "2026-09-25T10:37:05.161Z",
+  "generatedAt": "2026-09-26T10:24:46.647Z",
   "filter": {
     "allProvisional": true,
     "limit": null
   },
   "timeBudgetMin": 25,
   "counts": {
-    "total": 72,
-    "match": 36,
-    "mismatch": 1,
-    "unresolved": 35,
+    "total": 62,
+    "match": 35,
+    "mismatch": 2,
+    "unresolved": 25,
     "infraUnavailable": 0,
-    "deferred": 0,
-    "carriedForward": 0
+    "deferred": 10,
+    "carriedForward": 10
   },
   "results": [
-    {
-      "id": "grangeville-off-broadway-2026",
-      "title": "Grangeville",
-      "venue": "Signature Theatre",
-      "result": "match",
-      "playbillUrl": "https://playbill.com/production/grangeville-off-broadway-the-pershing-square-signature-center-alice-griffin-jewel-box-theatre-2025",
-      "urlSource": "serp",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Grangeville",
-          "market": "Off-Broadway",
-          "venue": "The Pershing Square Signature Center/Alice Griffin Jewel Box Theatre",
-          "year": 2025
-        },
-        "dates": {
-          "firstPreview": "2025-02-04",
-          "openingDate": "2025-02-24",
-          "closingDate": "2025-03-23"
-        },
-        "tagLine": {
-          "tags": [
-            "Off-Broadway",
-            "Play",
-            "Drama",
-            "One Act"
-          ],
-          "market": "Off-Broadway",
-          "showType": "play",
-          "revivalStatus": "unknown"
-        }
-      },
-      "mismatches": [],
-      "explainedByPriorRun": [],
-      "fingerprint": "Signature Theatre|2025-02-24|2025-03-23|false|Grangeville||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
-      "lastDefinitiveResult": "match"
-    },
-    {
-      "id": "eurydice-off-broadway-2026",
-      "title": "Eurydice",
-      "venue": "Signature Theatre",
-      "result": "match",
-      "playbillUrl": "https://playbill.com/production/eurydice-off-broadway-the-pershing-square-signature-center-romulus-linney-courtyard-theatre-2025",
-      "urlSource": "serp",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Eurydice",
-          "market": "Off-Broadway",
-          "venue": "The Pershing Square Signature Center/Romulus Linney Courtyard Theatre",
-          "year": 2025
-        },
-        "dates": {
-          "firstPreview": "2025-05-13",
-          "openingDate": "2025-06-02",
-          "closingDate": "2025-06-29"
-        },
-        "tagLine": {
-          "tags": [
-            "Off-Broadway",
-            "Play"
-          ],
-          "market": "Off-Broadway",
-          "showType": "play",
-          "revivalStatus": "unknown"
-        }
-      },
-      "mismatches": [],
-      "explainedByPriorRun": [],
-      "fingerprint": "Signature Theatre|2025-06-02|2025-06-29|false|Eurydice||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
-      "lastDefinitiveResult": "match"
-    },
-    {
-      "id": "elf-lyons-the-woman-on-the-edge-off-broadway-2026",
-      "title": "Elf Lyons: The Woman on the Edge",
-      "venue": "SoHo Playhouse",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "SoHo Playhouse|2026-09-27|2026-10-18|false|Elf Lyons: The Woman on the Edge||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
     {
       "id": "the-ford-hill-project-off-broadway-2026",
       "title": "The Ford/Hill Project",
@@ -141,7 +56,7 @@
       ],
       "explainedByPriorRun": [],
       "fingerprint": "BAM Fisher (Fishman Space)|2026-09-08|2026-09-20|false|The Ford/Hill Project||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "mismatch"
     },
     {
@@ -177,7 +92,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "James Earl Jones Theatre|2026-11-08||false|Wanted||broadway|musical",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -214,7 +129,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "St. Ann's Warehouse|2026-10-04|2026-10-24|false|Kramer/Fauci|NYU Skirball Center for the Performing Arts~2026-02-11~2026-02-21|off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -222,66 +137,35 @@
       "title": "The Dead, 1904",
       "venue": "American Irish Historical Society",
       "result": "match",
-      "playbillUrl": "https://playbill.com/production/the-dead-1904-off-broadway-the-american-irish-historical-society-2024",
+      "playbillUrl": "https://playbill.com/production/the-dead-1904-off-broadway-the-american-irish-historical-society-2026",
       "urlSource": "serp",
       "parsed": {
         "titleParse": {
           "rawTitle": "The Dead, 1904",
           "market": "Off-Broadway",
           "venue": "The American Irish Historical Society",
-          "year": 2024
+          "year": 2026
         },
         "dates": {
-          "firstPreview": "2024-11-20",
-          "openingDate": "2024-11-26",
-          "closingDate": "2025-01-05"
+          "firstPreview": "2026-11-21",
+          "openingDate": "2026-11-21",
+          "closingDate": "2027-01-03"
         },
         "tagLine": {
           "tags": [
-            "Off-Broadway"
+            "Off-Broadway",
+            "One Act",
+            "Revival"
           ],
           "market": "Off-Broadway",
           "showType": null,
-          "revivalStatus": "unknown"
+          "revivalStatus": "revival"
         }
       },
       "mismatches": [],
-      "explainedByPriorRun": [
-        {
-          "field": "opening-year",
-          "shows": 2026,
-          "playbill": 2024,
-          "priorRun": {
-            "openingDate": "2024-11-26",
-            "closingDate": "2025-01-05",
-            "venue": "American Irish Historical Society"
-          }
-        },
-        {
-          "field": "openingDate",
-          "shows": "2026-11-24",
-          "playbill": "2024-11-26",
-          "deltaDays": 728,
-          "priorRun": {
-            "openingDate": "2024-11-26",
-            "closingDate": "2025-01-05",
-            "venue": "American Irish Historical Society"
-          }
-        },
-        {
-          "field": "closingDate",
-          "shows": "2027-01-03",
-          "playbill": "2025-01-05",
-          "deltaDays": 728,
-          "priorRun": {
-            "openingDate": "2024-11-26",
-            "closingDate": "2025-01-05",
-            "venue": "American Irish Historical Society"
-          }
-        }
-      ],
+      "explainedByPriorRun": [],
       "fingerprint": "American Irish Historical Society|2026-11-24|2027-01-03|true|The Dead, 1904|American Irish Historical Society~2024-11-26~2025-01-05|off-broadway|special",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -329,7 +213,7 @@
         }
       ],
       "fingerprint": "West End Theatre||2026-11-29|true|Othello (Bedlam)|West End Theatre~2026-05-10~2026-05-31|off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -366,7 +250,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Atlantic Theater|2025-10-08|2025-11-22|false|Let's Love||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -402,7 +286,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Vineyard Theatre|2026-11-01|2026-12-13|false|Ms. Blakk for President||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -438,7 +322,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Signature Theatre Company/Alice Griffin Jewel Box Theater|2026-10-20|2026-11-22|false|King of the Yees||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -473,7 +357,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Signature Theatre|2024-02-20|2024-03-10|false|Sunset Baby||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -507,7 +391,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Signature Theatre|2024-04-15|2024-05-12|false|Orlando||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -541,7 +425,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Signature Theatre|2024-05-22|2024-06-16|false|Three Houses||off-broadway|musical",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -575,7 +459,79 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Signature Theatre|2024-10-28|2024-12-08|false|Bad Kreyòl||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
+      "lastDefinitiveResult": "match"
+    },
+    {
+      "id": "grangeville-off-broadway-2026",
+      "title": "Grangeville",
+      "venue": "Signature Theatre",
+      "result": "match",
+      "playbillUrl": "https://playbill.com/production/grangeville-off-broadway-the-pershing-square-signature-center-alice-griffin-jewel-box-theatre-2025",
+      "urlSource": "serp",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "Grangeville",
+          "market": "Off-Broadway",
+          "venue": "The Pershing Square Signature Center/Alice Griffin Jewel Box Theatre",
+          "year": 2025
+        },
+        "dates": {
+          "firstPreview": "2025-02-04",
+          "openingDate": "2025-02-24",
+          "closingDate": "2025-03-23"
+        },
+        "tagLine": {
+          "tags": [
+            "Off-Broadway",
+            "Play",
+            "Drama",
+            "One Act"
+          ],
+          "market": "Off-Broadway",
+          "showType": "play",
+          "revivalStatus": "unknown"
+        }
+      },
+      "mismatches": [],
+      "explainedByPriorRun": [],
+      "fingerprint": "Signature Theatre|2025-02-24|2025-03-23|false|Grangeville||off-broadway|play",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
+      "lastDefinitiveResult": "match"
+    },
+    {
+      "id": "eurydice-off-broadway-2026",
+      "title": "Eurydice",
+      "venue": "Signature Theatre",
+      "result": "match",
+      "playbillUrl": "https://playbill.com/production/eurydice-off-broadway-the-pershing-square-signature-center-romulus-linney-courtyard-theatre-2025",
+      "urlSource": "serp",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "Eurydice",
+          "market": "Off-Broadway",
+          "venue": "The Pershing Square Signature Center/Romulus Linney Courtyard Theatre",
+          "year": 2025
+        },
+        "dates": {
+          "firstPreview": "2025-05-13",
+          "openingDate": "2025-06-02",
+          "closingDate": "2025-06-29"
+        },
+        "tagLine": {
+          "tags": [
+            "Off-Broadway",
+            "Play"
+          ],
+          "market": "Off-Broadway",
+          "showType": "play",
+          "revivalStatus": "unknown"
+        }
+      },
+      "mismatches": [],
+      "explainedByPriorRun": [],
+      "fingerprint": "Signature Theatre|2025-06-02|2025-06-29|false|Eurydice||off-broadway|play",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -611,7 +567,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Signature Theatre|2025-10-16|2025-11-23|false|Oratorio for Living Things||off-broadway|musical",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -647,7 +603,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "MCC Theater|2025-10-01|2025-11-16|false|Caroline||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -682,7 +638,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "MCC Theater|2025-03-10|2025-05-18|false|All Nighter||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -717,7 +673,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "MCC Theater|2025-06-25|2025-07-27|false|Trophy Boys||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -752,7 +708,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "MCC Theater|2024-05-21|2024-06-02|false|The Lonely Few||off-broadway|musical",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -786,7 +742,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "MCC Theater|2024-11-18|2024-12-15|false|Shit. Meet. Fan.||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -823,7 +779,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Theatre 71|2026-04-30|2026-05-31|false|Broken Snow||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -859,7 +815,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Public Theater/Delacorte Theater|2026-06-11|2026-06-28|true|Romeo and Juliet||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -893,7 +849,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Lucille Lortel Theatre|2025-03-18|2025-05-11|false|Vanya||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -927,7 +883,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "The Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre|2023-05-25|2023-07-02|false|Primary Trust||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -963,7 +919,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Lincoln Center Theater - Mitzi E. Newhouse Theater|2025-11-03|2025-11-30|false|Kyoto||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -998,7 +954,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Menier Chocolate Factory|2026-07-20|2026-09-12|false|Midnight at the Never Get||off-west-end|musical",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1034,7 +990,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Gielgud Theatre|2024-10-03|2024-11-23|false|Juno and the Paycock||west-end|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1069,7 +1025,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Duke of York's Theatre|2024-10-30|2025-01-11|false|Barcelona||west-end|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1106,7 +1062,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Winter Garden Theatre|2026-11-19|2027-01-10|true|Much Ado About Nothing|Theatre Royal Drury Lane~2025-02-10~2025-04-05|broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1142,7 +1098,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Todd Haimes Theatre|2027-01-27|2027-02-28|false|Mix and Master||broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1178,7 +1134,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Todd Haimes Theatre|2027-04-25|2027-06-20|true|The Full Monty||broadway|musical",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1214,7 +1170,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Barbican Theatre|2026-06-03|2026-07-11|true|High Society||off-west-end|musical",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1248,7 +1204,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Charing Cross Theatre|2024-01-31|2024-04-07|false|Bronco Billy – The Musical||off-west-end|musical",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1282,43 +1238,21 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Lucille Lortel Theatre|2023-11-13|2024-01-13|true|Danny and the Deep Blue Sea||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
       "id": "mystic-pizza-regional-2025",
       "title": "Mystic Pizza",
       "venue": "Paper Mill Playhouse, Millburn, NJ",
-      "result": "match",
-      "playbillUrl": "https://playbill.com/production/mystic-pizza-regional-2025",
-      "urlSource": "serp",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Mystic Pizza (Regional, Riverside Theatre - Stark Stage, 2025) | Playbill",
-          "market": null,
-          "venue": null,
-          "year": null
-        },
-        "dates": {
-          "firstPreview": null,
-          "openingDate": "2025-01-07",
-          "closingDate": "2025-01-26"
-        },
-        "tagLine": {
-          "tags": [
-            "Regional",
-            "Musical"
-          ],
-          "market": "Regional",
-          "showType": "musical",
-          "revivalStatus": "unknown"
-        }
-      },
+      "result": "no-playbill-url",
+      "urlSource": "none",
       "mismatches": [],
-      "explainedByPriorRun": [],
+      "playbillUrl": null,
+      "parsed": null,
       "fingerprint": "Paper Mill Playhouse, Millburn, NJ|2025-02-02|2025-02-23|false|Mystic Pizza||regional|musical",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
-      "lastDefinitiveResult": "match"
+      "checkedAt": "2026-09-26T10:24:46.646Z",
+      "lastDefinitiveResult": "no-playbill-url"
     },
     {
       "id": "everybodys-talking-about-jamie-west-end-2024",
@@ -1352,7 +1286,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Peacock Theatre|2024-02-08|2024-03-23|true|Everybody's Talking About Jamie||off-west-end|musical",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1386,21 +1320,52 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Gillian Lynne Theatre|2024-02-29|2024-08-03|false|Standing at the Sky's Edge||west-end|musical",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "match"
     },
     {
       "id": "the-good-thief-off-broadway-2026",
       "title": "The Good Thief",
       "venue": "Irish Repertory Theatre",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
+      "result": "mismatch",
+      "playbillUrl": "https://playbill.com/production/the-good-thief-off-broadway-irish-repertory-theatre-w-scott-mclucas-studio-theatre-2026",
+      "urlSource": "serp",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "The Good Thief",
+          "market": "Off-Broadway",
+          "venue": "Irish Repertory Theatre/W. Scott McLucas Studio Theatre",
+          "year": 2026
+        },
+        "dates": {
+          "firstPreview": "2026-11-07",
+          "openingDate": "2026-11-17",
+          "closingDate": "2026-12-13"
+        },
+        "tagLine": {
+          "tags": [
+            "Off-Broadway",
+            "Solo",
+            "Play",
+            "One Act",
+            "Revival"
+          ],
+          "market": "Off-Broadway",
+          "showType": "play",
+          "revivalStatus": "revival"
+        }
+      },
+      "mismatches": [
+        {
+          "field": "isRevival",
+          "shows": false,
+          "playbill": true
+        }
+      ],
+      "explainedByPriorRun": [],
       "fingerprint": "Irish Repertory Theatre|2026-11-12|2026-12-13|false|The Good Thief||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
-      "lastDefinitiveResult": "no-playbill-url"
+      "checkedAt": "2026-09-26T10:24:46.646Z",
+      "lastDefinitiveResult": "mismatch"
     },
     {
       "id": "petra-off-broadway-2026",
@@ -1412,7 +1377,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "Vineyard Theatre|||false|Petra||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1425,7 +1390,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "Pershing Square Signature Center|2027-02-23|2027-03-21|false|Miles for Mary||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1438,7 +1403,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "Signature Theatre|2027-05-25|2027-06-20|false|Angela's Mixtape||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1451,7 +1416,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "Signature Theatre|2023-05-22|2023-07-09|false|The Comeuppance||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1464,7 +1429,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "MCC Theater|2026-04-11|2026-04-19|false|Uncensored: No Need to Overthink It||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1477,7 +1442,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "The West End Theatre|2026-05-10|2026-05-31|false|Bedlam's Othello||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1490,7 +1455,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "Perelman Performing Arts Center (PAC NYC)|2024-02-13|2024-02-24|false|Between Two Knees||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1503,7 +1468,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "The Space at Irondale|2026-04-15|2026-05-16|false|Hamlet/The Furies||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1516,7 +1481,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "Joan and Robert Rechnitz Theater, Two River Theater, Red Bank, NJ|2026-06-12|2026-06-28|false|Elephant Shoes||regional|musical",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1529,7 +1494,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "Housing Works Bookstore|2026-07-15|2026-08-09|true|The Gin Game||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1542,7 +1507,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "Radio City Music Hall|2026-07-28|2026-08-09|false|Les Misérables: The Arena Concert Spectacular||off-broadway|special",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1555,7 +1520,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "Sheila and Hughes Potiker Theatre, La Jolla Playhouse, San Diego, CA|2026-07-24|2026-08-23|false|The Family Album||regional|musical",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1568,7 +1533,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "The Other Palace - Studio|2026-07-31|2026-08-09|false|Space Dogs||off-west-end|musical",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1581,7 +1546,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "IATI Theater|2026-08-14|2026-09-05|false|Benevolent||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1594,7 +1559,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "Vineyard Theatre|2002-01-09|2002-02-03|false|Brutal Imagination||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1607,7 +1572,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "Royal Court Theatre|2024-01-17|2024-02-10|false|Cowbois||west-end|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1620,7 +1585,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "Menier Chocolate Factory|2014-12-01|2015-03-07|true|Assassins||off-west-end|musical",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1633,7 +1598,20 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "Actors Temple Theatre|2026-06-08||false|Marilyn Exposed||off-broadway|musical",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "elf-lyons-the-woman-on-the-edge-off-broadway-2026",
+      "title": "Elf Lyons: The Woman on the Edge",
+      "venue": "SoHo Playhouse",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "SoHo Playhouse|2026-09-27|2026-10-18|false|Elf Lyons: The Woman on the Edge||off-broadway|play",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1646,7 +1624,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "SoHo Playhouse|2026-09-17|2026-10-18|false|Conflicted||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1659,7 +1637,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "SoHo Playhouse|2026-10-01|2026-10-11|false|Jena Friedman: Motherfucker||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1672,7 +1650,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "SoHo Playhouse|2026-10-29|2026-11-13|false|Kelly McCaughan: Catholic Guilt||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1685,7 +1663,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "SoHo Playhouse|2026-12-05|2027-01-03|false|KEVIN!!!!!||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
@@ -1698,7 +1676,7 @@
       "playbillUrl": null,
       "parsed": null,
       "fingerprint": "SoHo Playhouse|2026-12-09|2026-12-20|false|Anthony DeVito: Jersey Boy||off-broadway|play",
-      "checkedAt": "2026-09-25T10:37:05.160Z",
+      "checkedAt": "2026-09-26T10:24:46.646Z",
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
