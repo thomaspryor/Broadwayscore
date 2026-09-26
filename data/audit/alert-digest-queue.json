@@ -104,18 +104,6 @@
     "queuedAt": "2026-09-25T18:41:47.263Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-last-ship-west-end-2026",
-    "title": "Review gap — \"The Last Ship\" missing 3 cited review(s)",
-    "description": "The Last Ship (the-last-ship-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-last-ship-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-25T19:11:43.110Z"
-  },
-  {
     "conditionKey": "opening-night-remediation-exhausted-t1-missing:delirium-off-broadway-2026",
     "title": "Auto-remediation gave up on delirium-off-broadway-2026",
     "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"delirium-off-broadway-2026\"}",
@@ -543,5 +531,53 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-26T17:14:55.613Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:cosi-fan-tutte-off-broadway-2026",
+    "title": "Review gap — \"Così fan tutte\" missing 2 cited review(s)",
+    "description": "Così fan tutte (cosi-fan-tutte-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cosi-fan-tutte-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-26T17:42:56.306Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
+    "title": "Review gap — \"Crazy Mama: A True Story of Love and Madness\" missing 4 cited review(s)",
+    "description": "Crazy Mama: A True Story of Love and Madness (crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-26T17:42:56.310Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:macbeth-off-broadway-2026",
+    "title": "Review gap — \"Macbeth\" missing 2 cited review(s)",
+    "description": "Macbeth (macbeth-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=macbeth-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-26T17:42:56.336Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-last-ship-west-end-2026",
+    "title": "Review gap — \"The Last Ship\" missing 2 cited review(s)",
+    "description": "The Last Ship (the-last-ship-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-last-ship-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-26T17:42:56.369Z"
   }
 ]
