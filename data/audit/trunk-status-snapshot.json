@@ -1,32 +1,32 @@
 {
-  "generatedAt": "2026-09-25T12:20:26.398Z",
+  "generatedAt": "2026-09-26T11:55:10.247Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "5a1b5e3eb003007eae3fdbb13b9c3618dd7bafe5",
+  "latestRunHeadSha": "80d39d08d3c4054410b157ebdb9c201ff01ae253",
   "state": "RED",
-  "consecutiveFailures": 3,
+  "consecutiveFailures": 4,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
   "redSince": "2026-09-25T05:44:16Z",
-  "redForHours": 6.6028883333333335,
+  "redForHours": 30.18173527777778,
   "redDurationIsFloor": false,
   "lastSuccessAt": "2026-09-25T05:12:16Z",
-  "latestFailedRunId": "36129090878",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36129090878",
+  "latestFailedRunId": "36237415281",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36237415281",
   "decidedRuns": 64,
   "failingJobs": [
-    {
-      "name": "Data Validation",
-      "steps": [
-        "Audit outlet-registry gaps"
-      ]
-    },
     {
       "name": "Unit Tests",
       "steps": [
         "Run scripts/lib tests (visual-qa transcript-scan etc.)"
+      ]
+    },
+    {
+      "name": "Data Validation",
+      "steps": [
+        "Audit outlet-registry gaps"
       ]
     },
     {
