@@ -1,135 +1,53 @@
 {
-  "updatedAt": "2026-09-25T23:44:22.522Z",
-  "processed": 87,
-  "failed": 309,
-  "successRate": "22.0%",
+  "updatedAt": "2026-09-26T00:30:08.840Z",
+  "processed": 8,
+  "failed": 46,
+  "successRate": "14.8%",
   "tierBreakdown": {
-    "playwright": 54,
-    "amp": 2,
-    "browserbase": 14,
+    "playwright": 3,
+    "amp": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 19,
+    "scrapingbee": 1,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-09-25T14:49:37.566Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
+      "t": "2026-09-26T00:25:43.615Z",
+      "event": "bb-session",
+      "session": "9a3d229e",
+      "url": "https://www.thestage.co.uk/reviews/the-last-ship-review-theatre-royal-drury-lane"
     },
     {
-      "t": "2026-09-25T14:52:32.818Z",
+      "t": "2026-09-26T00:25:44.367Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-26T00:25:44.961Z",
       "event": "bb-session",
-      "session": "9614f6cc",
+      "session": "3b57080f",
       "url": "https://www.wsj.com/arts-culture/theater/macbeth-review-a-ferocious-start-to-the"
     },
     {
-      "t": "2026-09-25T14:52:33.548Z",
+      "t": "2026-09-26T00:25:45.593Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-09-25T16:04:25.836Z",
+      "t": "2026-09-26T00:28:53.352Z",
       "event": "bb-session",
-      "session": "4b84d58d",
-      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+      "session": "bd5914fa",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
     },
     {
-      "t": "2026-09-25T16:04:38.697Z",
+      "t": "2026-09-26T00:29:25.245Z",
       "event": "bb-session",
-      "session": "6708cb1a",
-      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
-    },
-    {
-      "t": "2026-09-25T16:12:50.441Z",
-      "event": "bb-session",
-      "session": "04eb20f4",
-      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
-    },
-    {
-      "t": "2026-09-25T16:13:00.613Z",
-      "event": "bb-session",
-      "session": "ce8f7913",
-      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
-    },
-    {
-      "t": "2026-09-25T16:29:06.938Z",
-      "event": "bb-session",
-      "session": "5dfc2cc4",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
-    },
-    {
-      "t": "2026-09-25T16:29:07.691Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-25T17:19:13.573Z",
-      "event": "bb-session",
-      "session": "932dfd49",
-      "url": "https://seenandheard-international.com/2026/07/thoughtfully-beautiful-staging-of"
-    },
-    {
-      "t": "2026-09-25T17:19:30.304Z",
-      "event": "bb-session",
-      "session": "846129dd",
-      "url": "https://seenandheard-international.com/2026/05/intensely-moving-performance-of-p"
-    },
-    {
-      "t": "2026-09-25T17:36:49.170Z",
-      "event": "bb-session",
-      "session": "87ac9eb1",
-      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
-    },
-    {
-      "t": "2026-09-25T17:37:00.996Z",
-      "event": "bb-session",
-      "session": "774ae2aa",
-      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
-    },
-    {
-      "t": "2026-09-25T17:41:25.773Z",
-      "event": "bb-session",
-      "session": "cb45bf6f",
-      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
-    },
-    {
-      "t": "2026-09-25T17:41:36.561Z",
-      "event": "bb-session",
-      "session": "57e6dae3",
-      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
-    },
-    {
-      "t": "2026-09-25T17:46:05.126Z",
-      "event": "bb-session",
-      "session": "12a3ffdd",
-      "url": "https://www.londonatlarge.com/kimberly-akimbo-hampstead-theatre-review/"
-    },
-    {
-      "t": "2026-09-25T17:46:23.382Z",
-      "event": "bb-session",
-      "session": "7083f2ea",
-      "url": "https://www.londonatlarge.com/kimberly-akimbo-hampstead-theatre-review/"
-    },
-    {
-      "t": "2026-09-25T17:51:02.085Z",
-      "event": "bb-session",
-      "session": "9b79bbd6",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-story-review-hectorin"
-    },
-    {
-      "t": "2026-09-25T17:51:02.638Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-25T23:42:37.538Z",
-      "event": "bb-session",
-      "session": "37b08128",
-      "url": "https://www.voicemag.uk/review/16880/darkling-at-bush-theatre"
+      "session": "7b5da02d",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
     }
   ]
 }
