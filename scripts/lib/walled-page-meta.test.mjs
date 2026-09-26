@@ -102,6 +102,26 @@ test('does not name the critic when a sibling already owns that slot (rename wou
   assert.ok(set.includes('publishDate'));
 });
 
+test('salvageWalledPageMetaToFile writes gaps and respects an occupied critic slot', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const { salvageWalledPageMetaToFile } = require('./walled-page-meta.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'wpm-'));
+  const url = 'https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london';
+  const fp = path.join(dir, 'thestage--unknown.json');
+  fs.writeFileSync(fp, JSON.stringify({ showId: 'x', outletId: 'thestage', outlet: 'The Stage', criticName: 'Unknown', url }));
+  fs.writeFileSync(path.join(dir, 'thestage--holly-omahony.json'), '{}');
+  const set = salvageWalledPageMetaToFile(fp, WALLED, { showTitle: 'Darkling', expectedUrl: url });
+  const written = JSON.parse(fs.readFileSync(fp, 'utf8'));
+  assert.ok(set.includes('publishDate'));
+  assert.equal(written.publishDate, '2026-09-16');
+  assert.equal(written.criticName, 'Unknown'); // slot owned by a sibling
+  // url moved on since the fetch → no-op
+  assert.deepEqual(salvageWalledPageMetaToFile(fp, WALLED, { showTitle: 'Darkling', expectedUrl: 'https://www.thestage.co.uk/reviews/other-review' }), []);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
 test('only applies to The Stage URLs', () => {
   const other = { url: 'https://www.whatsonstage.com/news/darkling-review_1/', criticName: 'Unknown' };
   assert.deepEqual(applyWalledPageMeta(other, WALLED), []);

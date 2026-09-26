@@ -6611,25 +6611,13 @@ async function processReview(review) {
       // meta.js; reader report 2026-09-26). Gap-fill only, never overwrites.
       if (result.html && review.filePath) {
         try {
-          const { applyWalledPageMeta } = require('./lib/walled-page-meta');
-          const { normalizeUrl } = require('./lib/review-normalization');
-          const { safeWriteReview } = require('./lib/review-write-guard');
-          const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
-          if (!fileData.url || normalizeUrl(fileData.url) === normalizeUrl(review.url)) {
-            const { generateReviewFilename } = require('./lib/review-normalization');
-            const criticSlotTaken = (name) => {
-              const target = generateReviewFilename(fileData.outlet || fileData.outletId || 'thestage', name);
-              return target !== path.basename(review.filePath)
-                && fs.existsSync(path.join(path.dirname(review.filePath), target));
-            };
-            const salvaged = applyWalledPageMeta(fileData, result.html, { showTitle, criticSlotTaken });
-            const suspect = salvaged.find((s) => s.endsWith('Suspect'));
-            if (suspect) {
-              console.log(`    ⚠ Walled page ${suspect} for "${showTitle}" — metadata not applied`);
-            } else if (salvaged.length) {
-              safeWriteReview(review.filePath, fileData);
-              console.log(`    ↳ Salvaged walled-page metadata: ${salvaged.join(', ')}`);
-            }
+          const { salvageWalledPageMetaToFile } = require('./lib/walled-page-meta');
+          const salvaged = salvageWalledPageMetaToFile(review.filePath, result.html, { showTitle, expectedUrl: review.url });
+          const suspect = salvaged.find((s) => s.endsWith('Suspect'));
+          if (suspect) {
+            console.log(`    ⚠ Walled page ${suspect} for "${showTitle}" — metadata not applied`);
+          } else if (salvaged.length) {
+            console.log(`    ↳ Salvaged walled-page metadata: ${salvaged.join(', ')}`);
           }
         } catch (e) {
           console.log(`    ⚠ walled-page metadata salvage failed: ${e.message}`);

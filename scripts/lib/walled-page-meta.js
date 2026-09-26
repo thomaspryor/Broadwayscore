@@ -160,4 +160,31 @@ function applyWalledPageMeta(data, html, opts = {}) {
   return set;
 }
 
-module.exports = { extractTheStageArticleMeta, applyWalledPageMeta, headlineMatchesShow, classifyStageHeadline, isTheStageUrl, _isoFromStageDate };
+/**
+ * Read a review file, apply walled-page metadata, write it back through
+ * safeWriteReview. Returns applyWalledPageMeta's field list (a '*Suspect'
+ * entry means nothing was written). opts.expectedUrl: skip when the file's
+ * url has moved on since the fetch. opts.dryRun: compute, don't write.
+ * The critic-slot collision check lives here so every caller gets it.
+ */
+function salvageWalledPageMetaToFile(filePath, html, opts = {}) {
+  const fs = require('fs');
+  const path = require('path');
+  const { normalizeUrl, generateReviewFilename } = require('./review-normalization');
+  const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  if (opts.expectedUrl && data.url && normalizeUrl(data.url) !== normalizeUrl(opts.expectedUrl)) return [];
+  const criticSlotTaken = (name) => {
+    const target = generateReviewFilename(data.outlet || data.outletId || 'thestage', name);
+    return target !== path.basename(filePath) && fs.existsSync(path.join(path.dirname(filePath), target));
+  };
+  const set = applyWalledPageMeta(data, html, { showTitle: opts.showTitle, criticSlotTaken });
+  const applied = set.length && !set.some((s) => s.endsWith('Suspect'));
+  if (applied && !opts.dryRun) {
+    const { safeWriteReview } = require('./review-write-guard');
+    safeWriteReview(filePath, data);
+  }
+  if (opts.onApplied && applied) opts.onApplied(data);
+  return set;
+}
+
+module.exports = { salvageWalledPageMetaToFile, extractTheStageArticleMeta, applyWalledPageMeta, headlineMatchesShow, classifyStageHeadline, isTheStageUrl, _isoFromStageDate };

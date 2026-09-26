@@ -47,7 +47,7 @@ const htmlCacheDir = getArg('html-cache');
 const listUrls = args.includes('--list-urls');
 const cacheKey = (u) => require('crypto').createHash('sha1').update(String(u)).digest('hex');
 
-const { isTheStageUrl, applyWalledPageMeta } = require('./lib/walled-page-meta');
+const { isTheStageUrl, salvageWalledPageMetaToFile } = require('./lib/walled-page-meta');
 
 function isCandidate(d) {
   if (!d || !isTheStageUrl(d.url)) return false;
@@ -86,8 +86,6 @@ async function main() {
   console.log(`${candidates.length} candidate The Stage stub(s)${dryRun ? ' (dry run)' : ''}`);
   if (!candidates.length) return;
   const { fetchPage } = require('./lib/scraper');
-  const { safeWriteReview } = require('./lib/review-write-guard');
-  const { generateReviewFilename } = require('./lib/review-normalization');
   const showsJson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
   const showsById = Object.fromEntries((showsJson.shows || showsJson).map((s) => [s.id, s]));
   const suspects = [];
@@ -107,21 +105,16 @@ async function main() {
       }
     }
     if (html) {
-      const fresh = JSON.parse(fs.readFileSync(fp, 'utf8'));
-      const showTitle = (showsById[fresh.showId || path.basename(path.dirname(fp))] || {}).title;
-      const criticSlotTaken = (name) => {
-        const target = generateReviewFilename(fresh.outlet || fresh.outletId || 'thestage', name);
-        return target !== path.basename(fp) && fs.existsSync(path.join(path.dirname(fp), target));
-      };
-      const set = applyWalledPageMeta(fresh, html, { showTitle, criticSlotTaken });
+      const showTitle = (showsById[d.showId || path.basename(path.dirname(fp))] || {}).title;
+      let fresh = null;
+      const set = salvageWalledPageMetaToFile(fp, html, { showTitle, dryRun, onApplied: (x) => { fresh = x; } });
       const suspect = set.find((s) => s.endsWith('Suspect'));
       if (suspect) {
         console.log(`  ⚠ ${label}: ${suspect} ("${showTitle}") — not applied`);
         suspects.push(`${suspect} ${label} ${d.url}`);
         failed++;
       } else if (set.length) {
-        console.log(`  ✓ ${label}: ${set.map((k) => `${k}=${JSON.stringify(fresh[k])}`).join(', ')}`);
-        if (!dryRun) safeWriteReview(fp, fresh);
+        console.log(`  ✓ ${label}: ${set.map((k) => `${k}=${JSON.stringify(fresh && fresh[k])}`).join(', ')}`);
         updated++;
       } else {
         console.log(`  · ${label}: no metadata found on page`);
