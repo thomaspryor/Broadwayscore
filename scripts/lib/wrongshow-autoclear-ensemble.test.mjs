@@ -67,6 +67,17 @@ test('unanimous 3/3 wrong_show ensemble verdict + UK-outlet URL on a London show
   assert.equal(wouldClear, false, 'a 3/3-model ensemble wrong_show verdict must outrank the UK-outlet-URL heuristic');
 });
 
+test('a UK-outlet URL whose slug names ANOTHER show is not auto-cleared (Oliver! / The Other Place)', () => {
+  const data = {
+    wrongShow: true,
+    url: 'https://www.thestage.co.uk/reviews/the-other-place-review-lyttelton-theatre-national-theatre-london-alexander-zeldin',
+  };
+  const ctx = { isLondonMarketShow: true, isUkOutletUrl: true, dateMismatchOver90d: false };
+  assert.equal(shouldAutoClearWrongShowUkUrl(data, { ...ctx, urlSlugNamesOtherShow: true }), false);
+  // unchanged behavior when the slug gives no such signal
+  assert.equal(shouldAutoClearWrongShowUkUrl(data, { ...ctx, urlSlugNamesOtherShow: false }), true);
+});
+
 test('a single model reasoning that happens to contain a time-like "N:NN" after a semicolon is not miscounted as a 2nd model (ship-check regression)', () => {
   // Only "claude:" ever labels a segment here — the "8:00pm" inside claude's
   // own free-text reasoning must not be mistaken for a second model's tag.

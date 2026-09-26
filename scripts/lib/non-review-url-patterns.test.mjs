@@ -340,3 +340,36 @@ test('parity: every write-path blocked domain is also blocked on the discovery p
       + 'NAMED_NON_REVIEW_URL_PATTERNS',
   );
 });
+
+test('The Stage non-review sections are blocked for every source; /reviews/ and /long-reviews/ are not', () => {
+  // 2026-09-26: /news/ and /opinion/ pages scored live from sidebar star ratings
+  // (kiss-of-the-spider-woman-1993 80, mamma-mia-2001 60, proof-2026 60).
+  const blocked = [
+    'https://www.thestage.co.uk/news/production-news/kiss-of-the-spider-woman-to-be-revived-at-curve-in-leicester',
+    'https://www.thestage.co.uk/opinion/people-powered-creativity-will-outlive-ai-and-this-theatre-design-is-proof-jane-wheeler',
+    'https://www.thestage.co.uk/opinion/hamilton-at-victoria-palace-theatre-london--review-round-up',
+    'https://www.thestage.co.uk/promoted-content/the-last-self-tape-explores-how-art-performance-and-loneliness-collide',
+    'https://thestage.co.uk/review-round-ups/cats-at-regents-park-open-air-theatre-review-round-up',
+  ];
+  for (const u of blocked) assert.equal(domainFilters.isBlockedReviewUrl(u), true, u);
+  assert.equal(domainFilters.isBlockedReviewUrl('https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london'), false);
+  assert.equal(domainFilters.isBlockedReviewUrl('https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london'), false);
+});
+
+test("Hampstead Theatre's own box-office pages are venue pages, not reviews", () => {
+  assert.equal(domainFilters.isBlockedReviewUrl('https://www.hampsteadtheatre.com/whats-on/2026/the-urmetazoan/'), true);
+});
+
+test('any /whats-on/ listing without "review" in the path is blocked; outlet reviews filed there are not', () => {
+  for (const u of [
+    'https://kilntheatre.com/whats-on/table-17/',
+    'https://www.stratfordeast.com/whats-on/all-shows/here-there-are-blueberries',
+    'https://www.skiddle.com/whats-on/London/Gillian-Lynne-Theatre/My-Neighbour-Totoro/42468204/',
+    'https://www.afridiziak.com/whatson/anansi-the-spider-regents-park-open-air-theatre/',
+  ]) assert.equal(domainFilters.isBlockedReviewUrl(u), true, u);
+  for (const u of [
+    'https://www.manchestereveningnews.co.uk/whats-on/theatre-news/review-mousetrap-opera-house-manchester-11534540',
+    'https://www.londonmumsmagazine.com/whats-on/review-holy-fool-at-park-theatre-a-powerful-story-of-art-fear-and-resistance/',
+    'https://www.afridiziak.com/reviews/darkling/',
+  ]) assert.equal(domainFilters.isBlockedReviewUrl(u), false, u);
+});

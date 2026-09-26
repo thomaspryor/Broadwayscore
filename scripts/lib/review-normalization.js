@@ -715,6 +715,31 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
     }
   }
 
+  // Cross-show guard, maybeUpgradeUrl's twin (mergeReviews had none). A
+  // urlChanged swap whose candidate slug names a DIFFERENT show is another
+  // show's review: on 2026-09-17 a WET roundup mis-matched to "Man to Man"
+  // swapped The Stage's man-to-man URL for fences-review-leeds-playhouse here,
+  // and the Fences 4-star score, date and critic all went live on the Man to
+  // Man page. Like the cross-outlet guard below, nothing from such a record
+  // (url, text, score, critic, date) belongs here, so the whole merge no-ops.
+  // Fails open without a show title (slugLooksLikeDifferentShow's contract).
+  const _mergeShowTitle = (context.show && context.show.title) || context.showTitle || null;
+  if (urlChanged && !urlSwapRegressed && _mergeShowTitle
+      && reviewSlugNamesDifferentShow(incoming.url, _mergeShowTitle)) {
+    console.warn(`[mergeReviews] refused cross-show swap for ${existing.outletId || context.file || '?'}: ${incoming.url} does not match "${_mergeShowTitle || existing.url}"`);
+    logExclusion({
+      script: context.script || 'unknown-caller',
+      showId: context.showId || 'unknown',
+      file: context.file || '-',
+      reason: 'skippedCrossShowUrlSwap',
+      details: {
+        existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId,
+        criticName: existing.criticName, showTitle: _mergeShowTitle,
+      },
+    });
+    return { ...existing };
+  }
+
   // Sibling URL-collision guard (BRO-3092). A urlChanged swap onto a URL that
   // a DIFFERENT file in this show already owns manufactures exactly the state
   // validate-data.js errors on ("One URL per outlet per show = one review"),
@@ -2141,6 +2166,43 @@ function slugLooksLikeDifferentShow(newUrl, { showTitle, refUrl } = {}) {
 }
 
 /**
+ * Narrow, high-precision variant of slugLooksLikeDifferentShow for write
+ * paths that must not false-positive on headline-style slugs
+ * ("theater-review-a-cozy-little-mcshtetl" reviews Fiddler; ~12% of live URLs
+ * trip the broad check). Only fires on the structured "<show>-review-..."
+ * slug shape most UK/US outlets use (thestage.co.uk/reviews/fences-review-
+ * leeds-playhouse, standard.co.uk/.../burlesque-savoy-theatre-review-b123):
+ * the tokens BEFORE "review" in the last path segment are the show being
+ * reviewed. True only when that segment has distinctive tokens and none of
+ * them (nor a squashed-title match, e.g. "electrapersona") names this show.
+ */
+function reviewSlugNamesDifferentShow(url, showTitle) {
+  if (!url || !showTitle) return false;
+  let seg = '';
+  try {
+    seg = new URL(url).pathname.toLowerCase().split('/').filter(Boolean).pop() || '';
+  } catch { return false; }
+  seg = seg.replace(/\.[a-z]+$/, '');
+  const m = seg.match(/^([a-z0-9-]+?)-review(?:-|$)/);
+  if (!m) return false;
+  const pre = m[1].split('-').filter(
+    (t) => t.length >= 3 && !URL_GENERIC_SLUG_TOKENS.has(t) && !/^\d+$/.test(t)
+  );
+  if (!pre.length) return false;
+  const { titleTokens } = require('./show-match-verifier');
+  const tTokens = titleTokens(showTitle);
+  if (!tTokens.length) return false;
+  // The title may sit AFTER "review" too ("bww-review-...-a-dolls-house",
+  // "ny1-theater-review---a-raisin-in-the-sun"): any title token anywhere in
+  // the segment, or inside a squashed compound ("electrapersona"), clears it.
+  const segTokens = seg.split('-');
+  if (tTokens.some((t) => segTokens.includes(t))) return false;
+  const squashedSeg = seg.replace(/-/g, '');
+  if (tTokens.some((t) => squashedSeg.includes(t))) return false;
+  return true;
+}
+
+/**
  * Upgrade a review file's primary URL when an aggregator provides a better one.
  * Only replaces when existing content is bad (truncated/stub/excerpt/missing).
  * Returns true if the URL was upgraded (caller should mark file as changed).
@@ -2379,6 +2441,7 @@ module.exports = {
   isExemptFlaggedMergeTarget,
   maybeUpgradeUrl,
   slugLooksLikeDifferentShow,
+  reviewSlugNamesDifferentShow,
   validateCriticOutlet,
   loadCriticRegistry,
   resolveOutletFromCritic,
