@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25T10:28:50.361Z",
+  "generatedAt": "2026-09-26T10:08:28.288Z",
   "total": 300,
   "armedCount": 300,
   "refusedCount": 0,
@@ -682,6 +682,33 @@
       ]
     },
     {
+      "id": "3e6637c5-416f-81c8-8ae3-ffd6b49eb0f9",
+      "name": "[Review Submission] Mr Carl Woodward review of Thelma & Louise: A New Musical",
+      "url": "https://app.notion.com/p/Review-Submission-Mr-Carl-Woodward-review-of-Thelma-Louise-A-New-Musical-3e6637c5416f81c88ae3ffd6b49eb0f9",
+      "cmd": "node --test tests/unit/review-submission-woodward.test.mjs",
+      "missingPaths": [
+        "tests/unit/review-submission-woodward.test.mjs"
+      ]
+    },
+    {
+      "id": "3e6637c5-416f-810d-b328-d3e8aae9a194",
+      "name": "[Review Submission] Adventuresintheatreland review of Deep Heat Rivalry",
+      "url": "https://app.notion.com/p/Review-Submission-Adventuresintheatreland-review-of-Deep-Heat-Rivalry-3e6637c5416f810db328d3e8aae9a194",
+      "cmd": "node --test tests/unit/review-submission-adventuresintheatreland.test.mjs",
+      "missingPaths": [
+        "tests/unit/review-submission-adventuresintheatreland.test.mjs"
+      ]
+    },
+    {
+      "id": "3e6637c5-416f-81d2-ad30-e63ad47cac4e",
+      "name": "[Review Submission] 1883magazine review of Kimberly Akimbo",
+      "url": "https://app.notion.com/p/Review-Submission-1883magazine-review-of-Kimberly-Akimbo-3e6637c5416f81d2ad30e63ad47cac4e",
+      "cmd": "node --test tests/unit/review-submission-1883magazine.test.mjs",
+      "missingPaths": [
+        "tests/unit/review-submission-1883magazine.test.mjs"
+      ]
+    },
+    {
       "id": "3e5637c5-416f-81c2-85fb-c44a82d0b80b",
       "name": "[Review Submission] The Morning Star review of The Story",
       "url": "https://app.notion.com/p/Review-Submission-The-Morning-Star-review-of-The-Story-3e5637c5416f81c285fbc44a82d0b80b",
@@ -742,33 +769,6 @@
       "cmd": "node --test tests/unit/review-submission-all-that-dazzles.test.mjs",
       "missingPaths": [
         "tests/unit/review-submission-all-that-dazzles.test.mjs"
-      ]
-    },
-    {
-      "id": "3e4637c5-416f-8172-8ecb-feb908d8170a",
-      "name": "[Review Submission] London Theatre review of Deep Heat Rivalry",
-      "url": "https://app.notion.com/p/Review-Submission-London-Theatre-review-of-Deep-Heat-Rivalry-3e4637c5416f81728ecbfeb908d8170a",
-      "cmd": "node --test tests/unit/review-submission-london-theatre.test.mjs",
-      "missingPaths": [
-        "tests/unit/review-submission-london-theatre.test.mjs"
-      ]
-    },
-    {
-      "id": "3e4637c5-416f-8166-8b3d-eb5ec69a453c",
-      "name": "[Review Submission] The Stage review of Deep Heat Rivalry",
-      "url": "https://app.notion.com/p/Review-Submission-The-Stage-review-of-Deep-Heat-Rivalry-3e4637c5416f81668b3deb5ec69a453c",
-      "cmd": "node --test tests/unit/deep-heat-rivalry-review.test.mjs",
-      "missingPaths": [
-        "tests/unit/deep-heat-rivalry-review.test.mjs"
-      ]
-    },
-    {
-      "id": "3e4637c5-416f-817b-8905-e200b48515b5",
-      "name": "[Content Error] — Deep Heat Rivalry Deep Heat Rivalry at The Other Palace is listed as closed but it is running unt…",
-      "url": "https://app.notion.com/p/Content-Error-Deep-Heat-Rivalry-Deep-Heat-Rivalry-at-The-Other-Palace-is-listed-as-closed-but-it--3e4637c5416f817b8905e200b48515b5",
-      "cmd": "node --test tests/unit/deep-heat-rivalry-closure.test.mjs",
-      "missingPaths": [
-        "tests/unit/deep-heat-rivalry-closure.test.mjs"
       ]
     }
   ],
