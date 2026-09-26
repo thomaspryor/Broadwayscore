@@ -1,18 +1,31 @@
 {
   "stale": [
+    "Check Opening Night Drift",
     "Commercial Friday Refresh",
-    "Commercial Weekly Orchestrator"
+    "Commercial Weekly Orchestrator",
+    "Enrich Off-Broadway Dates"
   ],
-  "redispatched": [],
+  "redispatched": [
+    "Check Opening Night Drift",
+    "Enrich Off-Broadway Dates"
+  ],
   "staleStreak": {
+    "Check Opening Night Drift": {
+      "days": 1,
+      "lastCounted": "2026-09-26"
+    },
     "Commercial Friday Refresh": {
-      "days": 33,
-      "lastCounted": "2026-09-25"
+      "days": 34,
+      "lastCounted": "2026-09-26"
     },
     "Commercial Weekly Orchestrator": {
-      "days": 37,
-      "lastCounted": "2026-09-25"
+      "days": 38,
+      "lastCounted": "2026-09-26"
+    },
+    "Enrich Off-Broadway Dates": {
+      "days": 1,
+      "lastCounted": "2026-09-26"
     }
   },
-  "updatedAt": "2026-09-25T16:17:21.405Z"
+  "updatedAt": "2026-09-26T15:30:44.803Z"
 }
