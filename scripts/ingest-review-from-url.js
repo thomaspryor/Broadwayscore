@@ -270,14 +270,20 @@ if (!show) {
 
   // For LSA, prefer the in-body "--Name" sign-off over the publisher meta tag.
   const lsaCritic = hasBody && /lightingandsoundamerica\.com/i.test(url) ? extractLsaByline(text) : null;
-  const critic = criticArg || lsaCritic || extractByline(html) || 'Unknown';
+  // The Stage's walled page has no generic byline/date metadata, but its own
+  // markup carries byline, date and standfirst above the registration wall
+  // (walled-page-meta.js). Without this, Stage submissions landed as
+  // 'Unknown' with no date or quote (Deep Heat Rivalry, 2026-09-23).
+  const { extractTheStageArticleMeta, isTheStageUrl } = require('./lib/walled-page-meta');
+  const stageMeta = isTheStageUrl(url) ? extractTheStageArticleMeta(html) : null;
+  const critic = criticArg || lsaCritic || extractByline(html) || (stageMeta && stageMeta.criticName) || 'Unknown';
 
   // Page-date extraction: when --publish-date wasn't supplied, pull it from
   // standard CMS metadata (article:published_time / JSON-LD / <time>). Without
   // this the review lands with publishDate:undefined, which fails-open through
   // the anticipatory-pre-opening gate and weakens temporal wrong-production
   // detection. (1minutecritic HR + Maids incident, 2026-05-28.)
-  const publishDate = publishDateArg || extractPublishDate(html, url) || null;
+  const publishDate = publishDateArg || extractPublishDate(html, url) || (stageMeta && stageMeta.publishDate) || null;
   if (!publishDateArg && publishDate) {
     console.log(`  → Extracted publishDate from page metadata: ${publishDate}`);
   }
@@ -380,6 +386,9 @@ if (!show) {
     publishDate: publishDate,
     operatorTrust: false,
   });
+  if (stageMeta && stageMeta.standfirst && stageMeta.standfirst.length >= 25) {
+    fields.outletStandfirst = stageMeta.standfirst;
+  }
   if (recoveredScore) {
     // Route through setExtractedScore, never hand-set originalScore: an
     // extractor whose source is an aggregator tag (e.g. lbo-css-stars) must

@@ -255,6 +255,9 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // census could still report either host as a "missing review" gap for the
   // shows they were mistakenly ingested for.
   { host: /(^|\.)southbank\.london$/, reason: 'venue-production-page' },
+  // Hampstead Theatre's own /whats-on/ box-office pages (domain-filters.js
+  // VENUE_DOMAINS, 2026-09-26).
+  { host: /(^|\.)hampsteadtheatre\.com$/, reason: 'venue-production-page' },
   { host: /(^|\.)spincyclenyc\.com$/, reason: 'pr-firm-press-release' },
   // Mirrors PR_FIRM_DOMAINS' nyu.edu. Required by the write-path/discovery-path
   // parity test in non-review-url-patterns.test.mjs: without it a SERP census
