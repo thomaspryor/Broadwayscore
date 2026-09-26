@@ -1,17 +1,17 @@
 {
-  "updatedAt": "2026-09-26T15:22:47.985Z",
-  "processed": 32,
-  "failed": 118,
-  "successRate": "21.3%",
+  "updatedAt": "2026-09-26T16:13:55.803Z",
+  "processed": 61,
+  "failed": 314,
+  "successRate": "16.3%",
   "tierBreakdown": {
-    "playwright": 21,
+    "playwright": 31,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 9,
+    "scrapingbee": 16,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 14
   },
   "browserbaseSessions": 2,
   "recentActivity": [
@@ -26,6 +26,39 @@
       "event": "bb-session",
       "session": "6148c4d9",
       "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-09-26T13:35:26.252Z",
+      "event": "bb-session",
+      "session": "1ea7c7fa",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-26T13:35:31.656Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-26T16:02:04.550Z",
+      "event": "bb-session",
+      "session": "0656bbdb",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-26T16:02:05.073Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-26T16:02:22.444Z",
+      "event": "bb-session",
+      "session": "b257fa36",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-26T16:02:22.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
