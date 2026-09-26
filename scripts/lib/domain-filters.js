@@ -319,6 +319,16 @@ function isBlockedReviewUrl(url) {
     // Does NOT match /featured-review/ or /review-features-xyz/ (substring matches)
     const pathParts = lowerPath.split('/').filter(Boolean);
     if (pathParts.some(p => p === 'features' || p === 'feature' || p === 'interviews' || p === 'interview')) return true;
+    // The Stage publishes reviews only under /reviews/ and /long-reviews/.
+    // Its /news/, /opinion/ (incl. its "--review-round-up" compilations),
+    // /promoted-content/ and /review-round-ups/ pages carry sidebar star
+    // ratings from OTHER reviews, which is how a news item on a Curve revival
+    // scored 80 on kiss-of-the-spider-woman-1993 and an opinion column on AI
+    // scored 60 on proof-2026 (2026-09-26). non-review-url-patterns.js has the
+    // /news/ rule but it only applies to unvetted-SERP sources; these paths
+    // are never a review, whatever the source.
+    if (matchesDomainSet(hostname, new Set(['thestage.co.uk']))
+      && ['news', 'opinion', 'promoted-content', 'review-round-ups'].includes(pathParts[0])) return true;
     // Malformed URLs (e.g., "http://Here We Are review — ...")
     if (parsed.hostname.includes(' ') || !parsed.hostname.includes('.')) return true;
     return false;

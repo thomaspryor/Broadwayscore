@@ -6616,9 +6616,16 @@ async function processReview(review) {
           const { safeWriteReview } = require('./lib/review-write-guard');
           const fileData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
           if (!fileData.url || normalizeUrl(fileData.url) === normalizeUrl(review.url)) {
-            const salvaged = applyWalledPageMeta(fileData, result.html, { showTitle });
-            if (salvaged.includes('wrongShowSuspect')) {
-              console.log(`    ⚠ Walled page headline does not name "${showTitle}" — metadata not applied`);
+            const { generateReviewFilename } = require('./lib/review-normalization');
+            const criticSlotTaken = (name) => {
+              const target = generateReviewFilename(fileData.outlet || fileData.outletId || 'thestage', name);
+              return target !== path.basename(review.filePath)
+                && fs.existsSync(path.join(path.dirname(review.filePath), target));
+            };
+            const salvaged = applyWalledPageMeta(fileData, result.html, { showTitle, criticSlotTaken });
+            const suspect = salvaged.find((s) => s.endsWith('Suspect'));
+            if (suspect) {
+              console.log(`    ⚠ Walled page ${suspect} for "${showTitle}" — metadata not applied`);
             } else if (salvaged.length) {
               safeWriteReview(review.filePath, fileData);
               console.log(`    ↳ Salvaged walled-page metadata: ${salvaged.join(', ')}`);

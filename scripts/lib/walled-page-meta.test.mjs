@@ -81,6 +81,27 @@ test('refuses to dress up another show\'s review (headline mismatch)', () => {
   assert.ok(applyWalledPageMeta({ ...stub }, WALLED, { showTitle: 'Darkling' }).includes('publishDate'));
 });
 
+test('round-ups and non-review articles are refused', () => {
+  const { classifyStageHeadline } = require('./walled-page-meta.js');
+  assert.equal(classifyStageHeadline('Trainspotting the Musical at the Theatre Royal Haymarket – review round-up', 'Trainspotting the Musical'), 'roundup');
+  assert.equal(classifyStageHeadline('People-powered creativity will outlive AI, and this theatre design is proof', 'Proof'), 'not-review');
+  assert.equal(classifyStageHeadline("Sharon D Clarke to appear in UK premiere of Cy Coleman's musical The Life", 'The Life'), 'not-review');
+  assert.equal(classifyStageHeadline('Darkling review', 'Darkling'), 'review');
+  assert.equal(classifyStageHeadline('The Scottsboro Boys', 'The Scottsboro Boys'), 'review'); // pre-2015 template
+  const roundup = WALLED.replace('Darkling review', 'Darkling at the Bush Theatre – review round-up');
+  const stub = { url: 'https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london', criticName: 'Unknown' };
+  assert.deepEqual(applyWalledPageMeta(stub, roundup, { showTitle: 'Darkling' }), ['roundupSuspect']);
+  assert.equal(stub.criticName, 'Unknown');
+});
+
+test('does not name the critic when a sibling already owns that slot (rename would merge)', () => {
+  const stub = { url: 'https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london', criticName: 'Unknown' };
+  const set = applyWalledPageMeta(stub, WALLED, { showTitle: 'Darkling', criticSlotTaken: () => true });
+  assert.equal(stub.criticName, 'Unknown');
+  assert.ok(!set.includes('criticName'));
+  assert.ok(set.includes('publishDate'));
+});
+
 test('only applies to The Stage URLs', () => {
   const other = { url: 'https://www.whatsonstage.com/news/darkling-review_1/', criticName: 'Unknown' };
   assert.deepEqual(applyWalledPageMeta(other, WALLED), []);

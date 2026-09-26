@@ -87,6 +87,7 @@ async function main() {
   if (!candidates.length) return;
   const { fetchPage } = require('./lib/scraper');
   const { safeWriteReview } = require('./lib/review-write-guard');
+  const { generateReviewFilename } = require('./lib/review-normalization');
   const showsJson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
   const showsById = Object.fromEntries((showsJson.shows || showsJson).map((s) => [s.id, s]));
   const suspects = [];
@@ -108,10 +109,15 @@ async function main() {
     if (html) {
       const fresh = JSON.parse(fs.readFileSync(fp, 'utf8'));
       const showTitle = (showsById[fresh.showId || path.basename(path.dirname(fp))] || {}).title;
-      const set = applyWalledPageMeta(fresh, html, { showTitle });
-      if (set.includes('wrongShowSuspect')) {
-        console.log(`  ⚠ ${label}: page headline does not name "${showTitle}" — suspected wrong show, not applied`);
-        suspects.push(`${label} ${d.url}`);
+      const criticSlotTaken = (name) => {
+        const target = generateReviewFilename(fresh.outlet || fresh.outletId || 'thestage', name);
+        return target !== path.basename(fp) && fs.existsSync(path.join(path.dirname(fp), target));
+      };
+      const set = applyWalledPageMeta(fresh, html, { showTitle, criticSlotTaken });
+      const suspect = set.find((s) => s.endsWith('Suspect'));
+      if (suspect) {
+        console.log(`  ⚠ ${label}: ${suspect} ("${showTitle}") — not applied`);
+        suspects.push(`${suspect} ${label} ${d.url}`);
         failed++;
       } else if (set.length) {
         console.log(`  ✓ ${label}: ${set.map((k) => `${k}=${JSON.stringify(fresh[k])}`).join(', ')}`);
@@ -128,7 +134,7 @@ async function main() {
   }
   console.log(`\nDone: ${updated} updated, ${failed} without metadata${dryRun ? ' (dry run, nothing written)' : ''}`);
   if (suspects.length) {
-    console.log(`\n${suspects.length} suspected wrong-show file(s) (headline names another show):`);
+    console.log(`\n${suspects.length} suspect file(s) (another show, a round-up, or not a review):`);
     for (const s of suspects) console.log(`  ${s}`);
   }
   try { require('./lib/scraper').closeBrowser && await require('./lib/scraper').closeBrowser(); } catch { /* ignore */ }

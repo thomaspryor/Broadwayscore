@@ -97,6 +97,22 @@ function headlineMatchesShow(headline, showTitle) {
 }
 
 /**
+ * 'roundup' for The Stage's "... – review round-up" compilations (their
+ * byline is the compiler, not a critic), 'not-review' for a long headline
+ * with no "review" in it (news/opinion, e.g. "People-powered creativity will
+ * outlive AI, and this theatre design is proof"), else 'review'. Old pages
+ * (pre-2015) headline with the bare show title, which stays 'review'.
+ */
+function classifyStageHeadline(headline, showTitle) {
+  if (!headline) return 'review';
+  if (/\breview[s]?\s+round-?\s?up\b|\bround-?\s?up\b/i.test(headline)) return 'roundup';
+  if (/\breview\b/i.test(headline)) return 'review';
+  const words = headline.trim().split(/\s+/).length;
+  const titleWords = String(showTitle || '').trim().split(/\s+/).filter(Boolean).length;
+  return words > titleWords + 4 ? 'not-review' : 'review';
+}
+
+/**
  * Fill gaps on a review record from walled-page metadata. Mutates `data`;
  * returns the list of fields it set (empty when nothing changed).
  * With opts.showTitle, refuses (returns ['wrongShowSuspect']) when the page
@@ -110,6 +126,9 @@ function applyWalledPageMeta(data, html, opts = {}) {
   if (opts.showTitle && !headlineMatchesShow(meta.headline, opts.showTitle)) {
     return ['wrongShowSuspect'];
   }
+  const kind = classifyStageHeadline(meta.headline, opts.showTitle);
+  if (kind === 'roundup') return ['roundupSuspect'];
+  if (kind === 'not-review') return ['notReviewSuspect'];
   const set = [];
   if (meta.publishDate && !data.publishDate) {
     data.publishDate = meta.publishDate;
@@ -118,7 +137,13 @@ function applyWalledPageMeta(data, html, opts = {}) {
   }
   const critic = String(data.criticName || '').trim();
   const criticIsPlaceholder = !critic || /^(unknown|the stage)$/i.test(critic);
-  if (meta.criticName && criticIsPlaceholder && !data.criticNameManual) {
+  // opts.criticSlotTaken(name): true when a sibling file already owns this
+  // outlet+critic slot. Naming the critic renames the file on write
+  // (safeWriteReview), which MERGES into that sibling; on 2026-09-26 that
+  // folded two real Stage reviews into round-up files and lost their URLs.
+  const slotTaken = meta.criticName && typeof opts.criticSlotTaken === 'function'
+    && opts.criticSlotTaken(meta.criticName);
+  if (meta.criticName && criticIsPlaceholder && !data.criticNameManual && !slotTaken) {
     data.criticName = meta.criticName;
     data.criticNameSource = 'thestage-walled-page';
     set.push('criticName');
@@ -135,4 +160,4 @@ function applyWalledPageMeta(data, html, opts = {}) {
   return set;
 }
 
-module.exports = { extractTheStageArticleMeta, applyWalledPageMeta, headlineMatchesShow, isTheStageUrl, _isoFromStageDate };
+module.exports = { extractTheStageArticleMeta, applyWalledPageMeta, headlineMatchesShow, classifyStageHeadline, isTheStageUrl, _isoFromStageDate };

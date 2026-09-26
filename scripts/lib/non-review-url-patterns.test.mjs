@@ -340,3 +340,18 @@ test('parity: every write-path blocked domain is also blocked on the discovery p
       + 'NAMED_NON_REVIEW_URL_PATTERNS',
   );
 });
+
+test('The Stage non-review sections are blocked for every source; /reviews/ and /long-reviews/ are not', () => {
+  // 2026-09-26: /news/ and /opinion/ pages scored live from sidebar star ratings
+  // (kiss-of-the-spider-woman-1993 80, mamma-mia-2001 60, proof-2026 60).
+  const blocked = [
+    'https://www.thestage.co.uk/news/production-news/kiss-of-the-spider-woman-to-be-revived-at-curve-in-leicester',
+    'https://www.thestage.co.uk/opinion/people-powered-creativity-will-outlive-ai-and-this-theatre-design-is-proof-jane-wheeler',
+    'https://www.thestage.co.uk/opinion/hamilton-at-victoria-palace-theatre-london--review-round-up',
+    'https://www.thestage.co.uk/promoted-content/the-last-self-tape-explores-how-art-performance-and-loneliness-collide',
+    'https://thestage.co.uk/review-round-ups/cats-at-regents-park-open-air-theatre-review-round-up',
+  ];
+  for (const u of blocked) assert.equal(domainFilters.isBlockedReviewUrl(u), true, u);
+  assert.equal(domainFilters.isBlockedReviewUrl('https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london'), false);
+  assert.equal(domainFilters.isBlockedReviewUrl('https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london'), false);
+});
