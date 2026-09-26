@@ -1,89 +1,29 @@
 {
-  "generatedAt": "2026-09-25T23:07:41.698Z",
+  "generatedAt": "2026-09-26T02:16:26.356Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 145,
-  "clean": 140,
-  "defective": 5,
+  "clean": 144,
+  "defective": 1,
   "byType": {
-    "score-drift": 5
+    "unreachable": 1
   },
   "shows": [
     {
-      "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
-      "title": "BLOODSPORT: After Helen of Troy",
-      "openingDate": "2026-09-13",
+      "showId": "gimme-a-sign-off-broadway-2026",
+      "title": "Gimme a Sign!",
+      "openingDate": "2026-09-17",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 73.63 vs local 73.68 (Δ0.05)"
+          "type": "unreachable",
+          "detail": "HTTP 404"
         }
       ],
       "missingFromProd": [],
-      "localCount": 28,
-      "deployedCount": 28
-    },
-    {
-      "showId": "kimberly-akimbo-off-west-end-2026",
-      "title": "Kimberly Akimbo",
-      "openingDate": "2026-09-09",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 80.9 vs local 81.17 (Δ0.27)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 30,
-      "deployedCount": 30
-    },
-    {
-      "showId": "a-month-in-the-country-west-end-2026",
-      "title": "A Month in the Country",
-      "openingDate": "2026-09-02",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.08 vs local 79.32 (Δ0.24)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 30,
-      "deployedCount": 30
-    },
-    {
-      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
-      "title": "Much Ado About Nothing",
-      "openingDate": "2026-06-20",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.27 vs local 78.47 (Δ0.2)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 22,
-      "deployedCount": 22
-    },
-    {
-      "showId": "hadestown-west-end-2024",
-      "title": "Hadestown",
-      "openingDate": "2024-02-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 73.8 vs local 73.95 (Δ0.15)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21
+      "localCount": 0,
+      "deployedCount": null
     }
   ]
 }

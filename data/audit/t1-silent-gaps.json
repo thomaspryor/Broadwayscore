@@ -1,26 +1,8 @@
 {
-  "generatedAt": "2026-09-25T23:07:31.731Z",
+  "generatedAt": "2026-09-26T02:16:16.405Z",
   "windowDays": 45,
-  "showsScanned": 80,
+  "showsScanned": 82,
   "gaps": [
-    {
-      "showId": "the-winters-tale-off-broadway-2026",
-      "title": "The Winter's Tale",
-      "openingDate": "2026-08-12",
-      "file": "wsj--charles-isherwood.json",
-      "outletId": "wsj",
-      "tier": 1,
-      "type": "unscored",
-      "dispatchable": false,
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shakespeare-in-the-park-5b36a9da?eafs_enabled=false",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-winters-tale-off-broadway-2026",
-      "firstSeen": "2026-08-13T10:48:31.706Z",
-      "fileAgeHours": 1044.3164555555556,
-      "gapSeenAt": "2026-09-20T22:08:26.926Z",
-      "nonTerminalAgeHours": 120.98466805555556
-    },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
       "title": "The Human Voice / The Seven Deadly Sins",
@@ -34,9 +16,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 221.1111611111111,
+      "fileAgeHours": 224.25689111111112,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 221.0303113888889
+      "nonTerminalAgeHours": 224.17605416666666
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -51,9 +33,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays --outlet=thestage --critic=\"Dave Fargnoli\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T17:56:44.755Z",
-      "fileAgeHours": 221.17960638888889,
+      "fileAgeHours": 224.32533916666668,
       "gapSeenAt": "2026-09-21T21:33:52.974Z",
-      "nonTerminalAgeHours": 97.56076583333333
+      "nonTerminalAgeHours": 100.7065086111111
     }
   ],
   "contradictions": []

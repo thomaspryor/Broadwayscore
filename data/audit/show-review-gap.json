@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-09-25T23:07:29.288Z",
+  "generatedAt": "2026-09-26T02:16:13.920Z",
   "windowDays": 1095,
-  "targets": 258,
-  "auditedThisRun": 10,
-  "carriedForward": 554,
+  "targets": 255,
+  "auditedThisRun": 11,
+  "carriedForward": 556,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 305,
-    "missingCurrentRun": 429,
+    "withGap": 306,
+    "missingCurrentRun": 438,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 791,
-    "totalRecoverable": 7,
+    "totalRecoverable": 6,
     "totalRecovered": 8,
-    "priorProductionCitations": 2514
+    "priorProductionCitations": 2512
   },
   "results": [
     {
@@ -414,6 +414,42 @@
         "candidateCount": 0
       },
       "computedAt": "2026-09-02T22:17:45.717Z"
+    },
+    {
+      "showId": "a-ghost-in-your-ear-off-broadway-2026",
+      "title": "A Ghost In Your Ear",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-09-26T02:16:13.920Z"
     },
     {
       "showId": "a-life-in-four-seasons-west-end-2026",
@@ -841,17 +877,19 @@
       "status": "closed",
       "category": "off-west-end",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-Julie-Taymors-A-MIDSUMMER-NIGHTS-DREAM-20131103",
+        "https://playbill.com/article/read-reviews-for-a-midsummers-night-dream-starring-game-of-thrones-gwendoline-christie",
         "https://www.broadwayworld.com/article/Review-Roundup-A-MIDSUMMER-NIGHTS-DREAM-Starring-Annaleigh-Ashford-Danny-Burstein-and-More-at-Shakespeare-in-the-Park-20170801"
       ],
       "aggregatorListedUrls": [
-        "http://www.nytimes.com/2013/11/04/theater/reviews/taymors-midsummer-nights-dream-opens-brooklyn-theater.html",
-        "http://www.hollywoodreporter.com/review/a-midsummer-nights-dream-theater-652763",
-        "http://www.vulture.com/2013/11/theater-review-a-midsummer-nights-dream.html",
-        "http://nypost.com/2013/11/03/julie-taymor-storms-back-with-a-midsummer-nights-dream/",
-        "http://variety.com/2013/legit/reviews/off-broadway-review-julie-taymors-a-midsummer-nights-dream-1200785807/",
-        "http://www.newsday.com/entertainment/theater/a-midsummer-night-s-dream-review-julie-taymor-brings-magic-to-brooklyn-1.6364071",
-        "http://www.nydailynews.com/entertainment/music-arts/midsummer-night-dream-theater-review-article-1.1504232",
+        "https://theartsdesk.com/theatre/midsummer-nights-dream-bridge-theatre-review-%E2%80%93-gender-juggling-romp",
+        "https://www.standard.co.uk/go/london/theatre/a-midsummer-nights-dream-review-gwendoline-christie-bridge-theatre-a4165146.html",
+        "https://www.theguardian.com/stage/2019/jun/11/a-midsummer-nights-dream-review-bridge-theatre-london-gwendoline-christie-nicholas-hytner",
+        "https://www.londontheatre.co.uk/reviews/review-a-midsummer-nights-dream-starring-gwendoline-christie-at-the-bridge-theatre",
+        "https://www.radiotimes.com/news/2019-06-11/nicholas-hytners-a-midsummer-nights-dream-at-the-bridge-theatre-is-politically-sound-but-lacks-coherence-and-magic/",
+        "https://www.thestage.co.uk/reviews/2019/a-midsummer-nights-dream-gwendoline-christie-review-at-the-bridge-theatre-london",
+        "https://www.telegraph.co.uk/theatre/what-to-see/midsummer-nights-dream-review-bridge-theatre-erotic-enchanting/",
+        "https://www.timeout.com/london/theatre/a-midsummer-nights-dream-review-1",
+        "https://www.thetimes.co.uk/article/review-a-midsummer-nights-dream-bridge-theatre-se1-llhrswdg7",
         "https://www.nytimes.com/2017/07/31/theater/midsummer-nights-dream-review.html",
         "http://www.amny.com/entertainment/a-midsummer-night-s-dream-review-terrific-cast-delights-in-shakespeare-classic-1.13892431",
         "http://www.hollywoodreporter.com/review/a-midsummer-nights-dream-theater-review-1025277",
@@ -863,20 +901,20 @@
         "http://www.thewrap.com/midsummer-nights-dream-theater-review-phylicia-rashad-leads-sitcom-version-bard/"
       ],
       "dirFiles": 58,
-      "dirClean": 19,
+      "dirClean": 17,
       "inReviewsJson": 18,
       "missing": [
         {
-          "url": "http://nypost.com/2013/11/03/julie-taymor-storms-back-with-a-midsummer-nights-dream/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
+          "url": "https://theartsdesk.com/theatre/midsummer-nights-dream-bridge-theatre-review-%E2%80%93-gender-juggling-romp",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://variety.com/2013/legit/reviews/off-broadway-review-julie-taymors-a-midsummer-nights-dream-1200785807/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
+          "url": "https://www.radiotimes.com/news/2019-06-11/nicholas-hytners-a-midsummer-nights-dream-at-the-bridge-theatre-is-politically-sound-but-lacks-coherence-and-magic/",
+          "host": "radiotimes.com",
+          "knownOutletId": "radio-times",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -924,14 +962,6 @@
           "count": 1
         },
         {
-          "host": "londonboxoffice.co.uk",
-          "count": 1
-        },
-        {
-          "host": "londontheatre.co.uk",
-          "count": 2
-        },
-        {
           "host": "londontheatrereviews.co.uk",
           "count": 1
         },
@@ -944,10 +974,6 @@
           "count": 1
         },
         {
-          "host": "telegraph.co.uk",
-          "count": 2
-        },
-        {
           "host": "theatreweekly.com",
           "count": 1
         },
@@ -956,7 +982,7 @@
           "count": 1
         },
         {
-          "host": "thestage.co.uk",
+          "host": "thetimes.com",
           "count": 1
         },
         {
@@ -970,9 +996,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "http://www.nytimes.com/2013/11/04/theater/reviews/taymors-midsummer-nights-dream-opens-brooklyn-theater.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
+          "url": "https://www.standard.co.uk/go/london/theatre/a-midsummer-nights-dream-review-gwendoline-christie-bridge-theatre-a4165146.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -980,18 +1006,28 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nytimes--by.json",
+              "file": "standard--dominic-cavendish.json",
               "flag": "wrongProduction",
-              "urlInDir": "http://www.nytimes.com/2013/11/04/theater/reviews/taymors-midsummer-nights-dream-opens-brooklyn-theater.html"
+              "urlInDir": "https://standard.co.uk/culture/theatre/a-midsummer-night-s-dream-globe-review-b1281076.html"
+            },
+            {
+              "file": "standard--nick-curtis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.standard.co.uk/culture/theatre/a-midsummer-night-s-dream-globe-review-b1281076.html"
+            },
+            {
+              "file": "standard--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://standard.co.uk/culture/theatre/a-midsummer-night-s-dream-globe-review-b1281076.html"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.hollywoodreporter.com/review/a-midsummer-nights-dream-theater-652763",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
+          "url": "https://www.theguardian.com/stage/2019/jun/11/a-midsummer-nights-dream-review-bridge-theatre-london-gwendoline-christie-nicholas-hytner",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -999,18 +1035,28 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "hollywood-reporter--frank-scheck.json",
+              "file": "guardian--arifa-akbar.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/a-midsummer-nights-dream-theater-review-1025277/"
+              "urlInDir": "https://www.theguardian.com/stage/2026/jun/30/a-midsummer-nights-dream-review-regents-park-open-air-theatre-london"
+            },
+            {
+              "file": "guardian--kate-wyver.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2025/jun/06/a-midsummer-nights-dream-review-bridge-theatre-nicholas-hytner"
+            },
+            {
+              "file": "observer--kate-kellaway.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2019/jun/16/midsummer-night-nights-dream-review-bridge-gwendoline-christie-while-the-sun-shines-vanya-and-sonia"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.vulture.com/2013/11/theater-review-a-midsummer-nights-dream.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
+          "url": "https://www.londontheatre.co.uk/reviews/review-a-midsummer-nights-dream-starring-gwendoline-christie-at-the-bridge-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1018,18 +1064,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "vulture--jesse-green.json",
+              "file": "london-theatre--mark-shenton.json",
               "flag": "wrongProduction",
-              "urlInDir": "http://www.vulture.com/2013/11/theater-review-a-midsummer-nights-dream.html"
+              "urlInDir": "https://www.londontheatre.co.uk/reviews/review-a-midsummer-nights-dream-starring-gwendoline-christie-at-the-bridge-theatre"
             }
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.newsday.com/entertainment/theater/a-midsummer-night-s-dream-review-julie-taymor-brings-magic-to-brooklyn-1.6364071",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/midsummer-nights-dream-review-bridge-theatre-erotic-enchanting/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -1037,28 +1083,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "newsday--unknown.json",
+              "file": "sunday-telegraph--dominic-cavendish.json",
               "flag": "wrongProduction",
-              "urlInDir": "http://www.newsday.com/entertainment/theater/a-midsummer-night-s-dream-review-julie-taymor-brings-magic-to-brooklyn-1.6364071"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/music-arts/midsummer-night-dream-theater-review-article-1.1504232",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.nydailynews.com/entertainment/music-arts/midsummer-night-dream-theater-review-article-1.1504232"
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/midsummer-nights-dream-review-bridge-theatre-erotic-enchanting/"
             }
           ],
           "priorRun": true,
@@ -1167,19 +1194,27 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 610,
+        "count": 456,
         "byReason": {
-          "non-review-host": 30,
-          "aggregator-internal-nav": 438,
-          "not-http-url": 134,
-          "aggregator-section-root": 8
+          "aggregator-internal-nav": 309,
+          "not-http-url": 101,
+          "aggregator-section-root": 8,
+          "non-review-host": 38
         }
       },
-      "dedupedVariants": [],
+      "dedupedVariants": [
+        {
+          "url": "https://www.thetimes.co.uk/article/review-a-midsummer-nights-dream-bridge-theatre-se1-llhrswdg7",
+          "host": "thetimes.co.uk",
+          "matchedUrl": "https://www.thetimes.com/culture/theatre-dance/article/a-midsummer-nights-dream-review-a-hideous-set-ruins-the-fun-6z8l303sr",
+          "outletId": "times-uk",
+          "reason": "same outlet \"times-uk\" already held at thetimes.com; thetimes.co.uk is a registered alias of it"
+        }
+      ],
       "priorRunArticles": [
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Julie-Taymors-A-MIDSUMMER-NIGHTS-DREAM-20131103",
-          "publishDate": "2013-11-03"
+          "url": "https://playbill.com/article/read-reviews-for-a-midsummers-night-dream-starring-game-of-thrones-gwendoline-christie",
+          "publishDate": "2019-06-12"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-A-MIDSUMMER-NIGHTS-DREAM-Starring-Annaleigh-Ashford-Danny-Burstein-and-More-at-Shakespeare-in-the-Park-20170801",
@@ -1188,14 +1223,14 @@
       ],
       "weIngestBlocked": [
         {
-          "url": "http://nypost.com/2013/11/03/julie-taymor-storms-back-with-a-midsummer-nights-dream/",
-          "host": "nypost.com",
+          "url": "https://theartsdesk.com/theatre/midsummer-nights-dream-bridge-theatre-review-%E2%80%93-gender-juggling-romp",
+          "host": "theartsdesk.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "http://variety.com/2013/legit/reviews/off-broadway-review-julie-taymors-a-midsummer-nights-dream-1200785807/",
-          "host": "variety.com",
+          "url": "https://www.radiotimes.com/news/2019-06-11/nicholas-hytners-a-midsummer-nights-dream-at-the-bridge-theatre-is-politically-sound-but-lacks-coherence-and-magic/",
+          "host": "radiotimes.com",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -1226,6 +1261,24 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.thestage.co.uk/reviews/2019/a-midsummer-nights-dream-gwendoline-christie-review-at-the-bridge-theatre-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/a-midsummer-nights-dream-review-1",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
+          },
+          {
+            "url": "https://www.thetimes.co.uk/article/review-a-midsummer-nights-dream-bridge-theatre-se1-llhrswdg7",
+            "outletId": "thetimes.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
+          },
+          {
             "url": "https://www.timeout.com/newyork/theater/a-midsummer-nights-dream-23",
             "outletId": "timeout.com",
             "state": "live",
@@ -1233,10 +1286,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 1,
-        "candidateCount": 1
+        "liveCount": 3,
+        "candidateCount": 3
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-26T02:16:13.920Z"
     },
     {
       "showId": "a-month-in-the-country-west-end-2026",
@@ -16917,7 +16970,8 @@
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-pony-cams-burnout-paradise-off-broadway"
+        "https://playbill.com/article/read-the-reviews-for-pony-cams-burnout-paradise-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-BURNOUT-PARADISE-Opens-At-Astor-Place-Theatre-20260305"
       ],
       "aggregatorListedUrls": [
         "https://www.newyorktheatreguide.com/reviews/burnout-paradise-off-broadway-review-2026",
@@ -16988,12 +17042,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 91,
+        "count": 393,
         "byReason": {
-          "non-review-host": 19,
-          "aggregator-internal-nav": 47,
-          "not-http-url": 20,
-          "aggregator-section-root": 5
+          "aggregator-internal-nav": 261,
+          "not-http-url": 82,
+          "aggregator-section-root": 11,
+          "non-review-host": 37,
+          "roundup-page": 2
         }
       },
       "dedupedVariants": [],
@@ -17084,7 +17139,7 @@
         "liveCount": 8,
         "candidateCount": 10
       },
-      "computedAt": "2026-08-30T07:41:12.140Z"
+      "computedAt": "2026-09-26T02:16:13.920Z"
     },
     {
       "showId": "call-me-izzy-2025",
@@ -24050,18 +24105,19 @@
         "http://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/",
         "https://www.wsj.com/articles/cosi-fan-tutte-review-a-carnival-of-deception-1521485960",
         "https://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/",
-        "https://www.thetimes.com/culture/classical-opera/article/cosi-fan-tutte-review-royal-northern-sinfonia-lammermuir-festival-xr33g90bn",
         "https://innewcastle.co.uk/review-the-glasshouse-international-centre-for-music-reopens-sage-one-with-mozarts-cosi-fan-tutti/",
         "https://limelight-arts.com.au/competitions/win-tickets-to-met-opera-cosi-fan-tutti/",
         "https://www.nytimes.com/2026/09/23/nyregion/snake-metropolitan-opera-cosi-fan-tutte.html",
+        "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/",
         "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178",
-        "https://letterboxd.com/petricor/film/the-metropolitan-opera-cosi-fan-tutte/",
         "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
+        "https://letterboxd.com/film/the-metropolitan-opera-cosi-fan-tutte/reviews/",
         "https://www.operabase.com/productions/cosi-fan-tutte-671121/en",
         "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/",
-        "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot"
+        "https://www.rottentomatoes.com/m/the_metropolitan_opera_cosi_fan_tutte",
+        "https://www.musicomh.com/classical/opera-reviews/cosi-fan-tutte-review-mozart-opera-holland-park"
       ],
-      "dirFiles": 16,
+      "dirFiles": 18,
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [
@@ -24094,12 +24150,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://limelight-arts.com.au/competitions/win-tickets-to-met-opera-cosi-fan-tutti/",
-          "host": "limelight-arts.com.au",
-          "knownOutletId": "limelight-magazine-au",
-          "serpCensus": true
-        },
-        {
           "url": "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
           "host": "londongrip.co.uk",
           "knownOutletId": "londongrip",
@@ -24108,6 +24158,18 @@
         {
           "url": "https://www.operabase.com/productions/cosi-fan-tutte-671121/en",
           "host": "operabase.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_cosi_fan_tutte",
+          "host": "rottentomatoes.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.musicomh.com/classical/opera-reviews/cosi-fan-tutte-review-mozart-opera-holland-park",
+          "host": "musicomh.com",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -24177,29 +24239,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.thetimes.com/culture/classical-opera/article/cosi-fan-tutte-review-royal-northern-sinfonia-lammermuir-festival-xr33g90bn",
-          "host": "thetimes.com",
-          "knownOutletId": "times-uk",
-          "recoverable": true,
-          "recoverableFile": "times-uk--unknown.json",
-          "recoverableOutletId": "times-uk",
-          "recoverableCritic": "Simon Thompson",
-          "recoverableCount": 1,
-          "dirFlags": [
-            {
-              "file": "times-uk--simon-thompson.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thetimes.com/culture/classical-opera/article/cosi-fan-tutte-review-royal-northern-sinfonia-lammermuir-festival-xr33g90bn"
-            },
-            {
-              "file": "times-uk--unknown.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.thetimes.com/culture/classical-opera/article/cosi-fan-tutte-review-royal-northern-sinfonia-lammermuir-festival-xr33g90bn"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://innewcastle.co.uk/review-the-glasshouse-international-centre-for-music-reopens-sage-one-with-mozarts-cosi-fan-tutti/",
           "host": "innewcastle.co.uk",
           "knownOutletId": null,
@@ -24213,6 +24252,24 @@
               "file": "innewcastle--innewcastle-co-uk.json",
               "flag": "wrongProduction",
               "urlInDir": "https://innewcastle.co.uk/review-the-glasshouse-international-centre-for-music-reopens-sage-one-with-mozarts-cosi-fan-tutti/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://limelight-arts.com.au/competitions/win-tickets-to-met-opera-cosi-fan-tutti/",
+          "host": "limelight-arts.com.au",
+          "knownOutletId": "limelight-magazine-au",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "limelight-magazine-au--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://limelight-arts.com.au/competitions/win-tickets-to-met-opera-cosi-fan-tutti/"
             }
           ],
           "serpCensus": true
@@ -24236,6 +24293,24 @@
           "serpCensus": true
         },
         {
+          "url": "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/",
+          "host": "operawire.com",
+          "knownOutletId": "operawire",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "operawire--francisco-salazar.json",
+              "flag": "nonReview",
+              "urlInDir": "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178",
           "host": "bachtrack.com",
           "knownOutletId": "bachtrack",
@@ -24254,7 +24329,7 @@
           "serpCensus": true
         },
         {
-          "url": "https://letterboxd.com/petricor/film/the-metropolitan-opera-cosi-fan-tutte/",
+          "url": "https://letterboxd.com/film/the-metropolitan-opera-cosi-fan-tutte/reviews/",
           "host": "letterboxd.com",
           "knownOutletId": "letterboxd",
           "recoverable": false,
@@ -24288,24 +24363,6 @@
             }
           ],
           "serpCensus": true
-        },
-        {
-          "url": "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot"
-            }
-          ],
-          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -24322,7 +24379,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -24332,7 +24389,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -24342,7 +24399,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -24362,13 +24419,13 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 10,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
@@ -24377,8 +24434,8 @@
           "aggregator-internal-nav": 291,
           "not-http-url": 49,
           "aggregator-section-root": 8,
-          "non-review-host": 59,
-          "ticketing-reseller": 1
+          "non-review-host": 58,
+          "ticketing-reseller": 2
         }
       },
       "dedupedVariants": [],
@@ -24420,18 +24477,6 @@
       ],
       "ingestResults": [
         {
-          "url": "https://limelight-arts.com.au/competitions/win-tickets-to-met-opera-cosi-fan-tutti/",
-          "host": "limelight-arts.com.au",
-          "outletId": "limelight-magazine-au",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
           "url": "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
           "host": "londongrip.co.uk",
           "outletId": "londongrip",
@@ -24454,32 +24499,36 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  provisional outlet \"operabase\" (not in registry) — onboard to outlet-registry.json after review."
+        },
+        {
+          "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_cosi_fan_tutte",
+          "host": "rottentomatoes.com",
+          "outletId": "rottentomatoes",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.musicomh.com/classical/opera-reviews/cosi-fan-tutte-review-mozart-opera-holland-park",
+          "host": "musicomh.com",
+          "outletId": "musicomh",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.thetimes.com/culture/classical-opera/article/cosi-fan-tutte-review-royal-northern-sinfonia-lammermuir-festival-xr33g90bn",
-          "host": "thetimes.com",
-          "file": "times-uk--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script",
-          "recoveryCount": 2
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "limelight-magazine-au",
-            "outlet": "limelight-magazine-au",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://limelight-arts.com.au/competitions/win-tickets-to-met-opera-cosi-fan-tutti/"
-          },
           {
             "outletId": "londongrip",
             "outlet": "londongrip",
@@ -24495,11 +24544,18 @@
             "url": "https://www.operabase.com/productions/cosi-fan-tutte-671121/en"
           },
           {
-            "outletId": "times-uk",
-            "outlet": "times-uk",
+            "outletId": "rottentomatoes.com",
+            "outlet": "rottentomatoes.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.thetimes.com/culture/classical-opera/article/cosi-fan-tutte-review-royal-northern-sinfonia-lammermuir-festival-xr33g90bn"
+            "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_cosi_fan_tutte"
+          },
+          {
+            "outletId": "musicomh.com",
+            "outlet": "musicomh.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.musicomh.com/classical/opera-reviews/cosi-fan-tutte-review-mozart-opera-holland-park"
           },
           {
             "outletId": "innewcastle.co.uk",
@@ -24509,11 +24565,25 @@
             "url": "https://innewcastle.co.uk/review-the-glasshouse-international-centre-for-music-reopens-sage-one-with-mozarts-cosi-fan-tutti/"
           },
           {
+            "outletId": "limelight-magazine-au",
+            "outlet": "limelight-magazine-au",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://limelight-arts.com.au/competitions/win-tickets-to-met-opera-cosi-fan-tutti/"
+          },
+          {
             "outletId": "nytimes",
             "outlet": "nytimes",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.nytimes.com/2026/09/23/nyregion/snake-metropolitan-opera-cosi-fan-tutte.html"
+          },
+          {
+            "outletId": "operawire",
+            "outlet": "operawire",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/"
           },
           {
             "outletId": "bachtrack",
@@ -24527,7 +24597,7 @@
             "outlet": "letterboxd",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://letterboxd.com/petricor/film/the-metropolitan-opera-cosi-fan-tutte/"
+            "url": "https://letterboxd.com/film/the-metropolitan-opera-cosi-fan-tutte/reviews/"
           },
           {
             "outletId": "around-the-town-chicago",
@@ -24535,24 +24605,10 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/"
-          },
-          {
-            "outletId": "guardian",
-            "outlet": "guardian",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://limelight-arts.com.au/competitions/win-tickets-to-met-opera-cosi-fan-tutti/",
-            "outletId": "limelight-magazine-au",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-25T14:30:30.176Z"
-          },
           {
             "url": "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
             "outletId": "londongrip",
@@ -24568,11 +24624,18 @@
             "firstSeenAt": "2026-09-24T23:04:09.984Z"
           },
           {
-            "url": "https://www.thetimes.com/culture/classical-opera/article/cosi-fan-tutte-review-royal-northern-sinfonia-lammermuir-festival-xr33g90bn",
-            "outletId": "times-uk",
+            "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_cosi_fan_tutte",
+            "outletId": "rottentomatoes.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-24T23:04:09.984Z"
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
+          },
+          {
+            "url": "https://www.musicomh.com/classical/opera-reviews/cosi-fan-tutte-review-mozart-opera-holland-park",
+            "outletId": "musicomh.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
           },
           {
             "url": "https://innewcastle.co.uk/review-the-glasshouse-international-centre-for-music-reopens-sage-one-with-mozarts-cosi-fan-tutti/",
@@ -24582,11 +24645,25 @@
             "firstSeenAt": "2026-09-24T23:04:09.984Z"
           },
           {
+            "url": "https://limelight-arts.com.au/competitions/win-tickets-to-met-opera-cosi-fan-tutti/",
+            "outletId": "limelight-magazine-au",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-25T14:30:30.176Z"
+          },
+          {
             "url": "https://www.nytimes.com/2026/09/23/nyregion/snake-metropolitan-opera-cosi-fan-tutte.html",
             "outletId": "nytimes",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-24T23:04:09.984Z"
+          },
+          {
+            "url": "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/",
+            "outletId": "operawire",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
           },
           {
             "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178",
@@ -24596,11 +24673,11 @@
             "firstSeenAt": "2026-09-24T23:04:09.984Z"
           },
           {
-            "url": "https://letterboxd.com/petricor/film/the-metropolitan-opera-cosi-fan-tutte/",
+            "url": "https://letterboxd.com/film/the-metropolitan-opera-cosi-fan-tutte/reviews/",
             "outletId": "letterboxd",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-24T23:04:09.984Z"
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
           },
           {
             "url": "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/",
@@ -24608,20 +24685,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-24T23:04:09.984Z"
-          },
-          {
-            "url": "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot",
-            "outletId": "guardian",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-24T23:04:09.984Z"
           }
         ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 10
+        "candidateCount": 11
       },
-      "computedAt": "2026-09-25T14:30:30.176Z"
+      "computedAt": "2026-09-26T02:16:13.920Z"
     },
     {
       "showId": "cowbois-west-end-2024",
@@ -30622,17 +30692,10 @@
         "https://www.clintonandgreene.com/p/critically-acclaimed-delirium-comes",
         "https://artsfuse.org/330885/theater-review-arlekins-delirium-reimagines-ionesco-with-visual-flair-and-urgency/"
       ],
-      "dirFiles": 16,
-      "dirClean": 3,
-      "inReviewsJson": 3,
-      "missing": [
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/9/16/delirium",
-          "host": "offoffonline.com",
-          "knownOutletId": "off-off-online",
-          "serpCensus": true
-        }
-      ],
+      "dirFiles": 17,
+      "dirClean": 4,
+      "inReviewsJson": 4,
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [
         {
@@ -30752,7 +30815,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -30762,7 +30825,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -30782,40 +30845,17 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 32,
         "byReason": {
-          "aggregator-internal-nav": 4,
-          "non-review-host": 23,
-          "venue-production-page": 1,
+          "aggregator-internal-nav": 6,
+          "non-review-host": 25,
           "non-review-path": 1
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/9/16/delirium",
-          "host": "offoffonline.com",
-          "outletId": "off-off-online",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "off-off-online",
-            "outlet": "off-off-online",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.offoffonline.com/offoffonline/2026/9/16/delirium"
-          },
           {
             "outletId": "nytimes",
             "outlet": "nytimes",
@@ -30860,6 +30900,12 @@
             "firstSeenAt": "2026-09-25T08:29:36.594Z"
           },
           {
+            "url": "https://www.offoffonline.com/offoffonline/2026/9/16/delirium",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-25T14:30:30.176Z"
+          },
+          {
             "url": "https://www.newyorktheatreguide.com/reviews/delirium-off-broadway-review",
             "outletId": "newyorktheatreguide.com",
             "state": "live",
@@ -30869,13 +30915,6 @@
             "url": "https://www.theatermania.com/news/delirium-by-igor-golyak-will-have-new-york-premiere_1845587/",
             "outletId": "theatermania.com",
             "state": "live",
-            "firstSeenAt": "2026-09-25T14:30:30.176Z"
-          },
-          {
-            "url": "https://www.offoffonline.com/offoffonline/2026/9/16/delirium",
-            "outletId": "off-off-online",
-            "state": "GAP",
-            "reason": "sla-breach",
             "firstSeenAt": "2026-09-25T14:30:30.176Z"
           },
           {
@@ -30908,10 +30947,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 3,
+        "liveCount": 4,
         "candidateCount": 8
       },
-      "computedAt": "2026-09-25T14:30:30.176Z"
+      "computedAt": "2026-09-26T02:16:13.920Z"
     },
     {
       "showId": "dinosaur-world-live-off-west-end-2026",
@@ -43751,7 +43790,7 @@
         {
           "url": "https://www.yahoo.com/entertainment/theater-review-broadway-glengarry-glen-033424902.html",
           "host": "yahoo.com",
-          "knownOutletId": null,
+          "knownOutletId": "yahoo",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -44036,7 +44075,7 @@
         {
           "url": "http://news.yahoo.com/review-mamets-glengarry-glen-ross-crackles-023810738.html;_ylt=A2KJ3Cd7uMVQoUAA_mPQtDMD",
           "host": "yahoo.com",
-          "knownOutletId": null,
+          "knownOutletId": "yahoo",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -44091,25 +44130,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.thetimes.co.uk/article/theatre-review-glengarry-glen-ross-playhouse-wc2-zbbsm0kxj",
-          "host": "thetimes.co.uk",
-          "knownOutletId": "times-uk",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "times-uk--ann-treneman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thetimes.co.uk/article/theatre-review-glengarry-glen-ross-playhouse-wc2-zbbsm0kxj"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "http://ew.com/theater/2017/12/12/christian-slater-west-end-revival-glengarry-glen-ross-ew-review/",
           "host": "ew.com",
           "knownOutletId": "ew",
@@ -44136,16 +44156,24 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 978,
+        "count": 982,
         "byReason": {
-          "non-review-host": 67,
-          "aggregator-internal-nav": 750,
+          "aggregator-internal-nav": 754,
           "not-http-url": 144,
           "aggregator-section-root": 16,
+          "non-review-host": 67,
           "unparseable-url": 1
         }
       },
-      "dedupedVariants": [],
+      "dedupedVariants": [
+        {
+          "url": "https://www.thetimes.co.uk/article/theatre-review-glengarry-glen-ross-playhouse-wc2-zbbsm0kxj",
+          "host": "thetimes.co.uk",
+          "matchedUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-review-old-vic-l8l6xmsg0",
+          "outletId": "times-uk",
+          "reason": "same outlet \"times-uk\" already held at thetimes.com; thetimes.co.uk is a registered alias of it"
+        }
+      ],
       "priorRunArticles": [
         {
           "url": "https://playbill.com/article/read-the-reviews-of-glengarry-glen-ross-starring-kieran-culkin",
@@ -44306,6 +44334,12 @@
             "firstSeenAt": "2026-08-03T15:12:46.515Z"
           },
           {
+            "url": "https://www.thetimes.co.uk/article/theatre-review-glengarry-glen-ross-playhouse-wc2-zbbsm0kxj",
+            "outletId": "thetimes.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
+          },
+          {
             "url": "https://www.standard.co.uk/goingout/theatre/glengarry-glen-ross-theatre-review-christian-slater-sells-sharp-mamet-revival-a3687341.html",
             "outletId": "standard.co.uk",
             "state": "live",
@@ -44319,10 +44353,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 7,
-        "candidateCount": 7
+        "liveCount": 8,
+        "candidateCount": 8
       },
-      "computedAt": "2026-08-30T07:41:12.140Z"
+      "computedAt": "2026-09-26T02:16:13.920Z"
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -61444,6 +61478,42 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
+      "showId": "jeanna-de-waal-songs-i-love-to-sing-off-broadway-2026",
+      "title": "Jeanna de Waal: Songs I Love to Sing",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-09-26T02:16:13.920Z"
     },
     {
       "showId": "jeeves-takes-charge-west-end-2026",
@@ -119136,7 +119206,7 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-08-30T07:41:12.140Z"
+      "computedAt": "2026-09-26T02:16:13.920Z"
     },
     {
       "showId": "that-math-show-off-broadway-2026",
@@ -126826,20 +126896,21 @@
         "https://www.thestage.co.uk/reviews/the-invention-of-love-review-hampstead-theatre-london-2024-simon-russell-beale-tom-stoppard-blanche-mcintyre",
         "https://exeuntnyc.com/reviews/review-the-invention-of-love-at-theaterlab/",
         "https://www.vulture.com/article/how-much-did-i-love-the-invention-of-love.html",
+        "https://openingnight.online/the-invention-of-love/",
         "https://t2conline.com/the-invention-of-love-david-greenspan-is-brilliant-but-tom-stoppard-needs-an-editor/",
-        "https://lavocedinewyork.com/en/new-york/2026/09/23/stoppards-the-invention-of-love-makes-for-a-mesmerizing-evening-of-theater/",
-        "https://thefrontrowcenter.com/2026/09/the-invention-of-love/",
         "https://www.offoffonline.com/offoffonline/2026/9/19/the-invention-of-love-1UGbA",
         "https://www.theaterscene.net/plays/offbway-plays/the-invention-of-love/tony-marinelli/",
         "https://theaterlabnyc.com/tlab-shares-the-invention-of-love/",
+        "https://twi-ny.com/2026/09/20/the-invention-of-love-tom-stoppard-theaterlab/",
         "https://playstosee.com/reviews/uk-reviews/the-invention-of-love/",
         "https://www.allthatdazzles.co.uk/post/review-the-invention-of-love-hampstead-theatre",
         "https://www.thereviewshub.com/the-invention-of-love-hampstead-theatre-london/",
+        "https://lavocedinewyork.com/en/new-york/2026/09/23/stoppards-the-invention-of-love-makes-for-a-mesmerizing-evening-of-theater/",
         "https://sierz.co.uk/reviews/the-invention-of-love-hampstead-theatre/"
       ],
-      "dirFiles": 20,
-      "dirClean": 10,
-      "inReviewsJson": 10,
+      "dirFiles": 21,
+      "dirClean": 11,
+      "inReviewsJson": 11,
       "missing": [
         {
           "url": "https://www.londontheatre.co.uk/reviews/the-invention-of-love-review-hampstead-theatre",
@@ -126852,9 +126923,9 @@
           "knownOutletId": "timeout-london"
         },
         {
-          "url": "https://exeuntnyc.com/reviews/review-the-invention-of-love-at-theaterlab/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine",
+          "url": "https://openingnight.online/the-invention-of-love/",
+          "host": "openingnight.online",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -126888,15 +126959,15 @@
           "count": 1
         },
         {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
           "host": "interestedbystander.com",
           "count": 1
         },
         {
           "host": "theaterpizzazz.com",
-          "count": 1
-        },
-        {
-          "host": "twi-ny.com",
           "count": 1
         }
       ],
@@ -127060,7 +127131,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -127069,8 +127140,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -127090,20 +127161,20 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 12,
+        "resultCount": 13,
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 24,
         "byReason": {
-          "aggregator-internal-nav": 1,
-          "non-review-host": 25,
+          "aggregator-internal-nav": 2,
+          "non-review-host": 21,
           "venue-production-page": 1
         }
       },
@@ -127134,10 +127205,10 @@
           "reason": "[review-write-guard] date-implausible: the-invention-of-love-off-broadway-2026/timeout-london--andrz"
         },
         {
-          "url": "https://exeuntnyc.com/reviews/review-the-invention-of-love-at-theaterlab/",
-          "host": "exeuntnyc.com",
-          "outletId": "exeunt-magazine",
-          "provisional": false,
+          "url": "https://openingnight.online/the-invention-of-love/",
+          "host": "openingnight.online",
+          "outletId": "openingnight",
+          "provisional": true,
           "ok": true,
           "noop": false,
           "conflict": false,
@@ -127200,11 +127271,11 @@
             "url": "https://www.timeout.com/london/theatre/the-invention-of-love-review"
           },
           {
-            "outletId": "exeunt-magazine",
-            "outlet": "exeunt-magazine",
+            "outletId": "openingnight.online",
+            "outlet": "openingnight.online",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://exeuntnyc.com/reviews/review-the-invention-of-love-at-theaterlab/"
+            "url": "https://openingnight.online/the-invention-of-love/"
           },
           {
             "outletId": "plays-to-see",
@@ -127273,6 +127344,12 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://exeuntnyc.com/reviews/review-the-invention-of-love-at-theaterlab/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-25T14:30:30.176Z"
+          },
+          {
             "url": "https://www.vulture.com/article/how-much-did-i-love-the-invention-of-love.html",
             "outletId": "vulture.com",
             "state": "live",
@@ -127285,18 +127362,6 @@
             "firstSeenAt": "2026-09-24T23:04:09.984Z"
           },
           {
-            "url": "https://lavocedinewyork.com/en/new-york/2026/09/23/stoppards-the-invention-of-love-makes-for-a-mesmerizing-evening-of-theater/",
-            "outletId": "lavocedinewyork.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-24T23:04:09.984Z"
-          },
-          {
-            "url": "https://thefrontrowcenter.com/2026/09/the-invention-of-love/",
-            "outletId": "thefrontrowcenter.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-24T23:04:09.984Z"
-          },
-          {
             "url": "https://www.offoffonline.com/offoffonline/2026/9/19/the-invention-of-love-1UGbA",
             "outletId": "offoffonline.com",
             "state": "live",
@@ -127305,6 +127370,18 @@
           {
             "url": "https://www.theaterscene.net/plays/offbway-plays/the-invention-of-love/tony-marinelli/",
             "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-09-24T23:04:09.984Z"
+          },
+          {
+            "url": "https://twi-ny.com/2026/09/20/the-invention-of-love-tom-stoppard-theaterlab/",
+            "outletId": "twi-ny.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
+          },
+          {
+            "url": "https://lavocedinewyork.com/en/new-york/2026/09/23/stoppards-the-invention-of-love-makes-for-a-mesmerizing-evening-of-theater/",
+            "outletId": "lavocedinewyork.com",
             "state": "live",
             "firstSeenAt": "2026-09-24T23:04:09.984Z"
           },
@@ -127323,11 +127400,11 @@
             "firstSeenAt": "2026-09-14T23:04:15.991Z"
           },
           {
-            "url": "https://exeuntnyc.com/reviews/review-the-invention-of-love-at-theaterlab/",
-            "outletId": "exeunt-magazine",
+            "url": "https://openingnight.online/the-invention-of-love/",
+            "outletId": "openingnight.online",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-25T14:30:30.176Z"
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
           },
           {
             "url": "https://playstosee.com/reviews/uk-reviews/the-invention-of-love/",
@@ -127394,10 +127471,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 6,
-        "candidateCount": 18
+        "liveCount": 7,
+        "candidateCount": 19
       },
-      "computedAt": "2026-09-25T14:30:30.176Z"
+      "computedAt": "2026-09-26T02:16:13.920Z"
     },
     {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
@@ -136787,34 +136864,382 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://www.sohoplayhouse.com/see-a-show/the-secret-circus-musical",
+        "https://www.broadwayworld.com/new-orleans/article/Review-THE-SECRET-CIRCUS-THE-MUSICAL-at-Mudlark-Theatre-20260504",
+        "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/",
+        "https://stagelync.com/news/secret-circus-soho-playhouse",
+        "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets",
+        "https://theatre-news.com/news/UK/127152/The-Secret-Circus-Musical-set-to-open-highly-anticipated-London-performances",
+        "https://stagebuddy.com/event/the-secret-circus-musical",
+        "https://events.newyorkfamily.com/event/the-secret-circus-musical/",
+        "https://mommypoppins.com/new-york-city-kids/event/events/the-secret-circus-at-the-soho-playhouse"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.sohoplayhouse.com/see-a-show/the-secret-circus-musical",
+          "host": "sohoplayhouse.com",
+          "knownOutletId": "sohoplayhouse",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/new-orleans/article/Review-THE-SECRET-CIRCUS-THE-MUSICAL-at-Mudlark-Theatre-20260504",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "serpCensus": true
+        },
+        {
+          "url": "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/",
+          "host": "onstagecolorado.com",
+          "knownOutletId": "onstage-colorado",
+          "serpCensus": true
+        },
+        {
+          "url": "https://stagelync.com/news/secret-circus-soho-playhouse",
+          "host": "stagelync.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets",
+          "host": "donyc.com",
+          "knownOutletId": "donyc",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatre-news.com/news/UK/127152/The-Secret-Circus-Musical-set-to-open-highly-anticipated-London-performances",
+          "host": "theatre-news.com",
+          "knownOutletId": "theatre-news",
+          "serpCensus": true
+        },
+        {
+          "url": "https://stagebuddy.com/event/the-secret-circus-musical",
+          "host": "stagebuddy.com",
+          "knownOutletId": "stagebuddy",
+          "serpCensus": true
+        },
+        {
+          "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/",
+          "host": "newyorkfamily.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://mommypoppins.com/new-york-city-kids/event/events/the-secret-circus-at-the-soho-playhouse",
+          "host": "mommypoppins.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Secret Circus Musical\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Secret Circus Musical\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Secret Circus Musical\" review soho",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"The Secret Circus Musical\" Samson review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Secret Circus Musical SoHo Playhouse review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Secret Circus Musical SoHo Playhouse review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Secret Circus Musical SoHo Playhouse review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 9,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 33,
+        "byReason": {
+          "aggregator-internal-nav": 9,
+          "non-review-host": 23,
+          "venue-production-page": 1
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.sohoplayhouse.com/see-a-show/the-secret-circus-musical",
+          "host": "sohoplayhouse.com",
+          "outletId": "sohoplayhouse",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.broadwayworld.com/new-orleans/article/Review-THE-SECRET-CIRCUS-THE-MUSICAL-at-Mudlark-Theatre-20260504",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "the-secret-circus-musical-off-broadway-2026: https://www.broadwayworld.com/new-orleans/article/Review-THE-SECRET-CIRCUS-THE-MUSICAL-at-Mudlark-Theatre-20260504 looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
+        },
+        {
+          "url": "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/",
+          "host": "onstagecolorado.com",
+          "outletId": "onstage-colorado",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://stagelync.com/news/secret-circus-soho-playhouse",
+          "host": "stagelync.com",
+          "outletId": "stagelync",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets",
+          "host": "donyc.com",
+          "outletId": "donyc",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://theatre-news.com/news/UK/127152/The-Secret-Circus-Musical-set-to-open-highly-anticipated-London-performances",
+          "host": "theatre-news.com",
+          "outletId": "theatre-news"
+        },
+        {
+          "url": "https://stagebuddy.com/event/the-secret-circus-musical",
+          "host": "stagebuddy.com",
+          "outletId": "stagebuddy"
+        },
+        {
+          "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/",
+          "host": "newyorkfamily.com",
+          "outletId": "newyorkfamily"
+        },
+        {
+          "url": "https://mommypoppins.com/new-york-city-kids/event/events/the-secret-circus-at-the-soho-playhouse",
+          "host": "mommypoppins.com",
+          "outletId": "mommypoppins"
+        }
+      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "sohoplayhouse",
+            "outlet": "sohoplayhouse",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.sohoplayhouse.com/see-a-show/the-secret-circus-musical"
+          },
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/new-orleans/article/Review-THE-SECRET-CIRCUS-THE-MUSICAL-at-Mudlark-Theatre-20260504"
+          },
+          {
+            "outletId": "onstage-colorado",
+            "outlet": "onstage-colorado",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/"
+          },
+          {
+            "outletId": "stagelync.com",
+            "outlet": "stagelync.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stagelync.com/news/secret-circus-soho-playhouse"
+          },
+          {
+            "outletId": "donyc",
+            "outlet": "donyc",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
+          },
+          {
+            "outletId": "theatre-news",
+            "outlet": "theatre-news",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatre-news.com/news/UK/127152/The-Secret-Circus-Musical-set-to-open-highly-anticipated-London-performances"
+          },
+          {
+            "outletId": "stagebuddy",
+            "outlet": "stagebuddy",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stagebuddy.com/event/the-secret-circus-musical"
+          },
+          {
+            "outletId": "newyorkfamily.com",
+            "outlet": "newyorkfamily.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+          },
+          {
+            "outletId": "mommypoppins.com",
+            "outlet": "mommypoppins.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://mommypoppins.com/new-york-city-kids/event/events/the-secret-circus-at-the-soho-playhouse"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.sohoplayhouse.com/see-a-show/the-secret-circus-musical",
+            "outletId": "sohoplayhouse",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/new-orleans/article/Review-THE-SECRET-CIRCUS-THE-MUSICAL-at-Mudlark-Theatre-20260504",
+            "outletId": "broadwayworld",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
+          },
+          {
+            "url": "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/",
+            "outletId": "onstage-colorado",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
+          },
+          {
+            "url": "https://stagelync.com/news/secret-circus-soho-playhouse",
+            "outletId": "stagelync.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
+          },
+          {
+            "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets",
+            "outletId": "donyc",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
+          },
+          {
+            "url": "https://theatre-news.com/news/UK/127152/The-Secret-Circus-Musical-set-to-open-highly-anticipated-London-performances",
+            "outletId": "theatre-news",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
+          },
+          {
+            "url": "https://stagebuddy.com/event/the-secret-circus-musical",
+            "outletId": "stagebuddy",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
+          },
+          {
+            "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/",
+            "outletId": "newyorkfamily.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
+          },
+          {
+            "url": "https://mommypoppins.com/new-york-city-kids/event/events/the-secret-circus-at-the-soho-playhouse",
+            "outletId": "mommypoppins.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-26T02:16:13.920Z"
+          }
+        ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 9
       },
-      "computedAt": "2026-09-25T23:07:29.288Z"
+      "computedAt": "2026-09-26T02:16:13.920Z"
     },
     {
       "showId": "the-seven-deadly-sins-the-human-voice-off-west-end-2026",
@@ -137137,6 +137562,42 @@
         "candidateCount": 8
       },
       "computedAt": "2026-09-20T01:54:21.561Z"
+    },
+    {
+      "showId": "the-standard-of-living-west-end-2026",
+      "title": "The Standard Of Living",
+      "openingDate": "2026-09-29",
+      "status": "previews",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-09-26T02:16:13.920Z"
     },
     {
       "showId": "the-story-olivier-west-end-2026",
