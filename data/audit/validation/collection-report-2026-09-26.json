@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-26T13:18:45.927Z",
+  "runDate": "2026-09-26T15:12:11.914Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 71,
-    "failed": 306,
+    "processed": 72,
+    "failed": 310,
     "skipped": 0,
     "successRate": "18.8%"
   },
   "tierBreakdown": {
     "playwright": 41,
-    "amp": 0,
+    "amp": 2,
     "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 15,
+    "scrapingbee": 16,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 14
   },
   "statistics": {
-    "tier1Attempts": 19,
-    "tier1Success": 5,
-    "ampAttempts": 0,
-    "ampSuccess": 0,
-    "tier1_5Attempts": 6,
-    "tier1_5Success": 4,
-    "tier2Attempts": 17,
-    "tier2Success": 5,
+    "tier1Attempts": 16,
+    "tier1Success": 2,
+    "ampAttempts": 2,
+    "ampSuccess": 2,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 16,
+    "tier2Success": 4,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 12,
+    "tier3_6Attempts": 13,
     "tier3_6Success": 0,
     "tier4Attempts": 15,
     "tier4Success": 2,
-    "totalFailed": 295,
-    "scrapingBeePageCredits": 86,
+    "totalFailed": 299,
+    "scrapingBeePageCredits": 84,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 6,
-    "browserbaseMinutesUsed": 1.6,
-    "urlDiscoveryAttempts": 278,
-    "urlDiscoverySuccess": 2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 282,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -121,7 +121,8 @@
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026/broadwayworld--nicole-rosky.json",
     "two-strangers-bway-2025/playbill--margaret-hall.json",
     "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
-    "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+    "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+    "the-story-west-end-2026/times-uk--clive-davis.json"
   ],
   "failed": [
     "la-boheme-off-broadway-2026/nytimes--anthony-tommasini.json",
@@ -281,7 +282,6 @@
     "the-story-west-end-2026/slantmagazine--unknown.json",
     "the-story-west-end-2026/talkinbroadway--unknown.json",
     "the-story-west-end-2026/the-spectator-uk--the-spectator.json",
-    "the-story-west-end-2026/times-uk--clive-davis.json",
     "electra-persona-west-end-2026/vocaleyes--unknown.json",
     "paranormal-activity-2026/thereviewshub--unknown.json",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/theatermania--david-gordon.json",
@@ -429,7 +429,12 @@
     "heathers-the-musical-off-broadway-2025/londontheatre1--unknown.json",
     "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json",
     "heathers-the-musical-off-broadway-2025/theupcoming--unknown.json",
-    "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json"
+    "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
+    "fish-off-broadway-2026/hollywood-reporter--david-rooney.json",
+    "fish-off-broadway-2026/chicagotribune--unknown.json",
+    "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "heathers-the-musical-off-broadway-2025/west-end-wilma--unknown.json",
+    "heathers-the-musical-off-broadway-2025/nyt-theater--jonathan-mandell.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -475,7 +480,10 @@
       "two-strangers-bway-2025/playbill--margaret-hall.json",
       "amaze-magic-off-broadway-2025/timeout--adam-feldman.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
+      "data/review-texts/man-to-man-west-end-2026/deadline--unknown.json"
+    ],
     "browserbase": [
       "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--unknown.json",
@@ -498,7 +506,8 @@
       "a-month-in-the-country-west-end-2026/theartsdispatch--the-arts-dispatch.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
-      "weve-been-here-before-a-one-woman-musical-off-broadway-2026/broadwayworld--nicole-rosky.json"
+      "weve-been-here-before-a-one-woman-musical-off-broadway-2026/broadwayworld--nicole-rosky.json",
+      "the-story-west-end-2026/times-uk--clive-davis.json"
     ],
     "brightdata": [
       "in-honor-of-jean-michel-basquiat-off-broadway-2026/broadwayworld--fred-mason.json"
@@ -522,6 +531,13 @@
     ]
   },
   "failuresByOutlet": {
+    "WhatsOnStage": {
+      "count": 1,
+      "domain": "whatsonstage.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
     "The Stage": {
       "count": 2,
       "domain": "thestage.co.uk",
@@ -536,16 +552,23 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "The Times (UK)": {
-      "count": 2,
+    "vocaleyes": {
+      "count": 1,
+      "domain": "vocaleyes.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Sunday Times": {
+      "count": 1,
       "domain": "thetimes.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "vocaleyes": {
+    "The Times (UK)": {
       "count": 1,
-      "domain": "vocaleyes.co.uk",
+      "domain": "thetimes.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -567,14 +590,9 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "weve-been-here-before-a-one-woman-musical-off-broadway-2026/broadwayworld--nicole-rosky.json",
-      "oldUrl": "https://www.broadwayworld.com/article/Lindsey-Kraft-Will-Premiere-One-Woman-Musical-WEVE-BEEN-HERE-BEFORE-Music-Directed-By-Ben-Folds-20260709",
-      "newUrl": "https://www.broadwayworld.com/article/Video-Lindsey-Kraft-Ben-Folds-Give-a-Sneak-Peek-of-WEVE-BEEN-HERE-BEFORE-20260727"
-    },
-    {
-      "reviewId": "two-strangers-bway-2025/playbill--margaret-hall.json",
-      "oldUrl": "https://playbill.com/article/watch-fall-in-love-with-new-york-all-over-again-with-two-strangers-carry-a-cake-across-new-york",
-      "newUrl": "https://playbill.com/article/what-are-the-reviews-of-broadways-two-strangers-carry-a-cake-across-new-york"
+      "reviewId": "golden-boy-off-west-end-2026/thestage--dave-fargnoli.json",
+      "oldUrl": "https://thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays",
+      "newUrl": "https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays"
     }
   ]
 }
