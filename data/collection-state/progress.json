@@ -7,7 +7,11 @@
     "the-last-ship-west-end-2026/ground--unknown.json",
     "macbeth-off-broadway-2026/wsj--heidi-waleson.json",
     "macbeth-off-broadway-2026/playbill--dan-meyer.json",
-    "macbeth-off-broadway-2026/playbill--unknown.json"
+    "macbeth-off-broadway-2026/playbill--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/theatreboard--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/theatre-weekly--greg-stewart.json",
+    "darkling-off-west-end-2026/guardian--unknown.json",
+    "darkling-off-west-end-2026/broadwayworld--cindy-marcolina.json"
   ],
   "failed": [
     "delirium-off-broadway-2026/artsfuse--bill-marx.json",
@@ -55,14 +59,33 @@
     "macbeth-off-broadway-2026/talkclassical--unknown.json",
     "macbeth-off-broadway-2026/telegraph--dominic-cavendish.json",
     "macbeth-off-broadway-2026/thestage--unknown.json",
-    "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json"
+    "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/london-unattached--madeleine-morrow.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/thestage--unknown.json",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/times-uk--clive-davis.json",
+    "the-urmetazoan-off-west-end-2026/thestage--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/variety--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/timeout-london--tom-wicker.json",
+    "deep-heat-rivalry-off-west-end-2026/thestage--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/east-midlands-theatre--unknown.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/jacktheladmag--simon-webb.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/west-end-best-friend--maya-bateman.json",
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026/whatsonstage--daniella-harrison.json",
+    "table-17-off-west-end-2026/london-box-office--stuart-king.json",
+    "table-17-off-west-end-2026/thestage--unknown.json",
+    "darkling-off-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "the-last-ship-west-end-2026/a-youngish-perspective--unknown.json",
       "macbeth-off-broadway-2026/playbill--dan-meyer.json",
-      "macbeth-off-broadway-2026/playbill--unknown.json"
+      "macbeth-off-broadway-2026/playbill--unknown.json",
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/theatreboard--unknown.json",
+      "my-sons-a-queer-but-what-can-you-do-west-end-2026/theatre-weekly--greg-stewart.json",
+      "darkling-off-west-end-2026/guardian--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -71,7 +94,8 @@
     ],
     "directCookies": [],
     "scrapingbee": [
-      "the-last-ship-west-end-2026/ground--unknown.json"
+      "the-last-ship-west-end-2026/ground--unknown.json",
+      "darkling-off-west-end-2026/broadwayworld--cindy-marcolina.json"
     ],
     "brightdata": [
       "cosi-fan-tutte-off-broadway-2026/times-uk--unknown.json"
@@ -83,7 +107,7 @@
     ]
   },
   "startTime": "2026-09-26T00:18:18.743Z",
-  "lastProcessed": "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json",
+  "lastProcessed": "darkling-off-west-end-2026/thestage--unknown.json",
   "log": [
     {
       "t": "2026-09-26T00:25:43.615Z",
@@ -118,6 +142,28 @@
       "event": "bb-session",
       "session": "7b5da02d",
       "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+    },
+    {
+      "t": "2026-09-26T01:13:05.965Z",
+      "event": "bb-session",
+      "session": "93d7651d",
+      "url": "https://www.thestage.co.uk/reviews/deep-heat-rivalry-review-the-other-palace-lon"
+    },
+    {
+      "t": "2026-09-26T01:13:06.716Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-26T01:16:31.490Z",
+      "event": "bb-session",
+      "session": "d3930737",
+      "url": "https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london"
+    },
+    {
+      "t": "2026-09-26T01:16:32.016Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
