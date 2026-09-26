@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-26T17:37:12.772Z",
-  "processed": 58,
-  "failed": 196,
-  "successRate": "22.8%",
+  "updatedAt": "2026-09-26T17:52:17.994Z",
+  "processed": 72,
+  "failed": 283,
+  "successRate": "20.3%",
   "tierBreakdown": {
-    "playwright": 25,
+    "playwright": 29,
     "amp": 0,
     "browserbase": 3,
     "directCookies": 0,
     "scrapingbee": 13,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 14
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-09-26T13:04:15.804Z",
@@ -118,6 +118,17 @@
       "event": "bb-session",
       "session": "5965cada",
       "url": "https://www.londonatlarge.com/kimberly-akimbo-hampstead-theatre-review/"
+    },
+    {
+      "t": "2026-09-26T17:38:33.692Z",
+      "event": "bb-session",
+      "session": "ac1f15e2",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-26T17:38:34.469Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
