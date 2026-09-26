@@ -59,10 +59,14 @@ const ALLOWLIST = new Map([
     'Title is "Paranormal Activity"; "national-tour" is the id\'s RUN DESCRIPTOR, matching its five '
     + 'siblings paranormal-activity-{chicago,los-angeles,dc,sf,boston}-regional-*. The descriptor '
     + 'happens to end in a market word; the title never absorbed one.'],
+  ['strictly-come-dancing-london-off-west-end-2027',
+    'Title is "Strictly Come Dancing - London": the London leg (The O2 Arena, 12-14 Feb 2027) of the '
+    + 'touring arena show. "London" names the tour stop, like paranormal-activity-national-tour above; '
+    + 'checked 2026-09-26 that shows.json has no second entry for this run under another title.'],
 ]);
 
 /**
- * HOW THE ONE REAL DEFECT WAS TOLD APART FROM THESE THREE, since no rule does
+ * HOW THE ONE REAL DEFECT WAS TOLD APART FROM THE ALLOWLISTED ROWS, since no rule does
  * it: the SAME production appeared twice in shows.json under two different
  * titles. "1536" at the Ambassadors and "1536 West End" at the Almeida are one
  * play by Ava Pickett, and the transfer entry carried the correct name. A show

@@ -129,6 +129,14 @@ function runChain({ breakerTripped }) {
       SCRAPER_PATH: path.join(HERE, 'scraper.js'),
       SCRAPER_SPEND_LEDGER_PATH: ledger,
       SD_BREAKER_STATE_PATH: breaker,
+      // Isolate the BRIGHT DATA daily breaker too. Without this the child read
+      // the repo's real data/audit/bd-circuit-breaker.json, so on any day real
+      // traffic tripped the web_unlocker2 ceiling, BD was skipped, the chain
+      // fell through to a live Playwright fetch of example.com, and these
+      // three tests went red on main for reasons unrelated to attribution
+      // (2026-09-26: "802 billed vs ceiling 250"). A path with no file reads
+      // as an untripped breaker.
+      BD_BREAKER_STATE_PATH: path.join(dir, 'bd-circuit-breaker.json'),
       // SD must be IN the chain for the breaker to be what removes it —
       // otherwise the test would pass for the wrong reason (SD never ordered).
       SCRAPER_USE_SCRAPINGDOG: '1',
