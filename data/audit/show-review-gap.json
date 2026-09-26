@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-09-26T17:42:56.172Z",
+  "generatedAt": "2026-09-26T20:27:22.812Z",
   "windowDays": 1095,
-  "targets": 254,
-  "auditedThisRun": 13,
-  "carriedForward": 554,
+  "targets": 243,
+  "auditedThisRun": 14,
+  "carriedForward": 553,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 305,
-    "missingCurrentRun": 430,
+    "missingCurrentRun": 425,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 785,
     "totalRecoverable": 7,
     "totalRecovered": 8,
-    "priorProductionCitations": 2526
+    "priorProductionCitations": 2524
   },
   "results": [
     {
@@ -7076,7 +7076,10 @@
       "status": "closed",
       "category": "broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/what-do-the-critics-think-of-art-on-broadway"
+        "https://playbill.com/article/what-do-the-critics-think-of-art-on-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-ART-Opens-On-Broadway-Starring-Bobby-Cannavale-James-Corden-and-Neil-Patrick-Harris-20250916",
+        "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-at-ART-20250602",
+        "https://www.broadwayworld.com/article/Review-Roundup-GATSBY-Makes-its-World-Premiere-at-ART-20240614"
       ],
       "aggregatorListedUrls": [
         "https://1minutecritic.com/neil-patrick-harris-art-broadway-review/",
@@ -7092,40 +7095,28 @@
         "https://www.thewrap.com/art-broadway-review-bobby-cannavale-james-corden-neil-patrick-harris/",
         "https://www.vulture.com/article/theater-review-yasmina-reza-art-revival-harris-corden-cannavale.html",
         "https://deadline.com/2025/09/art-broadway-review-1236544412/",
+        "https://nystagereview.com/2025/09/16/art-male-friends-argue-on-a-flashy-canvas/",
         "https://variety.com/2025/legit/reviews/art-review-broadway-play-james-corden-1236519571/",
-        "https://nypost.com/2025/09/16/entertainment/art-review-james-corden-and-neil-patrick-harris-drone-on-about-paintings-in-retro-broadway-comedy/"
+        "https://www.theguardian.com/stage/2025/sep/17/art-review-james-corden-broadway-stars",
+        "https://nypost.com/2025/09/16/entertainment/art-review-james-corden-and-neil-patrick-harris-drone-on-about-paintings-in-retro-broadway-comedy/",
+        "https://www.thedailybeast.com/obsessed/art-review-james-corden-delivers-a-masterclass-of-broadway-comedy/",
+        "https://www.amny.com/entertainment/broadway/review-art-starry-cast-blank-canvas/",
+        "https://www.chicagotribune.com/2025/09/16/review-art-broadway-james-corden/",
+        "https://apnews.com/article/art-broadway-review-2025-cad36d5e3c340bcb0101604163c7f999",
+        "https://www.wsj.com/articles/art-review-james-cordens-comic-master-class-on-broadway-87b79479",
+        "https://www.bostonglobe.com/2024/06/13/arts/art-gatsby-thats-great/"
       ],
-      "dirFiles": 53,
+      "dirFiles": 54,
       "dirClean": 31,
       "inReviewsJson": 31,
       "missing": [],
       "dirOnly": [
         {
-          "host": "amny.com",
-          "count": 1
-        },
-        {
-          "host": "apnews.com",
-          "count": 1
-        },
-        {
           "host": "artsfuse.org",
           "count": 1
         },
         {
-          "host": "chicagotribune.com",
-          "count": 1
-        },
-        {
-          "host": "thedailybeast.com",
-          "count": 1
-        },
-        {
           "host": "frontmezzjunkies.com",
-          "count": 1
-        },
-        {
-          "host": "theguardian.com",
           "count": 1
         },
         {
@@ -7163,10 +7154,6 @@
         {
           "host": "washingtonpost.com",
           "count": 1
-        },
-        {
-          "host": "wsj.com",
-          "count": 1
         }
       ],
       "flaggedMisses": [
@@ -7203,6 +7190,25 @@
               "urlInDir": "https://www.thetimes.com/culture/theatre-dance/article/art-review-james-corden-broadway-sx6frth52?gaa_at=eafs&gaa_n=AWEtsqeevqVNqPO05eKHCEBDL6UlQbpahKcP1Z09iWgLQ4bVHNRQi5a1HM0J&gaa_ts=69ad09cb&gaa_sig=MnARf64rZmjeIZJ9hmSqg5F5FSHvq_v1wHe9CFPf8bTDeYopOfZ8x_ru95XZy174HJIb_WCcKsaWPPy8YTWDSw%3D%3D"
             }
           ]
+        },
+        {
+          "url": "https://www.bostonglobe.com/2024/06/13/arts/art-gatsby-thats-great/",
+          "host": "bostonglobe.com",
+          "knownOutletId": "boston-globe",
+          "recoverable": true,
+          "recoverableFile": "boston-globe--don-aucoin.json",
+          "recoverableOutletId": "boston-globe",
+          "recoverableCritic": "Don Aucoin",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "boston-globe--don-aucoin.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.bostonglobe.com/2025/12/03/arts/wonder-art-rj-palacio/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "citedNoUrl": [],
@@ -7212,15 +7218,25 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 119,
+        "count": 991,
         "byReason": {
-          "non-review-host": 21,
-          "aggregator-internal-nav": 87,
-          "not-http-url": 7,
-          "aggregator-section-root": 4
+          "aggregator-internal-nav": 751,
+          "not-http-url": 156,
+          "aggregator-section-root": 16,
+          "non-review-host": 68
         }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-at-ART-20250602",
+          "publishDate": "2025-06-02"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-GATSBY-Makes-its-World-Premiere-at-ART-20240614",
+          "publishDate": "2024-06-14"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -7308,16 +7324,58 @@
             "firstSeenAt": "2026-08-16T12:14:10.381Z"
           },
           {
+            "url": "https://nystagereview.com/2025/09/16/art-male-friends-argue-on-a-flashy-canvas/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T20:27:22.812Z"
+          },
+          {
             "url": "https://variety.com/2025/legit/reviews/art-review-broadway-play-james-corden-1236519571/",
             "outletId": "variety.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T12:14:10.381Z"
           },
           {
+            "url": "https://www.theguardian.com/stage/2025/sep/17/art-review-james-corden-broadway-stars",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T20:27:22.812Z"
+          },
+          {
             "url": "https://nypost.com/2025/09/16/entertainment/art-review-james-corden-and-neil-patrick-harris-drone-on-about-paintings-in-retro-broadway-comedy/",
             "outletId": "nypost.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T12:14:10.381Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/obsessed/art-review-james-corden-delivers-a-masterclass-of-broadway-comedy/",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T20:27:22.812Z"
+          },
+          {
+            "url": "https://www.amny.com/entertainment/broadway/review-art-starry-cast-blank-canvas/",
+            "outletId": "amny.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T20:27:22.812Z"
+          },
+          {
+            "url": "https://www.chicagotribune.com/2025/09/16/review-art-broadway-james-corden/",
+            "outletId": "chicagotribune.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T20:27:22.812Z"
+          },
+          {
+            "url": "https://apnews.com/article/art-broadway-review-2025-cad36d5e3c340bcb0101604163c7f999",
+            "outletId": "apnews.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T20:27:22.812Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/art-review-james-cordens-comic-master-class-on-broadway-87b79479",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T20:27:22.812Z"
           },
           {
             "url": "https://observer.com/2025/09/art-review-james-corden-neil-patrick-harris-bobby-cannavale/",
@@ -7335,10 +7393,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 13,
-        "candidateCount": 15
+        "liveCount": 19,
+        "candidateCount": 21
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-26T20:27:22.812Z"
     },
     {
       "showId": "as-you-like-it-globe-west-end-2026",
@@ -17319,12 +17377,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 394,
+        "count": 398,
         "byReason": {
-          "non-review-host": 36,
-          "aggregator-internal-nav": 304,
+          "aggregator-internal-nav": 308,
           "not-http-url": 46,
-          "aggregator-section-root": 8
+          "aggregator-section-root": 8,
+          "non-review-host": 36
         }
       },
       "dedupedVariants": [],
@@ -17339,7 +17397,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  provisional outlet \"open\" (not in registry) — onboard to outlet-registry.json after review.\nArti"
+          "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://ope"
         }
       ],
       "ingestSkippedByCap": [],
@@ -17546,7 +17604,7 @@
         "liveCount": 18,
         "candidateCount": 24
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-26T20:27:22.812Z"
     },
     {
       "showId": "camping-off-broadway-2026",
@@ -38294,12 +38352,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 392,
+        "count": 396,
         "byReason": {
-          "non-review-host": 36,
-          "aggregator-internal-nav": 306,
+          "aggregator-internal-nav": 310,
           "not-http-url": 42,
-          "aggregator-section-root": 8
+          "aggregator-section-root": 8,
+          "non-review-host": 36
         }
       },
       "dedupedVariants": [],
@@ -38468,7 +38526,7 @@
         "liveCount": 19,
         "candidateCount": 21
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-26T20:27:22.812Z"
     },
     {
       "showId": "forest-high-and-the-glitch-in-the-system-a-new-sci-fi-musical-off-broadway-2026",
@@ -62837,11 +62895,22 @@
       "status": "closed",
       "category": "broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-are-out-for-john-proctor-is-the-villain-starring-sadie-sink",
         "https://playbill.com/article/what-do-london-critics-think-of-john-proctor-is-the-villain",
+        "https://playbill.com/article/reviews-are-out-for-john-proctor-is-the-villain-starring-sadie-sink",
         "https://www.broadwayworld.com/article/Review-Roundup-JOHN-PROCTOR-IS-THE-VILLAIN-Opens-On-Broadway-20250414"
       ],
       "aggregatorListedUrls": [
+        "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
+        "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/john-proctor-is-the-villain-review-royal-court-b2946888.html",
+        "https://www.newstatesman.com/culture/2026/03/john-proctor-is-the-villain-is-a-thrilling-teenage-girl-take-on-the-crucible",
+        "https://therecs.co.uk/john-proctor-is-the-villain/",
+        "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-theatre-downstairs-royal-court-london",
+        "https://www.standard.co.uk/culture/theatre/john-proctor-is-the-villain-royal-court-theatre-review-b1276711.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/royal-court-theatre-john-proctor-is-the-villain-review/",
+        "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
+        "https://www.thetimes.com/culture/theatre-dance/article/john-proctor-is-the-villain-review-arthur-miller-for-the-metoo-era-kx3bcrjbl",
+        "https://theatreandtonic.co.uk/blog/john-proctor-is-the-villain-royal-court-theatre-review",
+        "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/",
         "https://www.amny.com/entertainment/theater/review-john-proctor-is-the-villain/",
         "https://www.chicagotribune.com/2025/04/14/review-john-proctor-is-the-villain-on-broadway-reinvents-the-crucible-for-today/",
         "https://cititour.com/NYC_Broadway/John-Proctor-is-the-Villain/1296",
@@ -62867,17 +62936,6 @@
         "https://variety.com/2025/legit/reviews/john-proctor-is-the-villain-review-broadway-sadie-sink-1236368941/",
         "https://www.washingtonpost.com/entertainment/theater/2025/04/14/john-proctor-is-the-villain-broadway-review/",
         "https://www.thewrap.com/john-proctor-is-the-villain-broadway-review-sadie-sink/",
-        "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
-        "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/john-proctor-is-the-villain-review-royal-court-b2946888.html",
-        "https://www.newstatesman.com/culture/2026/03/john-proctor-is-the-villain-is-a-thrilling-teenage-girl-take-on-the-crucible",
-        "https://therecs.co.uk/john-proctor-is-the-villain/",
-        "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-theatre-downstairs-royal-court-london",
-        "https://www.standard.co.uk/culture/theatre/john-proctor-is-the-villain-royal-court-theatre-review-b1276711.html",
-        "https://www.telegraph.co.uk/theatre/what-to-see/royal-court-theatre-john-proctor-is-the-villain-review/",
-        "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
-        "https://www.thetimes.com/culture/theatre-dance/article/john-proctor-is-the-villain-review-arthur-miller-for-the-metoo-era-kx3bcrjbl",
-        "https://theatreandtonic.co.uk/blog/john-proctor-is-the-villain-royal-court-theatre-review",
-        "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/",
         "https://www.newyorktheatreguide.com/theatre-news/news/the-emotional-empowering-role-of-music-in-john-proctor-is-the-villain-on-broadway",
         "https://www.teenvogue.com/story/sadie-sink-cover-march-april-2025-interview"
       ],
@@ -63019,12 +63077,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 490,
+        "count": 499,
         "byReason": {
-          "non-review-host": 55,
-          "aggregator-internal-nav": 353,
+          "aggregator-internal-nav": 361,
           "not-http-url": 69,
-          "aggregator-section-root": 13
+          "aggregator-section-root": 13,
+          "non-review-host": 55,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -63106,6 +63165,24 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-31T00:09:38.552Z"
+          },
+          {
+            "url": "https://www.newstatesman.com/culture/2026/03/john-proctor-is-the-villain-is-a-thrilling-teenage-girl-take-on-the-crucible",
+            "outletId": "newstatesman.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-31T00:09:38.552Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-31T00:09:38.552Z"
+          },
           {
             "url": "https://www.amny.com/entertainment/theater/review-john-proctor-is-the-villain/",
             "outletId": "amny.com",
@@ -63251,24 +63328,6 @@
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-31T00:09:38.552Z"
-          },
-          {
-            "url": "https://www.newstatesman.com/culture/2026/03/john-proctor-is-the-villain-is-a-thrilling-teenage-girl-take-on-the-crucible",
-            "outletId": "newstatesman.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-31T00:09:38.552Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-31T00:09:38.552Z"
-          },
-          {
             "url": "https://www.newyorktheatreguide.com/theatre-news/news/the-emotional-empowering-role-of-music-in-john-proctor-is-the-villain-on-broadway",
             "outletId": "newyorktheatreguide.com",
             "state": "live",
@@ -63293,7 +63352,7 @@
         "liveCount": 24,
         "candidateCount": 26
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-26T20:27:22.812Z"
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
@@ -68631,7 +68690,7 @@
         "https://www.newyorktheatreguide.com/reviews/liberation-broadway-review",
         "https://www.nydailynews.com/2025/10/28/broadway-review-liberation-bess-wohl/"
       ],
-      "dirFiles": 45,
+      "dirFiles": 47,
       "dirClean": 31,
       "inReviewsJson": 30,
       "missing": [
@@ -68759,12 +68818,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 718,
+        "count": 722,
         "byReason": {
-          "non-review-host": 55,
-          "aggregator-internal-nav": 542,
+          "aggregator-internal-nav": 546,
           "not-http-url": 109,
-          "aggregator-section-root": 12
+          "aggregator-section-root": 12,
+          "non-review-host": 55
         }
       },
       "dedupedVariants": [],
@@ -68959,7 +69018,7 @@
         "liveCount": 17,
         "candidateCount": 19
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-26T20:27:22.812Z"
     },
     {
       "showId": "little-bear-ridge-road-2025",
@@ -69005,7 +69064,7 @@
         "https://www.newyorker.com/magazine/2025/11/10/little-bear-ridge-road-theatre-review-the-bride-and-the-goodnight-cinderella"
       ],
       "dirFiles": 37,
-      "dirClean": 28,
+      "dirClean": 29,
       "inReviewsJson": 25,
       "missing": [
         {
@@ -69037,6 +69096,10 @@
         },
         {
           "host": "lavocedinewyork.com",
+          "count": 1
+        },
+        {
+          "host": "playbill.com",
           "count": 1
         },
         {
@@ -69169,12 +69232,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 790,
+        "count": 798,
         "byReason": {
-          "non-review-host": 71,
-          "aggregator-internal-nav": 583,
+          "aggregator-internal-nav": 591,
           "not-http-url": 120,
-          "aggregator-section-root": 16
+          "aggregator-section-root": 16,
+          "non-review-host": 71
         }
       },
       "dedupedVariants": [],
@@ -69412,7 +69475,7 @@
         "liveCount": 19,
         "candidateCount": 24
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-26T20:27:22.812Z"
     },
     {
       "showId": "little-bear-ridge-road-regional-2024",
@@ -72004,14 +72067,14 @@
         {
           "url": "https://www.sdjewishworld.com/2023/11/09/audience-delights-in-familiar-songs-of-mamma-mia/",
           "host": "sdjewishworld.com",
-          "knownOutletId": null,
+          "knownOutletId": "san-diego-jewish-world",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://gephardtdaily.com/uncategorized/review-mamma-mia-adds-70s-fun-fashion-to-pre-holiday-festivities/",
           "host": "gephardtdaily.com",
-          "knownOutletId": null,
+          "knownOutletId": "gephardt-daily",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -72032,7 +72095,7 @@
         {
           "url": "https://captimes.com/entertainment/theater/mamma-mia-takes-it-all-at-madisons-overture-center/article_553dc678-e639-11ee-8c30-f7271259a571.html",
           "host": "captimes.com",
-          "knownOutletId": null,
+          "knownOutletId": "the-cap-times",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -72053,28 +72116,28 @@
         {
           "url": "https://www.theoaklandpress.com/2024/04/24/mamma-mia-at-the-fisher-theatre-still-makes-dancing-queens-of-us-all-25-years-later/",
           "host": "theoaklandpress.com",
-          "knownOutletId": null,
+          "knownOutletId": "the-oakland-press",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://freepressokc.com/okc-broadways-mamma-mia-rocks-the-civic-center/",
           "host": "freepressokc.com",
-          "knownOutletId": null,
+          "knownOutletId": "oklahoma-city-free-press",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://www.bocamag.com/theatre-review-mamma-mia-at-kravis-center/",
           "host": "bocamag.com",
-          "knownOutletId": null,
+          "knownOutletId": "boca-magazine",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://www.palmbeachdailynews.com/story/entertainment/theater/2024/06/26/review-talented-cast-gives-new-life-to-crowd-pleaser-mamma-mia/74218774007/",
           "host": "palmbeachdailynews.com",
-          "knownOutletId": null,
+          "knownOutletId": "palm-beach-daily-news",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -72109,7 +72172,7 @@
         {
           "url": "https://whatsupnewp.com/2024/11/theatre-review-mamma-mia-continues-to-delight-audiences-with-standout-performances-and-energetic-dance-numbers/",
           "host": "whatsupnewp.com",
-          "knownOutletId": null,
+          "knownOutletId": "whats-up-newp",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -72123,7 +72186,7 @@
         {
           "url": "https://www.postcrescent.com/story/news/crime/2024/12/19/review-mamma-mia-shines-at-fox-cities-pac-in-appleton/77062302007/",
           "host": "postcrescent.com",
-          "knownOutletId": null,
+          "knownOutletId": "post-crescent",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -72137,7 +72200,7 @@
         {
           "url": "https://roughdraftatlanta.com/2025/02/26/mamma-mia-and-abba-bring-joy-and-energy-to-the-fox-theatre/",
           "host": "roughdraftatlanta.com",
-          "knownOutletId": null,
+          "knownOutletId": "rough-draft-atlanta",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -72165,7 +72228,7 @@
         {
           "url": "https://www.theoaklandpress.com/2026/03/25/mamma-mia-lays-on-all-its-love-again-at-the-fisher-theatre/",
           "host": "theoaklandpress.com",
-          "knownOutletId": null,
+          "knownOutletId": "the-oakland-press",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -72428,12 +72491,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1099,
+        "count": 1106,
         "byReason": {
-          "non-review-host": 89,
-          "aggregator-internal-nav": 831,
-          "not-http-url": 159,
-          "aggregator-section-root": 20
+          "aggregator-internal-nav": 830,
+          "not-http-url": 165,
+          "aggregator-section-root": 22,
+          "non-review-host": 89
         }
       },
       "dedupedVariants": [],
@@ -72936,7 +72999,7 @@
         "liveCount": 17,
         "candidateCount": 21
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-26T20:27:22.812Z"
     },
     {
       "showId": "man-to-man-west-end-2026",
@@ -74033,8 +74096,7 @@
         "https://playbill.com/article/what-are-the-reviews-for-marjorie-prime-on-broadway",
         "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-the-u-k-premiere-of-marjorie-prime",
         "https://playbill.com/article/what-do-critics-think-of-the-marjorie-prime-movie",
-        "https://www.broadwayworld.com/article/Review-Roundup-MARJORIE-PRIME-Opens-On-Broadway-Starring-Cynthia-Nixon-June-Squibb-Danny-Burstein-and-More-20251208",
-        "https://www.broadwayworld.com/article/Review-Roundup-MARJORIE-PRIME-Starring-Lois-Smith-Opens-Off-Broadway-20151214"
+        "https://www.broadwayworld.com/article/Review-Roundup-MARJORIE-PRIME-Opens-On-Broadway-Starring-Cynthia-Nixon-June-Squibb-Danny-Burstein-and-More-20251208"
       ],
       "aggregatorListedUrls": [
         "https://1minutecritic.com/marjorie-prime-broadway-review-june-squibb-cynthia-nixon/",
@@ -74071,10 +74133,6 @@
         "http://www.nytimes.com/2017/08/17/movies/marjorie-prime-review-jon-hamm.html",
         "http://undertheradarmag.com/reviews/marjorie_prime",
         "http://www.vanityfair.com/hollywood/2017/08/marjorie-prime-movie-review",
-        "http://www.nytimes.com/2015/12/15/theater/review-in-marjorie-prime-lois-smith-connects-with-the-past.html",
-        "http://variety.com/2015/legit/reviews/marjorie-prime-review-1201661106/",
-        "http://www.timeout.com/newyork/theater/marjorie-prime",
-        "http://www.nydailynews.com/entertainment/theater-arts/marjorie-prime-review-article-1.2463387",
         "https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the-ai-future-fb508e75"
       ],
       "dirFiles": 49,
@@ -74344,68 +74402,6 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://variety.com/2015/legit/reviews/marjorie-prime-review-1201661106/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "variety--marilyn-stasio.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://variety.com/2015/legit/reviews/marjorie-prime-review-1201661106/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/marjorie-prime",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout--adam-feldman.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.timeout.com/newyork/theater/marjorie-prime-broadway-revival-review-june-squibb-cynthia-nixon-jordan-harrison-danny-burstein-artifical-intelligence-ai"
-            },
-            {
-              "file": "timeout-london--andrzej-lukowski.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/theatre/marjorie-primereview"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/theater-arts/marjorie-prime-review-article-1.2463387",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--chris-jones.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nydailynews.com/2025/12/08/broadway-review-marjorie-prime-cynthia-nixon-june-squibb/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
         }
       ],
       "citedNoUrl": [],
@@ -74415,12 +74411,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 902,
+        "count": 650,
         "byReason": {
-          "non-review-host": 90,
-          "aggregator-internal-nav": 687,
-          "not-http-url": 105,
-          "aggregator-section-root": 20
+          "aggregator-internal-nav": 481,
+          "not-http-url": 78,
+          "aggregator-section-root": 16,
+          "non-review-host": 75
         }
       },
       "dedupedVariants": [],
@@ -74432,10 +74428,6 @@
         {
           "url": "https://playbill.com/article/what-do-critics-think-of-the-marjorie-prime-movie",
           "publishDate": "2017-08-17"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-MARJORIE-PRIME-Starring-Lois-Smith-Opens-Off-Broadway-20151214",
-          "publishDate": "2015-12-14"
         }
       ],
       "weIngestBlocked": [
@@ -74608,12 +74600,6 @@
             "firstSeenAt": "2026-08-16T12:14:10.381Z"
           },
           {
-            "url": "http://www.nytimes.com/2015/12/15/theater/review-in-marjorie-prime-lois-smith-connects-with-the-past.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T12:14:10.381Z"
-          },
-          {
             "url": "https://www.wsj.com/articles/marjorie-prime-review-broadways-family-drama-of-the-ai-future-fb508e75",
             "outletId": "wsj.com",
             "state": "live",
@@ -74645,7 +74631,7 @@
         "liveCount": 18,
         "candidateCount": 21
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-26T20:27:22.812Z"
     },
     {
       "showId": "marlise-off-broadway-2026",
@@ -86154,7 +86140,7 @@
         "https://www.washingtonpost.com/entertainment/theater/2025/11/14/oedipus-broadway-review-lesley-manville-mark-strong/"
       ],
       "dirFiles": 46,
-      "dirClean": 27,
+      "dirClean": 26,
       "inReviewsJson": 28,
       "missing": [
         {
@@ -86282,12 +86268,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 425,
+        "count": 474,
         "byReason": {
-          "non-review-host": 39,
-          "aggregator-internal-nav": 292,
-          "not-http-url": 86,
-          "aggregator-section-root": 8
+          "aggregator-internal-nav": 288,
+          "not-http-url": 140,
+          "aggregator-section-root": 10,
+          "non-review-host": 36
         }
       },
       "dedupedVariants": [],
@@ -86448,7 +86434,7 @@
         "liveCount": 13,
         "candidateCount": 15
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-26T20:27:22.812Z"
     },
     {
       "showId": "oh-mary-2024",
@@ -96020,12 +96006,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 428,
+        "count": 432,
         "byReason": {
-          "non-review-host": 39,
-          "aggregator-internal-nav": 304,
+          "aggregator-internal-nav": 308,
           "not-http-url": 77,
-          "aggregator-section-root": 8
+          "aggregator-section-root": 8,
+          "non-review-host": 39
         }
       },
       "dedupedVariants": [],
@@ -96150,7 +96136,7 @@
         "liveCount": 14,
         "candidateCount": 15
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-26T20:27:22.812Z"
     },
     {
       "showId": "poet-on-a-string-off-broadway-2026",
@@ -99010,7 +98996,7 @@
       ],
       "dirFiles": 39,
       "dirClean": 20,
-      "inReviewsJson": 20,
+      "inReviewsJson": 22,
       "missing": [],
       "dirOnly": [
         {
@@ -99112,23 +99098,6 @@
           ]
         },
         {
-          "url": "https://newyorknotebook.substack.com/p/punch",
-          "host": "newyorknotebook.substack.com",
-          "knownOutletId": "new-york-notebook",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "vulture--sandy-macdonald.json",
-              "flag": "clean",
-              "urlInDir": "https://newyorknotebook.substack.com/p/punch"
-            }
-          ]
-        },
-        {
           "url": "https://www.newyorktheatreguide.com/reviews/punch-broadway-review",
           "host": "newyorktheatreguide.com",
           "knownOutletId": "nytg",
@@ -99185,6 +99154,28 @@
           ]
         },
         {
+          "url": "https://www.timeout.com/newyork/theater/punch-broadway-play-review-will-harrison-james-graham",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--adam-feldman.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.timeout.com/newyork/theater/punch-broadway-play-review-will-harrison-james-graham"
+            },
+            {
+              "file": "timeout--morgan-carter.json",
+              "flag": "clean",
+              "urlInDir": "https://www.timeout.com/newyork/theater/punch-broadway-play-review-will-harrison-james-graham"
+            }
+          ]
+        },
+        {
           "url": "https://www.chicagotribune.com/2025/09/29/review-punch-broadway/",
           "host": "chicagotribune.com",
           "knownOutletId": "chicagotribune",
@@ -99209,12 +99200,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 429,
+        "count": 433,
         "byReason": {
-          "non-review-host": 35,
-          "aggregator-internal-nav": 299,
+          "aggregator-internal-nav": 303,
           "not-http-url": 87,
-          "aggregator-section-root": 8
+          "aggregator-section-root": 8,
+          "non-review-host": 35
         }
       },
       "dedupedVariants": [],
@@ -99250,13 +99241,6 @@
             "url": "https://www.nydailynews.com/2025/09/29/broadway-review-punch-manhattan-theatre-club/"
           },
           {
-            "outletId": "new-york-notebook",
-            "outlet": "new-york-notebook",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://newyorknotebook.substack.com/p/punch"
-          },
-          {
             "outletId": "nytg",
             "outlet": "nytg",
             "critic": "Unknown",
@@ -99276,6 +99260,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatermania.com/news/review-james-grahams-punch-a-much-needed-dose-of-hope-in-a-broken-world_1805266/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/punch-broadway-play-review-will-harrison-james-graham"
           },
           {
             "outletId": "chicagotribune",
@@ -99324,6 +99315,12 @@
             "firstSeenAt": "2026-08-16T12:14:10.381Z"
           },
           {
+            "url": "https://newyorknotebook.substack.com/p/punch",
+            "outletId": "newyorknotebook.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T12:14:10.381Z"
+          },
+          {
             "url": "https://newyorktheater.me/2025/09/29/punch-broadway-review/",
             "outletId": "newyorktheater.me",
             "state": "live",
@@ -99332,12 +99329,6 @@
           {
             "url": "https://www.theatrely.com/post/punch-redemption-and-runarounds-review",
             "outletId": "theatrely.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T12:14:10.381Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/punch-broadway-play-review-will-harrison-james-graham",
-            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T12:14:10.381Z"
           },
@@ -99394,13 +99385,6 @@
             "firstSeenAt": "2026-08-16T12:14:10.381Z"
           },
           {
-            "url": "https://newyorknotebook.substack.com/p/punch",
-            "outletId": "new-york-notebook",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T12:14:10.381Z"
-          },
-          {
             "url": "https://www.newyorktheatreguide.com/reviews/punch-broadway-review",
             "outletId": "nytg",
             "state": "GAP",
@@ -99422,6 +99406,13 @@
             "firstSeenAt": "2026-08-16T12:14:10.381Z"
           },
           {
+            "url": "https://www.timeout.com/newyork/theater/punch-broadway-play-review-will-harrison-james-graham",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-16T12:14:10.381Z"
+          },
+          {
             "url": "https://www.chicagotribune.com/2025/09/29/review-punch-broadway/",
             "outletId": "chicagotribune",
             "state": "GAP",
@@ -99433,7 +99424,7 @@
         "liveCount": 12,
         "candidateCount": 21
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-26T20:27:22.812Z"
     },
     {
       "showId": "purpose-2025",
@@ -108998,10 +108989,10 @@
       "candidatesRejected": {
         "count": 282,
         "byReason": {
-          "non-review-host": 16,
           "aggregator-internal-nav": 223,
           "not-http-url": 39,
-          "aggregator-section-root": 4
+          "aggregator-section-root": 4,
+          "non-review-host": 16
         }
       },
       "dedupedVariants": [],
@@ -109162,7 +109153,7 @@
         "liveCount": 19,
         "candidateCount": 20
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-26T20:27:22.812Z"
     },
     {
       "showId": "space-dogs-off-west-end-2026",
@@ -117038,29 +117029,29 @@
         "https://observer.com/2024/09/review-ex-lovers-eat-their-hearts-out-in-savory-romantic-comedy-table-17/",
         "https://www.theatermania.com/news/off-broadway-review-table-17-presents-the-anatomy-of-a-breakup_1749210/",
         "https://www.thewrap.com/table-17-off-broadway-review-michael-rishawn/",
-        "https://www.theguardian.com/stage/2026/sep/25/table-17-review-kiln-theatre-london",
         "https://www.londontheatre.co.uk/reviews/table-17-review-kiln-theatre",
+        "https://www.theguardian.com/stage/2026/sep/25/table-17-review-kiln-theatre-london",
         "https://www.londonboxoffice.co.uk/news/post/table-17-kiln-theatre-review",
         "https://www.thereviewshub.com/table-17-kiln-theatre-london/",
         "https://everything-theatre.co.uk/2026/09/review-table-17-kiln-theatre/",
-        "https://www.thestage.co.uk/reviews/table-17-review-kiln-theatre-london-marisha-wallace",
         "https://www.london-unattached.com/table-17-kiln-theatre/",
-        "https://www.londonlivinglarge.com/2026/09/table-17-kiln-theatre-sep-17-oct-24-2026.html",
+        "https://www.thestage.co.uk/reviews/table-17-review-kiln-theatre-london-marisha-wallace",
         "https://www.allthatdazzles.co.uk/post/review-table-17-kiln-theatre",
         "https://www.broadwayworld.com/westend/article/Review-TABLE-17-Starring-Marisha-Wallace-20260924",
-        "https://www.whatsonstage.com/news/table-17-at-the-kiln-theatre-review_1732618/",
-        "https://theatreweekly.com/review-table-17-at-kiln-theatre/",
         "https://kilntheatre.com/whats-on/table-17/",
         "https://www.show-score.com/uk/london/off-west-end-shows/table-17-kiln-theatre",
+        "https://www.whatsonstage.com/news/table-17-at-the-kiln-theatre-review_1732618/",
+        "https://www.westendbestfriend.co.uk/news/review-table-17-kiln-theatre",
         "https://www.londontheatredirect.com/play/table-17-tickets",
+        "https://theatreweekly.com/review-table-17-at-kiln-theatre/",
         "https://jamiewilsonproductions.com/news/table-17-to-premiere-at-the-kiln-theatre/",
+        "https://firstnightmagazine.com/2026/09/25/review-of-table-17-lacklustre-rom-com-isnt-out-of-the-date-but-isnt-flavourful-either/",
         "https://exeuntnyc.com/reviews/review-table-17-at-mcc-theater/",
-        "https://www.aol.co.uk/articles/table-17-review-tasty-romcom-160010000.html",
-        "https://kilntheatre.com/table-17-cinema-season/"
+        "https://www.timeout.com/london/theatre/table-17"
       ],
-      "dirFiles": 5,
-      "dirClean": 4,
-      "inReviewsJson": 3,
+      "dirFiles": 13,
+      "dirClean": 11,
+      "inReviewsJson": 11,
       "missing": [
         {
           "url": "https://cititour.com/NYC_Broadway/Table-17/1247",
@@ -117126,42 +117117,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.theguardian.com/stage/2026/sep/25/table-17-review-kiln-theatre-london",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/table-17-review-kiln-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.thereviewshub.com/table-17-kiln-theatre-london/",
-          "host": "thereviewshub.com",
-          "knownOutletId": "thereviewshub",
-          "serpCensus": true
-        },
-        {
-          "url": "https://everything-theatre.co.uk/2026/09/review-table-17-kiln-theatre/",
-          "host": "everything-theatre.co.uk",
-          "knownOutletId": "everything-theatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.london-unattached.com/table-17-kiln-theatre/",
-          "host": "london-unattached.com",
-          "knownOutletId": "london-unattached",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londonlivinglarge.com/2026/09/table-17-kiln-theatre-sep-17-oct-24-2026.html",
-          "host": "londonlivinglarge.com",
-          "knownOutletId": "londonlivinglarge",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.allthatdazzles.co.uk/post/review-table-17-kiln-theatre",
           "host": "allthatdazzles.co.uk",
           "knownOutletId": "all-that-dazzles-uk",
@@ -117186,6 +117141,12 @@
           "serpCensus": true
         },
         {
+          "url": "https://www.westendbestfriend.co.uk/news/review-table-17-kiln-theatre",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend",
+          "serpCensus": true
+        },
+        {
           "url": "https://www.londontheatredirect.com/play/table-17-tickets",
           "host": "londontheatredirect.com",
           "knownOutletId": "londontheatredirect",
@@ -117198,25 +117159,34 @@
           "serpCensus": true
         },
         {
+          "url": "https://firstnightmagazine.com/2026/09/25/review-of-table-17-lacklustre-rom-com-isnt-out-of-the-date-but-isnt-flavourful-either/",
+          "host": "firstnightmagazine.com",
+          "knownOutletId": "firstnightmagazine",
+          "serpCensus": true
+        },
+        {
           "url": "https://exeuntnyc.com/reviews/review-table-17-at-mcc-theater/",
           "host": "exeuntnyc.com",
           "knownOutletId": "exeunt-magazine",
           "serpCensus": true
         },
         {
-          "url": "https://www.aol.co.uk/articles/table-17-review-tasty-romcom-160010000.html",
-          "host": "aol.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://kilntheatre.com/table-17-cinema-season/",
-          "host": "kilntheatre.com",
-          "knownOutletId": null,
+          "url": "https://www.timeout.com/london/theatre/table-17",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
           "serpCensus": true
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "theartsdesk.com",
+          "count": 1
+        },
+        {
+          "host": "londonlivinglarge.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
@@ -117273,7 +117243,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 8,
+            "accepted": 7,
             "error": null
           },
           {
@@ -117283,7 +117253,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 4,
+            "accepted": 2,
             "error": null
           },
           {
@@ -117293,7 +117263,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -117303,7 +117273,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 4,
             "error": null
           },
           {
@@ -117323,14 +117293,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 396,
+        "count": 395,
         "byReason": {
           "aggregator-internal-nav": 298,
           "not-http-url": 40,
           "aggregator-section-root": 8,
           "non-review-host": 47,
-          "ticketing-listing": 1,
-          "non-review-path": 2
+          "roundup-page": 1,
+          "news-article": 1
         }
       },
       "dedupedVariants": [],
@@ -117402,9 +117372,9 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.theguardian.com/stage/2026/sep/25/table-17-review-kiln-theatre-london",
-          "host": "theguardian.com",
-          "outletId": "guardian",
+          "url": "https://www.allthatdazzles.co.uk/post/review-table-17-kiln-theatre",
+          "host": "allthatdazzles.co.uk",
+          "outletId": "all-that-dazzles-uk",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -117414,45 +117384,45 @@
           "reason": null
         },
         {
-          "url": "https://www.londontheatre.co.uk/reviews/table-17-review-kiln-theatre",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
+          "url": "https://www.broadwayworld.com/westend/article/Review-TABLE-17-Starring-Marisha-Wallace-20260924",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld",
           "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://kilntheatre.com/whats-on/table-17/",
+          "host": "kilntheatre.com",
+          "outletId": "kilntheatre",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.show-score.com/uk/london/off-west-end-shows/table-17-kiln-theatre",
+          "host": "show-score.com",
+          "outletId": null,
+          "provisional": true,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "spawnSync node ETIMEDOUT"
+          "reason": "unknown-outlet-aggregator-host (show-score.com)"
         },
         {
-          "url": "https://www.thereviewshub.com/table-17-kiln-theatre-london/",
-          "host": "thereviewshub.com",
-          "outletId": "thereviewshub",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://everything-theatre.co.uk/2026/09/review-table-17-kiln-theatre/",
-          "host": "everything-theatre.co.uk",
-          "outletId": "everything-theatre",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.london-unattached.com/table-17-kiln-theatre/",
-          "host": "london-unattached.com",
-          "outletId": "london-unattached",
+          "url": "https://www.westendbestfriend.co.uk/news/review-table-17-kiln-theatre",
+          "host": "westendbestfriend.co.uk",
+          "outletId": "west-end-best-friend",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -117464,31 +117434,6 @@
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.londonlivinglarge.com/2026/09/table-17-kiln-theatre-sep-17-oct-24-2026.html",
-          "host": "londonlivinglarge.com",
-          "outletId": "londonlivinglarge"
-        },
-        {
-          "url": "https://www.allthatdazzles.co.uk/post/review-table-17-kiln-theatre",
-          "host": "allthatdazzles.co.uk",
-          "outletId": "all-that-dazzles-uk"
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-TABLE-17-Starring-Marisha-Wallace-20260924",
-          "host": "broadwayworld.com",
-          "outletId": "broadwayworld"
-        },
-        {
-          "url": "https://kilntheatre.com/whats-on/table-17/",
-          "host": "kilntheatre.com",
-          "outletId": "kilntheatre"
-        },
-        {
-          "url": "https://www.show-score.com/uk/london/off-west-end-shows/table-17-kiln-theatre",
-          "host": "show-score.com",
-          "outletId": null
-        },
-        {
           "url": "https://www.londontheatredirect.com/play/table-17-tickets",
           "host": "londontheatredirect.com",
           "outletId": "londontheatredirect"
@@ -117499,66 +117444,24 @@
           "outletId": "jamiewilsonproductions"
         },
         {
+          "url": "https://firstnightmagazine.com/2026/09/25/review-of-table-17-lacklustre-rom-com-isnt-out-of-the-date-but-isnt-flavourful-either/",
+          "host": "firstnightmagazine.com",
+          "outletId": "firstnightmagazine"
+        },
+        {
           "url": "https://exeuntnyc.com/reviews/review-table-17-at-mcc-theater/",
           "host": "exeuntnyc.com",
           "outletId": "exeunt-magazine"
         },
         {
-          "url": "https://www.aol.co.uk/articles/table-17-review-tasty-romcom-160010000.html",
-          "host": "aol.co.uk",
-          "outletId": "aol"
-        },
-        {
-          "url": "https://kilntheatre.com/table-17-cinema-season/",
-          "host": "kilntheatre.com",
-          "outletId": "kilntheatre"
+          "url": "https://www.timeout.com/london/theatre/table-17",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "guardian",
-            "outlet": "guardian",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theguardian.com/stage/2026/sep/25/table-17-review-kiln-theatre-london"
-          },
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/table-17-review-kiln-theatre"
-          },
-          {
-            "outletId": "thereviewshub",
-            "outlet": "thereviewshub",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thereviewshub.com/table-17-kiln-theatre-london/"
-          },
-          {
-            "outletId": "everything-theatre",
-            "outlet": "everything-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://everything-theatre.co.uk/2026/09/review-table-17-kiln-theatre/"
-          },
-          {
-            "outletId": "london-unattached",
-            "outlet": "london-unattached",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.london-unattached.com/table-17-kiln-theatre/"
-          },
-          {
-            "outletId": "londonlivinglarge",
-            "outlet": "londonlivinglarge",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londonlivinglarge.com/2026/09/table-17-kiln-theatre-sep-17-oct-24-2026.html"
-          },
           {
             "outletId": "all-that-dazzles-uk",
             "outlet": "all-that-dazzles-uk",
@@ -117588,6 +117491,13 @@
             "url": "https://www.show-score.com/uk/london/off-west-end-shows/table-17-kiln-theatre"
           },
           {
+            "outletId": "west-end-best-friend",
+            "outlet": "west-end-best-friend",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendbestfriend.co.uk/news/review-table-17-kiln-theatre"
+          },
+          {
             "outletId": "londontheatredirect",
             "outlet": "londontheatredirect",
             "critic": "Unknown",
@@ -117602,6 +117512,13 @@
             "url": "https://jamiewilsonproductions.com/news/table-17-to-premiere-at-the-kiln-theatre/"
           },
           {
+            "outletId": "firstnightmagazine",
+            "outlet": "firstnightmagazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://firstnightmagazine.com/2026/09/25/review-of-table-17-lacklustre-rom-com-isnt-out-of-the-date-but-isnt-flavourful-either/"
+          },
+          {
             "outletId": "exeunt-magazine",
             "outlet": "exeunt-magazine",
             "critic": "Unknown",
@@ -117609,25 +117526,48 @@
             "url": "https://exeuntnyc.com/reviews/review-table-17-at-mcc-theater/"
           },
           {
-            "outletId": "aol.co.uk",
-            "outlet": "aol.co.uk",
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.aol.co.uk/articles/table-17-review-tasty-romcom-160010000.html"
-          },
-          {
-            "outletId": "kilntheatre.com",
-            "outlet": "kilntheatre.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://kilntheatre.com/table-17-cinema-season/"
+            "url": "https://www.timeout.com/london/theatre/table-17"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.londontheatre.co.uk/reviews/table-17-review-kiln-theatre",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T13:41:46.057Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/sep/25/table-17-review-kiln-theatre-london",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T13:41:46.057Z"
+          },
+          {
             "url": "https://www.londonboxoffice.co.uk/news/post/table-17-kiln-theatre-review",
             "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T13:41:46.057Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/table-17-kiln-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T13:41:46.057Z"
+          },
+          {
+            "url": "https://everything-theatre.co.uk/2026/09/review-table-17-kiln-theatre/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T13:41:46.057Z"
+          },
+          {
+            "url": "https://www.london-unattached.com/table-17-kiln-theatre/",
+            "outletId": "london-unattached.com",
             "state": "live",
             "firstSeenAt": "2026-09-26T13:41:46.057Z"
           },
@@ -117647,48 +117587,6 @@
             "url": "https://theatreweekly.com/review-table-17-at-kiln-theatre/",
             "outletId": "theatreweekly.com",
             "state": "live",
-            "firstSeenAt": "2026-09-26T13:41:46.057Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/sep/25/table-17-review-kiln-theatre-london",
-            "outletId": "guardian",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-26T13:41:46.057Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/table-17-review-kiln-theatre",
-            "outletId": "london-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-26T13:41:46.057Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/table-17-kiln-theatre-london/",
-            "outletId": "thereviewshub",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-26T13:41:46.057Z"
-          },
-          {
-            "url": "https://everything-theatre.co.uk/2026/09/review-table-17-kiln-theatre/",
-            "outletId": "everything-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-26T13:41:46.057Z"
-          },
-          {
-            "url": "https://www.london-unattached.com/table-17-kiln-theatre/",
-            "outletId": "london-unattached",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-26T13:41:46.057Z"
-          },
-          {
-            "url": "https://www.londonlivinglarge.com/2026/09/table-17-kiln-theatre-sep-17-oct-24-2026.html",
-            "outletId": "londonlivinglarge",
-            "state": "GAP",
-            "reason": "sla-breach",
             "firstSeenAt": "2026-09-26T13:41:46.057Z"
           },
           {
@@ -117720,6 +117618,13 @@
             "firstSeenAt": "2026-09-26T13:41:46.057Z"
           },
           {
+            "url": "https://www.westendbestfriend.co.uk/news/review-table-17-kiln-theatre",
+            "outletId": "west-end-best-friend",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-26T20:27:22.812Z"
+          },
+          {
             "url": "https://www.londontheatredirect.com/play/table-17-tickets",
             "outletId": "londontheatredirect",
             "state": "GAP",
@@ -117734,6 +117639,13 @@
             "firstSeenAt": "2026-09-26T13:41:46.057Z"
           },
           {
+            "url": "https://firstnightmagazine.com/2026/09/25/review-of-table-17-lacklustre-rom-com-isnt-out-of-the-date-but-isnt-flavourful-either/",
+            "outletId": "firstnightmagazine",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-26T20:27:22.812Z"
+          },
+          {
             "url": "https://exeuntnyc.com/reviews/review-table-17-at-mcc-theater/",
             "outletId": "exeunt-magazine",
             "state": "GAP",
@@ -117741,25 +117653,18 @@
             "firstSeenAt": "2026-09-26T13:41:46.057Z"
           },
           {
-            "url": "https://www.aol.co.uk/articles/table-17-review-tasty-romcom-160010000.html",
-            "outletId": "aol.co.uk",
+            "url": "https://www.timeout.com/london/theatre/table-17",
+            "outletId": "timeout-london",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-26T13:41:46.057Z"
-          },
-          {
-            "url": "https://kilntheatre.com/table-17-cinema-season/",
-            "outletId": "kilntheatre.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-26T13:41:46.057Z"
+            "firstSeenAt": "2026-09-26T20:27:22.812Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 4,
-        "candidateCount": 18
+        "liveCount": 9,
+        "candidateCount": 19
       },
-      "computedAt": "2026-09-26T13:41:46.057Z"
+      "computedAt": "2026-09-26T20:27:22.812Z"
     },
     {
       "showId": "tammy-faye-2024",
@@ -148986,12 +148891,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1260,
+        "count": 1249,
         "byReason": {
-          "non-review-host": 107,
-          "aggregator-internal-nav": 892,
-          "not-http-url": 237,
-          "aggregator-section-root": 24
+          "aggregator-internal-nav": 882,
+          "not-http-url": 234,
+          "aggregator-section-root": 26,
+          "non-review-host": 107
         }
       },
       "dedupedVariants": [],
@@ -149302,7 +149207,7 @@
         "liveCount": 25,
         "candidateCount": 27
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-26T20:27:22.812Z"
     },
     {
       "showId": "war-horse-west-end-2026",
