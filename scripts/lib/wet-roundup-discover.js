@@ -35,6 +35,58 @@ const { cleanSearchTitle } = require('./title-normalization');
 
 const { foldDiacritics } = require('./title-match');
 
+function decodeWpTitle(rendered) {
+  return (rendered || '').replace(/&#8217;/g, "'").replace(/&#8211;/g, '–').replace(/&amp;/g, '&').replace(/<[^>]+>/g, '');
+}
+
+function _normalizeForMatch(t) {
+  return foldDiacritics(String(t || '')).toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[‘’']/g, '')
+    .replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+const _MATCH_STOPWORDS = new Set(['the', 'and', 'for', 'with', 'from', 'are', 'was']);
+
+function _phraseIn(haystackNorm, phraseNorm) {
+  const p = phraseNorm.replace(/^(the|a|an) /, '');
+  return !!p && ` ${haystackNorm} `.includes(` ${p} `);
+}
+
+/**
+ * Does a WestEndTheatre WP post title belong to this show?
+ *
+ * The old check was `wpTitle.includes(word)` over the show's >2-char words: a
+ * SUBSTRING test that also counted duplicate words twice. "Man to Man" became
+ * ["man","man"] and matched any title containing "man" anywhere, e.g. "Fences
+ * Reviews: critics enjoyed Ray Fearon's performance" and "The Children
+ * reviews ... woman". The Fences roundup's The Stage URL then replaced the
+ * real Man to Man review URL (reader report, 2026-09-26), and 20 WET archives
+ * were cached against the wrong show the same way.
+ *
+ * Rule now:
+ *   - whole-word matching on DISTINCT tokens only;
+ *   - titles with <= 2 distinctive tokens (where single-word collisions bite)
+ *     must appear as a contiguous phrase;
+ *   - longer titles need >= 60% of their distinct tokens as whole words.
+ */
+function wetPostTitleMatchesShow(wpTitle, showTitle) {
+  const wpNorm = _normalizeForMatch(wpTitle);
+  const showNorm = _normalizeForMatch(showTitle);
+  if (!wpNorm || !showNorm) return false;
+  if (_phraseIn(wpNorm, showNorm)) return true;
+  // Subtitled shows ("Orlando: A Pornobiography") are often posted under the
+  // main title alone; the main title must still match as a whole phrase.
+  const mainTitle = String(showTitle || '').split(/\s*[:–—]\s+/)[0];
+  if (mainTitle && mainTitle !== showTitle && _phraseIn(wpNorm, _normalizeForMatch(mainTitle))) return true;
+  const wpTokens = new Set(wpNorm.split(' '));
+  const showWords = Array.from(new Set(showNorm.split(' ')
+    .filter(w => w.length > 2 && !_MATCH_STOPWORDS.has(w))));
+  if (showWords.length <= 2) return false; // short titles: phrase match only
+  const matched = showWords.filter(w => wpTokens.has(w));
+  return matched.length >= Math.ceil(showWords.length * 0.6);
+}
+
 async function discoverWetRoundupRows(show, opts = {}) {
   const fetchPage = opts.fetchPage || require('./scraper').fetchPage;
   const fetchJSON = opts.fetchJSON || require('./scraper').fetchJSON;
@@ -65,14 +117,8 @@ async function discoverWetRoundupRows(show, opts = {}) {
 
   for (const post of posts.slice(0, 3)) {
     // Validate post title matches our show (WP search can return wrong shows)
-    const wpTitle = (post.title?.rendered || '').replace(/&#8217;/g, "'").replace(/&#8211;/g, '–').replace(/&amp;/g, '&').replace(/<[^>]+>/g, '');
-    const normalizeForMatch = (t) => foldDiacritics(t).toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
-    const wpNorm = normalizeForMatch(wpTitle);
-    const showNorm = normalizeForMatch(searchTitle);
-    const showWords = showNorm.split(' ').filter(w => w.length > 2);
-    const matchedWords = showWords.filter(w => wpNorm.includes(w));
-    const minMatch = showWords.length <= 2 ? showWords.length : Math.ceil(showWords.length * 0.6);
-    if (matchedWords.length < minMatch) {
+    const wpTitle = decodeWpTitle(post.title?.rendered);
+    if (!wetPostTitleMatchesShow(wpTitle, searchTitle)) {
       log(`    ✗ WET title mismatch: "${wpTitle.slice(0, 60)}" doesn't match "${searchTitle}"`);
       continue;
     }
@@ -141,4 +187,4 @@ async function discoverWetRoundupRows(show, opts = {}) {
   return null;
 }
 
-module.exports = { discoverWetRoundupRows };
+module.exports = { discoverWetRoundupRows, wetPostTitleMatchesShow, decodeWpTitle };

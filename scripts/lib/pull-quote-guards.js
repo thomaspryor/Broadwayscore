@@ -550,6 +550,14 @@ const EXCERPT_SOURCE_RANK = {
   lboRoundupExcerpt: 10,
   fullText: 11,
   'fullText-chrome-skip': 12,
+  // Last-resort sources, deliberately ranked AFTER every fullText path so they
+  // only fill reviews that would otherwise ship with no quote (zero churn on
+  // existing quotes). theStageExcerpt (The Stage roundup blurbs, ~sweep-we-
+  // aggregators/scrape-thestage-roundups) was stored but never read here;
+  // outletStandfirst is the outlet's own standfirst salvaged from a
+  // registration-walled page (walled-page-meta.js).
+  theStageExcerpt: 13,
+  outletStandfirst: 14,
 };
 
 // The first rank that is a raw scrape of the article body rather than a curated

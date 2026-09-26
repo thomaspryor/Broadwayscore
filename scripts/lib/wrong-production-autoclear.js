@@ -618,11 +618,15 @@ function shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway, cv
  * @param {boolean} ctx.dateMismatchOver90d
  * @returns {boolean}
  */
-function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl, dateMismatchOver90d } = {}) {
+function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl, dateMismatchOver90d, urlSlugNamesOtherShow } = {}) {
   if (data.wrongShow !== true) return false;
   if (!isLondonMarketShow) return false;
   if (!isUkOutletUrl) return false;
   if (dateMismatchOver90d) return false;
+  // "UK outlets rarely review anything but London shows" says nothing when
+  // the URL itself is another show's review (thestage.co.uk/reviews/the-
+  // other-place-review-... on Oliver!, auto-cleared into the live page).
+  if (urlSlugNamesOtherShow) return false;
   const isWrongArticle = data.contentVerification?.wrongArticle === true;
   const hasManualReason = !!data.wrongShowReason;
   if (hasEnsembleConsensus(data, 'wrong_show')) return false;

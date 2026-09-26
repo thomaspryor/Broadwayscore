@@ -6605,6 +6605,25 @@ async function processReview(review) {
       console.log(`  ✗ GARBAGE CONTENT DETECTED: ${qualityCheck.issues[0] || 'invalid content'}`);
       console.log(`    Reason: ${qualityCheck.issues.join(', ')}`);
 
+      // A registration-walled The Stage page still carries the article's
+      // date, byline and standfirst above the wall. Salvage them so the
+      // review doesn't go live with no date, critic or quote (walled-page-
+      // meta.js; reader report 2026-09-26). Gap-fill only, never overwrites.
+      if (result.html && review.filePath) {
+        try {
+          const { salvageWalledPageMetaToFile } = require('./lib/walled-page-meta');
+          const salvaged = salvageWalledPageMetaToFile(review.filePath, result.html, { showTitle, expectedUrl: review.url });
+          const suspect = salvaged.find((s) => s.endsWith('Suspect'));
+          if (suspect) {
+            console.log(`    ⚠ Walled page ${suspect} for "${showTitle}" — metadata not applied`);
+          } else if (salvaged.length) {
+            console.log(`    ↳ Salvaged walled-page metadata: ${salvaged.join(', ')}`);
+          }
+        } catch (e) {
+          console.log(`    ⚠ walled-page metadata salvage failed: ${e.message}`);
+        }
+      }
+
       // Record as failed fetch with reason (increments failure count)
       recordFailedFetch(review, 'garbage_content', {
         method: result.method,
