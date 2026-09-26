@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-26T00:30:08.840Z",
-  "processed": 8,
-  "failed": 46,
-  "successRate": "14.8%",
+  "updatedAt": "2026-09-26T01:16:35.999Z",
+  "processed": 12,
+  "failed": 62,
+  "successRate": "16.2%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 2
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-09-26T00:25:43.615Z",
@@ -48,6 +48,28 @@
       "event": "bb-session",
       "session": "7b5da02d",
       "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+    },
+    {
+      "t": "2026-09-26T01:13:05.965Z",
+      "event": "bb-session",
+      "session": "93d7651d",
+      "url": "https://www.thestage.co.uk/reviews/deep-heat-rivalry-review-the-other-palace-lon"
+    },
+    {
+      "t": "2026-09-26T01:13:06.716Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-26T01:16:31.490Z",
+      "event": "bb-session",
+      "session": "d3930737",
+      "url": "https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london"
+    },
+    {
+      "t": "2026-09-26T01:16:32.016Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
