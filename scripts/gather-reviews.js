@@ -4720,18 +4720,13 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         if (posts && Array.isArray(posts)) {
           for (const post of posts.slice(0, 3)) {
             const wpTitle = (post.title?.rendered || '').replace(/&#8217;/g, "'").replace(/&#8211;/g, '\u2013').replace(/&amp;/g, '&').replace(/<[^>]+>/g, '');
-            // Validate the WP post title actually matches our show.
-            // Old check used first 8 chars which was too loose (e.g. "op" matched American Psycho for Op Mincemeat).
-            // New check: normalize both titles and require significant word overlap.
-            const normalizeForMatch = (t) => t.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
-            const wpNorm = normalizeForMatch(wpTitle);
-            const showNorm = normalizeForMatch(searchTitle);
-            const showWords = showNorm.split(' ').filter(w => w.length > 2);
-            const matchedWords = showWords.filter(w => wpNorm.includes(w));
-            // Require at least 60% of significant words to match, minimum 2 words (or all if title is 1-2 words)
-            const minMatch = showWords.length <= 2 ? showWords.length : Math.ceil(showWords.length * 0.6);
-            if (matchedWords.length < minMatch) {
-              console.log(`    ✗ WET title mismatch: "${wpTitle.slice(0, 60)}" doesn't match "${searchTitle}" (${matchedWords.length}/${showWords.length} words)`);
+            // Validate the WP post title actually matches our show. Shared with
+            // the opening-night poller (wet-roundup-discover.js): whole-word,
+            // phrase-required for short titles. The old inline substring check
+            // matched "Man to Man" to the Fences roundup via "performance".
+            const { wetPostTitleMatchesShow } = require('./lib/wet-roundup-discover');
+            if (!wetPostTitleMatchesShow(wpTitle, searchTitle)) {
+              console.log(`    ✗ WET title mismatch: "${wpTitle.slice(0, 60)}" doesn't match "${searchTitle}"`);
               continue;
             }
 

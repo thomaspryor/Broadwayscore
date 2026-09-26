@@ -172,6 +172,11 @@ const REFERENCE_DOMAINS = new Set([
 // ingested via /submit-review and scored as a "truncated" review).
 const VENUE_DOMAINS = new Set([
   'southbank.london',
+  // hampsteadtheatre.com/whats-on/2026/<show>/ is Hampstead Theatre's own
+  // box-office page, submitted via /submit-review for The Urmetazoan and
+  // Kimberly Akimbo (2026-09-26); its unregistered outletId turned the
+  // outlet-registry gate red. Same shape and remedy as the venues below.
+  'hampsteadtheatre.com',
   // Same venue family, different domain — southbankcentre.co.uk's own
   // /whats-on/ listing pages are the identical "Toggle caption ... Dates &
   // tickets ... Access ... Ticket Office" box-office copy (BRO-2712
@@ -319,6 +324,26 @@ function isBlockedReviewUrl(url) {
     // Does NOT match /featured-review/ or /review-features-xyz/ (substring matches)
     const pathParts = lowerPath.split('/').filter(Boolean);
     if (pathParts.some(p => p === 'features' || p === 'feature' || p === 'interviews' || p === 'interview')) return true;
+    // The Stage publishes reviews only under /reviews/ and /long-reviews/.
+    // Its /news/, /opinion/ (incl. its "--review-round-up" compilations),
+    // /promoted-content/ and /review-round-ups/ pages carry sidebar star
+    // ratings from OTHER reviews, which is how a news item on a Curve revival
+    // scored 80 on kiss-of-the-spider-woman-1993 and an opinion column on AI
+    // scored 60 on proof-2026 (2026-09-26). non-review-url-patterns.js has the
+    // /news/ rule but it only applies to unvetted-SERP sources; these paths
+    // are never a review, whatever the source.
+    if (matchesDomainSet(hostname, new Set(['thestage.co.uk']))
+      && ['news', 'opinion', 'promoted-content', 'review-round-ups'].includes(pathParts[0])) return true;
+    // A /whats-on/ listing is a venue box-office or ticketing page, never a
+    // review: hampsteadtheatre.com, kilntheatre.com, stratfordeast.com,
+    // almeida.co.uk, skiddle.com, afridiziak.com/whatson/ all arrived this way,
+    // mostly via /submit-review, and each new venue host turned the outlet-
+    // registry gate red until it was added to VENUE_DOMAINS one by one
+    // (2026-09-26). The shape blocks the whole class. News outlets that file
+    // real reviews under /whats-on/ (manchestereveningnews.co.uk/whats-on/
+    // theatre-news/review-..., chroniclelive, londonmumsmagazine) keep "review"
+    // in the path, so they pass.
+    if ((pathParts[0] === 'whats-on' || pathParts[0] === 'whatson') && !/review/.test(lowerPath)) return true;
     // Malformed URLs (e.g., "http://Here We Are review — ...")
     if (parsed.hostname.includes(' ') || !parsed.hostname.includes('.')) return true;
     return false;
