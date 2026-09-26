@@ -1,4 +1,55 @@
 {
+  "runDate": "2026-09-26T00:30:20.962Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026,cosi-fan-tutte-off-broadway-2026,macbeth-off-broadway-2026,the-last-ship-west-end-2026,delirium-off-broadway-2026,the-holes-off-broadway-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 8,
+    "failed": 46,
+    "skipped": 0,
+    "successRate": "14.8%"
+  },
+  "tierBreakdown": {
+    "playwright": 3,
+    "amp": 0,
+    "browserbase": 2,
+    "directCookies": 0,
+    "scrapingbee": 1,
+    "brightdata": 1,
+    "archiveToday": 0,
+    "archive": 2
+  },
+  "statistics": {
+    "tier1Attempts": 8,
+    "tier1Success": 3,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 4,
+    "tier1_5Success": 1,
+    "tier2Attempts": 5,
+    "tier2Success": 2,
+    "tier3Attempts": 4,
+    "tier3Success": 2,
+    "tier3_6Attempts": 3,
+    "tier3_6Success": 0,
+    "tier4Attempts": 7,
+    "tier4Success": 2,
+    "totalFailed": 45,
+    "scrapingBeePageCredits": 23,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 2.5,
+    "urlDiscoveryAttempts": 45,
+    "urlDiscoverySuccess": 2,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "delirium-off-broadway-2026/arlekinplayers--unknown.json",
     "cosi-fan-tutte-off-broadway-2026/operawire--francisco-salazar.json",
@@ -57,8 +108,7 @@
     "macbeth-off-broadway-2026/thestage--unknown.json",
     "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [
       "the-last-ship-west-end-2026/a-youngish-perspective--unknown.json",
       "macbeth-off-broadway-2026/playbill--dan-meyer.json",
@@ -82,42 +132,25 @@
       "cosi-fan-tutte-off-broadway-2026/operawire--francisco-salazar.json"
     ]
   },
-  "startTime": "2026-09-26T00:18:18.743Z",
-  "lastProcessed": "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json",
-  "log": [
+  "failuresByOutlet": {
+    "The Recs": {
+      "count": 1,
+      "domain": "therecs.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
     {
-      "t": "2026-09-26T00:25:43.615Z",
-      "event": "bb-session",
-      "session": "9a3d229e",
-      "url": "https://www.thestage.co.uk/reviews/the-last-ship-review-theatre-royal-drury-lane"
+      "reviewId": "macbeth-off-broadway-2026/playbill--dan-meyer.json",
+      "oldUrl": "https://playbill.com/article/what-do-the-critics-think-of-macbeth-starring-corey-stoll-and-nadia-bowers",
+      "newUrl": "https://playbill.com/article/what-did-reviews-say-about-macbeth-at-the-metropolitan-opera"
     },
     {
-      "t": "2026-09-26T00:25:44.367Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-09-26T00:25:44.961Z",
-      "event": "bb-session",
-      "session": "3b57080f",
-      "url": "https://www.wsj.com/arts-culture/theater/macbeth-review-a-ferocious-start-to-the"
-    },
-    {
-      "t": "2026-09-26T00:25:45.593Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-26T00:28:53.352Z",
-      "event": "bb-session",
-      "session": "bd5914fa",
-      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
-    },
-    {
-      "t": "2026-09-26T00:29:25.245Z",
-      "event": "bb-session",
-      "session": "7b5da02d",
-      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+      "reviewId": "macbeth-off-broadway-2026/playbill--unknown.json",
+      "oldUrl": "https://playbill.com/article/what-did-reviews-say-about-macbeth-at-the-metropolitan-opera",
+      "newUrl": "https://playbill.com/article/what-do-the-critics-think-of-macbeth-starring-corey-stoll-and-nadia-bowers"
     }
   ]
 }
