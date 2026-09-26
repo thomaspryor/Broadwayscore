@@ -16,6 +16,7 @@
  *   <a class="aos-ArticleAuthor ..." title="Holly O'Mahony">by Holly O'Mahony</a>
  *   <span class="aos-ArticleDate ...">Sep 16, 2026</span>
  *   <div class="aos-DS32-Teaser ...">Evocative coming-of-age monologue ...</div>
+ *     (or, on the other template, <div class="aos-Article-IntroText ...">)
  *
  * The FIRST occurrence of each is the article's own (related-article cards
  * further down reuse the ArticleAuthor/ArticleDate classes).
@@ -70,20 +71,45 @@ function extractTheStageArticleMeta(html) {
   const date = html.match(/<span[^>]*class="[^"]*aos-ArticleDate[^"]*"[^>]*>\s*([A-Za-z]{3,9}\s+\d{1,2},\s*\d{4})\s*</i);
   const publishDate = date ? _isoFromStageDate(date[1]) : null;
 
-  const teaser = html.match(/<div[^>]*class="[^"]*aos-DS32-Teaser[^"]*"[^>]*>([\s\S]{1,600}?)<\/div>/i);
+  // Two article templates: "aos-DS32-Teaser" (e.g. Darkling) and
+  // "aos-Article-IntroText" wrapping <span><p>…</p></span> (e.g. Man to Man).
+  const teaser = html.match(/<div[^>]*class="[^"]*aos-(?:DS32-Teaser|Article-IntroText)[^"]*"[^>]*>([\s\S]{1,600}?)<\/div>/i);
   const standfirst = teaser ? (_decode(teaser[1]) || null) : null;
 
   return { headline, criticName, publishDate, standfirst };
 }
 
 /**
+ * Does the article headline name the show? False only on a confident
+ * mismatch (headline present, show has distinctive tokens, none appear), so
+ * callers fail open when either side is missing.
+ */
+function headlineMatchesShow(headline, showTitle) {
+  if (!headline || !showTitle) return true;
+  const { titleTokens } = require('./show-match-verifier');
+  const tTokens = titleTokens(showTitle);
+  if (!tTokens.length) return true;
+  const h = headline.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[‘’']/g, '').replace(/[^a-z0-9]+/g, ' ');
+  const hTokens = new Set(h.split(' '));
+  const squashed = h.replace(/ /g, '');
+  return tTokens.some((t) => hTokens.has(t) || squashed.includes(t));
+}
+
+/**
  * Fill gaps on a review record from walled-page metadata. Mutates `data`;
  * returns the list of fields it set (empty when nothing changed).
+ * With opts.showTitle, refuses (returns ['wrongShowSuspect']) when the page
+ * headline names a different show: a date and byline must not make another
+ * show's review look more legitimate.
  */
-function applyWalledPageMeta(data, html) {
+function applyWalledPageMeta(data, html, opts = {}) {
   if (!data || !isTheStageUrl(data.url)) return [];
   const meta = extractTheStageArticleMeta(html);
   if (!meta) return [];
+  if (opts.showTitle && !headlineMatchesShow(meta.headline, opts.showTitle)) {
+    return ['wrongShowSuspect'];
+  }
   const set = [];
   if (meta.publishDate && !data.publishDate) {
     data.publishDate = meta.publishDate;
@@ -109,4 +135,4 @@ function applyWalledPageMeta(data, html) {
   return set;
 }
 
-module.exports = { extractTheStageArticleMeta, applyWalledPageMeta, isTheStageUrl, _isoFromStageDate };
+module.exports = { extractTheStageArticleMeta, applyWalledPageMeta, headlineMatchesShow, isTheStageUrl, _isoFromStageDate };

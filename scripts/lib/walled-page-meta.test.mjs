@@ -33,6 +33,17 @@ test('extracts the article\'s own date, byline, standfirst (not a related card\'
   });
 });
 
+test('IntroText template standfirst is read too', () => {
+  const html = `<span class="aos-ArticleDate aos-MR10px">Sep 14, 2026</span>
+<h1 class="aos-ArticleTitle aos-DS32-H1">Man to Man review</h1>
+<a class="aos-ArticleAuthor aos-NM" title="Sam Marlowe" href="/sammarlowe">by&nbsp;Sam Marlowe</a>
+<div class="aos-Article-IntroText aos-DS32-Intro aos-MB15px aos-FL100"><span><p>Tilda Swinton is mesmeric in this landmark revival of the confrontational German monodrama</p></span></div>`;
+  const meta = extractTheStageArticleMeta(html);
+  assert.equal(meta.standfirst, 'Tilda Swinton is mesmeric in this landmark revival of the confrontational German monodrama');
+  assert.equal(meta.publishDate, '2026-09-14');
+  assert.equal(meta.criticName, 'Sam Marlowe');
+});
+
 test('non-article HTML yields null', () => {
   assert.equal(extractTheStageArticleMeta('<html><body>Just a login page</body></html>'), null);
   assert.equal(extractTheStageArticleMeta(''), null);
@@ -60,6 +71,14 @@ test('applyWalledPageMeta fills gaps only', () => {
   const manual = { url: stub.url, criticName: 'Unknown', criticNameManual: true };
   applyWalledPageMeta(manual, WALLED);
   assert.equal(manual.criticName, 'Unknown');
+});
+
+test('refuses to dress up another show\'s review (headline mismatch)', () => {
+  const stub = { url: 'https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london', criticName: 'Unknown' };
+  assert.deepEqual(applyWalledPageMeta(stub, WALLED, { showTitle: 'Man to Man' }), ['wrongShowSuspect']);
+  assert.equal(stub.criticName, 'Unknown');
+  assert.equal(stub.publishDate, undefined);
+  assert.ok(applyWalledPageMeta({ ...stub }, WALLED, { showTitle: 'Darkling' }).includes('publishDate'));
 });
 
 test('only applies to The Stage URLs', () => {

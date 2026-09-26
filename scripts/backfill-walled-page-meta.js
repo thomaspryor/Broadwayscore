@@ -87,6 +87,9 @@ async function main() {
   if (!candidates.length) return;
   const { fetchPage } = require('./lib/scraper');
   const { safeWriteReview } = require('./lib/review-write-guard');
+  const showsJson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+  const showsById = Object.fromEntries((showsJson.shows || showsJson).map((s) => [s.id, s]));
+  const suspects = [];
   let updated = 0, failed = 0;
   for (const [i, { fp, d }] of candidates.entries()) {
     const label = path.relative(reviewTextsDir, fp);
@@ -104,8 +107,13 @@ async function main() {
     }
     if (html) {
       const fresh = JSON.parse(fs.readFileSync(fp, 'utf8'));
-      const set = applyWalledPageMeta(fresh, html);
-      if (set.length) {
+      const showTitle = (showsById[fresh.showId || path.basename(path.dirname(fp))] || {}).title;
+      const set = applyWalledPageMeta(fresh, html, { showTitle });
+      if (set.includes('wrongShowSuspect')) {
+        console.log(`  ⚠ ${label}: page headline does not name "${showTitle}" — suspected wrong show, not applied`);
+        suspects.push(`${label} ${d.url}`);
+        failed++;
+      } else if (set.length) {
         console.log(`  ✓ ${label}: ${set.map((k) => `${k}=${JSON.stringify(fresh[k])}`).join(', ')}`);
         if (!dryRun) safeWriteReview(fp, fresh);
         updated++;
@@ -119,6 +127,10 @@ async function main() {
     if (i < candidates.length - 1) await new Promise((r) => setTimeout(r, delayMs));
   }
   console.log(`\nDone: ${updated} updated, ${failed} without metadata${dryRun ? ' (dry run, nothing written)' : ''}`);
+  if (suspects.length) {
+    console.log(`\n${suspects.length} suspected wrong-show file(s) (headline names another show):`);
+    for (const s of suspects) console.log(`  ${s}`);
+  }
   try { require('./lib/scraper').closeBrowser && await require('./lib/scraper').closeBrowser(); } catch { /* ignore */ }
 }
 
