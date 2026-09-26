@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-09-26T02:19:27.136Z",
+  "generatedAt": "2026-09-26T08:23:39.483Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 80,
+    "avgScoreDiff": 6
   },
   "syndicationPairs": [
     {
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Holli Harms",
+      "showId": "the-invention-of-love-off-broadway-2026",
+      "primaryOutlet": "front-row-center",
+      "secondaryOutlet": "openingnight",
+      "primaryFile": "front-row-center--holli-harms.json",
+      "secondaryFile": "openingnight--holli-harms.json",
+      "similarity": 80,
+      "primaryScore": 84,
+      "secondaryScore": 78,
+      "scoreDiff": 6
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
