@@ -1,18 +1,200 @@
 {
-  "generatedAt": "2026-09-25T12:19:30.883Z",
+  "generatedAt": "2026-09-26T11:54:16.605Z",
   "shadow": true,
-  "checkoutSha": null,
-  "totalCandidates": 1585,
-  "eligibleCandidates": 47,
-  "checked": 0,
+  "checkoutSha": "0229f8f9088280a3e828c6883beda5e17c66fc97",
+  "totalCandidates": 1587,
+  "eligibleCandidates": 50,
+  "checked": 30,
   "truncated": true,
-  "fetchError": "checkout failed: Command failed: git fetch --shallow-since=@1790334447 origin main\nfatal: error in object: unshallow 7ae795e446c612a0ea57a3c7f28fe631f14f64b6\n",
+  "fetchError": null,
   "counts": {
-    "pass": 0,
+    "pass": 16,
     "fail": 0,
-    "unverifiable": 0
+    "unverifiable": 14
   },
-  "alreadyDone": [],
+  "alreadyDone": [
+    {
+      "id": "BRO-4130",
+      "name": "P1: maybeUpgradeUrl's applyUrlChangeInvariant snapshot is taken AFTER the caller's field-merge, wiping a score paired with its own new URL",
+      "verifyCmd": "node --test scripts/lib/url-change-invariant.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4069",
+      "name": "P2: ack-landed.js cannot acknowledge a card whose work landed BEFORE any dispatch on its ledger, so a session that re-dispatched an already-done card can never write a clean exit",
+      "verifyCmd": "node --test scripts/tests/ack-landed-already-landed.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4056",
+      "name": "P1: tabs silently logged out after session restore, and the needs-you sidebar doesn't flag them",
+      "verifyCmd": "node --test scripts/lib/claude-cli.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-3929",
+      "name": "P1: autonomous-checks.test.mjs HOME-cleanup test races on shared os.tmpdir(), false-blocking land.js on unrelated branches",
+      "verifyCmd": "node --test scripts/lib/autonomous-checks.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-3787",
+      "name": "Audit remaining short WEST_END_VENUES entries for non-West-End name collisions (like 'lyric'/Lyric Hammersmith)",
+      "verifyCmd": "node --test tests/unit/promote-we-aggregator-auto.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-3596",
+      "name": "Table-parsing scrapers with NO schema guard at all (worse than the BRO-2375 cousins)",
+      "verifyCmd": "node --test tests/unit/critics-circle-parser.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-3476",
+      "name": "P1: done-evidence sweep makes false accusations — 2 of its first 5 FAILED verdicts are mis-armed cards, not broken work (gitignored path + node <script> bypass pathNeverExisted)",
+      "verifyCmd": "node --test tests/unit/done-evidence-audit.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-3437",
+      "name": "P1: dispatch-watchdog's PARK path still writes retired-Notion ids — 12/12 board ids retired, live as of 2026-09-15 20:47",
+      "verifyCmd": "node --test scripts/dispatch-watchdog.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-3430",
+      "name": "P1: three live code paths still WRITE to the retired Notion board — weekly PostHog friction cards and daily opening-date audit cards land where nobody reads, and notion-brain update is unguarded",
+      "verifyCmd": "node --test scripts/tests/notion-write-paths-retired.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-3428",
+      "name": "P1: fix-stale-upcoming-tags.js has no automated caller — 14 shows mislabelled 'upcoming' on the live site, 16% of the digest queue",
+      "verifyCmd": "node --test tests/unit/opening-night-checks-metadata-completeness.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-3227",
+      "name": "P2: provider-spend-daily.jsonl is 9 days stale (22 rows / 45 days) — the spend ledger can't support a spend decision",
+      "verifyCmd": "node --test scripts/check-provider-spend.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-3043",
+      "name": "P1: data-health-check.yml's 'Commit health check + triage data' fallback-disqualified comment is stale post-BRO-2413",
+      "verifyCmd": "node --test scripts/lib/audit-push-retry-budgets.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-3017",
+      "name": "Backlog inflow: report create:close ratio in the morning digest (B1) then drain the self-referential class (A)",
+      "verifyCmd": "node --test scripts/lib/backlog-inflow-ratio.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-2989",
+      "name": "P1: crown sessions die waiting on the owner — 3 generations of one lineage dead, 5 tabs blocked on input right now",
+      "verifyCmd": "node --test scripts/lib/needs-you-snapshot.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-2967",
+      "name": "Newsletter: editorial override lever for WE-edition Broadway secondary opening (BRO-2598 follow-up)",
+      "verifyCmd": "node --test scripts/newsletter/newsworthiness.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-2443",
+      "name": "Register data/audit/guard-escalation-state.json for key-level merge reconciliation",
+      "verifyCmd": "node --test scripts/lib/core-data-merge-registry.test.mjs",
+      "detail": null
+    }
+  ],
   "failing": [],
-  "unverifiable": []
+  "unverifiable": [
+    {
+      "id": "BRO-4165",
+      "name": "land.yml: blobless rebase fails 'upload-pack: not our ref' / 'could not fetch from promisor remote' — misreported as a conflict",
+      "verifyCmd": "node --test scripts/lib/land-rebase-classify.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/land-rebase-classify.test.mjs"
+    },
+    {
+      "id": "BRO-4063",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every scripts/ root file with the shred signature and no fold is in the frozen baseline\"",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 146867ms (timeout — no verdict)"
+    },
+    {
+      "id": "BRO-4049",
+      "name": "Duplicate stub show entry crazy-mama-off-broadway-2026 siphons opening-night reviews from canonical id",
+      "verifyCmd": "node --test tests/unit/duplicate-show-dedup.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/duplicate-show-dedup.test.mjs"
+    },
+    {
+      "id": "BRO-3941",
+      "name": "P1: schedule sweep-open-backlog-acceptance.js in CI — BRO-3924's R3 already-passes wiring is dead code without it",
+      "verifyCmd": "node --test scripts/tests/sweep-open-backlog-acceptance-scheduled.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/tests/sweep-open-backlog-acceptance-scheduled.test.mjs"
+    },
+    {
+      "id": "BRO-3429",
+      "name": "P1: dispatch watchdog redispatches only through bsc-next, so every Linear P0/P1 rescue silently fails — 84 redispatches, 0 launches, 0 parks in 7 days",
+      "verifyCmd": "node --test scripts/lib/dispatch-watchdog-core.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/dispatch-watchdog-core.test.mjs"
+    },
+    {
+      "id": "BRO-3126",
+      "name": "P1: contentVerification isValid:false + articleType=preview does not gate contentTier or scoring — preview first-look scored 79 and shipped to prod",
+      "verifyCmd": "node --test tests/unit/preview-article-tier-gate.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/preview-article-tier-gate.test.mjs"
+    },
+    {
+      "id": "BRO-3086",
+      "name": "[em-20260908-091248] New submission from Broadway Scorecard Feedback",
+      "verifyCmd": "node --test tests/unit/broadway-scorecard-submission.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/broadway-scorecard-submission.test.mjs"
+    },
+    {
+      "id": "BRO-2960",
+      "name": "P1: breaker state files (sd/bd-circuit-breaker.json) are stale most hours because commercial-rss-poll.yml loses its push race 10 of 12 runs",
+      "verifyCmd": "node --test scripts/check-sd-breaker.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/check-sd-breaker.test.mjs"
+    },
+    {
+      "id": "BRO-2512",
+      "name": "Wire ci-health-check.sh into a periodic monitor so a concurrency-cancel regression on main is caught automatically",
+      "verifyCmd": "test -f scripts/ci-health-check.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/ci-health-check.test.mjs"
+    },
+    {
+      "id": "BRO-2505",
+      "name": "Auto-discover NYT/New Yorker/Vulture author-page slugs for all active T1/T2 critics",
+      "verifyCmd": "node --test tests/unit/critic-author-page-discovery.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/critic-author-page-discovery.test.mjs"
+    },
+    {
+      "id": "BRO-2504",
+      "name": "Add silent-failure WARN to muckrack/bww/nysun/nysr author-page scrapers",
+      "verifyCmd": "node --test tests/unit/warn-silent-failure.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/warn-silent-failure.test.mjs"
+    },
+    {
+      "id": "BRO-2486",
+      "name": "T1 dispatch decision does not canonicalize timeout/timeout-london alias pairs",
+      "verifyCmd": "node --test scripts/audit-opening.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-opening.test.mjs"
+    },
+    {
+      "id": "BRO-2430",
+      "name": "Carried over: 33 open fleet/dispatch backlog items that die when the Notion poller is retired (fleet_selfref + bsc_daily)",
+      "verifyCmd": "node --test scripts/linear-import-corpus.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/linear-import-corpus.test.mjs"
+    },
+    {
+      "id": "BRO-2427",
+      "name": "P2: uncleared setTimeout inside Promise.race timeout-wrappers — same bug class in 4+ scripts (BRO-420 follow-up)",
+      "verifyCmd": "test -f scripts/audit-timeout-patterns.js",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-timeout-patterns.js"
+    }
+  ]
 }
