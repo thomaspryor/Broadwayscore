@@ -29,7 +29,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry, outletOwnsUrlDomain } = require('./lib/review-normalization');
+const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry, outletOwnsUrlDomain, reviewSlugNamesDifferentShow } = require('./lib/review-normalization');
 const { decideUnknownTwinUrlCarry, decideDuplicateTwinUrlCarry } = require('./lib/review-text-identity');
 const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
@@ -651,6 +651,8 @@ function selectBestExcerpt(data, showTitle) {
     data.theatreReviewsExcerpt,
     data.westEndTheatreExcerpt,
     data.lboRoundupExcerpt,
+    data.theStageExcerpt,
+    data.outletStandfirst,
   ].filter(t => typeof t === 'string' && t);
 
   /**
@@ -985,6 +987,19 @@ function selectBestExcerpt(data, showTitle) {
         const validated = validateExcerpt(cleaned, 'fullText-chrome-skip');
         if (validated) return finish({ rank: EXCERPT_SOURCE_RANK['fullText-chrome-skip'], excerpt: validated });
       }
+    }
+  }
+
+  // 8. Last-resort quotes for reviews with no body text: The Stage roundup
+  //    blurb, then the outlet's own standfirst salvaged from a walled page
+  //    (walled-page-meta.js). Ranked after fullText so existing quotes never
+  //    change; before this, paywalled The Stage reviews shipped quote-less.
+  for (const field of ['theStageExcerpt', 'outletStandfirst']) {
+    if (!data[field]) continue;
+    const cleaned = cleanExcerpt(data[field]);
+    if (cleaned && cleaned.length > 25) {
+      const validated = validateExcerpt(cleaned, field);
+      if (validated) return finish({ rank: EXCERPT_SOURCE_RANK[field], excerpt: validated });
     }
   }
 
@@ -3137,6 +3152,7 @@ showDirs.forEach(showId => {
         isLondonMarketShow: isLondonMarket(showCat),
         isUkOutletUrl: isUkOutletUrl(data.url),
         dateMismatchOver90d: wsDateMismatch,
+        urlSlugNamesOtherShow: reviewSlugNamesDifferentShow(data.url, showById[showId] && showById[showId].title),
       })) {
         delete data.wrongShow;
         delete data.wrongShowNote;
