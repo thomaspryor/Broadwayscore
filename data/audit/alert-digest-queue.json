@@ -507,5 +507,41 @@
       }
     ],
     "queuedAt": "2026-09-26T15:33:02.089Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:short:the-urmetazoan-off-west-end-2026",
+    "title": "Shipped review too short to verify on The Urmetazoan",
+    "description": "thestage/Holly O'Mahony (thestage--holly-omahony.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://thestage.co.uk/reviews/the-urmetazoan-review-hampstead-theatre-london-alex-rugman",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-26T17:14:54.233Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:the-urmetazoan-off-west-end-2026",
+    "title": "Shipped review missing publishDate on The Urmetazoan",
+    "description": "artsdesk/Unknown SHIPPED with no publishDate — cannot confirm post-opening: https://theartsdesk.com/theatre/urmetazoan-hampstead-theatre-review-unconvincing-and-underwhelming",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-26T17:14:54.237Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-elf-lyons-the-woman-on-the-edge-off-broadway-2026",
+    "title": "Unhandled CV.wrongProduction on Elf Lyons: The Woman on the Edge",
+    "description": "broadway-baby/Unknown (broadway-baby--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This review is of Elf Lyons' solo show at the Edinbur — https://broadwaybaby.com/shows/elf-lyons-is-the-woman-on-the-edge/832666",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-26T17:14:55.613Z"
   }
 ]
