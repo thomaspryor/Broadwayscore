@@ -29,30 +29,6 @@
     "queuedAt": "2026-09-25T14:00:42.208Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:america-who-hurt-you-off-broadway-2026",
-    "title": "Review gap — \"America, Who Hurt You?\" missing 1 cited review(s)",
-    "description": "America, Who Hurt You? (america-who-hurt-you-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=america-who-hurt-you-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-25T14:30:30.261Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:deep-heat-rivalry-off-west-end-2026",
-    "title": "Review gap — \"Deep Heat Rivalry\" missing 4 cited review(s)",
-    "description": "Deep Heat Rivalry (deep-heat-rivalry-off-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=deep-heat-rivalry-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-25T14:30:30.296Z"
-  },
-  {
     "conditionKey": "arm-yield:workflow:scoring-audit",
     "title": "Scoring Audit has stopped updating (190 days)",
     "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since null, 190 days ago. It has never before gone quiet for more than null day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 30d, from 0 productive day(s) / 0 item(s) between 2026-03-19 and 2026-09-25.)",
@@ -126,42 +102,6 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-25T18:41:47.263Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:cosi-fan-tutte-off-broadway-2026",
-    "title": "Review gap — \"Così fan tutte\" missing 2 cited review(s)",
-    "description": "Così fan tutte (cosi-fan-tutte-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cosi-fan-tutte-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-25T19:11:43.049Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
-    "title": "Review gap — \"Crazy Mama: A True Story of Love and Madness\" missing 3 cited review(s)",
-    "description": "Crazy Mama: A True Story of Love and Madness (crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-25T19:11:43.052Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:macbeth-off-broadway-2026",
-    "title": "Review gap — \"Macbeth\" missing 2 cited review(s)",
-    "description": "Macbeth (macbeth-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=macbeth-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-25T19:11:43.079Z"
   },
   {
     "conditionKey": "review-gap:opening-window:the-last-ship-west-end-2026",
@@ -392,18 +332,6 @@
     "queuedAt": "2026-09-25T23:07:29.486Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-secret-circus-musical-off-broadway-2026",
-    "title": "Review gap — \"The Secret Circus Musical\" missing 5 cited review(s)",
-    "description": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-secret-circus-musical-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-26T02:16:14.098Z"
-  },
-  {
     "conditionKey": "express-retry-still-thin:la-boheme-off-broadway-2026",
     "title": "Opening Night Express retry still found thin review coverage for la-boheme-off-broadway-2026",
     "description": "The early auto-fire found next to nothing, and the same-night retry (still thin after retry — zero scoreable review records found) still hasn't closed the gap. Full-text upgrade will otherwise wait on the weekly recollect-for-scores.yml cron.",
@@ -414,30 +342,6 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-26T06:59:34.939Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:catarina-and-the-beauty-of-killing-fascists-west-end-2026",
-    "title": "Review gap — \"Catarina and the Beauty of Killing Fascists\" missing 1 cited review(s)",
-    "description": "Catarina and the Beauty of Killing Fascists (catarina-and-the-beauty-of-killing-fascists-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=catarina-and-the-beauty-of-killing-fascists-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-26T08:20:28.890Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:la-boheme-off-broadway-2026",
-    "title": "Review gap — \"La Bohème\" missing 6 cited review(s)",
-    "description": "La Bohème (la-boheme-off-broadway-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=la-boheme-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-26T08:20:28.922Z"
   },
   {
     "conditionKey": "review-gap:opening-window:the-invention-of-love-off-broadway-2026",
@@ -522,5 +426,53 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-26T12:15:06.799Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:america-who-hurt-you-off-broadway-2026",
+    "title": "Review gap — \"America, Who Hurt You?\" missing 1 cited review(s)",
+    "description": "America, Who Hurt You? (america-who-hurt-you-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=america-who-hurt-you-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-26T13:41:46.138Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:deep-heat-rivalry-off-west-end-2026",
+    "title": "Review gap — \"Deep Heat Rivalry\" missing 4 cited review(s)",
+    "description": "Deep Heat Rivalry (deep-heat-rivalry-off-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=deep-heat-rivalry-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-26T13:41:46.145Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:table-17-off-west-end-2026",
+    "title": "Review gap — \"Table 17\" missing 11 cited review(s)",
+    "description": "Table 17 (table-17-off-west-end-2026): 11 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=table-17-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-26T13:41:46.167Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-urmetazoan-off-west-end-2026",
+    "title": "Review gap — \"The Urmetazoan\" missing 3 cited review(s)",
+    "description": "The Urmetazoan (the-urmetazoan-off-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-urmetazoan-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-26T13:41:46.181Z"
   }
 ]
