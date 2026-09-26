@@ -359,3 +359,17 @@ test('The Stage non-review sections are blocked for every source; /reviews/ and 
 test("Hampstead Theatre's own box-office pages are venue pages, not reviews", () => {
   assert.equal(domainFilters.isBlockedReviewUrl('https://www.hampsteadtheatre.com/whats-on/2026/the-urmetazoan/'), true);
 });
+
+test('any /whats-on/ listing without "review" in the path is blocked; outlet reviews filed there are not', () => {
+  for (const u of [
+    'https://kilntheatre.com/whats-on/table-17/',
+    'https://www.stratfordeast.com/whats-on/all-shows/here-there-are-blueberries',
+    'https://www.skiddle.com/whats-on/London/Gillian-Lynne-Theatre/My-Neighbour-Totoro/42468204/',
+    'https://www.afridiziak.com/whatson/anansi-the-spider-regents-park-open-air-theatre/',
+  ]) assert.equal(domainFilters.isBlockedReviewUrl(u), true, u);
+  for (const u of [
+    'https://www.manchestereveningnews.co.uk/whats-on/theatre-news/review-mousetrap-opera-house-manchester-11534540',
+    'https://www.londonmumsmagazine.com/whats-on/review-holy-fool-at-park-theatre-a-powerful-story-of-art-fear-and-resistance/',
+    'https://www.afridiziak.com/reviews/darkling/',
+  ]) assert.equal(domainFilters.isBlockedReviewUrl(u), false, u);
+});

@@ -334,6 +334,16 @@ function isBlockedReviewUrl(url) {
     // are never a review, whatever the source.
     if (matchesDomainSet(hostname, new Set(['thestage.co.uk']))
       && ['news', 'opinion', 'promoted-content', 'review-round-ups'].includes(pathParts[0])) return true;
+    // A /whats-on/ listing is a venue box-office or ticketing page, never a
+    // review: hampsteadtheatre.com, kilntheatre.com, stratfordeast.com,
+    // almeida.co.uk, skiddle.com, afridiziak.com/whatson/ all arrived this way,
+    // mostly via /submit-review, and each new venue host turned the outlet-
+    // registry gate red until it was added to VENUE_DOMAINS one by one
+    // (2026-09-26). The shape blocks the whole class. News outlets that file
+    // real reviews under /whats-on/ (manchestereveningnews.co.uk/whats-on/
+    // theatre-news/review-..., chroniclelive, londonmumsmagazine) keep "review"
+    // in the path, so they pass.
+    if ((pathParts[0] === 'whats-on' || pathParts[0] === 'whatson') && !/review/.test(lowerPath)) return true;
     // Malformed URLs (e.g., "http://Here We Are review — ...")
     if (parsed.hostname.includes(' ') || !parsed.hostname.includes('.')) return true;
     return false;
