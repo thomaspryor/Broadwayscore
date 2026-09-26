@@ -355,3 +355,7 @@ test('The Stage non-review sections are blocked for every source; /reviews/ and 
   assert.equal(domainFilters.isBlockedReviewUrl('https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london'), false);
   assert.equal(domainFilters.isBlockedReviewUrl('https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london'), false);
 });
+
+test("Hampstead Theatre's own box-office pages are venue pages, not reviews", () => {
+  assert.equal(domainFilters.isBlockedReviewUrl('https://www.hampsteadtheatre.com/whats-on/2026/the-urmetazoan/'), true);
+});

@@ -172,6 +172,11 @@ const REFERENCE_DOMAINS = new Set([
 // ingested via /submit-review and scored as a "truncated" review).
 const VENUE_DOMAINS = new Set([
   'southbank.london',
+  // hampsteadtheatre.com/whats-on/2026/<show>/ is Hampstead Theatre's own
+  // box-office page, submitted via /submit-review for The Urmetazoan and
+  // Kimberly Akimbo (2026-09-26); its unregistered outletId turned the
+  // outlet-registry gate red. Same shape and remedy as the venues below.
+  'hampsteadtheatre.com',
   // Same venue family, different domain — southbankcentre.co.uk's own
   // /whats-on/ listing pages are the identical "Toggle caption ... Dates &
   // tickets ... Access ... Ticket Office" box-office copy (BRO-2712
