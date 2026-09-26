@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-26T13:36:11.998Z",
-  "processed": 71,
-  "failed": 307,
-  "successRate": "18.8%",
+  "updatedAt": "2026-09-26T13:48:42.005Z",
+  "processed": 28,
+  "failed": 122,
+  "successRate": "18.7%",
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 15,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingbee": 6,
+    "scrapingbee": 8,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 5
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-09-26T13:04:15.804Z",
@@ -38,6 +38,17 @@
       "event": "bb-session",
       "session": "bec864e1",
       "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-09-26T13:35:26.252Z",
+      "event": "bb-session",
+      "session": "1ea7c7fa",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-26T13:35:31.656Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
