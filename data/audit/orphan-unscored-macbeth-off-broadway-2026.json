@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "macbeth-off-broadway-2026",
   "openingDate": "2026-09-22",
-  "detectedAt": "2026-09-27T14:49:45.162Z",
+  "detectedAt": "2026-09-27T14:57:34.525Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "classical-voice-america--unknown.json",
-      "outletId": "classical-voice-america",
-      "criticName": "Unknown",
-      "url": "https://classicalvoiceamerica.org/2026/09/25/130682/",
-      "fullTextLen": 7131,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "talkclassical--unknown.json",
       "outletId": "talkclassical",
@@ -45,9 +28,9 @@
       "criticName": "Unknown",
       "url": "https://womanaroundtown.com/sections/playing-around/under-the-covens-eye-the-mets-enthralling-new-macbeth/",
       "fullTextLen": 615,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
       "humanReviewScore": null,
       "adjudicatedScore": null,
       "originalScore": null,
@@ -57,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 3,
-  "dispatchableOrphanCount": 2,
-  "blockedOrphanCount": 1,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
