@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27T18:48:27.809Z",
+  "generatedAt": "2026-09-27T19:08:32.468Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -2324,10 +2324,6 @@
           "isDualMarket": false
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "amNewYork",
           "isDualMarket": false
         },
@@ -3655,8 +3651,8 @@
           "detail": "No pre-existing score files"
         },
         "dtliSlug": {
-          "pass": false,
-          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+          "pass": true,
+          "detail": "DTLI slug: the-hairy-ape-review"
         },
         "bwwRoundup": {
           "pass": null,
@@ -3670,7 +3666,7 @@
         }
       },
       "readinessSummary": {
-        "failures": 2,
+        "failures": 1,
         "warnings": 2,
         "unknowns": 4,
         "total": 7
