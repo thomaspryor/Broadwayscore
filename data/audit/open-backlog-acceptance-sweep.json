@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-26T11:54:16.605Z",
+  "generatedAt": "2026-09-27T12:33:42.436Z",
   "shadow": true,
-  "checkoutSha": "0229f8f9088280a3e828c6883beda5e17c66fc97",
-  "totalCandidates": 1587,
-  "eligibleCandidates": 50,
+  "checkoutSha": "6aa0d7a95e64a429327175c753e8aec275b8d1a0",
+  "totalCandidates": 1591,
+  "eligibleCandidates": 52,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
@@ -119,16 +119,28 @@
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/land-rebase-classify.test.mjs"
     },
     {
+      "id": "BRO-4098",
+      "name": "triage-review-gap.js reports ingested-but-excluded when outlet's only file is a different production",
+      "verifyCmd": "node --test scripts/triage-review-gap.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/triage-review-gap.test.mjs"
+    },
+    {
       "id": "BRO-4063",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every scripts/ root file with the shred signature and no fold is in the frozen baseline\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 146867ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 145965ms (timeout — no verdict)"
     },
     {
       "id": "BRO-4049",
       "name": "Duplicate stub show entry crazy-mama-off-broadway-2026 siphons opening-night reviews from canonical id",
       "verifyCmd": "node --test tests/unit/duplicate-show-dedup.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/duplicate-show-dedup.test.mjs"
+    },
+    {
+      "id": "BRO-3953",
+      "name": "P1: audit-aggregator-gap.yml 'Run gap audit' step failing 3 of 5 runs",
+      "verifyCmd": "node --test tests/unit/aggregator-gap-audit.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/aggregator-gap-audit.test.mjs"
     },
     {
       "id": "BRO-3941",
@@ -183,18 +195,6 @@
       "name": "T1 dispatch decision does not canonicalize timeout/timeout-london alias pairs",
       "verifyCmd": "node --test scripts/audit-opening.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-opening.test.mjs"
-    },
-    {
-      "id": "BRO-2430",
-      "name": "Carried over: 33 open fleet/dispatch backlog items that die when the Notion poller is retired (fleet_selfref + bsc_daily)",
-      "verifyCmd": "node --test scripts/linear-import-corpus.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/linear-import-corpus.test.mjs"
-    },
-    {
-      "id": "BRO-2427",
-      "name": "P2: uncleared setTimeout inside Promise.race timeout-wrappers — same bug class in 4+ scripts (BRO-420 follow-up)",
-      "verifyCmd": "test -f scripts/audit-timeout-patterns.js",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-timeout-patterns.js"
     }
   ]
 }
