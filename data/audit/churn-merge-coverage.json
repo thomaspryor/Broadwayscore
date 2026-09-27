@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-27T20:32:57.878Z",
+    "generatedAt": "2026-09-27T22:21:43.809Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -9,41 +9,84 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 0,
-    "exemptCount": 0,
-    "coveredCount": 6,
-    "highChurnTracked": 6
+    "exemptCount": 3,
+    "coveredCount": 12,
+    "highChurnTracked": 15
   },
   "flagged": [],
-  "exempt": [],
+  "exempt": [
+    {
+      "path": "public/data/admin/critic-coverage.json",
+      "churn": 34
+    },
+    {
+      "path": "public/data/admin/locks.json",
+      "churn": 34
+    },
+    {
+      "path": "public/data/mobile-shows.json",
+      "churn": 34
+    }
+  ],
   "covered": [
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 43,
+      "churn": 52,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 34,
+      "churn": 41,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 34,
+      "churn": 41,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 34,
+      "churn": 41,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 34,
+      "churn": 41,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 30,
+      "churn": 35,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/scraper-spend-ledger.jsonl",
+      "churn": 35,
+      "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/orphan-unscored-elf-lyons-the-woman-on-the-edge-off-broadway-2026.json",
+      "churn": 34,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/orphan-unscored-macbeth-off-broadway-2026.json",
+      "churn": 34,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/orphan-unscored-the-secret-circus-musical-off-broadway-2026.json",
+      "churn": 34,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/orphan-unscored-tru-off-west-end-2026.json",
+      "churn": 34,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/verify-all-scored-state.json",
+      "churn": 34,
       "mergeAttr": "ours"
     }
   ]
