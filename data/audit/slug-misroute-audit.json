@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-20T17:21:59.076Z",
-  "totalScanned": 44168,
+  "generatedAt": "2026-09-27T18:05:54.595Z",
+  "totalScanned": 44775,
   "findings": [
     {
       "from": "an-ark-off-broadway-2026",
@@ -372,6 +372,68 @@
         "to-year-far",
         "from-also-full-match"
       ],
+      "confirm": false
+    },
+    {
+      "from": "becky-shaw-2026",
+      "to": "monte-cristo-the-york-theatre-company-off-broadway-2026",
+      "file": "nysr--david-finkle.json",
+      "slug": "Review-Roundup-MONTE-CRISTO-Opens-at-York-Theatre-20260320",
+      "source": "bww",
+      "url": "https://nystagereview.com/2026/04/06/becky-shaw-social-climbing-in-the-21st-century/",
+      "fromTokens": "becky|shaw",
+      "toTokens": "monte|cristo",
+      "articleYear": 2026,
+      "toYearGap": 0,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "Becky Shaw",
+        "venue": "Helen Hayes Theater",
+        "openingDate": "2026-04-06",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "toShow": {
+        "title": "Monte Cristo",
+        "venue": "Theatre at St. Jean's",
+        "openingDate": "2026-03-19",
+        "status": "closed",
+        "category": "off-broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [],
+      "confirm": false
+    },
+    {
+      "from": "becky-shaw-2026",
+      "to": "monte-cristo-the-york-theatre-company-off-broadway-2026",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "slug": "Review-Roundup-MONTE-CRISTO-Opens-at-York-Theatre-20260320",
+      "source": "bww",
+      "url": "https://www.nytimes.com/2026/04/06/theater/becky-shaw-review-alden-ehrenreich.html",
+      "fromTokens": "becky|shaw",
+      "toTokens": "monte|cristo",
+      "articleYear": 2026,
+      "toYearGap": 0,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "Becky Shaw",
+        "venue": "Helen Hayes Theater",
+        "openingDate": "2026-04-06",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "toShow": {
+        "title": "Monte Cristo",
+        "venue": "Theatre at St. Jean's",
+        "openingDate": "2026-03-19",
+        "status": "closed",
+        "category": "off-broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [],
       "confirm": false
     },
     {
@@ -1515,6 +1577,68 @@
       "warnings": [
         "to-year-far"
       ],
+      "confirm": false
+    },
+    {
+      "from": "every-brilliant-thing-2026",
+      "to": "everybodys-talking-about-jamie-west-end-2024",
+      "file": "ew--lee-lenker.json",
+      "slug": "Review-Roundup-EVERYBODYS-TALKING-ABOUT-JAMIE-Opens-in-Los-Angeles--See-What-the-Critics-Had-to-Say-20220125",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-EVERYBODYS-TALKING-ABOUT-JAMIE-Opens-in-Los-Angeles--See-What-the-Critics-Had-to-Say-20220125",
+      "fromTokens": "every|brilliant|thing",
+      "toTokens": "everybodys|talking|about|jamie",
+      "articleYear": 2022,
+      "toYearGap": 2,
+      "fromYearGap": 4,
+      "fromShow": {
+        "title": "Every Brilliant Thing",
+        "venue": "Hudson Theatre",
+        "openingDate": "2026-03-12",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "toShow": {
+        "title": "Everybody's Talking About Jamie",
+        "venue": "Peacock Theatre",
+        "openingDate": "2024-02-08",
+        "status": "closed",
+        "category": "off-west-end"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [],
+      "confirm": false
+    },
+    {
+      "from": "every-brilliant-thing-2026",
+      "to": "everybodys-talking-about-jamie-west-end-2024",
+      "file": "theatrely--rachel-hsu.json",
+      "slug": "Review-Roundup-EVERYBODYS-TALKING-ABOUT-JAMIE-Opens-in-Los-Angeles--See-What-the-Critics-Had-to-Say-20220125",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-EVERYBODYS-TALKING-ABOUT-JAMIE-Opens-in-Los-Angeles--See-What-the-Critics-Had-to-Say-20220125",
+      "fromTokens": "every|brilliant|thing",
+      "toTokens": "everybodys|talking|about|jamie",
+      "articleYear": 2022,
+      "toYearGap": 2,
+      "fromYearGap": 4,
+      "fromShow": {
+        "title": "Every Brilliant Thing",
+        "venue": "Hudson Theatre",
+        "openingDate": "2026-03-12",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "toShow": {
+        "title": "Everybody's Talking About Jamie",
+        "venue": "Peacock Theatre",
+        "openingDate": "2024-02-08",
+        "status": "closed",
+        "category": "off-west-end"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [],
       "confirm": false
     },
     {
@@ -5406,7 +5530,7 @@
       "fromTokens": "women|verge|nervous|breakdown",
       "toTokens": "verge",
       "articleYear": 2010,
-      "toYearGap": null,
+      "toYearGap": 16,
       "fromYearGap": 0,
       "fromShow": {
         "title": "Women on the Verge of a Nervous Breakdown",
@@ -5418,14 +5542,14 @@
       "toShow": {
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
-        "openingDate": null,
+        "openingDate": "2026-11-05",
         "status": "upcoming",
         "category": "off-broadway"
       },
       "class": "A",
       "outOfScope": false,
       "warnings": [
-        "no-date"
+        "to-year-far"
       ],
       "confirm": false
     },
@@ -5439,7 +5563,7 @@
       "fromTokens": "women|verge|nervous|breakdown",
       "toTokens": "verge",
       "articleYear": 2010,
-      "toYearGap": null,
+      "toYearGap": 16,
       "fromYearGap": 0,
       "fromShow": {
         "title": "Women on the Verge of a Nervous Breakdown",
@@ -5451,14 +5575,14 @@
       "toShow": {
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
-        "openingDate": null,
+        "openingDate": "2026-11-05",
         "status": "upcoming",
         "category": "off-broadway"
       },
       "class": "A",
       "outOfScope": false,
       "warnings": [
-        "no-date"
+        "to-year-far"
       ],
       "confirm": false
     },
@@ -5472,7 +5596,7 @@
       "fromTokens": "women|verge|nervous|breakdown",
       "toTokens": "verge",
       "articleYear": 2010,
-      "toYearGap": null,
+      "toYearGap": 16,
       "fromYearGap": 0,
       "fromShow": {
         "title": "Women on the Verge of a Nervous Breakdown",
@@ -5484,14 +5608,14 @@
       "toShow": {
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
-        "openingDate": null,
+        "openingDate": "2026-11-05",
         "status": "upcoming",
         "category": "off-broadway"
       },
       "class": "A",
       "outOfScope": false,
       "warnings": [
-        "no-date"
+        "to-year-far"
       ],
       "confirm": false
     },
@@ -5505,7 +5629,7 @@
       "fromTokens": "women|verge|nervous|breakdown",
       "toTokens": "verge",
       "articleYear": 2010,
-      "toYearGap": null,
+      "toYearGap": 16,
       "fromYearGap": 0,
       "fromShow": {
         "title": "Women on the Verge of a Nervous Breakdown",
@@ -5517,14 +5641,14 @@
       "toShow": {
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
-        "openingDate": null,
+        "openingDate": "2026-11-05",
         "status": "upcoming",
         "category": "off-broadway"
       },
       "class": "A",
       "outOfScope": false,
       "warnings": [
-        "no-date"
+        "to-year-far"
       ],
       "confirm": false
     },
@@ -5538,7 +5662,7 @@
       "fromTokens": "women|verge|nervous|breakdown",
       "toTokens": "verge",
       "articleYear": 2010,
-      "toYearGap": null,
+      "toYearGap": 16,
       "fromYearGap": 0,
       "fromShow": {
         "title": "Women on the Verge of a Nervous Breakdown",
@@ -5550,14 +5674,14 @@
       "toShow": {
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
-        "openingDate": null,
+        "openingDate": "2026-11-05",
         "status": "upcoming",
         "category": "off-broadway"
       },
       "class": "A",
       "outOfScope": false,
       "warnings": [
-        "no-date"
+        "to-year-far"
       ],
       "confirm": false
     },
@@ -5571,7 +5695,7 @@
       "fromTokens": "women|verge|nervous|breakdown",
       "toTokens": "verge",
       "articleYear": 2010,
-      "toYearGap": null,
+      "toYearGap": 16,
       "fromYearGap": 0,
       "fromShow": {
         "title": "Women on the Verge of a Nervous Breakdown",
@@ -5583,14 +5707,14 @@
       "toShow": {
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
-        "openingDate": null,
+        "openingDate": "2026-11-05",
         "status": "upcoming",
         "category": "off-broadway"
       },
       "class": "A",
       "outOfScope": false,
       "warnings": [
-        "no-date"
+        "to-year-far"
       ],
       "confirm": false
     },
@@ -5604,7 +5728,7 @@
       "fromTokens": "women|verge|nervous|breakdown",
       "toTokens": "verge",
       "articleYear": 2010,
-      "toYearGap": null,
+      "toYearGap": 16,
       "fromYearGap": 0,
       "fromShow": {
         "title": "Women on the Verge of a Nervous Breakdown",
@@ -5616,14 +5740,14 @@
       "toShow": {
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
-        "openingDate": null,
+        "openingDate": "2026-11-05",
         "status": "upcoming",
         "category": "off-broadway"
       },
       "class": "A",
       "outOfScope": false,
       "warnings": [
-        "no-date"
+        "to-year-far"
       ],
       "confirm": false
     },
@@ -5637,7 +5761,7 @@
       "fromTokens": "women|verge|nervous|breakdown",
       "toTokens": "verge",
       "articleYear": 2010,
-      "toYearGap": null,
+      "toYearGap": 16,
       "fromYearGap": 0,
       "fromShow": {
         "title": "Women on the Verge of a Nervous Breakdown",
@@ -5649,14 +5773,14 @@
       "toShow": {
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
-        "openingDate": null,
+        "openingDate": "2026-11-05",
         "status": "upcoming",
         "category": "off-broadway"
       },
       "class": "A",
       "outOfScope": false,
       "warnings": [
-        "no-date"
+        "to-year-far"
       ],
       "confirm": false
     },
@@ -5670,7 +5794,7 @@
       "fromTokens": "women|verge|nervous|breakdown",
       "toTokens": "verge",
       "articleYear": 2010,
-      "toYearGap": null,
+      "toYearGap": 16,
       "fromYearGap": 0,
       "fromShow": {
         "title": "Women on the Verge of a Nervous Breakdown",
@@ -5682,14 +5806,14 @@
       "toShow": {
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
-        "openingDate": null,
+        "openingDate": "2026-11-05",
         "status": "upcoming",
         "category": "off-broadway"
       },
       "class": "A",
       "outOfScope": false,
       "warnings": [
-        "no-date"
+        "to-year-far"
       ],
       "confirm": false
     },
@@ -5703,7 +5827,7 @@
       "fromTokens": "women|verge|nervous|breakdown",
       "toTokens": "verge",
       "articleYear": 2010,
-      "toYearGap": null,
+      "toYearGap": 16,
       "fromYearGap": 0,
       "fromShow": {
         "title": "Women on the Verge of a Nervous Breakdown",
@@ -5715,14 +5839,14 @@
       "toShow": {
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
-        "openingDate": null,
+        "openingDate": "2026-11-05",
         "status": "upcoming",
         "category": "off-broadway"
       },
       "class": "A",
       "outOfScope": false,
       "warnings": [
-        "no-date"
+        "to-year-far"
       ],
       "confirm": false
     },
@@ -5736,7 +5860,7 @@
       "fromTokens": "women|verge|nervous|breakdown",
       "toTokens": "verge",
       "articleYear": 2010,
-      "toYearGap": null,
+      "toYearGap": 16,
       "fromYearGap": 0,
       "fromShow": {
         "title": "Women on the Verge of a Nervous Breakdown",
@@ -5748,14 +5872,14 @@
       "toShow": {
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
-        "openingDate": null,
+        "openingDate": "2026-11-05",
         "status": "upcoming",
         "category": "off-broadway"
       },
       "class": "A",
       "outOfScope": false,
       "warnings": [
-        "no-date"
+        "to-year-far"
       ],
       "confirm": false
     },
@@ -5769,7 +5893,7 @@
       "fromTokens": "women|verge|nervous|breakdown",
       "toTokens": "verge",
       "articleYear": 2010,
-      "toYearGap": null,
+      "toYearGap": 16,
       "fromYearGap": 0,
       "fromShow": {
         "title": "Women on the Verge of a Nervous Breakdown",
@@ -5781,14 +5905,14 @@
       "toShow": {
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
-        "openingDate": null,
+        "openingDate": "2026-11-05",
         "status": "upcoming",
         "category": "off-broadway"
       },
       "class": "A",
       "outOfScope": false,
       "warnings": [
-        "no-date"
+        "to-year-far"
       ],
       "confirm": false
     },
@@ -5802,7 +5926,7 @@
       "fromTokens": "women|verge|nervous|breakdown",
       "toTokens": "verge",
       "articleYear": 2010,
-      "toYearGap": null,
+      "toYearGap": 16,
       "fromYearGap": 0,
       "fromShow": {
         "title": "Women on the Verge of a Nervous Breakdown",
@@ -5814,14 +5938,14 @@
       "toShow": {
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
-        "openingDate": null,
+        "openingDate": "2026-11-05",
         "status": "upcoming",
         "category": "off-broadway"
       },
       "class": "A",
       "outOfScope": false,
       "warnings": [
-        "no-date"
+        "to-year-far"
       ],
       "confirm": false
     },
@@ -5835,7 +5959,7 @@
       "fromTokens": "women|verge|nervous|breakdown",
       "toTokens": "verge",
       "articleYear": 2010,
-      "toYearGap": null,
+      "toYearGap": 16,
       "fromYearGap": 0,
       "fromShow": {
         "title": "Women on the Verge of a Nervous Breakdown",
@@ -5847,14 +5971,14 @@
       "toShow": {
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
-        "openingDate": null,
+        "openingDate": "2026-11-05",
         "status": "upcoming",
         "category": "off-broadway"
       },
       "class": "A",
       "outOfScope": false,
       "warnings": [
-        "no-date"
+        "to-year-far"
       ],
       "confirm": false
     },
@@ -5868,7 +5992,7 @@
       "fromTokens": "women|verge|nervous|breakdown",
       "toTokens": "verge",
       "articleYear": 2010,
-      "toYearGap": null,
+      "toYearGap": 16,
       "fromYearGap": 0,
       "fromShow": {
         "title": "Women on the Verge of a Nervous Breakdown",
@@ -5880,14 +6004,14 @@
       "toShow": {
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
-        "openingDate": null,
+        "openingDate": "2026-11-05",
         "status": "upcoming",
         "category": "off-broadway"
       },
       "class": "A",
       "outOfScope": false,
       "warnings": [
-        "no-date"
+        "to-year-far"
       ],
       "confirm": false
     }
