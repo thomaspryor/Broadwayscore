@@ -140,18 +140,6 @@
     "queuedAt": "2026-09-27T08:38:35.039Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36237415281",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-26T11:04:16.351Z"
-  },
-  {
     "conditionKey": "corpus-drift:cv-flag-contradiction",
     "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
     "description": "check-corpus-drift.js audit \"cv-flag-contradiction\" (node scripts/audit-cv-flag-contradiction.js --window=30 --strict) has been drifting. Latest output:\n\nFlag-vs-CV contradiction sweep: 143 shows in the last 30d window, 7 contradiction(s) found.\n  [wrongProduction] macbeth-off-broadway-2026/slippedisc--susan-hall.json (468w)\n  [wrongProduction] tosca-off-broadway-2026/new-york-classical-review--george-grella.json (925w)\n  [wrongProduction] tosca-off-broadway-2026/operawire--chris-ruel.json (2816w)\n  [wrongProduction] miles-for-mary-off-broadway-2026/talkinbroadway--marc-miller.json (675w)\n  [wrongProduction] the-last-ship-west-end-2026/timeout--andrzej-lukowski.json (976w)\n  [wrongProduction] kimberly-akimbo-off-west-end-2026/broadwayworld--katie-kirkpatrick.json (899w)\n  [wrongProduction] the-revlon-girl-off-west-end-2026/london-box-office--stacey-tyler.json (817w)\nCoverage: examined 93 of 3060 corpus show(s) (1638 review file(s) parsed).\n  --window=30d selected 143 show(s): 46 already opened, 97 not yet opened (the window filter has no upper bound).\n  50 selected show(s) yielded no readable review file (directory missing, unreadable, empty, or every file failed to parse).\n  2967 corpus show(s) were NOT examined, of which 425 carry no usable openingDate (missing or unparseable) and are excluded at EVERY window.\n  A clean result above covers only the examined shows. It is not a statement about the corpus.\n\n(4 baselined, 3 new)\n\n⚠️  NEW flag-vs-CV contradiction(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/cv-flag-contradiction-baseline.json):\n  [wrongProduction] macbeth-off-broadway-2026/slippedisc--susan-hall.json\n  [wrongProduction] the-last-ship-west-end-2026/timeout--andrzej-lukowski.json\n  [wrongProduction] kimberly-akimbo-off-west-end-2026/broadwayworld--katie-kirkpatrick.json\n\nInvestigate, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-cv-flag-contradiction.js --update-baseline",
@@ -616,5 +604,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-27T08:57:54.995Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Audit outlet-registry gaps, Audit same-URL byline double-counts",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36316311352",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-27T11:41:19.223Z"
   }
 ]
