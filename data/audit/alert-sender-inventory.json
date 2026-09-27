@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-26T18:15:35.310Z",
+  "generatedAt": "2026-09-27T18:52:24.186Z",
   "counts": {
-    "router": 149,
+    "router": 150,
     "digest": 1,
     "direct": 0,
     "humanCallerIgnoresDigest": 0
@@ -79,14 +79,14 @@
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4073,
+      "line": 4076,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 6079,
+      "line": 6082,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -969,6 +969,13 @@
     {
       "file": "scripts/reconcile-dead-completions.js",
       "line": 274,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
+      "file": "scripts/renew-cookies.js",
+      "line": 112,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
