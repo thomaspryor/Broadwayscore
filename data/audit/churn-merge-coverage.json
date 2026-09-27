@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-27T09:57:45.539Z",
+    "generatedAt": "2026-09-27T10:24:38.617Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,15 +16,15 @@
   "flagged": [
     {
       "path": "data/audit/guard-escalation-state.json",
-      "churn": 113
+      "churn": 115
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 79
+      "churn": 80
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 34
+      "churn": 35
     }
   ],
   "exempt": [
@@ -38,15 +38,15 @@
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 130
+      "churn": 132
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 130
+      "churn": 132
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 130
+      "churn": 132
     },
     {
       "path": "public/data/stats-reviews.json",
@@ -65,15 +65,15 @@
       "churn": 83
     },
     {
+      "path": "public/opening-night-status.json",
+      "churn": 80
+    },
+    {
       "path": "public/data/shows/hadestown-west-end-2024.json",
       "churn": 79
     },
     {
       "path": "public/data/shows/much-ado-about-nothing-globe-off-west-end-2026.json",
-      "churn": 79
-    },
-    {
-      "path": "public/opening-night-status.json",
       "churn": 79
     },
     {
@@ -170,7 +170,7 @@
     },
     {
       "path": "public/data/shows/catarina-and-the-beauty-of-killing-fascists-west-end-2026.json",
-      "churn": 40
+      "churn": 41
     },
     {
       "path": "public/data/shows/delirium-off-broadway-2026.json",
@@ -178,7 +178,7 @@
     },
     {
       "path": "public/data/shows/table-17-off-west-end-2026.json",
-      "churn": 34
+      "churn": 35
     },
     {
       "path": "public/data/shows/the-holes-off-broadway-2026.json",
@@ -188,37 +188,37 @@
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 263,
+      "churn": 264,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 245,
+      "churn": 246,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 243,
+      "churn": 245,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 228,
+      "churn": 230,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 228,
+      "churn": 230,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 228,
+      "churn": 230,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 160,
+      "churn": 162,
       "mergeAttr": "ours"
     },
     {
@@ -228,12 +228,12 @@
     },
     {
       "path": "data/audit/orphan-unscored-macbeth-off-broadway-2026.json",
-      "churn": 130,
+      "churn": 132,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 130,
+      "churn": 132,
       "mergeAttr": "ours"
     },
     {
@@ -243,37 +243,37 @@
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 102,
+      "churn": 101,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 79,
+      "churn": 80,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 79,
+      "churn": 80,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 79,
+      "churn": 80,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 71,
+      "churn": 72,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 67,
+      "churn": 66,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-the-secret-circus-musical-off-broadway-2026.json",
-      "churn": 45,
+      "churn": 47,
       "mergeAttr": "ours"
     },
     {
@@ -283,12 +283,12 @@
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 30,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 30,
+      "churn": 31,
       "mergeAttr": "ours"
     }
   ]
