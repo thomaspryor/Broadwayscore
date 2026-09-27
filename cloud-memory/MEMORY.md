@@ -95,7 +95,7 @@
 - [In-place URL update preserves stale state](feedback_inplace_url_update_preserves_stale_state.md) — real reviews merged into flagged slots stay suppressed; check file's CURRENT url first; run isScoreable() for hidden blockers
 - [SEO site-avg position brand-skewed](feedback_seo_site_avg_position_is_brand_skewed.md) — never cite GSC avg as ranking quality; use de-branded review-intent
 - [Cloudflare/DataDome blocks](feedback_cloudflare_bypass_hierarchy.md) — managed challenge + WSJ/NewYorker CI IP block defeat all; Browserbase only ([[feedback_wsj_newyorker_ci_ip_block.md]])
-- [Cookie auth](feedback_stage_cookie_minimal_set.md) — Stage = 5 cookies; Mac Studio Terminal needs FDA ([[feedback_mac_studio_cookies.md]]); health = body-length not expiry, re-login needs user ([[feedback_cookie_health_body_length_not_expiry.md]])
+- [Cookie auth](feedback_stage_cookie_minimal_set.md) — Stage = 5 cookies; Mac Studio Terminal needs FDA ([[feedback_mac_studio_cookies.md]]); health = body-length not expiry ([[feedback_cookie_health_body_length_not_expiry.md]]); Stage re-login ONLY via Mac Studio renew-cookies.js, never CI ([[feedback_stage_cookie_only.md]])
 - [Audience scrapers share normalize](feedback_audience_scrapers_share_normalize.md) — import normalizeTitle from title-match.js; commit audience-buzz before CI rebuild ([[feedback_audience_buzz_commit_before_rebuild.md]])
 - [Table scrapers need structural assertions](feedback_scraper_table_assertions.md) — hardcoded cells[N] breaks on column change
 - [Orphan cast invisible by design](feedback_orphan_cast_invisible_by_design.md) — rows w/o ibdbPersonId skipped at manifest build

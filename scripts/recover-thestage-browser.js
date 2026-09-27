@@ -15,7 +15,7 @@
  * shape the extractor already knows how to parse; only the auth path changes.
  *
  * Cookies come from data/cookies/thestage.json, produced by
- * scripts/thestage-login.js.
+ * scripts/renew-cookies.js --outlet=thestage.
  *
  * Usage:
  *   node scripts/recover-thestage-browser.js --auth-only         # fast health check
@@ -36,7 +36,7 @@ if (args.some(a => a === '--help' || a === '-h' || a.startsWith('--help='))) {
   console.log('Usage: node scripts/recover-thestage-browser.js [--auth-only] [--shows=id1,id2] [--dry-run]');
   console.log('');
   console.log('Recovers The Stage review full text via a real authenticated browser session.');
-  console.log('Requires data/cookies/thestage.json from scripts/thestage-login.js.');
+  console.log('Requires data/cookies/thestage.json from scripts/renew-cookies.js --outlet=thestage.');
   process.exit(0);
 }
 
@@ -81,7 +81,7 @@ async function extractArticle(page, url) {
 async function main() {
   const cookies = loadCookiesForDomain('thestage.co.uk');
   if (!cookies) {
-    console.error('ERROR: no The Stage cookies available. Run: node scripts/thestage-login.js');
+    console.error('ERROR: no The Stage cookies available. Run: node scripts/renew-cookies.js --outlet=thestage');
     process.exit(1);
   }
   console.log(`Loaded ${cookies.length} The Stage cookies.`);
@@ -122,7 +122,7 @@ async function main() {
   const testResult = await extractArticle(page, TEST_URL);
   if (testResult.error || !testResult.text || testResult.len < 500) {
     console.error(`Auth test FAILED: ${testResult.error || `only ${testResult.len || 0} chars`}`);
-    console.error('Cookies may be expired. Re-run: node scripts/thestage-login.js');
+    console.error('Cookies may be expired. Re-run: node scripts/renew-cookies.js --outlet=thestage');
     await context.close();
     process.exit(1);
   }

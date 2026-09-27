@@ -140,7 +140,7 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
@@ -150,7 +150,8 @@
       "notifyCount": 102,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-09-27T15:42:03.347Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -805,7 +806,7 @@
       "linearIdentifier": null
     },
     "test-yml:main-streak": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Main test.yml red — no confirmed-green run in 7.1h",
@@ -815,7 +816,8 @@
       "lastSurfacedAt": "2026-09-21T13:24:17.774Z",
       "notifyCount": 66,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "resolvedAt": "2026-09-27T15:42:03.282Z"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -4991,7 +4993,7 @@
       "resolvedAt": "2026-09-25T03:23:38.340Z"
     },
     "test-yml:red:Unit Tests:86254087": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run push-with-retry stranded-commit-cascade test (bash integration) — \"foo returns the contracted value\"",
       "firstSeen": "2026-09-25T02:13:05.904Z",
@@ -5005,7 +5007,9 @@
       "absentRunIds": [
         "36099810506",
         "36101146871"
-      ]
+      ],
+      "resolvedAt": "2026-09-27T15:42:03.159Z",
+      "resolveReason": "job-green"
     },
     "land:land/job/linear-BRO-4150-mugdffki": {
       "status": "resolved",
@@ -5083,7 +5087,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:9fec3ca6": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"TRIPPED breaker: the Bright Data ledger row carries fallback_from \"sd-breaker\"\"",
       "firstSeen": "2026-09-25T06:17:55.524Z",
@@ -5098,7 +5102,9 @@
         "mode": "dispatch-at-filing",
         "runId": "36101146871",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36101146871"
-      }
+      },
+      "resolvedAt": "2026-09-27T15:42:03.183Z",
+      "resolveReason": "job-green"
     },
     "review-gap:opening-window:la-boheme-off-broadway-2026": {
       "status": "open",

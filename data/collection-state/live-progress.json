@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-27T14:59:55.798Z",
-  "processed": 22,
-  "failed": 128,
-  "successRate": "14.7%",
+  "updatedAt": "2026-09-27T15:41:38.140Z",
+  "processed": 23,
+  "failed": 187,
+  "successRate": "11.0%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 10,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 4
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-09-27T14:41:45.051Z",
@@ -58,6 +58,23 @@
       "t": "2026-09-27T14:56:57.675Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-27T15:33:33.616Z",
+      "event": "bb-session",
+      "session": "8b0eaad3",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/book-of-mormon-restore"
+    },
+    {
+      "t": "2026-09-27T15:33:34.401Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-09-27T15:38:25.896Z",
+      "event": "bb-session",
+      "session": "78100ac3",
+      "url": "http://www.hollywoodreporter.com/review/catch-me-you-can-theater-176795"
     }
   ]
 }
