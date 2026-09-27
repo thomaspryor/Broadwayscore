@@ -73,7 +73,7 @@ function isBwwNonStageTieIn(rawTitle) {
 // 263 W 86th St, and dropping it would silently lose a genuine NYC miss.
 // "London" is only a signal after a preposition ("at/in/to London") — a bare
 // \blondon\b would swallow real titles such as LONDON ROAD.
-const BWW_NON_NYC_RE = /\b(?:west end(?!\s+theat(?:re|er))|(?:in|at|to|from)\s+london|national tour|on tour|touring production|the muny|us tour)\b/i;
+const BWW_NON_NYC_RE = /\b(?:west end(?!\s+theat(?:re|er))|(?:in|at|to|from)\s+london|national tour|north american tour|on tour|touring production|the muny|us tour)\b/i;
 function isBwwNonNycRoundup(rawTitle) {
   return BWW_NON_NYC_RE.test(rawTitle);
 }
@@ -112,8 +112,14 @@ function extractShowTitleFromBwwRoundup(rawTitle) {
   // A venue-word tail check doesn't save it either — "Center" IS a venue word.
   // Leaving a tail on costs at most one noisy candidate; truncating loses real
   // shows silently, so the asymmetry favors under-splitting.
+  //
+  // A bare market tail ("AMERICA, WHO HURT YOU? Off-Broadway", "THE HOLES
+  // Off-Broadway at The Wild Project") IS split: it's the market word, not a
+  // venue, and left on it turned two tracked, reviewed shows into false
+  // missing-show candidates (2026-09-27). Hyphenated "Off-Broadway" only —
+  // the headline form — so a title word like "off broadway" in prose stays.
   const sep = rest.match(
-    /^(.{2,80}?)(?:,\s*(?:Starring|Featuring|With)\b|\s+-\s+All\s+the\s+Reviews|\s+(?:Opens?\b|Comes?\s+to|Starring|Begins|Returns?\s+to|Transfers?\s+to)\b)/i
+    /^(.{2,80}?)(?:,\s*(?:Starring|Featuring|With)\b|\s+-\s+All\s+the\s+Reviews|\s+(?:Opens?\b|Comes?\s+to|Starring|Begins|Returns?\s+to|Transfers?\s+to)\b|\s+(?:Off-Broadway|on\s+Broadway)(?=\s|$))/i
   );
   const title = (sep ? sep[1] : rest).trim();
   return title || null;
@@ -521,6 +527,22 @@ function buildShowTitleIndex(shows, market = null) {
     }
     const raws = [s.title, s.slug ? s.slug.replace(/-/g, ' ') : null];
     if (s.title && s.title.includes(' - ')) raws.push(s.title.split(' - ')[0]);
+    // Pre-":" head too: BWW roundup headlines drop subtitles ("OUR SINATRA"
+    // for "Our Sinatra: A Musical Celebration"). Without it the roundup
+    // never resolved to the show, so no evidence was recorded and the
+    // opened show was reported as a missing-show candidate (2026-09-27).
+    // Guarded to multi-word heads (>=2 words, >=6 chars): a one-word or junk
+    // head ("2" from "2:22", "dolly") would suppress an unrelated new show.
+    if (s.title && s.title.includes(':')) {
+      const head = normalizeTitle(s.title.split(':')[0]);
+      if (head && head.includes(' ') && head.length >= 6) raws.push(s.title.split(':')[0]);
+    }
+    // Mirror extractShowTitleFromBwwRoundup's market-tail split: a catalog
+    // title that itself ends "on Broadway"/"Off-Broadway" ("10 Things I Hate
+    // About You on Broadway") must still match its truncated roundup title.
+    if (s.title && /\s+(?:on\s+Broadway|Off-Broadway)$/i.test(s.title)) {
+      raws.push(s.title.replace(/\s+(?:on\s+Broadway|Off-Broadway)$/i, ''));
+    }
     for (const raw of raws) {
       if (!raw) continue;
       const n = normalizeTitle(raw);

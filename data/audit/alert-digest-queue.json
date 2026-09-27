@@ -60,18 +60,6 @@
     "queuedAt": "2026-09-27T14:36:57.428Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:human-things-off-broadway-2026",
-    "title": "Review gap — \"Human Things\" missing 1 cited review(s)",
-    "description": "Human Things (human-things-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=human-things-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T14:36:57.437Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:the-last-ship-west-end-2026",
     "title": "Review gap — \"The Last Ship\" missing 3 cited review(s)",
     "description": "The Last Ship (the-last-ship-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-last-ship-west-end-2026 --checkpoint --ingest-missing",
@@ -264,18 +252,6 @@
     "queuedAt": "2026-09-27T16:31:53.855Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:midnight-off-broadway-2026",
-    "title": "Review gap — \"Midnight\" missing 6 cited review(s)",
-    "description": "Midnight (midnight-off-broadway-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=midnight-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.859Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
     "title": "Review gap — \"Mrs. Stern Wanders the Prussian State Library (Luna Stage)\" missing 2 cited review(s)",
     "description": "Mrs. Stern Wanders the Prussian State Library (Luna Stage) (mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026 --checkpoint --ingest-missing",
@@ -358,18 +334,6 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-27T16:31:53.882Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-holes-off-broadway-2026",
-    "title": "Review gap — \"The Holes\" missing 1 cited review(s)",
-    "description": "The Holes (the-holes-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-holes-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.885Z"
   },
   {
     "conditionKey": "review-gap:opening-window:the-hope-theory-off-broadway-2026",
@@ -633,5 +597,41 @@
       }
     ],
     "queuedAt": "2026-09-27T21:56:32.436Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-secret-circus-musical-off-broadway-2026",
+    "title": "Review gap — \"The Secret Circus Musical\" missing 1 cited review(s)",
+    "description": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-secret-circus-musical-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-27T22:52:37.105Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-urmetazoan-off-west-end-2026",
+    "title": "Review gap — \"The Urmetazoan\" missing 1 cited review(s)",
+    "description": "The Urmetazoan (the-urmetazoan-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-urmetazoan-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-27T22:52:37.109Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:tru-off-west-end-2026",
+    "title": "Review gap — \"Tru\" missing 2 cited review(s)",
+    "description": "Tru (tru-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tru-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-27T22:52:37.115Z"
   }
 ]

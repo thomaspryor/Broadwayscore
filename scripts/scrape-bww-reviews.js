@@ -30,6 +30,7 @@ const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
 const { serpQuery } = require('./lib/url-discovery');
+const { shouldSkipPreviewsShow } = require('./lib/opening-signal');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
 const { pruneUnmatchedAudit, collisionSlugSet, obRegionalShows } = require('./lib/aggregator-candidate-extract');
@@ -1141,8 +1142,14 @@ function saveReview(showId, reviewData, options = {}) {
 // ---------------------------------------------------------------------------
 
 async function processShow(show, showId, options = {}) {
-  // Skip shows in previews — they haven't opened yet, any scraped reviews are wrong-production
-  if (show.status === 'previews') {
+  // Skip shows in previews — they haven't opened yet, any scraped reviews are
+  // wrong-production. EXCEPT a landing-page roundup (forceRoundupUrl: a
+  // current BWW article, matched high-confidence) for a show whose previews
+  // status is stale (null/past openingDate) — see shouldSkipPreviewsShow.
+  const skipPreviews = options.forceRoundupUrl
+    ? shouldSkipPreviewsShow(show, new Date().toISOString().slice(0, 10))
+    : show.status === 'previews';
+  if (skipPreviews) {
     console.log(`  [SKIP] ${showId}: Show is in previews (opens ${show.openingDate})`);
     return { reviews: [], roundup: [] };
   }

@@ -59,8 +59,15 @@ function isWeShow(show) {
  * burn 4 aggregator fetches per show per cycle.
  */
 function inOpeningWindow(show, now = Date.now(), windowDays = 21) {
-  if (!show || !show.openingDate) return false;
-  const opening = Date.parse(show.openingDate);
+  if (!show) return false;
+  // A live show with NO openingDate anchors on previewsStartDate: it has
+  // demonstrably started performances, and a null date otherwise parked it
+  // "out-of-window" forever, so the census never looked for its reviews
+  // (our-sinatra 2026-09-27). A future openingDate still excludes (pre-opening).
+  const anchor = show.openingDate ||
+    ((show.status === 'previews' || show.status === 'open') ? show.previewsStartDate : null);
+  if (!anchor) return false;
+  const opening = Date.parse(anchor);
   if (!Number.isFinite(opening)) return false;
   return opening <= now && now - opening <= windowDays * DAY_MS;
 }

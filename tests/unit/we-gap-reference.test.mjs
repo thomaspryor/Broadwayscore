@@ -264,3 +264,12 @@ describe('safety wiring (audit + workflow must keep the fail-closed invariants)'
     assert.ok(auditSrc.includes('citedNoUrl'), 'URL-less citations surface in results');
   });
 });
+
+// Null-openingDate live shows anchor on previewsStartDate (our-sinatra 2026-09-27).
+test('inOpeningWindow: null opening + previews under way → in window via previewsStartDate', () => {
+  const now = Date.parse('2026-09-27T12:00:00Z');
+  assert.equal(inOpeningWindow({ status: 'previews', openingDate: null, previewsStartDate: '2026-09-11' }, now), true);
+  assert.equal(inOpeningWindow({ status: 'previews', openingDate: null, previewsStartDate: '2026-01-11' }, now), false);
+  assert.equal(inOpeningWindow({ status: 'announced', openingDate: null, previewsStartDate: '2026-09-11' }, now), false);
+  assert.equal(inOpeningWindow({ status: 'previews', openingDate: '2026-10-04', previewsStartDate: '2026-09-17' }, now), false);
+});

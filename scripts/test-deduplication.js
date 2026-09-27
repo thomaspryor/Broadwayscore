@@ -12,6 +12,7 @@
 const {
   normalizeTitle,
   checkForDuplicate,
+  isColonSegmentVariant,
   isSubtitleVariantOf,
 } = require('./lib/deduplication');
 
@@ -736,6 +737,38 @@ test('isSubtitleVariantOf: intra-run collision — second same-batch candidate c
     true,
     'second candidate (bare) vs first (subtitled), same run → collapses'
   );
+});
+
+
+// 2026-09-27 live dups that validate-data's checkForDuplicate missed.
+test('checkForDuplicate: comma vs dash venue suffix is the same room (Crazy Mama)', () => {
+  const tt = { id: 'crazy-mama-off-broadway-2026', title: 'Crazy Mama', slug: 'crazy-mama-off-broadway',
+    venue: '59E59 Theaters - Theater C', previewsStartDate: '2026-09-16', openingDate: null,
+    status: 'previews', category: 'off-broadway', type: 'play' };
+  const canon = { id: 'crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026',
+    title: 'Crazy Mama: A True Story of Love and Madness', slug: 'crazy-mama-a-true-story-of-love-and-madness-off-broadway',
+    venue: '59E59 Theaters, Theater C', previewsStartDate: '2026-09-16', openingDate: '2026-09-22',
+    status: 'open', category: 'off-broadway', type: 'play' };
+  assertEqual(checkForDuplicate(tt, [canon]).isDuplicate, true, 'Crazy Mama TodayTix listing flagged as dup');
+});
+
+test('checkForDuplicate: performer-prefix colon title at same venue (Louis Katz: Conflicted)', () => {
+  const tt = { id: 'louis-katz-conflicted-off-broadway-2026', title: 'Louis Katz: Conflicted', slug: 'louis-katz-conflicted-off-broadway',
+    venue: 'SoHo Playhouse', previewsStartDate: '2026-09-17', openingDate: null, status: 'previews', category: 'off-broadway', type: 'play' };
+  const canon = { id: 'conflicted-off-broadway-2026', title: 'Conflicted', slug: 'conflicted-off-broadway',
+    venue: 'SoHo Playhouse', openingDate: '2026-09-17', status: 'open', category: 'off-broadway', type: 'play' };
+  assertEqual(checkForDuplicate(tt, [canon]).isDuplicate, true, 'Louis Katz: Conflicted flagged as dup of Conflicted');
+  const other = { ...canon, id: 'x', title: 'Conflicted Hearts', slug: 'conflicted-hearts-off-broadway' };
+  assertEqual(isColonSegmentVariant('Louis Katz: Conflicted', other.title), false, 'partial segment is not a colon variant');
+});
+
+
+test('checkForDuplicate: sibling rooms in one complex stay distinct productions', () => {
+  const a = { id: 'hamlet-off-broadway-2026', title: 'Hamlet', slug: 'hamlet-off-broadway', venue: '59E59 Theaters, Theater A',
+    openingDate: '2026-10-01', status: 'upcoming', category: 'off-broadway', type: 'play' };
+  const b = { id: 'hamlet-x-off-broadway-2026', title: 'Hamlet', slug: 'hamlet-x-off-broadway', venue: '59E59 Theaters, Theater B',
+    openingDate: '2026-09-01', status: 'open', category: 'off-broadway', type: 'play' };
+  assertEqual(checkForDuplicate(a, [b]).isDuplicate, false, 'Theater A vs Theater B not merged');
 });
 
 // ---------- run ----------
