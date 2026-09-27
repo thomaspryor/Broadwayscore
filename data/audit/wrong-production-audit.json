@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-09-27T23:02:31.337Z",
+  "timestamp": "2026-09-27T23:31:11.392Z",
   "stats": {
     "totalReviews": 44510,
     "alreadyFlagged": 18362,
     "dateGuardCatches": 256,
-    "directorMismatch": 1065,
+    "directorMismatch": 1063,
     "tvFilmSignals": 1316,
-    "londonSignals": 1201,
+    "londonSignals": 1200,
     "offBroadwaySignals": 510,
     "yearMismatch": 95,
     "noPublishDate": 3829
@@ -33574,29 +33574,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jay presson allen\" from tru-1989"
-        }
-      ]
-    },
-    {
-      "showId": "tru-off-west-end-2026",
-      "file": "theatre-weekly--unknown.json",
-      "publishDate": "2026-09-24",
-      "url": "https://theatreweekly.com/first-look-production-images-released-for-jesse-tyler-ferguson-and-charlotte-damboise-in-tru-at-the-menier-chocolate-factory/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jay presson allen\" from tru-1989"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rob ashford\" from tru-off-broadway-2026"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
