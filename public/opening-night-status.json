@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27T16:59:28.484Z",
+  "generatedAt": "2026-09-27T17:17:21.669Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -118,6 +118,10 @@
         },
         {
           "name": "New York Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheaterMania",
           "isDualMarket": false
         },
         {
@@ -2617,17 +2621,17 @@
       "status": "open",
       "slug": "table-17-off-west-end",
       "thumbnail": "/images/shows/table-17-off-west-end-2026/thumbnail.webp",
-      "siteScore": 77.66,
+      "siteScore": 77.77,
       "liveScore": 78,
-      "scoreDrift": 0.3400000000000034,
+      "scoreDrift": 0.23000000000000398,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 17,
+      "total": 18,
       "t1": 3,
       "t2": 9,
-      "t3": 5,
-      "positive": 12,
+      "t3": 6,
+      "positive": 13,
       "mixed": 4,
       "negative": 1,
       "readiness": {
@@ -2757,6 +2761,18 @@
           "t2": 9,
           "t3": 5,
           "p": 12,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-27T17:17:21.669Z",
+          "rc": 18,
+          "s": 77.77,
+          "t1": 3,
+          "t2": 9,
+          "t3": 6,
+          "p": 13,
           "m": 4,
           "n": 1,
           "bc": "waiting"
