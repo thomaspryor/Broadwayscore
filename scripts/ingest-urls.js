@@ -25,6 +25,12 @@ const { resolveOutletFromUrl } = require('./lib/review-normalization');
 const { extractArticleTextFromUrl } = require('./lib/article-extractor');
 const { execErrorDetail } = require('./lib/exec-error-detail');
 
+// An override id is used verbatim; flag a typo instead of writing a file under a bogus outletId.
+function isRegisteredOutletId(id) {
+  const reg = require('../data/outlet-registry.json');
+  return Object.prototype.hasOwnProperty.call(reg.outlets || {}, id);
+}
+
 // Parse CLI args
 const args = process.argv.slice(2);
 const getArg = (name) => {
@@ -117,6 +123,11 @@ async function main() {
     // Resolve outlet
     let outletId = outletOverride;
     let outletName = outletOverride;
+    if (outletOverride && !isRegisteredOutletId(outletOverride)) {
+      const msg = `Outlet override "${outletOverride}" is not in data/outlet-registry.json — check the id: ${url}`;
+      results.warnings.push(`${prefix} ${msg}`);
+      console.log(`::warning::${msg}`);
+    }
 
     if (!outletId) {
       const resolved = resolveOutletFromUrl(url);
