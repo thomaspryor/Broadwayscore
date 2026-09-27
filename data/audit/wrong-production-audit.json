@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-27T15:56:30.502Z",
+  "timestamp": "2026-09-27T16:59:20.576Z",
   "stats": {
-    "totalReviews": 44400,
-    "alreadyFlagged": 18339,
+    "totalReviews": 44410,
+    "alreadyFlagged": 18347,
     "dateGuardCatches": 256,
     "directorMismatch": 1065,
     "tvFilmSignals": 1315,
-    "londonSignals": 1197,
+    "londonSignals": 1198,
     "offBroadwaySignals": 510,
     "yearMismatch": 95,
-    "noPublishDate": 3817
+    "noPublishDate": 3812
   },
   "findings": [
     {
@@ -46741,6 +46741,19 @@
       "score": 77,
       "publishDate": "2026-09-20",
       "url": "https://theartsdispatch.substack.com/p/man-to-man-review-royal-court-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "file": "theatre-vibe--lizzie-loveridge.json",
+      "publishDate": null,
+      "url": "https://theatrevibe.co.uk/2026/09/26/review-man-to-man-royal-court-2026/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
