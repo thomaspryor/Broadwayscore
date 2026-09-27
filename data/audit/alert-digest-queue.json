@@ -550,5 +550,88 @@
       }
     ],
     "queuedAt": "2026-09-27T20:19:28.426Z"
+  },
+  {
+    "conditionKey": "land:land/missing-shows-reviews-9s5ryw",
+    "title": "Landing blocked: rebase red on land/missing-shows-reviews-9s5ryw",
+    "description": "land.yml did not land land/missing-shows-reviews-9s5ryw: the rebase gate went red at 4a54c19e83. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36351274216",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/missing-shows-reviews-9s5ryw"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "4a54c19e8314dfa5badbbe2d4639b44108e931be"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36351274216"
+      }
+    ],
+    "queuedAt": "2026-09-27T21:21:04.902Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4185-newsletter-reviews",
+    "title": "Landing blocked: push red on land/bro-4185-newsletter-reviews",
+    "description": "land.yml did not land land/bro-4185-newsletter-reviews: the push gate went red at 6262e7842d. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4185-newsletter-reviews @ 6262e7842d (origin/land/bro-4185-newsletter-reviews) → origin/main @ c230767261 [land] attempt 1/3: rebased onto c230767261, 28 file(s) changed — running checks [land] linked 17 gitignored path(s) into the worktree (node_modules/core data) [land] verified-base: main moved aae96b7a3c → c230767261 across 10 inert path(s) only — reusing the upstream verdict,  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36350373878",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4185-newsletter-reviews"
+      },
+      {
+        "name": "gate",
+        "value": "push"
+      },
+      {
+        "name": "tip",
+        "value": "6262e7842db34ebd4fec1a786265e3769197d28e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36350373878"
+      }
+    ],
+    "queuedAt": "2026-09-27T21:37:21.139Z"
+  },
+  {
+    "conditionKey": "direct-push:3871111c97129b669f368bc9c565493016047cd6",
+    "title": "Direct push to main: 3871111c97 by thomaspryor",
+    "description": "3871111c97 reached main WITHOUT going through land.yml (no row in data/audit/landings.jsonl). Pushed by thomaspryor (committer GitHub). Head commit: Stop losing reviews: feeds, hyphen matching, year-guess dates, ingest scoring, monitors (BRO-4185) (#943) Direct pushes skip the delta-vs-base gates; sessions must land via scripts/merge-worktree-to-main.sh (BRO-3425). Compare: https://github.com/thomaspryor/Broadwayscore/compare/bb6d3bf6c9e3152b3c906f98b5bc2094bdc4d6f9...3871111c97129b669f368bc9c565493016047cd6 Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36353075455",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "sha",
+        "value": "3871111c97129b669f368bc9c565493016047cd6"
+      },
+      {
+        "name": "actor",
+        "value": "thomaspryor"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36353075455"
+      }
+    ],
+    "queuedAt": "2026-09-27T21:56:32.436Z"
   }
 ]

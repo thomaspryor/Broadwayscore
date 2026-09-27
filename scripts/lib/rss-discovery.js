@@ -216,7 +216,15 @@ function titleMatchesShow(itemTitle, showTitle) {
   // foldDiacritics runs BEFORE the [^a-z0-9' ] filter: without it "Misérables"
   // loses the é entirely and tokenizes to "misrables", which matches nothing.
   // See title-match.js foldDiacritics (task #648).
-  const normalize = t => foldDiacritics(t).toLowerCase().replace(/['']/g, "'").replace(/[^a-z0-9' ]/g, '').trim();
+  // Hyphens/dashes become spaces BEFORE the strip (BRO-4185): deleting them
+  // turned "Deep-Heat Rivalry" into "deepheat rivalry", so "deep" and "heat"
+  // never matched and Theatre Weekly's review was dropped. Curly quotes fold
+  // to ASCII here too — the old class ['\u0027\u0027'] held two plain
+  // apostrophes (cloud-memory/feedback_rss_discovery_curly_apostrophe_bug.md).
+  const normalize = t => foldDiacritics(String(t || '')).toLowerCase()
+    .replace(/[\u2018\u2019\u02BC]/g, "'")
+    .replace(/[-\u2010-\u2015]/g, ' ')
+    .replace(/[^a-z0-9' ]/g, '').replace(/\s+/g, ' ').trim();
   const showWords = normalize(showTitle)
     .split(/\s+/)
     .filter(w => !['the', 'a', 'an', 'of', 'and', 'in', 'at', 'on', 'to', 'for'].includes(w))
@@ -231,6 +239,13 @@ function titleMatchesShow(itemTitle, showTitle) {
     const escaped = word.replace(/[.*+?${}()|[\]\\]/g, '\\$&');
     return new RegExp('(?:^|[\\s\\-/.\'"_])' + escaped + '(?:$|[\\s\\-/.\'"_])', 'i').test(haystack);
   };
+  // A title whose significant words are one repeated word ("Man to Man") has
+  // no distinctive token: splitting compounds made "Spider-Man" headlines
+  // match it (BRO-4185 live probe). Require the whole title as a phrase.
+  if (new Set(showWords).size === 1 && showWords.length > 1) {
+    return wordMatch(itemLower, normalize(showTitle));
+  }
+
   // All significant show words must appear in the item title
   const matchCount = showWords.filter(w => wordMatch(itemLower, w)).length;
   // Require at least 80% of words to match (handles subtitles, alternate names)

@@ -3846,17 +3846,22 @@
       "resolvedAt": "2026-09-22T16:48:58.111Z"
     },
     "test-yml:red:Unit Tests:0858c92a": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
-      "lastSeen": "2026-09-21T19:59:41.370Z",
-      "lastNotifiedAt": "2026-09-21T19:59:41.370Z",
+      "lastSeen": "2026-09-27T22:03:47.075Z",
+      "lastNotifiedAt": "2026-09-27T22:03:47.075Z",
       "lastSurfacedAt": null,
-      "notifyCount": 2,
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": "BRO-3935",
-      "resolvedAt": "2026-09-23T03:10:28.996Z"
+      "linearIdentifier": "BRO-4196",
+      "dispatch": {
+        "requestedAt": "2026-09-27T22:03:47.075Z",
+        "mode": "dispatch-at-filing",
+        "runId": "36353075509",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36353075509"
+      }
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
       "status": "resolved",
@@ -4732,12 +4737,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Audit outlet-registry gaps, Audit same-URL byline double-counts",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-27T11:41:19.222Z",
+      "lastSeen": "2026-09-27T21:53:38.335Z",
       "lastNotifiedAt": "2026-09-27T11:41:19.222Z",
       "lastSurfacedAt": "2026-09-27T11:41:19.222Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -5430,6 +5436,43 @@
       "lastSeen": "2026-09-27T20:19:28.419Z",
       "lastNotifiedAt": "2026-09-27T20:19:28.419Z",
       "lastSurfacedAt": "2026-09-27T20:19:28.419Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/missing-shows-reviews-9s5ryw": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/missing-shows-reviews-9s5ryw",
+      "firstSeen": "2026-09-27T21:21:04.902Z",
+      "lastSeen": "2026-09-27T21:49:06.449Z",
+      "lastNotifiedAt": "2026-09-27T21:21:04.902Z",
+      "lastSurfacedAt": "2026-09-27T21:21:04.902Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "land:land/bro-4185-newsletter-reviews": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: push red on land/bro-4185-newsletter-reviews",
+      "firstSeen": "2026-09-27T21:37:21.138Z",
+      "lastSeen": "2026-09-27T21:37:21.138Z",
+      "lastNotifiedAt": "2026-09-27T21:37:21.138Z",
+      "lastSurfacedAt": "2026-09-27T21:37:21.138Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "direct-push:3871111c97129b669f368bc9c565493016047cd6": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Direct push to main: 3871111c97 by thomaspryor",
+      "firstSeen": "2026-09-27T21:56:32.435Z",
+      "lastSeen": "2026-09-27T21:56:32.435Z",
+      "lastNotifiedAt": "2026-09-27T21:56:32.435Z",
+      "lastSurfacedAt": "2026-09-27T21:56:32.435Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

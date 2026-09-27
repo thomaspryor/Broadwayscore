@@ -28,6 +28,13 @@ on:
     # rebase+retry handles the ordinary case, same latent exposure the
     # existing siblings already carry.
     - cron: '0 9 * * 6'
+    # Daily, recently opened shows only (--opened-within-days=21). A false
+    # flag set on opening weekend otherwise waits up to 7 days for the
+    # Saturday sweep — past that week's newsletter and the opening-night
+    # broadcast (BRO-4185: Table 17 / First Night, flagged Sat evening).
+    # Small candidate set (6 on 2026-09-27), same --llm verification and
+    # surge guard as the weekly run.
+    - cron: '43 13 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -79,12 +86,14 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           set +e
+          SCOPE=""
+          if [ "${{ github.event.schedule }}" = "43 13 * * *" ]; then SCOPE="--opened-within-days=21"; fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then
-            OUT=$(node scripts/clear-stale-wrong-production-flags.js --llm 2>&1)
+            OUT=$(node scripts/clear-stale-wrong-production-flags.js --llm $SCOPE 2>&1)
           elif [ "${{ inputs.force_bulk }}" = "true" ]; then
-            OUT=$(node scripts/clear-stale-wrong-production-flags.js --llm --apply --force-bulk 2>&1)
+            OUT=$(node scripts/clear-stale-wrong-production-flags.js --llm --apply --force-bulk $SCOPE 2>&1)
           else
-            OUT=$(node scripts/clear-stale-wrong-production-flags.js --llm --apply 2>&1)
+            OUT=$(node scripts/clear-stale-wrong-production-flags.js --llm --apply $SCOPE 2>&1)
           fi
           STATUS=$?
           echo "$OUT" | tail -300

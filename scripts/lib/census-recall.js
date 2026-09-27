@@ -382,7 +382,18 @@ function detectRecallRegression(entries, opts = {}) {
       const baseYield = yieldSamples.length ? median(yieldSamples) : null;
       const curYield = (latest[yieldKey] || {})[arm];
       const yieldKnown = baseYield !== null && baseYield > 0 && typeof curYield === 'number';
-      const yieldFell = !yieldKnown || (baseYield - curYield) / baseYield >= cfg.yieldDropRatio;
+      // Sample-mix guard (BRO-4185): yield is URLs per show, so a week that
+      // samples thin shows (4 small off-Broadway shows, ~4.5 truth URLs each
+      // vs a 23.8 median on 2026-09-21) drops EVERY arm's yield with nothing
+      // broken, and the corroboration above then passes by construction.
+      // Only the part of the yield drop beyond the drop in ground-truth
+      // density counts.
+      const density = e => (e && e.shows > 0 && e.truthUrls > 0 ? e.truthUrls / e.shows : null);
+      const baseDensitySamples = prior.map(density).filter(v => v !== null);
+      const baseDensity = baseDensitySamples.length ? median(baseDensitySamples) : null;
+      const curDensity = density(latest);
+      const densityDrop = baseDensity && curDensity !== null ? Math.max(0, (baseDensity - curDensity) / baseDensity) : 0;
+      const yieldFell = !yieldKnown || (baseYield - curYield) / baseYield - densityDrop >= cfg.yieldDropRatio;
       const yieldNote = yieldKnown ? `${round3(curYield)} vs ${round3(baseYield)} URLs/show` : 'yield unknown';
 
       const drop = baseline - current;

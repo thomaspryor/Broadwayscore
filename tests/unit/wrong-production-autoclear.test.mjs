@@ -938,6 +938,32 @@ describe('shouldAutoClearStaleDateGuard (date-corrected pre-opening flag)', () =
     );
   });
 
+  it('BRO-4185: also clears a flag-wrong-production-by-date `Date guard:` flag once the date is in window', () => {
+    // delirium-off-broadway-2026 twi-ny: flagged from a scoring-model year
+    // guess (2025-09-25), date corrected to 2026-09-25.
+    assert.strictEqual(
+      shouldAutoClearStaleDateGuard(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Date guard: review 2025-09-25 is 327d before 2026-09-08 (preview/open) — likely different production',
+          dateSource: 'llm-scoring-year-corrected',
+        },
+        { nowInWindow: true }
+      ),
+      true
+    );
+  });
+
+  it('BRO-4185: a scoring-model date guess never releases a `Date guard:` flag', () => {
+    assert.strictEqual(
+      shouldAutoClearStaleDateGuard(
+        { wrongProduction: true, wrongProductionNote: 'Date guard: review 2024-02-20 is 3649d after 2014-02-16 (close+7d)', dateSource: 'llm-scoring' },
+        { nowInWindow: true }
+      ),
+      false
+    );
+  });
+
   it('does NOT clear when the date is still out of window', () => {
     assert.strictEqual(
       shouldAutoClearStaleDateGuard(

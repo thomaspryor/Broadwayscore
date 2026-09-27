@@ -160,3 +160,47 @@ test('evaluateDateGuard: a date OUTSIDE every declared priorRun is still flagged
   assert.equal(r.flag, true);
   assert.equal(r.issue, 'before_preview');
 });
+
+// ── evaluateLlmYearMisdate (BRO-4185) ─────────────────────────────────────
+{
+  const { evaluateLlmYearMisdate } = require('./date-guard.js');
+  // Real shape: delirium-off-broadway-2026 / this-week-in-new-york (2026-09-27).
+  const show = { id: 'delirium-off-broadway-2026', previewsStartDate: '2026-09-08', openingDate: '2026-09-24', closingDate: '2026-11-07' };
+  const review = { publishDate: '2025-09-25', dateSource: 'llm-scoring', textFetchedAt: '2026-09-27T14:29:00Z' };
+
+  test('evaluateLlmYearMisdate: corrects a scoring-model guess one year early on a single-production title', () => {
+    assert.deepEqual(evaluateLlmYearMisdate({ review, show, isMultiProductionTitle: false }), { corrected: '2026-09-25', original: '2025-09-25' });
+  });
+
+  test('evaluateLlmYearMisdate: never touches a date read from the page/URL/JSON-LD', () => {
+    for (const dateSource of [undefined, 'url', 'json-ld', 'text-llm', 'html-meta']) {
+      assert.equal(evaluateLlmYearMisdate({ review: { ...review, dateSource }, show, isMultiProductionTitle: false }), null, String(dateSource));
+    }
+  });
+
+  test('evaluateLlmYearMisdate: revival titles and shows with prior runs/tour legs are left alone', () => {
+    assert.equal(evaluateLlmYearMisdate({ review, show, isMultiProductionTitle: true }), null);
+    assert.equal(evaluateLlmYearMisdate({ review, show: { ...show, priorRuns: [{ start: '2025-06-01', end: '2025-07-01' }] }, isMultiProductionTitle: false }), null);
+    assert.equal(evaluateLlmYearMisdate({ review, show: { ...show, tourLegs: [{ start: '2025-06-01' }] }, isMultiProductionTitle: false }), null);
+  });
+
+  test('evaluateLlmYearMisdate: requires the corrected date in window, fetched in window, and not after the fetch', () => {
+    // +1y lands after the fetch (fetched before the "real" date could exist)
+    assert.equal(evaluateLlmYearMisdate({ review: { ...review, textFetchedAt: '2026-09-20T00:00:00Z' }, show, isMultiProductionTitle: false }), null);
+    // fetched long after the run closed
+    assert.equal(evaluateLlmYearMisdate({ review: { ...review, textFetchedAt: '2027-06-01T00:00:00Z' }, show, isMultiProductionTitle: false }), null);
+    // two years early: +1y still before the window
+    assert.equal(evaluateLlmYearMisdate({ review: { ...review, publishDate: '2024-09-25' }, show, isMultiProductionTitle: false }), null);
+    // no fetch timestamp at all
+    assert.equal(evaluateLlmYearMisdate({ review: { publishDate: '2025-09-25', dateSource: 'llm-scoring' }, show, isMultiProductionTitle: false }), null);
+  });
+
+  test('evaluateLlmYearMisdate: an in-window date is not "corrected"', () => {
+    assert.equal(evaluateLlmYearMisdate({ review: { ...review, publishDate: '2026-09-25' }, show, isMultiProductionTitle: false }), null);
+  });
+
+  test('evaluateLlmYearMisdate: Feb 29 has no next-year twin', () => {
+    const s = { previewsStartDate: '2025-02-10', openingDate: '2025-02-20', closingDate: '2025-06-01' };
+    assert.equal(evaluateLlmYearMisdate({ review: { publishDate: '2024-02-29', dateSource: 'llm-scoring', textFetchedAt: '2025-03-05T00:00:00Z' }, show: s, isMultiProductionTitle: false }), null);
+  });
+}
