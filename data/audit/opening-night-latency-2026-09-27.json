@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-27T18:29:31.673Z",
+  "generatedAt": "2026-09-27T22:16:51.325Z",
   "date": "2026-09-27",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 281988,
+  "entryCount": 285359,
   "shows": [
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
@@ -783,13 +783,13 @@
     },
     {
       "showId": "hadestown-west-end-2024",
-      "reviewCount": 21,
+      "reviewCount": 22,
       "median_e2e_ms": 2145120953,
       "p90_e2e_ms": 2145120962,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 458542,
+        "scored-to-rebuilt": 460371,
         "rebuilt-to-deployed": 2141499750
       },
       "reviews_over_15min": 6,
@@ -1382,7 +1382,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 20382677,
-        "scored-to-rebuilt": 1406767,
+        "scored-to-rebuilt": 601895,
         "rebuilt-to-deployed": 583625249
       },
       "reviews_over_15min": 0,
@@ -2061,7 +2061,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 21474233,
+        "scored-to-rebuilt": 21471605,
         "rebuilt-to-deployed": 2141499752
       },
       "reviews_over_15min": 5,
@@ -4164,7 +4164,7 @@
     },
     {
       "showId": "the-story-west-end-2026",
-      "reviewCount": 35,
+      "reviewCount": 36,
       "median_e2e_ms": 2000241718,
       "p90_e2e_ms": 2031720640,
       "per_stage_median_ms": {
@@ -6095,7 +6095,7 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
-      "reviewCount": 35,
+      "reviewCount": 36,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6320,7 +6320,7 @@
     },
     {
       "showId": "catch-me-if-you-can-2011",
-      "reviewCount": 19,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8009,7 +8009,7 @@
     },
     {
       "showId": "shifters-off-broadway-2026",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8431,7 +8431,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 408398,
+        "scored-to-rebuilt": 405493,
         "rebuilt-to-deployed": 344625236
       },
       "reviews_over_15min": 0,
@@ -8844,6 +8844,96 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 242293,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "our-sinatra-a-musical-celebration-off-broadway-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 846064,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-brothers-paranormal-off-broadway-2019",
+      "reviewCount": 5,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 917777,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "ride-the-cyclone-off-broadway-2016",
+      "reviewCount": 8,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 888158,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "wicked-west-end-2021",
+      "reviewCount": 13,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "standing-at-the-skys-edge-west-end-2024",
+      "reviewCount": 14,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1564235,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
