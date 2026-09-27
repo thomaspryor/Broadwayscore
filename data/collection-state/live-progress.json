@@ -1,43 +1,63 @@
 {
-  "updatedAt": "2026-09-27T14:55:46.911Z",
-  "processed": 7,
-  "failed": 29,
-  "successRate": "19.4%",
+  "updatedAt": "2026-09-27T14:59:55.798Z",
+  "processed": 22,
+  "failed": 128,
+  "successRate": "14.7%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 12,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 4
   },
   "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-09-27T14:42:57.124Z",
+      "t": "2026-09-27T14:41:45.051Z",
       "event": "bb-session",
-      "session": "1dc9c25c",
-      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+      "session": "48fcd901",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
     },
     {
-      "t": "2026-09-27T14:43:05.037Z",
-      "event": "bb-session",
-      "session": "69da8b49",
-      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+      "t": "2026-09-27T14:41:45.571Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-09-27T14:51:47.379Z",
+      "t": "2026-09-27T14:42:02.921Z",
       "event": "bb-session",
-      "session": "c4c8476f",
-      "url": "https://bachtrack.com/concert-event/the-haunted-keyboard-chelsea-table-stage-20-"
+      "session": "47e2f495",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
     },
     {
-      "t": "2026-09-27T14:52:05.688Z",
+      "t": "2026-09-27T14:42:03.375Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-27T14:56:39.501Z",
       "event": "bb-session",
-      "session": "b7fee7a3",
-      "url": "https://bachtrack.com/concert-event/the-haunted-keyboard-chelsea-table-stage-20-"
+      "session": "b9f9c384",
+      "url": "https://www.nytimes.com/2006/03/02/theater/reviews/02espa.html"
+    },
+    {
+      "t": "2026-09-27T14:56:39.983Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-27T14:56:57.207Z",
+      "event": "bb-session",
+      "session": "13b1417b",
+      "url": "https://www.nytimes.com/2006/03/02/theater/reviews/02espa.html"
+    },
+    {
+      "t": "2026-09-27T14:56:57.675Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
