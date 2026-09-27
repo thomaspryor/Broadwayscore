@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "tru-off-west-end-2026",
   "openingDate": "2026-09-27",
-  "detectedAt": "2026-09-27T14:34:07.248Z",
+  "detectedAt": "2026-09-27T14:43:47.632Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -57,6 +57,23 @@
       "eligibilityReason": null
     },
     {
+      "file": "theatre-weekly--unknown.json",
+      "outletId": "theatre-weekly",
+      "criticName": "Unknown",
+      "url": "https://theatreweekly.com/first-look-production-images-released-for-jesse-tyler-ferguson-and-charlotte-damboise-in-tru-at-the-menier-chocolate-factory/",
+      "fullTextLen": 1067,
+      "dispatchActionable": false,
+      "skipReason": "not_scoreable",
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
+    {
       "file": "timeout-london--unknown.json",
       "outletId": "timeout-london",
       "criticName": "Unknown",
@@ -97,7 +114,7 @@
       "url": "https://www.whatsonstage.com/news/tru-with-jesse-tyler-ferguson-and-charlotte-damboise-first-look-photos_1732563/",
       "fullTextLen": 1318,
       "dispatchActionable": false,
-      "skipReason": "no_scorable_text",
+      "skipReason": "not_scoreable",
       "rescoreBlockedReason": null,
       "humanReviewScore": null,
       "adjudicatedScore": null,
@@ -108,9 +125,9 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 6,
+  "orphanCount": 7,
   "dispatchableOrphanCount": 0,
-  "blockedOrphanCount": 6,
+  "blockedOrphanCount": 7,
   "blockBroadcast": true,
   "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
