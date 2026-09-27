@@ -27,12 +27,15 @@ const COOKIE_DIR = path.join(PROJECT_ROOT, 'data', 'cookies');
  * (channel: 'chrome') is required, not the bundled Chrome-for-Testing build —
  * WSJ's DataDome challenge and Condé Nast's bot checks both fingerprint the
  * for-testing binary (see recover-wsj-browser.js header). Falls back to
- * bundled chromium only if real Chrome isn't installed.
+ * bundled chromium only if real Chrome isn't installed. Headed by default;
+ * renew-cookies.js passes {headless: true} for outlets with no bot checks.
  */
-async function launchOtpBrowser(profileDir) {
+async function launchOtpBrowser(profileDir, { headless = false, userAgent } = {}) {
   const { chromium } = require('playwright');
   const launchOpts = {
-    headless: false,
+    headless,
+    // Headless Chrome announces itself as "HeadlessChrome" in its UA.
+    ...(userAgent ? { userAgent } : {}),
     viewport: { width: 1280, height: 900 },
     args: ['--disable-blink-features=AutomationControlled'],
     ignoreDefaultArgs: ['--enable-automation'],
@@ -98,7 +101,7 @@ async function pollGmailForOtpCode({ fromFilter, sinceEpochSeconds, codePattern,
  * recover-*-browser.js, check-cookie-health.js) need no changes. Also stamps
  * _extracted-at.json so freshness monitoring (task #830) sees the new method.
  */
-function writeOtpCookies(fileKey, cookies) {
+function writeOtpCookies(fileKey, cookies, { method = 'otp-login' } = {}) {
   fs.mkdirSync(COOKIE_DIR, { recursive: true });
   const cookiePath = path.join(COOKIE_DIR, `${fileKey}.json`);
   fs.writeFileSync(cookiePath, JSON.stringify(cookies, null, 2) + '\n');
@@ -111,7 +114,7 @@ function writeOtpCookies(fileKey, cookies) {
   meta[fileKey] = {
     extractedAt: new Date().toISOString(),
     extractedAtUnix: Math.floor(Date.now() / 1000),
-    method: 'otp-login',
+    method,
   };
   fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2) + '\n');
 
