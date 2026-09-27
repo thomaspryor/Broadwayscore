@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27T22:12:04.796Z",
+  "generatedAt": "2026-09-27T22:47:02.893Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1389,6 +1389,10 @@
           "isDualMarket": false
         },
         {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
           "name": "amNewYork",
           "isDualMarket": false
         },
@@ -2613,26 +2617,26 @@
       "status": "open",
       "slug": "table-17-off-west-end",
       "thumbnail": "/images/shows/table-17-off-west-end-2026/thumbnail.webp",
-      "siteScore": 77.77,
+      "siteScore": 77.79,
       "liveScore": 78,
-      "scoreDrift": 0.23000000000000398,
+      "scoreDrift": 0.20999999999999375,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 18,
+      "total": 19,
       "t1": 3,
       "t2": 9,
-      "t3": 6,
-      "positive": 13,
+      "t3": 7,
+      "positive": 14,
       "mixed": 4,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:1/3",
-          "hi-conf:3/6"
+          "hi-conf:4/6"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2765,6 +2769,18 @@
           "t2": 9,
           "t3": 6,
           "p": 13,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-27T22:47:02.893Z",
+          "rc": 19,
+          "s": 77.79,
+          "t1": 3,
+          "t2": 9,
+          "t3": 7,
+          "p": 14,
           "m": 4,
           "n": 1,
           "bc": "waiting"
