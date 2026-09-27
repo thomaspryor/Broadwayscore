@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-27T19:54:21.914Z",
+  "runDate": "2026-09-27T20:29:40.490Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -27,22 +27,22 @@
     "archive": 6
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 6,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 6,
-    "tier2Success": 4,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 2,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 10,
-    "tier4Success": 2,
-    "totalFailed": 59,
-    "scrapingBeePageCredits": 4,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 56,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -351,21 +351,6 @@
       "ride-the-cyclone-off-broadway-2016/chicagotribune--chris-jones.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Hollywood Reporter": {
-      "count": 1,
-      "domain": "hollywoodreporter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "The New York Times": {
-      "count": 1,
-      "domain": "nytimes.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": true
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
