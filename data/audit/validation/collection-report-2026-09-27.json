@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-27T07:12:14.427Z",
+  "runDate": "2026-09-27T07:47:01.516Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -27,22 +27,22 @@
     "archive": 25
   },
   "statistics": {
-    "tier1Attempts": 3,
+    "tier1Attempts": 0,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
-    "tier2Success": 2,
-    "tier3Attempts": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 59,
-    "scrapingBeePageCredits": 3,
+    "totalFailed": 57,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -963,14 +963,6 @@
       "book-of-mormon-2011/washpost--unknown.json"
     ]
   },
-  "failuresByOutlet": {
-    "Bloomberg": {
-      "count": 1,
-      "domain": "businessweek.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
