@@ -21,6 +21,9 @@ const TICKET_DOMAINS = new Set([
   'seatgeek.com', 'stubhub.com', 'vividseats.com', 'broadwaybox.com',
   'goldstar.com', 'headout.com', 'rush.app', 'bwayrush.com',
   'luckyseat.com', 'broadwayroulette.com',
+  // Event/ticket listings that arrived through /submit-review on 2026-09-27
+  // (BRO-4185): an eventsfy "Get Tickets Today" page passed every guard.
+  'eventsfy.com', 'theatreaccess.nyc',
   // UK/WE ticketing + listing platforms (2026-08-02: gather saved a
   // bookitplease.com booking page as a Dog Man "review" stub under a
   // misattributed outlet).
