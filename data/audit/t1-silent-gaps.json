@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27T16:31:56.091Z",
+  "generatedAt": "2026-09-27T19:00:14.405Z",
   "windowDays": 45,
   "showsScanned": 75,
   "gaps": [
@@ -16,9 +16,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 262.5179272222222,
+      "fileAgeHours": 264.98968527777777,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 262.43707805555556
+      "nonTerminalAgeHours": 264.90883194444444
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -34,9 +34,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 119.85669944444444,
+      "fileAgeHours": 122.32845277777778,
       "gapSeenAt": "2026-09-27T08:57:57.261Z",
-      "nonTerminalAgeHours": 7.566341666666666
+      "nonTerminalAgeHours": 10.038095555555556
     },
     {
       "showId": "human-things-off-broadway-2026",
@@ -51,9 +51,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 25.6242075,
+      "fileAgeHours": 28.095960833333333,
       "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 22.80745
+      "nonTerminalAgeHours": 25.27920388888889
     },
     {
       "showId": "million-dollar-quartet-off-west-end-2026",
@@ -69,9 +69,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=million-dollar-quartet-off-west-end-2026",
       "firstSeen": "2026-09-17T08:13:24.884Z",
-      "fileAgeHours": 248.30864722222222,
+      "fileAgeHours": 250.78040083333335,
       "gapSeenAt": "2026-09-27T08:57:57.261Z",
-      "nonTerminalAgeHours": 7.566341666666666
+      "nonTerminalAgeHours": 10.038095555555556
     }
   ],
   "contradictions": []
