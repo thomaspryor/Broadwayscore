@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-27T01:32:16.327Z",
+  "generatedAt": "2026-09-27T08:17:13.923Z",
   "date": "2026-09-27",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 270031,
+  "entryCount": 272596,
   "shows": [
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
@@ -2758,7 +2758,7 @@
     },
     {
       "showId": "a-christmas-story-the-musical-2012",
-      "reviewCount": 15,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6320,7 +6320,7 @@
     },
     {
       "showId": "catch-me-if-you-can-2011",
-      "reviewCount": 20,
+      "reviewCount": 19,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8024,7 +8024,7 @@
     },
     {
       "showId": "everybodys-talking-about-jamie-west-end-2024",
-      "reviewCount": 2,
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8440,7 +8440,7 @@
     },
     {
       "showId": "the-last-ship-west-end-2026",
-      "reviewCount": 35,
+      "reviewCount": 36,
       "median_e2e_ms": 226993594,
       "p90_e2e_ms": 246225309,
       "per_stage_median_ms": {
@@ -8517,7 +8517,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 68623845,
+        "scored-to-rebuilt": 68622501,
         "rebuilt-to-deployed": 122416320
       },
       "reviews_over_15min": 0,
@@ -8526,13 +8526,13 @@
     },
     {
       "showId": "delirium-off-broadway-2026",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": 167715781,
       "p90_e2e_ms": 168646889,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 270097,
+        "scored-to-rebuilt": 245989,
         "rebuilt-to-deployed": 160460400
       },
       "reviews_over_15min": 2,
@@ -8755,6 +8755,21 @@
         "collected-to-scored": null,
         "scored-to-rebuilt": 2035460,
         "rebuilt-to-deployed": 29308095
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "tru-off-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 804011,
+        "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
