@@ -1,37 +1,5 @@
 [
   {
-    "startedAt": "2026-09-25T21:19:21.481Z",
-    "completedAt": "2026-09-25T21:19:23.957Z",
-    "totalReviews": 44705,
-    "processed": 0,
-    "skipped": 44704,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 111,
-      "total": 10933
-    },
-    "costUsd": 0.02523715,
-    "runId": "36188276516",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-25T21:19:25.912Z",
-    "completedAt": "2026-09-25T21:25:42.735Z",
-    "totalReviews": 177,
-    "processed": 177,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 463954,
-      "output": 41138,
-      "total": 505092
-    },
-    "costUsd": 1.2916159,
-    "runId": "36188276516",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-25T21:52:39.261Z",
     "completedAt": "2026-09-25T21:52:53.415Z",
     "totalReviews": 44705,
@@ -260206,6 +260174,54 @@
     },
     "costUsd": 1.2871768000000001,
     "runId": "36314105885",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-27T11:56:36.091Z",
+    "completedAt": "2026-09-27T11:56:41.592Z",
+    "totalReviews": 44786,
+    "processed": 0,
+    "skipped": 44781,
+    "errors": 3,
+    "tokensUsed": {
+      "input": 7685,
+      "output": 211,
+      "total": 22642
+    },
+    "costUsd": 0.051948549999999996,
+    "runId": "36315909409",
+    "errorDetails": [
+      {
+        "showId": "the-secret-circus-musical-off-broadway-2026",
+        "outletId": "mommypoppins",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-secret-circus-musical-off-broadway-2026",
+        "outletId": "stagebuddy",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "table-17-off-west-end-2026",
+        "outletId": "londontheatredirect",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-27T11:56:43.597Z",
+    "completedAt": "2026-09-27T12:03:49.370Z",
+    "totalReviews": 177,
+    "processed": 177,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 460855,
+      "output": 41218,
+      "total": 502073
+    },
+    "costUsd": 1.292727,
+    "runId": "36315909409",
     "errorDetails": []
   }
 ]
