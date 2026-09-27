@@ -2927,6 +2927,13 @@ function validateBWWRoundupGeography(reviews, html, showId, isWestEnd = false) {
 function validateBWWRoundupYear(reviews, html, showOpeningDate, showId, bwwUrl) {
   if (reviews.length === 0) return reviews;
 
+  // null/'' must short-circuit BEFORE new Date(): new Date(null) is 1970-01-01,
+  // a VALID date, so the NaN guard below never fired and every roundup for a
+  // null-openingDate show was rejected as "~670 months after opening". That
+  // silently discarded the BWW roundup for every show stuck in previews
+  // (our-sinatra 2026-09-27), so Check 2d never got the review signal it
+  // needs to flip the show open. Callers pass previewsStartDate as fallback.
+  if (!showOpeningDate) return reviews;
   const showDate = new Date(showOpeningDate);
   if (isNaN(showDate.getTime())) return reviews; // can't validate without valid date
 
@@ -4444,7 +4451,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       // Validate geographic accuracy — filter non-local outlets, reject if majority are wrong
       bwwReviews = validateBWWRoundupGeography(bwwReviews, bwwResult.html, showId, isWestEnd);
       // Validate publish year — reject roundups from older productions of the same title
-      bwwReviews = validateBWWRoundupYear(bwwReviews, bwwResult.html, show.openingDate, showId, bwwResult.url);
+      bwwReviews = validateBWWRoundupYear(bwwReviews, bwwResult.html, show.openingDate || show.previewsStartDate, showId, bwwResult.url);
       health.bww.extracted = bwwReviews.length;
       foundReviews.push(...bwwReviews);
       // Archive the page

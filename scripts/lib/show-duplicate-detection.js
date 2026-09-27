@@ -30,6 +30,9 @@ function canonicalVenue(show) {
   return (show.venue || '')
     .toLowerCase()
     .replace(/\s*\(.*?\)\s*/g, ' ') // drop parentheticals e.g. "(Over 18s Only)"
+    // Punctuation is formatting, not identity: "59E59 Theaters - Theater C"
+    // and "59E59 Theaters, Theater C" are one room (crazy-mama dup, 2026-09-27).
+    .replace(/[^a-z0-9]+/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -57,11 +60,32 @@ function rawTitleTokens(show) {
   );
 }
 
+function titleKey(t) {
+  return foldDiacritics(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+// True when the shorter title is EXACTLY one side of the longer title's colon:
+// "Louis Katz: Conflicted" vs "Conflicted" (performer prefix, a TodayTix
+// listing habit) or "Crazy Mama: A True Story..." vs "Crazy Mama" (subtitle).
+// This is the one-word-title case the >=2-token subset rule below excludes;
+// the exact-segment requirement keeps it from matching "Hamlet" to any
+// "Hamlet"-containing title. Caller still requires same venue + overlapping dates.
+function isColonSegmentTitle(a, b) {
+  const [short, long] = (a.title || '').length <= (b.title || '').length ? [a, b] : [b, a];
+  const longTitle = long.title || '';
+  const idx = longTitle.indexOf(':');
+  if (idx < 0) return false;
+  const shortKey = titleKey(short.title);
+  if (shortKey.length < 4 || shortKey === titleKey(longTitle)) return false;
+  return shortKey === titleKey(longTitle.slice(0, idx)) || shortKey === titleKey(longTitle.slice(idx + 1));
+}
+
 // True when one show's significant raw-title tokens are a STRICT subset of the
 // other's (fragment relationship), not merely overlapping (siblings).
 function isStrictTitleSubset(a, b) {
   const ta = rawTitleTokens(a);
   const tb = rawTitleTokens(b);
+  if (isColonSegmentTitle(a, b)) return true;
   if (ta.size < 2 || tb.size < 2 || ta.size === tb.size) return false;
   const [smaller, larger] = ta.size < tb.size ? [ta, tb] : [tb, ta];
   for (const t of smaller) if (!larger.has(t)) return false;
@@ -252,6 +276,7 @@ module.exports = {
   findSharedTicketIdentityDupes,
   ticketIdentityKeys,
   canonicalVenue,
+  isColonSegmentTitle,
   isStrictTitleSubset,
   datesOverlap,
 };
