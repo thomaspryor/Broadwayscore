@@ -137,6 +137,16 @@ test('loader: same outlet in two bundles, newer meta wins regardless of order', 
   }
 });
 
+test('loader: a copy with a known timestamp beats a meta-less leftover', () => {
+  const leftover = { thestage: [{ name: 'USER', value: 'dead', domain: '.thestage.co.uk' }] };
+  const fresh = { _meta: { outlets: { thestage: { extractedAtUnix: 1790000000 } } }, thestage: [{ name: 'USER', value: 'live', domain: '.thestage.co.uk' }] };
+  for (const order of [[fresh, leftover], [leftover, fresh]]) {
+    withBundles(order, () => {
+      assert.equal(loader.loadCookiesByFileKey('thestage').cookies[0].value, 'live');
+    });
+  }
+});
+
 test('loader: bundles with no per-outlet meta behave as before', () => {
   const b = { _meta: { extractedAt: '2026-07-20T00:00:00Z' }, ft: [{ name: 'FTSession', value: 'v', domain: '.ft.com' }] };
   withBundles([b], () => {

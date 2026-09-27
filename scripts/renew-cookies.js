@@ -156,7 +156,7 @@ function pushBundles() {
 }
 
 async function confirmViaHealthCheck(outlet) {
-  const listRuns = () => JSON.parse(gh(['run', 'list', '--repo', REPO, '--workflow', HEALTH_WORKFLOW, '--limit', '5', '--json', 'databaseId,status,conclusion,url,createdAt']));
+  const listRuns = () => JSON.parse(gh(['run', 'list', '--repo', REPO, '--workflow', HEALTH_WORKFLOW, '--limit', '5', '--json', 'databaseId,status,conclusion,url,createdAt,event']));
   // A run already in flight loaded the OLD secrets at job start. Let it
   // finish rather than stacking a second run on top of it.
   for (let i = 0; i < 15 && listRuns().some((r) => r.status !== 'completed'); i++) {
@@ -169,7 +169,8 @@ async function confirmViaHealthCheck(outlet) {
 
   for (let i = 0; i < 25; i++) {
     await sleep(60000);
-    const run = listRuns().find((r) => Date.parse(r.createdAt) >= since);
+    // Only a workflow_dispatch run created after our dispatch can be ours.
+    const run = listRuns().find((r) => r.event === 'workflow_dispatch' && Date.parse(r.createdAt) >= since);
     if (!run || run.status !== 'completed') continue;
     const log = gh(['run', 'view', String(run.databaseId), '--repo', REPO, '--log'], { maxBuffer: 64 * 1024 * 1024 });
     const liveIdx = log.indexOf('Live Access Test');

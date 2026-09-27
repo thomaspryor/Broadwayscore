@@ -116,12 +116,14 @@ function loadBundles() {
             const meta = bundleOutletMeta(bundle, outletKey);
             // Same outlet in two bundles (e.g. a leftover higher-numbered
             // secret from when the extractor produced more bundles): the
-            // entry with the newer known timestamp wins. Unknown on either
-            // side keeps the historical last-one-read-wins behavior.
+            // entry with the newer known timestamp wins, and a known
+            // timestamp beats an unknown one (a meta-less copy is a
+            // pre-_meta leftover). Unknown on both sides keeps the
+            // historical last-one-read-wins behavior.
             if (_bundleCache[outletKey]) {
               const prev = metaUnixTime(_bundleMetaCache[outletKey]);
               const next = metaUnixTime(meta);
-              if (prev !== null && next !== null && prev > next) continue;
+              if (prev !== null && (next === null || prev > next)) continue;
             }
             _bundleCache[outletKey] = cookies;
             if (meta) _bundleMetaCache[outletKey] = meta;
