@@ -9,12 +9,12 @@
          check-cookie-health.yml Layer 3). Logged in: exits in seconds.
          Logged out: reuses the persistent profile's session if it is still
          alive, else logs in ONCE (password from the macOS Keychain), pushes
-         COOKIES_BUNDLE_* via extract-safari-cookies.py --from-local, and
+         COOKIES_BUNDLE_* via extract-safari-cookies.py (from-local mode), and
          confirms with a live check-cookie-health run. CAPTCHA, emailed
          code, rejected password, or 2 logins in 7 days: stops, emails one
          link, and stays stopped. Recover with
-         `node scripts/renew-cookies.js --outlet=thestage --manual` (you log in
-         inside the same profile, so no extra device), or `--reset` after
+         renew-cookies.js in manual mode (see its header for flags) (you log in
+         inside the same profile, so no extra device), or its reset flag after
          fixing the cause some other way. Probe pages that aren't the known
          registration gate (Cloudflare challenge, maintenance) never trigger
          a login.
@@ -23,9 +23,10 @@
          tripped the 2-device limit on 2026-03-30.
 
          Do NOT install before the first supervised run:
-           security add-generic-password -s broadwayscorecard-cookie-renew -a thestage-email -w 'EMAIL'
-           security add-generic-password -s broadwayscorecard-cookie-renew -a thestage-password -w
-           node scripts/renew-cookies.js --outlet=thestage --headed
+           security add-generic-password, service broadwayscorecard-cookie-renew, account thestage-email, value = your Stage login email
+           security add-generic-password, service broadwayscorecard-cookie-renew, account thestage-password, prompt for password
+           (exact commands: scripts/lib/cookie-renew.js readKeychain docstring)
+           node scripts/renew-cookies.js (outlet thestage, headed flag; exact flags in its header)
          then confirm The Stage's account page shows a single active session.
 
          .env is sourced for RESEND_API_KEY/OWNER_EMAIL (alert email) only;
