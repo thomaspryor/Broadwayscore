@@ -6,6 +6,23 @@
   "windowDays": 7,
   "orphans": [
     {
+      "file": "classical-voice-america--unknown.json",
+      "outletId": "classical-voice-america",
+      "criticName": "Unknown",
+      "url": "https://classicalvoiceamerica.org/2026/09/25/130682/",
+      "fullTextLen": 7131,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
       "file": "talkclassical--unknown.json",
       "outletId": "talkclassical",
       "criticName": "Unknown",
@@ -44,6 +61,6 @@
   "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
