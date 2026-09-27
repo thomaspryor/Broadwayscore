@@ -171,21 +171,31 @@ def _strip_heredocs(cmd: str) -> str:
 # quotes inside heredoc-wrapped prose (this repo's own convention for long
 # --outcome/--notes values, per CLAUDE.md's heredoc commit-message rule) —
 # without it, shlex.split would raise on essentially every real invocation.
+# Linear replaced the Notion board (CLAUDE.md §6): `linear-brain.js update
+# BRO-N --state Done|Paused` is the same close-out, spelled --state. Before
+# 2026-09-27 only notion-brain.js counted, so a session that closed out on
+# Linear could never honestly claim SAFE TO EXIT and fell back to "NOT SAFE
+# TO EXIT — waiting on your merge" (the owner-merge ask OWNERMERGE blocks).
+_CLOSEOUT_SCRIPTS = (('notion-brain.js', '--status'), ('linear-brain.js', '--state'))
+
 def _notion_closeout_status(cmd):
-    if not cmd or 'notion-brain.js' not in cmd or 'update' not in cmd:
+    if not cmd or 'update' not in cmd or not any(s in cmd for s, _ in _CLOSEOUT_SCRIPTS):
         return None
     stripped = _strip_heredocs(cmd)
     try:
         tokens = shlex.split(stripped)
     except ValueError:
         return None  # unparseable quoting — treat as no match, don't crash the gate
-    if not any(t.endswith('notion-brain.js') for t in tokens) or 'update' not in tokens:
+    if 'update' not in tokens:
         return None
-    for i, tok in enumerate(tokens):
-        if tok == '--status' and i + 1 < len(tokens):
-            return tokens[i + 1].strip().lower()
-        if tok.startswith('--status='):
-            return tok.split('=', 1)[1].strip().lower()
+    for script, flag in _CLOSEOUT_SCRIPTS:
+        if not any(t.endswith(script) for t in tokens):
+            continue
+        for i, tok in enumerate(tokens):
+            if tok == flag and i + 1 < len(tokens):
+                return tokens[i + 1].strip().lower()
+            if tok.startswith(flag + '='):
+                return tok.split('=', 1)[1].strip().lower()
     return None
 
 events = []  # list of (kind, payload)
@@ -359,15 +369,55 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
     try:
         _opened_pr = False
         _merged_pr = False
+        _landed_pushed = False     # pushed to land/** (git or MCP create_branch/dispatch)
+        _land_followed = False     # checked a workflow run after that push
+        # Anchored: `git push origin HEAD:refs/heads/land/x`, `... HEAD:land/x`,
+        # `git push origin land/x` — not `foo-land/`.
+        _land_push_re = re.compile(r'git\s+push\b[^\n;&|]*\s(\S*:)?(refs/heads/)?land/')
         for _kind, _payload in events:
             if _kind != 'tool':
                 continue
             _name, _inp, _tid = _payload
+            _inp = _inp if isinstance(_inp, dict) else {}
             if _name == 'mcp__github__create_pull_request':
                 _opened_pr = True
             elif _name == 'mcp__github__merge_pull_request':
                 _merged_pr = True
-        if _opened_pr and not _merged_pr and _last_msg and 'NO-VERIFY:' not in _last_msg:
+            elif _name == 'Bash' and _land_push_re.search(_inp.get('command') or ''):
+                _landed_pushed = True
+            elif _name == 'mcp__github__create_branch' and str(_inp.get('branch') or '').startswith('land/'):
+                _landed_pushed = True
+            elif (_name == 'mcp__github__actions_run_trigger'
+                  and 'land' in str(_inp.get('workflow_id') or '')):
+                _landed_pushed = True
+            elif _landed_pushed and _name in ('mcp__github__actions_get', 'mcp__github__actions_list'):
+                _land_followed = True
+        _msg_ok = bool(_last_msg) and 'NO-VERIFY:' not in _last_msg
+        _stripped_owner = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
+        # OWNERMERGE (2026-09-27): the owner never merges — this repo lands via
+        # land/** (land.yml). "NOT SAFE TO EXIT — waiting on your merge" used
+        # to satisfy the blocker regex below; three iOS sessions in one day
+        # parked finished work that way. Merge-asks only: "waiting on your
+        # decision" / DECISION NEEDED stay legitimate.
+        _owner_merge_re = re.compile(
+            r"\b(your|the owner'?s?)\s+(merge|to merge)\b|\bfor you to merge\b"
+            r"|\bready (for you )?to merge\b|\bwaiting on (your|the owner'?s?) merge\b"
+            r"|\bonce you merge\b|\bafter you merge\b|\bmerge it when\b",
+            re.IGNORECASE,
+        )
+        if (_msg_ok and (_opened_pr or _landed_pushed) and not _merged_pr
+                and _owner_merge_re.search(_stripped_owner)):
+            print("OWNERMERGE")
+            sys.exit(0)
+        # A land/** push is follow-through, but not proof it landed (land.yml
+        # can refuse): SAFE TO EXIT additionally needs a later run check.
+        if (_msg_ok and _landed_pushed and not _land_followed and not _merged_pr
+                and re.search(r'^SAFE TO EXIT\b', _stripped_owner.strip().splitlines()[-1] if _stripped_owner.strip() else '')):
+            print("LANDUNCHECKED")
+            sys.exit(0)
+        if _landed_pushed:
+            _merged_pr = True
+        if _opened_pr and not _merged_pr and _msg_ok:
             # Strip fences here too (ship-check adversarial review found this
             # asymmetric with the status gate above) — a quoted example
             # containing blocker-shaped text must not satisfy the check.
@@ -1280,8 +1330,16 @@ if [[ "$result" == "FALSESAFE" ]]; then
   exit 2
 fi
 
+if [[ "$result" == "OWNERMERGE" ]]; then
+  echo "🛑 BLOCKED: you asked the owner to merge. The owner never merges PRs in this repo. Once CI is green, land it yourself: git push origin HEAD:refs/heads/land/<name> (land.yml rebases onto main, re-runs the blocking gates, fast-forwards main; MCP fallback: mcp__github__create_branch land/<name> or dispatch land.yml with branch=<name>). Follow the Land run to LANDED, close the PR, then report. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+if [[ "$result" == "LANDUNCHECKED" ]]; then
+  echo "🛑 BLOCKED: you pushed to land/** but claim SAFE TO EXIT without checking the Land run. land.yml can refuse a branch. Check the run (mcp__github__actions_list / actions_get on land.yml) and report LANDED or the refusal. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
 if [[ "$result" == "PRUNMERGED" ]]; then
-  echo "🛑 BLOCKED: a PR was opened via the GitHub MCP connector this session but never merged, with no stated blocker. This project's owner does not review PRs — merge it yourself once CI is green, or say exactly what's blocking it (cloud-memory/feedback_no_review_offers_user_not_technical.md). Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: a PR was opened via the GitHub MCP connector this session but never landed, with no stated blocker. This project's owner does not review or merge PRs — once CI is green, land it yourself: git push origin HEAD:refs/heads/land/<name> (land.yml rebases, re-runs the gates, fast-forwards main), follow the Land run, then close the PR. Or say exactly what's blocking it (cloud-memory/feedback_no_review_offers_user_not_technical.md). Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 

@@ -485,7 +485,7 @@ test('regression: PR gate strips fenced quotes too — a quoted example blocker 
   ].join('\n');
   const r = runHook(transcript, msg);
   assertBlocked(r, 'a blocker phrase inside a fenced quote must not satisfy the PR follow-through gate');
-  assert.match(r.stderr, /merge it yourself/i, `expected the PR-follow-through gate's own message (not a different gate's), got: ${r.stderr.slice(0, 300)}`);
+  assert.match(r.stderr, /land it yourself/i, `expected the PR-follow-through gate's own message (not a different gate's), got: ${r.stderr.slice(0, 300)}`);
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
@@ -597,7 +597,7 @@ test('PR opened via MCP, never merged, no stated blocker → BLOCKED (PRUNMERGED
   const transcript = writeTranscript(dir, [CREATE_PR]);
   const r = runHook(transcript, "Opened PR #42.\n\nSAFE TO EXIT — PR open, nothing else pending.");
   assertBlocked(r, 'PR opened, never merged, no blocker stated');
-  assert.match(r.stderr, /merge it yourself/i, `expected the merge-it-yourself reminder, got: ${r.stderr.slice(0, 300)}`);
+  assert.match(r.stderr, /land it yourself/i, `expected the land-it-yourself reminder, got: ${r.stderr.slice(0, 300)}`);
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
@@ -642,6 +642,71 @@ test('PR follow-through kill switch: PR_FOLLOWTHROUGH_GATE_DISABLE=1 allows an u
   // with no status line at all would conflate the two gates' kill switches.
   const r = runHook(transcript, 'Opened PR #42.\n\nSAFE TO EXIT — PR open, kill switch test.', { PR_FOLLOWTHROUGH_GATE_DISABLE: '1' });
   assertAllowed(r, 'kill switch must fully disable the PR gate');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ─────────── owner never merges: OWNERMERGE / land/** (2026-09-27) ────────────
+
+const LAND_PUSH = toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/fix-x' });
+const LAND_CREATE_BRANCH = toolUse('mcp__github__create_branch', { owner: 'thomaspryor', repo: 'Broadwayscore', branch: 'land/fix-x' });
+const LAND_RUN_CHECK = toolUse('mcp__github__actions_list', { method: 'list_workflow_runs', owner: 'thomaspryor', repo: 'Broadwayscore', resource_id: 'land.yml' });
+const LINEAR_CLOSEOUT_DONE = toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-4187 --state Done --comment "landed"' });
+
+test('OWNERMERGE: "waiting on your merge" blocks even with NOT SAFE TO EXIT', skipNoRepoHook, () => {
+  const dir = makeTmpDir('ownermerge-block');
+  const transcript = writeTranscript(dir, [CREATE_PR]);
+  const r = runHook(transcript, "PR #42 is green.\n\nNOT SAFE TO EXIT — PR #42 green, waiting on your merge.");
+  assertBlocked(r, 'asking the owner to merge must block');
+  assert.match(r.stderr, /owner never merges/i, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('OWNERMERGE false-positive guard: a real owner decision ("waiting on your decision") is allowed', skipNoRepoHook, () => {
+  const dir = makeTmpDir('ownermerge-decision');
+  const transcript = writeTranscript(dir, [CREATE_PR]);
+  const r = runHook(transcript, "DECISION NEEDED: pricing tier for /biz.\n\nNOT SAFE TO EXIT — waiting on your decision on pricing.");
+  assertAllowed(r, 'owner decisions are not merge asks');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('OWNERMERGE false-positive guard: "merge conflict" is a stated blocker, not a merge ask', skipNoRepoHook, () => {
+  const dir = makeTmpDir('ownermerge-conflict');
+  const transcript = writeTranscript(dir, [CREATE_PR]);
+  const r = runHook(transcript, "Resolving it now.\n\nNOT SAFE TO EXIT — merge conflict on PR #42.");
+  assertAllowed(r, 'merge conflict must stay a legitimate blocker');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('land/** push + checked Land run + Linear close-out → SAFE TO EXIT allowed (PR gate satisfied)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('land-allow');
+  const transcript = writeTranscript(dir, [CREATE_PR, LAND_PUSH, LAND_RUN_CHECK, LINEAR_CLOSEOUT_DONE]);
+  const r = runHook(transcript, "Landed via land.yml; main fast-forwarded.\n\nSAFE TO EXIT — landed and verified.");
+  assertAllowed(r, 'a landed branch satisfies the PR gate, and Linear close-out satisfies wrap-up');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('MCP create_branch land/** counts as landing follow-through', skipNoRepoHook, () => {
+  const dir = makeTmpDir('land-mcp');
+  const transcript = writeTranscript(dir, [CREATE_PR, LAND_CREATE_BRANCH, LAND_RUN_CHECK, LINEAR_CLOSEOUT_DONE]);
+  const r = runHook(transcript, "Landed.\n\nSAFE TO EXIT — landed via MCP land branch.");
+  assertAllowed(r, 'MCP land/** branch is the cloud fallback');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('LANDUNCHECKED: land/** push then SAFE TO EXIT without checking the run → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('land-unchecked');
+  const transcript = writeTranscript(dir, [CREATE_PR, LAND_PUSH, LINEAR_CLOSEOUT_DONE]);
+  const r = runHook(transcript, "Pushed to land.\n\nSAFE TO EXIT — pushed.");
+  assertBlocked(r, 'push to land/** is not proof it landed');
+  assert.match(r.stderr, /Land run/i, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('land/** match is anchored: a branch named foo-land/x is not a landing', skipNoRepoHook, () => {
+  const dir = makeTmpDir('land-anchor');
+  const transcript = writeTranscript(dir, [CREATE_PR, toolUse('Bash', { command: 'git push origin HEAD:foo-land/x' }), NOTION_CLOSEOUT_DONE]);
+  const r = runHook(transcript, "Pushed.\n\nSAFE TO EXIT — pushed.");
+  assertBlocked(r, 'foo-land/ is not land/**, PR still unlanded');
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
