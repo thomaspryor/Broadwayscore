@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-09-25T12:18:19.909Z",
+  "lastChecked": "2026-09-27T12:30:25.468Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,7 +14,7 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.5% scored (21065/21386)"
+      "message": "98.4% scored (21100/21437)"
     },
     {
       "name": "Quality: corpus drift",
@@ -24,7 +24,7 @@
     {
       "name": "Quality: DMARC deliverability",
       "status": "warn",
-      "message": "Newest DMARC report is 27d old (reporters send daily)"
+      "message": "Newest DMARC report is 29d old (reporters send daily)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -39,12 +39,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1244 outlet(s), 44616 review(s)"
+      "message": "No broken-extractor signature in 1253 outlet(s), 44719 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1244 outlet(s), 44616 review(s)"
+      "message": "No broken-extractor signature in 1253 outlet(s), 44719 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -53,13 +53,13 @@
     },
     {
       "name": "Quality: coverageExpectation drift",
-      "status": "pass",
-      "message": "No coverageExpectation re-probes needed"
+      "status": "warn",
+      "message": "3 outlet(s) need coverageExpectation re-decision: ap, broadwaynews, latimes"
     },
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "110 outlet×market rows checked, none NEW silent 2+ consecutive weeks (37 known/baselined, 4d ago)"
+      "message": "110 outlet×market rows checked, none NEW silent 2+ consecutive weeks (37 known/baselined, 6d ago)"
     }
   ]
 }
