@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-27T14:36:58.944Z",
+  "generatedAt": "2026-09-27T16:31:56.091Z",
   "windowDays": 45,
-  "showsScanned": 83,
+  "showsScanned": 75,
   "gaps": [
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
@@ -16,9 +16,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 260.6021225,
+      "fileAgeHours": 262.5179272222222,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 260.52120388888886
+      "nonTerminalAgeHours": 262.43707805555556
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -34,9 +34,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 117.94086166666666,
+      "fileAgeHours": 119.85669944444444,
       "gapSeenAt": "2026-09-27T08:57:57.261Z",
-      "nonTerminalAgeHours": 5.6504675
+      "nonTerminalAgeHours": 7.566341666666666
     },
     {
       "showId": "human-things-off-broadway-2026",
@@ -51,9 +51,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 23.708350833333334,
+      "fileAgeHours": 25.6242075,
       "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 20.891575833333334
+      "nonTerminalAgeHours": 22.80745
     },
     {
       "showId": "million-dollar-quartet-off-west-end-2026",
@@ -69,9 +69,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=million-dollar-quartet-off-west-end-2026",
       "firstSeen": "2026-09-17T08:13:24.884Z",
-      "fileAgeHours": 246.39278055555556,
+      "fileAgeHours": 248.30864722222222,
       "gapSeenAt": "2026-09-27T08:57:57.261Z",
-      "nonTerminalAgeHours": 5.6504675
+      "nonTerminalAgeHours": 7.566341666666666
     }
   ],
   "contradictions": []

@@ -1,74 +1,75 @@
 {
-  "generatedAt": "2026-09-27T14:37:06.800Z",
+  "generatedAt": "2026-09-27T16:32:05.680Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 149,
-  "clean": 145,
+  "checked": 151,
+  "clean": 147,
   "defective": 4,
   "byType": {
-    "score-drift": 4
+    "score-drift": 3,
+    "unreachable": 1
   },
   "shows": [
     {
-      "showId": "million-dollar-quartet-off-west-end-2026",
-      "title": "Million Dollar Quartet",
-      "openingDate": "2026-09-14",
+      "showId": "gimme-a-sign-off-broadway-2026",
+      "title": "Gimme a Sign!",
+      "openingDate": "2026-09-17",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 74.68 vs local 74.75 (Δ0.07)"
+          "type": "unreachable",
+          "detail": "HTTP 404"
         }
       ],
       "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21
+      "localCount": 0,
+      "deployedCount": null
     },
     {
-      "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
-      "title": "BLOODSPORT: After Helen of Troy",
-      "openingDate": "2026-09-13",
+      "showId": "table-17-off-west-end-2026",
+      "title": "Table 17",
+      "openingDate": "2026-09-24",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 73.64 vs local 73.74 (Δ0.1)"
+          "detail": "deployed cs 77.66 vs local 78.7 (Δ1.04)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 28,
-      "deployedCount": 28
+      "localCount": 16,
+      "deployedCount": 17
     },
     {
-      "showId": "a-month-in-the-country-west-end-2026",
-      "title": "A Month in the Country",
-      "openingDate": "2026-09-02",
+      "showId": "delirium-off-broadway-2026",
+      "title": "Delirium",
+      "openingDate": "2026-09-24",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 79.28 vs local 79.62 (Δ0.34)"
+          "detail": "deployed cs 87.18 vs local 87.03 (Δ0.15)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 30,
-      "deployedCount": 30
+      "localCount": 6,
+      "deployedCount": 7
     },
     {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "title": "Moulin Rouge! The Musical",
-      "openingDate": "2022-01-19",
+      "showId": "kimberly-akimbo-off-west-end-2026",
+      "title": "Kimberly Akimbo",
+      "openingDate": "2026-09-09",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 70.16 vs local 69.93 (Δ0.23)"
+          "detail": "deployed cs 80.93 vs local 81.15 (Δ0.22)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21
+      "localCount": 31,
+      "deployedCount": 32
     }
   ]
 }
