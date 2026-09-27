@@ -18,8 +18,8 @@
  *       rss     — Free RSS/Atom feed (Guardian, Vulture)
  *       wp-api  — WordPress REST API (NYSR)
  *       serp    — SERP site: query (all others, including paywalled)
- *   - Three outlets are skipped (have dedicated aggregator scrapers):
- *       broadwayworld, london-theatre, london-box-office
+ *   - Four outlets are skipped (have dedicated scrapers/pollers):
+ *       broadwayworld, london-theatre, london-box-office, loureviews
  *
  * Usage:
  *   node scripts/outlet-listing-poller.js [options]
@@ -55,6 +55,7 @@ const {
   findExistingReviewFile,
   isFlaggedMergeTarget,
 } = require('./lib/review-normalization');
+const { normalizeUrl } = require('./lib/url-utils');
 const { describeSkip } = require('./lib/ingest-skip-classify');
 const {
   findMatchingShows,
@@ -89,7 +90,10 @@ const REJECTED_URL_CACHE_MAX = 1000;
 // ---------------------------------------------------------------------------
 
 // Outlets with dedicated aggregator scrapers — skip entirely
-const SKIP_OUTLETS = new Set(['broadwayworld', 'london-theatre', 'london-box-office']);
+// loureviews: owned by poll-loureviews.yml (full-text WP ingest + its own tested
+// matcher, scripts/lib/loureviews-match.js) — polling it here too made two
+// writers for one outlet (BRO-4185 plan review).
+const SKIP_OUTLETS = new Set(['broadwayworld', 'london-theatre', 'london-box-office', 'loureviews']);
 
 // Per-outlet fetch strategies. Each entry declares a strategy + required URL/config.
 // Outlets not listed here fall back to SERP. All strategy fetches are wrapped in
@@ -217,7 +221,6 @@ const OUTLET_STRATEGY_CONFIG = {
   'musical-theatre-review':  { strategy: 'rss', url: 'https://musicaltheatrereview.com/feed/' },
   'plays-to-see':            { strategy: 'rss', url: 'https://playstosee.com/feed/' },
   'a-youngish-perspective':  { strategy: 'rss', url: 'https://ayoungishperspective.co.uk/feed/' },
-  loureviews:                { strategy: 'rss', url: 'https://loureviews.blog/feed/' },
   monstagigz:                { strategy: 'rss', url: 'https://monstagigz.com/feed/' },
   'north-west-end':          { strategy: 'rss', url: 'https://northwestend.com/feed/' },
   // South London Press: local news site; theatre reviews carry "review" in the slug
@@ -403,33 +406,25 @@ function buildStubPath(showId, outletId) {
 }
 
 /**
+ * After the writer refuses a write with 'flagged-filename-collision' (BRO-3182):
+ * is the flagged file that blocked it for this SAME url? Classification only,
+ * never a skip. Same-url refusals are usually an already-rejected URL
+ * re-matched daily (26 on 2026-09-26), but some carry a FALSE flag (Table 17 /
+ * First Night, BRO-4185), so they stay visible as a count; a false flag is
+ * fixed at read time in review-guards, not by suppressing rediscovery here.
+ */
+function isSameUrlFlaggedTarget(showId, outletId, url, reviewTextsDir = REVIEW_TEXTS_DIR) {
+  const filepath = path.join(reviewTextsDir, showId, generateReviewFilename(outletId, 'unknown'));
+  let data;
+  try { data = JSON.parse(fs.readFileSync(filepath, 'utf-8')); } catch { return false; }
+  return isFlaggedMergeTarget(data) && !!data.url && normalizeUrl(data.url) === normalizeUrl(url);
+}
+
+/**
  * Check idempotency: does a stub already exist for this outlet + URL in this show's dir?
  * Returns true if we should SKIP (already filed).
  * This check is per-show-dir — so the same URL can be filed under Show A and Show B independently.
  */
-/**
- * Is the exact target file this stub would land in a flagged/rejected record
- * for the SAME url? findExistingReviewFile deliberately ignores
- * wrongProduction/duplicateOf files, so without this the writer's BRO-3182
- * guard refuses the same already-rejected URL every single day (26 refusals
- * on 2026-09-26, mostly cross-show false matches) and buries the rare
- * different-url refusal that actually needs a human (BRO-4185).
- * Stateless on purpose: the workflow never persisted a cache for this.
- */
-function isKnownRejectedTarget(showId, outletId, url, reviewTextsDir = REVIEW_TEXTS_DIR) {
-  const filepath = path.join(reviewTextsDir, showId, generateReviewFilename(outletId, 'unknown'));
-  let data;
-  try { data = JSON.parse(fs.readFileSync(filepath, 'utf-8')); } catch { return false; }
-  return isFlaggedMergeTarget(data) && sameUrl(data.url, url);
-}
-
-function sameUrl(a, b) {
-  if (!a || !b) return false;
-  // Keep the query string: some outlets identify posts by it (post.cfm?p=29091).
-  const norm = u => u.trim().replace(/^https?:\/\/(www\.)?/i, '').replace(/#.*$/, '').replace(/\/+(?=\?|$)/, '').toLowerCase();
-  return norm(a) === norm(b);
-}
-
 function alreadyFiled(showId, outletId, url) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   const existing = findExistingReviewFile(showDir, outletId, 'unknown');
@@ -670,6 +665,7 @@ async function main() {
   // silent miss is visible; the fix is a feed entry (scripts/probe-outlet-feeds.js).
   const serpOnlyEmpty = [];
   const blockedCollisions = [];
+  const sameUrlFlagged = [];
 
   for (const outletId of qualifyingOutlets) {
     const outletEntry = outletRegistry[outletId] || {};
@@ -765,14 +761,14 @@ async function main() {
         // Skip URLs the classifier durably rejected on a prior cycle. The
         // writer would just reject them again and we'd burn classifier work.
         if (isRejectedCached(url, show.id)) continue;
-        if (isKnownRejectedTarget(show.id, outletId, url)) continue;
 
         const result = createStub(show.id, outletId, displayName, url, headline, publishDate, isMultiShow, nytCriticsPick, opts.dryRun);
         // Only count NEW writes — the shared writer may also reject (cross-market
         // classifier), reroute, or merge into an existing file. None of those
         // are "new stubs" for the workflow output.
         if (result && result.action === 'skipped' && result.reason === 'flagged-filename-collision') {
-          blockedCollisions.push({ showId: show.id, outletId, url });
+          if (isSameUrlFlaggedTarget(show.id, outletId, url)) sameUrlFlagged.push({ showId: show.id, outletId, url });
+          else blockedCollisions.push({ showId: show.id, outletId, url });
         }
         if (result && result.action === 'new') {
           if (!opts.dryRun) outletNewStubs++;
@@ -795,6 +791,12 @@ async function main() {
   if (outletsFailed > 0) console.warn(`Outlets with errors: ${outletsFailed}`);
   if (serpOnlyEmpty.length > 0) {
     console.warn(`SERP-only outlets with 0 results (unverified, not proof of no reviews): ${serpOnlyEmpty.length} — ${serpOnlyEmpty.join(', ')}`);
+  }
+  if (sameUrlFlagged.length > 0) {
+    // Not suppressed: a same-url refusal can be a FALSE flag (Table 17 / First
+    // Night, BRO-4185). Listed so the count is visible run over run.
+    console.log(`Re-matched URLs whose file is already flagged (same url, refused by writer): ${sameUrlFlagged.length}`);
+    for (const b of sameUrlFlagged) console.log(`  · ${b.showId} / ${b.outletId}: ${b.url}`);
   }
   if (blockedCollisions.length > 0) {
     console.warn(`\n⛔ ${blockedCollisions.length} new URL(s) blocked by a flagged file with a DIFFERENT url — needs a human call:`);
@@ -831,4 +833,4 @@ if (require.main === module) {
 }
 
 // Exported for scripts/probe-outlet-feeds.js (lists SERP-only outlets) and tests.
-module.exports = { SKIP_OUTLETS, OUTLET_STRATEGY_CONFIG, WP_API_CONFIG, isKnownRejectedTarget };
+module.exports = { SKIP_OUTLETS, OUTLET_STRATEGY_CONFIG, WP_API_CONFIG, isSameUrlFlaggedTarget };

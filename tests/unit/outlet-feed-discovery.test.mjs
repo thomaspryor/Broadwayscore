@@ -17,7 +17,7 @@ const {
   feedCandidateUrls,
   summarizeFeed,
 } = require('../../scripts/probe-outlet-feeds.js');
-const { isKnownRejectedTarget, OUTLET_STRATEGY_CONFIG } = require('../../scripts/outlet-listing-poller.js');
+const { isSameUrlFlaggedTarget, OUTLET_STRATEGY_CONFIG, SKIP_OUTLETS } = require('../../scripts/outlet-listing-poller.js');
 const { generateReviewFilename } = require('../../scripts/lib/review-normalization.js');
 
 const EPOCH = new Date(0);
@@ -110,9 +110,14 @@ describe('poller config', () => {
       assert.equal(OUTLET_STRATEGY_CONFIG[id]?.strategy, 'rss', id);
     }
   });
+
+  test('loureviews is owned by poll-loureviews.yml, not the poller', () => {
+    assert.equal(OUTLET_STRATEGY_CONFIG.loureviews, undefined);
+    assert.ok(SKIP_OUTLETS.has('loureviews'));
+  });
 });
 
-describe('isKnownRejectedTarget (stateless same-URL skip)', () => {
+describe('isSameUrlFlaggedTarget (classifies a writer refusal; never a skip)', () => {
   function withFile(data, fn) {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'olp-'));
     fs.mkdirSync(path.join(dir, 'show-a'));
@@ -120,32 +125,25 @@ describe('isKnownRejectedTarget (stateless same-URL skip)', () => {
     try { return fn(dir); } finally { fs.rmSync(dir, { recursive: true, force: true }); }
   }
 
-  test('flagged file with the same url (modulo www/trailing slash) → skip', () => {
-    withFile({ url: 'https://blogcritics.org/crazy-mama/', wrongShow: true, wrongProduction: true }, dir => {
-      assert.equal(isKnownRejectedTarget('show-a', 'blogcritics', 'https://www.blogcritics.org/crazy-mama', dir), true);
+  test('flagged file with the same url (modulo trailing slash/case) → same-url', () => {
+    withFile({ url: 'https://blogcritics.org/Crazy-Mama/', wrongProduction: true }, dir => {
+      assert.equal(isSameUrlFlaggedTarget('show-a', 'blogcritics', 'https://blogcritics.org/crazy-mama', dir), true);
     });
   });
 
-  test('flagged file with a DIFFERENT url → not skipped (writer guard still reports it)', () => {
+  test('flagged file with a DIFFERENT url → false (reported as a blocked new URL)', () => {
     withFile({ url: 'https://blogcritics.org/old/', wrongProduction: true }, dir => {
-      assert.equal(isKnownRejectedTarget('show-a', 'blogcritics', 'https://blogcritics.org/new/', dir), false);
+      assert.equal(isSameUrlFlaggedTarget('show-a', 'blogcritics', 'https://blogcritics.org/new/', dir), false);
     });
   });
 
-  test('unflagged file with the same url → not skipped here (alreadyFiled handles it)', () => {
+  test('unflagged file → false', () => {
     withFile({ url: 'https://blogcritics.org/x/' }, dir => {
-      assert.equal(isKnownRejectedTarget('show-a', 'blogcritics', 'https://blogcritics.org/x/', dir), false);
-    });
-  });
-
-  test('query-string post ids are distinct urls', () => {
-    withFile({ url: 'https://blogcritics.org/post.cfm?p=1', wrongProduction: true }, dir => {
-      assert.equal(isKnownRejectedTarget('show-a', 'blogcritics', 'https://blogcritics.org/post.cfm?p=2', dir), false);
-      assert.equal(isKnownRejectedTarget('show-a', 'blogcritics', 'https://blogcritics.org/post.cfm?p=1', dir), true);
+      assert.equal(isSameUrlFlaggedTarget('show-a', 'blogcritics', 'https://blogcritics.org/x/', dir), false);
     });
   });
 
   test('missing file → false', () => {
-    assert.equal(isKnownRejectedTarget('nope', 'blogcritics', 'https://x', os.tmpdir()), false);
+    assert.equal(isSameUrlFlaggedTarget('nope', 'blogcritics', 'https://x', os.tmpdir()), false);
   });
 });
