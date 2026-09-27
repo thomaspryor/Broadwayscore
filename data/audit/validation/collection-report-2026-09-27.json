@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-27T11:51:35.279Z",
+  "runDate": "2026-09-27T14:56:06.437Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
@@ -11,15 +11,15 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 10,
-    "failed": 28,
+    "processed": 7,
+    "failed": 29,
     "skipped": 0,
-    "successRate": "26.3%"
+    "successRate": "19.4%"
   },
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 4,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 0,
@@ -27,25 +27,25 @@
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 16,
-    "tier1Success": 9,
+    "tier1Attempts": 12,
+    "tier1Success": 7,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 1,
-    "tier2Attempts": 10,
+    "tier1_5Attempts": 4,
+    "tier1_5Success": 0,
+    "tier2Attempts": 8,
     "tier2Success": 5,
-    "tier3Attempts": 7,
-    "tier3Success": 4,
-    "tier3_6Attempts": 7,
+    "tier3Attempts": 5,
+    "tier3Success": 2,
+    "tier3_6Attempts": 5,
     "tier3_6Success": 0,
-    "tier4Attempts": 17,
+    "tier4Attempts": 15,
     "tier4Success": 1,
-    "totalFailed": 28,
+    "totalFailed": 29,
     "scrapingBeePageCredits": 35,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 1.5,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 1.8,
     "urlDiscoveryAttempts": 18,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -54,13 +54,10 @@
     "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json",
     "the-secret-circus-musical-off-broadway-2026/mommypoppins--unknown.json",
     "the-secret-circus-musical-off-broadway-2026/stagebuddy--unknown.json",
-    "the-urmetazoan-off-west-end-2026/fairypoweredproductions--fairypoweredproductions.json",
-    "delirium-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
     "delirium-off-broadway-2026/arlekinplayers--unknown.json",
-    "delirium-off-broadway-2026/front-row-center--david-walters.json",
     "table-17-off-west-end-2026/londonlivinglarge--london-living-large.json",
     "table-17-off-west-end-2026/londonlivinglarge--unknown.json",
-    "table-17-off-west-end-2026/londontheatredirect--unknown.json"
+    "table-17-off-west-end-2026/londontheatredirect--agata-kucharska.json"
   ],
   "failed": [
     "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
@@ -76,6 +73,7 @@
     "the-urmetazoan-off-west-end-2026/datathistle--unknown.json",
     "the-urmetazoan-off-west-end-2026/thestage--holly-omahony.json",
     "the-urmetazoan-off-west-end-2026/thestage--the-stage.json",
+    "delirium-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
     "table-17-off-west-end-2026/nytimes--unknown.json",
     "table-17-off-west-end-2026/vulture--sara-holdren.json",
     "delirium-off-broadway-2026/artsfuse--bill-marx.json",
@@ -95,17 +93,12 @@
   "tierDetails": {
     "playwright": [
       "the-secret-circus-musical-off-broadway-2026/stagebuddy--unknown.json",
-      "the-urmetazoan-off-west-end-2026/fairypoweredproductions--fairypoweredproductions.json",
-      "delirium-off-broadway-2026/front-row-center--david-walters.json",
       "table-17-off-west-end-2026/londonlivinglarge--london-living-large.json",
       "table-17-off-west-end-2026/londonlivinglarge--unknown.json",
-      "table-17-off-west-end-2026/londontheatredirect--unknown.json"
+      "table-17-off-west-end-2026/londontheatredirect--agata-kucharska.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/delirium-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-      "delirium-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
       "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json",
@@ -133,7 +126,7 @@
       "isKnownBlocked": false
     },
     "The Stage": {
-      "count": 1,
+      "count": 3,
       "domain": "thestage.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
