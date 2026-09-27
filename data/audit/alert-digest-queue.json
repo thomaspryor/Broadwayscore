@@ -236,18 +236,6 @@
     "queuedAt": "2026-09-26T13:41:46.145Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:table-17-off-west-end-2026",
-    "title": "Review gap — \"Table 17\" missing 11 cited review(s)",
-    "description": "Table 17 (table-17-off-west-end-2026): 11 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=table-17-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-26T13:41:46.167Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:the-urmetazoan-off-west-end-2026",
     "title": "Review gap — \"The Urmetazoan\" missing 3 cited review(s)",
     "description": "The Urmetazoan (the-urmetazoan-off-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-urmetazoan-off-west-end-2026 --checkpoint --ingest-missing",
@@ -616,5 +604,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-26T23:29:00.690Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:tru-off-west-end-2026",
+    "title": "Review gap — \"Tru\" missing 5 cited review(s)",
+    "description": "Tru (tru-off-west-end-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tru-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-27T02:05:03.760Z"
   }
 ]

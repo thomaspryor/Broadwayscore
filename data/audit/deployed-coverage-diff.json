@@ -1,177 +1,45 @@
 {
-  "generatedAt": "2026-09-26T23:29:44.451Z",
+  "generatedAt": "2026-09-27T02:05:15.264Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 148,
-  "clean": 138,
-  "defective": 10,
+  "clean": 146,
+  "defective": 2,
   "byType": {
-    "score-drift": 10,
-    "missing-from-prod": 2
+    "score-drift": 1,
+    "unreachable": 1
   },
   "shows": [
     {
-      "showId": "table-17-off-west-end-2026",
-      "title": "Table 17",
-      "openingDate": "2026-09-24",
+      "showId": "gimme-a-sign-off-broadway-2026",
+      "title": "Gimme a Sign!",
+      "openingDate": "2026-09-17",
       "ok": false,
       "defects": [
         {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: firstnightmagazine"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 77.88 vs local 76.19 (Δ1.69)"
-        }
-      ],
-      "missingFromProd": [
-        "firstnightmagazine"
-      ],
-      "localCount": 15,
-      "deployedCount": 14
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "title": "Stranger Things: The First Shadow",
-      "openingDate": "2023-12-14",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: times-uk"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 81.09 vs local 81.63 (Δ0.54)"
-        }
-      ],
-      "missingFromProd": [
-        "times-uk"
-      ],
-      "localCount": 25,
-      "deployedCount": 24
-    },
-    {
-      "showId": "golden-boy-off-west-end-2026",
-      "title": "Golden Boy",
-      "openingDate": "2026-09-15",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.72 vs local 78.66 (Δ0.06)"
+          "type": "unreachable",
+          "detail": "HTTP 404"
         }
       ],
       "missingFromProd": [],
-      "localCount": 29,
-      "deployedCount": 29
+      "localCount": 0,
+      "deployedCount": null
     },
     {
-      "showId": "million-dollar-quartet-off-west-end-2026",
-      "title": "Million Dollar Quartet",
-      "openingDate": "2026-09-14",
+      "showId": "the-last-ship-west-end-2026",
+      "title": "The Last Ship",
+      "openingDate": "2026-09-23",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 74.75 vs local 74.68 (Δ0.07)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21
-    },
-    {
-      "showId": "man-to-man-west-end-2026",
-      "title": "Man to Man",
-      "openingDate": "2026-09-11",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 77.3 vs local 77.47 (Δ0.17)"
+          "detail": "deployed cs 62.72 vs local 62.77 (Δ0.05)"
         }
       ],
       "missingFromProd": [],
       "localCount": 35,
-      "deployedCount": 35
-    },
-    {
-      "showId": "kimberly-akimbo-off-west-end-2026",
-      "title": "Kimberly Akimbo",
-      "openingDate": "2026-09-09",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 81.05 vs local 80.84 (Δ0.21)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 31,
-      "deployedCount": 31
-    },
-    {
-      "showId": "a-month-in-the-country-west-end-2026",
-      "title": "A Month in the Country",
-      "openingDate": "2026-09-02",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.59 vs local 79.52 (Δ0.07)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 30,
-      "deployedCount": 30
-    },
-    {
-      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
-      "title": "Much Ado About Nothing",
-      "openingDate": "2026-06-20",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.22 vs local 78.37 (Δ0.15)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 22,
-      "deployedCount": 22
-    },
-    {
-      "showId": "hadestown-west-end-2024",
-      "title": "Hadestown",
-      "openingDate": "2024-02-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 73.77 vs local 73.87 (Δ0.1)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "title": "Moulin Rouge! The Musical",
-      "openingDate": "2022-01-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 70.02 vs local 69.95 (Δ0.07)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21
+      "deployedCount": 36
     }
   ]
 }

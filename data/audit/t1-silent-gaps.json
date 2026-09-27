@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-26T23:29:33.626Z",
+  "generatedAt": "2026-09-27T02:05:05.959Z",
   "windowDays": 45,
-  "showsScanned": 81,
+  "showsScanned": 83,
   "gaps": [
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
@@ -16,9 +16,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 245.46983555555556,
+      "fileAgeHours": 248.0706675,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 245.39750444444445
+      "nonTerminalAgeHours": 247.98981916666668
     },
     {
       "showId": "human-things-off-broadway-2026",
@@ -29,17 +29,13 @@
       "tier": 2,
       "type": "empty-body",
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www"
-      },
-      "recoveryCount": 2,
+      "recovery": null,
+      "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 8.584628055555555,
+      "fileAgeHours": 11.176948333333334,
       "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 5.767876388888889
+      "nonTerminalAgeHours": 8.360191111111112
     }
   ],
   "contradictions": []
