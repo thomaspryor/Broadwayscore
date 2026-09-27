@@ -10,7 +10,7 @@ The Stage (thestage.co.uk) allows 2 devices per subscription. On 2026-03-30 ever
 - It uses one persistent Chrome profile (`~/Library/Application Support/BroadwayScorecard/browser-profiles/thestage`), so it is always the same "device".
 - The password comes from the Keychain (service `broadwayscorecard-cookie-renew`, accounts `thestage-email` / `thestage-password`). It never comes from `.env` or GitHub.
 - It logs in only when the walled probe (`scripts/lib/cookie-probes.js`) says logged out, and at most once per 20h.
-- It stops for a human after 2 logins in 7 days, or on any CAPTCHA, emailed code, or rejected password. Clear the stop with `--reset`.
+- It stops for a human after 2 logins in 7 days, or on any CAPTCHA, emailed code, or rejected password. Recover with `--manual`, which opens the same profile so you log in by hand without adding a device. Never log in from another browser to fix it, since that adds a session.
 - It refuses to run in CI.
 
 **How to apply:**

@@ -12,7 +12,12 @@
          COOKIES_BUNDLE_* via extract-safari-cookies.py --from-local, and
          confirms with a live check-cookie-health run. CAPTCHA, emailed
          code, rejected password, or 2 logins in 7 days: stops, emails one
-         link, and stays stopped until `renew-cookies.js --reset`.
+         link, and stays stopped. Recover with
+         `node scripts/renew-cookies.js --outlet=thestage --manual` (you log in
+         inside the same profile, so no extra device), or `--reset` after
+         fixing the cause some other way. Probe pages that aren't the known
+         registration gate (Cloudflare challenge, maintenance) never trigger
+         a login.
 
          MAC STUDIO ONLY. Never add Stage login to CI: per-runner logins
          tripped the 2-device limit on 2026-03-30.

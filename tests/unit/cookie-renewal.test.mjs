@@ -38,6 +38,18 @@ test('classifyWalledProbe: logged-in / logged-out / vacuous / error', () => {
   assert.ok(COOKIE_PROBES.thestage.url.startsWith('https://www.thestage.co.uk/reviews/'));
 });
 
+test('classifyWalledProbe: with gateMarker, an unrecognised short page is error, never logged-out', () => {
+  const p = { minBody: 1200, wallMarker: /THIS IS NOT A PAYWALL/i, gateMarker: COOKIE_PROBES.thestage.gateMarker };
+  const gate = { html: '<a href="https://www.thestage.co.uk/registration?utm_source=Reggate">create a free account</a>', body: '' };
+  const challenge = { html: '<title>Just a moment...</title><div id="cf-chl-widget"></div>', body: '' };
+  assert.equal(classifyWalledProbe({ ...p, withCookies: gate, withoutCookies: gate }), 'logged-out');
+  // Cloudflare challenge on the cookie fetch: uncertain, so no login.
+  assert.equal(classifyWalledProbe({ ...p, withCookies: challenge, withoutCookies: gate }), 'error');
+  // Challenge on the control fetch: can't tell what the wall looks like.
+  assert.equal(classifyWalledProbe({ ...p, withCookies: gate, withoutCookies: challenge }), 'error');
+  assert.equal(classifyWalledProbe({ ...p, withCookies: { html: '<p>', body: long }, withoutCookies: gate }), 'logged-in');
+});
+
 test('decideLogin: first login allowed', () => {
   assert.deepEqual(renew.decideLogin(undefined, Date.now()), { allowed: true, escalate: false, reason: 'ok' });
 });
@@ -91,6 +103,15 @@ test('acquireLock is fail-closed while the holder is alive, reclaims a dead hold
   assert.equal(typeof again, 'function', 'dead-PID lock is reclaimed');
   again();
   assert.equal(fs.existsSync(lock), false);
+
+  // Live PID (a reused PID after reboot looks like this) but older than
+  // LOCK_STALE_MS: reclaimed rather than skipping every run forever.
+  fs.writeFileSync(lock, `${process.pid} old\n`);
+  const old = new Date(Date.now() - renew.LOCK_STALE_MS - 60000);
+  fs.utimesSync(lock, old, old);
+  const third = renew.acquireLock(lock);
+  assert.equal(typeof third, 'function', 'age-stale lock is reclaimed');
+  third();
 });
 
 test('readKeychain returns null instead of throwing when the item is missing', () => {
@@ -175,9 +196,18 @@ safari = [
 ext.PROJECT_ROOT = root
 ext.COOKIE_FILE = sys.argv[1]
 ext.parse_binary_cookies = lambda p: safari
-ext.subprocess.run = lambda *a, **k: None
-sys.argv = ["extract"] + (["--from-local", "--dry-run"] if mode == "from-local" else [])
-ext.main()
+class Failed:
+    returncode = 1
+    stderr = "HTTP 403: Resource not accessible by integration"
+ext.subprocess.run = (lambda *a, **k: Failed()) if mode == "push-fail" else (lambda *a, **k: None)
+sidecar_before = open(os.path.join(cdir, "_extracted-at.json")).read()
+os.remove(os.path.join(cdir, ".gitignore")) if os.path.exists(os.path.join(cdir, ".gitignore")) else None
+sys.argv = ["extract"] + {"from-local": ["--from-local", "--dry-run"], "push-fail": ["--from-local", "--push"]}.get(mode, [])
+exit_code = 0
+try:
+    ext.main()
+except SystemExit as e:
+    exit_code = e.code
 bundles = ext.build_bundles(
   {"thestage": renewed, "variety": []},
   {"thestage": ext.outlet_meta_entry({"extractedAt": "a", "extractedAtUnix": 1, "method": "auto-renew"})},
@@ -187,6 +217,9 @@ print("RESULT " + json.dumps({
   "variety": json.load(open(os.path.join(cdir, "variety.json"))),
   "meta": json.load(open(os.path.join(cdir, "_extracted-at.json"))),
   "staleExists": os.path.exists(os.path.join(cdir, "thestage.json.stale")),
+  "sidecarUnchanged": open(os.path.join(cdir, "_extracted-at.json")).read() == sidecar_before,
+  "gitignoreCreated": os.path.exists(os.path.join(cdir, ".gitignore")),
+  "exit": exit_code,
   "bundles": bundles,
 }))
 `;
@@ -217,4 +250,12 @@ test('extractor --from-local: bundles come from local files, Safari untouched, p
   assert.deepEqual(b._meta.outlets.thestage, { extractedAt: 'a', extractedAtUnix: 1, method: 'auto-renew' });
   assert.equal(b._meta.pushedAt, 'now');
   assert.equal(b._meta.outlets.variety, undefined);
+  assert.equal(result.sidecarUnchanged, true, '--from-local leaves _extracted-at.json byte-identical');
+  assert.equal(result.gitignoreCreated, false, '--from-local creates no files');
+});
+
+test('extractor --from-local --push: a failed secret push exits non-zero', () => {
+  const { out, result } = runExtractor('push-fail');
+  assert.match(out, /✗ COOKIES_BUNDLE_1: HTTP 403/);
+  assert.equal(result.exit, 1);
 });

@@ -650,7 +650,7 @@ def main():
     # Persist sidecar metadata (skip in dry-run — no filesystem mutation).
     # Atomic write: tmp file + rename. Two parallel runs can still
     # last-writer-wins, but neither leaves the sidecar half-written.
-    if not dry_run_mode:
+    if not dry_run_mode and not from_local:
         try:
             tmp_meta_path = meta_path + ".tmp"
             with open(tmp_meta_path, "w") as f:
@@ -670,13 +670,14 @@ def main():
 
     # Also note the gitignore
     gitignore_path = os.path.join(output_dir, ".gitignore")
-    if not os.path.exists(gitignore_path):
+    if not from_local and not os.path.exists(gitignore_path):
         with open(gitignore_path, "w") as f:
             f.write("# Never commit cookies\n*.json\n")
         print(f"Created {gitignore_path} (cookies will not be committed to git)")
 
     # Auto-push to GitHub secrets if --push flag is set
     auto_push = "--push" in sys.argv
+    push_failed = False
     dry_run = "--dry-run" in sys.argv
 
     if auto_push or dry_run:
@@ -739,6 +740,7 @@ def main():
         print("=" * 60)
         print()
 
+        push_failed = False
         for i, bundle in enumerate(bundles, 1):
             secret_name = f"COOKIES_BUNDLE_{i}"
             raw = json.dumps(bundle)
@@ -759,11 +761,14 @@ def main():
                     print(f"  ✓ {secret_name}: {len(outlets)} outlets pushed ({', '.join(outlets)})")
                 else:
                     print(f"  ✗ {secret_name}: {result.stderr.strip()}")
+                    push_failed = True
             except FileNotFoundError:
                 print(f"  ✗ {secret_name}: 'gh' CLI not found — install GitHub CLI first")
+                push_failed = True
                 break
             except Exception as e:
                 print(f"  ✗ {secret_name}: {e}")
+                push_failed = True
             finally:
                 os.unlink(tmp_path)
 
@@ -800,6 +805,13 @@ def main():
             print(f"  (verify skipped: {e})")
 
     print()
+    if push_failed:
+        # Non-zero so callers (renew-cookies.js) don't record a push that
+        # didn't land: CI would keep the old bundle while the local file
+        # looks fresh.
+        print()
+        print("ERROR: one or more COOKIES_BUNDLE_* secrets failed to push (see ✗ above).")
+        sys.exit(1)
     print("Done! Cookies saved locally" + (" and pushed to GitHub." if auto_push else "."))
 
 

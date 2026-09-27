@@ -14,8 +14,9 @@
  *   1. Probe: fetch the outlet's walled article (scripts/lib/cookie-probes.js,
  *      the same probe check-cookie-health.js Layer 3 uses) with the current
  *      cookies and without any. Logged in -> exit 0. Probe URL no longer
- *      walled -> alert, exit 2. Fetch error -> exit 1. No login on
- *      uncertainty.
+ *      walled -> alert, exit 2. Fetch error or a page that isn't the
+ *      recognised registration gate (challenge, maintenance) -> exit 1.
+ *      No login on uncertainty.
  *   2. Open the persistent profile (always the same "device"). If the
  *      profile's own session is still alive, take its cookies: no login.
  *   3. Otherwise, if the gate allows (lib/cookie-renew.js decideLogin), submit
@@ -31,7 +32,8 @@
  * Usage:
  *   node scripts/renew-cookies.js --outlet=thestage [--headed] [--no-push] [--no-confirm]
  *   node scripts/renew-cookies.js --outlet=thestage --probe-only
- *   node scripts/renew-cookies.js --outlet=thestage --reset      # clear a needs-human stop
+ *   node scripts/renew-cookies.js --outlet=thestage --manual     # headed profile, YOU log in, then push
+ *   node scripts/renew-cookies.js --outlet=thestage --reset      # clear a needs-human stop (keeps login history)
  *
  * Exit: 0 ok/nothing to do, 1 error, 2 probe vacuous, 3 needs human,
  *       4 push/confirm failed.
@@ -114,14 +116,29 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // --- steps -------------------------------------------------------------------
 
-async function profileSessionCookies(context, outletCfg, probe) {
+// In-profile probe. Returns { status, cookies }: cookies only when logged in.
+async function profileSession(context, outletCfg, probe) {
   const page = context.pages()[0] || (await context.newPage());
   await page.goto(probe.url, { waitUntil: 'domcontentloaded', timeout: 45000 });
   await page.waitForTimeout(2000);
   const html = await page.content();
-  const status = classifyWalledProbe({ withCookies: { html, body: extractArticleTextFromUrl(html, probe.url) || '' }, minBody: probe.minBody, wallMarker: probe.wallMarker });
-  if (status !== 'logged-in') return null;
-  return (await context.cookies()).filter((c) => c.domain.includes(outletCfg.cookieDomain));
+  const status = classifyWalledProbe({
+    withCookies: { html, body: extractArticleTextFromUrl(html, probe.url) || '' },
+    minBody: probe.minBody, wallMarker: probe.wallMarker, gateMarker: probe.gateMarker,
+  });
+  if (status !== 'logged-in') return { status, cookies: null };
+  return { status, cookies: (await context.cookies()).filter((c) => c.domain.includes(outletCfg.cookieDomain)) };
+}
+
+// --manual: the owner logs in by hand inside the SAME persistent profile
+// (same device), so recovery from a needs-human stop never adds a session
+// elsewhere. Resolves once the page leaves the login URL (10 min limit).
+async function manualLogin(context, cfg) {
+  const page = context.pages()[0] || (await context.newPage());
+  await page.goto(cfg.loginUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
+  console.log('Log in in the browser window (10 min limit). Leave the window open; it closes itself.');
+  await page.waitForURL((u) => !/\/login/i.test(u.pathname), { timeout: 10 * 60 * 1000 }).catch(() => {});
+  await page.waitForTimeout(3000);
 }
 
 async function submitLogin(context, cfg, creds) {
@@ -151,7 +168,8 @@ async function submitLogin(context, cfg, creds) {
 
 function pushBundles() {
   // The extractor is the only COOKIES_BUNDLE_* writer; --from-local rebuilds
-  // every bundle from data/cookies/*.json without reading Safari.
+  // every bundle from data/cookies/*.json without reading Safari. It exits
+  // non-zero if any secret failed to push, which throws here.
   execFileSync('python3', ['scripts/extract-safari-cookies.py', '--from-local', '--push'], { cwd: REPO_ROOT, stdio: 'inherit', timeout: 300000 });
 }
 
@@ -163,17 +181,20 @@ async function confirmViaHealthCheck(outlet) {
     if (i === 0) console.log('check-cookie-health already running; waiting for it to finish before dispatching.');
     await sleep(60000);
   }
-  const since = Date.now() - 5000;
+  // Our run is the first workflow_dispatch run whose id wasn't listed before
+  // dispatch (ids, not timestamps: this Mac's clock vs GitHub's createdAt).
+  const before = new Set(listRuns().map((r) => r.databaseId));
   gh(['workflow', 'run', HEALTH_WORKFLOW, '--repo', REPO, '-f', 'live_check=true']);
   console.log('Dispatched check-cookie-health (live_check=true).');
 
   for (let i = 0; i < 25; i++) {
     await sleep(60000);
-    // Only a workflow_dispatch run created after our dispatch can be ours.
-    const run = listRuns().find((r) => r.event === 'workflow_dispatch' && Date.parse(r.createdAt) >= since);
+    const run = listRuns().find((r) => r.event === 'workflow_dispatch' && !before.has(r.databaseId));
     if (!run || run.status !== 'completed') continue;
     const log = gh(['run', 'view', String(run.databaseId), '--repo', REPO, '--log'], { maxBuffer: 64 * 1024 * 1024 });
-    const liveIdx = log.indexOf('Live Access Test');
+    // Exact section header: "Live Access Test" alone also appears in
+    // Layer-1 lines for no-cookie outlets.
+    const liveIdx = log.indexOf('--- Live Access Test');
     const line = log.slice(liveIdx >= 0 ? liveIdx : 0).split('\n').find((l) => l.includes(` ${outlet}: `));
     const ok = !!line && line.includes('✅');
     console.log(`Health check ${run.url}: ${line ? line.replace(/^.*?\t/, '').trim() : `no ${outlet} Layer 3 line found`}`);
@@ -210,10 +231,11 @@ async function main() {
     const persist = () => { all[outlet] = state; saveState(STATE_PATH, all); };
 
     if (flag('reset')) {
+      // Login history is kept on purpose: clearing it would lift the
+      // 2-logins-in-7-days guard right after a human intervened.
       state.needsHuman = null;
-      state.logins = [];
       persist();
-      console.log(`${outlet}: needs-human stop and login history cleared.`);
+      console.log(`${outlet}: needs-human stop cleared (login history kept).`);
       return 0;
     }
 
@@ -221,7 +243,7 @@ async function main() {
     let status;
     try {
       const [withCookies, withoutCookies] = [await fetchProbe(probe.url, readLocalCookies(cfg.fileKey)), await fetchProbe(probe.url, null)];
-      status = classifyWalledProbe({ withCookies, withoutCookies, minBody: probe.minBody, wallMarker: probe.wallMarker });
+      status = classifyWalledProbe({ withCookies, withoutCookies, minBody: probe.minBody, wallMarker: probe.wallMarker, gateMarker: probe.gateMarker });
       console.log(`${outlet} probe: ${status} (with cookies ${withCookies.body.length} chars, without ${withoutCookies.body.length}, floor ${probe.minBody})`);
     } catch (e) {
       console.error(`${outlet} probe failed: ${e.message}. Not logging in on an uncertain probe.`);
@@ -232,7 +254,12 @@ async function main() {
         `${probe.url} returns the full article with no cookies, so logged-in state cannot be measured. Pick a recent walled article in scripts/lib/cookie-probes.js.`, probe.url);
       return 2;
     }
-    if (status === 'logged-in' && !state.pendingPush) {
+    if (status === 'error') {
+      console.error(`${outlet}: probe page is not the recognised registration gate (challenge/maintenance/redesign?). Not logging in on an uncertain probe.`);
+      return 1;
+    }
+    const manual = flag('manual');
+    if (status === 'logged-in' && !state.pendingPush && !manual) {
       state.lastSuccessAt = new Date().toISOString();
       persist();
       console.log(`${outlet}: logged in, nothing to do.`);
@@ -240,22 +267,41 @@ async function main() {
     }
     if (probeOnly) return status === 'logged-in' ? 0 : 3;
 
-    if (status !== 'logged-in') {
+    if (status !== 'logged-in' || manual) {
       // 2 + 3. Persistent profile: reuse its session, else one gated login.
-      const context = await launchOtpBrowser(profileDir(outlet), { headless: !flag('headed') });
+      const context = await launchOtpBrowser(profileDir(outlet), { headless: !flag('headed') && !manual, userAgent: UA });
       let cookies;
       try {
-        cookies = await profileSessionCookies(context, cfg, probe);
-        if (cookies) {
-          console.log(`${outlet}: profile session still valid; no login needed.`);
+        if (manual) {
+          state.logins = [...state.logins, new Date().toISOString()].slice(-10);
+          persist();
+          await manualLogin(context, cfg);
+          const after = await profileSession(context, cfg, probe);
+          if (!after.cookies) {
+            console.error(`${outlet}: still not logged in after manual login (${after.status}). Nothing pushed.`);
+            return 3;
+          }
+          cookies = after.cookies;
+          state.needsHuman = null;
+          console.log(`${outlet}: manual login verified.`);
         } else {
+          const existing = await profileSession(context, cfg, probe);
+          if (existing.status === 'error') {
+            console.error(`${outlet}: in-profile probe page not recognised; not logging in on an uncertain probe.`);
+            return 1;
+          }
+          cookies = existing.cookies;
+        }
+        if (cookies && !manual) {
+          console.log(`${outlet}: profile session still valid; no login needed.`);
+        } else if (!cookies) {
           const gate = decideLogin(state, Date.now());
           if (!gate.allowed) {
             console.log(`${outlet}: login not attempted: ${gate.reason}`);
             if (gate.escalate) {
               state.needsHuman = { at: new Date().toISOString(), reason: gate.reason };
               persist();
-              await alertOwner(`Cookie renew: ${outlet} needs you`, `${gate.reason}. Check the account's active sessions, then run: node scripts/renew-cookies.js --outlet=${outlet} --reset`, cfg.loginUrl);
+              await alertOwner(`Cookie renew: ${outlet} needs you`, `${gate.reason}. Check the account's active sessions, then run: node scripts/renew-cookies.js --outlet=${outlet} --manual`, cfg.loginUrl);
               return 3;
             }
             return 0;
@@ -274,20 +320,28 @@ async function main() {
           state.logins = [...state.logins, new Date().toISOString()].slice(-10);
           persist();
           console.log(`${outlet}: submitting login (one attempt, no retries)...`);
-          const after = await submitLogin(context, cfg, creds);
-          cookies = await profileSessionCookies(context, cfg, probe);
-          if (!cookies) {
-            const why = after.formMissing ? 'login form not found (page changed?)' : classifyLoginFailure(after);
+          let why = null;
+          try {
+            const after = await submitLogin(context, cfg, creds);
+            const verified = await profileSession(context, cfg, probe);
+            cookies = verified.cookies;
+            if (!cookies) why = after.formMissing ? 'login form not found (page changed?)' : classifyLoginFailure(after);
+          } catch (e) {
+            why = `login step threw: ${e.message.split('\n')[0]}`;
+          }
+          if (why) {
+            // Any failure after a submit may have created a session: stop
+            // until a human looks, never retry automatically.
             state.needsHuman = { at: new Date().toISOString(), reason: `login did not produce a session: ${why}` };
             persist();
-            await alertOwner(`Cookie renew: ${outlet} login needs you (${why})`,
-              `Automatic login stopped without retrying (${why}). Log in once by hand, then run: node scripts/renew-cookies.js --outlet=${outlet} --reset`, cfg.loginUrl);
+            await alertOwner(`Cookie renew: ${outlet} login needs you`,
+              `Automatic login stopped without retrying (${why}). Run: node scripts/renew-cookies.js --outlet=${outlet} --manual (logs in inside the same browser profile, so no extra device).`, cfg.loginUrl);
             return 3;
           }
           console.log(`${outlet}: login succeeded.`);
         }
       } finally {
-        await context.close();
+        await context.close().catch(() => {});
       }
 
       const httpOnly = cookies.filter((c) => c.httpOnly).length;

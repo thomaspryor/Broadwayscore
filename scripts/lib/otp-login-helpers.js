@@ -30,10 +30,12 @@ const COOKIE_DIR = path.join(PROJECT_ROOT, 'data', 'cookies');
  * bundled chromium only if real Chrome isn't installed. Headed by default;
  * renew-cookies.js passes {headless: true} for outlets with no bot checks.
  */
-async function launchOtpBrowser(profileDir, { headless = false } = {}) {
+async function launchOtpBrowser(profileDir, { headless = false, userAgent } = {}) {
   const { chromium } = require('playwright');
   const launchOpts = {
     headless,
+    // Headless Chrome announces itself as "HeadlessChrome" in its UA.
+    ...(userAgent ? { userAgent } : {}),
     viewport: { width: 1280, height: 900 },
     args: ['--disable-blink-features=AutomationControlled'],
     ignoreDefaultArgs: ['--enable-automation'],

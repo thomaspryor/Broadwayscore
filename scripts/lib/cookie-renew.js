@@ -119,12 +119,17 @@ function saveState(statePath, state) {
   fs.renameSync(tmp, statePath);
 }
 
+// A renew run takes minutes (login + up to ~40 min waiting on CI). A lock
+// older than this is from a hung run or a PID reused after a reboot.
+const LOCK_STALE_MS = 2 * 60 * 60 * 1000;
+
 /**
  * Fail-CLOSED exclusive lock. scripts/lib/file-lock.js's withFileLock is
  * deliberately fail-open (runs the work after a timeout), which is right for
  * merging audit files and wrong for a login: two concurrent runs would be
  * two sessions. A lock held by a live PID means "skip this run". A lock left
- * by a dead PID (crash, reboot) is removed and retaken once.
+ * by a dead PID (crash, reboot) or older than LOCK_STALE_MS is removed and
+ * retaken once.
  *
  * @returns {Function|null} release function, or null if another run holds it
  */
@@ -136,7 +141,12 @@ function acquireLock(lockPath) {
       return () => { try { fs.unlinkSync(lockPath); } catch { /* already gone */ } };
     } catch (e) {
       if (e.code !== 'EEXIST') throw e;
-      if (pidAlive(readLockPid(lockPath))) return null;
+      let ageMs = 0;
+      try { ageMs = Date.now() - fs.statSync(lockPath).mtimeMs; } catch { continue; }
+      if (pidAlive(readLockPid(lockPath)) && ageMs < LOCK_STALE_MS) return null;
+      // One launchd job on one machine is the only contender, so the
+      // unlink-then-wx window is not the multi-waiter race file-lock.js #1024
+      // guards against; wx still guarantees a single winner.
       try { fs.unlinkSync(lockPath); } catch { /* raced; retry decides */ }
     }
   }
@@ -168,6 +178,7 @@ module.exports = {
   LOGIN_COOLDOWN_MS,
   LOGIN_WINDOW_MS,
   MAX_LOGINS_PER_WINDOW,
+  LOCK_STALE_MS,
   profileDir,
   emptyOutletState,
   decideLogin,

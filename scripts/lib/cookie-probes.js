@@ -22,6 +22,13 @@ const COOKIE_PROBES = {
     url: 'https://www.thestage.co.uk/reviews/now-you-see-me-live-review-london-coliseum-tim-lawson-simon-painter',
     minBody: 1200,
     wallMarker: /THIS IS NOT A PAYWALL/i,
+    // Positive "this is the logged-out registration gate" signal, present in
+    // the server HTML of the anonymous page ("create a free account to read
+    // 5 free articles", linked with utm_source=Reggate; verified 2026-09-27).
+    // A short page WITHOUT it is not a wall we recognise (Cloudflare
+    // challenge, maintenance page, redesign), so the probe is 'error' and
+    // renew-cookies.js will not log in on it.
+    gateMarker: /utm_source=Reggate/i,
   },
 };
 
@@ -31,17 +38,22 @@ const COOKIE_PROBES = {
  * @param {{body: string, html: string}|null} [p.withoutCookies] - control
  *   fetch; omit to skip the vacuous check
  * @param {number} p.minBody
- * @param {RegExp} [p.wallMarker]
+ * @param {RegExp} [p.wallMarker] - present => logged out
+ * @param {RegExp} [p.gateMarker] - when given, a failing page must show it
+ *   to count as 'logged-out'; otherwise the page is unrecognised => 'error'
  * @returns {'logged-in'|'logged-out'|'vacuous'|'error'}
  */
-function classifyWalledProbe({ withCookies, withoutCookies, minBody, wallMarker }) {
+function classifyWalledProbe({ withCookies, withoutCookies, minBody, wallMarker, gateMarker }) {
   const passes = (r) => !!r
     && (r.body || '').length >= minBody
     && !(wallMarker && wallMarker.test(r.html || ''));
+  const recognisedGate = (r) => !gateMarker || gateMarker.test(r.html || '');
 
   if (withoutCookies && passes(withoutCookies)) return 'vacuous';
+  if (withoutCookies && !recognisedGate(withoutCookies)) return 'error';
   if (!withCookies || typeof withCookies.html !== 'string' || withCookies.html.length === 0) return 'error';
-  return passes(withCookies) ? 'logged-in' : 'logged-out';
+  if (passes(withCookies)) return 'logged-in';
+  return recognisedGate(withCookies) ? 'logged-out' : 'error';
 }
 
 module.exports = { COOKIE_PROBES, classifyWalledProbe };
