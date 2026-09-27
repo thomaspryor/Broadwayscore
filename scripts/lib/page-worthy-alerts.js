@@ -74,6 +74,14 @@ const PAGE_WORTHY_PREFIXES = [
   // opening-night pipeline's real dead-man signals are the on-monitor-* and
   // broadcast:* keys above. check-opening-night-drift.yml still routes it
   // (downgraded to the morning digest by the router), so nothing goes silent.
+  //
+  // renew-cookies.js (BRO-4183; owner request 2026-09-27: "if a CAPTCHA or
+  // emailed code appears, stop and alert me with one link"). Fires only on a
+  // sticky needs-human stop (CAPTCHA, emailed code, rejected login, 2 logins
+  // in 7 days, missing Keychain creds). The stop blocks every further login
+  // until the owner acts, so it cannot re-fire on its own; the router's
+  // per-key cooldown dedups too. All other renewal signals go to the digest.
+  'cookie-renew:needs-human:',
 ];
 
 const PAGE_WORTHY_CONDITION_KEYS = new Set([

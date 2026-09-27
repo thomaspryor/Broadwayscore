@@ -23,6 +23,7 @@ const { fetchWithCookiesPlain } = require('./lib/fetch-plain');
 const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
 const { extractArticleTextFromUrl } = require('./lib/article-extractor');
 const { checkWsjOtpFreshness } = require('./lib/wsj-otp-freshness');
+const { COOKIE_PROBES, classifyWalledProbe } = require('./lib/cookie-probes');
 
 // --- Outlet Configuration ---
 
@@ -70,15 +71,21 @@ const CRITICAL_OUTLETS = {
   },
   thestage: {
     envVar: 'THESTAGE_COOKIES',
-    // Test a REVIEW (not the homepage): the homepage logged-out state is too
-    // subtle for keyword detection, but a review behind the paywall returns a
-    // registration wall with ~0 extractable body. minBodyChars catches the
-    // dead-session case that expiry-date checks miss (2026-05-29: USER cookie
-    // had 338d left but the session was dead server-side).
-    testUrl: 'https://www.thestage.co.uk/reviews/a-dolls-house-review-at-the-hudson-theatre-new-york-starring-jessica-chastain',
+    // Probe lives in lib/cookie-probes.js, shared with verify-cookie-login.js
+    // and renew-cookies.js. The previous URL (2023 A Doll's House) served its
+    // full body with ZERO cookies, so this layer could never report a Stage
+    // logout (re-verified 2026-09-27, BRO-4183). minBodyChars catches the
+    // dead-session case expiry checks miss (2026-05-29: USER cookie had 338d
+    // left but the session was dead server-side); wallMarker catches a
+    // registration wall that still carries extractable page furniture;
+    // vacuousControl re-fetches without cookies so a probe URL that ages out
+    // of the wall warns instead of passing silently.
+    testUrl: COOKIE_PROBES.thestage.url,
     authCookies: ['USERSECURE', 'USER'],
     minCookies: 3, // VISITOR + USER + USERSECURE is the floor; AWS LB cookies are bonuses
-    minBodyChars: 1200,
+    minBodyChars: COOKIE_PROBES.thestage.minBody,
+    wallMarker: COOKIE_PROBES.thestage.wallMarker,
+    vacuousControl: true,
   },
   variety: {
     envVar: 'VARIETY_COOKIES',
@@ -349,7 +356,7 @@ function checkGeneralHealth(cookies) {
 
 // --- Layer 3: Live Access Test via ScrapingBee ---
 
-async function checkLiveAccess(fileKey, testUrl, cookies, authCookies, minBodyChars) {
+async function checkLiveAccess(fileKey, testUrl, cookies, authCookies, minBodyChars, { wallMarker, vacuousControl } = {}) {
   const apiKey = process.env.SCRAPINGBEE_API_KEY;
   if (!apiKey) {
     return { status: 'skip', message: 'SCRAPINGBEE_API_KEY not set' };
@@ -402,8 +409,27 @@ async function checkLiveAccess(fileKey, testUrl, cookies, authCookies, minBodyCh
     // truncation — both 2026-05-29).
     if (minBodyChars) {
       const body = extractArticleTextFromUrl(html, testUrl) || '';
+      if (wallMarker && wallMarker.test(html)) {
+        return { status: 'fail', message: `Registration/paywall marker present (body ${body.length} chars) — logged out` };
+      }
       if (body.length < minBodyChars) {
         return { status: 'fail', message: `Body too short: ${body.length}/${minBodyChars} chars (paywall or broken extractor)` };
+      }
+      if (vacuousControl) {
+        // Free control fetch with NO cookies (plain HTTPS, no ScrapingBee).
+        // If it also clears the floor, the pass above proves nothing.
+        const ctl = await httpsGet(testUrl, { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36' }, 20000);
+        if (ctl.status === 200) {
+          const verdict = classifyWalledProbe({
+            withCookies: { html, body },
+            withoutCookies: { html: ctl.body, body: extractArticleTextFromUrl(ctl.body, testUrl) || '' },
+            minBody: minBodyChars,
+            wallMarker,
+          });
+          if (verdict === 'vacuous') {
+            return { status: 'warn', message: `OK (body ${body.length}) but VACUOUS: testUrl is readable without cookies — pick a recent walled article in scripts/lib/cookie-probes.js` };
+          }
+        }
       }
       return { status: 'pass', message: `OK (body ${body.length} chars)` };
     }
@@ -676,7 +702,7 @@ async function main() {
       // take for these domains, so this is the real end-to-end verification.
       const live = config.proxyBlocked
         ? await checkLiveAccessPlain(fileKey, config.testUrl, config.authCookies)
-        : await checkLiveAccess(fileKey, config.testUrl, existing.cookies, config.authCookies, config.minBodyChars);
+        : await checkLiveAccess(fileKey, config.testUrl, existing.cookies, config.authCookies, config.minBodyChars, config);
       console.log(`${icons[live.status]} ${fileKey}: ${live.message}`);
       return { name: fileKey, layer: 3, status: live.status, message: live.message, isCritical: true };
     });
@@ -784,7 +810,7 @@ async function main() {
 
       fields.push({
         name: 'Action',
-        value: 'Refresh: `python3 scripts/extract-safari-cookies.py --push` (or for wsj: `node scripts/wsj-otp-login.js`)',
+        value: 'Refresh: `python3 scripts/extract-safari-cookies.py --push` (wsj: `node scripts/wsj-otp-login.js`; thestage renews itself on the Mac Studio via `node scripts/renew-cookies.js --outlet=thestage`)',
         inline: false,
       });
 
