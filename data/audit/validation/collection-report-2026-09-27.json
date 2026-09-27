@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-27T15:41:53.221Z",
+  "runDate": "2026-09-27T16:14:05.123Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,41 +11,41 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 23,
+    "processed": 31,
     "failed": 187,
     "skipped": 0,
-    "successRate": "11.0%"
+    "successRate": "14.2%"
   },
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 15,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 0,
+    "tier1Attempts": 6,
+    "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 2,
-    "tier1_5Success": 2,
-    "tier2Attempts": 2,
-    "tier2Success": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 4,
+    "tier2Success": 3,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
+    "tier4Attempts": 2,
     "tier4Success": 0,
     "totalFailed": 57,
-    "scrapingBeePageCredits": 1,
+    "scrapingBeePageCredits": 3,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.4,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 57,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -73,7 +73,15 @@
     "miles-for-mary-off-broadway-2026/broadwayworld--bww-news-desk.json",
     "book-of-mormon-2011/washpost--unknown.json",
     "catch-me-if-you-can-2011/hollywood-reporter--unknown.json",
-    "a-life-in-the-theatre-2010/nytimes--unknown.json"
+    "a-life-in-the-theatre-2010/nytimes--unknown.json",
+    "human-things-off-broadway-2026/cititour--unknown.json",
+    "conflicted-off-broadway-2026/daily-mail--unknown.json",
+    "man-to-man-west-end-2026/theatre-vibe--unknown.json",
+    "kimberly-akimbo-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
+    "burlesque-west-end-2026/british-theatre--unknown.json",
+    "oh-mary-2024/cititour--unknown.json",
+    "hadestown-west-end-2024/the-recs--unknown.json",
+    "hadestown-west-end-2024/west-end-best-friend--unknown.json"
   ],
   "failed": [
     "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
@@ -275,7 +283,12 @@
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
       "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
-      "el-quijote-off-broadway-2026/nytimes--george-hunka.json"
+      "el-quijote-off-broadway-2026/nytimes--george-hunka.json",
+      "man-to-man-west-end-2026/theatre-vibe--unknown.json",
+      "kimberly-akimbo-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
+      "burlesque-west-end-2026/british-theatre--unknown.json",
+      "hadestown-west-end-2024/the-recs--unknown.json",
+      "hadestown-west-end-2024/west-end-best-friend--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -288,7 +301,10 @@
     "scrapingbee": [
       "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json",
       "the-secret-circus-musical-off-broadway-2026/mommypoppins--unknown.json",
-      "a-life-in-the-theatre-2010/nytimes--unknown.json"
+      "a-life-in-the-theatre-2010/nytimes--unknown.json",
+      "human-things-off-broadway-2026/cititour--unknown.json",
+      "conflicted-off-broadway-2026/daily-mail--unknown.json",
+      "oh-mary-2024/cititour--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
