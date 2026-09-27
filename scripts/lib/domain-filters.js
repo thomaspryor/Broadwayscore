@@ -21,6 +21,9 @@ const TICKET_DOMAINS = new Set([
   'seatgeek.com', 'stubhub.com', 'vividseats.com', 'broadwaybox.com',
   'goldstar.com', 'headout.com', 'rush.app', 'bwayrush.com',
   'luckyseat.com', 'broadwayroulette.com',
+  // Event/ticket listings that arrived through /submit-review on 2026-09-27
+  // (BRO-4185): an eventsfy "Get Tickets Today" page passed every guard.
+  'eventsfy.com', 'theatreaccess.nyc',
   // UK/WE ticketing + listing platforms (2026-08-02: gather saved a
   // bookitplease.com booking page as a Dog Man "review" stub under a
   // misattributed outlet).
@@ -118,7 +121,10 @@ const AGGREGATOR_DOMAINS = new Set([
   // the literal URL and will block before any redirect is followed — so any
   // review we ingest whose source URL happens to be the US spelling also gets
   // silently dropped. Bucket A, Tier 2 Fix 9.
-  'lovelondonloveculture.com', 'westendtheatre.com',
+  // lovelondonloveculture.com is NOT here: it publishes its own reviews
+  // (/review-<show>/) as well as round-ups of other critics
+  // (/review-round-up-<show>/). The round-ups are blocked by path below.
+  'westendtheatre.com',
   'newyorkcitytheatre.com', 'broadwayacrossamerica.com',
   'broadwayscorecard.com', 'broadway.org.uk', 'londonsbroadwaybuzz.ca',
   'stagedoor.com', // WE aggregator — critic-reviews pages are not outlet reviews
@@ -334,6 +340,12 @@ function isBlockedReviewUrl(url) {
     // are never a review, whatever the source.
     if (matchesDomainSet(hostname, new Set(['thestage.co.uk']))
       && ['news', 'opinion', 'promoted-content', 'review-round-ups'].includes(pathParts[0])) return true;
+    // Love London Love Culture: its round-ups quote other critics (task #1036,
+    // the-car-man-west-end-2026). Its /review-<show>/ posts are original reviews;
+    // the whole domain used to be blocked, which dropped The Last Ship's
+    // (BRO-4185, 2026-09-27).
+    if (matchesDomainSet(hostname, new Set(['lovelondonloveculture.com']))
+      && !/\/review-(?!round-up)[^/]+\/?$/.test(lowerPath)) return true;
     // A /whats-on/ listing is a venue box-office or ticketing page, never a
     // review: hampsteadtheatre.com, kilntheatre.com, stratfordeast.com,
     // almeida.co.uk, skiddle.com, afridiziak.com/whatson/ all arrived this way,

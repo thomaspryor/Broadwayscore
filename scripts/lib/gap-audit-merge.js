@@ -274,6 +274,40 @@ function isRiskyGapChange(prevState, nextState) {
 }
 
 /**
+ * Promote a quarantined show's re-audited state to baseline when the re-audit
+ * REPRODUCES the exact state it was quarantined with (BRO-4185).
+ *
+ * A candidateCount drop is risky to isRiskyGapChange, but correct rule changes
+ * produce exactly that (prior-production citation tagging, tighter URL
+ * rejection). A quarantined show's row stays at its pre-rule baseline and it
+ * is re-selected first every run, so it can never recover: on 2026-09-27, 24
+ * of 34 audited shows were the same quarantined repeats, 9 of 16 hourly runs
+ * failed, and the rest of the rotation starved. A transient broken input does
+ * not reproduce an identical state run after run; a deterministic rule change
+ * does. Never confirmed: a liveCount drop (the partial-checkout signature).
+ *
+ * @param {Object<string,string>} prevStates - riskStateMap of the previous file (audited ids only)
+ * @param {Object<string,string>} nextStates - riskStateMap of this run's merged results (audited ids only)
+ * @param {Array} prevResults - previous file's result rows (carry `quarantine.nextState`)
+ * @returns {{ prevStates: Object<string,string>, confirmed: string[] }}
+ */
+function confirmQuarantinedStates(prevStates, nextStates, prevResults) {
+  const out = { ...prevStates };
+  const confirmed = [];
+  const live = (s) => Number(String(s).split(':')[1]);
+  const byId = new Map((prevResults || []).filter(r => r && r.showId).map(r => [r.showId, r]));
+  for (const [id, next] of Object.entries(nextStates || {})) {
+    const row = byId.get(id);
+    const q = row && row.quarantine;
+    if (!q || q.nextState !== next || !(id in out)) continue;
+    if (live(next) < live(out[id])) continue;
+    out[id] = next;
+    confirmed.push(id);
+  }
+  return { prevStates: out, confirmed };
+}
+
+/**
  * Split this run's freshly-audited results into the subset safe to persist
  * and the subset blastRadiusCheck flagged as risky (BRO-3002).
  *
@@ -498,4 +532,4 @@ function countsFor(results) {
 // working.
 const { withFileLock } = require('./file-lock');
 
-module.exports = { mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, riskStateMap, isRiskyGapChange, partitionAuditedResults, withFileLock, DEFAULT_RETENTION_DAYS, CENSUS_SCHEMA, needsCensusMigration };
+module.exports = { mergeGapAudit, countsFor, gapStateFor, censusVerdictFor, stateMap, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock, DEFAULT_RETENTION_DAYS, CENSUS_SCHEMA, needsCensusMigration };

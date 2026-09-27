@@ -75,6 +75,7 @@ const {
   shouldAutoClearWrongProductionTourLeg,
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
+  isDatedGuardNote,
   shouldAutoClearAnticipatoryGrace,
   shouldAutoClearWrongProductionUkDualMarket,
 } = require('./lib/wrong-production-autoclear');
@@ -1564,7 +1565,7 @@ const crossShowFingerprints = new Map();
         // recovered 2026-06-28 (e.g. all-my-sons-west-end-2025 Guardian/Arifa
         // Akbar, held by a long-gone 2025-07-01 date).
         if (reviewDate && d.wrongProduction === true &&
-            String(d.wrongProductionNote || '').startsWith('Pre-opening guard:') &&
+            isDatedGuardNote(d.wrongProductionNote) &&
             !d.wrongProductionManualClear && d.humanReviewedWrongProduction !== false &&
             !d.allowEarlyDate) {
           const dgDecision = evaluateDateGuard({ pubDate: reviewDate, show: showRecord, outletId: d.outletId });

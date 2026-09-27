@@ -45,16 +45,30 @@ function escapeRegex(s) {
  * @param {Array}  activeShows - Shows with status open or previews
  * @returns {Array} subset of activeShows that match
  */
+// normalizeTitle JOINS hyphenated words ("Grown-Ups" → "grownups", deliberate
+// for exact title-to-title matching, see title-match.js). A headline or URL
+// slug is running text, not a title: "Deep-Heat Rivalry" and the slug
+// "review-deep-heat-rivalry-at-…" both collapse to one token and never
+// contain "deep heat rivalry" (BRO-4185: Theatre Weekly's review was in its
+// RSS feed and matched nothing). So also compare a hyphens-as-spaces form of
+// both sides. Kept local — title-match's contract is unchanged.
+function hyphenSpaced(s) {
+  return normalizeTitle(String(s || '').replace(/[-‐‑‒–—]/g, ' '));
+}
+
 function findMatchingShows(headline, urlSlug, activeShows) {
   if (!headline && !urlSlug) return [];
-  const combined = normalizeTitle((headline || '') + ' ' + (urlSlug || ''));
+  const raw = (headline || '') + ' ' + (urlSlug || '');
+  const combined = normalizeTitle(raw);
   if (!combined) return [];
+  const combinedSpaced = hyphenSpaced(raw);
 
   const matches = [];
 
   for (const show of activeShows) {
     const norm = normalizeTitle(show.title || '');
     if (!norm) continue;
+    const normSpaced = hyphenSpaced(show.title);
 
     const tokens = norm.split(/\s+/).filter(Boolean);
 
@@ -73,7 +87,10 @@ function findMatchingShows(headline, urlSlug, activeShows) {
 
     // Multi-word titles or longer single-word distinctive titles:
     // simple substring match on the combined normalized text is sufficient.
-    if (combined.includes(norm)) {
+    // The spaced form must match on word boundaries: without them, "heat"
+    // spaced out of a slug would sit inside "theatre".
+    if (combined.includes(norm)
+        || (normSpaced && new RegExp(`(^|\\s)${escapeRegex(normSpaced)}(\\s|$)`).test(combinedSpaced))) {
       matches.push(show);
     }
   }
@@ -160,11 +177,21 @@ function mergeAlwaysOnOutlets(derived, configuredIds, skipOutlets = new Set()) {
  * @param {Date}   cutoff
  * @returns {Array<{url: string, headline: string, publishDate: string|null}>}
  */
+// An unparseable date is an Invalid Date — truthy, never `< cutoff`, and its
+// toISOString() throws RangeError, which used to abort the whole outlet
+// (BRO-4185). Treat it as "no date" instead.
+function parseFeedDate(dateMatch) {
+  if (!dateMatch) return null;
+  const d = new Date(dateMatch[1].trim());
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
 function parseRssFeed(xml, cutoff) {
   const items = [];
 
   // RSS 2.0 items
-  const itemMatches = [...xml.matchAll(/<item>([\s\S]*?)<\/item>/gi)];
+  // `<item[\s>]` also matches RSS 1.0's `<item rdf:about="…">` (BRO-4185).
+  const itemMatches = [...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>/gi)];
   for (const [, body] of itemMatches) {
     const urlMatch = body.match(/<link>([^<]+)<\/link>/) || body.match(/<guid[^>]*>([^<]+)<\/guid>/);
     const titleMatch = body.match(/<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/i);
@@ -172,22 +199,25 @@ function parseRssFeed(xml, cutoff) {
     if (!urlMatch) continue;
     const url = urlMatch[1].trim();
     const headline = titleMatch ? titleMatch[1].replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim() : '';
-    const pubDate = dateMatch ? new Date(dateMatch[1].trim()) : null;
+    const pubDate = parseFeedDate(dateMatch);
     if (pubDate && pubDate < cutoff) continue;
     if (!url.startsWith('http')) continue;
     items.push({ url, headline, publishDate: pubDate ? pubDate.toISOString().slice(0, 10) : null });
   }
 
   // Atom entries
-  const entryMatches = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/gi)];
+  const entryMatches = [...xml.matchAll(/<entry(?:\s[^>]*)?>([\s\S]*?)<\/entry>/gi)];
   for (const [, body] of entryMatches) {
-    const urlMatch = body.match(/<link[^>]+href="([^"]+)"/) || body.match(/<id>([^<]+)<\/id>/);
+    // Prefer rel="alternate"; accept either quote style (Blogger emits href='…').
+    const urlMatch = body.match(/<link[^>]*rel=["']alternate["'][^>]*href=["']([^"']+)["']/i)
+      || body.match(/<link[^>]+href=["']([^"']+)["']/i)
+      || body.match(/<id>([^<]+)<\/id>/);
     const titleMatch = body.match(/<title[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/i);
     const dateMatch = body.match(/<published>([^<]+)<\/published>/i) || body.match(/<updated>([^<]+)<\/updated>/i);
     if (!urlMatch) continue;
     const url = urlMatch[1].trim();
     const headline = titleMatch ? titleMatch[1].replace(/&amp;/g, '&').trim() : '';
-    const pubDate = dateMatch ? new Date(dateMatch[1].trim()) : null;
+    const pubDate = parseFeedDate(dateMatch);
     if (pubDate && pubDate < cutoff) continue;
     if (!url.startsWith('http')) continue;
     items.push({ url, headline, publishDate: pubDate ? pubDate.toISOString().slice(0, 10) : null });
