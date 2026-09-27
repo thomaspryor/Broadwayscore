@@ -58,6 +58,8 @@ jobs:
 
       - name: Commit and push changes
         if: always() && inputs.dry_run != true
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
