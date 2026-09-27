@@ -2932,9 +2932,16 @@ function validateBWWRoundupYear(reviews, html, showOpeningDate, showId, bwwUrl) 
   // null-openingDate show was rejected as "~670 months after opening". That
   // silently discarded the BWW roundup for every show stuck in previews
   // (our-sinatra 2026-09-27), so Check 2d never got the review signal it
-  // needs to flip the show open. Callers pass previewsStartDate as fallback.
-  if (!showOpeningDate) return reviews;
-  const showDate = new Date(showOpeningDate);
+  // needs to flip the show open. Callers pass previewsStartDate as fallback;
+  // a show with NO dates (announced) anchors on its id's production year so
+  // an older production's roundup is still rejected.
+  let anchor = showOpeningDate;
+  if (!anchor) {
+    const y = String(showId || '').match(/-(\d{4})$/);
+    if (!y) return reviews;
+    anchor = `${y[1]}-07-01`;
+  }
+  const showDate = new Date(anchor);
   if (isNaN(showDate.getTime())) return reviews; // can't validate without valid date
 
   // 1. Extract datePublished from JSON-LD (most reliable)

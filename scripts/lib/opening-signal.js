@@ -372,7 +372,36 @@ function findStuckPreviews(shows, countMap, isDateReached) {
   return out;
 }
 
+
+/**
+ * Should a previews-status show be SKIPPED by an aggregator scraper?
+ *
+ * "status=previews" only means "not opened" when the show has a FUTURE
+ * opening date. With a null or already-passed openingDate the status is
+ * simply stale, and skipping it is a deadlock: the scraper drops the roundup
+ * that would have supplied the open signal (our-sinatra 2026-09-27 — the BWW
+ * /reviews/ landing scan matched it high-confidence and then skipped it).
+ *
+ * Single rule shared by every aggregator scraper's previews gate so the
+ * next one doesn't hand-roll "status === 'previews' → skip" again.
+ *
+ * @param {object} show
+ * @param {string} todayStr - YYYY-MM-DD
+ * @param {string|null} [publishedDate] - YYYY-MM-DD(+time) of the roundup/
+ *   review, when known. A publish date before previews began means it's
+ *   another production's coverage, so we skip.
+ * @returns {boolean} true → skip (not opened), false → process
+ */
+function shouldSkipPreviewsShow(show, todayStr, publishedDate = null) {
+  if (!show || show.status !== 'previews') return false;
+  if (show.openingDate && show.openingDate > todayStr) return true; // genuinely pre-opening
+  if (!show.previewsStartDate || show.previewsStartDate > todayStr) return true; // no run yet
+  if (publishedDate && String(publishedDate).slice(0, 10) < show.previewsStartDate) return true;
+  return false;
+}
+
 module.exports = {
+  shouldSkipPreviewsShow,
   MIN_REVIEWS_BY_CATEGORY,
   MIN_REVIEWS_DEFAULT,
   MIN_REVIEWS_CURATED_HISTORICAL,

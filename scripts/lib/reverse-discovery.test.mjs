@@ -439,3 +439,20 @@ test('title index: pre-colon head resolves a subtitle-dropped roundup title', ()
   const index = buildShowTitleIndex(shows, 'nyc');
   assert.equal(resolveMatchedShowId('OUR SINATRA', index), 'our-sinatra-a-musical-celebration-off-broadway-2026');
 });
+
+test('title index: catalog title ending "on Broadway" matches its truncated roundup title', () => {
+  const shows = [{ id: '10-things-i-hate-about-you-on-broadway-2024', title: '10 Things I Hate About You on Broadway', status: 'upcoming', category: 'broadway' }];
+  const index = buildShowTitleIndex(shows, 'nyc');
+  const t = extractShowTitleFromBwwRoundup('Review Roundup: 10 THINGS I HATE ABOUT YOU on Broadway');
+  assert.equal(resolveMatchedShowId(t, index), '10-things-i-hate-about-you-on-broadway-2024');
+});
+
+test('title index: one-word / junk pre-colon heads are not indexed', () => {
+  const shows = [
+    { id: 'a', title: '2:22 - A Ghost Story', status: 'open', category: 'broadway' },
+    { id: 'b', title: 'Dolly: An Original Musical', status: 'open', category: 'broadway' },
+  ];
+  const index = buildShowTitleIndex(shows, 'nyc');
+  assert.equal(resolveMatchedShowId('2', index), null);
+  assert.equal(resolveMatchedShowId('DOLLY', index), null);
+});

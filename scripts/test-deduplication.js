@@ -762,6 +762,15 @@ test('checkForDuplicate: performer-prefix colon title at same venue (Louis Katz:
   assertEqual(isColonSegmentVariant('Louis Katz: Conflicted', other.title), false, 'partial segment is not a colon variant');
 });
 
+
+test('checkForDuplicate: sibling rooms in one complex stay distinct productions', () => {
+  const a = { id: 'hamlet-off-broadway-2026', title: 'Hamlet', slug: 'hamlet-off-broadway', venue: '59E59 Theaters, Theater A',
+    openingDate: '2026-10-01', status: 'upcoming', category: 'off-broadway', type: 'play' };
+  const b = { id: 'hamlet-x-off-broadway-2026', title: 'Hamlet', slug: 'hamlet-x-off-broadway', venue: '59E59 Theaters, Theater B',
+    openingDate: '2026-09-01', status: 'open', category: 'off-broadway', type: 'play' };
+  assertEqual(checkForDuplicate(a, [b]).isDuplicate, false, 'Theater A vs Theater B not merged');
+});
+
 // ---------- run ----------
 
 console.log('Running deduplication tests...\n');

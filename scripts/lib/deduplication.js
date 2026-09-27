@@ -479,20 +479,22 @@ function isMultiProduction(newShow, existing) {
   // company/house format) are split into segments; two venues match if ANY segment
   // matches, so a compound listing never reads as "known different" from the bare
   // house name a catalog entry carries.
-  // A comma suffix is the same room-within-venue form as a dash suffix:
-  // "59E59 Theaters - Theater C" vs "59E59 Theaters, Theater C" read as
-  // known-different venues and hid the crazy-mama duplicate (2026-09-27).
-  const stripDash = v => v.replace(/\s*(?:[-–—]|,)\s*.+$/, '');
+  const stripDash = v => v.replace(/\s*[-–—]\s*.+$/, '');
+  // Punctuation-insensitive full name: "59E59 Theaters - Theater C" and
+  // "59E59 Theaters, Theater C" are the same room (crazy-mama dup,
+  // 2026-09-27), while "..., Theater A" vs "..., Theater B" stay distinct.
+  // Deliberately NOT a comma-suffix strip, which would merge sibling rooms.
+  const punctFree = v => v.replace(/[\s,\-–—]+/g, ' ').trim();
   const isUnknown = v => !v || v === 'tba' || v === 'tbd';
   const venueSegments = (venue) => !venue ? [] : venue.split('/')
-    .map(p => ({ norm: stripDash(normalizeVenueName(p)), alias: aliasCanonical(p) }))
+    .map(p => ({ norm: stripDash(normalizeVenueName(p)), full: punctFree(normalizeVenueName(p)), alias: aliasCanonical(p) }))
     .filter(s => !isUnknown(s.norm));
   const newVenueSegs = venueSegments(newShow.venue);
   const existVenueSegs = venueSegments(existing.venue);
   // Segments match on normalized equality OR a shared alias-table canonical
   // (renter company ≡ host venue, e.g. The New Group ≡ Signature Center).
   const venuesMatch = newVenueSegs.some(a => existVenueSegs.some(b =>
-    a.norm === b.norm || (a.alias && a.alias === b.alias)));
+    a.norm === b.norm || a.full === b.full || (a.alias && a.alias === b.alias)));
   let venuesKnownDifferent =
     newVenueSegs.length > 0 &&
     existVenueSegs.length > 0 &&

@@ -531,7 +531,18 @@ function buildShowTitleIndex(shows, market = null) {
     // for "Our Sinatra: A Musical Celebration"). Without it the roundup
     // never resolved to the show, so no evidence was recorded and the
     // opened show was reported as a missing-show candidate (2026-09-27).
-    if (s.title && s.title.includes(':')) raws.push(s.title.split(':')[0]);
+    // Guarded to multi-word heads (>=2 words, >=6 chars): a one-word or junk
+    // head ("2" from "2:22", "dolly") would suppress an unrelated new show.
+    if (s.title && s.title.includes(':')) {
+      const head = normalizeTitle(s.title.split(':')[0]);
+      if (head && head.includes(' ') && head.length >= 6) raws.push(s.title.split(':')[0]);
+    }
+    // Mirror extractShowTitleFromBwwRoundup's market-tail split: a catalog
+    // title that itself ends "on Broadway"/"Off-Broadway" ("10 Things I Hate
+    // About You on Broadway") must still match its truncated roundup title.
+    if (s.title && /\s+(?:on\s+Broadway|Off-Broadway)$/i.test(s.title)) {
+      raws.push(s.title.replace(/\s+(?:on\s+Broadway|Off-Broadway)$/i, ''));
+    }
     for (const raw of raws) {
       if (!raw) continue;
       const n = normalizeTitle(raw);

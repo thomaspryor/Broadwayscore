@@ -29,3 +29,8 @@ test('previewsStartDate anchor still rejects an older production roundup', () =>
 test('opened show with a current roundup is unchanged', () => {
   assert.equal(validateBWWRoundupYear(reviews, ld('2026-09-25T12:00:00Z'), '2026-09-24', 's', 'u').length, 2);
 });
+
+test('no dates at all: id year anchors, so an older production roundup is still rejected', () => {
+  assert.equal(validateBWWRoundupYear(reviews, ld('2013-05-01T12:00:00Z'), null, 'hamlet-off-broadway-2026', 'u').length, 0);
+  assert.equal(validateBWWRoundupYear(reviews, ld('2026-09-25T12:00:00Z'), null, 'hamlet-off-broadway-2026', 'u').length, 2);
+});
