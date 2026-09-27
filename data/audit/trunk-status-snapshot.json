@@ -1,48 +1,22 @@
 {
-  "generatedAt": "2026-09-26T11:55:10.247Z",
+  "generatedAt": "2026-09-27T12:41:29.544Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "80d39d08d3c4054410b157ebdb9c201ff01ae253",
-  "state": "RED",
-  "consecutiveFailures": 4,
-  "consecutiveSuccesses": 0,
-  "greenSince": null,
-  "greenForHours": null,
+  "latestRunHeadSha": "fa8cf3c0faf2f6bca3ec5d4eea24a04da40ec786",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "consecutiveSuccesses": 2,
+  "greenSince": "2026-09-26T21:13:08Z",
+  "greenForHours": 15.47265111111111,
   "greenDurationIsFloor": false,
-  "redSince": "2026-09-25T05:44:16Z",
-  "redForHours": 30.18173527777778,
+  "redSince": null,
+  "redForHours": null,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-09-25T05:12:16Z",
-  "latestFailedRunId": "36237415281",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36237415281",
+  "lastSuccessAt": "2026-09-27T11:37:07Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
   "decidedRuns": 64,
-  "failingJobs": [
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
-      ]
-    },
-    {
-      "name": "Data Validation",
-      "steps": [
-        "Audit outlet-registry gaps"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "scripts/lib/fallback-attribution.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run scripts/lib tests (visual-qa transcript-scan etc.)",
-      "evidence": "not ok 3280 - TRIPPED breaker: the Bright Data ledger row carries fallback_from \"sd-breaker\""
-    }
-  ],
-  "topFailingJob": "Unit Tests"
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }

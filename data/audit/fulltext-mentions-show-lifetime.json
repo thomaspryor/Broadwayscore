@@ -1,12 +1,10 @@
 {
-  "updatedAt": "2026-09-26T11:54:58.365Z",
-  "scanned": 2113,
-  "showsWithViolations": 332,
-  "totalViolations": 647,
-  "newSinceLastRun": 1,
-  "newViolationKeys": [
-    "my-sons-a-queer-but-what-can-you-do-west-end-2026::standard--nick-curtis.json"
-  ],
+  "updatedAt": "2026-09-27T12:41:18.401Z",
+  "scanned": 2114,
+  "showsWithViolations": 331,
+  "totalViolations": 644,
+  "newSinceLastRun": 0,
+  "newViolationKeys": [],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
     "schmigadoon-2026::nytimes--jesse-green.json",
@@ -293,7 +291,6 @@
     "fish-in-the-dark-2015::washpost--peter-marks.json",
     "the-last-ship-2014::newsday--linda-winer.json",
     "the-last-ship-2014::nytimes--charles-isherwood.json",
-    "the-last-ship-2014::variety--marilyn-stasio.json",
     "disgraced-2014::ew--thom-geier.json",
     "disgraced-2014::hollywood-reporter--david-rooney.json",
     "on-the-town-2014::dailybeast--tim-teeman.json",
@@ -538,7 +535,6 @@
     "les-miserables-west-end-2021::guardian--michael-billington.json",
     "les-miserables-west-end-2021::musical-theatre-review--unknown.json",
     "les-miserables-west-end-2021::the-sun--thea-jacobs.json",
-    "les-miserables-west-end-2021::thestage--mert-dilek.json",
     "les-miserables-west-end-2021::timeout-london--andrzej-lukowski.json",
     "1536-west-end-2026::thestage--holly-o.json",
     "shadowlands-west-end-2026::financialtimes--sarah-hemming.json",
@@ -551,7 +547,6 @@
     "six-the-musical-west-end-2021::theatre-bee-uk--theatre-bee-uk.json",
     "six-the-musical-west-end-2021::thestage--mark-shenton.json",
     "six-the-musical-west-end-2021::timeout-london--holly-williams.json",
-    "the-phantom-of-the-opera-west-end-1986::london-theatre--unknown.json",
     "starlight-express-west-end-2024::thestage--paul-vale.json",
     "witness-for-the-prosecution-west-end-2022::times-uk--clive-davis.json",
     "manic-street-creature-west-end-2026::thestage--holly-o.json",
@@ -3933,7 +3928,7 @@
       "showId": "the-last-ship-2014",
       "title": "The Last Ship",
       "openingDate": "2014-10-26",
-      "message": "newsday/Linda Winer (newsday--linda-winer.json) SHIPPED but fullText never mentions 'The Last Ship' (303 chars): http://www.newsday.com/entertainment/theater/the-last-ship-review-sting-elevates-show-he-wrote-1.9732042\nnytimes/Charles Isherwood (nytimes--charles-isherwood.json) SHIPPED but fullText never mentions 'The Last Ship' (303 chars): https://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html?ref=arts&amp;_r=0\nvariety/Marilyn Stasio (variety--marilyn-stasio.json) SHIPPED but fullText never mentions 'The Last Ship' (303 chars): https://variety.com/2014/legit/reviews/sting-last-ship-review-broadway-1201384569/",
+      "message": "newsday/Linda Winer (newsday--linda-winer.json) SHIPPED but fullText never mentions 'The Last Ship' (303 chars): http://www.newsday.com/entertainment/theater/the-last-ship-review-sting-elevates-show-he-wrote-1.9732042\nnytimes/Charles Isherwood (nytimes--charles-isherwood.json) SHIPPED but fullText never mentions 'The Last Ship' (303 chars): https://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html?ref=arts&amp;_r=0",
       "violations": [
         {
           "filename": "newsday--linda-winer.json",
@@ -3948,14 +3943,6 @@
           "url": "https://www.nytimes.com/2014/12/22/arts/in-last-ship-sting-tries-to-not-steal-the-spotlight.html?ref=arts&amp;_r=0",
           "outletId": "nytimes",
           "criticName": "Charles Isherwood",
-          "haystackLength": 303,
-          "textIssuesFlag": false
-        },
-        {
-          "filename": "variety--marilyn-stasio.json",
-          "url": "https://variety.com/2014/legit/reviews/sting-last-ship-review-broadway-1201384569/",
-          "outletId": "variety",
-          "criticName": "Marilyn Stasio",
           "haystackLength": 303,
           "textIssuesFlag": false
         }
@@ -5349,11 +5336,11 @@
       "showId": "godspell-2011",
       "title": "Godspell",
       "openingDate": "2011-11-07",
-      "message": "bloomberg/Jeremy Gerard (bloomberg--jeremy-gerard.json) SHIPPED but fullText never mentions 'Godspell' (350 chars): http://www.businessweek.com/news/2011-11-07/creepy-godspell-sounds-off-key-quarterback-s-a-girl-review.html\nnorthjerseycom/Robert Feldberg (northjerseycom--robert-feldberg.json) SHIPPED but fullText never mentions 'Godspell' (403 chars): http://www.northjersey.com/arts_entertainment/133418228_Imaginative__fast-paced__Godspell__returns_to_Broadway.html",
+      "message": "bloomberg/Jeremy Gerard (bloomberg--jeremy-gerard.json) SHIPPED but fullText never mentions 'Godspell' (350 chars): https://www.businessweek.com/news/2011-11-07/creepy-godspell-sounds-off-key-quarterback-s-a-girl-review.html\nnorthjerseycom/Robert Feldberg (northjerseycom--robert-feldberg.json) SHIPPED but fullText never mentions 'Godspell' (403 chars): http://www.northjersey.com/arts_entertainment/133418228_Imaginative__fast-paced__Godspell__returns_to_Broadway.html",
       "violations": [
         {
           "filename": "bloomberg--jeremy-gerard.json",
-          "url": "http://www.businessweek.com/news/2011-11-07/creepy-godspell-sounds-off-key-quarterback-s-a-girl-review.html",
+          "url": "https://www.businessweek.com/news/2011-11-07/creepy-godspell-sounds-off-key-quarterback-s-a-girl-review.html",
           "outletId": "bloomberg",
           "criticName": "Jeremy Gerard",
           "haystackLength": 350,
@@ -7021,7 +7008,7 @@
       "showId": "les-miserables-west-end-2021",
       "title": "Les Misérables",
       "openingDate": "1985-12-04",
-      "message": "daily-mail/Patrick Marmion (daily-mail--patrick-marmion.json) SHIPPED but fullText never mentions 'Les Misérables' (9910 chars): https://www.dailymail.co.uk/tvshowbiz/article-7897433/The-mighty-Mis-revolutionary-PATRICK-MARMION-reviews-Les-Miserables.html\nguardian/Michael Billington (guardian--michael-billington.json) SHIPPED but fullText never mentions 'Les Misérables' (7296 chars): https://www.theguardian.com/stage/2025/oct/07/les-miserables-musical-critics-reviews-cameron-mackintosh-sondheim-theatre-london\nmusical-theatre-review/Unknown (musical-theatre-review--unknown.json) SHIPPED but fullText never mentions 'Les Misérables' (5466 chars): https://musicaltheatrereview.com/les-miserables-sondheim-theatre/\nthe-sun/Thea Jacobs (the-sun--thea-jacobs.json) SHIPPED but fullText never mentions 'Les Misérables' (3227 chars): https://www.thesun.co.uk/tvandshowbiz/10758678/les-miserables-theatre-review-returns-sondheim-mesmerising/\nthestage/Mert Dilek (thestage--mert-dilek.json) SHIPPED but fullText never mentions 'Les Misérables' (7209 chars): https://www.thestage.co.uk/opinion/les-miserables-returns-to-the-sondheim-theatre-london--review-round-up\ntimeout-london/Andrzej Lukowski (timeout-london--andrzej-lukowski.json) SHIPPED but fullText never mentions 'Les Misérables' (4673 chars): https://www.timeout.com/london/theatre/les-miserables-review-1",
+      "message": "daily-mail/Patrick Marmion (daily-mail--patrick-marmion.json) SHIPPED but fullText never mentions 'Les Misérables' (9910 chars): https://www.dailymail.co.uk/tvshowbiz/article-7897433/The-mighty-Mis-revolutionary-PATRICK-MARMION-reviews-Les-Miserables.html\nguardian/Michael Billington (guardian--michael-billington.json) SHIPPED but fullText never mentions 'Les Misérables' (7296 chars): https://www.theguardian.com/stage/2025/oct/07/les-miserables-musical-critics-reviews-cameron-mackintosh-sondheim-theatre-london\nmusical-theatre-review/Unknown (musical-theatre-review--unknown.json) SHIPPED but fullText never mentions 'Les Misérables' (5466 chars): https://musicaltheatrereview.com/les-miserables-sondheim-theatre/\nthe-sun/Thea Jacobs (the-sun--thea-jacobs.json) SHIPPED but fullText never mentions 'Les Misérables' (3227 chars): https://www.thesun.co.uk/tvandshowbiz/10758678/les-miserables-theatre-review-returns-sondheim-mesmerising/\ntimeout-london/Andrzej Lukowski (timeout-london--andrzej-lukowski.json) SHIPPED but fullText never mentions 'Les Misérables' (4673 chars): https://www.timeout.com/london/theatre/les-miserables-review-1",
       "violations": [
         {
           "filename": "daily-mail--patrick-marmion.json",
@@ -7053,14 +7040,6 @@
           "outletId": "the-sun",
           "criticName": "Thea Jacobs",
           "haystackLength": 3227,
-          "textIssuesFlag": false
-        },
-        {
-          "filename": "thestage--mert-dilek.json",
-          "url": "https://www.thestage.co.uk/opinion/les-miserables-returns-to-the-sondheim-theatre-london--review-round-up",
-          "outletId": "thestage",
-          "criticName": "Mert Dilek",
-          "haystackLength": 7209,
           "textIssuesFlag": false
         },
         {
@@ -7194,22 +7173,6 @@
       ]
     },
     {
-      "showId": "the-phantom-of-the-opera-west-end-1986",
-      "title": "The Phantom of the Opera",
-      "openingDate": "1986-10-09",
-      "message": "london-theatre/Unknown (london-theatre--unknown.json) SHIPPED but fullText never mentions 'The Phantom of the Opera' (3613 chars): https://www.londontheatre.co.uk/reviews/when-we-are-married-review-donmar-warehouse",
-      "violations": [
-        {
-          "filename": "london-theatre--unknown.json",
-          "url": "https://www.londontheatre.co.uk/reviews/when-we-are-married-review-donmar-warehouse",
-          "outletId": "london-theatre",
-          "criticName": "Unknown",
-          "haystackLength": 3613,
-          "textIssuesFlag": false
-        }
-      ]
-    },
-    {
       "showId": "starlight-express-west-end-2024",
       "title": "Starlight Express",
       "openingDate": "2024-06-29",
@@ -7325,7 +7288,7 @@
       "showId": "dog-man-the-musical-west-end-2026",
       "title": "Dog Man - The Musical",
       "openingDate": "2026-08-03",
-      "message": "all-that-dazzles-uk/Unknown (all-that-dazzles-uk--unknown.json) SHIPPED but fullText never mentions 'Dog Man - The Musical' (6826 chars): https://www.allthatdazzles.co.uk/post/review-dog-man-the-musical-southbank-centre---uk-tour\nguardian/Unknown (guardian--unknown.json) SHIPPED but fullText never mentions 'Dog Man - The Musical' (3608 chars): https://www.theguardian.com/stage/2026/aug/05/dog-man-the-musical-review-southbank-centre-london\nlondontheatre1/Unknown (londontheatre1--unknown.json) SHIPPED but fullText never mentions 'Dog Man - The Musical' (4795 chars): https://www.londontheatre1.com/reviews/dog-man-the-musical-southbank-centre/\nthe-sun/Unknown (the-sun--unknown.json) SHIPPED but fullText never mentions 'Dog Man - The Musical' (3722 chars): https://www.thesun.co.uk/travel/39982298/dog-man-musical-chaotic-hilarious-kids-love-it/\nwhatsonstage/Theo Bosanquet (whatsonstage--theo-bosanquet.json) SHIPPED but fullText never mentions 'Dog Man - The Musical' (2938 chars): https://www.whatsonstage.com/news/dog-man-the-musical-at-londons-southbank-centre-and-on-tour-review_1728502/\n⚠️  musical-theatre-review/Unknown (musical-theatre-review--unknown.json) also too short to assess (0 chars): https://musicaltheatrereview.com/dog-man-the-musical-queen-elizabeth-hall/\n⚠️  theatre-weekly/Unknown (theatre-weekly--unknown.json) also too short to assess (0 chars): https://theatreweekly.com/review-dog-man-the-musical-at-queen-elizabeth-hall/\n⚠️  thestage/Unknown (thestage--unknown.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/dog-man-the-musical-review-southbank-centre-london-dav-pilkey",
+      "message": "all-that-dazzles-uk/Unknown (all-that-dazzles-uk--unknown.json) SHIPPED but fullText never mentions 'Dog Man - The Musical' (6826 chars): https://www.allthatdazzles.co.uk/post/review-dog-man-the-musical-southbank-centre---uk-tour\nguardian/Unknown (guardian--unknown.json) SHIPPED but fullText never mentions 'Dog Man - The Musical' (3608 chars): https://www.theguardian.com/stage/2026/aug/05/dog-man-the-musical-review-southbank-centre-london\nlondontheatre1/Unknown (londontheatre1--unknown.json) SHIPPED but fullText never mentions 'Dog Man - The Musical' (4795 chars): https://www.londontheatre1.com/reviews/dog-man-the-musical-southbank-centre/\nthe-sun/Unknown (the-sun--unknown.json) SHIPPED but fullText never mentions 'Dog Man - The Musical' (3722 chars): https://www.thesun.co.uk/travel/39982298/dog-man-musical-chaotic-hilarious-kids-love-it/\nwhatsonstage/Theo Bosanquet (whatsonstage--theo-bosanquet.json) SHIPPED but fullText never mentions 'Dog Man - The Musical' (2938 chars): https://www.whatsonstage.com/news/dog-man-the-musical-at-londons-southbank-centre-and-on-tour-review_1728502/\n⚠️  musical-theatre-review/Unknown (musical-theatre-review--unknown.json) also too short to assess (0 chars): https://musicaltheatrereview.com/dog-man-the-musical-queen-elizabeth-hall/\n⚠️  theatre-weekly/Unknown (theatre-weekly--unknown.json) also too short to assess (0 chars): https://theatreweekly.com/review-dog-man-the-musical-at-queen-elizabeth-hall/\n⚠️  thestage/Oliver Jones (thestage--oliver-jones.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/dog-man-the-musical-review-southbank-centre-london-dav-pilkey",
       "violations": [
         {
           "filename": "all-that-dazzles-uk--unknown.json",
@@ -7485,7 +7448,7 @@
       "showId": "the-tempest-globe-west-end-2026",
       "title": "The Tempest",
       "openingDate": "2026-01-29",
-      "message": "british-theatre/Howard Loxton (british-theatre--howard-loxton.json) SHIPPED but fullText never mentions 'The Tempest' (2827 chars): https://www.britishtheatreguide.info/reviews/the-tempest-shakespeare-s-g-25272\n⚠️  thestage/Dave Fargnoli (thestage--dave-fargnoli.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/the-tempest-review-theatrer-royal-drury-lane-london-sigourney-weaver-jamie-lloyd",
+      "message": "british-theatre/Howard Loxton (british-theatre--howard-loxton.json) SHIPPED but fullText never mentions 'The Tempest' (2827 chars): https://www.britishtheatreguide.info/reviews/the-tempest-shakespeare-s-g-25272",
       "violations": [
         {
           "filename": "british-theatre--howard-loxton.json",
@@ -7669,7 +7632,7 @@
       "showId": "man-to-man-west-end-2026",
       "title": "Man to Man",
       "openingDate": "2026-09-11",
-      "message": "financialtimes/Tim Bano (financialtimes--tim-bano.json) SHIPPED but fullText never mentions 'Man to Man' (3410 chars): https://www.ft.com/content/340eb1e7-e089-452f-b84a-5c4c67bfac9c\n⚠️  financialtimes/Unknown (financialtimes--unknown.json) also too short to assess (0 chars): https://www.ft.com/content/340eb1e7-e089-452f-b84a-5c4c67bfac9c\n⚠️  thestage/Matt Barton (thestage--matt-barton.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse\n⚠️  thestage/Sam Marlowe (thestage--sam-marlowe.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/man-to-man-review-jerwood-theatre-downstairs-royal-court-london-tilda-swinton\n⚠️  thestage/The Stage (thestage--the-stage.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/man-to-man-review-jerwood-theatre-downstairs-royal-court-london-tilda-swinton",
+      "message": "financialtimes/Tim Bano (financialtimes--tim-bano.json) SHIPPED but fullText never mentions 'Man to Man' (3410 chars): https://www.ft.com/content/340eb1e7-e089-452f-b84a-5c4c67bfac9c\n⚠️  financialtimes/Unknown (financialtimes--unknown.json) also too short to assess (0 chars): https://www.ft.com/content/340eb1e7-e089-452f-b84a-5c4c67bfac9c\n⚠️  thestage/Matt Barton (thestage--matt-barton.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/man-to-man-review-jerwood-theatre-downstairs-royal-court-london-tilda-swinton\n⚠️  thestage/Sam Marlowe (thestage--sam-marlowe.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/man-to-man-review-jerwood-theatre-downstairs-royal-court-london-tilda-swinton\n⚠️  thestage/The Stage (thestage--the-stage.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/man-to-man-review-jerwood-theatre-downstairs-royal-court-london-tilda-swinton",
       "violations": [
         {
           "filename": "financialtimes--tim-bano.json",
@@ -7981,7 +7944,7 @@
       "showId": "the-guilty-west-end-2026",
       "title": "The Guilty",
       "openingDate": "2026-06-30",
-      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED but fullText never mentions 'The Guilty' (3151 chars): https://www.theguardian.com/stage/2026/jul/01/the-guilty-review-russell-tovey-donmar-warehouse-london\n⚠️  thestage/Unknown (thestage--unknown.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/the-guilty-review-donmar-warehouse-london-russell-tovey-felix-barrett-chloe-moss",
+      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED but fullText never mentions 'The Guilty' (3151 chars): https://www.theguardian.com/stage/2026/jul/01/the-guilty-review-russell-tovey-donmar-warehouse-london\n⚠️  thestage/Sam Marlowe (thestage--sam-marlowe.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/the-guilty-review-donmar-warehouse-london-russell-tovey-felix-barrett-chloe-moss",
       "violations": [
         {
           "filename": "guardian--unknown.json",
@@ -8325,7 +8288,7 @@
       "showId": "shit-meet-fan-off-broadway-2024",
       "title": "Shit. Meet. Fan.",
       "openingDate": "2024-11-18",
-      "message": "lighting-and-sound-america/David Barbour (lighting-and-sound-america--david-barbour.json) SHIPPED but fullText never mentions 'Shit. Meet. Fan.' (8149 chars): http://www.lightingandsoundamerica.com/news/story.asp?ID=852X2O\n⚠️  thestage/Unknown (thestage--unknown.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/shit-meet-fan-review-newman-mills-theater-mcc-theater-new-york-robert-ohara-neil-patrick-harris-jane-krakowski-constance-wu-debra-messing",
+      "message": "lighting-and-sound-america/David Barbour (lighting-and-sound-america--david-barbour.json) SHIPPED but fullText never mentions 'Shit. Meet. Fan.' (8149 chars): http://www.lightingandsoundamerica.com/news/story.asp?ID=852X2O\n⚠️  thestage/Lane Williamson (thestage--lane-williamson.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/shit-meet-fan-review-newman-mills-theater-mcc-theater-new-york-robert-ohara-neil-patrick-harris-jane-krakowski-constance-wu-debra-messing",
       "violations": [
         {
           "filename": "lighting-and-sound-america--david-barbour.json",
@@ -8429,7 +8392,7 @@
       "showId": "kimberly-akimbo-off-west-end-2026",
       "title": "Kimberly Akimbo",
       "openingDate": "2026-09-09",
-      "message": "londonatlarge/LALadmin (londonatlarge--laladmin.json) SHIPPED but fullText never mentions 'Kimberly Akimbo' (1756 chars): https://www.londonatlarge.com/kimberly-akimbo-hampstead-theatre-review/",
+      "message": "londonatlarge/LALadmin (londonatlarge--laladmin.json) SHIPPED but fullText never mentions 'Kimberly Akimbo' (1756 chars): https://www.londonatlarge.com/kimberly-akimbo-hampstead-theatre-review/\n⚠️  broadwayworld/Unknown (broadwayworld--unknown.json) also too short to assess (0 chars): https://www.broadwayworld.com/westend/article/Review-KIMBERLY-AKIMBO-Hampstead-Theatre-20260910",
       "violations": [
         {
           "filename": "londonatlarge--laladmin.json",
@@ -8445,7 +8408,7 @@
       "showId": "golden-boy-off-west-end-2026",
       "title": "Golden Boy",
       "openingDate": "2026-09-15",
-      "message": "plays-to-see/Unknown (plays-to-see--unknown.json) SHIPPED but fullText never mentions 'Golden Boy' (4617 chars): https://playstosee.com/reviews/uk-reviews/golden-boy/",
+      "message": "plays-to-see/Unknown (plays-to-see--unknown.json) SHIPPED but fullText never mentions 'Golden Boy' (4617 chars): https://playstosee.com/reviews/uk-reviews/golden-boy/\n⚠️  thestage/Dave Fargnoli (thestage--dave-fargnoli.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays\n⚠️  thestage/The Stage (thestage--the-stage.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh-oconnor-daniel-mays",
       "violations": [
         {
           "filename": "plays-to-see--unknown.json",

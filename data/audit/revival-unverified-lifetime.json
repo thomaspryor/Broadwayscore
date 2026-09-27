@@ -1,10 +1,12 @@
 {
-  "updatedAt": "2026-09-26T11:55:03.662Z",
-  "scanned": 2113,
-  "showsWithViolations": 43,
-  "totalViolations": 43,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-09-27T12:41:23.607Z",
+  "scanned": 2114,
+  "showsWithViolations": 44,
+  "totalViolations": 44,
+  "newSinceLastRun": 1,
+  "newViolationKeys": [
+    "tru-off-west-end-2026"
+  ],
   "violationKeys": [
     "the-lost-boys-2026",
     "schmigadoon-2026",
@@ -47,6 +49,7 @@
     "disruption-off-broadway-2026",
     "darkling-off-west-end-2026",
     "pre-existing-condition-off-broadway-2026",
+    "tru-off-west-end-2026",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
     "becoming-hamlet-off-broadway-2026"
   ],
@@ -289,7 +292,7 @@
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "title": "Cabaret at the Kit Kat Club",
       "openingDate": "2021-12-16",
-      "message": "cabaret-at-the-kit-kat-club-west-end-2021 review text mentions \"revival\" 26x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "cabaret-at-the-kit-kat-club-west-end-2021 review text mentions \"revival\" 28x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -416,6 +419,15 @@
       "title": "Pre-Existing Condition",
       "openingDate": "2026-09-14",
       "message": "pre-existing-condition-off-broadway-2026 review text mentions \"revival\" 8x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "tru-off-west-end-2026",
+      "title": "Tru",
+      "openingDate": "2026-09-27",
+      "message": "tru-off-west-end-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

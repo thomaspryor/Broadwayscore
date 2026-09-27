@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "warn",
-  "lastChecked": "2026-09-25T12:18:19.909Z",
+  "lastChecked": "2026-09-27T12:30:25.467Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "44668 files, 21065 reviews (surplus: 23603)"
+      "message": "44786 files, 21100 reviews (surplus: 23686)"
     },
     {
       "name": "Sync: open show coverage",
@@ -19,7 +19,7 @@
     {
       "name": "Sync: social-pulse per-show freshness",
       "status": "warn",
-      "message": "1 running show(s) with social-pulse >14d stale: Who’s Afraid of Virginia Woolf? (165d)"
+      "message": "1 running show(s) with social-pulse >14d stale: Who’s Afraid of Virginia Woolf? (167d)"
     },
     {
       "name": "Sync: phantom show detection",
@@ -28,18 +28,18 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "pass",
-      "message": "25 active Broadway shows all have cast data"
+      "status": "warn",
+      "message": "1 empty cast: The Imaginary Invalid"
     },
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 21065 vs baseline 21151"
+      "message": "Open shows dropped by 3: 140 vs baseline 143; Reviews dropped: 21100 vs baseline 21184"
     },
     {
       "name": "Sync: grosses weekEnding",
-      "status": "pass",
-      "message": "weekEnding 9/13/2026 (12d ago)"
+      "status": "warn",
+      "message": "weekEnding 9/13/2026 is 14 days ago (2 missed weeks)"
     }
   ]
 }

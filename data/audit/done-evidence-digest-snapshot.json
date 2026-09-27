@@ -1,22 +1,47 @@
 {
-  "generatedAt": "2026-09-26T11:54:21.068Z",
-  "bannerText": "0/30 Done(14d) verified on main · 0 FAILED · 2 vacuous · 1 stuck-but-done — PARTIAL RUN: 201 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-09-27T12:33:51.584Z",
+  "bannerText": "21/29 Done(14d) verified on main · 2 FAILED · 2 vacuous · 109 stuck-but-done",
   "items": [
     {
-      "title": "STUCK BRO-2701 — P0: validate-show-venue gate is STRUCTURALLY permanently red — 33 no-playbill-url shows can never fit the 9-min budget",
+      "title": "FAILED BRO-2756 — Cron stale 3+ consecutive days: Update Social Pulse",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/update-social-pulse.sh",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2756/cron-stale-3-consecutive-days-update-social-pulse"
+    },
+    {
+      "title": "FAILED BRO-4137 — P1 SYSTEMIC: six wrong conclusions in one session all had one shape — a self-designed search returned nothing and I reported nothing as the answer; require a positive control before any absence claim",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/absence-claim-control.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4137/p1-systemic-six-wrong-conclusions-in-one-session-all-had-one-shape-a"
+    },
+    {
+      "title": "STUCK BRO-3887 — P1: GHA cache thrash — 3.6GB core-data cache evicts the SERP cache every run, gather-reviews SERP spend 5x",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2701/p0-validate-show-venue-gate-is-structurally-permanently-red-33-no"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3887/p1-gha-cache-thrash-36gb-core-data-cache-evicts-the-serp-cache-every"
     },
     {
-      "title": "VACUOUS BRO-2229 — Opening-night bypass check (cv-wrongproduction-unhandled) only runs within +/-2d of opening -- no lifetime corpus coverage",
-      "detail": "`test -f scripts/audit-cv-wrongproduction-lifetime.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2229/opening-night-bypass-check-cv-wrongproduction-unhandled-only-runs"
+      "title": "STUCK BRO-3881 — P1: every owner-alert-router card is undispatchable (prose-only acceptance criteria) — the digest burns a dispatch slot on one every day",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3881/p1-every-owner-alert-router-card-is-undispatchable-prose-only"
     },
     {
-      "title": "VACUOUS BRO-1690 — Monitor: verify 'exactly 1 scheduled owner email/day' holds (catches the next digest-noise regression)",
-      "detail": "`test -f scripts/monitor-scheduled-email-count.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-1690/monitor-verify-exactly-1-scheduled-owner-emailday-holds-catches-the"
+      "title": "STUCK BRO-3868 — P1: digest-autofix-ledger loses rows on every sync — attempt-memory, opus escalation and BOTH zero-dispatch alarms read a file with no merge driver",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3868/p1-digest-autofix-ledger-loses-rows-on-every-sync-attempt-memory-opus"
+    },
+    {
+      "title": "STUCK BRO-3828 — BSC Daily: Stuck pipeline items (card #794)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3828/bsc-daily-stuck-pipeline-items-card-794"
+    },
+    {
+      "title": "STUCK BRO-3826 — BSC Daily: Data freshness: shows missing poster/synopsis/tickets (#795)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3826/bsc-daily-data-freshness-shows-missing-postersynopsistickets-795"
+    },
+    {
+      "title": "STUCK BRO-3794 — BSC Daily: Main: red streak",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3794/bsc-daily-main-red-streak"
     }
   ],
-  "moreCount": 0
+  "moreCount": 105
 }
