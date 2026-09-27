@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-27T14:35:03.636Z",
+    "generatedAt": "2026-09-27T19:04:21.090Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 360,
-  "errorSeverity": 263,
+  "totalGaps": 361,
+  "errorSeverity": 264,
   "warningSeverity": 97,
   "gaps": [
     {
@@ -2165,6 +2165,15 @@
       "extracted": 8,
       "gap": 11,
       "ratio": 0.42,
+      "severity": "error"
+    },
+    {
+      "showId": "ride-the-cyclone-off-broadway-2016",
+      "category": "off-broadway",
+      "expected": 35,
+      "extracted": 8,
+      "gap": 27,
+      "ratio": 0.23,
       "severity": "error"
     },
     {
