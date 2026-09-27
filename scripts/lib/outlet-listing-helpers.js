@@ -45,16 +45,30 @@ function escapeRegex(s) {
  * @param {Array}  activeShows - Shows with status open or previews
  * @returns {Array} subset of activeShows that match
  */
+// normalizeTitle JOINS hyphenated words ("Grown-Ups" → "grownups", deliberate
+// for exact title-to-title matching, see title-match.js). A headline or URL
+// slug is running text, not a title: "Deep-Heat Rivalry" and the slug
+// "review-deep-heat-rivalry-at-…" both collapse to one token and never
+// contain "deep heat rivalry" (BRO-4185: Theatre Weekly's review was in its
+// RSS feed and matched nothing). So also compare a hyphens-as-spaces form of
+// both sides. Kept local — title-match's contract is unchanged.
+function hyphenSpaced(s) {
+  return normalizeTitle(String(s || '').replace(/[-‐‑‒–—]/g, ' '));
+}
+
 function findMatchingShows(headline, urlSlug, activeShows) {
   if (!headline && !urlSlug) return [];
-  const combined = normalizeTitle((headline || '') + ' ' + (urlSlug || ''));
+  const raw = (headline || '') + ' ' + (urlSlug || '');
+  const combined = normalizeTitle(raw);
   if (!combined) return [];
+  const combinedSpaced = hyphenSpaced(raw);
 
   const matches = [];
 
   for (const show of activeShows) {
     const norm = normalizeTitle(show.title || '');
     if (!norm) continue;
+    const normSpaced = hyphenSpaced(show.title);
 
     const tokens = norm.split(/\s+/).filter(Boolean);
 
@@ -73,7 +87,10 @@ function findMatchingShows(headline, urlSlug, activeShows) {
 
     // Multi-word titles or longer single-word distinctive titles:
     // simple substring match on the combined normalized text is sufficient.
-    if (combined.includes(norm)) {
+    // The spaced form must match on word boundaries: without them, "heat"
+    // spaced out of a slug would sit inside "theatre".
+    if (combined.includes(norm)
+        || (normSpaced && new RegExp(`(^|\\s)${escapeRegex(normSpaced)}(\\s|$)`).test(combinedSpaced))) {
       matches.push(show);
     }
   }

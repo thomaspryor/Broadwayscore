@@ -19,6 +19,45 @@ const {
 } = require('../../scripts/probe-outlet-feeds.js');
 const { isSameUrlFlaggedTarget, OUTLET_STRATEGY_CONFIG, SKIP_OUTLETS } = require('../../scripts/outlet-listing-poller.js');
 const { generateReviewFilename } = require('../../scripts/lib/review-normalization.js');
+const { findMatchingShows } = require('../../scripts/lib/outlet-listing-helpers.js');
+const { titleMatchesShow } = require('../../scripts/lib/rss-discovery.js');
+
+// Real headlines/slugs from the 2026-09-27 live probe (BRO-4185).
+describe('headline/slug matching across hyphens', () => {
+  const deepHeat = { id: 'deep-heat-rivalry-off-west-end-2026', title: 'Deep Heat Rivalry', status: 'open' };
+  const holes = { id: 'the-holes-off-broadway-2026', title: 'The Holes', status: 'open' };
+  const awhy = { id: 'america-who-hurt-you-off-broadway-2026', title: 'America, Who Hurt You?', status: 'open' };
+  const heat = { id: 'heat-x', title: 'Heatwave', status: 'open' };
+  const shows = [deepHeat, holes, awhy, heat];
+
+  test('poller: hyphenated headline matches the spaced title', () => {
+    const ids = findMatchingShows('Review: Deep-Heat Rivalry at The Other Palace Studio', '/review-deep-heat-rivalry-at-the-other-palace-studio/', shows).map(s => s.id);
+    assert.deepEqual(ids, [deepHeat.id]);
+  });
+
+  test('poller: a multi-word title now matches from the URL slug alone', () => {
+    const ids = findMatchingShows('The world has a group chat about America', '/america-who-hurt-you-sarah-jones-review/', shows).map(s => s.id);
+    assert.ok(ids.includes(awhy.id));
+  });
+
+  test('poller: the spaced form is word-bounded ("deep heat" does not match "deep-heatwave")', () => {
+    const deepHeatOnly = { id: 'deep-heat-x', title: 'Deep Heat', status: 'open' };
+    assert.deepEqual(findMatchingShows('', '/deep-heatwave-review/', [deepHeatOnly]).map(s => s.id), []);
+    assert.deepEqual(findMatchingShows('', '/deep-heat-review/', [deepHeatOnly]).map(s => s.id), ['deep-heat-x']);
+  });
+
+  test('rss-discovery: hyphenated headline matches; curly apostrophes fold', () => {
+    assert.equal(titleMatchesShow('Deep-Heat Rivalry – The Other Palace, London', 'Deep Heat Rivalry'), true);
+    assert.equal(titleMatchesShow('I’m Every Woman: The Chaka Khan Musical – review', "I'm Every Woman"), true);
+  });
+
+  test('rss-discovery: a repeated-word title ("Man to Man") needs the whole phrase', () => {
+    for (const h of ['‘Star Wars’ Is Continuing Skywalker Saga With ‘Spider-Man’ Director Jon Watts', 'MAN AND BOY. Dorfman, SE1', 'Review: The Last Man at Southwark Playhouse Elephant']) {
+      assert.equal(titleMatchesShow(h, 'Man to Man'), false, h);
+    }
+    assert.equal(titleMatchesShow('Man to Man – Royal Court review', 'Man to Man'), true);
+  });
+});
 
 const EPOCH = new Date(0);
 
