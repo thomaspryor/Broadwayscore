@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-09-27T08:57:54.805Z",
+  "generatedAt": "2026-09-27T14:36:57.317Z",
   "windowDays": 1095,
   "targets": 235,
-  "auditedThisRun": 15,
-  "carriedForward": 555,
+  "auditedThisRun": 10,
+  "carriedForward": 560,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 305,
-    "missingCurrentRun": 415,
+    "withGap": 306,
+    "missingCurrentRun": 417,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 801,
+    "totalFlaggedMisses": 800,
     "totalRecoverable": 7,
     "totalRecovered": 8,
     "priorProductionCitations": 2545
@@ -30833,7 +30833,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-27T08:57:54.805Z"
+      "computedAt": "2026-09-27T14:36:57.317Z"
     },
     {
       "showId": "delirium-off-broadway-2026",
@@ -42865,7 +42865,7 @@
         {
           "url": "https://www.yahoo.com/entertainment/theater-review-broadway-glengarry-glen-033424902.html",
           "host": "yahoo.com",
-          "knownOutletId": null,
+          "knownOutletId": "yahoo",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -42899,7 +42899,7 @@
         {
           "url": "http://news.yahoo.com/review-mamets-glengarry-glen-ross-crackles-023810738.html;_ylt=A2KJ3Cd7uMVQoUAA_mPQtDMD",
           "host": "yahoo.com",
-          "knownOutletId": null,
+          "knownOutletId": "yahoo",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -42942,10 +42942,10 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 978,
+        "count": 982,
         "byReason": {
           "non-review-host": 67,
-          "aggregator-internal-nav": 750,
+          "aggregator-internal-nav": 754,
           "not-http-url": 144,
           "aggregator-section-root": 16,
           "unparseable-url": 1
@@ -43014,8 +43014,8 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "yahoo.com",
-            "outlet": "yahoo.com",
+            "outletId": "yahoo",
+            "outlet": "yahoo",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.yahoo.com/entertainment/theater-review-broadway-glengarry-glen-033424902.html"
@@ -43248,7 +43248,7 @@
           },
           {
             "url": "https://www.yahoo.com/entertainment/theater-review-broadway-glengarry-glen-033424902.html",
-            "outletId": "yahoo.com",
+            "outletId": "yahoo",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
@@ -43265,7 +43265,7 @@
         "liveCount": 27,
         "candidateCount": 29
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-27T14:36:57.317Z"
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
@@ -44790,11 +44790,15 @@
         "https://www.newyorktheatreguide.com/theatre-news/news/ilana-glazer-and-more-join-george-clooney-in-good-night-and-good-luck-on-broadway-cast",
         "https://www.newyorktheatreguide.com/theatre-news/news/good-night-and-good-luck-to-provide-2000-tickets-to-nyc-students"
       ],
-      "dirFiles": 47,
-      "dirClean": 40,
-      "inReviewsJson": 39,
+      "dirFiles": 48,
+      "dirClean": 42,
+      "inReviewsJson": 40,
       "missing": [],
       "dirOnly": [
+        {
+          "host": "broadwaynews.com",
+          "count": 1
+        },
         {
           "host": "thedailybeast.com",
           "count": 1
@@ -44833,7 +44837,7 @@
         },
         {
           "host": "theaterlife.com",
-          "count": 1
+          "count": 2
         },
         {
           "host": "theaterscene.com",
@@ -45132,7 +45136,7 @@
         "liveCount": 22,
         "candidateCount": 25
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-27T14:36:57.317Z"
     },
     {
       "showId": "good-time-charlie-off-broadway-2026",
@@ -56526,37 +56530,177 @@
     {
       "showId": "human-things-off-broadway-2026",
       "title": "Human Things",
-      "openingDate": null,
-      "status": "previews",
+      "openingDate": "2026-09-25",
+      "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
+      "aggregatorListedUrls": [
+        "https://www.newyorktheatreguide.com/reviews/human-things-off-broadway-review",
+        "https://www.theatermania.com/news/review-human-things-stranded-on-a-desert-island-with-victoria-clark_1855018/",
+        "https://broadwaylog.app/shows/human-things-2026"
+      ],
+      "dirFiles": 3,
+      "dirClean": 2,
+      "inReviewsJson": 2,
+      "missing": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/human-things-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "serpCensus": true
+        },
+        {
+          "url": "https://broadwaylog.app/shows/human-things-2026",
+          "host": "broadwaylog.app",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Human Things\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Human Things\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Human Things West End Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Human Things West End Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Human Things West End Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 20,
+        "byReason": {
+          "non-review-host": 9,
+          "ticketing-listing": 1,
+          "aggregator-internal-nav": 6,
+          "venue-production-page": 2,
+          "non-review-path": 1,
+          "ticketing-reseller": 1
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/human-things-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://broadwaylog.app/shows/human-things-2026",
+          "host": "broadwaylog.app",
+          "outletId": "broadwaylog",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"broadwaylog\" (not in registry) — onboard to outlet-registry.json after revie"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/human-things-off-broadway-review"
+          },
+          {
+            "outletId": "broadwaylog.app",
+            "outlet": "broadwaylog.app",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwaylog.app/shows/human-things-2026"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
-        "liveCount": 0,
-        "candidateCount": 0
+        "candidates": [
+          {
+            "url": "https://www.theatermania.com/news/review-human-things-stranded-on-a-desert-island-with-victoria-clark_1855018/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-27T14:36:57.317Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/human-things-off-broadway-review",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-27T14:36:57.317Z"
+          },
+          {
+            "url": "https://broadwaylog.app/shows/human-things-2026",
+            "outletId": "broadwaylog.app",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-27T14:36:57.317Z"
+          }
+        ],
+        "censusSchema": 2,
+        "liveCount": 1,
+        "candidateCount": 3
       },
-      "computedAt": "2026-09-14T23:04:15.991Z"
+      "computedAt": "2026-09-27T14:36:57.317Z"
     },
     {
       "showId": "hungry-women-off-broadway-2026",
@@ -92243,8 +92387,8 @@
       "aggregatorArticles": [
         "https://playbill.com/article/read-the-reviews-for-othello-on-broadway-starring-denzel-washington-and-jake-gyllenhaal",
         "https://playbill.com/article/what-are-the-reviews-for-bedlams-4-person-version-of-shakespeares-othello",
-        "https://playbill.com/article/read-reviews-for-the-publics-othello-in-the-park",
         "https://playbill.com/article/read-reviews-for-othello-at-shakespeares-globe-theatre",
+        "https://playbill.com/article/read-reviews-for-the-publics-othello-in-the-park",
         "https://www.broadwayworld.com/article/Review-Roundup-OTHELLO-Starring-Denzel-Washington-and-Jake-Gyllenhaal-20250323",
         "https://www.broadwayworld.com/article/Review-Roundup-Four-Person-OTHELLO-Opens-at-Bedlam-20260508",
         "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-Shakespeare-in-the-Parks-OTHELLO-20180619"
@@ -92282,16 +92426,6 @@
         "https://nystagereview.com/2026/05/07/othello-bedlams-four-actor-version-a-palpable-hit/",
         "https://www.nytimes.com/2026/05/06/theater/othello-bedlam-hamlet-bam.html",
         "https://www.theatermania.com/news/review-bedlam-gives-its-trademark-innovative-touch-to-a-top-notch-othello_1835344/",
-        "http://www.amny.com/entertainment/othello-review-shakespeare-in-the-park-1.19286522",
-        "http://www.thedailybeast.com/the-must-see-othello-at-shakespeare-in-the-park-racism-and-power-in-pass-over",
-        "http://deadline.com/2018/06/othello-review-chukwudi-iwuji-corey-stoll-shakespeare-in-the-park-1202412953/",
-        "http://ew.com/theater/2018/06/18/othello-public-theater-review/",
-        "http://www.hollywoodreporter.com/review/othello-review-1120759",
-        "http://www.newsday.com/entertainment/theater/othello-central-park-1.19272693",
-        "http://www.nydailynews.com/entertainment/theater-arts/ny-ent-othello-review-20180618-story.html",
-        "http://www.vulture.com/2018/06/in-central-park-an-othello-in-which-love-conquers-little.html",
-        "http://www.nytimes.com/2018/06/18/theater/othello-shakespeare-in-the-park-review.html",
-        "http://www.thewrap.com/othello-theater-review-corey-stoll-iago-shakespeare-park-chukwudi-iwuji/",
         "https://www.standard.co.uk/go/london/theatre/othello-review-mark-rylance-returns-to-the-globe-with-a-larky-performance-a3902011.html",
         "https://www.theguardian.com/stage/2018/aug/02/othello-review-mark-rylance-andre-holland-shakespeares-globe-london",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/othello-shakespeares-globe-review-mark-rylance-a8474121.html ",
@@ -92302,6 +92436,16 @@
         "https://www.thetimes.co.uk/article/theatre-review-othello-shakespeare-s-globe-se1-fjsjkdnjg",
         "https://www.theupcoming.co.uk/2018/08/02/othello-at-shakespeares-globe-theatre-review/",
         "https://www.whatsonstage.com/london-theatre/reviews/othello-shakespeare-globe-rylance-holland-atim_47258.html",
+        "http://www.amny.com/entertainment/othello-review-shakespeare-in-the-park-1.19286522",
+        "http://www.thedailybeast.com/the-must-see-othello-at-shakespeare-in-the-park-racism-and-power-in-pass-over",
+        "http://deadline.com/2018/06/othello-review-chukwudi-iwuji-corey-stoll-shakespeare-in-the-park-1202412953/",
+        "http://ew.com/theater/2018/06/18/othello-public-theater-review/",
+        "http://www.hollywoodreporter.com/review/othello-review-1120759",
+        "http://www.newsday.com/entertainment/theater/othello-central-park-1.19272693",
+        "http://www.nydailynews.com/entertainment/theater-arts/ny-ent-othello-review-20180618-story.html",
+        "http://www.vulture.com/2018/06/in-central-park-an-othello-in-which-love-conquers-little.html",
+        "http://www.nytimes.com/2018/06/18/theater/othello-shakespeare-in-the-park-review.html",
+        "http://www.thewrap.com/othello-theater-review-corey-stoll-iago-shakespeare-park-chukwudi-iwuji/",
         "https://www.amny.com/entertainment/theater/othello-denzel-washington-jake-gyllenhaal/",
         "https://nypost.com/2025/03/15/entertainment/othello-review-denzel-washingtons-dull-broadway-show-isnt-worth-a-921-ticket/",
         "https://www.nydailynews.com/2025/03/23/broadway-review-denzel-washington-is-strong-as-othello-as-chemistry-with-desdemona-is-weak/",
@@ -92335,16 +92479,16 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.newsday.com/entertainment/theater/othello-central-park-1.19272693",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
+          "url": "https://www.thereviewshub.com/othello-shakespeares-globe-london/",
+          "host": "thereviewshub.com",
+          "knownOutletId": "thereviewshub",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.thereviewshub.com/othello-shakespeares-globe-london/",
-          "host": "thereviewshub.com",
-          "knownOutletId": "thereviewshub",
+          "url": "http://www.newsday.com/entertainment/theater/othello-central-park-1.19272693",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -92398,25 +92542,6 @@
               "urlInDir": "https://observer.com/2025/03/review-denzel-washingtons-othello-has-star-wattage-but-no-illumination/"
             }
           ]
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/theater-arts/ny-ent-othello-review-20180618-story.html",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--chris-jones.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nydailynews.com/2025/03/23/broadway-review-denzel-washington-is-strong-as-othello-as-chemistry-with-desdemona-is-weak/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://www.standard.co.uk/go/london/theatre/othello-review-mark-rylance-returns-to-the-globe-with-a-larky-performance-a3902011.html",
@@ -92514,6 +92639,25 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/ny-ent-othello-review-20180618-story.html",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nydailynews.com/2025/03/23/broadway-review-denzel-washington-is-strong-as-othello-as-chemistry-with-desdemona-is-weak/"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://www.nydailynews.com/2025/03/23/broadway-review-denzel-washington-is-strong-as-othello-as-chemistry-with-desdemona-is-weak/",
           "host": "nydailynews.com",
           "knownOutletId": "nydailynews",
@@ -92555,13 +92699,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1339,
+        "count": 1369,
         "byReason": {
           "non-review-host": 130,
-          "roundup-page": 12,
-          "aggregator-internal-nav": 939,
-          "not-http-url": 229,
-          "aggregator-section-root": 29
+          "aggregator-internal-nav": 963,
+          "not-http-url": 231,
+          "aggregator-section-root": 31,
+          "roundup-page": 14
         }
       },
       "dedupedVariants": [
@@ -92579,12 +92723,12 @@
           "publishDate": "2026-05-08"
         },
         {
-          "url": "https://playbill.com/article/read-reviews-for-the-publics-othello-in-the-park",
-          "publishDate": "2018-06-19"
-        },
-        {
           "url": "https://playbill.com/article/read-reviews-for-othello-at-shakespeares-globe-theatre",
           "publishDate": "2018-08-02"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-the-publics-othello-in-the-park",
+          "publishDate": "2018-06-19"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Four-Person-OTHELLO-Opens-at-Bedlam-20260508",
@@ -92609,14 +92753,14 @@
           "reason": "prior-run"
         },
         {
-          "url": "http://www.newsday.com/entertainment/theater/othello-central-park-1.19272693",
-          "host": "newsday.com",
+          "url": "https://www.thereviewshub.com/othello-shakespeares-globe-london/",
+          "host": "thereviewshub.com",
           "priorRun": true,
           "reason": "prior-run"
         },
         {
-          "url": "https://www.thereviewshub.com/othello-shakespeares-globe-london/",
-          "host": "thereviewshub.com",
+          "url": "http://www.newsday.com/entertainment/theater/othello-central-park-1.19272693",
+          "host": "newsday.com",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -92838,6 +92982,30 @@
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
           {
+            "url": "https://www.theguardian.com/stage/2018/aug/02/othello-review-mark-rylance-andre-holland-shakespeares-globe-london",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/othello-review-1",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://www.thetimes.co.uk/article/theatre-review-othello-shakespeare-s-globe-se1-fjsjkdnjg",
+            "outletId": "thetimes.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
+            "url": "https://www.theupcoming.co.uk/2018/08/02/othello-at-shakespeares-globe-theatre-review/",
+            "outletId": "theupcoming.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
             "url": "http://www.amny.com/entertainment/othello-review-shakespeare-in-the-park-1.19286522",
             "outletId": "amny.com",
             "state": "live",
@@ -92882,30 +93050,6 @@
           {
             "url": "http://www.thewrap.com/othello-theater-review-corey-stoll-iago-shakespeare-park-chukwudi-iwuji/",
             "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2018/aug/02/othello-review-mark-rylance-andre-holland-shakespeares-globe-london",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/othello-review-1",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://www.thetimes.co.uk/article/theatre-review-othello-shakespeare-s-globe-se1-fjsjkdnjg",
-            "outletId": "thetimes.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://www.theupcoming.co.uk/2018/08/02/othello-at-shakespeares-globe-theatre-review/",
-            "outletId": "theupcoming.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
@@ -92996,7 +93140,7 @@
         "liveCount": 27,
         "candidateCount": 31
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-27T14:36:57.317Z"
     },
     {
       "showId": "othello-off-broadway-2026",
@@ -98611,8 +98755,8 @@
         "https://www.nydailynews.com/2026/04/16/broadway-review-ayo-edebiri-is-spectacular-captivating-in-proof/"
       ],
       "dirFiles": 58,
-      "dirClean": 32,
-      "inReviewsJson": 32,
+      "dirClean": 31,
+      "inReviewsJson": 31,
       "missing": [],
       "dirOnly": [
         {
@@ -98645,10 +98789,6 @@
         },
         {
           "host": "theatrely.com",
-          "count": 1
-        },
-        {
-          "host": "thestage.co.uk",
           "count": 1
         },
         {
@@ -98686,12 +98826,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 772,
+        "count": 797,
         "byReason": {
           "non-review-host": 69,
-          "aggregator-internal-nav": 552,
-          "not-http-url": 134,
-          "aggregator-section-root": 17
+          "aggregator-internal-nav": 572,
+          "not-http-url": 137,
+          "aggregator-section-root": 19
         }
       },
       "dedupedVariants": [],
@@ -98874,7 +99014,7 @@
         "liveCount": 20,
         "candidateCount": 21
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-27T14:36:57.317Z"
     },
     {
       "showId": "proximo-off-broadway-2026",
@@ -99607,7 +99747,7 @@
         "https://www.newyorktheatreguide.com/theatre-news/news/purpose-wins-2025-pulitzer-prize-for-drama-oh-mary-named-a-finalist"
       ],
       "dirFiles": 31,
-      "dirClean": 26,
+      "dirClean": 27,
       "inReviewsJson": 26,
       "missing": [],
       "dirOnly": [
@@ -99670,23 +99810,6 @@
               "urlInDir": "https://www.wsj.com/articles/purpose-review-dramatic-overdrive-on-broadway-41ba9476?gaa_at=eafs&gaa_n=AWEtsqdB-x0ZBQmYmFOv2IsUurpReDX_Z3a14llvj_YXBCIMpXwft16ZBkya&gaa_ts=69952382&gaa_sig=-PFkWlpOMT18cJ4xN6rqWPnBLvxh1SZLMlcguUlaV4c-7bNLIcs7RQuxiN59AZUssQEv1tkgfqGVrm2WVSQbEA%3D%3D"
             }
           ]
-        },
-        {
-          "url": "https://www.broadwaynews.com/the-broadway-review-purpose-investigates-the-messy-men-and-women-who-become-monuments/",
-          "host": "broadwaynews.com",
-          "knownOutletId": "broadwaynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadwaynews--brittani-samuel.json",
-              "flag": "clean",
-              "urlInDir": "https://www.broadwaynews.com/the-broadway-review-purpose-investigates-the-messy-men-and-women-who-become-monuments/"
-            }
-          ]
         }
       ],
       "citedNoUrl": [],
@@ -99696,10 +99819,10 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 391,
+        "count": 395,
         "byReason": {
           "non-review-host": 36,
-          "aggregator-internal-nav": 301,
+          "aggregator-internal-nav": 305,
           "not-http-url": 46,
           "aggregator-section-root": 8
         }
@@ -99714,13 +99837,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatermania.com/news/review-purpose-an-explosive-new-family-drama-on-broadway_1767756/"
-          },
-          {
-            "outletId": "broadwaynews",
-            "outlet": "broadwaynews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.broadwaynews.com/the-broadway-review-purpose-investigates-the-messy-men-and-women-who-become-monuments/"
           }
         ],
         "suppressedMissing": [
@@ -99842,6 +99958,12 @@
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
           },
           {
+            "url": "https://www.broadwaynews.com/the-broadway-review-purpose-investigates-the-messy-men-and-women-who-become-monuments/",
+            "outletId": "broadwaynews.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T15:15:17.003Z"
+          },
+          {
             "url": "https://www.hollywoodreporter.com/lifestyle/arts/purpose-review-phylicia-rashad-1236166923/",
             "outletId": "hollywoodreporter.com",
             "state": "live",
@@ -99878,20 +100000,13 @@
             "state": "SUPPRESSED",
             "reason": "ci-unfetchable",
             "firstSeenAt": "2026-08-16T15:15:17.003Z"
-          },
-          {
-            "url": "https://www.broadwaynews.com/the-broadway-review-purpose-investigates-the-messy-men-and-women-who-become-monuments/",
-            "outletId": "broadwaynews",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T15:15:17.003Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 19,
+        "liveCount": 20,
         "candidateCount": 22
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-27T14:36:57.317Z"
     },
     {
       "showId": "queen-versailles-2025",
@@ -107267,7 +107382,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-27T08:57:54.805Z"
+      "computedAt": "2026-09-27T14:36:57.317Z"
     },
     {
       "showId": "schtick-a-pole-in-it-off-broadway-2026",
@@ -128058,13 +128173,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 835,
+        "count": 847,
         "byReason": {
           "non-review-host": 72,
-          "roundup-page": 10,
-          "aggregator-internal-nav": 620,
+          "aggregator-internal-nav": 630,
           "not-http-url": 117,
-          "aggregator-section-root": 16
+          "aggregator-section-root": 16,
+          "roundup-page": 12
         }
       },
       "dedupedVariants": [],
@@ -128311,7 +128426,7 @@
         "liveCount": 19,
         "candidateCount": 20
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-27T14:36:57.317Z"
     },
     {
       "showId": "the-last-ship-off-broadway-2026",
@@ -133969,9 +134084,9 @@
         "https://www.avclub.com/sarah-snook-picture-of-dorian-gray-broadway-reaction",
         "https://www.slantmagazine.com/theater/kip-williams-interview-the-picture-of-dorian-gray/"
       ],
-      "dirFiles": 48,
-      "dirClean": 33,
-      "inReviewsJson": 33,
+      "dirFiles": 49,
+      "dirClean": 34,
+      "inReviewsJson": 34,
       "missing": [],
       "dirOnly": [
         {
@@ -134008,7 +134123,7 @@
         },
         {
           "host": "theaterlife.com",
-          "count": 1
+          "count": 2
         },
         {
           "host": "theaterscene.net",
@@ -134290,7 +134405,7 @@
         "liveCount": 17,
         "candidateCount": 17
       },
-      "computedAt": "2026-08-31T00:09:38.552Z"
+      "computedAt": "2026-09-27T14:36:57.317Z"
     },
     {
       "showId": "the-potluck-off-broadway-2026",
