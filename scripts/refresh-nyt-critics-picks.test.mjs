@@ -11,7 +11,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { extractReviewUrls, evaluateScrape, mergePicks, baselineFromFile } = require('./refresh-nyt-critics-picks.js');
+const { extractReviewUrls, looksLikeSpotlightPage, evaluateScrape, mergePicks, MAX_NEW_PER_RUN } = require('./refresh-nyt-critics-picks.js');
 
 test('extracts relative hrefs from raw HTML', () => {
   const html = '<a href="/2026/09/23/theater/the-holes-review-max-wolf-friedlich.html">x</a>'
@@ -35,25 +35,45 @@ test('empty or blocked page yields no URLs', () => {
   assert.deepEqual(extractReviewUrls('<html>Access Denied</html>'), []);
 });
 
+
+test('spotlight page is recognized; a theater section page with /theater/ links is not', () => {
+  const link = '<a href="/2026/09/23/theater/the-holes-review.html">x</a>';
+  assert.equal(looksLikeSpotlightPage(`<title>Theater Critic’s Picks</title>${link}`), true);
+  assert.equal(looksLikeSpotlightPage(`<link rel="canonical" href="https://www.nytimes.com/spotlight/theater-critics-picks">${link}`), true);
+  // Redirected to the Theater section: review links, but no spotlight marker.
+  assert.equal(looksLikeSpotlightPage(`<title>Theater - The New York Times</title>${link}`), false);
+  // Marker but no links (blocked/empty shell).
+  assert.equal(looksLikeSpotlightPage('<title>Critic’s Picks</title>'), false);
+});
+
 test('refuses to write when page 1 errors (the 403 incident)', () => {
-  const v = evaluateScrape({ urls: [], baselineCount: 100, firstPageError: 'HTTP 403' });
+  const v = evaluateScrape({ urls: [], existingUrls: ['a'], firstPageError: 'HTTP 403' });
   assert.equal(v.ok, false);
   assert.match(v.reason, /403/);
 });
 
 test('refuses to write 0 URLs even when the file is already empty', () => {
-  assert.equal(evaluateScrape({ urls: [], baselineCount: 0 }).ok, false);
+  assert.equal(evaluateScrape({ urls: [], existingUrls: [] }).ok, false);
 });
 
-test('refuses a scrape that shrinks the list by more than half (the 10-URL run)', () => {
-  const urls = Array.from({ length: 10 }, (_, i) => `u${i}`);
-  assert.equal(evaluateScrape({ urls, baselineCount: 100 }).ok, false);
+test('accepts a partial scrape: merge only adds, so short is harmless (the 10-URL run)', () => {
+  const existing = Array.from({ length: 100 }, (_, i) => `u${i}`);
+  assert.equal(evaluateScrape({ urls: existing.slice(0, 10), existingUrls: existing }).ok, true);
 });
 
-test('accepts a normal rolling-window refresh', () => {
-  const urls = Array.from({ length: 98 }, (_, i) => `u${i}`);
-  assert.equal(evaluateScrape({ urls, baselineCount: 100 }).ok, true);
-  assert.equal(evaluateScrape({ urls, baselineCount: 0 }).ok, true);
+test('refuses an implausible burst of new URLs (wrong page)', () => {
+  const existing = Array.from({ length: 100 }, (_, i) => `u${i}`);
+  const burst = Array.from({ length: MAX_NEW_PER_RUN + 1 }, (_, i) => `new${i}`);
+  const v = evaluateScrape({ urls: burst, existingUrls: existing });
+  assert.equal(v.ok, false);
+  assert.match(v.reason, /new URLs/);
+  // A normal week: a couple of new picks on top of the known window.
+  assert.equal(evaluateScrape({ urls: [...existing.slice(2), 'new0', 'new1'], existingUrls: existing }).ok, true);
+});
+
+test('first-ever run (empty file) is not capped', () => {
+  const urls = Array.from({ length: 100 }, (_, i) => `u${i}`);
+  assert.equal(evaluateScrape({ urls, existingUrls: [] }).ok, true);
 });
 
 test('merge keeps picks that scrolled off the spotlight window', () => {
@@ -63,13 +83,4 @@ test('merge keeps picks that scrolled off the spotlight window', () => {
   assert.ok(urls.includes('https://www.nytimes.com/2024/04/19/theater/stereophonic-review.html'));
   assert.deepEqual(added, ['https://www.nytimes.com/2026/09/23/theater/the-holes-review.html']);
   assert.equal(urls.length, 3);
-});
-
-test('shrink baseline is the last scrape, not the accumulated list', () => {
-  const many = Array.from({ length: 300 }, (_, i) => `u${i}`);
-  assert.equal(baselineFromFile({ _meta: { lastScrapeCount: 100 }, urls: many }), 100);
-  // Legacy file without lastScrapeCount: cap at the 100-item window.
-  assert.equal(baselineFromFile({ _meta: {}, urls: many }), 100);
-  assert.equal(baselineFromFile({ urls: ['a', 'b'] }), 2);
-  assert.equal(baselineFromFile(null), 0);
 });

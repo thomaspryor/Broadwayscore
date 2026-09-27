@@ -37,13 +37,13 @@ const OUTPUT_PATH = path.join(__dirname, '../data/nyt-critics-picks.json');
 const BASE_URL = 'https://www.nytimes.com/spotlight/theater-critics-picks';
 const MAX_PAGES = 15; // Safety cap
 const DELAY_MS = 1500;
-// Reject a scrape that returns fewer than this share of the previous scrape.
-// The spotlight page is a rolling ~100-item window, so a healthy run stays
-// near the previous scrape's size.
-const MIN_RETAIN_RATIO = 0.5;
-// Size of the spotlight window; the fallback baseline when the file predates
-// _meta.lastScrapeCount.
-const SPOTLIGHT_WINDOW = 100;
+// NYT publishes a few picks a week. A run that finds more new URLs than this
+// scraped something other than the spotlight list; since the list only grows,
+// a bad merge would badge non-picks permanently, so refuse it instead.
+const MAX_NEW_PER_RUN = 25;
+// Text only the spotlight page carries. A proxy that followed a redirect to
+// the theater section or homepage returns /theater/ links without it.
+const SPOTLIGHT_MARKERS = [/theater-critics-picks/i, /Critic[’'‘]s Picks?/i];
 
 function fetchPlain(url) {
   return new Promise((resolve, reject) => {
@@ -73,14 +73,24 @@ let _scraper = null;
 async function fetchSpotlightPage(url) {
   try {
     const html = await fetchPlain(url);
-    if (extractReviewUrls(html).length > 0) return html;
-    console.log('    Plain fetch returned no review links, escalating to fetchPage()');
+    if (looksLikeSpotlightPage(html)) return html;
+    console.log('    Plain fetch did not return the spotlight page, escalating to fetchPage()');
   } catch (err) {
     console.log(`    Plain fetch failed (${err.message}), escalating to fetchPage()`);
   }
   if (!_scraper) _scraper = require('./lib/scraper');
   const result = await _scraper.fetchPage(url, { skipVerify: true });
-  return (result && result.content) || '';
+  const content = (result && result.content) || '';
+  if (!looksLikeSpotlightPage(content)) {
+    throw new Error('fetched page is not the Critic\'s Picks spotlight (marker missing)');
+  }
+  return content;
+}
+
+/** True when the content is the spotlight list itself, not some other NYT page. */
+function looksLikeSpotlightPage(content) {
+  const text = String(content || '');
+  return extractReviewUrls(text).length > 0 && SPOTLIGHT_MARKERS.some(re => re.test(text));
 }
 
 function sleep(ms) {
@@ -97,15 +107,18 @@ function extractReviewUrls(content) {
 }
 
 /**
- * Decide whether a scrape result may be merged into the file on disk.
- * `baselineCount` is the size of the previous successful scrape (not the
- * accumulated list, which only grows). Pure so it can be unit-tested.
+ * Decide whether a scrape may be merged into the file on disk. The merge only
+ * adds, so a short (partial) scrape is harmless; what must be refused is an
+ * empty/failed scrape (alert) and an implausible burst of new URLs (wrong
+ * page). Pure so it can be unit-tested.
  */
-function evaluateScrape({ urls, baselineCount, firstPageError }) {
+function evaluateScrape({ urls, existingUrls = [], firstPageError }) {
   if (firstPageError) return { ok: false, reason: `page 1 failed: ${firstPageError}` };
   if (urls.length === 0) return { ok: false, reason: 'scrape found 0 URLs' };
-  if (baselineCount > 0 && urls.length < baselineCount * MIN_RETAIN_RATIO) {
-    return { ok: false, reason: `scrape found ${urls.length} URLs, below ${Math.round(MIN_RETAIN_RATIO * 100)}% of the previous scrape's ${baselineCount}` };
+  const existing = new Set(existingUrls);
+  const newCount = urls.filter(u => !existing.has(u)).length;
+  if (existing.size > 0 && newCount > MAX_NEW_PER_RUN) {
+    return { ok: false, reason: `scrape would add ${newCount} new URLs (max ${MAX_NEW_PER_RUN} per run); likely not the picks list` };
   }
   return { ok: true };
 }
@@ -121,15 +134,6 @@ function mergePicks(existingUrls, scrapedUrls) {
   return { urls, added };
 }
 
-/** Baseline for the shrink guard: the previous scrape's size, capped at the window. */
-function baselineFromFile(prev) {
-  if (!prev) return 0;
-  const last = prev._meta && Number(prev._meta.lastScrapeCount);
-  if (last > 0) return last;
-  const n = Array.isArray(prev.urls) ? prev.urls.length : 0;
-  return Math.min(n, SPOTLIGHT_WINDOW);
-}
-
 function readExisting() {
   try {
     return JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf8'));
@@ -141,7 +145,7 @@ function readExisting() {
 async function main() {
   const dryRun = process.argv.includes('--dry-run');
   // Proxy fetches can be slow; stop paging before the workflow timeout. A
-  // partial scrape still merges additively (the shrink guard decides).
+  // partial scrape still merges additively.
   const budget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
   console.log('Refreshing NYT Critic\'s Picks from spotlight page...');
   const allUrls = new Set();
@@ -188,7 +192,7 @@ async function main() {
 
   const prev = readExisting();
   const existingUrls = (prev && Array.isArray(prev.urls)) ? prev.urls : [];
-  const verdict = evaluateScrape({ urls: scraped, baselineCount: baselineFromFile(prev), firstPageError });
+  const verdict = evaluateScrape({ urls: scraped, existingUrls, firstPageError });
   if (!verdict.ok) {
     console.error(`REFUSING to update ${OUTPUT_PATH}: ${verdict.reason}. Keeping the ${existingUrls.length} URLs on file.`);
     process.exit(1);
@@ -205,6 +209,7 @@ async function main() {
 
   const data = {
     _meta: {
+      ...((prev && prev._meta) || {}),
       lastUpdated: new Date().toISOString(),
       source: BASE_URL,
       count: urls.length,
@@ -217,7 +222,7 @@ async function main() {
   console.log(`Wrote ${urls.length} URLs (${added.length} new) to ${OUTPUT_PATH}`);
 }
 
-module.exports = { extractReviewUrls, evaluateScrape, mergePicks, baselineFromFile, MIN_RETAIN_RATIO };
+module.exports = { extractReviewUrls, looksLikeSpotlightPage, evaluateScrape, mergePicks, MAX_NEW_PER_RUN };
 
 if (require.main === module) {
   main().catch(err => {
