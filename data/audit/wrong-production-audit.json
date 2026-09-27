@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-27T01:43:18.909Z",
+  "timestamp": "2026-09-27T02:12:19.892Z",
   "stats": {
-    "totalReviews": 44361,
-    "alreadyFlagged": 18331,
+    "totalReviews": 44369,
+    "alreadyFlagged": 18333,
     "dateGuardCatches": 256,
-    "directorMismatch": 1050,
+    "directorMismatch": 1057,
     "tvFilmSignals": 1313,
-    "londonSignals": 1194,
+    "londonSignals": 1196,
     "offBroadwaySignals": 510,
     "yearMismatch": 95,
-    "noPublishDate": 3811
+    "noPublishDate": 3810
   },
   "findings": [
     {
@@ -33455,6 +33455,83 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-west-end-2026",
+      "file": "bestoftheatre--cecil-glover.json",
+      "publishDate": "2026-09-24",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/first-look-jesse-tyler-ferguson-truman-capote-tru",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rob ashford\" from tru-off-broadway-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-west-end-2026",
+      "file": "monstagigz--neil.json",
+      "publishDate": "2026-09-19",
+      "url": "https://monstagigz.com/2026/09/19/theatre-review-tru-starring-jesse-tyler-ferguson-at-the-menier-chocolate-factory/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
+      "publishDate": "2026-09-24",
+      "url": "https://theatreweekly.com/first-look-production-images-released-for-jesse-tyler-ferguson-and-charlotte-damboise-in-tru-at-the-menier-chocolate-factory/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rob ashford\" from tru-off-broadway-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-west-end-2026",
+      "file": "west-end-best-friend--unknown.json",
+      "publishDate": "2026-09-14",
+      "url": "https://www.westendbestfriend.co.uk/news/charlotte-damboise-tru-menier-chocolate-factory",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rob ashford\" from tru-off-broadway-2026"
         }
       ]
     },
