@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-27T09:59:03.217Z",
+    "generatedAt": "2026-09-27T10:25:56.482Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -81,7 +81,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 3 flagged, 39 exempt, 21 covered\n  ⚠️   113  data/audit/guard-escalation-state.json  — no merge driver; needs a decision\n  ⚠️    79  data/audit/orphaned-duplicate-pointer-heal.json  — no merge driver; needs a decision\n  ⚠️    34  data/audit/validation-baseline.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 3 flagged, 39 exempt, 21 covered\n  ⚠️   115  data/audit/guard-escalation-state.json  — no merge driver; needs a decision\n  ⚠️    80  data/audit/orphaned-duplicate-pointer-heal.json  — no merge driver; needs a decision\n  ⚠️    35  data/audit/validation-baseline.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
