@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-27T05:58:04.413Z",
+  "runDate": "2026-09-27T06:32:20.877Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -27,25 +27,25 @@
     "archive": 24
   },
   "statistics": {
-    "tier1Attempts": 16,
-    "tier1Success": 3,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier2Attempts": 13,
-    "tier2Success": 5,
-    "tier3Attempts": 14,
-    "tier3Success": 6,
-    "tier3_6Attempts": 13,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 13,
-    "tier4Success": 1,
-    "totalFailed": 71,
-    "scrapingBeePageCredits": 121,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 57,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 57,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -958,21 +958,6 @@
       "tru-off-west-end-2026/theatre-weekly--unknown.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Stage": {
-      "count": 6,
-      "domain": "thestage.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Bloomberg": {
-      "count": 1,
-      "domain": "businessweek.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
