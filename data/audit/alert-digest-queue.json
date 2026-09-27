@@ -608,5 +608,30 @@
       }
     ],
     "queuedAt": "2026-09-27T21:37:21.139Z"
+  },
+  {
+    "conditionKey": "direct-push:3871111c97129b669f368bc9c565493016047cd6",
+    "title": "Direct push to main: 3871111c97 by thomaspryor",
+    "description": "3871111c97 reached main WITHOUT going through land.yml (no row in data/audit/landings.jsonl). Pushed by thomaspryor (committer GitHub). Head commit: Stop losing reviews: feeds, hyphen matching, year-guess dates, ingest scoring, monitors (BRO-4185) (#943) Direct pushes skip the delta-vs-base gates; sessions must land via scripts/merge-worktree-to-main.sh (BRO-3425). Compare: https://github.com/thomaspryor/Broadwayscore/compare/bb6d3bf6c9e3152b3c906f98b5bc2094bdc4d6f9...3871111c97129b669f368bc9c565493016047cd6 Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36353075455",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "sha",
+        "value": "3871111c97129b669f368bc9c565493016047cd6"
+      },
+      {
+        "name": "actor",
+        "value": "thomaspryor"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36353075455"
+      }
+    ],
+    "queuedAt": "2026-09-27T21:56:32.436Z"
   }
 ]
