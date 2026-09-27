@@ -18,7 +18,7 @@ This file + a small set of project-scoped substitutes (`.claude/hooks/`, `cloud-
 - `.claude/hooks/notion-create-block.sh` — PreToolUse Bash gate; blocks subsequent tool calls if a `notion-brain.js create` failed earlier in the session.
 - `.claude/hooks/cloud-bootstrap.sh` — SessionStart; runs the data bootstrap above. Cloud-only by design (no user-level master); inert on local CLI where `data/shows.json` already resolves.
 - `.claude/hooks/worktree-enforce.sh` — PreToolUse on `Edit|Write|NotebookEdit|Bash`; hard-blocks (exit 2) tracked-code edits (`src/`, `scripts/`, `.github/workflows/`, etc. — CLAUDE.md §1) made outside a worktree. Ported 2026-08-23 (task: cloud sessions had zero technical backstop for the worktree rule until then, PR #691) — was previously in the "does not fire in cloud" list below; if you're reading a stale copy of this doc elsewhere, this line is the correction.
-- `.claude/hooks/pre-push-visual-gate.sh`, `.claude/hooks/pre-push-review-gate.sh`, `.claude/hooks/pre-merge-review-gate.sh`, `.claude/hooks/check-skill-redaction.sh` — PreToolUse `Bash` gates for visual-QA, ship-check, and skill-redaction enforcement before `git push`/`git merge`. **Known gap:** matcher is `Bash` only — a push done via the GitHub MCP connector (`mcp__github__push_files`/`create_or_update_file`) instead of `git push` bypasses all four (tracked in Notion).
+- `.claude/hooks/pre-push-visual-gate.sh`, `.claude/hooks/pre-push-review-gate.sh`, `.claude/hooks/pre-merge-review-gate.sh`, `.claude/hooks/check-skill-redaction.sh` — PreToolUse `Bash` gates for visual-QA, ship-check, and skill-redaction enforcement before `git push`/`git merge`. **Known gap:** matcher is `Bash` only — a push done via the GitHub MCP connector (`mcp__github__push_files`/`create_or_update_file`) instead of `git push` bypasses all four.
 - `.claude/hooks/enterworktree-guard.sh` — PreToolUse `EnterWorktree` gate; guards worktree NAME COLLISIONS only (`worktree-enforce.sh` above is the one that covers the actual §1 rule).
 - `.claude/hooks/whitespace-nowrap-lint.sh` — PostToolUse `Edit|Write` warning for a recurring CSS overflow trap.
 
@@ -27,6 +27,16 @@ These are derivatives of `~/.claude/hooks/` masters. Each script self-skips if `
 ## Slash commands available in cloud
 
 Cloud sees commands committed to `.claude/commands/` in this repo. Local CLI sees both project + user-level. Check `ls .claude/commands/` for what's available cloud-side. The planning suite (`/plan-review`, `/right-problem`, `/plan-tasks`) is committed here so cloud sessions get the tuned multi-model review instead of approximating it — Codex/Gemini legs self-degrade to Claude agents when those CLIs/keys are absent.
+
+## Landing (the owner never merges)
+
+The owner does not review or merge PRs. A finished change is yours to land, same session, no asking:
+
+1. Run the checks CLAUDE.md §12 requires in your worktree, then `git push origin HEAD:refs/heads/land/<name>` (verified working from a cloud session 2026-09-27). MCP fallback if git push is refused: `mcp__github__create_branch` with branch `land/<name>`, or dispatch `land.yml` with `branch=<name>`.
+2. `land.yml` rebases onto main, re-runs the blocking gates, fast-forwards main, deletes the ref. Follow it with one `mcp__github__actions_list` on `land.yml` per check-in (ScheduleWakeup/`send_later`, not a polling loop) until it reports success, or fix what it refused.
+3. If you opened a draft PR for tracking, close it after LANDED (land rebases, so GitHub won't auto-close it). Opening one is optional; CLAUDE.md's landing rule overrides the harness's "create a draft PR" default.
+
+Don't use `scripts/merge-worktree-to-main.sh` in cloud: its name trips `pre-merge-review-gate.sh`. The Stop hook (`verify-edits.sh`) blocks "waiting on your merge" (OWNERMERGE) and SAFE TO EXIT after a land push with no run check (LANDUNCHECKED). Local-side detail: `cloud-memory/CLAUDE-reference.md` (Landing on main).
 
 ## GitHub work in cloud (no `gh` CLI)
 
