@@ -18,6 +18,8 @@ const {
   validateOBProductionPageTitle,
   mergeSources,
   isPreviewStrictlyAfterOpening,
+  isNullOpeningFill,
+  isPhase3DefaultCandidate,
 } = require('./enrich-off-broadway-dates.js');
 
 // Real Playbill production pages render First Preview / Opening Date as
@@ -189,4 +191,67 @@ test('isPreviewStrictlyAfterOpening — preview after opening IS bad data', () =
 test('isPreviewStrictlyAfterOpening — missing either date is NOT bad data (nothing to compare)', () => {
   assert.equal(isPreviewStrictlyAfterOpening({ firstPreview: null, opening: '2026-04-26' }), false);
   assert.equal(isPreviewStrictlyAfterOpening({ firstPreview: '2026-04-15', opening: null }), false);
+});
+
+// Null-opening fill (2026-09-27): our-sinatra/midnight/truly-howard-hughes sat
+// at status=previews with openingDate=null while Playbill had the date,
+// because single-source writes were audit-only even with nothing to overwrite.
+test('isNullOpeningFill — null opening + plausible single-source date fills', () => {
+  const show = { openingDate: null, previewsStartDate: '2026-09-12' };
+  assert.equal(isNullOpeningFill(show, { opening: '2026-09-27', firstPreview: '2026-09-12', confidence: 'single-source' }), true);
+});
+
+test('isNullOpeningFill — null opening, no known preview, still fills', () => {
+  assert.equal(isNullOpeningFill({ openingDate: null }, { opening: '2026-10-21', confidence: 'single-source' }), true);
+});
+
+test('isNullOpeningFill — existing opening date is never a null-fill', () => {
+  assert.equal(isNullOpeningFill({ openingDate: '2026-09-20', previewsStartDate: '2026-09-12' }, { opening: '2026-09-27', confidence: 'single-source' }), false);
+});
+
+test('isNullOpeningFill — discrepancy between sources does not fill', () => {
+  assert.equal(isNullOpeningFill({ openingDate: null }, { opening: '2026-09-27', confidence: 'discrepancy' }), false);
+});
+
+test('isNullOpeningFill — opening before known first preview (wrong production) does not fill', () => {
+  assert.equal(isNullOpeningFill({ openingDate: null, previewsStartDate: '2026-09-12' }, { opening: '2025-10-01', confidence: 'single-source' }), false);
+});
+
+test('isNullOpeningFill — opening far after known preview does not fill', () => {
+  assert.equal(isNullOpeningFill({ openingDate: null, previewsStartDate: '2026-01-10' }, { opening: '2026-09-27', confidence: 'single-source' }), false);
+});
+
+test('isNullOpeningFill — source first-preview far from known preview does not fill', () => {
+  assert.equal(isNullOpeningFill({ openingDate: null, previewsStartDate: '2026-09-12' }, { opening: '2026-12-01', firstPreview: '2026-11-20', confidence: 'single-source' }), false);
+});
+
+test('isNullOpeningFill — preview after opening in source is bad data', () => {
+  assert.equal(isNullOpeningFill({ openingDate: null }, { opening: '2026-09-20', firstPreview: '2026-09-25', confidence: 'single-source' }), false);
+});
+
+test('isPhase3DefaultCandidate — same-date class queued', () => {
+  assert.equal(isPhase3DefaultCandidate({ openingDate: '2026-04-15', previewsStartDate: '2026-04-15' }, '2026-09-27'), true);
+});
+
+test('isPhase3DefaultCandidate — null opening already in previews queued', () => {
+  assert.equal(isPhase3DefaultCandidate({ status: 'previews', openingDate: null, previewsStartDate: '2026-09-11' }, '2026-09-27'), true);
+});
+
+test('isPhase3DefaultCandidate — null opening, previews not started, left to Phase 1', () => {
+  assert.equal(isPhase3DefaultCandidate({ openingDate: null, previewsStartDate: '2026-11-01' }, '2026-09-27'), false);
+  assert.equal(isPhase3DefaultCandidate({ openingDate: null }, '2026-09-27'), false);
+});
+
+test('isPhase3DefaultCandidate — distinct confirmed dates not queued', () => {
+  assert.equal(isPhase3DefaultCandidate({ openingDate: '2026-09-25', previewsStartDate: '2026-09-11' }, '2026-09-27'), false);
+});
+
+test('isPhase3DefaultCandidate — closed or long-running null-opening shows not queued', () => {
+  assert.equal(isPhase3DefaultCandidate({ status: 'closed', openingDate: null, previewsStartDate: '2026-09-01' }, '2026-09-27'), false);
+  assert.equal(isPhase3DefaultCandidate({ status: 'previews', openingDate: null, previewsStartDate: '2024-01-06' }, '2026-09-27'), false);
+});
+
+test('isNullOpeningFill — id year more than 1y from source opening does not fill', () => {
+  assert.equal(isNullOpeningFill({ id: 'girls-chance-music-off-broadway-2024', openingDate: null }, { opening: '2026-05-28', confidence: 'single-source' }), false);
+  assert.equal(isNullOpeningFill({ id: 'midnight-off-broadway-2026', openingDate: null }, { opening: '2026-09-27', confidence: 'single-source' }), true);
 });
