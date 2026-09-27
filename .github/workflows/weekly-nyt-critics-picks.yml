@@ -69,6 +69,13 @@ jobs:
           git commit -m "data: Update NYT Critics Picks"
           bash scripts/lib/push-with-retry.sh
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: weekly-nyt-critics-picks
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

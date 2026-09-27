@@ -14,7 +14,13 @@
  * and the old plain-only fetcher silently wrote an empty list, wiping every
  * Critic's Pick badge on the site (The Holes, 2026-09-23, was the report).
  *
- * Write guard: the file is only overwritten when the scrape looks sane
+ * Accumulating list: the spotlight page only shows the latest ~100 picks,
+ * but a Critic's Pick is permanent. Each run UNIONS the scrape into the
+ * URLs already on file, so a pick that scrolls off the window keeps its
+ * badge. (Replacing the list had already dropped 12 picks, e.g. Stereophonic
+ * and Hell's Kitchen, before the 403 outage.)
+ *
+ * Write guard: the file is only rewritten when the scrape looks sane
  * (see evaluateScrape). Otherwise the script exits 1 and leaves the
  * existing list alone so the workflow's failure alert fires.
  *
@@ -30,10 +36,13 @@ const OUTPUT_PATH = path.join(__dirname, '../data/nyt-critics-picks.json');
 const BASE_URL = 'https://www.nytimes.com/spotlight/theater-critics-picks';
 const MAX_PAGES = 15; // Safety cap
 const DELAY_MS = 1500;
-// Reject a scrape that returns fewer than this share of the URLs already on
-// file. The spotlight page is a rolling ~100-item window, so a healthy run
-// stays near the previous count.
+// Reject a scrape that returns fewer than this share of the previous scrape.
+// The spotlight page is a rolling ~100-item window, so a healthy run stays
+// near the previous scrape's size.
 const MIN_RETAIN_RATIO = 0.5;
+// Size of the spotlight window; the fallback baseline when the file predates
+// _meta.lastScrapeCount.
+const SPOTLIGHT_WINDOW = 100;
 
 function fetchPlain(url) {
   return new Promise((resolve, reject) => {
@@ -87,24 +96,44 @@ function extractReviewUrls(content) {
 }
 
 /**
- * Decide whether a scrape result may overwrite the file on disk.
- * Pure so it can be unit-tested.
+ * Decide whether a scrape result may be merged into the file on disk.
+ * `baselineCount` is the size of the previous successful scrape (not the
+ * accumulated list, which only grows). Pure so it can be unit-tested.
  */
-function evaluateScrape({ urls, previousCount, firstPageError }) {
+function evaluateScrape({ urls, baselineCount, firstPageError }) {
   if (firstPageError) return { ok: false, reason: `page 1 failed: ${firstPageError}` };
   if (urls.length === 0) return { ok: false, reason: 'scrape found 0 URLs' };
-  if (previousCount > 0 && urls.length < previousCount * MIN_RETAIN_RATIO) {
-    return { ok: false, reason: `scrape found ${urls.length} URLs, below ${Math.round(MIN_RETAIN_RATIO * 100)}% of the ${previousCount} on file` };
+  if (baselineCount > 0 && urls.length < baselineCount * MIN_RETAIN_RATIO) {
+    return { ok: false, reason: `scrape found ${urls.length} URLs, below ${Math.round(MIN_RETAIN_RATIO * 100)}% of the previous scrape's ${baselineCount}` };
   }
   return { ok: true };
 }
 
-function readPreviousCount() {
+/**
+ * Union the scrape into the URLs already on file. Never removes a URL.
+ * Pure so it can be unit-tested.
+ */
+function mergePicks(existingUrls, scrapedUrls) {
+  const existing = new Set(existingUrls || []);
+  const added = [...new Set(scrapedUrls)].filter(u => !existing.has(u)).sort();
+  const urls = [...new Set([...existing, ...scrapedUrls])].sort();
+  return { urls, added };
+}
+
+/** Baseline for the shrink guard: the previous scrape's size, capped at the window. */
+function baselineFromFile(prev) {
+  if (!prev) return 0;
+  const last = prev._meta && Number(prev._meta.lastScrapeCount);
+  if (last > 0) return last;
+  const n = Array.isArray(prev.urls) ? prev.urls.length : 0;
+  return Math.min(n, SPOTLIGHT_WINDOW);
+}
+
+function readExisting() {
   try {
-    const prev = JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf8'));
-    return Array.isArray(prev.urls) ? prev.urls.length : 0;
+    return JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf8'));
   } catch {
-    return 0;
+    return null;
   }
 }
 
@@ -146,19 +175,23 @@ async function main() {
     try { await _scraper.cleanup(); } catch { /* best effort */ }
   }
 
-  const urls = [...allUrls].sort();
-  console.log(`\nTotal unique URLs: ${urls.length}`);
+  const scraped = [...allUrls].sort();
+  console.log(`\nScraped unique URLs: ${scraped.length}`);
 
-  const previousCount = readPreviousCount();
-  const verdict = evaluateScrape({ urls, previousCount, firstPageError });
+  const prev = readExisting();
+  const existingUrls = (prev && Array.isArray(prev.urls)) ? prev.urls : [];
+  const verdict = evaluateScrape({ urls: scraped, baselineCount: baselineFromFile(prev), firstPageError });
   if (!verdict.ok) {
-    console.error(`REFUSING to overwrite ${OUTPUT_PATH}: ${verdict.reason}. Keeping the ${previousCount} URLs on file.`);
+    console.error(`REFUSING to update ${OUTPUT_PATH}: ${verdict.reason}. Keeping the ${existingUrls.length} URLs on file.`);
     process.exit(1);
   }
 
+  const { urls, added } = mergePicks(existingUrls, scraped);
+  console.log(`New picks: ${added.length}`);
+  added.forEach(u => console.log('  + ' + u));
+
   if (dryRun) {
-    console.log('[DRY RUN] Would write to', OUTPUT_PATH);
-    urls.forEach(u => console.log('  ' + u));
+    console.log(`[DRY RUN] Would write ${urls.length} URLs to`, OUTPUT_PATH);
     return;
   }
 
@@ -167,15 +200,16 @@ async function main() {
       lastUpdated: new Date().toISOString(),
       source: BASE_URL,
       count: urls.length,
+      lastScrapeCount: scraped.length,
     },
     urls,
   };
 
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(data, null, 2) + '\n');
-  console.log(`Wrote ${urls.length} URLs to ${OUTPUT_PATH}`);
+  console.log(`Wrote ${urls.length} URLs (${added.length} new) to ${OUTPUT_PATH}`);
 }
 
-module.exports = { extractReviewUrls, evaluateScrape, MIN_RETAIN_RATIO };
+module.exports = { extractReviewUrls, evaluateScrape, mergePicks, baselineFromFile, MIN_RETAIN_RATIO };
 
 if (require.main === module) {
   main().catch(err => {
