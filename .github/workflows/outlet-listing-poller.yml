@@ -120,10 +120,14 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          # The poller's durable-rejection cache (cross-market / junk-outlet
+          # URLs) was written every run and never staged, so each fresh runner
+          # re-processed every rejected URL again (BRO-4185).
+          git add data/audit/outlet-poller-rejected-urls.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes to commit"
           else
-            git commit -m "chore: Record scraper-spend ledger (outlet-listing-poller)"
+            git commit -m "chore: Record scraper-spend ledger + rejected-URL cache (outlet-listing-poller)"
             bash scripts/lib/push-with-retry.sh
           fi
 

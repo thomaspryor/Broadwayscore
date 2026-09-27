@@ -160,11 +160,21 @@ function mergeAlwaysOnOutlets(derived, configuredIds, skipOutlets = new Set()) {
  * @param {Date}   cutoff
  * @returns {Array<{url: string, headline: string, publishDate: string|null}>}
  */
+// An unparseable date is an Invalid Date — truthy, never `< cutoff`, and its
+// toISOString() throws RangeError, which used to abort the whole outlet
+// (BRO-4185). Treat it as "no date" instead.
+function parseFeedDate(dateMatch) {
+  if (!dateMatch) return null;
+  const d = new Date(dateMatch[1].trim());
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
 function parseRssFeed(xml, cutoff) {
   const items = [];
 
   // RSS 2.0 items
-  const itemMatches = [...xml.matchAll(/<item>([\s\S]*?)<\/item>/gi)];
+  // `<item[\s>]` also matches RSS 1.0's `<item rdf:about="…">` (BRO-4185).
+  const itemMatches = [...xml.matchAll(/<item(?:\s[^>]*)?>([\s\S]*?)<\/item>/gi)];
   for (const [, body] of itemMatches) {
     const urlMatch = body.match(/<link>([^<]+)<\/link>/) || body.match(/<guid[^>]*>([^<]+)<\/guid>/);
     const titleMatch = body.match(/<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/i);
@@ -172,22 +182,25 @@ function parseRssFeed(xml, cutoff) {
     if (!urlMatch) continue;
     const url = urlMatch[1].trim();
     const headline = titleMatch ? titleMatch[1].replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').trim() : '';
-    const pubDate = dateMatch ? new Date(dateMatch[1].trim()) : null;
+    const pubDate = parseFeedDate(dateMatch);
     if (pubDate && pubDate < cutoff) continue;
     if (!url.startsWith('http')) continue;
     items.push({ url, headline, publishDate: pubDate ? pubDate.toISOString().slice(0, 10) : null });
   }
 
   // Atom entries
-  const entryMatches = [...xml.matchAll(/<entry>([\s\S]*?)<\/entry>/gi)];
+  const entryMatches = [...xml.matchAll(/<entry(?:\s[^>]*)?>([\s\S]*?)<\/entry>/gi)];
   for (const [, body] of entryMatches) {
-    const urlMatch = body.match(/<link[^>]+href="([^"]+)"/) || body.match(/<id>([^<]+)<\/id>/);
+    // Prefer rel="alternate"; accept either quote style (Blogger emits href='…').
+    const urlMatch = body.match(/<link[^>]*rel=["']alternate["'][^>]*href=["']([^"']+)["']/i)
+      || body.match(/<link[^>]+href=["']([^"']+)["']/i)
+      || body.match(/<id>([^<]+)<\/id>/);
     const titleMatch = body.match(/<title[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/i);
     const dateMatch = body.match(/<published>([^<]+)<\/published>/i) || body.match(/<updated>([^<]+)<\/updated>/i);
     if (!urlMatch) continue;
     const url = urlMatch[1].trim();
     const headline = titleMatch ? titleMatch[1].replace(/&amp;/g, '&').trim() : '';
-    const pubDate = dateMatch ? new Date(dateMatch[1].trim()) : null;
+    const pubDate = parseFeedDate(dateMatch);
     if (pubDate && pubDate < cutoff) continue;
     if (!url.startsWith('http')) continue;
     items.push({ url, headline, publishDate: pubDate ? pubDate.toISOString().slice(0, 10) : null });

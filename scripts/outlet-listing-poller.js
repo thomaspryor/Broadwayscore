@@ -53,7 +53,9 @@ const {
   normalizeCritic,
   generateReviewFilename,
   findExistingReviewFile,
+  isFlaggedMergeTarget,
 } = require('./lib/review-normalization');
+const { describeSkip } = require('./lib/ingest-skip-classify');
 const {
   findMatchingShows,
   deriveQualifyingOutlets,
@@ -188,6 +190,53 @@ const OUTLET_STRATEGY_CONFIG = {
   // City A.M.: London business paper; theatre category RSS has West End reviews
   'city-am':                { strategy: 'rss', url: 'https://www.cityam.com/category/theatre/feed/' },
   // LondonTheatre1: covered by WP_API_CONFIG (wp-json/wp/v2/posts?categories=14) — no entry needed here
+
+  // --- Feed-first batch (BRO-4185, 2026-09-27) ---
+  // Found by scripts/probe-outlet-feeds.js and checked by hand. These were
+  // SERP-only: "site:domain theater review" returned 0 for 31/69 SERP outlets
+  // on 2026-09-26 while these feeds held the reviews (Off Off Online → The
+  // Holes, First Night → Table 17, TWI-NY → Delirium, London Unattached →
+  // Catarina). Re-run the probe to find more; leave general-news feeds
+  // (thejc, lightingandsoundamerica) and forums (theatreboard) on SERP.
+  'off-off-online':          { strategy: 'rss', url: 'https://offoffonline.com/offoffonline?format=rss' },
+  'this-week-in-new-york':   { strategy: 'rss', url: 'https://twi-ny.com/feed/' },
+  'la-voce-di-new-york':     { strategy: 'rss', url: 'https://lavocedinewyork.com/feed/' },
+  'the-interested-bystander': { strategy: 'rss', url: 'https://www.interestedbystander.com/feeds/posts/default' },
+  'firstnightmagazine':      { strategy: 'rss', url: 'https://firstnightmagazine.com/feed/' },
+  'london-unattached':       { strategy: 'rss', url: 'https://www.london-unattached.com/feed/' },
+  // Squarespace: /news is the review collection (the probe's first hit was /shop)
+  'west-end-best-friend':    { strategy: 'rss', url: 'https://www.westendbestfriend.co.uk/news?format=rss', urlFilter: /review/i },
+  'all-that-dazzles-uk':     { strategy: 'rss', url: 'https://www.allthatdazzles.co.uk/blog-feed.xml' },
+  'plays-international':     { strategy: 'rss', url: 'https://playsinternational.org.uk/feed/' },
+  theupcoming:               { strategy: 'rss', url: 'https://www.theupcoming.co.uk/feed/' },
+  'the-spy-in-the-stalls':   { strategy: 'rss', url: 'https://thespyinthestalls.com/feed/' },
+  liamodell:                 { strategy: 'rss', url: 'https://liamodell.com/feed/' },
+  readaboutstuff:            { strategy: 'rss', url: 'https://readaboutstuff.com/feed/' },
+  // Afridiziak mixes offers/interviews/news; reviews live under /reviews/
+  'afridiziak-theatre-news': { strategy: 'rss', url: 'https://www.afridiziak.com/feed/', urlFilter: /\/reviews\// },
+  'musical-theatre-review':  { strategy: 'rss', url: 'https://musicaltheatrereview.com/feed/' },
+  'plays-to-see':            { strategy: 'rss', url: 'https://playstosee.com/feed/' },
+  'a-youngish-perspective':  { strategy: 'rss', url: 'https://ayoungishperspective.co.uk/feed/' },
+  loureviews:                { strategy: 'rss', url: 'https://loureviews.blog/feed/' },
+  monstagigz:                { strategy: 'rss', url: 'https://monstagigz.com/feed/' },
+  'north-west-end':          { strategy: 'rss', url: 'https://northwestend.com/feed/' },
+  // South London Press: local news site; theatre reviews carry "review" in the slug
+  'south-london':            { strategy: 'rss', url: 'https://southlondon.co.uk/feed/', urlFilter: /review/i },
+  'theatre-vibe':            { strategy: 'rss', url: 'https://theatrevibe.co.uk/feed/' },
+  'west-end-wilma':          { strategy: 'rss', url: 'https://westendwilma.com/feed/' },
+  pinkprincetheatre:         { strategy: 'rss', url: 'https://www.pinkprincetheatre.com/blog-feed.xml' },
+  viewfromthegods:           { strategy: 'rss', url: 'https://viewfromthegods.co.uk/feed/' },
+  fairypoweredproductions:   { strategy: 'rss', url: 'https://fairypoweredproductions.com/feed/' },
+  adventuresintheatreland:   { strategy: 'rss', url: 'https://www.adventuresintheatreland.com/blog-feed.xml' },
+  unmissabletheatre:         { strategy: 'rss', url: 'https://unmissabletheatre.co.uk/reviews?format=rss' },
+  theartsdispatch:           { strategy: 'rss', url: 'https://theartsdispatch.substack.com/feed' },
+  jackstage:                 { strategy: 'rss', url: 'https://www.jackstage.co.uk/blog-feed.xml' },
+  rolandcat:                 { strategy: 'rss', url: 'https://rolandcat.substack.com/feed' },
+  revstanstheatreblog:       { strategy: 'rss', url: 'https://revstanstheatreblog.co.uk/feed/' },
+  matineemouse:              { strategy: 'rss', url: 'https://matineemouse.substack.com/feed' },
+  'rhombus-rota':            { strategy: 'rss', url: 'https://rhombusrota.co.uk/feed/' },
+  'harry-theatre-life':      { strategy: 'rss', url: 'https://www.harrytheatrelife.co.uk/blog-feed.xml' },
+  onin:                      { strategy: 'rss', url: 'https://onin.london/feed/' },
 };
 
 // Outlets where we use WordPress REST API (separate — API approach, no URL scraping needed)
@@ -242,7 +291,7 @@ function parseArgs() {
 // HTTP helpers (simple, no BD/SB — used for RSS and WP API)
 // ---------------------------------------------------------------------------
 
-function fetchSimple(url, timeoutMs = 15000) {
+function fetchSimple(url, timeoutMs = 15000, redirectsLeft = 5) {
   return new Promise((resolve, reject) => {
     const urlObj = new URL(url);
     const mod = urlObj.protocol === 'https:' ? require('https') : require('http');
@@ -250,7 +299,11 @@ function fetchSimple(url, timeoutMs = 15000) {
       { hostname: urlObj.hostname, path: urlObj.pathname + urlObj.search, headers: { 'User-Agent': 'BroadwayScorecard/1.0 (+https://broadwayscorecard.com)', Accept: 'application/rss+xml, application/atom+xml, application/json, text/html' } },
       res => {
         if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-          return fetchSimple(res.headers.location, timeoutMs).then(resolve, reject);
+          res.resume();
+          if (redirectsLeft <= 0) return reject(new Error(`Too many redirects for ${url}`));
+          // Location may be relative (e.g. Squarespace "/offoffonline?format=rss").
+          const next = new URL(res.headers.location, url).toString();
+          return fetchSimple(next, timeoutMs, redirectsLeft - 1).then(resolve, reject);
         }
         if (res.statusCode !== 200) { res.resume(); return reject(new Error(`HTTP ${res.statusCode} for ${url}`)); }
         const chunks = [];
@@ -354,6 +407,29 @@ function buildStubPath(showId, outletId) {
  * Returns true if we should SKIP (already filed).
  * This check is per-show-dir — so the same URL can be filed under Show A and Show B independently.
  */
+/**
+ * Is the exact target file this stub would land in a flagged/rejected record
+ * for the SAME url? findExistingReviewFile deliberately ignores
+ * wrongProduction/duplicateOf files, so without this the writer's BRO-3182
+ * guard refuses the same already-rejected URL every single day (26 refusals
+ * on 2026-09-26, mostly cross-show false matches) and buries the rare
+ * different-url refusal that actually needs a human (BRO-4185).
+ * Stateless on purpose: the workflow never persisted a cache for this.
+ */
+function isKnownRejectedTarget(showId, outletId, url, reviewTextsDir = REVIEW_TEXTS_DIR) {
+  const filepath = path.join(reviewTextsDir, showId, generateReviewFilename(outletId, 'unknown'));
+  let data;
+  try { data = JSON.parse(fs.readFileSync(filepath, 'utf-8')); } catch { return false; }
+  return isFlaggedMergeTarget(data) && sameUrl(data.url, url);
+}
+
+function sameUrl(a, b) {
+  if (!a || !b) return false;
+  // Keep the query string: some outlets identify posts by it (post.cfm?p=29091).
+  const norm = u => u.trim().replace(/^https?:\/\/(www\.)?/i, '').replace(/#.*$/, '').replace(/\/+(?=\?|$)/, '').toLowerCase();
+  return norm(a) === norm(b);
+}
+
 function alreadyFiled(showId, outletId, url) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   const existing = findExistingReviewFile(showDir, outletId, 'unknown');
@@ -589,6 +665,11 @@ async function main() {
   // --- Per-outlet sweep ---
   let totalNewStubs = 0;
   let outletsFailed = 0;
+  // Every source returned nothing. For SERP-only outlets that is NOT proof of
+  // "no new reviews" (index lag, keyword mismatch) — listed in the summary so a
+  // silent miss is visible; the fix is a feed entry (scripts/probe-outlet-feeds.js).
+  const serpOnlyEmpty = [];
+  const blockedCollisions = [];
 
   for (const outletId of qualifyingOutlets) {
     const outletEntry = outletRegistry[outletId] || {};
@@ -649,7 +730,11 @@ async function main() {
     }
 
     if (articles.length === 0) {
-      console.log(`  No articles found (normal if no new reviews this week)`);
+      const serpOnly = !WP_API_CONFIG[outletId] && !OUTLET_STRATEGY_CONFIG[outletId];
+      if (serpOnly) serpOnlyEmpty.push(outletId);
+      console.log(serpOnly
+        ? `  No articles found — SERP-only outlet, so this is unverified (add a feed entry: scripts/probe-outlet-feeds.js --outlets ${outletId})`
+        : `  No articles found (normal if no new reviews this week)`);
       continue;
     }
 
@@ -680,11 +765,15 @@ async function main() {
         // Skip URLs the classifier durably rejected on a prior cycle. The
         // writer would just reject them again and we'd burn classifier work.
         if (isRejectedCached(url, show.id)) continue;
+        if (isKnownRejectedTarget(show.id, outletId, url)) continue;
 
         const result = createStub(show.id, outletId, displayName, url, headline, publishDate, isMultiShow, nytCriticsPick, opts.dryRun);
         // Only count NEW writes — the shared writer may also reject (cross-market
         // classifier), reroute, or merge into an existing file. None of those
         // are "new stubs" for the workflow output.
+        if (result && result.action === 'skipped' && result.reason === 'flagged-filename-collision') {
+          blockedCollisions.push({ showId: show.id, outletId, url });
+        }
         if (result && result.action === 'new') {
           if (!opts.dryRun) outletNewStubs++;
           totalNewStubs++;
@@ -704,6 +793,18 @@ async function main() {
   console.log(`\n=== Done ===`);
   console.log(`New stubs: ${totalNewStubs}`);
   if (outletsFailed > 0) console.warn(`Outlets with errors: ${outletsFailed}`);
+  if (serpOnlyEmpty.length > 0) {
+    console.warn(`SERP-only outlets with 0 results (unverified, not proof of no reviews): ${serpOnlyEmpty.length} — ${serpOnlyEmpty.join(', ')}`);
+  }
+  if (blockedCollisions.length > 0) {
+    console.warn(`\n⛔ ${blockedCollisions.length} new URL(s) blocked by a flagged file with a DIFFERENT url — needs a human call:`);
+    for (const b of blockedCollisions) {
+      console.warn(`  • ${describeSkip(b.showId, b.url, { reason: 'flagged-filename-collision' })}`);
+      if (process.env.GITHUB_STEP_SUMMARY) {
+        fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `- ⛔ blocked: \`${b.showId}\` / ${b.outletId}: ${b.url}\n`);
+      }
+    }
+  }
 
   // Persist rejected-URL cache (cross-market classifier rejects, etc.) so the
   // next poll cycle skips them upfront. Skip in dry-run since recordRejection
@@ -720,9 +821,14 @@ async function main() {
   }
 }
 
-main()
-  .then(() => process.exit(0))
-  .catch(err => {
-    console.error('Fatal:', err);
-    process.exit(1);
-  });
+if (require.main === module) {
+  main()
+    .then(() => process.exit(0))
+    .catch(err => {
+      console.error('Fatal:', err);
+      process.exit(1);
+    });
+}
+
+// Exported for scripts/probe-outlet-feeds.js (lists SERP-only outlets) and tests.
+module.exports = { SKIP_OUTLETS, OUTLET_STRATEGY_CONFIG, WP_API_CONFIG, isKnownRejectedTarget };
