@@ -23,7 +23,7 @@ permissions:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -33,7 +33,22 @@ jobs:
         with:
           node-version: '20'
 
+      # NYT 403s the runner's plain fetch (since 2026-09-16); the script
+      # falls back to fetchPage() (Bright Data → ScrapingBee → Playwright),
+      # which needs deps + proxy secrets.
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
       - name: Refresh NYT Critics Picks
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           ARGS=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then

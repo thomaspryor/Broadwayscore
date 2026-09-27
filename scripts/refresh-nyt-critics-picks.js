@@ -8,6 +8,16 @@
  * to data/nyt-critics-picks.json. The homepage shelf cross-references
  * these URLs against our reviews to find matching shows.
  *
+ * Fetch order per page: plain HTTPS first (free), then the shared
+ * fetchPage() chain (Bright Data → ScrapingBee → Playwright …) when NYT
+ * blocks the runner. Since 2026-09-16 NYT answers GitHub runners with 403,
+ * and the old plain-only fetcher silently wrote an empty list, wiping every
+ * Critic's Pick badge on the site (The Holes, 2026-09-23, was the report).
+ *
+ * Write guard: the file is only overwritten when the scrape looks sane
+ * (see evaluateScrape). Otherwise the script exits 1 and leaves the
+ * existing list alone so the workflow's failure alert fires.
+ *
  * Usage:
  *   node scripts/refresh-nyt-critics-picks.js [--dry-run]
  */
@@ -20,10 +30,12 @@ const OUTPUT_PATH = path.join(__dirname, '../data/nyt-critics-picks.json');
 const BASE_URL = 'https://www.nytimes.com/spotlight/theater-critics-picks';
 const MAX_PAGES = 15; // Safety cap
 const DELAY_MS = 1500;
+// Reject a scrape that returns fewer than this share of the URLs already on
+// file. The spotlight page is a rolling ~100-item window, so a healthy run
+// stays near the previous count.
+const MIN_RETAIN_RATIO = 0.5;
 
-const dryRun = process.argv.includes('--dry-run');
-
-function fetchPage(url) {
+function fetchPlain(url) {
   return new Promise((resolve, reject) => {
     const options = {
       headers: {
@@ -34,6 +46,7 @@ function fetchPage(url) {
     };
     const req = https.get(url, options, (res) => {
       if (res.statusCode !== 200) {
+        res.resume();
         reject(new Error(`HTTP ${res.statusCode} for ${url}`));
         return;
       }
@@ -46,27 +59,68 @@ function fetchPage(url) {
   });
 }
 
+let _scraper = null;
+async function fetchSpotlightPage(url) {
+  try {
+    const html = await fetchPlain(url);
+    if (extractReviewUrls(html).length > 0) return html;
+    console.log('    Plain fetch returned no review links, escalating to fetchPage()');
+  } catch (err) {
+    console.log(`    Plain fetch failed (${err.message}), escalating to fetchPage()`);
+  }
+  if (!_scraper) _scraper = require('./lib/scraper');
+  const result = await _scraper.fetchPage(url, { skipVerify: true });
+  return (result && result.content) || '';
+}
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function extractReviewUrls(html) {
-  // Match theater review URLs in the spotlight page
-  const matches = html.match(/\/\d{4}\/\d{2}\/\d{2}\/theater\/[^"]+/g) || [];
+/**
+ * Pull NYT theater review URLs out of a spotlight page. Works on raw HTML
+ * (relative or absolute hrefs) and on markdown returned by proxy fetchers.
+ */
+function extractReviewUrls(content) {
+  const matches = String(content || '').match(/\/\d{4}\/\d{2}\/\d{2}\/theater\/[A-Za-z0-9\-_/]+\.html/g) || [];
   return [...new Set(matches)].map(p => `https://www.nytimes.com${p}`);
 }
 
+/**
+ * Decide whether a scrape result may overwrite the file on disk.
+ * Pure so it can be unit-tested.
+ */
+function evaluateScrape({ urls, previousCount, firstPageError }) {
+  if (firstPageError) return { ok: false, reason: `page 1 failed: ${firstPageError}` };
+  if (urls.length === 0) return { ok: false, reason: 'scrape found 0 URLs' };
+  if (previousCount > 0 && urls.length < previousCount * MIN_RETAIN_RATIO) {
+    return { ok: false, reason: `scrape found ${urls.length} URLs, below ${Math.round(MIN_RETAIN_RATIO * 100)}% of the ${previousCount} on file` };
+  }
+  return { ok: true };
+}
+
+function readPreviousCount() {
+  try {
+    const prev = JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf8'));
+    return Array.isArray(prev.urls) ? prev.urls.length : 0;
+  } catch {
+    return 0;
+  }
+}
+
 async function main() {
+  const dryRun = process.argv.includes('--dry-run');
   console.log('Refreshing NYT Critic\'s Picks from spotlight page...');
   const allUrls = new Set();
   let prevSize = 0;
+  let firstPageError = null;
 
   for (let page = 1; page <= MAX_PAGES; page++) {
     const url = page === 1 ? BASE_URL : `${BASE_URL}?page=${page}`;
     console.log(`  Page ${page}: ${url}`);
 
     try {
-      const html = await fetchPage(url);
+      const html = await fetchSpotlightPage(url);
       const urls = extractReviewUrls(html);
 
       for (const u of urls) allUrls.add(u);
@@ -81,14 +135,26 @@ async function main() {
       prevSize = allUrls.size;
     } catch (err) {
       console.error(`    Error on page ${page}: ${err.message}`);
+      if (page === 1) firstPageError = err.message;
       break;
     }
 
     if (page < MAX_PAGES) await sleep(DELAY_MS);
   }
 
+  if (_scraper && typeof _scraper.cleanup === 'function') {
+    try { await _scraper.cleanup(); } catch { /* best effort */ }
+  }
+
   const urls = [...allUrls].sort();
   console.log(`\nTotal unique URLs: ${urls.length}`);
+
+  const previousCount = readPreviousCount();
+  const verdict = evaluateScrape({ urls, previousCount, firstPageError });
+  if (!verdict.ok) {
+    console.error(`REFUSING to overwrite ${OUTPUT_PATH}: ${verdict.reason}. Keeping the ${previousCount} URLs on file.`);
+    process.exit(1);
+  }
 
   if (dryRun) {
     console.log('[DRY RUN] Would write to', OUTPUT_PATH);
@@ -109,7 +175,11 @@ async function main() {
   console.log(`Wrote ${urls.length} URLs to ${OUTPUT_PATH}`);
 }
 
-main().catch(err => {
-  console.error('Fatal:', err);
-  process.exit(1);
-});
+module.exports = { extractReviewUrls, evaluateScrape, MIN_RETAIN_RATIO };
+
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal:', err);
+    process.exit(1);
+  });
+}
