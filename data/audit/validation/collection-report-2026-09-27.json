@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-27T03:16:50.110Z",
+  "runDate": "2026-09-27T04:14:07.381Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -27,26 +27,26 @@
     "archive": 24
   },
   "statistics": {
-    "tier1Attempts": 18,
-    "tier1Success": 6,
+    "tier1Attempts": 11,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 2,
-    "tier1_5Success": 2,
-    "tier2Attempts": 14,
-    "tier2Success": 4,
-    "tier3Attempts": 11,
-    "tier3Success": 3,
-    "tier3_6Attempts": 10,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 11,
+    "tier2Success": 3,
+    "tier3Attempts": 12,
+    "tier3Success": 4,
+    "tier3_6Attempts": 9,
     "tier3_6Success": 0,
-    "tier4Attempts": 18,
-    "tier4Success": 2,
-    "totalFailed": 296,
-    "scrapingBeePageCredits": 74,
+    "tier4Attempts": 11,
+    "tier4Success": 0,
+    "totalFailed": 300,
+    "scrapingBeePageCredits": 54,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.3,
-    "urlDiscoveryAttempts": 275,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 284,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -884,6 +884,13 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
+    "WhatsOnStage": {
+      "count": 1,
+      "domain": "whatsonstage.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
     "Londontheatredirect": {
       "count": 2,
       "domain": "londontheatredirect.com",
@@ -891,14 +898,14 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "The Times (UK)": {
-      "count": 2,
+    "The Sunday Times": {
+      "count": 1,
       "domain": "thetimes.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "The Sunday Times": {
+    "The Times (UK)": {
       "count": 1,
       "domain": "thetimes.com",
       "hasCredentials": false,
