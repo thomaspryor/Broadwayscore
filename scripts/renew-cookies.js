@@ -42,6 +42,14 @@
 'use strict';
 
 const fs = require('fs');
+const { hasHelpFlag } = require('./lib/cli-help');
+
+// Before any other require or side effect (task #498).
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(3, 43).join('\n'));
+  process.exit(0);
+}
+
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { extractArticleTextFromUrl } = require('./lib/article-extractor');
@@ -62,11 +70,6 @@ const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (
 const args = process.argv.slice(2);
 const flag = (n) => args.includes(`--${n}`);
 const arg = (n) => { const a = args.find((x) => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3) : null; };
-
-if (flag('help') || flag('h')) {
-  console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(3, 42).join('\n'));
-  process.exit(0);
-}
 
 // --- helpers -----------------------------------------------------------------
 
@@ -96,13 +99,23 @@ function readLocalCookies(fileKey) {
   }
 }
 
-async function alertOwner(title, description, url) {
+// needs-human stops page the owner (one email with the login link; allowlisted
+// prefix 'cookie-renew:needs-human:' in lib/page-worthy-alerts.js). Everything
+// else (probe URL went free, push failed, CI confirm failed) goes to the
+// morning digest. The router's per-conditionKey cooldown dedups repeats.
+async function alertOwner({ outlet, kind, needsHuman, title, description, url }) {
   try {
     execFileSync('osascript', ['-e', `display notification ${JSON.stringify(description.slice(0, 180))} with title ${JSON.stringify(title)}`], { stdio: 'ignore' });
   } catch { /* not on a GUI session */ }
   try {
-    const { sendAlert } = require('./lib/discord-notify');
-    await sendAlert({ title, description, severity: 'error', url, email: true, idempotencyKey: `cookie-renew:${title}:${new Date().toISOString().slice(0, 10)}` });
+    const { routeAlert } = require('./lib/owner-alert-router');
+    await routeAlert({
+      conditionKey: needsHuman ? `cookie-renew:needs-human:${outlet}` : `cookie-renew:${kind}:${outlet}`,
+      disposition: needsHuman ? 'human' : 'digest',
+      title,
+      description,
+      url,
+    });
   } catch (e) {
     console.error(`[alert] failed: ${e.message}`);
   }
@@ -250,8 +263,8 @@ async function main() {
       return 1;
     }
     if (status === 'vacuous') {
-      await alertOwner(`Cookie renew: ${outlet} probe URL is no longer walled`,
-        `${probe.url} returns the full article with no cookies, so logged-in state cannot be measured. Pick a recent walled article in scripts/lib/cookie-probes.js.`, probe.url);
+      await alertOwner({ outlet, kind: 'probe-vacuous', title: `Cookie renew: ${outlet} probe URL is no longer walled`,
+        description: `${probe.url} returns the full article with no cookies, so logged-in state cannot be measured. Pick a recent walled article in scripts/lib/cookie-probes.js.`, url: probe.url });
       return 2;
     }
     if (status === 'error') {
@@ -301,7 +314,8 @@ async function main() {
             if (gate.escalate) {
               state.needsHuman = { at: new Date().toISOString(), reason: gate.reason };
               persist();
-              await alertOwner(`Cookie renew: ${outlet} needs you`, `${gate.reason}. Check the account's active sessions, then run: node scripts/renew-cookies.js --outlet=${outlet} --manual`, cfg.loginUrl);
+              await alertOwner({ outlet, needsHuman: true, title: `Cookie renew: ${outlet} needs you`,
+                description: `${gate.reason}. Check the account's active sessions, then run: node scripts/renew-cookies.js --outlet=${outlet} --manual`, url: cfg.loginUrl });
               return 3;
             }
             return 0;
@@ -311,8 +325,8 @@ async function main() {
           if (!creds.email || !creds.password) {
             state.needsHuman = { at: new Date().toISOString(), reason: 'Keychain credentials missing' };
             persist();
-            await alertOwner(`Cookie renew: ${outlet} credentials missing`,
-              `Add Keychain items service=broadwayscorecard-cookie-renew accounts ${outlet}-email / ${outlet}-password, then --reset.`, cfg.loginUrl);
+            await alertOwner({ outlet, needsHuman: true, title: `Cookie renew: ${outlet} credentials missing`,
+              description: `Add Keychain items service=broadwayscorecard-cookie-renew accounts ${outlet}-email / ${outlet}-password, then --reset.`, url: cfg.loginUrl });
             return 3;
           }
 
@@ -334,8 +348,8 @@ async function main() {
             // until a human looks, never retry automatically.
             state.needsHuman = { at: new Date().toISOString(), reason: `login did not produce a session: ${why}` };
             persist();
-            await alertOwner(`Cookie renew: ${outlet} login needs you`,
-              `Automatic login stopped without retrying (${why}). Run: node scripts/renew-cookies.js --outlet=${outlet} --manual (logs in inside the same browser profile, so no extra device).`, cfg.loginUrl);
+            await alertOwner({ outlet, needsHuman: true, title: `Cookie renew: ${outlet} login needs you`, url: cfg.loginUrl, description:
+              `Automatic login stopped without retrying (${why}). Run: node scripts/renew-cookies.js --outlet=${outlet} --manual (logs in inside the same browser profile, so no extra device).` });
             return 3;
           }
           console.log(`${outlet}: login succeeded.`);
@@ -356,7 +370,8 @@ async function main() {
     try {
       pushBundles();
     } catch (e) {
-      await alertOwner(`Cookie renew: ${outlet} push failed`, `Cookies renewed locally but COOKIES_BUNDLE_* push failed (${e.message}). The next run retries the push.`, `https://github.com/${REPO}/settings/secrets/actions`);
+      await alertOwner({ outlet, kind: 'push-failed', title: `Cookie renew: ${outlet} push failed`,
+        description: `Cookies renewed locally but COOKIES_BUNDLE_* push failed (${e.message}). The next run retries the push.`, url: `https://github.com/${REPO}/settings/secrets/actions` });
       return 4;
     }
     state.pendingPush = false;
@@ -367,8 +382,8 @@ async function main() {
     if (flag('no-confirm')) return 0;
     const confirm = await confirmViaHealthCheck(outlet);
     if (confirm.ok === false) {
-      await alertOwner(`Cookie renew: ${outlet} CI health check still failing`,
-        `Cookies were renewed and pushed, but check-cookie-health did not report ${outlet} logged in${confirm.timeout ? ' (timed out waiting)' : ''}.`, confirm.url || `https://github.com/${REPO}/actions/workflows/${HEALTH_WORKFLOW}`);
+      await alertOwner({ outlet, kind: 'confirm-failed', title: `Cookie renew: ${outlet} CI health check still failing`,
+        description: `Cookies were renewed and pushed, but check-cookie-health did not report ${outlet} logged in${confirm.timeout ? ' (timed out waiting)' : ''}.`, url: confirm.url || `https://github.com/${REPO}/actions/workflows/${HEALTH_WORKFLOW}` });
       return 4;
     }
     console.log(`${outlet}: renewal complete.`);
