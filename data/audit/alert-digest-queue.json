@@ -550,5 +550,34 @@
       }
     ],
     "queuedAt": "2026-09-27T20:19:28.426Z"
+  },
+  {
+    "conditionKey": "land:land/missing-shows-reviews-9s5ryw",
+    "title": "Landing blocked: rebase red on land/missing-shows-reviews-9s5ryw",
+    "description": "land.yml did not land land/missing-shows-reviews-9s5ryw: the rebase gate went red at 4a54c19e83. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36351274216",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/missing-shows-reviews-9s5ryw"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "4a54c19e8314dfa5badbbe2d4639b44108e931be"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36351274216"
+      }
+    ],
+    "queuedAt": "2026-09-27T21:21:04.902Z"
   }
 ]
