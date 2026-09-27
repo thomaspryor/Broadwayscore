@@ -54,7 +54,7 @@ jobs:
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="--dry-run"
           fi
-          node scripts/refresh-nyt-critics-picks.js $ARGS
+          node scripts/refresh-nyt-critics-picks.js --time-budget-min=14 $ARGS
 
       - name: Commit and push changes
         if: always() && inputs.dry_run != true

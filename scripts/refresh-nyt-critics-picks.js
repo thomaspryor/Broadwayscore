@@ -31,6 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const OUTPUT_PATH = path.join(__dirname, '../data/nyt-critics-picks.json');
 const BASE_URL = 'https://www.nytimes.com/spotlight/theater-critics-picks';
@@ -139,12 +140,19 @@ function readExisting() {
 
 async function main() {
   const dryRun = process.argv.includes('--dry-run');
+  // Proxy fetches can be slow; stop paging before the workflow timeout. A
+  // partial scrape still merges additively (the shrink guard decides).
+  const budget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
   console.log('Refreshing NYT Critic\'s Picks from spotlight page...');
   const allUrls = new Set();
   let prevSize = 0;
   let firstPageError = null;
 
   for (let page = 1; page <= MAX_PAGES; page++) {
+    if (budget.exceeded()) {
+      console.log(`  Time budget reached before page ${page}; stopping.`);
+      break;
+    }
     const url = page === 1 ? BASE_URL : `${BASE_URL}?page=${page}`;
     console.log(`  Page ${page}: ${url}`);
 
