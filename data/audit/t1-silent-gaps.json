@@ -1,8 +1,26 @@
 {
-  "generatedAt": "2026-09-27T02:05:05.959Z",
+  "generatedAt": "2026-09-27T08:57:57.261Z",
   "windowDays": 45,
   "showsScanned": 83,
   "gaps": [
+    {
+      "showId": "truly-howard-hughes-off-broadway-2026",
+      "title": "Truly, Howard Hughes",
+      "openingDate": null,
+      "file": "cititour--unknown.json",
+      "outletId": "cititour",
+      "tier": 2,
+      "type": "unscored",
+      "dispatchable": false,
+      "url": "https://cititour.com/NYC_Events/Truly-Howard-Hughes/34944",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=truly-howard-hughes-off-broadway-2026",
+      "firstSeen": "2026-09-09T14:56:32.660Z",
+      "fileAgeHours": 426.0232555555556,
+      "gapSeenAt": "2026-09-27T08:57:57.261Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
       "title": "The Human Voice / The Seven Deadly Sins",
@@ -16,9 +34,27 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --url=https://www.thereviewshub.com/tag/seven-deadly-sins-the-human-voice/ --outlet=thereviewshub --critic=\"The Reviews Hub - London\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-16T18:00:50.847Z",
-      "fileAgeHours": 248.0706675,
+      "fileAgeHours": 254.951585,
       "gapSeenAt": "2026-09-16T18:05:42.610Z",
-      "nonTerminalAgeHours": 247.98981916666668
+      "nonTerminalAgeHours": 254.8707363888889
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "title": "Golden Boy",
+      "openingDate": "2026-09-15",
+      "file": "daily-mail--patrick-marmion.json",
+      "outletId": "daily-mail",
+      "tier": 1,
+      "type": "unscored",
+      "dispatchable": false,
+      "url": "https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
+      "firstSeen": "2026-09-22T16:40:31.606Z",
+      "fileAgeHours": 112.2903575,
+      "gapSeenAt": "2026-09-27T08:57:57.261Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "human-things-off-broadway-2026",
@@ -33,9 +69,27 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 11.176948333333334,
+      "fileAgeHours": 18.05786527777778,
       "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 8.360191111111112
+      "nonTerminalAgeHours": 15.241108333333333
+    },
+    {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "title": "Million Dollar Quartet",
+      "openingDate": "2026-09-14",
+      "file": "broadwayworld--michael-major.json",
+      "outletId": "broadwayworld",
+      "tier": 2,
+      "type": "unscored",
+      "dispatchable": false,
+      "url": "https://www.broadwayworld.com/westend/article/Video-MILLION-DOLLAR-QUARTET-Trailer-Released-Ahead-of-2026-London-Return-20260909",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=million-dollar-quartet-off-west-end-2026",
+      "firstSeen": "2026-09-17T08:13:24.884Z",
+      "fileAgeHours": 240.742305,
+      "gapSeenAt": "2026-09-27T08:57:57.261Z",
+      "nonTerminalAgeHours": 0
     }
   ],
   "contradictions": []
