@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-27T09:02:34.046Z",
+  "runDate": "2026-09-27T09:35:05.435Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 111,
-    "failed": 680,
+    "processed": 112,
+    "failed": 679,
     "skipped": 0,
-    "successRate": "14.0%"
+    "successRate": "14.2%"
   },
   "tierBreakdown": {
     "playwright": 44,
@@ -24,7 +24,7 @@
     "scrapingbee": 19,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 25
+    "archive": 26
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -39,15 +39,15 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 57,
+    "tier4Attempts": 1,
+    "tier4Success": 1,
+    "totalFailed": 56,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 57,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -161,7 +161,8 @@
     "everybodys-talking-about-jamie-west-end-2024/london-box-office--phil-willmott.json",
     "catch-me-if-you-can-2011/hollywood-reporter--unknown.json",
     "book-of-mormon-2011/washpost--unknown.json",
-    "a-life-in-the-theatre-2010/nytimes--unknown.json"
+    "a-life-in-the-theatre-2010/nytimes--unknown.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json"
   ],
   "failed": [
     "whos-afraid-of-virginia-woolf-west-end-2026/front-row-center--unknown.json",
@@ -800,7 +801,6 @@
     "the-collaboration-2022/hollywood-reporter--anita-gates.json",
     "the-collaboration-2022/times-uk--jesse-green.json",
     "ohio-state-murders-2022/hollywood-reporter--anita-gates.json",
-    "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
     "aint-no-mo-2022/usatoday--matthew-j-palm.json",
     "topdog-underdog-2022/rollingstone--david-fear.json",
     "waitress-2021/vulture--helen-shaw.json",
@@ -960,9 +960,16 @@
       "moulin-rouge-the-musical-west-end-2021/nytg--unknown.json",
       "hadestown-2019/theater-life--isa-goldberg.json",
       "tru-off-west-end-2026/theatre-weekly--unknown.json",
-      "book-of-mormon-2011/washpost--unknown.json"
+      "book-of-mormon-2011/washpost--unknown.json",
+      "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json"
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "a-beautiful-noise-the-neil-diamond-musical-2022/vulture--sara-holdren.json",
+      "oldUrl": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-the-neil-diamond-musical.html",
+      "newUrl": "https://www.vulture.com/2022/12/theater-review-a-beautiful-noise-broadway-neil-diamond-musical.html"
+    }
+  ]
 }
