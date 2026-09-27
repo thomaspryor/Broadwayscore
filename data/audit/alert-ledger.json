@@ -1499,13 +1499,13 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-09-26T15:30:45.829Z",
+      "lastSeen": "2026-09-27T16:10:32.981Z",
       "lastNotifiedAt": "2026-09-21T17:36:41.780Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-2864",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1520,17 +1520,17 @@
       "silentRefires": 15
     },
     "cron-health:Enrich Off-Broadway Dates": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Enrich Off-Broadway Dates",
       "firstSeen": "2026-08-23T12:24:33.123Z",
-      "lastSeen": "2026-09-07T17:00:27.827Z",
-      "lastNotifiedAt": "2026-09-07T17:00:27.827Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-09-27T16:10:32.880Z",
+      "lastNotifiedAt": "2026-09-27T16:10:32.880Z",
+      "lastSurfacedAt": "2026-09-27T16:10:32.880Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-09-14T17:23:03.919Z"
+      "linearIdentifier": null
     },
     "cron-health:Opening Night Checklist": {
       "status": "resolved",
@@ -1623,13 +1623,13 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-09-26T15:30:45.824Z",
+      "lastSeen": "2026-09-27T16:10:32.976Z",
       "lastNotifiedAt": "2026-09-24T16:18:57.029Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-3656",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -2582,18 +2582,17 @@
       "resolveReason": "backfill sweep (BRO-2765 fix): confirmed hasRealImage()===true on disk"
     },
     "cron-health:Check Opening Night Drift": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Check Opening Night Drift",
       "firstSeen": "2026-09-08T15:48:29.053Z",
-      "lastSeen": "2026-09-22T16:07:29.352Z",
-      "lastNotifiedAt": "2026-09-22T16:07:29.352Z",
-      "lastSurfacedAt": "2026-09-22T16:07:29.352Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-09-27T16:10:32.874Z",
+      "lastNotifiedAt": "2026-09-27T16:10:32.874Z",
+      "lastSurfacedAt": "2026-09-27T16:10:32.874Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-09-23T15:54:24.155Z"
+      "linearIdentifier": null
     },
     "cron-health-chronic:Enrich Off-Broadway Dates": {
       "status": "resolved",
