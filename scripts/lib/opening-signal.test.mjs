@@ -352,3 +352,29 @@ test('isStuckInPreviews counts an announced show against the score gate', () => 
   assert.equal(isStuckInPreviews({ status: 'announced', category: 'off-west-end' }, { count: 3, tier1And2: 1 }), true);
   assert.equal(isStuckInPreviews({ status: 'announced', category: 'off-west-end' }, { count: 2, tier1And2: 1 }), false);
 });
+
+// shouldSkipPreviewsShow — shared aggregator-scraper previews gate
+// (our-sinatra 2026-09-27: stale previews status + null opening deadlocked).
+{
+  const { shouldSkipPreviewsShow } = require('./opening-signal.js');
+  const today = '2026-09-27';
+  test('shouldSkipPreviewsShow: future opening date → skip (genuinely pre-opening)', () => {
+    assert.equal(shouldSkipPreviewsShow({ status: 'previews', previewsStartDate: '2026-09-17', openingDate: '2026-10-04' }, today), true);
+  });
+  test('shouldSkipPreviewsShow: null opening, previews under way → process', () => {
+    assert.equal(shouldSkipPreviewsShow({ status: 'previews', previewsStartDate: '2026-09-11', openingDate: null }, today), false);
+  });
+  test('shouldSkipPreviewsShow: past opening, status not yet flipped → process', () => {
+    assert.equal(shouldSkipPreviewsShow({ status: 'previews', previewsStartDate: '2026-09-11', openingDate: '2026-09-15' }, today), false);
+  });
+  test('shouldSkipPreviewsShow: article published before previews began → skip (other production)', () => {
+    assert.equal(shouldSkipPreviewsShow({ status: 'previews', previewsStartDate: '2026-09-11', openingDate: null }, today, '2024-05-01T10:00:00Z'), true);
+  });
+  test('shouldSkipPreviewsShow: no previews date / not started → skip', () => {
+    assert.equal(shouldSkipPreviewsShow({ status: 'previews', openingDate: null }, today), true);
+    assert.equal(shouldSkipPreviewsShow({ status: 'previews', previewsStartDate: '2026-10-10', openingDate: null }, today), true);
+  });
+  test('shouldSkipPreviewsShow: non-previews status never skipped here', () => {
+    assert.equal(shouldSkipPreviewsShow({ status: 'open', openingDate: '2026-09-15' }, today), false);
+  });
+}

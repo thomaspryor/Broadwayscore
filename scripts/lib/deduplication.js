@@ -480,16 +480,21 @@ function isMultiProduction(newShow, existing) {
   // matches, so a compound listing never reads as "known different" from the bare
   // house name a catalog entry carries.
   const stripDash = v => v.replace(/\s*[-–—]\s*.+$/, '');
+  // Punctuation-insensitive full name: "59E59 Theaters - Theater C" and
+  // "59E59 Theaters, Theater C" are the same room (crazy-mama dup,
+  // 2026-09-27), while "..., Theater A" vs "..., Theater B" stay distinct.
+  // Deliberately NOT a comma-suffix strip, which would merge sibling rooms.
+  const punctFree = v => v.replace(/[\s,\-–—]+/g, ' ').trim();
   const isUnknown = v => !v || v === 'tba' || v === 'tbd';
   const venueSegments = (venue) => !venue ? [] : venue.split('/')
-    .map(p => ({ norm: stripDash(normalizeVenueName(p)), alias: aliasCanonical(p) }))
+    .map(p => ({ norm: stripDash(normalizeVenueName(p)), full: punctFree(normalizeVenueName(p)), alias: aliasCanonical(p) }))
     .filter(s => !isUnknown(s.norm));
   const newVenueSegs = venueSegments(newShow.venue);
   const existVenueSegs = venueSegments(existing.venue);
   // Segments match on normalized equality OR a shared alias-table canonical
   // (renter company ≡ host venue, e.g. The New Group ≡ Signature Center).
   const venuesMatch = newVenueSegs.some(a => existVenueSegs.some(b =>
-    a.norm === b.norm || (a.alias && a.alias === b.alias)));
+    a.norm === b.norm || a.full === b.full || (a.alias && a.alias === b.alias)));
   let venuesKnownDifferent =
     newVenueSegs.length > 0 &&
     existVenueSegs.length > 0 &&
@@ -612,6 +617,26 @@ function isMultiProduction(newShow, existing) {
   return false;
 }
 
+function colonSegmentKey(t) {
+  return foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+/**
+ * True when the shorter title equals exactly one side of the longer title's
+ * first colon ("Louis Katz: Conflicted" ~ "Conflicted", "Crazy Mama: A True
+ * Story" ~ "Crazy Mama"). Title-only; callers must also require same venue.
+ */
+function isColonSegmentVariant(titleA, titleB) {
+  const [short, long] = String(titleA || '').length <= String(titleB || '').length
+    ? [titleA, titleB] : [titleB, titleA];
+  const longStr = String(long || '');
+  const idx = longStr.indexOf(':');
+  if (idx < 0) return false;
+  const key = colonSegmentKey(short);
+  if (key.length < 4 || key === colonSegmentKey(longStr)) return false;
+  return key === colonSegmentKey(longStr.slice(0, idx)) || key === colonSegmentKey(longStr.slice(idx + 1));
+}
+
 /**
  * Check if two shows are in different market pools (NYC vs London).
  * Cross-market shows with the same title are NOT duplicates (e.g., Hamilton BW + Hamilton WE).
@@ -728,6 +753,20 @@ function checkForDuplicate(newShow, existingShows) {
         return {
           isDuplicate: true,
           reason: `Same venue "${newVenue}" + similar title start`,
+          existingShow: existing
+        };
+      }
+    }
+
+    // Check 7b: Same venue + one title is exactly one side of the other's
+    // colon — "Louis Katz: Conflicted" vs "Conflicted" (TodayTix performer
+    // prefix). normalizeTitle() keeps only the pre-colon side ("louis katz"),
+    // so Checks 5/7/8 all miss this shape. Exact-segment + venue keeps it tight.
+    if (venuesMatch(newShow.venue, existing.venue) && isColonSegmentVariant(newShow.title, existing.title)) {
+      if (!isMultiProduction(newShow, existing)) {
+        return {
+          isDuplicate: true,
+          reason: `Same venue + colon-segment title: "${newShow.title}" vs "${existing.title}"`,
           existingShow: existing
         };
       }
@@ -936,6 +975,7 @@ module.exports = {
   findSameTitleTwinIfNoOpeningDate,
   isLongClosedTwin,
   isSubtitleVariantOf,
+  isColonSegmentVariant,
   aliasCanonical,
   venuesMatch,
   KNOWN_DUPLICATES,
