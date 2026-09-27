@@ -25,6 +25,7 @@
  *   node scripts/clear-stale-wrong-production-flags.js --llm        # dry-run + LLM second-opinion
  *   node scripts/clear-stale-wrong-production-flags.js --llm --apply  # write to disk
  *   node scripts/clear-stale-wrong-production-flags.js --show=ID    # filter to one show
+ *   node scripts/clear-stale-wrong-production-flags.js --opened-within-days=21  # recent shows only (daily run)
  *   node scripts/clear-stale-wrong-production-flags.js --dir=PATH   # alt review-texts dir
  *
  * Without --llm the predicate is the only gate. NOT RECOMMENDED for
@@ -58,6 +59,12 @@ const FORCE_BULK = args.includes('--force-bulk');
 const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').split('=')[1] || '';
 const DIR_OVERRIDE = (args.find(a => a.startsWith('--dir=')) || '').split('=')[1] || '';
 const SHOWS_OVERRIDE = (args.find(a => a.startsWith('--shows=')) || '').split('=')[1] || '';
+// --opened-within-days=N: only shows whose earliest date (previews/opening)
+// is within the last N days. The weekly Saturday sweep leaves a false flag set
+// on opening weekend in place for up to 7 days — past the newsletter send and
+// the opening-night broadcast (BRO-4185: Table 17 / First Night was flagged
+// Saturday evening, hours after that week's sweep).
+const OPENED_WITHIN_DAYS = parseInt((args.find(a => a.startsWith('--opened-within-days=')) || '').split('=')[1] || '', 10) || 0;
 
 if (APPLY && !USE_LLM) {
   console.error('REFUSED: --apply requires --llm. Predicate alone is too weak for wrongProduction.');
@@ -72,6 +79,14 @@ const showsRaw = JSON.parse(fs.readFileSync(SHOWS_JSON, 'utf8'));
 const showsArr = Array.isArray(showsRaw) ? showsRaw : (showsRaw.shows || []);
 const showById = Object.create(null);
 for (const s of showsArr) if (s && s.id) showById[s.id] = s;
+
+function openedWithinDays(show, days) {
+  const earliest = [show.previewsStartDate, show.openingDate].filter(Boolean).sort()[0];
+  const t = Date.parse(earliest || '');
+  if (Number.isNaN(t)) return false;
+  const age = (Date.now() - t) / 86400000;
+  return age >= -7 && age <= days;
+}
 
 const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR, { withFileTypes: true })
   .filter(d => d.isDirectory() && !d.name.startsWith('.') && !d.name.startsWith('_'))
@@ -91,6 +106,7 @@ for (const showId of showDirs) {
   if (SHOW_FILTER && showId !== SHOW_FILTER) continue;
   const show = showById[showId];
   if (!show) continue;
+  if (OPENED_WITHIN_DAYS && !openedWithinDays(show, OPENED_WITHIN_DAYS)) continue;
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   let files;
   try {

@@ -345,3 +345,27 @@ describe('createOrMergeReviewFile integration (BRO-1431 wiring through the share
     });
   });
 });
+
+// BRO-4185: every `-f name=` ingest-urls dispatches must be a declared
+// workflow_dispatch input of the target workflow. GitHub rejects unknown
+// inputs, so `-f show=` (the input is `show_id`) failed every scoring
+// dispatch while the ingest run stayed green.
+describe('ingest-urls downstream dispatch args match target workflow inputs', () => {
+  const { downstreamWorkflows } = require('./lib/ingest-downstream.js');
+  const repoRoot = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
+  const yaml = require('js-yaml');
+  function dispatchInputs(file) {
+    const doc = yaml.load(fs.readFileSync(path.join(repoRoot, '.github/workflows', file), 'utf8'));
+    const on = doc.on || doc[true] || {}; // js-yaml parses a bare `on:` key as boolean true
+    return new Set(Object.keys((on.workflow_dispatch && on.workflow_dispatch.inputs) || {}));
+  }
+  for (const wf of downstreamWorkflows('some-show-2026', 3)) {
+    test(`${wf.file}: every -f input is declared`, () => {
+      const declared = dispatchInputs(wf.file);
+      assert.ok(declared.size > 0, `could not read inputs of ${wf.file}`);
+      const used = [...wf.args.matchAll(/-f\s+([A-Za-z0-9_-]+)=/g)].map(m => m[1]);
+      assert.ok(used.length > 0);
+      for (const name of used) assert.ok(declared.has(name), `${wf.file} has no input "${name}" (declared: ${[...declared].join(', ')})`);
+    });
+  }
+});

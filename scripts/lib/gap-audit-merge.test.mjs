@@ -11,7 +11,7 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { mergeGapAudit, countsFor, gapStateFor, stateMap, censusVerdictFor, riskStateMap, isRiskyGapChange, partitionAuditedResults } = require('./gap-audit-merge.js');
+const { mergeGapAudit, countsFor, gapStateFor, stateMap, censusVerdictFor, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults } = require('./gap-audit-merge.js');
 
 const result = (showId, over = {}) => ({
   showId,
@@ -349,4 +349,33 @@ test('censusVerdictFor: public counts are outlet-level even as candidates stay U
   assert.strictEqual(v.candidateCount, 2);      // public: timeout.com + gone.com
   assert.strictEqual(v.liveCount, 1);           // public: only timeout.com is covered
   assert.ok(v.liveCount <= v.candidateCount);
+});
+
+// BRO-4185: quarantined shows that reproduce their quarantined state are a
+// rule change, not a broken input — accept; everything else keeps holding.
+test('confirmQuarantinedStates: a reproduced candidate-count drop is accepted as baseline', () => {
+  const prev = { 'dear-england': 'complete:4:9' };
+  const next = { 'dear-england': 'complete:4:1' };
+  const prevResults = [{ showId: 'dear-england', quarantine: { nextState: 'complete:4:1', since: '2026-09-26T17:22:00Z' } }];
+  const { prevStates, confirmed } = confirmQuarantinedStates(prev, next, prevResults);
+  assert.deepStrictEqual(confirmed, ['dear-england']);
+  assert.strictEqual(isRiskyGapChange(prevStates['dear-england'], next['dear-england']), false);
+});
+
+test('confirmQuarantinedStates: a different state than the quarantined one keeps holding', () => {
+  const prevResults = [{ showId: 'a', quarantine: { nextState: 'complete:4:1' } }];
+  const { confirmed } = confirmQuarantinedStates({ a: 'complete:4:9' }, { a: 'complete:4:3' }, prevResults);
+  assert.deepStrictEqual(confirmed, []);
+});
+
+test('confirmQuarantinedStates: a liveCount drop is never auto-accepted, even if reproduced', () => {
+  const prevResults = [{ showId: 'a', quarantine: { nextState: 'incomplete:0:9' } }];
+  const { confirmed } = confirmQuarantinedStates({ a: 'complete:6:9' }, { a: 'incomplete:0:9' }, prevResults);
+  assert.deepStrictEqual(confirmed, []);
+});
+
+test('confirmQuarantinedStates: shows never quarantined are untouched', () => {
+  const { prevStates, confirmed } = confirmQuarantinedStates({ a: 'complete:4:9' }, { a: 'complete:4:1' }, [{ showId: 'a' }]);
+  assert.deepStrictEqual(confirmed, []);
+  assert.strictEqual(prevStates.a, 'complete:4:9');
 });

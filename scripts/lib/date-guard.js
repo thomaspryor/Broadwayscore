@@ -249,7 +249,63 @@ function evaluatePreWindowInclusion({ pubDate, showEarliest, isFlexCategory, pri
   return { exclude: true, daysBefore, threshold, reason: 'pre-window date' };
 }
 
+/**
+ * Pure decision: is this review's publishDate a scoring-model year guess that
+ * is provably one year early? Returns { corrected: 'YYYY-MM-DD', original }
+ * or null.
+ *
+ * Background (BRO-4185, 2026-09-27): ensemble-scorer.ts fills a MISSING
+ * publishDate with the scoring model's guess and stamps dateSource:
+ * 'llm-scoring'. For posts whose text gives "September 25" with no year
+ * (This Week in New York writes this way), the model guesses the PREVIOUS
+ * year. The date guard then reads a review of a show that opened days ago as
+ * "327 days before previews" and stamps wrongProduction, and the rebuild's
+ * pre-window guard re-excludes it on every run. Delirium (twi-ny, scored 90),
+ * Shifters, The Bathroom Attendant (twi-ny) and The Story (Islington Tribune)
+ * were all lost this way.
+ *
+ * Only corrects when the evidence is decisive:
+ *   - the date is the model's guess (dateSource 'llm-scoring'), never a date
+ *     read from the page, a URL, JSON-LD or an archive;
+ *   - the title has ONE production in the dataset and no priorRuns/tourLegs,
+ *     so a review dated before that production existed cannot be about it:
+ *     the date, not the review, is wrong. Revival titles are left alone (a
+ *     year-old date there is plausibly a real prior-production review);
+ *   - the same month/day one year later falls inside the run window;
+ *   - the text was fetched inside the run window and the corrected date is
+ *     not after the fetch (a review can't be fetched before it's published).
+ *
+ * @param {object} args
+ * @param {object} args.review - review-text JSON (publishDate, dateSource, textFetchedAt|firstSeenAt)
+ * @param {object} args.show - shows.json record
+ * @param {boolean} args.isMultiProductionTitle
+ * @returns {{ corrected: string, original: string } | null}
+ */
+function evaluateLlmYearMisdate({ review, show, isMultiProductionTitle }) {
+  if (!review || !show || isMultiProductionTitle) return null;
+  if (review.dateSource !== 'llm-scoring') return null;
+  if ((show.priorRuns && show.priorRuns.length) || (show.tourLegs && show.tourLegs.length)) return null;
+  const m = String(review.publishDate || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return null;
+  const DAY = 86400000;
+  const pd = Date.UTC(+m[1], +m[2] - 1, +m[3]);
+  const shifted = Date.UTC(+m[1] + 1, +m[2] - 1, +m[3]);
+  if (new Date(shifted).getUTCDate() !== +m[3]) return null; // Feb 29 has no next-year twin
+  const fetched = Date.parse(review.textFetchedAt || review.firstSeenAt || '');
+  const earliestStr = earliestShowDate(show);
+  if (Number.isNaN(fetched) || !earliestStr) return null;
+  const winStart = Date.parse(earliestStr) - UK_DAYS_BEFORE_PREVIEW * DAY;
+  const winEnd = show.closingDate ? Date.parse(show.closingDate) + DAYS_AFTER_CLOSE * DAY : Infinity;
+  if (Number.isNaN(winStart)) return null;
+  if (pd >= winStart) return null; // not early: nothing to correct
+  const inWindow = t => t >= winStart && t <= winEnd;
+  if (!inWindow(shifted) || !inWindow(fetched)) return null;
+  if (shifted > fetched + DAY) return null;
+  return { corrected: new Date(shifted).toISOString().slice(0, 10), original: review.publishDate };
+}
+
 module.exports = {
+  evaluateLlmYearMisdate,
   evaluateDateGuard,
   evaluateDatelessRevivalGuard,
   earliestShowDate,

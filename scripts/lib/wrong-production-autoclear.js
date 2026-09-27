@@ -708,9 +708,26 @@ function shouldAutoClearDatelessRevival(data, { hasUsableDate } = {}) {
  */
 function shouldAutoClearStaleDateGuard(data, { nowInWindow } = {}) {
   if (!data || data.wrongProduction !== true) return false;
-  const note = data.wrongProductionNote || '';
-  if (!note.startsWith('Pre-opening guard:')) return false;
+  if (!isDatedGuardNote(data.wrongProductionNote)) return false;
+  // `Date guard:` flags (added BRO-4185): a scoring-model date guess must not
+  // move a flag in either direction (same carve-out as date-plausibility.js /
+  // contradicted-flag-basis.js). Pre-opening behaviour is left unchanged.
+  if (String(data.wrongProductionNote).startsWith('Date guard:') && data.dateSource === 'llm-scoring') return false;
   return nowInWindow === true;
+}
+
+/**
+ * Notes written by the two DATED guards, both computed by
+ * date-guard.evaluateDateGuard on publishDate alone:
+ *   - `Pre-opening guard:` — rebuild-all-reviews.js
+ *   - `Date guard:`        — flag-wrong-production-by-date.js
+ * The second prefix was missing (BRO-4185): a flag-wrong-production-by-date
+ * flag was never re-evaluated after its date was corrected, so the same
+ * date fix that released a `Pre-opening guard:` flag left this one stuck.
+ */
+function isDatedGuardNote(note) {
+  const n = String(note || '');
+  return n.startsWith('Pre-opening guard:') || n.startsWith('Date guard:');
 }
 
 /**
@@ -922,6 +939,7 @@ module.exports = {
   shouldAutoClearWrongProductionTourLeg,
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
+  isDatedGuardNote,
   shouldAutoClearAnticipatoryGrace,
   shouldPreserveExclusionFlagsOnUrlRecovery,
   shouldAutoClearWrongProductionUkDualMarket,
