@@ -25,6 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const { parseRssFeed, deriveQualifyingOutlets } = require('./lib/outlet-listing-helpers');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const COMMON_FEED_PATHS = ['/feed/', '/rss.xml', '/feed.xml', '/rss', '/index.xml', '/blog?format=rss'];
 const MAX_SQUARESPACE_COLLECTIONS = 15;
@@ -136,6 +137,11 @@ function parseArgs(argv) {
 }
 
 async function main() {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('Usage: node scripts/probe-outlet-feeds.js [--outlets id1,id2] [--json out.json]\n'
+      + 'Probes SERP-only outlets for a usable RSS/Atom feed and prints candidate OUTLET_STRATEGY_CONFIG entries. Read-only.');
+    return;
+  }
   const opts = parseArgs(process.argv.slice(2));
   const root = path.join(__dirname, '..');
   const { outlets: registry } = JSON.parse(fs.readFileSync(path.join(root, 'data', 'outlet-registry.json'), 'utf-8'));
