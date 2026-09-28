@@ -113,3 +113,5 @@ Follow-up carded: task #707 generalizes this into
 ## Related
 - memory/feedback_notion_create_verify.md — similar pattern of
   checking the remote state after a possibly-silent failure.
+
+**Update 2026-09-28 (BRO-4238):** sessions never push main directly — the push gate refuses it on Mac (BRO-3425) and cloud. Land instead: `git push origin HEAD:refs/heads/land/<name>` and follow the Land run (CLOUD.md § Landing); data-only changes land the same way.

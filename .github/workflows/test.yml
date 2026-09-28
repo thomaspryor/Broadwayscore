@@ -2058,6 +2058,9 @@ on:
       # hook-with-its-test pairing already used for pre-push-visual-gate.sh
       # above.
       - 'scripts/tests/merge-gate-hook.test.mjs'
+      # BRO-4238: cloud sessions never push main (land via land/**) — drives
+      # the real pre-push-review-gate.sh. Also in tests/unit-test-manifest.txt.
+      - 'scripts/tests/cloud-push-main-guard.test.mjs'
       - '.claude/hooks/pre-merge-review-gate.sh'
       - '.claude/hooks/pre-push-review-gate.sh'
       - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'

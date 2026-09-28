@@ -18,6 +18,8 @@ This happened in the 2026-05-17 session: 7 shows had Show Score data scraped loc
 cd /Users/tompryor/broadway-scorecard-data
 git add audience-buzz.json
 git commit -m "data: Update audience-buzz with [source] data for [shows]"
-git pull --rebase && git push origin main
+git push origin HEAD:refs/heads/land/<name>   # then follow the Land run
 ```
 Then verify the public show files have the new data after the next CI rebuild.
+
+**Update 2026-09-28 (BRO-4238):** sessions never push main directly — the push gate refuses it on Mac (BRO-3425) and cloud. Land instead: `git push origin HEAD:refs/heads/land/<name>` and follow the Land run (CLOUD.md § Landing); data-only changes land the same way.

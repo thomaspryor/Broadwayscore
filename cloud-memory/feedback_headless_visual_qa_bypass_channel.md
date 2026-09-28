@@ -16,10 +16,12 @@ metadata:
 
 **What DOES work:** append `# NO-VERIFY: <reason, ≥15 chars>` as a literal shell comment on the gated command itself:
 ```bash
-bash scripts/lib/push-with-retry.sh 7 main # NO-VERIFY: headless dispatch, no interactive user present; real visual-qa sweep run, overallPass=true
+git push origin HEAD:refs/heads/land/<name> # NO-VERIFY: headless dispatch, no interactive user present; real visual-qa sweep run, overallPass=true
 ```
 This is the one channel the hook's own comment calls "guaranteed visible at gate time" — it greps the command string directly, not the transcript. Every use is logged to `~/.claude/logs/visual-gate-bypass.log`.
 
 **Why:** confirmed live during BRO-927 (2026-09-16) — `ship immediately for:` in assistant text was silently ignored twice (the hook block message repeated verbatim) before finding the shell-comment path in the hook source itself.
 
 **How to apply:** Still run the real `/visual-qa` sweep first (or manual Playwright screenshots) — the bypass is for the *approval wait*, not for skipping verification. Only use this in genuinely unattended sessions; an interactive session should wait for the real user reply.
+
+**Update 2026-09-28 (BRO-4238):** sessions never push main directly — the push gate refuses it on Mac (BRO-3425) and cloud. Land instead: `git push origin HEAD:refs/heads/land/<name>` and follow the Land run (CLOUD.md § Landing); data-only changes land the same way.
