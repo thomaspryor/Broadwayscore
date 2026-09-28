@@ -337,10 +337,43 @@ test('session-start.sh: without CLAUDE_CODE_REMOTE (Mac-like) it only warns and 
 
 // BRO-4234: cloud sessions never load the Mac-only ~/.claude/CLAUDE.md, so the
 // owner profile must ride the banner every cloud session gets injected.
-test('session-start.sh banner carries the owner profile (not technical, not at a computer, never reviews PRs)', () => {
-  const hookSrc = fs.readFileSync(path.join(REPO_ROOT, '.claude', 'hooks', 'session-start.sh'), 'utf8');
-  assert.match(hookSrc, /ABOUT THE OWNER/);
-  assert.match(hookSrc, /Not technical\. Plain English/);
-  assert.match(hookSrc, /NOT at a computer/);
-  assert.match(hookSrc, /Never reviews or merges PRs/);
+// Runs the REAL hook. CLAUDE_PROJECT_DIR points at an empty dir so the
+// checkout staleness/sync block has nothing to act on.
+function runBanner(extraEnv) {
+  const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-4234-home-'));
+  const emptyProject = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-4234-proj-'));
+  try {
+    const env = { ...process.env, HOME: fakeHome, CLAUDE_PROJECT_DIR: emptyProject, CODE_SYNC_DISABLED: '1', ...extraEnv };
+    for (const [k, v] of Object.entries(env)) if (v === undefined) delete env[k];
+    return execFileSync('bash', [path.join(REPO_ROOT, '.claude', 'hooks', 'session-start.sh')], {
+      cwd: emptyProject, input: '{"source":"startup"}', encoding: 'utf8', timeout: 120000, env, stdio: ['pipe', 'pipe', 'ignore'],
+    });
+  } finally {
+    fs.rmSync(fakeHome, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    fs.rmSync(emptyProject, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+}
+
+test('owner banner: iPhone cloud session gets the owner profile and the iPhone line', () => {
+  const out = runBanner({ CLAUDE_CODE_REMOTE: 'true', CLAUDE_CODE_ENTRYPOINT: 'remote_mobile' });
+  assert.match(out, /ABOUT THE OWNER \(for your chat replies/);
+  assert.match(out, /Not technical\. Plain English/);
+  assert.match(out, /Never reviews or merges PRs/);
+  assert.match(out, /on the Claude iPhone app/);
+  assert.match(out, /money, irreversible or destructive actions/, 'decisions that stay the owner\'s must be carved out');
+  assert.match(out, /SAFE TO EXIT \/ NOT SAFE TO EXIT/, 'must not teach a reply shape the Stop hook blocks');
+  assert.match(out, /No human in this session/);
+});
+
+test('owner banner: other cloud entrypoints (browser, desktop app) do not claim the owner is off a computer', () => {
+  const out = runBanner({ CLAUDE_CODE_REMOTE: 'true', CLAUDE_CODE_ENTRYPOINT: 'remote_web' });
+  assert.match(out, /ABOUT THE OWNER/);
+  assert.match(out, /may be on a phone or at their Mac in a browser/);
+  assert.doesNotMatch(out, /iPhone app/);
+});
+
+test('owner banner: never printed outside cloud (the owner IS at a computer on the Mac)', () => {
+  const out = runBanner({ CLAUDE_CODE_REMOTE: undefined, CLAUDE_CODE_ENTRYPOINT: undefined });
+  assert.doesNotMatch(out, /ABOUT THE OWNER/);
+  assert.match(out, /CRITICAL SESSION RULES/, 'the rest of the banner still prints');
 });

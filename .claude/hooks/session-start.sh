@@ -594,15 +594,28 @@ fi
 # ABOUT THE OWNER (BRO-4234): cloud sessions never load the Mac-only global
 # ~/.claude/CLAUDE.md, which is where these facts lived, so sessions assumed a
 # technical owner at a terminal who reviews PRs. This banner is injected on
-# startup, resume and compact, so it reaches every cloud session.
-cat << 'EOF'
-ABOUT THE OWNER (applies to every message you send them):
-- Not technical. Plain English, no jargon, no commands or file paths for them to run or open, never "review the diff/PR".
+# startup, resume and compact. Cloud-only (CLAUDE_CODE_REMOTE): on the Mac the
+# owner IS at a computer ~90% of the time. Second opinion 2026-09-28: scope
+# to chat replies, carve decisions that stay the owner's, keep the Stop hook's
+# closing line, branch on the iPhone entrypoint, cover unattended sessions.
+# repo-only: never copy this block into the ~/.claude/hooks master.
+if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ]; then
+  cat << 'EOF'
+ABOUT THE OWNER (for your chat replies; Linear comments, PR bodies and commits stay technical, with paths and evidence):
+- Not technical. Plain English, no jargon, no commands for them to run, never "review the diff/PR".
 - Never reviews or merges PRs. Land your own work (rule 7).
-- In this cloud session they are on the Claude iOS app or claude.ai, NOT at a computer: they can't run anything, open files, or see this container. Do every step yourself; if something truly needs their Mac, say so in one line.
-- Each reply: what changed for them, what is still running, and what they need to do (usually nothing). Phone-short. A real decision gets a short plain choice with your recommendation; anything you can decide, decide.
+EOF
+  if [ "${CLAUDE_CODE_ENTRYPOINT:-}" = "remote_mobile" ]; then
+    echo "- They are on the Claude iPhone app: they can't run commands or see this container. Links are fine (they can tap them). Do every step yourself; if something truly needs their Mac, say so in one line."
+  else
+    echo "- They may be on a phone or at their Mac in a browser. Either way, don't ask them to run anything; give clickable links, not file paths."
+  fi
+  cat << 'EOF'
+- Each reply: what changed for them, what is still running, what they need to do (usually nothing). Phone-short. Decide technical calls yourself; money, irreversible or destructive actions, emails to real people, and product or taste calls get a short DECISION NEEDED with your recommendation. End with the SAFE TO EXIT / NOT SAFE TO EXIT line.
+- No human in this session (Routine, scheduled or automated prompt): don't wait for answers. Take the safe default, skip anything irreversible or expensive, and record what you skipped.
 
 EOF
+fi
 
 cat << 'EOF'
 CRITICAL SESSION RULES (CLAUDE.md has full text — these 7 are the most-violated):
@@ -610,7 +623,7 @@ CRITICAL SESSION RULES (CLAUDE.md has full text — these 7 are the most-violate
 2. VERIFY: run the command + show output before claiming done. `node --check` is syntax only, not a test.
 3. ASYNC = WAIT: deploys/CI started ≠ done. Verify it succeeded; fix if it failed.
 4. FIX, DON'T REPORT: discovered issues get fixed now, not listed for later.
-5. KEEP GOING: do natural follow-ups (rebuild, deploy, fix adjacent). Don't offer handoffs to "a new session" — banned phrase list in CLAUDE.md §5.
+5. KEEP GOING: do natural follow-ups (rebuild, deploy, fix adjacent). Don't offer handoffs to "a new session".
 6. TERSE OUTPUT: short answers, no trailing recap, drop pleasantries. Output tokens cost ~5x input — verbose explanation is the single biggest token leak Claude controls. Verification evidence still required (rule 2); cut narration, keep proof.
 7. PRs: the owner NEVER reviews or merges them. Land it yourself: `git push origin HEAD:refs/heads/land/<name>`, follow the Land run, close the PR (CLOUD.md § Landing). "Waiting on review" is never a reason to leave a PR open.
 Flow: implement → /did-it-work → /ship-check → /wrap-up. Don't stop between skills unless user said stop or you hit a real blocker.
