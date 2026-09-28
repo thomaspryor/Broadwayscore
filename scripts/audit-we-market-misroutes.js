@@ -32,6 +32,8 @@
  * wrongProduction on a Broadway show into that tour's own entry.
  *   node scripts/audit-we-market-misroutes.js --scope=tour --from=beetlejuice-2022 --tour=beetlejuice-tour-2022
  *   ... add --execute to move. The tour entry must exist in shows.json with tourOf set.
+ *   --launch=YYYY-MM-DD sets the tour-launch cutoff when the entry has no openingDate
+ *   (e.g. the launch roundup's date); dated reviews more than a week earlier stay put.
  * Rules live in scripts/lib/tour-backfill.js. Every executed move is appended to
  * data/audit/tour-backfill-manifest.jsonl (from, to, file, at) so it can be undone.
  */
@@ -49,6 +51,7 @@ const USAGE = `audit-we-market-misroutes.js — Replay the gather-time market-ro
 
 Usage:
   node scripts/audit-we-market-misroutes.js [options]
+  node scripts/audit-we-market-misroutes.js --scope=tour --from=<dir> --tour=<id> [--launch=YYYY-MM-DD] [--execute]
   node scripts/audit-we-market-misroutes.js --help, -h    print this usage and exit
 `;
 const ROOT = path.join(__dirname, '..');
@@ -99,7 +102,9 @@ function mainTour() {
     console.error(`${tourId} must exist in shows.json with category 'tour' and tourOf set`); process.exit(2);
   }
   const parent = shows.find(s => s.id === tour.tourOf);
-  const ctx = { broadwayOpeningDate: parent && parent.openingDate, tourLaunchDate: tour.openingDate };
+  const launch = parseFlag('launch', null);
+  if (launch && !/^\d{4}-\d{2}-\d{2}$/.test(launch)) { console.error('--launch must be YYYY-MM-DD'); process.exit(2); }
+  const ctx = { broadwayOpeningDate: parent && parent.openingDate, tourLaunchDate: tour.openingDate || launch };
   const fromDir = path.join(REVIEW_TEXTS_DIR, fromId);
   const toDir = path.join(REVIEW_TEXTS_DIR, tourId);
   const counts = {};
