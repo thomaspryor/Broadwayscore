@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-28T17:42:30.059Z",
-  "processed": 24,
-  "failed": 26,
-  "successRate": "48.0%",
+  "updatedAt": "2026-09-28T18:12:51.329Z",
+  "processed": 44,
+  "failed": 66,
+  "successRate": "40.0%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 25,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingbee": 6,
-    "brightdata": 0,
+    "scrapingbee": 10,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 7
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-09-28T17:16:35.829Z",
@@ -71,6 +71,29 @@
       "t": "2026-09-28T17:39:26.890Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-09-28T17:53:19.115Z",
+      "event": "bb-session",
+      "session": "ae2fd881",
+      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+    },
+    {
+      "t": "2026-09-28T17:53:19.904Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-28T17:54:32.400Z",
+      "event": "bb-session",
+      "session": "f461e1c5",
+      "url": "https://www.facebook.com/SinittaOfficial/posts/heading-to-see-the-opening-of-sin"
+    },
+    {
+      "t": "2026-09-28T17:54:51.539Z",
+      "event": "bb-session",
+      "session": "01d42bb8",
+      "url": "https://www.facebook.com/SinittaOfficial/posts/heading-to-see-the-opening-of-sin"
     }
   ]
 }
