@@ -246,6 +246,10 @@ function retireId(id, options) {
   }
 
   const row = opts.archivedRow;
+  // venue-write-guard-ok: the registry copies title/venue VERBATIM from an already
+  // written shows.json row (which passed sanitizeVenueForWrite when it was saved) so
+  // that matchesRetired can compare the same normalized pair later; this file never
+  // writes a venue into shows.json.
   const entry = {
     id,
     reason: opts.reason.trim(),

@@ -134,7 +134,7 @@ test('discover-new-shows.js is wired: the candidate loop calls matchesRetired on
   const loopStart = src.indexOf('for (const show of discoveredShows) {');
   assert.ok(loopStart > 0, 'candidate loop must exist');
   const todaytixDedup = src.indexOf('existingTodaytixIds.has(show.todaytixId)', loopStart);
-  const retiredCall = src.indexOf('matchesRetired({ id: minted.showId, title: show.title, venue: show.venue })', loopStart);
+  const retiredCall = src.indexOf('matchesRetired({ id: minted.showId, title: show.title, venue: sanitizeVenueForWrite(show.venue) })', loopStart);
   const mintCall = src.indexOf('const minted = mintCandidateId(show);', loopStart);
   assert.ok(mintCall > loopStart && mintCall < retiredCall, 'the id must be minted before the retired check');
   assert.ok(retiredCall > loopStart && retiredCall < todaytixDedup, 'retired check must run before the first dedup step');
