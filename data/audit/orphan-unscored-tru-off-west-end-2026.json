@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "tru-off-west-end-2026",
   "openingDate": "2026-09-27",
-  "detectedAt": "2026-09-28T13:19:19.795Z",
+  "detectedAt": "2026-09-28T14:19:52.421Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -57,6 +57,23 @@
       "eligibilityReason": null
     },
     {
+      "file": "london-theatre--unknown.json",
+      "outletId": "london-theatre",
+      "criticName": "Unknown",
+      "url": "https://www.londontheatre.co.uk/reviews/tru-review-menier-chocolate-factory",
+      "fullTextLen": 7362,
+      "dispatchActionable": false,
+      "skipReason": "no_scorable_text",
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
       "file": "west-end-best-friend--unknown.json",
       "outletId": "west-end-best-friend",
       "criticName": "News Desk",
@@ -74,9 +91,9 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 4,
+  "orphanCount": 5,
   "dispatchableOrphanCount": 0,
-  "blockedOrphanCount": 4,
+  "blockedOrphanCount": 5,
   "blockBroadcast": true,
   "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28T13:19:38.548Z",
+  "generatedAt": "2026-09-28T14:20:10.737Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1583,26 +1583,26 @@
       "status": "open",
       "slug": "tru-off-west-end",
       "thumbnail": "/images/shows/tru-off-west-end-2026/thumbnail.png",
-      "siteScore": 76.55,
-      "liveScore": 77,
-      "scoreDrift": 0.45000000000000284,
+      "siteScore": 75.01,
+      "liveScore": 75,
+      "scoreDrift": -0.010000000000005116,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
-      "t1": 3,
+      "total": 11,
+      "t1": 4,
       "t2": 3,
-      "t3": 3,
-      "positive": 7,
-      "mixed": 2,
+      "t3": 4,
+      "positive": 8,
+      "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:1/3",
-          "hi-conf:2/6"
+          "T1:2/3",
+          "hi-conf:3/6"
         ],
-        "highConfidence": 2,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1740,6 +1740,18 @@
           "t3": 3,
           "p": 7,
           "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-28T14:20:10.737Z",
+          "rc": 11,
+          "s": 75.01,
+          "t1": 4,
+          "t2": 3,
+          "t3": 4,
+          "p": 8,
+          "m": 3,
           "n": 0,
           "bc": "waiting"
         }
