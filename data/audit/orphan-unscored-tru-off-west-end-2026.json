@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "tru-off-west-end-2026",
   "openingDate": "2026-09-27",
-  "detectedAt": "2026-09-28T03:30:48.468Z",
+  "detectedAt": "2026-09-28T04:02:04.532Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -57,23 +57,6 @@
       "eligibilityReason": null
     },
     {
-      "file": "timeout-london--andrzej-lukowski.json",
-      "outletId": "timeout-london",
-      "criticName": "Andrzej Lukowski",
-      "url": "https://www.timeout.com/london/theatre/tru-review",
-      "fullTextLen": 3198,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
-    {
       "file": "west-end-best-friend--unknown.json",
       "outletId": "west-end-best-friend",
       "criticName": "News Desk",
@@ -91,10 +74,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 5,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 4,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 4,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-09-28T03:30:48.468Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
