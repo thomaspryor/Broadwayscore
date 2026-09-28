@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 
-export type MarketId = 'nyc' | 'west-end' | 'off-west-end' | 'off-broadway' | 'regional';
+export type MarketId = 'nyc' | 'west-end' | 'off-west-end' | 'off-broadway' | 'regional' | 'tour';
 
 /**
  * Detects the current market from the URL pathname.
@@ -24,6 +24,8 @@ export function getMarketFromPath(pathname: string): MarketId {
 
   // Pre-Broadway browse hub — the market dropdown's regional destination
   if (pathname.startsWith('/browse/pre-broadway-out-of-town-shows')) return 'regional';
+  // National tours hub (BRO-4211)
+  if (pathname.startsWith('/browse/broadway-national-tours')) return 'tour';
 
   // Show detail pages: /show/{slug} where slug contains market suffix
   // Slugs may end with market (hamilton-west-end) or have year (hamilton-west-end-2021)
@@ -34,6 +36,9 @@ export function getMarketFromPath(pathname: string): MarketId {
     if (slug.includes('-west-end')) return 'west-end';
     if (slug.includes('-off-broadway')) return 'off-broadway';
     if (slug.includes('-regional')) return 'regional';
+    // Tour ids are "<title>-tour-<year>" (BRO-4211). Anchored so a title that
+    // merely contains "tour" (the-apology-tour-off-broadway-2026) is unaffected.
+    if (/-tour-\d{4}$/.test(slug)) return 'tour';
   }
 
   return 'nyc';
