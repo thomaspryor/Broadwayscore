@@ -73,7 +73,8 @@ const { isWithinPriorRun, hasDeclaredPriorRuns, isWithinTourLeg, hasDeclaredTour
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
 const { isAggregatorUrlMismatch, isAggregatorReviewSource, shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement } = require('./lib/aggregator-domains');
-const { classifyMarketRouting, buildSiblingIndex } = require('./lib/market-routing');
+const { classifyMarketRouting, buildSiblingIndex, tourDecision } = require('./lib/market-routing');
+const { isNationalTourRoundupSlug } = require('./lib/tour-roundup-candidate');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
 const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
@@ -2135,7 +2136,7 @@ async function searchBWWRoundup(show, year, options = {}) {
   // SERP finds the actual URL regardless of BWW's slug choice. Run BEFORE URL guessing.
   try {
     const titleForSearch = show.title.replace(/'/g, '');
-    const marketKeyword = isLondonMarket(show.category) ? 'west end' : (show.category === 'off-broadway') ? 'off-broadway' : 'broadway';
+    const marketKeyword = isLondonMarket(show.category) ? 'west end' : (show.category === 'off-broadway') ? 'off-broadway' : (show.category === 'tour') ? 'national tour' : 'broadway';
     const searchQuery = `site:broadwayworld.com/article "Review Roundup" "${titleForSearch}" ${marketKeyword} ${year}`;
     console.log(`    Searching Google for BWW roundup...`);
     const serpResults = await serpQuery(searchQuery, { nbResults: 5 });
@@ -3152,7 +3153,8 @@ function createReviewFile(showId, reviewData, options = {}) {
   const fromPostOpening = options.fromPostOpening || false;
   // mergeOpts is finalized after _showMeta is loaded (see below); initialized as empty
   let mergeOpts = fromPostOpening ? { fromPostOpening: true } : {};
-  if (isNotBroadway(outletText, { allowOffBroadway, allowWestEnd, allowOpera, allowRegional })) {
+  const allowTour = (getShowData(showId) || {}).category === 'tour';
+  if (isNotBroadway(outletText, { allowOffBroadway, allowWestEnd, allowOpera, allowRegional, allowTour })) {
     console.log(`    ✗ Skipping ${filename}: non-Broadway outlet "${outletText}"`);
     return 'nonBroadway';
   }
@@ -3224,6 +3226,18 @@ function createReviewFile(showId, reviewData, options = {}) {
 
   // TOUR/REGIONAL GUARD: Reject regional BWW and local paper tour reviews
   if (isLikelyTourReview(reviewData.url, showId)) {
+    // Tour-stop review of a title with a national tour on file: file it on the
+    // tour (BRO-4262). No tour window match = skip as before.
+    const visited = options._marketVisited instanceof Set ? options._marketVisited : new Set();
+    const tour = tourDecision(showId, getSiblingIndex().get(showId), {
+      url: reviewData.url, publishDate: reviewData.publishDate, dateSource: reviewData.dateSource,
+    });
+    if (tour && !visited.has(tour.targetShowId)) {
+      visited.add(showId);
+      console.log(`    ⤳ Rerouting ${filename}: ${showId} → ${tour.targetShowId} (${tour.reason})`);
+      _recordMarketMisroute({ fromShowId: showId, toShowId: tour.targetShowId, file: filename, url: reviewData.url, publishDate: reviewData.publishDate, reason: tour.reason });
+      return createReviewFile(tour.targetShowId, reviewData, { ...options, _marketVisited: visited });
+    }
     console.log(`    ✗ Skipping ${filename}: tour/regional review (${reviewData.url?.substring(0, 60)})`);
     return 'tourReview';
   }
@@ -3243,6 +3257,7 @@ function createReviewFile(showId, reviewData, options = {}) {
         url: reviewData.url,
         outletId: reviewData.outletId || normalizedOutletId,
         publishDate: reviewData.publishDate,
+        dateSource: reviewData.dateSource,
         category: showCategory,
         allowCrossMarket: options.allowCrossMarket === true,
         visited,
@@ -4451,9 +4466,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     const venueMarkersDisqualify = !isRegional &&
         (/\bat the kennedy center\b/.test(roundupTitle) ||
          /\bat the (ahmanson|old globe|la jolla|goodman|steppenwolf|arena stage)\b/.test(roundupTitle));
-    if (isNotBroadway(roundupTitle, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: isRegional }) ||
+    // A national tour takes only its own tour roundups; a Broadway show never does (BRO-4262).
+    const isTourShow = show.category === 'tour';
+    const tourRoundup = isNationalTourRoundupSlug((bwwResult.url || '').split('/article/')[1] || '');
+    if (isTourShow ? !tourRoundup : (isNotBroadway(roundupTitle, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: isRegional }) ||
         /\bon tour\b/.test(roundupTitle) || /\bnational tour\b/.test(roundupTitle) ||
-        venueMarkersDisqualify) {
+        venueMarkersDisqualify)) {
       console.log(`    ✗ Skipping non-Broadway roundup: ${bwwResult.url}`);
     } else {
       let bwwReviews = extractBWWRoundupReviews(bwwResult.html, showId, bwwResult.url, show.title);
@@ -5538,7 +5556,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       // Create stub file for unmatched BWW excerpts
       if (!matched) {
         // Non-Broadway guard for BWW stubs (tours, off-Broadway, film/TV)
-        if (isNotBroadway(bwwReview.outlet || bwwReview.outletId || '', { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: show.category === 'regional' })) {
+        if (isNotBroadway(bwwReview.outlet || bwwReview.outletId || '', { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: show.category === 'regional', allowTour: show.category === 'tour' })) {
           console.log(`    [BWW skip] Non-Broadway outlet: ${bwwReview.outlet}`);
           continue;
         }

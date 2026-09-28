@@ -979,6 +979,10 @@ function isLikelyTourReview(url, showId) {
   // here (missing a genuine multi-city tour contamination on a regional show)
   // is a much rarer, lower-stakes failure than the false positive this fixes.
   const isRegional = /-regional-/.test(showId);
+  // National tours (category 'tour', id `{title}-tour-{year}`, BRO-4211/4262):
+  // tour-stop coverage from US city BWW pages and local papers IS the tour's
+  // own review corpus. A UK/West End page is still a different production.
+  const isTour = /-tour-\d{4}$/.test(showId);
 
   // Regional BWW (city-specific subdirectories)
   const bwwMatch = lower.match(/broadwayworld\.com\/([a-z-]+)\/article\//);
@@ -993,6 +997,9 @@ function isLikelyTourReview(url, showId) {
     const nonRegional = ['article', 'off-broadway', 'off-off-broadway', 'reviews', 'board', 'columns', 'people', 'video', 'shows', 'bwwopera', 'bwwdance', 'bwwtv'];
     if (nonRegional.includes(city)) { /* not regional, fall through */ }
     else if (isRegional) { /* regional show's own city page — legitimate, fall through */ }
+    else if (isTour) {
+      if (['westend', 'london', 'uk-regional'].includes(city)) return true;
+    }
     else if (isWestEnd || isOffBroadway) {
       // For WE/OB shows: BWW westend and london are legitimate, US cities are not
       const ukCities = ['westend', 'london', 'uk-regional'];
@@ -1004,7 +1011,7 @@ function isLikelyTourReview(url, showId) {
   }
 
   // Local paper tour indicators (Broadway shows only)
-  if (!isWestEnd && !isOffBroadway && !isRegional) {
+  if (!isWestEnd && !isOffBroadway && !isRegional && !isTour) {
     const tourPatterns = [
       /star-telegram\.com.*fort-worth/i,
       /houstonchronicle\.com/i,

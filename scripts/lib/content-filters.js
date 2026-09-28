@@ -20,7 +20,9 @@ const { hasOnlyForwardTenseTourMention } = require('./excerpt-validation');
 function isNotBroadway(text, options = {}) {
   if (!text) return false;
   const lower = text.toLowerCase();
-  const { allowOffBroadway = false, allowWestEnd = false, allowOpera = false, allowRegional = false } = options;
+  // allowTour: the target is a national tour (BRO-4262), so tour language and
+  // tour-stop cities are its own coverage, not evidence of another production.
+  const { allowOffBroadway = false, allowWestEnd = false, allowOpera = false, allowRegional = false, allowTour = false } = options;
 
   // Off-Broadway / regional — skip these checks if allowOffBroadway
   // ("world premiere" also gets a pass under allowRegional: feeder-venue
@@ -54,7 +56,7 @@ function isNotBroadway(text, options = {}) {
     lower.includes('touring production') ||
     lower.includes('touring cast') ||
     lower.includes('touring company');
-  if (hasTourPhrase && !hasOnlyForwardTenseTourMention(text)) {
+  if (!allowTour && hasTourPhrase && !hasOnlyForwardTenseTourMention(text)) {
     return true;
   }
 
@@ -62,7 +64,7 @@ function isNotBroadway(text, options = {}) {
     // Always rejected regardless of category — but allowOpera={true} for shows
     // tagged type='opera' (Met Opera productions etc.)
     (!allowOpera && lower.includes('opera')) ||
-    (!allowRegional && lower.includes('in chicago')) ||
+    (!allowRegional && !allowTour && lower.includes('in chicago')) ||
     // Film / movie
     lower.includes('film review') ||
     lower.includes('film adaptation') ||

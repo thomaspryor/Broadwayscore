@@ -35,6 +35,7 @@ const MARKET_SEARCH_KEYWORDS = {
   'west-end': 'West End',
   'off-west-end': 'Off-West End',
   regional: 'theater',
+  tour: 'national tour',
 };
 
 /** market/category slug → human label used in prompt text. */
