@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-09-28T16:16:03.674Z",
+  "generatedAt": "2026-09-28T22:37:42.816Z",
   "windowDays": 1095,
-  "targets": 212,
+  "targets": 221,
   "auditedThisRun": 17,
-  "carriedForward": 558,
+  "carriedForward": 560,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 307,
-    "missingCurrentRun": 396,
+    "withGap": 309,
+    "missingCurrentRun": 410,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 795,
-    "totalRecoverable": 5,
-    "totalRecovered": 8,
+    "totalFlaggedMisses": 801,
+    "totalRecoverable": 6,
+    "totalRecovered": 9,
     "priorProductionCitations": 2573
   },
   "results": [
@@ -24282,10 +24282,11 @@
         "https://innewcastle.co.uk/review-the-glasshouse-international-centre-for-music-reopens-sage-one-with-mozarts-cosi-fan-tutti/",
         "https://www.nytimes.com/2026/09/23/nyregion/snake-metropolitan-opera-cosi-fan-tutte.html",
         "https://www.operabase.com/productions/cosi-fan-tutte-671121/en",
+        "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
         "https://letterboxd.com/film/the-metropolitan-opera-cosi-fan-tutte/reviews/",
+        "https://www.rottentomatoes.com/m/the_metropolitan_opera_cosi_fan_tutte",
         "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/",
-        "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera",
-        "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot"
+        "https://www.musicomh.com/classical/opera-reviews/cosi-fan-tutte-review-mozart-opera-holland-park"
       ],
       "dirFiles": 20,
       "dirClean": 2,
@@ -24333,9 +24334,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera",
-          "host": "australianbookreview.com.au",
-          "knownOutletId": null,
+          "url": "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
+          "host": "londongrip.co.uk",
+          "knownOutletId": "londongrip",
           "serpCensus": true
         }
       ],
@@ -24457,6 +24458,24 @@
           "serpCensus": true
         },
         {
+          "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_cosi_fan_tutte",
+          "host": "rottentomatoes.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "rottentomatoes--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.rottentomatoes.com/m/the_metropolitan_opera_cosi_fan_tutte"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/",
           "host": "aroundthetownchicago.com",
           "knownOutletId": "around-the-town-chicago",
@@ -24475,9 +24494,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
+          "url": "https://www.musicomh.com/classical/opera-reviews/cosi-fan-tutte-review-mozart-opera-holland-park",
+          "host": "musicomh.com",
+          "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -24485,9 +24504,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "guardian--unknown.json",
+              "file": "musicomh--sam-smith.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot"
+              "urlInDir": "https://www.musicomh.com/classical/opera-reviews/cosi-fan-tutte-review-mozart-opera-holland-park"
             }
           ],
           "serpCensus": true
@@ -24526,7 +24545,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 1,
             "error": null
           },
@@ -24547,20 +24566,20 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 9,
+        "resultCount": 10,
         "error": null
       },
       "candidatesRejected": {
-        "count": 406,
+        "count": 403,
         "byReason": {
-          "non-review-host": 57,
-          "aggregator-internal-nav": 290,
+          "non-review-host": 53,
+          "aggregator-internal-nav": 291,
           "ticketing-listing": 1,
           "ticketing-reseller": 1,
           "not-http-url": 49,
@@ -24624,16 +24643,16 @@
           "reason": "⚠️  provisional outlet \"operabase\" (not in registry) — onboard to outlet-registry.json after review."
         },
         {
-          "url": "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera",
-          "host": "australianbookreview.com.au",
-          "outletId": "australianbookreview",
-          "provisional": true,
+          "url": "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
+          "host": "londongrip.co.uk",
+          "outletId": "londongrip",
+          "provisional": false,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  provisional outlet \"australianbookreview\" (not in registry) — onboard to outlet-registry.json af"
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
         }
       ],
       "ingestSkippedByCap": [],
@@ -24648,11 +24667,11 @@
             "url": "https://www.operabase.com/productions/cosi-fan-tutte-671121/en"
           },
           {
-            "outletId": "australianbookreview.com.au",
-            "outlet": "australianbookreview.com.au",
+            "outletId": "londongrip",
+            "outlet": "londongrip",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera"
+            "url": "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/"
           },
           {
             "outletId": "times-uk",
@@ -24683,6 +24702,13 @@
             "url": "https://letterboxd.com/film/the-metropolitan-opera-cosi-fan-tutte/reviews/"
           },
           {
+            "outletId": "rottentomatoes.com",
+            "outlet": "rottentomatoes.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_cosi_fan_tutte"
+          },
+          {
             "outletId": "around-the-town-chicago",
             "outlet": "around-the-town-chicago",
             "critic": "Unknown",
@@ -24690,11 +24716,11 @@
             "url": "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/"
           },
           {
-            "outletId": "guardian",
-            "outlet": "guardian",
+            "outletId": "musicomh.com",
+            "outlet": "musicomh.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot"
+            "url": "https://www.musicomh.com/classical/opera-reviews/cosi-fan-tutte-review-mozart-opera-holland-park"
           }
         ],
         "suppressedMissing": [],
@@ -24713,11 +24739,11 @@
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
-            "url": "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera",
-            "outletId": "australianbookreview.com.au",
+            "url": "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
+            "outletId": "londongrip",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
           },
           {
             "url": "https://www.thetimes.com/culture/classical-opera/article/cosi-fan-tutte-review-royal-northern-sinfonia-lammermuir-festival-xr33g90bn",
@@ -24748,6 +24774,13 @@
             "firstSeenAt": "2026-09-28T01:29:33.709Z"
           },
           {
+            "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_cosi_fan_tutte",
+            "outletId": "rottentomatoes.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
             "url": "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/",
             "outletId": "around-the-town-chicago",
             "state": "GAP",
@@ -24755,18 +24788,18 @@
             "firstSeenAt": "2026-09-28T14:10:59.050Z"
           },
           {
-            "url": "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot",
-            "outletId": "guardian",
+            "url": "https://www.musicomh.com/classical/opera-reviews/cosi-fan-tutte-review-mozart-opera-holland-park",
+            "outletId": "musicomh.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-27T02:05:03.576Z"
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
           }
         ],
         "censusSchema": 2,
         "liveCount": 1,
-        "candidateCount": 9
+        "candidateCount": 10
       },
-      "computedAt": "2026-09-28T14:10:59.050Z"
+      "computedAt": "2026-09-28T22:37:42.816Z"
     },
     {
       "showId": "cowbois-west-end-2024",
@@ -30749,17 +30782,20 @@
         "https://culturesauce.com/ionesco-delirium-off-broadway-review/",
         "https://www.theatermania.com/news/review-bickering-fish-in-the-end-times-in-delirium_1854846/",
         "https://newyorktheater.me/2026/09/26/delirium-review/",
-        "https://thefrontrowcenter.com/2026/09/delirium/",
         "https://www.newyorktheatreguide.com/reviews/delirium-off-broadway-review",
         "https://www.offoffonline.com/offoffonline/2026/9/16/delirium",
         "https://www.nytimes.com/2026/09/21/theater/chulpan-khamatova-delirium-eugene-ionesco.html",
-        "https://brooklyneagle.com/408527/new-york-premiere-of-delirium/"
+        "https://artsfuse.org/330885/theater-review-arlekins-delirium-reimagines-ionesco-with-visual-flair-and-urgency/"
       ],
       "dirFiles": 21,
       "dirClean": 8,
       "inReviewsJson": 7,
       "missing": [],
       "dirOnly": [
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
         {
           "host": "twi-ny.com",
           "count": 1
@@ -30785,9 +30821,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://brooklyneagle.com/408527/new-york-premiere-of-delirium/",
-          "host": "brooklyneagle.com",
-          "knownOutletId": null,
+          "url": "https://artsfuse.org/330885/theater-review-arlekins-delirium-reimagines-ionesco-with-visual-flair-and-urgency/",
+          "host": "artsfuse.org",
+          "knownOutletId": "artsfuse",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -30795,9 +30831,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "brooklyneagle--brooklyn-eagle-staff.json",
+              "file": "artsfuse--bill-marx.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://brooklyneagle.com/408527/new-york-premiere-of-delirium/"
+              "urlInDir": "https://artsfuse.org/330885/theater-review-arlekins-delirium-reimagines-ionesco-with-visual-flair-and-urgency/"
             }
           ],
           "serpCensus": true
@@ -30827,7 +30863,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -30873,17 +30909,15 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 8,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
         "count": 30,
         "byReason": {
-          "non-review-host": 24,
-          "aggregator-internal-nav": 3,
-          "ticketing-listing": 1,
-          "venue-production-page": 1,
-          "non-review-path": 1
+          "non-review-host": 22,
+          "aggregator-internal-nav": 6,
+          "ticketing-listing": 2
         }
       },
       "dedupedVariants": [],
@@ -30898,11 +30932,11 @@
             "url": "https://www.nytimes.com/2026/09/21/theater/chulpan-khamatova-delirium-eugene-ionesco.html"
           },
           {
-            "outletId": "brooklyneagle.com",
-            "outlet": "brooklyneagle.com",
+            "outletId": "artsfuse",
+            "outlet": "artsfuse",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://brooklyneagle.com/408527/new-york-premiere-of-delirium/"
+            "url": "https://artsfuse.org/330885/theater-review-arlekins-delirium-reimagines-ionesco-with-visual-flair-and-urgency/"
           }
         ],
         "suppressedMissing": [],
@@ -30926,12 +30960,6 @@
             "firstSeenAt": "2026-09-27T02:05:03.576Z"
           },
           {
-            "url": "https://thefrontrowcenter.com/2026/09/delirium/",
-            "outletId": "thefrontrowcenter.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-26T17:42:56.172Z"
-          },
-          {
             "url": "https://www.newyorktheatreguide.com/reviews/delirium-off-broadway-review",
             "outletId": "newyorktheatreguide.com",
             "state": "live",
@@ -30951,18 +30979,18 @@
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
-            "url": "https://brooklyneagle.com/408527/new-york-premiere-of-delirium/",
-            "outletId": "brooklyneagle.com",
+            "url": "https://artsfuse.org/330885/theater-review-arlekins-delirium-reimagines-ionesco-with-visual-flair-and-urgency/",
+            "outletId": "artsfuse",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-27T16:31:53.708Z"
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 6,
-        "candidateCount": 8
+        "liveCount": 5,
+        "candidateCount": 7
       },
-      "computedAt": "2026-09-28T14:10:59.050Z"
+      "computedAt": "2026-09-28T22:37:42.816Z"
     },
     {
       "showId": "dinosaur-world-live-off-west-end-2026",
@@ -34689,27 +34717,24 @@
       "aggregatorListedUrls": [
         "https://www.sohoplayhouse.com/see-a-show/elf-lyons-the-woman-on-the-edge",
         "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/",
-        "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
+        "https://sohotheatre.com/events/elf-lyons-is-the-woman-on-the-edge/",
+        "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
         "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
         "https://list.co.uk/news/elf-lyons-is-the-woman-on-the-edge-comedy-review-clever-and-profound-48789",
+        "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review",
+        "https://www.voicemag.uk/review/16817/elf-lyons-is-the-woman-on-the-edge",
         "https://www.mickperrin.com/tours/elf-lyons-is-the-woman-on-the-edge/",
-        "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/",
         "https://broadwaybaby.com/shows/elf-lyons-is-the-woman-on-the-edge/832666",
-        "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
+        "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
         "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
-        "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/",
-        "https://getthechance.wales/2026/08/13/review-elf-lyons-is-the-woman-on-the-edge-edinburgh-fringe-by-hannah-goslin/"
+        "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/",
+        "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/"
       ],
       "dirFiles": 21,
       "dirClean": 2,
       "inReviewsJson": 1,
       "missing": [],
-      "dirOnly": [
-        {
-          "host": "sohotheatre.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://www.sohoplayhouse.com/see-a-show/elf-lyons-the-woman-on-the-edge",
@@ -34748,9 +34773,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
-          "host": "rolandcat.substack.com",
-          "knownOutletId": "rolandcat",
+          "url": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -34758,9 +34783,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "rolandcat--roviews.json",
+              "file": "theatreandtonic--penny-walshe.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the"
+              "urlInDir": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review"
             }
           ],
           "serpCensus": true
@@ -34802,6 +34827,42 @@
           "serpCensus": true
         },
         {
+          "url": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--andrzej-lukowski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.voicemag.uk/review/16817/elf-lyons-is-the-woman-on-the-edge",
+          "host": "voicemag.uk",
+          "knownOutletId": "voice-magazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "voice-magazine--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.voicemag.uk/review/16817/elf-lyons-is-the-woman-on-the-edge"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://www.mickperrin.com/tours/elf-lyons-is-the-woman-on-the-edge/",
           "host": "mickperrin.com",
           "knownOutletId": null,
@@ -34820,9 +34881,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/",
-          "host": "festmag.com",
-          "knownOutletId": null,
+          "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
+          "host": "fringereview.co.uk",
+          "knownOutletId": "fringereview",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -34830,27 +34891,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "festmag--jamie-dunn.json",
+              "file": "fringereview--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatreandtonic--penny-walshe.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review"
+              "urlInDir": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/"
             }
           ],
           "serpCensus": true
@@ -34874,6 +34917,24 @@
           "serpCensus": true
         },
         {
+          "url": "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/",
+          "host": "festmag.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "festmag--jamie-dunn.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/",
           "host": "theqr.co.uk",
           "knownOutletId": "theqr",
@@ -34887,24 +34948,6 @@
               "file": "theqr--will-quinn.json",
               "flag": "wrongProduction",
               "urlInDir": "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://getthechance.wales/2026/08/13/review-elf-lyons-is-the-woman-on-the-edge-edinburgh-fringe-by-hannah-goslin/",
-          "host": "getthechance.wales",
-          "knownOutletId": "getthechance",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "getthechance--hannah-goslin.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://getthechance.wales/2026/08/13/review-elf-lyons-is-the-woman-on-the-edge-edinburgh-fringe-by-hannah-goslin/"
             }
           ],
           "serpCensus": true
@@ -34923,7 +34966,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -34954,7 +34997,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -34964,7 +35007,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -34980,16 +35023,16 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 12,
+        "resultCount": 14,
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 28,
         "byReason": {
-          "aggregator-internal-nav": 3,
-          "non-review-host": 24,
-          "venue-production-page": 1,
-          "non-review-path": 1
+          "non-review-host": 23,
+          "aggregator-internal-nav": 1,
+          "non-review-path": 3,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -35011,11 +35054,11 @@
             "url": "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/"
           },
           {
-            "outletId": "rolandcat",
-            "outlet": "rolandcat",
+            "outletId": "theatreandtonic",
+            "outlet": "theatreandtonic",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the"
+            "url": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review"
           },
           {
             "outletId": "chortle",
@@ -35032,6 +35075,20 @@
             "url": "https://list.co.uk/news/elf-lyons-is-the-woman-on-the-edge-comedy-review-clever-and-profound-48789"
           },
           {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review"
+          },
+          {
+            "outletId": "voice-magazine",
+            "outlet": "voice-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.voicemag.uk/review/16817/elf-lyons-is-the-woman-on-the-edge"
+          },
+          {
             "outletId": "mickperrin.com",
             "outlet": "mickperrin.com",
             "critic": "Unknown",
@@ -35039,18 +35096,11 @@
             "url": "https://www.mickperrin.com/tours/elf-lyons-is-the-woman-on-the-edge/"
           },
           {
-            "outletId": "festmag.com",
-            "outlet": "festmag.com",
+            "outletId": "fringereview",
+            "outlet": "fringereview",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/"
-          },
-          {
-            "outletId": "theatreandtonic",
-            "outlet": "theatreandtonic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review"
+            "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/"
           },
           {
             "outletId": "beyondthejoke.co.uk",
@@ -35060,22 +35110,28 @@
             "url": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge"
           },
           {
+            "outletId": "festmag.com",
+            "outlet": "festmag.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/"
+          },
+          {
             "outletId": "theqr",
             "outlet": "theqr",
             "critic": "Unknown",
             "stars": null,
             "url": "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/"
-          },
-          {
-            "outletId": "getthechance",
-            "outlet": "getthechance",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://getthechance.wales/2026/08/13/review-elf-lyons-is-the-woman-on-the-edge-edinburgh-fringe-by-hannah-goslin/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://sohotheatre.com/events/elf-lyons-is-the-woman-on-the-edge/",
+            "outletId": "sohotheatre.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
           {
             "url": "https://broadwaybaby.com/shows/elf-lyons-is-the-woman-on-the-edge/832666",
             "outletId": "broadwaybaby.com",
@@ -35097,11 +35153,11 @@
             "firstSeenAt": "2026-09-27T02:05:03.576Z"
           },
           {
-            "url": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
-            "outletId": "rolandcat",
+            "url": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
+            "outletId": "theatreandtonic",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-28T16:16:03.674Z"
+            "firstSeenAt": "2026-09-28T07:54:42.859Z"
           },
           {
             "url": "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
@@ -35118,8 +35174,36 @@
             "firstSeenAt": "2026-09-28T07:54:42.859Z"
           },
           {
+            "url": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://www.voicemag.uk/review/16817/elf-lyons-is-the-woman-on-the-edge",
+            "outletId": "voice-magazine",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
             "url": "https://www.mickperrin.com/tours/elf-lyons-is-the-woman-on-the-edge/",
             "outletId": "mickperrin.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T16:16:03.674Z"
+          },
+          {
+            "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
+            "outletId": "fringereview",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
+            "outletId": "beyondthejoke.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-28T16:16:03.674Z"
@@ -35132,39 +35216,18 @@
             "firstSeenAt": "2026-09-28T16:16:03.674Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
-            "outletId": "theatreandtonic",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-28T07:54:42.859Z"
-          },
-          {
-            "url": "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
-            "outletId": "beyondthejoke.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-28T16:16:03.674Z"
-          },
-          {
             "url": "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/",
             "outletId": "theqr",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-28T16:16:03.674Z"
-          },
-          {
-            "url": "https://getthechance.wales/2026/08/13/review-elf-lyons-is-the-woman-on-the-edge-edinburgh-fringe-by-hannah-goslin/",
-            "outletId": "getthechance",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-28T16:16:03.674Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 1,
-        "candidateCount": 12
+        "liveCount": 2,
+        "candidateCount": 14
       },
-      "computedAt": "2026-09-28T16:16:03.674Z"
+      "computedAt": "2026-09-28T22:37:42.816Z"
     },
     {
       "showId": "encores-la-cage-aux-folles-off-broadway-2026",
@@ -56084,18 +56147,18 @@
         "https://www.timeout.com/newyork/theater/how-shakespeare-saved-my-life-jacob-ming-trent-review",
         "https://www.vulture.com/article/reviews-how-shakespeare-saved-my-life-arias-with-a-twist.html",
         "https://www.show-score.com/off-broadway-shows/how-shakespeare-saved-my-life",
+        "https://culturesauce.com/how-shakespeare-saved-my-life-treats-the-bard-as-life-coach-off-broadway-review/",
+        "https://www.offoffonline.com/offoffonline/2026/9/21/how-shakespeare-saved-my-life",
         "https://thefrontrowcenter.com/2026/09/how-shakespeare-saved-my-life/",
         "https://www.theatermania.com/news/interview-how-shakespeare-really-did-save-jacob-ming-trents-life_1853554/",
         "https://mdtheatreguide.com/2026/06/theatre-review-how-shakespeare-saved-my-life-at-folger-theatre/",
         "https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/",
         "https://theatreeddys.com/2026/01/how-shakespeare-saved-my-life.html",
         "https://www.hillrag.com/2026/06/23/how-shakespeare-saved-my-life/",
-        "https://www.showify.us/shows/how-shakespeare-saved-my-life",
-        "https://www.encoreplus.app/berkeleyrep/how-shakespeare-saved-my-life-2026-brt/",
-        "https://culturevulture.net/theater/how-shakespeare-saved-my-life/"
+        "https://www.encoreplus.app/berkeleyrep/how-shakespeare-saved-my-life-2026-brt/"
       ],
-      "dirFiles": 17,
-      "dirClean": 8,
+      "dirFiles": 19,
+      "dirClean": 9,
       "inReviewsJson": 7,
       "missing": [
         {
@@ -56111,26 +56174,37 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.showify.us/shows/how-shakespeare-saved-my-life",
-          "host": "showify.us",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://www.encoreplus.app/berkeleyrep/how-shakespeare-saved-my-life-2026-brt/",
           "host": "encoreplus.app",
           "knownOutletId": null,
           "serpCensus": true
-        },
-        {
-          "url": "https://culturevulture.net/theater/how-shakespeare-saved-my-life/",
-          "host": "culturevulture.net",
-          "knownOutletId": "culture-vulture",
-          "serpCensus": true
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "showify.us",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2026/9/21/how-shakespeare-saved-my-life",
+          "host": "offoffonline.com",
+          "knownOutletId": "off-off-online",
+          "recoverable": true,
+          "recoverableFile": "off-off-online--deirdre-donovan.json",
+          "recoverableOutletId": "off-off-online",
+          "recoverableCritic": "Deirdre Donovan",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "off-off-online--deirdre-donovan.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.offoffonline.com/offoffonline/2026/9/21/how-shakespeare-saved-my-life"
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://www.theatermania.com/news/interview-how-shakespeare-really-did-save-jacob-ming-trents-life_1853554/",
           "host": "theatermania.com",
@@ -56218,7 +56292,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 5,
+            "accepted": 7,
             "error": null
           },
           {
@@ -56228,7 +56302,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -56238,7 +56312,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           },
           {
@@ -56268,7 +56342,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 2,
             "error": null
           }
         ],
@@ -56278,16 +56352,16 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 416,
+        "count": 415,
         "byReason": {
-          "aggregator-internal-nav": 267,
+          "non-review-host": 55,
+          "aggregator-internal-nav": 266,
+          "ticketing-listing": 1,
+          "ticketing-reseller": 2,
+          "venue-production-page": 1,
           "not-http-url": 76,
           "aggregator-section-root": 11,
-          "non-review-host": 54,
-          "roundup-page": 2,
-          "ticketing-listing": 3,
-          "ticketing-reseller": 2,
-          "venue-production-page": 1
+          "roundup-page": 3
         }
       },
       "dedupedVariants": [],
@@ -56317,18 +56391,6 @@
           "reason": "Refusing to ingest — https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/ matches a known "
         },
         {
-          "url": "https://www.showify.us/shows/how-shakespeare-saved-my-life",
-          "host": "showify.us",
-          "outletId": "showify",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
           "url": "https://www.encoreplus.app/berkeleyrep/how-shakespeare-saved-my-life-2026-brt/",
           "host": "encoreplus.app",
           "outletId": "encoreplus",
@@ -56339,21 +56401,22 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  provisional outlet \"encoreplus\" (not in registry) — onboard to outlet-registry.json after review"
-        },
-        {
-          "url": "https://culturevulture.net/theater/how-shakespeare-saved-my-life/",
-          "host": "culturevulture.net",
-          "outletId": "culture-vulture",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
         }
       ],
       "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2026/9/21/how-shakespeare-saved-my-life",
+          "host": "offoffonline.com",
+          "file": "off-off-online--deirdre-donovan.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -56372,13 +56435,6 @@
             "url": "https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/"
           },
           {
-            "outletId": "showify.us",
-            "outlet": "showify.us",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.showify.us/shows/how-shakespeare-saved-my-life"
-          },
-          {
             "outletId": "encoreplus.app",
             "outlet": "encoreplus.app",
             "critic": "Unknown",
@@ -56386,11 +56442,11 @@
             "url": "https://www.encoreplus.app/berkeleyrep/how-shakespeare-saved-my-life-2026-brt/"
           },
           {
-            "outletId": "culture-vulture",
-            "outlet": "culture-vulture",
+            "outletId": "off-off-online",
+            "outlet": "off-off-online",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://culturevulture.net/theater/how-shakespeare-saved-my-life/"
+            "url": "https://www.offoffonline.com/offoffonline/2026/9/21/how-shakespeare-saved-my-life"
           },
           {
             "outletId": "theatermania",
@@ -56460,6 +56516,12 @@
             "firstSeenAt": "2026-09-28T16:16:03.674Z"
           },
           {
+            "url": "https://culturesauce.com/how-shakespeare-saved-my-life-treats-the-bard-as-life-coach-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
             "url": "https://thefrontrowcenter.com/2026/09/how-shakespeare-saved-my-life/",
             "outletId": "thefrontrowcenter.com",
             "state": "live",
@@ -56480,13 +56542,6 @@
             "firstSeenAt": "2026-09-28T16:16:03.674Z"
           },
           {
-            "url": "https://www.showify.us/shows/how-shakespeare-saved-my-life",
-            "outletId": "showify.us",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-27T16:31:53.708Z"
-          },
-          {
             "url": "https://www.encoreplus.app/berkeleyrep/how-shakespeare-saved-my-life-2026-brt/",
             "outletId": "encoreplus.app",
             "state": "GAP",
@@ -56494,11 +56549,11 @@
             "firstSeenAt": "2026-09-28T16:16:03.674Z"
           },
           {
-            "url": "https://culturevulture.net/theater/how-shakespeare-saved-my-life/",
-            "outletId": "culture-vulture",
+            "url": "https://www.offoffonline.com/offoffonline/2026/9/21/how-shakespeare-saved-my-life",
+            "outletId": "off-off-online",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-27T16:31:53.708Z"
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
           },
           {
             "url": "https://www.theatermania.com/news/interview-how-shakespeare-really-did-save-jacob-ming-trents-life_1853554/",
@@ -56531,9 +56586,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 7,
-        "candidateCount": 16
+        "candidateCount": 15
       },
-      "computedAt": "2026-09-28T16:16:03.674Z"
+      "computedAt": "2026-09-28T22:37:42.816Z"
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
@@ -57105,17 +57160,25 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.newyorktheatreguide.com/reviews/human-things-off-broadway-review",
+        "https://theknockturnal.com/human-things-takes-stage/",
         "https://www.theatermania.com/news/review-human-things-stranded-on-a-desert-island-with-victoria-clark_1855018/",
-        "https://www.nbcnewyork.com/video/broadway/victoria-clark-tony-winner-talks-about-new-play-human-things/6552211/"
+        "https://broadwaylog.app/shows/human-things-2026",
+        "https://www.newyorktheatreguide.com/theatre-news/news/victoria-clark-ben-rosenfield-more-to-star-in-world-premiere-play-human-things"
       ],
       "dirFiles": 7,
       "dirClean": 5,
       "inReviewsJson": 5,
       "missing": [
         {
-          "url": "https://www.nbcnewyork.com/video/broadway/victoria-clark-tony-winner-talks-about-new-play-human-things/6552211/",
-          "host": "nbcnewyork.com",
-          "knownOutletId": "nbcny",
+          "url": "https://theknockturnal.com/human-things-takes-stage/",
+          "host": "theknockturnal.com",
+          "knownOutletId": "the-knockturnal",
+          "serpCensus": true
+        },
+        {
+          "url": "https://broadwaylog.app/shows/human-things-2026",
+          "host": "broadwaylog.app",
+          "knownOutletId": null,
           "serpCensus": true
         }
       ],
@@ -57148,7 +57211,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 4,
             "error": null
           },
           {
@@ -57158,7 +57221,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -57168,7 +57231,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -57178,41 +57241,52 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 3,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 23,
+        "count": 17,
         "byReason": {
-          "non-review-host": 9,
+          "non-review-host": 8,
           "aggregator-internal-nav": 3,
+          "non-review-path": 2,
           "ticketing-listing": 1,
-          "venue-production-page": 2,
-          "ticketing-reseller": 1,
-          "aggregator-section-root": 2,
-          "non-review-path": 3,
-          "roundup-page": 2
+          "venue-production-page": 1,
+          "aggregator-section-root": 1,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://www.nbcnewyork.com/video/broadway/victoria-clark-tony-winner-talks-about-new-play-human-things/6552211/",
-          "host": "nbcnewyork.com",
-          "outletId": "nbcny",
+          "url": "https://theknockturnal.com/human-things-takes-stage/",
+          "host": "theknockturnal.com",
+          "outletId": "the-knockturnal",
           "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://broadwaylog.app/shows/human-things-2026",
+          "host": "broadwaylog.app",
+          "outletId": "broadwaylog",
+          "provisional": true,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+          "reason": "⚠️  provisional outlet \"broadwaylog\" (not in registry) — onboard to outlet-registry.json after revie"
         }
       ],
       "ingestSkippedByCap": [],
@@ -57220,11 +57294,18 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "nbcny",
-            "outlet": "nbcny",
+            "outletId": "the-knockturnal",
+            "outlet": "the-knockturnal",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.nbcnewyork.com/video/broadway/victoria-clark-tony-winner-talks-about-new-play-human-things/6552211/"
+            "url": "https://theknockturnal.com/human-things-takes-stage/"
+          },
+          {
+            "outletId": "broadwaylog.app",
+            "outlet": "broadwaylog.app",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwaylog.app/shows/human-things-2026"
           }
         ],
         "suppressedMissing": [],
@@ -57242,18 +57323,31 @@
             "firstSeenAt": "2026-09-27T14:36:57.317Z"
           },
           {
-            "url": "https://www.nbcnewyork.com/video/broadway/victoria-clark-tony-winner-talks-about-new-play-human-things/6552211/",
-            "outletId": "nbcny",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/victoria-clark-ben-rosenfield-more-to-star-in-world-premiere-play-human-things",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://theknockturnal.com/human-things-takes-stage/",
+            "outletId": "the-knockturnal",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-28T14:10:59.050Z"
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://broadwaylog.app/shows/human-things-2026",
+            "outletId": "broadwaylog.app",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
           }
         ],
         "censusSchema": 2,
         "liveCount": 2,
-        "candidateCount": 3
+        "candidateCount": 4
       },
-      "computedAt": "2026-09-28T14:10:59.050Z"
+      "computedAt": "2026-09-28T22:37:42.816Z"
     },
     {
       "showId": "hungry-women-off-broadway-2026",
@@ -67193,17 +67287,16 @@
         "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/",
         "https://www.opera.hu/en/programme/2026-2027/la-boheme/hungarian-state-opera-2026-12-11-1800/",
         "https://operawire.com/metropolitan-opera-2026-27-review-la-boheme/",
-        "https://newyorkclassicalreview.com/2026/09/tenor-sub-brings-a-welcome-puccini-reunion-in-mets-opening-cast-boheme/",
         "https://bachtrack.com/opera-event/la-boheme-metropolitan-opera-25-september-2026/436175",
         "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
         "https://www.rottentomatoes.com/m/the_metropolitan_opera_la_boheme_2025",
         "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
-        "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
-        "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
+        "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
+        "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/"
       ],
-      "dirFiles": 10,
-      "dirClean": 1,
-      "inReviewsJson": 1,
+      "dirFiles": 13,
+      "dirClean": 3,
+      "inReviewsJson": 2,
       "missing": [
         {
           "url": "https://www.nytimes.com/2023/04/23/arts/music/la-boheme-yannick-nezet-seguin-met-opera-review.html",
@@ -67225,12 +67318,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://operawire.com/metropolitan-opera-2026-27-review-la-boheme/",
-          "host": "operawire.com",
-          "knownOutletId": "operawire",
-          "serpCensus": true
-        },
-        {
           "url": "https://bachtrack.com/opera-event/la-boheme-metropolitan-opera-25-september-2026/436175",
           "host": "bachtrack.com",
           "knownOutletId": "bachtrack",
@@ -67249,19 +67336,24 @@
           "serpCensus": true
         },
         {
-          "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
-          "host": "newcriterion.com",
-          "knownOutletId": "the-new-criterion",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
           "host": "wsj.com",
           "knownOutletId": "wsj",
           "serpCensus": true
+        },
+        {
+          "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
+          "host": "newcriterion.com",
+          "knownOutletId": "the-new-criterion",
+          "serpCensus": true
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "newyorkclassicalreview.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [
         {
           "url": "https://www.nytimes.com/2021/11/10/arts/music/boheme-met-opera-review.html",
@@ -67362,7 +67454,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -67398,13 +67490,13 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 11,
+        "resultCount": 10,
         "error": null
       },
       "candidatesRejected": {
-        "count": 26,
+        "count": 24,
         "byReason": {
-          "non-review-host": 24,
+          "non-review-host": 22,
           "ticketing-reseller": 2
         }
       },
@@ -67443,18 +67535,6 @@
           "reason": "⚠️  provisional outlet \"opera\" (not in registry) — onboard to outlet-registry.json after review.\n  ⚠"
         },
         {
-          "url": "https://operawire.com/metropolitan-opera-2026-27-review-la-boheme/",
-          "host": "operawire.com",
-          "outletId": "operawire",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
           "url": "https://bachtrack.com/opera-event/la-boheme-metropolitan-opera-25-september-2026/436175",
           "host": "bachtrack.com",
           "outletId": "bachtrack",
@@ -67477,23 +67557,30 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  provisional outlet \"operamylove\" (not in registry) — onboard to outlet-registry.json after revie"
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
+          "host": "britishtheatreguide.info",
+          "outletId": "british-theatre",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
-          "host": "britishtheatreguide.info",
-          "outletId": "british-theatre"
+          "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
+          "host": "wsj.com",
+          "outletId": "wsj"
         },
         {
           "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
           "host": "newcriterion.com",
           "outletId": "the-new-criterion"
-        },
-        {
-          "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
-          "host": "wsj.com",
-          "outletId": "wsj"
         }
       ],
       "censusVerdict": {
@@ -67512,13 +67599,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.opera.hu/en/programme/2026-2027/la-boheme/hungarian-state-opera-2026-12-11-1800/"
-          },
-          {
-            "outletId": "operawire",
-            "outlet": "operawire",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://operawire.com/metropolitan-opera-2026-27-review-la-boheme/"
           },
           {
             "outletId": "bachtrack",
@@ -67574,10 +67654,10 @@
         ],
         "candidates": [
           {
-            "url": "https://newyorkclassicalreview.com/2026/09/tenor-sub-brings-a-welcome-puccini-reunion-in-mets-opening-cast-boheme/",
-            "outletId": "newyorkclassicalreview.com",
+            "url": "https://operawire.com/metropolitan-opera-2026-27-review-la-boheme/",
+            "outletId": "operawire.com",
             "state": "live",
-            "firstSeenAt": "2026-09-28T16:16:03.674Z"
+            "firstSeenAt": "2026-09-28T07:54:42.859Z"
           },
           {
             "url": "https://askonasholt.com/artist/kristina-mkhitaryan/press/kristina-mkhitaryan-debuts-as-mimi-in-la-boheme-at-the-metropolitan-opera",
@@ -67592,13 +67672,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-28T16:16:03.674Z"
-          },
-          {
-            "url": "https://operawire.com/metropolitan-opera-2026-27-review-la-boheme/",
-            "outletId": "operawire",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-28T07:54:42.859Z"
           },
           {
             "url": "https://bachtrack.com/opera-event/la-boheme-metropolitan-opera-25-september-2026/436175",
@@ -67622,17 +67695,17 @@
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
-            "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
-            "outletId": "the-new-criterion",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-26T17:42:56.172Z"
-          },
-          {
             "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
             "outletId": "wsj",
             "state": "SUPPRESSED",
             "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-09-26T17:42:56.172Z"
+          },
+          {
+            "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
+            "outletId": "the-new-criterion",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
@@ -67652,9 +67725,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 1,
-        "candidateCount": 11
+        "candidateCount": 10
       },
-      "computedAt": "2026-09-28T16:16:03.674Z"
+      "computedAt": "2026-09-28T22:37:42.816Z"
     },
     {
       "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
@@ -70894,6 +70967,520 @@
       "computedAt": "2026-09-21T00:49:24.476Z"
     },
     {
+      "showId": "lost-in-del-valle-return-off-broadway-2026",
+      "title": "Lost in Del Valle",
+      "openingDate": "2026-09-23",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.newyorktheatreguide.com/reviews/lost-in-del-valle-off-broadway-review-ned-van-zandt",
+        "https://www.theaterscene.net/plays/solo-plays/lost-in-del-valle/tony-marinelli/",
+        "https://www.offoffonline.com/offoffonline/2026/4/6/lost-in-del-valle",
+        "http://www.theaterscene.net/plays/solo-plays/lost-in-del-valle/tony-marinelli/",
+        "https://www.theatermania.com/news/review-lost-in-del-valle-gets-lost-in-its-own-storytelling_1854949/",
+        "https://www.newyorksocialdiary.com/lost-in-del-valle-this-true-tale-doesnt-write-itself/",
+        "https://www.theatermania.com/news/ned-van-zandts-lost-in-del-valle-will-return-to-soho-playhouse_1846785/",
+        "https://www.sohoplayhouse.com/see-a-show/lost-in-del-valle",
+        "https://www.show-score.com/off-off-broadway-shows/lost-in-del-valle",
+        "https://broadwaypodcastnetwork.com/podcasts/the-roundtable/ned-van-zandt-amir-arison-bring-lost-in-del-valle-to-nyc/876",
+        "https://theknockturnal.com/a-raw-journey-from-chaos-to-redemption-in-lost-in-del-valle/",
+        "https://www.iloveny.com/thebeat/post/presenting-the-us-premiere-of-lost-in-del-valle/",
+        "https://www.indiependent.co.uk/captivating-performance-lost-in-a-chaotic-story-del-valle-a-true-tale-of-sex-drugs-rock-and-roll-and-redemption-review/",
+        "https://broadwaylog.app/shows/lost-in-del-valle-2026"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/lost-in-del-valle-off-broadway-review-ned-van-zandt",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theaterscene.net/plays/solo-plays/lost-in-del-valle/tony-marinelli/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene"
+        },
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2026/4/6/lost-in-del-valle",
+          "host": "offoffonline.com",
+          "knownOutletId": "off-off-online",
+          "serpCensus": true
+        },
+        {
+          "url": "http://www.theaterscene.net/plays/solo-plays/lost-in-del-valle/tony-marinelli/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-lost-in-del-valle-gets-lost-in-its-own-storytelling_1854949/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.newyorksocialdiary.com/lost-in-del-valle-this-true-tale-doesnt-write-itself/",
+          "host": "newyorksocialdiary.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/ned-van-zandts-lost-in-del-valle-will-return-to-soho-playhouse_1846785/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.sohoplayhouse.com/see-a-show/lost-in-del-valle",
+          "host": "sohoplayhouse.com",
+          "knownOutletId": "sohoplayhouse",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.show-score.com/off-off-broadway-shows/lost-in-del-valle",
+          "host": "show-score.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://broadwaypodcastnetwork.com/podcasts/the-roundtable/ned-van-zandt-amir-arison-bring-lost-in-del-valle-to-nyc/876",
+          "host": "broadwaypodcastnetwork.com",
+          "knownOutletId": "broadwaypodcastnetwork",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theknockturnal.com/a-raw-journey-from-chaos-to-redemption-in-lost-in-del-valle/",
+          "host": "theknockturnal.com",
+          "knownOutletId": "the-knockturnal",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.iloveny.com/thebeat/post/presenting-the-us-premiere-of-lost-in-del-valle/",
+          "host": "iloveny.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.indiependent.co.uk/captivating-performance-lost-in-a-chaotic-story-del-valle-a-true-tale-of-sex-drugs-rock-and-roll-and-redemption-review/",
+          "host": "indiependent.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://broadwaylog.app/shows/lost-in-del-valle-2026",
+          "host": "broadwaylog.app",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Lost in Del Valle\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Lost in Del Valle\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Lost in Del Valle\" review soho",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Lost in Del Valle\" Schultz review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Lost in Del Valle SoHo Playhouse review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Lost in Del Valle SoHo Playhouse review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Lost in Del Valle SoHo Playhouse review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 13,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 22,
+        "byReason": {
+          "non-review-host": 17,
+          "aggregator-internal-nav": 3,
+          "non-review-path": 1,
+          "merch-store": 1
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/lost-in-del-valle-off-broadway-review-ned-van-zandt",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.theaterscene.net/plays/solo-plays/lost-in-del-valle/tony-marinelli/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2026/4/6/lost-in-del-valle",
+          "host": "offoffonline.com",
+          "outletId": "off-off-online",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "http://www.theaterscene.net/plays/solo-plays/lost-in-del-valle/tony-marinelli/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-lost-in-del-valle-gets-lost-in-its-own-storytelling_1854949/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.newyorksocialdiary.com/lost-in-del-valle-this-true-tale-doesnt-write-itself/",
+          "host": "newyorksocialdiary.com",
+          "outletId": "newyorksocialdiary"
+        },
+        {
+          "url": "https://www.theatermania.com/news/ned-van-zandts-lost-in-del-valle-will-return-to-soho-playhouse_1846785/",
+          "host": "theatermania.com",
+          "outletId": "theatermania"
+        },
+        {
+          "url": "https://www.sohoplayhouse.com/see-a-show/lost-in-del-valle",
+          "host": "sohoplayhouse.com",
+          "outletId": "sohoplayhouse"
+        },
+        {
+          "url": "https://www.show-score.com/off-off-broadway-shows/lost-in-del-valle",
+          "host": "show-score.com",
+          "outletId": null
+        },
+        {
+          "url": "https://broadwaypodcastnetwork.com/podcasts/the-roundtable/ned-van-zandt-amir-arison-bring-lost-in-del-valle-to-nyc/876",
+          "host": "broadwaypodcastnetwork.com",
+          "outletId": "broadwaypodcastnetwork"
+        },
+        {
+          "url": "https://theknockturnal.com/a-raw-journey-from-chaos-to-redemption-in-lost-in-del-valle/",
+          "host": "theknockturnal.com",
+          "outletId": "the-knockturnal"
+        },
+        {
+          "url": "https://www.iloveny.com/thebeat/post/presenting-the-us-premiere-of-lost-in-del-valle/",
+          "host": "iloveny.com",
+          "outletId": "iloveny"
+        },
+        {
+          "url": "https://www.indiependent.co.uk/captivating-performance-lost-in-a-chaotic-story-del-valle-a-true-tale-of-sex-drugs-rock-and-roll-and-redemption-review/",
+          "host": "indiependent.co.uk",
+          "outletId": "indiependent"
+        },
+        {
+          "url": "https://broadwaylog.app/shows/lost-in-del-valle-2026",
+          "host": "broadwaylog.app",
+          "outletId": "broadwaylog"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/lost-in-del-valle-off-broadway-review-ned-van-zandt"
+          },
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theaterscene.net/plays/solo-plays/lost-in-del-valle/tony-marinelli/"
+          },
+          {
+            "outletId": "off-off-online",
+            "outlet": "off-off-online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.offoffonline.com/offoffonline/2026/4/6/lost-in-del-valle"
+          },
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theaterscene.net/plays/solo-plays/lost-in-del-valle/tony-marinelli/"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/review-lost-in-del-valle-gets-lost-in-its-own-storytelling_1854949/"
+          },
+          {
+            "outletId": "newyorksocialdiary.com",
+            "outlet": "newyorksocialdiary.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorksocialdiary.com/lost-in-del-valle-this-true-tale-doesnt-write-itself/"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/ned-van-zandts-lost-in-del-valle-will-return-to-soho-playhouse_1846785/"
+          },
+          {
+            "outletId": "sohoplayhouse",
+            "outlet": "sohoplayhouse",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.sohoplayhouse.com/see-a-show/lost-in-del-valle"
+          },
+          {
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.show-score.com/off-off-broadway-shows/lost-in-del-valle"
+          },
+          {
+            "outletId": "broadwaypodcastnetwork",
+            "outlet": "broadwaypodcastnetwork",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwaypodcastnetwork.com/podcasts/the-roundtable/ned-van-zandt-amir-arison-bring-lost-in-del-valle-to-nyc/876"
+          },
+          {
+            "outletId": "the-knockturnal",
+            "outlet": "the-knockturnal",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theknockturnal.com/a-raw-journey-from-chaos-to-redemption-in-lost-in-del-valle/"
+          },
+          {
+            "outletId": "iloveny.com",
+            "outlet": "iloveny.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.iloveny.com/thebeat/post/presenting-the-us-premiere-of-lost-in-del-valle/"
+          },
+          {
+            "outletId": "indiependent.co.uk",
+            "outlet": "indiependent.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.indiependent.co.uk/captivating-performance-lost-in-a-chaotic-story-del-valle-a-true-tale-of-sex-drugs-rock-and-roll-and-redemption-review/"
+          },
+          {
+            "outletId": "broadwaylog.app",
+            "outlet": "broadwaylog.app",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwaylog.app/shows/lost-in-del-valle-2026"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/lost-in-del-valle-off-broadway-review-ned-van-zandt",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/solo-plays/lost-in-del-valle/tony-marinelli/",
+            "outletId": "theater-scene",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2026/4/6/lost-in-del-valle",
+            "outletId": "off-off-online",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/solo-plays/lost-in-del-valle/tony-marinelli/",
+            "outletId": "theater-scene",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-lost-in-del-valle-gets-lost-in-its-own-storytelling_1854949/",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://www.newyorksocialdiary.com/lost-in-del-valle-this-true-tale-doesnt-write-itself/",
+            "outletId": "newyorksocialdiary.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/ned-van-zandts-lost-in-del-valle-will-return-to-soho-playhouse_1846785/",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://www.sohoplayhouse.com/see-a-show/lost-in-del-valle",
+            "outletId": "sohoplayhouse",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://www.show-score.com/off-off-broadway-shows/lost-in-del-valle",
+            "outletId": "show-score.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://broadwaypodcastnetwork.com/podcasts/the-roundtable/ned-van-zandt-amir-arison-bring-lost-in-del-valle-to-nyc/876",
+            "outletId": "broadwaypodcastnetwork",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://theknockturnal.com/a-raw-journey-from-chaos-to-redemption-in-lost-in-del-valle/",
+            "outletId": "the-knockturnal",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://www.iloveny.com/thebeat/post/presenting-the-us-premiere-of-lost-in-del-valle/",
+            "outletId": "iloveny.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://www.indiependent.co.uk/captivating-performance-lost-in-a-chaotic-story-del-valle-a-true-tale-of-sex-drugs-rock-and-roll-and-redemption-review/",
+            "outletId": "indiependent.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://broadwaylog.app/shows/lost-in-del-valle-2026",
+            "outletId": "broadwaylog.app",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          }
+        ],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 12
+      },
+      "computedAt": "2026-09-28T22:37:42.816Z"
+    },
+    {
       "showId": "louis-katz-conflicted-off-broadway-2026",
       "title": "Louis Katz: Conflicted",
       "openingDate": null,
@@ -71071,8 +71658,8 @@
         "https://www.timeout.com/london/theatre/macbeth-review",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/macbeth-national-theatre-review-rory-kinnear-annemarie-duff-a8244476.html",
         "https://www.telegraph.co.uk/theatre/what-to-see/dud-see-macbeth-national-theatre-review/",
-        "https://bachtrack.com/review-macbeth-proske-nezet-seguin-kelsey-davidsen-metropolitan-opera-new-york-september-2026",
         "https://www.wsj.com/arts-culture/theater/macbeth-review-a-ferocious-start-to-the-met-operas-season-491640f2",
+        "https://bachtrack.com/review-macbeth-proske-nezet-seguin-kelsey-davidsen-metropolitan-opera-new-york-september-2026",
         "https://www.nytimes.com/2026/09/23/style/met-opera-opening-night-macbeth.html",
         "https://www.classicalsource.com/concert/the-metropolitan-opera-macbeth-2/",
         "https://www.rottentomatoes.com/m/the_metropolitan_opera_macbeth",
@@ -71618,7 +72205,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -71654,18 +72241,18 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 11,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 1671,
+        "count": 1670,
         "byReason": {
-          "aggregator-internal-nav": 1153,
+          "non-review-host": 136,
+          "aggregator-internal-nav": 1151,
+          "ticketing-reseller": 1,
           "not-http-url": 325,
           "aggregator-section-root": 29,
-          "non-review-host": 137,
-          "roundup-page": 26,
-          "ticketing-reseller": 1
+          "roundup-page": 28
         }
       },
       "dedupedVariants": [
@@ -71950,7 +72537,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=classicalsource.com): Scrapingdog HTTP 400: Oops! Some"
+          "reason": "spawnSync node ETIMEDOUT"
         },
         {
           "url": "https://www.operabase.com/productions/macbeth-476049/en",
@@ -72145,7 +72732,7 @@
         "liveCount": 7,
         "candidateCount": 13
       },
-      "computedAt": "2026-09-28T16:16:03.674Z"
+      "computedAt": "2026-09-28T22:37:42.816Z"
     },
     {
       "showId": "madama-butterfly-off-broadway-2024",
@@ -78841,6 +79428,7 @@
         "https://chicago.suntimes.com/theater/2024/07/09/midnight-in-the-garden-of-good-and-evil-review-goodman-theatre-chicago",
         "https://chicago.splashmags.com/index.php/2024/07/midnight-in-the-garden-of-good-and-evil-review-immaculate-vibes/",
         "https://www.darylroththeatre.com/production/midnight/",
+        "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall",
         "https://www.nyc.com/broadway_tickets/midnight.442588552075689984/",
         "https://www.tickadoo.com/new-york/midnight"
       ],
@@ -79128,6 +79716,24 @@
           "serpCensus": true
         },
         {
+          "url": "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--emily-wyrwa.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://www.nyc.com/broadway_tickets/midnight.442588552075689984/",
           "host": "nyc.com",
           "knownOutletId": null,
@@ -79188,7 +79794,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -79224,20 +79830,18 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 1389,
+        "count": 1387,
         "byReason": {
-          "aggregator-internal-nav": 983,
-          "not-http-url": 244,
-          "aggregator-section-root": 29,
           "non-review-host": 124,
-          "roundup-page": 2,
-          "ticketing-reseller": 5,
+          "aggregator-internal-nav": 986,
+          "ticketing-reseller": 3,
           "venue-production-page": 1,
-          "non-review-path": 1
+          "not-http-url": 244,
+          "aggregator-section-root": 29
         }
       },
       "dedupedVariants": [],
@@ -79438,6 +80042,13 @@
             "url": "https://www.darylroththeatre.com/production/midnight/"
           },
           {
+            "outletId": "theatrely",
+            "outlet": "theatrely",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall"
+          },
+          {
             "outletId": "nyc.com",
             "outlet": "nyc.com",
             "critic": "Unknown",
@@ -79462,6 +80073,13 @@
             "firstSeenAt": "2026-09-27T16:31:53.708Z"
           },
           {
+            "url": "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall",
+            "outletId": "theatrely",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
             "url": "https://www.nyc.com/broadway_tickets/midnight.442588552075689984/",
             "outletId": "nyc.com",
             "state": "GAP",
@@ -79478,9 +80096,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 3
+        "candidateCount": 4
       },
-      "computedAt": "2026-09-28T16:16:03.674Z"
+      "computedAt": "2026-09-28T22:37:42.816Z"
     },
     {
       "showId": "milk-and-honey-amt-theater-off-broadway-2026",
@@ -82579,6 +83197,240 @@
         "candidateCount": 6
       },
       "computedAt": "2026-08-30T07:41:12.140Z"
+    },
+    {
+      "showId": "moonrise-a-theatrical-dinner-experience-at-paradise-club-off-broadway-2026",
+      "title": "MOONRISE: A Theatrical Dinner Experience at Paradise Club",
+      "openingDate": null,
+      "status": "previews",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc",
+        "https://www.eventbrite.com/e/moonrise-a-dinner-experience-at-paradise-club-tickets-1997723558942",
+        "https://www.localwineevents.com/view/event/moonrise--a-dinner-experience-at-paradise-club/928060",
+        "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-experience-nyc"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc",
+          "host": "pulsd.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.eventbrite.com/e/moonrise-a-dinner-experience-at-paradise-club-tickets-1997723558942",
+          "host": "eventbrite.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.localwineevents.com/view/event/moonrise--a-dinner-experience-at-paradise-club/928060",
+          "host": "localwineevents.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-experience-nyc",
+          "host": "pulsd.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"MOONRISE: A Theatrical Dinner Experience at Paradise Club\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"MOONRISE: A Theatrical Dinner Experience at Paradise Club\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"MOONRISE: A Theatrical Dinner Experience at Paradise Club\" review paradise",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "MOONRISE: A Theatrical Dinner Experience at Paradise Club Paradise Club review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "MOONRISE: A Theatrical Dinner Experience at Paradise Club Paradise Club review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "MOONRISE: A Theatrical Dinner Experience at Paradise Club Paradise Club review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 4,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 31,
+        "byReason": {
+          "non-review-host": 31
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc",
+          "host": "pulsd.com",
+          "outletId": "pulsd",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.eventbrite.com/e/moonrise-a-dinner-experience-at-paradise-club-tickets-1997723558942",
+          "host": "eventbrite.com",
+          "outletId": "eventbrite",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.localwineevents.com/view/event/moonrise--a-dinner-experience-at-paradise-club/928060",
+          "host": "localwineevents.com",
+          "outletId": "localwineevents",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-experience-nyc",
+          "host": "pulsd.com",
+          "outletId": "pulsd",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"pulsd\" (not in registry) — onboard to outlet-registry.json after review.\n  ⚠"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "pulsd.com",
+            "outlet": "pulsd.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc"
+          },
+          {
+            "outletId": "eventbrite.com",
+            "outlet": "eventbrite.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.eventbrite.com/e/moonrise-a-dinner-experience-at-paradise-club-tickets-1997723558942"
+          },
+          {
+            "outletId": "localwineevents.com",
+            "outlet": "localwineevents.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.localwineevents.com/view/event/moonrise--a-dinner-experience-at-paradise-club/928060"
+          },
+          {
+            "outletId": "pulsd.com",
+            "outlet": "pulsd.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-experience-nyc"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc",
+            "outletId": "pulsd.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://www.eventbrite.com/e/moonrise-a-dinner-experience-at-paradise-club-tickets-1997723558942",
+            "outletId": "eventbrite.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://www.localwineevents.com/view/event/moonrise--a-dinner-experience-at-paradise-club/928060",
+            "outletId": "localwineevents.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-experience-nyc",
+            "outletId": "pulsd.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          }
+        ],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 3
+      },
+      "computedAt": "2026-09-28T22:37:42.816Z"
     },
     {
       "showId": "mother-play-2024",
@@ -101159,34 +102011,39 @@
         "https://letterboxd.com/film/red-riding-hood/crew/",
         "https://westchester.kidsoutandabout.com/content/red-riding-hood-0",
         "https://www.showify.us/shows/red-riding-hood",
-        "https://exeuntnyc.com/reviews/review-little-red-riding-hood-fiaf-florence-gould-hall/",
-        "https://www.broadwayworld.com/westend/article/Review-NORTHERN-BALLET-LITTLE-RED-RIDING-HOOD-Royal-Ballet-And-Opera-20251024"
+        "https://exeuntnyc.com/reviews/review-little-red-riding-hood-fiaf-florence-gould-hall/"
       ],
-      "dirFiles": 2,
+      "dirFiles": 3,
       "dirClean": 1,
       "inReviewsJson": 0,
       "missing": [
-        {
-          "url": "https://letterboxd.com/film/red-riding-hood/crew/",
-          "host": "letterboxd.com",
-          "knownOutletId": "letterboxd",
-          "serpCensus": true
-        },
         {
           "url": "https://exeuntnyc.com/reviews/review-little-red-riding-hood-fiaf-florence-gould-hall/",
           "host": "exeuntnyc.com",
           "knownOutletId": "exeunt-magazine",
           "serpCensus": true
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-NORTHERN-BALLET-LITTLE-RED-RIDING-HOOD-Royal-Ballet-And-Opera-20251024",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "serpCensus": true
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://letterboxd.com/film/red-riding-hood/crew/",
+          "host": "letterboxd.com",
+          "knownOutletId": "letterboxd",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "letterboxd--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://letterboxd.com/film/red-riding-hood/crew/"
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://westchester.kidsoutandabout.com/content/red-riding-hood-0",
           "host": "kidsoutandabout.com",
@@ -101250,7 +102107,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -101266,49 +102123,25 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 25,
         "byReason": {
-          "non-review-host": 17,
+          "non-review-host": 15,
           "aggregator-internal-nav": 6,
           "ticketing-listing": 1,
-          "venue-production-page": 2,
-          "ticketing-reseller": 1
+          "ticketing-reseller": 1,
+          "venue-production-page": 2
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://letterboxd.com/film/red-riding-hood/crew/",
-          "host": "letterboxd.com",
-          "outletId": "letterboxd",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
           "url": "https://exeuntnyc.com/reviews/review-little-red-riding-hood-fiaf-florence-gould-hall/",
           "host": "exeuntnyc.com",
           "outletId": "exeunt-magazine",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-NORTHERN-BALLET-LITTLE-RED-RIDING-HOOD-Royal-Ballet-And-Opera-20251024",
-          "host": "broadwayworld.com",
-          "outletId": "broadwayworld",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -101323,13 +102156,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "letterboxd",
-            "outlet": "letterboxd",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://letterboxd.com/film/red-riding-hood/crew/"
-          },
-          {
             "outletId": "exeunt-magazine",
             "outlet": "exeunt-magazine",
             "critic": "Unknown",
@@ -101337,11 +102163,11 @@
             "url": "https://exeuntnyc.com/reviews/review-little-red-riding-hood-fiaf-florence-gould-hall/"
           },
           {
-            "outletId": "broadwayworld",
-            "outlet": "broadwayworld",
+            "outletId": "letterboxd",
+            "outlet": "letterboxd",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.broadwayworld.com/westend/article/Review-NORTHERN-BALLET-LITTLE-RED-RIDING-HOOD-Royal-Ballet-And-Opera-20251024"
+            "url": "https://letterboxd.com/film/red-riding-hood/crew/"
           },
           {
             "outletId": "kidsoutandabout.com",
@@ -101360,13 +102186,6 @@
             "firstSeenAt": "2026-09-28T01:29:33.709Z"
           },
           {
-            "url": "https://letterboxd.com/film/red-riding-hood/crew/",
-            "outletId": "letterboxd",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-28T14:10:59.050Z"
-          },
-          {
             "url": "https://exeuntnyc.com/reviews/review-little-red-riding-hood-fiaf-florence-gould-hall/",
             "outletId": "exeunt-magazine",
             "state": "IN_FLIGHT",
@@ -101374,11 +102193,11 @@
             "firstSeenAt": "2026-09-28T01:29:33.709Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-NORTHERN-BALLET-LITTLE-RED-RIDING-HOOD-Royal-Ballet-And-Opera-20251024",
-            "outletId": "broadwayworld",
+            "url": "https://letterboxd.com/film/red-riding-hood/crew/",
+            "outletId": "letterboxd",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+            "firstSeenAt": "2026-09-28T14:10:59.050Z"
           },
           {
             "url": "https://westchester.kidsoutandabout.com/content/red-riding-hood-0",
@@ -101390,9 +102209,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 1,
-        "candidateCount": 5
+        "candidateCount": 4
       },
-      "computedAt": "2026-09-28T14:10:59.050Z"
+      "computedAt": "2026-09-28T22:37:42.816Z"
     },
     {
       "showId": "redcliffe-off-west-end-2026",
@@ -117769,17 +118588,17 @@
         "https://www.allthatdazzles.co.uk/post/review-table-17-kiln-theatre",
         "https://www.broadwayworld.com/westend/article/Review-TABLE-17-Starring-Marisha-Wallace-20260924",
         "https://kilntheatre.com/whats-on/table-17/",
-        "https://everything-theatre.co.uk/2026/09/review-table-17-kiln-theatre/",
         "https://www.show-score.com/uk/london/off-west-end-shows/table-17-kiln-theatre",
-        "https://www.londontheatre1.com/reviews/table-17-kiln-theatre/",
+        "https://everything-theatre.co.uk/2026/09/review-table-17-kiln-theatre/",
         "https://www.timeout.com/london/theatre/table-17-review",
         "https://www.westendbestfriend.co.uk/news/review-table-17-kiln-theatre",
+        "https://www.whatsonstage.com/news/table-17-at-the-kiln-theatre-review_1732618/",
         "https://www.londontheatredirect.com/play/table-17-tickets",
         "https://www.londonlivinglarge.com/2026/09/table-17-kiln-theatre-sep-17-oct-24-2026.html",
-        "https://www.whatsonstage.com/news/table-17-at-the-kiln-theatre-review_1732618/",
         "https://www.ikonlondonmagazine.com/table-17-review-kiln-theatre/",
         "https://theatreweekly.com/review-table-17-at-kiln-theatre/",
-        "https://firstnightmagazine.com/2026/09/25/review-of-table-17-lacklustre-rom-com-isnt-out-of-the-date-but-isnt-flavourful-either/"
+        "https://firstnightmagazine.com/2026/09/25/review-of-table-17-lacklustre-rom-com-isnt-out-of-the-date-but-isnt-flavourful-either/",
+        "https://www.aol.co.uk/articles/table-17-review-tasty-romcom-160010000.html"
       ],
       "dirFiles": 32,
       "dirClean": 20,
@@ -117838,11 +118657,21 @@
           "host": "show-score.com",
           "knownOutletId": null,
           "serpCensus": true
+        },
+        {
+          "url": "https://www.aol.co.uk/articles/table-17-review-tasty-romcom-160010000.html",
+          "host": "aol.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
         }
       ],
       "dirOnly": [
         {
           "host": "theartsdesk.com",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
           "count": 1
         }
       ],
@@ -117917,7 +118746,7 @@
           "recoverableFile": "thestage--the-stage.json",
           "recoverableOutletId": "thestage",
           "recoverableCritic": "The Stage",
-          "recoverableCount": 1,
+          "recoverableCount": 2,
           "dirFlags": [
             {
               "file": "thestage--the-stage.json",
@@ -118003,7 +118832,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -118013,7 +118842,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 6,
             "error": null
           },
           {
@@ -118033,9 +118862,9 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 394,
+        "count": 395,
         "byReason": {
-          "non-review-host": 46,
+          "non-review-host": 47,
           "aggregator-internal-nav": 298,
           "ticketing-listing": 1,
           "not-http-url": 40,
@@ -118116,6 +118945,18 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "unknown-outlet-aggregator-host (show-score.com)"
+        },
+        {
+          "url": "https://www.aol.co.uk/articles/table-17-review-tasty-romcom-160010000.html",
+          "host": "aol.co.uk",
+          "outletId": "aol",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Fetch failed: All scraping methods failed"
         }
       ],
       "ingestSkippedByCap": [],
@@ -118129,7 +118970,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 2
+          "recoveryCount": 3
         }
       ],
       "censusVerdict": {
@@ -118148,6 +118989,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.show-score.com/uk/london/off-west-end-shows/table-17-kiln-theatre"
+          },
+          {
+            "outletId": "aol.co.uk",
+            "outlet": "aol.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.aol.co.uk/articles/table-17-review-tasty-romcom-160010000.html"
           },
           {
             "outletId": "thestage",
@@ -118214,12 +119062,6 @@
             "firstSeenAt": "2026-09-27T08:57:54.805Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/table-17-kiln-theatre/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-28T01:29:33.709Z"
-          },
-          {
             "url": "https://www.timeout.com/london/theatre/table-17-review",
             "outletId": "timeout.com",
             "state": "live",
@@ -118232,6 +119074,12 @@
             "firstSeenAt": "2026-09-27T16:31:53.708Z"
           },
           {
+            "url": "https://www.whatsonstage.com/news/table-17-at-the-kiln-theatre-review_1732618/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-27T08:57:54.805Z"
+          },
+          {
             "url": "https://www.londontheatredirect.com/play/table-17-tickets",
             "outletId": "londontheatredirect.com",
             "state": "live",
@@ -118242,12 +119090,6 @@
             "outletId": "londonlivinglarge.com",
             "state": "live",
             "firstSeenAt": "2026-09-28T01:29:33.709Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/table-17-at-the-kiln-theatre-review_1732618/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-27T08:57:54.805Z"
           },
           {
             "url": "https://www.ikonlondonmagazine.com/table-17-review-kiln-theatre/",
@@ -118282,6 +119124,13 @@
             "firstSeenAt": "2026-09-27T16:31:53.708Z"
           },
           {
+            "url": "https://www.aol.co.uk/articles/table-17-review-tasty-romcom-160010000.html",
+            "outletId": "aol.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
             "url": "https://www.thestage.co.uk/reviews/table-17-review-kiln-theatre-london-marisha-wallace",
             "outletId": "thestage",
             "state": "GAP",
@@ -118290,10 +119139,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 18,
+        "liveCount": 17,
         "candidateCount": 21
       },
-      "computedAt": "2026-09-28T14:10:59.050Z"
+      "computedAt": "2026-09-28T22:37:42.816Z"
     },
     {
       "showId": "tammy-faye-2024",
@@ -126093,7 +126942,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 2,
             "error": null
           },
@@ -126103,8 +126952,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 3,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -126140,18 +126989,18 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 9,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
         "count": 401,
         "byReason": {
-          "aggregator-internal-nav": 266,
+          "non-review-host": 46,
+          "aggregator-internal-nav": 265,
+          "venue-production-page": 2,
           "not-http-url": 71,
           "aggregator-section-root": 11,
-          "non-review-host": 48,
-          "roundup-page": 4,
-          "venue-production-page": 1
+          "roundup-page": 6
         }
       },
       "dedupedVariants": [],
@@ -126295,7 +127144,7 @@
         "liveCount": 5,
         "candidateCount": 10
       },
-      "computedAt": "2026-09-28T16:16:03.674Z"
+      "computedAt": "2026-09-28T22:37:42.816Z"
     },
     {
       "showId": "the-hope-theory-off-broadway-2026",
@@ -129862,27 +130711,29 @@
         "http://www.usatoday.com/story/life/theater/2014/12/21/sting-last-ship-review-broadway-cast-musical/20687761/",
         "https://youtu.be/fh8lw-DJuu8",
         "https://www.londontheatre.co.uk/reviews/the-last-ship-review-theatre-royal-drury-lane",
+        "https://www.timeout.com/london/news/review-the-last-ship-theatre-royal-drury-lane-sting-092426",
         "https://www.thereviewshub.com/the-last-ship-theatre-royal-drury-lane-london/",
         "https://www.pinkprincetheatre.com/post/review-the-last-ship-theatre-royal-drury-lane",
-        "https://www.timeout.com/london/news/review-the-last-ship-theatre-royal-drury-lane-sting-092426",
         "https://www.britishtheatreguide.info/reviews/the-last-ship-theatre-royal-d-26042",
         "https://www.allthatdazzles.co.uk/post/review-the-last-ship-theatre-royal-drury-lane",
         "https://musicaltheatrereview.com/the-last-ship-theatre-royal-drury-lane/",
-        "https://theatreandtonic.co.uk/blog/the-last-ship-theatre-royal-drury-lane-review",
         "https://everything-theatre.co.uk/2026/09/review-the-last-ship-theatre-royal-drury-lane/",
+        "https://theatreandtonic.co.uk/blog/the-last-ship-theatre-royal-drury-lane-review",
         "https://www.thetimes.com/culture/theatre-dance/article/the-last-ship-review-sting-theatre-royal-london-gzlz63nsm",
+        "https://www.standard.co.uk/culture/theatre/the-last-ship-review-b1298193.html",
         "https://matineemouse.substack.com/p/the-last-ship-review",
         "https://loureviews.blog/2026/09/24/musical-review-the-last-ship-at-theatre-royal-drury-lane/",
         "https://ayoungishperspective.co.uk/2026/09/25/review-the-last-ship/",
         "https://lwtheatres.co.uk/whats-on/the-last-ship/",
+        "https://lwtickets.co.uk/whats-on/the-last-ship/",
         "https://theatreandartreviews.com/2026/09/24/the-last-ship-theatre-royal-drury-lane/",
         "https://www.beyondthecurtain.co.uk/2026/09/the-last-ship-theatre-royal-drury-lane.html",
+        "https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/",
         "https://www.harrytheatrelife.co.uk/post/review-the-last-ship-theatre-royal-drury-lane-london",
         "https://www.londontheatre1.com/reviews/the-last-ship-theatre-royal-drury-lane/",
-        "https://lwtickets.co.uk/whats-on/the-last-ship/",
+        "https://theatreweekly.com/review-the-last-ship-at-theatre-royal-drury-lane/",
         "https://www.telegraph.co.uk/theatre/what-to-see/the-last-ship-review-sting-theatre-royal-drury-lane/",
-        "https://www.whatsonstage.com/news/the-last-ship-review-sting-in-choppy-waters-in-the-west-end_1732320/",
-        "https://www.standard.co.uk/culture/theatre/the-last-ship-review-b1298193.html"
+        "https://www.whatsonstage.com/news/the-last-ship-review-sting-in-choppy-waters-in-the-west-end_1732320/"
       ],
       "dirFiles": 56,
       "dirClean": 39,
@@ -129995,6 +130846,12 @@
           "host": "theatreandartreviews.com",
           "knownOutletId": null,
           "serpCensus": true
+        },
+        {
+          "url": "https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/",
+          "host": "theatrevibe.co.uk",
+          "knownOutletId": "theatre-vibe",
+          "serpCensus": true
         }
       ],
       "dirOnly": [
@@ -130060,10 +130917,6 @@
         },
         {
           "host": "thespyinthestalls.com",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
           "count": 1
         },
         {
@@ -130185,7 +131038,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 2,
             "error": null
           },
@@ -130196,7 +131049,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -130205,7 +131058,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 2,
             "error": null
           },
@@ -130216,7 +131069,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -130226,24 +131079,24 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 6,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 19,
+        "resultCount": 22,
         "error": null
       },
       "candidatesRejected": {
-        "count": 874,
+        "count": 873,
         "byReason": {
+          "non-review-host": 57,
           "aggregator-internal-nav": 679,
+          "ticketing-listing": 1,
           "not-http-url": 121,
           "aggregator-section-root": 12,
-          "non-review-host": 58,
-          "roundup-page": 3,
-          "ticketing-listing": 1
+          "roundup-page": 3
         }
       },
       "dedupedVariants": [],
@@ -130377,6 +131230,18 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "Refusing to ingest — https://theatreandartreviews.com/2026/09/24/the-last-ship-theatre-royal-drury-l"
+        },
+        {
+          "url": "https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/",
+          "host": "theatrevibe.co.uk",
+          "outletId": "theatre-vibe",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "❌ Refusing to ingest — collision with theatre-vibe--unknown.json\n   reason: stale-flag-on-existing-f"
         }
       ],
       "ingestSkippedByCap": [],
@@ -130405,6 +131270,13 @@
             "url": "https://theatreandartreviews.com/2026/09/24/the-last-ship-theatre-royal-drury-lane/"
           },
           {
+            "outletId": "theatre-vibe",
+            "outlet": "theatre-vibe",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/"
+          },
+          {
             "outletId": "lwtheatres.co.uk",
             "outlet": "lwtheatres.co.uk",
             "critic": "Unknown",
@@ -130422,6 +131294,12 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.timeout.com/london/news/review-the-last-ship-theatre-royal-drury-lane-sting-092426",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-24T23:04:09.984Z"
+          },
+          {
             "url": "https://www.thereviewshub.com/the-last-ship-theatre-royal-drury-lane-london/",
             "outletId": "thereviewshub.com",
             "state": "live",
@@ -130432,12 +131310,6 @@
             "outletId": "pinkprincetheatre.com",
             "state": "live",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/news/review-the-last-ship-theatre-royal-drury-lane-sting-092426",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-24T23:04:09.984Z"
           },
           {
             "url": "https://www.britishtheatreguide.info/reviews/the-last-ship-theatre-royal-d-26042",
@@ -130458,14 +131330,14 @@
             "firstSeenAt": "2026-09-27T22:52:36.905Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/the-last-ship-theatre-royal-drury-lane-review",
-            "outletId": "theatreandtonic.co.uk",
+            "url": "https://everything-theatre.co.uk/2026/09/review-the-last-ship-theatre-royal-drury-lane/",
+            "outletId": "everything-theatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
-            "url": "https://everything-theatre.co.uk/2026/09/review-the-last-ship-theatre-royal-drury-lane/",
-            "outletId": "everything-theatre.co.uk",
+            "url": "https://theatreandtonic.co.uk/blog/the-last-ship-theatre-royal-drury-lane-review",
+            "outletId": "theatreandtonic.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
@@ -130474,6 +131346,12 @@
             "outletId": "thetimes.com",
             "state": "live",
             "firstSeenAt": "2026-09-24T05:40:09.820Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/the-last-ship-review-b1298193.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-24T23:04:09.984Z"
           },
           {
             "url": "https://matineemouse.substack.com/p/the-last-ship-review",
@@ -130512,6 +131390,12 @@
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
+            "url": "https://theatreweekly.com/review-the-last-ship-at-theatre-royal-drury-lane/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-last-ship-review-sting-theatre-royal-drury-lane/",
             "outletId": "telegraph.co.uk",
             "state": "live",
@@ -130522,12 +131406,6 @@
             "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-09-24T05:40:09.820Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/the-last-ship-review-b1298193.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-24T23:04:09.984Z"
           },
           {
             "url": "https://youtu.be/fh8lw-DJuu8",
@@ -130551,6 +131429,13 @@
             "firstSeenAt": "2026-09-27T02:05:03.576Z"
           },
           {
+            "url": "https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/",
+            "outletId": "theatre-vibe",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
             "url": "https://lwtheatres.co.uk/whats-on/the-last-ship/",
             "outletId": "lwtheatres.co.uk",
             "state": "GAP",
@@ -130566,10 +131451,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 18,
-        "candidateCount": 23
+        "liveCount": 19,
+        "candidateCount": 25
       },
-      "computedAt": "2026-09-28T16:16:03.674Z"
+      "computedAt": "2026-09-28T22:37:42.816Z"
     },
     {
       "showId": "the-little-mermaid-the-musical-off-broadway-2026",
@@ -137335,11 +138220,11 @@
         "https://www.broadwayworld.com/new-orleans/article/Review-THE-SECRET-CIRCUS-THE-MUSICAL-at-Mudlark-Theatre-20260504",
         "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/",
         "https://stagelync.com/news/secret-circus-soho-playhouse",
-        "https://theatre-news.com/news/UK/127152/The-Secret-Circus-Musical-set-to-open-highly-anticipated-London-performances",
         "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets",
-        "https://stagebuddy.com/event/the-secret-circus-musical",
+        "https://theatre-news.com/news/UK/127152/The-Secret-Circus-Musical-set-to-open-highly-anticipated-London-performances",
         "https://events.newyorkfamily.com/event/the-secret-circus-musical/",
-        "https://mommypoppins.com/new-york-city-kids/event/events/the-secret-circus-at-the-soho-playhouse"
+        "https://mommypoppins.com/new-york-city-kids/event/events/the-secret-circus-at-the-soho-playhouse",
+        "https://stagebuddy.com/event/the-secret-circus-musical"
       ],
       "dirFiles": 9,
       "dirClean": 3,
@@ -137458,7 +138343,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -137523,8 +138408,8 @@
         "byReason": {
           "non-review-host": 30,
           "aggregator-internal-nav": 8,
-          "venue-production-page": 1,
-          "non-review-path": 1
+          "non-review-path": 1,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -137598,16 +138483,16 @@
             "firstSeenAt": "2026-09-27T08:57:54.805Z"
           },
           {
-            "url": "https://stagebuddy.com/event/the-secret-circus-musical",
-            "outletId": "stagebuddy.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-26T17:42:56.172Z"
-          },
-          {
             "url": "https://mommypoppins.com/new-york-city-kids/event/events/the-secret-circus-at-the-soho-playhouse",
             "outletId": "mommypoppins.com",
             "state": "live",
             "firstSeenAt": "2026-09-27T16:31:53.708Z"
+          },
+          {
+            "url": "https://stagebuddy.com/event/the-secret-circus-musical",
+            "outletId": "stagebuddy.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
             "url": "https://www.broadwayworld.com/new-orleans/article/Review-THE-SECRET-CIRCUS-THE-MUSICAL-at-Mudlark-Theatre-20260504",
@@ -137656,7 +138541,7 @@
         "liveCount": 3,
         "candidateCount": 9
       },
-      "computedAt": "2026-09-28T14:10:59.050Z"
+      "computedAt": "2026-09-28T22:37:42.816Z"
     },
     {
       "showId": "the-seven-deadly-sins-the-human-voice-off-west-end-2026",
@@ -138014,7 +138899,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-28T14:10:59.050Z"
+      "computedAt": "2026-09-28T22:37:42.816Z"
     },
     {
       "showId": "the-story-olivier-west-end-2026",
@@ -139971,9 +140856,9 @@
         "https://khambayswordswordswords.blog/2026/09/26/the-urmetazoan-at-hampstead-theatre-2026-review/",
         "https://www.thereviewshub.com/the-urmetazoan-hampstead-theatre-london/",
         "https://sierz.co.uk/reviews/the-urmetazoan-hampstead-theatre/",
-        "https://www.broadwayworld.com/westend/article/Review-THE-URMETAZOAN-Hampstead-Theatre-20260925",
         "https://www.londontheatre1.com/reviews/the-urmetazoan-hampstead-theatre/",
         "https://www.theupcoming.co.uk/2026/09/25/the-urmetazoan-at-hampstead-theatre-theatre-review/",
+        "https://www.broadwayworld.com/westend/article/Review-THE-URMETAZOAN-Hampstead-Theatre-20260925",
         "https://thespyinthestalls.com/2026/09/the-urmetazoan/",
         "https://www.londonboxoffice.co.uk/news/post/the-urmetazoan-hampstead-theatre-review",
         "https://fairypoweredproductions.com/the-urmetazoan-review/",
@@ -139982,25 +140867,12 @@
         "https://www.timeout.com/london/theatre/the-urmetazoan",
         "https://www.thestage.co.uk/reviews/the-urmetazoan-review-hampstead-theatre-london-alex-rugman",
         "https://www.thereviewshub.com/tag/the-urmetazoan/",
-        "https://www.show-score.com/uk/london/off-west-end-shows/the-urmetazoan"
+        "https://www.datathistle.com/event/3105084-the-urmetazoan/"
       ],
-      "dirFiles": 19,
-      "dirClean": 12,
-      "inReviewsJson": 12,
-      "missing": [
-        {
-          "url": "https://www.theupcoming.co.uk/2026/09/25/the-urmetazoan-at-hampstead-theatre-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "knownOutletId": "theupcoming",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.show-score.com/uk/london/off-west-end-shows/the-urmetazoan",
-          "host": "show-score.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "dirFiles": 20,
+      "dirClean": 13,
+      "inReviewsJson": 13,
+      "missing": [],
       "dirOnly": [
         {
           "host": "theartsdesk.com",
@@ -140040,6 +140912,24 @@
               "file": "thestage--the-stage.json",
               "flag": "duplicate",
               "urlInDir": "https://www.thestage.co.uk/reviews/the-urmetazoan-review-hampstead-theatre-london-alex-rugman"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.datathistle.com/event/3105084-the-urmetazoan/",
+          "host": "datathistle.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "datathistle--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.datathistle.com/event/3105084-the-urmetazoan/"
             }
           ],
           "serpCensus": true
@@ -140150,60 +141040,19 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 15,
+        "count": 14,
         "byReason": {
-          "non-review-host": 10,
-          "roundup-page": 1,
+          "non-review-host": 9,
+          "non-review-path": 1,
           "ticketing-listing": 1,
           "venue-production-page": 2,
-          "non-review-path": 1
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
-      "ingestResults": [
-        {
-          "url": "https://www.theupcoming.co.uk/2026/09/25/the-urmetazoan-at-hampstead-theatre-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "outletId": "theupcoming",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.show-score.com/uk/london/off-west-end-shows/the-urmetazoan",
-          "host": "show-score.com",
-          "outletId": null,
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "unknown-outlet-aggregator-host (show-score.com)"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "theupcoming",
-            "outlet": "theupcoming",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theupcoming.co.uk/2026/09/25/the-urmetazoan-at-hampstead-theatre-theatre-review/"
-          },
-          {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.show-score.com/uk/london/off-west-end-shows/the-urmetazoan"
-          },
           {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
@@ -140217,6 +141066,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thestage.co.uk/reviews/the-urmetazoan-review-hampstead-theatre-london-alex-rugman"
+          },
+          {
+            "outletId": "datathistle.com",
+            "outlet": "datathistle.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.datathistle.com/event/3105084-the-urmetazoan/"
           }
         ],
         "suppressedMissing": [],
@@ -140240,14 +141096,20 @@
             "firstSeenAt": "2026-09-26T23:29:00.474Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-THE-URMETAZOAN-Hampstead-Theatre-20260925",
-            "outletId": "broadwayworld.com",
+            "url": "https://www.londontheatre1.com/reviews/the-urmetazoan-hampstead-theatre/",
+            "outletId": "londontheatre1.com",
             "state": "live",
             "firstSeenAt": "2026-09-26T13:41:46.057Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/the-urmetazoan-hampstead-theatre/",
-            "outletId": "londontheatre1.com",
+            "url": "https://www.theupcoming.co.uk/2026/09/25/the-urmetazoan-at-hampstead-theatre-theatre-review/",
+            "outletId": "theupcoming.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-28T16:16:03.674Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-THE-URMETAZOAN-Hampstead-Theatre-20260925",
+            "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-09-26T13:41:46.057Z"
           },
@@ -140288,20 +141150,6 @@
             "firstSeenAt": "2026-09-26T13:41:46.057Z"
           },
           {
-            "url": "https://www.theupcoming.co.uk/2026/09/25/the-urmetazoan-at-hampstead-theatre-theatre-review/",
-            "outletId": "theupcoming",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-28T16:16:03.674Z"
-          },
-          {
-            "url": "https://www.show-score.com/uk/london/off-west-end-shows/the-urmetazoan",
-            "outletId": "show-score.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-28T16:16:03.674Z"
-          },
-          {
             "url": "https://www.timeout.com/london/theatre/the-urmetazoan",
             "outletId": "timeout-london",
             "state": "GAP",
@@ -140314,13 +141162,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-26T13:41:46.057Z"
+          },
+          {
+            "url": "https://www.datathistle.com/event/3105084-the-urmetazoan/",
+            "outletId": "datathistle.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T22:37:42.816Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 10,
+        "liveCount": 11,
         "candidateCount": 14
       },
-      "computedAt": "2026-09-28T16:16:03.674Z"
+      "computedAt": "2026-09-28T22:37:42.816Z"
     },
     {
       "showId": "the-very-hungry-caterpillar-interactive-show-off-broadway-2026",
