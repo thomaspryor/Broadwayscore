@@ -1,134 +1,76 @@
 {
-  "updatedAt": "2026-09-28T15:36:49.276Z",
-  "processed": 214,
-  "failed": 391,
-  "successRate": "35.4%",
+  "updatedAt": "2026-09-28T17:42:30.059Z",
+  "processed": 24,
+  "failed": 26,
+  "successRate": "48.0%",
   "tierBreakdown": {
-    "playwright": 111,
+    "playwright": 16,
     "amp": 0,
-    "browserbase": 5,
-    "directCookies": 2,
-    "scrapingbee": 32,
-    "brightdata": 36,
+    "browserbase": 7,
+    "directCookies": 0,
+    "scrapingbee": 6,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 38
+    "archive": 1
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
-      "t": "2026-09-28T12:06:24.489Z",
+      "t": "2026-09-28T17:16:35.829Z",
       "event": "bb-session",
-      "session": "94446537",
+      "session": "359f92e4",
+      "url": "https://www.thetimes.com/culture/music/article/sting-interview-police-last-ship-"
+    },
+    {
+      "t": "2026-09-28T17:16:36.557Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-28T17:25:07.465Z",
+      "event": "bb-session",
+      "session": "dc93e9f3",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/golden-boy-josh-oconnor-b"
+    },
+    {
+      "t": "2026-09-28T17:25:08.218Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-28T17:29:13.441Z",
+      "event": "bb-session",
+      "session": "dd93f90e",
+      "url": "https://www.thisislondon.co.uk/theatre/review-23927559-million-dollar-quartet-do"
+    },
+    {
+      "t": "2026-09-28T17:33:08.097Z",
+      "event": "bb-session",
+      "session": "39f64f4a",
       "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
     },
     {
-      "t": "2026-09-28T12:06:34.744Z",
+      "t": "2026-09-28T17:33:18.084Z",
       "event": "bb-session",
-      "session": "67f63ba0",
+      "session": "646d5630",
       "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
     },
     {
-      "t": "2026-09-28T12:29:41.036Z",
+      "t": "2026-09-28T17:34:57.889Z",
       "event": "bb-session",
-      "session": "983b8cf7",
-      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
+      "session": "4d9d2c56",
+      "url": "https://royalcourttheatre.com/"
     },
     {
-      "t": "2026-09-28T12:29:41.785Z",
+      "t": "2026-09-28T17:39:26.115Z",
+      "event": "bb-session",
+      "session": "a9ce9d1e",
+      "url": "https://www.thetimes.co.uk/culture/books/article/what-should-children-do-how-flo"
+    },
+    {
+      "t": "2026-09-28T17:39:26.890Z",
       "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-28T12:29:52.715Z",
-      "event": "bb-session",
-      "session": "bea47507",
-      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
-    },
-    {
-      "t": "2026-09-28T12:29:53.387Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-28T12:33:58.136Z",
-      "event": "bb-session",
-      "session": "d547f2fe",
-      "url": "https://www.wsj.com/articles/schmigadoon-review-musical-comedy-as-youve-never-se"
-    },
-    {
-      "t": "2026-09-28T12:33:58.799Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-28T13:13:31.361Z",
-      "event": "bb-session",
-      "session": "0bad1762",
-      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
-    },
-    {
-      "t": "2026-09-28T13:13:46.586Z",
-      "event": "bb-session",
-      "session": "e3295993",
-      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
-    },
-    {
-      "t": "2026-09-28T13:16:21.275Z",
-      "event": "bb-session",
-      "session": "b0deccdb",
-      "url": "https://www.whatsonstage.com/news/million-dollar-quartet-review-london-transfer-"
-    },
-    {
-      "t": "2026-09-28T13:16:36.434Z",
-      "event": "bb-session",
-      "session": "c1b4d4c7",
-      "url": "https://www.whatsonstage.com/news/million-dollar-quartet-review-london-transfer-"
-    },
-    {
-      "t": "2026-09-28T13:17:54.134Z",
-      "event": "bb-session",
-      "session": "29a665c0",
-      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
-    },
-    {
-      "t": "2026-09-28T13:18:08.362Z",
-      "event": "bb-session",
-      "session": "e7c9d35f",
-      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
-    },
-    {
-      "t": "2026-09-28T13:22:17.957Z",
-      "event": "bb-session",
-      "session": "b00d0144",
-      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
-    },
-    {
-      "t": "2026-09-28T13:22:18.989Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-28T13:22:29.420Z",
-      "event": "bb-session",
-      "session": "6255a384",
-      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
-    },
-    {
-      "t": "2026-09-28T13:22:30.363Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-28T13:24:29.388Z",
-      "event": "bb-session",
-      "session": "d765991a",
-      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
-    },
-    {
-      "t": "2026-09-28T13:24:39.695Z",
-      "event": "bb-session",
-      "session": "70545e22",
-      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+      "domain": "thetimes.co.uk"
     }
   ]
 }
