@@ -112,7 +112,7 @@ const { verifyContent, quickValidityCheck, resolveCvMarket, contentHash } = requ
 const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-registry');
 
 // Content quality detection (garbage/invalid content filter)
-const { assessTextQuality, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor } = require('./lib/content-quality');
+const { assessTextQuality, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
 const { runScoreExtractorPrePass } = require('./lib/score-extractor-prepass');
@@ -546,7 +546,7 @@ const UNRELIABLE_TITLE_OUTLETS = new Set(['pages-on-stages']);
 
 // Domain alias matching — imported from shared lib (scraper.js)
 const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats } = require('./lib/scraper');
-const { shouldCountFailure, isPermanentlyFailed } = require('./lib/failed-fetch-policy');
+const { shouldCountFailure, isPermanentlyFailed, shouldReopenStaleContentMismatch } = require('./lib/failed-fetch-policy');
 const { consultBrightData } = require('./lib/brightdata-caps');
 const { recordBdCall } = require('./lib/bd-telemetry');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
@@ -6016,7 +6016,14 @@ function findReviewsToProcess() {
         // corrected URL is a strong signal the next fetch will succeed, and
         // the OLD url's failure history says nothing about the NEW one.
         const fetchFailureEntry = failedFetchesByReviewId.get(reviewId);
-        if (fetchFailureEntry && !urlCorrectedRefetch) {
+        // A content mismatch judged by an older version of the content check
+        // gets one fresh fetch under the current rule (BRO-4185 H).
+        const reopenStaleMismatch = shouldReopenStaleContentMismatch(fetchFailureEntry, data, URL_CONTENT_CHECK_VERSION);
+        if (reopenStaleMismatch) {
+          data.contentMismatchReopenedFor = URL_CONTENT_CHECK_VERSION;
+          try { fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+        }
+        if (fetchFailureEntry && !urlCorrectedRefetch && !reopenStaleMismatch) {
           const fetchGate = shouldRetryFetch(showsById.get(showId) || null, data, fetchFailureEntry);
           if (!fetchGate.shouldRetry && CONFIG.reviewFilter.size === 0 && !CONFIG.showFilter) {
             logExclusion({
@@ -6387,6 +6394,7 @@ function recordFailedFetch(review, reason, details = {}) {
     critic: review.critic,
     url: review.url,
     failureReason: reason,
+    ...(reason === 'url_content_mismatch' ? { checkVersion: URL_CONTENT_CHECK_VERSION } : {}),
     failureCount: counts ? prevCount + 1 : prevCount,
     lastFailedAt: new Date().toISOString(),
     firstFailedAt: existing?.firstFailedAt || new Date().toISOString(),
