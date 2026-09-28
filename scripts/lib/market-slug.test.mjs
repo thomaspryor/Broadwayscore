@@ -39,3 +39,13 @@ test('stripMarketSuffix removes only a trailing market suffix, not mid-title occ
   assert.equal(stripMarketSuffix('beetlejuice-the-musical-west-end'), 'beetlejuice-the-musical');
   assert.equal(stripMarketSuffix('west-end-girls'), 'west-end-girls');
 });
+
+test('stripIdSuffix strips a trailing market suffix and/or id year, built from the same MARKET_SUFFIXES (BRO-4204 S5-T3)', () => {
+  const { stripIdSuffix } = require('./market-slug.js');
+  assert.equal(stripIdSuffix('holy-fool-off-west-end-2026'), 'holy-fool');
+  assert.equal(stripIdSuffix('evita-2026'), 'evita');
+  assert.equal(stripIdSuffix('beetlejuice-the-musical-west-end'), 'beetlejuice-the-musical');
+  // Current behaviour, pinned on purpose: "-bway" is an id tag, not a market suffix.
+  assert.equal(stripIdSuffix('two-strangers-bway-2025'), 'two-strangers-bway');
+  assert.equal(stripIdSuffix('west-end-girls'), 'west-end-girls');
+});
