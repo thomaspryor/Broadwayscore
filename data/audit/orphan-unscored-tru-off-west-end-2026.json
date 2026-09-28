@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "tru-off-west-end-2026",
   "openingDate": "2026-09-27",
-  "detectedAt": "2026-09-28T08:06:36.464Z",
+  "detectedAt": "2026-09-28T08:34:51.514Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -13,23 +13,6 @@
       "fullTextLen": 2130,
       "dispatchActionable": false,
       "skipReason": "not_scoreable",
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
-    },
-    {
-      "file": "guardian--unknown.json",
-      "outletId": "guardian",
-      "criticName": "Unknown",
-      "url": "https://www.theguardian.com/stage/2026/sep/28/tru-review-a-five-star-performance-of-a-three-star-script-about-the-life-of-truman-capote",
-      "fullTextLen": 2685,
-      "dispatchActionable": true,
-      "skipReason": null,
       "rescoreBlockedReason": null,
       "humanReviewScore": null,
       "adjudicatedScore": null,
@@ -74,40 +57,6 @@
       "eligibilityReason": null
     },
     {
-      "file": "south-london--unknown.json",
-      "outletId": "south-london",
-      "criticName": "Unknown",
-      "url": "https://southlondon.co.uk/area/southwark/review-tru-at-menier-chocolate-factory/",
-      "fullTextLen": 3739,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
-    {
-      "file": "thereviewshub--the-reviews-hub-london.json",
-      "outletId": "thereviewshub",
-      "criticName": "The Reviews Hub - London",
-      "url": "https://www.thereviewshub.com/tru-menier-chocolate-factory-london/",
-      "fullTextLen": 4136,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
-    {
       "file": "west-end-best-friend--unknown.json",
       "outletId": "west-end-best-friend",
       "criticName": "News Desk",
@@ -125,10 +74,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 7,
-  "dispatchableOrphanCount": 3,
+  "orphanCount": 4,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 4,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-09-28T08:06:36.464Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
