@@ -156,5 +156,6 @@ export function getDurationSuffix(category?: string): string {
   if (category === 'off-broadway') return 'Off-Broadway';
   // Regional tryouts are emphatically NOT "on Broadway" — that's the point.
   if (category === 'regional') return 'in tryout';
+  if (category === 'tour') return 'on tour';
   return 'on Broadway';
 }

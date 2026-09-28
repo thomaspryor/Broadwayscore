@@ -26,6 +26,8 @@ import { getSeasonForDate } from '../../scripts/lib/broadway-seasons';
  */
 export function getBrowseSlug(category: ComputedShow['category'] | undefined, type: ComputedShow['type']): string | null {
   if (type === 'opera' || type === 'special') return null;
+  // One list for every national tour, musical or play (BRO-4211).
+  if (category === 'tour') return 'broadway-national-tours';
   const isMusical = type === 'musical';
   switch (category) {
     case 'west-end': return isMusical ? 'best-west-end-musicals' : 'best-west-end-plays';
@@ -95,6 +97,7 @@ export function getMarketLabel(category: ComputedShow['category'] | undefined): 
     // Latent today (WhereItRanks returns null for regional, which has no rank
     // pools) but wrong the moment regional gets one.
     case 'regional': return 'Regional';
+    case 'tour': return 'Tour';
     default: return 'Broadway';
   }
 }
