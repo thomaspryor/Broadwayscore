@@ -1328,3 +1328,22 @@ test('regression: existing user_text consumers unchanged — a STRING-content ow
   assertAllowed(runHook(transcript, SAFE_MSG), 'a plain string user record is inert for every other gate');
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+// BRO-4238: github-main-guard.sh refuses Broadwayscore PR merges. A refused
+// merge attempt must not count as "the PR was merged" and switch off the
+// follow-through gate.
+test('PR gate: a merge attempt the hook BLOCKED does not count as merged → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('blocked-merge');
+  const blockedMerge = toolUse('mcp__github__merge_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', pullNumber: 1 },
+    'PreToolUse:mcp__github__merge_pull_request hook error: 🛑 BLOCKED: PRs in thomaspryor/Broadwayscore are never merged directly (BRO-4238)');
+  const transcript = writeTranscript(dir, [CREATE_PR, blockedMerge, LINEAR_CLOSEOUT_DONE]);
+  assertBlocked(runHook(transcript, 'Merged PR #1.\n\nSAFE TO EXIT — merged.'), 'a blocked merge left the PR open');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('PR gate: a merge that went through still counts (unchanged) → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('real-merge');
+  const transcript = writeTranscript(dir, [CREATE_PR, MERGE_PR, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, 'Merged PR #1.\n\nSAFE TO EXIT — merged.'), 'a real merge closes the PR out');
+  fs.rmSync(dir, { recursive: true, force: true });
+});

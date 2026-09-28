@@ -120,6 +120,28 @@ test('every hook command falls back to git rev-parse --show-toplevel when CLAUDE
   }
 });
 
+// BRO-4238: a resolvable repo whose hook SCRIPT is missing (a session whose
+// registration was snapshotted before a script was renamed, or that checked
+// out an older commit) must not block every tool call with exit 2. It skips
+// with a visible systemMessage instead. The no-repo case below stays FATAL.
+test('every hook command skips VISIBLY (exit 0 + systemMessage, never RESOLVED) when the repo resolves but its script is missing', () => {
+  const settings = loadSettings();
+  const emptyProject = fs.mkdtempSync(path.join(os.tmpdir(), 'settings-hook-paths-noscript-'));
+  try {
+    const env = { ...process.env, PATH: process.env.PATH, CLAUDE_PROJECT_DIR: emptyProject };
+    for (const entry of allHookCommands(settings)) {
+      const r = runResolver(entry.command, { cwd: emptyProject, env });
+      assert.equal(r.status, 0, `missing ${entry.rawPath} must fail open, got ${r.status}; stderr=${r.stderr}`);
+      assert.doesNotMatch(r.stdout, /^RESOLVED:/, `must not claim to run a missing ${entry.rawPath}`);
+      const msg = JSON.parse(r.stdout.trim());
+      assert.match(msg.systemMessage, /Hook script missing, skipped/);
+      assert.ok(msg.systemMessage.includes(entry.rawPath.replace(/^.*\.claude\/hooks\//, '')), `message must name the script: ${msg.systemMessage}`);
+    }
+  } finally {
+    fs.rmSync(emptyProject, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
 test('every hook command FAILS LOUDLY with exit 2 (not a silent allow) when it cannot resolve a repo root at all', () => {
   const settings = loadSettings();
   const outsideAnyRepo = fs.mkdtempSync(path.join(os.tmpdir(), 'settings-hook-paths-outside-'));
