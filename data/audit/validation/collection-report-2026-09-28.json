@@ -1,149 +1,74 @@
 {
-  "runDate": "2026-09-28T03:20:25.328Z",
+  "runDate": "2026-09-28T07:55:36.022Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "how-shakespeare-saved-my-life-off-broadway-2026,la-boheme-off-broadway-2026,midnight-off-broadway-2026,tru-off-west-end-2026,the-urmetazoan-off-west-end-2026,the-secret-circus-musical-off-broadway-2026,human-things-off-broadway-2026",
+    "showFilter": "how-shakespeare-saved-my-life-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 7,
-    "failed": 23,
+    "processed": 2,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "23.3%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 14,
-    "tier1Success": 7,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 2,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 9,
-    "tier2Success": 5,
-    "tier3Attempts": 6,
-    "tier3Success": 3,
-    "tier3_6Attempts": 6,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 14,
-    "tier4Success": 1,
-    "totalFailed": 23,
-    "scrapingBeePageCredits": 16,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.2,
-    "urlDiscoveryAttempts": 13,
-    "urlDiscoverySuccess": 2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "tru-off-west-end-2026/timeout-london--unknown.json",
-    "tru-off-west-end-2026/theatre-weekly--unknown.json",
-    "tru-off-west-end-2026/west-end-best-friend--unknown.json",
-    "tru-off-west-end-2026/whatsonstage--alex-wood.json",
-    "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json",
-    "the-secret-circus-musical-off-broadway-2026/mommypoppins--unknown.json",
-    "the-secret-circus-musical-off-broadway-2026/stagebuddy--unknown.json"
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwayworld--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/culturesauce--unknown.json"
   ],
-  "failed": [
-    "midnight-off-broadway-2026/cititour--unknown.json",
-    "midnight-off-broadway-2026/broadwayworld--unknown.json",
-    "midnight-off-broadway-2026/chicagotribune--unknown.json",
-    "midnight-off-broadway-2026/eventsfy--unknown.json",
-    "midnight-off-broadway-2026/one-minute-critic--ryan-leeds.json",
-    "tru-off-west-end-2026/bestoftheatre--cecil-glover.json",
-    "tru-off-west-end-2026/london-theatre--unknown.json",
-    "tru-off-west-end-2026/thestage--sam-marlowe.json",
-    "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
-    "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json",
-    "la-boheme-off-broadway-2026/nytimes--anthony-tommasini.json",
-    "la-boheme-off-broadway-2026/new-york-classical-review--rick-perdian.json",
-    "the-urmetazoan-off-west-end-2026/timeout-london--unknown.json",
-    "human-things-off-broadway-2026/broadwayworld--backstage-live-with-richard-ridge.json",
-    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
-    "la-boheme-off-broadway-2026/front-row-center--elizabeth-ann-foster.json",
-    "la-boheme-off-broadway-2026/opera--unknown.json",
-    "la-boheme-off-broadway-2026/operawire--francisco-salazar.json",
-    "la-boheme-off-broadway-2026/seen-and-heard-international--daniel-meyer.json",
-    "la-boheme-off-broadway-2026/seen-and-heard-international--robert-beattie.json",
-    "the-urmetazoan-off-west-end-2026/datathistle--unknown.json",
-    "the-urmetazoan-off-west-end-2026/thestage--holly-omahony.json",
-    "the-urmetazoan-off-west-end-2026/thestage--the-stage.json"
-  ],
+  "failed": [],
   "tierDetails": {
     "playwright": [
-      "tru-off-west-end-2026/timeout-london--unknown.json",
-      "tru-off-west-end-2026/theatre-weekly--unknown.json",
-      "tru-off-west-end-2026/west-end-best-friend--unknown.json",
-      "the-secret-circus-musical-off-broadway-2026/stagebuddy--unknown.json"
+      "how-shakespeare-saved-my-life-off-broadway-2026/culturesauce--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [
-      "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json",
-      "the-secret-circus-musical-off-broadway-2026/mommypoppins--unknown.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "tru-off-west-end-2026/whatsonstage--alex-wood.json"
+      "how-shakespeare-saved-my-life-off-broadway-2026/broadwayworld--unknown.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Stage": {
-      "count": 2,
-      "domain": "thestage.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Vulture": {
-      "count": 1,
-      "domain": "events.newyorkfamily.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "donyc": {
-      "count": 1,
-      "domain": "donyc.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Talkin' Broadway": {
-      "count": 1,
-      "domain": "talkinbroadway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    }
-  },
-  "urlDiscoveries": [
-    {
-      "reviewId": "tru-off-west-end-2026/timeout-london--unknown.json",
-      "oldUrl": "https://www.timeout.com/london/theatre/tru",
-      "newUrl": "https://www.timeout.com/london/theatre/tru-review"
-    },
-    {
-      "reviewId": "tru-off-west-end-2026/london-theatre--unknown.json",
-      "oldUrl": "https://www.londontheatre.co.uk/theatre-news/news/learn-about-the-real-history-behind-tru-at-the-menier-chocolate-factory",
-      "newUrl": "https://www.londontheatre.co.uk/reviews/tru-review-menier-chocolate-factory"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
