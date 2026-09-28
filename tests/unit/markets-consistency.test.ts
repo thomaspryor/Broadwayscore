@@ -74,10 +74,19 @@ test('tour: launched on the web in code, still withheld from the app feed until 
   assert.equal(jsMarkets.isHiddenFromAppFeed('regional', ''), false);
 });
 
-test('a launched markets.json row has a featureFlags getter that returns true', () => {
+test('launched in markets.json exactly when the featureFlags getter is hard-wired true', () => {
+  // Web (featureFlags) and script (markets.js) gates must agree with no env set.
   for (const [category, row] of Object.entries(TS_MARKETS) as [string, any][]) {
-    if (row.launched) {
-      assert.equal((featureFlags as unknown as Record<string, boolean>)[row.featureFlag], true, category);
-    }
+    if (!row.featureFlag) continue;
+    const webOn = (featureFlags as unknown as Record<string, boolean>)[row.featureFlag] === true;
+    assert.equal(jsMarkets.isCategoryEnabled(category, ''), webOn, category);
+    assert.equal(row.launched === true, webOn, category);
+  }
+});
+
+test('unflagged categories are always public and in the app feed', () => {
+  for (const c of ['broadway', 'off-broadway', 'west-end', 'off-west-end', undefined]) {
+    assert.equal(jsMarkets.isCategoryEnabled(c, ''), true, String(c));
+    assert.equal(jsMarkets.isHiddenFromAppFeed(c, ''), false, String(c));
   }
 });
