@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-28T21:02:57.133Z",
-  "processed": 31,
-  "failed": 19,
-  "successRate": "62.0%",
+  "updatedAt": "2026-09-28T21:34:17.197Z",
+  "processed": 52,
+  "failed": 58,
+  "successRate": "47.3%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 28,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 12,
-    "brightdata": 1,
+    "scrapingbee": 15,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 8
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-09-28T20:47:55.386Z",
@@ -49,6 +49,28 @@
       "t": "2026-09-28T21:02:44.686Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-28T21:07:26.324Z",
+      "event": "bb-session",
+      "session": "48f80a3a",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-28T21:07:27.211Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-28T21:24:59.849Z",
+      "event": "bb-session",
+      "session": "44dcd720",
+      "url": "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-"
+    },
+    {
+      "t": "2026-09-28T21:25:00.702Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
