@@ -337,3 +337,24 @@ test('lastLedgerDay agrees with ledgerFreshnessHours about which day is newest',
   const day = lastLedgerDay(records);
   assert.equal(ledgerFreshnessHours(records, now), ledgerFreshnessHours([{ day }], now));
 });
+
+test('attributionGaps (BRO-4215): flags a provider under min on every one of the last N consecutive days', () => {
+  const { attributionGaps } = require('./provider-spend-core.js');
+  const opts = { min: 0.8, days: 2, providers: ['scrapingbee', 'scrapingdog', 'brightdata'] };
+  const series = [
+    { day: '2026-09-25', attributedPct: { scrapingbee: 0.19, scrapingdog: 0.9, brightdata: 0.5 } },
+    { day: '2026-09-26', attributedPct: { scrapingbee: 0.13, scrapingdog: 0.95, brightdata: 0.85 } },
+    { day: '2026-09-27', attributedPct: { scrapingbee: 0.17, scrapingdog: 0.4, brightdata: 0.6 } },
+  ];
+  assert.deepEqual(attributionGaps(series, opts), [{ provider: 'scrapingbee', pcts: [0.13, 0.17] }],
+    'scrapingdog/brightdata dipped for only one of the two days');
+  // A null (unmeasured) day breaks the run.
+  const withNull = [series[0], { ...series[1], attributedPct: { scrapingbee: null } }, series[2]];
+  assert.deepEqual(attributionGaps(withNull, opts), []);
+  // A calendar gap between the last two records breaks the run.
+  assert.deepEqual(attributionGaps([series[0], series[2]], opts), []);
+  // Not enough history.
+  assert.deepEqual(attributionGaps([series[2]], opts), []);
+  // Providers not listed are never flagged.
+  assert.deepEqual(attributionGaps(series, { ...opts, providers: ['browserbase'] }), []);
+});

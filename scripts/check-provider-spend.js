@@ -29,6 +29,7 @@ const {
 const {
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday, aggregateLedgerByDay,
   ledgerFreshnessHours, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,
+  attributionGaps,
 } = require('./lib/provider-spend-core');
 const {
   countCallsByProvider, topCallers, creditsByProvider, topCallersByCredits,
@@ -246,6 +247,32 @@ async function main() {
         decision: true,
         decisionPrompt: `Scraping spend over budget: ${breaches.overspend.join('; ')}. Should I raise the daily budget, or do you want scraping volume cut to stay within it?`,
       } : {}),
+    });
+  }
+
+  // BRO-4215: a SUSTAINED attribution gap is its own actionable condition.
+  // Until now a low attributedPct only added a digest line; ScrapingBee sat at
+  // 12-23% for weeks (Reddit Sentiment + Show Score rows discarded at runner
+  // exit) and the same gap would have alerted on 29 days back to 2026-08-02.
+  // disposition 'auto' files a card and dispatches a fix session, so a gap is
+  // worked instead of observed. One conditionKey per provider.
+  const gaps = attributionGaps(series, {
+    min: thresholds.attributionAlertMin ?? 0.8,
+    days: thresholds.attributionAlertDays ?? 2,
+    providers: thresholds.attributionAlertProviders || ['scrapingbee', 'scrapingdog', 'brightdata'],
+  });
+  for (const gap of gaps) {
+    const { routeAlert } = require('./lib/owner-alert-router');
+    const pctText = gap.pcts.map((p) => `${Math.round(p * 100)}%`).join(', ');
+    const top = (attribution[gap.provider]?.top || []).map((t) => `${t.script} ${t.amount}`).join('; ');
+    await routeAlert({
+      conditionKey: `provider-spend:attribution-gap:${gap.provider}`,
+      title: `Untracked ${gap.provider} spend: ledger explains only ${pctText} of billed`,
+      description: `data/audit/provider-spend-daily.jsonl attributedPct.${gap.provider} was below ${Math.round((thresholds.attributionAlertMin ?? 0.8) * 100)}% on each of the last ${gap.pcts.length} days (${pctText}), so most of this provider's billed spend comes from callers whose rows never reach data/audit/scraper-spend-ledger.jsonl. Top logged callers today: ${top || 'none'}.`,
+      hint: 'Method that found BRO-4215: (1) collect the provider balance readings CI logs print (ScrapingBee: "[SB Credits] N remaining" from scraper.js checkScrapingBeeCredits) across job logs for one day; (2) per interval, compare billed delta vs ledger rows in that window; (3) list workflow runs active in high-gap intervals and absent in matched ones; (4) grep those job logs for "[SB Call]"/"[SD Call]" lines to confirm. Usual causes: a job that writes telemetry but never commits the ledger (bash scripts/lint-workflow-guards.sh ledger-coverage), a script calling the provider with no record*Call (node --test scripts/lib/sb-call-telemetry-coverage.test.mjs), or runs in progress when the day closed.',
+      severity: 'error',
+      disposition: 'auto',
+      cooldownHours: 72,
     });
   }
 
