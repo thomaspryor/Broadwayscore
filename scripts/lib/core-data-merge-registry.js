@@ -1795,6 +1795,14 @@ const CORE_DATA_MERGE_REGISTRY = [
   { file: 'followers.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
   { file: 'subscribers.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
   { file: 'subscribers-westend.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
+  // 2026 data audit (S0-T2/S0-T4): the retired-id registry and its archive of
+  // deleted shows.json rows. Both are append-only arrays written only by
+  // retireId() in scripts/lib/retired-show-ids.js, which today runs from a
+  // human session against the core-data repo (Sprint 0 ramp, Sprint 2 batch
+  // tool) — no workflow writes either yet. Promote to 'active' with a keyed
+  // union merge (by id / by archived row id) BEFORE the first CI writer lands.
+  { file: 'retired-show-ids.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, retireId() in scripts/lib/retired-show-ids.js from human sessions; no workflow writer yet (2026 data audit S0-T2)' },
+  { file: 'deleted-shows-2026-09.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, retireId() in scripts/lib/retired-show-ids.js (archive of deleted rows beside retired-show-ids.json); no workflow writer yet (2026 data audit S0-T2)' },
 ];
 
 /**
