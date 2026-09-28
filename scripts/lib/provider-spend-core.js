@@ -433,7 +433,33 @@ function missingLedgerDays(records, now = new Date(), days = CONTINUITY_WINDOW_D
   return missing.sort();
 }
 
+/**
+ * BRO-4215: providers whose ledger explained less than `min` of their billed
+ * spend on EACH of the last `days` consecutive recorded days. ScrapingBee sat
+ * at 12-23% attributed for weeks with only a digest line to show for it
+ * (~70% of its credits were Reddit Sentiment rows discarded at runner exit);
+ * this turns a sustained gap into an actionable alert instead of a number
+ * someone has to notice. A null pct (billing API down / provider idle) breaks
+ * the run: an unmeasured day proves nothing either way.
+ * @param {Array<{day:string, attributedPct?:Object}>} series day-ascending
+ * @returns {Array<{provider:string, pcts:number[]}>}
+ */
+function attributionGaps(series, { min = 0.8, days = 2, providers = [] } = {}) {
+  const recent = (series || []).slice(-days);
+  if (recent.length < days) return [];
+  for (let i = 1; i < recent.length; i++) {
+    if (!isNextUtcDay(recent[i - 1].day, recent[i].day)) return [];
+  }
+  const gaps = [];
+  for (const provider of providers) {
+    const pcts = recent.map((r) => (r.attributedPct || {})[provider]);
+    if (pcts.every((p) => typeof p === 'number' && p < min)) gaps.push({ provider, pcts });
+  }
+  return gaps;
+}
+
 module.exports = {
+  attributionGaps,
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot,
   utcYesterday, isNextUtcDay, aggregateLedgerByDay, bbCost,
   BB_BASE_MONTHLY_USD, BB_BASE_AMORTIZED_DAYS, BB_OVERAGE_PER_BROWSER_HOUR_USD,
