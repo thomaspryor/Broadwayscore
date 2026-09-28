@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-27T22:21:43.809Z",
+    "generatedAt": "2026-09-28T10:32:42.069Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -8,85 +8,140 @@
   },
   "summary": {
     "minChurn": 30,
-    "flaggedCount": 0,
-    "exemptCount": 3,
-    "coveredCount": 12,
-    "highChurnTracked": 15
+    "flaggedCount": 2,
+    "exemptCount": 7,
+    "coveredCount": 18,
+    "highChurnTracked": 27
   },
-  "flagged": [],
+  "flagged": [
+    {
+      "path": "data/audit/guard-escalation-state.json",
+      "churn": 49
+    },
+    {
+      "path": "data/audit/orphaned-duplicate-pointer-heal.json",
+      "churn": 35
+    }
+  ],
   "exempt": [
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 34
+      "churn": 61
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 34
+      "churn": 61
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 34
+      "churn": 61
+    },
+    {
+      "path": "data/llm-scoring-runs.json",
+      "churn": 49
+    },
+    {
+      "path": "public/data/stats-reviews.json",
+      "churn": 43
+    },
+    {
+      "path": "data/audit/alert-ledger.json",
+      "churn": 40
+    },
+    {
+      "path": "public/opening-night-status.json",
+      "churn": 35
     }
   ],
   "covered": [
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 52,
+      "churn": 101,
       "mergeAttr": "union"
     },
     {
-      "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 41,
+      "path": "data/audit/deploy-watermark.json",
+      "churn": 87,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/deploy-watermark.json",
-      "churn": 41,
+      "path": "data/audit/cross-show-fingerprint-collisions.json",
+      "churn": 86,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 41,
+      "churn": 86,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 41,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 35,
+      "churn": 86,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 35,
+      "churn": 76,
       "mergeAttr": "union"
     },
     {
+      "path": "data/audit/opening-night-completeness-state.json",
+      "churn": 67,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/orphan-unscored-elf-lyons-the-woman-on-the-edge-off-broadway-2026.json",
-      "churn": 34,
+      "churn": 61,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-macbeth-off-broadway-2026.json",
-      "churn": 34,
+      "churn": 61,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-the-secret-circus-musical-off-broadway-2026.json",
-      "churn": 34,
+      "churn": 61,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-tru-off-west-end-2026.json",
-      "churn": 34,
+      "churn": 61,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
+      "churn": 61,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/scoring-progress.json",
+      "churn": 49,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/pre2005-wrong-production.json",
+      "churn": 35,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/syndicated-duplicates.json",
+      "churn": 35,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/wrong-production-audit.json",
+      "churn": 35,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
       "churn": 34,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/collection-state/live-progress.json",
+      "churn": 31,
       "mergeAttr": "ours"
     }
   ]
