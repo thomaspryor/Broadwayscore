@@ -705,5 +705,34 @@
       }
     ],
     "queuedAt": "2026-09-28T08:18:23.207Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4185-audit-line",
+    "title": "Landing blocked: rebase red on land/bro-4185-audit-line",
+    "description": "land.yml did not land land/bro-4185-audit-line: the rebase gate went red at 0c234619c6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36403341517",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4185-audit-line"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "0c234619c6d8ef9d3ba46d3f7640ba2043172211"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36403341517"
+      }
+    ],
+    "queuedAt": "2026-09-28T09:26:33.973Z"
   }
 ]
