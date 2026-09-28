@@ -1,41 +1,13 @@
 {
-  "generated": "2026-09-28T12:41:48.537Z",
+  "generated": "2026-09-28T12:49:23.423Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 98,
+  "count": 18,
   "orphans": [
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
-      "loserFile": "cleveland-plain-dealer--glenn-anderson.json",
-      "targetFile": "clevelands-star-102--glenn-anderson.json",
-      "reason": "orphaned-duplicate-heal: clevelands-star-102--glenn-anderson.json was flagged invalid after cleveland-plain-dealer--glenn-anderson.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "a-christmas-carol-2019",
-      "loserFile": "observer--rex-reed.json",
-      "targetFile": "observer--david-cote.json",
-      "reason": "orphaned-duplicate-heal: observer--david-cote.json was flagged invalid after observer--rex-reed.json was pointed at it",
-      "field": "duplicateOf"
-    },
     {
       "showId": "all-my-sons-2019",
       "loserFile": "vulture--jesse-green.json",
       "targetFile": "vulture--sara-holdren.json",
       "reason": "orphaned-duplicate-heal: vulture--sara-holdren.json was flagged invalid after vulture--jesse-green.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "almost-famous-2022",
-      "loserFile": "hollywood-reporter--david-rooney.json",
-      "targetFile": "hollywood-reporter--angie-han.json",
-      "reason": "orphaned-duplicate-heal: hollywood-reporter--angie-han.json was flagged invalid after hollywood-reporter--david-rooney.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "american-psycho-2016",
-      "loserFile": "guardian--jesse-green.json",
-      "targetFile": "guardian--alexis-soloski.json",
-      "reason": "orphaned-duplicate-heal: guardian--alexis-soloski.json was flagged invalid after guardian--jesse-green.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -46,115 +18,10 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "an-enemy-of-the-people-2024",
-      "loserFile": "newyorker--vinson-cunningham-2024-bway.json",
-      "targetFile": "newyorker--naomi-fry.json",
-      "reason": "orphaned-duplicate-heal: newyorker--naomi-fry.json was flagged invalid after newyorker--vinson-cunningham-2024-bway.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "arcadia-west-end-2026",
-      "loserFile": "london-theatre--unknown.json",
-      "targetFile": "london-theatre--aliya-al-hassan.json",
-      "reason": "orphaned-duplicate-heal: london-theatre--aliya-al-hassan.json was flagged invalid after london-theatre--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "becky-shaw-2026",
-      "loserFile": "cote-notices--david-cote.json",
-      "targetFile": "cote-notices--cote-notices.json",
-      "reason": "orphaned-duplicate-heal: cote-notices--cote-notices.json was flagged invalid after cote-notices--david-cote.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "bughouse-off-broadway-2026",
-      "loserFile": "theatermania--pete-hempstead.json",
-      "targetFile": "theatermania--linda-buchwald.json",
-      "reason": "orphaned-duplicate-heal: theatermania--linda-buchwald.json was flagged invalid after theatermania--pete-hempstead.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "cabaret-2024",
-      "loserFile": "observer--rex-reed.json",
-      "targetFile": "observer--jesse-green.json",
-      "reason": "orphaned-duplicate-heal: observer--jesse-green.json was flagged invalid after observer--rex-reed.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "care-west-end-2026",
-      "loserFile": "times-uk--unknown.json",
-      "targetFile": "times-uk--clive-davis.json",
-      "reason": "orphaned-duplicate-heal: times-uk--clive-davis.json was flagged invalid after times-uk--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "carousel-2018",
-      "loserFile": "vulture--sara-holdren.json",
-      "targetFile": "vulture--jesse-green.json",
-      "reason": "orphaned-duplicate-heal: vulture--jesse-green.json was flagged invalid after vulture--sara-holdren.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "charlie-and-the-chocolate-factory-2017",
-      "loserFile": "stageandcinema--unknown.json",
-      "targetFile": "stageandcinema--tony-frankel.json",
-      "reason": "orphaned-duplicate-heal: stageandcinema--tony-frankel.json was flagged invalid after stageandcinema--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "cosi-fan-tutte-off-broadway-2026",
-      "loserFile": "times-uk--unknown.json",
-      "targetFile": "times-uk--simon-thompson.json",
-      "reason": "orphaned-duplicate-heal: times-uk--simon-thompson.json was flagged invalid after times-uk--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "cost-of-living-2022",
-      "loserFile": "nytimes--maya-phillips.json",
-      "targetFile": "nytimes--jesse-green.json",
-      "reason": "orphaned-duplicate-heal: nytimes--jesse-green.json was flagged invalid after nytimes--maya-phillips.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "end-of-the-rainbow-west-end-2026",
       "loserFile": "guardian--unknown.json",
       "targetFile": "guardian--emma-brockes.json",
       "reason": "orphaned-duplicate-heal: guardian--emma-brockes.json was flagged invalid after guardian--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "every-brilliant-thing-2026",
-      "loserFile": "theatrely--juan-a-ramirez.json",
-      "targetFile": "theatrely--emily-wyrwa.json",
-      "reason": "orphaned-duplicate-heal: theatrely--emily-wyrwa.json was flagged invalid after theatrely--juan-a-ramirez.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "evita-2012",
-      "loserFile": "nytimes--ben-brantley.json",
-      "targetFile": "nytimes--jesse-green.json",
-      "reason": "orphaned-duplicate-heal: nytimes--jesse-green.json was flagged invalid after nytimes--ben-brantley.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "good-night-oscar-2023",
-      "loserFile": "theatermania--zachary-stewart.json",
-      "targetFile": "theatermania--jesse-green.json",
-      "reason": "orphaned-duplicate-heal: theatermania--jesse-green.json was flagged invalid after theatermania--zachary-stewart.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "hadestown-west-end-2024",
-      "loserFile": "artsdesk--unknown.json",
-      "targetFile": "artsdesk--marianka-swain.json",
-      "reason": "orphaned-duplicate-heal: artsdesk--marianka-swain.json was flagged invalid after artsdesk--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "head-over-heels-2018",
-      "loserFile": "nytimes--ben-brantley.json",
-      "targetFile": "nytimes--jesse-green.json",
-      "reason": "orphaned-duplicate-heal: nytimes--jesse-green.json was flagged invalid after nytimes--ben-brantley.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -165,115 +32,10 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "heisenberg-2016",
-      "loserFile": "nytimes--ben-brantley.json",
-      "targetFile": "nytimes--charles-isherwood.json",
-      "reason": "orphaned-duplicate-heal: nytimes--charles-isherwood.json was flagged invalid after nytimes--ben-brantley.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "hells-kitchen-2024",
-      "loserFile": "chelsea-community-news--scott-stiffler.json",
-      "targetFile": "chelsea-community-news--michael-musto.json",
-      "reason": "orphaned-duplicate-heal: chelsea-community-news--michael-musto.json was flagged invalid after chelsea-community-news--scott-stiffler.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
-      "loserFile": "variety--marilyn-stasio.json",
-      "targetFile": "variety--frank-rizzo.json",
-      "reason": "orphaned-duplicate-heal: variety--frank-rizzo.json was flagged invalid after variety--marilyn-stasio.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "home-2024",
-      "loserFile": "vulture--jackson-mchenry.json",
-      "targetFile": "vulture--amelia-merrill.json",
-      "reason": "orphaned-duplicate-heal: vulture--amelia-merrill.json was flagged invalid after vulture--jackson-mchenry.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "illinoise-2024",
-      "loserFile": "vulture--helen-shaw.json",
-      "targetFile": "vulture--sara-holdren.json",
-      "reason": "orphaned-duplicate-heal: vulture--sara-holdren.json was flagged invalid after vulture--helen-shaw.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "indian-princesses-off-broadway-2025",
-      "loserFile": "talkinbroadway--thom-geier.json",
-      "targetFile": "talkinbroadway--howard-miller.json",
-      "reason": "orphaned-duplicate-heal: talkinbroadway--howard-miller.json was flagged invalid after talkinbroadway--thom-geier.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "loserFile": "whatsonstage--unknown.json",
-      "targetFile": "whatsonstage--lucinda-everett.json",
-      "reason": "orphaned-duplicate-heal: whatsonstage--lucinda-everett.json was flagged invalid after whatsonstage--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "jagged-little-pill-2019",
-      "loserFile": "vulture--jesse-green.json",
-      "targetFile": "vulture--helen-shaw.json",
-      "reason": "orphaned-duplicate-heal: vulture--helen-shaw.json was flagged invalid after vulture--jesse-green.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "jane-eyre-off-west-end-2026",
-      "loserFile": "fairypoweredproductions--unknown.json",
-      "targetFile": "fairypoweredproductions--andrew-and.json",
-      "reason": "orphaned-duplicate-heal: fairypoweredproductions--andrew-and.json was flagged invalid after fairypoweredproductions--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "john-proctor-is-the-villain-west-end-2026",
-      "loserFile": "standard--the-standard.json",
-      "targetFile": "standard--nick-curtis.json",
-      "reason": "orphaned-duplicate-heal: standard--nick-curtis.json was flagged invalid after standard--the-standard.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "kiss-me-kate-2019",
       "loserFile": "guardian--jesse-oxfeld.json",
       "targetFile": "guardian--david-jays.json",
       "reason": "orphaned-duplicate-heal: guardian--david-jays.json was flagged invalid after guardian--jesse-oxfeld.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "kiss-me-kate-2019",
-      "loserFile": "observer--rex-reed.json",
-      "targetFile": "observer--david-cote.json",
-      "reason": "orphaned-duplicate-heal: observer--david-cote.json was flagged invalid after observer--rex-reed.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "kiss-me-kate-2019",
-      "loserFile": "vulture--jesse-green.json",
-      "targetFile": "vulture--sara-holdren.json",
-      "reason": "orphaned-duplicate-heal: vulture--sara-holdren.json was flagged invalid after vulture--jesse-green.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "les-liaisons-dangereuses-2016",
-      "loserFile": "nytimes--ben-brantley.json",
-      "targetFile": "nytimes--matt-wolf.json",
-      "reason": "orphaned-duplicate-heal: nytimes--matt-wolf.json was flagged invalid after nytimes--ben-brantley.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "masquerade-off-broadway-2025",
-      "loserFile": "nyt-theater--unknown.json",
-      "targetFile": "nyt-theater--jonathan-mandell.json",
-      "reason": "orphaned-duplicate-heal: nyt-theater--jonathan-mandell.json was flagged invalid after nyt-theater--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "mass-west-end-2026",
-      "loserFile": "times-uk--dominic-maxwell.json",
-      "targetFile": "times-uk--rachel-halliburton.json",
-      "reason": "orphaned-duplicate-heal: times-uk--rachel-halliburton.json was flagged invalid after times-uk--dominic-maxwell.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -291,41 +53,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "mother-play-2024",
-      "loserFile": "nytimes--jesse-green.json",
-      "targetFile": "nytimes--alexis-soloski.json",
-      "reason": "orphaned-duplicate-heal: nytimes--alexis-soloski.json was flagged invalid after nytimes--jesse-green.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "mother-play-2024",
-      "loserFile": "nytimes--jesse-schulman.json",
-      "targetFile": "nytimes--alexis-soloski.json",
-      "reason": "orphaned-duplicate-heal: nytimes--alexis-soloski.json was flagged invalid after nytimes--jesse-schulman.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "mother-play-2024",
-      "loserFile": "theatermania--rachel-graham.json",
-      "targetFile": "theatermania--jesse-green.json",
-      "reason": "orphaned-duplicate-heal: theatermania--jesse-green.json was flagged invalid after theatermania--rachel-graham.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "mother-russia-off-broadway-2026",
-      "loserFile": "theatermania--zachary-stewart.json",
-      "targetFile": "theatermania--linda-buchwald.json",
-      "reason": "orphaned-duplicate-heal: theatermania--linda-buchwald.json was flagged invalid after theatermania--zachary-stewart.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "moulin-rouge-2019",
-      "loserFile": "wsj--terry-teachout.json",
-      "targetFile": "wsj--unknown.json",
-      "reason": "orphaned-duplicate-heal: wsj--unknown.json was flagged invalid after wsj--terry-teachout.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "mr-saturday-night-2022",
       "loserFile": "variety--frank-rizzo.json",
       "targetFile": "variety--maya-phillips.json",
@@ -333,101 +60,10 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "my-neighbour-totoro-west-end-2025",
-      "loserFile": "broadwayworld--unknown.json",
-      "targetFile": "broadwayworld--gary-naylor.json",
-      "reason": "orphaned-duplicate-heal: broadwayworld--gary-naylor.json was flagged invalid after broadwayworld--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
-      "loserFile": "everything-theatre--unknown.json",
-      "targetFile": "everything-theatre--sara-west.json",
-      "reason": "orphaned-duplicate-heal: everything-theatre--sara-west.json was flagged invalid after everything-theatre--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "oh-mary-west-end-2025",
-      "loserFile": "nytimes--matt-wolf.json",
-      "targetFile": "nytimes--jesse-green.json",
-      "reason": "orphaned-duplicate-heal: nytimes--jesse-green.json was flagged invalid after nytimes--matt-wolf.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "ohio-state-murders-2022",
-      "loserFile": "theater-pizzazz--ron-fassler.json",
-      "targetFile": "theater-pizzazz--ron-fassler-critic.json",
-      "reason": "orphaned-duplicate-heal: theater-pizzazz--ron-fassler-critic.json was flagged invalid after theater-pizzazz--ron-fassler.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "ohio-state-murders-2022",
       "loserFile": "variety--naveen-kumar.json",
       "targetFile": "variety--aramide-tinubu.json",
       "reason": "orphaned-duplicate-heal: variety--aramide-tinubu.json was flagged invalid after variety--naveen-kumar.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "loserFile": "i-paper--unknown.json",
-      "targetFile": "i-paper--fiona-mountford.json",
-      "reason": "orphaned-duplicate-heal: i-paper--fiona-mountford.json was flagged invalid after i-paper--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "once-on-this-island-2017",
-      "loserFile": "vulture--sara-holdren.json",
-      "targetFile": "vulture--jesse-green.json",
-      "reason": "orphaned-duplicate-heal: vulture--jesse-green.json was flagged invalid after vulture--sara-holdren.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
-      "loserFile": "standard--the-standard.json",
-      "targetFile": "standard--nick-curtis.json",
-      "reason": "orphaned-duplicate-heal: standard--nick-curtis.json was flagged invalid after standard--the-standard.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "other-desert-cities-2011",
-      "loserFile": "usatoday--elysa-gardner.json",
-      "targetFile": "usatoday--elysa-garder.json",
-      "reason": "orphaned-duplicate-heal: usatoday--elysa-garder.json was flagged invalid after usatoday--elysa-gardner.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "paddington-the-musical-west-end-2025",
-      "loserFile": "city-am--adam-bloodworth.json",
-      "targetFile": "city-am--steve-dinneen.json",
-      "reason": "orphaned-duplicate-heal: city-am--steve-dinneen.json was flagged invalid after city-am--adam-bloodworth.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "parade-2023",
-      "loserFile": "vulture--jackson-mchenry.json",
-      "targetFile": "vulture--helen-shaw.json",
-      "reason": "orphaned-duplicate-heal: vulture--helen-shaw.json was flagged invalid after vulture--jackson-mchenry.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "plaza-suite-2022",
-      "loserFile": "variety--daniel-daddario.json",
-      "targetFile": "variety--frank-rizzo.json",
-      "reason": "orphaned-duplicate-heal: variety--frank-rizzo.json was flagged invalid after variety--daniel-daddario.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "prayer-for-the-french-republic-2024",
-      "loserFile": "vulture--sara-holdren.json",
-      "targetFile": "vulture--helen-shaw.json",
-      "reason": "orphaned-duplicate-heal: vulture--helen-shaw.json was flagged invalid after vulture--sara-holdren.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "prince-of-broadway-2017",
-      "loserFile": "vulture--sara-holdren.json",
-      "targetFile": "vulture--jesse-green.json",
-      "reason": "orphaned-duplicate-heal: vulture--jesse-green.json was flagged invalid after vulture--sara-holdren.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -445,48 +81,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "romeo-and-juliet-west-end-2026",
-      "loserFile": "london-theatre--unknown.json",
-      "targetFile": "london-theatre--chris-omaweng.json",
-      "reason": "orphaned-duplicate-heal: london-theatre--chris-omaweng.json was flagged invalid after london-theatre--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "seagull-true-story-off-broadway-2026",
-      "loserFile": "one-minute-critic--bobby-mcguire.json",
-      "targetFile": "one-minute-critic--matthew-wexler.json",
-      "reason": "orphaned-duplicate-heal: one-minute-critic--matthew-wexler.json was flagged invalid after one-minute-critic--bobby-mcguire.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "significant-other-2017",
-      "loserFile": "nytimes--ben-brantley.json",
-      "targetFile": "nytimes--charles-isherwood.json",
-      "reason": "orphaned-duplicate-heal: nytimes--charles-isherwood.json was flagged invalid after nytimes--ben-brantley.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "stereophonic-2024",
-      "loserFile": "nysr--bob-verini.json",
-      "targetFile": "nysr--bob-verini-2.json",
-      "reason": "orphaned-duplicate-heal: nysr--bob-verini-2.json was flagged invalid after nysr--bob-verini.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "stranger-things-2024",
-      "loserFile": "variety--frank-rizzo.json",
-      "targetFile": "variety--david-benedict.json",
-      "reason": "orphaned-duplicate-heal: variety--david-benedict.json was flagged invalid after variety--frank-rizzo.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "loserFile": "standard--unknown.json",
-      "targetFile": "standard--nick-curtis.json",
-      "reason": "orphaned-duplicate-heal: standard--nick-curtis.json was flagged invalid after standard--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "sweat-2017",
       "loserFile": "guardian--jesse-green.json",
       "targetFile": "guardian--alexis-soloski.json",
@@ -501,52 +95,10 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
-      "loserFile": "plays-to-see--unknown.json",
-      "targetFile": "plays-to-see--sara-tiron.json",
-      "reason": "orphaned-duplicate-heal: plays-to-see--sara-tiron.json was flagged invalid after plays-to-see--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "loserFile": "times-uk--unknown.json",
-      "targetFile": "times-uk--clive-davis.json",
-      "reason": "orphaned-duplicate-heal: times-uk--clive-davis.json was flagged invalid after times-uk--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-devil-wears-prada-west-end-2024",
-      "loserFile": "standard--unknown.json",
-      "targetFile": "standard--martin-robinson.json",
-      "reason": "orphaned-duplicate-heal: standard--martin-robinson.json was flagged invalid after standard--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-front-page-2016",
-      "loserFile": "timeout--david-cote.json",
-      "targetFile": "timeout--adam-feldman.json",
-      "reason": "orphaned-duplicate-heal: timeout--adam-feldman.json was flagged invalid after timeout--david-cote.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-great-gatsby-2024",
-      "loserFile": "theater-pizzazz--ron-fassler.json",
-      "targetFile": "theater-pizzazz--brian-scott-lipton.json",
-      "reason": "orphaned-duplicate-heal: theater-pizzazz--brian-scott-lipton.json was flagged invalid after theater-pizzazz--ron-fassler.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
       "loserFile": "times-uk--susie-goldsbrough.json",
       "targetFile": "times-uk--clive-davis.json",
       "reason": "orphaned-duplicate-heal: times-uk--clive-davis.json was flagged invalid after times-uk--susie-goldsbrough.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-loved-ones-off-broadway-2026",
-      "loserFile": "theatermania--rachel-graham.json",
-      "targetFile": "theatermania--david-gordon.json",
-      "reason": "orphaned-duplicate-heal: theatermania--david-gordon.json was flagged invalid after theatermania--rachel-graham.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -564,20 +116,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "the-producers-west-end-2025",
-      "loserFile": "independent--unknown.json",
-      "targetFile": "independent--louis-chilton.json",
-      "reason": "orphaned-duplicate-heal: independent--louis-chilton.json was flagged invalid after independent--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-rocky-horror-show-2026",
-      "loserFile": "cote-notices--david-cote.json",
-      "targetFile": "cote-notices--david-finkle.json",
-      "reason": "orphaned-duplicate-heal: cote-notices--david-finkle.json was flagged invalid after cote-notices--david-cote.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "the-scottsboro-boys-2010",
       "loserFile": "ap--unknown.json",
       "targetFile": "ap--mark-kennedy.json",
@@ -585,108 +123,10 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "the-story-west-end-2026",
-      "loserFile": "british-theatre--unknown.json",
-      "targetFile": "british-theatre--david-chadderton.json",
-      "reason": "orphaned-duplicate-heal: british-theatre--david-chadderton.json was flagged invalid after british-theatre--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
-      "loserFile": "standard--nick-curtis.json",
-      "targetFile": "standard--unknown.json",
-      "reason": "orphaned-duplicate-heal: standard--unknown.json was flagged invalid after standard--nick-curtis.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
-      "loserFile": "west-end-best-friend--cara-brazier.json",
-      "targetFile": "west-end-best-friend--unknown.json",
-      "reason": "orphaned-duplicate-heal: west-end-best-friend--unknown.json was flagged invalid after west-end-best-friend--cara-brazier.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "time-and-the-conways-2017",
-      "loserFile": "deadline--pete-hammond.json",
-      "targetFile": "deadline--jeremy-gerard.json",
-      "reason": "orphaned-duplicate-heal: deadline--jeremy-gerard.json was flagged invalid after deadline--pete-hammond.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "time-stands-still-2010",
-      "loserFile": "ap--unknown.json",
-      "targetFile": "ap--charles-isherwood.json",
-      "reason": "orphaned-duplicate-heal: ap--charles-isherwood.json was flagged invalid after ap--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "titanique-west-end-2024",
-      "loserFile": "telegraph--unknown.json",
-      "targetFile": "telegraph--dominic-cavendish.json",
-      "reason": "orphaned-duplicate-heal: telegraph--dominic-cavendish.json was flagged invalid after telegraph--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "torch-song-2018",
-      "loserFile": "towleroad--naveen-kumar.json",
-      "targetFile": "towleroad--matt-windman.json",
-      "reason": "orphaned-duplicate-heal: towleroad--matt-windman.json was flagged invalid after towleroad--naveen-kumar.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "torch-song-2018",
       "loserFile": "variety--matt-windman.json",
       "targetFile": "variety--marilyn-stasio.json",
       "reason": "orphaned-duplicate-heal: variety--marilyn-stasio.json was flagged invalid after variety--matt-windman.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "uncle-vanya-2024",
-      "loserFile": "variety--trish-deitch.json",
-      "targetFile": "variety--bob-verini.json",
-      "reason": "orphaned-duplicate-heal: variety--bob-verini.json was flagged invalid after variety--trish-deitch.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "violet-2014",
-      "loserFile": "nytimes--charles-isherwood.json",
-      "targetFile": "nytimes--ben-brantley.json",
-      "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after nytimes--charles-isherwood.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "water-for-elephants-2024",
-      "loserFile": "theatermania--zachary-stewart.json",
-      "targetFile": "theatermania--david-gordon.json",
-      "reason": "orphaned-duplicate-heal: theatermania--david-gordon.json was flagged invalid after theatermania--zachary-stewart.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "wicked-west-end-2021",
-      "loserFile": "timeout-london--honour-bayes.json",
-      "targetFile": "timeout--honour-bayes.json",
-      "reason": "orphaned-duplicate-heal: timeout--honour-bayes.json was flagged invalid after timeout-london--honour-bayes.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "yellow-face-2024",
-      "loserFile": "thewrap--unknown.json",
-      "targetFile": "thewrap--robert-hofler.json",
-      "reason": "orphaned-duplicate-heal: thewrap--robert-hofler.json was flagged invalid after thewrap--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "you-got-older-off-broadway-2026",
-      "loserFile": "nytimes--helen-shaw.json",
-      "targetFile": "nytimes--charles-isherwood.json",
-      "reason": "orphaned-duplicate-heal: nytimes--charles-isherwood.json was flagged invalid after nytimes--helen-shaw.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "you-got-older-off-broadway-2026",
-      "loserFile": "theatermania--zachary-stewart.json",
-      "targetFile": "theatermania--hayley-levitt.json",
-      "reason": "orphaned-duplicate-heal: theatermania--hayley-levitt.json was flagged invalid after theatermania--zachary-stewart.json was pointed at it",
       "field": "duplicateOf"
     }
   ]
