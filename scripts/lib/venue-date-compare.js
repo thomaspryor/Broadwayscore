@@ -94,7 +94,11 @@ function compareShow(show, parsed, playbillUrl) {
   // silently PASS this check as "not a mismatch" (BRO-243). That's the wrong
   // direction of error for a venue-mismatch DETECTOR — false negatives are
   // exactly what this script exists to catch.
-  if (show.venue && parsed.titleParse?.venue && !venuesMatch(show.venue, parsed.titleParse.venue)) {
+  // A national tour (BRO-4211) has no single house: shows.json says "North
+  // American Tour" and Playbill names a stop, so the venue cannot be compared.
+  // The year, dates and revival/type checks below still apply.
+  if (show.category !== 'tour'
+      && show.venue && parsed.titleParse?.venue && !venuesMatch(show.venue, parsed.titleParse.venue)) {
     record({
       field: 'venue',
       shows: show.venue,
