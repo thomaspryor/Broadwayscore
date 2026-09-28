@@ -336,6 +336,13 @@ on:
       - 'scripts/check-cross-outlet-attribution-drift.js'
       - 'scripts/audit-toplevel-script-test-yml-coverage.js'
       - 'scripts/audit-toplevel-script-test-yml-coverage.test.mjs'
+      # S4-T2/S4-T3 (BRO-4204): the update-show-status coverage guard and the
+      # blind-source verdict step. Their tests live in tests/unit/ (globbed),
+      # but the sources are top-level scripts/ files with no broad glob — same
+      # second-shape gap as the entries above (the floor test in
+      # scripts/audit-toplevel-script-test-yml-coverage.test.mjs enforces it).
+      - 'scripts/check-broadway-source-coverage.js'
+      - 'scripts/check-discovery-source-blind.js'
       # scripts/audit-workflow-concurrency.js is the lint-workflows CI gate
       # itself (line ~2042 below) — its parsing logic now lives in
       # scripts/lib/ci-cancellation-guard.js (globbed above) but this file is

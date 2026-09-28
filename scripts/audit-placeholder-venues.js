@@ -27,88 +27,21 @@
  * (`Midtown E`), We've Been Here Before (`Soho/Tribeca`) and Matilda
  * (`Midtown W`) were all ingested in the last few weeks.
  *
- * READ-ONLY. Writes nothing. `isPlaceholderVenue` is exported so the write-time
- * guard (S0-T3) and its unit test share this one definition rather than
- * re-deriving it (CLAUDE.md §15 — never copy logic into a test).
+ * READ-ONLY. Writes nothing. The predicate itself (`isPlaceholderVenue`,
+ * `UNKNOWN_MARKERS`, `NEIGHBOURHOOD_BLOBS`, `JUNK_SUBSTRINGS`) LIVES in
+ * scripts/lib/placeholder-venue.js since S4-T7 (BRO-4204) — this census, the
+ * write-time guard (sanitizeVenueForWrite, S0-T3) and the source lint
+ * (venue-write-guard-detector.js) all require() that one module, so the three
+ * can never disagree about what a placeholder is again (CLAUDE.md §15 —
+ * never copy logic; the lint's private copy is exactly how "West End" slipped
+ * through). Re-exported here unchanged so existing callers
+ * (enrich-west-end-shows.js, enrich-ob-dates-from-showscore.js, the S0-T3 unit
+ * test) keep working.
  */
 
 const fs = require('fs');
 const path = require('path');
-
-/**
- * Neighbourhood / region strings that have been observed stored in the `venue`
- * field. These are NOT venues — they are the granularity above a venue, and a
- * show carrying one tells us nothing about which house it plays.
- *
- * Exact-match (after trim) rather than substring: "West Village Musical Theatre
- * Festival" is a real venue name containing "West Village", and must pass.
- */
-const NEIGHBOURHOOD_BLOBS = new Set([
-  'midtown e',
-  'midtown w',
-  'midtown east',
-  'midtown west',
-  'greenwich v',
-  'greenwich village',
-  'soho/tribeca',
-  'soho / tribeca',
-  'east village',
-  'west village',
-  'upper w side',
-  'upper e side',
-  'brooklyn',
-  'queens',
-  'harlem',
-  'off-broadway',
-]);
-
-/** Values meaning "we do not know the venue". */
-const UNKNOWN_MARKERS = new Set(['tba', 'tbd', 'n/a', 'na', 'unknown', '', '-']);
-
-/**
- * Substrings that only ever appear in junk written to the venue field —
- * scraped instructions rather than a name.
- */
-const JUNK_SUBSTRINGS = [
-  'confirmation email',
-  'check your',
-  'see website',
-  'various locations',
-  'multiple venues',
-  'lorem ipsum',
-];
-
-/**
- * Is this `venue` value a placeholder rather than a real venue?
- *
- * Fails CLOSED for the caller's benefit: a missing/blank venue counts as a
- * placeholder, because the whole point is "we cannot classify this show yet".
- *
- * @param {string|null|undefined} venue
- * @returns {{ placeholder: boolean, reason: string|null }}
- */
-function isPlaceholderVenue(venue) {
-  if (venue === null || venue === undefined) return { placeholder: true, reason: 'missing' };
-  if (typeof venue !== 'string') return { placeholder: true, reason: 'not_a_string' };
-
-  const trimmed = venue.trim();
-  const lower = trimmed.toLowerCase();
-
-  if (UNKNOWN_MARKERS.has(lower)) return { placeholder: true, reason: 'unknown_marker' };
-  if (NEIGHBOURHOOD_BLOBS.has(lower)) return { placeholder: true, reason: 'neighbourhood_blob' };
-  for (const j of JUNK_SUBSTRINGS) {
-    if (lower.includes(j)) return { placeholder: true, reason: 'junk_text' };
-  }
-  // A bare postcode/number, or a single character, is not a venue name.
-  if (trimmed.length < 3) return { placeholder: true, reason: 'too_short' };
-  // A digits-only string ("123") passed the length check above but is still
-  // not a venue name — a bare street number or postcode fragment slipping
-  // through unrelated parsing, not a theatre (ship-check finding, card #1922
-  // follow-up: sanitizeVenueForWrite previously let "123" through as valid).
-  if (/^\d+$/.test(trimmed)) return { placeholder: true, reason: 'numeric_only' };
-
-  return { placeholder: false, reason: null };
-}
+const { isPlaceholderVenue, NEIGHBOURHOOD_BLOBS, UNKNOWN_MARKERS, JUNK_SUBSTRINGS } = require('./lib/placeholder-venue');
 
 // Worktrees never have their own data/ (gitignored + symlinked in the main
 // checkout, not copied on EnterWorktree), so the __dirname-relative path below
@@ -116,10 +49,14 @@ function isPlaceholderVenue(venue) {
 // repo — same idiom load-env.js and dispatch-ledger.js use (task #983).
 const CANONICAL_REPO = '/Users/tompryor/Broadwayscore';
 
-function loadShows() {
+function loadShows(explicitPath) {
   // Resolve from __dirname, not cwd — this script runs from worktrees and from CI.
+  // `--shows=<path>` (S4-T7) overrides both: cloud worktrees have neither a
+  // local data/shows.json nor the canonical macOS path.
   const local = path.join(__dirname, '..', 'data', 'shows.json');
-  const p = fs.existsSync(local) ? local : path.join(CANONICAL_REPO, 'data', 'shows.json');
+  const p = explicitPath
+    ? path.resolve(explicitPath)
+    : (fs.existsSync(local) ? local : path.join(CANONICAL_REPO, 'data', 'shows.json'));
   const raw = require(p);
   return Array.isArray(raw) ? raw : raw.shows;
 }
@@ -138,6 +75,7 @@ the enumerated list cannot discriminate OOB while venues are placeholders.
   --json                machine-readable output
   --category=<cat>      restrict to one category (default: off-broadway)
   --all-categories      census every category
+  --shows=<path>        read this shows.json instead of data/shows.json
 Writes nothing.`);
     process.exit(0);
   }
@@ -146,8 +84,9 @@ Writes nothing.`);
   const allCategories = argv.includes('--all-categories');
   const catArg = argv.find(a => a.startsWith('--category='));
   const category = catArg ? catArg.split('=')[1] : 'off-broadway';
+  const showsArg = argv.find(a => a.startsWith('--shows='));
 
-  const shows = loadShows();
+  const shows = loadShows(showsArg ? showsArg.slice('--shows='.length) : undefined);
   const scope = allCategories ? shows : shows.filter(s => s.category === category);
 
   const flagged = [];

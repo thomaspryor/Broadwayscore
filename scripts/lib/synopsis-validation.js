@@ -75,7 +75,40 @@ const PLOT_SIGNAL_RE = /\b(about|set in|set during|set on|takes place|follows?|f
 // wrong trade because "theatre"/"Broadway" appearing in PLOT text within range
 // would become a false positive, and stale ones strip the synopsis at deploy.
 // Only stale when paired with an open/closed status.
-const STALE_FUTURE_RE = /\b(scheduled to|set to|is set to|will|due to|expected to|slated to)\s+(transfer|open|begin previews|begin its run|premiere|return|run|play)\b[^.]{0,40}\b(west end|broadway|off-?broadway|theatre|theater|in \d{4})\b/i;
+//
+// S4-T13 (2026 data audit, BRO-4204): four more pre-opening shapes that sat
+// live on OPENED shows because none of them uses a "scheduled to"-style verb
+// — Wikipedia's lede "<Title> is an upcoming 2026 musical with music and
+// lyrics by…", marketing's "is coming to Broadway / the West End", and the
+// dated "will open on 12 March 2026" / "opens on March 12, 2026". Each is
+// scoped as narrowly as the original: "is an upcoming" allows at most two
+// qualifier words before a work-noun ("is an upcoming Broadway musical"), so
+// "she is an upcoming actress in a play" cannot trip it; "is coming to" needs
+// a MARKET right after it ("a rich relative who is coming to visit" never
+// matches); "opens on <month>" additionally needs a 20xx year or a
+// theatre/market within 40 chars, because plot text does say "the action
+// opens on June 6, 1944". A verbose stale sentence outside these shapes is,
+// as before, a tolerated false negative.
+const MONTH_RE_SRC = '(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)';
+const STALE_FUTURE_RE = new RegExp([
+  // Original (2026-06-21): schedule verb + market/theatre/year within 40 chars.
+  '\\b(?:scheduled to|set to|is set to|will|due to|expected to|slated to)\\s+(?:transfer|open|begin previews|begin its run|premiere|return|run|play)\\b[^.]{0,40}\\b(?:west end|broadway|off-?broadway|theatre|theater|in \\d{4})\\b',
+  // "<Title> is an upcoming 2026 musical…" — Wikipedia's pre-opening lede.
+  '\\bis an upcoming (?:[\\w\'’-]+ ){0,2}(?:musical|play|stage play|production|revival|comedy|drama|opera|adaptation)\\b',
+  // "is coming to Broadway / the West End" — a market, never a verb phrase.
+  '\\bis coming to (?:the )?(?:broadway|west end|off-?broadway|off-?west end)\\b',
+  // "will open on 12 March 2026" / "will open in March 2026" / "will open in 2026".
+  '\\bwill open (?:on|in) (?:\\d{1,2}(?:st|nd|rd|th)? )?(?:' + MONTH_RE_SRC + '|\\d{4})\\b',
+  // "opens on March 12, 2026" / "opens on 5 March at the Adelphi Theatre".
+  '\\bopens on (?:\\d{1,2}(?:st|nd|rd|th)? )?' + MONTH_RE_SRC + '\\b[^.]{0,40}\\b(?:20\\d{2}|west end|broadway|off-?broadway|theatre|theater)\\b',
+].join('|'), 'i');
+
+// "is coming to the Adelphi Theatre" — the venue form of "is coming to".
+// Case-SENSITIVE on purpose (so it cannot live inside the /i regex above): the
+// house name must be Capitalised Words ending in Theatre/Theater/Playhouse,
+// which is what keeps "a critic is coming to the theatre to review the show"
+// (plot, lowercase) from ever matching.
+const STALE_COMING_TO_VENUE_RE = /\bis coming to (?:the )?(?:[A-Z][\w'’.&-]*\s){1,5}(?:Theatre|Theater|Playhouse)\b/;
 
 const LIVE_STATUSES = new Set(['open', 'now-playing', 'closed']);
 
@@ -121,7 +154,7 @@ function isStaleSynopsis(show) {
   if (!text || typeof text !== 'string') return false;
   const status = (show.status || '').toLowerCase();
   if (!LIVE_STATUSES.has(status)) return false;
-  return STALE_FUTURE_RE.test(text);
+  return STALE_FUTURE_RE.test(text) || STALE_COMING_TO_VENUE_RE.test(text);
 }
 
 /**
@@ -192,6 +225,7 @@ module.exports = {
   PLACEHOLDER_OPENER_RE,
   PRODUCTION_HISTORY_RE,
   STALE_FUTURE_RE,
+  STALE_COMING_TO_VENUE_RE,
   detectRefusalPattern,
   isLlmRefusal,
   isPlaceholderSynopsis,

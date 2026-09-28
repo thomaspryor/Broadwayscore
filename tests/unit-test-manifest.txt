@@ -328,6 +328,7 @@ tests/unit/brand-mention-serp-bd-first.test.mjs
 tests/unit/broadcast-state.test.mjs
 tests/unit/broadway-fantasy-league.test.mjs
 tests/unit/broadway-schedule-discovery.test.mjs
+tests/unit/broadway-source-coverage-rotted.test.mjs
 tests/unit/broadway-venue-fallback.test.mjs
 tests/unit/broadwayOpenings-sort.test.mjs
 tests/unit/brothers-paranormal-show-exists.test.mjs
@@ -369,6 +370,7 @@ tests/unit/cast-tombstone.test.mjs
 tests/unit/census-ledger-outlet-ids.test.mjs
 tests/unit/check-claude-auth-health.test.mjs
 tests/unit/check-corpus-drift.test.mjs
+tests/unit/check-discovery-source-blind.test.mjs
 tests/unit/checkout-rate-limit-retry.test.mjs
 tests/unit/ci-cancellation-logic.test.mjs
 tests/unit/ci-config-hygiene.test.mjs
@@ -742,6 +744,7 @@ tests/unit/per-category-precursor-warnings.test.mjs
 tests/unit/placeholder-byline.test.mjs
 tests/unit/placeholder-images.test.mjs
 tests/unit/placeholder-venue-guard.test.mjs
+tests/unit/placeholder-venue.test.mjs
 tests/unit/plan-ready.test.mjs
 tests/unit/playbill-ob-schedule.test.mjs
 tests/unit/playbill-schedule-parser.test.mjs

@@ -246,7 +246,12 @@ jobs:
       # Playbill's announced Broadway schedule against shows.json and alerts
       # on anything Playbill has that discovery above didn't add. Alert-only
       # (never writes shows.json); continue-on-error so a scraper hiccup here
-      # never blocks the rest of the pipeline.
+      # never blocks the rest of the pipeline. S4-T2 (BRO-4204): when the
+      # Playbill parser has ROTTED (0 entries for >24h) the script now exits 1,
+      # leaves the gaps file untouched and records `guard.blind: true` in
+      # data/audit/broadway-source-coverage-state.json — continue-on-error is
+      # deliberately KEPT so status flips still run; the verdict is applied by
+      # the "Fail if a discovery source is blind" step at the end of this job.
       - name: Check Broadway source coverage
         continue-on-error: true
         env:
@@ -331,13 +336,22 @@ jobs:
         continue-on-error: true
         timeout-minutes: 8
 
+      # S4-T13 (BRO-4204): enrich-wikipedia-synopsis.js verifies every
+      # candidate article with Claude before writing and logs "Verifier
+      # (ANTHROPIC_API_KEY): DISABLED — nothing will be written" without the
+      # key — both steps below ran that way since 2026-02-23, so the synopsis
+      # refresh was a silent no-op on every run.
       - name: Enrich shows with Wikipedia synopses (Broadway/OB)
         if: ${{ inputs.skip_discovery != 'true' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/enrich-wikipedia-synopsis.js --limit=20
         continue-on-error: true
 
       - name: Enrich shows with Wikipedia synopses (West End + Off-West End)
         if: ${{ inputs.skip_discovery != 'true' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           node scripts/enrich-wikipedia-synopsis.js --category=west-end --limit=10
           node scripts/enrich-wikipedia-synopsis.js --category=off-west-end --limit=10
@@ -924,6 +938,23 @@ jobs:
 
           echo "Triggering deploy..."
           gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
+
+      # S4-T3 (2026 data audit, BRO-4204): the run goes RED when a discovery
+      # source is blind. Two signals were already WRITTEN every run but nothing
+      # ever read them — playbillBroadway sat at a 24-run zero streak (olt and
+      # theatremonkey at 23) with every run green:
+      #   * data/audit/discovery-source-coverage.json — zeroStreak >= 3 on
+      #     playbillBroadway / olt / theatremonkey (the same threshold
+      #     scripts/lib/discovery-source-coverage.js alerts at);
+      #   * data/audit/broadway-source-coverage-state.json `guard.blind` —
+      #     written by "Check Broadway source coverage" above when the Playbill
+      #     parser has rotted (S4-T2).
+      # Deliberately the LAST step, with no continue-on-error: status flips,
+      # discovery, enrichment and the commit/push above have all already run —
+      # this only changes the verdict. Read-only (never writes data/audit/).
+      - name: Fail if a discovery source is blind
+        if: always()
+        run: node scripts/check-discovery-source-blind.js
 
   create-issue:
     needs: update-shows
