@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-26T22:37:39.138Z",
+  "generatedAt": "2026-09-28T17:07:39.799Z",
   "shows": {
     "the-lost-boys-2026": {
       "capitalization": 25000000,
@@ -1522,33 +1522,41 @@
       "researchTrigger": "backlog"
     },
     "school-girls-or-the-african-mean-girls-play-2026": {
-      "title": "School Girls; Or, The African Mean Girls Play",
-      "slug": "school-girls-or-the-african-mean-girls-play",
-      "openingDate": "2026-09-28",
-      "status": "previews",
       "capitalization": null,
       "capitalizationSource": null,
       "weeklyRunningCost": null,
-      "costMethodology": "industry-estimate",
+      "costMethodology": null,
       "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
       "designation": "Nonprofit",
-      "notes": "School Girls; Or, The African Mean Girls Play is produced by Manhattan Theatre Club, a nonprofit organization, at the Samuel J. Friedman Theatre. It is currently in previews ahead of a September 28, 2026 opening with a scheduled closing of November 1, 2026. As an MTC production, it operates on a subscriber-funded nonprofit model with no traditional investor recoupment structure. No capitalization, weekly running cost, or recoupment data is available in the evidence.",
+      "notes": "Produced by Manhattan Theatre Club, a 501(c)(3) nonprofit; no public data on capitalization, weekly nut, or recoupment exists.",
+      "confidence": "high",
       "sources": [
         {
-          "type": "trade",
-          "url": "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
-          "date": "2026-09-14"
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-10"
         },
         {
-          "type": "reddit",
-          "url": "https://www.reddit.com/r/Broadway/comments/1wb1n4u/school_girls_or_the_african_mean_girls_play_first/",
-          "date": null
+          "type": "manual",
+          "url": "https://en.wikipedia.org/wiki/Samuel_J._Friedman_Theatre",
+          "date": "2026-09-28"
+        },
+        {
+          "type": "manual",
+          "url": "https://projects.propublica.org/nonprofits/organizations/237086643",
+          "date": "2026-09-28"
         }
       ],
-      "confidence": "high",
-      "researchedAt": "2026-09-26T21:04:18.306Z"
+      "title": "School Girls; Or, The African Mean Girls Play",
+      "slug": "school-girls-or-the-african-mean-girls-play-2026",
+      "openingDate": "2026-09-28",
+      "status": "open",
+      "researchedAt": "2026-09-28T17:07:39.799Z",
+      "model": "o4-mini",
+      "researchTrigger": "manual"
     },
     "oh-mary-2024": {
       "title": "Oh, Mary!",
