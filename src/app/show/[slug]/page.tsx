@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
+import { isCategoryEnabled } from '@/lib/markets';
 import { getShowBySlug, getShowById, getRecentShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug, getTourStops } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getBoxOfficeHistoryStats } from '@/lib/data-grosses-history';
@@ -84,7 +85,8 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const show = getShowBySlug(params.slug);
-  if (!show) return { title: 'Show Not Found' };
+  // Flag-gated categories (tour, regional) 404 at request time too, not just at prebuild.
+  if (!show || !isCategoryEnabled(show.category)) return { title: 'Show Not Found' };
 
   const score = show.criticScore?.score;
   const roundedScore = score ? Math.round(score) : null;
@@ -231,7 +233,7 @@ function getSentimentLabel(score: number, category?: string): { label: string; c
 export default async function ShowPage({ params }: { params: { slug: string } }) {
   const show = getShowBySlug(params.slug);
 
-  if (!show) {
+  if (!show || !isCategoryEnabled(show.category)) {
     notFound();
   }
 

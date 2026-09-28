@@ -16,6 +16,7 @@ import assert from 'node:assert/strict';
 import { getMarketMinReviews, getMarketLabel } from '../../src/lib/market-utils';
 import { reviewsRemainingForScore } from '../../src/config/score-buckets';
 import { MARKETS as TS_MARKETS } from '../../src/lib/markets';
+import { featureFlags } from '../../src/config/feature-flags';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsMinReviews = require('../../scripts/lib/min-reviews');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -30,6 +31,16 @@ test('every category row has the fields the gates and switches read', () => {
     assert.equal(typeof row.minReviews, 'number', category);
     assert.ok(row.featureFlag === null || typeof row.featureFlag === 'string', category);
     assert.equal(typeof row.hideFromAppFeed, 'boolean', category);
+  }
+});
+
+test('every featureFlag in markets.json names a real featureFlags getter', () => {
+  // A typo here would fail closed: the category stays hidden even with the env flag on.
+  for (const [category, row] of rows) {
+    if (row.featureFlag) {
+      const desc = Object.getOwnPropertyDescriptor(featureFlags, row.featureFlag);
+      assert.ok(desc && typeof desc.get === 'function', `${category}: featureFlags.${row.featureFlag} does not exist`);
+    }
   }
 });
 

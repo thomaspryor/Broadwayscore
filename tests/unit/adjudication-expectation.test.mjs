@@ -29,6 +29,18 @@ test('existing categories keep their exact wording', () => {
     regional: ['Broadway', 'national tour, regional theater, pre-Broadway tryout, film/TV adaptation, streaming special'],
   };
   for (const [category, [expectedType, wrongTypes]] of Object.entries(cases)) {
-    assert.deepEqual(adjudicationExpectation(category), { expectedType, wrongTypes }, category);
+    const got = adjudicationExpectation(category);
+    assert.deepEqual({ expectedType: got.expectedType, wrongTypes: got.wrongTypes }, { expectedType, wrongTypes }, category);
   }
+});
+
+test('context paragraph: forward-tour note for existing categories, Broadway-mention note for tours', () => {
+  for (const category of ['broadway', 'off-broadway', 'west-end', 'off-west-end', 'regional']) {
+    const { expectedType, contextNote } = adjudicationExpectation(category);
+    assert.ok(contextNote.startsWith('A FORWARD-LOOKING mention of a future tour'), category);
+    assert.ok(contextNote.includes(`review of the CURRENT ${expectedType} run`), category);
+  }
+  const tour = adjudicationExpectation('tour').contextNote;
+  assert.ok(!tour.includes('FORWARD-LOOKING mention of a future tour'));
+  assert.match(tour, /original Broadway run/);
 });

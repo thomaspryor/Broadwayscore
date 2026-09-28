@@ -1,4 +1,5 @@
 import { getShowBySlug } from '@/lib/data-core';
+import { isCategoryEnabled } from '@/lib/markets';
 import { getScoreTier } from '@/components/show-cards';
 import { hasEnoughReviews, isCriticalGold } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
@@ -100,7 +101,7 @@ export async function GET(
   const slug = params.slug.replace(/\.svg$/i, '');
 
   const show = getShowBySlug(slug);
-  if (!show) return notFoundSvg();
+  if (!show || !isCategoryEnabled(show.category)) return notFoundSvg();
 
   const rawScore = show.criticScore?.score;
   const reviewCount = show.criticScore?.reviewCount ?? 0;
