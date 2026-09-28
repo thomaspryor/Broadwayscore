@@ -15,53 +15,18 @@ import showsData from '../../data/shows.json';
 // at prebuild, so the redirect and this lookup can never disagree.
 import slugRedirectsData from '../../data/slug-redirects-compact.json';
 import { resolveCriticRedirect } from './slug-redirects';
+import criticNameFixesData from '../../scripts/lib/critic-name-fixes.json';
 
 // ============================================
 // Normalization maps — merge typo duplicates
 // ============================================
 
-// Critic name typos → canonical name (case-sensitive keys matching reviews.json)
-const CRITIC_NAME_FIXES: Record<string, string> = {
-  'Ben Brantly': 'Ben Brantley',
-  'Ben Branley': 'Ben Brantley',
-  'Ben Brantley (Pt. 2)': 'Ben Brantley',
-  'Aramide Timubu': 'Aramide Tinubu',
-  'Thom Geir': 'Thom Geier',
-  'Thom Geler': 'Thom Geier',
-  'Thom Greier': 'Thom Geier',
-  'Franck Scheck': 'Frank Scheck',
-  'Frank Sheck': 'Frank Scheck',
-  'Jonny Oleksinski': 'Johnny Oleksinski',
-  'Hinton Als': 'Hilton Als',
-  'Sarah Holdren': 'Sara Holdren',
-  'Linda Winder': 'Linda Winer',
-  'Robert Holfer': 'Robert Hofler',
-  'Jonathan Mandrell': 'Jonathan Mandell',
-  'Elyse Gardner': 'Elysa Gardner',
-  'Brain Scott Lipton': 'Brian Scott Lipton',
-  'Brian Lipton': 'Brian Scott Lipton',
-  'Scott Lipton': 'Brian Scott Lipton',
-  'Lea Greenblatt': 'Leah Greenblatt',
-  'Lovia Gyarke': 'Lovia Gyarkye',
-  'Barbara Shuler': 'Barbara Schuler',
-  'Charles McNUlty': 'Charles McNulty',
-  'Marilyn Stasio.': 'Marilyn Stasio',
-  'Marilyn Stasio (Pt. 2)': 'Marilyn Stasio',
-  'Michal Feingold': 'Michael Feingold',
-  'Suzt Evans': 'Suzy Evans',
-  'Adam Markavitz': 'Adam Markovitz',
-  'Diana Snyder': 'Diane Snyder',
-  'A. D. Amorosi': 'A.D. Amorosi',
-  'Rob Weinert- Kendt': 'Rob Weinert-Kendt',
-  'Elizabeth Vincentelli': 'Elisabeth Vincentelli',
-  'Steve Suskin': 'Steven Suskin',
-  'Daniel D&#8217;Addario': "Daniel D'Addario",
-  'CSA.     Naveen Kumar': 'Naveen Kumar',
-  'Reviews Karen Galindo': 'Karen Galindo',
-  'Michael Glitz': 'Michael Giltz',
-  // 'Nancy Sasso Janis' is the correct byline (Patch.com); was previously remapped
-  // to 'Sasso Janis' which is wrong. Removed 2026-04-11 after /ship-check audit.
-};
+// Critic name typos → canonical name (case-sensitive keys matching reviews.json).
+// ONE shared table — scripts/lib/critic-name-fixes.json — read here and by
+// scripts/lib/critic-display-name.js (displayCriticName, the emission-time
+// helper), so the site and the build can never disagree on a spelling again
+// (audit S7-T1). Add pairs to the JSON, never to a second inline map.
+const CRITIC_NAME_FIXES: Record<string, string> = criticNameFixesData.fixes;
 
 // Variant outletIds → canonical outletId (merges split profiles)
 const OUTLET_ID_FIXES: Record<string, string> = {

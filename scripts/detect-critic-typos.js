@@ -10,6 +10,12 @@
  * Safety: only auto-fixes distance-1 same-outlet pairs. Distance-2 or
  * no-shared-outlet pairs are logged but not auto-fixed.
  *
+ * Canonical choice (audit S7-T5, scripts/lib/critic-alias-picker.js): a
+ * candidate already in the alias table resolves to ITS canonical — the picker
+ * never writes a canonical that is itself an alias elsewhere; then the
+ * registry spelling (outlet-registry defaultCritic / critic-registry key);
+ * then file count. Pairs that differ only in a digit are never typos.
+ *
  * Usage: node scripts/detect-critic-typos.js [--dry-run]
  */
 
@@ -17,21 +23,24 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
-const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+// REVIEW_TEXTS_DIR lets a test point the scan at a fixture tree (audit S7-T5).
+const REVIEW_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 const AUTO_ALIASES_PATH = path.join(__dirname, '..', 'data', 'auto-critic-aliases.json');
 
-const { CRITIC_ALIASES, levenshteinDistance } = require('./lib/review-normalization');
+const { CRITIC_ALIASES, levenshteinDistance, loadOutletRegistry, loadCriticRegistry } = require('./lib/review-normalization');
+const { buildAliasIndex, buildRegistrySpellings, buildOutletSlugs, pickCanonical, recordAlias } = require('./lib/critic-alias-picker');
 
 const dryRun = process.argv.includes('--dry-run');
 
-// Build reverse lookup: for each alias string → canonical
-const aliasToCanonical = new Map();
-for (const [canonical, aliases] of Object.entries(CRITIC_ALIASES)) {
-  aliasToCanonical.set(canonical, canonical);
-  for (const alias of aliases) {
-    aliasToCanonical.set(alias.replace(/\s+/g, '-').replace(/\./g, ''), canonical);
-  }
-}
+// Reverse lookup (alias string → canonical), with alias-of-another-canonical
+// keys and two-way conflicts resolved by the picker rather than by iteration order.
+const aliasIndex = buildAliasIndex(CRITIC_ALIASES);
+const outletRegistry = loadOutletRegistry();
+const registrySpellings = buildRegistrySpellings({
+  outletRegistry,
+  criticRegistry: loadCriticRegistry(),
+});
+const outletSlugs = buildOutletSlugs(outletRegistry);
 
 // Scan all review files for critic slugs + their outlets
 const criticOutlets = new Map(); // criticSlug -> Map<outletSlug, count>
@@ -63,6 +72,7 @@ console.log(`Scanned ${critics.length} unique critic slugs`);
 // Find distance-1 pairs that share an outlet and aren't already aliased
 const autoFixes = [];
 const flagged = [];
+const skipped = [];
 
 for (let i = 0; i < critics.length; i++) {
   for (let j = i + 1; j < critics.length; j++) {
@@ -72,10 +82,11 @@ for (let i = 0; i < critics.length; i++) {
     const dist = levenshteinDistance(a, b);
     if (dist !== 1) continue;
 
-    // Check if already covered by CRITIC_ALIASES
-    const canonA = aliasToCanonical.get(a);
-    const canonB = aliasToCanonical.get(b);
-    if (canonA && canonB && canonA === canonB) continue;
+    const countA = criticCounts.get(a);
+    const countB = criticCounts.get(b);
+    const pick = pickCanonical({ a, b, countA, countB, aliasIndex, registrySpellings, outletSlugs });
+    // Already covered by CRITIC_ALIASES (same canonical) — nothing to report.
+    if (pick.skip && pick.silent) continue;
 
     // Check shared outlets
     const outletsA = criticOutlets.get(a);
@@ -85,23 +96,32 @@ for (let i = 0; i < critics.length; i++) {
       if (outletsB.has(outlet)) sharedOutlets.push(outlet);
     }
 
-    if (sharedOutlets.length > 0) {
-      // High confidence: distance 1 + shared outlet = auto-fix
-      const countA = criticCounts.get(a);
-      const countB = criticCounts.get(b);
-      // Canonical is the one with more files
-      const canonical = countA >= countB ? a : b;
-      const typo = countA >= countB ? b : a;
-      autoFixes.push({ canonical, typo, countCanonical: Math.max(countA, countB), countTypo: Math.min(countA, countB), sharedOutlets });
-    } else {
+    if (sharedOutlets.length === 0) {
       // Low confidence: distance 1 but no shared outlet — just flag
-      flagged.push({ a, b, countA: criticCounts.get(a), countB: criticCounts.get(b) });
+      flagged.push({ a, b, countA, countB });
+    } else if (pick.skip) {
+      // High-confidence pair the picker refuses to decide (digit-only
+      // difference, conflicting alias-table entries) — a human resolves it.
+      skipped.push({ a, b, countA, countB, reason: pick.reason, sharedOutlets });
+    } else {
+      // High confidence: distance 1 + shared outlet = auto-fix
+      const { canonical, typo } = pick;
+      autoFixes.push({
+        canonical, typo, reason: pick.reason,
+        countCanonical: canonical === a ? countA : countB,
+        countTypo: typo === a ? countA : countB,
+        sharedOutlets,
+      });
     }
   }
 }
 
 console.log(`\nAuto-fixable (dist=1 + shared outlet): ${autoFixes.length}`);
 console.log(`Flagged only (dist=1, no shared outlet): ${flagged.length}`);
+console.log(`Skipped by the picker (dist=1 + shared outlet, needs a human): ${skipped.length}`);
+for (const s of skipped) {
+  console.log(`  ${s.a} (${s.countA}) ~ ${s.b} (${s.countB}) — ${s.reason} [outlets: ${s.sharedOutlets.join(', ')}]`);
+}
 
 if (autoFixes.length === 0) {
   console.log('\nNo new critic typos detected. All clean!');
@@ -110,7 +130,7 @@ if (autoFixes.length === 0) {
 
 console.log('\n=== AUTO-FIXING ===');
 for (const fix of autoFixes) {
-  console.log(`  ${fix.typo} (${fix.countTypo}) → ${fix.canonical} (${fix.countCanonical}) [outlets: ${fix.sharedOutlets.join(', ')}]`);
+  console.log(`  ${fix.typo} (${fix.countTypo}) → ${fix.canonical} (${fix.countCanonical}) [outlets: ${fix.sharedOutlets.join(', ')}] (${fix.reason})`);
 }
 
 if (flagged.length > 0) {
@@ -133,15 +153,20 @@ try {
   autoAliases = { aliases: {} };
 }
 
+if (!autoAliases.aliases || typeof autoAliases.aliases !== 'object') autoAliases.aliases = {};
+
 let added = 0;
 for (const fix of autoFixes) {
-  const typoLower = fix.typo.replace(/-/g, ' ');
-  if (!autoAliases.aliases[fix.canonical]) {
-    autoAliases.aliases[fix.canonical] = [fix.canonical.replace(/-/g, ' ')];
-  }
-  if (!autoAliases.aliases[fix.canonical].includes(typoLower)) {
-    autoAliases.aliases[fix.canonical].push(typoLower);
+  // recordAlias never creates a key that is an alias of another key and never
+  // re-claims a typo string another key already owns (audit S7-T5).
+  const result = recordAlias(autoAliases.aliases, fix.canonical, fix.typo);
+  if (result.added) {
     added++;
+    if (result.target !== fix.canonical) {
+      console.log(`  (routed ${fix.typo} → ${result.target}: ${fix.canonical} is an alias of it)`);
+    }
+  } else if (result.reason && result.reason !== 'already present') {
+    console.log(`  (not recorded ${fix.typo} → ${fix.canonical}: ${result.reason})`);
   }
 }
 
