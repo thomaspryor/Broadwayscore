@@ -237056,35 +237056,41 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-09-28T02:05:45.648Z",
-    "completedAt": "2026-09-28T02:05:48.449Z",
-    "totalReviews": 8,
-    "processed": 0,
-    "skipped": 7,
-    "errors": 0,
+    "startedAt": "2026-09-28T02:01:45.165Z",
+    "completedAt": "2026-09-28T02:02:27.216Z",
+    "totalReviews": 44939,
+    "processed": 2,
+    "skipped": 44926,
+    "errors": 1,
     "tokensUsed": {
-      "input": 5653,
-      "output": 142,
-      "total": 14102
+      "input": 66384,
+      "output": 1997,
+      "total": 167211
     },
-    "costUsd": 0.0192305,
-    "runId": "36366784958",
-    "errorDetails": []
+    "costUsd": 0.25656755,
+    "runId": "36366452732",
+    "errorDetails": [
+      {
+        "showId": "red-riding-hood-off-broadway-2026",
+        "outletId": "showify",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   },
   {
-    "startedAt": "2026-09-28T02:05:50.341Z",
-    "completedAt": "2026-09-28T02:05:50.343Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-09-28T02:02:29.113Z",
+    "completedAt": "2026-09-28T02:09:03.617Z",
+    "totalReviews": 176,
+    "processed": 176,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
+      "input": 456380,
+      "output": 41672,
+      "total": 498052
     },
-    "costUsd": 0,
-    "runId": "36366784958",
+    "costUsd": 1.284911,
+    "runId": "36366452732",
     "errorDetails": []
   }
 ]
