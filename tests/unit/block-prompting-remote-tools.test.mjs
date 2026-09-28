@@ -13,7 +13,7 @@ const HOOK = path.join(REPO_ROOT, '.claude', 'hooks', 'block-prompting-remote-to
 const SETTINGS = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, '.claude', 'settings.json'), 'utf8'));
 
 const tmpDirs = [];
-after(() => tmpDirs.forEach((d) => fs.rmSync(d, { recursive: true, force: true })));
+after(() => tmpDirs.forEach((d) => fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 })));
 
 function repoWithOrigin(url) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'blocker-'));
