@@ -1,6 +1,8 @@
 # .claude/CLOUD.md — read first if you're a cloud Claude Code session
 
-Cloud Claude Code apps (claude.ai/code, iOS, Mac desktop) run in stateless sandboxes that DON'T mount the user's `~/.claude/` config dir. That dir has 15 hooks, 22 slash commands, and 360+ memory files that you, the cloud session, can't see.
+Cloud Claude Code apps (claude.ai/code, iOS, Mac desktop) run in stateless sandboxes that DON'T mount the owner's real `~/.claude/` config dir (the Mac's hooks, slash commands and memory; counts change weekly).
+
+**The owner's global instructions usually ARE loaded** (BRO-4237): `.claude/hooks/session-start.sh` fetches `CLAUDE.md` + `anti-slop-rules.md` from the private `thomaspryor/claude-config` repo at every cloud start and installs them as `~/.claude/<file>`, so you and your subagents have them. Their "## Cloud sessions" section overrides Mac-only rules. If the fetch failed, session-start printed a short owner fallback plus the reason instead.
 
 This file + a small set of project-scoped substitutes (`.claude/hooks/`, `cloud-memory/`) bring you closer to local CLI behavior.
 
@@ -15,14 +17,14 @@ This file + a small set of project-scoped substitutes (`.claude/hooks/`, `cloud-
 
 - `.claude/hooks/session-start.sh` — critical-rules banner + integrity check
 - `.claude/hooks/verify-edits.sh` — Stop hook; blocks "done" without Bash verification, and (since 2026-08-23) requires a closing SAFE TO EXIT / NOT SAFE TO EXIT line + blocks an unmerged PR with no stated blocker once a session did real work. Since 2026-09-28 it also blocks work with no Linear card filed or claimed (NOCARD; bypass `NO-CARD: <reason>`), and a bare NOT SAFE TO EXIT or "waiting on review" no longer counts as a PR blocker (state `CI still running`, `CI red`, a merge conflict, `DECISION NEEDED:`, or a `PR-BLOCKER: <reason>` line). NOCARD and the Linear close-out gate fail open when Linear is unreachable. Bypass: `NO-VERIFY: <reason>` in final message.
-- `.claude/hooks/notion-create-block.sh` — PreToolUse Bash gate; blocks subsequent tool calls if a `notion-brain.js create` failed earlier in the session.
+- `.claude/hooks/notion-create-block.sh` — PreToolUse Bash gate from the Notion era; inert now (Notion is retired and `notion-brain.js create` refuses before it could trip it). Never use Notion; the board is Linear.
 - `.claude/hooks/cloud-bootstrap.sh` — SessionStart; runs the data bootstrap above. Cloud-only by design (no user-level master); inert on local CLI where `data/shows.json` already resolves.
 - `.claude/hooks/worktree-enforce.sh` — PreToolUse on `Edit|Write|NotebookEdit|Bash`; hard-blocks (exit 2) tracked-code edits (`src/`, `scripts/`, `.github/workflows/`, etc. — CLAUDE.md §1) made outside a worktree. Ported 2026-08-23 (task: cloud sessions had zero technical backstop for the worktree rule until then, PR #691) — was previously in the "does not fire in cloud" list below; if you're reading a stale copy of this doc elsewhere, this line is the correction.
 - `.claude/hooks/pre-push-visual-gate.sh`, `.claude/hooks/pre-push-review-gate.sh`, `.claude/hooks/pre-merge-review-gate.sh`, `.claude/hooks/check-skill-redaction.sh` — PreToolUse `Bash` gates for visual-QA, ship-check, and skill-redaction enforcement before `git push`/`git merge`. **Known gap:** matcher is `Bash` only — a push done via the GitHub MCP connector (`mcp__github__push_files`/`create_or_update_file`) instead of `git push` bypasses all four.
 - `.claude/hooks/enterworktree-guard.sh` — PreToolUse `EnterWorktree` gate; guards worktree NAME COLLISIONS only (`worktree-enforce.sh` above is the one that covers the actual §1 rule).
 - `.claude/hooks/whitespace-nowrap-lint.sh` — PostToolUse `Edit|Write` warning for a recurring CSS overflow trap.
 
-These are derivatives of `~/.claude/hooks/` masters. Each script self-skips if `$HOME/.claude/hooks/<basename>` exists (so on local CLI the user-level master fires; on cloud the project copy fires). 11 other user-level hooks still DO NOT fire in cloud (design-system-lint, etc.) — be extra careful with edits those local-only hooks would catch.
+These are derivatives of `~/.claude/hooks/` masters. Each script self-skips if `$HOME/.claude/hooks/<basename>` exists (so on local CLI the user-level master fires; on cloud the project copy fires). Most Mac hooks (about 30 of ~40, e.g. design-system-lint, finish-line-gate, infra-plan-review-gate, block-resend-broadcasts) still DO NOT fire in cloud; porting the high-value ones is BRO-4238. Until then, follow those rules by hand: the global instructions describe them.
 
 ## Slash commands available in cloud
 
@@ -102,4 +104,4 @@ Cloud has no `gh` CLI — CLAUDE.md's `gh run`/`gh workflow run`/`gh secret set`
 
 ## When in doubt
 
-Tell the user: "I'm running in a cloud session, so I don't have access to X. Want me to (a) make do with what's here, or (b) wait for you to switch to a local session?"
+Do what you can from cloud first: most "local-only" things have a cloud route (GitHub MCP tools instead of `gh`, `land/<name>` instead of merging, `execute-approved-fix.yml` for private data, `create_session`/Routines instead of cmux dispatch). If something truly needs the owner's Mac, say so in one plain line and keep going with everything else. Never ask the owner to "switch to a local session" or to make a technical choice they can't evaluate.
