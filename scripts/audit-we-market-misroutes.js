@@ -28,14 +28,7 @@
  *   node scripts/audit-we-market-misroutes.js --show=ID       # limit to one show
  *   node scripts/audit-we-market-misroutes.js --limit=N       # cap move count
  *
- * Tour scope (BRO-4211): move national-tour reviews that were flagged
- * wrongProduction on a Broadway show into that tour's own entry.
- *   node scripts/audit-we-market-misroutes.js --scope=tour --from=beetlejuice-2022 --tour=beetlejuice-tour-2022
- *   ... add --execute to move. The tour entry must exist in shows.json with tourOf set.
- *   --launch=YYYY-MM-DD sets the tour-launch cutoff when the entry has no openingDate
- *   (e.g. the launch roundup's date); dated reviews more than a week earlier stay put.
- * Rules live in scripts/lib/tour-backfill.js. Every executed move is appended to
- * data/audit/tour-backfill-manifest.jsonl (from, to, file, at) so it can be undone.
+ * Tour moves (BRO-4211) live in scripts/sweep-tour-reviews.js.
  */
 
 const fs = require('fs');
@@ -43,7 +36,6 @@ const path = require('path');
 const { classifyMarketRouting, buildSiblingIndex } = require('./lib/market-routing');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { classifyTourBackfill, prepareTourMove } = require('./lib/tour-backfill');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -51,7 +43,6 @@ const USAGE = `audit-we-market-misroutes.js — Replay the gather-time market-ro
 
 Usage:
   node scripts/audit-we-market-misroutes.js [options]
-  node scripts/audit-we-market-misroutes.js --scope=tour --from=<dir> --tour=<id> [--launch=YYYY-MM-DD] [--execute]
   node scripts/audit-we-market-misroutes.js --help, -h    print this usage and exit
 `;
 const ROOT = path.join(__dirname, '..');
@@ -90,53 +81,9 @@ function findExistingInTarget(targetDir, outletId, criticSlug) {
   return null;
 }
 
-const TOUR_MANIFEST = path.join(ROOT, 'data', 'audit', 'tour-backfill-manifest.jsonl');
-
-function mainTour() {
-  const fromId = parseFlag('from', null);
-  const tourId = parseFlag('tour', null);
-  if (!fromId || !tourId) { console.error('--scope=tour needs --from=<broadway show dir> and --tour=<tour id>'); process.exit(2); }
-  const shows = loadShows();
-  const tour = shows.find(s => s.id === tourId);
-  if (!tour || tour.category !== 'tour' || !tour.tourOf) {
-    console.error(`${tourId} must exist in shows.json with category 'tour' and tourOf set`); process.exit(2);
-  }
-  const parent = shows.find(s => s.id === tour.tourOf);
-  const launch = parseFlag('launch', null);
-  if (launch && !/^\d{4}-\d{2}-\d{2}$/.test(launch)) { console.error('--launch must be YYYY-MM-DD'); process.exit(2); }
-  const ctx = { broadwayOpeningDate: parent && parent.openingDate, tourLaunchDate: tour.openingDate || launch };
-  const fromDir = path.join(REVIEW_TEXTS_DIR, fromId);
-  const toDir = path.join(REVIEW_TEXTS_DIR, tourId);
-  const counts = {};
-  const moves = [];
-  for (const f of fs.readdirSync(fromDir).filter(n => n.endsWith('.json') && !n.startsWith('_')).sort()) {
-    let data;
-    try { data = JSON.parse(fs.readFileSync(path.join(fromDir, f), 'utf8')); } catch { continue; }
-    const d = classifyTourBackfill(data, ctx);
-    if (d.reason === 'not-flagged' || d.reason === 'flag-not-tour') continue;
-    const key = d.action === 'move' && fs.existsSync(path.join(toDir, f)) ? 'target-collision' : d.reason;
-    counts[key] = (counts[key] || 0) + 1;
-    console.log(`  ${key.padEnd(24)} ${f}`);
-    if (key === 'tour-review') moves.push({ f, data });
-  }
-  const limited = moves.slice(0, LIMIT);
-  if (execute) {
-    fs.mkdirSync(toDir, { recursive: true });
-    const at = new Date().toISOString();
-    for (const { f, data } of limited) {
-      safeWriteReview(path.join(toDir, f), prepareTourMove(data, { fromShowId: fromId, tourId, at }), { merge: false });
-      fs.unlinkSync(path.join(fromDir, f));
-      fs.appendFileSync(TOUR_MANIFEST, JSON.stringify({ from: fromId, to: tourId, file: f, at }) + '\n');
-    }
-  }
-  console.log(`\nTour backfill ${execute ? 'EXECUTE' : 'DRY-RUN'} ${fromId} -> ${tourId}: ${JSON.stringify(counts)}`);
-  console.log(`  ${execute ? 'moved' : 'would move'}: ${limited.length}`);
-}
-
 function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
-  if (parseFlag('scope', null) === 'tour') return mainTour();
   const shows = loadShows();
   const showMap = new Map(shows.map(s => [s.id, s]));
   const siblingIndex = buildSiblingIndex(shows);
