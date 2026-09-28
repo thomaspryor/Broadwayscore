@@ -537,9 +537,9 @@ check_ledger_coverage() {
     echo "::error::ledger-coverage check found only $(echo "$OUT" | sed -n 's/^__TOO_FEW_WORKFLOWS__://p') workflow file(s) in .github/workflows (expected at least $MIN_WORKFLOWS) — refusing to report a verdict rather than silently pass on a near-empty or wrong-cwd scan."
     FAILED=1
   elif echo "$OUT" | grep -qF '__CLEAN__' && ! echo "$OUT" | grep -qvF '__CLEAN__'; then
-    echo "All ledger-reaching (url-discovery.js serpQuery/discoverCorrectUrl, scraper.js fetchPage) workflows commit data/audit/scraper-spend-ledger.jsonl in the same job (or are documented, non-stale exemptions)"
+    echo "All ledger-reaching (provider-telemetry record* writers, incl. via url-discovery.js serpQuery/discoverCorrectUrl and scraper.js fetchPage) workflows commit data/audit/scraper-spend-ledger.jsonl in the same job (or are documented, non-stale exemptions)"
   else
-    echo "::error::Workflows call url-discovery.js's serpQuery()/discoverCorrectUrl() or scraper.js's fetchPage() but no step stages data/audit/scraper-spend-ledger.jsonl for commit in the same job (or an exemption entry has gone stale):"
+    echo "::error::Workflows reach a scraper-spend telemetry writer (provider-telemetry record*, serpQuery/discoverCorrectUrl, fetchPage) but no step stages data/audit/scraper-spend-ledger.jsonl for commit in the same job (or an exemption entry has gone stale):"
     echo "$OUT" | grep -vF '__CLEAN__'
     echo "Fix: add a 'Commit scraper-spend ledger' step (see audit-closing-dates.yml for the pattern) to the violating job."
     echo "If this is a known, tracked gap, add it to scripts/lib/ledger-coverage-exemptions.js with a dated reason."

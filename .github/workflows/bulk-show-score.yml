@@ -184,6 +184,13 @@ jobs:
             bash scripts/lib/push-with-retry.sh
           fi
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: bulk-show-score
+
   merge:
     needs: [prepare, scrape]
     if: always() && needs.prepare.outputs.missing_count > 0

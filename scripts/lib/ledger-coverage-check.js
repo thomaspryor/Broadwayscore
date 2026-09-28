@@ -65,9 +65,21 @@ const LEDGER_PATH = 'data/audit/scraper-spend-ledger.jsonl';
 // staging the ledger without the check needing to open the action file.
 const COMMIT_LEDGER_ACTION_RE = /uses:\s*\.\/\.github\/actions\/commit-scraper-spend-ledger\b/;
 // lib basename -> tracked export names that reach a telemetry writer.
+//
+// BRO-4215 (2026-09-28): also the telemetry writers themselves. Tracking only
+// the two chokepoints above missed every module that records spend by calling
+// provider-telemetry's record* directly (reddit-api.js, scrape-show-score-
+// audience.js, fetch-social-pulse.js, ...): update-reddit-sentiment.yml spent
+// ~193K ScrapingBee credits in one week (~71% of the bill) whose ledger rows
+// were discarded at runner exit because the job never staged the ledger, and
+// this check could not see it. Any script that reaches a record* writer
+// produces ledger rows, so that is the property worth tracking.
+const TELEMETRY_WRITERS = new Set(['recordProviderCall', 'recordBdCall', 'recordSbCall', 'recordSdCall', 'recordBbCall']);
 const TRACKED_TARGETS = new Map([
   ['url-discovery.js', new Set(['serpQuery', 'discoverCorrectUrl'])],
   ['scraper.js', new Set(['fetchPage'])],
+  ['provider-telemetry.js', TELEMETRY_WRITERS],
+  ['bd-telemetry.js', TELEMETRY_WRITERS],
 ]);
 const JOB_KEY_RE = /^  ([A-Za-z0-9_.-]+):\s*$/;
 const SCRIPT_INVOKE_RE = /\bnode\s+(?:--[\w-]+(?:=\S+)?\s+)*scripts\/([A-Za-z0-9_./-]+\.js)/g;
@@ -127,7 +139,8 @@ function matchForLoopStart(jobLines, i) {
  * findLedgerScripts(scriptsDir) -> Set<string>
  * Returns scripts/-relative paths (e.g. "audit-closing-dates.js") for every
  * .js file under scriptsDir whose own code calls url-discovery.js's
- * serpQuery/discoverCorrectUrl, directly or transitively. Returns an empty
+ * serpQuery/discoverCorrectUrl, scraper.js's fetchPage, or a
+ * provider-telemetry record* writer (BRO-4215), directly or transitively. Returns an empty
  * set (fails open, logs nothing — callers should treat this as "skip the
  * check") if acorn isn't installed. Thin wrapper over the shared
  * require-graph-ast.js engine (BRO-3671) — see that file's header for the
@@ -276,7 +289,7 @@ function findMissingLedgerCommits(workflowYamlText, ledgerScripts) {
     if (invoked.length > 0 && !jobStagesLedgerFile(job.lines)) {
       violations.push({
         job: job.name,
-        message: `job '${job.name}' runs ${invoked.join(', ')} (calls url-discovery.js's serpQuery/discoverCorrectUrl or scraper.js's fetchPage) but no step stages data/audit/${LEDGER_FILE} for commit in this job`,
+        message: `job '${job.name}' runs ${invoked.join(', ')} (reaches a scraper-spend telemetry writer: provider-telemetry record*, serpQuery/discoverCorrectUrl, or fetchPage) but no step stages data/audit/${LEDGER_FILE} for commit in this job`,
       });
     }
   }

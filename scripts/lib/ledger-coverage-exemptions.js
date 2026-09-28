@@ -20,7 +20,7 @@
  * ledger even though the actual `git add` line lives inside the action
  * file, not the calling workflow; see COMMIT_LEDGER_ACTION_RE).
  *
- * ONE entry remains, and it is NOT a real gap — it's a documented detector
+ * Two entries remain (the second added 2026-09-28, BRO-4215); neither is a real gap — each is a documented detector
  * false positive, kept here (rather than fixed in the checker) because
  * generalizing SCRIPT_INVOKE_RE to distinguish "text inside a JS template
  * literal building a GitHub issue body" from "an actual `node scripts/X.js`
@@ -46,6 +46,16 @@ const EXEMPTIONS = [
       'code path is unreachable (issue creation is explicitly disabled: "Skipping issue ' +
       'creation — pipeline handles these automatically"), and even if it ran, it would never ' +
       'execute the shell command, only print it as markdown in an issue.',
+  },
+  {
+    file: 'test-paywalled-access.yml',
+    job: 'test-access',
+    reason:
+      '2026-09-28 (BRO-4215): detector false positive, not a real gap. Widening the tracked ' +
+      'targets to provider-telemetry record* made test-paywalled-access.js reachable, but its ' +
+      'only paid path (Browserbase) is gated on --browserbase, which this workflow never passes ' +
+      '(both invocations run plain local Playwright), so the job writes no ledger rows. Remove ' +
+      'this entry if the workflow ever passes --browserbase.',
   },
 ];
 

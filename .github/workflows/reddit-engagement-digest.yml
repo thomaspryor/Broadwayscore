@@ -94,6 +94,13 @@ jobs:
             echo "No changes to digest state"
           fi
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: reddit-engagement-digest
+
       - name: Job summary
         if: always()
         run: |

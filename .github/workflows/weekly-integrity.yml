@@ -307,6 +307,14 @@ jobs:
             bash scripts/lib/push-with-retry.sh 25 main
           fi
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: weekly-integrity
+          push-retry-args: '25 main'
+
       - name: Create issue if problems found
         if: steps.check.outputs.has_issues == 'true' || inputs.force_issue == 'true'
         uses: actions/github-script@v7
