@@ -528,6 +528,10 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight mb-2">
                 {show.title}
               </h1>
+              {/* A tour shares its Broadway parent's title and poster; say which one this is. */}
+              {isTour && (
+                <p className="-mt-1 mb-2 text-sm sm:text-base font-semibold text-sky-300" data-testid="tour-subtitle">National Tour</p>
+              )}
 
               {/* No separate verdict sentence here — SXO fix 2026-07-19 tried one and it
                   duplicated the score box below (same 91/100, same review count, same
@@ -675,7 +679,8 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                     <span key={i}> <span className="text-gray-500">·</span> {seg.emphasize ? <span className="text-amber-400">{seg.text}</span> : seg.text}</span>
                   ));
                 })()}
-                {isTour && (() => {
+                {isTour && !show.openingDate && (() => {
+                  // Only while the tour's own dates are unknown; the date line covers it otherwise.
                   const years = getTourReviewYears(show.criticScore?.reviews);
                   return years ? <span> <span className="text-gray-500">·</span> reviewed {years}</span> : null;
                 })()}
@@ -686,9 +691,8 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                 const parent = show.tourOf ? getShowById(show.tourOf) : null;
                 return (
                   <p className="text-xs sm:text-sm mb-1 leading-relaxed text-sky-300/90" data-testid="tour-trust-line">
-                    <span className="font-semibold">National tour</span>
                     <span className="text-gray-400">
-                      {' '}— critics in each city on the tour, scored separately from Broadway.
+                      Reviewed by critics in each city on the tour, scored separately from Broadway.
                       {parent && (
                         <>
                           {' '}
@@ -704,27 +708,31 @@ export default async function ShowPage({ params }: { params: { slug: string } })
 
               {/* Broadway side: its national tour(s). Empty while the tour flag is off. */}
               {!isTour && (() => {
-                const tours = getToursOf(show.id);
+                const tours = getToursOf(show);
                 if (tours.length === 0) return null;
                 return (
                   <p className="text-xs sm:text-sm mb-1 leading-relaxed text-sky-300/90" data-testid="on-tour-line">
-                    <span className="font-semibold">On tour</span>
+                    {/* "On tour" only while one is running; a finished tour is "National tour". */}
+                    <span className="font-semibold">{tours.some(t => t.status === 'open' || t.status === 'previews') ? 'On tour' : 'National tour'}</span>
                     <span className="text-gray-400">
                       {(() => {
                         // Same TBD gate as the tryout line: never show a score the tour's own page hides.
                         const t = tours.length === 1 ? tours[0] : null;
                         const tCount = t?.criticScore?.reviewCount || 0;
                         const tT12 = (t?.criticScore?.tier1Count || 0) + (t?.criticScore?.tier2Count || 0);
-                        const tourScore = (t?.criticScore?.score && hasEnoughReviews(tCount, t.category, tT12, false))
-                          ? Math.round(t.criticScore.score) : null;
+                        const tourHidden = !t || applyCoverageFloor(
+                          !hasEnoughReviews(tCount, t.category, tT12, false) || t.status === 'previews' || t.status === 'upcoming',
+                          { scorePublicSince: t.scorePublicSince, coverageState: t.cov?.state, coverageAcked: t.coverageAcked },
+                        );
+                        const tourScore = (!tourHidden && t?.criticScore?.score) ? Math.round(t.criticScore.score) : null;
                         return tourScore
-                          ? <>{' '}— critics score the national tour <span className="text-sky-300 font-semibold">{tourScore}/100</span>.{' '}</>
+                          ? <>{' '}— critics {t?.status === 'open' || t?.status === 'previews' ? 'score' : 'scored'} the tour <span className="text-sky-300 font-semibold">{tourScore}/100</span>.{' '}</>
                           : <>{' '}— the national tour has its own critic score.{' '}</>;
                       })()}
                       {tours.map((tour, i) => (
                         <span key={tour.id}>
                           <Link href={`/show/${tour.slug}`} className="text-sky-300 underline decoration-sky-300/40 underline-offset-2 hover:text-sky-200" data-testid="on-tour-link">
-                            {tours.length > 1 ? `See the ${(tour.openingDate || tour.id.match(/\d{4}/)?.[0] || '').slice(0, 4)} tour →` : 'See the tour →'}
+                            {tours.length > 1 ? `See the ${(tour.openingDate || tour.id.match(/(\d{4})$/)?.[1] || '').slice(0, 4)} tour →` : 'See the tour →'}
                           </Link>
                           {i < tours.length - 1 ? ' ' : ''}
                         </span>

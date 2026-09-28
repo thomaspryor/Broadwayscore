@@ -206,12 +206,22 @@ export function getTourShows(): ComputedShow[] {
 }
 
 /**
- * National tours of a Broadway production, for its "Now on tour" line. Empty
- * while the tour flag is off, so a flag-off build never links to a 404.
+ * National tours of a Broadway production, for its "On tour" line. A tour's
+ * tourOf names one Broadway run, but every Broadway production of the same
+ * title gets the line (Beetlejuice tours from beetlejuice-2019, and the 2022
+ * and 2025 returns are the pages people land on). Empty while the tour flag
+ * is off, so a flag-off build never links to a 404.
  */
-export function getToursOf(broadwayShowId: string): ComputedShow[] {
+export function getToursOf(show: Pick<ComputedShow, 'id' | 'title' | 'category'>): ComputedShow[] {
   if (!isCategoryEnabled('tour')) return [];
-  return getAllShows().filter(show => show.category === 'tour' && show.tourOf === broadwayShowId);
+  if (show.category && show.category !== 'broadway') return [];
+  const title = show.title.trim().toLowerCase();
+  return getAllShows().filter(t => {
+    if (t.category !== 'tour' || !t.tourOf) return false;
+    if (t.tourOf === show.id) return true;
+    const parent = getShowById(t.tourOf);
+    return !!parent && parent.title.trim().toLowerCase() === title;
+  });
 }
 
 /**
