@@ -7,13 +7,17 @@ Fix the 15 live data defects found by the 2026 audit and the seven pipeline mech
 
 Repo split: web repo `/home/user/Broadwayscore` (code, workflows, public derived files); core data `/root/broadway-scorecard-data` (shows.json, slug maps, aliases; symlinked from `data/`); review texts `/home/user/broadway-review-texts` (one file per review, `_pending/` strand; linked at `~/broadway-review-texts`). CI rebuilds `reviews.json` (`rebuild-reviews.yml`), never local.
 
-Edit protocol for every data task (from the plan review): `git pull` the target repo immediately before editing; one batch per commit; push immediately; after CI's next commit, re-read `origin/main` and assert the change survived; review-file edits only through `safeWriteReview` with the field's breadcrumb (`wrongProductionOverride`/`wrongShow` clear/`originalScoreCleared` + reason); every deleted shows.json row archived to `data/audit/deleted-shows-2026-09.json`; closing-date edits stamped `humanCorrectedClosingDate`.
+Edit protocol for every data task (from the plan review and the sprint critique): `git pull` the target repo immediately before editing; one batch per commit; push immediately; after the first origin/main commit that follows ours (for review texts that is the next `collect-review-texts.yml` or any workflow using the `push-review-texts` action), re-read `origin/main` and assert the change survived; review-file edits only through `safeWriteReview` with the field's breadcrumb (`wrongProductionOverride`/`wrongShow` clear/`originalScoreCleared` + reason; `llmScore` and `isNonReview` are protected too); every deleted shows.json row archived to `deleted-shows-2026-09.json` **in the core-data repo** beside `retired-show-ids.json` (never in the web repo's tracked `data/audit/`, §11); closing-date edits stamped `humanCorrectedClosingDate`.
+
+**Single writer rule (sprint critique):** in data sprints, subagents never commit. Each subagent writes a patch or a JSON list of intended edits to the scratchpad; the coordinator applies them serially, one batch per commit, one push at a time, so `S1-T7`-style survival checks can attribute any revert.
+
+**§18 note:** `.github/actions/push-core-data/action.yml` is in `infra-review-scope.js`; the plan-review verdict is keyed per session, so the session that executes S0-T4 records its own `review-gate.mjs --query=record-plan` first (this session already has one). The workflows edited in Sprints 4 and 7 are outside the gated regex (warn-only).
 
 ## Sprint Summary
 | Sprint | Goal | Tasks | Complexity |
 |--------|------|-------|------------|
-| 0 | Safety rails landed; ramp proven on one review and one row | 9 | 6S, 3M |
-| 1 | Wrong scores and misfiled outlets corrected on the live site | 7 | 5S, 2M |
+| 0 | Safety rails, dedup stopgap and parser fix landed; ramp proven on one review and one row; 24h gate | 12 | 8S, 4M |
+| 1 | Listing-page guard landed; wrong scores and misfiled outlets corrected on the live site | 8 | 6S, 2M |
 | 2 | Missing shows added, dates and text corrected | 12 | 9S, 3M |
 | 3 | Hidden and stranded reviews recovered | 5 | 3S, 2M |
 | 4 | Discovery and ingestion stop producing junk and going dark silently; inclusion policy written | 14 | 9S, 5M |
@@ -45,10 +49,28 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Complexity:** S
 - **Depends on:** None
 - **Parallel:** Yes
-- **Files:** scripts/lib/retired-show-ids.js (new: `loadRetiredIds()`, `isRetiredId(id)`, `retireId(id, {reason, archivedRow})`), data/retired-show-ids.json (new, in core data repo; seeded empty), tests/unit/retired-show-ids.test.mjs (new)
-- **Description:** A small JSON list `{id, reason, retiredAt}` plus a loader. `retireId` appends to the list and to `data/audit/deleted-shows-2026-09.json` (full archived row). Data file lives in the core-data repo because shows.json lives there.
+- **Files:** scripts/lib/retired-show-ids.js (new: `loadRetiredIds()`, `isRetiredId(id)`, `retireId(id, {reason, archivedRow})`), core-data repo: retired-show-ids.json and deleted-shows-2026-09.json (new, seeded empty), tests/unit/retired-show-ids.test.mjs (new)
+- **Description:** A small JSON list `{id, reason, retiredAt}` plus a loader. `retireId` appends to the list and to the archive (full row). Both files live in the core-data repo (they are core data, §11), resolved the same way `shows.json` is.
 - **Acceptance criteria:**
   - VERIFY: `node --test tests/unit/retired-show-ids.test.mjs` passes (load, isRetired, retire appends both files)
+
+### Task S0-T2b: Cross-linked ids are never duplicates (stopgap for Sprint 2)
+- **Complexity:** S
+- **Depends on:** None
+- **Parallel:** Yes
+- **Files:** scripts/lib/deduplication.js (`checkForDuplicate` :655, before Check 1), tests/unit/show-dedup-crosslink.test.mjs (new)
+- **Description:** A candidate whose `transferOf` or `priorRuns` names the existing row (or vice versa) is not a duplicate. Without this, `isMultiProduction` (:447-453) only exempts closed-vs-announced pairs, so Into the Woods (previews since 09-22), Arcadia (Duke of York's, open), Lost in Del Valle (return, open) and the one-part Cursed Child would fail `validate-data.js:365` and the push sentinel would refuse Sprint 2. S5-T1 replaces this with the full temporal rule; the exemption stays as a safety net.
+- **Acceptance criteria:**
+  - VERIFY: `node --test tests/unit/show-dedup-crosslink.test.mjs tests/unit/show-dedup-temporal.test.mjs` pass (new fixture: open same-title pair cross-linked is not a duplicate; un-linked open pair still is)
+
+### Task S0-T2c: Fix the Playbill Broadway schedule parser (moved from S4-T1)
+- **Complexity:** M
+- **Depends on:** None
+- **Parallel:** Yes
+- **Files:** scripts/lib/playbill-broadway-schedule.js (:101 titleRe, :119-131 field loop), tests/fixtures/broadway-discovery/playbill-broadway-2026-09-28.html (new, from agentA/playbill-schedule-article.html), tests/unit/broadway-schedule-discovery.test.mjs
+- **Description:** Code-only and dependency-free, and the parser feeds `discover-new-shows.js` itself (not only the coverage guard), so Broadway discovery stays dark until this lands. Widen the title character class (digits, `;`, quotes, `/`), tolerate `<strong>` letter splits, terminate each segment at the next anchor regardless of title match. Fixture asserts 33 entries incl. 860, Blue Man Group, School Girls, and Other Desert Cities = Hudson/09-29/10-18. Hand-entered dates from S2-T9 survive because `discovery-reconcile.js:60` recrawls only RECRAWLABLE sources.
+- **Acceptance criteria:**
+  - VERIFY: `node --test tests/unit/broadway-schedule-discovery.test.mjs` passes with the new fixture
 
 ### Task S0-T3: Discovery refuses retired ids
 - **Complexity:** S
@@ -63,8 +85,8 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Complexity:** M
 - **Depends on:** S0-T2
 - **Parallel:** Yes
-- **Files:** scripts/lib/reconcile-shows-fields.js (:101-110), .github/actions/push-core-data/action.yml (:429-444 inline node), tests/unit/reconcile-retired-ids.test.mjs (new)
-- **Description:** `reconcileShowsJson` never re-adds an id present in the retired list even when the base snapshot lacks it. The action passes the retired list through. (Composite action edit: covered by the recorded plan-review verdict for §18.)
+- **Files:** scripts/lib/reconcile-shows-fields.js (:101-110), .github/actions/push-core-data/action.yml (:429-444 inline node; :59 `CORE_FILES` add `retired-show-ids.json` and `deleted-shows-2026-09.json` so CI writes to them are pushed), tests/unit/reconcile-retired-ids.test.mjs (new)
+- **Description:** `reconcileShowsJson` never re-adds an id present in the retired list even when the base snapshot lacks it. The action passes the retired list through and pushes the two new core files. (Composite action is §18-gated: the executing session records `review-gate.mjs --query=record-plan` first.)
 - **Acceptance criteria:**
   - VERIFY: `node --test tests/unit/reconcile-retired-ids.test.mjs` passes (remote has id, base lacks it, id retired: not re-added; same without retirement: re-added)
 
@@ -79,7 +101,7 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 
 ### Task S0-T6: Land Sprint 0 code
 - **Complexity:** S
-- **Depends on:** S0-T1, S0-T3, S0-T4, S0-T5
+- **Depends on:** S0-T1, S0-T2b, S0-T2c, S0-T3, S0-T4, S0-T5
 - **Parallel:** No
 - **Files:** none new
 - **Description:** tsc, lint, node tests; push `land/audit-s0-safety-rails`; follow `land.yml` to success; seed `data/retired-show-ids.json` in the core-data repo.
@@ -103,7 +125,7 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Description:** Dispatch `rebuild-reviews.yml`; after it commits, `node scripts/check-prod-deploy.js HEAD --wait`; read the live `public/data/shows/romeo-and-juliet-off-broadway-2026.json`; then wait for the next `push-review-texts` run and re-read the file on origin/main.
 - **Acceptance criteria:**
   - VERIFY: live show JSON `cs` is below 60 and `rc` is 26 (was 27)
-  - VERIFY: after the next CI push-review-texts run, the file on origin/main still has `wrongProduction: true`
+  - VERIFY: after the first origin/main commit in the review-texts repo that follows ours (any workflow using the `push-review-texts` action, e.g. `collect-review-texts.yml`), the file still has `wrongProduction: true`
 
 ### Task S0-T9: Ramp unit 2: retire the phantom row by hand and confirm it stays gone
 - **Complexity:** S
@@ -113,7 +135,15 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Description:** Remove `tabdates-off-west-end-2026` (title "?tab=dates"), archive the row, add the retired entry, commit and push core data. Wait for one `update-show-status` run.
 - **Acceptance criteria:**
   - VERIFY: after the next `update-show-status` run, `git -C /root/broadway-scorecard-data show origin/main:shows.json | grep -c tabdates-off-west-end-2026` prints 0
-  - Gate: S0-T8 and S0-T9 both hold for 24 hours before Sprint 1 starts (owner: continue automatically on success)
+
+### Task S0-T10: 24-hour gate re-check
+- **Complexity:** S
+- **Depends on:** S0-T8, S0-T9
+- **Parallel:** No
+- **Files:** none (scheduled with `send_later`, 24h)
+- **Description:** Re-run the two survival greps (S0-T8's file on origin/main; S0-T9's `grep -c` on origin/main shows.json) 24 hours after the ramp. Owner decision: continue into Sprint 1 automatically on success; stop and report on any revert.
+- **Acceptance criteria:**
+  - VERIFY: both greps still pass 24h later, output pasted on BRO-4204
 
 ---
 
@@ -121,6 +151,15 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 **Demo:** R&J, Much Ado, Every Brilliant Thing, Rocky Horror and the listing-page shows show corrected scores and outlets on the live site.
 **Risks:** each file edit must carry the right breadcrumb or CI restores it; the 20 about-entertainment rows are historical (2005-2013) and rename across outlet dirs, so use `safeRenameReview`; a rebuild is one CI run for all of them, so verify per show.
 **MODEL:** Sonnet.
+
+### Task S1-T0: Listing-page URL guard with a human breadcrumb (moved from S6-T3)
+- **Complexity:** S
+- **Depends on:** None
+- **Parallel:** Yes (code track; lands via `land/` before S1-T3 runs)
+- **Files:** scripts/lib/is-scoreable.js (:11), scripts/lib/review-guards.js (:853 urlLooksLikeReview, :1786 isNonReview demotion, :3281 explainExclusion), tests
+- **Description:** `explainExclusion` returns `listing-page-url` when `urlLooksLikeReview` is false for `/shows/…`, `index.html`, bare hosts; star extraction from such pages is refused. Also: `isNonReview` is demoted at :1786 when a fresher CV pass says "review", so S1-T3's hand flags need a `humanReviewedNonReview: true` breadcrumb the demoter honours.
+- **Acceptance criteria:**
+  - VERIFY: tests: the talkinbroadway index URL and the londontheatrehub `/shows/` URL are excluded; a hand-flagged `isNonReview` with the breadcrumb is not demoted
 
 ### Task S1-T1: Flag the remaining Theatre Record leaks on R&J and Much Ado
 - **Complexity:** S
@@ -142,10 +181,10 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 
 ### Task S1-T3: Delist listing pages and invalid-tier reviews
 - **Complexity:** M
-- **Depends on:** S0-T8
+- **Depends on:** S0-T8, S1-T0
 - **Parallel:** Yes
 - **Files:** talkinbroadway index.html files (3 shows), londontheatrehub /shows/ files (3), the 10 `contentTier: invalid` scored files (list from agentF/llm-signals.json)
-- **Description:** Use the field `explainExclusion` (review-guards.js:3281) honours for non-reviews (read the branch first; likely `isNonReview`/`nonReviewReason`), set through `safeWriteReview`.
+- **Description:** Set `isNonReview: true`, `isNonReviewReason`, and the `humanReviewedNonReview: true` breadcrumb from S1-T0 through `safeWriteReview` (the listing pages are also caught by the URL guard once S1-T0 lands; the flag makes the exclusion explicit and survivable).
 - **Acceptance criteria:**
   - VERIFY: `node -e` calling `explainExclusion(data, show, path)` on each file returns an exclusion reason
 
@@ -162,8 +201,8 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Complexity:** M
 - **Depends on:** S0-T8
 - **Parallel:** Yes
-- **Files:** every-brilliant-thing-2026/nytimes--adam-feldman.json to timeout--adam-feldman.json; 20 about-entertainment--{brantley,isherwood}.json files to nytimes--…; 3 sunday-telegraph files to telegraph; 13 the-lion-king-1997 jasonraize files (set outletId to the real newspaper only if the text is the newspaper's review, else flag nonReview)
-- **Description:** `safeRenameReview` (review-write-guard.js:2571) plus outletId/outlet fields; keep `url` unchanged. Remove `jasonraize` from `data/outlet-registry.json` once no file references it.
+- **Files:** every-brilliant-thing-2026/nytimes--adam-feldman.json to timeout--adam-feldman.json; 20 about-entertainment--{brantley,isherwood}.json files to nytimes--…; 3 sunday-telegraph files to telegraph; 13 the-lion-king-1997 jasonraize files (set outletId to the real newspaper only if the text is the newspaper's review, else flag nonReview with the S1-T0 breadcrumb)
+- **Description:** `safeRenameReview` (review-write-guard.js:2571) plus outletId/outlet fields; keep `url` unchanged. Review files only: `data/outlet-registry.json` is web-repo tracked, so removing `jasonraize` from it happens in S7-T5 (which already edits that file).
 - **Acceptance criteria:**
   - VERIFY: `node -e` with `hostMatchesOutletDomain` (scripts/lib/outlet-domain-validation.js) over the touched files reports 0 mismatches
 
@@ -254,11 +293,11 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Description:** the-gruffalo-west-end-2026 closing 2026-09-08 (OLT), status closed; closing dates for im-sorry-prime-minister, deep-azure-globe, here-there-are-blueberries-stratford-east from OLT/venue pages; each stamped `humanCorrectedClosingDate: true`, `closingDateSource`.
 - **Acceptance criteria:** VERIFY: `validate-data.js --dry-run` shows 0 "closed with null closingDate" for these ids
 
-### Task S2-T11: Closed Off-Broadway opening dates from Playbill production pages
-- **Complexity:** M | **Depends on:** S0-T9 | **Parallel:** Yes
-- **Files:** shows.json; scratchpad script `fix-ob-opening-dates.js` (curl -L Playbill production page, parse "Opening Date")
-- **Description:** For the 73 closed Off-Broadway rows with `openingDate === previewsStartDate`, apply Playbill's opening date only when the page's year matches the show's year (guards the R&J Suite case in enrich-off-broadway-dates.js:866-874); write `openingDateSource: "playbill-manual"`; log skipped ids.
-- **Acceptance criteria:** VERIFY: script summary prints applied/skipped counts; `validate-data.js --dry-run` 0 new errors; spot-check 5 ids against Playbill by hand
+### Task S2-T11: Closed Off-Broadway opening dates through the real fixer
+- **Complexity:** M | **Depends on:** S0-T9 | **Parallel:** Yes (code part in a worktree, landed before the data run)
+- **Files:** scripts/enrich-off-broadway-dates.js (:744 Phase-3 candidates, :874 ELIGIBLE_STATUSES: add `--include-closed-when-year-matches`), tests/unit/enrich-ob-dates-closed-year-match.test.mjs (new), shows.json
+- **Description:** No scratchpad re-implementation (§15). The fixer gains a flag that admits closed rows only when the Playbill production page's year equals the show's opening year (keeps the R&J Suite guard at :866-874); run it once for the 73 rows; `openingDateSource: "playbill"`; skipped ids logged. S7-T7 later only swaps the status filter for `isRecentlyLive`.
+- **Acceptance criteria:** VERIFY: unit test: closed row + matching year is eligible, closed row + other year is not; run summary prints applied/skipped; `validate-data.js --dry-run` 0 new errors; 5 ids spot-checked against Playbill by hand
 
 ### Task S2-T12: Synopses, provisional flags, venue placeholders and spelling
 - **Complexity:** M | **Depends on:** S0-T9 | **Parallel:** Yes
@@ -300,8 +339,8 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 ### Task S3-T5: Rebuild, verify, investigate Sabrage and Othello
 - **Complexity:** S | **Depends on:** S3-T1, S3-T2, S3-T3, S3-T4, S2-T7 | **Parallel:** No
 - **Files:** none
-- **Description:** Dispatch `rebuild-reviews.yml`; confirm live `cs` on the touched shows; for sabrage-off-west-end-2026 and othello-off-broadway-2026 read `reviewsRemainingForScore` and the min-review rule to explain the missing score and fix the data cause if any.
-- **Acceptance criteria:** VERIFY: Every Brilliant Thing and Death of a Salesman `rc` increase after the DTLI remap feeds the next gather; Sabrage/Othello either show `cs` or the reason is written in the scratchpad
+- **Description:** Dispatch `rebuild-reviews.yml`; confirm live `cs` on the touched shows; dispatch the gather workflow (`gather-reviews.yml`) for every-brilliant-thing-2026 and death-of-a-salesman-2026 so the DTLI remap is exercised now; for sabrage-off-west-end-2026 and othello-off-broadway-2026 read `reviewsRemainingForScore` and the min-review rule to explain the missing score and fix the data cause if any.
+- **Acceptance criteria:** VERIFY: after the gather run, Every Brilliant Thing and Death of a Salesman `rc` are higher than before it; Sabrage/Othello either show `cs` or the reason is written in the scratchpad
 
 ---
 
@@ -310,14 +349,10 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 **Risks:** `.github/workflows/**` edits (recorded plan-review verdict covers §18); making the coverage step fail must not stop the status flips in the same job, so use a final failing step; `fetchPage()` for OLT changes the fetch tier and may need the Playwright fallback in CI.
 **MODEL:** Opus for T1, T11, T12; Sonnet for the rest.
 
-### Task S4-T1: Fix the Playbill Broadway schedule parser
-- **Complexity:** M | **Depends on:** None | **Parallel:** Yes
-- **Files:** scripts/lib/playbill-broadway-schedule.js (:101 titleRe, :119-131 field loop), tests/fixtures/broadway-discovery/playbill-broadway-2026-09-28.html (new, from agentA/playbill-schedule-article.html), tests/unit/broadway-schedule-discovery.test.mjs
-- **Description:** Widen the title character class (digits, `;`, quotes, `/`), tolerate `<strong>` letter splits, terminate each segment at the next anchor regardless of title match. Fixture asserts 33 entries incl. 860, Blue Man Group, School Girls, and Other Desert Cities = Hudson/09-29/10-18.
-- **Acceptance criteria:** VERIFY: `node --test tests/unit/broadway-schedule-discovery.test.mjs` passes with the new fixture
+### Task S4-T1: (moved to S0-T2c)
 
 ### Task S4-T2: Coverage guard honours "rotted"
-- **Complexity:** S | **Depends on:** S4-T1 | **Parallel:** Yes
+- **Complexity:** S | **Depends on:** S0-T2c | **Parallel:** Yes
 - **Files:** scripts/check-broadway-source-coverage.js (:65), tests/unit/broadway-source-coverage-rotted.test.mjs (new)
 - **Description:** When `checkSilentRot` returns `'rotted'`, write `{blind: true, count: null}` state, skip the gaps file, exit 1.
 - **Acceptance criteria:** VERIFY: test passes; running the script against an empty-entries fixture exits 1 and writes `blind: true`
@@ -348,15 +383,15 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 
 ### Task S4-T7: "West End" is a placeholder venue
 - **Complexity:** S | **Depends on:** None | **Parallel:** Yes
-- **Files:** scripts/lib/venue-write-guard-detector.js (:145 UNKNOWN_MARKERS), scripts/audit-placeholder-venues.js (:66 duplicate list, import the lib copy instead)
-- **Description:** Add `west end`, `off-broadway`, `various` to the markers; de-duplicate the list into the lib.
-- **Acceptance criteria:** VERIFY: `node scripts/audit-placeholder-venues.js` reports the-comedy-about-spies (before S2-T12 lands) or 0 after
+- **Files:** scripts/lib/placeholder-venue.js (new home for `UNKNOWN_MARKERS` + `isPlaceholderVenue`), scripts/audit-placeholder-venues.js (:66/:90 import from the lib; this is the copy `venue-classification.js:16` and `sanitizeVenueForWrite` :257 consume today), scripts/lib/venue-write-guard-detector.js (:145 source-lint copy, import the same set)
+- **Description:** Add `west end`, `off-broadway`, `various` to the markers; move the set into `scripts/lib` and import it from both consumers so the write-time check and the lint agree.
+- **Acceptance criteria:** VERIFY: `node scripts/audit-placeholder-venues.js` reports the-comedy-about-spies (before S2-T12 lands) or 0 after; `sanitizeVenueForWrite("West End")` returns the placeholder result in a unit test
 
 ### Task S4-T8: One-night and validate-data checks for non-theatre rows
 - **Complexity:** S | **Depends on:** S4-T6 | **Parallel:** Yes
 - **Files:** scripts/validate-data.js, scripts/discover-new-shows.js (isOneNightShow bypass when TodayTix returns "null" dates)
-- **Description:** validate-data WARNs on rows matching `NON_THEATRE_VENUE_RE` without opera type; discovery skips one-night rows even when dates arrive as the string "null".
-- **Acceptance criteria:** VERIFY: `validate-data.js --dry-run` prints the warning count (expect ~77 before Sprint 8, 0 after)
+- **Description:** validate-data WARNs on rows matching `NON_THEATRE_VENUE_RE` that have no review, are not opera and are not at a theatre venue (the owner's keep rule); discovery skips one-night rows even when dates arrive as the string "null".
+- **Acceptance criteria:** VERIFY: `validate-data.js --dry-run` warning count equals the length of the retire list in `non-theatre-decision-d3.json` (39) before Sprint 8 and 0 after
 
 ### Task S4-T9: West End promoter title and match fixes
 - **Complexity:** M | **Depends on:** None | **Parallel:** Yes
@@ -414,7 +449,7 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Acceptance criteria:** VERIFY: test with the Charing Cross pair returns duplicate
 
 ### Task S5-T3: `stripIdSuffix` uses `stripMarketSuffix`
-- **Complexity:** S | **Depends on:** None | **Parallel:** Yes
+- **Complexity:** S | **Depends on:** S5-T1 (same file, same track) | **Parallel:** No
 - **Files:** scripts/lib/deduplication.js (:694), scripts/validate-shows-prebuild.js (:35), scripts/lib/market-slug.js (:23)
 - **Description:** Replace both local regexes with the shared helper so `-off-west-end-2026` strips correctly.
 - **Acceptance criteria:** VERIFY: test: `holy-fool-off-west-end-2026` strips to `holy-fool`
@@ -422,8 +457,8 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 ### Task S5-T4: Id year from dates; validate-data warning
 - **Complexity:** S | **Depends on:** None | **Parallel:** Yes
 - **Files:** scripts/lib/todaytix-dates.js (:95-101 productionIdYear), scripts/discover-new-shows.js (:2417-2428), scripts/validate-data.js
-- **Description:** Mint the year from previews or opening when either is known; otherwise current year plus `idYearProvisional: true`; validate-data WARNs when a non-closed id's year matches neither date year.
-- **Acceptance criteria:** VERIFY: unit test for productionIdYear; `validate-data.js --dry-run` lists the 22 known drifted ids
+- **Description:** `productionIdYear` already prefers opening, then previews, then unconfirmed start (:95); the drift comes from candidates that had no date at minting. Add `idYearProvisional: true` when the fallback year is used, a validate-data WARN when a non-closed id's year matches neither date year, and a per-id root-cause note for the 22 (which source minted each, and why no date was present).
+- **Acceptance criteria:** VERIFY: unit test for the provisional stamp; `validate-data.js --dry-run` lists the 22 known drifted ids; the root-cause table is in the PR description
 
 ### Task S5-T5: London transfer-pair detector
 - **Complexity:** S | **Depends on:** S5-T1 | **Parallel:** Yes
@@ -445,9 +480,9 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 
 ### Task S5-T8: Supabase migration for renamed ids
 - **Complexity:** S | **Depends on:** S5-T6 | **Parallel:** Yes
-- **Files:** supabase/migrations/<ts>_rename_show_ids.sql (new, parameterized template), scripts/rename-show-id.js (emits the SQL for `watchlist.show_id`, `list_items.show_id`, `reviews.show_id`)
-- **Description:** The tool prints the migration for the owner to apply (or applies via the existing Supabase path if one exists in scripts/).
-- **Acceptance criteria:** VERIFY: `--dry-run` output includes three UPDATE statements for the fixture id
+- **Files:** supabase/migrations/<ts>_rename_show_ids.sql (new, parameterized template), scripts/rename-show-id.js (emits the SQL for every table with a `show_id` column)
+- **Description:** First confirm the table names: `supabase-schema.sql` declares `reviews.show_id`, `watchlist.show_id`, `list_items.show_id`, but `supabase/migrations` only shows user_show_stubs, unmatched_imports and fantasy_*; the live schema wins (read it through the existing Supabase path in scripts/ or ask the owner). The tool then prints the migration for the owner to apply.
+- **Acceptance criteria:** VERIFY: `--dry-run` output includes one UPDATE per confirmed `show_id` table for the fixture id
 
 ### Task S5-T9: Critic-slug redirects
 - **Complexity:** M | **Depends on:** None | **Parallel:** Yes
@@ -474,11 +509,7 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Description:** Whichever path wrote them refuses shows outside west-end/off-west-end unless `priorRuns` names a London run.
 - **Acceptance criteria:** VERIFY: test: a NYC show id is refused; a London id accepted; the writer is named in the commit message
 
-### Task S6-T3: Listing-page URL guard
-- **Complexity:** S | **Depends on:** None | **Parallel:** Yes
-- **Files:** scripts/lib/is-scoreable.js (:11), scripts/lib/review-guards.js (:853 urlLooksLikeReview, :3281 explainExclusion), tests
-- **Description:** `explainExclusion` returns `listing-page-url` when `urlLooksLikeReview` is false for `/shows/…`, `index.html`, bare hosts; star extraction from such pages is refused.
-- **Acceptance criteria:** VERIFY: test with the talkinbroadway index URL and the londontheatrehub `/shows/` URL both excluded
+### Task S6-T3: (moved to S1-T0)
 
 ### Task S6-T4: In-window veto for wrongProduction and wrongShow
 - **Complexity:** M | **Depends on:** None | **Parallel:** Yes
@@ -488,7 +519,7 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 
 ### Task S6-T5: Ambiguity check on the numeric path; expose the effective rating
 - **Complexity:** M | **Depends on:** None | **Parallel:** Yes
-- **Files:** scripts/lib/rebuild-helpers.js (:549 P0.5 block, :30 isUnambiguousRatingString, :660 parseOriginalScore), scripts/rebuild-all-reviews.js (:4805-4809 emit `originalRating` from the effective source), tests
+- **Files:** scripts/lib/rebuild-helpers.js (:549 P0.5 block, :30 isUnambiguousRatingString, :660 call site of `parseOriginalScore`, which is defined in scripts/lib/score-parsers.js:156 and is on the §12.7 watchlist), scripts/rebuild-all-reviews.js (:4805-4809 emit `originalRating` from the effective source), tests
 - **Description:** P0.5 requires `isUnambiguousRatingString` (or an OUTLET_VERIFIED source) for non-letter, non-star strings; when `aggregatorStars` drives the score, emit it as `originalRating` and label `scoreSource: "aggregatorStars-relay"`.
 - **Acceptance criteria:** VERIFY: test: `55` (number) is rejected, `"3/5"` accepted, `"B+"` accepted; `audit-scores.js` no longer crashes (fix the `startsWith` at :94)
 
@@ -504,7 +535,7 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Description:** Replace the hardcoded 75/30 thresholds; add a regression test.
 - **Acceptance criteria:** VERIFY: test: 74 maps to Positive, 48 to Negative
 
-> **Delegated 2026-09-28:** S6-T8a through S6-T8e are owned by a separate session (owner handed it a standalone prompt). This session does not touch scripts/lib/text-quality.js, scripts/lib/llm-confidence.js, the adjudication queue, or the rescore flag until that session reports back on BRO-4204. S6-T8f (residual weighting) stays here.
+> **Delegated 2026-09-28:** S6-T8a through S6-T8e are owned by a separate session (owner handed it a standalone prompt). This session does not touch scripts/lib/text-quality.js, scripts/lib/llm-confidence.js, the adjudication queue, or the rescore flag until that session reports back on BRO-4204. S6-T8f (residual weighting) stays here. Notes for that session from the sprint critique: `llmScore` is a PROTECTED field, so S6-T8c's re-cap must follow the S0-T7 ramp pattern (one file, confirm it survives the next review-texts push, then batch), and S6-T8d is independent of the rest and can run first.
 
 ### Task S6-T8a: Diagnose the confidence cap on unanimous verdicts (owner D4: attack the root cause)
 - **Complexity:** S | **Depends on:** None | **Parallel:** Yes
@@ -558,8 +589,8 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 ### Task S7-T1: `displayCriticName` helper
 - **Complexity:** M | **Depends on:** None | **Parallel:** Yes
 - **Files:** scripts/lib/critic-display-name.js (new), scripts/lib/review-normalization.js (:217 CRITIC_ALIASES, :326-341 loader, :465 JUNK_BYLINES), scripts/lib/placeholder-byline.js (:28, :71), scripts/lib/critic-canonicalization.js (:90), tests/unit/critic-display-name.test.mjs
-- **Description:** `displayCriticName(raw, outlet, registryEntry)` = canonicalizeCritic → alias table (CRITIC_ALIASES + auto file + the 37 `CRITIC_NAME_FIXES` moved in) → merged placeholder list (JUNK_BYLINES ∪ GENERIC_BYLINE_TERMS ∪ archive/uncredited/condé nast/written by/reviewed by) → `null`. Trailing job titles, pronouns and HTML residue stripped here too.
-- **Acceptance criteria:** VERIFY: test table: "Clive Davis, Chief Theatre Critic" → "Clive Davis"; "Archive" → null; "Ben Brantly" → "Ben Brantley"; "Juan A. Ramirez" and "Juan A. Ramírez" → one value
+- **Description:** `displayCriticName(raw, outlet, registryEntry)` = canonicalizeCritic → alias table (CRITIC_ALIASES + auto file + the 37 `CRITIC_NAME_FIXES` moved in) → merged placeholder list (JUNK_BYLINES ∪ GENERIC_BYLINE_TERMS ∪ archive/uncredited/condé nast/written by/reviewed by) → `null`. Suffix stripping (job titles, pronouns, HTML residue) happens once, at capture time in S7-T4, not here; the helper only canonicalizes and filters.
+- **Acceptance criteria:** VERIFY: test table: "Archive" → null; "The Stage" (outlet The Stage) → null; "Ben Brantly" → "Ben Brantley"; "Juan A. Ramirez" and "Juan A. Ramírez" → one value
 
 ### Task S7-T2: Single call site at emission; consumers drop their own maps
 - **Complexity:** M | **Depends on:** S7-T1 | **Parallel:** No
@@ -603,11 +634,11 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Description:** The existing `--all-pending` flag is scheduled; a dispatch input lets Sprint 8 drain on demand.
 - **Acceptance criteria:** VERIFY: YAML parses; a dispatch with the input runs the drain for one closed show and its `_pending` count drops
 
-### Task S7-T9: DTLI slug year check and Show-Score pagination
+### Task S7-T9: DTLI slug year check; reproduce the Show-Score 8-tile cap
 - **Complexity:** M | **Depends on:** None | **Parallel:** Yes
-- **Files:** scripts/discover-dtli-slugs.js (:380), scripts/lib/review-guards.js (:44-66 pickBestDtliSlug), scripts/fetch-aggregator-pages.ts (:159-161, :271-334), tests
-- **Description:** Reject a slug whose review-item years all predate the show's year; `--force` re-probes 2026 ids; Show-Score follows `data-next-page-path` past the first 8 tiles.
-- **Acceptance criteria:** VERIFY: unit test for the year rule; a local fetch of bug-2026's Show-Score page extracts more than 8 critic tiles
+- **Files:** scripts/discover-dtli-slugs.js (:380), scripts/lib/review-guards.js (:44-66 pickBestDtliSlug), tests; Show-Score: investigation only (pagination is already followed at `gather-reviews.js:713` and `show-score-discover.js:122`, and `fetch-aggregator-pages.ts:271` scrolls the carousel)
+- **Description:** Reject a DTLI slug whose review-item years all predate the show's year; `--force` re-probes 2026 ids. For Show-Score, reproduce the "extracted exactly 8 of N" result on bug-2026 and name the path that stops early; fix only if the reproduction shows a real defect (otherwise record the finding and drop it).
+- **Acceptance criteria:** VERIFY: unit test for the year rule; a written reproduction note for bug-2026 naming the stopping path (or "no defect")
 
 ### Task S7-T10: West End closing-date and age-guidance backfill from OLT
 - **Complexity:** S | **Depends on:** None | **Parallel:** Yes
@@ -624,7 +655,7 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 ---
 
 ## Sprint 8: Follow-on batches and wrap-up
-**Demo:** Evita, Gloria, Paddington, Purple Rain, Wanted and Dolly live at correct-year URLs with the old ones redirecting; the 77 non-theatre rows are gone (D3); Off-West End coverage includes the ~65 missing productions; the pending backlog for closed 2026 shows is drained.
+**Demo:** Evita, Gloria, Paddington, Purple Rain, Wanted and Dolly live at correct-year URLs with the old ones redirecting; the 39 non-show rows are gone and the 83 kept rows are untouched (D3); Off-West End coverage includes the ~65 missing productions; the pending backlog for closed 2026 shows is drained.
 **Risks:** one rename per land run (pre-mortem); removals only after S4-T6/T8 are live in CI; OWE adds only through the promoter.
 **MODEL:** Sonnet.
 
@@ -643,8 +674,8 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 ### Task S8-T3: Off-West End additions through the promoter
 - **Complexity:** M | **Depends on:** S4-T11, S4-T12 | **Parallel:** Yes
 - **Files:** data/audit/owe-venue-candidates.json, shows.json
-- **Description:** Stage the ~45 reviewed and ~20 announced productions from the audit's list (agentB/findings-summary.json) as candidates with venue and dates; let the promoter admit them; reviews arrive via the poller and drain.
-- **Acceptance criteria:** VERIFY: promoter run adds them with 0 validate-data errors; a week later ≥ 70% of the reviewed ones have `rc > 0`
+- **Description:** Stage the ~45 reviewed and ~20 announced productions from the audit's list (agentB/findings-summary.json) as candidates with venue and dates; let the promoter admit them; reviews arrive via the poller and drain. Runs after S8-T1's renames finish (both write shows.json; the coordinator serializes).
+- **Acceptance criteria:** VERIFY: promoter run adds them with 0 validate-data errors (the week-later coverage check moves to S8-T5)
 
 ### Task S8-T4: Drain and gather in CI
 - **Complexity:** S | **Depends on:** S7-T8 | **Parallel:** Yes
@@ -656,33 +687,36 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Complexity:** S | **Depends on:** all | **Parallel:** No
 - **Files:** memory/completed-migrations.md (one line), Linear BRO-4204
 - **Description:** `/wrap-up`: verify deploys live, re-run the audit's headline one-liners (should print 0 for each class), Outcome comment on BRO-4204, state Done with `PR-EVIDENCE` lines.
-- **Acceptance criteria:** VERIFY: the 15 symptom checks from `2026-data-audit-report.md` §1 each print 0 or the documented residual
+- **Acceptance criteria:** VERIFY: the 15 symptom checks from `2026-data-audit-report.md` §1 each print 0 or the documented residual; at least 70% of the reviewed Off-West End additions from S8-T3 have `rc > 0` (checked here, a week after S8-T3)
 
 ---
 
 ## Dependencies Graph
 S0-T1, S0-T2 → S0-T3/T4/T5 → S0-T6 → S0-T9 (ramp 2). S0-T7 → S0-T8 (ramp 1, independent of code). Gate 24h → Sprint 1 (all on S0-T8) → S1-T6 → S1-T7.
-Sprint 2 tasks depend on S0-T9 only; S2-T7 feeds S3-T5. Sprint 3 depends on S0-T8/S0-T9. Sprint 4 has no data dependencies (code only); S4-T3 ← S4-T2 ← S4-T1; S4-T10 ← S4-T9; S4-T12 ← S4-T11 ← S4-T6. Sprint 5: S5-T2/T5 ← S5-T1; S5-T8 ← S5-T6. Sprint 6: S6-T9 ← all. Sprint 7: S7-T2 ← S7-T1; S7-T5 ← S7-T1; S7-T3 ← S5-T9; S7-T8 ← S7-T7. Sprint 8: S8-T1 ← S5-T6/T7/T8; S8-T2 ← S4-T6/T8 + D3; S8-T3 ← S4-T11/T12; S8-T4 ← S7-T8.
+Sprint 1: S1-T0 lands first; S1-T3 ← S1-T0. Sprint 2 tasks depend on S0-T9 and S0-T2b (dedup stopgap); S2-T11's code part lands before its run; S2-T7 feeds S3-T5. Sprint 3 depends on S0-T8/S0-T9. Sprint 4 has no data dependencies (code only); S4-T3 ← S4-T2 ← S0-T2c; S4-T13 ← S4-T3 (same workflow file); S4-T10 ← S4-T9; S4-T12 ← S4-T11 ← S4-T6; S4-T14 ← S4-T6. Sprint 5: S5-T2/T3/T5 ← S5-T1; S5-T8 ← S5-T6. Sprint 6: S6-T5 ← S6-T1 (same file); S6-T8f ← the delegated S6-T8a-e; S6-T9 ← all. Sprint 7: S7-T2 ← S7-T1; S7-T5 ← S7-T1; S7-T3 ← S5-T9; S7-T8 ← S7-T7. Sprint 8: S8-T1 ← S5-T6/T7/T8; S8-T2 ← S4-T6/T8/T14 + S0-T2; S8-T3 ← S4-T11/T12 and after S8-T1; S8-T4 ← S7-T8.
 
 ## Subagent Execution Map (within one /execute-plan session)
+Rule for data sprints (1, 2, 3, 8): subagent tracks produce patches or edit lists in the scratchpad; only the coordinator writes to shows.json or the review-texts repo, serially, one batch per commit. Rule for code sprints: no two tracks edit the same file.
+
 Session 1 (Sprint 0):
-Subagent track 1:  S0-T1 → S0-T5
-Subagent track 2:  S0-T2 → S0-T3 → S0-T4
-Subagent track 3:  S0-T7 → S0-T8 (review-texts repo only)
-Sync:              ──── after T1-T5 (S0-T6 land) ──── then S0-T9 ────
+Subagent track 1:  S0-T1 → S0-T5 (validate-data.js)
+Subagent track 2:  S0-T2 → S0-T3 → S0-T4 (retired ids, discovery, reconcile + action)
+Subagent track 3:  S0-T2b → S0-T2c (deduplication.js, playbill parser)
+Subagent track 4:  S0-T7 → S0-T8 (review-texts ramp, coordinator commits)
+Sync:              ──── S0-T6 land ──── S0-T9 ──── S0-T10 (24h) ────
 
-Session 2 (Sprint 1): tracks S1-T1/T2 | S1-T3/T4 | S1-T5, sync at S1-T6.
-Session 3 (Sprint 2): tracks S2-T1/T2/T3/T4 | S2-T5/T6/T8 | S2-T9/T10/T11 | S2-T12; S2-T7 sequential last.
-Session 4 (Sprint 3): tracks S3-T1/T2 | S3-T3 | S3-T4; sync S3-T5.
-Session 5 (Sprint 4): tracks S4-T1→T2→T3 | S4-T4/T5/T13 | S4-T6→T8→T11→T12 | S4-T7 | S4-T9→T10.
-Session 6 (Sprint 5): tracks S5-T1→T2→T5 | S5-T3/T4 | S5-T6→T8 | S5-T7/T9.
-Session 7 (Sprint 6): tracks S6-T1/T2 | S6-T3/T4 | S6-T5/T6/T7 | S6-T8; sync S6-T9.
-Session 8 (Sprint 7): tracks S7-T1→T2→T5 | S7-T4/T6 | S7-T7→T8 | S7-T9/T10/T11 | S7-T3.
-Sessions 9-10 (Sprint 8): S8-T1 sequential; S8-T3/T4 parallel; S8-T2 after D3; S8-T5 last.
+Session 2 (Sprint 1): code track S1-T0 (land first); analysis tracks S1-T1/T2 | S1-T3/T4 | S1-T5 produce edit lists; coordinator applies and commits serially; S1-T6, S1-T7.
+Session 3 (Sprint 2): analysis tracks S2-T1/T2/T3/T4 | S2-T5/T6/T8 | S2-T9/T10 | S2-T12 produce stub JSON and diffs; S2-T11 code part lands first, then its run; coordinator applies all shows.json edits serially; S2-T7 last.
+Session 4 (Sprint 3): analysis tracks S3-T1/T2 | S3-T3 | S3-T4 produce edit lists; coordinator applies; S3-T5.
+Session 5 (Sprint 4): track A S4-T2→T3→T13 (coverage guard, update-show-status.yml) | track B S4-T4→T6→T8→T14 (discover-new-shows.js, venue-classification.js, policy) | track C S4-T9→T10→T11→T12 (promoters, promote-we-aggregator.yml) | track D S4-T5→T7 (markers, placeholder lib).
+Session 6 (Sprint 5): track A S5-T1→T2→T3→T5 (deduplication.js, transfer-detection.js) | track B S5-T4 | track C S5-T6→T8 (rename tool) | track D S5-T7→T9 (web app aliases, middleware).
+Session 7 (Sprint 6): track A S6-T1→T5 (rebuild-all-reviews.js, cross-market-guard.js, rebuild-helpers.js) | track B S6-T2 | track C S6-T4→T6→T7 | S6-T8f after the delegated session reports; sync S6-T9.
+Session 8 (Sprint 7): track A S7-T1→T2→T6→T11 (helper, rebuild-all-reviews.js, tooling) | track B S7-T4→T5 (byline capture, alias picker + registry) | track C S7-T7→T8→T10 (liveness helper, workflows, OLT backfill) | track D S7-T3→T9.
+Sessions 9-10 (Sprint 8): S8-T1 one rename per land run; then S8-T3; S8-T4 in parallel (CI dispatches only); S8-T2 after S4 is live; S8-T5 last.
 
-**Parallel sprints (subagent-level, same session):** Sprints 4 and 5 touch disjoint files except `discover-new-shows.js` (S4-T4/T6/T8 vs S5-T4) and `validate-data.js` (S4-T8 vs S5-T4); run them in separate sessions.
-**Critical path:** S0 → gate → S1 → S2 → S3 → S4 → S5 → S6 → S7 → S8: 10 sessions minimum (Sprint 8 spans two).
-**Max subagent parallelism:** 4 (Sprints 2, 4, 7).
+**Parallel sprints (subagent-level, same session):** none; every sprint has file overlap with its neighbours (`discover-new-shows.js`, `validate-data.js`, `rebuild-all-reviews.js`).
+**Critical path:** S0 → gate (24h) → S1 → S2 → S3 → S4 → S5 → S6 → S7 → S8: 10 sessions minimum (Sprint 8 spans two).
+**Max subagent parallelism:** 4.
 **Cross-session plan:** one sprint per session, each shipped to main via `land/<name>` before the next starts; Sprint 0's gate is wall-clock (24h), so Session 2 starts the next day.
 
 ## Known Edge Cases
