@@ -800,5 +800,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-28T11:41:47.831Z"
+  },
+  {
+    "conditionKey": "land:land/collector-wp-reverify",
+    "title": "Landing blocked: unit-tests-node red on land/collector-wp-reverify",
+    "description": "land.yml did not land land/collector-wp-reverify: the unit-tests-node gate went red at 7eec83def5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36420697961",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/collector-wp-reverify"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "7eec83def520136e482b8ce52554beff3f4e64eb"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36420697961"
+      }
+    ],
+    "queuedAt": "2026-09-28T12:49:49.342Z"
   }
 ]
