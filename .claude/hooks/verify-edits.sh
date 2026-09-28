@@ -690,7 +690,12 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
             if _name == 'mcp__github__create_pull_request':
                 _opened_pr = True
             elif _name == 'mcp__github__merge_pull_request':
-                _merged_pr = True
+                # Only a merge that happened counts (BRO-4238): github-main-guard.sh
+                # now refuses Broadwayscore merges, and a refused attempt must not
+                # switch off the follow-through checks below.
+                if not re.search(r'\bBLOCKED\b|hook error|"merged"\s*:\s*false|\berror\b',
+                                 tool_results_by_id.get(_tid, '') or '', re.IGNORECASE):
+                    _merged_pr = True
             elif _name == 'Bash' and _land_push_re.search(_inp.get('command') or ''):
                 _landed_pushed = True
             elif _name == 'mcp__github__create_branch' and str(_inp.get('branch') or '').startswith('land/'):

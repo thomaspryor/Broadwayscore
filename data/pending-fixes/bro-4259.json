@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4259",
   "planId": "6ceb085f-0b44-4ff3-8d94-23943f6b9e52",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-09-28T22:25:16.217Z",
   "submitter": {
     "name": null,
@@ -81,5 +81,13 @@
         "description": "Add the 2023 Playwrights Horizons run of School Pictures and link it as a prior run of the 2026 Cherry Lane entry"
       }
     ]
-  }
+  },
+  "executedAt": "2026-09-28T23:42:01.037Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added school-pictures-off-broadway-2023 (priorRuns link on school-pictures-off-broadway-2026)"
+    }
+  ]
 }
