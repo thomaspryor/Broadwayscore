@@ -1,0 +1,172 @@
+#!/usr/bin/env node
+/**
+ * enrich-tour-dates.js (BRO-4262): fill national-tour launch and closing dates.
+ *
+ * For every category:'tour' show missing a date, reads the tour's engagement
+ * list from Tours To You and the show's Wikipedia article, and writes only what
+ * scripts/lib/tour-schedule.js decideTourDates allows: a launch Wikipedia also
+ * names, and a close backed by a positive signal. Closing writes go through
+ * writeClosingDate (honours humanCorrectedClosingDate, stamps the source).
+ * Status changes are left to update-show-status.js, which is date-driven.
+ *
+ * Writes data/audit/tour-dates.json every run: per tour, what was written and
+ * any problem (a schedule page that parsed to nothing, a stored launch that
+ * disagrees with the schedule). Problems never write.
+ *
+ * Usage:
+ *   node scripts/enrich-tour-dates.js            report only (default)
+ *   node scripts/enrich-tour-dates.js --write    write shows.json
+ *   node scripts/enrich-tour-dates.js --show=ID  one tour
+ * TOUR_DATES_MODE=off skips the run entirely (kill switch for the workflow).
+ */
+
+const fs = require('fs');
+const path = require('path');
+const https = require('https');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+const { decideTourDates, scheduleSlugs, parseTourSchedule } = require('./lib/tour-schedule');
+const { writeClosingDate } = require('./lib/closing-date-guard');
+const { createShowsWriteGuard } = require('./lib/shows-write-guard');
+
+const ROOT = path.join(__dirname, '..');
+const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
+const AUDIT_PATH = path.join(ROOT, 'data', 'audit', 'tour-dates.json');
+const WIKI_API = 'https://en.wikipedia.org/w/api.php';
+const USER_AGENT = 'BroadwayScorecardBot/1.0 (https://broadwayscorecard.com; contact@broadwayscorecard.com)';
+const SOURCE = 'tourstoyou+wikipedia';
+
+const USAGE = `enrich-tour-dates.js — fill national-tour launch/closing dates (BRO-4262)
+  --write       write shows.json (default: report only)
+  --show=ID     one tour
+  TOUR_DATES_MODE=off  skip entirely`;
+
+function fetchJson(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, { headers: { 'User-Agent': USER_AGENT }, timeout: 20000 }, (res) => {
+      let body = '';
+      res.on('data', (c) => { body += c; });
+      res.on('end', () => {
+        if (res.statusCode !== 200) return reject(new Error(`HTTP ${res.statusCode} for ${url}`));
+        try { resolve(JSON.parse(body)); } catch (e) { reject(e); }
+      });
+    }).on('error', reject).on('timeout', function () { this.destroy(new Error('timeout')); });
+  });
+}
+
+/** Wikitext of the first candidate article that exists and mentions a tour. */
+async function fetchWikiText(title) {
+  const titles = [`${title} (musical)`, `${title} (play)`, title];
+  const url = `${WIKI_API}?action=query&titles=${encodeURIComponent(titles.join('|'))}&prop=revisions&rvprop=content&rvslots=main&format=json&formatversion=2&redirects=1`;
+  const data = await fetchJson(url);
+  const pages = (data.query && data.query.pages) || [];
+  const byTitle = new Map(pages.filter(p => !p.missing && p.revisions).map(p => [p.title, p.revisions[0].slots.main.content]));
+  const redirects = new Map(((data.query && data.query.redirects) || []).map(r => [r.from, r.to]));
+  const norm = new Map(((data.query && data.query.normalized) || []).map(n => [n.from, n.to]));
+  for (const t of titles) {
+    const resolved = redirects.get(norm.get(t) || t) || norm.get(t) || t;
+    const text = byTitle.get(resolved);
+    if (text && /\btour\b/i.test(text)) return text;
+  }
+  return '';
+}
+
+/** Plain GET. Tours To You is a public WordPress site with no bot wall. */
+function fetchText(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, { headers: { 'User-Agent': USER_AGENT }, timeout: 20000 }, (res) => {
+      if (res.statusCode !== 200) { res.resume(); return reject(new Error(`HTTP ${res.statusCode}`)); }
+      let body = '';
+      res.on('data', (c) => { body += c; });
+      res.on('end', () => resolve(body));
+    }).on('error', reject).on('timeout', function () { this.destroy(new Error('timeout')); });
+  });
+}
+
+async function fetchSchedule(tour, fetchPage) {
+  for (const slug of scheduleSlugs(tour)) {
+    const url = `https://tourstoyou.org/shows/${slug}/`;
+    let html = '';
+    try {
+      const res = await fetchPage(url);
+      html = typeof res === 'string' ? res : (res && (res.html || res.content)) || '';
+    } catch (e) {
+      console.log(`  fetchPage failed for ${url}: ${e.message}; trying a plain GET`);
+    }
+    if (!parseTourSchedule(html).length) {
+      try { html = await fetchText(url); } catch (e) { console.log(`  plain GET failed for ${url}: ${e.message}`); }
+    }
+    if (parseTourSchedule(html).length) return { url, html };
+  }
+  return { url: null, html: '' };
+}
+
+async function main() {
+  const argv = process.argv.slice(2);
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+  if (process.env.TOUR_DATES_MODE === 'off') { console.log('TOUR_DATES_MODE=off — skipping'); return; }
+  const write = argv.includes('--write') && process.env.TOUR_DATES_MODE !== 'report';
+  const only = (argv.find(a => a.startsWith('--show=')) || '').split('=')[1] || null;
+  const { fetchPage } = require('./lib/scraper');
+
+  const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
+  const targets = shows.filter(s => s.category === 'tour' && (only ? s.id === only : (!s.openingDate || !s.closingDate)));
+  console.log(`${targets.length} tour(s) to check${write ? '' : ' (report only)'}`);
+
+  const results = [];
+  for (const tour of targets) {
+    console.log(`\n${tour.id}`);
+    const { url, html } = await fetchSchedule(tour, fetchPage);
+    let wiki = '';
+    try { wiki = await fetchWikiText(tour.title); } catch (e) { console.log(`  wikipedia failed: ${e.message}`); }
+    const decision = url
+      ? decideTourDates(tour, html, wiki)
+      : { write: {}, notes: [], problem: `no Tours To You page found (tried ${scheduleSlugs(tour).join(', ')}); set tourScheduleSlug on the entry` };
+    for (const n of decision.notes) console.log(`  ${n}`);
+    if (decision.problem) console.log(`  PROBLEM: ${decision.problem}`);
+    console.log(`  would write: ${JSON.stringify(decision.write)}`);
+    results.push({ id: tour.id, scheduleUrl: url, wikipedia: Boolean(wiki), ...decision });
+  }
+
+  const toWrite = results.filter(r => Object.keys(r.write).length);
+  const applied = [];
+  if (write && toWrite.length) {
+    const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_PATH);
+    const snapshot = loadShows();
+    const byId = new Map(snapshot.shows.map(s => [s.id, s]));
+    const today = new Date().toISOString().slice(0, 10);
+    for (const r of toWrite) {
+      const show = byId.get(r.id);
+      if (!show) continue;
+      const done = {};
+      // Re-check under the write lock: never overwrite a date set meanwhile.
+      if (r.write.openingDate && !show.openingDate) {
+        show.openingDate = r.write.openingDate;
+        show.openingDateSource = SOURCE;
+        done.openingDate = r.write.openingDate;
+      }
+      if (r.write.closingDate && !show.closingDate && writeClosingDate(show, r.write.closingDate, SOURCE, { todayStr: today })) {
+        done.closingDate = r.write.closingDate;
+      }
+      if (Object.keys(done).length) applied.push({ id: r.id, ...done });
+    }
+    if (applied.length) saveShows(snapshot);
+  }
+
+  fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
+  fs.writeFileSync(AUDIT_PATH, JSON.stringify({
+    generatedAt: new Date().toISOString(),
+    mode: write ? 'write' : 'report',
+    applied,
+    tours: results.map(r => ({ id: r.id, scheduleUrl: r.scheduleUrl, wikipedia: r.wikipedia, wouldWrite: r.write, notes: r.notes, problem: r.problem || null })),
+  }, null, 2) + '\n');
+  console.log(`\n${write ? `Wrote ${applied.length} tour(s)` : `${toWrite.length} tour(s) would be written`}; ${results.filter(r => r.problem).length} problem(s). Audit: ${path.relative(ROOT, AUDIT_PATH)}`);
+}
+
+if (require.main === module) {
+  // cleanup() closes any browser fetchPage opened; without it the success path hangs.
+  main()
+    .catch((e) => { console.error(e); process.exitCode = 1; })
+    .finally(() => require('./lib/scraper').cleanup().catch(() => {}).finally(() => process.exit(process.exitCode || 0)));
+}
+
+module.exports = { fetchWikiText };
