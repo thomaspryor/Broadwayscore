@@ -334,3 +334,13 @@ test('session-start.sh: without CLAUDE_CODE_REMOTE (Mac-like) it only warns and 
     fs.rmSync(fakeHome, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 }));
+
+// BRO-4234: cloud sessions never load the Mac-only ~/.claude/CLAUDE.md, so the
+// owner profile must ride the banner every cloud session gets injected.
+test('session-start.sh banner carries the owner profile (not technical, not at a computer, never reviews PRs)', () => {
+  const hookSrc = fs.readFileSync(path.join(REPO_ROOT, '.claude', 'hooks', 'session-start.sh'), 'utf8');
+  assert.match(hookSrc, /ABOUT THE OWNER/);
+  assert.match(hookSrc, /Not technical\. Plain English/);
+  assert.match(hookSrc, /NOT at a computer/);
+  assert.match(hookSrc, /Never reviews or merges PRs/);
+});

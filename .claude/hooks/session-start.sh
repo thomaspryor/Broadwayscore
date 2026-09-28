@@ -591,6 +591,19 @@ if [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/scripts/lib/disk-space-check.js" ] &&
   fi
 fi
 
+# ABOUT THE OWNER (BRO-4234): cloud sessions never load the Mac-only global
+# ~/.claude/CLAUDE.md, which is where these facts lived, so sessions assumed a
+# technical owner at a terminal who reviews PRs. This banner is injected on
+# startup, resume and compact, so it reaches every cloud session.
+cat << 'EOF'
+ABOUT THE OWNER (applies to every message you send them):
+- Not technical. Plain English, no jargon, no commands or file paths for them to run or open, never "review the diff/PR".
+- Never reviews or merges PRs. Land your own work (rule 7).
+- In this cloud session they are on the Claude iOS app or claude.ai, NOT at a computer: they can't run anything, open files, or see this container. Do every step yourself; if something truly needs their Mac, say so in one line.
+- Each reply: what changed for them, what is still running, and what they need to do (usually nothing). Phone-short. A real decision gets a short plain choice with your recommendation; anything you can decide, decide.
+
+EOF
+
 cat << 'EOF'
 CRITICAL SESSION RULES (CLAUDE.md has full text — these 7 are the most-violated):
 1. LINEAR CARD FIRST, before any edit: `node scripts/linear-brain.js create "<title>" --dispatch --notes "...## Acceptance criteria..."`. Dispatched onto an existing issue → `node scripts/linear-session.js claim --issue=BRO-N` instead. Notion is retired: never notion-brain.js.
