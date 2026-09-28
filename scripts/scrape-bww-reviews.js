@@ -51,6 +51,8 @@ const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligi
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd } = require('./lib/jsonld');
+const { isNationalTourRoundupSlug, tourCandidateFor } = require('./lib/tour-roundup-candidate');
+const { routeAlert } = require('./lib/owner-alert-router');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -1349,6 +1351,31 @@ async function landingDiscoverMode(shows, options = {}) {
   for (const url of roundupUrls) {
     const slug = (url.split('/article/')[1] || '').replace(/[?#].*$/, '');
     const match = matchBwwRoundupSlugToShow(slug, shows);
+    // A national-tour roundup matches the Broadway show by title, and
+    // processShow's category guard would drop it after fetching. Suggest the
+    // tour to the owner instead when it isn't tracked yet (BRO-4211).
+    if (match && isNationalTourRoundupSlug(slug)) {
+      const cand = tourCandidateFor(slug, match.show, shows);
+      console.log(`  [TOUR]  ${match.show.id} ← ${slug.slice(0, 70)}${cand ? ' (suggesting a tour entry)' : ' (tour already tracked)'}`);
+      if (cand && !options.dryRun) {
+        try {
+          await routeAlert({
+            conditionKey: `tour-candidate:${cand.broadwayShowId}`,
+            title: `Tour candidate: ${cand.title} national tour`,
+            severity: 'info',
+            disposition: 'digest',
+            decision: true,
+            decisionPrompt: `Add the ${cand.title} national tour as a tracked tour?`,
+            url,
+            description: `BroadwayWorld published a national-tour review roundup for ${cand.title} (${cand.broadwayShowId}), which has no tour entry. Add a category:'tour' entry with tourOf:${cand.broadwayShowId}, then run node scripts/sweep-tour-reviews.js --tour=<id>.`,
+            cooldownHours: 24 * 30,
+          });
+        } catch (e) {
+          console.log(`  [WARN] tour-candidate alert failed: ${e.message}`);
+        }
+      }
+      continue;
+    }
     if (match) {
       matched.push({ url, showId: match.show.id, slug });
       console.log(`  [MATCH] ${match.show.id} ← ${slug.slice(0, 70)}`);
