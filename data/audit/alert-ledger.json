@@ -3149,26 +3149,26 @@
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-09-28T19:21:55.594Z",
+      "lastSeen": "2026-09-28T19:48:00.414Z",
       "lastNotifiedAt": "2026-09-28T15:26:29.676Z",
       "lastSurfacedAt": "2026-09-28T15:26:29.676Z",
       "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-28T19:21:55.600Z",
+      "lastSeen": "2026-09-28T19:48:00.421Z",
       "lastNotifiedAt": "2026-09-28T15:26:29.682Z",
       "lastSurfacedAt": "2026-09-28T15:26:29.682Z",
       "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3546,13 +3546,13 @@
       "disposition": "digest",
       "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
       "firstSeen": "2026-09-18T16:10:40.527Z",
-      "lastSeen": "2026-09-28T19:21:55.605Z",
+      "lastSeen": "2026-09-28T19:48:00.426Z",
       "lastNotifiedAt": "2026-09-28T15:26:29.687Z",
       "lastSurfacedAt": "2026-09-28T15:26:29.687Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-remediation-exhausted-t1-missing:america-who-hurt-you-off-broadway-2026": {
       "status": "open",
@@ -3823,13 +3823,13 @@
       "disposition": "digest",
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-09-28T19:21:55.590Z",
+      "lastSeen": "2026-09-28T19:48:00.411Z",
       "lastNotifiedAt": "2026-09-28T15:26:29.672Z",
       "lastSurfacedAt": "2026-09-28T15:26:29.672Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4182,13 +4182,13 @@
       "disposition": "digest",
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-09-28T19:21:55.585Z",
+      "lastSeen": "2026-09-28T19:48:00.407Z",
       "lastNotifiedAt": "2026-09-28T15:26:29.664Z",
       "lastSurfacedAt": "2026-09-28T15:26:29.664Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -5732,12 +5732,13 @@
       "disposition": "digest",
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
-      "lastSeen": "2026-09-28T19:21:55.577Z",
+      "lastSeen": "2026-09-28T19:48:00.397Z",
       "lastNotifiedAt": "2026-09-28T19:21:55.577Z",
       "lastSurfacedAt": "2026-09-28T19:21:55.577Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "open",
@@ -5777,6 +5778,18 @@
       "lastSeen": "2026-09-28T19:34:50.515Z",
       "lastNotifiedAt": "2026-09-28T19:34:50.515Z",
       "lastSurfacedAt": "2026-09-28T19:34:50.515Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "corpus-drift:duplicate-shows": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
+      "firstSeen": "2026-09-28T19:48:00.401Z",
+      "lastSeen": "2026-09-28T19:48:00.401Z",
+      "lastNotifiedAt": "2026-09-28T19:48:00.401Z",
+      "lastSurfacedAt": "2026-09-28T19:48:00.401Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
