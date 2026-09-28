@@ -49,7 +49,7 @@ const lsr = require('./lib/linear-session-reporting');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
 const { makeVerifyEvidence } = require('./lib/done-evidence-verify');
 const { makeVerifyCmdEvidence } = require('./lib/linear-cmd-execution');
-const { appendBypassRow } = require('./lib/linear-gate-bypass-ledger');
+const { appendBypassRow, bypassCommentLine } = require('./lib/linear-gate-bypass-ledger');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 const { checkIssueStaleness, newestComments } = require('./lib/linear-staleness-check');
 
@@ -278,12 +278,22 @@ async function cmdReport(args, deps = {}) {
     }
   }
 
-  const body = lsr.buildOutcomeCommentBody({
+  let body = lsr.buildOutcomeCommentBody({
     summary: args.summary,
     keyFiles: splitKeyFiles(args['key-files']),
     verification: args.verification,
     status: args.status,
   });
+  // BRO-4241: a Done-gate bypass is recorded in this outcome comment (the
+  // only record in cloud sessions, where the ledger file is skipped). Same
+  // validity rule as the gate below: a --force reason of 10+ characters, or
+  // LINEAR_DONE_GATE_DISABLED=1.
+  if (args.status === 'done') {
+    const forceReason = args.force && typeof args.force === 'string' && args.force.length >= 10 ? args.force : null;
+    if (forceReason || process.env.LINEAR_DONE_GATE_DISABLED === '1') {
+      body += `\n\n${bypassCommentLine({ mechanism: forceReason ? 'force' : 'env-disabled', reason: forceReason, targetState: 'Done' })}`;
+    }
+  }
   await linear.createComment(issue.id, body);
   // Marker IMMEDIATELY after the comment lands — before getTeam()'s network
   // round-trip and before the (now git/gh-heavy) Done gate. The Stop-hook

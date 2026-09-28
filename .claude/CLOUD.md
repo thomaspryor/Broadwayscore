@@ -38,6 +38,39 @@ The owner does not review or merge PRs. A finished change is yours to land, same
 
 Don't use `scripts/merge-worktree-to-main.sh` in cloud: its name trips `pre-merge-review-gate.sh`. The Stop hook (`verify-edits.sh`) blocks "waiting on your merge" or "ready for your review" / "unreviewed" (OWNERMERGE) and SAFE TO EXIT after a land push with no run check (LANDUNCHECKED). Local-side detail: `cloud-memory/CLAUDE-reference.md` (Landing on main).
 
+## Closing a Linear issue from cloud
+
+- **Cite the landed commit, not a site URL.** `PR-EVIDENCE: merged deployed checked (https://github.com/thomaspryor/Broadwayscore/commit/<sha>)` with the sha as it sits on origin/main (land rebases, so take it from `git log origin/main`). The gate checks it through GitHub's API, so the shallow clone doesn't matter. A prod URL alone is refused ("names no commit or PR URL"), which is what used to force `--force` on every cloud close.
+- **Close out last.** The Stop hook wants the close after your last commit/push. A `--force` in a cloud session no longer writes `data/audit/linear-gate-bypass.jsonl` (that tracked-file churn caused a commit-land-close loop); the bypass is recorded as a `DONE-GATE-BYPASS:` line on the issue instead (BRO-4241).
+
+## Worktrees and branches in cloud
+
+- **Data in a new worktree:** run `./scripts/setup-local-data.sh --link-only` inside it. It links `data/*.json` to the existing `~/broadway-scorecard-data` clone and `data/review-texts` to the main checkout's, with no fetch and no `reset --hard`. Without it `tsc` and data tests fail for reasons unrelated to your change.
+- **Never `git checkout -B <branch>` in a worktree for a branch another checkout has checked out.** git 2.43 allows it silently and moves the branch under the other checkout, which then shows its old files as staged changes. Push to `land/<name>` from your own branch or a detached HEAD instead.
+
+## Owner one-time setup (cloud environment → Edit → Setup script)
+
+Auto mode ignores `autoMode` rules in this repo's `.claude/settings.json` by design, but honors user-level ones. This writes them at container start (only if no user settings exist yet) and fetches private data so sessions start with it:
+
+```bash
+mkdir -p ~/.claude
+[ -f ~/.claude/settings.json ] || cat > ~/.claude/settings.json <<'JSON'
+{
+  "autoMode": {
+    "environment": ["$defaults",
+      "thomaspryor/broadway-review-texts and thomaspryor/broadway-scorecard-data are the owner's own private data repos behind broadwayscorecard.com; sessions routinely attach, clone and read them."],
+    "allow": ["$defaults",
+      "Attaching thomaspryor/broadway-review-texts or thomaspryor/broadway-scorecard-data with add_repo and cloning them",
+      "Running this repo's own scripts (node scripts/*.js, bash scripts/*.sh) that read or write data/ and data/review-texts/",
+      "Landing reviewed changes with git push origin HEAD:refs/heads/land/<name>, and dispatching execute-approved-fix.yml for a plan committed in data/pending-fixes/"],
+    "soft_deny": ["$defaults",
+      "Force-push, history rewrite, branch deletion or bulk file deletion on thomaspryor/broadway-review-texts or thomaspryor/broadway-scorecard-data"]
+  }
+}
+JSON
+[ -x scripts/setup-local-data.sh ] && ./scripts/setup-local-data.sh --all >/dev/null 2>&1 || true
+```
+
 ## Fixing private data (review-texts, core data) from cloud
 
 Don't clone and push the private repos: each write stops for an approval, and a repo's checked-in settings can't pre-authorize it (auto mode ignores project-level `autoMode` rules by design). Route the edit through CI instead (BRO-4216):

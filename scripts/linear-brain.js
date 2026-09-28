@@ -27,7 +27,7 @@ const linearClient = require('./lib/linear-client');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
 const { makeVerifyEvidence } = require('./lib/done-evidence-verify');
 const { makeVerifyCmdEvidence } = require('./lib/linear-cmd-execution');
-const { appendBypassRow } = require('./lib/linear-gate-bypass-ledger');
+const { appendBypassRow, bypassCommentLine } = require('./lib/linear-gate-bypass-ledger');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 const { TERMINAL_STATE_TYPES, newestComments } = require('./lib/linear-staleness-check');
 
@@ -345,6 +345,11 @@ async function main(argv = process.argv.slice(2), deps = {}) {
               targetState: target.name,
             });
           } catch { /* diagnostic only — never block the transition */ }
+          // BRO-4241: record the bypass on the issue too. The comment posts
+          // before the state move (see ORDER MATTERS below), and in cloud
+          // sessions it is the only record (the ledger file is skipped there).
+          const line = bypassCommentLine({ mechanism: bypassReason ? 'force' : 'env-disabled', reason: bypassReason, targetState: target.name });
+          args.comment = args.comment !== undefined ? `${args.comment}\n\n${line}` : line;
         }
         if (!bypassReason && process.env.LINEAR_DONE_GATE_DISABLED !== '1') {
           const commentText = typeof args.comment === 'string' ? args.comment : '';
