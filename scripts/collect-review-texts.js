@@ -148,7 +148,7 @@ const {
   isWithinTourLeg,
   shouldPreserveExclusionFlagsOnUrlRecovery,
 } = require('./lib/wrong-production-autoclear');
-const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview } = require('./lib/consent-refetch');
+const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview, salvageConsentPrefixedStoredText } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browserbase-caps');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
@@ -6613,7 +6613,20 @@ async function processReview(review) {
   const bdBlockedBefore = getScraperStats().bdBlocked || 0;
 
   try {
-    const result = await fetchReviewText(review);
+    // Consent-prefixed capture: the article is already on disk behind the
+    // consent layer. Re-verify that stored text first; fetch only when it
+    // doesn't strip to a usable article (BRO-4185 A).
+    let result = null;
+    if (review._consentLayerRetry && review.filePath) {
+      try {
+        const stored = salvageConsentPrefixedStoredText(JSON.parse(fs.readFileSync(review.filePath, 'utf8')));
+        if (stored) {
+          result = { text: stored, method: 'stored-text-consent-stripped', html: null, attempts: null };
+          console.log(`  ↺ Using stored text with the consent layer stripped (${stored.length} chars) — no refetch`);
+        }
+      } catch (e) { /* fall through to a normal fetch */ }
+    }
+    if (!result) result = await fetchReviewText(review);
 
     console.log(`  ✓ SUCCESS via ${result.method} (${result.text.length} chars)`);
 
