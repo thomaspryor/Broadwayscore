@@ -39,7 +39,8 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   // pre-Broadway browse page (no dedicated hub yet).
   const isRegional = marketId === 'regional';
   // National tours (BRO-4211): own pill label; dropdown links to the tours browse page.
-  const isTour = marketId === 'tour';
+  // Flag-checked: with the flag off a /show/*-tour-YYYY URL is a 404 and must not read as "Tours".
+  const isTour = marketId === 'tour' && featureFlags.tour;
   // Don't apply opera domain branding when user has explicitly navigated to
   // another market (off-broadway, west-end, off-west-end, regional). The opera
   // domain flag only matters on opera-specific pages.
