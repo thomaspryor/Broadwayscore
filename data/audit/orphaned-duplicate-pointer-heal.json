@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-28T19:37:01.462Z",
+  "generated": "2026-09-28T20:08:13.662Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 19,
+  "count": 21,
   "orphans": [
     {
       "showId": "all-my-sons-2019",
@@ -135,6 +135,20 @@
       "targetFile": "variety--marilyn-stasio.json",
       "reason": "orphaned-duplicate-heal: variety--marilyn-stasio.json was flagged invalid after variety--matt-windman.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "bug-2026",
+      "loserFile": "nysr--roma-torre.json",
+      "targetFile": "ny1--roma-torre.json",
+      "reason": "orphaned-duplicate-heal: ny1--roma-torre.json was flagged invalid after nysr--roma-torre.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "loserFile": "nysr--michael-sommers.json",
+      "targetFile": "nysr--melissa-rose-bernardo.json",
+      "reason": "orphaned-duplicate-heal: nysr--melissa-rose-bernardo.json was flagged invalid after nysr--michael-sommers.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
