@@ -61,8 +61,19 @@ const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
  * The default export below is this, bound to the real data/shows.json —
  * tests use this factory directly to point at a throwaway fixture file
  * instead (real concurrent-writer simulation needs an isolated file).
+ *
+ * @param {string} showsPath
+ * @param {object} [options]
+ * @param {boolean} [options.dryRun=false] - When true, saveShows() never
+ *   touches disk: no lock, no re-read/merge, no write. Each call is recorded
+ *   on the returned `suppressedWrites` ledger instead (`{ reason, showCount,
+ *   at }`), so a caller with several write sites (validate-data.js has four
+ *   auto-fix sites) can report "N writes suppressed" and which site each came
+ *   from. Callers name the site via the `reason` save option, which is
+ *   stripped before a real write so atomicWriteJson never sees it.
  */
-function createShowsWriteGuard(showsPath) {
+function createShowsWriteGuard(showsPath, options = {}) {
+  const dryRun = !!(options && options.dryRun);
   const guard = createJsonWriteGuard(showsPath, {
     recordsKey: 'shows',
     shape: 'array',
@@ -73,11 +84,33 @@ function createShowsWriteGuard(showsPath) {
     },
   });
 
+  // Dry-run ledger: one entry per saveShows() call that was swallowed.
+  const suppressedWrites = [];
+
+  /**
+   * @param {object} data - The file's object, as returned by loadShows().
+   * @param {object} [saveOptions]
+   * @param {string} [saveOptions.reason] - Which validator/site is saving.
+   *   Recorded on the dry-run ledger; never forwarded to the real write.
+   * @param {boolean} [saveOptions.allowShrink] - Forwarded to the real write
+   *   (see json-write-guard.js save()).
+   */
+  function saveShows(data, saveOptions = {}) {
+    const { reason, ...writeOptions } = saveOptions || {};
+    if (!dryRun) return guard.save(data, writeOptions);
+    const showCount = data && Array.isArray(data.shows) ? data.shows.length : null;
+    const entry = { reason: reason || null, showCount, at: new Date().toISOString() };
+    suppressedWrites.push(entry);
+    return { wrote: false, dryRun: true, ...entry };
+  }
+
   return {
     loadShows: guard.load,
-    saveShows: guard.save,
+    saveShows,
     showsPath: guard.filePath,
     lockDir: guard.lockDir,
+    dryRun,
+    suppressedWrites,
   };
 }
 
