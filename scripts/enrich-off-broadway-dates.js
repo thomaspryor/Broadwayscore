@@ -192,6 +192,7 @@ module.exports = {
   isPreviewStrictlyAfterOpening,
   isNullOpeningFill,
   isPhase3DefaultCandidate,
+  acceptScheduleMatch,
 };
 
 // =========================================================
@@ -658,6 +659,38 @@ function isPreviewStrictlyAfterOpening(entry) {
   return !!(entry && entry.firstPreview && entry.opening && entry.firstPreview > entry.opening);
 }
 
+// Playbill's schedule article lists shows by their short title ("Our
+// Sinatra") while the catalog often carries the full subtitled one ("Our
+// Sinatra: A Musical Celebration"). matchTitleToShow rates that pair
+// "medium", and only "high" was accepted, so the show's opening date was
+// silently discarded and it sat at openingDate=null in previews with zero
+// reviews (2026-09-27). A medium title match is accepted when the venues
+// independently agree; downstream date guards (isNullOpeningFill etc.)
+// still apply.
+const VENUE_GENERIC_WORDS = new Set([
+  'the', 'theatre', 'theater', 'theaters', 'theatres', 'stage', 'playhouse',
+  'center', 'centre', 'hall', 'studio', 'space', 'room', 'company', 'main',
+  'new', 'york', 'city', 'west', 'east', 'side', 'street', 'at', 'and', 'off',
+  'broadway', 'house', 'arts',
+]);
+function venueWords(v) {
+  return new Set(String(v || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').split(' ')
+    .filter(w => w.length >= 4 && !VENUE_GENERIC_WORDS.has(w)));
+}
+function venuesShareDistinctiveWord(a, b) {
+  const wa = venueWords(a);
+  if (wa.size === 0) return false;
+  for (const w of venueWords(b)) if (wa.has(w)) return true;
+  return false;
+}
+function acceptScheduleMatch(result, entry) {
+  if (!result || !result.show || result.show.category !== 'off-broadway') return false;
+  if (result.confidence === 'high') return true;
+  if (result.confidence !== 'medium') return false;
+  const listedVenue = (entry && entry.raw && entry.raw.playbill && entry.raw.playbill.venue) || (entry && entry.venue);
+  return venuesShareDistinctiveWord(listedVenue, result.show.venue);
+}
+
 function daysBetween(a, b) {
   return Math.round(Math.abs(new Date(a).getTime() - new Date(b).getTime()) / 86400000);
 }
@@ -961,7 +994,7 @@ async function main() {
       // 'broadway' would filter to !cat||cat==='broadway' and silently drop
       // the OB show from candidates. (Caught in /ship-check 2026-04-29.)
       const result = matchTitleToShow(entry.title, obShows, { market: 'off-broadway' });
-      if (!result || result.confidence !== 'high' || result.show.category !== 'off-broadway') continue;
+      if (!acceptScheduleMatch(result, entry)) continue;
       show = result.show;
     }
     const isCandidate = candidateShows.some(s => s.id === show.id);

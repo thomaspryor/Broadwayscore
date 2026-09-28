@@ -20,6 +20,7 @@ const {
   isPreviewStrictlyAfterOpening,
   isNullOpeningFill,
   isPhase3DefaultCandidate,
+  acceptScheduleMatch,
 } = require('./enrich-off-broadway-dates.js');
 
 // Real Playbill production pages render First Preview / Opening Date as
@@ -254,4 +255,24 @@ test('isPhase3DefaultCandidate — closed or long-running null-opening shows not
 test('isNullOpeningFill — id year more than 1y from source opening does not fill', () => {
   assert.equal(isNullOpeningFill({ id: 'girls-chance-music-off-broadway-2024', openingDate: null }, { opening: '2026-05-28', confidence: 'single-source' }), false);
   assert.equal(isNullOpeningFill({ id: 'midnight-off-broadway-2026', openingDate: null }, { opening: '2026-09-27', confidence: 'single-source' }), true);
+});
+
+// Our Sinatra 2026-09-27: Playbill's schedule lists "Our Sinatra"; the catalog
+// has "Our Sinatra: A Musical Celebration" → matchTitleToShow says "medium".
+test('acceptScheduleMatch — high always accepted', () => {
+  assert.equal(acceptScheduleMatch({ confidence: 'high', show: { category: 'off-broadway', venue: 'X' } }, {}), true);
+});
+test('acceptScheduleMatch — medium accepted when venues share a distinctive word', () => {
+  const r = { confidence: 'medium', show: { category: 'off-broadway', venue: 'The Marjorie S. Deane Little Theater' } };
+  assert.equal(acceptScheduleMatch(r, { raw: { playbill: { venue: 'Marjorie S. Deane Little Theater @ The West Side Y' } } }), true);
+});
+test('acceptScheduleMatch — medium rejected when venues differ or only share generic words', () => {
+  const r = { confidence: 'medium', show: { category: 'off-broadway', venue: 'SoHo Playhouse' } };
+  assert.equal(acceptScheduleMatch(r, { raw: { playbill: { venue: 'Minetta Lane Theatre' } } }), false);
+  assert.equal(acceptScheduleMatch({ confidence: 'medium', show: { category: 'off-broadway', venue: 'New World Stages' } }, { raw: { playbill: { venue: 'New York Theatre Workshop' } } }), false);
+  assert.equal(acceptScheduleMatch(r, {}), false);
+});
+test('acceptScheduleMatch — low / non-OB never accepted', () => {
+  assert.equal(acceptScheduleMatch({ confidence: 'low', show: { category: 'off-broadway', venue: 'SoHo Playhouse' } }, { raw: { playbill: { venue: 'SoHo Playhouse' } } }), false);
+  assert.equal(acceptScheduleMatch({ confidence: 'high', show: { category: 'broadway', venue: 'X' } }, {}), false);
 });
