@@ -16,6 +16,7 @@ export type ShowCategory = 'broadway' | 'off-broadway' | 'west-end' | 'off-west-
  * date-based wrongProduction guards. See scripts/lib/wrong-production-autoclear.js.
  */
 export interface PriorRun {
+  id?: string; // shows.json id of the prior run's own row, when it has one — a cross-link, so scripts/lib/deduplication.js isCrossLinked() never reads the pair as duplicates
   openingDate: string; // ISO date — start of the prior run
   closingDate?: string; // ISO date — end of the prior run (defaults to openingDate + 180 days)
   venue?: string; // Display label, e.g. "Bushwick Starr"

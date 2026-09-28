@@ -56,11 +56,11 @@ runs:
         # Decision table is mirrored + pinned in
         # scripts/lib/core-data-sync-decision.js and
         # tests/unit/core-data-sync-decision.test.mjs — change both together.
-        # retired-show-ids.json + deleted-shows-2026-09.json (2026 data audit,
+        # retired-show-ids.json + deleted-shows.json (2026 data audit,
         # S0-T2/S0-T4): the retired-id registry and its archive of deleted
         # rows, written by scripts/lib/retired-show-ids.js retireId(). Core
         # data (§11) — listed here so a CI run that retires an id pushes both.
-        CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json diary-shows.json audience-reviews-lbo.json opening-night-sent.json followers.json subscribers.json subscribers-westend.json awards.json retired-show-ids.json deleted-shows-2026-09.json"
+        CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json diary-shows.json audience-reviews-lbo.json opening-night-sent.json followers.json subscribers.json subscribers-westend.json awards.json retired-show-ids.json deleted-shows.json"
         # Manifest of files this workflow actually modified — consumed by the
         # "Commit and push core data" step below to decide whether the
         # per-slug reconciliation merge (commercial.json, diary-shows.json) is
@@ -452,17 +452,27 @@ runs:
                 // concurrent add and resurrect the row. Read from THIS checkout
                 // (post-rebase, so it carries every retirement any run has
                 // pushed), not the workspace copy taken at job start. Missing
-                // file = no retirements yet. An unreadable file falls back to
-                // the module default (the workspace copy) and says so.
+                // or empty file = no retirements yet. An unreadable file
+                // (bad JSON, not an array) reconciles with an EMPTY list and
+                // warns. Never hand the module undefined here: it would
+                // re-read its default path, throw on the same corruption, and
+                // the outer catch would then skip the ENTIRE reconcile,
+                // field recovery included.
                 let retiredIds = [];
                 try {
                   if (fs.existsSync("retired-show-ids.json")) {
-                    const retired = JSON.parse(fs.readFileSync("retired-show-ids.json", "utf8"));
-                    retiredIds = (Array.isArray(retired) ? retired : []).map((e) => e && e.id).filter(Boolean);
+                    const rawRetired = fs.readFileSync("retired-show-ids.json", "utf8");
+                    if (rawRetired.trim() !== "") {
+                      const retired = JSON.parse(rawRetired);
+                      if (!Array.isArray(retired)) {
+                        throw new Error("expected a JSON array, got " + (retired === null ? "null" : typeof retired));
+                      }
+                      retiredIds = retired.map((e) => e && e.id).filter(Boolean);
+                    }
                   }
                 } catch (e) {
-                  console.log("::warning::retired-show-ids.json in the core-data checkout is unreadable (" + e.message + ") — falling back to the workspace copy");
-                  retiredIds = undefined;
+                  console.log("::warning::retired-show-ids.json in the core-data checkout is unreadable (" + e.message + ") — reconciling with an EMPTY retired list this run; a retired id present on remote can be re-added until the file is fixed");
+                  retiredIds = [];
                 }
 
                 const { recovered, readded, baseAvailable, retiredSkipped } = reconcileShowsJson(local, remote, base, undefined, retiredIds);

@@ -7,7 +7,7 @@ Fix the 15 live data defects found by the 2026 audit and the seven pipeline mech
 
 Repo split: web repo `/home/user/Broadwayscore` (code, workflows, public derived files); core data `/root/broadway-scorecard-data` (shows.json, slug maps, aliases; symlinked from `data/`); review texts `/home/user/broadway-review-texts` (one file per review, `_pending/` strand; linked at `~/broadway-review-texts`). CI rebuilds `reviews.json` (`rebuild-reviews.yml`), never local.
 
-Edit protocol for every data task (from the plan review and the sprint critique): `git pull` the target repo immediately before editing; one batch per commit; push immediately; after the first origin/main commit that follows ours (for review texts that is the next `collect-review-texts.yml` or any workflow using the `push-review-texts` action), re-read `origin/main` and assert the change survived; review-file edits only through `safeWriteReview` with the field's breadcrumb (`wrongProductionOverride`/`wrongShow` clear/`originalScoreCleared` + reason; `llmScore` and `isNonReview` are protected too); every deleted shows.json row archived to `deleted-shows-2026-09.json` **in the core-data repo** beside `retired-show-ids.json` (never in the web repo's tracked `data/audit/`, §11); closing-date edits stamped `humanCorrectedClosingDate`.
+Edit protocol for every data task (from the plan review and the sprint critique): `git pull` the target repo immediately before editing; one batch per commit; push immediately; after the first origin/main commit that follows ours (for review texts that is the next `collect-review-texts.yml` or any workflow using the `push-review-texts` action), re-read `origin/main` and assert the change survived; review-file edits only through `safeWriteReview` with the field's breadcrumb (`wrongProductionOverride`/`wrongShow` clear/`originalScoreCleared` + reason; `llmScore` and `isNonReview` are protected too); every deleted shows.json row archived to `deleted-shows.json` **in the core-data repo** beside `retired-show-ids.json` (never in the web repo's tracked `data/audit/`, §11); closing-date edits stamped `humanCorrectedClosingDate`.
 
 **Single writer rule (sprint critique):** in data sprints, subagents never commit. Each subagent writes a patch or a JSON list of intended edits to the scratchpad; the coordinator applies them serially, one batch per commit, one push at a time, so `S1-T7`-style survival checks can attribute any revert.
 
@@ -49,7 +49,7 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Complexity:** S
 - **Depends on:** None
 - **Parallel:** Yes
-- **Files:** scripts/lib/retired-show-ids.js (new: `loadRetiredIds()`, `isRetiredId(id)`, `retireId(id, {reason, archivedRow})`), core-data repo: retired-show-ids.json and deleted-shows-2026-09.json (new, seeded empty), tests/unit/retired-show-ids.test.mjs (new)
+- **Files:** scripts/lib/retired-show-ids.js (new: `loadRetiredIds()`, `isRetiredId(id)`, `retireId(id, {reason, archivedRow})`), core-data repo: retired-show-ids.json and deleted-shows.json (new, seeded empty), tests/unit/retired-show-ids.test.mjs (new)
 - **Description:** A small JSON list `{id, reason, retiredAt}` plus a loader. `retireId` appends to the list and to the archive (full row). Both files live in the core-data repo (they are core data, §11), resolved the same way `shows.json` is.
 - **Acceptance criteria:**
   - VERIFY: `node --test tests/unit/retired-show-ids.test.mjs` passes (load, isRetired, retire appends both files)
@@ -85,7 +85,7 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Complexity:** M
 - **Depends on:** S0-T2
 - **Parallel:** Yes
-- **Files:** scripts/lib/reconcile-shows-fields.js (:101-110), .github/actions/push-core-data/action.yml (:429-444 inline node; :59 `CORE_FILES` add `retired-show-ids.json` and `deleted-shows-2026-09.json` so CI writes to them are pushed), tests/unit/reconcile-retired-ids.test.mjs (new)
+- **Files:** scripts/lib/reconcile-shows-fields.js (:101-110), .github/actions/push-core-data/action.yml (:429-444 inline node; :59 `CORE_FILES` add `retired-show-ids.json` and `deleted-shows.json` so CI writes to them are pushed), tests/unit/reconcile-retired-ids.test.mjs (new)
 - **Description:** `reconcileShowsJson` never re-adds an id present in the retired list even when the base snapshot lacks it. The action passes the retired list through and pushes the two new core files. (Composite action is §18-gated: the executing session records `review-gate.mjs --query=record-plan` first.)
 - **Acceptance criteria:**
   - VERIFY: `node --test tests/unit/reconcile-retired-ids.test.mjs` passes (remote has id, base lacks it, id retired: not re-added; same without retirement: re-added)
@@ -132,7 +132,7 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Complexity:** S
 - **Depends on:** S0-T6
 - **Parallel:** No
-- **Files:** /root/broadway-scorecard-data/shows.json, data/retired-show-ids.json, data/audit/deleted-shows-2026-09.json
+- **Files:** /root/broadway-scorecard-data/shows.json, data/retired-show-ids.json, data/deleted-shows.json
 - **Description:** Remove `tabdates-off-west-end-2026` (title "?tab=dates"), archive the row, add the retired entry, commit and push core data. Wait for one `update-show-status` run.
 - **Acceptance criteria:**
   - VERIFY: after the next `update-show-status` run, `git -C /root/broadway-scorecard-data show origin/main:shows.json | grep -c tabdates-off-west-end-2026` prints 0

@@ -20,6 +20,9 @@ const { VENUE_ALIASES } = require('./title-match');
 // Top-level, not lazy (review catch): text-cleaning.js has no imports of its
 // own, so there is no direct or transitive cycle back to this module.
 const { decodeHtmlEntities } = require('./text-cleaning');
+// transferOf/transferredTo half of isCrossLinked(); show-duplicate-detection
+// requires only ./title-match, so there is no cycle back into this module.
+const { isDeclaredTransferPair } = require('./show-duplicate-detection');
 
 /**
  * Alias-table canonical for a venue string, or null when the table has no
@@ -668,24 +671,29 @@ function isCrossMarket(newShow, existing) {
  * the same title (Into the Woods, Arcadia, Lost in Del Valle, the one-part
  * Cursed Child) fails validate-data's duplicate check.
  *
+ * The transferOf/transferredTo half is show-duplicate-detection.js's
+ * `isDeclaredTransferPair` (the ticket-identity audit's rule — one
+ * definition, not two). Only the priorRuns direction lives here.
+ *
  * `priorRuns` entries are `{ openingDate, closingDate, venue, note?,
- * source? }` objects in shows.json today (34 shows, none carry an id); an
- * entry "names" a row when it is the bare id string or an object whose
- * `id` / `showId` / `productionId` equals it. Ids are compared as non-empty
+ * source? }` objects in shows.json today (34 shows, none carry an id; the
+ * optional `id` is declared on `PriorRun` in src/types/show.ts); an entry
+ * "names" a row when it is the bare id string or an object whose `id` /
+ * `showId` / `productionId` equals it. Ids are compared as non-empty
  * strings only, so two rows without ids never read as linked
  * (undefined === undefined). Symmetric in its arguments.
  */
 function isCrossLinked(a, b) {
   if (!a || !b) return false;
+  if (isDeclaredTransferPair(a, b)) return true;
   const idOf = (s) => (typeof s.id === 'string' && s.id.trim()) ? s.id.trim() : null;
-  const names = (show, id) => {
+  const namesPriorRun = (show, id) => {
     if (!id) return false;
-    if (show.transferOf === id || show.transferredTo === id) return true;
     const runs = Array.isArray(show.priorRuns) ? show.priorRuns : [];
     return runs.some(r => r === id ||
       (r && typeof r === 'object' && (r.id === id || r.showId === id || r.productionId === id)));
   };
-  return names(a, idOf(b)) || names(b, idOf(a));
+  return namesPriorRun(a, idOf(b)) || namesPriorRun(b, idOf(a));
 }
 
 /**

@@ -193,10 +193,21 @@ function ticketIdentityKeys(show) {
 }
 
 // A declared transfer is a deliberate two-entry relationship, in either
-// direction and from either side.
+// direction and from either side. Ids are compared as non-empty (trimmed)
+// strings only, so two rows without ids never read as a pair
+// (undefined === undefined). Shared with deduplication.js isCrossLinked(),
+// which adds the priorRuns-id direction on top of it (S0-T2b) — one rule
+// for the dedup check and for this ticket-identity audit.
+function declaredId(show) {
+  return show && typeof show.id === 'string' && show.id.trim() ? show.id.trim() : null;
+}
+
 function isDeclaredTransferPair(a, b) {
-  return a.transferOf === b.id || b.transferOf === a.id
-    || a.transferredTo === b.id || b.transferredTo === a.id;
+  if (!a || !b) return false;
+  const idA = declaredId(a);
+  const idB = declaredId(b);
+  return (idB !== null && (a.transferOf === idB || a.transferredTo === idB))
+    || (idA !== null && (b.transferOf === idA || b.transferredTo === idA));
 }
 
 // TODAYTIX RECYCLES NUMERIC IDS. A shared listing id is therefore NOT proof of
@@ -275,6 +286,7 @@ module.exports = {
   findTitleFragmentDupes,
   findSharedTicketIdentityDupes,
   ticketIdentityKeys,
+  isDeclaredTransferPair,
   canonicalVenue,
   isColonSegmentTitle,
   isStrictTitleSubset,

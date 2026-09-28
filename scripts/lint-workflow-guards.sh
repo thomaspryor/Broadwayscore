@@ -152,7 +152,7 @@ check_private_git_add() {
   # in this list as of BRO-1084 — it moved to public-repo-tracked, so a
   # plain `git add data/outlet-registry.json` in a workflow is now the
   # CORRECT way to commit a registry change, not a silent no-op.
-  local CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json diary-shows.json audience-reviews-lbo.json followers.json subscribers.json subscribers-westend.json retired-show-ids.json deleted-shows-2026-09.json"
+  local CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json diary-shows.json audience-reviews-lbo.json followers.json subscribers.json subscribers-westend.json retired-show-ids.json deleted-shows.json"
   local VIOLATIONS="" f core
   for f in .github/workflows/*.yml; do
     for core in $CORE_FILES; do
