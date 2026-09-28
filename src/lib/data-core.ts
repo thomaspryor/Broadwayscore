@@ -1253,9 +1253,11 @@ export function getOtherProductions(show: ComputedShow): ComputedShow[] {
   const baseTitle = normalize(show.title);
   // 'regional' last (4): when a regional tryout later transfers to Broadway, the
   // Broadway production (0) leads the cross-production list and the tryout trails it.
-  const marketOrder: Record<string, number> = { broadway: 0, 'west-end': 1, 'off-west-end': 2, 'off-broadway': 3, regional: 4 };
+  const marketOrder: Record<string, number> = { broadway: 0, 'west-end': 1, 'off-west-end': 2, 'off-broadway': 3, regional: 4, tour: 5 };
+  // Flag-gated categories are skipped while their flag is off: their detail pages
+  // aren't built, so a card here would be a dead link (BRO-4211 flag-off build).
   return getAllShows()
-    .filter(s => s.id !== show.id && normalize(s.title) === baseTitle)
+    .filter(s => s.id !== show.id && normalize(s.title) === baseTitle && isCategoryEnabled(s.category))
     .sort((a, b) => {
       const catA = marketOrder[(a.category || 'broadway')] ?? 3;
       const catB = marketOrder[(b.category || 'broadway')] ?? 3;

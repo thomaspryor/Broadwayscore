@@ -15,6 +15,7 @@ const path = require('path');
 // Mirror of src/lib/calendar/duration.ts — kept in lockstep by
 // tests/unit/parse-runtime-parity.test.ts. See that file before editing either.
 const { parseRuntimeMinutes } = require('./lib/parse-runtime');
+const { isHiddenFromAppFeed } = require('./lib/markets');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
@@ -33,9 +34,11 @@ try {
   console.warn('⚠ shows.json not found or invalid — generating empty show-lookup.json');
 }
 
-// Only include shows that users might rate (not ancient closed shows without data)
+// Only include shows that users might rate (not ancient closed shows without data).
+// Flag-gated app-feed categories (tour, BRO-4211) stay out of this public file while off.
 const relevantShows = shows.filter(show =>
-  show.status !== 'closed' || show.closingDate
+  !isHiddenFromAppFeed(show.category) &&
+  (show.status !== 'closed' || show.closingDate)
 );
 
 // Build minimal lookup entries — strip null values for size
