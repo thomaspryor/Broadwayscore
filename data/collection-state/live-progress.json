@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-28T03:20:16.237Z",
-  "processed": 7,
-  "failed": 23,
-  "successRate": "23.3%",
+  "updatedAt": "2026-09-28T04:09:07.906Z",
+  "processed": 14,
+  "failed": 65,
+  "successRate": "17.7%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 7,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-09-28T03:18:15.019Z",
@@ -34,6 +34,52 @@
     },
     {
       "t": "2026-09-28T03:18:34.034Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-28T04:02:12.688Z",
+      "event": "bb-session",
+      "session": "19f7fcb7",
+      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+    },
+    {
+      "t": "2026-09-28T04:02:20.669Z",
+      "event": "bb-session",
+      "session": "63124498",
+      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+    },
+    {
+      "t": "2026-09-28T04:03:40.453Z",
+      "event": "bb-session",
+      "session": "85d65620",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
+    },
+    {
+      "t": "2026-09-28T04:03:59.798Z",
+      "event": "bb-session",
+      "session": "d0595dc2",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
+    },
+    {
+      "t": "2026-09-28T04:06:31.892Z",
+      "event": "bb-session",
+      "session": "81adf1e9",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-28T04:06:32.398Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-28T04:06:51.104Z",
+      "event": "bb-session",
+      "session": "0537f0a1",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-28T04:06:51.602Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
