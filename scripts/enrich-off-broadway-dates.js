@@ -190,6 +190,8 @@ module.exports = {
   validateOBProductionPageTitle,
   mergeSources,
   isPreviewStrictlyAfterOpening,
+  isNullOpeningFill,
+  isPhase3DefaultCandidate,
 };
 
 // =========================================================
@@ -519,15 +521,15 @@ async function scrapePlaybillProductionPages(candidateShows, alreadyMatchedShowI
   // broader unconfirmed-source set runs ~120 SERP+fetch/day with no
   // auto-apply (results land in audit-only). `--phase3-broad` enables the
   // wider sweep for one-time catalog audits.
-  // Shows with no openingDate at all are intentionally NOT included in the
-  // default queue — Phase 1 (Playbill schedule article) is the right source
-  // for upcoming/announced shows; Phase 3 is the gap-filler for shows the
-  // schedule article doesn't carry.
-  const sameDateClass = (s) => s.openingDate && s.previewsStartDate && s.openingDate === s.previewsStartDate;
+  // Shows with no openingDate that are NOT yet in performances are left to
+  // Phase 1 (Playbill schedule article). Ones already in previews ARE queued
+  // (isPhase3DefaultCandidate): the schedule article drops them once previews
+  // start, so this is their only source.
+  const today = new Date().toISOString().slice(0, 10);
   const queue = candidateShows.filter(s => {
     if (alreadyMatchedShowIds.has(s.id)) return false;
     if (broad) return true;
-    return sameDateClass(s);
+    return isPhase3DefaultCandidate(s, today);
   });
   console.log(`Queue: ${queue.length} candidate shows not covered by schedule article` +
     (broad ? ' [broad]' : ' [same-date-only — pass --phase3-broad to widen]'));
@@ -654,6 +656,64 @@ async function scrapePlaybillProductionPages(candidateShows, alreadyMatchedShowI
  */
 function isPreviewStrictlyAfterOpening(entry) {
   return !!(entry && entry.firstPreview && entry.opening && entry.firstPreview > entry.opening);
+}
+
+function daysBetween(a, b) {
+  return Math.round(Math.abs(new Date(a).getTime() - new Date(b).getTime()) / 86400000);
+}
+
+/**
+ * Null-opening fill: the show has NO openingDate, so a single-source date
+ * overwrites nothing — the two-source rule exists to protect existing dates
+ * from a single-source error, and there is no existing date here.
+ *
+ * Before 2026-09-27 these landed audit-only ("single-source-and-not-same-
+ * date-fix") forever. A null openingDate pins a show at status=previews,
+ * which every review gatherer treats as out-of-window, so opened shows got
+ * zero reviews (our-sinatra, midnight, truly-howard-hughes: 23 shows sat
+ * in the audit log with a Playbill date that was never applied).
+ *
+ * Wrong-production guard: when we already know the first preview, the
+ * source's opening must not precede it, must land within
+ * NULL_FILL_MAX_OPENING_AFTER_PREVIEW_DAYS of it, and the source's own
+ * first-preview (if given) must agree within NULL_FILL_MAX_PREVIEW_SHIFT_DAYS.
+ */
+const NULL_FILL_MAX_PREVIEW_SHIFT_DAYS = 60;
+const NULL_FILL_MAX_OPENING_AFTER_PREVIEW_DAYS = 120;
+function isNullOpeningFill(show, entry) {
+  if (!show || !entry || show.openingDate || !entry.opening) return false;
+  if (entry.confidence === 'discrepancy') return false;
+  if (isPreviewStrictlyAfterOpening(entry)) return false;
+  // Catalog id year is the production year at discovery; a source date >1y
+  // away is a different production (girls-chance-music-off-broadway-2024 vs
+  // a 2026 Playbill date).
+  const idYear = (show.id || '').match(/-(\d{4})$/);
+  if (idYear && Math.abs(parseInt(idYear[1], 10) - parseInt(entry.opening.slice(0, 4), 10)) > 1) return false;
+  const knownPreview = show.previewsStartDate;
+  if (knownPreview) {
+    if (entry.opening < knownPreview) return false;
+    if (daysBetween(entry.opening, knownPreview) > NULL_FILL_MAX_OPENING_AFTER_PREVIEW_DAYS) return false;
+    if (entry.firstPreview && daysBetween(entry.firstPreview, knownPreview) > NULL_FILL_MAX_PREVIEW_SHIFT_DAYS) return false;
+  }
+  return true;
+}
+
+/**
+ * Phase 3 default queue: the same-date class (IBDB conflation) PLUS shows
+ * already in performances with no openingDate at all. The latter never
+ * appear in Playbill's upcoming-schedule article once previews start, so
+ * Phase 1 can't reach them; without a per-show lookup they stay at
+ * status=previews indefinitely. Small class (~10 shows), bounded SERP cost.
+ */
+const PHASE3_NULL_OPENING_LOOKBACK_DAYS = 120;
+function isPhase3DefaultCandidate(show, today) {
+  if (!show) return false;
+  if (show.openingDate && show.previewsStartDate && show.openingDate === show.previewsStartDate) return true;
+  if (show.openingDate || !show.previewsStartDate || show.previewsStartDate > today) return false;
+  // Live shows only, and only recent ones: closed one-off events and
+  // long-running attractions with no press night would burn SERP every run.
+  if (show.status !== 'previews' && show.status !== 'open') return false;
+  return daysBetween(show.previewsStartDate, today) <= PHASE3_NULL_OPENING_LOOKBACK_DAYS;
 }
 
 /**
@@ -989,7 +1049,9 @@ async function main() {
     // For NON-same-date changes, require two-source agreement OR --force.
     // This protects the bulk of OB shows (where the existing date may already
     // be correct) from being silently overwritten by a single-source error.
-    if (!sameDateFix && !sameDateConfirmed && entry.confidence !== 'high' && !force) {
+    const nullFill = isNullOpeningFill(show, entry);
+
+    if (!sameDateFix && !sameDateConfirmed && !nullFill && entry.confidence !== 'high' && !force) {
       // Pick the most informative reason for audit operators. Magnitude veto
       // is the most actionable signal — it usually means a wrong-production
       // match. Otherwise fall back to the generic single-source label.
@@ -1027,6 +1089,14 @@ async function main() {
       showChanges.push({ field: 'openingDateSource', old: show.openingDateSource, new: entryDateSource });
       changes.push({ id: show.id, title: show.title, slug: show.slug, changes: showChanges });
       console.log(`  FIX ${show.title}: same-date ${show.openingDate} → preview=${entry.firstPreview || show.previewsStartDate}, opening=${entry.opening} [${entryDateSource}]`);
+    } else if (nullFill && isCandidate) {
+      const showChanges = [{ field: 'openingDate', old: null, new: entry.opening }];
+      if (entry.firstPreview && !show.previewsStartDate) {
+        showChanges.push({ field: 'previewsStartDate', old: show.previewsStartDate, new: entry.firstPreview });
+      }
+      showChanges.push({ field: 'openingDateSource', old: show.openingDateSource, new: entryDateSource });
+      changes.push({ id: show.id, title: show.title, slug: show.slug, changes: showChanges });
+      console.log(`  FILL ${show.title}: null opening → ${entry.opening} [${entryDateSource}]`);
     } else if (sameDateConfirmed && isCandidate) {
       const showChanges = [
         { field: 'openingDateSource', old: show.openingDateSource, new: entryDateSource },

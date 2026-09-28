@@ -408,6 +408,70 @@ def filter_cookies_for_group(all_cookies, group):
     return matched
 
 
+def is_auto_renewed(meta, group_name):
+    """True when scripts/renew-cookies.js owns this outlet's cookies (BRO-4183).
+
+    Safari has no valid session for such an outlet, so re-extracting it would
+    overwrite (or quarantine) the renewed cookies and push dead ones: the
+    next probe then reports logged-out and triggers another login.
+    """
+    entry = meta.get(group_name) if isinstance(meta, dict) else None
+    return isinstance(entry, dict) and entry.get("method") == "auto-renew"
+
+
+def load_local_cookies(path):
+    """Cookie list from a data/cookies/<outlet>.json file, or [] if absent/invalid."""
+    try:
+        with open(path) as f:
+            cookies = json.load(f)
+        return cookies if isinstance(cookies, list) else []
+    except (OSError, json.JSONDecodeError):
+        return []
+
+
+def outlet_meta_entry(entry):
+    """Per-outlet freshness for a bundle's _meta.outlets (read by cookie-loader.js)."""
+    if not isinstance(entry, dict) or not (entry.get("extractedAt") or entry.get("extractedAtUnix")):
+        return None
+    return {k: entry[k] for k in ("extractedAt", "extractedAtUnix", "method") if k in entry}
+
+
+def build_bundles(outlet_cookies, outlet_meta, bundle_meta, max_size):
+    """Bin-pack {fileKey: cookies} into bundles whose base64 JSON stays <= max_size.
+
+    Each bundle carries `_meta` (bundle_meta plus `outlets`, the per-outlet
+    extraction times). Per-outlet meta matters because one bundle mixes
+    outlets refreshed at different times (a renew-cookies.js outlet next to
+    Safari-extracted ones); a single bundle timestamp would make stale
+    outlets look fresh.
+    """
+    def empty():
+        return {"_meta": {**bundle_meta, "outlets": {}}}
+
+    def with_outlet(bundle, file_key, cookies):
+        meta = {**bundle["_meta"], "outlets": dict(bundle["_meta"]["outlets"])}
+        if outlet_meta.get(file_key):
+            meta["outlets"][file_key] = outlet_meta[file_key]
+        return {**bundle, "_meta": meta, file_key: cookies}
+
+    def size(bundle):
+        return len(base64.b64encode(json.dumps(bundle).encode("utf-8")))
+
+    bundles = []
+    current = empty()
+    for file_key, cookies in sorted(outlet_cookies.items()):
+        candidate = with_outlet(current, file_key, cookies)
+        outlet_count = len([k for k in current if not k.startswith("_")])
+        if size(candidate) > max_size and outlet_count > 0:
+            bundles.append(current)
+            current = with_outlet(empty(), file_key, cookies)
+        else:
+            current = candidate
+    if len([k for k in current if not k.startswith("_")]) > 0:
+        bundles.append(current)
+    return bundles
+
+
 def main():
     print("=" * 60)
     print("  Safari Cookie Extractor")
@@ -415,8 +479,15 @@ def main():
     print("=" * 60)
     print()
 
+    # --from-local (BRO-4183): rebuild and push bundles from data/cookies/*.json
+    # without reading Safari. Used by renew-cookies.js so this script stays
+    # the only COOKIES_BUNDLE_* writer. Implies no local file mutations.
+    from_local = "--from-local" in sys.argv
+
     # Check file exists
-    if not os.path.exists(COOKIE_FILE):
+    if from_local:
+        pass
+    elif not os.path.exists(COOKIE_FILE):
         print(f"Error: Cookie file not found at:")
         print(f"  {COOKIE_FILE}")
         print()
@@ -425,7 +496,7 @@ def main():
 
     # Try to read
     try:
-        all_cookies = parse_binary_cookies(COOKIE_FILE)
+        all_cookies = [] if from_local else parse_binary_cookies(COOKIE_FILE)
     except PermissionError:
         print("=" * 60)
         print("  PERMISSION DENIED")
@@ -444,7 +515,10 @@ def main():
         print(f"Error reading cookie file: {e}")
         sys.exit(1)
 
-    print(f"Read {len(all_cookies)} total cookies from Safari.")
+    if from_local:
+        print("--from-local: Safari not read; using data/cookies/*.json.")
+    else:
+        print(f"Read {len(all_cookies)} total cookies from Safari.")
     print()
 
     # Create output directory
@@ -478,8 +552,31 @@ def main():
     stale_outlets = []
 
     for group_name, group in DOMAIN_GROUPS.items():
-        matched = filter_cookies_for_group(all_cookies, group)
         output_path = os.path.join(output_dir, group["output"])
+
+        # Local-file outlets: everything in --from-local mode, and outlets
+        # owned by renew-cookies.js in a normal Safari run. Neither the local
+        # file nor its sidecar entry is touched.
+        if from_local or is_auto_renewed(meta, group_name):
+            local = load_local_cookies(output_path)
+            if not local:
+                print(f"  {group_name}: no local cookies, not bundled.")
+                print()
+                continue
+            any_found = True
+            why = "local file" if from_local else "auto-renewed by renew-cookies.js; Safari skipped"
+            print(f"  {group_name}: {len(local)} cookies [{why}]")
+            print()
+            gh_commands.append({
+                "name": group["secret_name"],
+                "b64": base64.b64encode(json.dumps(local).encode("utf-8")).decode("utf-8"),
+                "group_name": group_name,
+                "count": len(local),
+                "_cookies": local,
+            })
+            continue
+
+        matched = filter_cookies_for_group(all_cookies, group)
 
         if not matched:
             print(f"  {group_name}: No cookies found.")
@@ -553,7 +650,7 @@ def main():
     # Persist sidecar metadata (skip in dry-run — no filesystem mutation).
     # Atomic write: tmp file + rename. Two parallel runs can still
     # last-writer-wins, but neither leaves the sidecar half-written.
-    if not dry_run_mode:
+    if not dry_run_mode and not from_local:
         try:
             tmp_meta_path = meta_path + ".tmp"
             with open(tmp_meta_path, "w") as f:
@@ -573,13 +670,14 @@ def main():
 
     # Also note the gitignore
     gitignore_path = os.path.join(output_dir, ".gitignore")
-    if not os.path.exists(gitignore_path):
+    if not from_local and not os.path.exists(gitignore_path):
         with open(gitignore_path, "w") as f:
             f.write("# Never commit cookies\n*.json\n")
         print(f"Created {gitignore_path} (cookies will not be committed to git)")
 
     # Auto-push to GitHub secrets if --push flag is set
     auto_push = "--push" in sys.argv
+    push_failed = False
     dry_run = "--dry-run" in sys.argv
 
     if auto_push or dry_run:
@@ -588,43 +686,29 @@ def main():
         # ---- Build bundles (bin-pack outlets into ≤48KB chunks) ----
         MAX_BUNDLE_SIZE = 46 * 1024  # 46KB with headroom (GitHub limit is 48KB)
 
-        # Build per-outlet cookie data keyed by fileKey
+        # Build per-outlet cookie data (and freshness) keyed by fileKey
         outlet_cookies = {}
+        outlet_meta = {}
         for cmd in gh_commands:
             # Find the fileKey for this group (from DOMAIN_GROUPS)
             for group_name, group in DOMAIN_GROUPS.items():
                 if group["secret_name"] == cmd["name"]:
                     file_key = group["output"].replace(".json", "")
                     outlet_cookies[file_key] = cmd["_cookies"]
+                    entry = outlet_meta_entry(meta.get(cmd["group_name"]))
+                    if entry:
+                        outlet_meta[file_key] = entry
                     break
 
-        # Bin-pack into bundles. Each bundle gets a _meta entry so
-        # check-cookie-health can flag stale extractions even when the
-        # local data/cookies/ files aren't present (i.e. in CI).
-        # cookie-loader.js already ignores non-array entries when loading
-        # bundles, so _meta is safely skipped by consumers.
-        def empty_bundle():
-            return {"_meta": {"extractedAt": now_iso, "extractedAtUnix": now_unix}}
-
-        bundles = []
-        current_bundle = empty_bundle()
-        for file_key, cookies in sorted(outlet_cookies.items()):
-            test_bundle = {**current_bundle, file_key: cookies}
-            test_json = json.dumps(test_bundle)
-            test_b64_size = len(base64.b64encode(test_json.encode("utf-8")))
-
-            # Bundle full if adding this outlet exceeds size AND we already
-            # have at least one outlet in it (i.e. more than just _meta).
-            outlet_count = len([k for k in current_bundle if not k.startswith("_")])
-            if test_b64_size > MAX_BUNDLE_SIZE and outlet_count > 0:
-                bundles.append(current_bundle)
-                current_bundle = {**empty_bundle(), file_key: cookies}
-            else:
-                current_bundle = test_bundle
-
-        outlet_count = len([k for k in current_bundle if not k.startswith("_")])
-        if outlet_count > 0:
-            bundles.append(current_bundle)
+        # Bin-pack into bundles. Bundle-level _meta.extractedAt is kept for
+        # consumers that predate per-outlet meta, but only on a real Safari
+        # run: a --from-local push extracted nothing, so it records pushedAt
+        # instead and each outlet's age comes from _meta.outlets.
+        # cookie-loader.js ignores non-array entries, so _meta is never
+        # mistaken for cookies.
+        bundle_meta = ({"pushedAt": now_iso, "mode": "from-local"} if from_local
+                       else {"extractedAt": now_iso, "extractedAtUnix": now_unix})
+        bundles = build_bundles(outlet_cookies, outlet_meta, bundle_meta, MAX_BUNDLE_SIZE)
 
         # Print bundle plan
         print()
@@ -656,6 +740,7 @@ def main():
         print("=" * 60)
         print()
 
+        push_failed = False
         for i, bundle in enumerate(bundles, 1):
             secret_name = f"COOKIES_BUNDLE_{i}"
             raw = json.dumps(bundle)
@@ -676,11 +761,14 @@ def main():
                     print(f"  ✓ {secret_name}: {len(outlets)} outlets pushed ({', '.join(outlets)})")
                 else:
                     print(f"  ✗ {secret_name}: {result.stderr.strip()}")
+                    push_failed = True
             except FileNotFoundError:
                 print(f"  ✗ {secret_name}: 'gh' CLI not found — install GitHub CLI first")
+                push_failed = True
                 break
             except Exception as e:
                 print(f"  ✗ {secret_name}: {e}")
+                push_failed = True
             finally:
                 os.unlink(tmp_path)
 
@@ -703,7 +791,7 @@ def main():
     # the failure that silently logged us out of The Stage for ~11 days). Free,
     # uses the residential IP we're already on. Non-fatal: a probe failure here
     # just means "go log into that site in Safari," not that extraction failed.
-    if not dry_run:
+    if not dry_run and not from_local:
         try:
             print()
             print("=" * 60)
@@ -717,6 +805,13 @@ def main():
             print(f"  (verify skipped: {e})")
 
     print()
+    if push_failed:
+        # Non-zero so callers (renew-cookies.js) don't record a push that
+        # didn't land: CI would keep the old bundle while the local file
+        # looks fresh.
+        print()
+        print("ERROR: one or more COOKIES_BUNDLE_* secrets failed to push (see ✗ above).")
+        sys.exit(1)
     print("Done! Cookies saved locally" + (" and pushed to GitHub." if auto_push else "."))
 
 

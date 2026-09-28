@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "macbeth-off-broadway-2026",
   "openingDate": "2026-09-22",
-  "detectedAt": "2026-09-27T14:22:46.755Z",
+  "detectedAt": "2026-09-28T08:39:25.823Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,11 +21,28 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
+    },
+    {
+      "file": "woman-around-town--unknown.json",
+      "outletId": "woman-around-town",
+      "criticName": "Unknown",
+      "url": "https://womanaroundtown.com/sections/playing-around/under-the-covens-eye-the-mets-enthralling-new-macbeth/",
+      "fullTextLen": 615,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
+  "orphanCount": 2,
   "dispatchableOrphanCount": 0,
-  "blockedOrphanCount": 1,
+  "blockedOrphanCount": 2,
   "blockBroadcast": true,
   "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null

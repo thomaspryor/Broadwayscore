@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-09-26T03:23:42.974Z",
+    "lastUpdated": "2026-09-27T21:55:39.999Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -9935,10 +9935,15 @@
       "region": "london"
     },
     "ikonlondonmagazine": {
-      "displayName": "Ikon London Magazine",
+      "displayName": "Ikonlondonmagazine",
+      "tier": 3,
+      "aliases": [
+        "ikonlondonmagazine"
+      ],
       "domain": "ikonlondonmagazine.com",
-      "tier": 4,
-      "region": "london"
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-09-27T17:06:45.518Z"
     },
     "boxofficeradio": {
       "displayName": "Box Office Radio",
@@ -11370,6 +11375,17 @@
         "openingnight"
       ],
       "domain": "openingnight.online"
+    },
+    "islingtontribune": {
+      "displayName": "Islingtontribune",
+      "tier": 3,
+      "aliases": [
+        "islingtontribune"
+      ],
+      "domain": "islingtontribune.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-09-27T21:55:39.998Z"
     }
   },
   "_aliasIndex": {

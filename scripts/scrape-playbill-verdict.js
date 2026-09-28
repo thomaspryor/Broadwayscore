@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, matchSlugToShow, cleanSlugTitle, loadShows, cleanExternalTitle, titleWordsMatch, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
+const { shouldSkipPreviewsShow } = require('./lib/opening-signal');
 const { pruneUnmatchedAudit, collisionSlugSet, obRegionalShows } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { checkArchiveCategory } = require('./lib/archive-cache-guard');
@@ -753,9 +754,12 @@ async function scrapePlaybillVerdict() {
     if (match) {
       const showId = match.show.id;
 
-      // Skip shows in previews — they haven't opened yet, any reviews are wrong-production
-      if (match.show.status === 'previews') {
-        stats.skippedOffBroadway++;
+      // Skip shows in previews — they haven't opened yet, any reviews are
+      // wrong-production. Not when the previews status is stale (null/past
+      // openingDate) and the article post-dates previews start: that verdict
+      // IS the open signal (shouldSkipPreviewsShow, our-sinatra 2026-09-27).
+      if (shouldSkipPreviewsShow(match.show, new Date().toISOString().slice(0, 10), article.publishDate || null)) {
+        stats.skippedPreviews = (stats.skippedPreviews || 0) + 1;
         continue;
       }
 

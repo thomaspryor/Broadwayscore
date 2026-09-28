@@ -59,3 +59,30 @@ test('does NOT flag same-title-fragment at a DIFFERENT venue', () => {
   ];
   assert.equal(findTitleFragmentDupes(shows).length, 0);
 });
+
+// 2026-09-27 live dups: TodayTix listing vs venue/article entry.
+test('flags performer-prefix colon variant at the same venue ("Louis Katz: Conflicted" ~ "Conflicted")', () => {
+  const dates = { previewsStartDate: '2026-09-17', closingDate: '2026-10-18' };
+  const shows = [
+    show({ id: 'louis-katz', title: 'Louis Katz: Conflicted', venue: 'SoHo Playhouse', ...dates }),
+    show({ id: 'conflicted', title: 'Conflicted', venue: 'SoHo Playhouse', ...dates }),
+  ];
+  assert.equal(findTitleFragmentDupes(shows).length, 1);
+});
+
+test('venue punctuation variants are the same room ("59E59 Theaters - Theater C" ~ "59E59 Theaters, Theater C")', () => {
+  const shows = [
+    show({ id: 'cm1', title: 'Crazy Mama', venue: '59E59 Theaters - Theater C', previewsStartDate: '2026-09-16', closingDate: '2026-10-18' }),
+    show({ id: 'cm2', title: 'Crazy Mama: A True Story of Love and Madness', venue: '59E59 Theaters, Theater C', previewsStartDate: '2026-09-16', openingDate: '2026-09-22', closingDate: null }),
+  ];
+  assert.equal(findTitleFragmentDupes(shows).length, 1);
+});
+
+test('colon variant does NOT flag a partial segment ("Hamlet" vs "Hamlet Unbound: A Remix")', () => {
+  const dates = { previewsStartDate: '2026-09-01', closingDate: '2026-10-01' };
+  const shows = [
+    show({ id: 'h1', title: 'Hamlet', venue: 'SoHo Playhouse', ...dates }),
+    show({ id: 'h2', title: 'Hamlet Unbound: A Remix', venue: 'SoHo Playhouse', ...dates }),
+  ];
+  assert.equal(findTitleFragmentDupes(shows).length, 0);
+});
