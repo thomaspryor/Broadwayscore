@@ -7,7 +7,7 @@
 
 export type ShowStatus = 'previews' | 'opened' | 'closing' | 'closed';
 
-export type ShowCategory = 'broadway' | 'off-broadway' | 'west-end' | 'off-west-end' | 'regional';
+export type ShowCategory = 'broadway' | 'off-broadway' | 'west-end' | 'off-west-end' | 'regional' | 'tour';
 
 /**
  * A prior run of the SAME artistic production at a different venue or in
