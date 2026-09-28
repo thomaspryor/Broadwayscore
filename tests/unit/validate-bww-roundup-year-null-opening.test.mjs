@@ -34,3 +34,11 @@ test('no dates at all: id year anchors, so an older production roundup is still 
   assert.equal(validateBWWRoundupYear(reviews, ld('2013-05-01T12:00:00Z'), null, 'hamlet-off-broadway-2026', 'u').length, 0);
   assert.equal(validateBWWRoundupYear(reviews, ld('2026-09-25T12:00:00Z'), null, 'hamlet-off-broadway-2026', 'u').length, 2);
 });
+
+test('productionYear: never 1970 for a null opening date', () => {
+  const { productionYear } = require('../../scripts/gather-reviews.js');
+  assert.equal(productionYear({ openingDate: '2026-09-15' }), 2026);
+  assert.equal(productionYear({ openingDate: null, previewsStartDate: '2025-12-19' }), 2025);
+  assert.equal(productionYear({ openingDate: null, id: 'el-quijote-off-broadway-2026' }), 2026);
+  assert.equal(productionYear({ openingDate: null }), new Date().getFullYear());
+});

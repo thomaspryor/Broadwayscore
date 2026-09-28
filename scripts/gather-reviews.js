@@ -1066,7 +1066,7 @@ async function searchShowScore(show) {
     console.log('    Curated URL failed, falling back to slug variations...');
   }
 
-  const year = new Date(show.openingDate).getFullYear();
+  const year = productionYear(show);
   const titleSlug = slugify(show.title);
   const titleNoColonSlug = slugify(show.title.replace(/:/g, ''));
   const isOffBroadway = show.category === 'off-broadway';
@@ -2917,6 +2917,21 @@ function validateBWWRoundupGeography(reviews, html, showId, isWestEnd = false) {
 }
 
 /**
+ * Production year for search queries / URL guesses. `new Date(null)` is
+ * 1970, so an open show with no openingDate searched for "... review 1970"
+ * (same null-date bug class as validateBWWRoundupYear). Falls back to the
+ * first performance, then the catalog id's year, then this year.
+ */
+function productionYear(show) {
+  for (const d of [show && show.openingDate, show && show.previewsStartDate]) {
+    const y = d ? new Date(d).getFullYear() : NaN;
+    if (Number.isFinite(y) && y > 1900) return y;
+  }
+  const m = String((show && show.id) || '').match(/-(\d{4})$/);
+  return m ? parseInt(m[1], 10) : new Date().getFullYear();
+}
+
+/**
  * Validate BWW roundup publish year against show's opening date.
  * Catches wrong-year roundups where BWW's fuzzy routing serves an older production's
  * roundup (e.g., The Other Place 2013 roundup served for a 2026 show).
@@ -4148,7 +4163,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     console.log(`[PRIOR-RUN] ${showId}: in previews but declares priorRuns/tourLegs — discovering reviews from the earlier run/tour stop`);
   }
 
-  const year = new Date(show.openingDate).getFullYear();
+  const year = productionYear(show);
   console.log(`Title: ${show.title}`);
   console.log(`Year: ${year}`);
   console.log(`Status: ${show.status}`);
@@ -5951,6 +5966,7 @@ module.exports = {
   extractBWWRoundupReviews,
   sanitizeBwwJsonLd,
   validateBWWRoundupYear,
+  productionYear,
   validateBWWRoundupGeography,
   createReviewFile,
   gatherReviewsForShow,
