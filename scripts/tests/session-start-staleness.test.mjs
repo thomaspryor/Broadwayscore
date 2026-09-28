@@ -308,7 +308,7 @@ test('session-start.sh: end-to-end in a cloud-like env, a resumed stale checkout
     assert.match(out, /CODE CHECKOUT SYNCED: fast-forwarded .* by 2 commit\(s\)/);
     assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), git(cloneDir, ['rev-parse', 'origin/main']));
   } finally {
-    fs.rmSync(fakeHome, { recursive: true, force: true });
+    fs.rmSync(fakeHome, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 }));
 
@@ -331,6 +331,6 @@ test('session-start.sh: without CLAUDE_CODE_REMOTE (Mac-like) it only warns and 
     assert.doesNotMatch(out, /SYNCED/);
     assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
   } finally {
-    fs.rmSync(fakeHome, { recursive: true, force: true });
+    fs.rmSync(fakeHome, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 }));
