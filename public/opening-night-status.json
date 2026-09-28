@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28T17:19:07.581Z",
+  "generatedAt": "2026-09-28T18:26:54.696Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1603,23 +1603,22 @@
       "status": "open",
       "slug": "tru-off-west-end",
       "thumbnail": "/images/shows/tru-off-west-end-2026/thumbnail.png",
-      "siteScore": 73.49,
-      "liveScore": 73,
-      "scoreDrift": -0.4899999999999949,
+      "siteScore": 71.2,
+      "liveScore": 71,
+      "scoreDrift": -0.20000000000000284,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 12,
-      "t1": 4,
+      "total": 13,
+      "t1": 5,
       "t2": 3,
       "t3": 5,
       "positive": 8,
-      "mixed": 3,
+      "mixed": 4,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:2/3",
           "hi-conf:3/6"
         ],
         "highConfidence": 3,
@@ -1644,10 +1643,6 @@
           "isDualMarket": true
         },
         {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
           "name": "The Independent",
           "isDualMarket": true
         },
@@ -1667,10 +1662,6 @@
         },
         {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ],
@@ -1780,6 +1771,18 @@
           "t3": 5,
           "p": 8,
           "m": 3,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-28T18:26:54.696Z",
+          "rc": 13,
+          "s": 71.2,
+          "t1": 5,
+          "t2": 3,
+          "t3": 5,
+          "p": 8,
+          "m": 4,
           "n": 1,
           "bc": "waiting"
         }

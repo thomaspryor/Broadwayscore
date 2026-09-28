@@ -1,66 +1,20 @@
 {
-  "generatedAt": "2026-09-28T17:17:50.347Z",
+  "generatedAt": "2026-09-28T18:25:35.459Z",
   "current": {
-    "totalCritics": 85,
-    "totalGaps": 747,
+    "totalCritics": 86,
+    "totalGaps": 1002,
     "gapsByBucket": {
-      "A": 23,
-      "B": 7,
-      "C": 706,
-      "D": 11,
+      "A": 39,
+      "B": 22,
+      "C": 933,
+      "D": 8,
       "E": 0
     },
     "gapsBySource": {
-      "muckrack": 747
+      "muckrack": 1002
     }
   },
   "history": [
-    {
-      "date": "2026-06-15",
-      "timestamp": "2026-06-15T11:43:06.315Z",
-      "totalCritics": 76,
-      "totalGaps": 762,
-      "gapsByBucket": {
-        "A": 19,
-        "B": 18,
-        "C": 720,
-        "D": 5,
-        "E": 0
-      },
-      "gapsBySource": {
-        "muckrack": 762
-      },
-      "perCritic": {
-        "Chris Jones": 123,
-        "Elysa Gardner": 110,
-        "Jesse Green": 79,
-        "Steven Suskin": 63,
-        "Austin Fimmano": 37,
-        "Alice Saville": 35,
-        "David Rooney": 33,
-        "Roma Torre": 30,
-        "David Finkle": 30,
-        "Dan Rubins": 30,
-        "Tim Bano": 28,
-        "Sarah Hemming": 24,
-        "Bob Verini": 22,
-        "Matt Wolf": 17,
-        "Helen Shaw": 15,
-        "Hayley Levitt": 15,
-        "Pete Hempstead": 14,
-        "Laura Collins-Hughes": 13,
-        "Kyle Turner": 10,
-        "Johnny Oleksinski": 9,
-        "Charles Isherwood": 7,
-        "Matt Windman": 7,
-        "Mark Kennedy": 4,
-        "Jackson McHenry": 2,
-        "Marianka Swain": 2,
-        "David Gordon": 1,
-        "Andrzej Lukowski": 1,
-        "Gillian Russo": 1
-      }
-    },
     {
       "date": "2026-06-22",
       "timestamp": "2026-06-22T11:04:37.305Z",
@@ -649,6 +603,69 @@
         "Dominic Maxwell": 1,
         "Patrick Ryan": 1
       }
+    },
+    {
+      "date": "2026-09-28",
+      "timestamp": "2026-09-28T17:51:06.744Z",
+      "totalCritics": 86,
+      "totalGaps": 1002,
+      "gapsByBucket": {
+        "A": 39,
+        "B": 22,
+        "C": 933,
+        "D": 8,
+        "E": 0
+      },
+      "gapsBySource": {
+        "muckrack": 1002
+      },
+      "perCritic": {
+        "Elysa Gardner": 87,
+        "Steven Suskin": 63,
+        "David Finkle": 59,
+        "Sarah Hemming": 52,
+        "Dan Rubins": 48,
+        "Roma Torre": 47,
+        "Pete Hempstead": 47,
+        "Laura Collins Hughes": 45,
+        "Tim Bano": 35,
+        "Alun Hood": 35,
+        "Melissa Rose Bernardo": 34,
+        "Matt Wolf": 32,
+        "Joey Sims": 32,
+        "Austin Fimmano": 29,
+        "David Rooney": 28,
+        "Anya Ryan": 28,
+        "Brittani Samuel": 27,
+        "Frank Scheck": 26,
+        "Arifa Akbar": 22,
+        "Juan A. Ramirez": 21,
+        "Bob Verini": 19,
+        "Kyle Turner": 18,
+        "Julia Rank": 18,
+        "Patrick Marmion": 17,
+        "Hayley Levitt": 16,
+        "Jonathan Mandell": 15,
+        "Johnny Oleksinski": 14,
+        "Charles Isherwood": 13,
+        "Sara Holdren": 12,
+        "Helen Shaw": 12,
+        "Dave Fargnoli": 9,
+        "Sam Marlowe": 8,
+        "Christopher Kelly": 6,
+        "Chris Jones": 4,
+        "Matt Windman": 4,
+        "Mark Kennedy": 4,
+        "Jackson McHenry": 4,
+        "Jesse Green": 2,
+        "Alexis Soloski": 2,
+        "Frank Rizzo": 2,
+        "Alice Saville": 2,
+        "Joe Dziemianowicz": 1,
+        "Michael Musto": 1,
+        "Dominic Maxwell": 1,
+        "Gillian Russo": 1
+      }
     }
   ],
   "topCriticsByGap": [
@@ -657,35 +674,28 @@
       "outlet": "usatoday",
       "tier": 2,
       "missingCount": 87,
-      "lastDate": "2026-08-26"
+      "lastDate": "2026-09-09"
     },
     {
-      "name": "Alun Hood",
-      "outlet": "whatsonstage",
-      "tier": 2,
-      "missingCount": 74,
-      "lastDate": "2026-08-12"
-    },
-    {
-      "name": "Andrzej Lukowski",
-      "outlet": "timeout-london",
-      "tier": 2,
-      "missingCount": 53,
-      "lastDate": "2026-09-15"
-    },
-    {
-      "name": "Frank Scheck",
+      "name": "Steven Suskin",
       "outlet": "nysr",
       "tier": 2,
-      "missingCount": 49,
-      "lastDate": "2026-09-15"
+      "missingCount": 63,
+      "lastDate": "2026-06-24"
     },
     {
-      "name": "Juan A. Ramirez",
-      "outlet": "theatrely",
+      "name": "David Finkle",
+      "outlet": "nysr",
       "tier": 2,
-      "missingCount": 48,
-      "lastDate": "2026-08-17"
+      "missingCount": 59,
+      "lastDate": "2026-09-20"
+    },
+    {
+      "name": "Sarah Hemming",
+      "outlet": "financialtimes",
+      "tier": 1,
+      "missingCount": 52,
+      "lastDate": "2026-09-22"
     },
     {
       "name": "Dan Rubins",
@@ -695,32 +705,39 @@
       "lastDate": "2026-09-09"
     },
     {
-      "name": "Laura Collins-Hughes",
+      "name": "Roma Torre",
+      "outlet": "ny1",
+      "tier": 2,
+      "missingCount": 47,
+      "lastDate": "2026-07-29"
+    },
+    {
+      "name": "Pete Hempstead",
+      "outlet": "theatermania",
+      "tier": 2,
+      "missingCount": 47,
+      "lastDate": "2026-06-08"
+    },
+    {
+      "name": "Laura Collins Hughes",
       "outlet": "nytimes",
       "tier": 1,
-      "missingCount": 40,
-      "lastDate": "2026-08-13"
+      "missingCount": 45,
+      "lastDate": "2026-09-21"
     },
     {
-      "name": "Arifa Akbar",
-      "outlet": "guardian",
+      "name": "Tim Bano",
+      "outlet": "financialtimes",
       "tier": 1,
-      "missingCount": 36,
-      "lastDate": "2026-09-04"
+      "missingCount": 35,
+      "lastDate": "2026-09-21"
     },
     {
-      "name": "Matt Wolf",
-      "outlet": "london-theatre",
+      "name": "Alun Hood",
+      "outlet": "whatsonstage",
       "tier": 2,
-      "missingCount": 33,
-      "lastDate": "2026-08-22"
-    },
-    {
-      "name": "Tom Wicker",
-      "outlet": "thestage",
-      "tier": 2,
-      "missingCount": 30,
-      "lastDate": "2026-09-10"
+      "missingCount": 35,
+      "lastDate": "2026-08-12"
     }
   ]
 }
