@@ -233,3 +233,20 @@ test('opera queries keep their Met anchoring unchanged', () => {
   });
   assert.ok(qs.every((q) => /Met|Metropolitan/.test(q)));
 });
+
+test('isRedditFresh (BRO-4215): skips shows touched within the window, using the later of scrape/attempt', () => {
+  const { isRedditFresh, lastRedditTouchMs } = require('./reddit-post-filters.js');
+  const now = Date.parse('2026-09-28T12:00:00Z');
+  const scraped = (iso) => ({ sources: { reddit: { lastUpdated: iso } } });
+  assert.equal(isRedditFresh(scraped('2026-09-28T01:00:00Z'), 20, now), true, '11h ago');
+  assert.equal(isRedditFresh(scraped('2026-09-27T12:00:00Z'), 20, now), false, '24h ago');
+  assert.equal(isRedditFresh({ redditLastAttempted: '2026-09-28T06:00:00Z' }, 20, now), true, 'no-data attempt counts');
+  // Old data + newer failed attempt: the attempt wins (max, not ||).
+  const both = { sources: { reddit: { lastUpdated: '2026-04-01T00:00:00Z' } }, redditLastAttempted: '2026-09-28T10:00:00Z' };
+  assert.equal(lastRedditTouchMs(both), Date.parse('2026-09-28T10:00:00Z'));
+  assert.equal(isRedditFresh(both, 20, now), true);
+  assert.equal(isRedditFresh(undefined, 20, now), false, 'never touched');
+  assert.equal(isRedditFresh({ sources: {} }, 20, now), false);
+  assert.equal(isRedditFresh(scraped('garbage'), 20, now), false, 'unparseable date ignored');
+  assert.equal(isRedditFresh(scraped('2026-09-28T11:00:00Z'), 0, now), false, 'hours=0 disables');
+});

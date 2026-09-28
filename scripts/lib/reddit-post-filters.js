@@ -332,7 +332,37 @@ function refreshStaleSortKey(buzzRecord) {
   return t ? new Date(t).getTime() : 0;
 }
 
+/**
+ * Latest Reddit touch for a buzz record: the LATER of the last successful
+ * scrape (sources.reddit.lastUpdated) and the last no-data attempt
+ * (redditLastAttempted). Unlike refreshStaleSortKey's `lastUpdated || attempted`
+ * this takes the max, so a newer failed attempt on top of old data counts.
+ * @returns {number|null} epoch ms, or null if never touched
+ */
+function lastRedditTouchMs(buzzRecord) {
+  const rec = buzzRecord || {};
+  const reddit = rec.sources && rec.sources.reddit;
+  const times = [reddit && reddit.lastUpdated, rec.redditLastAttempted]
+    .filter(Boolean).map((t) => new Date(t).getTime()).filter((t) => !Number.isNaN(t));
+  return times.length ? Math.max(...times) : null;
+}
+
+/**
+ * BRO-4215: true when the show's Reddit was scraped or attempted within
+ * `hours` of `nowMs`. The opening-night orchestrator dispatches the same
+ * opening-window shows ~7x/day; Reddit sentiment does not move on that
+ * cadence, and each re-scrape cost ~10 ScrapingBee credits per request
+ * (~193K credits in one week). hours <= 0 disables the skip.
+ */
+function isRedditFresh(buzzRecord, hours, nowMs = Date.now()) {
+  if (!(hours > 0)) return false;
+  const last = lastRedditTouchMs(buzzRecord);
+  return last !== null && nowMs - last < hours * 60 * 60 * 1000;
+}
+
 module.exports = {
+  lastRedditTouchMs,
+  isRedditFresh,
   isRoundupOrMegathread,
   isGenericTitle,
   isRedditVolumeInflated,
