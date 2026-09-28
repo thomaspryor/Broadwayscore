@@ -47,7 +47,7 @@
 
 'use strict';
 
-const { WIRE_SERVICE_OUTLETS, normalizeOutlet } = require('./review-normalization');
+const { WIRE_SERVICE_OUTLETS, normalizeOutlet, resolveOutletFromUrl } = require('./review-normalization');
 
 // The only source this check applies to — see the SCOPE note above. Widen
 // this set only after running the same corpus-wide false-positive scan this
@@ -193,6 +193,77 @@ function explainOutletDomainMismatch(data, registry) {
   return `URL host "${host}" does not match registered outlet "${data.outletId}"'s domain — likely outlet misattribution (borrowed tier weight)`;
 }
 
+// Archival / republication hosts a review legitimately lives on under its
+// own outlet's id: newspapers.com OCR scans of historical reviews and
+// Wayback Machine mirrors. (Wire-service syndication is exempted by outlet
+// id, and aggregator hosts never resolve to a different registered outlet
+// on the live corpus — 0 of 44 mismatches on 2026-09-28.)
+const HOST_MISMATCH_EXEMPT_HOSTS = ['newspapers.com', 'web.archive.org', 'archive.org', 'archive.ph', 'archive.today'];
+
+/**
+ * Audit advisory (2026 data audit S7-T6, BRO-4204): does the review URL's
+ * host belong to a DIFFERENT registered outlet than the row's outletId?
+ *
+ * The outlet id on a review file comes from the aggregator's label, not
+ * from the URL host, so a Time Out review can be filed as NYT
+ * (every-brilliant-thing-2026 / Adam Feldman, 2026-03). Unlike
+ * explainOutletDomainMismatch above — the scoped EXCLUSION for the
+ * submit-review-form ingest path — this is never a gate: rebuild-all-reviews
+ * stamps `outletHostMismatch: true` on the emitted reviews.json row and
+ * prints one advisory line, and the audit consumes the field. It fires
+ * whenever the host resolves to another registered outlet; `tiersDiffer`
+ * says whether the mismatch also borrows tier weight (the Feldman case is
+ * T1 → T1, still an attribution error on the live site).
+ *
+ * Exempt: wire services (AP/Reuters/Bloomberg/UPI syndicate on partner
+ * hosts by design), newspapers.com / web.archive.org provenance, and
+ * dual-hosted brands — an outlet whose own registry `domain`/`domainAliases`
+ * claim the host is never a mismatch, which is what keeps timeout-london on
+ * timeout.com/newyork (and telegraph vs sunday-telegraph) quiet.
+ *
+ * Host → outlet resolution delegates to review-normalization.js's
+ * resolveOutletFromUrl (the canonical domain index with its collision
+ * rules); tiers and domain ownership are read off the registry the caller
+ * passes, so tests run against the real data/outlet-registry.json.
+ *
+ * @param {{ outletId?: string, url?: string }} row
+ * @param {object} registry - loaded outlet-registry.json ({ outlets: {...} })
+ * @returns {{ mismatch: boolean, tiersDiffer: boolean, host: string|null,
+ *   outletId: string|null, outletTier: number|null, hostOutletId: string|null,
+ *   hostOutletTier: number|null, reason: string }}
+ */
+function classifyOutletHostMismatch({ outletId, url } = {}, registry) {
+  const out = {
+    mismatch: false, tiersDiffer: false, host: null,
+    outletId: null, outletTier: null, hostOutletId: null, hostOutletTier: null, reason: 'unvalidatable',
+  };
+  if (!url || !outletId || !registry || !registry.outlets) return out;
+  const host = extractHost(url);
+  if (!host) return { ...out, reason: 'unparseable-url' };
+  out.host = host;
+  if (HOST_MISMATCH_EXEMPT_HOSTS.some((d) => hostMatchesDomain(host, d))) return { ...out, reason: 'archival-host' };
+  const lower = String(outletId).toLowerCase();
+  const canonicalId = registry.outlets[lower] ? lower : normalizeOutlet(outletId);
+  const outlet = canonicalId ? registry.outlets[canonicalId] : null;
+  if (!outlet) return { ...out, reason: 'outlet-not-registered' };
+  out.outletId = canonicalId;
+  out.outletTier = outlet.tier || 3;
+  if (WIRE_SERVICE_OUTLETS.has(canonicalId)) return { ...out, reason: 'wire-service' };
+  if (getOutletDomains(outlet).some((d) => hostMatchesDomain(host, d))) return { ...out, reason: 'outlet-owns-host' };
+  const resolved = resolveOutletFromUrl(url);
+  const hostOutletId = resolved && resolved.outletId ? String(resolved.outletId) : null;
+  if (!hostOutletId) return { ...out, reason: 'host-not-registered' };
+  if (hostOutletId === canonicalId) return { ...out, reason: 'same-outlet' };
+  const hostOutlet = registry.outlets[hostOutletId];
+  if (!hostOutlet) return { ...out, reason: 'host-outlet-not-in-registry' };
+  out.hostOutletId = hostOutletId;
+  out.hostOutletTier = hostOutlet.tier || 3;
+  out.mismatch = true;
+  out.tiersDiffer = out.outletTier !== out.hostOutletTier;
+  out.reason = `URL host "${host}" belongs to registered outlet "${hostOutletId}" (T${out.hostOutletTier}), not "${canonicalId}" (T${out.outletTier})${out.tiersDiffer ? ' — tiers differ' : ''}`;
+  return out;
+}
+
 module.exports = {
   normalizeHost,
   normalizeDomain,
@@ -202,4 +273,6 @@ module.exports = {
   hostMatchesOutletDomain,
   hasOutletDomainEscapeHatch,
   explainOutletDomainMismatch,
+  HOST_MISMATCH_EXEMPT_HOSTS,
+  classifyOutletHostMismatch,
 };

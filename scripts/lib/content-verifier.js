@@ -426,7 +426,15 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
         reasoning: parsed.reasoning,
         show,
         fullText: scrapedText,
+        // Audit S6-T4 (BRO-4204): url + show feed the in-window slug-match
+        // veto; wrongShow is the CV shape the rebuild routes to its wrongShow
+        // family (wrongArticle AND wrongProduction).
+        url,
+        wrongShow: !!(parsed.wrongArticle && wpFlag),
       });
+      if (temporalOverrides.inWindowSlugMatch && wpFlag) {
+        console.log(`    ⚠ In-window slug-match veto: URL slug names the show and publishDate is inside the production window — wrongProduction confidence downgraded to low`);
+      }
       // BRO-2835: these day-counts were `new Date(...)`, which is Invalid Date
       // for an ordinal publishDate, so the annotation persisted onto the review
       // read "[OVERRIDE: review within NaNd of opening ...]". Same parser as the
