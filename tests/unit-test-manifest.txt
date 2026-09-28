@@ -443,6 +443,7 @@ tests/unit/cross-show-url-reroute.test.mjs
 tests/unit/curated-historical-min-reviews.test.mjs
 tests/unit/cv-ordinal-date-hints.test.mjs
 tests/unit/cv-stale-wrongproduction-selfheal.test.mjs
+tests/unit/cv-wrong-article-manual-clear.test.mjs
 tests/unit/data-health-check-push-timeout.test.mjs
 tests/unit/data-validation-job-budget.test.mjs
 tests/unit/date-utils.test.mjs
@@ -495,6 +496,7 @@ tests/unit/duplicate-of-url-mismatch.test.mjs
 tests/unit/email-capture-integrity.test.mjs
 tests/unit/enrich-card-acceptance-drafting.test.mjs
 tests/unit/enrich-card-rearm-vacuous.test.mjs
+tests/unit/enrich-ob-dates-closed-year-match.test.mjs
 tests/unit/ensemble.test.mjs
 tests/unit/essay-intro-nonreview-fp.test.mjs
 tests/unit/eurydice-image-found.test.mjs
