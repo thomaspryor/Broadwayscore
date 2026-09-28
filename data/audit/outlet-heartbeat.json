@@ -1,59 +1,70 @@
 {
-  "generatedAt": "2026-09-21T15:44:15.325Z",
+  "generatedAt": "2026-09-28T17:51:06.391Z",
   "rows": [
     {
       "outletId": "nytg",
       "market": "off-broadway",
       "tier": 2,
-      "reviewCount": 95,
+      "reviewCount": 102,
       "status": "green",
       "medianGapDays": 4,
       "thresholdDays": 45,
+      "silentDays": 1,
+      "lastReviewDate": "2026-09-27"
+    },
+    {
+      "outletId": "theatermania",
+      "market": "off-broadway",
+      "tier": 2,
+      "reviewCount": 123,
+      "status": "green",
+      "medianGapDays": 3,
+      "thresholdDays": 45,
       "silentDays": 3,
-      "lastReviewDate": "2026-09-15"
+      "lastReviewDate": "2026-09-25"
     },
     {
       "outletId": "newsday",
       "market": "broadway",
       "tier": 2,
-      "reviewCount": 286,
+      "reviewCount": 287,
       "status": "red",
       "medianGapDays": 7,
       "thresholdDays": 45,
-      "silentDays": 2465,
+      "silentDays": 2484,
       "lastReviewDate": "2019-12-05"
     },
     {
       "outletId": "nytimes",
       "market": "broadway",
       "tier": 1,
-      "reviewCount": 733,
+      "reviewCount": 737,
       "status": "green",
       "medianGapDays": 5,
       "thresholdDays": 45,
-      "silentDays": 10,
+      "silentDays": 29,
       "lastReviewDate": "2026-08-25"
     },
     {
       "outletId": "wsj",
       "market": "broadway",
       "tier": 1,
-      "reviewCount": 367,
+      "reviewCount": 369,
       "status": "green",
       "medianGapDays": 7,
       "thresholdDays": 45,
-      "silentDays": 2,
+      "silentDays": 21,
       "lastReviewDate": "2026-09-02"
     },
     {
       "outletId": "variety",
       "market": "broadway",
       "tier": 1,
-      "reviewCount": 599,
+      "reviewCount": 602,
       "status": "green",
       "medianGapDays": 6,
       "thresholdDays": 45,
-      "silentDays": 10,
+      "silentDays": 29,
       "lastReviewDate": "2026-08-25"
     },
     {
@@ -64,84 +75,84 @@
       "status": "green",
       "medianGapDays": 7,
       "thresholdDays": 45,
-      "silentDays": 10,
+      "silentDays": 29,
       "lastReviewDate": "2026-08-25"
     },
     {
       "outletId": "daily-mail",
       "market": "west-end",
       "tier": 2,
-      "reviewCount": 111,
+      "reviewCount": 126,
       "status": "green",
       "medianGapDays": 5,
       "thresholdDays": 45,
-      "silentDays": -2,
+      "silentDays": 8,
       "lastReviewDate": "2026-09-20"
     },
     {
       "outletId": "thestage",
       "market": "west-end",
       "tier": 2,
-      "reviewCount": 118,
+      "reviewCount": 148,
       "status": "green",
-      "medianGapDays": 5,
+      "medianGapDays": 4,
       "thresholdDays": 45,
-      "silentDays": 1,
-      "lastReviewDate": "2026-09-17"
+      "silentDays": 0,
+      "lastReviewDate": "2026-09-28"
     },
     {
       "outletId": "telegraph",
       "market": "west-end",
       "tier": 1,
-      "reviewCount": 95,
+      "reviewCount": 100,
       "status": "green",
       "medianGapDays": 6,
       "thresholdDays": 45,
-      "silentDays": 1,
-      "lastReviewDate": "2026-09-17"
+      "silentDays": 5,
+      "lastReviewDate": "2026-09-23"
     },
     {
       "outletId": "times-uk",
       "market": "west-end",
       "tier": 1,
-      "reviewCount": 122,
+      "reviewCount": 128,
       "status": "green",
       "medianGapDays": 4,
       "thresholdDays": 45,
-      "silentDays": 2,
-      "lastReviewDate": "2026-09-16"
+      "silentDays": 5,
+      "lastReviewDate": "2026-09-23"
     },
     {
       "outletId": "timeout-london",
       "market": "west-end",
       "tier": 2,
-      "reviewCount": 137,
+      "reviewCount": 143,
       "status": "green",
-      "medianGapDays": 2,
+      "medianGapDays": 2.5,
       "thresholdDays": 45,
-      "silentDays": 1,
-      "lastReviewDate": "2026-09-17"
+      "silentDays": 2,
+      "lastReviewDate": "2026-09-26"
     },
     {
       "outletId": "whatsonstage",
       "market": "west-end",
       "tier": 2,
-      "reviewCount": 120,
+      "reviewCount": 125,
       "status": "green",
       "medianGapDays": 2,
       "thresholdDays": 45,
-      "silentDays": 1,
-      "lastReviewDate": "2026-09-17"
+      "silentDays": 3,
+      "lastReviewDate": "2026-09-25"
     },
     {
       "outletId": "ap",
       "market": "broadway",
       "tier": 1,
-      "reviewCount": 155,
+      "reviewCount": 156,
       "status": "red",
       "medianGapDays": 10,
       "thresholdDays": 45,
-      "silentDays": 299,
+      "silentDays": 318,
       "lastReviewDate": "2025-11-09"
     },
     {
@@ -152,18 +163,18 @@
       "status": "red",
       "medianGapDays": 4,
       "thresholdDays": 45,
-      "silentDays": 494,
+      "silentDays": 513,
       "lastReviewDate": "2025-04-28"
     },
     {
       "outletId": "deadline",
       "market": "broadway",
       "tier": 2,
-      "reviewCount": 305,
+      "reviewCount": 306,
       "status": "green",
       "medianGapDays": 5,
       "thresholdDays": 45,
-      "silentDays": 6,
+      "silentDays": 25,
       "lastReviewDate": "2026-08-29"
     },
     {
@@ -174,18 +185,18 @@
       "status": "green",
       "medianGapDays": 6,
       "thresholdDays": 45,
-      "silentDays": 10,
+      "silentDays": 29,
       "lastReviewDate": "2026-08-25"
     },
     {
       "outletId": "nysr",
       "market": "broadway",
       "tier": 2,
-      "reviewCount": 473,
+      "reviewCount": 474,
       "status": "green",
       "medianGapDays": 1,
       "thresholdDays": 45,
-      "silentDays": 10,
+      "silentDays": 29,
       "lastReviewDate": "2026-08-25"
     },
     {
@@ -196,7 +207,7 @@
       "status": "red",
       "medianGapDays": 6,
       "thresholdDays": 45,
-      "silentDays": 97,
+      "silentDays": 116,
       "lastReviewDate": "2026-05-30"
     },
     {
@@ -207,7 +218,7 @@
       "status": "green",
       "medianGapDays": 4,
       "thresholdDays": 45,
-      "silentDays": 10,
+      "silentDays": 29,
       "lastReviewDate": "2026-08-25"
     },
     {
@@ -218,19 +229,19 @@
       "status": "red",
       "medianGapDays": 7,
       "thresholdDays": 45,
-      "silentDays": 239,
+      "silentDays": 258,
       "lastReviewDate": "2026-01-08"
     },
     {
       "outletId": "guardian",
       "market": "broadway",
       "tier": 1,
-      "reviewCount": 243,
-      "status": "red",
-      "medianGapDays": 8.5,
+      "reviewCount": 244,
+      "status": "green",
+      "medianGapDays": 9,
       "thresholdDays": 45,
-      "silentDays": 130,
-      "lastReviewDate": "2026-04-27"
+      "silentDays": 0,
+      "lastReviewDate": "2026-09-23"
     },
     {
       "outletId": "new-york-sun",
@@ -240,18 +251,18 @@
       "status": "green",
       "medianGapDays": 5,
       "thresholdDays": 45,
-      "silentDays": 9,
+      "silentDays": 28,
       "lastReviewDate": "2026-08-26"
     },
     {
       "outletId": "newyorker",
       "market": "broadway",
       "tier": 1,
-      "reviewCount": 97,
+      "reviewCount": 98,
       "status": "red",
       "medianGapDays": 25,
       "thresholdDays": 50,
-      "silentDays": 127,
+      "silentDays": 146,
       "lastReviewDate": "2026-04-30"
     },
     {
@@ -262,73 +273,73 @@
       "status": "red",
       "medianGapDays": 7,
       "thresholdDays": 45,
-      "silentDays": 121,
+      "silentDays": 140,
       "lastReviewDate": "2026-05-06"
     },
     {
       "outletId": "theatermania",
       "market": "broadway",
       "tier": 2,
-      "reviewCount": 344,
-      "status": "red",
+      "reviewCount": 347,
+      "status": "green",
       "medianGapDays": 7,
       "thresholdDays": 45,
-      "silentDays": 108,
-      "lastReviewDate": "2026-05-19"
+      "silentDays": 29,
+      "lastReviewDate": "2026-08-25"
     },
     {
       "outletId": "thewrap",
       "market": "broadway",
       "tier": 2,
-      "reviewCount": 332,
+      "reviewCount": 333,
       "status": "red",
       "medianGapDays": 5,
       "thresholdDays": 45,
-      "silentDays": 131,
+      "silentDays": 150,
       "lastReviewDate": "2026-04-26"
     },
     {
       "outletId": "timeout",
       "market": "broadway",
       "tier": 1,
-      "reviewCount": 420,
+      "reviewCount": 421,
       "status": "green",
       "medianGapDays": 5,
       "thresholdDays": 45,
-      "silentDays": 10,
+      "silentDays": 29,
       "lastReviewDate": "2026-08-25"
     },
     {
       "outletId": "vulture",
       "market": "broadway",
       "tier": 1,
-      "reviewCount": 431,
+      "reviewCount": 439,
       "status": "green",
       "medianGapDays": 5,
       "thresholdDays": 45,
-      "silentDays": 10,
+      "silentDays": 29,
       "lastReviewDate": "2026-08-25"
     },
     {
       "outletId": "amny",
       "market": "broadway",
       "tier": 2,
-      "reviewCount": 294,
+      "reviewCount": 297,
       "status": "green",
       "medianGapDays": 7,
       "thresholdDays": 45,
-      "silentDays": 10,
+      "silentDays": 29,
       "lastReviewDate": "2026-08-25"
     },
     {
       "outletId": "nbcny",
       "market": "broadway",
       "tier": 2,
-      "reviewCount": 96,
+      "reviewCount": 97,
       "status": "red",
       "medianGapDays": 7,
       "thresholdDays": 45,
-      "silentDays": 3342,
+      "silentDays": 3361,
       "lastReviewDate": "2017-07-11"
     },
     {
@@ -339,7 +350,7 @@
       "status": "red",
       "medianGapDays": 7,
       "thresholdDays": 45,
-      "silentDays": 108,
+      "silentDays": 127,
       "lastReviewDate": "2026-05-19"
     },
     {
@@ -350,7 +361,7 @@
       "status": "red",
       "medianGapDays": 12,
       "thresholdDays": 45,
-      "silentDays": 164,
+      "silentDays": 183,
       "lastReviewDate": "2026-03-24"
     },
     {
@@ -361,18 +372,18 @@
       "status": "red",
       "medianGapDays": 8,
       "thresholdDays": 45,
-      "silentDays": 2388,
+      "silentDays": 2407,
       "lastReviewDate": "2020-02-20"
     },
     {
       "outletId": "hollywood-reporter",
       "market": "broadway",
       "tier": 1,
-      "reviewCount": 372,
+      "reviewCount": 375,
       "status": "red",
       "medianGapDays": 5,
       "thresholdDays": 45,
-      "silentDays": 142,
+      "silentDays": 161,
       "lastReviewDate": "2026-04-15"
     },
     {
@@ -383,7 +394,7 @@
       "status": "green",
       "medianGapDays": 7,
       "thresholdDays": 45,
-      "silentDays": 10,
+      "silentDays": 29,
       "lastReviewDate": "2026-08-25"
     },
     {
@@ -394,29 +405,29 @@
       "status": "red",
       "medianGapDays": 7,
       "thresholdDays": 45,
-      "silentDays": 150,
+      "silentDays": 169,
       "lastReviewDate": "2026-04-07"
     },
     {
       "outletId": "nysr",
       "market": "off-broadway",
       "tier": 2,
-      "reviewCount": 106,
+      "reviewCount": 111,
       "status": "green",
       "medianGapDays": 2,
       "thresholdDays": 45,
       "silentDays": 0,
-      "lastReviewDate": "2026-09-18"
+      "lastReviewDate": "2026-09-28"
     },
     {
       "outletId": "theatrely",
       "market": "broadway",
       "tier": 2,
-      "reviewCount": 141,
+      "reviewCount": 142,
       "status": "green",
       "medianGapDays": 4,
       "thresholdDays": 45,
-      "silentDays": 10,
+      "silentDays": 29,
       "lastReviewDate": "2026-08-25"
     },
     {
@@ -427,7 +438,7 @@
       "status": "red",
       "medianGapDays": 24,
       "thresholdDays": 48,
-      "silentDays": 518,
+      "silentDays": 537,
       "lastReviewDate": "2025-04-04"
     },
     {
@@ -438,7 +449,7 @@
       "status": "green",
       "medianGapDays": 7,
       "thresholdDays": 45,
-      "silentDays": 9,
+      "silentDays": 28,
       "lastReviewDate": "2026-08-26"
     },
     {
@@ -449,7 +460,7 @@
       "status": "red",
       "medianGapDays": 8,
       "thresholdDays": 45,
-      "silentDays": 3158,
+      "silentDays": 3177,
       "lastReviewDate": "2018-01-11"
     },
     {
@@ -460,8 +471,19 @@
       "status": "red",
       "medianGapDays": 33,
       "thresholdDays": 66,
-      "silentDays": 491,
+      "silentDays": 510,
       "lastReviewDate": "2025-05-01"
+    },
+    {
+      "outletId": "observer",
+      "market": "broadway",
+      "tier": 2,
+      "reviewCount": 91,
+      "status": "red",
+      "medianGapDays": 27.5,
+      "thresholdDays": 55,
+      "silentDays": 467,
+      "lastReviewDate": "2025-06-13"
     },
     {
       "outletId": "latimes",
@@ -471,18 +493,18 @@
       "status": "red",
       "medianGapDays": 41,
       "thresholdDays": 82,
-      "silentDays": 126,
+      "silentDays": 145,
       "lastReviewDate": "2026-05-01"
     },
     {
       "outletId": "thestage",
       "market": "broadway",
       "tier": 2,
-      "reviewCount": 78,
+      "reviewCount": 82,
       "status": "red",
-      "medianGapDays": 18,
+      "medianGapDays": 17,
       "thresholdDays": 45,
-      "silentDays": 661,
+      "silentDays": 680,
       "lastReviewDate": "2024-11-12"
     },
     {
@@ -493,7 +515,7 @@
       "status": "red",
       "medianGapDays": 77,
       "thresholdDays": 154,
-      "silentDays": 518,
+      "silentDays": 537,
       "lastReviewDate": "2025-04-04"
     },
     {
@@ -504,7 +526,7 @@
       "status": "red",
       "medianGapDays": 49,
       "thresholdDays": 98,
-      "silentDays": 2371,
+      "silentDays": 2390,
       "lastReviewDate": "2020-03-08"
     },
     {
@@ -515,7 +537,7 @@
       "status": "red",
       "medianGapDays": 28,
       "thresholdDays": 56,
-      "silentDays": 536,
+      "silentDays": 555,
       "lastReviewDate": "2025-03-17"
     },
     {
@@ -526,96 +548,85 @@
       "status": "red",
       "medianGapDays": 168,
       "thresholdDays": 336,
-      "silentDays": 2694,
+      "silentDays": 2713,
       "lastReviewDate": "2019-04-20"
-    },
-    {
-      "outletId": "backstage",
-      "market": "broadway",
-      "tier": 2,
-      "reviewCount": 65,
-      "status": "red",
-      "medianGapDays": 7.5,
-      "thresholdDays": 45,
-      "silentDays": 4880,
-      "lastReviewDate": "2013-04-25"
     },
     {
       "outletId": "bloomberg",
       "market": "broadway",
       "tier": 2,
-      "reviewCount": 79,
+      "reviewCount": 74,
       "status": "red",
       "medianGapDays": 7,
       "thresholdDays": 45,
-      "silentDays": 3094,
+      "silentDays": 3113,
       "lastReviewDate": "2018-03-16"
     },
     {
       "outletId": "london-theatre",
       "market": "west-end",
       "tier": 2,
-      "reviewCount": 145,
+      "reviewCount": 149,
       "status": "green",
       "medianGapDays": 3,
       "thresholdDays": 45,
-      "silentDays": 1,
-      "lastReviewDate": "2026-09-17"
+      "silentDays": 3,
+      "lastReviewDate": "2026-09-25"
     },
     {
       "outletId": "guardian",
       "market": "west-end",
       "tier": 1,
-      "reviewCount": 149,
+      "reviewCount": 157,
       "status": "green",
       "medianGapDays": 3,
       "thresholdDays": 45,
       "silentDays": 1,
-      "lastReviewDate": "2026-09-17"
+      "lastReviewDate": "2026-09-27"
+    },
+    {
+      "outletId": "backstage",
+      "market": "broadway",
+      "tier": 2,
+      "reviewCount": 60,
+      "status": "red",
+      "medianGapDays": 10,
+      "thresholdDays": 45,
+      "silentDays": 4899,
+      "lastReviewDate": "2013-04-25"
     },
     {
       "outletId": "standard",
       "market": "west-end",
       "tier": 1,
-      "reviewCount": 105,
+      "reviewCount": 111,
       "status": "green",
       "medianGapDays": 5,
       "thresholdDays": 45,
-      "silentDays": 2,
-      "lastReviewDate": "2026-09-16"
+      "silentDays": 0,
+      "lastReviewDate": "2026-09-28"
     },
     {
       "outletId": "financialtimes",
       "market": "west-end",
       "tier": 1,
-      "reviewCount": 77,
+      "reviewCount": 80,
       "status": "green",
       "medianGapDays": 6,
       "thresholdDays": 45,
-      "silentDays": 0,
-      "lastReviewDate": "2026-09-18"
+      "silentDays": 6,
+      "lastReviewDate": "2026-09-22"
     },
     {
       "outletId": "independent",
       "market": "west-end",
       "tier": 2,
-      "reviewCount": 59,
+      "reviewCount": 61,
       "status": "green",
-      "medianGapDays": 8.5,
+      "medianGapDays": 9.5,
       "thresholdDays": 45,
-      "silentDays": 2,
+      "silentDays": 12,
       "lastReviewDate": "2026-09-16"
-    },
-    {
-      "outletId": "observer",
-      "market": "broadway",
-      "tier": 2,
-      "reviewCount": 48,
-      "status": "red",
-      "medianGapDays": 45,
-      "thresholdDays": 90,
-      "silentDays": 448,
-      "lastReviewDate": "2025-06-13"
     },
     {
       "outletId": "rollingstone",
@@ -625,84 +636,73 @@
       "status": "red",
       "medianGapDays": 111.5,
       "thresholdDays": 223,
-      "silentDays": 688,
+      "silentDays": 707,
       "lastReviewDate": "2024-10-16"
     },
     {
       "outletId": "nyt-theater",
       "market": "off-broadway",
       "tier": 2,
-      "reviewCount": 60,
+      "reviewCount": 64,
       "status": "green",
       "medianGapDays": 5,
       "thresholdDays": 45,
       "silentDays": 0,
-      "lastReviewDate": "2026-09-18"
+      "lastReviewDate": "2026-09-28"
     },
     {
       "outletId": "talkinbroadway",
       "market": "off-broadway",
       "tier": 2,
-      "reviewCount": 59,
+      "reviewCount": 61,
       "status": "green",
-      "medianGapDays": 5,
+      "medianGapDays": 4.5,
       "thresholdDays": 45,
-      "silentDays": 0,
+      "silentDays": 10,
       "lastReviewDate": "2026-09-18"
     },
     {
       "outletId": "new-york-sun",
       "market": "off-broadway",
       "tier": 2,
-      "reviewCount": 28,
+      "reviewCount": 29,
       "status": "green",
       "medianGapDays": 8,
       "thresholdDays": 45,
-      "silentDays": 24,
-      "lastReviewDate": "2026-08-25"
-    },
-    {
-      "outletId": "theatermania",
-      "market": "off-broadway",
-      "tier": 2,
-      "reviewCount": 111,
-      "status": "green",
-      "medianGapDays": 3,
-      "thresholdDays": 45,
-      "silentDays": 0,
-      "lastReviewDate": "2026-09-18"
+      "silentDays": 19,
+      "lastReviewDate": "2026-09-09"
     },
     {
       "outletId": "timeout",
       "market": "off-broadway",
       "tier": 1,
-      "reviewCount": 39,
+      "reviewCount": 42,
       "status": "green",
-      "medianGapDays": 7.5,
+      "medianGapDays": 8,
       "thresholdDays": 45,
-      "silentDays": 4,
-      "lastReviewDate": "2026-09-14"
+      "silentDays": 1,
+      "lastReviewDate": "2026-09-27"
     },
     {
       "outletId": "i-paper",
       "market": "west-end",
       "tier": 2,
-      "reviewCount": 30,
+      "reviewCount": 34,
       "status": "green",
-      "medianGapDays": 36,
-      "thresholdDays": 72,
+      "medianGapDays": 28,
+      "thresholdDays": 56,
       "silentDays": 4,
-      "lastReviewDate": "2026-09-14"
+      "lastReviewDate": "2026-09-24"
     },
     {
       "outletId": "nytimes",
       "market": "west-end",
       "tier": 1,
-      "reviewCount": 13,
+      "reviewCount": 15,
       "status": "green",
       "medianGapDays": 87.5,
       "thresholdDays": 175,
-      "silentDays": 57,
+      "silentDays": 67,
       "lastReviewDate": "2026-07-23"
     },
     {
@@ -713,7 +713,7 @@
       "status": "green",
       "medianGapDays": 173.5,
       "thresholdDays": 347,
-      "silentDays": 62,
+      "silentDays": 72,
       "lastReviewDate": "2026-07-18"
     },
     {
@@ -724,7 +724,7 @@
       "status": "red",
       "medianGapDays": 1227,
       "thresholdDays": 2454,
-      "silentDays": 4518,
+      "silentDays": 4537,
       "lastReviewDate": "2014-04-22"
     },
     {
@@ -735,19 +735,19 @@
       "status": "green",
       "medianGapDays": 16,
       "thresholdDays": 45,
-      "silentDays": 6,
+      "silentDays": 16,
       "lastReviewDate": "2026-09-12"
     },
     {
       "outletId": "nytimes",
       "market": "off-broadway",
       "tier": 1,
-      "reviewCount": 87,
+      "reviewCount": 92,
       "status": "green",
-      "medianGapDays": 5.5,
+      "medianGapDays": 5,
       "thresholdDays": 45,
-      "silentDays": 0,
-      "lastReviewDate": "2026-09-18"
+      "silentDays": 5,
+      "lastReviewDate": "2026-09-23"
     },
     {
       "outletId": "theatrely",
@@ -757,30 +757,30 @@
       "status": "green",
       "medianGapDays": 78,
       "thresholdDays": 156,
-      "silentDays": 0,
+      "silentDays": 10,
       "lastReviewDate": "2026-09-18"
     },
     {
       "outletId": "thewrap",
       "market": "off-broadway",
       "tier": 2,
-      "reviewCount": 30,
+      "reviewCount": 31,
       "status": "green",
-      "medianGapDays": 10,
+      "medianGapDays": 10.5,
       "thresholdDays": 45,
-      "silentDays": 2,
+      "silentDays": 12,
       "lastReviewDate": "2026-09-16"
     },
     {
       "outletId": "vulture",
       "market": "off-broadway",
       "tier": 1,
-      "reviewCount": 53,
+      "reviewCount": 61,
       "status": "green",
-      "medianGapDays": 8.5,
+      "medianGapDays": 8,
       "thresholdDays": 45,
-      "silentDays": 1,
-      "lastReviewDate": "2026-09-17"
+      "silentDays": 0,
+      "lastReviewDate": "2026-09-28"
     },
     {
       "outletId": "billboard",
@@ -790,7 +790,7 @@
       "status": "red",
       "medianGapDays": 707,
       "thresholdDays": 1414,
-      "silentDays": 1614,
+      "silentDays": 1633,
       "lastReviewDate": "2022-04-04"
     },
     {
@@ -801,7 +801,7 @@
       "status": "red",
       "medianGapDays": 13.5,
       "thresholdDays": 45,
-      "silentDays": 148,
+      "silentDays": 167,
       "lastReviewDate": "2026-04-09"
     },
     {
@@ -812,29 +812,29 @@
       "status": "red",
       "medianGapDays": 26,
       "thresholdDays": 52,
-      "silentDays": 2845,
+      "silentDays": 2864,
       "lastReviewDate": "2018-11-20"
     },
     {
       "outletId": "wsj",
       "market": "off-broadway",
       "tier": 1,
-      "reviewCount": 40,
+      "reviewCount": 43,
       "status": "green",
       "medianGapDays": 7,
       "thresholdDays": 45,
-      "silentDays": 8,
-      "lastReviewDate": "2026-09-10"
+      "silentDays": 4,
+      "lastReviewDate": "2026-09-24"
     },
     {
       "outletId": "newyorker",
       "market": "off-broadway",
       "tier": 1,
-      "reviewCount": 10,
+      "reviewCount": 11,
       "status": "green",
-      "medianGapDays": 52,
-      "thresholdDays": 104,
-      "silentDays": 57,
+      "medianGapDays": 77,
+      "thresholdDays": 154,
+      "silentDays": 67,
       "lastReviewDate": "2026-07-23"
     },
     {
@@ -845,7 +845,7 @@
       "status": "green",
       "medianGapDays": 612,
       "thresholdDays": 1224,
-      "silentDays": 495,
+      "silentDays": 514,
       "lastReviewDate": "2025-04-27"
     },
     {
@@ -856,7 +856,7 @@
       "status": "green",
       "medianGapDays": 542,
       "thresholdDays": 1084,
-      "silentDays": 157,
+      "silentDays": 176,
       "lastReviewDate": "2026-03-31"
     },
     {
@@ -867,7 +867,7 @@
       "status": "green",
       "medianGapDays": 134,
       "thresholdDays": 268,
-      "silentDays": 0,
+      "silentDays": 19,
       "lastReviewDate": "2026-09-04"
     },
     {
@@ -878,7 +878,7 @@
       "status": "red",
       "medianGapDays": 164,
       "thresholdDays": 328,
-      "silentDays": 1163,
+      "silentDays": 1182,
       "lastReviewDate": "2023-06-29"
     },
     {
@@ -889,7 +889,7 @@
       "status": "green",
       "medianGapDays": 41,
       "thresholdDays": 82,
-      "silentDays": 10,
+      "silentDays": 29,
       "lastReviewDate": "2026-08-25"
     },
     {
@@ -900,18 +900,18 @@
       "status": "green",
       "medianGapDays": 20,
       "thresholdDays": 45,
-      "silentDays": 10,
+      "silentDays": 29,
       "lastReviewDate": "2026-08-25"
     },
     {
       "outletId": "amny",
       "market": "off-broadway",
       "tier": 2,
-      "reviewCount": 11,
+      "reviewCount": 12,
       "status": "green",
-      "medianGapDays": 41,
-      "thresholdDays": 82,
-      "silentDays": 33,
+      "medianGapDays": 42,
+      "thresholdDays": 84,
+      "silentDays": 43,
       "lastReviewDate": "2026-08-16"
     },
     {
@@ -922,7 +922,7 @@
       "status": "green",
       "medianGapDays": 161,
       "thresholdDays": 322,
-      "silentDays": 168,
+      "silentDays": 178,
       "lastReviewDate": "2026-04-03"
     },
     {
@@ -933,19 +933,19 @@
       "status": "green",
       "medianGapDays": 1588.5,
       "thresholdDays": 3177,
-      "silentDays": 16,
+      "silentDays": 26,
       "lastReviewDate": "2026-09-02"
     },
     {
       "outletId": "financialtimes",
       "market": "off-broadway",
       "tier": 1,
-      "reviewCount": 4,
+      "reviewCount": 5,
       "status": "green",
-      "medianGapDays": 239,
-      "thresholdDays": 478,
-      "silentDays": 126,
-      "lastReviewDate": "2026-05-15"
+      "medianGapDays": 185,
+      "thresholdDays": 370,
+      "silentDays": 5,
+      "lastReviewDate": "2026-09-23"
     },
     {
       "outletId": "washpost",
@@ -955,29 +955,29 @@
       "status": "green",
       "medianGapDays": 820,
       "thresholdDays": 1640,
-      "silentDays": 171,
+      "silentDays": 181,
       "lastReviewDate": "2026-03-31"
     },
     {
       "outletId": "nypost",
       "market": "off-broadway",
       "tier": 2,
-      "reviewCount": 6,
+      "reviewCount": 7,
       "status": "green",
-      "medianGapDays": 166,
-      "thresholdDays": 332,
-      "silentDays": 51,
+      "medianGapDays": 316,
+      "thresholdDays": 632,
+      "silentDays": 61,
       "lastReviewDate": "2026-07-29"
     },
     {
       "outletId": "chicagotribune",
       "market": "off-broadway",
       "tier": 2,
-      "reviewCount": 4,
+      "reviewCount": 5,
       "status": "green",
-      "medianGapDays": 467,
-      "thresholdDays": 934,
-      "silentDays": 51,
+      "medianGapDays": 758,
+      "thresholdDays": 1516,
+      "silentDays": 61,
       "lastReviewDate": "2026-07-29"
     },
     {
@@ -988,7 +988,7 @@
       "status": "red",
       "medianGapDays": 2504,
       "thresholdDays": 5008,
-      "silentDays": 5250,
+      "silentDays": 5269,
       "lastReviewDate": "2012-04-20"
     },
     {
@@ -999,19 +999,19 @@
       "status": "green",
       "medianGapDays": 248,
       "thresholdDays": 496,
-      "silentDays": 3,
+      "silentDays": 13,
       "lastReviewDate": "2026-09-15"
     },
     {
       "outletId": "times-uk",
       "market": "off-broadway",
       "tier": 1,
-      "reviewCount": 4,
-      "status": "red",
-      "medianGapDays": 44,
-      "thresholdDays": 88,
-      "silentDays": 126,
-      "lastReviewDate": "2026-05-15"
+      "reviewCount": 5,
+      "status": "green",
+      "medianGapDays": 87.5,
+      "thresholdDays": 175,
+      "silentDays": 5,
+      "lastReviewDate": "2026-09-23"
     },
     {
       "outletId": "bloomberg",
@@ -1021,17 +1021,17 @@
       "status": "unknown",
       "reason": "insufficient-history",
       "lastReviewDate": "2012-11-15",
-      "silentDays": 5055
+      "silentDays": 5065
     },
     {
       "outletId": "slantmagazine",
       "market": "off-broadway",
       "tier": 2,
       "reviewCount": 6,
-      "status": "green",
+      "status": "red",
       "medianGapDays": 35,
       "thresholdDays": 70,
-      "silentDays": 70,
+      "silentDays": 80,
       "lastReviewDate": "2026-07-10"
     },
     {
@@ -1042,7 +1042,7 @@
       "status": "unknown",
       "reason": "insufficient-history",
       "lastReviewDate": "2017-12-22",
-      "silentDays": 3192
+      "silentDays": 3202
     },
     {
       "outletId": "indiewire",
@@ -1052,7 +1052,7 @@
       "status": "green",
       "medianGapDays": 1239,
       "thresholdDays": 2478,
-      "silentDays": 1817,
+      "silentDays": 1836,
       "lastReviewDate": "2021-09-13"
     },
     {
@@ -1063,7 +1063,7 @@
       "status": "green",
       "medianGapDays": 1532,
       "thresholdDays": 3064,
-      "silentDays": 7,
+      "silentDays": 26,
       "lastReviewDate": "2026-08-28"
     },
     {
@@ -1074,7 +1074,7 @@
       "status": "green",
       "medianGapDays": 1236.5,
       "thresholdDays": 2473,
-      "silentDays": 55,
+      "silentDays": 65,
       "lastReviewDate": "2026-07-25"
     },
     {
@@ -1085,17 +1085,18 @@
       "status": "unknown",
       "reason": "insufficient-history",
       "lastReviewDate": "2019-10-17",
-      "silentDays": 2528
+      "silentDays": 2538
     },
     {
       "outletId": "hollywood-reporter",
       "market": "off-broadway",
       "tier": 1,
-      "reviewCount": 1,
-      "status": "unknown",
-      "reason": "insufficient-history",
-      "lastReviewDate": "2019-10-17",
-      "silentDays": 2528
+      "reviewCount": 2,
+      "status": "red",
+      "medianGapDays": 1051,
+      "thresholdDays": 2102,
+      "silentDays": 2538,
+      "lastReviewDate": "2019-10-17"
     },
     {
       "outletId": "variety",
@@ -1105,7 +1106,7 @@
       "status": "green",
       "medianGapDays": 1178.5,
       "thresholdDays": 2357,
-      "silentDays": 170,
+      "silentDays": 180,
       "lastReviewDate": "2026-04-01"
     },
     {
@@ -1116,7 +1117,7 @@
       "status": "red",
       "medianGapDays": 139,
       "thresholdDays": 278,
-      "silentDays": 353,
+      "silentDays": 363,
       "lastReviewDate": "2025-09-30"
     },
     {
@@ -1127,7 +1128,7 @@
       "status": "green",
       "medianGapDays": 4655,
       "thresholdDays": 9310,
-      "silentDays": 273,
+      "silentDays": 283,
       "lastReviewDate": "2025-12-19"
     },
     {
@@ -1138,7 +1139,7 @@
       "status": "unknown",
       "reason": "insufficient-history",
       "lastReviewDate": "2011-09-23",
-      "silentDays": 5474
+      "silentDays": 5484
     },
     {
       "outletId": "usatoday",
@@ -1148,7 +1149,7 @@
       "status": "unknown",
       "reason": "insufficient-history",
       "lastReviewDate": "2026-09-15",
-      "silentDays": 3
+      "silentDays": 13
     },
     {
       "outletId": "daily-mail",
@@ -1158,7 +1159,7 @@
       "status": "red",
       "medianGapDays": 2,
       "thresholdDays": 45,
-      "silentDays": 166,
+      "silentDays": 176,
       "lastReviewDate": "2026-04-05"
     },
     {
@@ -1169,17 +1170,7 @@
       "status": "unknown",
       "reason": "insufficient-history",
       "lastReviewDate": "2026-04-01",
-      "silentDays": 170
-    },
-    {
-      "outletId": "thestage",
-      "market": "off-broadway",
-      "tier": 2,
-      "reviewCount": 1,
-      "status": "unknown",
-      "reason": "insufficient-history",
-      "lastReviewDate": "2026-04-01",
-      "silentDays": 170
+      "silentDays": 180
     },
     {
       "outletId": "whatsonstage",
@@ -1189,7 +1180,17 @@
       "status": "unknown",
       "reason": "insufficient-history",
       "lastReviewDate": "2026-04-01",
-      "silentDays": 170
+      "silentDays": 180
+    },
+    {
+      "outletId": "thestage",
+      "market": "off-broadway",
+      "tier": 2,
+      "reviewCount": 1,
+      "status": "unknown",
+      "reason": "insufficient-history",
+      "lastReviewDate": "2024-11-19",
+      "silentDays": 678
     },
     {
       "outletId": "whatsonstage",
@@ -1199,7 +1200,7 @@
       "status": "unknown",
       "reason": "insufficient-history",
       "lastReviewDate": "2021-12-10",
-      "silentDays": 1729
+      "silentDays": 1748
     }
   ]
 }
