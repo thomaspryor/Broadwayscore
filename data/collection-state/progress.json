@@ -70,7 +70,8 @@
     "schmigadoon-2026/thewrap--robert-hofler.json",
     "schmigadoon-2026/wsj--unknown.json",
     "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
-    "avenue-q-west-end-2026/reviewsgate--william-russell.json"
+    "avenue-q-west-end-2026/reviewsgate--william-russell.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/culturesauce--unknown.json"
   ],
   "failed": [
     "tru-off-west-end-2026/guardian--unknown.json",
@@ -335,7 +336,14 @@
     "avenue-q-west-end-2026/backstage--david-sheward.json",
     "avenue-q-west-end-2026/sunday-express--callum-crumlish.json",
     "avenue-q-west-end-2026/talkinbroadway--matthew-murray.json",
-    "avenue-q-west-end-2026/talkinbroadway--unknown.json"
+    "avenue-q-west-end-2026/talkinbroadway--unknown.json",
+    "macbeth-off-broadway-2026/talkclassical--unknown.json",
+    "macbeth-off-broadway-2026/woman-around-town--unknown.json",
+    "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
+    "in-honor-of-jean-michel-basquiat-off-broadway-2026/exeunt-magazine--unknown.json",
+    "pre-existing-condition-off-broadway-2026/guardian--unknown.json",
+    "pre-existing-condition-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "pre-existing-condition-off-broadway-2026/airmail--air-mail.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -373,7 +381,8 @@
       "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
-      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json"
+      "schmigadoon-2026/theater-pizzazz--eyal-solomon.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/culturesauce--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -430,7 +439,7 @@
     ]
   },
   "startTime": "2026-09-28T09:43:14.536Z",
-  "lastProcessed": "avenue-q-west-end-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/off-off-online--deirdre-donovan.json",
   "log": [
     {
       "t": "2026-09-28T09:46:48.867Z",
@@ -533,6 +542,40 @@
       "t": "2026-09-28T12:33:58.799Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-28T12:51:22.600Z",
+      "event": "bb-session",
+      "session": "620d6e56",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-28T12:51:23.558Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-28T12:51:41.801Z",
+      "event": "bb-session",
+      "session": "b2cc8c03",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-28T12:51:42.675Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-28T12:53:24.740Z",
+      "event": "bb-session",
+      "session": "f09ae99e",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    },
+    {
+      "t": "2026-09-28T12:53:41.038Z",
+      "event": "bb-session",
+      "session": "795a0875",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
     }
   ]
 }
