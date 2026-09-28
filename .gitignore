@@ -274,6 +274,11 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # literally `test -f docs/health-check-triage-2026-07-24.md`, so it has to be
 # committed rather than scratch/local like the rest of /docs/.
 !/docs/health-check-triage-2026-07-24.md
+# BRO-4207's opening-night ingestion review — the design that BRO-4210 (the
+# opening-night lane epic) and BRO-4208/BRO-4209 point at, so the sessions
+# that pick those cards up can find it in the repo, not in one cloud sandbox's
+# scratch copy (same durable-path rule as the two entries above).
+!/docs/opening-night-autonomy-review-2026-09-28.md
 # BRO-128's Les Mis Arena Concert Reddit post draft — acceptance criteria is
 # literally `test -f docs/reddit-les-mis-arena-concert.md`, so it has to be
 # committed rather than scratch/local like the rest of /docs/.
