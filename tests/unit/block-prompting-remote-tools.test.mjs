@@ -53,10 +53,15 @@ test('self-initiated send_later and create_trigger are denied', () => {
   }
 });
 
-test('send_later and create_trigger the owner asked for pass through', () => {
+test('re-arming a watch the owner set up earlier is denied (prompts while they sleep)', () => {
+  for (const tool of ['send_later', 'create_trigger']) {
+    assert.equal(run(remote(tool, { initiation: 'human_schedule' })), 'deny', tool);
+  }
+});
+
+test('send_later and create_trigger the owner is asking for now pass through', () => {
   for (const tool of ['send_later', 'create_trigger']) {
     assert.equal(run(remote(tool, { initiation: 'human_request' })), 'pass', tool);
-    assert.equal(run(remote(tool, { initiation: 'human_schedule' })), 'pass', tool);
   }
 });
 

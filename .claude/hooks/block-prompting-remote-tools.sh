@@ -5,9 +5,10 @@
 # that have a prompt-free equivalent before the prompt appears.
 #
 # Scope, on purpose:
-#   send_later / create_trigger: denied unless initiation is human_request or
-#     human_schedule (the owner asked for it, so a confirmation is expected).
-#     Claude's own check-ins use ScheduleWakeup, Monitor or PR subscriptions.
+#   send_later / create_trigger: denied unless initiation is human_request (the
+#     owner is asking right now, so they are there to confirm). human_schedule
+#     re-arms are denied too: they prompt later, often while the owner sleeps,
+#     and the unanswered prompt silently ends the watch (BRO-4258).
 #   add_repo: denied only for thomaspryor/Broadwayscore when the session's
 #     project checkout already is that repo. Every other repo passes through.
 # Fails open (exit 0, no decision) on missing jq or unparseable input.
@@ -31,8 +32,8 @@ case "$tool" in
   mcp__Claude_Code_Remote__send_later|mcp__claude-code-remote__send_later|\
   mcp__Claude_Code_Remote__create_trigger|mcp__claude-code-remote__create_trigger)
     initiation="$(printf '%s' "$input" | jq -r '.tool_input.initiation // ""' 2>/dev/null)"
-    case "$initiation" in human_request|human_schedule) exit 0 ;; esac
-    deny "Blocked: send_later and create_trigger put an approval prompt on the owner's phone every time (BRO-4236), so they are reserved for reminders or schedules the owner's own message asked for. For your own check-ins: to follow work that must finish (a land.yml run, a deploy), wait in this turn with a run_in_background Bash loop or Monitor (e.g. poll until the land/<name> ref is deleted, which land.yml does on success); subscribe_pr_activity when a PR exists; ScheduleWakeup (always pass a prompt; max 3600s) only as a best-effort nudge, since it can fail to fire. Do not retry with the other scheduling tool."
+    case "$initiation" in human_request) exit 0 ;; esac
+    deny "Blocked: send_later and create_trigger put an approval prompt on the owner's phone every time (BRO-4236), so they are reserved for a reminder or schedule the owner is asking for in their current message. Re-arming a watch or loop is blocked too: nobody answers that prompt at night, so the watch would silently stop (BRO-4258). Overnight watches are scheduled up front while the owner is awake; see .claude/CLOUD.md 'Overnight watches'. For your own check-ins: to follow work that must finish (a land.yml run, a deploy), wait in this turn with a run_in_background Bash loop or Monitor (e.g. poll until the land/<name> ref is deleted, which land.yml does on success); subscribe_pr_activity when a PR exists; ScheduleWakeup (always pass a prompt; max 3600s) only as a best-effort nudge, since it can fail to fire. If a watch you are running is now blocked, say so in your status line and next report (no push notification: the owner may be asleep) instead of retrying. Do not retry with the other scheduling tool."
     ;;
   mcp__Claude_Code_Remote__add_repo|mcp__claude-code-remote__add_repo)
     owner="$(printf '%s' "$input" | jq -r '.tool_input.owner // "" | ascii_downcase' 2>/dev/null)"
