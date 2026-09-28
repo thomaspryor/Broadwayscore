@@ -334,3 +334,6 @@ test('session-start.sh: without CLAUDE_CODE_REMOTE (Mac-like) it only warns and 
     fs.rmSync(fakeHome, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 }));
+
+// BRO-4234's printed owner banner was replaced by the installed global
+// instructions (BRO-4237): see scripts/tests/global-instructions.test.mjs.
