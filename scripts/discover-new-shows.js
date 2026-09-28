@@ -1343,6 +1343,15 @@ const VENUE_PAGE_EXCLUDE_PATTERNS = [
   // 'conference' for "Sat Conference 2026": "Conference of the Birds" is a
   // real, staged play.
   'acting lab',
+  // Orange Tree / Marylebone recitals and talks the S4-T11 promoter dry-run
+  // (2026-09-28) would otherwise have confirmed from the venue page:
+  // "Schubert Winterreise", "Schubert Die Schöne Müllerin", "Impressions from
+  // Debussy to Coltrane", "The Sound of Shakespeare", "Solace of Pilgrims: A
+  // Lenten Journey", "David Owen Norris: Made in England", "SAT Conference
+  // 2026". Owner rule (D3): keep what gets or might get reviewed — recitals
+  // and conferences do not. Corpus-audited: zero hits across 3,073 titles.
+  'schubert', 'debussy', 'winterreise', 'lieder', 'song cycle', 'recital',
+  'lenten', 'sat conference', 'the sound of shakespeare', 'david owen norris',
 ];
 
 // Per-venue candidate cap (mirrors OB_VENUE_CAP below) — one bad parser
