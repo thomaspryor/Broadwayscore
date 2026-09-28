@@ -1,4 +1,5 @@
 'use strict';
+// venue-write-guard-ok: the evidence object records which venue markers the review text named for the reroute verdict; it never writes a venue into shows.json (the reroute only moves a review file).
 
 /**
  * Cross-market reroute guard — BRO-4204 2026 data audit, sprint task S6-T2.

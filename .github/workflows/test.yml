@@ -343,6 +343,10 @@ on:
       # scripts/audit-toplevel-script-test-yml-coverage.test.mjs enforces it).
       - 'scripts/check-broadway-source-coverage.js'
       - 'scripts/check-discovery-source-blind.js'
+      # West End promoter job summary (audit S4-T10): required by
+      # tests/unit/we-aggregator-dedup-rejections.test.mjs, so a solo edit
+      # must trigger CI (same floor test).
+      - 'scripts/we-promotion-job-summary.js'
       # scripts/audit-workflow-concurrency.js is the lint-workflows CI gate
       # itself (line ~2042 below) — its parsing logic now lives in
       # scripts/lib/ci-cancellation-guard.js (globbed above) but this file is
@@ -1262,6 +1266,7 @@ on:
       # promoter + its test still need their own entries so a solo edit
       # triggers CI.
       - 'scripts/promote-we-aggregator-candidates.js'
+      - 'scripts/we-promotion-job-summary.js'
       - 'tests/unit/promote-we-aggregator-auto.test.mjs'
       # Transfer auto-detection (pure lib + driver, 2026-07-11)
       - 'scripts/detect-regional-transfers.js'

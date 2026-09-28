@@ -602,14 +602,18 @@ function isAggregatorRelaySource(source) {
   return AGGREGATOR_RELAY_SOURCE_PREFIXES.some((p) => s.startsWith(p));
 }
 
-/** Title key for same-title matching: lowercase alphanumerics only. */
+// Fold diacritics BEFORE stripping to [a-z0-9] (tests/unit/sibling-matchers-
+// diacritics.test.mjs): "Les Misérables" must key as lesmiserables, not lesmisrables.
+const { foldDiacritics } = require('./title-match');
+
+/** Title key for same-title matching: lowercase alphanumerics only, diacritics folded. */
 function normalizeTitleKey(title) {
-  return String(title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  return foldDiacritics(String(title || '')).toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
 /** Critic key; null for the unknown/unnamed placeholders (never a match). */
 function normalizeCriticKey(name) {
-  const k = String(name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const k = foldDiacritics(String(name || '')).toLowerCase().replace(/[^a-z0-9]/g, '');
   if (!k || k === 'unknown' || k === 'unnamed' || k === 'staff') return null;
   return k;
 }

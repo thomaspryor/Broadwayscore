@@ -37,6 +37,7 @@ const { buildVenueVocabulary } = require('../../scripts/lib/show-title-normalize
 const { evaluateCandidates, decideWestEndAggregatorPromotion } = require('../../scripts/promote-we-aggregator-candidates.js');
 const { buildJobSummary, validateErrorsFrom } = require('../../scripts/we-promotion-job-summary.js');
 
+// TESTS-VS-DERIVED-DATA-EXEMPT: the fixture rows below are inlined literals (the file never reads data/shows.json); they pin the dedup DECISION for a known duplicate shape, not a fact about the live catalog.
 // The live rows (data/shows.json, 2026-09-28) the promoter kept duplicating:
 // venue strings the slug-derived candidate venue never matches.
 const DRACULA_ROW = { id: 'dracula-west-end-2025', title: 'Dracula', venue: 'Noël Coward Theatre', category: 'west-end' };

@@ -1,4 +1,5 @@
 'use strict';
+// venue-write-guard-ok: parseOltTheaterEvents only carries the OLT venue name into an in-memory parse result; every shows.json write downstream (discover-new-shows.js, enrich-west-end-dates.js) sanitizes through sanitizeVenueForWrite / the closing-date guard before saving.
 
 /**
  * olt-enrichment.js — Official London Theatre (SOLT) readers and the

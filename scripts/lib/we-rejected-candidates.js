@@ -1,4 +1,5 @@
 'use strict';
+// venue-write-guard-ok: the rejection store records the candidate venue for the audit ledger (data/audit/we-rejected-candidates.json); it never writes a venue into shows.json.
 /**
  * Prior-rejection store for the West End aggregator promoter (BRO-4204
  * S4-T9; consumed by scripts/promote-we-aggregator-candidates.js).

@@ -1,4 +1,5 @@
 'use strict';
+// venue-write-guard-ok: detectLondonTransferPairs copies an EXISTING row's venue into a priorRuns suggestion that is only printed, never written (S5-T5: humans add the link).
 
 /**
  * Regional→Broadway transfer detection (pure, no IO — CLAUDE.md §15).
