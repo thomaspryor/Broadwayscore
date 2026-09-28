@@ -669,5 +669,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-28T01:29:33.891Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-midnight-off-broadway-2026",
+    "title": "Stale 'upcoming' tag on Midnight",
+    "description": "midnight-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=midnight-off-broadway-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-28T07:00:53.700Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:tru-off-west-end-2026",
+    "title": "Shipped review missing publishDate on Tru",
+    "description": "timeout-london/Andrzej Lukowski SHIPPED with no publishDate — cannot confirm post-opening: https://www.timeout.com/london/theatre/tru-review",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-28T07:00:55.262Z"
   }
 ]
