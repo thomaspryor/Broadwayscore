@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-28T19:14:02.570Z",
+  "timestamp": "2026-09-28T19:40:55.516Z",
   "stats": {
-    "totalReviews": 44566,
-    "alreadyFlagged": 18239,
+    "totalReviews": 44558,
+    "alreadyFlagged": 18242,
     "dateGuardCatches": 240,
     "directorMismatch": 1098,
     "tvFilmSignals": 1318,
-    "londonSignals": 1204,
+    "londonSignals": 1205,
     "offBroadwaySignals": 509,
     "yearMismatch": 95,
-    "noPublishDate": 3884
+    "noPublishDate": 3878
   },
   "findings": [
     {
@@ -43962,6 +43962,20 @@
     },
     {
       "showId": "high-society-west-end-2026",
+      "file": "london-unattached--fiona-maclean.json",
+      "score": 79,
+      "publishDate": "2026-06-05",
+      "url": "https://www.london-unattached.com/high-society-barbican-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "high-society-west-end-2026",
       "file": "londontheatre1--unknown.json",
       "score": 75,
       "publishDate": "2026-06-04",
@@ -54123,6 +54137,19 @@
       ]
     },
     {
+      "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
+      "file": "bestoftheatre--alan-ingram.json",
+      "publishDate": "2026-09-17",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-the-seven-deadly-sins-the-human-voice-charing-cross-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-humans-2016",
       "file": "deadline--jeremy-gerard.json",
       "score": 90,
@@ -55817,19 +55844,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "the-seven-deadly-sins-the-human-voice-off-west-end-2026",
-      "file": "bestoftheatre--alan-ingram.json",
-      "publishDate": "2026-09-17",
-      "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-the-seven-deadly-sins-the-human-voice-charing-cross-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
