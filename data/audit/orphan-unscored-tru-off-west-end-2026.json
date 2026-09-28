@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "tru-off-west-end-2026",
   "openingDate": "2026-09-27",
-  "detectedAt": "2026-09-28T01:03:33.948Z",
+  "detectedAt": "2026-09-28T01:39:00.888Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "outletId": "all-that-dazzles-uk",
+      "criticName": "All That Dazzles",
+      "url": "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory",
+      "fullTextLen": 7535,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "bestoftheatre--cecil-glover.json",
       "outletId": "bestoftheatre",
@@ -23,6 +40,23 @@
       "eligibilityReason": null
     },
     {
+      "file": "broadwayworld--clementine-scott.json",
+      "outletId": "broadwayworld",
+      "criticName": "Clementine Scott",
+      "url": "https://www.broadwayworld.com/westend/article/Review-TRU-Starring-Jesse-Tyler-Ferguson-Menier-Chocolate-Factory-20260927",
+      "fullTextLen": 4128,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
       "file": "how2london--unknown.json",
       "outletId": "how2london",
       "criticName": "Unknown",
@@ -30,6 +64,23 @@
       "fullTextLen": 3482,
       "dispatchActionable": false,
       "skipReason": "not_scoreable",
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "liamodell--liam-odell.json",
+      "outletId": "liamodell",
+      "criticName": "Liam O’Dell",
+      "url": "https://liamodell.com/2026/09/27/tru-review-menier-chocolate-factory-london-jesse-tyler-ferguson-charlotte-damboise-truman-capote-jay-presson-allen/",
+      "fullTextLen": 4876,
+      "dispatchActionable": false,
+      "skipReason": "no_scorable_text",
       "rescoreBlockedReason": null,
       "humanReviewScore": null,
       "adjudicatedScore": null,
@@ -91,10 +142,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 5,
-  "dispatchableOrphanCount": 0,
-  "blockedOrphanCount": 5,
+  "orphanCount": 8,
+  "dispatchableOrphanCount": 2,
+  "blockedOrphanCount": 6,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }

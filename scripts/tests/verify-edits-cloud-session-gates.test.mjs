@@ -661,6 +661,14 @@ test('OWNERMERGE: "waiting on your merge" blocks even with NOT SAFE TO EXIT', sk
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
+test('OWNERMERGE false-positive guard: describing or quoting the rule is not a merge ask', skipNoRepoHook, () => {
+  const dir = makeTmpDir('ownermerge-describe');
+  const transcript = writeTranscript(dir, [CREATE_PR, toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/x' }), toolUse('mcp__github__actions_get', { method: 'get_workflow_run' }), toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-1 --state Done' })]);
+  const r = runHook(transcript, 'Landed. Sessions never ask the owner to merge, and the Stop hook now blocks "waiting on your merge" and `ready to merge`.\n\nSAFE TO EXIT — landed and verified.');
+  assertAllowed(r, 'a description or quotation of the rule must not trip OWNERMERGE');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
 test('OWNERMERGE false-positive guard: a real owner decision ("waiting on your decision") is allowed', skipNoRepoHook, () => {
   const dir = makeTmpDir('ownermerge-decision');
   const transcript = writeTranscript(dir, [CREATE_PR]);
