@@ -104,7 +104,12 @@ if (!show) {
 }
 
 // --- Determine score bucket ---
-const bucket = score >= 83 ? 'Rave' : score >= 75 ? 'Positive' : score >= 55 ? 'Mixed' : score >= 30 ? 'Negative' : 'Pan';
+// Shared thresholds (83/70/55/35) from score-extractors.js — this used to
+// hardcode a 75/30 ladder, so a direct entry of 72 landed in reviews.json as
+// 'Mixed' while the rebuild's canonical bucket for 72 is 'Positive'
+// (BRO-4204 audit S6-T7).
+const { scoreToBucket } = require('./lib/score-extractors');
+const bucket = scoreToBucket(score);
 
 console.log(`\n╔══════════════════════════════════════════════════╗`);
 console.log(`║  Direct Review Entry${dryRun ? ' (DRY RUN)' : ''}`);

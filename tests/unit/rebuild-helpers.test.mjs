@@ -190,14 +190,15 @@ describe('getBestScore — explicit scores', () => {
     };
     const result = getBestScore(data);
     assert.strictEqual(result.score, 80);
-    assert.strictEqual(result.source, 'originalScore-priority0');
+    // S6-T5: a relayed known-star-outlet rating is labelled for what it is.
+    assert.strictEqual(result.source, 'aggregatorStars-relay');
   });
 
   test('P0.5: aggregatorStars with no excerpt to cross-check is not blocked', () => {
     const data = { outletId: 'guardian', aggregatorStars: '3/5', fullText: 'x'.repeat(300) };
     const result = getBestScore(data);
     assert.strictEqual(result.score, 60);
-    assert.strictEqual(result.source, 'originalScore-priority0');
+    assert.strictEqual(result.source, 'aggregatorStars-relay');
   });
 });
 
