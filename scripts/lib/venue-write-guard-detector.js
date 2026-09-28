@@ -134,21 +134,24 @@ function findMatchingParen(source, openIdx) {
 // interpolated template can embed unsanitized data just like any other
 // expression.
 //
-// EXCEPT a hardcoded value that IS itself a known placeholder marker
-// (`venue: "TBA"`) — found live by adversarial review: sanitizeVenueForWrite()
-// exists specifically to reject these (isPlaceholderVenue's UNKNOWN_MARKERS,
-// scripts/audit-placeholder-venues.js), so a hand-typed 'TBA' is exactly the
-// value class this guard exists to keep out of the venue field, not a
-// counterexample to it.
+// EXCEPT a hardcoded value that IS itself a placeholder (`venue: "TBA"`,
+// `venue: "West End"`) — found live by adversarial review:
+// sanitizeVenueForWrite() exists specifically to reject these, so a
+// hand-typed 'TBA' is exactly the value class this guard exists to keep out
+// of the venue field, not a counterexample to it. Decided by the SAME
+// isPlaceholderVenue() the write-time guard calls (scripts/lib/placeholder-
+// venue.js, S4-T7) — this file used to carry its own private copy of the
+// marker set, which drifted: the guard rejected "Off-Broadway" while this
+// lint waved it through, and neither knew "West End".
 const STRING_LITERAL_RE = /^(['"])(?:\\.|(?!\1)[^\\])*\1$/;
 const TEMPLATE_LITERAL_NO_INTERP_RE = /^`(?:\\.|[^`$]|\$(?!\{))*`$/;
-const UNKNOWN_MARKERS = new Set(['tba', 'tbd', 'n/a', 'na', 'unknown', '', '-']);
+const { isPlaceholderVenue } = require('./placeholder-venue');
 
 function isHardcodedStringRhs(rhs) {
   const trimmed = rhs.trim();
   if (!STRING_LITERAL_RE.test(trimmed) && !TEMPLATE_LITERAL_NO_INTERP_RE.test(trimmed)) return false;
-  const inner = trimmed.slice(1, -1).trim().toLowerCase();
-  return !UNKNOWN_MARKERS.has(inner);
+  const inner = trimmed.slice(1, -1);
+  return !isPlaceholderVenue(inner).placeholder;
 }
 
 // A bare `null`/`undefined` RHS (`venue: null`) can never carry junk data —

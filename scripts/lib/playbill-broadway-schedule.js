@@ -31,7 +31,11 @@ const path = require('path');
 const { fetchPage } = require('./scraper');
 
 const PLAYBILL_BROADWAY_URL = 'https://playbill.com/article/schedule-of-upcoming-and-announced-broadway-shows';
-const LAST_SUCCESS_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'playbill-broadway-last-success.json');
+// PLAYBILL_BROADWAY_LAST_SUCCESS_PATH (S4-T2): lets check-broadway-source-
+// coverage.js's fixture run (and its unit test) exercise the REAL rot decision
+// against a scratch last-success file instead of the committed data/audit one.
+const LAST_SUCCESS_PATH = process.env.PLAYBILL_BROADWAY_LAST_SUCCESS_PATH
+  || path.join(__dirname, '..', '..', 'data', 'audit', 'playbill-broadway-last-success.json');
 const GRACE_WINDOW_MS = 24 * 60 * 60 * 1000;
 const SILENT_ROT_HTML_THRESHOLD = 5000;
 
