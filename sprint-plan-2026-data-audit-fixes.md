@@ -126,7 +126,7 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Acceptance criteria:**
   - VERIFY: live show JSON `rc` is 26 (was 27) and carries no The Stage row; `cs` moves down (the audit's 57 assumes all ten West End relays removed, which is S1-T1's batch)
   - VERIFY: after the first origin/main commit in the review-texts repo that follows ours (any workflow using the `push-review-texts` action, e.g. `collect-review-texts.yml`), the file still has `wrongProduction: true`
-  - RESULT 2026-09-28: review-texts commit 7fd45367; rebuild run 10487 succeeded 16:34 UTC; web main and the live site both serve rc 26, no Stage row, cs 63.06 (was 63.71). Survival check pending (S0-T10).
+  - RESULT 2026-09-28: review-texts commit 7fd45367; rebuild run 10487 succeeded 16:34 UTC; web main and the live site both serve rc 26, no Stage row, cs 63.06 (was 63.71). Survival: a later CI commit (a067cc5a) re-tiered the file to invalid/wrong_content and kept wrongProduction:true and the revoked override; S0-T10 re-checks at 24h.
 
 ### Task S0-T9: Ramp unit 2: retire the phantom row by hand and confirm it stays gone
 - **Complexity:** S
