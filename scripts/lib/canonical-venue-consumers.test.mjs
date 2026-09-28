@@ -160,3 +160,28 @@ test('venuesMatch: bare "BAM" stays unaliased — three distinct BAM stages must
   assert.equal(venuesMatch('BAM', 'BAM Fisher (Fishman Space)'), false);
   assert.equal(venuesMatch('BAM Harvey Theater', 'BAM Fisher (Fishman Space)'), false);
 });
+
+// 2026-09-28 — two TodayTix/venue-page duplicates slipped past
+// findExistingMatch (the venue-page promotion path) while checkForDuplicate
+// would have caught both.
+test('venuesMatch: same room written with comma vs dash is one venue', () => {
+  assert.equal(venuesMatch('59E59 Theaters, Theater C', '59E59 Theaters - Theater C'), true);
+  assert.equal(venuesMatch('59E59 Theaters Theater A', '59E59 Theaters, Theater A'), true);
+  assert.equal(venuesMatch('59E59 Theaters, Theater A', '59E59 Theaters - Theater B'), false);
+});
+
+test('findExistingMatch: real 2026-09 duplicate pairs match in both directions', () => {
+  const pairs = [
+    [{ id: 'crazy-mama-off-broadway-2026', title: 'Crazy Mama', venue: '59E59 Theaters - Theater C' },
+     { id: 'crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026', title: 'Crazy Mama: A True Story of Love and Madness', venue: '59E59 Theaters, Theater C' }],
+    [{ id: 'louis-katz-conflicted-off-broadway-2026', title: 'Louis Katz: Conflicted', venue: 'SoHo Playhouse' },
+     { id: 'conflicted-off-broadway-2026', title: 'Conflicted', venue: 'SoHo Playhouse' }],
+  ];
+  for (const [a, b] of pairs) {
+    assert.equal(findExistingMatch(a, [b])?.match.id, b.id);
+    assert.equal(findExistingMatch(b, [a])?.match.id, a.id);
+  }
+  // A colon title at a different venue is still a different show.
+  assert.equal(findExistingMatch({ title: 'Conflicted', venue: 'Minetta Lane Theatre' },
+    [{ id: 'x', title: 'Louis Katz: Conflicted', venue: 'SoHo Playhouse' }]), null);
+});
