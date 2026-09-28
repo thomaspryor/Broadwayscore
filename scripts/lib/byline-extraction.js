@@ -9,6 +9,8 @@
 
 'use strict';
 
+const { stripBylineSuffixes } = require('./byline-normalization');
+
 function decodeEntities(s) {
   return (s || '')
     .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(parseInt(n, 10)))
@@ -28,11 +30,16 @@ function extractByline(html) {
     // Run BEFORE rel="author" because Jetpack's "View all posts by X" link in the
     // footer also has rel="author" and pollutes the value.
     /<[a-z]+[^>]+class=["'][^"']*author-name[^"']*["'][^>]*>([^<]+)</i,
-    /<span[^>]+class=["'][^"']*byline[^"']*["'][^>]*>(?:By\s+)?([^<]+)<\/span>/i,
-    /<p[^>]+class=["'][^"']*byline[^"']*["'][^>]*>(?:By\s+)?([^<]+)<\/p>/i,
+    // A <br> between the name and the closing tag ("Michael Sommers<br></span>")
+    // is tolerated so the capture is the name, not a miss (audit S7-T4).
+    /<span[^>]+class=["'][^"']*byline[^"']*["'][^>]*>(?:By\s+)?([^<]+?)\s*(?:<br\s*\/?>\s*)*<\/span>/i,
+    /<p[^>]+class=["'][^"']*byline[^"']*["'][^>]*>(?:By\s+)?([^<]+?)\s*(?:<br\s*\/?>\s*)*<\/p>/i,
     // Inline "By Name" prose near top of article — FMJ-style "By Ross" right
-    // after the headline. Capture follows the literal "By " token.
-    />By\s+([A-Z][A-Za-z][A-Za-z .'-]{1,38})(?=\s+(?:[A-Z]|<|—))/,
+    // after the headline. Capture follows the literal "By " token. The name
+    // class accepts the curly apostrophe (’) and its entity forms (&rsquo;,
+    // &#8217;) so "Holly O’Mahony" is captured whole instead of stopping at
+    // "Holly O" (audit S7-T4).
+    />By\s+([A-Z][A-Za-z](?:[A-Za-z .'’-]|&rsquo;|&#8217;){1,38})(?=\s+(?:[A-Z]|<|—))/,
     // <a rel="author"> — before the nested-author-name fallback below because
     // an explicit rel="author" is a stronger signal than a bare class name.
     /<a[^>]+rel=["']author["'][^>]*>([^<]+)<\/a>/i,
@@ -55,9 +62,14 @@ function extractByline(html) {
       // Strip Jetpack-style "View all posts by X" prefix that leaks through
       // some <a rel=author> matches.
       name = name.replace(/^view\s+all\s+posts\s+by\s+/i, '');
+      // Strip what rides along with the name at capture time — ", Chief
+      // Theatre Critic", "(she/her)", "<br>" / a stray ">" — so the stored
+      // criticName is the person (audit S7-T4). Shared with
+      // normalizeBylineCapture; one implementation.
+      name = stripBylineSuffixes(name);
       if (!name || name.length < 2 || name.length > 80 || !/[A-Za-z]/.test(name)) continue;
       // Capitalize lowercase author slugs from class="author-name" (e.g. "ross" → "Ross").
-      if (/^[a-z][a-z\s.'-]*$/.test(name)) {
+      if (/^[a-z][a-z\s.'’-]*$/.test(name)) {
         name = name.split(/\s+/).map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
       }
       return name;

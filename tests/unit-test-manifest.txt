@@ -354,6 +354,7 @@ tests/unit/bww-roundup-persistence.test.mjs
 tests/unit/bww-roundup-thumbs-and-urls.test.mjs
 tests/unit/bww-rr-discover.test.mjs
 tests/unit/byline-attestation.test.mjs
+tests/unit/byline-capture-suffixes.test.mjs
 tests/unit/byline-normalization.test.mjs
 tests/unit/bylines-unknown-recovery.test.mjs
 tests/unit/canonical-duplicate-pointers.test.mjs
@@ -432,7 +433,9 @@ tests/unit/coverage-guard-wired.test.mjs
 tests/unit/coverage-verdict.test.mjs
 tests/unit/coverageExpectation-drift.test.mjs
 tests/unit/creative-team-validator.test.mjs
+tests/unit/critic-alias-picker.test.mjs
 tests/unit/critic-consensus-eligibility.test.mjs
+tests/unit/critic-display-name.test.mjs
 tests/unit/critic-fill-rules.test.mjs
 tests/unit/critic-listing-promotion.test.mjs
 tests/unit/critic-registry-guard.test.mjs
