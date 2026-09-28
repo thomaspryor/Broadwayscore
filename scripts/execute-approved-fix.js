@@ -14,6 +14,8 @@
  *   data-edit      — Field changes in shows.json, commercial.json, audience-buzz.json
  *   run-script     — Execute allowlisted pipeline scripts
  *   review-file-op — Move/delete/rename review files in data/review-texts/
+ *   review-field-edit — Compare-and-set one allowlisted field on a review file
+ *                       (scripts/lib/review-field-edit.js; BRO-4216)
  *
  * Env vars:
  *   ISSUE_NUMBER       - GitHub issue number
@@ -36,6 +38,8 @@ const commercialWriteGuard = require('./lib/commercial-write-guard.js');
 const audienceBuzzWriteGuard = require('./lib/audience-buzz-write-guard.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
+const { applyReviewFieldEdit, resolveReviewPath } = require('./lib/review-field-edit.js');
+const { safeWriteReview } = require('./lib/review-write-guard.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -278,6 +282,25 @@ function executeReviewFileOp(action) {
   return { ok: false, reason: `Unknown operation: ${operation}` };
 }
 
+function executeReviewFieldEdit(action, stamp) {
+  const reviewTextsDir = path.join(ROOT, 'data/review-texts');
+  const abs = resolveReviewPath(reviewTextsDir, action.file);
+  if (!abs) return { ok: false, reason: `Bad review path: ${action.file}` };
+  if (!fs.existsSync(abs)) return { ok: false, reason: `Review file not found: ${action.file}` };
+  const record = JSON.parse(fs.readFileSync(abs, 'utf8'));
+  const res = applyReviewFieldEdit(record, action, stamp);
+  if (!res.ok) return res;
+  safeWriteReview(abs, res.record);
+  // The write guard can legitimately refuse a change (a protected field with
+  // no clear breadcrumb). Report that instead of claiming success.
+  const after = JSON.parse(fs.readFileSync(abs, 'utf8'));
+  const got = after[action.field] === undefined ? null : after[action.field];
+  if (JSON.stringify(got) !== JSON.stringify(action.newValue)) {
+    return { ok: false, reason: `${action.file} ${action.field}: write guard kept ${JSON.stringify(got)}` };
+  }
+  return { ok: true, msg: `${action.file} ${res.msg}` };
+}
+
 function executeBatchTransform(action) {
   const { file, field, transform } = action;
 
@@ -340,6 +363,14 @@ async function main() {
     return;
   }
 
+  // Plan ids name a file under data/pending-fixes/: GitHub issue numbers
+  // ("925", "504-systematic") or Linear ids ("bro-4202", BRO-4216).
+  if (!/^[a-z0-9][a-z0-9-]*$/i.test(String(issueNumber))) {
+    console.error(`Invalid plan id: ${issueNumber}`);
+    output('result', 'error');
+    return;
+  }
+
   // 1. Load plan
   const planFile = path.join(ROOT, 'data/pending-fixes', `${issueNumber}.json`);
   if (!fs.existsSync(planFile)) {
@@ -381,6 +412,15 @@ async function main() {
     return;
   }
 
+  // BRO-4216: plans can now be written by sessions, not only by the feedback
+  // pipeline. Cap the blast radius of any single plan.
+  const MAX_ACTIONS = 25;
+  if ((planData.plan.actions || []).length > MAX_ACTIONS) {
+    console.error(`Plan has ${planData.plan.actions.length} actions (max ${MAX_ACTIONS}) — refusing`);
+    output('result', 'error');
+    return;
+  }
+
   console.log(`Executing plan for issue #${issueNumber}`);
   console.log(`  Summary: ${planData.plan.summary}`);
   console.log(`  Actions: ${planData.plan.actions.length}`);
@@ -403,6 +443,9 @@ async function main() {
         break;
       case 'review-file-op':
         result = executeReviewFileOp(action);
+        break;
+      case 'review-field-edit':
+        result = executeReviewFieldEdit(action, { fixId: planData.planId || String(issueNumber), at: new Date().toISOString() });
         break;
       case 'batch-transform':
         result = executeBatchTransform(action);
@@ -456,6 +499,7 @@ async function main() {
 
   console.log(`\nPlan executed: ${applied.length} applied, ${failed.length} failed`);
   output('result', applied.length > 0 ? 'fixed' : 'no-changes');
+  output('failed', String(failed.length));
 
   // 6. Send confirmation to Tom
   const ownerEmail = process.env.OWNER_EMAIL;
