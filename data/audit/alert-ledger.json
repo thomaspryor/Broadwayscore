@@ -4269,10 +4269,10 @@
       "disposition": "auto",
       "title": "Time-bomb test armed: scripts/clear-stale-roundup-flags.test.mjs — --apply clears a stale flag (individual review on a whitelisted per-outlet URL) and leaves a genuine roundup page flagged",
       "firstSeen": "2026-09-21T20:01:42.771Z",
-      "lastSeen": "2026-09-21T20:01:42.771Z",
-      "lastNotifiedAt": "2026-09-21T20:01:42.771Z",
+      "lastSeen": "2026-09-28T21:14:16.689Z",
+      "lastNotifiedAt": "2026-09-28T21:14:16.689Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-3992"
     },
@@ -4736,13 +4736,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Run wrongShow auto-clear ensemble corpus scan (needs review-texts), Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-28T20:57:18.063Z",
+      "lastSeen": "2026-09-28T21:18:38.368Z",
       "lastNotifiedAt": "2026-09-28T11:41:47.830Z",
       "lastSurfacedAt": "2026-09-28T11:41:47.830Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 20
+      "silentRefires": 21
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -5855,6 +5855,18 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "time-bomb-tests:unit:tests/unit/cookie-renewal.test.mjs::acquireLock is fail-closed while the holder is alive, reclaims a dead holder": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/cookie-renewal.test.mjs — acquireLock is fail-closed while the holder is alive, reclaims a dead holder",
+      "firstSeen": "2026-09-28T21:14:18.285Z",
+      "lastSeen": "2026-09-28T21:14:18.285Z",
+      "lastNotifiedAt": "2026-09-28T21:14:18.285Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4257"
     }
   }
 }
