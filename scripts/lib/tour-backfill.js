@@ -47,8 +47,11 @@ function firstSeen(data) {
 /**
  * Decide whether one file moves from a Broadway show to its tour.
  * Returns { action: 'move' | 'skip', reason }.
- * ctx: { broadwayOpeningDate?, tourLaunchDate?, tourClosingDate?, otherToursOfTitle? }
- * (ISO strings, either may be null; otherToursOfTitle = how many OTHER tours share the title).
+ * ctx: { broadwayOpeningDate?, tourLaunchDate?, tourClosingDate?, otherToursOfTitle?,
+ *        nextTourLaunchDate?, siblingTourUndated? } (ISO strings may be null). With two
+ * tours of one title, each dated review belongs to exactly one: a tour's window
+ * ends where the next one's begins (nextTourLaunchDate); with either launch date
+ * unknown the split can't be made (siblingTourUndated).
  */
 function classifyTourBackfill(data, ctx = {}) {
   if (!data || data.wrongProduction !== true) return { action: 'skip', reason: 'not-flagged' };
@@ -73,6 +76,9 @@ function classifyTourBackfill(data, ctx = {}) {
   if (pub && bway && pub < bway) return { action: 'skip', reason: 'before-broadway-opening' };
   // Allow a week of slack: roundups and first-stop reviews can predate the official launch listing.
   if (pub && launch && pub.getTime() < launch.getTime() - 7 * 86400000) return { action: 'skip', reason: 'before-tour-launch' };
+  if (ctx.siblingTourUndated) return { action: 'skip', reason: 'ambiguous-tour' };
+  const next = toDate(ctx.nextTourLaunchDate);
+  if (pub && next && pub.getTime() >= next.getTime() - 7 * 86400000) return { action: 'skip', reason: 'later-tour' };
   const close = toDate(ctx.tourClosingDate);
   if (pub && close && pub.getTime() > close.getTime() + AFTER_CLOSE_SLACK_MS) return { action: 'skip', reason: 'after-tour-close' };
   if (!pub) {
@@ -149,7 +155,10 @@ function planTourSweep(shows) {
       .filter(s => (s.category || 'broadway') === 'broadway' && normTitle(s.title) === title)
       .map(s => s.id)
       .sort();
-    const otherToursOfTitle = tours.filter(t => t.id !== tour.id && normTitle(byId.get(t.tourOf).title) === title).length;
+    const siblings = tours.filter(t => t.id !== tour.id && normTitle(byId.get(t.tourOf).title) === title);
+    const otherToursOfTitle = siblings.length;
+    const siblingTourUndated = siblings.length > 0 && (!tour.openingDate || siblings.some(t => !t.openingDate));
+    const later = siblings.map(t => t.openingDate).filter(d => d && tour.openingDate && d > tour.openingDate).sort();
     return {
       tourId: tour.id,
       fromIds,
@@ -158,6 +167,8 @@ function planTourSweep(shows) {
         tourLaunchDate: tour.openingDate || null,
         tourClosingDate: tour.status === 'closed' ? (tour.closingDate || null) : null,
         otherToursOfTitle,
+        nextTourLaunchDate: later[0] || null,
+        siblingTourUndated,
       },
     };
   });
