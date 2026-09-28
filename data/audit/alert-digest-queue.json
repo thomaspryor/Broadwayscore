@@ -357,5 +357,34 @@
       }
     ],
     "queuedAt": "2026-09-28T20:59:33.883Z"
+  },
+  {
+    "conditionKey": "land:land/tour-roundup-suggest",
+    "title": "Landing blocked: scripts-lib-tests red on land/tour-roundup-suggest",
+    "description": "land.yml did not land land/tour-roundup-suggest: the scripts-lib-tests gate went red at efa266948c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36479440718",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/tour-roundup-suggest"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "efa266948ce85b1524c81b230d97bb9b90db4c08"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36479440718"
+      }
+    ],
+    "queuedAt": "2026-09-28T21:07:00.749Z"
   }
 ]
