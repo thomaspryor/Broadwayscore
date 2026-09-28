@@ -88,6 +88,26 @@ const GIT_NET_TIMEOUT_MS = Number(process.env.GIT_NET_TIMEOUT_SEC || 90) * 1000;
 const MERGED_TREE_TIMEOUT_MS = 20 * 60 * 1000;
 const CHECK_OUTPUT_MAX_BYTES = 256 * 1024 * 1024;
 
+// Blobless-clone rebase failure (BRO-4141 class, 2026-09-27 our-sinatra land):
+// mid-rebase, git lazily fetches missing blobs in batches, and a batch can also
+// name a blob THIS rebase just wrote (a 3-way merge result) that its cached
+// lookup missed. GitHub answers "not our ref" for that id and the whole batch
+// dies, so multi-commit branches failed while squashed ones landed. Two
+// defences: prefetch every blob the picks read before any local object exists,
+// and retry a rebase that still dies that way (a fresh process sees the blobs
+// the failed pass wrote, so each retry gets further).
+const PROMISOR_ERR_RE = /promisor remote|not our ref/i;
+const REBASE_CONFLICT_RE = /CONFLICT|could not apply/;
+const PROMISOR_REBASE_RETRIES = 3;
+const PREFETCH_TIMEOUT_MS = Math.max(GIT_NET_TIMEOUT_MS, 5 * 60 * 1000);
+const PREFETCH_MAX_PATHS = 2000;
+
+/** A rebase failure caused by a partial-clone lazy fetch, not by the patches. */
+function isPromisorFetchFailure(stderr) {
+  const text = String(stderr || '');
+  return PROMISOR_ERR_RE.test(text) && !REBASE_CONFLICT_RE.test(text);
+}
+
 // ── Pure decision helpers ───────────────────────────────────────────────────
 
 /**
@@ -473,6 +493,44 @@ function landBranch(o) {
       git(['clean', '-fdq'], workdir);
     };
 
+    // Best-effort: read (and so lazily fetch) every blob the rebase picks will
+    // need, while nothing rebase-created exists locally. Scoped to the ORIGINAL
+    // branch range (`sha`), never the rebased HEAD, whose blobs are local-only.
+    // --binary so binary/-diff files load too; --no-renames so a renamed file's
+    // old path is listed and main's copy of it is fetched for the merge.
+    const quiet = (args, timeout = PREFETCH_TIMEOUT_MS) => {
+      try {
+        execFileSync('git', args, { cwd: workdir, stdio: ['ignore', 'ignore', 'ignore'], timeout });
+        return true;
+      } catch { return false; }
+    };
+    const prefetchForRebase = (onto) => {
+      const mb = gitOrNull(['merge-base', onto, sha], workdir);
+      if (!mb) return;
+      quiet(['log', '-p', '--binary', '--no-textconv', '--no-ext-diff', '--format=', `${mb}..${sha}`]);
+      const paths = [...new Set((gitOrNull(['log', '--no-renames', '--format=', '--name-only', `${mb}..${sha}`], workdir) || '')
+        .split('\n').filter(Boolean))];
+      if (paths.length && paths.length <= PREFETCH_MAX_PATHS) {
+        quiet(['diff', '--binary', '--no-textconv', '--no-ext-diff', mb, onto, '--', ...paths]);
+      }
+    };
+    const rebaseOnto = (onto) => {
+      prefetchForRebase(onto);
+      for (let retry = 0; ; retry++) {
+        try {
+          git(['rebase', onto], workdir);
+          return;
+        } catch (err) {
+          const errText = String(err.stderr || err.message || '');
+          if (retry >= PROMISOR_REBASE_RETRIES || !isPromisorFetchFailure(errText)) throw err;
+          gitOrNull(['rebase', '--abort'], workdir);
+          discardResidue(`promisor retry ${retry + 1}`);
+          const gitVersion = gitOrNull(['--version'], workdir) || 'git ?';
+          log(`[land] rebase onto ${onto.slice(0, 10)} hit a partial-clone lazy-fetch failure (${gitVersion}) — retry ${retry + 1}/${PROMISOR_REBASE_RETRIES}: ${errText.split('\n').find(l => /fatal|error/.test(l)) || errText.slice(0, 200)}`);
+        }
+      }
+    };
+
     let lastReason = null;
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
       discardResidue(`attempt ${attempt}`);
@@ -483,7 +541,7 @@ function landBranch(o) {
       const baseSha = git(['rev-parse', targetRef], workdir);
 
       try {
-        git(['rebase', baseSha], workdir);
+        rebaseOnto(baseSha);
       } catch (err) {
         gitOrNull(['rebase', '--abort'], workdir);
         return done({ attempts: attempt, baseSha, failedCheck: 'rebase', reason: `branch would not rebase cleanly onto ${targetRef} @ ${baseSha.slice(0, 10)}: ${String(err.stderr || err.message).slice(0, 300)}` });
@@ -532,7 +590,7 @@ function landBranch(o) {
         }
         discardResidue(`attempt ${attempt} (churn re-rebase)`);
         try {
-          git(['rebase', nowBase], workdir);
+          rebaseOnto(nowBase);
         } catch (err) {
           gitOrNull(['rebase', '--abort'], workdir);
           return done({ attempts: attempt, baseSha: nowBase, verifiedBase: baseSha, failedCheck: 'rebase', reason: `branch would not rebase cleanly onto ${targetRef} @ ${nowBase.slice(0, 10)} (inert churn since ${landBase.slice(0, 10)}): ${String(err.stderr || err.message).slice(0, 300)}`, files });
@@ -602,6 +660,8 @@ function landBranch(o) {
 }
 
 module.exports = {
+  isPromisorFetchFailure,
+  PROMISOR_REBASE_RETRIES,
   MAX_ATTEMPTS,
   MAX_CHURN_SKIPS,
   INERT_FOR_VERIFICATION_RE,
