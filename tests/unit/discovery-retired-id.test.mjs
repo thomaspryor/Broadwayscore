@@ -14,17 +14,20 @@
 // Run: node --test tests/unit/discovery-retired-id.test.mjs
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const ROOT = join(import.meta.dirname, '..', '..');
-const { matchesRetired, _resetCache } = require(join(ROOT, 'scripts/lib/retired-show-ids.js'));
+const { matchesRetired, retireId, loadRetiredIds, _resetCache } = require(join(ROOT, 'scripts/lib/retired-show-ids.js'));
 const { mintCandidateId } = require(join(ROOT, 'scripts/discover-new-shows.js'));
 
 // In-memory registry — exactly the entry S0-T9 will write for the phantom
-// row, plus a legacy id-only entry.
+// row (`retireId(..., { blockTitleVenue: true })`: junk that must never
+// return under ANY id, the one form that records title/venue), plus a
+// legacy id-only entry.
 const RETIRED = [
   {
     id: 'tabdates-off-west-end-2026',
@@ -68,6 +71,47 @@ test('a legacy id-only retired entry matches by id but never by (empty) title+ve
 
   const noVenue = { title: '', venue: '', category: 'off-broadway', openingDate: '2020-05-01' };
   assert.equal(matchesRetired({ id: 'x-off-broadway-2020', title: noVenue.title, venue: noVenue.venue }, RETIRED), null);
+});
+
+test('a duplicate retired the default way (id-only) refuses only its own id — a same-title+venue re-discovery under a new id is NOT refused; blockTitleVenue:true refuses it', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'discovery-retired-'));
+  const paths = { listPath: join(dir, 'retired-show-ids.json'), archivePath: join(dir, 'deleted-shows.json') };
+  _resetCache();
+  try {
+    // hamlet-off-broadway-2025 was a duplicate of the kept hamlet-off-broadway-2024
+    // row: same title, same venue. Retired the default way, through the real
+    // retireId, so the entry is exactly what lands on disk.
+    const dup = { id: 'hamlet-off-broadway-2025', title: 'Hamlet', venue: 'The Public Theater', category: 'off-broadway', openingDate: '2025-03-01' };
+    retireId(dup.id, { reason: 'duplicate of hamlet-off-broadway-2024', archivedRow: dup, ...paths });
+    let entries = loadRetiredIds(paths);
+    assert.equal(entries[0].title, null, 'default retirement records no title');
+    assert.equal(entries[0].venue, null, 'default retirement records no venue');
+
+    const sameListing = { title: 'Hamlet', venue: 'The Public Theater', category: 'off-broadway', openingDate: '2025-03-01' };
+    assert.equal(mintCandidateId(sameListing).showId, dup.id, 'sanity: the same listing mints the retired id');
+    assert.deepEqual(matchesRetired(candidateFor(sameListing), entries), { id: dup.id, matchedBy: 'id' });
+
+    const kept = { title: 'Hamlet', venue: 'The Public Theater', category: 'off-broadway', openingDate: '2024-03-01' };
+    assert.equal(mintCandidateId(kept).showId, 'hamlet-off-broadway-2024');
+    assert.equal(matchesRetired(candidateFor(kept), entries), null, 'the kept row (same title+venue) is never refused');
+
+    const revival = { title: 'Hamlet', venue: 'The Public Theater', category: 'off-broadway', openingDate: '2031-03-01' };
+    assert.equal(mintCandidateId(revival).showId, 'hamlet-off-broadway-2031');
+    assert.equal(matchesRetired(candidateFor(revival), entries), null, 'a later same-title revival at the same house is not blocked by an id-only retirement');
+
+    // Junk (a panel listing) retired with blockTitleVenue: true — no id may
+    // bring it back, however the source re-dates it.
+    const junk = { id: 'hamlet-panel-off-broadway-2025', title: 'Hamlet Panel', venue: 'The Public Theater', category: 'off-broadway', openingDate: '2025-03-01' };
+    retireId(junk.id, { reason: 'panel discussion, not a production', archivedRow: junk, blockTitleVenue: true, ...paths });
+    entries = loadRetiredIds(paths);
+    const junkAgain = { title: 'HAMLET PANEL', venue: 'the public theater', category: 'off-broadway', openingDate: '2027-03-01' };
+    assert.equal(mintCandidateId(junkAgain).showId, 'hamlet-panel-off-broadway-2027');
+    assert.deepEqual(matchesRetired(candidateFor(junkAgain), entries), { id: junk.id, matchedBy: 'title+venue' });
+    assert.equal(matchesRetired(candidateFor(revival), entries), null, 'the id-only entry still does not block the revival');
+  } finally {
+    _resetCache();
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 test('mintCandidateId mirrors the id-year rule the loop used to inline (opening > previews > unconfirmed > now)', () => {

@@ -132,7 +132,12 @@ fi
 # diary-shows.json added 2026-07-14 (Notion 39d637c5, import self-heal loop) --
 # scripts/resolve-unmatched-imports.js and scripts/refresh-mezzanine-catalog.js
 # need to test against the real file locally, same as shows.json/reviews.json.
-SYMLINK_FILES=(shows.json reviews.json commercial.json diary-shows.json)
+# retired-show-ids.json + deleted-shows.json added 2026-09-28 (2026 data audit,
+# S0-T2): scripts/lib/retired-show-ids.js retireId() appends to both from a
+# local session, and a retirement that lands in a plain data/ copy (gitignored,
+# never pushed) would leave the deleted row free to come back -- the registry
+# only works when the write reaches the core-data clone, like shows.json.
+SYMLINK_FILES=(shows.json reviews.json commercial.json diary-shows.json retired-show-ids.json deleted-shows.json)
 
 # Files that should be regular copies (read-only for most purposes)
 COPY_FILES=(audience-buzz.json audience-reviews-lbo.json awards.json critic-consensus.json critic-registry.json grosses.json grosses-history.json mezzanine-productions-raw.json opening-night-sent.json)

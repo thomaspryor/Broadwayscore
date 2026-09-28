@@ -13,7 +13,7 @@
 // Run: node --test tests/unit/reconcile-retired-ids.test.mjs
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { readFileSync, mkdtempSync, writeFileSync, existsSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createRequire } from 'node:module';
@@ -137,7 +137,7 @@ test('push-core-data/action.yml hands the checkout\'s retired list to reconcileS
   assert.ok(m, 'CORE_FILES line present');
   const files = m[1].split(/\s+/);
   assert.ok(files.includes('retired-show-ids.json'), 'CORE_FILES must include retired-show-ids.json');
-  assert.ok(files.includes('deleted-shows-2026-09.json'), 'CORE_FILES must include deleted-shows-2026-09.json');
+  assert.ok(files.includes('deleted-shows.json'), 'CORE_FILES must include deleted-shows.json');
 
   // The inline `-e '...'` body is a bash single-quoted string: one apostrophe
   // in a comment would truncate it (audit-workflow-hygiene rule (j)).
@@ -145,10 +145,78 @@ test('push-core-data/action.yml hands the checkout\'s retired list to reconcileS
   const end = yaml.indexOf("' 2>&1 || true", start);
   const body = yaml.slice(start, end);
   assert.ok(!body.includes("'"), 'inline node body must contain no single quote');
+
+  // An unreadable registry must hand the module an EMPTY ARRAY, never
+  // undefined: undefined makes the module re-read its default path, throw on
+  // the same corruption, and the outer catch then skips the ENTIRE reconcile.
+  assert.ok(!/retiredIds = undefined/.test(body), 'the loader must never fall back to undefined');
+  assert.match(body, /::warning::retired-show-ids\.json/, 'an unreadable registry must warn');
+});
+
+// The inline registry loader, run for real (extracted from the YAML, not
+// copied — a copy passing would prove nothing about the action): the
+// snippet from `let retiredIds = [];` up to the reconcileShowsJson call, with
+// `fs` bound to a temp dir standing in for the core-data checkout cwd.
+function extractRetiredLoader() {
+  const yaml = readFileSync(join(ROOT, '.github/actions/push-core-data/action.yml'), 'utf8');
+  const start = yaml.indexOf('let retiredIds = [];');
+  const end = yaml.indexOf('const { recovered, readded, baseAvailable, retiredSkipped }', start);
+  assert.ok(start > 0 && end > start, 'loader block present in the inline node body');
+  const src = yaml.slice(start, end);
+  return (dir) => {
+    const logs = [];
+    const fakeFs = {
+      existsSync: (p) => existsSync(join(dir, p)),
+      readFileSync: (p, enc) => readFileSync(join(dir, p), enc),
+    };
+    const fakeConsole = { log: (line) => logs.push(String(line)) };
+    const retiredIds = new Function('fs', 'console', `${src}\nreturn retiredIds;`)(fakeFs, fakeConsole);
+    return { retiredIds, logs };
+  };
+}
+
+test('inline loader: missing, empty and valid registry files load silently; corrupt and non-array files give [] plus one ::warning::, never undefined', () => {
+  const run = extractRetiredLoader();
+  const dir = mkdtempSync(join(tmpdir(), 'inline-retired-'));
+  try {
+    const file = join(dir, 'retired-show-ids.json');
+    let r = run(dir);
+    assert.deepEqual(r, { retiredIds: [], logs: [] }, 'missing file: empty list, no warning');
+
+    writeFileSync(file, '');
+    r = run(dir);
+    assert.deepEqual(r, { retiredIds: [], logs: [] }, 'empty file (a fresh touch / seed): empty list, no warning');
+
+    writeFileSync(file, JSON.stringify([{ id: X, reason: 'r' }, { id: '' }, null, { reason: 'no id' }]));
+    r = run(dir);
+    assert.deepEqual(r, { retiredIds: [X], logs: [] }, 'valid registry: ids only, junk entries dropped');
+
+    writeFileSync(file, '{ not json');
+    r = run(dir);
+    assert.deepEqual(r.retiredIds, [], 'corrupt file: an EMPTY ARRAY, never undefined');
+    assert.equal(r.logs.length, 1);
+    assert.match(r.logs[0], /^::warning::retired-show-ids\.json/);
+
+    writeFileSync(file, '{"retired": []}');
+    r = run(dir);
+    assert.deepEqual(r.retiredIds, [], 'non-array: empty array plus a warning');
+    assert.match(r.logs[0], /expected a JSON array/);
+
+    // The empty array reaches the module as-is (no re-read of the default
+    // path, no throw): field recovery and concurrent adds still run this
+    // round — the documented trade-off the warning names.
+    const local = { shows: [S('hamilton', { venue: null })] };
+    const res = reconcileShowsJson(local, { shows: [S('hamilton', { venue: 'Booth' }), S(X)] }, { shows: [S('hamilton', { venue: null })] }, undefined, r.retiredIds);
+    assert.equal(res.recovered, 1, 'field recovery still ran');
+    assert.equal(res.readded, 1, 'with an empty list the remote-only row is re-added this round');
+    assert.equal(res.retiredSkipped, 0);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 test('.gitignore keeps both registry files out of the public repo (core data, §11)', () => {
   const ignore = readFileSync(join(ROOT, '.gitignore'), 'utf8').split('\n').map((l) => l.trim());
   assert.ok(ignore.includes('data/retired-show-ids.json'));
-  assert.ok(ignore.includes('data/deleted-shows-2026-09.json'));
+  assert.ok(ignore.includes('data/deleted-shows.json'));
 });

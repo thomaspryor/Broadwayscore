@@ -14,6 +14,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { checkForDuplicate, isCrossLinked } = require('../../scripts/lib/deduplication.js');
+const { isDeclaredTransferPair } = require('../../scripts/lib/show-duplicate-detection.js');
 
 // Transfer shape: the existing run is still open, the freshly-discovered
 // transfer stub is in previews and does not carry a venue yet (discovery
@@ -126,4 +127,21 @@ test('isCrossLinked is symmetric, id-exact, and never matches missing ids', () =
   assert.equal(isCrossLinked({ id: '', transferOf: '' }, { id: '' }), false, 'empty ids never link');
   assert.equal(isCrossLinked(null, b), false);
   assert.equal(isCrossLinked(a, undefined), false);
+});
+
+test('the transferOf/transferredTo half IS show-duplicate-detection\'s isDeclaredTransferPair (one rule for the dedup check and the ticket-identity audit)', () => {
+  const t = { id: 'kimberly-regional-2024' };
+  const b = { id: 'kimberly-bway-2025' };
+  for (const [x, y] of [[{ ...t, transferredTo: b.id }, b], [t, { ...b, transferOf: t.id }], [{ ...t, transferOf: b.id }, b], [t, { ...b, transferredTo: t.id }]]) {
+    assert.equal(isDeclaredTransferPair(x, y), true);
+    assert.equal(isCrossLinked(x, y), true);
+    assert.equal(isCrossLinked(y, x), true, 'symmetric through the shared helper');
+  }
+  // The shared helper carries the same id-exact guard the dedup check relies
+  // on: undefined === undefined and empty ids are not a pair.
+  assert.equal(isDeclaredTransferPair({ id: 'a-2026', transferOf: undefined }, { title: 'X' }), false);
+  assert.equal(isDeclaredTransferPair({ id: '' }, { id: '', transferredTo: '' }), false);
+  assert.equal(isDeclaredTransferPair({ id: ' a-2026 ' }, { id: 'b-2025', transferOf: 'a-2026' }), true, 'ids are trimmed before comparing');
+  assert.equal(isDeclaredTransferPair(null, b), false);
+  assert.equal(isDeclaredTransferPair(t, undefined), false);
 });

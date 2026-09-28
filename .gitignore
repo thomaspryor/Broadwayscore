@@ -211,7 +211,7 @@ data/critic-registry.json
 # shows.json rows, so both are core data (§11) — same repo as shows.json,
 # synced by push-core-data's CORE_FILES, never committed here.
 data/retired-show-ids.json
-data/deleted-shows-2026-09.json
+data/deleted-shows.json
 
 # Theatr rotated refresh token (written by scrape-theatr-audience.js) — a live
 # credential that must never be committed. The BroadwayScorecard/ line below

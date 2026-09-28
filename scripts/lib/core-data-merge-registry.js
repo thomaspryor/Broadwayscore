@@ -1802,7 +1802,7 @@ const CORE_DATA_MERGE_REGISTRY = [
   // tool) — no workflow writes either yet. Promote to 'active' with a keyed
   // union merge (by id / by archived row id) BEFORE the first CI writer lands.
   { file: 'retired-show-ids.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, retireId() in scripts/lib/retired-show-ids.js from human sessions; no workflow writer yet (2026 data audit S0-T2)' },
-  { file: 'deleted-shows-2026-09.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, retireId() in scripts/lib/retired-show-ids.js (archive of deleted rows beside retired-show-ids.json); no workflow writer yet (2026 data audit S0-T2)' },
+  { file: 'deleted-shows.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, retireId() in scripts/lib/retired-show-ids.js (archive of deleted rows beside retired-show-ids.json); no workflow writer yet (2026 data audit S0-T2)' },
 ];
 
 /**

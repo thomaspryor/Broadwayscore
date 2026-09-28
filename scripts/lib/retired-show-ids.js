@@ -19,13 +19,20 @@
  * CORE_FILES and restored by checkout-core-data's *.json copy):
  *   data/retired-show-ids.json     — JSON array of
  *                                    {id, reason, retiredAt, title, venue}
- *   data/deleted-shows-2026-09.json — JSON array of the full archived rows
+ *   data/deleted-shows.json — JSON array of the full archived rows
  *                                    (the shows.json entry as it was deleted)
  *
- * `title`/`venue` on a registry entry are copied from the archived row so
- * discovery can refuse a re-discovered listing even when the minted id
- * differs (a different id-year, a re-slugged title). Entries without them
- * (older or hand-written) only match by id.
+ * `title`/`venue` on a registry entry are recorded ONLY when the retirement
+ * passes `blockTitleVenue: true` — for junk rows (panels, festivals, phantom
+ * "?tab=dates" listings) that must never come back under ANY id: discovery
+ * then refuses a re-discovered listing even when the minted id differs (a
+ * different id-year, a re-slugged title). The default writes `title: null,
+ * venue: null`, so `matchesRetired()` can only match that entry by id.
+ * Duplicates and merges MUST be retired id-only: the kept row shares the
+ * retired row's title+venue, so a title+venue block would refuse the kept
+ * production's own listing on re-discovery and, years later, a same-title
+ * revival at the same house. Entries without title/venue (older,
+ * hand-written, or the default) match by id alone.
  *
  * Paths: the exported constants are the canonical repo locations. Tests (and
  * only tests) point the functions elsewhere via the RETIRED_IDS_PATH /
@@ -39,7 +46,7 @@ const { foldDiacritics } = require('./title-match');
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
 const RETIRED_IDS_PATH = path.join(REPO_ROOT, 'data', 'retired-show-ids.json');
-const ARCHIVE_PATH = path.join(REPO_ROOT, 'data', 'deleted-shows-2026-09.json');
+const ARCHIVE_PATH = path.join(REPO_ROOT, 'data', 'deleted-shows.json');
 
 function resolveListPath(opts) {
   return (opts && opts.listPath) || process.env.RETIRED_IDS_PATH || RETIRED_IDS_PATH;
@@ -67,13 +74,38 @@ function readJsonArray(filePath, label) {
   return parsed;
 }
 
+// Where a write to `filePath` must land. rename() onto a symlink REPLACES
+// the symlink with a regular file, orphaning the real target — and local
+// checkouts have both registry files symlinked into the private core-data
+// clone (scripts/setup-local-data.sh SYMLINK_FILES, like shows.json), so a
+// write over the link would strand the retirement in a gitignored data/ copy
+// that never reaches the core-data repo. Follow the link (even a dangling one:
+// a clone that has not seeded the file yet) and write the target. Same fix as
+// scripts/lib/atomic-shows-write.js.
+function resolveWriteTarget(filePath) {
+  try {
+    return fs.realpathSync(filePath);
+  } catch (e) {
+    if (e.code !== 'ENOENT') throw e;
+  }
+  let link = null;
+  try {
+    if (fs.lstatSync(filePath).isSymbolicLink()) link = fs.readlinkSync(filePath);
+  } catch (e) {
+    if (e.code !== 'ENOENT') throw e;
+  }
+  if (link === null) return filePath;
+  return resolveWriteTarget(path.resolve(path.dirname(filePath), link));
+}
+
 // Atomic write (tmp + rename) so a crash mid-write cannot leave a truncated
 // registry that the next reader would then throw on (or, worse, read as []).
 function writeJsonArray(filePath, arr) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  const tmp = `${filePath}.tmp-${process.pid}`;
+  const target = resolveWriteTarget(filePath);
+  fs.mkdirSync(path.dirname(target), { recursive: true });
+  const tmp = `${target}.tmp-${process.pid}`;
   fs.writeFileSync(tmp, JSON.stringify(arr, null, 2) + '\n');
-  fs.renameSync(tmp, filePath);
+  fs.renameSync(tmp, target);
 }
 
 /**
@@ -126,9 +158,10 @@ function normalizeKey(value) {
 /**
  * Discovery predicate (S0-T3): does this candidate match a retired entry?
  * Matches on the id the candidate would mint, OR on exact normalized
- * title+venue equality with a retired entry that recorded both. Empty
- * title/venue on either side never matches (a legacy entry without them is
- * id-only).
+ * title+venue equality with a retired entry that recorded both (only a
+ * `blockTitleVenue: true` retirement does). Empty title/venue on either side
+ * never matches (the default retirement, and a legacy entry without them,
+ * is id-only).
  *
  * @param {{id?: string, title?: string, venue?: string}} candidate
  * @param {Array<{id: string, title?: string, venue?: string}>} [entries]
@@ -167,9 +200,15 @@ function matchesRetired(candidate, entries) {
  * retirement means two sessions deleted the same row, which is worth
  * stopping on, not papering over.
  *
+ * `title`/`venue` are copied from the row ONLY with `blockTitleVenue: true`
+ * (a junk row that must never return under any id — the row must then carry
+ * both, or the block could never fire and the call throws). The default
+ * writes nulls, so the entry matches by id alone: the only safe form for a
+ * duplicate/merge, whose kept row shares the title+venue (module docstring).
+ *
  * @param {string} id
- * @param {{reason: string, archivedRow: object, now?: Date|string,
- *          listPath?: string, archivePath?: string}} options
+ * @param {{reason: string, archivedRow: object, blockTitleVenue?: boolean,
+ *          now?: Date|string, listPath?: string, archivePath?: string}} options
  * @returns {{entry: object, listPath: string, archivePath: string}}
  */
 function retireId(id, options) {
@@ -182,6 +221,15 @@ function retireId(id, options) {
   }
   if (!opts.archivedRow || typeof opts.archivedRow !== 'object' || Array.isArray(opts.archivedRow)) {
     throw new Error(`retireId(${id}): archivedRow must be the deleted shows.json row (object)`);
+  }
+  if (opts.blockTitleVenue !== undefined && typeof opts.blockTitleVenue !== 'boolean') {
+    throw new Error(`retireId(${id}): blockTitleVenue must be a boolean when given, got ${typeof opts.blockTitleVenue}`);
+  }
+  const blockTitleVenue = opts.blockTitleVenue === true;
+  const rowTitle = typeof opts.archivedRow.title === 'string' && opts.archivedRow.title.trim() ? opts.archivedRow.title : null;
+  const rowVenue = typeof opts.archivedRow.venue === 'string' && opts.archivedRow.venue.trim() ? opts.archivedRow.venue : null;
+  if (blockTitleVenue && (rowTitle === null || rowVenue === null)) {
+    throw new Error(`retireId(${id}): blockTitleVenue needs both title and venue on the archived row (matchesRetired only ever matches on the pair) — retire id-only instead`);
   }
 
   const listPath = resolveListPath(opts);
@@ -202,8 +250,8 @@ function retireId(id, options) {
     id,
     reason: opts.reason.trim(),
     retiredAt: now.toISOString(),
-    title: typeof row.title === 'string' ? row.title : null,
-    venue: typeof row.venue === 'string' ? row.venue : null,
+    title: blockTitleVenue ? rowTitle : null,
+    venue: blockTitleVenue ? rowVenue : null,
   };
 
   const archive = readJsonArray(archivePath, 'deleted-shows archive');
