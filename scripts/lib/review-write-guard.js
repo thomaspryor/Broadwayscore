@@ -125,6 +125,8 @@ const PROTECTED_FIELDS = [
   'previousOriginalScore',
   'humanReviewNote',
   'humanReviewedWrongProduction',
+  // Human-verified escape hatch for review-guards.js's listingPageUrl rule (2026 audit S1-T0) — same family as the *ManualClear breadcrumbs below.
+  'listingPageUrlManualClear',
   'humanReviewedWrongArticle',
   // Operator opt-out for the anticipatory pre-opening gate (content-filters.js
   // isAnticipatoryPreviewPost). Same family as the two above and it was simply

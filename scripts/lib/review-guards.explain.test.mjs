@@ -118,11 +118,15 @@ test('each exclusion rule name fires for its own trigger', () => {
 
 test('namedNonReviewUrl (BRO-4101) is scoped to serp-discovery sources only — a real review whose citation URL happens to sit on a named-pattern host must not be dropped just for sharing a source label', () => {
   const text = 'A perfectly ordinary review body with more than enough words to pass the text gate.';
-  // broadwayworld.com/shows/.../cast is a NAMED_NON_REVIEW_URL_PATTERNS entry
-  // (venue-production-page) not also covered by domain-filters' blockedReviewUrl
+  // londontheatre.co.uk/show/<id> is a NAMED_NON_REVIEW_URL_PATTERNS entry
+  // (ticketing-listing) not also covered by domain-filters' blockedReviewUrl
   // list, so this exercises the namedNonReviewUrl branch specifically rather
-  // than being pre-excluded by an earlier rule in the chain.
-  const named = { fullText: text, url: 'https://www.broadwayworld.com/shows/Some-Show-123456/cast', criticName: 'A Real Critic' };
+  // than being pre-excluded by an earlier rule in the chain. (It used to be
+  // broadwayworld.com/shows/.../cast, but since the 2026 audit's S1-T0 the
+  // host-scoped listingPageUrl rule runs first and claims every
+  // broadwayworld.com/shows/ URL regardless of source — see
+  // tests/unit/listing-page-url.test.mjs.)
+  const named = { fullText: text, url: 'https://www.londontheatre.co.uk/show/47207-the-last-ship', criticName: 'A Real Critic' };
   const nonSerpSources = [undefined, 'show-score-playwright', 'bww-roundup', 'submit-review-form'];
   for (const source of nonSerpSources) {
     const data = source === undefined ? { ...named } : { ...named, source };
@@ -138,7 +142,7 @@ test('namedNonReviewUrlManualClear escape hatch lets a human-verified file throu
   const data = {
     fullText: text,
     source: 'serp-discovery',
-    url: 'https://www.broadwayworld.com/shows/Some-Show-123456/cast',
+    url: 'https://www.londontheatre.co.uk/show/47207-the-last-ship',
     namedNonReviewUrlManualClear: true,
   };
   assert.notStrictEqual(explainExclusion(data, null, undefined), 'namedNonReviewUrl');

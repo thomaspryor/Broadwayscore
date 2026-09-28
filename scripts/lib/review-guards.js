@@ -3522,6 +3522,24 @@ function explainExclusion(data, show, filePath) {
   // (2026-07-09, Notion 39a637c5-416f-813a). Canonical-guard rule:
   // memory/feedback_includability_predicates_must_be_canonical.md.
   if (data.url && require('./domain-filters').isBlockedReviewUrl(data.url)) return 'blockedReviewUrl';
+  // Listing pages scored as reviews (2026 data audit, S1-T0). Host-scoped URL
+  // shapes that are never an article, found live: a review INDEX
+  // (talkinbroadway.com/page/world/index.html, scored on 3 shows), an
+  // aggregator's SHOW page (londontheatrehub.co.uk/shows/equus/,
+  // whatsonstage.com/shows/.../war-horse_1712421/, broadwayworld.com/shows/
+  // Grangeville-334944.html — their reviews live under /reviews/ and
+  // /article/), and a bare homepage. Host-specific by design (didtheylikeit.com
+  // /shows/<show>/<review>/ and broadwaybaby.com/shows/<slug>/<id> are real
+  // reviews) — see LISTING_PAGE_URL_PATTERNS. Unlike namedNonReviewUrl below
+  // this is NOT source-scoped: a listing page is a listing page whoever found
+  // it. Escape hatch (mirrors namedNonReviewUrlManualClear; PROTECTED in
+  // review-write-guard.js): a human who verifies the file's text IS a real
+  // review despite the listing-shaped URL sets listingPageUrlManualClear: true
+  // — though re-pointing url at the actual article is the better fix.
+  if (
+    typeof data.url === 'string' && data.listingPageUrlManualClear !== true &&
+    require('./non-review-url-patterns').listingPageUrlReason(data.url)
+  ) return 'listingPageUrl';
   // Named non-review URL patterns (BRO-4101), scoped to unvetted-SERP-sourced
   // records only (isUnvettedSerpSource — the canonical SUSPECT_SOURCES set
   // also used by audit-corpus-contamination.js's wrong-production audit).
