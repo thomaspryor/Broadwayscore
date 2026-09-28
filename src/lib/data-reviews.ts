@@ -9,6 +9,12 @@ import { slugify } from './data-core';
 
 import reviewsData from '../../data/reviews.json';
 import showsData from '../../data/shows.json';
+// Retired critic slugs → canonical (2026 data audit, S5-T9). The same compact
+// map src/middleware.ts 301s from; entries originate in
+// data/critic-slug-aliases.json (core data) via scripts/build-slug-redirects.js
+// at prebuild, so the redirect and this lookup can never disagree.
+import slugRedirectsData from '../../data/slug-redirects-compact.json';
+import { resolveCriticRedirect } from './slug-redirects';
 
 // ============================================
 // Normalization maps — merge typo duplicates
@@ -536,8 +542,17 @@ export function getAllCritics(): CriticProfile[] {
   return criticProfilesList;
 }
 
+const criticRedirectMap = slugRedirectsData as Record<string, string>;
+
 export function getCriticBySlug(slug: string): CriticProfile | undefined {
-  return criticSlugMap.get(slug);
+  const exact = criticSlugMap.get(slug);
+  if (exact) return exact;
+  // Old slug (diacritic-mangled, merged spelling) → the canonical profile.
+  // Requests normally never get here — the middleware 301s first — but any
+  // caller holding an old slug (or a runtime without the middleware) still
+  // resolves the same critic instead of a 404.
+  const canonical = resolveCriticRedirect(criticRedirectMap, slug);
+  return canonical ? criticSlugMap.get(canonical) : undefined;
 }
 
 export function getAllCriticSlugs(): string[] {

@@ -215,6 +215,11 @@ data/critic-registry.json
 # synced by push-core-data's CORE_FILES, never committed here.
 data/retired-show-ids.json
 data/deleted-shows.json
+# Critic-slug alias registry (2026 data audit, S5-T9): {"<old-slug>":
+# "<canonical-slug>"}, read by scripts/lib/critic-slug-aliases.js at prebuild.
+# Core data (§11) — same repo as shows.json, synced by push-core-data's
+# CORE_FILES, never committed here. Template: tests/fixtures/critic-slug-aliases.seed.json.
+data/critic-slug-aliases.json
 
 # Theatr rotated refresh token (written by scrape-theatr-audience.js) — a live
 # credential that must never be committed. The BroadwayScorecard/ line below

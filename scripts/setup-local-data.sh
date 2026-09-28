@@ -151,7 +151,11 @@ fi
 # local session, and a retirement that lands in a plain data/ copy (gitignored,
 # never pushed) would leave the deleted row free to come back -- the registry
 # only works when the write reaches the core-data clone, like shows.json.
-SYMLINK_FILES=(shows.json reviews.json commercial.json diary-shows.json retired-show-ids.json deleted-shows.json)
+# critic-slug-aliases.json added 2026-09-28 (2026 data audit, S5-T9): the
+# retired-critic-slug → canonical map is hand-edited from a local session, and
+# an edit that lands in a plain data/ copy never reaches prebuild in CI -- the
+# redirect only exists once the entry is in the core-data clone.
+SYMLINK_FILES=(shows.json reviews.json commercial.json diary-shows.json retired-show-ids.json deleted-shows.json critic-slug-aliases.json)
 
 # Files that should be regular copies (read-only for most purposes)
 COPY_FILES=(audience-buzz.json audience-reviews-lbo.json awards.json critic-consensus.json critic-registry.json grosses.json grosses-history.json mezzanine-productions-raw.json opening-night-sent.json)
