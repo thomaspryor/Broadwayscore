@@ -51,8 +51,7 @@ const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligi
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd } = require('./lib/jsonld');
-const { isNationalTourRoundupSlug, tourCandidateFor } = require('./lib/tour-roundup-candidate');
-const { routeAlert } = require('./lib/owner-alert-router');
+const { isNationalTourRoundupSlug, tourCandidateFor, recordTourCandidates } = require('./lib/tour-roundup-candidate');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -1348,6 +1347,7 @@ async function landingDiscoverMode(shows, options = {}) {
 
   const matched = [];
   const unmatched = [];
+  const tourCandidates = [];
   for (const url of roundupUrls) {
     const slug = (url.split('/article/')[1] || '').replace(/[?#].*$/, '');
     const match = matchBwwRoundupSlugToShow(slug, shows);
@@ -1358,23 +1358,9 @@ async function landingDiscoverMode(shows, options = {}) {
     if (match && (match.show.category || 'broadway') === 'broadway' && isNationalTourRoundupSlug(slug)) {
       const cand = tourCandidateFor(slug, match.show, shows);
       console.log(`  [TOUR]  ${match.show.id} ← ${slug.slice(0, 70)}${cand ? ' (suggesting a tour entry)' : ' (tour already tracked)'}`);
-      if (cand && !options.dryRun) {
-        try {
-          await routeAlert({
-            conditionKey: `tour-candidate:${cand.broadwayShowId}`,
-            title: `Tour candidate: ${cand.title} national tour`,
-            severity: 'info',
-            disposition: 'digest',
-            decision: true,
-            decisionPrompt: `Add the ${cand.title} national tour as a tracked tour?`,
-            url,
-            description: `BroadwayWorld published a national-tour review roundup for ${cand.title} (${cand.broadwayShowId}), which has no tour entry. Add a category:'tour' entry with tourOf:${cand.broadwayShowId}, then run node scripts/sweep-tour-reviews.js --tour=<id>.`,
-            cooldownHours: 24 * 30,
-          });
-        } catch (e) {
-          console.log(`  [WARN] tour-candidate alert failed: ${e.message}`);
-        }
-      }
+      // Recorded here; scripts/route-tour-candidates.js turns the file into owner
+      // digest suggestions (only the landing job runs it and commits the alert files).
+      if (cand && !options.dryRun) tourCandidates.push({ ...cand, url, slug });
       continue;
     }
     if (match) {
@@ -1383,6 +1369,15 @@ async function landingDiscoverMode(shows, options = {}) {
     } else {
       unmatched.push({ url, slug });
       console.log(`  [MISS]  ${slug.slice(0, 70)}`);
+    }
+  }
+
+  if (tourCandidates.length) {
+    try {
+      const n = recordTourCandidates(path.join(__dirname, '../data/audit/tour-roundup-candidates.json'), tourCandidates);
+      console.log(`\nRecorded ${tourCandidates.length} national-tour candidate(s) (${n} tracked) for route-tour-candidates.js`);
+    } catch (e) {
+      console.log(`  [WARN] Could not record tour candidates: ${e.message}`);
     }
   }
 

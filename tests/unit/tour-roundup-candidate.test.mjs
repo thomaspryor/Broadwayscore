@@ -41,3 +41,28 @@ test('a candidate only for a Broadway show with no tour entry of its title', () 
   assert.equal(tourCandidateFor(slug, { id: 'x-off-broadway-2026', title: 'X', category: 'off-broadway' }, shows), null);
   assert.equal(tourCandidateFor(slug, null, shows), null);
 });
+
+test('recordTourCandidates keeps one row per show and its first-seen time; openTourCandidates drops tracked tours', async () => {
+  const { recordTourCandidates, openTourCandidates } = require('../../scripts/lib/tour-roundup-candidate.js');
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tour-cand-'));
+  try {
+    const file = path.join(dir, 'c.json');
+    const slug = 'Review-Roundup-DEATH-BECOMES-HER-Launches-National-Tour-20260915';
+    const c = { broadwayShowId: 'death-becomes-her-2024', title: 'Death Becomes Her', url: 'https://x/a', slug };
+    assert.equal(recordTourCandidates(file, [c], '2026-09-01T00:00:00Z'), 1);
+    assert.equal(recordTourCandidates(file, [c], '2026-09-02T00:00:00Z'), 1);
+    const rows = JSON.parse(fs.readFileSync(file, 'utf8'));
+    assert.equal(rows[0].firstSeen, '2026-09-01T00:00:00Z');
+    assert.equal(rows[0].lastSeen, '2026-09-02T00:00:00Z');
+    const dbh = { id: 'death-becomes-her-2024', title: 'Death Becomes Her', category: 'broadway' };
+    assert.equal(openTourCandidates(rows, [dbh]).length, 1);
+    const tour = { id: 'death-becomes-her-tour-2026', title: 'Death Becomes Her', category: 'tour', tourOf: 'death-becomes-her-2024' };
+    assert.equal(openTourCandidates(rows, [dbh, tour]).length, 0, 'a tour entry settles the row');
+    assert.equal(openTourCandidates(rows, []).length, 0, 'a removed show settles the row');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });
+  }
+});

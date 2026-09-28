@@ -5,7 +5,7 @@
  * a /theater/north-american-tour link, "currently playing at North American
  * Tour", a PerformingArtsTheater named "North American Tour".
  *
- * Run: npx tsx --test tests/unit/tour-display.test.mjs
+ * Run: npx tsx --test tests/unit/tour-display.test.ts
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -16,7 +16,7 @@ import { getDurationSuffix } from '../../src/lib/date-utils';
 import { getMarketFromPath } from '../../src/hooks/useCurrentMarket';
 import { generateShowSchema, getShowFAQs } from '../../src/lib/seo';
 
-const tour = {
+const tour: any = {
   id: 'beetlejuice-tour-2022', slug: 'beetlejuice-tour-2022', title: 'Beetlejuice',
   venue: 'North American Tour', category: 'tour', type: 'musical', status: 'open',
   openingDate: null, closingDate: null, synopsis: 'x',
@@ -46,7 +46,7 @@ test('header market: tour show pages and the tours hub read as tour; titles cont
 });
 
 test('show JSON-LD: a tour is a Place in the US, not a theater named "North American Tour"', () => {
-  const schema = generateShowSchema(tour);
+  const schema: any = generateShowSchema(tour);
   assert.equal(schema.location['@type'], 'Place');
   assert.equal(schema.location.address.addressCountry, 'US');
   assert.equal(schema.location.address.streetAddress, undefined);
@@ -65,7 +65,7 @@ test('non-tour shows keep their existing labels', () => {
   assert.equal(getHeroDurationSuffix({ category: 'broadway' }), 'on Broadway');
   assert.equal(getHeroDurationSuffix({ category: 'regional' }), null);
   assert.equal(getBrowseSlug('broadway', 'musical'), 'best-broadway-musicals');
-  const schema = generateShowSchema({ ...tour, category: 'broadway', venue: 'Winter Garden Theatre', theaterAddress: '1634 Broadway, New York, NY 10019' });
+  const schema: any = generateShowSchema({ ...tour, category: 'broadway', venue: 'Winter Garden Theatre', theaterAddress: '1634 Broadway, New York, NY 10019' });
   assert.equal(schema.location['@type'], 'PerformingArtsTheater');
   assert.equal(schema.organizer.name, 'Winter Garden Theatre');
 });
