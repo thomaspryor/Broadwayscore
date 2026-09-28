@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "warn",
-  "lastChecked": "2026-09-27T12:30:25.467Z",
+  "lastChecked": "2026-09-28T14:32:26.964Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "44786 files, 21100 reviews (surplus: 23686)"
+      "message": "44958 files, 21337 reviews (surplus: 23621)"
     },
     {
       "name": "Sync: open show coverage",
@@ -18,8 +18,8 @@
     },
     {
       "name": "Sync: social-pulse per-show freshness",
-      "status": "warn",
-      "message": "1 running show(s) with social-pulse >14d stale: Who’s Afraid of Virginia Woolf? (167d)"
+      "status": "pass",
+      "message": "68 running BW/WE shows — no stale social-pulse files"
     },
     {
       "name": "Sync: phantom show detection",
@@ -33,13 +33,13 @@
     },
     {
       "name": "Sync: baseline drift",
-      "status": "warn",
-      "message": "Open shows dropped by 3: 140 vs baseline 143; Reviews dropped: 21100 vs baseline 21184"
+      "status": "pass",
+      "message": "3059 shows, 142 open, 21337 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "warn",
-      "message": "weekEnding 9/13/2026 is 14 days ago (2 missed weeks)"
+      "message": "weekEnding 9/13/2026 is 15 days ago (2 missed weeks)"
     }
   ]
 }

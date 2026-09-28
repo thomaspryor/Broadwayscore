@@ -1,25 +1,25 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-09-25T12:18:19.914Z",
+  "lastChecked": "2026-09-28T14:32:26.970Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
+      "name": "Workflow repeat-failure: Check Corpus Drift",
+      "status": "error",
+      "message": "Check Corpus Drift failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
       "name": "Workflow repeat-failure: Land",
-      "status": "error",
-      "message": "Land failed 4 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Test Suite",
-      "status": "error",
-      "message": "Test Suite failed 3 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Process Review Submission",
       "status": "warn",
-      "message": "Process Review Submission failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "message": "Land failed 3 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+    },
+    {
+      "name": "Workflow repeat-failure: Fetch Guardian Reviews via API",
+      "status": "warn",
+      "message": "Fetch Guardian Reviews via API failed 2 times in the last 24h — likely broken, not transient."
     }
   ]
 }
