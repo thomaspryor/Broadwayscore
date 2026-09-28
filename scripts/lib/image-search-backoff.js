@@ -28,13 +28,26 @@ function backoffMs(failures) {
   return BACKOFF_DAYS[Math.min(failures, BACKOFF_DAYS.length) - 1] * DAY_MS;
 }
 
+const OPENING_WINDOW_DAYS = 14;
+
+function isNearOpening(show, nowMs) {
+  const t = show && show.openingDate ? new Date(show.openingDate).getTime() : NaN;
+  return !Number.isNaN(t) && Math.abs(nowMs - t) <= OPENING_WINDOW_DAYS * DAY_MS;
+}
+
 /**
  * Pure: should the Google Images tier be skipped for this show right now?
  * @param {{failures:number, lastAttempt:string}|undefined} entry
+ * @param {number} [nowMs]
+ * @param {{openingDate?:string}} [show] - within ±14 days of openingDate the gate never skips
  * @returns {{skip:boolean, retryAt:string|null}}
  */
-function shouldSkipGoogleImages(entry, nowMs = Date.now()) {
+function shouldSkipGoogleImages(entry, nowMs = Date.now(), show = null) {
   if (!entry || !(entry.failures > 0)) return { skip: false, retryAt: null };
+  // Never back off around opening: art usually first appears then, and a show
+  // found weeks early would otherwise sit at the 14-day cap exactly when it
+  // becomes findable.
+  if (isNearOpening(show, nowMs)) return { skip: false, retryAt: null };
   const last = new Date(entry.lastAttempt).getTime();
   if (Number.isNaN(last)) return { skip: false, retryAt: null };
   const retryAtMs = last + backoffMs(entry.failures);
@@ -75,6 +88,7 @@ function saveImageSearchAttempts(attempts, p = ATTEMPTS_PATH) {
 module.exports = {
   ATTEMPTS_PATH,
   BACKOFF_DAYS,
+  OPENING_WINDOW_DAYS,
   shouldSkipGoogleImages,
   recordGoogleImagesAttempt,
   loadImageSearchAttempts,

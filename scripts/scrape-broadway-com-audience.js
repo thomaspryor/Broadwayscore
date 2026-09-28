@@ -574,6 +574,16 @@ async function main() {
       errors++;
     }
 
+    // BRO-4242: checkpoint every 10 shows so a batched run killed by the
+    // workflow's timeout keeps what it already scraped (the old one-run-per-show
+    // dispatch saved each show independently). Entries are only ever added in
+    // this loop, so this cannot trip the entry-count guard below.
+    if (!dryRun && updated > 0 && (i + 1) % 10 === 0 && i < toProcess.length - 1) {
+      if (!audienceBuzz._meta.sources.includes('Broadway.com')) audienceBuzz._meta.sources.push('Broadway.com');
+      saveAudienceBuzz(audienceBuzz);
+      console.log(`  (checkpoint saved after ${i + 1} shows)`);
+    }
+
     // Rate limit
     if (i < toProcess.length - 1) {
       await sleep(REQUEST_DELAY_MS);

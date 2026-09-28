@@ -47,6 +47,16 @@ test('recordGoogleImagesAttempt does not mutate its input', () => {
   assert.deepEqual(orig, { a: { failures: 1, lastAttempt: '2026-09-27T00:00:00Z' } });
 });
 
+test('never skips within ±14 days of openingDate (art usually appears around opening)', () => {
+  const entry = { failures: 5, lastAttempt: new Date(t0).toISOString() }; // deep in backoff
+  const now = t0 + DAY;
+  assert.equal(shouldSkipGoogleImages(entry, now, { openingDate: '2026-10-05' }).skip, false, '6 days before opening');
+  assert.equal(shouldSkipGoogleImages(entry, now, { openingDate: '2026-09-20' }).skip, false, '9 days after opening');
+  assert.equal(shouldSkipGoogleImages(entry, now, { openingDate: '2026-12-01' }).skip, true, 'far from opening');
+  assert.equal(shouldSkipGoogleImages(entry, now, { openingDate: null }).skip, true, 'no opening date');
+  assert.equal(shouldSkipGoogleImages(entry, now, null).skip, true, 'no show passed');
+});
+
 test('load tolerates missing/corrupt files; save round-trips sorted', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'img-backoff-'));
   const p = path.join(dir, 'a.json');

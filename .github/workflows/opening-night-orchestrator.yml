@@ -388,9 +388,9 @@ jobs:
           # (see memory/feedback_silent_workflow_failures.md — never swallow dispatch
           # errors with `|| true`).
           #
-          # Each target audience-scraper workflow now uses per-run concurrency groups
-          # so back-to-back dispatches (especially the Broadway.com per-show loop) no
-          # longer lose middle dispatches to GitHub's 1-pending-queue limit.
+          # Each target audience-scraper workflow uses per-run concurrency groups
+          # so back-to-back dispatches don't lose middle ones to GitHub's
+          # 1-pending-queue limit. (Broadway.com is one batched dispatch since BRO-4242.)
           SHOWS="${{ steps.find.outputs.shows }}"
           MARKET="${{ steps.market.outputs.market }}"
           echo "Dispatching audience scrapers for: $SHOWS (market: ${MARKET:-all})"

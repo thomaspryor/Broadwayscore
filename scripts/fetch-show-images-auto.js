@@ -1696,6 +1696,8 @@ async function fetchFromGoogleImages(show) {
   let posterBuffer = null;
   let squareCandidates = [];
   let posterCandidates = [];
+  let squareErrored = false;
+  let posterErrored = false;
 
   // ============================================================
   // SEARCH 1: Square images (for homepage thumbnail cards)
@@ -1746,6 +1748,7 @@ async function fetchFromGoogleImages(show) {
     }
   } catch (err) {
     console.log(`   ⚠ Square search failed: ${err.message}`);
+    squareErrored = true;
   }
 
   await sleep(1500);
@@ -1795,6 +1798,7 @@ async function fetchFromGoogleImages(show) {
     }
   } catch (err) {
     console.log(`   ⚠ Poster search failed: ${err.message}`);
+    posterErrored = true;
   }
 
   // ============================================================
@@ -1802,6 +1806,9 @@ async function fetchFromGoogleImages(show) {
   // ============================================================
   if (!thumbnailBuffer && !posterBuffer) {
     console.log(`   ✗ No usable images found`);
+    // BRO-4243: both searches THREW (provider outage/exhaustion) — not evidence
+    // the show has no findable art, so the caller must not back it off.
+    if (squareErrored && posterErrored) return { searchErrored: true };
     return null;
   }
 
@@ -2220,13 +2227,15 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   // Broad coverage — finds thumbnail art that structured sources miss
   // Loops through multiple candidates if verification rejects the first one
   if (googleAttempts === null) googleAttempts = loadImageSearchAttempts();
-  const googleGate = forceGoogle ? { skip: false } : shouldSkipGoogleImages(googleAttempts[show.id]);
+  const googleGate = forceGoogle ? { skip: false } : shouldSkipGoogleImages(googleAttempts[show.id], Date.now(), show);
   let googleAccepted = false;
   let googleImages = null;
+  let googleErrored = false;
   if (googleGate.skip) {
     console.log(`   ⏭ Google Images skipped: ${googleAttempts[show.id].failures} recent failure(s), retry after ${googleGate.retryAt} (BRO-4243; --force-google to override)`);
   } else {
     googleImages = await fetchFromGoogleImages(show);
+    if (googleImages && googleImages.searchErrored) { googleErrored = true; googleImages = null; }
   }
   while (googleImages && googleImages.thumbnail) {
     // Save remaining candidates, and any already-saved poster, before
@@ -2252,7 +2261,7 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     if (remaining.length === 0) break;
     googleImages = await tryNextGoogleCandidate(show, remaining, previousPoster);
   }
-  if (!googleGate.skip) noteGoogleAttempt(show.id, googleAccepted);
+  if (!googleGate.skip && !googleErrored) noteGoogleAttempt(show.id, googleAccepted);
 
   // Step 5 (was Step 4): Playbill fallback (landscape OG image only)
   // NEEDS VERIFICATION — last resort
@@ -2577,7 +2586,9 @@ async function main() {
     ? new Set(showFilter.split(',').map(s => s.trim()).filter(Boolean))
     : null;
   const onlyMissing = args.includes('--missing') || args.includes('--missing-only');
-  forceGoogle = args.includes('--force-google');
+  // Targeted runs (--show=, incl. the bounded audit-imageless self-heal
+  // dispatches) always search: the backoff is for the recurring --missing sweep.
+  forceGoogle = args.includes('--force-google') || !!showFilter;
   const badImagesOnly = args.includes('--bad-images');
   const concurrency = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] || '5', 10);
   // Verification is ON by default — use --no-verify to skip (faster but less safe)
