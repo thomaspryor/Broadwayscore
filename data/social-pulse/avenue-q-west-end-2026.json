@@ -3,47 +3,50 @@
   "showId": "avenue-q-west-end-2026",
   "showTitle": "Avenue Q",
   "market": "West End",
-  "fetchedAt": "2026-09-21T12:12:46.933Z",
+  "fetchedAt": "2026-09-28T13:11:00.099Z",
   "tier": "Hidden",
-  "volume": 6,
-  "effectiveVolume": 0.4,
+  "volume": 4,
+  "effectiveVolume": 0.6,
   "relevanceRates": {
-    "byPlatform": {},
-    "overall": null,
-    "classified": 0
+    "byPlatform": {
+      "reddit": 0,
+      "bluesky": 1
+    },
+    "overall": 0.5,
+    "classified": 2
   },
   "positivePct": null,
   "opinionSample": 0,
-  "weekOverWeekPct": -25,
-  "baselineMultiple": 0.59,
+  "weekOverWeekPct": -33,
+  "baselineMultiple": 0.41,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
     "instagram": 0,
     "reddit": 0,
-    "bluesky": 0
+    "bluesky": 1
   },
   "topQuotes": [],
   "counters": {
-    "reddit": 0,
-    "bluesky": 0,
-    "x": 6,
-    "wikipedia": 5793
+    "reddit": 1,
+    "bluesky": 1,
+    "x": 2,
+    "wikipedia": 5306
   },
   "wikipediaTitle": "Avenue Q",
   "baseline": {
-    "mean": 9.6640625,
+    "mean": 8.9560546875,
     "weeksOfHistory": 8
   },
   "rawCounts": {
-    "reddit": 0,
-    "bluesky": 0
+    "reddit": 1,
+    "bluesky": 1
   },
   "errors": [],
   "rank": {
-    "position": 21,
-    "total": 44,
-    "text": "21/44 West End"
+    "position": 18,
+    "total": 42,
+    "text": "18/42 West End"
   },
-  "compositeScore": 0.2
+  "compositeScore": 0.3
 }

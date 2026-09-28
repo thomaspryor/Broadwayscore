@@ -93,3 +93,16 @@ test('missing/garbage entries are handled without throwing', () => {
   // inline logic this replaced — an unlabelled failure is still a failure.
   assert.equal(isPermanentlyFailed({ failureCount: 99 }), true);
 });
+
+// BRO-4185 H: one fresh fetch for a content mismatch judged by an older check.
+const { shouldReopenStaleContentMismatch } = require('./failed-fetch-policy');
+test('shouldReopenStaleContentMismatch: old-version mismatch on a textless unflagged file reopens once', () => {
+  const entry = { failureReason: 'url_content_mismatch' };
+  const data = { url: 'https://example.com/review', fullText: null };
+  assert.equal(shouldReopenStaleContentMismatch(entry, data, 2), true);
+  assert.equal(shouldReopenStaleContentMismatch({ ...entry, checkVersion: 2 }, data, 2), false);
+  assert.equal(shouldReopenStaleContentMismatch(entry, { ...data, contentMismatchReopenedFor: 2 }, 2), false);
+  assert.equal(shouldReopenStaleContentMismatch(entry, { ...data, fullText: 'x'.repeat(2000) }, 2), false);
+  assert.equal(shouldReopenStaleContentMismatch(entry, { ...data, wrongShow: true }, 2), false);
+  assert.equal(shouldReopenStaleContentMismatch({ failureReason: 'url_dead' }, data, 2), false);
+});
