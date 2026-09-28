@@ -13,13 +13,26 @@
  * 5. Logical consistency (status vs dates)
  * 6. Catastrophic change detection
  *
- * Usage: node scripts/validate-data.js [--strict]
+ * Usage: node scripts/validate-data.js [--strict] [--dry-run]
  * Exit codes: 0 = OK, 1 = Errors found
  */
 
 const fs = require('fs');
 const path = require('path');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
+const { loadRetiredIdsSafe, checkRetiredIds } = require('./lib/validate-retired-ids');
+
+// --dry-run (Sprint 0 / S0-T1): run every check, print every verdict, exit with
+// the same code — but never touch disk. Three write paths honour it: the
+// push-refusal sentinel (below), the shows.json write guard (its dryRun
+// option swallows the four auto-fix saveShows() sites), and writeAuditArtifact
+// (the tracked data/audit/ files). Parsed and declared up here, ahead of the
+// sentinel functions, because the uncaughtException handler can reach them
+// before the rest of the module has evaluated — everything the summary needs
+// must already exist at that point (no TDZ on a crash path).
+const DRY_RUN = process.argv.includes('--dry-run');
+const dryRunLedger = { showsWrites: null, artifactWrites: [] };
+let dryRunSummaryPrinted = false;
 
 // Canonical "would rebuild include this review-text file?" predicate, shared
 // with scripts/check-review-count-drift.js so both stay in sync. isIncludable
@@ -66,6 +79,10 @@ const PUSH_REFUSAL_SENTINEL = path.join(
   '.skip-push-core-data'
 );
 function writePushRefusalSentinel(reason) {
+  if (DRY_RUN) {
+    info(`DRY RUN: would write push-refusal sentinel ${PUSH_REFUSAL_SENTINEL} (reason: ${reason}) — suppressed`);
+    return;
+  }
   try {
     fs.writeFileSync(PUSH_REFUSAL_SENTINEL,
       `validate-data.js refused push at ${new Date().toISOString()}\nreason: ${reason}\n`);
@@ -76,7 +93,12 @@ function writePushRefusalSentinel(reason) {
 }
 function clearPushRefusalSentinel() {
   try {
-    if (fs.existsSync(PUSH_REFUSAL_SENTINEL)) fs.unlinkSync(PUSH_REFUSAL_SENTINEL);
+    if (!fs.existsSync(PUSH_REFUSAL_SENTINEL)) return;
+    if (DRY_RUN) {
+      info(`DRY RUN: would clear stale push-refusal sentinel ${PUSH_REFUSAL_SENTINEL} — suppressed`);
+      return;
+    }
+    fs.unlinkSync(PUSH_REFUSAL_SENTINEL);
   } catch (_) { /* non-fatal */ }
 }
 // Single exit-with-error path so every error site reaches the sentinel — not just the
@@ -84,6 +106,7 @@ function clearPushRefusalSentinel() {
 // the sentinel (missing shows.json + parse error). Route them through this.
 function exitWithError(reason) {
   writePushRefusalSentinel(reason);
+  printDryRunSummary();
   process.exit(1);
 }
 // Also catch unexpected crashes — uncaughtException doesn't fire on process.exit, but it
@@ -92,8 +115,33 @@ function exitWithError(reason) {
 process.on('uncaughtException', (err) => {
   writePushRefusalSentinel(`uncaughtException: ${err.message}`);
   console.error(err);
+  printDryRunSummary();
   process.exit(1);
 });
+
+// --dry-run exit summary. Reached from every exit path (success, exitWithError,
+// uncaughtException) and prints at most once. Reads the ledgers off
+// `dryRunLedger` (declared at the top of the module) so it is safe to call
+// even when a crash happens before the write guard below is constructed.
+function printDryRunSummary() {
+  if (!DRY_RUN || dryRunSummaryPrinted) return;
+  dryRunSummaryPrinted = true;
+  const showsWrites = dryRunLedger.showsWrites || [];
+  const artifactWrites = dryRunLedger.artifactWrites;
+  console.log('');
+  console.log(`DRY RUN: ${showsWrites.length} shows.json writes suppressed`);
+  showsWrites.forEach((w, i) => {
+    const payload = w.showCount != null ? ` — ${w.showCount} shows in payload` : '';
+    console.log(`   ${i + 1}. ${w.reason || 'saveShows() (no reason given)'}${payload}`);
+  });
+  console.log(`DRY RUN: ${artifactWrites.length} audit artifact writes suppressed`);
+  artifactWrites.forEach((a, i) => console.log(`   ${i + 1}. ${a.label} → ${a.file} (${a.bytes} bytes)`));
+}
+// Verb for the auto-fix result lines: in a dry run the in-memory fix still
+// happened (later checks see the corrected value) but nothing reached disk.
+function autoFixVerb() {
+  return DRY_RUN ? 'Would auto-fix (dry run)' : 'Auto-fixed';
+}
 
 // Stuck-vs-fresh classification for pending-score gap records.
 // Extracted + unit-tested in tests/unit/pending-gap-classification.test.mjs.
@@ -109,6 +157,18 @@ const USAGE = `validate-data.js — Comprehensive data validation for Broadway S
 Usage:
   node scripts/validate-data.js [options]
   node scripts/validate-data.js --help, -h    print this usage and exit
+
+Options:
+  --dry-run   Run every check and exit with the same code, but write nothing:
+              shows.json auto-fixes (stale status, slugs, venue/category,
+              theaterAddress), the tracked data/audit/ artifacts and the
+              push-refusal sentinel are all suppressed. Each suppressed write
+              is logged where it would have happened and summarised at exit as
+              "DRY RUN: N shows.json writes suppressed" (0 when none).
+  --strict    Label the run STRICT in the header. Accepted for CI/workflow
+              compatibility; no check currently changes severity under it.
+
+Exit codes: 0 = OK, 1 = errors found (unchanged by --dry-run).
 `;
 
 // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
@@ -151,7 +211,12 @@ if (process.env.VALIDATE_DATA_SHOWS_JSON) {
   console.warn(warning);
   console.error(warning);
 }
-const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_FILE);
+// Every shows.json write in this file goes through this guard, so --dry-run
+// is enforced at the seam rather than at each of the four auto-fix sites:
+// under dryRun, saveShows() records the intended write and returns.
+const showsGuard = createShowsWriteGuard(SHOWS_FILE, { dryRun: DRY_RUN });
+const { loadShows, saveShows } = showsGuard;
+dryRunLedger.showsWrites = showsGuard.suppressedWrites;
 
 // FIXTURE RUNS MUST NOT WRITE TRACKED AUDIT ARTIFACTS.
 //
@@ -174,6 +239,15 @@ const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_FILE);
 // validate-data.js under the same override since long before this.
 const FIXTURE_MODE = !!process.env.VALIDATE_DATA_SHOWS_JSON;
 function writeAuditArtifact(file, contents, label) {
+  if (DRY_RUN) {
+    // Checked ahead of FIXTURE_MODE so a dry run always reports what it
+    // would have written, even under the fixture override.
+    const bytes = Buffer.byteLength(contents);
+    const rel = path.relative(path.join(__dirname, '..'), file);
+    dryRunLedger.artifactWrites.push({ label, file: rel, bytes });
+    info(`DRY RUN: would write ${label} → ${rel} (${bytes} bytes) — suppressed`);
+    return false;
+  }
   if (FIXTURE_MODE) {
     info(`Skipping ${label} write — VALIDATE_DATA_SHOWS_JSON override active, so this run's corpus is a fixture and would corrupt the tracked file.`);
     return false;
@@ -400,6 +474,23 @@ function validateNoDuplicates(shows) {
       ok('No duplicate titles detected by deduplication module');
     }
   }
+}
+
+// ===========================================
+// RETIRED SHOW IDS (Sprint 0 / S0-T5)
+// ===========================================
+// A show id that was deliberately retired (data/retired-show-ids.json in the
+// core-data repo, read via scripts/lib/retired-show-ids.js) must not quietly
+// come back through discovery or reconcile. Warn, not error: the registry is
+// the guard's source of truth and a resurrection needs a human, not a red
+// trunk. Decision logic lives in scripts/lib/validate-retired-ids.js (§15);
+// a missing registry module or file is an empty list, never a failure.
+
+function validateRetiredIds(shows) {
+  info('Checking for retired show ids...');
+  const { retired, error: loadError } = loadRetiredIdsSafe();
+  if (loadError) warn(`Retired-id registry could not be loaded (${loadError}) — treating as empty`);
+  checkRetiredIds(shows, retired, { warn, ok });
 }
 
 // ===========================================
@@ -795,8 +886,8 @@ function validateDates(shows) {
       const match = showsData.shows.find(s => s.id === show.id);
       if (match) match.status = show.status;
     }
-    saveShows(showsData);
-    ok(`Auto-fixed ${staleStatusFixes} stale previews → open`);
+    saveShows(showsData, { reason: 'validateDates (stale previews/upcoming → open)' });
+    ok(`${autoFixVerb()} ${staleStatusFixes} stale previews → open`);
   }
 
   if (issues === 0 && staleStatusFixes === 0) {
@@ -855,7 +946,7 @@ function validateSlugs(shows) {
   }
 
   if (autoFixed > 0) {
-    warn(`Auto-fixed ${autoFixed} invalid slug(s) — saving corrected shows.json`);
+    warn(`${autoFixVerb()} ${autoFixed} invalid slug(s) — ${DRY_RUN ? 'shows.json write suppressed' : 'saving corrected shows.json'}`);
     // shows.json is { shows: [...] } — read the wrapper and index into .shows.
     // (Previously did JSON.parse(...).find(), treating the wrapper object as a
     // bare array → TypeError if this ever fired; and matched by non-unique
@@ -868,7 +959,7 @@ function validateSlugs(shows) {
         match.id = fix.id;
       }
     }
-    saveShows(showsData);
+    saveShows(showsData, { reason: 'validateSlugs (URL-safe slug/id fixes)' });
   }
 
   if (autoFixed === 0) {
@@ -1007,8 +1098,8 @@ function validateVenueCategory(shows) {
       const match = showsData.shows.find(s => s.id === show.id);
       if (match) match.category = show.category;
     }
-    saveShows(showsData);
-    ok(`Auto-fixed ${autoFixed} venue/category mismatches`);
+    saveShows(showsData, { reason: 'validateVenueCategory (London venue/category fixes)' });
+    ok(`${autoFixVerb()} ${autoFixed} venue/category mismatches`);
   } else {
     ok('All London show venues match their category');
   }
@@ -1244,9 +1335,9 @@ function validateTheaterAddress(shows) {
         match.theaterAddress = show.theaterAddress;
       }
     }
-    saveShows(showsData);
+    saveShows(showsData, { reason: 'validateTheaterAddress (canonical theaterAddress fixes)' });
     mismatchExamples.forEach(m => info('  ' + m));
-    ok(`Auto-fixed ${mismatches} theaterAddress/venue mismatches from registry`);
+    ok(`${autoFixVerb()} ${mismatches} theaterAddress/venue mismatches from registry`);
   } else {
     ok('All Broadway theaterAddress fields match venue registry');
   }
@@ -5065,8 +5156,8 @@ function validateCrossMarketContamination() {
   // is currently rare — only The Arts Desk — so this is the cheap moment to watch it).
   try {
     const accumFile = path.join(DATA_DIR, 'audit', 'london-only-nyc-accumulation.json');
-    const auditDir = path.dirname(accumFile);
-    if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+    // (writeAuditArtifact creates data/audit/ itself — and skips it under
+    // --dry-run / fixture mode — so no mkdir here.)
     const payload = {
       generatedBy: 'scripts/validate-data.js reverse cross-market guard',
       description: 'London-region, non-isDualMarket outlets carrying NYC reviews. Tier 3/untiered Broadway hits are advisory isDualMarket candidates; Tier 1/2 Broadway hits are CI errors; off-Broadway hits are tolerated warnings.',
@@ -5182,7 +5273,7 @@ function runValidation() {
   console.log('='.repeat(60));
   console.log('BROADWAY SCORECARD DATA VALIDATION');
   console.log('='.repeat(60));
-  console.log(`Mode: ${strictMode ? 'STRICT' : 'STANDARD'}`);
+  console.log(`Mode: ${strictMode ? 'STRICT' : 'STANDARD'}${DRY_RUN ? ' (DRY RUN — no writes)' : ''}`);
   console.log('');
 
   // Check shows.json exists and is valid JSON
@@ -5205,6 +5296,7 @@ function runValidation() {
 
   // Run all validations
   validateNoDuplicates(shows);
+  validateRetiredIds(shows);
   console.log('');
   validateRequiredFields(shows);
   validateShowTitles(shows);
@@ -5361,6 +5453,7 @@ function runValidation() {
   // push-core-data isn't blocked on data that's now valid.
   clearPushRefusalSentinel();
 
+  printDryRunSummary();
   process.exit(0);
 }
 
