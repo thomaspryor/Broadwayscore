@@ -296,6 +296,34 @@ function validateNoDuplicates(shows) {
     if (transferIssues === 0) ok('All transfer pairs (transferOf/transferredTo) reciprocal');
   }
 
+  // National tours (category:'tour', BRO-4211): each tour names the Broadway
+  // production it tours via tourOf. The Broadway side derives its tours from
+  // these links, so a dangling or wrong-market tourOf hides the tour entirely.
+  {
+    const byId = new Map(shows.map(s => [s.id, s]));
+    let tourIssues = 0;
+    for (const s of shows) {
+      if (s.category !== 'tour' && s.tourOf === undefined) continue;
+      if (s.category !== 'tour') {
+        error(`Show "${s.id}" has tourOf but is category "${s.category}" — only category:'tour' shows carry tourOf`);
+        tourIssues++;
+        continue;
+      }
+      const target = s.tourOf ? byId.get(s.tourOf) : null;
+      if (!s.tourOf) {
+        error(`Tour "${s.id}" is missing tourOf (the Broadway production it tours)`);
+        tourIssues++;
+      } else if (!target) {
+        error(`Tour "${s.id}" tourOf "${s.tourOf}" does not reference an existing show`);
+        tourIssues++;
+      } else if (target.category !== 'broadway') {
+        error(`Tour "${s.id}" tourOf "${s.tourOf}" must point at a category:'broadway' show (got "${target.category}")`);
+        tourIssues++;
+      }
+    }
+    if (tourIssues === 0) ok('All tours (category:tour) link to a Broadway production');
+  }
+
   // Check duplicate ibdbUrl — each IBDB production maps to exactly one show entry.
   // Two shows sharing an ibdbUrl means a revival was cloned from the original
   // production's IBDB page and silently inherited its opening/preview dates (and
@@ -476,7 +504,7 @@ function validateShowTitles(shows) {
 function validateStatus(shows) {
   info('Checking status values...');
   const validStatuses = ['open', 'closed', 'previews', 'upcoming', 'announced'];
-  const validCategories = ['broadway', 'off-broadway', 'west-end', 'off-west-end', 'regional'];
+  const validCategories = ['broadway', 'off-broadway', 'west-end', 'off-west-end', 'regional', 'tour'];
   let invalid = 0;
 
   for (const show of shows) {

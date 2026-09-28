@@ -185,3 +185,22 @@ describe('resolveCvMarket (special-venue carve-out, Les Mis Arena Concert @ Radi
     assert.equal(resolveCvMarket({}), 'broadway');
   });
 });
+
+// BRO-4211: without a 'tour' profile the Broadway fallback flagged all 9
+// Beetlejuice tour pilot reviews as "a touring production, not the Broadway run".
+describe('national tour verifier profile (category:tour)', () => {
+  const { buildVerificationPrompt } = require('../../scripts/lib/content-verifier.js');
+  const args = { scrapedText: 'Beetlejuice is playing the Buell Theatre in Denver.', showTitle: 'Beetlejuice', outletName: 'The Denver Post', venue: 'North American Tour' };
+
+  test('tour show resolves to the tour market', () => {
+    assert.equal(resolveCvMarket({ category: 'tour', venue: 'North American Tour' }), 'tour');
+  });
+
+  test('tour prompt uses the national-tour profile, not the Broadway fallback', () => {
+    const tour = buildVerificationPrompt({ ...args, market: 'tour' }).prompt;
+    const bway = buildVerificationPrompt({ ...args, market: 'broadway' }).prompt;
+    assert.ok(tour.includes('national tour'), 'tour profile label missing');
+    assert.ok(tour.includes('original Broadway run'), 'tour prompt must name the Broadway run as the wrong production');
+    assert.notEqual(tour, bway);
+  });
+});

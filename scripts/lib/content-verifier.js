@@ -611,6 +611,23 @@ function buildVerificationPrompt({ scrapedText, excerpt, showTitle, outletName, 
         'Coverage of a later Broadway transfer rather than this regional run'
       ]
     },
+    // 'tour' — US/North American national tours of a Broadway show
+    // (category:'tour', BRO-4211). Same failure as regional before it had a
+    // profile: the Broadway fallback calls every tour-stop review "a touring
+    // production, not the Broadway run" (all 9 Beetlejuice tour pilot reviews,
+    // 2026-09-28). A city dateline and a local presenting series are correct here.
+    'tour': {
+      label: 'national tour',
+      description: 'the touring company of a Broadway show, reviewed at any stop on its US/Canada national tour (a city dateline, a touring venue such as the Buell, Hobby Center or Golden Gate Theatre, or a local "Broadway series" presenter is correct, not a mismatch)',
+      dateLabel: 'Tour launch date',
+      venueLabel: 'Tour',
+      wrongProdExamples: [
+        'The original Broadway run in New York (reviewed at the Broadway theatre, not on tour)',
+        'A West End, UK-tour or other non-North-American production of the title',
+        'A regional or community theatre staging of the title (its own cast and creative team, not the touring company)',
+        'A pre-Broadway tryout of the title'
+      ]
+    },
     // 'special-venue' — off-broadway/type:'special' shows filed at large or
     // prestige NYC venues (Radio City Music Hall, Park Avenue Armory, Carnegie
     // Hall, NYU Skirball, New York City Center) that read as "Broadway-caliber"

@@ -4693,7 +4693,9 @@ showDirs.forEach(showId => {
         // itself as "touring" (Les Mis Arena Concert Spectacular @ Radio City, 2026-07-30 —
         // theatermania's review opens "This star-studded touring production..." which is
         // accurate, not contamination from a different sit-down production).
-        if (!data.allowTourSignal && showStatusMap[showId] !== 'tour-stop' && showById[showId]?.type !== 'special') {
+        // category:'tour' shows (national tours, BRO-4211) are the touring production,
+        // so tour wording in their reviews is expected, not contamination.
+        if (!data.allowTourSignal && showStatusMap[showId] !== 'tour-stop' && showById[showId]?.type !== 'special' && showById[showId]?.category !== 'tour') {
           const tourCheck = isTourReviewExcerpt(introText, tourContextForShow(showById[showId]) || { currentShowId: showId, currentShowTitle: showTitleMap[showId] });
           if (tourCheck.isTourReview) {
             flagForHumanReview(data, 'possible-tour-fulltext',
