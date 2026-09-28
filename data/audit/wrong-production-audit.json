@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-28T18:26:46.690Z",
+  "timestamp": "2026-09-28T18:34:27.436Z",
   "stats": {
-    "totalReviews": 44554,
-    "alreadyFlagged": 18314,
+    "totalReviews": 44567,
+    "alreadyFlagged": 18315,
     "dateGuardCatches": 254,
-    "directorMismatch": 1106,
+    "directorMismatch": 1108,
     "tvFilmSignals": 1321,
-    "londonSignals": 1201,
+    "londonSignals": 1203,
     "offBroadwaySignals": 510,
     "yearMismatch": 95,
-    "noPublishDate": 3809
+    "noPublishDate": 3810
   },
   "findings": [
     {
@@ -33682,6 +33682,29 @@
     },
     {
       "showId": "tru-off-west-end-2026",
+      "file": "bestoftheatre--maria-boot.json",
+      "publishDate": "2026-09-28",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-tru-menier-chocolate-factory",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rob ashford\" from tru-off-broadway-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-west-end-2026",
       "file": "british-theatre--sandra-giorgetti.json",
       "publishDate": "2026-09-28",
       "url": null,
@@ -47786,6 +47809,19 @@
       "score": 82,
       "publishDate": "2026-09-15",
       "url": "https://theatreweekly.com/review-million-dollar-quartet-at-the-arts-at-marble-arch/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "file": "whatsonstage--andy-plaice.json",
+      "publishDate": "2026-09-16",
+      "url": "https://www.whatsonstage.com/news/million-dollar-quartet-review-london-transfer-for-the-jukebox-extravaganza_1731572/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
