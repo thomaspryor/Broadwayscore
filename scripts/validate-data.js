@@ -3029,6 +3029,34 @@ function validateP0ScoreCoverage() {
  * Scans review-text source files for regional BWW URLs and local paper tour indicators
  * that don't have wrongProduction set. Warns if >30% of a show's reviews are regional.
  */
+/**
+ * Tour reviews still sitting on a Broadway show that has a tour entry
+ * (BRO-4211). scripts/sweep-tour-reviews.js moves them and is run by hand when
+ * a tour entry is added, so a forgotten run would leave them stranded silently
+ * (excluded from Broadway, missing from the tour). Warning only.
+ */
+function validateTourSweepPending(shows = []) {
+  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+  if (!fs.existsSync(reviewTextsDir)) return;
+  const { planTourSweep, decideTourSweep } = require('./lib/tour-backfill');
+  const listFiles = (showId) => {
+    const dir = path.join(reviewTextsDir, showId);
+    if (!fs.existsSync(dir)) return [];
+    return fs.readdirSync(dir).filter(x => x.endsWith('.json')).map(file => {
+      try { return { file, data: JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) }; } catch { return { file, data: null }; }
+    });
+  };
+  let pending = 0;
+  for (const plan of planTourSweep(shows || [])) {
+    const n = decideTourSweep(plan, listFiles).filter(r => r.key === 'tour-review').length;
+    if (n > 0) {
+      pending += n;
+      warn(`Tour sweep pending: ${n} tour review(s) on ${plan.fromIds.join('/')} belong to "${plan.tourId}". Run: node scripts/sweep-tour-reviews.js --tour=${plan.tourId} (dry-run, then --execute)`);
+    }
+  }
+  if (pending === 0) ok('No tour reviews waiting to move to a tour entry');
+}
+
 function validateTourReviewContamination(shows = []) {
   info('Checking for unflagged tour/regional review contamination...');
 
@@ -5391,6 +5419,8 @@ function runValidation() {
   validateLotteryRushData(shows);
   console.log('');
   validateTourReviewContamination(shows);
+  console.log('');
+  validateTourSweepPending(shows);
   console.log('');
   validateCrossMarketSourceFiles();
   console.log('');
