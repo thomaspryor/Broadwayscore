@@ -1804,7 +1804,7 @@ const crossShowFingerprints = new Map();
           // target (totoro contamination, Notion 39b637c5-416f-815e) — leave it.
           const existingData = JSON.parse(fs.readFileSync(expectedPath, 'utf8'));
           const mergeResult = mergeUniqueReviewFields(existingData, d);
-          if (mergeResult.action === 'skip-flagged-source') { skippedFlaggedCount++; continue; }
+          if (mergeResult.action !== 'merged') { skippedFlaggedCount++; continue; }
           if (mergeResult.changed) {
             safeWriteReview(expectedPath, existingData);
           }
@@ -1870,7 +1870,7 @@ const crossShowFingerprints = new Map();
           // target (totoro contamination, Notion 39b637c5-416f-815e) — leave it.
           const existingData = JSON.parse(fs.readFileSync(expectedPath, 'utf8'));
           const mergeResult = mergeUniqueReviewFields(existingData, d);
-          if (mergeResult.action === 'skip-flagged-source') { skippedFlaggedCount++; continue; }
+          if (mergeResult.action !== 'merged') { skippedFlaggedCount++; continue; }
           if (mergeResult.changed) {
             safeWriteReview(expectedPath, existingData);
           }

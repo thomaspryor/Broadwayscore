@@ -122,7 +122,7 @@ async function processAll() {
             // (merge-review-fields.js, Notion 39b637c5-416f-815e) — leave it.
             const existing = JSON.parse(fs.readFileSync(newPath, 'utf8'));
             const mergeResult = mergeUniqueReviewFields(existing, c.data);
-            if (mergeResult.action === 'skip-flagged-source') continue;
+            if (mergeResult.action !== 'merged') continue;
             if (mergeResult.changed) {
               fs.writeFileSync(newPath, JSON.stringify(existing, null, 2) + '\n');
             }

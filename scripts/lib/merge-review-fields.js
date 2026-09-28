@@ -18,6 +18,13 @@
  *     URL-token-driven stale-flag self-heals.
  *  2. Flag, pointer, verdict, and operator-decision fields never transfer in
  *     any merge — they describe the file they sit on, not the sibling.
+ *  3. A source carrying an operator assertion (a human cleared or pinned it)
+ *     is never deleted either. Rule 2 means its protection cannot move to the
+ *     sibling, so unlinking it silently undid the human decision: 2026-09-27
+ *     Catarina / London Unattached was hand-cleared, merged away as a stale
+ *     --unknown file, and the unprotected sibling was CV-promoted again
+ *     (BRO-4185 follow-up). Callers treat any action other than 'merged' as
+ *     "leave the source file in place".
  *
  * isExclusionFlagged mirrors the data-only flag checks of the canonical
  * predicate review-guards.js::isIncludableForRebuild (which cannot be called
@@ -53,6 +60,22 @@ const NEVER_TRANSFER_PATTERN = new RegExp(
     '_locked',
   ].join('|') + ')'
 );
+
+// Fields whose presence records a human decision about THIS file. One list,
+// so a new override family is added here once rather than in each consumer.
+const OPERATOR_ASSERTION_FIELDS = [
+  'wrongProductionManualClear', 'wrongArticleManualClear', 'wrongShowManualClear',
+  'wrongProductionOverride', 'wrongShowOverride', 'isNotReviewManualClear',
+  'manualContentTier', 'humanReviewScore',
+  'allowEarlyDate', 'allowCrossMarket', 'allowTourSignal', 'allowFilmSignal',
+  'manualClearNote',
+];
+
+function hasOperatorAssertion(data) {
+  if (!data) return false;
+  if (data.humanReviewedWrongProduction === false) return true;
+  return OPERATOR_ASSERTION_FIELDS.some(k => data[k] != null && data[k] !== false && data[k] !== '');
+}
 
 function isTransferableField(key) {
   return !NEVER_TRANSFER_PATTERN.test(key);
@@ -93,12 +116,15 @@ function isExclusionFlagged(data) {
  * Merge source's fields into target (mutating target) where target lacks them
  * (null/undefined; explicit false/0/'' on the target are preserved).
  *
- * @returns {{ action: 'merged'|'skip-flagged-source', changed: boolean }}
- *   'skip-flagged-source' → target untouched; caller must NOT delete the source.
+ * @returns {{ action: 'merged'|'skip-flagged-source'|'skip-protected-source', changed: boolean }}
+ *   Any action other than 'merged' → target untouched; caller must NOT delete the source.
  */
 function mergeUniqueReviewFields(target, source) {
   if (isExclusionFlagged(source)) {
     return { action: 'skip-flagged-source', changed: false };
+  }
+  if (hasOperatorAssertion(source)) {
+    return { action: 'skip-protected-source', changed: false };
   }
   let changed = false;
   for (const [key, val] of Object.entries(source || {})) {
@@ -115,5 +141,7 @@ module.exports = {
   mergeUniqueReviewFields,
   isExclusionFlagged,
   isTransferableField,
+  hasOperatorAssertion,
+  OPERATOR_ASSERTION_FIELDS,
   NEVER_TRANSFER_PATTERN,
 };

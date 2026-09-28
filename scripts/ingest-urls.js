@@ -23,6 +23,7 @@ const { downstreamWorkflows } = require('./lib/ingest-downstream');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { resolveOutletFromUrl } = require('./lib/review-normalization');
 const { extractArticleTextFromUrl } = require('./lib/article-extractor');
+const { extractAuthorFromHtml } = require('./lib/content-quality');
 const { execErrorDetail } = require('./lib/exec-error-detail');
 
 // An override id is used verbatim; flag a typo instead of writing a file under a bogus outletId.
@@ -154,6 +155,7 @@ async function main() {
     // Fetch text if requested
     let fullText = null;
     let fetchMethod = null;
+    let criticName = null;
     if (fetchPage && !noFetch) {
       try {
         if (verbose) console.log(`    Fetching text...`);
@@ -164,6 +166,10 @@ async function main() {
           // raw chrome. Falls back to raw HTML only if no extractor pattern
           // matched and the raw HTML doesn't look like a full page.
           const extracted = extractArticleTextFromUrl(result.content, url);
+          // Name the critic now, the same way the collector does. Leaving every
+          // ingest as 'Unknown' created an --unknown file that a later rebuild
+          // merged into the named sibling and deleted (BRO-4185 follow-up).
+          try { criticName = extractAuthorFromHtml(result.content, extracted || '', { url }) || null; } catch { criticName = null; }
           if (extracted && extracted.length >= 200) {
             fullText = extracted;
             if (verbose) console.log(`    ✓ Extracted ${fullText.length} chars (article body) via ${fetchMethod}`);
@@ -183,7 +189,7 @@ async function main() {
     const input = {
       outletId,
       outlet: outletName,
-      criticName: 'Unknown', // Will be populated by collect-review-texts later
+      criticName: criticName || 'Unknown', // collect-review-texts fills it in later when the page gave none
       url,
       source: 'ingest-urls',
       fields: {},

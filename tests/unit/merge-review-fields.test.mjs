@@ -22,7 +22,7 @@ import { dirname, resolve } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..', '..');
 const require = createRequire(import.meta.url);
-const { mergeUniqueReviewFields, isExclusionFlagged, isTransferableField } =
+const { mergeUniqueReviewFields, isExclusionFlagged, isTransferableField, hasOperatorAssertion } =
   require(resolve(ROOT, 'scripts/lib/merge-review-fields.js'));
 
 describe('mergeUniqueReviewFields', () => {
@@ -63,16 +63,29 @@ describe('mergeUniqueReviewFields', () => {
     assert.strictEqual(target.url, null);
   });
 
-  test('manually-cleared wrongProduction source merges normally (clear-aware)', () => {
+  test('manually-cleared source is not merged away: its clear cannot transfer, so deleting it undoes the human decision', () => {
+    // Clear breadcrumbs never transfer (rule 2), so merging then unlinking a
+    // hand-cleared file silently dropped the clear. BRO-4185 follow-up:
+    // Catarina / London Unattached (2026-09-27).
     const target = { outletId: 'x', url: null };
     const r = mergeUniqueReviewFields(target, {
       wrongProduction: true, wrongProductionManualClear: true,
       url: 'https://x.test/r', publishDate: '2026-07-01',
     });
-    assert.strictEqual(r.action, 'merged');
-    assert.strictEqual(target.url, 'https://x.test/r');
-    assert.strictEqual(target.wrongProduction, undefined, 'flag fields never transfer');
-    assert.strictEqual(target.wrongProductionManualClear, undefined, 'clear breadcrumbs never transfer');
+    assert.strictEqual(r.action, 'skip-protected-source');
+    assert.strictEqual(r.changed, false);
+    assert.strictEqual(target.url, null, 'target untouched');
+  });
+
+  test('Catarina shape: allowEarlyDate + manualClearNote source is kept; sibling left alone', () => {
+    const target = { outletId: 'london-unattached', criticName: 'Madeleine Morrow', fullText: 'x'.repeat(2000) };
+    const source = {
+      outletId: 'london-unattached', criticName: 'Madeleine Morrow', allowEarlyDate: true,
+      wrongShow: false, manualClearNote: 'BRO-4185: hand-cleared', fullText: 'y'.repeat(2000),
+    };
+    const r = mergeUniqueReviewFields(target, source);
+    assert.strictEqual(r.action, 'skip-protected-source');
+    assert.deepStrictEqual(Object.keys(target).sort(), ['criticName', 'fullText', 'outletId']);
   });
 
   test('unflagged source merges only missing fields; explicit false/0 on target preserved', () => {
@@ -184,5 +197,21 @@ describe('wiring', () => {
     const validator = readFileSync(resolve(ROOT, 'scripts/validate-review-texts.js'), 'utf8');
     assert.match(validator, /isSkippedByValidator\(data\)/,
       'validate-review-texts must route its skip decision through the canonical predicate');
+  });
+});
+
+describe('hasOperatorAssertion', () => {
+  test('recognises each human-decision marker', () => {
+    for (const d of [
+      { wrongProductionManualClear: true }, { wrongShowManualClear: true }, { allowEarlyDate: true },
+      { allowTourSignal: true }, { manualContentTier: 'complete' }, { humanReviewScore: 70 },
+      { humanReviewedWrongProduction: false }, { manualClearNote: 'x' },
+    ]) assert.strictEqual(hasOperatorAssertion(d), true, JSON.stringify(d));
+  });
+  test('ordinary machine-written files carry no assertion', () => {
+    for (const d of [
+      {}, null, { allowEarlyDate: false }, { humanReviewedWrongProduction: true },
+      { wrongProduction: true, wrongProductionReason: 'Collector LLM' }, { manualClearNote: '' },
+    ]) assert.strictEqual(hasOperatorAssertion(d), false, JSON.stringify(d));
   });
 });
