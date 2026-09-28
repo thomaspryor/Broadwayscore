@@ -133,8 +133,30 @@ function applyTourInheritance(shows) {
   return changed;
 }
 
+/**
+ * Tour art must be the tour's own archived file or one from a Broadway
+ * production of the same title. Anything else is a title-search accident
+ * (the Shucked tour once pointed at a SIX photo). Returns problem strings.
+ */
+function tourImageProblems(tour, shows) {
+  if (!isTourShow(tour) || !tour.images) return [];
+  const t = normTitle(tour.title);
+  const allowed = [tour.id, ...(shows || [])
+    .filter(s => (s.category || 'broadway') === 'broadway' && normTitle(s.title) === t)
+    .map(s => s.id)];
+  const problems = [];
+  for (const [k, v] of Object.entries(tour.images)) {
+    if (!v || k.startsWith('_')) continue;
+    const m = /^\/images\/shows\/([^/]+)\//.exec(String(v));
+    if (!m) problems.push(`${k} is not an archived image (${String(v).slice(0, 80)})`);
+    else if (!allowed.includes(m[1])) problems.push(`${k} comes from "${m[1]}", not this tour or a Broadway "${tour.title}"`);
+  }
+  return problems;
+}
+
 module.exports = {
   isTourShow,
+  tourImageProblems,
   tourInheritance,
   applyTourInheritance,
   toursOfTitle,

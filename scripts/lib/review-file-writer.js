@@ -520,7 +520,9 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     // tour instead of being dropped (BRO-4262). No tour window match = skip as before.
     const visited = _rerouteVisited || new Set();
     const tour = tourDecision(showId, _getSiblingIndex().get(showId), {
-      url: input.url, publishDate: input.publishDate, dateSource: input.dateSource,
+      url: input.url,
+      publishDate: input.publishDate || input.fields?.publishDate,
+      dateSource: input.dateSource || input.fields?.dateSource,
     });
     if (tour && !visited.has(tour.targetShowId)) {
       visited.add(showId);
@@ -623,7 +625,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       url: input.url,
       outletId,
       publishDate: pubDateStr,
-      dateSource: input.dateSource || fields.dateSource,
+      dateSource: input.dateSource || input.fields?.dateSource,
       category: showCategory,
       allowCrossMarket: fields.allowCrossMarket === true,
       visited,

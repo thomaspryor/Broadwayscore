@@ -19,6 +19,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { tourImageProblems } = require('./lib/tour-family');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { loadRetiredIdsSafe, checkRetiredIds } = require('./lib/validate-retired-ids');
 
@@ -394,8 +395,12 @@ function validateNoDuplicates(shows) {
         error(`Tour "${s.id}" tourOf "${s.tourOf}" must point at a category:'broadway' show (got "${target.category}")`);
         tourIssues++;
       }
+      for (const problem of tourImageProblems(s, shows)) {
+        error(`Tour "${s.id}" image: ${problem}`);
+        tourIssues++;
+      }
     }
-    if (tourIssues === 0) ok('All tours (category:tour) link to a Broadway production');
+    if (tourIssues === 0) ok('All tours (category:tour) link to a Broadway production and use their own or its art');
   }
 
   // Check duplicate ibdbUrl — each IBDB production maps to exactly one show entry.

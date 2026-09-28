@@ -94,3 +94,15 @@ test('tours inherit the parent archived thumbnail/poster and synopsis, never the
   assert.equal(shows[1].images.thumbnail, '/images/shows/p/thumbnail.webp');
   assert.deepEqual(applyTourInheritance(shows), [], 'idempotent');
 });
+
+test('tourImageProblems: own or same-title Broadway art only', () => {
+  const { tourImageProblems } = require('./tour-family.js');
+  const shows = [
+    { id: 'shucked-2023', title: 'Shucked', category: 'broadway' },
+    { id: 'six-2021', title: 'SIX', category: 'broadway' },
+  ];
+  const ok = { id: 'shucked-tour-2024', title: 'Shucked', category: 'tour', images: { thumbnail: '/images/shows/shucked-2023/thumbnail.webp', poster: '/images/shows/shucked-tour-2024/poster.webp', hero: null } };
+  assert.deepEqual(tourImageProblems(ok, shows), []);
+  const bad = { ...ok, images: { hero: '/images/shows/six-2021/hero.webp', poster: 'https://x.test/p.jpg' } };
+  assert.equal(tourImageProblems(bad, shows).length, 2);
+});
