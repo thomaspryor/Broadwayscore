@@ -35,11 +35,14 @@ function tourCandidateFor(slug, matchedShow, shows) {
   if ((matchedShow.category || 'broadway') !== 'broadway') return null;
   const title = String(matchedShow.title || '').trim().toLowerCase();
   const byId = new Map((shows || []).map(s => [s.id, s]));
+  // A tour of this title that is still running (or undated) already owns the
+  // roundup. Once every tour of the title has closed, a new tour roundup is a
+  // second tour and is a candidate again (Beetlejuice 2026, BRO-4262).
   const hasTour = (shows || []).some(s => {
     if (s.category !== 'tour' || !s.tourOf) return false;
-    if (s.tourOf === matchedShow.id) return true;
     const parent = byId.get(s.tourOf);
-    return !!parent && String(parent.title || '').trim().toLowerCase() === title;
+    const sameTitle = s.tourOf === matchedShow.id || (!!parent && String(parent.title || '').trim().toLowerCase() === title);
+    return sameTitle && !(s.status === 'closed' && s.closingDate);
   });
   if (hasTour) return null;
   return { broadwayShowId: matchedShow.id, title: matchedShow.title };
@@ -72,6 +75,7 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
 function openTourCandidates(rows, shows) {
   const byId = new Map((shows || []).map(s => [s.id, s]));
   return (rows || []).filter(r => {
+    if (r.createdTourId) return false; // create-tour-entries.js made its entry (BRO-4262)
     const show = byId.get(r.broadwayShowId);
     return !!show && !!tourCandidateFor(r.slug || 'national-tour', show, shows);
   });

@@ -23,7 +23,9 @@
  */
 
 const DAY = 86400000;
-const SEGMENT_GAP_DAYS = 56;
+// Tours lay off for a summer (Hadestown: June to October) without ending, so
+// only a gap past six months, or a New York run, starts a new tour.
+const SEGMENT_GAP_DAYS = 180;
 const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
 function decode(s) {
@@ -113,7 +115,8 @@ const isNewYorkRun = r => /^new york,? ny\b|^broadway\b/i.test(r.city);
  * Split engagements into runs separated by more than SEGMENT_GAP_DAYS. A New
  * York engagement is a Broadway run, never a tour stop: it is left out and
  * always ends the current segment (Beetlejuice's 2025 Palace return sat
- * between its first and second tours).
+ * between its first and second tours). Each segment records whether a New
+ * York run preceded it (afterNewYork).
  */
 function segmentTourRows(rows, gapDays = SEGMENT_GAP_DAYS) {
   const segments = [];
@@ -125,7 +128,7 @@ function segmentTourRows(rows, gapDays = SEGMENT_GAP_DAYS) {
       cur.rows.push(r);
       if (r.end > cur.end) cur.end = r.end;
     } else {
-      segments.push({ start: r.start, end: r.end, rows: [r] });
+      segments.push({ start: r.start, end: r.end, rows: [r], afterNewYork: broken && segments.length > 0 });
     }
     broken = false;
   }
@@ -145,25 +148,39 @@ function wikiNames(wikiText, d) {
 }
 
 /**
- * Which segment is this tour? The one holding its known launch date; for a tour
- * with no launch date, the one Wikipedia dates (a launch it names), preferring
- * the latest. A single-engagement sit-down segment is never a tour.
+ * A segment's launch: the first engagement Wikipedia names. Skips openers a
+ * tour isn't dated from (Life of Pi's Toronto sit-down before Baltimore;
+ * Kimberly Akimbo's Utica previews before the Denver launch, when named).
  */
-function pickSegment(segments, tour, wikiText) {
+function segmentLaunch(seg, wikiText) {
+  const row = seg.rows.find(r => wikiNames(wikiText, r.start));
+  return row ? row.start : null;
+}
+
+/**
+ * Which segment is this tour?
+ * - Known launch: the segment holding it.
+ * - Id year ({title}-tour-2022): the one segment whose named launch is that year.
+ * - Otherwise (a new tour from a roundup): the segment whose named launch falls
+ *   within 120 days before the roundup was first seen (a week after, for
+ *   listings that lag). No match = null, never a guess.
+ */
+function pickSegment(segments, tour, wikiText, { seenAt } = {}) {
   const tours = segments.filter(s => s.rows.length > 1);
   const launch = tour && tour.openingDate ? new Date(`${String(tour.openingDate).slice(0, 10)}T00:00:00Z`) : null;
   if (launch && !Number.isNaN(launch.getTime())) {
     return tours.find(s => launch >= new Date(s.start.getTime() - 7 * DAY) && launch <= s.end) || null;
   }
-  const named = tours.filter(s => wikiNames(wikiText, s.start));
-  // Tour ids carry the launch year ({title}-tour-2022): with two tours of a
-  // title, that year says which one this entry is.
+  const named = tours.map(s => ({ s, launch: segmentLaunch(s, wikiText) })).filter(x => x.launch);
   const idYear = Number((String((tour && tour.id) || '').match(/-tour-(\d{4})$/) || [])[1]);
   if (idYear) {
-    const sameYear = named.filter(s => s.start.getUTCFullYear() === idYear);
-    return sameYear.length === 1 ? sameYear[0] : null;
+    const sameYear = named.filter(x => x.launch.getUTCFullYear() === idYear);
+    return sameYear.length === 1 ? sameYear[0].s : null;
   }
-  return named.length ? named[named.length - 1] : null;
+  const seen = seenAt ? new Date(seenAt) : null;
+  if (!seen || Number.isNaN(seen.getTime())) return null;
+  const near = named.filter(x => x.launch <= new Date(seen.getTime() + 7 * DAY) && x.launch >= new Date(seen.getTime() - 120 * DAY));
+  return near.length === 1 ? near[0].s : null;
 }
 
 /**
@@ -184,32 +201,41 @@ function statedClosedRanges(html) {
  * @param {object} tour shows.json tour entry (openingDate/closingDate may be null)
  * @param {string} scheduleHtml Tours To You page
  * @param {string} wikiText Wikipedia raw wikitext of the show's article
+ * @param {Date} [now]
+ * @param {{seenAt?: string}} [opts] when the roundup for a new tour was first seen
  * @returns {{write: {openingDate?: string, closingDate?: string}, notes: string[], problem?: string}}
  */
-function decideTourDates(tour, scheduleHtml, wikiText, now = new Date()) {
+function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = {}) {
   const rows = parseTourSchedule(scheduleHtml);
   if (rows.length === 0) return { write: {}, notes: [], problem: 'schedule page parsed to zero engagements (layout change or wrong page)' };
   const segments = segmentTourRows(rows);
-  const seg = pickSegment(segments, tour, wikiText);
+  const seg = pickSegment(segments, tour, wikiText, opts);
   if (!seg) return { write: {}, notes: [`${segments.length} segment(s), none matches this tour`], problem: 'no schedule segment matches this tour' };
 
   const write = {};
+  const launch = segmentLaunch(seg, wikiText);
   const notes = [`segment ${iso(seg.start)}..${iso(seg.end)} (${seg.rows.length} engagements)`];
   if (!tour.openingDate) {
-    if (wikiNames(wikiText, seg.start)) write.openingDate = iso(seg.start);
-    else notes.push(`launch ${iso(seg.start)} not confirmed by Wikipedia; left unset`);
-  } else if (Math.abs(new Date(`${tour.openingDate}T00:00:00Z`) - seg.start) / DAY > 14) {
-    notes.push(`stored launch ${tour.openingDate} differs from schedule ${iso(seg.start)} by >14 days`);
+    if (launch) write.openingDate = iso(launch);
+    else notes.push('no engagement date in this segment is named by Wikipedia; launch left unset');
+  } else if (launch && Math.abs(new Date(`${tour.openingDate}T00:00:00Z`) - launch) / DAY > 14) {
+    notes.push(`stored launch ${tour.openingDate} differs from ${iso(launch)} by >14 days`);
   }
 
-  const later = segments.find(s => s.start > seg.end && s.rows.length > 1 && s.start <= now);
-  const ended = seg.end < now;
-  if (ended && !tour.closingDate) {
-    const stated = statedClosedRanges(scheduleHtml)
-      .some(r => r.from === seg.start.getUTCFullYear() && r.to === seg.end.getUTCFullYear());
-    if (later) write.closingDate = iso(seg.end);
-    else if (wikiNames(wikiText, seg.end)) write.closingDate = iso(seg.end);
+  // Closing needs a positive signal. A later segment only counts when a New
+  // York run sits between them (a new production, not a summer layoff).
+  const idx = segments.indexOf(seg);
+  const next = segments.slice(idx + 1).find(s => s.rows.length > 1);
+  const separateTourStarted = next && next.afterNewYork && next.start <= now;
+  const launchYear = (launch || seg.start).getUTCFullYear();
+  // Stated on the schedule page's history note or in a Wikipedia section
+  // heading ("=== North American tour (2024–2026) ===").
+  const stated = [...statedClosedRanges(scheduleHtml), ...statedClosedRanges(wikiText)]
+    .some(r => r.from === launchYear && r.to === seg.end.getUTCFullYear());
+  if (seg.end < now && !tour.closingDate) {
+    if (wikiNames(wikiText, seg.end)) write.closingDate = iso(seg.end);
     else if (stated) write.closingDate = iso(seg.end);
+    else if (separateTourStarted) write.closingDate = iso(seg.end);
     else notes.push(`last listed stop ended ${iso(seg.end)} but nothing confirms the tour closed; left open`);
   }
   return { write, notes };

@@ -69,3 +69,39 @@ test('schedule slugs', () => {
   assert.deepEqual(scheduleSlugs({ title: "MJ" }), ['mj', 'mj-the-musical']);
   assert.deepEqual(scheduleSlugs({ title: 'Some Like It Hot', tourScheduleSlug: 'some-like-it-hot-tour' }), ['some-like-it-hot-tour']);
 });
+
+test('a stated closed range in a Wikipedia heading closes a finished tour', () => {
+  const html = page([
+    row('Cleveland, OH', 'Playhouse Square', 'June 6-23, 2024'),
+    row('Chicago, IL', 'Cadillac Palace', 'June 25–July 14, 2024'),
+    row('Dallas, TX', 'Winspear', 'December 3-15, 2024'),
+    row('Houston, TX', 'Hobby Center', 'June 3-15, 2025'),
+    row('Miami, FL', 'Arsht', 'October 7-19, 2025'),
+    row('Tampa, FL', 'Straz', 'January 6-18, 2026'),
+    row('Denver, CO', 'Buell', 'July 8-19, 2026'),
+  ]);
+  const wiki = '=== North American tour (2024–2026) === opened at Playhouse Square on June 6, 2024';
+  const d = decideTourDates({ id: 'x-tour-2024', openingDate: null, closingDate: null }, html, wiki, NOW);
+  assert.deepEqual(d.write, { openingDate: '2024-06-06', closingDate: '2026-07-19' });
+});
+
+test('a summer layoff is not a closing; a New York run between tours is', () => {
+  const html = page([
+    row('Denver, CO', 'Buell', 'November 2-19, 2021'),
+    row('Seattle, WA', 'Paramount', 'May 20–June 1, 2022'),
+    row('Boston, MA', 'Citizens', 'October 3-16, 2022'),
+  ]);
+  const d = decideTourDates({ id: 'h-tour-2021', openingDate: '2021-11-02', closingDate: null }, html, '', NOW);
+  assert.equal(d.write.closingDate, undefined, 'June to October gap stays one tour, and nothing confirms a close');
+});
+
+test('a new tour is matched only near when its roundup was seen', () => {
+  const html = page([
+    row('Fresno, CA', 'Saroyan', 'February 13, 2026'),
+    row('Sacramento, CA', 'Memorial', 'February 17-22, 2026'),
+  ]);
+  const wiki = 'The second tour began on February 13, 2026 in Fresno';
+  assert.equal(decideTourDates({ id: null }, html, wiki, NOW, { seenAt: '2026-02-20' }).write.openingDate, '2026-02-13');
+  assert.match(decideTourDates({ id: null }, html, wiki, NOW, { seenAt: '2026-09-20' }).problem, /no schedule segment/);
+  assert.match(decideTourDates({ id: null }, html, wiki, NOW).problem, /no schedule segment/, 'no seenAt, no guess');
+});
