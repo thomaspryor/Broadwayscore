@@ -128,4 +128,27 @@ describe('input-builder — market label derivation from category', () => {
       `expected "(Broadway)" default in context, got:\n${input.context}`
     );
   });
+  test('category="tour" gets the tour note and no fake venue (BRO-4211)', () => {
+    // Ladue News reviewed the Shucked tour at the St. Louis Fox and both ensemble
+    // legs rejected it as wrong_production because the prompt said
+    // "Shucked at North American Tour (tour)".
+    const input = buildScoringInput(baseReview({
+      showId: 'shucked-tour-2024',
+      showTitle: 'Shucked',
+      category: 'tour',
+      venue: 'North American Tour',
+    }));
+    assert.ok(input.context.includes('Show: Shucked (North American national tour)'), input.context);
+    assert.ok(!input.context.includes('at North American Tour'), input.context);
+    assert.ok(input.context.includes('NATIONAL TOUR'), input.context);
+    assert.ok(input.context.includes('ANY stop on the tour'), input.context);
+  });
+
+  test('non-tour categories never get the tour note', () => {
+    for (const category of ['broadway', 'off-broadway', 'west-end', 'off-west-end', 'regional', undefined]) {
+      const input = buildScoringInput(baseReview({ category, venue: 'Some Theatre' }));
+      assert.ok(!input.context.includes('NATIONAL TOUR'), `${category}: ${input.context}`);
+      assert.ok(input.context.includes('at Some Theatre'), `${category}: ${input.context}`);
+    }
+  });
 });

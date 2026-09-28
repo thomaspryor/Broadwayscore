@@ -24,7 +24,7 @@ test('regional is NEVER labelled Broadway (the Family Album regression, 2026-07-
 
 test('unknown market slugs echo back rather than silently becoming Broadway', () => {
   assert.equal(getMarketLabel('edinburgh-fringe'), 'edinburgh-fringe');
-  assert.equal(getMarketLabel('tour'), 'tour');
+  assert.equal(getMarketLabel('dublin-fringe'), 'dublin-fringe');
 });
 
 test('absent market still defaults to Broadway (the real majority case)', () => {
@@ -188,4 +188,14 @@ test('classifier prompt still says Broadway for an actual Broadway show', () => 
   });
   assert.match(prompt, /\(Broadway opening: 2015\)/);
   assert.doesNotMatch(prompt, /REGIONAL production/);
+});
+
+test('tour market: label, detector and note (BRO-4211)', () => {
+  const { isTourMarket, getTourPromptContext } = require('./market-label.js');
+  assert.equal(getMarketLabel('tour'), 'North American national tour');
+  assert.equal(isTourMarket('tour'), true);
+  assert.equal(isTourMarket(' Tour '), true);
+  for (const m of ['broadway', 'regional', 'west-end', null, undefined, '']) assert.equal(isTourMarket(m), false);
+  assert.equal(isNonMetroMarket('tour'), false);
+  assert.match(getTourPromptContext(), /ANY stop on the tour/);
 });
