@@ -82,6 +82,8 @@ on:
       # listed above.
       - 'scripts/check-vercel-build-guard.js'
       - 'scripts/check-corpus-drift.js'
+      # BRO-4215: required by scripts/lib/check-attribution-gap-clear.test.mjs
+      - 'scripts/check-attribution-gap-clear.js'
       # BRO-3375: same gap shape — a top-level scripts/ file outside the
       # scripts/lib/** glob, so a solo edit would trigger ZERO CI. Its decision
       # logic deliberately lives OUTSIDE this repo, in
