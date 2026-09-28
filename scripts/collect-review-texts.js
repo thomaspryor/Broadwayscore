@@ -117,7 +117,7 @@ const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, norm
 const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
 const { runScoreExtractorPrePass } = require('./lib/score-extractor-prepass');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
-const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
+const { isTourReviewExcerpt, tourContextForShow, isFilmTvReview } = require('./lib/excerpt-validation');
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const {
   NO_DATE_SENTINEL,
@@ -5263,14 +5263,15 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
 
     // Tour detection (skip tour-stop shows)
     let isTourStop = false;
+    let tourShow = null;
     try {
       if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
-      const sm = _showsJsonCache.shows.find(s => s.id === showIdForTour);
-      if (sm && sm.status === 'tour-stop') isTourStop = true;
+      tourShow = _showsJsonCache.shows.find(s => s.id === showIdForTour) || null;
+      if (tourShow && tourShow.status === 'tour-stop') isTourStop = true;
     } catch (e) { /* shows.json unavailable */ }
 
     if (!isTourStop) {
-      const tourCheck = isTourReviewExcerpt(introText);
+      const tourCheck = isTourReviewExcerpt(introText, tourContextForShow(tourShow));
       if (tourCheck.isTourReview) {
         data.possibleTourReview = true;
         data.tourSignal = tourCheck.signal;

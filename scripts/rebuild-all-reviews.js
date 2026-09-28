@@ -40,7 +40,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
-const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview, excerptMentionsFormerCast } = require('./lib/excerpt-validation');
+const { excerptMentionsWrongShow, isTourReviewExcerpt, tourContextForShow, isFilmTvReview, excerptMentionsFormerCast } = require('./lib/excerpt-validation');
 const {
   shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome, isPromoTeaser,
   hasListingChrome, stripListingPrelude, isTagCloudExcerpt, isMidWordTruncation,
@@ -818,7 +818,7 @@ function selectBestExcerpt(data, showTitle) {
 
     // Layer 4: Tour review detection (only for non-tour-stop shows)
     if (data._showStatus !== 'tour-stop') {
-      const tourCheck = isTourReviewExcerpt(excerpt, { currentShowId: showId, currentShowTitle: showTitle });
+      const tourCheck = isTourReviewExcerpt(excerpt, tourContextForShow(showById[showId]) || { currentShowId: showId, currentShowTitle: showTitle });
       if (tourCheck.isTourReview) {
         if (!stats.tourExcerptFlags) stats.tourExcerptFlags = [];
         stats.tourExcerptFlags.push({ showId, source, signal: tourCheck.signal });
@@ -4645,7 +4645,7 @@ showDirs.forEach(showId => {
         // theatermania's review opens "This star-studded touring production..." which is
         // accurate, not contamination from a different sit-down production).
         if (!data.allowTourSignal && showStatusMap[showId] !== 'tour-stop' && showById[showId]?.type !== 'special') {
-          const tourCheck = isTourReviewExcerpt(introText, { currentShowId: showId, currentShowTitle: showTitleMap[showId] });
+          const tourCheck = isTourReviewExcerpt(introText, tourContextForShow(showById[showId]) || { currentShowId: showId, currentShowTitle: showTitleMap[showId] });
           if (tourCheck.isTourReview) {
             flagForHumanReview(data, 'possible-tour-fulltext',
               `Tour signal in fullText intro: ${tourCheck.signal}`);
