@@ -40,7 +40,7 @@ const ABBREV_EXPANSIONS = [
 ];
 
 /**
- * Canonical diacritic fold: NFD-decompose, then drop combining marks.
+ * Canonical diacritic fold: decompose, then drop combining marks.
  * "Les Misérables" → "Les Miserables", "Último" → "Ultimo", "Dvořák" → "Dvorak".
  *
  * Why this is a shared export rather than a one-liner each caller re-types:
@@ -51,16 +51,17 @@ const ABBREV_EXPANSIONS = [
  * was suppressed as url_content_mismatch because content-quality.js was the one
  * matcher not folding. Eight siblings had the same latent hole (task #648).
  *
- * NOTE: NFD only handles composable diacritics. Non-decomposing letters (ø, ł,
- * æ, ß, đ) pass through unchanged — no show title in the corpus uses one, and
- * transliterating them would be a real behavior change rather than a fold.
- *
- * @param {string} s
- * @returns {string}
+ * The implementation lives in scripts/lib/url-slug.js since the 2026 data
+ * audit (S7-T3): the site's URL slugs (src/lib/data-core.ts) fold through the
+ * same function, so a title matcher and a critic page can never disagree on
+ * what an accent folds to. That rule is NFKD (a superset of the NFD this
+ * used to do: it also maps ligatures and full-width letters to ASCII; every
+ * shows.json title and reviews.json byline folds identically under both).
+ * Non-decomposing letters (ø, ł, æ, ß, đ) still pass through unchanged — no
+ * show title in the corpus uses one, and transliterating them would be a
+ * real behavior change rather than a fold.
  */
-function foldDiacritics(s) {
-  return String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '');
-}
+const { foldDiacritics } = require('./url-slug');
 
 function normalizeTitle(s) {
   if (!s) return '';

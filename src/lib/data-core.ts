@@ -23,6 +23,7 @@ import { isHomepageNotable, isAcclaimedKnownPropertyRevival, notabilityRank, NOT
 import { getShowCommercial } from './data-commercial';
 import { getShowAwards } from './data-awards';
 import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs as getBrowseSlugsFromConfig } from '@/config/browse-pages';
+import { slugify as urlSlugify } from '../../scripts/lib/url-slug';
 // Import raw data (loaded at build time for static generation)
 import showsData from '../../data/shows.json';
 import reviewsData from '../../data/reviews.json';
@@ -650,11 +651,15 @@ export function getUpcomingShows(): ComputedShow[] {
 // Director Queries
 // ============================================
 
+/**
+ * URL slug for a person or place name — critics, outlets, directors,
+ * theaters, actors, creative team. ONE rule, shared with the JS side
+ * (scripts/lib/url-slug.js): diacritics fold before slugifying, so
+ * "José Solís" → `jose-solis` and "Nilgün Yusuf" → `nilgun-yusuf` (2026 data
+ * audit, S7-T3; the pre-fold slugs 301 via data/critic-slug-aliases.json).
+ */
 export function slugify(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
+  return urlSlugify(name);
 }
 
 /**

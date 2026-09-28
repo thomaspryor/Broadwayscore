@@ -106,9 +106,10 @@ test('the 37 CRITIC_NAME_FIXES pairs resolve to their canonical (and the canonic
   assert.equal(displayCriticName('Nancy Sasso Janis', 'Patch'), 'Nancy Sasso Janis');
 });
 
-test('one map: src/lib/data-reviews.ts reads the same JSON instead of its own CRITIC_NAME_FIXES literal', () => {
+test('one map: the fixes JSON is read by this helper only — src/lib/data-reviews.ts keeps neither a copy nor an import (S7-T2)', () => {
   const ts = readFileSync(path.join(repoRoot, 'src/lib/data-reviews.ts'), 'utf8');
-  assert.match(ts, /scripts\/lib\/critic-name-fixes\.json/);
+  assert.doesNotMatch(ts, /import[^;]*critic-name-fixes\.json/, 'the site reads the emitted name, not the fixes table');
+  assert.doesNotMatch(ts, /CRITIC_NAME_FIXES\s*[:=]/, 'no inline copy of the fixes map');
   assert.doesNotMatch(ts, /'Ben Brantly':/, 'no inline copy of the fixes map');
   const json = JSON.parse(readFileSync(path.join(repoRoot, 'scripts/lib/critic-name-fixes.json'), 'utf8'));
   assert.deepEqual(json.fixes, CRITIC_NAME_FIXES);

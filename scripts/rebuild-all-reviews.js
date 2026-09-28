@@ -54,6 +54,7 @@ const { extractBylineFromText } = require('./lib/byline-from-text');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl, compareFilesForDedupPriority, applyScoreRelevantMigrations } = require('./lib/rebuild-helpers');
 const { normalizeCriticName } = require('./lib/byline-normalization');
 const { recoverDisplayBylinesForShow, resolveCriticName } = require('./lib/byline-recovery');
+const { displayCriticName } = require('./lib/critic-display-name');
 const { mergeManualEntries } = require('./lib/manual-entry-merge');
 const { isStaleScoreInput, markRescoreNeeded } = require('./lib/rescore-flagging');
 const { isLondonMarket, isUkOutletUrl, isBroadwayCategory } = require('./lib/venue-classification');
@@ -4954,12 +4955,32 @@ showDirs.forEach(showId => {
         // the real name a same-URL sibling carries (recoveredNameByFile, built
         // above from ALL siblings including excluded ones). Display-only — never
         // written back to the source JSON file.
+        //
+        // S7-T2 (2026 data audit): the resolved byline then goes through
+        // displayCriticName() — the ONE call site for the critic string the
+        // site (src/lib/data-reviews.ts) and the mobile JSON
+        // (generate-mobile-show-details.js) show. It canonicalizes typo
+        // variants (critic-name-fixes.json, CRITIC_ALIASES) and returns null
+        // for a byline that is not a person ("Archive", "Unknown", an outlet's
+        // own name, "Written by"), so no consumer keeps a name map of its own
+        // and no placeholder gets a critic page. tests/unit/
+        // rebuild-display-critic-name-call-site.test.mjs pins this as the only
+        // call in the file.
         criticName: (() => {
           const resolved = resolveCriticName(normalizeCriticName(data.criticName), recoveredNameByFile.get(file));
           if (resolved.recovered) {
             stats.bylineRecoveredFromSibling = (stats.bylineRecoveredFromSibling || 0) + 1;
           }
-          return resolved.name;
+          const registryEntry = outletRegistry.outlets[canonicalOutletId];
+          const display = displayCriticName(
+            resolved.name,
+            getOutletDisplayName(canonicalOutletId) || data.outlet || null,
+            registryEntry ? { id: canonicalOutletId, ...registryEntry } : undefined
+          );
+          if (display === null && resolved.name && !/^unknown$/i.test(resolved.name)) {
+            stats.placeholderCriticDropped = (stats.placeholderCriticDropped || 0) + 1;
+          }
+          return display;
         })(),
         url: data.url || null,
         publishDate: normalizePublishDate(data.publishDate) || (() => {
@@ -5017,8 +5038,8 @@ showDirs.forEach(showId => {
         } : {})
       };
 
-      // Sanitize display fields: decode HTML entities in critic name, outlet, pullQuote
-      if (review.criticName) review.criticName = decodeHtmlEntities(review.criticName);
+      // Sanitize display fields: decode HTML entities in outlet, pullQuote
+      // (criticName is already display-clean — displayCriticName() decodes).
       if (review.outlet) review.outlet = decodeHtmlEntities(review.outlet);
       if (review.pullQuote) review.pullQuote = decodeHtmlEntities(review.pullQuote);
 
@@ -5660,6 +5681,7 @@ const output = {
       skippedDuplicate: stats.skippedDuplicate,
       skippedDuplicateUrl: stats.skippedDuplicateUrl || 0,
       bylineRecoveredFromSibling: stats.bylineRecoveredFromSibling || 0,
+      placeholderCriticDropped: stats.placeholderCriticDropped || 0,
       allowedMultiCriticUrl: stats.allowedMultiCriticUrl || 0,
       skippedCrossOutletDuplicateUrl: stats.skippedCrossOutletDuplicateUrl || 0,
       allowedMultiCriticUrlCrossOutlet: stats.allowedMultiCriticUrlCrossOutlet || 0,
@@ -6049,6 +6071,7 @@ console.log(`  Skipped (no valid score): ${stats.skippedNoScore}`);
 console.log(`  Skipped (duplicate): ${stats.skippedDuplicate}`);
 console.log(`  Skipped (duplicate URL): ${stats.skippedDuplicateUrl || 0}`);
 console.log(`  Byline recovered from same-URL sibling: ${stats.bylineRecoveredFromSibling || 0}`);
+console.log(`  Byline nulled as non-person (displayCriticName): ${stats.placeholderCriticDropped || 0}`);
 console.log(`  Allowed (multi-critic same URL): ${stats.allowedMultiCriticUrl || 0}`);
 console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletDuplicateUrl || 0}`);
 console.log(`  Allowed (multi-critic cross-outlet URL): ${stats.allowedMultiCriticUrlCrossOutlet || 0}`);

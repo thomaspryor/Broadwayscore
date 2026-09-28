@@ -203,9 +203,7 @@ const KNOWN_DUPLICATES = {
  * Generate a slug from a title
  */
 function slugify(title) {
-  return title
-    .toLowerCase()
-    .normalize('NFKD').replace(/[\u0300-\u036f]/g, '') // Strip diacritics (é→e)
+  return foldDiacritics(title.toLowerCase()) // Strip diacritics (é→e) — the shared rule (url-slug.js)
     .replace(/[&]/g, 'and')
     // "/" is a word separator ("Electra/Persona"), not punctuation to drop —
     // without this, slugify("Electra/Persona") = "electrapersona" while

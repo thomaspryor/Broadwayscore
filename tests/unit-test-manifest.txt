@@ -789,6 +789,7 @@ tests/unit/push-with-retry-fallback-eligibility.test.mjs
 tests/unit/push-with-retry-trap-exit-code.test.mjs
 tests/unit/rebuild-all-reviews.test.mjs
 tests/unit/rebuild-dedup-scored-preference.test.mjs
+tests/unit/rebuild-display-critic-name-call-site.test.mjs
 tests/unit/rebuild-fast-contamination-guard.test.mjs
 tests/unit/rebuild-fast-push-timeout.test.mjs
 tests/unit/rebuild-helpers.test.mjs
@@ -991,6 +992,7 @@ tests/unit/url-cross-production-ownership.test.mjs
 tests/unit/url-or-title-guard.test.mjs
 tests/unit/url-ownership.test.mjs
 tests/unit/url-path-matching.test.mjs
+tests/unit/url-slug.test.mjs
 tests/unit/url-utils-normalize.test.mjs
 tests/unit/url-validation-integration.test.mjs
 tests/unit/url-validation.test.mjs
