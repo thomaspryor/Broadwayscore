@@ -31,8 +31,8 @@
  * (decideCoverageOutcome): 'rotted' → record `guard: {blind: true, count:
  * null}` in the state file, leave the gaps file UNTOUCHED (the last real view
  * beats a fake empty one), exit 1. The workflow step stays
- * continue-on-error so status flips still run; the final "Fail if a
- * discovery source is blind" step (scripts/check-discovery-source-blind.js)
+ * continue-on-error so status flips still run; the separate
+ * discovery-source-blind job (scripts/check-discovery-source-blind.js)
  * reads `guard.blind` and turns the run red.
  *
  * Usage: node scripts/check-broadway-source-coverage.js [--dry-run]
