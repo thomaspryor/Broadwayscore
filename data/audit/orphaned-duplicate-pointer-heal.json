@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-28T14:16:01.523Z",
+  "generated": "2026-09-28T15:15:39.404Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 18,
+  "count": 19,
   "orphans": [
     {
       "showId": "all-my-sons-2019",
@@ -36,6 +36,13 @@
       "loserFile": "guardian--jesse-oxfeld.json",
       "targetFile": "guardian--david-jays.json",
       "reason": "orphaned-duplicate-heal: guardian--david-jays.json was flagged invalid after guardian--jesse-oxfeld.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "mass-west-end-2026",
+      "loserFile": "times-uk--dominic-maxwell.json",
+      "targetFile": "times-uk--rachel-halliburton.json",
+      "reason": "orphaned-duplicate-heal: times-uk--rachel-halliburton.json was flagged invalid after times-uk--dominic-maxwell.json was pointed at it",
       "field": "duplicateOf"
     },
     {
