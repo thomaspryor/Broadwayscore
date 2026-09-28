@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "tru-off-west-end-2026",
   "openingDate": "2026-09-27",
-  "detectedAt": "2026-09-28T18:26:34.433Z",
+  "detectedAt": "2026-09-28T18:39:03.536Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "british-theatre--sandra-giorgetti.json",
-      "outletId": "british-theatre",
-      "criticName": "Sandra Giorgetti",
-      "url": null,
-      "fullTextLen": 3391,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "how2london--unknown.json",
       "outletId": "how2london",
@@ -74,23 +57,6 @@
       "eligibilityReason": null
     },
     {
-      "file": "times-uk--dominic-maxwell.json",
-      "outletId": "times-uk",
-      "criticName": "Dominic Maxwell",
-      "url": null,
-      "fullTextLen": 2383,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
-    {
       "file": "west-end-best-friend--unknown.json",
       "outletId": "west-end-best-friend",
       "criticName": "News Desk",
@@ -106,29 +72,12 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
-    },
-    {
-      "file": "whatsonstage--sonny-waheed.json",
-      "outletId": "whatsonstage",
-      "criticName": "Sonny Waheed",
-      "url": null,
-      "fullTextLen": 3858,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
     }
   ],
-  "orphanCount": 7,
-  "dispatchableOrphanCount": 3,
+  "orphanCount": 4,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 4,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-09-28T18:26:34.433Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
