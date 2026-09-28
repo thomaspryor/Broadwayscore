@@ -57,7 +57,8 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
   const byId = new Map(rows.map(r => [r.broadwayShowId, r]));
   for (const c of candidates) {
     const prev = byId.get(c.broadwayShowId);
-    byId.set(c.broadwayShowId, { ...c, firstSeen: (prev && prev.firstSeen) || now, lastSeen: now });
+    // Keep notifiedAt: a roundup seen again must not re-ask the owner.
+    byId.set(c.broadwayShowId, { ...prev, ...c, firstSeen: (prev && prev.firstSeen) || now, lastSeen: now });
   }
   const out = [...byId.values()].sort((a, b) => a.broadwayShowId.localeCompare(b.broadwayShowId));
   fs.writeFileSync(file, JSON.stringify(out, null, 2) + '\n');
