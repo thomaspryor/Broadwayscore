@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 /**
  * Fail loudly when a discovery source is blind (S4-T3, 2026 data audit
- * BRO-4204). The LAST step of update-show-status.yml's update-shows job.
+ * BRO-4204). Runs in update-show-status.yml's own `discovery-source-blind`
+ * job (needs: update-shows, if: always()) — a separate job rather than a
+ * final step of update-shows, so the RUN turns red while update-shows itself
+ * stays green and the downstream jobs that gate on its success (create-issue,
+ * trigger-data-agent, catchup-zero-review-shows, check-opening-night-
+ * readiness) keep running (owner decision 2026-09-28).
  *
  * Two blindness signals were already being WRITTEN on every run, and nothing
  * ever read them, so playbillBroadway sat at a 24-run zero streak (olt and

@@ -1,9 +1,10 @@
 // S4-T3 (2026 data audit, BRO-4204): update-show-status goes red when a
 // discovery source is blind. Requires the REAL decision function (CLAUDE.md
 // §15), runs the real CLI against fixtures, and pins the workflow wiring —
-// the last step of the update-shows job runs it with no continue-on-error,
-// while the coverage guard step keeps its continue-on-error so status flips
-// still run.
+// a separate discovery-source-blind job (needs: update-shows, if: always())
+// runs it with no continue-on-error, NOTHING depends on that job, the four
+// downstream jobs keep gating on update-shows exactly as before, and the
+// coverage guard step keeps its continue-on-error so status flips still run.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -132,18 +133,64 @@ test('CLI: --help exits 0 without reading anything', () => {
   assert.match(r.stdout, /check-discovery-source-blind\.js/);
 });
 
-// Workflow wiring: this is what makes the run red. Parsed, not grepped.
-test('update-show-status.yml: last step of update-shows runs the blind check with no continue-on-error; the coverage guard keeps continue-on-error', () => {
+// Workflow wiring: this is what makes the RUN red without touching the
+// pipeline. Parsed, not grepped.
+const SCRIPT_RE = /node scripts\/check-discovery-source-blind\.js/;
+const needsOf = (job) => (Array.isArray(job.needs) ? job.needs : job.needs ? [job.needs] : []);
+
+test('update-show-status.yml: a separate discovery-source-blind job (needs: update-shows, if: always()) runs the check with no continue-on-error', () => {
+  const wf = yaml.load(readFileSync(join(ROOT, '.github', 'workflows', 'update-show-status.yml'), 'utf8'));
+  const job = wf.jobs['discovery-source-blind'];
+  assert.ok(job, 'discovery-source-blind job must exist');
+  assert.deepEqual(needsOf(job), ['update-shows']);
+  assert.equal(String(job.if), 'always()', 'the verdict must run even when update-shows failed');
+  assert.equal(job['continue-on-error'], undefined, 'the job must be able to fail the run');
+
+  const step = job.steps.find(s => SCRIPT_RE.test(s.run || ''));
+  assert.ok(step, 'the job must run scripts/check-discovery-source-blind.js');
+  assert.equal(step.name, 'Fail if a discovery source is blind');
+  assert.equal(step['continue-on-error'], undefined, 'the verdict step must be able to fail the job');
+  assert.ok(!/\|\|\s*true/.test(step.run), 'the verdict must not be swallowed with || true');
+
+  // The two audit files it reads are tracked in this repo, and `ref: main`
+  // makes the checkout see the streaks update-shows just committed rather
+  // than the trigger commit's stale copy (same reason catchup-zero-review-shows
+  // checks out main).
+  const checkout = job.steps.find(s => /actions\/checkout@/.test(s.uses || ''));
+  assert.ok(checkout, 'the job must check out the repo');
+  assert.equal(checkout.with && checkout.with.ref, 'main');
+});
+
+test('update-show-status.yml: the blind check is NOT a step of update-shows, and the coverage guard keeps continue-on-error', () => {
   const wf = yaml.load(readFileSync(join(ROOT, '.github', 'workflows', 'update-show-status.yml'), 'utf8'));
   const steps = wf.jobs['update-shows'].steps;
-  const last = steps[steps.length - 1];
-  assert.equal(last.name, 'Fail if a discovery source is blind');
-  assert.match(last.run, /node scripts\/check-discovery-source-blind\.js/);
-  assert.equal(last['continue-on-error'], undefined, 'the blind check must be able to fail the job');
-  assert.equal(String(last.if), 'always()', 'the verdict step runs even when an earlier step failed');
-
+  assert.equal(
+    steps.find(s => SCRIPT_RE.test(s.run || '')),
+    undefined,
+    'a failing blind check inside update-shows would skip every downstream job that needs its success (owner decision 2026-09-28)'
+  );
   const guard = steps.find(s => s.name === 'Check Broadway source coverage');
   assert.ok(guard, 'coverage guard step still present');
   assert.equal(guard['continue-on-error'], true, 'the guard step must keep continue-on-error so status flips still run (S4-T3)');
-  assert.ok(steps.indexOf(guard) < steps.indexOf(last));
+});
+
+test('update-show-status.yml: nothing depends on discovery-source-blind, and the downstream jobs gate on update-shows exactly as before', () => {
+  const wf = yaml.load(readFileSync(join(ROOT, '.github', 'workflows', 'update-show-status.yml'), 'utf8'));
+  for (const [name, job] of Object.entries(wf.jobs)) {
+    assert.ok(!needsOf(job).includes('discovery-source-blind'), `${name} must not need discovery-source-blind — a blind source would then skip it`);
+  }
+  // Pinned verbatim: these four are what a blind source must NOT switch off.
+  const ci = wf.jobs['create-issue'];
+  assert.deepEqual(needsOf(ci), ['update-shows']);
+  assert.ok(!/discovery-source-blind|always\(\)/.test(String(ci.if)), 'create-issue keeps its implicit success() gate on update-shows');
+  const tda = wf.jobs['trigger-data-agent'];
+  assert.deepEqual(needsOf(tda), ['update-shows']);
+  assert.ok(!/discovery-source-blind|always\(\)/.test(String(tda.if)), 'trigger-data-agent keeps its implicit success() gate on update-shows');
+  for (const name of ['catchup-zero-review-shows', 'check-opening-night-readiness']) {
+    assert.deepEqual(needsOf(wf.jobs[name]), ['update-shows']);
+    assert.equal(String(wf.jobs[name].if).trim(), "always() && needs.update-shows.result == 'success'", `${name} gate unchanged`);
+  }
+  const alert = wf.jobs['alert-on-failure'];
+  assert.deepEqual(needsOf(alert), ['update-shows']);
+  assert.equal(String(alert.if).trim(), 'failure()', 'alert-on-failure semantics unchanged');
 });
