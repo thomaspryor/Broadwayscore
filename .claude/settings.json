@@ -14,10 +14,6 @@
         "hooks": [
           {
             "type": "command",
-            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/notion-create-block.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
-          },
-          {
-            "type": "command",
             "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/worktree-enforce.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
           }
         ]
@@ -36,6 +32,10 @@
           {
             "type": "command",
             "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/check-skill-redaction.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          },
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/block-resend-broadcasts.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
           }
         ]
       },
@@ -54,6 +54,15 @@
           {
             "type": "command",
             "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/block-prompting-remote-tools.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__github__(create_or_update_file|push_files|delete_file|merge_pull_request|enable_pr_auto_merge)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/github-main-guard.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
           }
         ]
       },

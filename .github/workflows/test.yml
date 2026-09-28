@@ -2063,6 +2063,13 @@ on:
       - 'scripts/tests/cloud-push-main-guard.test.mjs'
       - '.claude/hooks/pre-merge-review-gate.sh'
       - '.claude/hooks/pre-push-review-gate.sh'
+      # BRO-4238: GitHub-MCP main guard + cloud copy of the Resend broadcast
+      # guard (and the lib it needs); tests drive the real scripts. Also in
+      # tests/unit-test-manifest.txt.
+      - '.claude/hooks/github-main-guard.sh'
+      - '.claude/hooks/block-resend-broadcasts.sh'
+      - '.claude/hooks/lib/strip-git-commit-noise.js'
+      - 'scripts/tests/cloud-settings-guards.test.mjs'
       - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'
       # verify-edits.sh heredoc-stripper here-string false negative (task
       # #1606), same shell-e2e class as merge-gate-hook.test.mjs above and
