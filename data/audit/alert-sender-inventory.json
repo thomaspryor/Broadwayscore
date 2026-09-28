@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-27T18:52:24.186Z",
+  "generatedAt": "2026-09-28T21:02:39.360Z",
   "counts": {
-    "router": 150,
+    "router": 151,
     "digest": 1,
     "direct": 0,
     "humanCallerIgnoresDigest": 0
@@ -79,14 +79,14 @@
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4076,
+      "line": 4085,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 6082,
+      "line": 6091,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -121,7 +121,7 @@
     },
     {
       "file": ".github/workflows/update-show-status.yml",
-      "line": 1928,
+      "line": 1932,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
@@ -233,35 +233,35 @@
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 2039,
+      "line": 2043,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 2064,
+      "line": 2068,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 2087,
+      "line": 2091,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 2288,
+      "line": 2308,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/audit-show-review-gap.js",
-      "line": 2386,
+      "line": 2406,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -450,14 +450,21 @@
     },
     {
       "file": "scripts/check-provider-spend.js",
-      "line": 221,
+      "line": 234,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/check-provider-spend.js",
-      "line": 266,
+      "line": 277,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "auto"
+    },
+    {
+      "file": "scripts/check-provider-spend.js",
+      "line": 321,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
