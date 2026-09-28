@@ -717,6 +717,8 @@ jobs:
           git add data/audit/olt-last-success.json 2>/dev/null || true
           git add data/audit/theatremonkey-last-success.json 2>/dev/null || true
           git add data/audit/theatremonkey-venue-cache.json 2>/dev/null || true
+          # enrich-tour-dates.js report (BRO-4262); health-check.js reads it for the digest.
+          git add data/audit/tour-dates.json 2>/dev/null || true
           git add data/audit/broadway-source-coverage-gaps.json 2>/dev/null || true
           git add data/audit/broadway-source-coverage-state.json 2>/dev/null || true
           # OB + OWE venue-page staging (BRO-182 adversarial review, 2026-08-26):

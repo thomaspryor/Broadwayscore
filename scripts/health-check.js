@@ -3924,6 +3924,51 @@ function obClosingBacklogResults(report, now = new Date()) {
   }];
 }
 
+/**
+ * National-tour automation (BRO-4262): what the unattended tour writers did or
+ * could not do, from their own audit files. Pure: takes the parsed reports.
+ * - a held sweep (it refused to move a flood of reviews) is an error: intake or
+ *   a rule broke and tour reviews are stuck on a Broadway page;
+ * - a date problem (schedule page unreadable, stored launch disagrees) is a warn;
+ * - tours created automatically are reported so the owner sees them land.
+ */
+function tourAutomationResults({ sweep, dates, autocreate } = {}) {
+  const out = [];
+  const held = (sweep && sweep.held) || [];
+  if (held.length) {
+    out.push({
+      name: 'Data: tour review sweep held',
+      status: 'error',
+      message: `The daily tour sweep refused to move reviews for ${held.join(', ')}: more than it should ever need to, so nothing was moved.`,
+      hint: `Look at: node scripts/sweep-tour-reviews.js --tour=${held[0]} (dry run). If the moves are right, run it with --execute.`,
+    });
+  }
+  const problems = ((dates && dates.tours) || []).filter(t => t.problem);
+  if (problems.length) {
+    out.push({
+      name: 'Data: tour dates need a look',
+      status: 'warn',
+      message: `${problems.length} tour(s) could not be dated automatically: ${problems.map(p => `${p.id} (${p.problem})`).join('; ')}`,
+      hint: 'See data/audit/tour-dates.json. A page that parses to nothing usually means Tours To You changed layout or the slug differs (set tourScheduleSlug on the entry).',
+    });
+  }
+  const created = (autocreate && autocreate.created) || [];
+  if (created.length) {
+    out.push({
+      name: 'Data: national tours added automatically',
+      status: 'warn',
+      message: `Added ${created.join(', ')} from BroadwayWorld tour roundups (dates from Tours To You + Wikipedia).`,
+      hint: 'Nothing to do unless one is wrong; see data/audit/tour-autocreate.json.',
+    });
+  }
+  return out;
+}
+
+function checkTourAutomation() {
+  const read = (f) => { try { return JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit', f), 'utf8')); } catch { return null; } };
+  return tourAutomationResults({ sweep: read('tour-sweep.json'), dates: read('tour-dates.json'), autocreate: read('tour-autocreate.json') });
+}
+
 // Reads data/audit/ob-closing-candidates.json off disk and surfaces it via
 // obClosingBacklogResults. Pure local-file read — unlike feedbackBacklogResults
 // (needs a live GitHub API call via getOpenFeedbackReviewIssues), this has no
@@ -5096,6 +5141,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkBatchState(),
     ...checkQuality(),
     ...checkObClosingBacklog(),
+    ...checkTourAutomation(),
     ...checkOutletHealth(),
     ...checkCommercialModelDrift(),
     ...checkCookieExpiration(),
@@ -5367,4 +5413,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman };
+module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman };
