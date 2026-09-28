@@ -1,18 +1,65 @@
 {
-  "updatedAt": "2026-09-28T08:28:59.425Z",
-  "processed": 1,
-  "failed": 5,
-  "successRate": "16.7%",
+  "updatedAt": "2026-09-28T09:55:23.954Z",
+  "processed": 7,
+  "failed": 27,
+  "successRate": "20.6%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 5,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 6,
+  "recentActivity": [
+    {
+      "t": "2026-09-28T09:46:48.867Z",
+      "event": "bb-session",
+      "session": "e74b5de4",
+      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+    },
+    {
+      "t": "2026-09-28T09:46:57.367Z",
+      "event": "bb-session",
+      "session": "b17f57a1",
+      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+    },
+    {
+      "t": "2026-09-28T09:48:39.628Z",
+      "event": "bb-session",
+      "session": "b3706597",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
+    },
+    {
+      "t": "2026-09-28T09:48:59.439Z",
+      "event": "bb-session",
+      "session": "eab714dc",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
+    },
+    {
+      "t": "2026-09-28T09:53:53.060Z",
+      "event": "bb-session",
+      "session": "04ede199",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-28T09:53:53.801Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-28T09:54:12.821Z",
+      "event": "bb-session",
+      "session": "0c7e688b",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-28T09:54:13.445Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }

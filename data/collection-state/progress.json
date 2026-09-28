@@ -1,28 +1,110 @@
 {
   "processed": [
-    "tru-off-west-end-2026/west-end-best-friend--unknown.json"
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json",
+    "tru-off-west-end-2026/west-end-best-friend--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/mommypoppins--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/stagebuddy--unknown.json"
   ],
   "failed": [
     "tru-off-west-end-2026/guardian--unknown.json",
+    "midnight-off-broadway-2026/cititour--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "midnight-off-broadway-2026/broadwayworld--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "midnight-off-broadway-2026/one-minute-critic--ryan-leeds.json",
     "tru-off-west-end-2026/bestoftheatre--cecil-glover.json",
     "tru-off-west-end-2026/london-theatre--unknown.json",
     "tru-off-west-end-2026/thestage--sam-marlowe.json",
-    "tru-off-west-end-2026/whatsonstage--alex-wood.json"
+    "tru-off-west-end-2026/whatsonstage--alex-wood.json",
+    "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json",
+    "la-boheme-off-broadway-2026/nytimes--anthony-tommasini.json",
+    "la-boheme-off-broadway-2026/new-york-classical-review--rick-perdian.json",
+    "the-urmetazoan-off-west-end-2026/timeout-london--unknown.json",
+    "human-things-off-broadway-2026/broadwayworld--backstage-live-with-richard-ridge.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/front-row-center--elizabeth-ann-foster.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "la-boheme-off-broadway-2026/operawire--francisco-salazar.json",
+    "la-boheme-off-broadway-2026/seen-and-heard-international--daniel-meyer.json",
+    "la-boheme-off-broadway-2026/seen-and-heard-international--robert-beattie.json",
+    "the-urmetazoan-off-west-end-2026/datathistle--unknown.json",
+    "the-urmetazoan-off-west-end-2026/thestage--holly-omahony.json",
+    "the-urmetazoan-off-west-end-2026/thestage--the-stage.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "tru-off-west-end-2026/west-end-best-friend--unknown.json"
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json",
+      "tru-off-west-end-2026/west-end-best-friend--unknown.json",
+      "the-secret-circus-musical-off-broadway-2026/stagebuddy--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json",
+      "the-secret-circus-musical-off-broadway-2026/mommypoppins--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-09-28T08:26:54.680Z",
-  "lastProcessed": "tru-off-west-end-2026/whatsonstage--alex-wood.json",
-  "log": []
+  "startTime": "2026-09-28T09:43:14.536Z",
+  "lastProcessed": "the-urmetazoan-off-west-end-2026/thestage--the-stage.json",
+  "log": [
+    {
+      "t": "2026-09-28T09:46:48.867Z",
+      "event": "bb-session",
+      "session": "e74b5de4",
+      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+    },
+    {
+      "t": "2026-09-28T09:46:57.367Z",
+      "event": "bb-session",
+      "session": "b17f57a1",
+      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+    },
+    {
+      "t": "2026-09-28T09:48:39.628Z",
+      "event": "bb-session",
+      "session": "b3706597",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
+    },
+    {
+      "t": "2026-09-28T09:48:59.439Z",
+      "event": "bb-session",
+      "session": "eab714dc",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
+    },
+    {
+      "t": "2026-09-28T09:53:53.060Z",
+      "event": "bb-session",
+      "session": "04ede199",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-28T09:53:53.801Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-28T09:54:12.821Z",
+      "event": "bb-session",
+      "session": "0c7e688b",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-28T09:54:13.445Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
