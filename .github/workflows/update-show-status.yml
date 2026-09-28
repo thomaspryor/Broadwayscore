@@ -251,7 +251,7 @@ jobs:
       # leaves the gaps file untouched and records `guard.blind: true` in
       # data/audit/broadway-source-coverage-state.json — continue-on-error is
       # deliberately KEPT so status flips still run; the verdict is applied by
-      # the "Fail if a discovery source is blind" step at the end of this job.
+      # the separate discovery-source-blind job below (S4-T3).
       - name: Check Broadway source coverage
         continue-on-error: true
         env:
@@ -939,21 +939,46 @@ jobs:
           echo "Triggering deploy..."
           gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
 
-      # S4-T3 (2026 data audit, BRO-4204): the run goes RED when a discovery
-      # source is blind. Two signals were already WRITTEN every run but nothing
-      # ever read them — playbillBroadway sat at a 24-run zero streak (olt and
-      # theatremonkey at 23) with every run green:
-      #   * data/audit/discovery-source-coverage.json — zeroStreak >= 3 on
-      #     playbillBroadway / olt / theatremonkey (the same threshold
-      #     scripts/lib/discovery-source-coverage.js alerts at);
-      #   * data/audit/broadway-source-coverage-state.json `guard.blind` —
-      #     written by "Check Broadway source coverage" above when the Playbill
-      #     parser has rotted (S4-T2).
-      # Deliberately the LAST step, with no continue-on-error: status flips,
-      # discovery, enrichment and the commit/push above have all already run —
-      # this only changes the verdict. Read-only (never writes data/audit/).
+  # S4-T3 (2026 data audit, BRO-4204): the workflow RUN turns red when a
+  # discovery source is blind. Two signals were already WRITTEN every run but
+  # nothing ever read them — playbillBroadway sat at a 24-run zero streak (olt
+  # and theatremonkey at 23) with every run green:
+  #   * data/audit/discovery-source-coverage.json — zeroStreak >= 3 on
+  #     playbillBroadway / olt / theatremonkey (the same threshold
+  #     scripts/lib/discovery-source-coverage.js alerts at);
+  #   * data/audit/broadway-source-coverage-state.json `guard.blind` — written
+  #     by update-shows' "Check Broadway source coverage" step when the
+  #     Playbill parser has rotted (S4-T2).
+  # Its OWN job, not a final step of update-shows (owner decision 2026-09-28):
+  # create-issue, trigger-data-agent, catchup-zero-review-shows and
+  # check-opening-night-readiness all gate on update-shows SUCCEEDING, so a
+  # failing step there would have silently switched off review collection for
+  # every new/opened show for as long as a source stayed blind. Here only this
+  # job fails: the run is red, update-shows stays green, every downstream job
+  # runs exactly as before, and alert-on-failure (needs: update-shows,
+  # if: failure()) is untouched. Nothing may list this job in `needs:` —
+  # tests/unit/check-discovery-source-blind.test.mjs pins that.
+  # `ref: main` (same as catchup-zero-review-shows) so the verdict reads the
+  # streaks update-shows just committed rather than the trigger commit's copy.
+  # Both files are tracked in this repo, so no core-data checkout; the script
+  # has no npm dependencies, so no install. Read-only — never writes data/audit/.
+  discovery-source-blind:
+    needs: update-shows
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
       - name: Fail if a discovery source is blind
-        if: always()
         run: node scripts/check-discovery-source-blind.js
 
   create-issue:
