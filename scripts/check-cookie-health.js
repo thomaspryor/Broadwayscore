@@ -24,6 +24,7 @@ const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
 const { extractArticleTextFromUrl } = require('./lib/article-extractor');
 const { checkWsjOtpFreshness } = require('./lib/wsj-otp-freshness');
 const { COOKIE_PROBES, classifyWalledProbe } = require('./lib/cookie-probes');
+const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 
 // --- Outlet Configuration ---
 
@@ -382,6 +383,12 @@ async function checkLiveAccess(fileKey, testUrl, cookies, authCookies, minBodyCh
 
   try {
     const res = await httpsGet(sbUrl, { 'Spb-Cookie': cookieHeader }, 60000);
+    // BRO-4215: render_js + premium_proxy bills 25 credits; this call site wrote
+    // no ledger row, so the twice-weekly cookie probe was invisible spend.
+    try {
+      recordSbCall({ url: testUrl, fn: 'premium', success: res.status === 200,
+        status: res.status || 'error', credits: sbBilledCredits(res.status || 'error', 25) });
+    } catch (_) { /* telemetry must never fail the health check */ }
 
     if (res.status === 0) return { status: 'warn', message: `Request failed: ${res.body}` };
     if (res.status === 500) return { status: 'warn', message: 'ScrapingBee 500 (site blocking)' };
