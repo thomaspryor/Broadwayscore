@@ -1156,6 +1156,20 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (promote-we-aggregator.yml), group promote-we-aggregator (cancel-in-progress: false).',
   },
   {
+    // BRO-4204 S4-T9: remembered-rejection store (lib/we-rejected-candidates.js)
+    // written only by a non-dry-run promote-we-aggregator-candidates.js run and
+    // committed by the same "Commit WE promotion audit log" step as the two
+    // entries above. Registered so that step's Git Data API fallback stays
+    // available (push-with-retry.sh disqualifies a diff touching an
+    // unregistered path — the BRO-2722 progress-watch-state failure class).
+    file: 'audit/we-rejected-candidates.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'promote-we-aggregator',
+    verifiedBy: '2026-09-28 (BRO-4204 S4-T9): same findWritingWorkflows()-class check as the two promote-we-aggregator entries above — 1 writer (promote-we-aggregator.yml, git-add-existing.sh in its "Commit WE promotion audit log" step), group promote-we-aggregator (cancel-in-progress: false).',
+  },
+  {
     file: 'audit/affiliate-link-probe.json',
     surface: 'public-repo',
     status: 'single-writer',
