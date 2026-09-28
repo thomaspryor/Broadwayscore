@@ -330,63 +330,32 @@
     "queuedAt": "2026-09-28T20:21:25.489Z"
   },
   {
-    "conditionKey": "we-aggregator-go-live:krapps-last-tape-west-end-2026",
-    "title": "Krapps Last Tape @ royal court — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/review-krapps-last-tape-royal-court-theatre). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/krapps-last-tape-west-end-2026",
+    "conditionKey": "land:land/tour-phase-d",
+    "title": "Landing blocked: colocated-tests red on land/tour-phase-d",
+    "description": "land.yml did not land land/tour-phase-d: the colocated-tests gate went red at d7af494b41. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/tour-phase-d @ d7af494b41 (origin/land/tour-phase-d) → origin/main @ 101c544c4e [land] attempt 1/3: rebased onto 049a79b0c1, 24 file(s) changed — running checks [land] verified-base: main moved 8448e553b5 → 049a79b0c1 across 153 file(s), substantive — running the full gauntlet [land] linked 19 gitignored path(s) into the worktree (node_modules/core data) [land] checks: colocated-tests= Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36477093126",
+    "severity": "error",
+    "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-28T20:53:32.432Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:dracula-west-end-2026",
-    "title": "Dracula @ noel coward — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/dracula-noel-coward-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/dracula-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-28T20:53:32.436Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:john-proctor-west-end-2026",
-    "title": "John Proctor @ royal court — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/royal-court-john-proctor-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/john-proctor-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-28T20:53:32.439Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:to-maury-with-love-concert-west-end-2026",
-    "title": "To Maury With Love Concert @ theatre royal drury lane — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/to-maury-with-love-concert-theatre-royal-drury-lane-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/to-maury-with-love-concert-west-end-2026",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-28T20:53:32.443Z"
-  },
-  {
-    "conditionKey": "we-aggregator-go-live:ballet-shoes-west-end-2025",
-    "title": "Ballet Shoes @ national — West End show live and scoring",
-    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/ballet-shoes-national-theatre-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
-    "severity": "info",
-    "url": "https://broadwayscorecard.com/show/ballet-shoes-west-end-2025",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-28T20:53:32.465Z"
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/tour-phase-d"
+      },
+      {
+        "name": "gate",
+        "value": "colocated-tests"
+      },
+      {
+        "name": "tip",
+        "value": "d7af494b41a4957ad98e308ef4123c4798078c0e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36477093126"
+      }
+    ],
+    "queuedAt": "2026-09-28T20:59:33.883Z"
   }
 ]
