@@ -87,6 +87,35 @@ describe('slugMatchesShow', () => {
     const url = 'https://www.broadwayworld.com/article/Review-Roundup-THE-LEGEND-OF-X-Opens-on-Broadway-20260422';
     assert.ok(slugMatchesShow(url, show));
   });
+
+  // 2026-09-23: "America, Who Hurt You?" stripped to AMERICA and substring-
+  // matched North-AMERICAN-Tour, persisting a Dirty Dancing tour roundup as
+  // the Off-Broadway show's bwwRoundupUrl.
+  it('requires whole slug words, not substrings', () => {
+    const show = { title: 'America, Who Hurt You?', openingDate: '2026-09-17' };
+    for (const slug of ['DIRTY-DANCING', 'DEATH-BECOMES-HER', 'BUENA-VISTA-SOCIAL-CLUB']) {
+      const url = `https://www.broadwayworld.com/article/Review-Roundup-${slug}-Launches-North-American-Tour-20260923`;
+      assert.strictEqual(slugMatchesShow(url, show), false, slug);
+    }
+    const punch = 'https://www.broadwayworld.com/article/Review-Roundup-PUNCH-Opens-on-Broadway-20250929';
+    assert.strictEqual(slugMatchesShow(punch, { title: 'Art' }), false);
+    const cohen = 'https://www.broadwayworld.com/article/Review-Roundup-Cat-Cohens-BROAD-STROKES-Opens-Off-Broadway-20260727';
+    assert.strictEqual(slugMatchesShow(cohen, { title: 'Cats' }), false);
+  });
+
+  it('folds apostrophes, accents, and fused slash titles the way BWW slugs do', () => {
+    const cases = [
+      ["Rosie O'Donnell: Common Knowledge", 'Review-Roundup-Rosie-ODonnells-COMMON-KNOWLEDGE-20260731'],
+      ["Ain't No Mo'", 'Review-Roundup-Jordan-E-Coopers-AINT-NO-MO-Opens-On-Broadway-20221202'],
+      ["Bedlam's Othello", 'Review-Roundup-Four-Person-OTHELLO-Opens-at-Bedlam-20260508'],
+      ['Les Misérables: The Arena Concert Spectacular', 'Review-Roundup-LES-MISERABLES-THE-ARENA-CONCERT-SPECTACULAR-Opens-At-Radio-City-Music-Hall-20260728'],
+      ['Magic/Bird', 'Review-Roundup-MAGICBIRD-Opens-on-Broadway-Updating-LIVE-20120411'],
+      ['Label•less', 'Review-Roundup-LABELLESS-at-The-Duke-on-42nd-Street-20260618'],
+    ];
+    for (const [title, slug] of cases) {
+      assert.ok(slugMatchesShow(`https://www.broadwayworld.com/article/${slug}`, { title }), title);
+    }
+  });
 });
 
 describe('scoreCandidate', () => {
