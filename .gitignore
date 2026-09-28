@@ -354,6 +354,11 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # literally `test -f docs/scraping-bee-usage.md`, so it has to be committed
 # rather than scratch/local like the rest of /docs/.
 !/docs/scraping-bee-usage.md
+# BRO-4204 (2026 data audit, S4-T14): the show inclusion policy the discovery
+# gates enforce. Referenced by code comments in scripts/discover-new-shows.js,
+# scripts/lib/venue-classification.js and scripts/validate-data.js, so it has
+# to be committed rather than scratch/local like the rest of /docs/.
+!/docs/show-inclusion-policy.md
 /memory/
 /data/deep-research/
 /data/theater-research/

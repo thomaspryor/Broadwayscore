@@ -52,7 +52,7 @@ const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { verifyCreativeTeamViaSerp } = require('./lib/creative-team-verify');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
 const { classifyGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
-const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
+const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isNonTheatreVenue, isLondonReceivingHouse, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
 const showsWriteGuard = require('./lib/shows-write-guard');
 const { matchesRetired } = require('./lib/retired-show-ids');
@@ -221,6 +221,30 @@ const NON_THEATER_PATTERNS = [
   'education program', 'student showcase',
 ];
 
+// Junk-title shapes from the 2026 data audit (BRO-4204 S4-T6): festivals,
+// panels / Q&As, NT Live cinema screenings, prize nights, comedy previews,
+// work-in-progress nights, venue "events" listings and sports double-headers.
+// A word-anchored regex rather than more NON_THEATER_PATTERNS substrings so
+// 'festival' cannot hit "Festen" and 'panel' cannot hit "Panelbeater".
+// Corpus-checked 2026-09-28 against every title in shows.json (3,073 rows):
+// each token hits only the audit's junk rows (Kilburn High Road Festival,
+// Migrant Qa Panel, Nt Live All My Sons 12a Tbc, Stiles Drewe Best New Song
+// Prize 2026, Edinburgh Fringe Comedy Previews, Rosie Jones: Anyone But Me
+// (WIP), Bar Events, Barbarians v Wales Double Header) and nothing tracked.
+const NON_THEATRE_TITLE_RE = /^nt live\b|\bfestival\b|\bpanel\b|\bq ?& ?a\b|\bqa\b|\bscreening\b|\bprize\b|\(wip\)|\bwork[- ]in[- ]progress\b|\bcomedy previews\b|\bfringe previews\b|\bdouble header\b|^(?:bar|venue|special) events\b/i;
+
+// TodayTix top-level categories that are never a staged production. Checked
+// on the raw TodayTix object (`show.category.name`); the same value is written
+// to shows.json as `todayTixCategory`. "Concerts" is how Betty Buckley at Joe's
+// Pub and Harry Connick Jr. at Carnegie Hall reached the Off-Broadway list.
+const NON_THEATRE_TODAYTIX_CATEGORIES = new Set(['Concerts', 'Events', 'Landmarks', 'Films', 'Conversations']);
+
+// TodayTix categories that vouch for a listing at a non-theatre venue: a
+// TodayTix Off-Broadway row at Radio City / Carnegie Hall / 54 Below is
+// admitted only when TodayTix itself tags it Plays or Musicals (owner rule,
+// 2026 audit). London paths do not get this override — see isNonTheaterContent.
+const STAGED_PRODUCTION_CATEGORIES = new Set(['Plays', 'Musicals']);
+
 // West End-specific additional patterns — shared by TodayTix London, OLT, and ShowScore candidate processing
 const WE_EXTRA_PATTERNS = [
   'dining experience', 'candlelight', 'by candlelight',
@@ -275,7 +299,13 @@ function isOneNightShow(show) {
   // filtered before ever reaching the dedup/new-show pipeline (Gap B, card
   // #1446: Mix and Master, The Full Monty, Warriors, Three Days of Rain were
   // all real full Broadway/Off-Broadway runs filtered this way).
-  if (show.startDate === 'null' || show.endDate === 'null') return false;
+  //
+  // The one place "null" dates DO mean a one-off booking is a non-theatre
+  // venue (2026 audit, BRO-4204 S4-T8): a Carnegie Hall / Royal Albert Hall /
+  // 54 Below listing with no run dates is a single concert or cabaret night,
+  // not a not-yet-on-sale production, so the skip fires there and only there.
+  // A "null"-dated listing at a theatre keeps the #1446 behaviour.
+  if (show.startDate === 'null' || show.endDate === 'null') return isNonTheatreVenue(show.venue);
   return show.startDate === show.endDate;
 }
 
@@ -294,16 +324,45 @@ function sanitizeTodayTixDate(startDate, showTitle) {
   return classifyTodayTixStartDate(startDate, showTitle).previewsStartDate;
 }
 
-function isNonTheaterContent(show) {
+// The admission rule this enforces is written up in docs/show-inclusion-policy.md
+// (2026 data audit, BRO-4204). `show` is TodayTix-shaped (displayName,
+// subcategories, venue as string or { name }, category { name }, description);
+// the Playbill / ShowScore paths synthesize that shape before calling.
+//
+// `market` is 'london' on the London discovery paths and 'nyc' (default)
+// otherwise. It changes exactly one gate: a non-theatre venue match rejects
+// outright in London, but in NYC is overridden when TodayTix tags the row
+// Plays or Musicals (a staged production booked into Radio City or Carnegie
+// Hall — Les Misérables: The Arena Concert Spectacular is the reviewed case).
+function isNonTheaterContent(show, { market = 'nyc' } = {}) {
   const title = (show.displayName || show.name || '').toLowerCase();
   if (EXCLUDED_TITLES.some(excluded => title.includes(excluded))) return true;
   if (NON_THEATER_PATTERNS.some(pattern => title.includes(pattern))) return true;
+  if (NON_THEATRE_TITLE_RE.test(title)) return true; // festival / panel / screening / Q&A / prize / WIP titles
   const subcatNames = (show.subcategories || []).map(sc => sc.name);
   if (subcatNames.includes('Classical')) return true; // Opera
+
+  // Gate 1b: TodayTix top-level category — Concerts, Events, Landmarks,
+  // Films and Conversations are never staged productions, whatever the venue.
+  if (NON_THEATRE_TODAYTIX_CATEGORIES.has(show.category?.name)) return true;
 
   // Gate 2: Venue blocklist — categorically non-theater venues
   const venue = (typeof show.venue === 'string' ? show.venue : show.venue?.name || '').toLowerCase();
   if (NON_THEATER_VENUES.some(v => venue.includes(v))) return true;
+
+  // Gate 3: Stadiums, arenas, concert halls, cabaret rooms (NON_THEATRE_VENUE_RE,
+  // scripts/lib/venue-classification.js). London: reject outright. NYC: admit
+  // only when TodayTix tags the row Plays or Musicals. A production critics
+  // review at one of these still gets in via the aggregator promoters, which
+  // never consult this gate (the safety valve).
+  if (isNonTheatreVenue(show.venue)) {
+    if (market === 'london') return true;
+    if (!STAGED_PRODUCTION_CATEGORIES.has(show.category?.name)) return true;
+  }
+
+  // Gate 3b: Greater London receiving houses (Hackney Empire, New Wimbledon
+  // Theatre…) list UK tour stops, not London productions. London paths only.
+  if (market === 'london' && isLondonReceivingHouse(show.venue)) return true;
 
   // Gate 4: Synopsis keywords — catches shows with clean titles but non-theater descriptions
   const description = (show.description || '').toLowerCase();
@@ -723,7 +782,10 @@ async function fetchShowsFromTodayTixLondon() {
       if (!isTheaterCategory) return false;
     }
 
-    return !isNonTheaterContent(s) && !isOneNightShow(s);
+    // market:'london' — a stadium/arena/concert-hall/cabaret venue or a
+    // receiving-house tour stop rejects outright here, with no Plays/Musicals
+    // override (docs/show-inclusion-policy.md).
+    return !isNonTheaterContent(s, { market: 'london' }) && !isOneNightShow(s);
   });
 
   const seen = new Set();
@@ -933,6 +995,12 @@ async function fetchShowsFromOfficialLondonTheatre() {
         if (verbose) console.log(`  [SKIP] "${title}" — OLT venue "${rawVenue || ''}" is a placeholder/blob, deferring to next run (card #1060)`);
         continue;
       }
+      // London paths reject non-theatre venues and receiving-house tour stops
+      // outright (2026 audit, BRO-4204 — docs/show-inclusion-policy.md).
+      if (isNonTheatreVenue(venue) || isLondonReceivingHouse(venue)) {
+        if (verbose) console.log(`  [FILTERED] "${title}" — OLT venue "${venue}" is a non-theatre venue or receiving house`);
+        continue;
+      }
       const endDate = data.endDate === 'null' || data.endDate === null ? null : data.endDate || null;
 
       seen.add(titleLower);
@@ -1048,6 +1116,12 @@ async function fetchShowsFromLondonTheatre() {
         const venue = sanitizeVenueForWrite(decodedVenue);
         if (!venue) {
           if (verbose) console.log(`  [SKIP] "${title}" — LT venue "${rawLocation || ''}" is a placeholder/blob, deferring to next run (card #1060)`);
+          continue;
+        }
+        // London paths reject non-theatre venues and receiving-house tour
+        // stops outright (2026 audit, BRO-4204 — docs/show-inclusion-policy.md).
+        if (isNonTheatreVenue(venue) || isLondonReceivingHouse(venue)) {
+          if (verbose) console.log(`  [FILTERED] "${title}" — LT venue "${venue}" is a non-theatre venue or receiving house`);
           continue;
         }
         const endDate = data.endDate === 'null' || data.endDate === null ? null : data.endDate || null;
@@ -1673,8 +1747,9 @@ async function consumeShowScoreCandidatesFile() {
     } catch { /* TodayTix search failed — proceed without */ }
 
     if (ttShow) {
-      // Full TodayTix validation: all gates apply
-      if (isNonTheaterContent(ttShow)) {
+      // Full TodayTix validation: all gates apply (London candidates get the
+      // outright non-theatre-venue rejection, NYC the Plays/Musicals override)
+      if (isNonTheaterContent(ttShow, { market: isLondonMarket(candidate.category) ? 'london' : 'nyc' })) {
         filteredNonTheater++;
         if (verbose) console.log(`  [FILTERED] "${candidate.title}" — TT non-theater content`);
         continue;
@@ -1808,6 +1883,15 @@ async function consumeShowScoreCandidatesFile() {
       const venue = ssData?.venue || null;
       if (!venue) {
         console.log(`  [SKIP] "${candidate.title}" — no verified venue yet (ShowScore ${ssData ? 'venue is a placeholder/blob' : 'fetch failed'}), deferring to next run (card #994)`);
+        continue;
+      }
+      // Same London rule as the TodayTix-confirmed branch above: a
+      // stadium/arena/concert-hall/cabaret venue or a receiving-house tour
+      // stop rejects outright (2026 audit, BRO-4204). The aggregator
+      // promoters remain the route in for anything critics actually review.
+      if (isLondonMarket(candidate.category) && (isNonTheatreVenue(venue) || isLondonReceivingHouse(venue))) {
+        filteredNonTheater++;
+        if (verbose) console.log(`  [FILTERED] "${candidate.title}" — ShowScore venue "${venue}" is a non-theatre venue or receiving house`);
         continue;
       }
       const openingDate = ssData?.openingDate || null;
@@ -3094,6 +3178,9 @@ module.exports = {
   resolveTodayTixVenue,
   EXCLUDED_TITLES,
   NON_THEATER_PATTERNS,
+  NON_THEATRE_TITLE_RE,
+  NON_THEATRE_TODAYTIX_CATEGORIES,
+  STAGED_PRODUCTION_CATEGORIES,
   WE_EXTRA_PATTERNS,
   VENUE_PAGE_EXCLUDE_PATTERNS,
   VENUE_LISTING_PAGES,
