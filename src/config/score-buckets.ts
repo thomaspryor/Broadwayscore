@@ -221,6 +221,7 @@ export function reviewsRemainingForScore(
     : category === 'off-west-end' ? MIN_REVIEWS_FOR_SCORE_OFF_WEST_END
     : category === 'west-end' ? MIN_REVIEWS_FOR_SCORE_WEST_END
     : category === 'regional' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY
+    : category === 'tour' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY
     : MIN_REVIEWS_FOR_SCORE;
 
   // Curated historical override: only applies to Broadway (the bigger threshold)

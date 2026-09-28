@@ -11,7 +11,7 @@ import {
   MIN_REVIEWS_FOR_SCORE_OFF_WEST_END,
 } from '@/config/score-buckets';
 
-export type ShowCategory = 'broadway' | 'off-broadway' | 'west-end' | 'off-west-end' | 'regional';
+export type ShowCategory = 'broadway' | 'off-broadway' | 'west-end' | 'off-west-end' | 'regional' | 'tour';
 
 /** Returns true for both 'west-end' and 'off-west-end' — i.e., any London market. */
 export function isLondonMarket(category?: string): boolean {
@@ -47,6 +47,7 @@ export function getMarketMinReviews(category?: string): number {
     case 'off-broadway':
     case 'off-off-broadway':
     case 'regional':
+    case 'tour':
       return MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY;
     case 'off-west-end':
       return MIN_REVIEWS_FOR_SCORE_OFF_WEST_END;
@@ -108,6 +109,7 @@ export function getMarketLabel(category?: string): string {
     case 'off-west-end': return 'Off-West End';
     case 'off-broadway': return 'Off-Broadway';
     case 'regional': return 'Regional';
+    case 'tour': return 'Tour';
     default: return 'Broadway';
   }
 }

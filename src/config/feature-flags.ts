@@ -74,6 +74,10 @@ export const featureFlags = {
    *  regionalSlugAllowed + generate-search-shows.js). Enable via
    *  NEXT_PUBLIC_FEATURES=regional. */
   get regional() { return has('regional'); },
+  /** National tours of Broadway shows (category:'tour', BRO-4211). Gates the same
+   *  surfaces as `regional` plus the public/data app feed (see src/config/markets.json).
+   *  Enable via NEXT_PUBLIC_FEATURES=tour. */
+  get tour() { return has('tour'); },
   get tonyPeople() { return has('tonyPeople'); },
   get sectionJumpLinks() { return has('sectionJumpLinks'); },
   get userAccounts() { return has('userAccounts'); },

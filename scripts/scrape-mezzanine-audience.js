@@ -798,7 +798,8 @@ async function main() {
   }
 
   // Split shows by market for correct pool matching
-  const nycShows = shows.filter(s => !isLondonMarket(s.category) && s.category !== 'regional');
+  // Tours (category:'tour') play outside NYC like regional shows (BRO-4211).
+  const nycShows = shows.filter(s => !isLondonMarket(s.category) && s.category !== 'regional' && s.category !== 'tour');
   const weShows = shows.filter(s => isLondonMarket(s.category));
   const regionalShows = shows.filter(s => s.category === 'regional');
   console.log(`Matching ${nycShows.length} NYC shows + ${weShows.length} WE shows + ${regionalShows.length} regional shows against their market pools...\n`);

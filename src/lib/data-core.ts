@@ -19,6 +19,7 @@ import { getAudienceBuzz } from './data-audience';
 import { isOperaShow } from './show-market';
 import { belongsOnWestEndListing, belongsOnOffWestEndHub } from './genre';
 import { featureFlags } from '@/config/feature-flags';
+import { isCategoryEnabled } from './markets';
 import { isHomepageNotable, isAcclaimedKnownPropertyRevival, notabilityRank, NOTABILITY_THRESHOLDS, type NotabilitySignals } from './homepage-notability';
 import { getShowCommercial } from './data-commercial';
 import { getShowAwards } from './data-awards';
@@ -386,14 +387,14 @@ export function getShowById(id: string): ComputedShow | undefined {
  * Get all show slugs (for static generation)
  */
 /**
- * Regional (non-NYC US) shows are hidden from EVERY pre-rendered/indexed surface
- * (detail page static params, OG, sitemap, search index) until the `regional`
- * feature flag is on. They are a distinct category, so listing getters already
- * exclude them; this gate covers the build-time slug sets so a flag-off push can
- * never publish an orphaned, Google-indexed regional page.
+ * Flag-gated categories (regional, tour — see src/config/markets.json) are hidden
+ * from EVERY pre-rendered/indexed surface (detail page static params, OG, sitemap,
+ * search index) until their feature flag is on. They are distinct categories, so
+ * listing getters already exclude them; this gate covers the build-time slug sets
+ * so a flag-off push can never publish an orphaned, Google-indexed page.
  */
 function regionalSlugAllowed(show: any): boolean {
-  return featureFlags.regional || show.category !== 'regional';
+  return isCategoryEnabled(show.category);
 }
 
 export function getAllShowSlugs(): string[] {
