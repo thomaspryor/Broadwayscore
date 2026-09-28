@@ -611,18 +611,6 @@
     "queuedAt": "2026-09-27T22:52:37.105Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-urmetazoan-off-west-end-2026",
-    "title": "Review gap — \"The Urmetazoan\" missing 1 cited review(s)",
-    "description": "The Urmetazoan (the-urmetazoan-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-urmetazoan-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T22:52:37.109Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:tru-off-west-end-2026",
     "title": "Review gap — \"Tru\" missing 2 cited review(s)",
     "description": "Tru (tru-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tru-off-west-end-2026 --checkpoint --ingest-missing",
@@ -693,5 +681,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-28T07:00:55.262Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:la-boheme-off-broadway-2026",
+    "title": "Review gap — \"La Bohème\" missing 6 cited review(s)",
+    "description": "La Bohème (la-boheme-off-broadway-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=la-boheme-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-28T07:54:43.002Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-invention-of-love-off-broadway-2026",
+    "title": "Review gap — \"The Invention of Love\" missing 5 cited review(s)",
+    "description": "The Invention of Love (the-invention-of-love-off-broadway-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-invention-of-love-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-28T07:54:43.044Z"
   }
 ]
