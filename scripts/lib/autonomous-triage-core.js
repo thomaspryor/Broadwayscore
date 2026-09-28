@@ -235,6 +235,10 @@ const SAFE_CHECK_FORMS = [
   // strict YYYY-MM-DD token (no shell metachars, no path segments), so this
   // cannot reference or mutate anything outside data/audit/canary-*.marker.
   { re: /^node scripts\/check-canary-marker\.js --date=(\d{4}-\d{2}-\d{2})$/ },
+  // BRO-4215: acceptance for check-provider-spend.js's attribution-gap cards —
+  // read-only check of the latest provider-spend-daily.jsonl row; --provider
+  // is locked to the three known names (no path, no shell metachars).
+  { re: /^node scripts\/check-attribution-gap-clear\.js --provider=(scrapingbee|scrapingdog|brightdata)$/ },
   // Task #1713: this repo's own standard validation entry points were
   // excluded from every form above, so a card author who correctly named
   // `node scripts/validate-data.js` as the acceptance check got REFUSED

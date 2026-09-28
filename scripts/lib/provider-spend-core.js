@@ -445,7 +445,8 @@ function missingLedgerDays(records, now = new Date(), days = CONTINUITY_WINDOW_D
  * @returns {Array<{provider:string, pcts:number[]}>}
  */
 function attributionGaps(series, { min = 0.8, days = 2, providers = [] } = {}) {
-  const recent = (series || []).slice(-days);
+  const sorted = [...(series || [])].sort((a, b) => (a.day < b.day ? -1 : a.day > b.day ? 1 : 0));
+  const recent = sorted.slice(-days);
   if (recent.length < days) return [];
   for (let i = 1; i < recent.length; i++) {
     if (!isNextUtcDay(recent[i - 1].day, recent[i].day)) return [];
