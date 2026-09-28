@@ -162,7 +162,8 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
   // Get related pages info
   const relatedPages = config.relatedPages
     .map(slug => getBrowsePageConfig(slug))
-    .filter((p): p is NonNullable<typeof p> => p !== undefined);
+    // A flag-gated page (regional, tour) is a 404 while its flag is off.
+    .filter((p): p is NonNullable<typeof p> => p !== undefined && (!p.source || isCategoryEnabled(p.source)));
 
   const schemas = [breadcrumbSchema, itemListSchema, faqSchema].filter(Boolean);
 
