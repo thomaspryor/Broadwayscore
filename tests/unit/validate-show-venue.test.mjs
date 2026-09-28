@@ -750,3 +750,46 @@ test('every market keyword classifies to a market, in both bare and off- form', 
   }
   assert.equal(classifyMarketTail('').market, null, 'an empty tail names no market');
 });
+
+// ---------------------------------------------------------------------------
+// National tours (BRO-4211). A tour entry has venue "North American Tour" and
+// is the same title as its Broadway parent, so the scorer must take only the
+// tour's own Playbill page and never the Broadway, London or regional one.
+const tourShow = {
+  id: 'beetlejuice-tour-2022', title: 'Beetlejuice', venue: 'North American Tour', category: 'tour',
+};
+
+test('isExemptFromPlaybillCheck exempts roundup-promoted tours, not other tours', () => {
+  assert.equal(isExemptFromPlaybillCheck({ ...tourShow, discoverySource: 'aggregator-roundup:bww-tour-roundup' }), true);
+  assert.equal(isExemptFromPlaybillCheck({ ...tourShow, discoverySource: 'manual-user-request' }), false);
+});
+
+test('scorePlaybillUrl: a tour show accepts its tour page', () => {
+  const s = scorePlaybillUrl('https://playbill.com/production/beetlejuice-tour-2022', tourShow);
+  assert.ok(s !== null && s > 0, `expected a positive score, got ${s}`);
+});
+
+test('scorePlaybillUrl: a tour show refuses Broadway, London, regional and legacy pages of the same title', () => {
+  for (const url of [
+    'https://playbill.com/production/beetlejuice-broadway-winter-garden-theatre-2019',
+    'https://playbill.com/production/beetlejuice-london-prince-edward-theatre-2025',
+    'https://playbill.com/production/beetlejuice-regional-some-playhouse-2024',
+    'https://playbill.com/production/beetlejuice-off-broadway-some-theatre-2018',
+  ]) {
+    assert.equal(scorePlaybillUrl(url, tourShow), null, url);
+  }
+});
+
+test('scorePlaybillUrl: non-tour shows still refuse a tour page', () => {
+  const bway = { id: 'beetlejuice-2019', title: 'Beetlejuice', venue: 'Winter Garden Theatre', category: 'broadway' };
+  assert.equal(scorePlaybillUrl('https://playbill.com/production/beetlejuice-tour-2022', bway), null);
+});
+
+test('compareShow skips the venue for a tour but still checks the year', () => {
+  const parsed = { titleParse: { venue: 'Kennedy Center Opera House', year: 2022 }, dates: {}, tagLine: null };
+  const ok = compareShow(tourShow, parsed, 'https://playbill.com/production/beetlejuice-tour-2022');
+  assert.deepEqual(ok.mismatches, []);
+  const wrongYear = compareShow(tourShow, { ...parsed, titleParse: { venue: 'X', year: 2019 } },
+    'https://playbill.com/production/beetlejuice-tour-2019');
+  assert.deepEqual(wrongYear.mismatches.map(m => m.field), ['opening-year']);
+});

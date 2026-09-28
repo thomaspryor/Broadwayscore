@@ -200,6 +200,11 @@ function isExemptFromPlaybillCheck(show) {
   // Broadway transfer, not the regional run (little-bear-ridge-road-regional-2024:
   // Steppenwolf 2024 record vs Playbill's Booth 2025 transfer — main red 2026-07-10).
   if (show.category === 'regional' && src.startsWith('aggregator-roundup')) return true;
+  // Same rule for national tours (BRO-4211): a BWW tour roundup is dated,
+  // third-party proof the tour exists and reviewed, which is what this check
+  // establishes for a stub. A tour without a roundup still goes through the
+  // tour-aware Playbill match in scorePlaybillUrl.
+  if (show.category === 'tour' && src.startsWith('aggregator-roundup')) return true;
   // Free outdoor/park productions with no Playbill /production/ page at all
   // (not tracked by Playbill's commercial-production database) are exempt.
   // Without this, the SERP query in findPlaybillUrl() falls back to a
@@ -386,8 +391,14 @@ function scorePlaybillUrl(url, show) {
   // regional reject stopped firing — the guard whose absence turned CI run
   // 34000023372 red. The old substring test had matched inside those. Any
   // keyword added to the vocabulary now reaches all four gates below at once.
-  const { market: urlMarket, rest: afterMarket } = classifyMarketTail(marketTail);
-  if (urlMarket === 'regional' && show.category !== 'regional') return null;
+  const { keyword: urlKeyword, market: urlMarket, rest: afterMarket } = classifyMarketTail(marketTail);
+  // A national-tour show (BRO-4211) takes ONLY a tour URL. classifyMarketTail
+  // folds tour into 'regional', so read the keyword itself: the Broadway,
+  // London and regional pages of the same title are different productions, and
+  // a legacy URL (empty keyword) carries no tour evidence at all.
+  const isTour = show.category === 'tour';
+  if (isTour && urlKeyword.replace(/^off-/, '') !== 'tour') return null;
+  if (urlMarket === 'regional' && !isTour && show.category !== 'regional') return null;
   // Cross-market hard reject: a same-titled show can have entirely separate
   // Broadway and West End productions (different venue, cast, often
   // different score) — the +10 title-match alone must never carry a
@@ -565,13 +576,15 @@ async function findPlaybillUrl(show, log) {
   }
   const market = show.category === 'off-broadway' ? 'Off-Broadway'
     : (show.category === 'west-end' || show.category === 'off-west-end') ? 'London'
+    : show.category === 'tour' ? 'Tour'
     : 'Broadway';
   // BRO-2821: this used to be the venue's FIRST whitespace token, which is a
   // stopword for 202 of the 2,943 shows carrying a venue (6.9%) — "New World
   // Stages" -> "New", "St. James Theatre" -> "St.", "The Theater Center" ->
   // "The" — so the query carried no venue signal at all. venueSearchToken picks
   // the first distinctive token instead, and returns '' when a venue has none.
-  const venueWord = venueSearchToken(show.venue);
+  // A tour's venue is "North American Tour", which names no house to search on.
+  const venueWord = show.category === 'tour' ? '' : venueSearchToken(show.venue);
   // An empty venueWord must not leave a dangling separator: `"Title" Broadway `
   // and `"Title" ` are the same queries as their trimmed forms to a search
   // engine, but serp-cache.js keys on the query STRING, so the untrimmed
