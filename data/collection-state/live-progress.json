@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-28T19:38:29.512Z",
-  "processed": 269,
-  "failed": 431,
-  "successRate": "38.4%",
+  "updatedAt": "2026-09-28T19:44:51.856Z",
+  "processed": 64,
+  "failed": 56,
+  "successRate": "53.3%",
   "tierBreakdown": {
-    "playwright": 147,
+    "playwright": 37,
     "amp": 0,
-    "browserbase": 5,
-    "directCookies": 2,
-    "scrapingbee": 39,
-    "brightdata": 44,
+    "browserbase": 3,
+    "directCookies": 0,
+    "scrapingbee": 15,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 41
+    "archive": 10
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-09-28T18:52:19.820Z",
@@ -49,6 +49,29 @@
       "t": "2026-09-28T19:12:07.659Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-28T19:30:53.753Z",
+      "event": "bb-session",
+      "session": "d0e76d74",
+      "url": "https://www.whatsonstage.com/news/the-mousetrap-bath_1457/"
+    },
+    {
+      "t": "2026-09-28T19:31:14.467Z",
+      "event": "bb-session",
+      "session": "fed8df5b",
+      "url": "https://www.whatsonstage.com/news/the-mousetrap-bath_1457/"
+    },
+    {
+      "t": "2026-09-28T19:37:29.943Z",
+      "event": "bb-session",
+      "session": "733749a6",
+      "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-review-at-the-old-vic-londo"
+    },
+    {
+      "t": "2026-09-28T19:37:30.998Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

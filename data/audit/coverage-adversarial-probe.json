@@ -1,41 +1,51 @@
 {
-  "generatedAt": "2026-09-21T18:14:01.056Z",
+  "generatedAt": "2026-09-28T19:42:08.468Z",
   "days": 45,
   "pages": 1,
   "sample": [
-    "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
-    "my-sons-a-queer-but-what-can-you-do-west-end-2026",
-    "night-city-off-west-end-2026",
-    "anansi-the-spider-west-end-2026",
-    "golden-boy-off-west-end-2026"
+    "the-cherry-orchard-riverside-studios-off-west-end-2026",
+    "september-l-davis-the-apology-tour-off-broadway-2026",
+    "how-shakespeare-saved-my-life-off-broadway-2026",
+    "the-human-voice-the-seven-deadly-sins-west-end-2026",
+    "la-gringa-off-broadway-2026"
   ],
   "shows": [
     {
-      "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
-      "title": "The Body of Mary: A Play in Three Acts (of God)",
-      "openingDate": "2026-09-15",
+      "showId": "the-cherry-orchard-riverside-studios-off-west-end-2026",
+      "title": "The Cherry Orchard",
+      "openingDate": "2026-09-08",
       "sampleState": "measured",
-      "sampleReason": "opened 7d ago",
-      "naiveQuery": "The Body of Mary: A Play in Three Acts (of God) The Gym at Judson review",
+      "sampleReason": "opened 21d ago",
+      "naiveQuery": "The Cherry Orchard Riverside Studios review",
       "candidates": [
         {
-          "url": "https://exeuntnyc.com/reviews/review-the-body-of-mary-a-play-in-three-acts-of-god-at-the-gym-at-judson/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-the-body-of-mary-a-play-in-three-acts-of-god_1853803/",
+          "url": "https://www.thereviewshub.com/the-cherry-orchard-riverside-studios-london/",
           "state": "gap",
           "reason": null
         },
         {
-          "url": "https://nystagereview.com/2026/09/15/the-body-of-mary-a-play-in-three-acts-of-god-oh-mary-lets-laugh-about-mistreatment-of-women/",
-          "state": "live",
+          "url": "https://www.londonpubtheatres.com/review-the-cherry-orchard-at-riverside-studios-8-12-september-2026",
+          "state": "gap",
           "reason": null
         },
         {
-          "url": "https://thefrontrowcenter.com/2026/09/the-body-of-mary-a-play-in-three-acts-of-god/",
-          "state": "live",
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-the-cherry-orchard-riverside-studios",
+          "state": "excluded",
+          "reason": "aggregator-own-page"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-cherry-orchard-review-riverside-studios-london-rep-radical-classical",
+          "state": "gap",
+          "reason": null
+        },
+        {
+          "url": "https://playstosee.com/reviews/the-cherry-orchard-5/",
+          "state": "gap",
+          "reason": null
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-THE-CHERRY-ORCHARD-Riverside-Theatre-20260911",
+          "state": "gap",
           "reason": null
         }
       ],
@@ -45,171 +55,52 @@
           "raw": 10
         }
       ],
-      "onDiskCount": 7
+      "onDiskCount": 0
     },
     {
-      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
-      "title": "My Son’s A Queer (But What Can You Do?)",
-      "openingDate": "2026-09-17",
+      "showId": "september-l-davis-the-apology-tour-off-broadway-2026",
+      "title": "September L. Davis: The Apology Tour",
+      "openingDate": "2026-09-20",
       "sampleState": "measured",
-      "sampleReason": "opened 5d ago",
-      "naiveQuery": "My Son’s A Queer (But What Can You Do?) Apollo Theatre review",
+      "sampleReason": "opened 9d ago",
+      "naiveQuery": "September L. Davis: The Apology Tour Studio Seaview review",
       "candidates": [
         {
-          "url": "https://westendwilma.com/review-my-sons-a-queer-but-what-can-you-do-ambassadors-theatre/",
-          "state": "excluded",
-          "reason": "quarantined: date_implausible"
+          "url": "https://www.theatermania.com/news/ana-gasteyers-september-l-davis-to-perform-apology-tour-off-broadway_1847868/",
+          "state": "gap",
+          "reason": null
         },
         {
-          "url": "https://theatreandtonic.co.uk/blog/my-sons-a-queer-but-what-can-you-do-review",
+          "url": "https://www.newyorktheatreguide.com/theatre-news/news/ana-gasteyers-september-l-davis-the-apology-tour-to-run-off-broadway-this-fall",
+          "state": "gap",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 1
+    },
+    {
+      "showId": "how-shakespeare-saved-my-life-off-broadway-2026",
+      "title": "How Shakespeare Saved My Life",
+      "openingDate": "2026-09-27",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "naiveQuery": "How Shakespeare Saved My Life The Public Theater/Shiva Theater review",
+      "candidates": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/how-shakespeare-saved-my-life-off-broadway-review-jacob-ming-trent",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://mdtheatreguide.com/2026/06/theatre-review-how-shakespeare-saved-my-life-at-folger-theatre/",
           "state": "excluded",
           "reason": "wrongProduction"
-        },
-        {
-          "url": "https://musicaltheatrereview.com/music-review-rob-madge-my-sons-a-queer-but-what-can-you-do-cast-album/",
-          "state": "excluded",
-          "reason": "wrongProduction"
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 10
-        }
-      ],
-      "onDiskCount": 26
-    },
-    {
-      "showId": "night-city-off-west-end-2026",
-      "title": "Night City",
-      "openingDate": "2026-09-12",
-      "sampleState": "measured",
-      "sampleReason": "opened 10d ago",
-      "naiveQuery": "Night City Southwark Playhouse review",
-      "candidates": [
-        {
-          "url": "https://southwarkplayhouse.co.uk/productions/night-city/",
-          "state": "excluded",
-          "reason": "wrongShow"
-        },
-        {
-          "url": "https://lovelondonloveculture.com/2026/09/15/review-round-up-night-city-southwark-playhouse/",
-          "state": "excluded",
-          "reason": "blockedReviewUrl"
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://everything-theatre.co.uk/2026/09/review-night-city-southwark-playhouse-borough/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.pinkprincetheatre.com/post/review-night-city-southwark-playhouse",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://saltertonartsreview.com/2026/09/night-city-southwark-playhouse-borough-london/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.londonbornandbred.co.uk/post/night-city-at-southwark-playhouse",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.londontheatre1.com/reviews/night-city-southwark-playhouse-borough/",
-          "state": "live",
-          "reason": null
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 10
-        }
-      ],
-      "onDiskCount": 27
-    },
-    {
-      "showId": "anansi-the-spider-west-end-2026",
-      "title": "Anansi the Spider",
-      "openingDate": "2026-08-18",
-      "sampleState": "measured",
-      "sampleReason": "opened 35d ago",
-      "naiveQuery": "Anansi the Spider Regent's Park Open Air Theatre review",
-      "candidates": [
-        {
-          "url": "https://theatreandtonic.co.uk/blog/anansi-the-spider-regents-park-open-air-theatre-review",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/anansi-the-spider-review-regents-park-open-air-theatre",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/anansi-the-spider-review-picnic-lawn-regents-park-open-air-theatre-london",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://openairtheatreheritage.com/productions/anansi-the-spider/YUCmExEAACIAR1kx",
-          "state": "live",
-          "reason": null
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 10
-        }
-      ],
-      "onDiskCount": 19
-    },
-    {
-      "showId": "golden-boy-off-west-end-2026",
-      "title": "Golden Boy",
-      "openingDate": "2026-09-15",
-      "sampleState": "measured",
-      "sampleReason": "opened 7d ago",
-      "naiveQuery": "Golden Boy Almeida Theatre review",
-      "candidates": [
-        {
-          "url": "https://almeida.co.uk/whats-on/golden-boy/",
-          "state": "excluded",
-          "reason": "wrongProduction"
-        },
-        {
-          "url": "https://www.thereviewshub.com/golden-boy-almeida-theatre-london/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/golden-boy-review",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/golden-boy-review-josh-oconnor",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://fringereview.co.uk/review/fringereview-uk/2026/golden-boy/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://liamodell.com/2026/09/16/golden-boy-review-almeida-theatre-josh-oconnor-hayley-squires-sam-yates/",
-          "state": "live",
-          "reason": null
         }
       ],
       "queries": [
@@ -218,15 +109,71 @@
           "raw": 9
         }
       ],
-      "onDiskCount": 40
+      "onDiskCount": 18
+    },
+    {
+      "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
+      "title": "The Human Voice / The Seven Deadly Sins",
+      "openingDate": "2026-09-12",
+      "sampleState": "measured",
+      "sampleReason": "opened 17d ago",
+      "naiveQuery": "The Human Voice / The Seven Deadly Sins Charing Cross Theatre review",
+      "candidates": [
+        {
+          "url": "https://everything-theatre.co.uk/2026/09/review-the-human-voice-the-seven-deadly-sins-charing-cross-theatre/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://getthechance.wales/2026/09/18/review-the-seven-deadly-sins-the-human-voice-charing-cross-theatre-london-by-james-ellis/",
+          "state": "live",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 17
+    },
+    {
+      "showId": "la-gringa-off-broadway-2026",
+      "title": "La Gringa",
+      "openingDate": "2026-08-24",
+      "sampleState": "measured",
+      "sampleReason": "opened 36d ago",
+      "naiveQuery": "La Gringa Repertorio Español / Spanish Theatre Repertory review",
+      "candidates": [
+        {
+          "url": "https://repertorio.nyc/show/292/la-gringa",
+          "state": "gap",
+          "reason": null
+        },
+        {
+          "url": "https://www.showify.us/shows/la-gringa",
+          "state": "gap",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 1
     }
   ],
   "summary": {
     "verdict": "gaps-found",
     "measured": 5,
-    "gapCount": 1,
+    "gapCount": 9,
     "gapShows": [
-      "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026"
+      "the-cherry-orchard-riverside-studios-off-west-end-2026",
+      "september-l-davis-the-apology-tour-off-broadway-2026",
+      "la-gringa-off-broadway-2026"
     ]
   }
 }
