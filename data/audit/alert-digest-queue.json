@@ -734,5 +734,30 @@
       }
     ],
     "queuedAt": "2026-09-28T09:26:33.973Z"
+  },
+  {
+    "conditionKey": "direct-push:d476281ced81c46a2bd54ddea314192969831413",
+    "title": "Direct push to main: d476281ced by thomaspryor",
+    "description": "d476281ced reached main WITHOUT going through land.yml (no row in data/audit/landings.jsonl). Pushed by thomaspryor (committer GitHub). Head commit: fix(bww-rr-discover): match roundup slugs by whole word, not substring (#942) Direct pushes skip the delta-vs-base gates; sessions must land via scripts/merge-worktree-to-main.sh (BRO-3425). Compare: https://github.com/thomaspryor/Broadwayscore/compare/06fdf25af4c3dabfb6fbbc60f04582081fd26b04...d476281ced81c46a2bd54ddea314192969831413 Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36405916964",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "sha",
+        "value": "d476281ced81c46a2bd54ddea314192969831413"
+      },
+      {
+        "name": "actor",
+        "value": "thomaspryor"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36405916964"
+      }
+    ],
+    "queuedAt": "2026-09-28T09:57:04.821Z"
   }
 ]
