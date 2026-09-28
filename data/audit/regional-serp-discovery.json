@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-09-21T19:58:41.695Z",
+  "lastRun": "2026-09-28T21:14:03.030Z",
   "shows": [
     {
       "showId": "black-swan-regional-2026",
@@ -8,14 +8,14 @@
       "ingested": [],
       "newOutletCandidates": [
         {
-          "url": "https://www.facebook.com/globe/posts/don-aucoin-review-the-black-swan-stage-adaptation-now-premiering-at-the-american/1431057752389835/",
-          "domain": "facebook.com",
-          "title": "Don Aucoin review: The \"Black Swan\" stage adaptation, now ..."
-        },
-        {
           "url": "https://www.reddit.com/r/Broadway/comments/1toslqf/dave_malloy_sonya_tayehs_black_swan_first_preview/",
           "domain": "reddit.com",
           "title": "Dave Malloy & Sonya Tayeh's Black Swan first preview thoughts"
+        },
+        {
+          "url": "https://www.facebook.com/globe/posts/don-aucoin-review-the-black-swan-stage-adaptation-now-premiering-at-the-american/1431057752389835/",
+          "domain": "facebook.com",
+          "title": "Don Aucoin review: The \"Black Swan\" stage adaptation, now ..."
         },
         {
           "url": "https://americanrepertorytheater.org/shows-events/black-swan/",
@@ -23,9 +23,9 @@
           "title": "Black Swan | A.R.T. - American Repertory Theater"
         }
       ],
-      "skippedExisting": 6,
+      "skippedExisting": 7,
       "skippedUnregistered": 3,
-      "skippedNotReview": 1
+      "skippedNotReview": 0
     },
     {
       "showId": "wonder-regional-2026",
@@ -34,9 +34,9 @@
       "ingested": [],
       "newOutletCandidates": [
         {
-          "url": "https://cambridgeusa.org/event/wonder-the-musical-2/",
-          "domain": "cambridgeusa.org",
-          "title": "Wonder: The Musical - Cambridge Office for Tourism"
+          "url": "https://americanrepertorytheater.org/shows-events/wonder/",
+          "domain": "americanrepertorytheater.org",
+          "title": "Wonder | A.R.T. - American Repertory Theater"
         },
         {
           "url": "https://onbostonstages.blog/2025/12/30/arts-musical-wonder-is-promising-but-imperfect/",
@@ -44,24 +44,19 @@
           "title": "ART's musical 'Wonder' is promising, but imperfect | onbostonstages"
         },
         {
-          "url": "https://www.boston-theater.com/shows/american_repertory_theater/wonder",
-          "domain": "boston-theater.com",
-          "title": "Wonder - Boston Theater"
+          "url": "https://cambridgeusa.org/event/wonder-the-musical-2/",
+          "domain": "cambridgeusa.org",
+          "title": "Wonder: The Musical - Cambridge Office for Tourism"
         },
         {
-          "url": "https://www.reddit.com/r/Broadway/comments/1pj40hi/wonder_first_preview/",
-          "domain": "reddit.com",
-          "title": "Wonder first preview : r/Broadway - Reddit"
-        },
-        {
-          "url": "https://americanrepertorytheater.org/shows-events/wonder/",
-          "domain": "americanrepertorytheater.org",
-          "title": "Wonder | A.R.T. - American Repertory Theater"
+          "url": "https://www.thecrimson.com/article/2025/12/31/wonder-american-repertory-theater-musical-review/",
+          "domain": "thecrimson.com",
+          "title": "'Wonder' Review: A Show to 'Change the Way We See'"
         }
       ],
-      "skippedExisting": 4,
-      "skippedUnregistered": 5,
-      "skippedNotReview": 1
+      "skippedExisting": 6,
+      "skippedUnregistered": 4,
+      "skippedNotReview": 0
     },
     {
       "showId": "crazysexycool-regional-2026",
@@ -95,9 +90,9 @@
           "title": "Thoughts on “Iceboy!” at the Goodman Theatre - louharry.com"
         }
       ],
-      "skippedExisting": 3,
+      "skippedExisting": 4,
       "skippedUnregistered": 3,
-      "skippedNotReview": 4
+      "skippedNotReview": 3
     },
     {
       "showId": "dolly-a-true-original-musical-regional-2025",
@@ -121,41 +116,16 @@
       "skippedNotReview": 5
     },
     {
-      "showId": "42-balloons-regional-2025",
-      "query": "\"42 Balloons\" review Chicago",
-      "candidates": 10,
-      "ingested": [],
-      "newOutletCandidates": [
-        {
-          "url": "https://www.reddit.com/r/Broadway/comments/1kysi60/42_balloons_musical_at_chicago_shakespeare/",
-          "domain": "reddit.com",
-          "title": "42 Balloons musical at Chicago Shakespeare : r/Broadway - Reddit"
-        },
-        {
-          "url": "https://broadwayscorecard.com/show/42-balloons-regional-2025",
-          "domain": "broadwayscorecard.com",
-          "title": "42 Balloons Reviews — Positive 77/100 | Broadway Scorecard"
-        },
-        {
-          "url": "https://www.chi-mt.com/reviews/chicago-shakes-42-balloons-theo-diana-bic-porchlight-titanique-jun-25",
-          "domain": "chi-mt.com",
-          "title": "Reviews: \"42 Balloons”; “Diana”; “and “Titanique” — Chi-MT.com"
-        },
-        {
-          "url": "https://en.wikipedia.org/wiki/42_Balloons",
-          "domain": "en.wikipedia.org",
-          "title": "42 Balloons - Wikipedia"
-        }
-      ],
-      "skippedExisting": 2,
-      "skippedUnregistered": 4,
-      "skippedNotReview": 4
-    },
-    {
       "showId": "elephant-shoes-regional-2026",
       "query": "\"Elephant Shoes\" review Red Bank",
       "candidates": 10,
-      "ingested": [],
+      "ingested": [
+        {
+          "url": "https://www.broadwayworld.com/new-jersey/regional/Elephant-Shoes-4353732",
+          "outletId": "broadwayworld",
+          "action": "new"
+        }
+      ],
       "newOutletCandidates": [
         {
           "url": "https://www.facebook.com/jay.lustig1/posts/my-review-of-elephant-shoes-which-is-currently-being-presented-at-two-river-thea/10161100960184649/",
@@ -199,9 +169,9 @@
           "title": "Review of The Family Album musical at La Jolla Playhouse"
         },
         {
-          "url": "https://broadwayscorecard.com/show/the-family-album-regional-2026",
-          "domain": "broadwayscorecard.com",
-          "title": "The Family Album Reviews — Rave 85/100 | Broadway Scorecard"
+          "url": "https://highschool.latimes.com/arts-and-entertainment/the-family-album-brings-asian-american-stories-to-the-stage/",
+          "domain": "highschool.latimes.com",
+          "title": "The Family Album brings Asian American stories to the stage"
         }
       ],
       "skippedExisting": 4,
@@ -215,31 +185,25 @@
       "ingested": [],
       "newOutletCandidates": [
         {
+          "url": "https://www.westeros.org/Features/Entry/Review_Game_of_Thrones_The_Mad_King",
+          "domain": "westeros.org",
+          "title": "Features - Review: Game of Thrones: The Mad King - Westeros.org"
+        },
+        {
           "url": "https://www.reddit.com/r/gameofthrones/comments/1vlbr65/review_the_mad_king_play_is_a_spectacle_for/",
           "domain": "reddit.com",
           "title": "The Mad King play is a spectacle for diehard Game of Thrones fans"
-        },
-        {
-          "url": "https://www.westeros.org/Features/Entry/Review_Game_of_Thrones_The_Mad_King",
-          "domain": "westeros.org",
-          "title": "Features - Review: Game of Thrones: The Mad King - Westeros"
         }
       ],
-      "skippedExisting": 1,
+      "skippedExisting": 3,
       "skippedUnregistered": 2,
-      "skippedNotReview": 5
+      "skippedNotReview": 3
     },
     {
       "showId": "starstruck-regional-2026",
       "query": "\"Starstruck\" review New Hope",
       "candidates": 10,
-      "ingested": [
-        {
-          "url": "https://t2conline.com/a-trendy-cyrano-world-premiere-of-starstruck/",
-          "outletId": "times-square-chronicles",
-          "action": "new"
-        }
-      ],
+      "ingested": [],
       "newOutletCandidates": [
         {
           "url": "https://whyy.org/articles/starstruck-bucks-county-playhouse-emily-saliers-indigo-girls/",
@@ -254,7 +218,7 @@
       ],
       "skippedExisting": 2,
       "skippedUnregistered": 2,
-      "skippedNotReview": 5
+      "skippedNotReview": 6
     },
     {
       "showId": "paranormal-activity-chicago-regional-2025",
@@ -263,14 +227,14 @@
       "ingested": [],
       "newOutletCandidates": [
         {
-          "url": "https://rachelweinbergreviews.com/2025/10/17/review-paranormal-activity-at-chicago-shakespeare-theater/",
-          "domain": "rachelweinbergreviews.com",
-          "title": "Review: PARANORMAL ACTIVITY Stage Play at Chicago ..."
-        },
-        {
           "url": "https://www.reddit.com/r/ChicagoTheater/comments/1o1sdww/paranormal_activity_at_chicago_shakes/",
           "domain": "reddit.com",
           "title": "Paranormal Activity at Chicago Shakes : r/ChicagoTheater - Reddit"
+        },
+        {
+          "url": "https://rachelweinbergreviews.com/2025/10/17/review-paranormal-activity-at-chicago-shakespeare-theater/",
+          "domain": "rachelweinbergreviews.com",
+          "title": "Review: PARANORMAL ACTIVITY Stage Play at Chicago ..."
         },
         {
           "url": "https://www.facebook.com/ChicagoShakes/posts/-out-of-4-for-paranormal-activity-from-chicago-sun-times-carries-enough-connecti/1214096580750346/",
@@ -307,10 +271,15 @@
           "url": "https://www.reddit.com/r/horror/comments/1pegbl2/paranormal_activity_play_in_la/",
           "domain": "reddit.com",
           "title": "Paranormal Activity Play in LA : r/horror - Reddit"
+        },
+        {
+          "url": "https://www.los-angeles-theatre.com/shows/ahmanson-theater/paranormal-activity",
+          "domain": "los-angeles-theatre.com",
+          "title": "Paranormal Activity · Ahmanson Theater Los Angeles, CA"
         }
       ],
-      "skippedExisting": 5,
-      "skippedUnregistered": 3,
+      "skippedExisting": 4,
+      "skippedUnregistered": 4,
       "skippedNotReview": 2
     },
     {
@@ -320,19 +289,24 @@
       "ingested": [],
       "newOutletCandidates": [
         {
+          "url": "https://www.reddit.com/r/Broadway/comments/1qtfan7/paranormal_activity_pocket_review/",
+          "domain": "reddit.com",
+          "title": "Paranormal Activity pocket review : r/Broadway - Reddit"
+        },
+        {
           "url": "https://kpfa.org/area941/episode/review-paranormal-activity-at-act-toni-rembe-theatre/",
           "domain": "kpfa.org",
           "title": "Review: \"Paranormal Activity\" at ACT Toni Rembe Theatre | KPFA"
         },
         {
-          "url": "https://www.reddit.com/r/Broadway/comments/1qtfan7/paranormal_activity_pocket_review/",
-          "domain": "reddit.com",
-          "title": "Paranormal Activity pocket review : r/Broadway - Reddit"
+          "url": "https://www.shakespearetheatre.org/events/paranormal-activity-25-26/",
+          "domain": "shakespearetheatre.org",
+          "title": "Paranormal Activity 25-26 - Shakespeare Theatre Company"
         }
       ],
-      "skippedExisting": 4,
-      "skippedUnregistered": 2,
-      "skippedNotReview": 4
+      "skippedExisting": 5,
+      "skippedUnregistered": 3,
+      "skippedNotReview": 2
     },
     {
       "showId": "paranormal-activity-sf-regional-2026",
@@ -356,21 +330,15 @@
           "title": "Reviews are in — Paranormal Activity is a hit! We've added one ..."
         }
       ],
-      "skippedExisting": 4,
+      "skippedExisting": 3,
       "skippedUnregistered": 3,
-      "skippedNotReview": 3
+      "skippedNotReview": 4
     },
     {
       "showId": "paranormal-activity-boston-regional-2026",
       "query": "\"Paranormal Activity\" review Boston",
       "candidates": 10,
-      "ingested": [
-        {
-          "url": "https://www.theatermirror.net/paranormal-activity-a-thrilling-and-terrifying-ride/",
-          "outletId": "theater-mirror",
-          "action": "new"
-        }
-      ],
+      "ingested": [],
       "newOutletCandidates": [
         {
           "url": "https://www.reddit.com/r/Broadway/comments/1v0q0md/saw_paranormal_activity_in_boston_last_night/",
@@ -386,11 +354,16 @@
           "url": "https://citylivingboston.com/2026/07/17/paranormal-activity-in-boston-then-we-take-manhattan/",
           "domain": "citylivingboston.com",
           "title": "Paranormal Activity in Boston: Then, We Take Manhattan"
+        },
+        {
+          "url": "https://joyceschoices.com/theater-paranormal-activity/",
+          "domain": "joyceschoices.com",
+          "title": "THEATER: PARANORMAL ACTIVITY - Joyce's Choices"
         }
       ],
-      "skippedExisting": 2,
-      "skippedUnregistered": 3,
-      "skippedNotReview": 4
+      "skippedExisting": 3,
+      "skippedUnregistered": 4,
+      "skippedNotReview": 3
     },
     {
       "showId": "paranormal-activity-national-tour-regional-2025",
@@ -404,19 +377,14 @@
           "title": "Paranormal Activity | American Conservatory Theater"
         },
         {
-          "url": "https://www.facebook.com/SFChronicle/posts/the-stage-adaptation-of-paranormal-activity-at-san-franciscos-act-delivers-visce/1527935376044534/",
-          "domain": "facebook.com",
-          "title": "The stage adaptation of “Paranormal Activity” at San Francisco's ..."
-        },
-        {
           "url": "https://kpfa.org/area941/episode/review-paranormal-activity-at-act-toni-rembe-theatre/",
           "domain": "kpfa.org",
           "title": "Review: \"Paranormal Activity\" at ACT Toni Rembe Theatre | KPFA"
         }
       ],
       "skippedExisting": 0,
-      "skippedUnregistered": 3,
-      "skippedNotReview": 5
+      "skippedUnregistered": 2,
+      "skippedNotReview": 7
     },
     {
       "showId": "bull-durham-paper-mill-regional-2025",
@@ -432,13 +400,7 @@
       "showId": "working-girl-la-jolla-regional-2025",
       "query": "\"Working Girl\" review La Jolla",
       "candidates": 10,
-      "ingested": [
-        {
-          "url": "https://www.sdjewishworld.com/2025/11/23/working-girl-takes-audience-back-to-the-80s/",
-          "outletId": "san-diego-jewish-world",
-          "action": "new"
-        }
-      ],
+      "ingested": [],
       "newOutletCandidates": [
         {
           "url": "https://www.reddit.com/r/Broadway/comments/1osm9ho/working_girl_in_la_jolla_is_a_blast/",
@@ -451,6 +413,11 @@
           "title": "Working Girl - La Jolla - BWW Forum"
         },
         {
+          "url": "https://www.latheatrix.com/post/review-la-jolla-playhouse-s-world-premiere-working-girl-is-well-timed-for-broadway",
+          "domain": "latheatrix.com",
+          "title": "La Jolla Playhouse's world-premiere 'Working Girl' is well-timed for ..."
+        },
+        {
           "url": "https://www.facebook.com/RollingStone/posts/the-working-girl-musical-gets-a-remake-thanks-to-lyrical-maestro-cyndi-lauper-an/1208944287760302/",
           "domain": "facebook.com",
           "title": "The 'Working Girl' musical gets a remake thanks to lyrical maestro ..."
@@ -461,9 +428,9 @@
           "title": "Working Girl - San Diego Theater"
         }
       ],
-      "skippedExisting": 4,
-      "skippedUnregistered": 4,
-      "skippedNotReview": 1
+      "skippedExisting": 5,
+      "skippedUnregistered": 5,
+      "skippedNotReview": 0
     },
     {
       "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
@@ -471,8 +438,8 @@
       "candidates": 10,
       "ingested": [
         {
-          "url": "https://www.wbur.org/news/2026/08/25/american-repertory-theater-rhinoceros-review",
-          "outletId": "wbur",
+          "url": "https://www.broadwayworld.com/boston/article/Review-A-Breath-taking-RHINOCEROS-at-American-Repertory-Theater-20260824",
+          "outletId": "broadwayworld",
           "action": "new"
         }
       ],
