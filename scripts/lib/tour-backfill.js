@@ -16,6 +16,8 @@
  * - Most files carry no publishDate, so a launch-date cut cannot be the main rule.
  */
 
+const { isLikelyTourReview } = require('./review-guards');
+
 const TOUR_REASON_RE = /\btour(?:ing)?\b|national-tour|BWW regional\/tour/i;
 // Pre-Broadway tryouts are their own production (regional), not the post-Broadway tour.
 const TRYOUT_RE = /pre-Broadway|\btryout\b|out-of-town|world premiere/i;
@@ -58,6 +60,17 @@ function classifyTourBackfill(data, ctx = {}) {
   if (data.routedFromShowId) return { action: 'skip', reason: 'already-routed' };
   const why = reasonText(data);
   if (!TOUR_REASON_RE.test(why)) return { action: 'skip', reason: 'flag-not-tour' };
+  // The contamination safety net's generic "Tour/regional/pre-Broadway" label
+  // names three productions at once, so it is not tour evidence on its own
+  // (BRO-4262 pre-mortem: it would route regional stock and sit-down reviews
+  // into a tour). Needs a tour-specific reason, a tour-stop URL, or tour
+  // language in the text.
+  const whySpecific = why.replace(/Tour\/regional\/pre-Broadway(?: production)?/gi, '');
+  const textHead = String(data.fullText || data.wrongFullText || '').slice(0, 3000);
+  const tourEvidence = TOUR_REASON_RE.test(whySpecific)
+    || isLikelyTourReview(data.url, data.showId)
+    || /\b(national tour|north american tour|touring (?:production|company|cast))\b/i.test(textHead);
+  if (!tourEvidence) return { action: 'skip', reason: 'no-tour-evidence' };
   if (data.isNonReview === true || data.isRoundupArticle === true) return { action: 'skip', reason: 'non-review' };
   if (data.duplicateOf || data.duplicateTextOf) return { action: 'skip', reason: 'duplicate' };
   if (data.wrongShow === true) return { action: 'skip', reason: 'wrong-show' };
@@ -213,4 +226,21 @@ function decideTourSweep(plan, listFiles) {
   return rows;
 }
 
-module.exports = { classifyTourBackfill, prepareTourMove, planTourSweep, decideTourSweep, BROADWAY_RELATIVE_FIELDS };
+/**
+ * Hard stop for the scheduled sweep (BRO-4262): a mop-up should move a handful
+ * of files. More than maxMoves for one tour, or more than maxShare of any one
+ * Broadway folder, means intake or a rule broke, so nothing moves.
+ * @param {Array<{fromId}>} pending rows keyed 'tour-review'
+ * @param {(id:string)=>number} folderSize files in a Broadway folder
+ * @returns {string|null} why the tour is held, or null to proceed
+ */
+function sweepHoldReason(pending, fromIds, folderSize, { maxMoves = 20, maxShare = 0.10 } = {}) {
+  if (pending.length > maxMoves) return `${pending.length} moves > cap ${maxMoves}`;
+  for (const id of fromIds) {
+    const n = pending.filter(r => r.fromId === id).length;
+    if (n > 0 && n > maxShare * Math.max(1, folderSize(id))) return `${n} of ${folderSize(id)} files in ${id} (> ${Math.round(maxShare * 100)}%)`;
+  }
+  return null;
+}
+
+module.exports = { sweepHoldReason, classifyTourBackfill, prepareTourMove, planTourSweep, decideTourSweep, BROADWAY_RELATIVE_FIELDS };

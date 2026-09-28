@@ -34,9 +34,13 @@ test('pre-Broadway tryouts and UK productions are not the North American tour', 
 
 // Four A Beautiful Noise tour-stop reviews (Houston, Minneapolis, Cleveland, Revue)
 // carried only this generic label; it must not read as tryout evidence.
-test('the generic "Tour/regional/pre-Broadway production" label is not tryout evidence', () => {
-  const d = { ...tourFlag, wrongProductionReason: 'Tour/regional/pre-Broadway production, not Broadway. Flagged by contamination safety net' };
-  assert.equal(classifyTourBackfill(d).action, 'move');
+test('the generic "Tour/regional/pre-Broadway production" label is neither tryout nor tour evidence (BRO-4262)', () => {
+  const generic = { ...tourFlag, showId: 'shucked-2023', wrongProductionReason: 'Tour/regional/pre-Broadway production, not Broadway. Flagged by contamination safety net' };
+  // On its own it could be a regional stock or sit-down production: stays put.
+  assert.equal(classifyTourBackfill(generic).reason, 'no-tour-evidence');
+  // With a tour-stop URL or tour language in the text it moves, and is not read as a tryout.
+  assert.equal(classifyTourBackfill({ ...generic, url: 'https://www.broadwayworld.com/denver/article/Review-SHUCKED-at-Buell' }).action, 'move');
+  assert.equal(classifyTourBackfill({ ...generic, fullText: 'The national tour of Shucked arrived at the Fox.' }).action, 'move');
 });
 
 test('dated reviews before the Broadway opening or the tour launch stay put', () => {
@@ -149,4 +153,12 @@ test('decideTourSweep: one move per review URL across Broadway folders; filename
     'bj-2022/post--a.json:target-collision',
     'bj-2025/gazette--unknown.json:duplicate-on-tour',
   ]);
+});
+
+test('scheduled sweep holds a flood instead of moving it (BRO-4262)', async () => {
+  const { sweepHoldReason } = await import('../../scripts/lib/tour-backfill.js').then(m => m.default || m);
+  const rows = n => Array.from({ length: n }, () => ({ fromId: 'wicked-2003' }));
+  assert.equal(sweepHoldReason(rows(3), ['wicked-2003'], () => 400), null);
+  assert.match(sweepHoldReason(rows(21), ['wicked-2003'], () => 400), /cap 20/);
+  assert.match(sweepHoldReason(rows(5), ['wicked-2003'], () => 30), /> 10%/);
 });
