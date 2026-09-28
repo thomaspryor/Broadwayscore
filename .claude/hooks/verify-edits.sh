@@ -399,14 +399,19 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         # to satisfy the blocker regex below; three iOS sessions in one day
         # parked finished work that way. Merge-asks only: "waiting on your
         # decision" / DECISION NEEDED stay legitimate.
+        # Addressed-to-you forms only: "the owner ... merge" reads as a
+        # description of the rule ("never ask the owner to merge") and false-
+        # positived on the very session that shipped this gate. Quoted and
+        # backticked spans are dropped too, so citing the phrase is safe.
         _owner_merge_re = re.compile(
-            r"\b(your|the owner'?s?)\s+(merge|to merge)\b|\bfor you to merge\b"
-            r"|\bready (for you )?to merge\b|\bwaiting on (your|the owner'?s?) merge\b"
+            r"\byour\s+(merge|to merge)\b|\bfor you to merge\b"
+            r"|\bready (for you )?to merge\b|\bwaiting on your merge\b"
             r"|\bonce you merge\b|\bafter you merge\b|\bmerge it when\b",
             re.IGNORECASE,
         )
+        _owner_scan = re.sub(r'`[^`\n]*`|"[^"\n]*"|\u201c[^\u201d\n]*\u201d', '', _stripped_owner)
         if (_msg_ok and (_opened_pr or _landed_pushed) and not _merged_pr
-                and _owner_merge_re.search(_stripped_owner)):
+                and _owner_merge_re.search(_owner_scan)):
             print("OWNERMERGE")
             sys.exit(0)
         # A land/** push is follow-through, but not proof it landed (land.yml
