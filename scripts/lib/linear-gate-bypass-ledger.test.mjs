@@ -73,3 +73,33 @@ test('readBypassRows tolerates a torn line without losing the well-formed rows a
     ['BRO-6', 'BRO-8']
   );
 });
+
+// BRO-4241: cloud sessions skip the tracked file (it re-tripped the Stop
+// hooks in a loop) and record the bypass on the Linear issue instead.
+test('shouldWriteLedgerFile: false only in a cloud session', () => {
+  const { shouldWriteLedgerFile } = require('./linear-gate-bypass-ledger.js');
+  assert.equal(shouldWriteLedgerFile({ CLAUDE_CODE_REMOTE: 'true' }), false);
+  assert.equal(shouldWriteLedgerFile({}), true);
+  assert.equal(shouldWriteLedgerFile({ CLAUDE_CODE_REMOTE: 'false' }), true);
+});
+
+test('appendBypassRow: cloud session never touches the default ledger; explicit paths still write', () => {
+  const { appendBypassRow, DEFAULT_LEDGER } = require('./linear-gate-bypass-ledger.js');
+  const before = fs.existsSync(DEFAULT_LEDGER) ? fs.readFileSync(DEFAULT_LEDGER, 'utf8') : null;
+  const res = appendBypassRow({ identifier: 'BRO-0', mechanism: 'force', reason: 'x'.repeat(12) }, DEFAULT_LEDGER, { CLAUDE_CODE_REMOTE: 'true' });
+  assert.deepEqual(res, { written: false, reason: 'cloud-session' });
+  const after = fs.existsSync(DEFAULT_LEDGER) ? fs.readFileSync(DEFAULT_LEDGER, 'utf8') : null;
+  assert.equal(after, before);
+  const tmp = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'bypass-')), 'l.jsonl');
+  appendBypassRow({ identifier: 'BRO-1', mechanism: 'force', reason: 'y'.repeat(12) }, tmp, { CLAUDE_CODE_REMOTE: 'true' });
+  assert.equal(fs.readFileSync(tmp, 'utf8').trim().split('\n').length, 1);
+});
+
+test('bypassCommentLine: one greppable line', () => {
+  const { bypassCommentLine } = require('./linear-gate-bypass-ledger.js');
+  assert.equal(
+    bypassCommentLine({ mechanism: 'force', reason: 'Verified live;\n shallow clone', targetState: 'Done' }),
+    'DONE-GATE-BYPASS: mechanism=force target=Done reason=Verified live; shallow clone',
+  );
+  assert.equal(bypassCommentLine({ mechanism: 'env-disabled', targetState: 'Done' }), 'DONE-GATE-BYPASS: mechanism=env-disabled target=Done');
+});

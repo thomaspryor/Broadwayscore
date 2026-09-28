@@ -45,6 +45,8 @@ const DEFAULT_REPO = path.join(__dirname, '..', '..');
 // Per-git-call ceiling. Generous enough for a cold fetch on a large repo,
 // short enough that a synchronous caller can promise a bound.
 const GIT_TIMEOUT_MS = 120000;
+// A depth-1 clone of this repo took ~30s from a cloud session (BRO-4241).
+const CLONE_TIMEOUT_MS = 300000;
 
 // node_modules/gitignored-core-data live at the MAIN checkout, not a git
 // WORKTREE (every code session in this repo runs from one, CLAUDE.md makes
@@ -91,8 +93,19 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', 
   // runs, and an unbounded `fetch`/`worktree add` can wait forever on a
   // contended lock or a stalled remote — a hang is worse than a failure,
   // because a failure fails OPEN and a hang does not (Codex ship-check P0).
-  // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-  execFileSync('git', ['fetch', ...depthArgs, 'origin', 'main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+  try {
+    // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
+    execFileSync('git', ['fetch', ...depthArgs, 'origin', 'main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+  } catch (err) {
+    // BRO-4241: cloud clones can't deepen (`fatal: error in object: unshallow
+    // <sha>`), which made every VERIFY command unverifiable there. When the
+    // caller only needs "origin/main now", clone its tip into a SEPARATE temp
+    // repo. Never fall back to `fetch --depth=1` in `repo` itself: that
+    // rewrites .git/shallow, orphans local main from origin/main and breaks
+    // later rebases and ancestry checks (see shallow-fetch-args.js).
+    if (!shouldCloneAfterFetchFailure(err, pinnedSha)) throw err;
+    return makeStandaloneCheckout({ repo, prefix });
+  }
   // Pin to the SHA we just fetched, not the moving ref: between this fetch and
   // the worktree add, a parallel session's push can advance origin/main, and
   // the card would then be judged against a commit that landed after it
@@ -132,9 +145,50 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', 
   return { dir, wt, repo, sha, prepared };
 }
 
+/**
+ * BRO-4241: fall back to a standalone clone ONLY for the shallow-clone
+ * "can't deepen" failure. A timeout, lock contention or an offline host keeps
+ * failing fast as before: a 5-minute clone on every ordinary fetch hiccup
+ * would stall synchronous close-time callers (Codex-style review finding).
+ * Never when the caller pinned a sha (the merge-gate baseline needs that
+ * exact commit, which a depth-1 clone of main may not contain).
+ */
+function shouldCloneAfterFetchFailure(err, pinnedSha) {
+  if (pinnedSha) return false;
+  if (!err || err.signal) return false; // killed by our own timeout
+  const text = `${err.stderr || ''} ${err.message || ''}`;
+  return /unshallow|error in object/i.test(text);
+}
+
+/**
+ * Depth-1 clone of origin/main into its own temp repo (BRO-4241). Used only
+ * when the in-repo fetch fails; the caller's repo and object store are never
+ * touched. Same return shape as makeFreshCheckout plus `standalone: true`,
+ * which tells removeCheckout to delete the directory instead of a worktree.
+ */
+function makeStandaloneCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-' } = {}) {
+  const url = execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim();
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
+  const wt = path.join(dir, 'main');
+  try {
+    execFileSync('git', ['clone', '--quiet', '--depth', '1', '--single-branch', '-b', 'main', url, wt], { timeout: CLONE_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+    prepareCheckWorkdir(wt, repo);
+  } catch (err) {
+    try { fs.rmSync(dir, { recursive: true, force: true }); } catch { /* best effort */ }
+    throw err;
+  }
+  const sha = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: wt, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim();
+  const prepared = fs.existsSync(path.join(wt, 'node_modules'));
+  return { dir, wt, repo, sha, prepared, standalone: true };
+}
+
 /** Best effort: a leftover worktree is picked up by `git worktree prune`. */
 function removeCheckout(co) {
   if (!co) return;
+  if (co.standalone) {
+    try { fs.rmSync(co.dir, { recursive: true, force: true }); } catch { /* best effort */ }
+    return;
+  }
   const repo = co.repo || DEFAULT_REPO;
   try { execFileSync('git', ['worktree', 'remove', '--force', co.wt], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] }); }
   catch { /* leave for git worktree prune */ }
@@ -220,4 +274,4 @@ function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS, prepa
   return { status: 'fail', detail: last };
 }
 
-module.exports = { makeFreshCheckout, removeCheckout, runVerify, DEFAULT_REPO, CHECK_TIMEOUT_MS };
+module.exports = { makeFreshCheckout, removeCheckout, runVerify, shouldCloneAfterFetchFailure, DEFAULT_REPO, CHECK_TIMEOUT_MS };

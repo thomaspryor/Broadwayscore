@@ -199,6 +199,8 @@ test('the Done gate --force bypass logs a "force" row with the reason', () => {
         getIssue: async () => issue,
         getTeam: async () => ({ states: ${JSON.stringify(TEAM_STATES)} }),
         appendBypassRow: (row) => { console.error('BYPASS_ROW ' + JSON.stringify(row)); },
+        // BRO-4241: a bypass is also recorded as a comment on the issue.
+        createComment: async (id, body) => { console.error('CREATE_COMMENT_CALLED ' + JSON.stringify(body)); },
         updateIssue: async () => { console.error('UPDATE_ISSUE_CALLED'); },
       });
     `,
@@ -210,5 +212,6 @@ test('the Done gate --force bypass logs a "force" row with the reason', () => {
   assert.equal(row.gate, 'done');
   assert.equal(row.mechanism, 'force');
   assert.equal(row.reason, 'manually verified in production');
+  assert.match(res.stderr, /CREATE_COMMENT_CALLED "DONE-GATE-BYPASS: mechanism=force target=Done reason=manually verified in production"/);
   assert.equal(row.identifier, 'BRO-9435');
 });
