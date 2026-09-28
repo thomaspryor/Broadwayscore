@@ -1,45 +1,11 @@
 {
-  "generatedAt": "2026-09-27T22:52:58.653Z",
+  "generatedAt": "2026-09-28T01:29:47.035Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 151,
-  "clean": 149,
-  "defective": 2,
-  "byType": {
-    "score-drift": 1,
-    "unreachable": 1
-  },
-  "shows": [
-    {
-      "showId": "gimme-a-sign-off-broadway-2026",
-      "title": "Gimme a Sign!",
-      "openingDate": "2026-09-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null
-    },
-    {
-      "showId": "deep-heat-rivalry-off-west-end-2026",
-      "title": "Deep Heat Rivalry",
-      "openingDate": "2026-09-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 82.78 vs local 82.59 (Δ0.19)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 11,
-      "deployedCount": 12
-    }
-  ]
+  "clean": 151,
+  "defective": 0,
+  "byType": {},
+  "shows": []
 }

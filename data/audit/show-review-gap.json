@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-09-27T22:52:36.905Z",
+  "generatedAt": "2026-09-28T01:29:33.709Z",
   "windowDays": 1095,
-  "targets": 218,
-  "auditedThisRun": 11,
+  "targets": 215,
+  "auditedThisRun": 16,
   "carriedForward": 559,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 306,
-    "missingCurrentRun": 387,
+    "withGap": 310,
+    "missingCurrentRun": 406,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 798,
-    "totalRecoverable": 6,
-    "totalRecovered": 10,
+    "totalFlaggedMisses": 796,
+    "totalRecoverable": 5,
+    "totalRecovered": 9,
     "priorProductionCitations": 2570
   },
   "results": [
@@ -5417,36 +5417,140 @@
       "showId": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
       "title": "ANON – a tempest at our kitchen table",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"ANON – a tempest at our kitchen table\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"ANON – a tempest at our kitchen table\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"ANON – a tempest at our kitchen table\" review newman",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "ANON – a tempest at our kitchen table The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "ANON – a tempest at our kitchen table The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "ANON – a tempest at our kitchen table The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 28,
+        "byReason": {
+          "non-review-host": 8,
+          "aggregator-internal-nav": 7,
+          "ticketing-reseller": 8,
+          "ticketing-listing": 3,
+          "venue-production-page": 2
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.theatermania.com/news/jeremy-shamos-to-star-in-anne-washburns-anon-a-tempest-at-our-kitchen-table_1850305/",
+            "outletId": "theatermania",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          }
+        ],
+        "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-09-22T00:36:35.717Z"
+      "computedAt": "2026-09-28T01:29:33.709Z"
     },
     {
       "showId": "anonymous-off-broadway-2026",
@@ -16672,7 +16776,12 @@
         "liveCount": 0,
         "candidateCount": 9
       },
-      "computedAt": "2026-08-30T07:41:12.140Z"
+      "computedAt": "2026-08-30T07:41:12.140Z",
+      "quarantine": {
+        "nextState": "incomplete:0:6",
+        "since": "2026-09-28T01:29:33.759Z",
+        "lastAt": "2026-09-28T01:29:33.759Z"
+      }
     },
     {
       "showId": "bull-durham-paper-mill-regional-2025",
@@ -24174,19 +24283,19 @@
         "http://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/",
         "https://www.wsj.com/articles/cosi-fan-tutte-review-a-carnival-of-deception-1521485960",
         "https://observer.com/2018/03/opera-review-met-cosi-fan-tutte-by-phelim-mcdermott-is-a-disaster/",
+        "https://operawire.com/metropolitan-opera-2026-27-review-cosi-fan-tutte/",
         "https://innewcastle.co.uk/review-the-glasshouse-international-centre-for-music-reopens-sage-one-with-mozarts-cosi-fan-tutti/",
         "https://www.nytimes.com/2026/09/23/nyregion/snake-metropolitan-opera-cosi-fan-tutte.html",
-        "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/",
         "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178",
         "https://www.operabase.com/productions/cosi-fan-tutte-671121/en",
+        "https://letterboxd.com/film/the-metropolitan-opera-cosi-fan-tutte/reviews/",
+        "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera",
         "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
-        "https://www.rottentomatoes.com/m/the_metropolitan_opera_cosi_fan_tutte",
-        "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/",
         "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot"
       ],
-      "dirFiles": 20,
-      "dirClean": 1,
-      "inReviewsJson": 1,
+      "dirFiles": 21,
+      "dirClean": 2,
+      "inReviewsJson": 2,
       "missing": [
         {
           "url": "https://www.nationalreview.com/2018/03/cosi-fan-tutte-metropolitan-opera-review-great-entertainment/",
@@ -24219,6 +24328,12 @@
         {
           "url": "https://www.operabase.com/productions/cosi-fan-tutte-671121/en",
           "host": "operabase.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera",
+          "host": "australianbookreview.com.au",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -24330,24 +24445,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/",
-          "host": "operawire.com",
-          "knownOutletId": "operawire",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "operawire--francisco-salazar.json",
-              "flag": "nonReview",
-              "urlInDir": "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178",
           "host": "bachtrack.com",
           "knownOutletId": "bachtrack",
@@ -24366,9 +24463,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_cosi_fan_tutte",
-          "host": "rottentomatoes.com",
-          "knownOutletId": null,
+          "url": "https://letterboxd.com/film/the-metropolitan-opera-cosi-fan-tutte/reviews/",
+          "host": "letterboxd.com",
+          "knownOutletId": "letterboxd",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -24376,27 +24473,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "rottentomatoes--unknown.json",
+              "file": "letterboxd--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.rottentomatoes.com/m/the_metropolitan_opera_cosi_fan_tutte"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/",
-          "host": "aroundthetownchicago.com",
-          "knownOutletId": "around-the-town-chicago",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "around-the-town-chicago--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/"
+              "urlInDir": "https://letterboxd.com/film/the-metropolitan-opera-cosi-fan-tutte/reviews/"
             }
           ],
           "serpCensus": true
@@ -24434,7 +24513,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -24444,7 +24523,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -24486,9 +24565,9 @@
       "candidatesRejected": {
         "count": 406,
         "byReason": {
-          "aggregator-internal-nav": 292,
           "non-review-host": 55,
-          "ticketing-reseller": 2,
+          "aggregator-internal-nav": 291,
+          "ticketing-reseller": 3,
           "not-http-url": 49,
           "aggregator-section-root": 8
         }
@@ -24544,6 +24623,18 @@
           "reason": "⚠️  provisional outlet \"operabase\" (not in registry) — onboard to outlet-registry.json after review."
         },
         {
+          "url": "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera",
+          "host": "australianbookreview.com.au",
+          "outletId": "australianbookreview",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"australianbookreview\" (not in registry) — onboard to outlet-registry.json af"
+        },
+        {
           "url": "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
           "host": "londongrip.co.uk",
           "outletId": "londongrip",
@@ -24568,6 +24659,13 @@
             "url": "https://www.operabase.com/productions/cosi-fan-tutte-671121/en"
           },
           {
+            "outletId": "australianbookreview.com.au",
+            "outlet": "australianbookreview.com.au",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera"
+          },
+          {
             "outletId": "londongrip",
             "outlet": "londongrip",
             "critic": "Unknown",
@@ -24589,13 +24687,6 @@
             "url": "https://www.nytimes.com/2026/09/23/nyregion/snake-metropolitan-opera-cosi-fan-tutte.html"
           },
           {
-            "outletId": "operawire",
-            "outlet": "operawire",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/"
-          },
-          {
             "outletId": "bachtrack",
             "outlet": "bachtrack",
             "critic": "Unknown",
@@ -24603,18 +24694,11 @@
             "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178"
           },
           {
-            "outletId": "rottentomatoes.com",
-            "outlet": "rottentomatoes.com",
+            "outletId": "letterboxd",
+            "outlet": "letterboxd",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_cosi_fan_tutte"
-          },
-          {
-            "outletId": "around-the-town-chicago",
-            "outlet": "around-the-town-chicago",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/"
+            "url": "https://letterboxd.com/film/the-metropolitan-opera-cosi-fan-tutte/reviews/"
           },
           {
             "outletId": "guardian",
@@ -24627,11 +24711,24 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://operawire.com/metropolitan-opera-2026-27-review-cosi-fan-tutte/",
+            "outletId": "operawire.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
             "url": "https://www.operabase.com/productions/cosi-fan-tutte-671121/en",
             "outletId": "operabase.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
+          },
+          {
+            "url": "https://www.australianbookreview.com.au/abr-arts-reviews/cosi-fan-tutte-metropolitan-opera",
+            "outletId": "australianbookreview.com.au",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
           },
           {
             "url": "https://londongrip.co.uk/2026/02/cosi-fan-tutte-review-by-julia-pascal/",
@@ -24655,13 +24752,6 @@
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
-            "url": "https://operawire.com/metropolitan-opera-to-present-cosi-fan-tutte-live-in-hd/",
-            "outletId": "operawire",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-26T17:42:56.172Z"
-          },
-          {
             "url": "https://bachtrack.com/opera-event/cosi-fan-tutte-metropolitan-opera-23-september-2026/436178",
             "outletId": "bachtrack",
             "state": "GAP",
@@ -24669,18 +24759,11 @@
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
-            "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_cosi_fan_tutte",
-            "outletId": "rottentomatoes.com",
+            "url": "https://letterboxd.com/film/the-metropolitan-opera-cosi-fan-tutte/reviews/",
+            "outletId": "letterboxd",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-26T17:42:56.172Z"
-          },
-          {
-            "url": "https://aroundthetownchicago.com/theatre-reviews/cosi-fan-tutte-review-by-jacob-davis/",
-            "outletId": "around-the-town-chicago",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-27T16:31:53.708Z"
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
           },
           {
             "url": "https://www.theguardian.com/music/2026/feb/08/cosi-fan-tutte-review-mozart-eno-london-coliseum-phelim-mcdermot",
@@ -24691,10 +24774,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 0,
+        "liveCount": 1,
         "candidateCount": 9
       },
-      "computedAt": "2026-09-27T16:31:53.708Z"
+      "computedAt": "2026-09-28T01:29:33.709Z"
     },
     {
       "showId": "cowbois-west-end-2024",
@@ -28590,7 +28673,12 @@
         "liveCount": 0,
         "candidateCount": 9
       },
-      "computedAt": "2026-08-30T07:41:12.140Z"
+      "computedAt": "2026-08-30T07:41:12.140Z",
+      "quarantine": {
+        "nextState": "incomplete:0:4",
+        "since": "2026-09-28T01:29:33.759Z",
+        "lastAt": "2026-09-28T01:29:33.759Z"
+      }
     },
     {
       "showId": "death-becomes-her-2024",
@@ -30665,34 +30753,138 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://melodramamag.com/shows/degenerates/"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://melodramamag.com/shows/degenerates/",
+          "host": "melodramamag.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Degenerates\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Degenerates\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Degenerates\" review playwrights",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Degenerates Playwrights Horizons/Peter Jay Sharp Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Degenerates Playwrights Horizons/Peter Jay Sharp Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Degenerates Playwrights Horizons/Peter Jay Sharp Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 32,
+        "byReason": {
+          "non-review-host": 23,
+          "aggregator-internal-nav": 4,
+          "ticketing-reseller": 1,
+          "venue-production-page": 2,
+          "merch-store": 1,
+          "production-database-listing": 1
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://melodramamag.com/shows/degenerates/",
+          "host": "melodramamag.com",
+          "outletId": "melodramamag",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "melodramamag.com",
+            "outlet": "melodramamag.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://melodramamag.com/shows/degenerates/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://melodramamag.com/shows/degenerates/",
+            "outletId": "melodramamag.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          }
+        ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-09-27T19:00:11.962Z"
+      "computedAt": "2026-09-28T01:29:33.709Z"
     },
     {
       "showId": "delirium-off-broadway-2026",
@@ -30704,28 +30896,34 @@
       "aggregatorListedUrls": [
         "https://culturesauce.com/ionesco-delirium-off-broadway-review/",
         "https://www.theatermania.com/news/review-bickering-fish-in-the-end-times-in-delirium_1854846/",
-        "https://www.nytimes.com/2026/09/21/theater/chulpan-khamatova-delirium-eugene-ionesco.html",
         "https://newyorktheater.me/2026/09/26/delirium-review/",
         "https://thefrontrowcenter.com/2026/09/delirium/",
-        "https://www.newyorktheatreguide.com/reviews/delirium-off-broadway-review",
         "https://www.offoffonline.com/offoffonline/2026/9/16/delirium",
+        "https://www.newyorktheatreguide.com/reviews/delirium-off-broadway-review",
+        "https://www.nytimes.com/2026/09/21/theater/chulpan-khamatova-delirium-eugene-ionesco.html",
         "https://www.theatermania.com/news/delirium-by-igor-golyak-will-have-new-york-premiere_1845587/",
-        "https://brooklyneagle.com/408527/new-york-premiere-of-delirium/"
+        "https://brooklyneagle.com/408527/new-york-premiere-of-delirium/",
+        "https://www.theatermirror.net/delirium-strikes-all-the-right-raw-notes/"
       ],
       "dirFiles": 21,
-      "dirClean": 7,
-      "inReviewsJson": 6,
+      "dirClean": 8,
+      "inReviewsJson": 7,
       "missing": [],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "twi-ny.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [
         {
           "url": "https://www.nytimes.com/2026/09/21/theater/chulpan-khamatova-delirium-eugene-ionesco.html",
           "host": "nytimes.com",
           "knownOutletId": "nytimes",
-          "recoverable": true,
-          "recoverableFile": "nytimes--elisabeth-vincentelli.json",
-          "recoverableOutletId": "nytimes",
-          "recoverableCritic": "Elisabeth Vincentelli",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
           "recoverableCount": 0,
           "dirFlags": [
             {
@@ -30753,6 +30951,24 @@
             }
           ],
           "serpCensus": true
+        },
+        {
+          "url": "https://www.theatermirror.net/delirium-strikes-all-the-right-raw-notes/",
+          "host": "theatermirror.net",
+          "knownOutletId": "theater-mirror",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theater-mirror--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermirror.net/delirium-strikes-all-the-right-raw-notes/"
+            }
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -30768,8 +30984,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 3,
+            "results": 10,
+            "accepted": 2,
             "error": null
           },
           {
@@ -30779,7 +30995,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -30819,37 +31035,26 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 9,
+        "resultCount": 10,
         "error": null
       },
       "candidatesRejected": {
-        "count": 28,
+        "count": 27,
         "byReason": {
-          "aggregator-internal-nav": 4,
-          "non-review-host": 23,
-          "non-review-path": 1
+          "non-review-host": 22,
+          "aggregator-internal-nav": 2,
+          "non-review-path": 1,
+          "ticketing-listing": 1,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.nytimes.com/2026/09/21/theater/chulpan-khamatova-delirium-eugene-ionesco.html",
-          "host": "nytimes.com",
-          "file": "nytimes--elisabeth-vincentelli.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -30866,6 +31071,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://brooklyneagle.com/408527/new-york-premiere-of-delirium/"
+          },
+          {
+            "outletId": "theater-mirror",
+            "outlet": "theater-mirror",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermirror.net/delirium-strikes-all-the-right-raw-notes/"
           }
         ],
         "suppressedMissing": [],
@@ -30895,14 +31107,14 @@
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
-            "url": "https://www.newyorktheatreguide.com/reviews/delirium-off-broadway-review",
-            "outletId": "newyorktheatreguide.com",
+            "url": "https://www.offoffonline.com/offoffonline/2026/9/16/delirium",
+            "outletId": "offoffonline.com",
             "state": "live",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
-            "url": "https://www.offoffonline.com/offoffonline/2026/9/16/delirium",
-            "outletId": "offoffonline.com",
+            "url": "https://www.newyorktheatreguide.com/reviews/delirium-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
@@ -30925,13 +31137,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-27T16:31:53.708Z"
+          },
+          {
+            "url": "https://www.theatermirror.net/delirium-strikes-all-the-right-raw-notes/",
+            "outletId": "theater-mirror",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
           }
         ],
         "censusSchema": 2,
         "liveCount": 6,
-        "candidateCount": 8
+        "candidateCount": 9
       },
-      "computedAt": "2026-09-27T16:31:53.708Z"
+      "computedAt": "2026-09-28T01:29:33.709Z"
     },
     {
       "showId": "dinosaur-world-live-off-west-end-2026",
@@ -31801,7 +32020,12 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-08-30T07:41:12.140Z"
+      "computedAt": "2026-08-30T07:41:12.140Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-09-28T01:29:33.759Z",
+        "lastAt": "2026-09-28T01:29:33.759Z"
+      }
     },
     {
       "showId": "don-giovanni-off-broadway-2025",
@@ -33063,17 +33287,46 @@
       "showId": "ectoplasm-off-broadway-2026",
       "title": "Ectoplasm",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.vulture.com/2022/01/theater-review-nyc-this-beautiful-future-ectoplasm.html",
-        "http://www.theaterscene.net/plays/offbway-plays/ectoplasm/victor-gluck/"
+        "http://www.theaterscene.net/plays/offbway-plays/ectoplasm/victor-gluck/",
+        "https://www.spitnvigor.com/ectoplasm",
+        "https://t2conline.com/ectoplasm-the-plot-gets-lost-in-the-seance/",
+        "https://www.show-score.com/off-broadway-shows/ectoplasm",
+        "https://www.spitnvigor.com/event-details/ectoplasm-2026-09-26-19-30"
       ],
       "dirFiles": 2,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.spitnvigor.com/ectoplasm",
+          "host": "spitnvigor.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://t2conline.com/ectoplasm-the-plot-gets-lost-in-the-seance/",
+          "host": "t2conline.com",
+          "knownOutletId": "times-square-chronicles",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.show-score.com/off-broadway-shows/ectoplasm",
+          "host": "show-score.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.spitnvigor.com/event-details/ectoplasm-2026-09-26-19-30",
+          "host": "spitnvigor.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [
         {
@@ -33116,17 +33369,158 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Ectoplasm\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Ectoplasm\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Ectoplasm\" review spit",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Ectoplasm spit&vigor's Tiny Baby Blackbox Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Ectoplasm spit&vigor's Tiny Baby Blackbox Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Ectoplasm spit&vigor's Tiny Baby Blackbox Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 27,
+        "byReason": {
+          "non-review-host": 17,
+          "aggregator-internal-nav": 5,
+          "ticketing-reseller": 4,
+          "non-review-path": 1
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.spitnvigor.com/ectoplasm",
+          "host": "spitnvigor.com",
+          "outletId": "spitnvigor",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://t2conline.com/ectoplasm-the-plot-gets-lost-in-the-seance/",
+          "host": "t2conline.com",
+          "outletId": "times-square-chronicles",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
+        {
+          "url": "https://www.show-score.com/off-broadway-shows/ectoplasm",
+          "host": "show-score.com",
+          "outletId": null,
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "unknown-outlet-aggregator-host (show-score.com)"
+        },
+        {
+          "url": "https://www.spitnvigor.com/event-details/ectoplasm-2026-09-26-19-30",
+          "host": "spitnvigor.com",
+          "outletId": "spitnvigor",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"spitnvigor\" (not in registry) — onboard to outlet-registry.json after review"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "spitnvigor.com",
+            "outlet": "spitnvigor.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.spitnvigor.com/ectoplasm"
+          },
+          {
+            "outletId": "times-square-chronicles",
+            "outlet": "times-square-chronicles",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://t2conline.com/ectoplasm-the-plot-gets-lost-in-the-seance/"
+          },
+          {
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.show-score.com/off-broadway-shows/ectoplasm"
+          },
+          {
+            "outletId": "spitnvigor.com",
+            "outlet": "spitnvigor.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.spitnvigor.com/event-details/ectoplasm-2026-09-26-19-30"
+          },
           {
             "outletId": "theater-scene",
             "outlet": "theater-scene",
@@ -33138,6 +33532,34 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.spitnvigor.com/ectoplasm",
+            "outletId": "spitnvigor.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://t2conline.com/ectoplasm-the-plot-gets-lost-in-the-seance/",
+            "outletId": "times-square-chronicles",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://www.show-score.com/off-broadway-shows/ectoplasm",
+            "outletId": "show-score.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://www.spitnvigor.com/event-details/ectoplasm-2026-09-26-19-30",
+            "outletId": "spitnvigor.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
             "url": "http://www.theaterscene.net/plays/offbway-plays/ectoplasm/victor-gluck/",
             "outletId": "theater-scene",
             "state": "IN_FLIGHT",
@@ -33147,9 +33569,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 1
+        "candidateCount": 4
       },
-      "computedAt": "2026-09-21T00:49:24.476Z"
+      "computedAt": "2026-09-28T01:29:33.709Z"
     },
     {
       "showId": "electra-persona-west-end-2026",
@@ -34963,7 +35385,12 @@
         "liveCount": 1,
         "candidateCount": 13
       },
-      "computedAt": "2026-09-27T22:52:36.905Z"
+      "computedAt": "2026-09-27T22:52:36.905Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-09-28T01:29:33.759Z",
+        "lastAt": "2026-09-28T01:29:33.759Z"
+      }
     },
     {
       "showId": "encores-la-cage-aux-folles-off-broadway-2026",
@@ -38532,6 +38959,42 @@
         "candidateCount": 25
       },
       "computedAt": "2026-09-20T01:54:21.561Z"
+    },
+    {
+      "showId": "ewa-dziarnowska-this-resting-patience-off-broadway-2026",
+      "title": "Ewa Dziarnowska: This resting, patience",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-09-28T01:29:33.709Z"
     },
     {
       "showId": "father-time-off-broadway-2026",
@@ -45296,7 +45759,12 @@
         "liveCount": 4,
         "candidateCount": 6
       },
-      "computedAt": "2026-08-30T07:41:12.140Z"
+      "computedAt": "2026-08-30T07:41:12.140Z",
+      "quarantine": {
+        "nextState": "incomplete:4:5",
+        "since": "2026-09-28T01:29:33.759Z",
+        "lastAt": "2026-09-28T01:29:33.759Z"
+      }
     },
     {
       "showId": "grace-pervades-west-end-2026",
@@ -51360,6 +51828,42 @@
       "computedAt": "2026-09-05T17:16:12.711Z"
     },
     {
+      "showId": "hay-fever-west-end-2026",
+      "title": "Hay Fever",
+      "openingDate": "2026-10-01",
+      "status": "previews",
+      "category": "west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-09-28T01:29:33.709Z"
+    },
+    {
       "showId": "heart-of-rock-and-roll-2024",
       "title": "The Heart of Rock and Roll",
       "openingDate": "2024-04-22",
@@ -56236,7 +56740,12 @@
         "liveCount": 0,
         "candidateCount": 10
       },
-      "computedAt": "2026-09-27T22:52:36.905Z"
+      "computedAt": "2026-09-27T22:52:36.905Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-09-28T01:29:33.759Z",
+        "lastAt": "2026-09-28T01:29:33.759Z"
+      }
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
@@ -60308,7 +60817,12 @@
         "liveCount": 3,
         "candidateCount": 4
       },
-      "computedAt": "2026-08-27T01:23:51.910Z"
+      "computedAt": "2026-08-27T01:23:51.910Z",
+      "quarantine": {
+        "nextState": "complete:3:3",
+        "since": "2026-09-28T01:29:33.759Z",
+        "lastAt": "2026-09-28T01:29:33.759Z"
+      }
     },
     {
       "showId": "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026",
@@ -61615,6 +62129,42 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-31T14:43:54.309Z"
+    },
+    {
+      "showId": "jena-friedman-motherfucker-off-broadway-2026",
+      "title": "Jena Friedman: Motherfucker",
+      "openingDate": "2026-10-01",
+      "status": "previews",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-09-28T01:29:33.709Z"
     },
     {
       "showId": "jesa-off-broadway-2026",
@@ -68240,7 +68790,7 @@
       "showId": "legally-blondes-orfeh-unbound-off-broadway-2026",
       "title": "Legally Blonde's Orfeh: Unbound",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
@@ -68253,12 +68803,73 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Legally Blonde's Orfeh: Unbound\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Legally Blonde's Orfeh: Unbound\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Legally Blonde's Orfeh: Unbound\" review below",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Legally Blonde's Orfeh: Unbound 54 Below review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Legally Blonde's Orfeh: Unbound 54 Below review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Legally Blonde's Orfeh: Unbound 54 Below review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 21,
+        "byReason": {
+          "non-review-host": 17,
+          "aggregator-internal-nav": 3,
+          "ticketing-listing": 1
+        }
       },
       "dedupedVariants": [],
       "censusVerdict": {
@@ -68266,10 +68877,11 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
+        "censusSchema": 2,
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-21T00:49:24.476Z"
+      "computedAt": "2026-09-28T01:29:33.709Z"
     },
     {
       "showId": "lempicka-2024",
@@ -79133,7 +79745,12 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-09-27T22:52:36.905Z"
+      "computedAt": "2026-09-27T22:52:36.905Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-09-28T01:29:33.759Z",
+        "lastAt": "2026-09-28T01:29:33.759Z"
+      }
     },
     {
       "showId": "milk-and-honey-amt-theater-off-broadway-2026",
@@ -100805,36 +101422,240 @@
       "showId": "red-riding-hood-off-broadway-2026",
       "title": "Red Riding Hood",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://westchester.kidsoutandabout.com/content/red-riding-hood-0",
+        "https://www.showify.us/shows/red-riding-hood",
+        "https://exeuntnyc.com/reviews/review-little-red-riding-hood-fiaf-florence-gould-hall/",
+        "https://www.broadwayworld.com/westend/article/Review-NORTHERN-BALLET-LITTLE-RED-RIDING-HOOD-Royal-Ballet-And-Opera-20251024"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://westchester.kidsoutandabout.com/content/red-riding-hood-0",
+          "host": "kidsoutandabout.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.showify.us/shows/red-riding-hood",
+          "host": "showify.us",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-little-red-riding-hood-fiaf-florence-gould-hall/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-NORTHERN-BALLET-LITTLE-RED-RIDING-HOOD-Royal-Ballet-And-Opera-20251024",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Red Riding Hood\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Red Riding Hood\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Red Riding Hood\" review 92ny",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Red Riding Hood 92NY Buttenwieser Hall review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Red Riding Hood 92NY Buttenwieser Hall review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Red Riding Hood 92NY Buttenwieser Hall review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 30,
+        "byReason": {
+          "non-review-host": 19,
+          "aggregator-internal-nav": 6,
+          "ticketing-reseller": 1,
+          "non-review-path": 1,
+          "ticketing-listing": 1,
+          "venue-production-page": 2
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://westchester.kidsoutandabout.com/content/red-riding-hood-0",
+          "host": "kidsoutandabout.com",
+          "outletId": "kidsoutandabout",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.showify.us/shows/red-riding-hood",
+          "host": "showify.us",
+          "outletId": "showify",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-little-red-riding-hood-fiaf-florence-gould-hall/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-NORTHERN-BALLET-LITTLE-RED-RIDING-HOOD-Royal-Ballet-And-Opera-20251024",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "kidsoutandabout.com",
+            "outlet": "kidsoutandabout.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://westchester.kidsoutandabout.com/content/red-riding-hood-0"
+          },
+          {
+            "outletId": "showify.us",
+            "outlet": "showify.us",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.showify.us/shows/red-riding-hood"
+          },
+          {
+            "outletId": "exeunt-magazine",
+            "outlet": "exeunt-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://exeuntnyc.com/reviews/review-little-red-riding-hood-fiaf-florence-gould-hall/"
+          },
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/westend/article/Review-NORTHERN-BALLET-LITTLE-RED-RIDING-HOOD-Royal-Ballet-And-Opera-20251024"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://westchester.kidsoutandabout.com/content/red-riding-hood-0",
+            "outletId": "kidsoutandabout.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://www.showify.us/shows/red-riding-hood",
+            "outletId": "showify.us",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-little-red-riding-hood-fiaf-florence-gould-hall/",
+            "outletId": "exeunt-magazine",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-NORTHERN-BALLET-LITTLE-RED-RIDING-HOOD-Royal-Ballet-And-Opera-20251024",
+            "outletId": "broadwayworld",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          }
+        ],
+        "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 4
       },
-      "computedAt": "2026-09-23T01:14:28.989Z"
+      "computedAt": "2026-09-28T01:29:33.709Z"
     },
     {
       "showId": "redcliffe-off-west-end-2026",
@@ -107138,7 +107959,18 @@
         "http://www.vulture.com/2017/11/theater-school-girls-or-the-african-mean-girls-play.html",
         "http://www.nytimes.com/2017/11/16/theater/school-girls-or-the-african-mean-girls-play-review.html",
         "http://www.timeout.com/newyork/theater/school-girls-or-the-african-mean-girls-play",
-        "http://variety.com/2017/legit/reviews/school-girls-or-the-african-mean-girls-play-review-1202612324/"
+        "http://variety.com/2017/legit/reviews/school-girls-or-the-african-mean-girls-play-review-1202612324/",
+        "https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway-2026",
+        "https://www.sun-sentinel.com/2026/09/08/review-brevo-theatres-school-girls-or-the-african-mean-girls-play-is-a-hoot-but-also-biting-censure/",
+        "https://www.theatermania.com/news/jocelyn-bioh-to-join-cast-of-her-play-school-girls-or-the-african-mean-girls-play-for-four-performances_1854797/",
+        "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
+        "https://aroundthetownchicago.com/theatre-reviews/school-girls-or-the-african-mean-girls-play/",
+        "https://exeuntnyc.com/reviews/review-school-girls-african-mean-girls-play-lucille-lortel-theatre/",
+        "https://broadwaylog.app/shows/school-girls-or-the-african-mean-girls-play-2026",
+        "https://www.theatreinchicago.com/school-girls-or-the-african-mean-girls-play/11303/",
+        "https://familyaffairsandothermatters.com/school-girls-or-the-african-mean-girls-play-review/",
+        "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-queen-bee-gets-stung-11587675557",
+        "https://larchmontbuzz.com/larchmont-village-life/review-school-girls-or-the-african-mean-girls-play/"
       ],
       "dirFiles": 6,
       "dirClean": 0,
@@ -107178,6 +108010,72 @@
           "knownOutletId": "variety",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway-2026",
+          "host": "show-score.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.sun-sentinel.com/2026/09/08/review-brevo-theatres-school-girls-or-the-african-mean-girls-play-is-a-hoot-but-also-biting-censure/",
+          "host": "sun-sentinel.com",
+          "knownOutletId": "south-florida-sun-sentinel",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/jocelyn-bioh-to-join-cast-of-her-play-school-girls-or-the-african-mean-girls-play-for-four-performances_1854797/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
+          "host": "manhattantheatreclub.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/school-girls-or-the-african-mean-girls-play/",
+          "host": "aroundthetownchicago.com",
+          "knownOutletId": "around-the-town-chicago",
+          "serpCensus": true
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-school-girls-african-mean-girls-play-lucille-lortel-theatre/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "serpCensus": true
+        },
+        {
+          "url": "https://broadwaylog.app/shows/school-girls-or-the-african-mean-girls-play-2026",
+          "host": "broadwaylog.app",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatreinchicago.com/school-girls-or-the-african-mean-girls-play/11303/",
+          "host": "theatreinchicago.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://familyaffairsandothermatters.com/school-girls-or-the-african-mean-girls-play-review/",
+          "host": "familyaffairsandothermatters.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-queen-bee-gets-stung-11587675557",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "serpCensus": true
+        },
+        {
+          "url": "https://larchmontbuzz.com/larchmont-village-life/review-school-girls-or-the-african-mean-girls-play/",
+          "host": "larchmontbuzz.com",
+          "knownOutletId": null,
+          "serpCensus": true
         }
       ],
       "dirOnly": [],
@@ -107205,16 +108103,85 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"School Girls; Or, The African Mean Girls Play\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"School Girls; Or, The African Mean Girls Play\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"School Girls; Or, The African Mean Girls Play\" review samuel",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"School Girls; Or, The African Mean Girls Play\" Bioh review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "School Girls; Or, The African Mean Girls Play Samuel J. Friedman Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "School Girls; Or, The African Mean Girls Play Samuel J. Friedman Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "School Girls; Or, The African Mean Girls Play Samuel J. Friedman Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 11,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 109,
+        "count": 150,
         "byReason": {
-          "aggregator-internal-nav": 79,
+          "non-review-host": 50,
+          "aggregator-internal-nav": 83,
+          "ticketing-reseller": 6,
+          "venue-production-page": 1,
           "not-http-url": 6,
-          "aggregator-section-root": 4,
-          "non-review-host": 20
+          "aggregator-section-root": 4
         }
       },
       "dedupedVariants": [],
@@ -107256,18 +108223,267 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
+      "ingestResults": [
+        {
+          "url": "https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway-2026",
+          "host": "show-score.com",
+          "outletId": null,
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "unknown-outlet-aggregator-host (show-score.com)"
+        },
+        {
+          "url": "https://www.sun-sentinel.com/2026/09/08/review-brevo-theatres-school-girls-or-the-african-mean-girls-play-is-a-hoot-but-also-biting-censure/",
+          "host": "sun-sentinel.com",
+          "outletId": "south-florida-sun-sentinel",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.theatermania.com/news/jocelyn-bioh-to-join-cast-of-her-play-school-girls-or-the-african-mean-girls-play-for-four-performances_1854797/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
+          "host": "manhattantheatreclub.com",
+          "outletId": "manhattantheatreclub",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/school-girls-or-the-african-mean-girls-play/",
+          "host": "aroundthetownchicago.com",
+          "outletId": "around-the-town-chicago",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://exeuntnyc.com/reviews/review-school-girls-african-mean-girls-play-lucille-lortel-theatre/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine"
+        },
+        {
+          "url": "https://broadwaylog.app/shows/school-girls-or-the-african-mean-girls-play-2026",
+          "host": "broadwaylog.app",
+          "outletId": "broadwaylog"
+        },
+        {
+          "url": "https://www.theatreinchicago.com/school-girls-or-the-african-mean-girls-play/11303/",
+          "host": "theatreinchicago.com",
+          "outletId": "theatreinchicago"
+        },
+        {
+          "url": "https://familyaffairsandothermatters.com/school-girls-or-the-african-mean-girls-play-review/",
+          "host": "familyaffairsandothermatters.com",
+          "outletId": "familyaffairsandothermatters"
+        },
+        {
+          "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-queen-bee-gets-stung-11587675557",
+          "host": "wsj.com",
+          "outletId": "wsj"
+        },
+        {
+          "url": "https://larchmontbuzz.com/larchmont-village-life/review-school-girls-or-the-african-mean-girls-play/",
+          "host": "larchmontbuzz.com",
+          "outletId": "larchmontbuzz"
+        }
+      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
-        "suppressedMissing": [],
-        "candidates": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway-2026"
+          },
+          {
+            "outletId": "south-florida-sun-sentinel",
+            "outlet": "south-florida-sun-sentinel",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.sun-sentinel.com/2026/09/08/review-brevo-theatres-school-girls-or-the-african-mean-girls-play-is-a-hoot-but-also-biting-censure/"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/jocelyn-bioh-to-join-cast-of-her-play-school-girls-or-the-african-mean-girls-play-for-four-performances_1854797/"
+          },
+          {
+            "outletId": "manhattantheatreclub.com",
+            "outlet": "manhattantheatreclub.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/"
+          },
+          {
+            "outletId": "around-the-town-chicago",
+            "outlet": "around-the-town-chicago",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://aroundthetownchicago.com/theatre-reviews/school-girls-or-the-african-mean-girls-play/"
+          },
+          {
+            "outletId": "exeunt-magazine",
+            "outlet": "exeunt-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://exeuntnyc.com/reviews/review-school-girls-african-mean-girls-play-lucille-lortel-theatre/"
+          },
+          {
+            "outletId": "broadwaylog.app",
+            "outlet": "broadwaylog.app",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwaylog.app/shows/school-girls-or-the-african-mean-girls-play-2026"
+          },
+          {
+            "outletId": "theatreinchicago.com",
+            "outlet": "theatreinchicago.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatreinchicago.com/school-girls-or-the-african-mean-girls-play/11303/"
+          },
+          {
+            "outletId": "familyaffairsandothermatters.com",
+            "outlet": "familyaffairsandothermatters.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://familyaffairsandothermatters.com/school-girls-or-the-african-mean-girls-play-review/"
+          },
+          {
+            "outletId": "larchmontbuzz.com",
+            "outlet": "larchmontbuzz.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://larchmontbuzz.com/larchmont-village-life/review-school-girls-or-the-african-mean-girls-play/"
+          }
+        ],
+        "suppressedMissing": [
+          {
+            "outletId": "wsj",
+            "outlet": "wsj",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-queen-bee-gets-stung-11587675557"
+          }
+        ],
+        "candidates": [
+          {
+            "url": "https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway-2026",
+            "outletId": "show-score.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://www.sun-sentinel.com/2026/09/08/review-brevo-theatres-school-girls-or-the-african-mean-girls-play-is-a-hoot-but-also-biting-censure/",
+            "outletId": "south-florida-sun-sentinel",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/jocelyn-bioh-to-join-cast-of-her-play-school-girls-or-the-african-mean-girls-play-for-four-performances_1854797/",
+            "outletId": "theatermania",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
+            "outletId": "manhattantheatreclub.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/school-girls-or-the-african-mean-girls-play/",
+            "outletId": "around-the-town-chicago",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-school-girls-african-mean-girls-play-lucille-lortel-theatre/",
+            "outletId": "exeunt-magazine",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://broadwaylog.app/shows/school-girls-or-the-african-mean-girls-play-2026",
+            "outletId": "broadwaylog.app",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://www.theatreinchicago.com/school-girls-or-the-african-mean-girls-play/11303/",
+            "outletId": "theatreinchicago.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://familyaffairsandothermatters.com/school-girls-or-the-african-mean-girls-play-review/",
+            "outletId": "familyaffairsandothermatters.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-queen-bee-gets-stung-11587675557",
+            "outletId": "wsj",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://larchmontbuzz.com/larchmont-village-life/review-school-girls-or-the-african-mean-girls-play/",
+            "outletId": "larchmontbuzz.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          }
+        ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 11
       },
-      "computedAt": "2026-09-27T19:00:11.962Z"
+      "computedAt": "2026-09-28T01:29:33.709Z"
     },
     {
       "showId": "schtick-a-pole-in-it-off-broadway-2026",
@@ -117213,25 +118429,27 @@
         "https://www.londonboxoffice.co.uk/news/post/table-17-kiln-theatre-review",
         "https://www.thereviewshub.com/table-17-kiln-theatre-london/",
         "https://www.thestage.co.uk/reviews/table-17-review-kiln-theatre-london-marisha-wallace",
+        "https://www.afridiziak.com/reviews/table-17-kiln-theatre/",
         "https://www.london-unattached.com/table-17-kiln-theatre/",
-        "https://everything-theatre.co.uk/2026/09/review-table-17-kiln-theatre/",
         "https://www.allthatdazzles.co.uk/post/review-table-17-kiln-theatre",
-        "https://www.whatsonstage.com/news/table-17-at-the-kiln-theatre-review_1732618/",
-        "https://www.timeout.com/london/theatre/table-17-review",
         "https://www.broadwayworld.com/westend/article/Review-TABLE-17-Starring-Marisha-Wallace-20260924",
         "https://kilntheatre.com/whats-on/table-17/",
         "https://www.show-score.com/uk/london/off-west-end-shows/table-17-kiln-theatre",
+        "https://www.londontheatre1.com/reviews/table-17-kiln-theatre/",
+        "https://everything-theatre.co.uk/2026/09/review-table-17-kiln-theatre/",
+        "https://www.timeout.com/london/theatre/table-17-review",
+        "https://www.whatsonstage.com/news/table-17-at-the-kiln-theatre-review_1732618/",
         "https://www.westendbestfriend.co.uk/news/review-table-17-kiln-theatre",
         "https://www.londontheatredirect.com/play/table-17-tickets",
+        "https://www.londonlivinglarge.com/2026/09/table-17-kiln-theatre-sep-17-oct-24-2026.html",
         "https://www.ikonlondonmagazine.com/table-17-review-kiln-theatre/",
+        "https://theatreweekly.com/review-table-17-at-kiln-theatre/",
         "https://jamiewilsonproductions.com/news/table-17-to-premiere-at-the-kiln-theatre/",
-        "https://firstnightmagazine.com/2026/09/25/review-of-table-17-lacklustre-rom-com-isnt-out-of-the-date-but-isnt-flavourful-either/",
-        "https://exeuntnyc.com/reviews/review-table-17-at-mcc-theater/",
-        "https://www.aol.co.uk/articles/table-17-review-tasty-romcom-160010000.html"
+        "https://firstnightmagazine.com/2026/09/25/review-of-table-17-lacklustre-rom-com-isnt-out-of-the-date-but-isnt-flavourful-either/"
       ],
-      "dirFiles": 29,
-      "dirClean": 17,
-      "inReviewsJson": 16,
+      "dirFiles": 32,
+      "dirClean": 20,
+      "inReviewsJson": 19,
       "missing": [
         {
           "url": "https://cititour.com/NYC_Broadway/Table-17/1247",
@@ -117286,41 +118504,11 @@
           "host": "show-score.com",
           "knownOutletId": null,
           "serpCensus": true
-        },
-        {
-          "url": "https://www.ikonlondonmagazine.com/table-17-review-kiln-theatre/",
-          "host": "ikonlondonmagazine.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-table-17-at-mcc-theater/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.aol.co.uk/articles/table-17-review-tasty-romcom-160010000.html",
-          "host": "aol.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
         }
       ],
       "dirOnly": [
         {
           "host": "theartsdesk.com",
-          "count": 1
-        },
-        {
-          "host": "londonlivinglarge.com",
-          "count": 1
-        },
-        {
-          "host": "londontheatre1.com",
-          "count": 1
-        },
-        {
-          "host": "theatreweekly.com",
           "count": 1
         }
       ],
@@ -117374,6 +118562,11 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
+              "file": "nytimes--laura-collins-hughes.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2024/09/06/theater/table-17-review-kara-young.html"
+            },
+            {
               "file": "nytimes--unknown.json",
               "flag": "wrongProduction",
               "urlInDir": "https://www.nytimes.com/2024/09/06/theater/table-17-review-kara-young.html"
@@ -117417,24 +118610,6 @@
             }
           ],
           "serpCensus": true
-        },
-        {
-          "url": "https://firstnightmagazine.com/2026/09/25/review-of-table-17-lacklustre-rom-com-isnt-out-of-the-date-but-isnt-flavourful-either/",
-          "host": "firstnightmagazine.com",
-          "knownOutletId": "firstnightmagazine",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "firstnightmagazine--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://firstnightmagazine.com/2026/09/25/review-of-table-17-lacklustre-rom-com-isnt-out-of-the-date-but-isnt-flavourful-either/"
-            }
-          ],
-          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -117453,7 +118628,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": true,
@@ -117502,7 +118677,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 4,
+            "accepted": 2,
             "error": null
           },
           {
@@ -117512,7 +118687,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -117522,7 +118697,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 6,
             "error": null
           },
           {
@@ -117538,18 +118713,18 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 20,
+        "resultCount": 22,
         "error": null
       },
       "candidatesRejected": {
         "count": 393,
         "byReason": {
-          "ticketing-listing": 1,
-          "aggregator-internal-nav": 298,
           "non-review-host": 45,
+          "aggregator-internal-nav": 298,
+          "ticketing-listing": 1,
           "not-http-url": 40,
           "aggregator-section-root": 8,
-          "non-review-path": 1
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
@@ -117625,51 +118800,20 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "unknown-outlet-aggregator-host (show-score.com)"
-        },
-        {
-          "url": "https://www.ikonlondonmagazine.com/table-17-review-kiln-theatre/",
-          "host": "ikonlondonmagazine.com",
-          "outletId": "ikonlondonmagazine",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-table-17-at-mcc-theater/",
-          "host": "exeuntnyc.com",
-          "outletId": "exeunt-magazine",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
-        },
-        {
-          "url": "https://www.aol.co.uk/articles/table-17-review-tasty-romcom-160010000.html",
-          "host": "aol.co.uk",
-          "outletId": "aol",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Fetch failed: All scraping methods failed"
         }
       ],
       "ingestSkippedByCap": [],
-      "recoveryResults": [],
-      "recoverySkippedByCap": [
+      "recoveryResults": [
         {
           "url": "https://www.thestage.co.uk/reviews/table-17-review-kiln-theatre-london-marisha-wallace",
           "host": "thestage.co.uk",
-          "file": "thestage--the-stage.json"
+          "file": "thestage--the-stage.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1
         }
       ],
       "censusVerdict": {
@@ -117690,27 +118834,6 @@
             "url": "https://www.show-score.com/uk/london/off-west-end-shows/table-17-kiln-theatre"
           },
           {
-            "outletId": "ikonlondonmagazine.com",
-            "outlet": "ikonlondonmagazine.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.ikonlondonmagazine.com/table-17-review-kiln-theatre/"
-          },
-          {
-            "outletId": "exeunt-magazine",
-            "outlet": "exeunt-magazine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://exeuntnyc.com/reviews/review-table-17-at-mcc-theater/"
-          },
-          {
-            "outletId": "aol.co.uk",
-            "outlet": "aol.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.aol.co.uk/articles/table-17-review-tasty-romcom-160010000.html"
-          },
-          {
             "outletId": "thestage",
             "outlet": "thestage",
             "critic": "Unknown",
@@ -117723,13 +118846,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://jamiewilsonproductions.com/news/table-17-to-premiere-at-the-kiln-theatre/"
-          },
-          {
-            "outletId": "firstnightmagazine",
-            "outlet": "firstnightmagazine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://firstnightmagazine.com/2026/09/25/review-of-table-17-lacklustre-rom-com-isnt-out-of-the-date-but-isnt-flavourful-either/"
           }
         ],
         "suppressedMissing": [],
@@ -117759,14 +118875,14 @@
             "firstSeenAt": "2026-09-27T08:57:54.805Z"
           },
           {
-            "url": "https://www.london-unattached.com/table-17-kiln-theatre/",
-            "outletId": "london-unattached.com",
+            "url": "https://www.afridiziak.com/reviews/table-17-kiln-theatre/",
+            "outletId": "afridiziak.com",
             "state": "live",
-            "firstSeenAt": "2026-09-27T08:57:54.805Z"
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
           },
           {
-            "url": "https://everything-theatre.co.uk/2026/09/review-table-17-kiln-theatre/",
-            "outletId": "everything-theatre.co.uk",
+            "url": "https://www.london-unattached.com/table-17-kiln-theatre/",
+            "outletId": "london-unattached.com",
             "state": "live",
             "firstSeenAt": "2026-09-27T08:57:54.805Z"
           },
@@ -117777,8 +118893,20 @@
             "firstSeenAt": "2026-09-27T08:57:54.805Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/table-17-at-the-kiln-theatre-review_1732618/",
-            "outletId": "whatsonstage.com",
+            "url": "https://www.broadwayworld.com/westend/article/Review-TABLE-17-Starring-Marisha-Wallace-20260924",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-27T08:57:54.805Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/table-17-kiln-theatre/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://everything-theatre.co.uk/2026/09/review-table-17-kiln-theatre/",
+            "outletId": "everything-theatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-27T08:57:54.805Z"
           },
@@ -117789,8 +118917,8 @@
             "firstSeenAt": "2026-09-27T08:57:54.805Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-TABLE-17-Starring-Marisha-Wallace-20260924",
-            "outletId": "broadwayworld.com",
+            "url": "https://www.whatsonstage.com/news/table-17-at-the-kiln-theatre-review_1732618/",
+            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-09-27T08:57:54.805Z"
           },
@@ -117803,6 +118931,30 @@
           {
             "url": "https://www.londontheatredirect.com/play/table-17-tickets",
             "outletId": "londontheatredirect.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-27T08:57:54.805Z"
+          },
+          {
+            "url": "https://www.londonlivinglarge.com/2026/09/table-17-kiln-theatre-sep-17-oct-24-2026.html",
+            "outletId": "londonlivinglarge.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://www.ikonlondonmagazine.com/table-17-review-kiln-theatre/",
+            "outletId": "ikonlondonmagazine.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-27T16:31:53.708Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-table-17-at-kiln-theatre/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-28T01:29:33.709Z"
+          },
+          {
+            "url": "https://firstnightmagazine.com/2026/09/25/review-of-table-17-lacklustre-rom-com-isnt-out-of-the-date-but-isnt-flavourful-either/",
+            "outletId": "firstnightmagazine.com",
             "state": "live",
             "firstSeenAt": "2026-09-27T08:57:54.805Z"
           },
@@ -117821,27 +118973,6 @@
             "firstSeenAt": "2026-09-27T16:31:53.708Z"
           },
           {
-            "url": "https://www.ikonlondonmagazine.com/table-17-review-kiln-theatre/",
-            "outletId": "ikonlondonmagazine.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-27T16:31:53.708Z"
-          },
-          {
-            "url": "https://exeuntnyc.com/reviews/review-table-17-at-mcc-theater/",
-            "outletId": "exeunt-magazine",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-27T16:31:53.708Z"
-          },
-          {
-            "url": "https://www.aol.co.uk/articles/table-17-review-tasty-romcom-160010000.html",
-            "outletId": "aol.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-27T16:31:53.708Z"
-          },
-          {
             "url": "https://www.thestage.co.uk/reviews/table-17-review-kiln-theatre-london-marisha-wallace",
             "outletId": "thestage",
             "state": "GAP",
@@ -117854,20 +118985,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-27T08:57:54.805Z"
-          },
-          {
-            "url": "https://firstnightmagazine.com/2026/09/25/review-of-table-17-lacklustre-rom-com-isnt-out-of-the-date-but-isnt-flavourful-either/",
-            "outletId": "firstnightmagazine",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-27T08:57:54.805Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 12,
-        "candidateCount": 20
+        "liveCount": 18,
+        "candidateCount": 22
       },
-      "computedAt": "2026-09-27T16:31:53.708Z"
+      "computedAt": "2026-09-28T01:29:33.709Z"
     },
     {
       "showId": "tammy-faye-2024",
@@ -126806,6 +127930,42 @@
         "candidateCount": 7
       },
       "computedAt": "2026-09-20T16:50:31.684Z"
+    },
+    {
+      "showId": "the-hungry-ghost-off-west-end-2026",
+      "title": "The Hungry Ghost",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-09-28T01:29:33.709Z"
     },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
@@ -136796,14 +137956,14 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.sohoplayhouse.com/see-a-show/the-secret-circus-musical",
         "https://www.broadwayworld.com/new-orleans/article/Review-THE-SECRET-CIRCUS-THE-MUSICAL-at-Mudlark-Theatre-20260504",
-        "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/",
+        "https://www.sohoplayhouse.com/see-a-show/the-secret-circus-musical",
         "https://stagelync.com/news/secret-circus-soho-playhouse",
-        "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets",
+        "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/",
         "https://theatre-news.com/news/UK/127152/The-Secret-Circus-Musical-set-to-open-highly-anticipated-London-performances",
-        "https://events.newyorkfamily.com/event/the-secret-circus-musical/",
+        "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets",
         "https://stagebuddy.com/event/the-secret-circus-musical",
+        "https://events.newyorkfamily.com/event/the-secret-circus-musical/",
         "https://mommypoppins.com/new-york-city-kids/event/events/the-secret-circus-at-the-soho-playhouse"
       ],
       "dirFiles": 9,
@@ -136838,24 +137998,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/",
-          "host": "onstagecolorado.com",
-          "knownOutletId": "onstage-colorado",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "onstage-colorado--toni-tresca.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://stagelync.com/news/secret-circus-soho-playhouse",
           "host": "stagelync.com",
           "knownOutletId": null,
@@ -136869,6 +138011,24 @@
               "file": "stagelync--stagelync.json",
               "flag": "wrongShow",
               "urlInDir": "https://stagelync.com/news/secret-circus-soho-playhouse"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/",
+          "host": "onstagecolorado.com",
+          "knownOutletId": "onstage-colorado",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "onstage-colorado--toni-tresca.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/"
             }
           ],
           "serpCensus": true
@@ -136954,7 +138114,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -136964,7 +138124,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -136984,10 +138144,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 38,
+        "count": 39,
         "byReason": {
-          "aggregator-internal-nav": 8,
-          "non-review-host": 29,
+          "non-review-host": 27,
+          "aggregator-internal-nav": 10,
+          "non-review-path": 1,
           "venue-production-page": 1
         }
       },
@@ -137025,18 +138186,18 @@
             "url": "https://www.sohoplayhouse.com/see-a-show/the-secret-circus-musical"
           },
           {
-            "outletId": "onstage-colorado",
-            "outlet": "onstage-colorado",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/"
-          },
-          {
             "outletId": "stagelync.com",
             "outlet": "stagelync.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://stagelync.com/news/secret-circus-soho-playhouse"
+          },
+          {
+            "outletId": "onstage-colorado",
+            "outlet": "onstage-colorado",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/"
           },
           {
             "outletId": "theatre-news",
@@ -137088,15 +138249,15 @@
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
-            "url": "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/",
-            "outletId": "onstage-colorado",
+            "url": "https://stagelync.com/news/secret-circus-soho-playhouse",
+            "outletId": "stagelync.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
-            "url": "https://stagelync.com/news/secret-circus-soho-playhouse",
-            "outletId": "stagelync.com",
+            "url": "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/",
+            "outletId": "onstage-colorado",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
@@ -137120,7 +138281,7 @@
         "liveCount": 3,
         "candidateCount": 9
       },
-      "computedAt": "2026-09-27T16:31:53.708Z"
+      "computedAt": "2026-09-28T01:29:33.709Z"
     },
     {
       "showId": "the-seven-deadly-sins-the-human-voice-off-west-end-2026",
@@ -137478,7 +138639,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-26T02:16:13.920Z"
+      "computedAt": "2026-09-28T01:29:33.709Z"
     },
     {
       "showId": "the-story-olivier-west-end-2026",
@@ -143587,6 +144748,42 @@
       "computedAt": "2026-09-24T19:52:14.230Z"
     },
     {
+      "showId": "toc-toc-off-broadway-2026",
+      "title": "Toc Toc",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-09-28T01:29:33.709Z"
+    },
+    {
       "showId": "touch-off-broadway-2026",
       "title": "Touch",
       "openingDate": "2026-03-14",
@@ -144412,7 +145609,12 @@
         "liveCount": 8,
         "candidateCount": 11
       },
-      "computedAt": "2026-09-27T16:31:53.708Z"
+      "computedAt": "2026-09-27T16:31:53.708Z",
+      "quarantine": {
+        "nextState": "incomplete:7:15",
+        "since": "2026-09-28T01:29:33.759Z",
+        "lastAt": "2026-09-28T01:29:33.759Z"
+      }
     },
     {
       "showId": "truly-howard-hughes-off-broadway-2026",
@@ -149818,7 +151020,12 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-08-30T07:41:12.140Z"
+      "computedAt": "2026-08-30T07:41:12.140Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-09-28T01:29:33.759Z",
+        "lastAt": "2026-09-28T01:29:33.759Z"
+      }
     },
     {
       "showId": "water-for-elephants-2024",
