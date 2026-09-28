@@ -591,6 +591,20 @@ if [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/scripts/lib/disk-space-check.js" ] &&
   fi
 fi
 
+# ── DELIVERY EXPERIMENT (BRO-4237, test branch only, never lands) ──────────
+# Which routes put text into a fresh cloud session's context, and its
+# subagents'? Each route carries its own canary.
+if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ]; then
+  mkdir -p "$HOME/.claude"
+  printf '# Delivery test (user-level CLAUDE.md written by SessionStart hook)\nCanary: CANARY-USERMD-7F3A\n' > "$HOME/.claude/CLAUDE.md"
+  printf '# Delivery test (CLAUDE.local.md written by SessionStart hook)\nCanary: CANARY-LOCALMD-2B9C\n' > "${CLAUDE_PROJECT_DIR:-$REPO_ROOT}/CLAUDE.local.md"
+  echo "DELIVERY TEST hook print block starts. Canary: CANARY-PRINT-HEAD-1A"
+  for i in $(seq 1 120); do echo "filler line $i: the quick brown fox jumps over the lazy dog, padding the hook output to measure truncation."; done
+  echo "Canary: CANARY-PRINT-MID-2B (about 12 KB into the block)"
+  for i in $(seq 121 300); do echo "filler line $i: the quick brown fox jumps over the lazy dog, padding the hook output to measure truncation."; done
+  echo "Canary: CANARY-PRINT-TAIL-3C (about 30 KB into the block)"
+fi
+
 cat << 'EOF'
 CRITICAL SESSION RULES (CLAUDE.md has full text — these 7 are the most-violated):
 1. LINEAR CARD FIRST, before any edit: `node scripts/linear-brain.js create "<title>" --dispatch --notes "...## Acceptance criteria..."`. Dispatched onto an existing issue → `node scripts/linear-session.js claim --issue=BRO-N` instead. Notion is retired: never notion-brain.js.
