@@ -386,5 +386,34 @@
       }
     ],
     "queuedAt": "2026-09-28T21:07:00.749Z"
+  },
+  {
+    "conditionKey": "land:land/audit-inflight-gate-2",
+    "title": "Landing blocked: rebase red on land/audit-inflight-gate-2",
+    "description": "land.yml did not land land/audit-inflight-gate-2: the rebase gate went red at f31d117bbd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36484124055",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/audit-inflight-gate-2"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "f31d117bbdaf35affff3ac0761daeedcc977b11a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36484124055"
+      }
+    ],
+    "queuedAt": "2026-09-28T21:10:42.308Z"
   }
 ]
