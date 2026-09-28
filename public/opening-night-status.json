@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28T01:33:09.664Z",
+  "generatedAt": "2026-09-28T01:39:14.593Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -118,10 +118,6 @@
         },
         {
           "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
           "isDualMarket": false
         },
         {
@@ -1540,25 +1536,24 @@
       "status": "open",
       "slug": "tru-off-west-end",
       "thumbnail": "/images/shows/tru-off-west-end-2026/thumbnail.png",
-      "siteScore": 77.08,
-      "liveScore": 77,
-      "scoreDrift": -0.0799999999999983,
+      "siteScore": 73.66,
+      "liveScore": 74,
+      "scoreDrift": 0.3400000000000034,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
-      "t1": 1,
+      "total": 4,
+      "t1": 2,
       "t2": 1,
       "t3": 1,
       "positive": 2,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "4/8 total",
           "T1:0/3",
-          "T2:1/2",
           "hi-conf:0/6"
         ],
         "highConfidence": 0,
@@ -1600,10 +1595,6 @@
         },
         {
           "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -1655,6 +1646,18 @@
           "t3": 1,
           "p": 2,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-28T01:39:14.593Z",
+          "rc": 4,
+          "s": 73.66,
+          "t1": 2,
+          "t2": 1,
+          "t3": 1,
+          "p": 2,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }
