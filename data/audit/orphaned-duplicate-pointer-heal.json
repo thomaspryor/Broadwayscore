@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-28T01:36:06.094Z",
+  "generated": "2026-09-28T03:25:31.894Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 97,
+  "count": 98,
   "orphans": [
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
@@ -575,6 +575,13 @@
       "loserFile": "cote-notices--david-cote.json",
       "targetFile": "cote-notices--david-finkle.json",
       "reason": "orphaned-duplicate-heal: cote-notices--david-finkle.json was flagged invalid after cote-notices--david-cote.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "the-scottsboro-boys-2010",
+      "loserFile": "ap--unknown.json",
+      "targetFile": "ap--mark-kennedy.json",
+      "reason": "orphaned-duplicate-heal: ap--mark-kennedy.json was flagged invalid after ap--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
