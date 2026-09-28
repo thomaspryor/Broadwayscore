@@ -2939,7 +2939,13 @@ function productionYear(show) {
  * Extracts datePublished from JSON-LD or URL year and rejects if too old.
  * @returns {Array} reviews (empty if roundup is wrong year, unchanged otherwise)
  */
-function validateBWWRoundupYear(reviews, html, showOpeningDate, showId, bwwUrl) {
+// opts.openEnded: the show has no recorded openingDate, so showOpeningDate is
+// its first preview (or id year). Press night can land many months after the
+// first preview (repertory: mas-sabe-el-saulo-por-viejo, previews 2025-12-19),
+// so the "published after opening" limit widens from 6 to 18 months, the same
+// width as the before-opening limit. A much later production of the title
+// (stale stuck-in-previews entry) is still rejected.
+function validateBWWRoundupYear(reviews, html, showOpeningDate, showId, bwwUrl, opts = {}) {
   if (reviews.length === 0) return reviews;
 
   // null/'' must short-circuit BEFORE new Date(): new Date(null) is 1970-01-01,
@@ -3003,7 +3009,8 @@ function validateBWWRoundupYear(reviews, html, showOpeningDate, showId, bwwUrl) 
 
   // Also reject if roundup was published more than 6 months AFTER opening
   // (unlikely to be a legitimate roundup — might be a revival or re-run)
-  if (monthsDiff < -6) {
+  const maxMonthsAfter = opts.openEnded ? 18 : 6;
+  if (monthsDiff < -maxMonthsAfter) {
     console.log(`    ⚠ REJECTING BWW roundup: published ${roundupDate.toISOString().slice(0, 10)} but show opened ${showOpeningDate} (roundup is ${-monthsDiff} months after opening)`);
     return [];
   }
@@ -4473,7 +4480,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       // Validate geographic accuracy — filter non-local outlets, reject if majority are wrong
       bwwReviews = validateBWWRoundupGeography(bwwReviews, bwwResult.html, showId, isWestEnd);
       // Validate publish year — reject roundups from older productions of the same title
-      bwwReviews = validateBWWRoundupYear(bwwReviews, bwwResult.html, show.openingDate || show.previewsStartDate, showId, bwwResult.url);
+      bwwReviews = validateBWWRoundupYear(bwwReviews, bwwResult.html, show.openingDate || show.previewsStartDate, showId, bwwResult.url, { openEnded: !show.openingDate });
       health.bww.extracted = bwwReviews.length;
       foundReviews.push(...bwwReviews);
       // Archive the page

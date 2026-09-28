@@ -703,7 +703,7 @@ async function runAggregators(show) {
         // Validate roundup year — reject if from older production (e.g., OB roundup for Broadway show)
         // previewsStartDate fallback: stuck-previews shows (null openingDate) are
         // exactly the ones this backstop polls for.
-        reviews = validateBWWRoundupYear(reviews, bww.html, show.openingDate || show.previewsStartDate, show.id, bww.url);
+        reviews = validateBWWRoundupYear(reviews, bww.html, show.openingDate || show.previewsStartDate, show.id, bww.url, { openEnded: !show.openingDate });
         console.log(`  BWW RR: ${reviews.length} reviews found`);
         results.push(...reviews);
         // Persist only now: fetched, extracted, AND year-validated as this
