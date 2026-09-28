@@ -2370,12 +2370,15 @@ async function discoverShows() {
     // mint OR on the archived row's exact normalized title+venue (a re-slugged
     // title or a different id-year still names the same retired listing).
     const minted = mintCandidateId(show);
-    const retiredHit = matchesRetired({ id: minted.showId, title: show.title, venue: show.venue });
+    // Venue goes through sanitizeVenueForWrite so a placeholder ("TBA", "West End")
+    // can never match a retired title+venue pair; matchesRetired normalizes the rest.
+    const candidateVenue = sanitizeVenueForWrite(show.venue);
+    const retiredHit = matchesRetired({ id: minted.showId, title: show.title, venue: sanitizeVenueForWrite(show.venue) });
     if (retiredHit) {
-      console.log(`  retired-skip: ${minted.showId} ("${show.title}" @ ${show.venue || 'no venue'}) matched retired ${retiredHit.id} by ${retiredHit.matchedBy}`);
+      console.log(`  retired-skip: ${minted.showId} ("${show.title}" @ ${candidateVenue || 'no venue'}) matched retired ${retiredHit.id} by ${retiredHit.matchedBy}`);
       retiredSkipped.push({
         title: show.title,
-        venue: show.venue || null,
+        venue: sanitizeVenueForWrite(show.venue),
         candidateId: minted.showId,
         retiredId: retiredHit.id,
         matchedBy: retiredHit.matchedBy,
