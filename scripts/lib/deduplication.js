@@ -658,6 +658,37 @@ function isCrossMarket(newShow, existing) {
 }
 
 /**
+ * Two rows that explicitly cross-link each other are different productions
+ * by construction: a transfer that names its tryout (`transferOf`), a tryout
+ * that names its transfer (`transferredTo`), or a return engagement whose
+ * `priorRuns` names the earlier row. Sprint-plan S0-T2b (stopgap until the
+ * S5-T1 temporal rule): without this, checkForDuplicate's Check 1 (exact
+ * title) fires before any venue/date reasoning and `isMultiProduction` only
+ * exempts closed-vs-announced pairs, so an OPEN return/transfer stub with
+ * the same title (Into the Woods, Arcadia, Lost in Del Valle, the one-part
+ * Cursed Child) fails validate-data's duplicate check.
+ *
+ * `priorRuns` entries are `{ openingDate, closingDate, venue, note?,
+ * source? }` objects in shows.json today (34 shows, none carry an id); an
+ * entry "names" a row when it is the bare id string or an object whose
+ * `id` / `showId` / `productionId` equals it. Ids are compared as non-empty
+ * strings only, so two rows without ids never read as linked
+ * (undefined === undefined). Symmetric in its arguments.
+ */
+function isCrossLinked(a, b) {
+  if (!a || !b) return false;
+  const idOf = (s) => (typeof s.id === 'string' && s.id.trim()) ? s.id.trim() : null;
+  const names = (show, id) => {
+    if (!id) return false;
+    if (show.transferOf === id || show.transferredTo === id) return true;
+    const runs = Array.isArray(show.priorRuns) ? show.priorRuns : [];
+    return runs.some(r => r === id ||
+      (r && typeof r === 'object' && (r.id === id || r.showId === id || r.productionId === id)));
+  };
+  return names(a, idOf(b)) || names(b, idOf(a));
+}
+
+/**
  * Check if a show might be a duplicate of an existing show
  * Returns { isDuplicate: boolean, reason: string, existingShow: object|null }
  *
@@ -680,6 +711,12 @@ function checkForDuplicate(newShow, existingShows) {
     // Skip opera vs non-opera comparisons — similar-sounding titles are different works
     // (e.g., Verdi's "Otello" should never match Shakespeare's "Othello")
     if ((newShow.type === 'opera') !== (existing.type === 'opera')) continue;
+
+    // Skip rows the candidate is explicitly cross-linked to (transferOf /
+    // transferredTo / priorRuns naming the other id) — different productions
+    // by construction, before any title check can fire (S0-T2b). Only THIS
+    // row is skipped; an un-linked same-title row can still match below.
+    if (isCrossLinked(newShow, existing)) continue;
 
     // Check 1: Exact title match (case-insensitive)
     if (newTitleLower === existingTitleLower) {
@@ -981,6 +1018,7 @@ module.exports = {
   areTitlesSimilar,
   checkKnownDuplicates,
   isCrossMarket,
+  isCrossLinked,
   getMarketPool,
   isSlugContainmentDuplicate,
   findSameTitleTwinIfNoOpeningDate,
