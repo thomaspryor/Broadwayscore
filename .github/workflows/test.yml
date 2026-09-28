@@ -2080,6 +2080,12 @@ on:
       # run ZERO CI without this line. Also registered in
       # tests/unit-test-manifest.txt.
       - 'scripts/tests/session-start-staleness.test.mjs'
+      # BRO-4237: the cloud session-start hook installs the owner's global
+      # instructions via scripts/sync-global-instructions.js (the lib rides
+      # 'scripts/lib/**'); the test drives the real hook end-to-end. Also
+      # registered in tests/unit-test-manifest.txt.
+      - 'scripts/sync-global-instructions.js'
+      - 'scripts/tests/global-instructions.test.mjs'
       # Generalized hook liveness (task #1104) — the same vacuous-gate class
       # applied to EVERY hook registered in settings.json, not just the
       # #1079 gate: hook-syntax-guard.sh quarantined two healthy hooks on

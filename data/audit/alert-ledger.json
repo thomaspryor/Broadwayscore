@@ -4740,13 +4740,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Run wrongShow auto-clear ensemble corpus scan (needs review-texts), Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-28T20:09:49.195Z",
+      "lastSeen": "2026-09-28T20:19:18.017Z",
       "lastNotifiedAt": "2026-09-28T11:41:47.830Z",
       "lastSurfacedAt": "2026-09-28T11:41:47.830Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 16
+      "silentRefires": 17
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -5759,7 +5759,7 @@
       }
     },
     "land:land/bro-4241-cloud-blockers": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: scripts-lib-tests red on land/bro-4241-cloud-blockers",
       "firstSeen": "2026-09-28T19:29:54.317Z",
@@ -5768,10 +5768,11 @@
       "lastSurfacedAt": "2026-09-28T19:29:54.317Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-28T20:18:40.001Z"
     },
     "land:land/bro-4237-global-rules": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: scripts-lib-tests red on land/bro-4237-global-rules",
       "firstSeen": "2026-09-28T19:34:50.515Z",
@@ -5780,7 +5781,8 @@
       "lastSurfacedAt": "2026-09-28T19:34:50.515Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-28T20:13:44.531Z"
     },
     "corpus-drift:duplicate-shows": {
       "status": "open",
