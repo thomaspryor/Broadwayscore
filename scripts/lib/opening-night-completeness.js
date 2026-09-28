@@ -1,5 +1,7 @@
 'use strict';
 
+const { isRecentlyLive } = require('./show-liveness');
+
 /**
  * Pure predicates for the opening-night metadata completeness gate (card #189).
  * Catches empty cast / placeholder synopsis / stale "upcoming" tag on shows
@@ -17,7 +19,12 @@ const PLACEHOLDER_SYNOPSIS_PATTERNS = [
 
 const MIN_SYNOPSIS_LENGTH = 120;
 
-const STALE_UPCOMING_STATUSES = new Set(['open']);
+// Liveness for the stale-'upcoming'-tag check: status=open ONLY. Reproduces
+// the historical `STALE_UPCOMING_STATUSES = new Set(['open'])` by
+// construction — a previews show may legitimately still carry the tag, and a
+// closed show's tags are nobody's concern (audit S7-T7;
+// tests/unit/show-liveness.test.mjs pins the equivalence).
+const STALE_UPCOMING_LIVENESS = Object.freeze({ liveStatuses: Object.freeze(['open']), allowClosed: false });
 
 /**
  * @param {Object} show
@@ -45,7 +52,7 @@ function isPlaceholderSynopsis(synopsis) {
  */
 function hasStaleUpcomingTag(show) {
   if (!show || !Array.isArray(show.tags)) return false;
-  return STALE_UPCOMING_STATUSES.has(show.status) && show.tags.includes('upcoming');
+  return isRecentlyLive(show, STALE_UPCOMING_LIVENESS) && show.tags.includes('upcoming');
 }
 
 /**
@@ -97,6 +104,7 @@ function countRevivalMentions(texts) {
 module.exports = {
   PLACEHOLDER_SYNOPSIS_PATTERNS,
   MIN_SYNOPSIS_LENGTH,
+  STALE_UPCOMING_LIVENESS,
   hasEmptyCast,
   isPlaceholderSynopsis,
   hasStaleUpcomingTag,

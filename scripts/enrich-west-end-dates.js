@@ -6,6 +6,13 @@
  * (press night) dates from two sources:
  *   1. Theatremonkey.com (primary, ~80+ shows with structured Press Night dates)
  *   2. Playbill London schedule (secondary, ~15 shows, cross-validates)
+ * and, since the 2026 data audit (S7-T10), backfills closingDate (source
+ * 'olt') and ageRecommendation from Official London Theatre — the listing
+ * JSON-LD discovery already fetches, plus each show page's age guidance —
+ * on WE/OWE rows where the field is null. Existing values are never
+ * overwritten; humanCorrectedClosingDate: true rows are never touched
+ * (scripts/lib/olt-enrichment.js holds the decision, closingDate goes through
+ * scripts/lib/closing-date-guard.js, the save through shows-write-guard.js).
  *
  * Usage:
  *   node scripts/enrich-west-end-dates.js [options]
@@ -17,6 +24,12 @@
  *   --force              Overwrite existing dates
  *   --fix-unconfirmed    Also process shows with unconfirmed openingDateSource
  *                        (todaytix, showscore, unknown) — used by daily cron
+ *   --skip-olt           Skip the Official London Theatre backfill phase
+ *   --olt-only           Run ONLY the OLT backfill (no Theatremonkey/Playbill)
+ *   --olt-html=PATH      Read the OLT listing from a saved HTML file instead of
+ *                        fetching it (offline dry-runs, fixtures)
+ *   --olt-age-pages=N    Max OLT show pages to fetch for age guidance per run
+ *                        (default 40; 0 disables the per-show fetches)
  */
 
 const fs = require('fs');
@@ -26,6 +39,15 @@ const { matchTitleToShow } = require('./lib/show-matching');
 const { isUnconfirmedDateSource } = require('./lib/date-source-confidence');
 const { inferPressNightFromReviews } = require('./lib/infer-press-night-from-reviews');
 const showsWriteGuard = require('./lib/shows-write-guard');
+const { writeClosingDate } = require('./lib/closing-date-guard');
+const {
+  OLT_LISTING_URL,
+  isoDay,
+  parseOltTheaterEvents,
+  parseOltAgeGuidance,
+  isOltEnrichable,
+  planOltEnrichment,
+} = require('./lib/olt-enrichment');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -63,6 +85,19 @@ const missingOnly = !force && !fixUnconfirmed;
 const showArg = args.find(a => a.startsWith('--show='));
 const showSlug = showArg ? showArg.split('=')[1] : null;
 
+// Official London Theatre backfill phase (audit S7-T10).
+const skipOlt = args.includes('--skip-olt');
+const oltOnly = args.includes('--olt-only');
+const oltHtmlArg = args.find(a => a.startsWith('--olt-html='));
+const oltHtmlPath = oltHtmlArg ? oltHtmlArg.split('=').slice(1).join('=') : null;
+const oltAgePagesArg = args.find(a => a.startsWith('--olt-age-pages='));
+const OLT_AGE_PAGES_DEFAULT = 40;
+const oltAgePages = oltAgePagesArg
+  ? Math.max(0, parseInt(oltAgePagesArg.split('=')[1], 10) || 0)
+  : OLT_AGE_PAGES_DEFAULT;
+const OLT_AGE_PAGE_DELAY_MS = 1500;
+const FETCH_TIMEOUT_MS = 30000;
+
 function loadShows() {
   return showsWriteGuard.loadShows();
 }
@@ -76,7 +111,10 @@ function sleep(ms) {
 }
 
 async function fetchPage(url) {
-  const response = await fetch(url, { headers: FETCH_HEADERS });
+  // Plain HTTPS: Theatremonkey, Playbill and OLT all serve static HTML with
+  // no bot wall (discovery fetches OLT the same way), so the scraping-service
+  // chain is not needed. Bounded so a dead socket can't eat the cron run.
+  const response = await fetch(url, { headers: FETCH_HEADERS, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
   if (!response.ok) return null;
   return response.text();
 }
@@ -433,6 +471,112 @@ function mergeSources(tmEntries, pbEntries) {
 }
 
 // ============================================================
+// OFFICIAL LONDON THEATRE — closingDate + ageRecommendation backfill (S7-T10)
+// ============================================================
+
+/**
+ * Match every OLT listing entry to a WE/OWE row and plan the backfill.
+ * Network: one listing fetch (or --olt-html=PATH), plus at most
+ * --olt-age-pages show-page fetches for rows still missing ageRecommendation
+ * (the age guidance is on the show page, not in the listing JSON-LD).
+ * Every decision is the pure planOltEnrichment() in
+ * scripts/lib/olt-enrichment.js; this function only fetches, matches, logs.
+ *
+ * @returns {{changes: Array, matched: number, unmatched: string[], skipped: number,
+ *            agePagesFetched: number, events: number}}
+ */
+async function scrapeOfficialLondonTheatre(weShows) {
+  console.log('');
+  console.log('--- OFFICIAL LONDON THEATRE (closingDate + age backfill) ---');
+  const result = { changes: [], matched: 0, unmatched: [], skipped: 0, agePagesFetched: 0, events: 0 };
+
+  let html = null;
+  if (oltHtmlPath) {
+    console.log(`Reading cached listing: ${oltHtmlPath}`);
+    html = fs.readFileSync(oltHtmlPath, 'utf8');
+  } else {
+    console.log(`Fetching: ${OLT_LISTING_URL}`);
+    try {
+      html = await fetchPage(OLT_LISTING_URL);
+    } catch (err) {
+      console.warn(`WARNING: OLT fetch error: ${err.message}`);
+    }
+  }
+  if (!html || html.length < 3000) {
+    console.warn(`WARNING: OLT listing unavailable or suspiciously short (${html ? html.length : 0} bytes) — skipping backfill`);
+    return result;
+  }
+
+  const events = parseOltTheaterEvents(html);
+  result.events = events.length;
+  console.log(`Parsed ${events.length} TheaterEvent entries`);
+  if (events.length < 5) {
+    console.warn('WARNING: fewer than 5 OLT entries — possible partial fetch, skipping backfill');
+    return result;
+  }
+
+  // One entry per row (first wins — OLT can list a title twice for a return
+  // engagement). High-confidence title matches only, same bar as Theatremonkey.
+  // `date` (the OLT run start) lets matchTitleToShow pick, among same-title
+  // productions, the one whose run window contains it (the-cherry-orchard-
+  // west-end-2026 vs the-cherry-orchard-riverside-studios-off-west-end-2026);
+  // it falls back to the usual most-recent pick when no window matches.
+  const byShowId = new Map();
+  for (const event of events) {
+    const runStart = isoDay(event.startDate);
+    const match = matchTitleToShow(cleanTitle(event.title), weShows, { market: 'west-end', ...(runStart ? { date: runStart } : {}) });
+    if (!match || match.confidence !== 'high' || (match.show.category !== 'west-end' && match.show.category !== 'off-west-end')) {
+      result.unmatched.push(event.title);
+      continue;
+    }
+    if (!byShowId.has(match.show.id)) byShowId.set(match.show.id, { show: match.show, event });
+  }
+  result.matched = byShowId.size;
+  console.log(`Matched ${byShowId.size} entries to WE/OWE rows (${result.unmatched.length} unmatched)`);
+
+  let agePagesLeft = oltAgePages;
+  for (const { show, event } of byShowId.values()) {
+    if (!isOltEnrichable(show)) {
+      result.skipped++;
+      console.log(`  SKIP ${show.title} (${show.id}): status=${show.status}${show.closingDate ? `, closed ${show.closingDate}` : ''} — not live or recently closed`);
+      continue;
+    }
+    const wantsAge = !show.ageRecommendation && !!event.url;
+    if (wantsAge && agePagesLeft > 0) {
+      agePagesLeft--;
+      try {
+        if (result.agePagesFetched > 0) await sleep(OLT_AGE_PAGE_DELAY_MS);
+        const pageHtml = await fetchPage(event.url);
+        result.agePagesFetched++;
+        event.ageRecommendation = pageHtml ? parseOltAgeGuidance(pageHtml) : null;
+        console.log(`  age page ${event.url} → ${event.ageRecommendation || (pageHtml ? 'no guidance on page' : 'fetch returned nothing')}`);
+      } catch (err) {
+        console.log(`  age page fetch failed for ${show.title}: ${err.message}`);
+      }
+    } else if (wantsAge) {
+      console.log(`  (age-page budget of ${oltAgePages} exhausted — ${show.title} age deferred to next run)`);
+    }
+
+    const plan = planOltEnrichment(show, event);
+    for (const ch of plan.changes) {
+      console.log(`  FILL ${show.title} (${show.id}): ${ch.field} ${ch.old ?? 'null'} -> ${ch.new} [${ch.source}]`);
+    }
+    for (const sk of plan.skips) {
+      // already-set / no-olt-* are the steady state for most rows — only the
+      // guard-driven skips are worth a line.
+      if (/^(already-set|no-olt-)/.test(sk.reason)) continue;
+      console.log(`  SKIP ${show.title} (${show.id}): ${sk.field} — ${sk.reason}`);
+    }
+    if (plan.changes.length > 0) {
+      result.changes.push({ show: show.title, slug: show.slug, id: show.id, changes: plan.changes });
+    }
+  }
+
+  console.log(`OLT: ${result.changes.length} row(s) to backfill, ${result.skipped} matched row(s) not live, ${result.agePagesFetched} age page(s) fetched`);
+  return result;
+}
+
+// ============================================================
 // MAIN
 // ============================================================
 
@@ -445,6 +589,8 @@ async function main() {
   console.log(`Mode: ${verify ? 'VERIFY' : dryRun ? 'DRY RUN' : 'LIVE'}`);
   if (force) console.log('  FORCE mode: will overwrite existing dates');
   if (fixUnconfirmed) console.log('  FIX-UNCONFIRMED mode: will correct shows with todaytix/showscore/unknown sources');
+  if (skipOlt) console.log('  SKIP-OLT: Official London Theatre backfill disabled');
+  if (oltOnly) console.log('  OLT-ONLY: Theatremonkey/Playbill phases disabled');
   if (showSlug) console.log(`Show filter: ${showSlug}`);
   console.log('');
 
@@ -485,11 +631,18 @@ async function main() {
   console.log(`Candidate shows for enrichment: ${candidateShows.length}`);
   console.log('');
 
+  // Phase 0: Official London Theatre closingDate + ageRecommendation backfill
+  // (audit S7-T10). Independent of the TM/PB candidate filter: it fills only
+  // null fields on live/recently closed rows, whatever their date sources.
+  const oltResult = skipOlt
+    ? { changes: [], matched: 0, unmatched: [], skipped: 0, agePagesFetched: 0, events: 0 }
+    : await scrapeOfficialLondonTheatre(weShows);
+
   // Phase 1: Theatremonkey (primary)
-  const tmEntries = await scrapeTheatremonkey(weShows);
+  const tmEntries = oltOnly ? [] : await scrapeTheatremonkey(weShows);
 
   // Phase 2: Playbill (secondary)
-  const pbEntries = await scrapePlaybill();
+  const pbEntries = oltOnly ? [] : await scrapePlaybill();
 
   // Phase 3: Merge sources
   console.log('');
@@ -498,7 +651,7 @@ async function main() {
   console.log(`Merged: ${entries.length} unique shows (TM: ${tmEntries.length}, PB: ${pbEntries.length})`);
   console.log('');
 
-  if (entries.length === 0) {
+  if (entries.length === 0 && !oltOnly) {
     console.warn('WARNING: 0 entries from all sources');
     // In fix-unconfirmed mode, Phase 4 (infer press night from review-date
     // clustering) is a review-data-only fallback that does NOT need any scrape
@@ -506,12 +659,13 @@ async function main() {
     // can ONLY be corrected by inference. Exiting here would skip that backfill
     // forever (the weekly cron's TM/PB scrape returning empty was silently
     // leaving ~32 collapsed WE openingDate===previewsStartDate todaytix shows
-    // uncorrected). Only bail early when there's genuinely nothing to do.
-    if (!fixUnconfirmed) {
+    // uncorrected). Only bail early when there's genuinely nothing to do —
+    // and never while the OLT phase has backfills to apply.
+    if (!fixUnconfirmed && oltResult.changes.length === 0) {
       console.log('No changes to apply');
       process.exit(0);
     }
-    console.log('Continuing to Phase 4 (review-date inference) despite 0 scrape entries.');
+    if (fixUnconfirmed) console.log('Continuing to Phase 4 (review-date inference) despite 0 scrape entries.');
   }
 
   // Phase 4: Match to shows.json and compute changes
@@ -650,12 +804,18 @@ async function main() {
     console.log(`Inferred ${inferences.length} press night(s) from review dates`);
   }
 
+  // Phase 0 results join the change list here: the report and the apply
+  // loop below treat them like any other change, except closingDate, which
+  // the apply loop routes through writeClosingDate().
+  changes.push(...oltResult.changes);
+
   // Report
   console.log('');
   console.log('='.repeat(60));
   console.log('RESULTS');
   console.log('='.repeat(60));
   console.log(`Total entries: ${entries.length} (TM: ${tmEntries.length}, PB: ${pbEntries.length})`);
+  console.log(`OLT: ${oltResult.events} entries, ${oltResult.matched} matched, ${oltResult.changes.length} row(s) to backfill`);
   console.log(`Matched to shows: ${matchCount}`);
   console.log(`Unmatched: ${unmatched.length}`);
   if (unmatched.length > 0) {
@@ -697,7 +857,14 @@ async function main() {
       if (!showRecord) continue;
 
       for (const ch of c.changes) {
-        showRecord[ch.field] = ch.new;
+        if (ch.field === 'closingDate') {
+          // Through the guard: planOltEnrichment already refuses
+          // humanCorrectedClosingDate rows, and the guard refuses again at
+          // write time (also stamps closingDateSource + closingDateUpdatedAt).
+          writeClosingDate(showRecord, ch.new, ch.source || 'olt');
+        } else {
+          showRecord[ch.field] = ch.new;
+        }
       }
       updated++;
     }
@@ -728,6 +895,8 @@ async function main() {
     fs.appendFileSync(process.env.GITHUB_OUTPUT, `updated_count=${updated}\n`);
     fs.appendFileSync(process.env.GITHUB_OUTPUT, `matched_count=${matchCount}\n`);
     fs.appendFileSync(process.env.GITHUB_OUTPUT, `entries_count=${entries.length}\n`);
+    fs.appendFileSync(process.env.GITHUB_OUTPUT, `olt_changes_count=${oltResult.changes.length}\n`);
+    fs.appendFileSync(process.env.GITHUB_OUTPUT, `olt_matched_count=${oltResult.matched}\n`);
   }
 
   console.log('');
