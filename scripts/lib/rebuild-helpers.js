@@ -129,13 +129,50 @@ function bothThumbsOpposeVerdict(data, score) {
  * @param {object} data        review-text record (scoreSource / originalScoreSource / starRating read)
  * @returns {string|null}
  */
-function publishedRatingEvidence(raw, data) {
+// Registry starScale by outletId (lazy, cached). Tests pass opts.starScale
+// instead of touching the registry.
+let _starScaleRegistry = null;
+function registryStarScale(outletId) {
+  if (!outletId) return null;
+  if (_starScaleRegistry === null) {
+    try {
+      const _fs = require('fs');
+      const _path = require('path');
+      _starScaleRegistry = JSON.parse(_fs.readFileSync(_path.join(__dirname, '..', '..', 'data', 'outlet-registry.json'), 'utf-8'));
+    } catch {
+      _starScaleRegistry = { outlets: {} };
+    }
+  }
+  const entry = (_starScaleRegistry.outlets || {})[outletId];
+  if (!entry || !Number.isFinite(entry.starScale) || entry.starScale <= 0) return null;
+  return entry.starScale;
+}
+
+// 'star-ladder' (S6-T5 follow-up): a bare number at an outlet the registry says
+// publishes N-star ratings, sitting exactly on that ladder (k * 100/N for a
+// whole k in 1..N — Time Out's 60 = ★★★, the Guardian's 80 = ★★★★, USA Today's
+// 75 = ★★★ of 4), is the older web-search pipeline's star relay, not a made-up
+// number. The strict gate's scoring-delta showed ~50 such T1 relays (timeout,
+// guardian, times-uk) would otherwise be replaced by an LLM read within a few
+// points of the published star. A number OFF the ladder (75 at a 5-star
+// outlet, EW's 88) or at an outlet with no starScale stays ambiguous.
+function isOnStarLadder(raw, starScale) {
+  if (!Number.isFinite(starScale) || starScale <= 0) return false;
+  const n = typeof raw === 'number' ? raw : (typeof raw === 'string' && /^\s*\d+(?:\.\d+)?\s*$/.test(raw) ? Number(raw) : NaN);
+  if (!Number.isFinite(n) || n <= 0 || n > 100) return false;
+  const k = n / (100 / starScale);
+  return Math.abs(k - Math.round(k)) < 1e-9 && Math.round(k) >= 1 && Math.round(k) <= starScale;
+}
+
+function publishedRatingEvidence(raw, data, opts) {
   if (raw == null || raw === '') return null;
   if (isUnambiguousRatingString(raw)) return 'unambiguous';
   const d = data || {};
   if (d.scoreSource && OUTLET_VERIFIED_SOURCES.has(d.scoreSource)) return 'verified-scoreSource';
   if (d.originalScoreSource && OUTLET_VERIFIED_SOURCES.has(d.originalScoreSource)) return 'verified-originalScoreSource';
   if (isUnambiguousRatingString(d.starRating)) return 'starRating';
+  const starScale = opts && Object.prototype.hasOwnProperty.call(opts, 'starScale') ? opts.starScale : registryStarScale(d.outletId);
+  if (isOnStarLadder(raw, starScale)) return 'star-ladder';
   return null;
 }
 
@@ -1220,6 +1257,7 @@ function compareFilesForDedupPriority(a, b) {
 }
 
 module.exports = {
+  isOnStarLadder,
   isUnambiguousRatingString,
   publishedRatingEvidence,
   isPublishedRatingEvidence,
