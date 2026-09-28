@@ -793,10 +793,18 @@ function getCachedUrl(showId) {
   return null;
 }
 
+// BRO-4215: set when processShow's fetch THREW for the current show, as
+// opposed to cleanly finding no usable data (404, wrong page, empty page).
+// Both return null; only a clean no-data result may stamp
+// showScoreLastAttempted, or a proxy outage would mark every show fresh and
+// suppress retries for the whole --skip-fresh-hours window.
+let showFetchFailed = false;
+
 /**
  * Process a single show (cache-only — URL must already be in show-score-urls.json)
  */
 async function processShow(show) {
+  showFetchFailed = false;
   // Multi-production guard: older productions only processed if they have their own page
   if (!isMostRecentProduction(show)) {
     const myUrl = getCachedUrl(show.id);
@@ -895,6 +903,7 @@ async function processShow(show) {
 
   } catch (error) {
     console.error(`  ERROR: ${error.message}`);
+    showFetchFailed = true;
     return null;
   }
 }
@@ -997,7 +1006,7 @@ async function main() {
         process.exit(1);
       }
       if (skipFreshHours > 0) {
-        const fresh = shows.filter(s => isSourceFresh((audienceBuzz.shows || {})[s.id], 'showScore', skipFreshHours));
+        const fresh = shows.filter(s => isSourceFresh((audienceBuzz.shows || {})[s.id], 'showScore', skipFreshHours, { attemptField: 'showScoreLastAttempted' }));
         if (fresh.length > 0) {
           console.log(`Skipping ${fresh.length} show(s) with Show Score updated in the last ${skipFreshHours}h: ${fresh.map(s => s.id).join(', ')}`);
           shows = shows.filter(s => !fresh.includes(s));
@@ -1233,6 +1242,15 @@ async function main() {
         }
       } else if (previousScores[show.id] != null) {
         scoreDrops.push(show.id);
+      }
+
+      // BRO-4215: a clean scrape that produced no score (no page yet, empty page,
+      // identical-to-sibling) is stamped so --skip-fresh-hours doesn't re-fetch it
+      // on every orchestrator dispatch. Fetch errors are never stamped.
+      if (skipFreshHours > 0 && !dryRun && !shardOutput && !showFetchFailed && !(data && data.score)) {
+        audienceBuzz.shows[show.id] = audienceBuzz.shows[show.id] || { sources: {} };
+        audienceBuzz.shows[show.id].showScoreLastAttempted = new Date().toISOString();
+        saveAudienceBuzz(audienceBuzz);
       }
     } catch (e) {
       console.error(`Error processing ${show.title}:`, e.message);

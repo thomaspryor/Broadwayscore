@@ -18,9 +18,11 @@
 
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help');
 
 const REPO = path.join(__dirname, '..');
 const PROVIDERS = ['scrapingbee', 'scrapingdog', 'brightdata'];
+const USAGE = `Usage: node scripts/check-attribution-gap-clear.js --provider=${PROVIDERS.join('|')}`;
 
 function latestPct(lines, provider) {
   const records = lines.map((l) => { try { return JSON.parse(l); } catch { return null; } })
@@ -32,10 +34,11 @@ function latestPct(lines, provider) {
 }
 
 function main(argv) {
+  if (hasHelpFlag(argv || [])) { console.log(USAGE); return 0; }
   const arg = (argv || []).find((a) => a.startsWith('--provider='));
   const provider = arg ? arg.slice('--provider='.length) : '';
   if (!PROVIDERS.includes(provider)) {
-    console.error(`Usage: node scripts/check-attribution-gap-clear.js --provider=${PROVIDERS.join('|')}`);
+    console.error(USAGE);
     return 2;
   }
   const thresholds = JSON.parse(fs.readFileSync(path.join(REPO, 'scripts', 'config', 'provider-spend-thresholds.json'), 'utf8'));

@@ -143,7 +143,10 @@ jobs:
           elif [ -n "${{ github.event.inputs.show_id }}" ]; then
             ARGS="$ARGS --show=${{ github.event.inputs.show_id }}"
           elif [ -n "${{ github.event.inputs.shows }}" ]; then
-            ARGS="$ARGS --shows=${{ github.event.inputs.shows }} --skip-fresh-hours=${{ github.event.inputs.skip_fresh_hours || '20' }}"
+            SKIP_FRESH_HOURS="${{ github.event.inputs.skip_fresh_hours || '20' }}"
+            # Numeric only (free-text dispatch input); anything else falls back to 20.
+            [[ "$SKIP_FRESH_HOURS" =~ ^[0-9]+(\.[0-9]+)?$ ]] || SKIP_FRESH_HOURS=20
+            ARGS="$ARGS --shows=${{ github.event.inputs.shows }} --skip-fresh-hours=$SKIP_FRESH_HOURS"
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             # Manual/API trigger without filter: default to recently opened shows (≤14 days)
             # Prevents accidentally processing all open shows when only one is needed
