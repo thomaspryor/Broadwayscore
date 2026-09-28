@@ -188,9 +188,10 @@ describe('getOffBroadwayShows', () => {
   });
 });
 
-describe('national tours with the tour flag off', () => {
-  test('getToursOf is empty, so no Broadway page links a 404 tour page (BRO-4211)', () => {
-    assert.deepEqual(getToursOf({ id: 'beetlejuice-2019', title: 'Beetlejuice', category: 'broadway' }), []);
+describe('national tours (launched in code, BRO-4211)', () => {
+  test('getToursOf links the Broadway page to its tour', () => {
+    const ids = getToursOf({ id: 'beetlejuice-2019', title: 'Beetlejuice', category: 'broadway' }).map(t => t.id);
+    assert.ok(ids.includes('beetlejuice-tour-2022'), `expected beetlejuice-tour-2022, got ${JSON.stringify(ids)}`);
   });
 });
 
