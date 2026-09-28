@@ -420,11 +420,10 @@ jobs:
 
           if [ "$MARKET" != "west-end" ]; then
             # Broadway audience scrapers (also dispatched when market is empty = all markets)
-            IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
-            for SHOW_ID in "${SHOW_ARRAY[@]}"; do
-              echo "  → Dispatching Broadway.com scraper for $SHOW_ID"
-              dispatch "update-broadway-com[$SHOW_ID]" update-broadway-com.yml -f show="$SHOW_ID"
-            done
+            # BRO-4242: one batched run, not one workflow run per show (was 35
+            # dispatches per tick, ~100 full job setups/day for one show each).
+            echo "  → Dispatching Broadway.com scraper for: $SHOWS"
+            dispatch "update-broadway-com" update-broadway-com.yml -f shows="$SHOWS"
 
             echo "  → Dispatching Mezzanine for: $SHOWS"
             dispatch "update-mezzanine" update-mezzanine.yml -f shows="$SHOWS"
