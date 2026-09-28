@@ -39,7 +39,7 @@ export interface BrowsePageConfig {
   hideRanks?: boolean;
   limit?: number;
   relatedPages: string[]; // Slugs of related browse pages
-  source?: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end' | 'regional'; // Data source (default: broadway)
+  source?: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end' | 'regional' | 'tour'; // Data source (default: broadway)
   /** Optional function to group shows into sections with H2 headings.
    *  Returns a label for each show — shows with the same label are grouped together.
    *  Only applies when using the default/custom sort (client re-sorts lose groupings). */
@@ -302,6 +302,21 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       return 'Recent Tryouts';
     },
     relatedPages: ['upcoming-broadway-shows', 'new-broadway-shows-2025', 'best-broadway-show-right-now'],
+  },
+
+  // BRO-4211. Built only when the tour flag is on (getAllBrowseSlugs gates on
+  // markets.json through isCategoryEnabled).
+  'broadway-national-tours': {
+    slug: 'broadway-national-tours',
+    title: 'Broadway National Tours',
+    h1: 'Broadway National Tours: Critic Scores',
+    metaTitle: `Broadway National Tour Reviews \u2014 Critic Scores (${CURRENT_YEAR})`,
+    metaDescription: 'Critic scores for Broadway national tours, built from local reviews in every city the tour plays. See how the touring production compares with the original Broadway run.',
+    intro: 'When a Broadway hit goes on the road, local critics in each city review the touring company: new cast, a production rebuilt to travel. We score those reviews the same way we score Broadway, so each tour gets its own critic score, kept separate from the Broadway run it came from.',
+    sort: 'score',
+    source: 'tour',
+    hideRanks: true, // a catalog of tours, not a ranking
+    relatedPages: ['best-broadway-show-right-now', 'best-broadway-musicals', 'pre-broadway-out-of-town-shows'],
   },
 
   'broadway-shows-closing-soon': {
