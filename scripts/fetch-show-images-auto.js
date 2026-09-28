@@ -18,7 +18,7 @@
  *
  * No hardcoded IDs - works for any show!
  *
- * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing|--missing-only] [--bad-images] [--dry-run] [--audit-existing]
+ * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing|--missing-only] [--bad-images] [--dry-run] [--audit-existing] [--force-google]
  */
 
 require('./lib/load-env').loadEnv();
@@ -48,7 +48,8 @@ const USAGE = `fetch-show-images-auto.js — discover + fetch show images (Today
 Usage:
   node scripts/fetch-show-images-auto.js [--show=show-id] [--missing|--missing-only]
     [--bad-images] [--dry-run] [--audit-existing] [--concurrency=N] [--no-verify]
-    [--flagged] [--max-runtime=MIN]
+    [--flagged] [--max-runtime=MIN] [--force-google]
+    --force-google  ignore the per-show Google Images backoff (data/audit/image-search-attempts.json)
   node scripts/fetch-show-images-auto.js --help, -h   print this usage and exit — no fetches/writes
 `;
 
@@ -71,6 +72,13 @@ const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 
 // Module-level dry-run state (set in main)
 let dryRunMode = false;
+// BRO-4243: per-show backoff for the paid Google Images tier (25 SB credits
+// per search, 2 per show). --force-google bypasses it for a manual retry.
+const {
+  shouldSkipGoogleImages, recordGoogleImagesAttempt, loadImageSearchAttempts, saveImageSearchAttempts,
+} = require('./lib/image-search-backoff');
+let googleAttempts = null; // lazily loaded map; persisted after each attempt (not in dry-run)
+let forceGoogle = false;
 let dryRunResults = [];
 
 // Module-level shows data (loaded in main, referenced by processOneShow guard)
@@ -1660,6 +1668,15 @@ function filterGoogleCandidates(results, maxCount = 10) {
     .slice(0, maxCount);
 }
 
+// Record one Google Images tier outcome for the BRO-4243 backoff and persist it
+// immediately (runs can time out at --max-runtime). No writes in dry-run.
+function noteGoogleAttempt(showId, success) {
+  if (dryRunMode) return;
+  if (googleAttempts === null) googleAttempts = loadImageSearchAttempts();
+  googleAttempts = recordGoogleImagesAttempt(googleAttempts, showId, success);
+  try { saveImageSearchAttempts(googleAttempts); } catch (e) { console.warn(`   ⚠ could not save image-search-attempts.json: ${e.message}`); }
+}
+
 async function fetchFromGoogleImages(show) {
   const year = show.openingDate ? show.openingDate.substring(0, 4) : '';
   const safeTitle = show.title.replace(/"/g, '');
@@ -2202,7 +2219,15 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   // Step 4 (NEW): Google Images search for promotional art
   // Broad coverage — finds thumbnail art that structured sources miss
   // Loops through multiple candidates if verification rejects the first one
-  let googleImages = await fetchFromGoogleImages(show);
+  if (googleAttempts === null) googleAttempts = loadImageSearchAttempts();
+  const googleGate = forceGoogle ? { skip: false } : shouldSkipGoogleImages(googleAttempts[show.id]);
+  let googleAccepted = false;
+  let googleImages = null;
+  if (googleGate.skip) {
+    console.log(`   ⏭ Google Images skipped: ${googleAttempts[show.id].failures} recent failure(s), retry after ${googleGate.retryAt} (BRO-4243; --force-google to override)`);
+  } else {
+    googleImages = await fetchFromGoogleImages(show);
+  }
   while (googleImages && googleImages.thumbnail) {
     // Save remaining candidates, and any already-saved poster, before
     // verifyAndCollect/the rejection path below can lose them. The poster
@@ -2213,18 +2238,21 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     const candidate = await verifyAndCollect(googleImages, show, 'Google Images', verifyCtx);
     if (candidate) {
       candidates.push(candidate);
+      googleAccepted = true;
       if (candidate.verifyResult?.imageType === 'promotional_art' &&
           candidate.verifyResult?.confidence === 'high') {
         console.log(`   ★ Promotional art found at high confidence — using this`);
+        noteGoogleAttempt(show.id, true);
         return candidate.images;
       }
-      if (!verifyCtx) return candidate.images;
+      if (!verifyCtx) { noteGoogleAttempt(show.id, true); return candidate.images; }
       break;  // Accepted — stop trying more candidates
     }
     // Rejected — try next candidate from the same search results
     if (remaining.length === 0) break;
     googleImages = await tryNextGoogleCandidate(show, remaining, previousPoster);
   }
+  if (!googleGate.skip) noteGoogleAttempt(show.id, googleAccepted);
 
   // Step 5 (was Step 4): Playbill fallback (landscape OG image only)
   // NEEDS VERIFICATION — last resort
@@ -2549,6 +2577,7 @@ async function main() {
     ? new Set(showFilter.split(',').map(s => s.trim()).filter(Boolean))
     : null;
   const onlyMissing = args.includes('--missing') || args.includes('--missing-only');
+  forceGoogle = args.includes('--force-google');
   const badImagesOnly = args.includes('--bad-images');
   const concurrency = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] || '5', 10);
   // Verification is ON by default — use --no-verify to skip (faster but less safe)
