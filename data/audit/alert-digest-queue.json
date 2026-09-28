@@ -299,5 +299,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-28T19:48:00.402Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4236-prompt-blocker",
+    "title": "Landing blocked: rebase red on land/bro-4236-prompt-blocker",
+    "description": "land.yml did not land land/bro-4236-prompt-blocker: the rebase gate went red at 7fcc299547. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36477687868",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4236-prompt-blocker"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "7fcc2995470cad847c0554509cc6d970a176da00"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36477687868"
+      }
+    ],
+    "queuedAt": "2026-09-28T20:21:25.489Z"
   }
 ]
