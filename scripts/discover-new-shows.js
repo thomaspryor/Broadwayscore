@@ -55,6 +55,7 @@ const { classifyGenre, applyGenreCategoryOverride } = require('./lib/genre-class
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
 const showsWriteGuard = require('./lib/shows-write-guard');
+const { matchesRetired } = require('./lib/retired-show-ids');
 
 // Tags each candidate with which discovery source produced it (BRO-2072) so
 // reconcileMatchedShow() below can require multi-source agreement before
@@ -66,6 +67,48 @@ function tagSource(shows, sourceLabel) {
     if (!s._discoverySource) s._discoverySource = sourceLabel;
   }
   return shows;
+}
+
+function isoDateOrNull(value) {
+  if (!value) return null;
+  const parsed = new Date(value);
+  return isNaN(parsed.getTime()) ? null : parsed.toISOString().split('T')[0];
+}
+
+// The id (and the ISO dates it derives from) a candidate WOULD mint. Computed
+// ONCE at the top of the candidate loop (2026 data audit, S0-T3) so the
+// retired-id refusal there and the row actually written further down can
+// never disagree about the id — a second copy of this arithmetic is exactly
+// how a "retired" id would quietly mint under a slightly different name.
+// Pure: no shows.json access, no side effects. Exported for the unit test.
+//
+// Year rule — use the production's own year for the ID. Order matters:
+// openingDate, then previewsStartDate, then the quarantined
+// unconfirmedStartDate, and only then fall back to "now".
+//
+// The `now.getFullYear()` fallback is the third link in the 2027-Encores!
+// chain (2026-08-12). A season announced 6-10 months out reaches here with
+// openingDate null (see classifyTodayTixStartDate), so every 2027 show was
+// minted as `<slug>-off-broadway-2026`. That is both wrong on its face and
+// self-blocking: "You're a Good Man, Charlie Brown" (Feb 2027) generated the
+// SAME id as the 92NY production that ran in March 2026, so the ID-collision
+// guard in the loop dropped it even after the twin guard was taught to let
+// it through. A date we don't trust enough to gate reviews on is still
+// plenty good enough to name a row.
+//
+// Slug rule — market-aware. withMarketSuffix() strips any pre-existing market
+// suffix before re-appending — idempotent, so a title/slug that already
+// carries the suffix (e.g. round-tripped through another discovery path)
+// doesn't get it appended a second time, which used to produce IDs like
+// `beetlejuice-the-musical-west-end-west-end-2026` (BRO-3237).
+function mintCandidateId(show, now = new Date()) {
+  const openingDate = isoDateOrNull(show.openingDate);
+  const closingDate = isoDateOrNull(show.closingDate);
+  const previewsStartDate = isoDateOrNull(show.previewsStartDate);
+  const idYear = productionIdYear({ openingDate, previewsStartDate, unconfirmedStartDate: show.unconfirmedStartDate })
+    || String(now.getFullYear());
+  const marketSlug = withMarketSuffix(slugify(show.title), show.category);
+  return { openingDate, closingDate, previewsStartDate, idYear, marketSlug, showId: `${marketSlug}-${idYear}` };
 }
 
 // Strict exact-match set of the 41 official Broadway houses (canonical + aliases),
@@ -2134,6 +2177,11 @@ async function discoverShows() {
   // Find new shows not in our database using improved duplicate detection
   const newShows = [];
   const skippedDuplicates = [];
+  // S0-T3 (2026 data audit): candidates refused because the id they would
+  // mint, or their normalized title+venue, is in data/retired-show-ids.json.
+  // Kept apart from skippedDuplicates: a duplicate has an existing row to
+  // point at, a retired id has a deletion that must stay deleted.
+  const retiredSkipped = [];
   // Gap C (card #1446): shows discovery correctly re-matches to an existing
   // shows.json entry, but the entry's stale preview/opening date and venue
   // are never refreshed from the live source. reconciledShows tracks the
@@ -2315,6 +2363,26 @@ async function discoverShows() {
   }
 
   for (const show of discoveredShows) {
+    // S0-T3 (2026 data audit): a retired id never comes back. This runs
+    // BEFORE every dedup check because none of them can see a deleted row —
+    // the phantom "?tab=dates" row was deleted by hand and re-minted by the
+    // next run for exactly that reason. Match on the id this iteration would
+    // mint OR on the archived row's exact normalized title+venue (a re-slugged
+    // title or a different id-year still names the same retired listing).
+    const minted = mintCandidateId(show);
+    const retiredHit = matchesRetired({ id: minted.showId, title: show.title, venue: show.venue });
+    if (retiredHit) {
+      console.log(`  retired-skip: ${minted.showId} ("${show.title}" @ ${show.venue || 'no venue'}) matched retired ${retiredHit.id} by ${retiredHit.matchedBy}`);
+      retiredSkipped.push({
+        title: show.title,
+        venue: show.venue || null,
+        candidateId: minted.showId,
+        retiredId: retiredHit.id,
+        matchedBy: retiredHit.matchedBy,
+      });
+      continue;
+    }
+
     // Step 0: TodayTix ID dedup — most reliable, catches name mismatches
     if (show.todaytixId && existingTodaytixIds.has(show.todaytixId)) {
       const existing = existingTodaytixIds.get(show.todaytixId);
@@ -2376,56 +2444,13 @@ async function discoverShows() {
       continue;
     }
 
-    // Convert date strings to ISO format
-    let openingDate = null;
-    if (show.openingDate) {
-      const parsed = new Date(show.openingDate);
-      if (!isNaN(parsed.getTime())) {
-        openingDate = parsed.toISOString().split('T')[0];
-      }
-    }
-
-    let closingDate = null;
-    if (show.closingDate) {
-      const parsed = new Date(show.closingDate);
-      if (!isNaN(parsed.getTime())) {
-        closingDate = parsed.toISOString().split('T')[0];
-      }
-    }
-
-    let previewsStartDate = null;
-    if (show.previewsStartDate) {
-      const parsed = new Date(show.previewsStartDate);
-      if (!isNaN(parsed.getTime())) {
-        previewsStartDate = parsed.toISOString().split('T')[0];
-      }
-    }
-
-    // Use the production's own year for the ID. Order matters: openingDate,
-    // then previewsStartDate, then the quarantined unconfirmedStartDate, and
-    // only then fall back to "now".
-    //
-    // The `new Date().getFullYear()` fallback is the third link in the
-    // 2027-Encores! chain (2026-08-12). A season announced 6-10 months out
-    // reaches here with openingDate null (see classifyTodayTixStartDate), so
-    // every 2027 show was minted as `<slug>-off-broadway-2026`. That is both
-    // wrong on its face and self-blocking: "You're a Good Man, Charlie Brown"
-    // (Feb 2027) generated the SAME id as the 92NY production that ran in
-    // March 2026, so the ID-collision guard below dropped it even after the
-    // twin guard was taught to let it through. A date we don't trust enough
-    // to gate reviews on is still plenty good enough to name a row.
-    const idYear = productionIdYear({ openingDate, previewsStartDate, unconfirmedStartDate: show.unconfirmedStartDate })
-      || String(new Date().getFullYear());
-    const baseSlug = slugify(show.title);
-
-    // Market-aware slug and ID generation. withMarketSuffix() strips any
-    // pre-existing market suffix before re-appending — idempotent, so a
-    // title/slug that already carries the suffix (e.g. round-tripped through
-    // another discovery path) doesn't get it appended a second time, which
-    // used to produce IDs like `beetlejuice-the-musical-west-end-west-end-2026`
-    // (BRO-3237).
-    const marketSlug = withMarketSuffix(baseSlug, show.category);
-    const showId = `${marketSlug}-${idYear}`;
+    // ISO dates, id-year, market slug and the id itself all come from the
+    // ONE mintCandidateId() call at the top of this iteration (S0-T3) — see
+    // that helper for the id-year rule (2027-Encores! chain) and the
+    // market-suffix idempotency note (BRO-3237). Nothing between there and
+    // here mutates `show`, so this is byte-for-byte the id the retired-id
+    // check just cleared.
+    const { openingDate, closingDate, previewsStartDate, idYear, marketSlug, showId } = minted;
 
     // Guard: skip if generated ID collides with existing DB or batch.
     if (existingIds.has(showId)) {
@@ -2589,6 +2614,17 @@ async function discoverShows() {
     console.log('');
   }
 
+  // S0-T3 run summary: retired ids refused this run (see retired-skip lines
+  // above for the per-candidate detail). A non-zero count is expected while
+  // the retired listing is still live at its source; it is NOT a defect.
+  if (retiredSkipped.length > 0) {
+    console.log(`Skipped ${retiredSkipped.length} retired id(s) — never re-discovered (data/retired-show-ids.json):`);
+    for (const r of retiredSkipped) {
+      console.log(`   - "${r.title}" → ${r.candidateId} (matched ${r.retiredId} by ${r.matchedBy})`);
+    }
+    console.log('');
+  }
+
   if (newShows.length === 0) {
     if (reconciledShows.length > 0) {
       if (!dryRun) {
@@ -2600,7 +2636,7 @@ async function discoverShows() {
     } else {
       console.log('✅ No new shows discovered - database is up to date');
     }
-    return { newShows: [], count: 0, reconciledCount: reconciledShows.length };
+    return { newShows: [], count: 0, reconciledCount: reconciledShows.length, retiredSkippedCount: retiredSkipped.length };
   }
 
   console.log(`🎭 Found ${newShows.length} NEW show(s):`);
@@ -3018,7 +3054,7 @@ async function discoverShows() {
     fs.appendFileSync(outputFile, `we_new_count=${weNewShows.length}\n`);
   }
 
-  return { newShows, count: newShows.length, reconciledCount: reconciledShows.length };
+  return { newShows, count: newShows.length, reconciledCount: reconciledShows.length, retiredSkippedCount: retiredSkipped.length };
 }
 
 if (require.main === module) {
@@ -3061,4 +3097,5 @@ module.exports = {
   fetchSingleVenuePage,
   shouldExcludeVenueShow,
   applyVerifiedIbdbCreativeTeam,
+  mintCandidateId,
 };
