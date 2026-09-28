@@ -649,6 +649,19 @@ function buildVerificationPrompt({ scrapedText, excerpt, showTitle, outletName, 
     }
   };
   const mc = marketConfig[effectiveMarket] || marketConfig['broadway'];
+  // Tour shows invert three pieces of the shared guidance below (BRO-4211 ship-check):
+  // "on Broadway now" signals the WRONG run, the Kennedy Center is a normal tour
+  // stop, and a local critic at the local stop is the ordinary case, not an exception.
+  const isTour = effectiveMarket === 'tour';
+  const correctRunPhrases = isTour
+    ? `"now playing [city]'s [touring venue]", "on its national tour", "the touring company"`
+    : `"on Broadway/West End now", "in its new ${mc.label} incarnation"`;
+  const differentRunExamples = isTour
+    ? 'the original Broadway run in New York / a West End or UK production / a regional or community staging / TV / film'
+    : 'a Kennedy Center / Almeida / La Jolla / TV / film / prior-revival';
+  const outletLocationGuidance = isTour
+    ? `- **Local critics reviewing their city's tour stop is the NORMAL case.** A local outlet (Denver Post, Chicago Sun-Times, Tulsa World, a BroadwayWorld city edition) and a touring venue or presenter (Kennedy Center, Ahmanson, Golden Gate, Buell, Hobby Center, a "Broadway in [city]" series) are correct for this show. Only flag wrongProduction when the body reviews the New York Broadway run (a Broadway theatre named as where the critic saw it) or a non-touring staging.`
+    : `- **Outlet location does NOT determine production location.** Many out-of-town newspapers have critics who cover ${mc.label} reviews from NYC/London. Peter Marks (Washington Post), Chris Jones (Chicago Tribune), Charles McNulty (LA Times), Matt Wolf (London Theatre / International Herald Tribune), Dominic Cavendish (Telegraph), Michael Billington (Guardian), and many others file reviews of the ${mc.label} production from their home paper. The byline/outlet being "Washington Post" or "Chicago Tribune" or "Manchester Evening News" is NOT by itself evidence of wrong production — look at the VENUE named in the body.`;
 
   const dateContext = openingDate ? `\n- ${mc.dateLabel}: ${openingDate}` : '';
   const publishDateContext = publishDate ? `\n- Review publish date: ${publishDate}` : '';
@@ -752,8 +765,8 @@ ${wrongProdList}
 
    **"Reviews OF" vs "mentions OF" — the critical distinction (Schmigadoon 2026 FP class):**
    Before flagging wrongProduction=true, ask yourself: is this critic evaluating the ${mc.label} run that just opened, or is the critic evaluating a different run?
-     - **Evaluates the ${mc.label} run** (NOT wrongProduction, even if other productions are named): critic attended the ${mc.label} performance, the opinion-bearing sentences describe the ${mc.label} cast/staging, phrases like "the show at [${mc.label} theatre]", "this ${mc.label} outing", "on Broadway/West End now", "in its new ${mc.label} incarnation".
-     - **Evaluates a different run** (IS wrongProduction): the opinion-bearing sentences describe a Kennedy Center / Almeida / La Jolla / TV / film / prior-revival cast and venue — the review was WRITTEN about that run and merely refiled on a ${mc.label} show page.
+     - **Evaluates the ${mc.label} run** (NOT wrongProduction, even if other productions are named): critic attended the ${mc.label} performance, the opinion-bearing sentences describe the ${mc.label} cast/staging, phrases like "the show at [${mc.label} theatre]", "this ${mc.label} outing", ${correctRunPhrases}.
+     - **Evaluates a different run** (IS wrongProduction): the opinion-bearing sentences describe ${differentRunExamples} cast and venue — the review was WRITTEN about that run and merely refiled on a ${mc.label} show page.
    Background paragraphs that contextualize ("this is a transfer from the Kennedy Center pre-Broadway tryout"), historical asides ("the show was famously a 2021 Apple TV+ series"), or comparative references ("like NBC's Smash…") are NOT evidence of wrongProduction. Do not flag on mention alone.
    **Confidence calibration for this flag:** Only set wrongProduction=true with confidence="high" when the review's opinion-bearing content evaluates a non-${mc.label} production. If the evidence is only a passing mention, contextual aside, or comparative reference, set wrongProduction=false. If you're uncertain whether the review is OF the ${mc.label} run or OF a different run, set confidence="low" — the rebuild gate requires confidence>=medium for promotion.
 
@@ -772,7 +785,7 @@ ${wrongProdList}
 
 **CRITICAL NUANCES — avoid known false positives:**
 
-- **Outlet location does NOT determine production location.** Many out-of-town newspapers have critics who cover ${mc.label} reviews from NYC/London. Peter Marks (Washington Post), Chris Jones (Chicago Tribune), Charles McNulty (LA Times), Matt Wolf (London Theatre / International Herald Tribune), Dominic Cavendish (Telegraph), Michael Billington (Guardian), and many others file reviews of the ${mc.label} production from their home paper. The byline/outlet being "Washington Post" or "Chicago Tribune" or "Manchester Evening News" is NOT by itself evidence of wrong production — look at the VENUE named in the body.
+${outletLocationGuidance}
 
 - **American Airlines Theatre / Todd Haimes Theatre** is on Broadway at 227 W 42nd Street (Roundabout's venue). It is NOT in Washington DC even if the review is in the Washington Post. Do not confuse it with the name.
 

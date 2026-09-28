@@ -197,10 +197,28 @@ describe('national tour verifier profile (category:tour)', () => {
   });
 
   test('tour prompt uses the national-tour profile, not the Broadway fallback', () => {
+    const tour = buildVerificationPrompt({ ...args, market: 'tour', openingDate: '2022-12-13' }).prompt;
+    assert.ok(tour.includes('**national tour** productions'), 'tour profile description missing');
+    assert.ok(tour.includes('Tour launch date: 2022-12-13'), 'tour date label missing');
+    assert.ok(tour.includes('The original Broadway run in New York'), 'tour prompt must name the Broadway run as the wrong production');
+    // The Broadway fallback's wrong-production list calls every tour review wrong.
+    assert.ok(!tour.includes('National tour, touring production'), 'Broadway fallback wrong-production list leaked into tour prompt');
+  });
+
+  // Ship-check findings: three shared lines read backwards for a tour show.
+  test('tour prompt drops Broadway-centric guidance and treats local critics as normal', () => {
     const tour = buildVerificationPrompt({ ...args, market: 'tour' }).prompt;
-    const bway = buildVerificationPrompt({ ...args, market: 'broadway' }).prompt;
-    assert.ok(tour.includes('national tour'), 'tour profile label missing');
-    assert.ok(tour.includes('original Broadway run'), 'tour prompt must name the Broadway run as the wrong production');
-    assert.notEqual(tour, bway);
+    assert.ok(!tour.includes('on Broadway/West End now'), '"on Broadway now" must not count as the correct run for a tour');
+    assert.ok(!tour.includes('describe a Kennedy Center'), 'the Kennedy Center is a normal tour stop, not a different run');
+    assert.ok(!tour.includes('Peter Marks'), 'out-of-town-critic guidance is for NYC/London shows');
+    assert.ok(tour.includes('is the NORMAL case'), 'tour prompt must say local critics at the local stop are normal');
+  });
+
+  test('non-tour prompts keep the shared Broadway/London guidance', () => {
+    const bway = buildVerificationPrompt({ ...args, market: 'broadway', venue: 'Marquis Theatre' }).prompt;
+    assert.ok(bway.includes('on Broadway/West End now'));
+    assert.ok(bway.includes('describe a Kennedy Center'));
+    assert.ok(bway.includes('Peter Marks'));
+    assert.ok(!bway.includes('is the NORMAL case'));
   });
 });
