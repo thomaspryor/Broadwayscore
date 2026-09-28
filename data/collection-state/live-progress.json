@@ -1,83 +1,134 @@
 {
-  "updatedAt": "2026-09-28T19:57:48.842Z",
-  "processed": 85,
-  "failed": 65,
-  "successRate": "56.7%",
+  "updatedAt": "2026-09-28T20:09:28.784Z",
+  "processed": 311,
+  "failed": 459,
+  "successRate": "40.4%",
   "tierBreakdown": {
-    "playwright": 51,
+    "playwright": 176,
     "amp": 0,
-    "browserbase": 3,
-    "directCookies": 0,
-    "scrapingbee": 16,
-    "brightdata": 3,
+    "browserbase": 5,
+    "directCookies": 2,
+    "scrapingbee": 39,
+    "brightdata": 48,
     "archiveToday": 0,
-    "archive": 16
+    "archive": 47
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-09-28T18:52:19.820Z",
+      "t": "2026-09-28T12:06:24.489Z",
       "event": "bb-session",
-      "session": "4dd99c33",
-      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
-    },
-    {
-      "t": "2026-09-28T18:52:37.389Z",
-      "event": "bb-session",
-      "session": "4359fdd9",
-      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
-    },
-    {
-      "t": "2026-09-28T18:57:25.000Z",
-      "event": "bb-session",
-      "session": "b27ef493",
+      "session": "94446537",
       "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
     },
     {
-      "t": "2026-09-28T18:57:35.981Z",
+      "t": "2026-09-28T12:06:34.744Z",
       "event": "bb-session",
-      "session": "ce65c327",
+      "session": "67f63ba0",
       "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
     },
     {
-      "t": "2026-09-28T19:12:06.588Z",
+      "t": "2026-09-28T12:29:41.036Z",
       "event": "bb-session",
-      "session": "5eb7368c",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
+      "session": "983b8cf7",
+      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
     },
     {
-      "t": "2026-09-28T19:12:07.659Z",
+      "t": "2026-09-28T12:29:41.785Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     },
     {
-      "t": "2026-09-28T19:30:53.753Z",
+      "t": "2026-09-28T12:29:52.715Z",
       "event": "bb-session",
-      "session": "d0e76d74",
-      "url": "https://www.whatsonstage.com/news/the-mousetrap-bath_1457/"
+      "session": "bea47507",
+      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
     },
     {
-      "t": "2026-09-28T19:31:14.467Z",
-      "event": "bb-session",
-      "session": "fed8df5b",
-      "url": "https://www.whatsonstage.com/news/the-mousetrap-bath_1457/"
-    },
-    {
-      "t": "2026-09-28T19:37:29.943Z",
-      "event": "bb-session",
-      "session": "733749a6",
-      "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-review-at-the-old-vic-londo"
-    },
-    {
-      "t": "2026-09-28T19:37:30.998Z",
+      "t": "2026-09-28T12:29:53.387Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "thetimes.com"
     },
     {
-      "t": "2026-09-28T19:51:25.607Z",
+      "t": "2026-09-28T12:33:58.136Z",
       "event": "bb-session",
-      "session": "5372b954",
-      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+      "session": "d547f2fe",
+      "url": "https://www.wsj.com/articles/schmigadoon-review-musical-comedy-as-youve-never-se"
+    },
+    {
+      "t": "2026-09-28T12:33:58.799Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-28T13:13:31.361Z",
+      "event": "bb-session",
+      "session": "0bad1762",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+    },
+    {
+      "t": "2026-09-28T13:13:46.586Z",
+      "event": "bb-session",
+      "session": "e3295993",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+    },
+    {
+      "t": "2026-09-28T13:16:21.275Z",
+      "event": "bb-session",
+      "session": "b0deccdb",
+      "url": "https://www.whatsonstage.com/news/million-dollar-quartet-review-london-transfer-"
+    },
+    {
+      "t": "2026-09-28T13:16:36.434Z",
+      "event": "bb-session",
+      "session": "c1b4d4c7",
+      "url": "https://www.whatsonstage.com/news/million-dollar-quartet-review-london-transfer-"
+    },
+    {
+      "t": "2026-09-28T13:17:54.134Z",
+      "event": "bb-session",
+      "session": "29a665c0",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
+    },
+    {
+      "t": "2026-09-28T13:18:08.362Z",
+      "event": "bb-session",
+      "session": "e7c9d35f",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-09-28T13:22:17.957Z",
+      "event": "bb-session",
+      "session": "b00d0144",
+      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
+    },
+    {
+      "t": "2026-09-28T13:22:18.989Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-28T13:22:29.420Z",
+      "event": "bb-session",
+      "session": "6255a384",
+      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
+    },
+    {
+      "t": "2026-09-28T13:22:30.363Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-28T13:24:29.388Z",
+      "event": "bb-session",
+      "session": "d765991a",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-28T13:24:39.695Z",
+      "event": "bb-session",
+      "session": "70545e22",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
     }
   ]
 }
