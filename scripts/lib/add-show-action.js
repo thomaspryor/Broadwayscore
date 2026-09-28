@@ -11,6 +11,8 @@
  * (validate-show-venue.js treats manual-user-request as provisional).
  */
 
+const { sanitizeVenueForWrite } = require('./venue-classification');
+
 const REQUIRED = ['id', 'title', 'slug', 'venue', 'status', 'type', 'category', 'market'];
 const ALLOWED = new Set([
   ...REQUIRED,
@@ -31,6 +33,7 @@ function applyAddShow(shows, action) {
   if (!ID_RE.test(show.id) || !ID_RE.test(show.slug)) return { ok: false, reason: 'add-show: id/slug must be lowercase-kebab' };
   if (!STATUSES.includes(show.status)) return { ok: false, reason: `add-show: bad status "${show.status}"` };
   if (!CATEGORIES.includes(show.category)) return { ok: false, reason: `add-show: bad category "${show.category}"` };
+  if (sanitizeVenueForWrite(show.venue) === null) return { ok: false, reason: `add-show: venue "${show.venue}" is a placeholder` };
   if (shows.some(s => s.id === show.id)) return { ok: false, reason: `add-show: id "${show.id}" already exists` };
   if (shows.some(s => s.slug === show.slug)) return { ok: false, reason: `add-show: slug "${show.slug}" already exists` };
 
@@ -47,7 +50,7 @@ function applyAddShow(shows, action) {
     if (!from.priorRuns.some(r => r.id === show.id)) {
       const run = { id: show.id, openingDate: show.openingDate };
       if (show.closingDate) run.closingDate = show.closingDate;
-      if (show.venue) run.venue = show.venue;
+      run.venue = sanitizeVenueForWrite(show.venue);
       from.priorRuns.push(run);
     }
   }

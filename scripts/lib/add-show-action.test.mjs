@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { applyAddShow } = require('./add-show-action.js');
 
-const base = () => ({ id: 'x-off-broadway-2023', title: 'X', slug: 'x-off-broadway-2023', venue: 'V', status: 'closed',
+const base = () => ({ id: 'x-off-broadway-2023', title: 'X', slug: 'x-off-broadway-2023', venue: 'Playwrights Horizons', status: 'closed',
   type: 'play', category: 'off-broadway', market: 'broadway', openingDate: '2023-01-02', closingDate: '2023-02-03' });
 
 test('adds a show and stamps discoverySource', () => {
@@ -30,6 +30,9 @@ test('crossLinkFrom appends priorRuns once and requires the target', () => {
   const cur = { id: 'cur', slug: 'cur' };
   const r = applyAddShow([cur], { show: base(), crossLinkFrom: 'cur' });
   assert.equal(r.ok, true);
-  assert.deepEqual(cur.priorRuns, [{ id: 'x-off-broadway-2023', openingDate: '2023-01-02', closingDate: '2023-02-03', venue: 'V' }]);
+  assert.deepEqual(cur.priorRuns, [{ id: 'x-off-broadway-2023', openingDate: '2023-01-02', closingDate: '2023-02-03', venue: 'Playwrights Horizons' }]);
   assert.equal(applyAddShow([], { show: base(), crossLinkFrom: 'nope' }).ok, false);
+});
+test('refuses a placeholder venue', () => {
+  assert.equal(applyAddShow([], { show: { ...base(), venue: 'TBA' } }).ok, false);
 });
