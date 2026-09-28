@@ -376,7 +376,36 @@ try:
                         events.append(('tool', (c.get('name'), c.get('input', {}) or {}, c.get('id'))))
                     elif ct == 'text':
                         events.append(('text', c.get('text', '') or ''))
+            elif mtype in ('attachment', 'queue-operation'):
+                # Harness notices delivered MID-TURN — a background agent's
+                # <task-notification> or <agent-message from=…> hand-back that
+                # lands while the session is busy — are not user messages at
+                # all: they are `attachment` records ({type:'queued_command',
+                # prompt:'<task-notification>…'}) and the queue's own
+                # enqueue/remove ledger rows ({type:'queue-operation',
+                # content:'…'}). Seen in a real transcript (2026-09-28): four
+                # finished agents had ONLY these shapes, no user record. Same
+                # event kind as the idle-time delivery below.
+                _att = r.get('attachment') if mtype == 'attachment' else r
+                _txt = ''
+                if isinstance(_att, dict):
+                    if mtype == 'attachment' and _att.get('type') != 'queued_command':
+                        continue
+                    _txt = _att.get('prompt') if mtype == 'attachment' else _att.get('content')
+                if isinstance(_txt, str) and ('<task-notification>' in _txt or '<agent-message' in _txt):
+                    events.append(('user_notice', _txt))
+                continue
             elif mtype == 'user':
+                # Harness notices — <task-notification> (a background agent
+                # finished), <agent-message from=…> hand-backs, queued-Routine
+                # notices, and the owner's own typed prompts — arrive, when the
+                # session is idle, as user messages whose content is a plain
+                # STRING, not a list. They get their own event kind (consumed
+                # by the in-flight gate only) so the existing user_text
+                # consumers keep seeing exactly what they saw before.
+                if isinstance(content, str):
+                    events.append(('user_notice', content))
+                    continue
                 # Tool results arrive as user messages with type=tool_result in their content.
                 # User-typed text appears as type=text — used by the visual-qa
                 # reference-attached and override-active-for-push checks.
@@ -491,6 +520,144 @@ if os.environ.get('SESSION_STATUS_GATE_DISABLE', '0') != '1':
                 sys.exit(0)
             if _has_decision_needed and _claims_safe:
                 print("FALSESAFE")
+                sys.exit(0)
+    except Exception:
+        pass  # fail-open — never let this gate crash the rest of the script
+
+# ─── In-flight-work gate (INFLIGHT, added 2026-09-28) ───────────────────────
+# Owner evidence (session 01JhF7pK, 2026-09-28): a session with ten background
+# agents running, a Land run in progress and two scheduled check-ins ended a
+# turn on "SAFE TO EXIT". The owner reads that line as "I may close or kill
+# this session now" — and had been doing exactly that to earlier sessions that
+# were still mid-work. Every gate above checks the status LINE'S SHAPE or the
+# board close-out; none asks whether anything is still running that would die
+# with the session. This one does, from the transcript alone (there is no
+# live state to read — /second-opinion review a5a8923c):
+#   - a self-bound Routine still to fire: mcp__Claude_Code_Remote__send_later
+#     (a one-shot into THIS session) or create_trigger without
+#     persistent_session_id / create_new_session_on_fire. Its id comes from
+#     the tool's own result ("trigger_id":"trig_…" or {"trigger":{"id":…}}).
+#     A one-shot is live while its fire time (send_later's fire_at, or
+#     run_once_at, as last set by update_trigger) is still ahead of now; a
+#     cron Routine is live until delete_trigger or update_trigger
+#     enabled:false. The firing itself never echoes the id (it arrives as a
+#     queued-notifications notice plus a ReadNotifications body), so time is
+#     the only honest signal.
+#   - a background Agent without a completion: "agentId: X" in the Agent
+#     result (a foreground Agent returns its report inline and never
+#     matches). Completed by a later <task-notification> whose <task-id> is X
+#     (any status — failed counts), an <agent-message from="X"> hand-back, or
+#     TaskStop(X). A later SendMessage(to=X) resumes it: live again until the
+#     next completion, so each id keeps its latest start and completion index.
+#     Background Bash is deliberately NOT tracked: the review found two of
+#     four background commands in a real transcript finished without any
+#     notice — a guaranteed false positive.
+#   Those notices arrive as user messages whose content is a plain STRING
+#   (session idle) or as `attachment` / `queue-operation` records (delivered
+#   mid-turn) — none of which the parser above used to read — hence the
+#   separate 'user_notice' event kind it now emits, consumed only here.
+# Placed right after the status-line gate: a live id with SAFE TO EXIT as the
+# closing line blocks before any board/PR gate can, and the demanded rewrite
+# (NOT SAFE TO EXIT — <what is still running>) passes every gate below. Own
+# block, own try/except, own last-line parse (never the status-line gate's
+# locals, which SESSION_STATUS_GATE_DISABLE=1 leaves undefined). Not gated on
+# "did substantial work": a session that only spawned agents did no edit yet
+# still dies if closed. Kill switch: INFLIGHT_GATE_DISABLE=1. Fail-open.
+if os.environ.get('INFLIGHT_GATE_DISABLE', '0') != '1':
+    try:
+        _if_stripped = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
+        _if_lines = [ln.strip() for ln in _if_stripped.strip().splitlines() if ln.strip()]
+        _if_divider_re = re.compile(r'^[\-=_*~─━│┃┌┐└┘•·\s]+$')
+        while _if_lines and _if_divider_re.match(_if_lines[-1]):
+            _if_lines.pop()
+        _if_last_line = _if_lines[-1] if _if_lines else ''
+        if re.match(r'^SAFE TO EXIT\b', _if_last_line) and 'NO-VERIFY:' not in (_last_msg or ''):
+            from datetime import datetime, timezone
+
+            def _if_parse_ts(s):
+                try:
+                    return datetime.fromisoformat(str(s).strip().replace('Z', '+00:00')).timestamp()
+                except Exception:
+                    return None
+
+            _if_now = datetime.now(timezone.utc).timestamp()
+            _if_trig_id_re = re.compile(r'"(?:trigger_id|id)"\s*:\s*"(trig_[0-9A-Za-z]+)"')
+            _TRIG_CREATE = ('mcp__Claude_Code_Remote__send_later', 'mcp__Claude_Code_Remote__create_trigger')
+            _trig = {}          # trig id -> {'idx', 'label', 'fire' (ts|None for cron), 'done' (idx)}
+            _agent_start = {}   # agent id -> (idx, label)
+            _agent_done = {}    # agent id -> idx
+
+            for _i3, (_kind3, _payload3) in enumerate(events):
+                if _kind3 == 'tool':
+                    _name3, _inp3, _tid3 = _payload3
+                    _inp3 = _inp3 if isinstance(_inp3, dict) else {}
+                    _res3 = tool_results_by_id.get(_tid3, '') or ''
+                    if _name3 in _TRIG_CREATE:
+                        if _inp3.get('persistent_session_id') or _inp3.get('create_new_session_on_fire'):
+                            continue  # fires into another session — this one's death does not lose it
+                        _m3 = _if_trig_id_re.search(_res3)
+                        if not _m3:
+                            continue  # the call failed (no id in its result) — nothing was scheduled
+                        _fire3 = None
+                        if _name3.endswith('send_later'):
+                            _fm = re.search(r'"fire_at"\s*:\s*"([^"]+)"', _res3)
+                            _fire3 = _if_parse_ts(_fm.group(1)) if _fm else _if_now + 1
+                        elif _inp3.get('run_once_at'):
+                            _fire3 = _if_parse_ts(_inp3.get('run_once_at'))
+                        _label3 = _inp3.get('name') or re.sub(r'\s+', ' ', _inp3.get('message') or _inp3.get('prompt') or '')[:60]
+                        _trig[_m3.group(1)] = {'idx': _i3, 'label': _label3, 'fire': _fire3, 'done': -1}
+                    elif _name3 == 'mcp__Claude_Code_Remote__update_trigger':
+                        _uid3 = str(_inp3.get('trigger_id') or '')
+                        if _uid3 in _trig and 'error' not in _res3[:200].lower():
+                            if _inp3.get('run_once_at'):
+                                _trig[_uid3]['fire'] = _if_parse_ts(_inp3.get('run_once_at'))
+                                _trig[_uid3]['idx'] = _i3
+                            if _inp3.get('cron_expression'):
+                                _trig[_uid3]['fire'] = None
+                                _trig[_uid3]['idx'] = _i3
+                            if _inp3.get('enabled') is False:
+                                _trig[_uid3]['done'] = _i3
+                            elif _inp3.get('enabled') is True:
+                                _trig[_uid3]['idx'] = _i3
+                    elif _name3 == 'mcp__Claude_Code_Remote__delete_trigger':
+                        _did3 = str(_inp3.get('trigger_id') or '')
+                        if _did3 in _trig and 'error' not in _res3[:200].lower():
+                            _trig[_did3]['done'] = _i3
+                    elif _name3 == 'Agent':
+                        _m3 = re.search(r'\bagentId:\s*([0-9a-z]{6,})', _res3)
+                        if _m3:
+                            _agent_start[_m3.group(1)] = (_i3, 'Agent "%s"' % (_inp3.get('description') or '')[:50])
+                    elif _name3 == 'SendMessage':
+                        _to3 = str(_inp3.get('to') or '').strip()
+                        if _to3 in _agent_start and 'error' not in _res3[:200].lower():
+                            _agent_start[_to3] = (_i3, _agent_start[_to3][1].replace(' (resumed)', '') + ' (resumed)')
+                    elif _name3 == 'TaskStop':
+                        _stop3 = str(_inp3.get('task_id') or _inp3.get('taskId') or '').strip()
+                        if _stop3:
+                            _agent_done[_stop3] = _i3
+                elif _kind3 in ('user_notice', 'user_text'):
+                    for _mn in re.finditer(r'<task-notification>(.*?)</task-notification>', _payload3 or '', flags=re.DOTALL):
+                        _idm = re.search(r'<task-id>\s*([^<\s]+)\s*</task-id>', _mn.group(1))
+                        if _idm:
+                            _agent_done[_idm.group(1)] = _i3
+                    for _mh in re.finditer(r'<agent-message\s+from="([^"]+)"', _payload3 or ''):
+                        _agent_done[_mh.group(1)] = _i3
+
+            _live = []
+            for _tid_l, _t in _trig.items():
+                if _t['done'] >= _t['idx']:
+                    continue
+                if _t['fire'] is not None and _t['fire'] <= _if_now:
+                    continue  # a one-shot that has already fired
+                _when = ('fires %s' % datetime.fromtimestamp(_t['fire'], timezone.utc).strftime('%Y-%m-%dT%H:%MZ')) if _t['fire'] else 'recurring'
+                _live.append('trigger %s "%s" (%s)' % (_tid_l, _t['label'], _when))
+            for _aid_l, (_idx_l, _lab_l) in _agent_start.items():
+                if _agent_done.get(_aid_l, -1) < _idx_l:
+                    _live.append('%s [%s]' % (_lab_l, _aid_l))
+            if _live:
+                sys.stderr.write('   still in flight: ' + '; '.join(_live[:8])
+                                 + ('; +%d more' % (len(_live) - 8) if len(_live) > 8 else '') + '\n')
+                print("INFLIGHT")
                 sys.exit(0)
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
@@ -631,9 +798,9 @@ if os.environ.get('CARD_GATE_DISABLE', '0') != '1':
 # card actually set to Done or Paused via `notion-brain.js update` — the one
 # phase CLAUDE.md §6 independently mandates for every session regardless of
 # size ("Session end: ... -> Done/Paused"), unlike /what-else (Phase 2, which
-# Quick sessions skip) or the async-op check (Phase 3, not tractable to infer
-# from a transcript without false positives — both deliberately out of scope
-# for this gate; see PR description). Satisfying this check IS the required
+# Quick sessions skip) or the async-op check (Phase 3 — out of scope for THIS
+# gate; since 2026-09-28 the in-flight gate above covers its agent and
+# self-bound-Routine half from the transcript, CI runs stay the session's job). Satisfying this check IS the required
 # outcome, not a proxy for it — it can't be gamed by going through empty
 # motions the way a bare Skill call can.
 #
@@ -1505,6 +1672,11 @@ fi
 
 if [[ "$result" == "NOCARD" ]]; then
   echo "🛑 BLOCKED: this session did real work (edit/commit/push/PR) but never filed or claimed its Linear card (CLAUDE.md §6: card first). Run: node scripts/linear-brain.js create '<title>' --dispatch --notes '...## Acceptance criteria...' — or, if you were given an existing issue, node scripts/linear-session.js claim --issue=BRO-N. Notion is retired: never notion-brain.js. Bypass: NO-CARD: <reason, 10+ chars>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "INFLIGHT" ]]; then
+  echo "🛑 BLOCKED: claiming SAFE TO EXIT while this session still has work in flight (listed above). SAFE TO EXIT tells the owner this session can be closed or killed right now; a background agent or a Routine scheduled to wake this session dies with it. Collect the agent's hand-back (or TaskStop it) and delete_trigger any check-in you no longer need, or end with: NOT SAFE TO EXIT — <what is still running and what happens when it finishes>. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 
