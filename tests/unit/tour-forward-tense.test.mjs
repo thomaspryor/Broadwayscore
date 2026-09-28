@@ -42,7 +42,7 @@ describe('tour forward-tense carve-out', () => {
     'I caught the national tour at the Pantages.',
     'The national tour opened in Chicago last week.',
     'This touring production has settled in at Cadillac Palace.',
-    'The tour arrived at Kennedy Center.',
+    'The tour arrived at the Boston Opera House.',  // Kennedy Center left the venue list (BRO-4185)
     'Currently on tour in North America.',
     'During its national tour, the show stopped in Boston.',
     'The touring company toured 20 cities.',
