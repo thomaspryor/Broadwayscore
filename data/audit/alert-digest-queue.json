@@ -633,5 +633,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-27T22:52:37.115Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-tru-off-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Tru",
+    "description": "theatre-weekly/Katie Shaw (theatre-weekly--katie-shaw.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The review mentions Jesse Tyler Ferguson reprising hi — https://theatreweekly.com/review-tru-at-menier-chocolate-factory/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-28T00:54:46.221Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:short:tru-off-west-end-2026",
+    "title": "Shipped review too short to verify on Tru",
+    "description": "theatre-weekly/Unknown (theatre-weekly--unknown.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://theatreweekly.com/review-tru-at-menier-chocolate-factory/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-28T00:54:46.227Z"
   }
 ]
