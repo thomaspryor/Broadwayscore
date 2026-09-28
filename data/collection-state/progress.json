@@ -113,7 +113,8 @@
     "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
     "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
     "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
-    "el-quijote-off-broadway-2026/nytimes--george-hunka.json"
+    "el-quijote-off-broadway-2026/nytimes--george-hunka.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/vulture--sara-holdren.json"
   ],
   "failed": [
     "tru-off-west-end-2026/guardian--unknown.json",
@@ -446,7 +447,12 @@
     "les-miserables-west-end-2021/financialtimes--sarah-hemming.json",
     "les-miserables-west-end-2021/nysr--unknown.json",
     "the-mousetrap-west-end-2021/thestage--dave-fargnoli.json",
-    "the-mousetrap-west-end-2021/whatsonstage--sarah-crompton.json"
+    "the-mousetrap-west-end-2021/whatsonstage--sarah-crompton.json",
+    "macbeth-off-broadway-2026/talkclassical--unknown.json",
+    "macbeth-off-broadway-2026/woman-around-town--unknown.json",
+    "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
+    "in-honor-of-jean-michel-basquiat-off-broadway-2026/exeunt-magazine--unknown.json",
+    "pre-existing-condition-off-broadway-2026/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -558,7 +564,8 @@
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "white-rabbit-red-rabbit-west-end-2026/whatsonstage--alex-wood.json",
       "hamilton-west-end-2021/variety--kj-yossman.json",
-      "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json"
+      "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/vulture--sara-holdren.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -587,7 +594,7 @@
     ]
   },
   "startTime": "2026-09-28T09:43:14.536Z",
-  "lastProcessed": "el-quijote-off-broadway-2026/nytimes--george-hunka.json",
+  "lastProcessed": "pre-existing-condition-off-broadway-2026/guardian--unknown.json",
   "log": [
     {
       "t": "2026-09-28T09:46:48.867Z",
@@ -760,6 +767,52 @@
       "event": "bb-session",
       "session": "70545e22",
       "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-28T14:25:43.142Z",
+      "event": "bb-session",
+      "session": "89101d73",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-28T14:25:43.753Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-28T14:26:01.177Z",
+      "event": "bb-session",
+      "session": "886b2d3d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-28T14:26:01.653Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-28T14:27:14.007Z",
+      "event": "bb-session",
+      "session": "41acb710",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+    },
+    {
+      "t": "2026-09-28T14:27:41.225Z",
+      "event": "bb-session",
+      "session": "b5ea9ed5",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+    },
+    {
+      "t": "2026-09-28T14:28:42.828Z",
+      "event": "bb-session",
+      "session": "f4615a17",
+      "url": "https://exeuntnyc.com/reviews/review-in-honor-of-jean-michel-basquiat-at-new-yor"
+    },
+    {
+      "t": "2026-09-28T14:28:54.191Z",
+      "event": "bb-session",
+      "session": "eb2043e2",
+      "url": "https://exeuntnyc.com/reviews/review-in-honor-of-jean-michel-basquiat-at-new-yor"
     }
   ]
 }
