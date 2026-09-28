@@ -43,6 +43,7 @@
  */
 
 const { WEST_END_VENUES } = require('./venue-classification');
+const { foldDiacritics } = require('./title-match');
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd, hasJsonLdType } = require('./jsonld');
@@ -127,12 +128,44 @@ const VENUE_SLUG_ENTRIES = [...WEST_END_VENUES]
 /** Generic tokens that trail/lead a venue mention in a slug but aren't part
  *  of any canonical venue string here (WEST_END_VENUES entries are bare
  *  names, e.g. "soho place", not "soho place theatre"). Stripped from the
- *  title remainder after venue extraction so they don't leak into the title. */
+ *  title remainder after venue extraction so they don't leak into the title.
+ *
+ *  BRO-4204 S4-T9: also strips the roundup-article tokens LBO's CMS puts on
+ *  EITHER side of the venue ("review-roundup-<title>-<venue>",
+ *  "<title>-<venue>-review2", "<title>-review-round-up-<venue>",
+ *  "<title>-review-<venue>") and the venue-noise words that survive venue
+ *  removal ("<title>-at-the-<venue>", "<title>-<venue>-london"). Until this
+ *  lived HERE, only fetchLboRecentRoundups pre-stripped a leading "review-"
+ *  and a trailing "-review\d*", so the matcher itself resolved
+ *  "dracula-noel-coward-review2" to "Dracula Review2" and a mid-slug
+ *  "nine-night-review-trafalgar" to "Nine Night Review" (both live in
+ *  data/audit/we-promotion-log.jsonl). A garbage title never dedups against
+ *  the real row, mints a duplicate, and validate-data then refuses the WHOLE
+ *  batch. Runs to a fixed point because the tokens nest ("...-at-the-<venue>-
+ *  review" only exposes "-at-the" once "-review" is gone).
+ *
+ *  Trailing-only for london/west-end/at/the: a title can START with them
+ *  ("London Road", "The Story", "At Home") but, once the venue is removed,
+ *  never ends with them as a slug fragment. */
+const ROUNDUP_PREFIX_RE = /^(?:reviews?-)?round-?ups?-|^reviews?-/;
+const ROUNDUP_SUFFIX_RE = /-reviews?(?:-round-?ups?)?\d*$|-round-?ups?$/;
+const LEADING_VENUE_NOISE_RE = /^(?:theatre|theater)-/;
+const TRAILING_VENUE_NOISE_RE = /-(?:theatre|theater|london|west-end|at|the)$/;
+const MAX_STRIP_PASSES = 6;
 function stripGenericVenueWords(remainder) {
-  return remainder
-    .replace(/^(theatre|theater)-/, '')
-    .replace(/-(theatre|theater)$/, '')
-    .replace(/^-+|-+$/g, '');
+  let out = String(remainder || '');
+  for (let i = 0; i < MAX_STRIP_PASSES; i++) {
+    const next = out
+      .replace(ROUNDUP_PREFIX_RE, '')
+      .replace(ROUNDUP_SUFFIX_RE, '')
+      .replace(LEADING_VENUE_NOISE_RE, '')
+      .replace(TRAILING_VENUE_NOISE_RE, '')
+      .replace(/-{2,}/g, '-')
+      .replace(/^-+|-+$/g, '');
+    if (next === out) break;
+    out = next;
+  }
+  return out;
 }
 
 // National Theatre South Bank names its three auditoria inside LBO's slug
@@ -317,12 +350,23 @@ async function fetchLboArticleDate(url, opts = {}) {
 
 /**
  * Does `slug` (a news-sitemap.xml path segment) contain a canonical West End
- * venue name? Returns { venue, remainder } — remainder is the slug with the
- * matched venue substring (and adjoining hyphens) removed, for title
- * extraction — or null if no canonical venue matches.
+ * venue name? Returns { venue, remainder, title } — remainder is the slug
+ * with the matched venue substring (and adjoining hyphens), the roundup
+ * tokens and the venue-noise words removed (see stripGenericVenueWords);
+ * title is slugToTitle(remainder) — or null if no canonical venue matches.
+ * The slug is diacritic-folded first (title-match.js foldDiacritics) so an
+ * accented CMS slug still finds its ASCII WEST_END_VENUES entry, and any
+ * non-slug character becomes a separator: LBO's sitemap carries 69 hand-
+ * typed slugs like "Review:-HAMLET-at-the-National-Theatre" (live, 2026-09-
+ * 28), where the colon glued to "review" defeated the prefix strip and the
+ * title came out as "Review: Hamlet".
  */
 function matchWestEndVenueFromSlug(slug) {
   if (!slug) return null;
+  slug = foldDiacritics(slug).toLowerCase()
+    .replace(/[^a-z0-9-]+/g, '-')
+    .replace(/-{2,}/g, '-')
+    .replace(/^-+|-+$/g, '');
   if (WE_SLUG_FALSE_POSITIVE_RE.test(slug)) return null;
   for (const { venue, slug: venueSlug } of VENUE_SLUG_ENTRIES) {
     const idx = slug.indexOf(venueSlug);
@@ -336,8 +380,10 @@ function matchWestEndVenueFromSlug(slug) {
     let remainder = stripGenericVenueWords(
       (slug.slice(0, idx) + slug.slice(afterIdx)).replace(/^-+|-+$/g, '').replace(/-{2,}/g, '-')
     );
-    if (venue === 'national') remainder = stripNationalAuditorium(remainder);
-    return { venue, remainder };
+    // Auditorium strip can expose a fresh edge token ("pride-theatre-dorfman-
+    // review" -> "pride-review" -> "pride"), so re-run the edge strip after it.
+    if (venue === 'national') remainder = stripGenericVenueWords(stripNationalAuditorium(remainder));
+    return { venue, remainder, title: remainder ? slugToTitle(remainder) : '' };
   }
   return null;
 }
@@ -352,13 +398,6 @@ function slugToTitle(slug) {
     .map((w, i) => (i > 0 && TITLE_CASE_LOWERCASE.has(w)) ? w : w[0].toUpperCase() + w.slice(1))
     .join(' ');
 }
-
-const LBO_PREFIX_STRIP = /^(review-roundup-|review-round-up-|review-)/;
-// LBO's CMS appends a bare digit (no hyphen) to the slug of a reposted
-// duplicate article — observed live: "an-ideal-husband-lyric-hammersmith-
-// review2" alongside the original "...-review" post (BRO-3716). Without the
-// trailing `\d*`, "review2" survives the strip and leaks into the title.
-const LBO_SUFFIX_STRIP = /(-reviews?\d*)$/;
 
 /**
  * Fetch LBO's news-sitemap.xml and extract {title, venue} review-roundup
@@ -390,13 +429,18 @@ async function fetchLboRecentRoundups(opts = {}) {
     const rawSlug = slugMatch ? slugMatch[1] : null;
     if (!rawSlug || !/review/i.test(rawSlug)) continue;
 
-    const stripped = rawSlug.replace(LBO_PREFIX_STRIP, '').replace(LBO_SUFFIX_STRIP, '');
-    const venueMatch = matchWestEndVenueFromSlug(stripped);
+    // Roundup prefix/suffix stripping ("review-roundup-", "-review2",
+    // "-review-round-up", ...) lives inside matchWestEndVenueFromSlug now
+    // (BRO-4204 S4-T9) — one code path for every caller, so a slug the
+    // matcher resolves in a test resolves identically here. LBO's CMS appends
+    // a bare digit (no hyphen) to a reposted duplicate's slug ("...-review2",
+    // BRO-3716) — covered by the matcher's `\d*`.
+    const venueMatch = matchWestEndVenueFromSlug(rawSlug);
     if (!venueMatch || !venueMatch.remainder) continue;
 
     const lastmodM = block[1].match(/<lastmod>([^<]+)<\/lastmod>/);
     out.push({
-      title: slugToTitle(venueMatch.remainder),
+      title: venueMatch.title,
       venue: venueMatch.venue,
       sourceUrl: loc,
       // NOT a publish date — sitemap <lastmod> tracks whenever the CMS last
