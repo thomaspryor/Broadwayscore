@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-09-28T16:16:18.214Z",
+  "generatedAt": "2026-09-28T22:38:08.564Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 153,
+  "checked": 154,
   "clean": 151,
-  "defective": 2,
+  "defective": 3,
   "byType": {
-    "unreachable": 2
+    "unreachable": 3
   },
   "shows": [
     {
@@ -29,6 +29,21 @@
       "showId": "gimme-a-sign-off-broadway-2026",
       "title": "Gimme a Sign!",
       "openingDate": "2026-09-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "unreachable",
+          "detail": "HTTP 404"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 0,
+      "deployedCount": null
+    },
+    {
+      "showId": "the-cherry-orchard-riverside-studios-off-west-end-2026",
+      "title": "The Cherry Orchard",
+      "openingDate": "2026-09-08",
       "ok": false,
       "defects": [
         {

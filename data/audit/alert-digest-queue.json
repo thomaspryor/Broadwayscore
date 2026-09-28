@@ -417,36 +417,39 @@
     "queuedAt": "2026-09-28T21:10:42.308Z"
   },
   {
-    "conditionKey": "opening-night-drift:the-secret-circus-musical-off-broadway-2026",
-    "title": "Opening night drift: The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
-    "description": "Review counts do not reconcile for The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): local review-texts=3, reviews.json aggregate=0, live production=n/a, drift=3 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36492183659",
+    "conditionKey": "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026",
+    "title": "Review gap — \"Lost in Del Valle\" missing 12 cited review(s)",
+    "description": "Lost in Del Valle (lost-in-del-valle-return-off-broadway-2026): 12 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=lost-in-del-valle-return-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "fields": [
-      {
-        "name": "Show",
-        "value": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
-        "inline": false
-      },
-      {
-        "name": "Counts",
-        "value": "local=3, aggregate=0, live=n/a, drift=3",
-        "inline": false
-      },
-      {
-        "name": "Opening",
-        "value": "2026-09-26",
-        "inline": false
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/36492183659)",
-        "inline": false
-      }
-    ],
-    "queuedAt": "2026-09-28T22:26:57.067Z"
+    "fields": [],
+    "queuedAt": "2026-09-28T22:37:43.007Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-secret-circus-musical-off-broadway-2026",
+    "title": "Review gap — \"The Secret Circus Musical\" missing 1 cited review(s)",
+    "description": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-secret-circus-musical-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-28T22:37:43.055Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:tru-off-west-end-2026",
+    "title": "Review gap — \"Tru\" missing 2 cited review(s)",
+    "description": "Tru (tru-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tru-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-28T22:37:43.059Z"
   }
 ]
