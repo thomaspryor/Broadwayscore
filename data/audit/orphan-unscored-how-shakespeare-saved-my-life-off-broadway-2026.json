@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "how-shakespeare-saved-my-life-off-broadway-2026",
   "openingDate": "2026-09-27",
-  "detectedAt": "2026-09-28T16:33:04.553Z",
+  "detectedAt": "2026-09-28T16:56:48.478Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -11,9 +11,9 @@
       "criticName": "Unknown",
       "url": "https://www.showify.us/shows/how-shakespeare-saved-my-life",
       "fullTextLen": 763,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
       "humanReviewScore": null,
       "adjudicatedScore": null,
       "originalScore": null,
@@ -24,9 +24,9 @@
     }
   ],
   "orphanCount": 1,
-  "dispatchableOrphanCount": 1,
-  "blockedOrphanCount": 0,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
