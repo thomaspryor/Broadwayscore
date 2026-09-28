@@ -17,7 +17,7 @@
  */
 
 const https = require('https');
-const { recordSbCall, recordSdCall } = require('./provider-telemetry');
+const { recordSbCall, recordSdCall, sbBilledCredits, sdBilledCredits } = require('./provider-telemetry');
 const { consultScrapingdog } = require('./scrapingdog-caps');
 
 const USER_AGENT = 'web:broadwayscorecard:v1.0 (by /u/bwayscorecard)';
@@ -72,6 +72,32 @@ const SD_TIERS = [
   { name: 'stealth', params: { stealth_mode: 'true' }, credits: 10 },
 ];
 let sdTierIndex = 0;
+
+// BRO-4215: consecutive-failure breaker for the Scrapingdog tier. Reddit's SD
+// stealth tier failed HTTP 500 on ~19,090 of ~19,500 calls in one week — each
+// a ~30s round-trip before falling through to ScrapingBee anyway. After
+// SD_BREAKER_THRESHOLD straight failures, skip SD and go straight to the next
+// tier, but let one probe through every SD_BREAKER_PROBE_EVERY skipped calls
+// (half-open) so a recovered SD is picked back up within the same run.
+// Deliberately separate from scrapingDogDown, which means "bad key / no
+// credits" and drives that error message.
+const SD_BREAKER_THRESHOLD = 5;
+const SD_BREAKER_PROBE_EVERY = 50;
+let sdConsecutiveFailures = 0;
+let sdBreakerSkips = 0;
+
+/**
+ * Pure: should this call attempt Scrapingdog? Closed (attempt) until
+ * `consecutiveFailures` reaches `threshold`; then open (skip), except every
+ * `probeEvery`-th skipped call, which is let through as a probe.
+ * @param {number} consecutiveFailures - SD failures since the last success
+ * @param {number} skipsSinceOpen - calls skipped since the breaker opened
+ */
+function shouldAttemptScrapingdog(consecutiveFailures, skipsSinceOpen,
+  { threshold = SD_BREAKER_THRESHOLD, probeEvery = SD_BREAKER_PROBE_EVERY } = {}) {
+  if (consecutiveFailures < threshold) return true;
+  return skipsSinceOpen > 0 && skipsSinceOpen % probeEvery === 0;
+}
 
 // Overridable for tests (points at a local mock server)
 const SCRAPINGDOG_BASE_URL = process.env.SCRAPINGDOG_BASE_URL || 'https://api.scrapingdog.com/scrape';
@@ -141,8 +167,7 @@ async function fetchViaScrapingBee(url) {
   const _rec = (success, status) => {
     if (_recorded) return;
     _recorded = true;
-    const billed = (status === 401 || status === 402 || status === 'error') ? 0 : 10;
-    try { recordSbCall({ url, fn: 'json', success, status, credits: billed }); } catch (_) {}
+    try { recordSbCall({ url, fn: 'json', success, status, credits: sbBilledCredits(status, 10) }); } catch (_) {}
   };
 
   return new Promise((resolve, reject) => {
@@ -210,15 +235,28 @@ async function fetchViaScrapingDog(url) {
     throw new Error('Scrapingdog daily breaker tripped — skipping for this call');
   }
 
+  if (!shouldAttemptScrapingdog(sdConsecutiveFailures, sdBreakerSkips)) {
+    sdBreakerSkips++;
+    throw new Error(`Scrapingdog breaker open (${sdConsecutiveFailures} consecutive failures) — skipping`);
+  }
+  if (sdConsecutiveFailures >= SD_BREAKER_THRESHOLD) sdBreakerSkips++; // this call is the probe
+
   while (true) {
     const tier = SD_TIERS[sdTierIndex];
     try {
-      return await scrapingDogRequest(apiKey, url, tier);
+      const result = await scrapingDogRequest(apiKey, url, tier);
+      sdConsecutiveFailures = 0;
+      sdBreakerSkips = 0;
+      return result;
     } catch (e) {
       if (e.escalate && sdTierIndex < SD_TIERS.length - 1) {
         sdTierIndex++;
         console.warn(`  Scrapingdog ${tier.name} tier refused (${e.message.slice(0, 80)}...) — escalating to ${SD_TIERS[sdTierIndex].name} tier for this run`);
         continue;
+      }
+      sdConsecutiveFailures++;
+      if (sdConsecutiveFailures === SD_BREAKER_THRESHOLD) {
+        console.warn(`  Scrapingdog failed ${SD_BREAKER_THRESHOLD}x in a row — skipping it (probe every ${SD_BREAKER_PROBE_EVERY} calls) for this run`);
       }
       throw e;
     }
@@ -258,7 +296,11 @@ function scrapingDogRequest(apiKey, url, tier) {
         // outcome. Record once per response here so every branch below stays
         // billing-neutral (only the parse outcome, not the credit amount, may
         // still change per branch).
-        rec(res.statusCode === 200, res.statusCode, tier.credits);
+        // SD bills only successful requests (provider-telemetry sdBilledCredits;
+        // its own 500 body says "You won't be charged"). BRO-4215: booking the
+        // tier price on every response wrote ~190K phantom SD credits/week
+        // from Reddit's failing stealth tier.
+        rec(res.statusCode === 200, res.statusCode, sdBilledCredits(res.statusCode === 200, tier.credits));
         if (res.statusCode === 200) {
           try {
             resolve(JSON.parse(data));
@@ -956,6 +998,8 @@ function resetFallbackState() {
   brightDataDown = false;
   scrapingDogDown = false;
   sdTierIndex = 0;
+  sdConsecutiveFailures = 0;
+  sdBreakerSkips = 0;
   scrapingBeeSwitchTime = 0;
   rateLimitCount = 0;
   lastRequestTime = 0;
@@ -977,6 +1021,7 @@ module.exports = {
   fetchWithFallback,
   fetchViaScrapingBee,
   fetchViaScrapingDog,
+  shouldAttemptScrapingdog,
   fetchViaRedditRSS,
   toRssUrl,
   parseRedditAtom,
