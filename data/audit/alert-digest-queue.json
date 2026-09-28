@@ -1,135 +1,51 @@
 [
   {
-    "conditionKey": "opening-night-revival-unverified-tru-off-west-end-2026",
-    "title": "Unverified revival on Tru",
-    "description": "tru-off-west-end-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T14:05:37.650Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:america-who-hurt-you-off-broadway-2026",
-    "title": "Review gap — \"America, Who Hurt You?\" missing 1 cited review(s)",
-    "description": "America, Who Hurt You? (america-who-hurt-you-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=america-who-hurt-you-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T14:36:57.417Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:cosi-fan-tutte-off-broadway-2026",
-    "title": "Review gap — \"Così fan tutte\" missing 3 cited review(s)",
-    "description": "Così fan tutte (cosi-fan-tutte-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cosi-fan-tutte-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T14:36:57.421Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
-    "title": "Review gap — \"Crazy Mama: A True Story of Love and Madness\" missing 4 cited review(s)",
-    "description": "Crazy Mama: A True Story of Love and Madness (crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T14:36:57.424Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:deep-heat-rivalry-off-west-end-2026",
-    "title": "Review gap — \"Deep Heat Rivalry\" missing 4 cited review(s)",
-    "description": "Deep Heat Rivalry (deep-heat-rivalry-off-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=deep-heat-rivalry-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T14:36:57.428Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:human-things-off-broadway-2026",
-    "title": "Review gap — \"Human Things\" missing 1 cited review(s)",
-    "description": "Human Things (human-things-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=human-things-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T14:36:57.437Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-last-ship-west-end-2026",
-    "title": "Review gap — \"The Last Ship\" missing 3 cited review(s)",
-    "description": "The Last Ship (the-last-ship-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-last-ship-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T14:36:57.471Z"
-  },
-  {
     "conditionKey": "corpus-drift:cv-flag-contradiction",
     "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
-    "description": "check-corpus-drift.js audit \"cv-flag-contradiction\" (node scripts/audit-cv-flag-contradiction.js --window=30 --strict) has been drifting. Latest output:\n\nFlag-vs-CV contradiction sweep: 169 shows in the last 30d window, 7 contradiction(s) found.\n  [wrongProduction] macbeth-off-broadway-2026/slippedisc--susan-hall.json (468w)\n  [wrongProduction] tosca-off-broadway-2026/new-york-classical-review--george-grella.json (925w)\n  [wrongProduction] tosca-off-broadway-2026/operawire--chris-ruel.json (2816w)\n  [wrongProduction] miles-for-mary-off-broadway-2026/talkinbroadway--marc-miller.json (675w)\n  [wrongProduction] the-last-ship-west-end-2026/timeout--andrzej-lukowski.json (976w)\n  [wrongProduction] the-revlon-girl-off-west-end-2026/london-box-office--stacey-tyler.json (817w)\n  [wrongProduction] our-sinatra-a-musical-celebration-off-broadway-2026/theater-life--unknown.json (955w)\nCoverage: examined 103 of 3059 corpus show(s) (1733 review file(s) parsed).\n  --window=30d selected 169 show(s): 55 already opened, 114 not yet opened (the window filter has no upper bound).\n  66 selected show(s) yielded no readable review file (directory missing, unreadable, empty, or every file failed to parse).\n  2956 corpus show(s) were NOT examined, of which 398 carry no usable openingDate (missing or unparseable) and are excluded at EVERY window.\n  A clean result above covers only the examined shows. It is not a statement about the corpus.\n\n(4 baselined, 3 new)\n\n⚠️  NEW flag-vs-CV contradiction(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/cv-flag-contradiction-baseline.json):\n  [wrongProduction] macbeth-off-broadway-2026/slippedisc--susan-hall.json\n  [wrongProduction] the-last-ship-west-end-2026/timeout--andrzej-lukowski.json\n  [wrongProduction] our-sinatra-a-musical-celebration-off-broadway-2026/theater-life--unknown.json\n\nInvestigate, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-cv-flag-contradiction.js --update-baseline",
+    "description": "check-corpus-drift.js audit \"cv-flag-contradiction\" (node scripts/audit-cv-flag-contradiction.js --window=30 --strict) has been drifting. Latest output:\n\nFlag-vs-CV contradiction sweep: 169 shows in the last 30d window, 7 contradiction(s) found.\n  [wrongProduction] macbeth-off-broadway-2026/slippedisc--susan-hall.json (468w)\n  [wrongProduction] tosca-off-broadway-2026/new-york-classical-review--george-grella.json (925w)\n  [wrongProduction] tosca-off-broadway-2026/operawire--chris-ruel.json (2816w)\n  [wrongProduction] miles-for-mary-off-broadway-2026/talkinbroadway--marc-miller.json (675w)\n  [wrongProduction] the-last-ship-west-end-2026/timeout--andrzej-lukowski.json (976w)\n  [wrongProduction] the-revlon-girl-off-west-end-2026/london-box-office--stacey-tyler.json (817w)\n  [wrongProduction] our-sinatra-a-musical-celebration-off-broadway-2026/theater-life--unknown.json (955w)\nCoverage: examined 109 of 3059 corpus show(s) (1840 review file(s) parsed).\n  --window=30d selected 169 show(s): 57 already opened, 112 not yet opened (the window filter has no upper bound).\n  60 selected show(s) yielded no readable review file (directory missing, unreadable, empty, or every file failed to parse).\n  2950 corpus show(s) were NOT examined, of which 398 carry no usable openingDate (missing or unparseable) and are excluded at EVERY window.\n  A clean result above covers only the examined shows. It is not a statement about the corpus.\n\n(4 baselined, 3 new)\n\n⚠️  NEW flag-vs-CV contradiction(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/cv-flag-contradiction-baseline.json):\n  [wrongProduction] macbeth-off-broadway-2026/slippedisc--susan-hall.json\n  [wrongProduction] the-last-ship-west-end-2026/timeout--andrzej-lukowski.json\n  [wrongProduction] our-sinatra-a-musical-celebration-off-broadway-2026/theater-life--unknown.json\n\nInvestigate, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-cv-flag-contradiction.js --update-baseline",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-27T15:09:13.201Z"
+    "queuedAt": "2026-09-28T15:26:29.664Z"
   },
   {
     "conditionKey": "corpus-drift:aggregator-archive-integrity",
     "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
-    "description": "check-corpus-drift.js audit \"aggregator-archive-integrity\" (node scripts/audit-aggregator-archive-integrity.js --strict) has been drifting. Latest output:\n\nAggregator-archive integrity:\n  Scanned: 5997 files\n  Skipped (no show in shows.json): 263\n  Bad: 2\n\n❌ NEW bad archives (1):\n   - theatre-reviews/here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026\n\nEach represents a cached aggregator HTML file whose page title\ndoes not match the showId in the filename — i.e., poisoned cache.\n\nRemediate by re-fetching or quarantining the file, then re-running\nthe audit. To accept these intentionally, run --update-baseline.",
+    "description": "check-corpus-drift.js audit \"aggregator-archive-integrity\" (node scripts/audit-aggregator-archive-integrity.js --strict) has been drifting. Latest output:\n\nAggregator-archive integrity:\n  Scanned: 6035 files\n  Skipped (no show in shows.json): 263\n  Bad: 2\n\n❌ NEW bad archives (1):\n   - theatre-reviews/here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026\n\nEach represents a cached aggregator HTML file whose page title\ndoes not match the showId in the filename — i.e., poisoned cache.\n\nRemediate by re-fetching or quarantining the file, then re-running\nthe audit. To accept these intentionally, run --update-baseline.",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-27T15:09:13.208Z"
+    "queuedAt": "2026-09-28T15:26:29.672Z"
   },
   {
     "conditionKey": "corpus-drift:critic-outlets",
     "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
-    "description": "check-corpus-drift.js audit \"critic-outlets\" (node scripts/audit-critic-outlets.js --strict) has been drifting. Latest output:\n\n    Primary: theater-scene (96%), total: 25 reviews\n  Pete Hempstead at whatsonstage (3% share) for the-lost-boys-2026\n    Primary: theatermania (98%), total: 40 reviews\n  Susannah Clapp at guardian (9% share) for much-ado-about-nothing-globe-off-west-end-2026\n    Primary: observer (91%), total: 32 reviews\n  Susannah Clapp at guardian (9% share) for stranger-things-the-first-shadow-west-end-2023\n    Primary: observer (91%), total: 32 reviews\n  Susannah Clapp at guardian (9% share) for sylvia-off-west-end-2026\n    Primary: observer (91%), total: 32 reviews\n  Patrick Ryan at tennessean (3% share) for gypsy-2024\n    Primary: usatoday (97%), total: 31 reviews\n  David Kaufman at nydailynews (4% share) for proof-2000\n    Primary: theater-scene (96%), total: 23 reviews\n  Emlyn Travis at amny (3% share) for cabaret-2024\n    Primary: ew (97%), total: 29 reviews\n  Shania Russell at cbsnews (10% share) for gypsy-2024\n    Primary: ew (90%), total: 21 reviews\n  Shania Russell at cbsnews (10% share) for spamalot-2005\n    Primary: ew (90%), total: 21 reviews\n  Frank J. Avella at edge-new-york (5% share) for heisenberg-2016\n    Primary: the-contending (95%), total: 21 reviews\n  Scott Matthewman at musical-theatre-review (5% share) for teeth-n-smiles-west-end-2026\n    Primary: thereviewshub (95%), total: 20 reviews\n  Markos Papadatos at truehollywoodtalk (4% share) for the-lost-boys-2026\n    Primary: digital-journal (96%), total: 28 reviews\n\n--report-only/--strict: No files written\n\n(31 baselined, 6 new)\n\n⚠️  NEW flagged review(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/critic-outlets-baseline.json):\n  David Barbour at theatermania (0% share) for the-39-steps-2008\n  Michael Dale at talkinbroadway (3% share) for benevolent-off-broadway-2026\n  Michael Dale at talkinbroadway (3% share) for camping-off-broadway-2026\n  Holli Harms at openingnight (6% share) for the-invention-of-love-off-broadway-2026\n  Shania Russell at cbsnews (10% share) for gypsy-2024\n  Shania Russell at cbsnews (10% share) for spamalot-2005\n\nInvestigate the attribution, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-critic-outlets.js --update-baseline",
+    "description": "check-corpus-drift.js audit \"critic-outlets\" (node scripts/audit-critic-outlets.js --strict) has been drifting. Latest output:\n\n  Pete Hempstead at whatsonstage (2% share) for the-lost-boys-2026\n    Primary: theatermania (98%), total: 41 reviews\n  Susannah Clapp at guardian (9% share) for much-ado-about-nothing-globe-off-west-end-2026\n    Primary: observer (91%), total: 32 reviews\n  Susannah Clapp at guardian (9% share) for stranger-things-the-first-shadow-west-end-2023\n    Primary: observer (91%), total: 32 reviews\n  Susannah Clapp at guardian (9% share) for sylvia-off-west-end-2026\n    Primary: observer (91%), total: 32 reviews\n  Patrick Ryan at tennessean (3% share) for gypsy-2024\n    Primary: usatoday (97%), total: 31 reviews\n  David Kaufman at nydailynews (4% share) for proof-2000\n    Primary: theater-scene (96%), total: 23 reviews\n  Emlyn Travis at amny (3% share) for cabaret-2024\n    Primary: ew (97%), total: 29 reviews\n  Shania Russell at cbsnews (10% share) for gypsy-2024\n    Primary: ew (90%), total: 21 reviews\n  Shania Russell at cbsnews (10% share) for spamalot-2005\n    Primary: ew (90%), total: 21 reviews\n  Frank J. Avella at edge-new-york (5% share) for heisenberg-2016\n    Primary: the-contending (95%), total: 21 reviews\n  Scott Matthewman at musical-theatre-review (5% share) for teeth-n-smiles-west-end-2026\n    Primary: thereviewshub (95%), total: 20 reviews\n  Markos Papadatos at truehollywoodtalk (4% share) for the-lost-boys-2026\n    Primary: digital-journal (96%), total: 28 reviews\n\n--report-only/--strict: No files written\n\n(31 baselined, 7 new)\n\n⚠️  NEW flagged review(s), not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/critic-outlets-baseline.json):\n  David Barbour at theatermania (0% share) for the-39-steps-2008\n  Michael Dale at talkinbroadway (3% share) for benevolent-off-broadway-2026\n  Michael Dale at talkinbroadway (3% share) for camping-off-broadway-2026\n  Lizzie Loveridge at curtainup (9% share) for king-charles-iii-2015\n  Holli Harms at openingnight (6% share) for the-invention-of-love-off-broadway-2026\n  Shania Russell at cbsnews (10% share) for gypsy-2024\n  Shania Russell at cbsnews (10% share) for spamalot-2005\n\nInvestigate the attribution, or if this is deliberate progress, refresh the baseline:\n  node scripts/audit-critic-outlets.js --update-baseline",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-27T15:09:13.212Z"
+    "queuedAt": "2026-09-28T15:26:29.676Z"
   },
   {
     "conditionKey": "corpus-drift:duplicate-of-cleared-contradiction",
     "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
-    "description": "check-corpus-drift.js audit \"duplicate-of-cleared-contradiction\" (node scripts/audit-duplicate-of-cleared-contradiction.js --gate --max=0) has been drifting. Latest output:\n\nDuplicate-of-cleared contradiction sweep: 44798 review file(s) scanned, 2 match(es).\n  and-juliet-2022/theatermania--pete-hempstead.json -> theatermania--jesse-green.json (both claim/deny the same URL)\n  the-cottage-2023/theater-life--paulanne-simmons.json -> theater-life--samuel-l-leiter.json (both claim/deny the same URL)\n\nFAIL: 2 review file(s) carry a duplicateOf pointer AND a _duplicateOfCleared breadcrumb for the same URL (> max 0).\nThis is the #1655 class: two contradictory verdicts about the same URL collision on one record.\nFix: node scripts/audit-duplicate-of-cleared-contradiction.js --fix (retracts the dead breadcrumb; duplicateOf already governs inclusion — see the module docblock for why this is safe in bulk).",
+    "description": "check-corpus-drift.js audit \"duplicate-of-cleared-contradiction\" (node scripts/audit-duplicate-of-cleared-contradiction.js --gate --max=0) has been drifting. Latest output:\n\nDuplicate-of-cleared contradiction sweep: 44958 review file(s) scanned, 2 match(es).\n  and-juliet-2022/theatermania--pete-hempstead.json -> theatermania--jesse-green.json (both claim/deny the same URL)\n  the-cottage-2023/theater-life--paulanne-simmons.json -> theater-life--samuel-l-leiter.json (both claim/deny the same URL)\n\nFAIL: 2 review file(s) carry a duplicateOf pointer AND a _duplicateOfCleared breadcrumb for the same URL (> max 0).\nThis is the #1655 class: two contradictory verdicts about the same URL collision on one record.\nFix: node scripts/audit-duplicate-of-cleared-contradiction.js --fix (retracts the dead breadcrumb; duplicateOf already governs inclusion — see the module docblock for why this is safe in bulk).",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-27T15:09:13.219Z"
+    "queuedAt": "2026-09-28T15:26:29.682Z"
   },
   {
     "conditionKey": "corpus-drift:orphan-show-ids",
@@ -141,443 +57,66 @@
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-09-27T15:09:13.225Z"
+    "queuedAt": "2026-09-28T15:26:29.687Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:alvin-ailey-american-dance-theater-new-works-west-end-2026",
-    "title": "Review gap — \"Alvin Ailey American Dance Theater - New Works\" missing 3 cited review(s)",
-    "description": "Alvin Ailey American Dance Theater - New Works (alvin-ailey-american-dance-theater-new-works-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=alvin-ailey-american-dance-theater-new-works-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.810Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:becoming-hamlet-off-broadway-2026",
-    "title": "Review gap — \"Becoming Hamlet\" missing 2 cited review(s)",
-    "description": "Becoming Hamlet (becoming-hamlet-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=becoming-hamlet-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.816Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:darkling-off-west-end-2026",
-    "title": "Review gap — \"Darkling\" missing 2 cited review(s)",
-    "description": "Darkling (darkling-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=darkling-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.826Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:garry-starr-classic-penguins-off-broadway-2026",
-    "title": "Review gap — \"Garry Starr: Classic Penguins\" missing 2 cited review(s)",
-    "description": "Garry Starr: Classic Penguins (garry-starr-classic-penguins-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=garry-starr-classic-penguins-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.832Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:gimme-a-sign-off-broadway-2026",
-    "title": "Review gap — \"Gimme a Sign!\" missing 1 cited review(s)",
-    "description": "Gimme a Sign! (gimme-a-sign-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=gimme-a-sign-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.835Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:golden-boy-off-west-end-2026",
-    "title": "Review gap — \"Golden Boy\" missing 1 cited review(s)",
-    "description": "Golden Boy (golden-boy-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=golden-boy-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.838Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:how-shakespeare-saved-my-life-off-broadway-2026",
-    "title": "Review gap — \"How Shakespeare Saved My Life\" missing 7 cited review(s)",
-    "description": "How Shakespeare Saved My Life (how-shakespeare-saved-my-life-off-broadway-2026): 7 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=how-shakespeare-saved-my-life-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.841Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:in-honor-of-jean-michel-basquiat-off-broadway-2026",
-    "title": "Review gap — \"In Honor of Jean-Michel Basquiat\" missing 1 cited review(s)",
-    "description": "In Honor of Jean-Michel Basquiat (in-honor-of-jean-michel-basquiat-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=in-honor-of-jean-michel-basquiat-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.847Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:kimberly-akimbo-off-west-end-2026",
-    "title": "Review gap — \"Kimberly Akimbo\" missing 5 cited review(s)",
-    "description": "Kimberly Akimbo (kimberly-akimbo-off-west-end-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=kimberly-akimbo-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.850Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:lean-to-off-broadway-2026",
-    "title": "Review gap — \"Lean-To\" missing 1 cited review(s)",
-    "description": "Lean-To (lean-to-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=lean-to-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.855Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:midnight-off-broadway-2026",
-    "title": "Review gap — \"Midnight\" missing 6 cited review(s)",
-    "description": "Midnight (midnight-off-broadway-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=midnight-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.859Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
-    "title": "Review gap — \"Mrs. Stern Wanders the Prussian State Library (Luna Stage)\" missing 2 cited review(s)",
-    "description": "Mrs. Stern Wanders the Prussian State Library (Luna Stage) (mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.862Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:my-sons-a-queer-but-what-can-you-do-west-end-2026",
-    "title": "Review gap — \"My Son’s A Queer (But What Can You Do?)\" missing 4 cited review(s)",
-    "description": "My Son’s A Queer (But What Can You Do?) (my-sons-a-queer-but-what-can-you-do-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=my-sons-a-queer-but-what-can-you-do-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.865Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:night-city-off-west-end-2026",
-    "title": "Review gap — \"Night City\" missing 2 cited review(s)",
-    "description": "Night City (night-city-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=night-city-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.868Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:safe-house-off-broadway-2026",
-    "title": "Review gap — \"Safe House\" missing 3 cited review(s)",
-    "description": "Safe House (safe-house-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=safe-house-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.871Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:spandex-off-broadway-2026",
-    "title": "Review gap — \"Spandex\" missing 1 cited review(s)",
-    "description": "Spandex (spandex-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=spandex-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.875Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:table-17-off-west-end-2026",
-    "title": "Review gap — \"Table 17\" missing 4 cited review(s)",
-    "description": "Table 17 (table-17-off-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=table-17-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.878Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-cherry-orchard-park-avenue-armory-off-broadway-2026",
-    "title": "Review gap — \"The Cherry Orchard\" missing 1 cited review(s)",
-    "description": "The Cherry Orchard (the-cherry-orchard-park-avenue-armory-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-cherry-orchard-park-avenue-armory-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.882Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-holes-off-broadway-2026",
-    "title": "Review gap — \"The Holes\" missing 1 cited review(s)",
-    "description": "The Holes (the-holes-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-holes-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.885Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-hope-theory-off-broadway-2026",
-    "title": "Review gap — \"The Hope Theory\" missing 6 cited review(s)",
-    "description": "The Hope Theory (the-hope-theory-off-broadway-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-hope-theory-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.888Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-human-voice-the-seven-deadly-sins-west-end-2026",
-    "title": "Review gap — \"The Human Voice / The Seven Deadly Sins\" missing 1 cited review(s)",
-    "description": "The Human Voice / The Seven Deadly Sins (the-human-voice-the-seven-deadly-sins-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-27T16:31:53.891Z"
-  },
-  {
-    "conditionKey": "direct-push:e028b08ab67b087db0f8c057d40398f169f388f1",
-    "title": "Direct push to main: e028b08ab6 by thomaspryor",
-    "description": "e028b08ab6 reached main WITHOUT going through land.yml (no row in data/audit/landings.jsonl). Pushed by thomaspryor (committer GitHub). Head commit: fix(nyt-picks): stop 403s wiping Critic's Pick badges; accumulate picks (#946) Direct pushes skip the delta-vs-base gates; sessions must land via scripts/merge-worktree-to-main.sh (BRO-3425). Compare: https://github.com/thomaspryor/Broadwayscore/compare/cdd05e3e8af7fc0139892592a407de09c63359b5...e028b08ab67b087db0f8c057d40398f169f388f1 Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36337581939",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "sha",
-        "value": "e028b08ab67b087db0f8c057d40398f169f388f1"
-      },
-      {
-        "name": "actor",
-        "value": "thomaspryor"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36337581939"
-      }
-    ],
-    "queuedAt": "2026-09-27T17:44:24.732Z"
-  },
-  {
-    "conditionKey": "slug-misroute:c9a7d65c39c0",
-    "title": "13 new slug-misroute finding(s)",
-    "description": "13 review file(s) appear misrouted and are not yet dispositioned. Nothing was changed automatically. To triage LOCALLY:\n1) node scripts/audit-slug-match-routing.js\n2) node scripts/verify-misroute-content.js --include-flagged --include-oos\n3) gated apply per scripts/apply-slug-misroute-whitelist.js header (snapshot → ff-only → --apply → rebuild → spot-check)\nTo silence a finding you've decided to leave: node scripts/disposition-misroute.js add --from=ID --file=F --reason=\"...\"",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "becky-shaw-2026 → monte-cristo-the-york-theatre-company-off-broadway-2026",
-        "value": "nysr--david-finkle.json (article 2026, class-A)"
-      },
-      {
-        "name": "becky-shaw-2026 → monte-cristo-the-york-theatre-company-off-broadway-2026",
-        "value": "nytimes--elisabeth-vincentelli.json (article 2026, class-A)"
-      },
-      {
-        "name": "every-brilliant-thing-2026 → everybodys-talking-about-jamie-west-end-2024",
-        "value": "ew--lee-lenker.json (article 2022, class-A)"
-      },
-      {
-        "name": "every-brilliant-thing-2026 → everybodys-talking-about-jamie-west-end-2024",
-        "value": "theatrely--rachel-hsu.json (article 2022, class-A)"
-      },
-      {
-        "name": "garry-starr-classic-penguins-garrick-west-end-2026 → garry-starr-classic-penguins-off-west-end-2026",
-        "value": "new-york-sun--elysa-gardner.json (article 2026, no-date,from-also-full-match)"
-      },
-      {
-        "name": "garry-starr-classic-penguins-off-broadway-2026 → garry-starr-classic-penguins-off-west-end-2026",
-        "value": "nysr--roma-torre.json (article 2026, no-date,from-also-full-match)"
-      },
-      {
-        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
-        "value": "exeunt-magazine--lane-williamson.json (article 2026, class-A)"
-      },
-      {
-        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
-        "value": "latimes--unknown.json (article 2026, class-A)"
-      },
-      {
-        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
-        "value": "nyt-theater--jonathan-mandell.json (article 2026, class-A)"
-      },
-      {
-        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
-        "value": "nytg--austin-fimmano.json (article 2026, class-A)"
-      },
-      {
-        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
-        "value": "theatrely--juan-a-ramirez.json (article 2026, class-A)"
-      },
-      {
-        "name": "schmigadoon-2026 → every-brilliant-thing-2026",
-        "value": "vulture--sara-holdren.json (article 2026, class-A)"
-      },
-      {
-        "name": "the-ritz-2007 → break-a-new-play-off-broadway-2026",
-        "value": "nytimes--ben-brantley.json (article 2010, no-date)"
-      }
-    ],
-    "queuedAt": "2026-09-27T18:05:54.666Z"
-  },
-  {
-    "conditionKey": "opening-night-drift:tru-off-west-end-2026",
-    "title": "Opening night drift: Tru (tru-off-west-end-2026)",
-    "description": "Review counts do not reconcile for Tru (tru-off-west-end-2026): local review-texts=8, reviews.json aggregate=1, live production=n/a, drift=7 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36347485889",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Show",
-        "value": "Tru (tru-off-west-end-2026)",
-        "inline": false
-      },
-      {
-        "name": "Counts",
-        "value": "local=8, aggregate=1, live=n/a, drift=7",
-        "inline": false
-      },
-      {
-        "name": "Opening",
-        "value": "2026-09-27",
-        "inline": false
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/36347485889)",
-        "inline": false
-      }
-    ],
-    "queuedAt": "2026-09-27T20:19:28.420Z"
-  },
-  {
-    "conditionKey": "opening-night-drift:the-secret-circus-musical-off-broadway-2026",
-    "title": "Opening night drift: The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
-    "description": "Review counts do not reconcile for The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): local review-texts=3, reviews.json aggregate=0, live production=n/a, drift=3 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36347485889",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Show",
-        "value": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
-        "inline": false
-      },
-      {
-        "name": "Counts",
-        "value": "local=3, aggregate=0, live=n/a, drift=3",
-        "inline": false
-      },
-      {
-        "name": "Opening",
-        "value": "2026-09-26",
-        "inline": false
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/36347485889)",
-        "inline": false
-      }
-    ],
-    "queuedAt": "2026-09-27T20:19:28.426Z"
-  },
-  {
-    "conditionKey": "land:land/missing-shows-reviews-9s5ryw",
-    "title": "Landing blocked: rebase red on land/missing-shows-reviews-9s5ryw",
-    "description": "land.yml did not land land/missing-shows-reviews-9s5ryw: the rebase gate went red at 4a54c19e83. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36351274216",
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-how-shakespeare-saved-my-life-off-broadway-2026",
+    "title": "Unhandled CV.wrongProduction on How Shakespeare Saved My Life",
+    "description": "timeout/Raven Snook (timeout--raven-snook.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] While the review matches the expected critic (Raven S — https://www.timeout.com/newyork/theater/how-shakespeare-saved-my-life-jacob-ming-trent-review",
     "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/missing-shows-reviews-9s5ryw"
-      },
-      {
-        "name": "gate",
-        "value": "rebase"
-      },
-      {
-        "name": "tip",
-        "value": "4a54c19e8314dfa5badbbe2d4639b44108e931be"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36351274216"
-      }
-    ],
-    "queuedAt": "2026-09-27T21:21:04.902Z"
+    "fields": [],
+    "queuedAt": "2026-09-28T15:34:39.476Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:how-shakespeare-saved-my-life-off-broadway-2026",
+    "title": "Shipped review missing publishDate on How Shakespeare Saved My Life",
+    "description": "culturesauce/Thom Geier SHIPPED with no publishDate — cannot confirm post-opening: https://culturesauce.com/how-shakespeare-saved-my-life-treats-the-bard-as-life-coach-off-broadway-review/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-28T15:34:39.479Z"
+  },
+  {
+    "conditionKey": "opening-night-revival-unverified-how-shakespeare-saved-my-life-off-broadway-2026",
+    "title": "Unverified revival on How Shakespeare Saved My Life",
+    "description": "how-shakespeare-saved-my-life-off-broadway-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-28T15:34:39.483Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:tru-off-west-end-2026",
+    "title": "Auto-remediation gave up on tru-off-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"tru-off-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-28T15:34:43.334Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:elf-lyons-the-woman-on-the-edge-off-broadway-2026",
+    "title": "Auto-remediation gave up on elf-lyons-the-woman-on-the-edge-off-broadway-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"elf-lyons-the-woman-on-the-edge-off-broadway-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-28T15:34:47.681Z"
   }
 ]

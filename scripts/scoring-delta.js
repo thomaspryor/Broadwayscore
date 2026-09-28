@@ -770,6 +770,44 @@ function resolveReviewDate(review) {
  * This is a subset of rebuild-all-reviews.js's full decision chain, but
  * captures the path that the Giant/temporal incident flowed through.
  */
+// Every show a review URL is filed under (flagged files included), keyed the
+// same way as rebuild-all-reviews.js's urlShowIdsAll / normalizeUrlForDedup.
+// Corpus-level data, identical on both replay sides; built once per guards
+// module so a canonicalizeUrlForDedup change is still modelled per side.
+const _urlShowIdsAllCache = new WeakMap();
+function urlKeyForCrossShowIndex(url, guards) {
+  if (!url || typeof guards.canonicalizeUrlForDedup !== 'function') return null;
+  const canon = guards.canonicalizeUrlForDedup(url);
+  if (!canon) return null;
+  return canon.replace(/^https?:\/\//, '').replace(/^www\./, '');
+}
+function getUrlShowIdsAll(guards) {
+  if (_urlShowIdsAllCache.has(guards)) return _urlShowIdsAllCache.get(guards);
+  const index = new Map();
+  let skipIds = new Set();
+  try {
+    const showsRaw = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+    skipIds = new Set((showsRaw.shows || showsRaw).filter(s => s && s._skipCrossShowDupe).map(s => s.id));
+  } catch {}
+  try {
+    for (const sid of listShowDirs(REVIEW_TEXTS_DIR)) {
+      if (skipIds.has(sid)) continue;
+      const sDir = path.join(REVIEW_TEXTS_DIR, sid);
+      for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
+        try {
+          const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
+          const key = urlKeyForCrossShowIndex(d.url, guards);
+          if (!key) continue;
+          if (!index.has(key)) index.set(key, new Set());
+          index.get(key).add(sid);
+        } catch {}
+      }
+    }
+  } catch {}
+  _urlShowIdsAllCache.set(guards, index);
+  return index;
+}
+
 function decideInclusion(review, show, guards) {
   // 1. Already-flagged top-level exclusions. A static wrongShow/wrongProduction
   // flag on disk does NOT mean rebuild-all-reviews.js excludes the review — the
@@ -989,6 +1027,45 @@ function decideInclusion(review, show, guards) {
         });
       } catch {}
     }
+  }
+
+  // Stale "Cross-market: London outlet" flag on a Broadway/off-Broadway show
+  // (BRO-4185 E) — mirrors rebuild-all-reviews.js's reverse self-heal block,
+  // including its registry-domain, own-window and filed-under-other-show ctx.
+  if (!wrongProductionCleared && review.wrongProduction === true && !review.wrongProductionOverride
+      && review.url && ['broadway', 'off-broadway'].includes(show?.category || 'broadway')
+      && (review.wrongProductionNote || '').startsWith('Cross-market: London outlet')
+      && typeof autoClear.shouldAutoClearStaleLondonOutletCrossMarket === 'function') {
+    try {
+      const revRawOutlet = (review.outletId || review.outlet || '').toLowerCase();
+      const revCanonical = normalizeOutletCanonical(revRawOutlet);
+      const revInfo = (outletRegistry.outlets || {})[revCanonical] || {};
+      const revHost = (new URL(review.url).hostname || '').toLowerCase().replace(/^www\./, '');
+      const revPrimary = String(revInfo.domain || '').toLowerCase().replace(/^www\./, '');
+      let revDateMismatch = false;
+      const showStart = show ? earliestShowDate(show) : null;
+      if (review.publishDate && showStart) {
+        const rd = parseDate(review.publishDate);
+        const preWindowDays = guards.__dateGuard?.PRE_WINDOW_DAYS ?? 60;
+        if (rd && !isNaN(rd.getTime()) && (new Date(showStart).getTime() - rd.getTime()) > preWindowDays * 86400000) revDateMismatch = true;
+      }
+      const urlKey = urlKeyForCrossShowIndex(review.url, guards);
+      wrongProductionCleared = autoClear.shouldAutoClearStaleLondonOutletCrossMarket(review, {
+        isNycMarketShow: true,
+        outletIsDualMarket: DUAL_MARKET_OUTLETS.has(revCanonical) || DUAL_MARKET_OUTLETS.has(revRawOutlet),
+        urlOnOutletPrimaryDomain: !!revPrimary && (revHost === revPrimary || revHost.endsWith('.' + revPrimary)),
+        isUkUrl: isUkOutletUrl(review.url) || /\.(co|org)\.uk$/.test(revHost),
+        isDateMismatch: revDateMismatch,
+        isShowListingUrl: isEvergreenListingUrl(review.url),
+        cvBlocksClear: typeof guards.cvBlocksUkWrongProductionAutoClear === 'function'
+          ? guards.cvBlocksUkWrongProductionAutoClear(review.contentVerification)
+          : false,
+        inOwnProductionWindow: typeof guards.isReviewWithinOwnProductionWindow === 'function'
+          ? guards.isReviewWithinOwnProductionWindow(show, review.publishDate)
+          : false,
+        urlFiledUnderOtherShow: !!urlKey && (getUrlShowIdsAll(guards).get(urlKey) || new Set()).size > 1,
+      });
+    } catch {}
   }
 
   if (review.wrongShow === true && !wrongShowCleared) return { included: false, reason: 'wrongShow' };
@@ -1307,6 +1384,10 @@ function main() {
         && (baseline.__priorRunLib?.shouldAutoClearStaleDateGuard?.toString() || '') === (working.__priorRunLib?.shouldAutoClearStaleDateGuard?.toString() || '')
         && (baseline.__priorRunLib?.shouldAutoClearAnticipatoryGrace?.toString() || '') === (working.__priorRunLib?.shouldAutoClearAnticipatoryGrace?.toString() || '')
         && (baseline.__priorRunLib?.shouldAutoClearWrongProductionUrlYear?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProductionUrlYear?.toString() || '')
+        // BRO-4185 E: stale London-outlet cross-market self-heal + the own-window
+        // helper that feeds its ctx.
+        && (baseline.__priorRunLib?.shouldAutoClearStaleLondonOutletCrossMarket?.toString() || '') === (working.__priorRunLib?.shouldAutoClearStaleLondonOutletCrossMarket?.toString() || '')
+        && (baseline.isReviewWithinOwnProductionWindow?.toString() || '') === (working.isReviewWithinOwnProductionWindow?.toString() || '')
         // evaluateDateGuard feeds shouldAutoClearStaleDateGuard's nowInWindow
         // ctx — same "the ctx-computing helper is as load-bearing as the
         // predicate it feeds" rationale as outletIsUkSideSelfHealRegion below.

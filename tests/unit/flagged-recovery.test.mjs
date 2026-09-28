@@ -251,3 +251,33 @@ describe('filledDateOutsideWindow (post-fill guard, Tender/Sessions 2026-07-24)'
     assert.equal(filledDateOutsideWindow('not-a-date', '2026-07-09'), false);
   });
 });
+
+// BRO-4185 F: host-level coverage fallback must not let a flagged-out file
+// with a DIFFERENT url hide an aggregator-listed review from ingest.
+describe('hostFallbackVouchers', () => {
+  const { hostFallbackVouchers } = require('../../scripts/lib/flagged-recovery');
+  const covered = (d) => d.included === true;
+  const longText = 'x'.repeat(2000);
+
+  test('a flagged file with its own different url vouches for nothing', () => {
+    const files = [{ url: 'https://www.chicagotribune.com/2024/06/20/review-cats', wrongProduction: true, fullText: longText }];
+    assert.deepStrictEqual(hostFallbackVouchers(files, covered), []);
+  });
+  test('an included file (url variant) still covers', () => {
+    const f = { url: 'https://example.com/review-a', included: true, fullText: longText };
+    assert.deepStrictEqual(hostFallbackVouchers([f], covered), [f]);
+  });
+  test('a url-less manual entry still covers', () => {
+    const f = { wrongProduction: true };
+    assert.deepStrictEqual(hostFallbackVouchers([f], covered), [f]);
+  });
+  test('an empty-body recoverable file still vouches (recovery path)', () => {
+    const f = { url: 'https://example.com/old-slug', isNonReview: true };
+    assert.deepStrictEqual(hostFallbackVouchers([f], covered), [f]);
+  });
+  test('keeps only the vouching files from a mixed host set', () => {
+    const good = { url: 'https://example.com/a', included: true, fullText: longText };
+    const bad = { url: 'https://example.com/b', wrongShow: true, fullText: longText };
+    assert.deepStrictEqual(hostFallbackVouchers([good, bad], covered), [good]);
+  });
+});

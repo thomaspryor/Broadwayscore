@@ -418,3 +418,41 @@ test('extractOpeningFactsFromArticle applies per-field windows across a year bou
   assert.equal(facts.openingDate, '2027-01-08');
   assert.equal(facts.closingDate, '2027-03-01');
 });
+
+// 2026-09-27: BWW's /reviews/ list carried four NYC roundups that all landed
+// as false missing-show candidates. OUR SINATRA drops the show's subtitle;
+// the other two carry a bare market tail; tour roundups are not NYC.
+test('BWW roundup: bare Off-Broadway / on Broadway market tail is split off', () => {
+  assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: AMERICA, WHO HURT YOU? Off-Broadway'), 'AMERICA, WHO HURT YOU?');
+  assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: THE HOLES Off-Broadway at The Wild Project'), 'THE HOLES');
+  assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: OH, MARY! on Broadway'), 'OH, MARY!');
+  // venue-tail guard from task #281 still holds
+  assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: MIDNIGHT AT THE NEVER GET'), 'MIDNIGHT AT THE NEVER GET');
+});
+
+test('BWW roundup: North American Tour is non-NYC', () => {
+  assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: DIRTY DANCING Launches North American Tour'), null);
+});
+
+test('title index: pre-colon head resolves a subtitle-dropped roundup title', () => {
+  const shows = [{ id: 'our-sinatra-a-musical-celebration-off-broadway-2026', title: 'Our Sinatra: A Musical Celebration', slug: 'our-sinatra-a-musical-celebration-off-broadway', status: 'previews', category: 'off-broadway' }];
+  const index = buildShowTitleIndex(shows, 'nyc');
+  assert.equal(resolveMatchedShowId('OUR SINATRA', index), 'our-sinatra-a-musical-celebration-off-broadway-2026');
+});
+
+test('title index: catalog title ending "on Broadway" matches its truncated roundup title', () => {
+  const shows = [{ id: '10-things-i-hate-about-you-on-broadway-2024', title: '10 Things I Hate About You on Broadway', status: 'upcoming', category: 'broadway' }];
+  const index = buildShowTitleIndex(shows, 'nyc');
+  const t = extractShowTitleFromBwwRoundup('Review Roundup: 10 THINGS I HATE ABOUT YOU on Broadway');
+  assert.equal(resolveMatchedShowId(t, index), '10-things-i-hate-about-you-on-broadway-2024');
+});
+
+test('title index: one-word / junk pre-colon heads are not indexed', () => {
+  const shows = [
+    { id: 'a', title: '2:22 - A Ghost Story', status: 'open', category: 'broadway' },
+    { id: 'b', title: 'Dolly: An Original Musical', status: 'open', category: 'broadway' },
+  ];
+  const index = buildShowTitleIndex(shows, 'nyc');
+  assert.equal(resolveMatchedShowId('2', index), null);
+  assert.equal(resolveMatchedShowId('DOLLY', index), null);
+});

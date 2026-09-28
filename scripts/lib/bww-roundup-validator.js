@@ -242,6 +242,16 @@ function validateBWWRoundupUrlMatchesShow(url, showTitle, showCategory) {
   const shortTitle = shortTitleCandidate(showTitle);
   if (shortTitle && titleWordsPassSlugCheck(shortTitle, slugSegments, slugSegmentsArray)) return true;
 
+  // Colon-subtitled shows ("Our Sinatra: A Musical Celebration" → "Our
+  // Sinatra"): BWW slugs drop the subtitle the same way. The whole roundup
+  // was rejected on 2026-09-27 for exactly this. Head must be >=2 content
+  // words so a bare "Hamlet: ..." can't match any Hamlet roundup.
+  const colonIdx = showTitle.indexOf(':');
+  if (colonIdx > 0) {
+    const head = showTitle.slice(0, colonIdx).trim();
+    if (normalizeTitleWords(head).length >= 2 && titleWordsPassSlugCheck(head, slugSegments, slugSegmentsArray)) return true;
+  }
+
   return false;
 }
 

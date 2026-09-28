@@ -460,12 +460,15 @@ const TOUR_EXCERPT_PATTERNS = [
 const TOUR_VENUE_PATTERNS = [
   /\bPantages\b/,
   /\bOrpheum\b/,
-  /\bFox Theatre\b/,
+  /(?<!Red )\bFox Theatre\b/, // "Red Fox Theatre" is an Irish company (Catch of the Day)
   /\bFabulous Fox\b/,
   /\bAhmanson\b/,
   /\bCIBC Theatre\b/,
   /\bCadillac Palace\b/,
-  /\bKennedy Center\b/,
+  // Kennedy Center removed (BRO-4185 follow-up): all 14 matches in the corpus
+  // were real Broadway reviews mentioning a Kennedy Center Honor or the
+  // pre-Broadway run that transferred. Tryout-dated reviews are caught by the
+  // date guard, and a touring stop there says "national tour" anyway.
   /\bBoston Opera House\b/,
   /\bBuell Theatre\b/,
   /\bSegerstrom\b/,
@@ -490,6 +493,12 @@ const TOUR_FORWARD_TENSE_PATTERNS = [
   // Bare participle/gerund adjacent to tour — no helper verb required. Catches
   // "tour planned for 2027", "tour launching next spring", "tour announced today".
   /\btour\s+(?:planned|announced|scheduled|slated|launching|booked|upcoming|expected)\b/i,
+  // UK run-then-tour phrasing: "currently performing in London before embarking
+  // on a national tour", "until 29 August and then on tour", "before it heads on
+  // tour" (BRO-4185 follow-up: 8 London reviews excluded by these).
+  /\bbefore\s+(?:it\s+|they\s+)?(?:embark(?:s|ing)?|head(?:s|ing)?(?:\s+out)?|go(?:es|ing)?(?:\s+out)?|set(?:s|ting)?\s+off)\s+on\s+(?:a\s+|its\s+)?(?:national\s+|uk\s+|us\s+)?tour\b/i,
+  /\b(?:and\s+)?then\s+on\s+(?:a\s+)?(?:national\s+|uk\s+)?tour\b/i,
+  /\bembark(?:s|ing)?\s+on\s+(?:a\s+)?(?:national\s+|uk\s+|us\s+)?tour\s+(?:in|next|later|this)\b/i,
 ];
 
 // Past-tense / in-progress markers — confirm this IS a tour review
@@ -566,34 +575,97 @@ function tourMatchIsAboutDifferentShow(excerpt, matchIndex, currentShowId, curre
   return null;
 }
 
+// Words right before a tour phrase that make it history, not the production
+// under review: "Fresh off a national tour", "following a national tour",
+// "after bolting off on tour", "previous versions had ... a national tour".
+const TOUR_HISTORY_PREFIX = /(?:fresh\s+off|following|after(?:\s+\w+){0,3}|bolting\s+off\s+on|previous(?:ly)?(?:\s+\w+){0,4})\s+(?:a\s+|its\s+|the\s+)?(?:first\s+)?$/i;
+const TOUR_HISTORY_WINDOW_CHARS = 70;
+const TOUR_YEAR_WINDOW_CHARS = 40;
+// A tour happening now. When present, an earlier year nearby is the show's
+// history ("opened on Broadway in 1975 ... now on its national tour"), not a
+// sign that the tour mention itself is history. Life of Pi / The Wiz /
+// Beetlejuice tour reviews all name an original year.
+const TOUR_PRESENT_PATTERNS = [
+  /\b(?:currently|now)\s+(?:on|touring|playing)\b/i,
+  /\bthis\s+(?:national\s+|north\s+american\s+|uk\s+|us\s+)?tour\b/i,
+  /\b(?:on|during)\s+its\s+(?:national\s+|north\s+american\s+|uk\s+)?tour\b/i,
+  /\btour\s+(?:is\s+(?:now|currently|in)|stops?|has\s+arrived|arrives|plays|opened)\b/i,
+  /\bthe\s+(?:first\s+)?(?:national|north\s+american)\s+tour\s+of\b/i,
+];
+
+/**
+ * One context object for every caller, so the collector and the rebuild give
+ * the same verdict (BRO-4185 follow-up: the collector called with none).
+ * @param {{id?: string, title?: string, venue?: string, theater?: string,
+ *          openingDate?: string, previewsStartDate?: string}|null} show
+ */
+function tourContextForShow(show) {
+  if (!show) return undefined;
+  const date = show.openingDate || show.previewsStartDate || '';
+  const year = parseInt(String(date).slice(0, 4), 10);
+  return {
+    currentShowId: show.id,
+    currentShowTitle: show.title,
+    currentShowVenue: show.venue || show.theater || null,
+    currentShowYear: Number.isFinite(year) ? year : null,
+  };
+}
+
+// A match is not a tour signal when it describes something else: the show's
+// own venue, an earlier year's production, a company name, or history.
+function tourMatchIsDiscounted(excerpt, index, matchText, context, isVenue) {
+  const before = excerpt.slice(Math.max(0, index - TOUR_HISTORY_WINDOW_CHARS), index);
+  const after = excerpt.slice(index + matchText.length, index + matchText.length + TOUR_HISTORY_WINDOW_CHARS);
+  if (context && context.currentShowYear && !TOUR_PRESENT_PATTERNS.some(p => p.test(excerpt))) {
+    const near = `${before.slice(-TOUR_YEAR_WINDOW_CHARS)} ${after.slice(0, TOUR_YEAR_WINDOW_CHARS)}`;
+    const years = near.match(/\b(19|20)\d{2}\b/g) || [];
+    if (years.some(y => Number(y) < context.currentShowYear)) return 'earlier-year';
+  }
+  if (isVenue) {
+    const venue = context && context.currentShowVenue ? String(context.currentShowVenue).toLowerCase() : '';
+    const word = matchText.toLowerCase().replace(/\s+theat(?:re|er)$/, '');
+    if (venue && venue.includes(word)) return 'own-venue';
+    return null;
+  }
+  if (/touring company/i.test(matchText)) {
+    if (/Touring Company/.test(matchText)) return 'company-name';
+    const prev = (before.match(/([A-Z][\w'-]+)\s+$/) || [])[1];
+    if ((prev && !/^(?:The|A|An|This|That|Its|Their|His|Her|Our)$/.test(prev)) || /^\s+[A-Z]/.test(after)) return 'company-name';
+  }
+  if (TOUR_HISTORY_PREFIX.test(before)) return 'history';
+  return null;
+}
+
 /**
  * Check if an excerpt appears to be from a touring production review.
  *
  * @param {string} excerpt - The excerpt text
- * @param {{currentShowId?: string, currentShowTitle?: string}} [context] - when
- *   provided, a tour-pattern match immediately preceded by a DIFFERENT known
- *   show's title is treated as a comparison lede, not tour contamination.
- * @returns {{ isTourReview: boolean, signal?: string, forwardTenseOnly?: boolean, otherShowComparison?: boolean }}
+ * @param {{currentShowId?: string, currentShowTitle?: string,
+ *          currentShowVenue?: string, currentShowYear?: number}} [context] -
+ *   build it with tourContextForShow(show). With it, a match immediately
+ *   preceded by a DIFFERENT known show's title is a comparison lede, and a
+ *   match at the show's own venue or next to an earlier year is not tour
+ *   contamination.
+ * @returns {{ isTourReview: boolean, signal?: string, forwardTenseOnly?: boolean, otherShowComparison?: boolean, discounted?: string }}
  */
 function isTourReviewExcerpt(excerpt, context) {
   if (!excerpt) return { isTourReview: false };
 
-  // Venue patterns are unambiguous — check first (forward-tense carve-out does NOT apply)
+  // Venue patterns: forward-tense carve-out does NOT apply, but own-venue and
+  // earlier-year mentions are not a tour (11 to Midnight is AT the Orpheum;
+  // "moving to the Orpheum Theater ... that summer" of 1982).
+  let discounted = null;
   for (const pattern of TOUR_VENUE_PATTERNS) {
-    if (pattern.test(excerpt)) {
-      return { isTourReview: true, signal: `venue: ${pattern.source}` };
+    const re = new RegExp(pattern.source, pattern.flags.includes('g') ? pattern.flags : pattern.flags + 'g');
+    let m;
+    while ((m = re.exec(excerpt))) {
+      const why = tourMatchIsDiscounted(excerpt, m.index, m[0], context, true);
+      if (!why) return { isTourReview: true, signal: `venue: ${pattern.source}` };
+      discounted = discounted || why;
     }
   }
 
   // Tour keyword patterns — skip when only forward-tense context is present.
-  // Checks the FIRST match per pattern only (mirrors the pre-existing
-  // .find()-based behavior): a comparison lede that opens the excerpt is by
-  // far the common case this excerpt corpus produces, and scanning every
-  // subsequent match against the (necessarily incomplete) known-show-title
-  // catalog trades a real fix — the-comedy-about-spies-west-end-2026's lede
-  // also names "Fawlty Towers", which is not itself a cataloged show — for a
-  // narrower theoretical gain (a genuine self-description coexisting with an
-  // unrelated comparison later in the same excerpt).
   for (const pattern of TOUR_EXCERPT_PATTERNS) {
     const m = pattern.exec(excerpt);
     if (!m) continue;
@@ -606,10 +678,17 @@ function isTourReviewExcerpt(excerpt, context) {
         return { isTourReview: false, otherShowComparison: true, signal: pattern.source, mentionedTitle: other.title };
       }
     }
-    return { isTourReview: true, signal: pattern.source };
+    const re = new RegExp(pattern.source, pattern.flags.includes('g') ? pattern.flags : pattern.flags + 'g');
+    let mm; let live = false;
+    while ((mm = re.exec(excerpt))) {
+      const why = tourMatchIsDiscounted(excerpt, mm.index, mm[0], context, false);
+      if (!why) { live = true; break; }
+      discounted = discounted || why;
+    }
+    if (live) return { isTourReview: true, signal: pattern.source };
   }
 
-  return { isTourReview: false };
+  return discounted ? { isTourReview: false, discounted } : { isTourReview: false };
 }
 
 // --- Film/TV Review Detection ---
@@ -683,6 +762,7 @@ function resetCache() {
 module.exports = {
   excerptMentionsWrongShow,
   isTourReviewExcerpt,
+  tourContextForShow,
   isFilmTvReview,
   excerptMentionsFormerCast,
   buildSafeNameTokens,

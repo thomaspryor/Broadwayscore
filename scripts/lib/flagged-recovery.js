@@ -183,8 +183,25 @@ function filledDateOutsideWindow(publishDate, openingDate) {
   return pd < op - 30 * 86400000 || pd > op + 365 * 86400000;
 }
 
+// Host-level coverage fallback for the gap census, used when no dir file
+// carries the aggregator-listed URL itself. Which same-host files may stand
+// in for that URL:
+//   - a file the rebuild includes (a URL variant of a review we hold),
+//   - a URL-less manual entry,
+//   - an empty-body recoverable file (recovery re-fetches the listed URL into it).
+// A flagged-out file with its OWN, different URL is a different article: it
+// vouches for nothing. Counting it made the census report a real review as a
+// "flagged miss" that auto-ingest never touches (BRO-4185 F: 73 current-run
+// rows, e.g. the Chicago Tribune's 2026 Cats: The Jellicle Ball review hidden
+// behind its flagged 2024 review of the earlier production).
+function hostFallbackVouchers(files, isCovered) {
+  if (!Array.isArray(files)) return [];
+  return files.filter(d => !d.url || isCovered(d) === true || isRecoverableFlaggedFile(d));
+}
+
 module.exports = {
   FLAGGED_RECOVERY_CAP,
+  hostFallbackVouchers,
   filledDateOutsideWindow,
   isEmptyBodyFile,
   isRecoverableFlaggedFile,

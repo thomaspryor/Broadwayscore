@@ -171,3 +171,28 @@ test('no URL on either side cannot fabricate a match', () => {
 
   assert.equal(findPipelineTwin(manual[0], reviews, normalizeUrl), null);
 });
+
+// BRO-4192: a manual entry replacing its pipeline twin must carry the twin's
+// pipeline-derived designation (NYT Critics_Pick is keyed on the twin's
+// canonical URL) and must not keep a stale one.
+test('replaced manual entry takes the twin designation (gun-and-powder NYT pick)', () => {
+  const normalizeUrl = (u) => u;
+  const reviews = [{ showId: 'gp', outletId: 'nytimes', criticName: 'Naveen Kumar', assignedScore: 91,
+    url: 'https://www.nytimes.com/2024/04/18/theater/gun-powder-review.html', designation: 'Critics_Pick' }];
+  const manual = [{ showId: 'gp', outletId: 'nytimes', criticName: 'Naveen Kumar', assignedScore: 86,
+    scoreSource: 'human-review', manualEntry: true, url: 'https://papermill.org/x.pdf' }];
+  mergeManualEntries(reviews, manual, normalizeUrl);
+  assert.equal(reviews.length, 1);
+  assert.equal(reviews[0].assignedScore, 86, 'manual score still wins');
+  assert.equal(reviews[0].designation, 'Critics_Pick');
+  assert.equal(manual[0].designation, undefined, 'input manual entry is not mutated');
+});
+
+test('replaced manual entry drops a designation the twin no longer has', () => {
+  const normalizeUrl = (u) => u;
+  const reviews = [{ showId: 's', outletId: 'o', criticName: 'A', assignedScore: 70 }];
+  const manual = [{ showId: 's', outletId: 'o', criticName: 'A', assignedScore: 75,
+    manualEntry: true, designation: 'Critics_Pick' }];
+  mergeManualEntries(reviews, manual, normalizeUrl);
+  assert.equal(reviews[0].designation, undefined);
+});

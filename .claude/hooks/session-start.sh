@@ -571,13 +571,14 @@ if [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/scripts/lib/disk-space-check.js" ] &&
 fi
 
 cat << 'EOF'
-CRITICAL SESSION RULES (CLAUDE.md has full text — these 6 are the most-violated):
-1. NOTION: create card immediately via `node scripts/notion-brain.js create` (CLI, not MCP — MCP is blocked).
+CRITICAL SESSION RULES (CLAUDE.md has full text — these 7 are the most-violated):
+1. LINEAR CARD FIRST, before any edit: `node scripts/linear-brain.js create "<title>" --dispatch --notes "...## Acceptance criteria..."`. Dispatched onto an existing issue → `node scripts/linear-session.js claim --issue=BRO-N` instead. Notion is retired: never notion-brain.js.
 2. VERIFY: run the command + show output before claiming done. `node --check` is syntax only, not a test.
 3. ASYNC = WAIT: deploys/CI started ≠ done. Verify it succeeded; fix if it failed.
 4. FIX, DON'T REPORT: discovered issues get fixed now, not listed for later.
 5. KEEP GOING: do natural follow-ups (rebuild, deploy, fix adjacent). Don't offer handoffs to "a new session" — banned phrase list in CLAUDE.md §5.
 6. TERSE OUTPUT: short answers, no trailing recap, drop pleasantries. Output tokens cost ~5x input — verbose explanation is the single biggest token leak Claude controls. Verification evidence still required (rule 2); cut narration, keep proof.
+7. PRs: the owner NEVER reviews or merges them. Land it yourself: `git push origin HEAD:refs/heads/land/<name>`, follow the Land run, close the PR (CLOUD.md § Landing). "Waiting on review" is never a reason to leave a PR open.
 Flow: implement → /did-it-work → /ship-check → /wrap-up. Don't stop between skills unless user said stop or you hit a real blocker.
 EOF
 

@@ -4,6 +4,10 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
+  hasStaleClearBreadcrumb,
+  pickRetargetSibling,
+  pickOrphanGroupWinners,
+  pickTextTwinSibling,
   isTargetInvalidated,
   hasSubstantiveUnflaggedContent,
   shouldClearOrphanedDuplicatePointer,
@@ -497,4 +501,102 @@ test('partitionOrphansForFix: force=true bypasses the guard entirely, even when 
 test('partitionOrphansForFix: empty input — nothing fixable, nothing surging', () => {
   assert.deepEqual(partitionOrphansForFix([], 10, false), { fixable: [], surgingFields: [] });
   assert.deepEqual(partitionOrphansForFix(undefined, 10, false), { fixable: [], surgingFields: [] });
+});
+
+// BRO-4192: live pointer + existing clear breadcrumb = an earlier clear that was
+// re-set; a normal safeWriteReview restores the pointer, so the heal must force.
+test('hasStaleClearBreadcrumb: live pointer with a leftover clear breadcrumb', () => {
+  // moulin-rouge-2019 wsj--terry-teachout.json shape
+  assert.equal(hasStaleClearBreadcrumb({ duplicateOf: 'wsj--unknown.json', duplicateClearReason: 'heal ... on 2026-09-27' }, 'duplicateOf'), true);
+  assert.equal(hasStaleClearBreadcrumb({ duplicateTextOf: 'a.json', duplicateClearReason: 'x' }, 'duplicateTextOf'), true);
+});
+
+test('hasStaleClearBreadcrumb: false without a live pointer or without a breadcrumb', () => {
+  assert.equal(hasStaleClearBreadcrumb({ duplicateOf: 'a.json' }, 'duplicateOf'), false);
+  assert.equal(hasStaleClearBreadcrumb({ duplicateOf: 'a.json', duplicateClearReason: '  ' }, 'duplicateOf'), false);
+  assert.equal(hasStaleClearBreadcrumb({ duplicateOf: null, duplicateClearReason: 'x' }, 'duplicateOf'), false);
+  assert.equal(hasStaleClearBreadcrumb(null, 'duplicateOf'), false);
+});
+
+// BRO-4192: retarget an orphan at a valid same-URL canonical instead of
+// clearing it (clearing would admit a second copy of one article).
+test('pickRetargetSibling: picks a valid same-URL sibling, skipping loser, target, pointers and excluded', () => {
+  const url = 'https://www.vulture.com/article/all-my-sons-review.html';
+  const siblings = [
+    { file: 'vulture--jesse-green.json', data: { url } },                        // the loser itself
+    { file: 'vulture--old.json', data: { url } },                                // the invalidated target
+    { file: 'vulture--dup.json', data: { url, duplicateOf: 'x.json' } },         // another loser
+    { file: 'vulture--bad.json', data: { url: url + '?utm_source=x', bad: true } }, // excluded
+    { file: 'vulture--other-url.json', data: { url: 'https://www.vulture.com/other.html' } },
+    { file: 'vulture--sara-holdren.json', data: { url: url + '/' } },
+  ];
+  const isExcluded = d => d.bad === true;
+  assert.equal(pickRetargetSibling({ file: 'vulture--jesse-green.json', url }, 'vulture--old.json', siblings, isExcluded), 'vulture--sara-holdren.json');
+});
+
+test('pickRetargetSibling: null when no eligible sibling or no URL', () => {
+  const url = 'https://example.com/r';
+  assert.equal(pickRetargetSibling({ file: 'a.json', url }, 't.json', [{ file: 'b.json', data: { url, duplicateOf: 'a.json' } }], () => false), null);
+  assert.equal(pickRetargetSibling({ file: 'a.json' }, 't.json', [{ file: 'b.json', data: { url } }], () => false), null);
+});
+
+// mother-play-2024 NYT: jesse-green + misattributed jesse-schulman both pointed
+// at a rejected alexis-soloski. The winner must be the byline already live.
+test('pickOrphanGroupWinners: prefers the member already published', () => {
+  const url = 'https://www.nytimes.com/2024/04/25/theater/mother-play-review.html';
+  const orphans = [
+    { showId: 'mother-play-2024', loserFile: 'nytimes--jesse-schulman.json', targetFile: 'nytimes--alexis-soloski.json', url, outletId: 'nytimes', criticName: 'Jesse Schulman' },
+    { showId: 'mother-play-2024', loserFile: 'nytimes--jesse-green.json', targetFile: 'nytimes--alexis-soloski.json', url: url + '/', outletId: 'nytimes', criticName: 'Jesse Green' },
+  ];
+  const w = pickOrphanGroupWinners(orphans, new Set(['mother-play-2024|nytimes|jesse green']));
+  assert.equal(w.get('mother-play-2024/nytimes--jesse-green.json'), 'nytimes--jesse-green.json');
+  assert.equal(w.get('mother-play-2024/nytimes--jesse-schulman.json'), 'nytimes--jesse-green.json');
+});
+
+test('pickOrphanGroupWinners: first member wins when none is published; singletons and other shows are separate', () => {
+  const url = 'https://example.com/r';
+  const orphans = [
+    { showId: 's1', loserFile: 'a.json', targetFile: 't.json', url },
+    { showId: 's1', loserFile: 'b.json', targetFile: 't.json', url },
+    { showId: 's2', loserFile: 'a.json', targetFile: 't.json', url },       // same file name, other show
+    { showId: 's1', loserFile: 'c.json', targetFile: 'u.json', url },       // other target
+  ];
+  const w = pickOrphanGroupWinners(orphans, new Set());
+  assert.equal(w.get('s1/a.json'), 'a.json');
+  assert.equal(w.get('s1/b.json'), 'a.json');
+  assert.equal(w.has('s2/a.json'), false);
+  assert.equal(w.has('s1/c.json'), false);
+});
+
+test('pickOrphanGroupWinners: an excluded member never wins over a valid one', () => {
+  const url = 'https://example.com/r';
+  const orphans = [
+    { showId: 's1', loserFile: 'a.json', targetFile: 't.json', url, outletId: 'o', criticName: 'A', bad: true },
+    { showId: 's1', loserFile: 'b.json', targetFile: 't.json', url, outletId: 'o', criticName: 'B' },
+  ];
+  // a is published but excluded; b wins.
+  const w = pickOrphanGroupWinners(orphans, new Set(['s1|o|a']), m => m.bad === true);
+  assert.equal(w.get('s1/a.json'), 'b.json');
+  assert.equal(w.get('s1/b.json'), 'b.json');
+});
+
+test('pickTextTwinSibling: same outlet + same opening body under another URL', () => {
+  const body = 'Every family has a skeleton or two in its closet. ' + 'x'.repeat(600);
+  const loser = { file: 'variety--aramide-tinubu.json', data: { outletId: 'variety', fullText: body } };
+  const siblings = [
+    loser,
+    { file: 'variety--marilyn-stasio.json', data: { outletId: 'variety', fullText: body } },          // the target
+    { file: 'nytimes--x.json', data: { outletId: 'nytimes', fullText: body } },                      // other outlet
+    { file: 'variety--dup.json', data: { outletId: 'variety', fullText: body, duplicateOf: 'a' } },  // a loser
+    { file: 'variety--charles-isherwood.json', data: { outletId: 'variety', fullText: '  ' + body.replace('. ', '.\n\n') + ' more' } },
+  ];
+  assert.equal(pickTextTwinSibling(loser, 'variety--marilyn-stasio.json', siblings, () => false), 'variety--charles-isherwood.json');
+  assert.equal(pickTextTwinSibling(loser, 'variety--marilyn-stasio.json', siblings, d => d.fullText.endsWith('more')), null);
+});
+
+test('pickTextTwinSibling: short or different bodies never match', () => {
+  const short = { file: 'a.json', data: { outletId: 'o', fullText: 'short' } };
+  assert.equal(pickTextTwinSibling(short, 't.json', [{ file: 'b.json', data: { outletId: 'o', fullText: 'short' } }], () => false), null);
+  const a = { file: 'a.json', data: { outletId: 'o', fullText: 'a'.repeat(600) } };
+  assert.equal(pickTextTwinSibling(a, 't.json', [{ file: 'b.json', data: { outletId: 'o', fullText: 'b'.repeat(600) } }], () => false), null);
 });

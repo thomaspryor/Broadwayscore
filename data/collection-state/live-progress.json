@@ -1,80 +1,134 @@
 {
-  "updatedAt": "2026-09-27T20:29:24.319Z",
-  "processed": 49,
-  "failed": 188,
-  "successRate": "20.7%",
+  "updatedAt": "2026-09-28T15:36:49.276Z",
+  "processed": 214,
+  "failed": 391,
+  "successRate": "35.4%",
   "tierBreakdown": {
-    "playwright": 25,
+    "playwright": 111,
     "amp": 0,
-    "browserbase": 4,
-    "directCookies": 0,
-    "scrapingbee": 11,
-    "brightdata": 0,
+    "browserbase": 5,
+    "directCookies": 2,
+    "scrapingbee": 32,
+    "brightdata": 36,
     "archiveToday": 0,
-    "archive": 6
+    "archive": 38
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
-      "t": "2026-09-27T15:34:24.017Z",
+      "t": "2026-09-28T12:06:24.489Z",
       "event": "bb-session",
-      "session": "a2150b18",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+      "session": "94446537",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
     },
     {
-      "t": "2026-09-27T15:34:24.986Z",
+      "t": "2026-09-28T12:06:34.744Z",
+      "event": "bb-session",
+      "session": "67f63ba0",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-09-28T12:29:41.036Z",
+      "event": "bb-session",
+      "session": "983b8cf7",
+      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
+    },
+    {
+      "t": "2026-09-28T12:29:41.785Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "thetimes.com"
     },
     {
-      "t": "2026-09-27T15:34:43.207Z",
+      "t": "2026-09-28T12:29:52.715Z",
       "event": "bb-session",
-      "session": "9d28d480",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+      "session": "bea47507",
+      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
     },
     {
-      "t": "2026-09-27T15:34:44.120Z",
+      "t": "2026-09-28T12:29:53.387Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "thetimes.com"
     },
     {
-      "t": "2026-09-27T15:49:18.968Z",
+      "t": "2026-09-28T12:33:58.136Z",
       "event": "bb-session",
-      "session": "686412bd",
-      "url": "https://www.nytimes.com/2006/03/02/theater/reviews/02espa.html"
+      "session": "d547f2fe",
+      "url": "https://www.wsj.com/articles/schmigadoon-review-musical-comedy-as-youve-never-se"
     },
     {
-      "t": "2026-09-27T15:49:19.812Z",
+      "t": "2026-09-28T12:33:58.799Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-09-27T15:49:38.199Z",
+      "t": "2026-09-28T13:13:31.361Z",
       "event": "bb-session",
-      "session": "7caaf598",
-      "url": "https://www.nytimes.com/2006/03/02/theater/reviews/02espa.html"
+      "session": "0bad1762",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
     },
     {
-      "t": "2026-09-27T15:49:39.087Z",
+      "t": "2026-09-28T13:13:46.586Z",
+      "event": "bb-session",
+      "session": "e3295993",
+      "url": "https://www.whatsonstage.com/news/man-and-boy-at-the-national-theatre-review_171"
+    },
+    {
+      "t": "2026-09-28T13:16:21.275Z",
+      "event": "bb-session",
+      "session": "b0deccdb",
+      "url": "https://www.whatsonstage.com/news/million-dollar-quartet-review-london-transfer-"
+    },
+    {
+      "t": "2026-09-28T13:16:36.434Z",
+      "event": "bb-session",
+      "session": "c1b4d4c7",
+      "url": "https://www.whatsonstage.com/news/million-dollar-quartet-review-london-transfer-"
+    },
+    {
+      "t": "2026-09-28T13:17:54.134Z",
+      "event": "bb-session",
+      "session": "29a665c0",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
+    },
+    {
+      "t": "2026-09-28T13:18:08.362Z",
+      "event": "bb-session",
+      "session": "e7c9d35f",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-09-28T13:22:17.957Z",
+      "event": "bb-session",
+      "session": "b00d0144",
+      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
+    },
+    {
+      "t": "2026-09-28T13:22:18.989Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "thetimes.com"
     },
     {
-      "t": "2026-09-27T15:33:33.616Z",
+      "t": "2026-09-28T13:22:29.420Z",
       "event": "bb-session",
-      "session": "8b0eaad3",
-      "url": "http://www.washingtonpost.com/entertainment/theater_dance/book-of-mormon-restore"
+      "session": "6255a384",
+      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
     },
     {
-      "t": "2026-09-27T15:33:34.401Z",
+      "t": "2026-09-28T13:22:30.363Z",
       "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
+      "domain": "thetimes.com"
     },
     {
-      "t": "2026-09-27T15:38:25.896Z",
+      "t": "2026-09-28T13:24:29.388Z",
       "event": "bb-session",
-      "session": "78100ac3",
-      "url": "http://www.hollywoodreporter.com/review/catch-me-you-can-theater-176795"
+      "session": "d765991a",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-28T13:24:39.695Z",
+      "event": "bb-session",
+      "session": "70545e22",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
     }
   ]
 }

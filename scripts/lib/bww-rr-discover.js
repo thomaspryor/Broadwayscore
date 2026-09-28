@@ -118,12 +118,38 @@ function candidateTitles(show) {
   return Array.from(new Set(out));
 }
 
+/**
+ * Whole-word token match against the slug's hyphen-separated words. A raw
+ * substring test let "America, Who Hurt You?" (stripped to AMERICA) match
+ * Review-Roundup-DIRTY-DANCING-Launches-North-AMERICAN-Tour-20260923, which
+ * then got persisted as that Off-Broadway show's bwwRoundupUrl (2026-09-23).
+ * BWW slugs drop apostrophes and accents and fuse slash/bullet titles
+ * (O'DONNELL → ODONNELLS, MISÉRABLES → MISERABLES, Magic/Bird → MAGICBIRD),
+ * so titles are folded the same way first (possessive 's dropped, since BWW
+ * writes both BEDLAM and ODONNELLS), a trailing S on the slug word is accepted, and a
+ * title whose tokens fuse into one slug word counts as a full match.
+ */
+function slugWords(slug) {
+  const last = String(slug).split(/[?#]/)[0].replace(/\/+$/, '').split('/').pop();
+  return new Set(last.toUpperCase().split(/[^A-Z0-9]+/).filter(Boolean));
+}
+
+function foldTitleForSlug(title) {
+  return (title || '').normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/['’]s\b/gi, '').replace(/['’‘•/]/g, '');
+}
+
+function tokenInSlug(token, words) {
+  return words.has(token) || words.has(`${token}S`);
+}
+
 function slugMatchesShow(slug, show) {
-  const slugUpper = slug.toUpperCase();
+  const words = slugWords(slug);
   for (const form of candidateTitles(show)) {
-    const titleTokens = tokensFromTitle(form);
+    const titleTokens = tokensFromTitle(foldTitleForSlug(form));
     if (titleTokens.length === 0) continue;
-    const missing = titleTokens.filter(t => !slugUpper.includes(t));
+    if (titleTokens.length > 1 && tokenInSlug(titleTokens.join(''), words)) return true;
+    const missing = titleTokens.filter(t => !tokenInSlug(t, words));
     // All tokens must match for short titles; 1 miss tolerated for 4+ token titles.
     const allowed = titleTokens.length >= 4 ? 1 : 0;
     if (missing.length <= allowed) return true;

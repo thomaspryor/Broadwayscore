@@ -106,6 +106,7 @@ const {
   FLAGGED_RECOVERY_CAP,
   isEmptyBodyFile,
   isRecoverableFlaggedFile,
+  hostFallbackVouchers,
   isRecoverableUncitedStub,
   STAR_SOURCE_BY_REFERENCE,
   decideEmptyBodyRecovery,
@@ -218,7 +219,7 @@ function writeJsonAtomic(filePath, obj) {
 // Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
 const { freshnessMsFor, compareAuditPriority, checkpointTs } = require('./lib/gap-audit-freshness');
 // Per-show merge for the audit file (#893) + the S0 blast-radius guard.
-const { mergeGapAudit, countsFor, riskStateMap, isRiskyGapChange, partitionAuditedResults, withFileLock } = require('./lib/gap-audit-merge');
+const { mergeGapAudit, countsFor, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock } = require('./lib/gap-audit-merge');
 // Merge-aware checkpoint read-modify-write (#923 — the #893 race class, one
 // file over). saveCheckpoint(wholeObject) used to write the ENTIRE in-memory
 // checkpoint from inside the per-show loop, unlocked on two of its three call
@@ -977,7 +978,10 @@ async function auditShow(show, opts = {}) {
     const exactMatches = dirFilesAll.filter(d => d.url && normalizeReviewUrl(d.url) === aggNorm);
     const dirFiles = exactMatches.length > 0
       ? exactMatches
-      : dirFilesAll.filter(d => !d.url || classifyReviewUrl(d.url).ok);
+      : hostFallbackVouchers(
+        dirFilesAll.filter(d => !d.url || classifyReviewUrl(d.url).ok),
+        d => isCoveredFile(d, show),
+      );
     if (dirFiles.length === 0) {
       // Before calling it missing: is this the SAME outlet's review we already
       // hold, published on another host that outlet has registered? The Pass
@@ -2153,6 +2157,7 @@ async function main(argv = process.argv.slice(2)) {
   }
   const audit = mergeGapAudit(prevAudit, runAudit);
   const mergedResults = audit.results;
+  const nextRiskAll = riskStateMap(mergedResults);
 
   // Blast-radius guard (plan S0): a run that flips >5% of shows' coverage state
   // is far more likely to be a broken input (dead SERP provider, empty census,
@@ -2183,11 +2188,14 @@ async function main(argv = process.argv.slice(2)) {
       // failure this guard exists to catch). riskStateMap/isRiskyGapChange
       // (gap-audit-merge.js) compare liveCount/candidateCount instead of the
       // verdict word — see their doc comments for the full rationale.
-      return blastRadiusCheck(
-        only(riskStateMap(prevAudit && prevAudit.results)),
-        only(riskStateMap(mergedResults)),
-        { label: 'review-gap', isRiskyChange: isRiskyGapChange }
-      );
+      // BRO-4185: a quarantined show whose re-audit reproduces its
+      // quarantined state is a deterministic rule change, not a broken input
+      // — accept it as baseline (see confirmQuarantinedStates).
+      const nextRisk = only(nextRiskAll);
+      const { prevStates, confirmed } = confirmQuarantinedStates(
+        only(riskStateMap(prevAudit && prevAudit.results)), nextRisk, prevAudit && prevAudit.results);
+      if (confirmed.length) console.log(`  ✓ ${confirmed.length} quarantined show(s) reproduced their quarantined state — accepted as baseline: ${confirmed.slice(0, 20).join(', ')}`);
+      return blastRadiusCheck(prevStates, nextRisk, { label: 'review-gap', isRiskyChange: isRiskyGapChange });
     })();
 
   // Roll up unknown outlet hosts: hosts that aggregator articles linked to
@@ -2245,6 +2253,18 @@ async function main(argv = process.argv.slice(2)) {
   const quarantined = canPartialWrite
     ? mergeGapAudit(prevAudit, { ...runAudit, results: safeResults }, { protectedIds: new Set(riskyResults.map(r => r.showId)) })
     : null;
+  // Stamp the state each quarantined show was held at, so the next run can
+  // tell a reproduced state (accept) from a transient one (keep holding).
+  if (quarantined) {
+    const at = new Date().toISOString();
+    const riskyIds = new Set(riskyResults.map(r => r.showId));
+    for (const row of quarantined.results) {
+      if (!row || !riskyIds.has(row.showId)) continue;
+      const ns = nextRiskAll[row.showId];
+      const same = row.quarantine && row.quarantine.nextState === ns;
+      row.quarantine = { nextState: ns, since: same ? row.quarantine.since : at, lastAt: at };
+    }
+  }
 
   if (!dryRun && (blast.ok || canPartialWrite)) {
     const toWrite = blast.ok ? audit : quarantined;

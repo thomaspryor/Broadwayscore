@@ -20,6 +20,7 @@ const require = createRequire(import.meta.url);
 const {
   landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
   isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks,
+  isPromisorFetchFailure,
 } = require('./land-branch.js');
 
 // The lib's landing-verify call would try `git fetch --unshallow` only on a
@@ -675,5 +676,62 @@ test('verified-base seam end-to-end: gauntlet skipped on the verified base, run 
     assert.equal(innerRuns, 1, 'gauntlet must run after a substantive move');
     assert.ok(w.isAncestorOfOrigin(r2.sha));
     void tip;
+  } finally { w.cleanup(); }
+});
+
+
+// ── partial clone (the Land job checks out with filter: blob:none) ──────────
+
+test('isPromisorFetchFailure: the real Land stderr retries, a content conflict never does', () => {
+  // Verbatim shape from run 36351955579 (land/our-sinatra, 3-commit branch).
+  const real = 'fatal: remote error: upload-pack: not our ref e31a1e453a95c0ffee\nfatal: could not fetch bc4a5adf from promisor remote';
+  assert.equal(isPromisorFetchFailure(real), true);
+  assert.equal(isPromisorFetchFailure('error: could not fetch 1234 from promisor remote'), true);
+  assert.equal(isPromisorFetchFailure('CONFLICT (content): Merge conflict in a.txt\nerror: could not apply 1234... feat'), false);
+  assert.equal(isPromisorFetchFailure('CONFLICT (content): x\nfatal: not our ref abc'), false, 'a real conflict is never masked by a retry');
+  assert.equal(isPromisorFetchFailure(''), false);
+  assert.equal(isPromisorFetchFailure(undefined), false);
+});
+
+test('lands a multi-commit branch needing 3-way merges from a blobless clone, with no blobs left missing', () => {
+  const w = makeWorld();
+  try {
+    sh(w.origin, ['config', 'uploadpack.allowFilter', 'true']);
+    sh(w.origin, ['config', 'uploadpack.allowAnySHA1InWant', 'true']);
+    // Shared files both sides edit (different lines), so every pick 3-way merges.
+    const lines = (tag) => Array.from({ length: 40 }, (_, i) => `line ${i}${tag && i === 0 ? ` ${tag}` : ''}`).join('\n') + '\n';
+    sh(w.other, ['fetch', '-q', 'origin', 'main']); sh(w.other, ['reset', '-q', '--hard', 'origin/main']);
+    for (const f of ['m1.txt', 'm2.txt']) w.commitOn(w.other, f, lines(''), `seed ${f}`);
+    sh(w.other, ['push', '-q', 'origin', 'HEAD:main']);
+
+    const part = path.join(w.root, 'partial');
+    sh(w.root, ['clone', '-q', '--no-local', '--filter=blob:none', `file://${w.origin}`, part]);
+    sh(part, ['config', 'user.email', 't@e.st']); sh(part, ['config', 'user.name', 'test']);
+    sh(part, ['checkout', '-q', '-b', 'feat-multi', 'origin/main']);
+    const lastLine = (tag) => lines('').replace(/line 39\n$/, `line 39 ${tag}\n`);
+    w.commitOn(part, 'm1.txt', lastLine('branch-1'), 'feat 1');
+    w.commitOn(part, 'm2.txt', lastLine('branch-2'), 'feat 2');
+    w.commitOn(part, 'm1.txt', lastLine('branch-3'), 'feat 3');
+    sh(part, ['push', '-q', 'origin', 'feat-multi']);
+    sh(part, ['checkout', '-q', '--detach', 'origin/main']);
+
+    // main edits the first line of both files, then the partial clone refetches
+    // (commits/trees only — the new blobs stay missing until someone reads them).
+    sh(w.other, ['fetch', '-q', 'origin', 'main']); sh(w.other, ['reset', '-q', '--hard', 'origin/main']);
+    w.commitOn(w.other, 'm1.txt', lines('main'), 'main m1');
+    w.commitOn(w.other, 'm2.txt', lines('main'), 'main m2');
+    sh(w.other, ['push', '-q', 'origin', 'HEAD:main']);
+
+    const logs = [];
+    const r = landBranch({
+      branch: 'feat-multi', repoDir: part, source: 'origin',
+      checks: () => greenChecks(), pushMain: plainPush, log: (m) => logs.push(m),
+    });
+    assert.equal(r.landed, true, JSON.stringify(r) + logs.join('\n'));
+    assert.equal(r.attempts, 1);
+    const landed = sh(w.other, ['ls-remote', 'origin', 'refs/heads/main']).split(/\s/)[0];
+    const show = (f) => execFileSync('git', ['--git-dir', w.origin, 'show', `${landed}:${f}`], { encoding: 'utf8' });
+    assert.match(show('m1.txt'), /^line 0 main\n[\s\S]*line 39 branch-3\n$/);
+    assert.match(show('m2.txt'), /^line 0 main\n[\s\S]*line 39 branch-2\n$/);
   } finally { w.cleanup(); }
 });

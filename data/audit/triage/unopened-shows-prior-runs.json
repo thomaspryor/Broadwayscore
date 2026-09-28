@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-27T12:41:15.264Z",
+  "generatedAt": "2026-09-28T14:42:59.664Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3061,
-  "flaggedShows": 46,
-  "flaggedFiles": 186,
+  "scannedShows": 3059,
+  "flaggedShows": 47,
+  "flaggedFiles": 187,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
@@ -11,7 +11,7 @@
   "unreadableFiles": 0,
   "byVerdict": {
     "likely-contamination": 28,
-    "needs-human-review": 18
+    "needs-human-review": 19
   },
   "shows": [
     {
@@ -1857,7 +1857,7 @@
       "status": "upcoming",
       "venue": "The Public Theater/Newman Theater",
       "previewsStartDate": "2026-10-08",
-      "openingDate": null,
+      "openingDate": "2026-10-21",
       "verdict": "likely-contamination",
       "reasoning": "5/5 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
@@ -2715,9 +2715,10 @@
       "stats": {
         "count": 2,
         "distinctYears": [
+          2022,
           2025
         ],
-        "spanDays": 2,
+        "spanDays": 830,
         "flaggedCount": 2,
         "venueMentionCount": 0
       },
@@ -2743,8 +2744,8 @@
           "afterReason": "wrongProduction",
           "outletId": "times-uk",
           "criticName": "Kevin Ng",
-          "publishDate": "2025-01-01",
-          "url": "https://www.thetimes.com/culture/classical-opera/article/aida-review-the-met-dpkkr7tmf",
+          "publishDate": "2022-09-26",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/aida-review-robert-carsens-new-production-misses-the-point-2dhm9d52m",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -3181,6 +3182,42 @@
           "criticName": "Stuart King",
           "publishDate": "2025-05-03",
           "url": "https://www.londonboxoffice.co.uk/news/post/giant-harold-pinter-theatre-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
+      "title": "The Hairy Ape",
+      "market": "broadway",
+      "status": "previews",
+      "venue": "Irish Repertory Theatre",
+      "previewsStartDate": "2026-09-25",
+      "openingDate": "2026-10-04",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Irish Repertory Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2017
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "amny--matt-windman.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "amny",
+          "criticName": "Matt Windman",
+          "publishDate": "2017-04-02",
+          "url": "http://www.amny.com/entertainment/the-hairy-ape-review-a-stunning-staging-of-an-expressionist-classic-1.13351233",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

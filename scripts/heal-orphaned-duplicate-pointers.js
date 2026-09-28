@@ -42,7 +42,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { safeWriteReview, isExcludedIgnoringDuplicate } = require('./lib/review-write-guard');
 const {
   findOrphanedDuplicatePointers,
   findUnjustifiedHealClears,
@@ -51,6 +51,10 @@ const {
   findOrphanedDuplicateTextPointers,
   buildDuplicateTextClearReason,
   partitionOrphansForFix,
+  hasStaleClearBreadcrumb,
+  pickRetargetSibling,
+  pickOrphanGroupWinners,
+  pickTextTwinSibling,
 } = require('./lib/orphaned-duplicate-pointer-heal');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -75,6 +79,19 @@ const VALID_FIELDS = new Set(['duplicateOf', 'duplicateTextOf', 'both']);
 
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 const AUDIT_PATH = path.join(__dirname, '..', 'data', 'audit', 'orphaned-duplicate-pointer-heal.json');
+const REVIEWS_PATH = process.env.REVIEWS_PATH || path.join(__dirname, '..', 'data', 'reviews.json');
+
+// showId|outletId|criticName of every entry currently published, so a group of
+// same-URL orphans keeps the byline that is already live (BRO-4192).
+function loadPublishedKeys() {
+  try {
+    const raw = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf-8'));
+    const list = Array.isArray(raw) ? raw : (raw.reviews || []);
+    return new Set(list.map(r => `${r.showId}|${r.outletId || ''}|${String(r.criticName || '').toLowerCase()}`));
+  } catch {
+    return new Set();
+  }
+}
 
 // Same non-show buckets audit-duplicate-of-url-mismatch.js excludes: neither
 // is a real show directory with a sibling namespace duplicateOf can resolve
@@ -244,13 +261,90 @@ function flatten(chains) {
   return n;
 }
 
+let retargeted = 0;
+let keptIncludedTarget = 0;
+let skippedLocked = 0;
+let keptForTextTwin = 0;
+let skippedExcludedLoser = 0;
 function fix(orphans) {
   let cleared = 0;
   const day = new Date().toISOString().slice(0, 10);
+  // BRO-4192: same-URL losers orphaned by one target resolve to ONE winner,
+  // chosen up front (see pickOrphanGroupWinners).
+  const described = orphans.filter(o => o.field === 'duplicateOf').map(o => {
+    try {
+      const d = JSON.parse(fs.readFileSync(path.join(REVIEW_TEXTS_DIR, o.showId, o.loserFile), 'utf-8'));
+      return { ...o, url: d.url, outletId: d.outletId, criticName: d.criticName, data: { ...d, showId: d.showId || o.showId } };
+    } catch { return o; }
+  });
+  const groupWinners = pickOrphanGroupWinners(described, loadPublishedKeys(), m => !m.data || isExcludedIgnoringDuplicate(m.data));
   for (const o of orphans) {
     const dir = path.join(REVIEW_TEXTS_DIR, o.showId);
     const filePath = path.join(dir, o.loserFile);
     const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    // BRO-4192: several writes below force past the guard, which also skips
+    // the _locked preserve. A locked file is never the heal's to change.
+    if (data._locked === true) { skippedLocked++; continue; }
+    // BRO-4192: when the loser is itself excluded by the rebuild, clearing its
+    // pointer changes nothing shipped, and the write guard re-marks it on the
+    // same write (both records invalid → historical dedup). Leave it.
+    if (o.field === 'duplicateOf' && isExcludedIgnoringDuplicate({ ...data, showId: data.showId || o.showId })) {
+      skippedExcludedLoser++;
+      continue;
+    }
+    // BRO-4192: a live pointer that ALREADY carries a clear breadcrumb (an
+    // earlier clear that was re-set) can never be cleared by a normal
+    // safeWriteReview — the protected-field restore treats an existing
+    // breadcrumb as "flag deliberately re-set over a prior clear" and puts the
+    // pointer back, and its contract says re-clearing goes through the
+    // canonical clear script with force. This is that script, and it writes
+    // the full on-disk object back (LOAD-MODIFY-SAVE), so force loses nothing.
+    const staleBreadcrumb = hasStaleClearBreadcrumb(data, o.field);
+    // BRO-4192: another sibling with the same URL may still be a legitimate
+    // canonical. Clearing would then admit a second copy of one article, so
+    // RETARGET the pointer at that sibling instead.
+    if (o.field === 'duplicateOf') {
+      // The heal's own isTargetInvalidated is narrower than the rebuild's
+      // inclusion rule: a raw wrongProduction target can still ship
+      // (all-my-sons-2019 Vulture Sara Holdren). If the rebuild INCLUDES the
+      // target, the pointer is correct — leave it.
+      let targetData = null;
+      try { targetData = JSON.parse(fs.readFileSync(path.join(dir, o.targetFile), 'utf-8')); } catch { /* missing target */ }
+      if (targetData) {
+        if (!targetData.showId) targetData.showId = o.showId;
+        if (!isExcludedIgnoringDuplicate(targetData)) { keptIncludedTarget++; continue; }
+      }
+      const siblings = fs.readdirSync(dir)
+        .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json')
+        .map(f => {
+          try {
+            const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8'));
+            if (!d.showId) d.showId = o.showId;
+            return { file: f, data: d };
+          } catch { return null; }
+        })
+        .filter(Boolean);
+      const retarget = pickRetargetSibling({ file: o.loserFile, url: data.url }, o.targetFile, siblings, isExcludedIgnoringDuplicate);
+      const textTwin = retarget ? null : pickTextTwinSibling({ file: o.loserFile, data }, o.targetFile, siblings, isExcludedIgnoringDuplicate);
+      if (textTwin) {
+        // Same article under another URL id. Clearing would ship both, and a
+        // duplicateTextOf retarget doesn't hold (the rebuild's 500-char
+        // fingerprint breaks on injected "related stories" blocks). The loser
+        // stays hidden behind its current pointer, as it is today.
+        keptForTextTwin++;
+        continue;
+      }
+      const groupWinner = o.field === 'duplicateOf' ? groupWinners.get(`${o.showId}/${o.loserFile}`) : null;
+      const target = retarget || (groupWinner && groupWinner !== o.loserFile ? groupWinner : null);
+      if (target) {
+        data.duplicateOf = target;
+        data.duplicateReason = `heal-retarget on ${day}: ${o.targetFile} was invalidated; ${target} is the valid same-URL canonical (BRO-4192)`;
+        data.duplicateClearReason = null;
+        safeWriteReview(filePath, data, { force: true });
+        retargeted++;
+        continue;
+      }
+    }
     if (o.field === 'duplicateTextOf') {
       data.duplicateClearReason = buildDuplicateTextClearReason(day, o.targetFile, o.reason);
       // NULL, not delete — verified live against 1536-west-end-2026/
@@ -270,7 +364,10 @@ function fix(orphans) {
       data.duplicateOf = null;
       data.duplicateReason = null;
     }
-    safeWriteReview(filePath, data);
+    // A group winner is written with force so the collision check can't bury
+    // it under a same-URL sibling that is still mid-heal (BRO-4192).
+    const isGroupWinner = groupWinners.get(`${o.showId}/${o.loserFile}`) === o.loserFile;
+    safeWriteReview(filePath, data, (staleBreadcrumb || isGroupWinner) ? { force: true } : undefined);
     cleared++;
   }
   return cleared;
@@ -376,7 +473,7 @@ function main() {
         orphans: fixable,
       }, null, 2) + '\n');
     } catch (e) { console.warn(`[heal-orphaned-duplicate-pointers] could not write audit report: ${e.message}`); }
-    console.log(`\nCleared ${cleared} orphaned pointer(s).`);
+    console.log(`\nCleared ${cleared} orphaned pointer(s); retargeted ${retargeted} to a valid same-URL canonical; kept ${keptForTextTwin} with a same-body twin under another URL; ${keptIncludedTarget} whose target the rebuild still includes; skipped ${skippedLocked} locked and ${skippedExcludedLoser} whose own record the rebuild excludes (BRO-4192).`);
     console.log('Re-run the rebuild to pick up the re-admitted reviews.');
     process.exit(0);
   }

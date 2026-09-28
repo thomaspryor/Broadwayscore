@@ -21,7 +21,7 @@
  */
 
 const { normalizeTitle, titleTokens, jaccard } = require('./title-match');
-const { isSubtitleVariantOf, levenshteinDistance, venuesMatch } = require('./deduplication');
+const { isSubtitleVariantOf, isColonSegmentVariant, levenshteinDistance, venuesMatch } = require('./deduplication');
 
 const DEFAULT_DEDUP_JACCARD_THRESHOLD = 0.80;
 const DEFAULT_TYPO_EDIT_DISTANCE_MAX = 3;
@@ -65,6 +65,13 @@ function findExistingMatch(candidate, existingShows, opts = {}) {
     if (eNorm === cNorm) return { match: e, reason: 'normalized-equal' };
     if (isSubtitleVariantOf(candidate.title, e.title)) {
       return { match: e, reason: `subtitle-variant-of: "${e.title}"` };
+    }
+    // Performer-prefixed or subtitled listing of the same show at the same
+    // venue: "Louis Katz: Conflicted" (TodayTix) vs "Conflicted" (venue page).
+    // isSubtitleVariantOf only covers the pre-colon half; checkForDuplicate's
+    // Check 7b already used this, but this path did not (2026-09-28 dup).
+    if (isColonSegmentVariant(candidate.title, e.title)) {
+      return { match: e, reason: `colon-segment-of: "${e.title}"` };
     }
     if (cNorm.length >= typoMinTitleLength && eNorm.length >= typoMinTitleLength) {
       const dist = levenshteinDistance(cNorm, eNorm);

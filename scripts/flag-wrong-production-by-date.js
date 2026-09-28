@@ -18,7 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
-const { evaluateDateGuard, evaluateDatelessRevivalGuard, earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
+const { evaluateDateGuard, evaluateDatelessRevivalGuard, evaluateLlmYearMisdate, earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch } = require('./lib/stale-flag-after-url-correction');
 const { evaluateDatePlausibility } = require('./lib/date-plausibility');
@@ -88,7 +88,8 @@ function run() {
   let flaggedEarly = 0, flaggedLate = 0, skipped = 0, noDate = 0, noWindow = 0, ok = 0;
   let priorRunSkipped = 0, datelessRevivalFlagged = 0;
   let lockedSkipCount = 0, corroborationHeld = 0, corroborationWarned = 0;
-  let awaitingRefetchSkipped = 0, overrideClearSkipped = 0;
+  let awaitingRefetchSkipped = 0, overrideClearSkipped = 0, yearCorrected = 0;
+  const yearCorrectedDetails = [];
   const flaggedDetails = [];
   const heldDetails = [];
   const stuckCiBlockingDetails = [];
@@ -109,6 +110,28 @@ function run() {
       const filePath = path.join(dirPath, file);
       let data;
       try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
+
+      // Scoring-model year guess that is provably a year early (BRO-4185):
+      // correct the DATE before any guard reads it. Runs ahead of the
+      // already-flagged skip on purpose — files this guard already flagged
+      // from the bad year get their date fixed here, and the rebuild's stale
+      // date-guard auto-clear (shouldAutoClearStaleDateGuard) then releases
+      // the flag because its basis no longer holds. Operator decisions win.
+      if (!data.wrongProductionOverride && data.humanReviewedWrongProduction === undefined) {
+        const fix = evaluateLlmYearMisdate({ review: data, show, isMultiProductionTitle: multiProductionTitleIds.has(showDir) });
+        if (fix) {
+          yearCorrected++;
+          yearCorrectedDetails.push({ showId: showDir, file, from: fix.original, to: fix.corrected });
+          if (!DRY_RUN) {
+            data.previousPublishDate = fix.original;
+            data.publishDate = fix.corrected;
+            data.dateSource = 'llm-scoring-year-corrected';
+            data.publishDateCorrectedAt = new Date().toISOString();
+            const r = safeWriteReview(filePath, data);
+            if (r.lockedSkipped) lockedSkipCount++;
+          }
+        }
+      }
 
       // Skip already-flagged
       if (data.wrongProduction || data.wrongShow || data.wrongProductionManualClear || data.allowEarlyDate) {
@@ -313,7 +336,13 @@ function run() {
     }
   }
 
+  if (yearCorrectedDetails.length) {
+    console.log(`\n--- ${DRY_RUN ? 'Would correct' : 'Corrected'} scoring-model year guesses (BRO-4185) ---`);
+    for (const d of yearCorrectedDetails) console.log(`  ${d.showId}/${d.file}: ${d.from} → ${d.to}`);
+  }
+
   console.log(`\n--- Summary ---`);
+  console.log(`Year-corrected dates:  ${yearCorrected}`);
   console.log(`Held (corroboration):  ${corroborationHeld}`);
   console.log(`Warned (weak corrob):  ${corroborationWarned}`);
   console.log(`OK (within window):    ${ok}`);

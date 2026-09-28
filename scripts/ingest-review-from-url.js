@@ -46,6 +46,14 @@ const { fetchPage } = require('./lib/scraper');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
+const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
+// classifyReviewUrl reasons that never occur on a scored review in the corpus
+// (checked 2026-09-28); see the refusal below.
+const INGEST_REFUSED_URL_REASONS = new Set([
+  'ticketing-reseller', 'ticketing-listing', 'venue-production-page',
+  'production-database-listing', 'access-listings-page', 'talent-agency-credit-page',
+  'institutional-press-release', 'pr-firm-press-release', 'ugc-platform',
+]);
 const { stripTrailingJunk } = require('./lib/text-cleaning');
 const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost, lookupOutletForHost } = require('./lib/outlet-canonicalize');
 const { getOutletDisplayName, findExistingReviewFile, normalizeCritic, resolveOutletFromUrlIfPathInformed } = require('./lib/review-normalization');
@@ -120,6 +128,20 @@ if (!show) {
   if (isBlockedReviewUrl(url)) {
     console.error(`Refusing to ingest — ${url} matches a known non-review domain (ticket/listing/social/reference/venue/PR-firm). See scripts/lib/domain-filters.js.`);
     process.exit(1);
+  }
+
+  // Listing / ticketing / venue pages the shared URL classifier recognizes
+  // (BRO-4185 G: ~100 such files were written through /submit-review and the
+  // census, e.g. tickpick, ents24, lovetheatre, westend.com/shows). Only these
+  // reasons refuse: the classifier's broader candidate-filter reasons
+  // (non-review-host, aggregator-internal-nav) also match 300+ scored real
+  // reviews (WNYC, 4Columns, BroadwayWorld review articles), so they stay out.
+  {
+    const verdict = classifyReviewUrl(url);
+    if (!verdict.ok && INGEST_REFUSED_URL_REASONS.has(verdict.reason)) {
+      console.error(`Refusing to ingest — ${url} is a ${verdict.reason} page, not a review (scripts/lib/non-review-url-patterns.js classifyReviewUrl).`);
+      process.exit(1);
+    }
   }
 
   // Per-show blocklist — honor _blocklist.json, the sidecar whose WHOLE PURPOSE

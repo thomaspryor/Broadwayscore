@@ -234,7 +234,8 @@ async function main() {
 
     for (const show of shows) {
       if (show.status === 'open') {
-        const year = new Date(show.openingDate).getFullYear();
+        // new Date(null) is 1970: fall back to first performance / id year.
+        const year = new Date(show.openingDate || show.previewsStartDate || `${(show.id.match(/-(\d{4})$/) || [])[1] || new Date().getFullYear()}-01-01`).getFullYear();
         const result = await collectReviewsForShow(show.title, year, show.id, { category: show.category });
 
         const outputPath = path.join(outputDir, `${show.id}.json`);

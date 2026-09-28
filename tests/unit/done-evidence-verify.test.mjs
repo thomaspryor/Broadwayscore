@@ -337,3 +337,110 @@ test('detectOriginRepo parses owner/repo from https and ssh remotes', (t) => {
   git('remote', 'set-url', 'origin', 'git@github.com:thomaspryor/Broadwayscore.git');
   assert.equal(detectOriginRepo(work), 'thomaspryor/Broadwayscore');
 });
+
+// ── GitHub REST fallback (BRO-4206): cloud sessions are shallow clones with
+// no `gh`, so every local predicate answers null there. The fallback settles
+// only what local could not, never denies, and never runs without a known
+// origin. httpGetJson is stubbed: unit tests make no network calls.
+
+const { makeRemoteLookup, makeMentionsIssue, makeGetPrMergeCommit } = require('../../scripts/lib/done-evidence-verify.js');
+
+function stubHttp(routes) {
+  const calls = [];
+  const fn = (url) => {
+    calls.push(url);
+    for (const [re, body] of routes) if (re.test(url)) return body;
+    return null;
+  };
+  fn.calls = calls;
+  return fn;
+}
+
+const LANDED = { status: 'behind', merge_base_commit: { commit: { message: 'fix(BRO-77): landed thing' } } };
+
+test('makeRemoteLookup: compare runs main...{sha} (small response); behind/identical = on main with the SHA\'s own message', () => {
+  const http = stubHttp([[/compare\/main\.\.\.aaa/, LANDED], [/compare\/main\.\.\.bbb/, { status: 'identical', merge_base_commit: { commit: { message: 'm' } } }]]);
+  const remote = makeRemoteLookup({ originRepo: LOCAL, httpGetJson: http });
+  assert.deepEqual(remote.commit('aaa'), { onMain: true, status: 'behind', message: 'fix(BRO-77): landed thing' });
+  assert.equal(remote.commit('bbb').onMain, true);
+  assert.match(http.calls[0], /^https:\/\/api\.github\.com\/repos\/thomaspryor\/Broadwayscore\/compare\/main\.\.\.aaa\b/,
+    'the {sha}...main direction carries main\'s whole diff and overflowed 1 MB');
+});
+
+test('makeRemoteLookup: diverged/ahead/no answer are unknown, never false, and carry no message (merge base is not the SHA)', () => {
+  const http = stubHttp([
+    [/main\.\.\.div/, { status: 'diverged', merge_base_commit: { commit: { message: 'fix(BRO-77): somebody else' } } }],
+    [/main\.\.\.ahd/, { status: 'ahead', merge_base_commit: { commit: { message: 'x' } } }],
+  ]);
+  const remote = makeRemoteLookup({ originRepo: LOCAL, httpGetJson: http });
+  assert.deepEqual(remote.commit('div'), { onMain: null, status: 'diverged', message: null },
+    'a rebased land/** tip reads diverged; only the local cherry check may call it');
+  assert.equal(remote.commit('ahd').onMain, null);
+  assert.equal(remote.commit('gone'), null);
+});
+
+test('makeRemoteLookup: memoised per SHA/PR, and disabled entirely when the origin is unknown', () => {
+  const http = stubHttp([[/compare/, LANDED], [/pulls\/5$/, { merged: true, merge_commit_sha: 'ABC', state: 'closed', title: 't', body: 'b' }]]);
+  const remote = makeRemoteLookup({ originRepo: LOCAL, httpGetJson: http });
+  remote.commit('aaa'); remote.commit('aaa'); remote.pull(5); remote.pull(5);
+  assert.equal(http.calls.length, 2);
+  const off = makeRemoteLookup({ originRepo: null, httpGetJson: () => { throw new Error('must not be called'); } });
+  assert.equal(off.enabled, false);
+  assert.equal(off.commit('aaa'), null);
+  assert.equal(off.pull(5), null);
+});
+
+test('makeIsCommitOnMain + remote: settles a locally-unknown SHA (offline) but never overrides a local "not on main"', (t) => {
+  const { root, git, commit, work } = makeRepo();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  commit('a.txt');
+  git('push', '-q', 'origin', 'main');
+  git('checkout', '-q', '-b', 'feature');
+  const tip = commit('b.txt');
+
+  // Online: local says definitively false; the remote must not be asked.
+  const strict = makeIsCommitOnMain({ cwd: work, log: () => {}, remote: makeRemoteLookup({ originRepo: LOCAL, httpGetJson: () => { throw new Error('asked remote over a local verdict'); } }) });
+  assert.equal(strict(tip), false);
+
+  // Offline (the cloud case): local is unknown, so GitHub decides.
+  git('remote', 'set-url', 'origin', path.join(root, 'does-not-exist.git'));
+  const http = stubHttp([[/main\.\.\.landed/, LANDED], [/main\.\.\.div/, { status: 'diverged' }]]);
+  const isOnMain = makeIsCommitOnMain({ cwd: work, log: () => {}, remote: makeRemoteLookup({ originRepo: LOCAL, httpGetJson: http }) });
+  assert.equal(isOnMain('landed'), true);
+  assert.equal(isOnMain('div'), null);
+  assert.equal(isOnMain('nothing'), null);
+});
+
+test('makeMentionsIssue + remote: a commit missing from a shallow clone is read from GitHub; unread text stays unknown', (t) => {
+  const { root, work } = makeRepo();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  const http = stubHttp([[/main\.\.\.cafe01/, LANDED], [/main\.\.\.cafe02/, { status: 'behind', merge_base_commit: { commit: { message: 'unrelated' } } }]]);
+  const mentions = makeMentionsIssue({ cwd: work, log: () => {}, remote: makeRemoteLookup({ originRepo: LOCAL, httpGetJson: http }) });
+  assert.equal(mentions({ sha: 'cafe01', prNumber: null, issueIdentifier: 'BRO-77' }), true);
+  assert.equal(mentions({ sha: 'cafe02', prNumber: null, issueIdentifier: 'BRO-77' }), false);
+  assert.equal(mentions({ sha: 'cafe03', prNumber: null, issueIdentifier: 'BRO-77' }), null);
+});
+
+test('makeGetPrMergeCommit / makeMentionsIssue + remote: no `gh` on PATH → the PR is read from GitHub', (t) => {
+  const { root, work } = makeRepo();
+  t.after(() => fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  const http = stubHttp([
+    [/pulls\/10$/, { merged: true, merge_commit_sha: 'ABCDEF', state: 'closed', title: 'fix', body: 'Linear: BRO-77' }],
+    [/pulls\/11$/, { merged: false, merge_commit_sha: 'fff', state: 'open', title: 'wip', body: '' }],
+  ]);
+  const remote = makeRemoteLookup({ originRepo: LOCAL, httpGetJson: http });
+  const getPr = makeGetPrMergeCommit({ cwd: work, originRepo: LOCAL, log: () => {}, remote });
+  const mentions = makeMentionsIssue({ cwd: work, originRepo: LOCAL, log: () => {}, remote });
+  // git is resolved before PATH is emptied (makeRepo ran above); only `gh` is looked up after.
+  const savedPath = process.env.PATH;
+  process.env.PATH = path.join(root, 'no-bin');
+  try {
+    assert.deepEqual(getPr(10), { sha: 'abcdef', state: 'MERGED' });
+    assert.deepEqual(getPr(11), { sha: null, state: 'OPEN' });
+    assert.equal(getPr(12), null);
+    assert.equal(mentions({ sha: 'nosuch', prNumber: 10, issueIdentifier: 'BRO-77' }), true, 'PR body names the issue');
+    assert.equal(mentions({ sha: 'nosuch', prNumber: 11, issueIdentifier: 'BRO-77' }), null, 'commit unread + PR silent = unknown, not an accusation');
+  } finally {
+    process.env.PATH = savedPath;
+  }
+});

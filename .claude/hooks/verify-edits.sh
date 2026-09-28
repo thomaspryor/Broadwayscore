@@ -171,22 +171,188 @@ def _strip_heredocs(cmd: str) -> str:
 # quotes inside heredoc-wrapped prose (this repo's own convention for long
 # --outcome/--notes values, per CLAUDE.md's heredoc commit-message rule) —
 # without it, shlex.split would raise on essentially every real invocation.
-def _notion_closeout_status(cmd):
-    if not cmd or 'notion-brain.js' not in cmd or 'update' not in cmd:
+# Linear replaced the Notion board (CLAUDE.md §6): `linear-brain.js update
+# BRO-N --state Done` is the same close-out, spelled --state. Linear has no
+# "Paused" state (linear-brain rejects it); a pause is --state Backlog, which
+# is what `linear-session.js report --status=paused` sets. Before
+# 2026-09-27 only notion-brain.js counted, so a session that closed out on
+# Linear could never honestly claim SAFE TO EXIT and fell back to "NOT SAFE
+# TO EXIT — waiting on your merge" (the owner-merge ask OWNERMERGE blocks).
+# `linear-session.js report --status=done|paused` is the close-out verb for an
+# issue the session CLAIMED (dispatched onto BRO-N) rather than created.
+_CLOSEOUT_SCRIPTS = (
+    ('notion-brain.js', 'update', '--status'),
+    ('linear-brain.js', 'update', '--state'),
+    ('linear-session.js', 'report', '--status'),
+)
+
+def _board_closeout_status(cmd):
+    if not cmd or not any(s in cmd for s, _v, _f in _CLOSEOUT_SCRIPTS):
         return None
     stripped = _strip_heredocs(cmd)
     try:
         tokens = shlex.split(stripped)
     except ValueError:
         return None  # unparseable quoting — treat as no match, don't crash the gate
-    if not any(t.endswith('notion-brain.js') for t in tokens) or 'update' not in tokens:
-        return None
-    for i, tok in enumerate(tokens):
-        if tok == '--status' and i + 1 < len(tokens):
-            return tokens[i + 1].strip().lower()
-        if tok.startswith('--status='):
-            return tok.split('=', 1)[1].strip().lower()
+    for script, verb, flag in _CLOSEOUT_SCRIPTS:
+        if not any(t.endswith(script) for t in tokens) or verb not in tokens:
+            continue
+        for i, tok in enumerate(tokens):
+            if tok == flag and i + 1 < len(tokens):
+                return tokens[i + 1].strip().lower()
+            if tok.startswith(flag + '='):
+                return tok.split('=', 1)[1].strip().lower()
     return None
+
+# Close-out values across the three CLIs: done/paused (notion-brain --status,
+# linear-session report --status) and Linear's real state names for a
+# finished or parked card (linear-brain --state).
+_CLOSEOUT_STATES = ('done', 'paused', 'backlog', 'canceled', 'duplicate')
+
+# A Done the board's own gate refused (linear-brain exit 5 "❌", linear-session
+# "REFUSED" / doneGateRefused:true) left the card open — it is not a close-out.
+_CLOSEOUT_REFUSED_RE = re.compile(r'\bREFUSED\b|❌|"doneGateRefused"\s*:\s*true')
+
+# One definition of "the session did real work" for every gate below: a code
+# edit, a git commit/push, `gh pr create|merge`, or a GitHub MCP write.
+_WORK_MCP_TOOLS = (
+    'mcp__github__create_pull_request',
+    'mcp__github__merge_pull_request',
+    'mcp__github__push_files',
+    'mcp__github__create_or_update_file',
+)
+
+def _is_work_tool(name, inp):
+    inp = inp if isinstance(inp, dict) else {}
+    if name in ('Edit', 'Write', 'NotebookEdit'):
+        fp = inp.get('file_path', '') or ''
+        if fp.startswith('/tmp/') or '/scratchpad/' in fp:
+            return False  # throwaway analysis scripts, not repo work
+        return fp.endswith(CODE_EXTS) and not any(s in fp for s in EXEMPT_SUBSTRINGS)
+    if name in _WORK_MCP_TOOLS:
+        return True
+    if name == 'Bash':
+        cmd = inp.get('command') or ''
+        return bool(re.search(r'\bgit\s+(push|commit)\b', cmd) or re.search(r'\bgh\s+pr\s+(merge|create)\b', cmd))
+    return False
+
+# Card evidence (CLAUDE.md §6, "card first"): a create/claim that SUCCEEDED —
+# its own tool_result carries the CLI's success marker (stderr) or the stdout
+# JSON identifier (survives `2>/dev/null`). Both the command AND its own result
+# must match, so a grep/cat that merely prints the marker string from source or
+# tests doesn't count. A BRO-N merely mentioned in user text deliberately does
+# NOT count: injected context (e.g. session-start.sh's own banner cites
+# BRO-2663) arrives as user text, and a dispatched session should `claim` its
+# issue anyway — the block message says how.
+_CARD_CMD_RE = re.compile(r'linear-brain\.js\s+create\b|linear-session\.js\s+claim\b')
+_CARD_RESULT_RE = re.compile(r'\bBRO-\d+\b|__LINEAR_ISSUE_ID__=[0-9A-Za-z-]{8,}')
+
+def _session_has_card():
+    for kind, payload in events:
+        if kind != 'tool':
+            continue
+        name, inp, tid = payload
+        if name != 'Bash' or not isinstance(inp, dict):
+            continue
+        if not _CARD_CMD_RE.search(_strip_heredocs(inp.get('command') or '')):
+            continue
+        if _CARD_RESULT_RE.search(tool_results_by_id.get(tid, '') or ''):
+            return True
+    return False
+
+# Owner-asks the PR gate blocks (the owner never merges OR reviews). Merge-asks
+# since 2026-09-27; review-asks since 2026-09-28 (session 01Fn6CXk parked PR
+# #947 ~11h on "NOT SAFE TO EXIT — PR still open and unreviewed"). A match
+# preceded in the same clause by a negation ("without waiting for review",
+# "no need for your review", "doesn't need a review") describes the rule and
+# doesn't count.
+_MERGE_ASK_RE = re.compile(
+    r"\byour\s+(merge|to merge)\b|\bfor you to merge\b"
+    r"|\bready (for you )?to merge\b|\bwaiting on your merge\b"
+    r"|\bonce you merge\b|\bafter you merge\b|\bmerge it when\b",
+    re.IGNORECASE,
+)
+_REVIEW_Q = r"((a|an|the|human|owner'?s?|your)\s+){0,2}"
+_REVIEW_N = r"(review|reviewers?|approval|sign-?off)"
+_REVIEW_ASK_RE = re.compile(
+    r"\bunreviewed\b|\bplease review\b|\b(ready )?for your " + _REVIEW_N + r"\b"
+    r"|\bwait(ing)? (on|for) " + _REVIEW_Q + _REVIEW_N + r"\b"
+    r"|\b(awaiting|pending|blocked on) " + _REVIEW_Q + _REVIEW_N + r"\b"
+    r"|\bneeds? (a|an|your|human|owner'?s?)\s+" + _REVIEW_N + r"\b",
+    re.IGNORECASE,
+)
+_NEGATION_RE = re.compile(r"\b(no|not|never|without)\b|n't\b", re.IGNORECASE)
+
+def _owner_ask(text):
+    # The status line's own "NOT" is not a negation of what follows it.
+    text = re.sub(r'\b(NOT )?SAFE TO EXIT\b', ' ', text or '')
+    for rx in (_MERGE_ASK_RE, _REVIEW_ASK_RE):
+        for m in rx.finditer(text):
+            clause = re.split(r'[.;:!?\n—–]', text[max(0, m.start() - 30):m.start()])[-1]
+            if not _NEGATION_RE.search(clause):
+                return True
+    return False
+
+# Legitimate reasons a PR is still open. NOT a bare `NOT SAFE TO EXIT` (the
+# status-line gate requires that line on every work turn, so accepting it let
+# ANY parked PR pass) and not "draft pending".
+_PR_BLOCKER_RE = re.compile(
+    r"\b(CI|checks?|tests?|test\.yml|land\.yml|(the )?land run|(the )?build)('s|\s+(is|are|has|have))?"
+    r"\s+(still\s+|currently\s+)?(running|pending|in[ -]progress|queued|red|failing|failed)\b"
+    r"|\bCI\s+(hasn'?t|has not|isn'?t|is not)\s+(finished|completed|done|green)\b"
+    r"|\bwaiting (on|for) (the )?(CI|checks?|tests?|test\.yml|land\.yml|land run|build)\b"
+    r"|\bmerge conflicts?\b|\bblocked on\b",
+    re.IGNORECASE,
+)
+_DECISION_LINE_RE = re.compile(r"^[\s>*_-]*DECISION NEEDED:", re.MULTILINE)
+_PR_BLOCKER_LINE_RE = re.compile(r"^[\s>*_-]*PR-BLOCKER:\**\s*(.*)$", re.MULTILINE)
+
+def _pr_blocker_stated(text):
+    if _PR_BLOCKER_RE.search(text) or _DECISION_LINE_RE.search(text):
+        return True
+    for m in _PR_BLOCKER_LINE_RE.finditer(text):
+        reason = m.group(1).strip(' *_')
+        # A PR-BLOCKER that is really "waiting on the owner" is the review ask
+        # this gate exists to stop.
+        if (len(reason) >= 10 and not _owner_ask(reason)
+                and not re.search(r"\b(owner|you|your)\b", reason, re.IGNORECASE)):
+            return True
+    return False
+
+# Board gates (NOCARD, NOWRAPUP) stand down when the owner flipped the
+# board-gate escape hatch (board-gate-escape-hatch.md) or when Linear can't
+# answer (CLAUDE.md §6: "If Linear is down: warn, continue untracked"). Decided
+# HERE, in-process, so a stood-down board gate falls through to every later
+# gate (PR, UNVERIFIED, scoring, visual, ship-check) instead of exiting the
+# hook — a ship-check review found the earlier bash-side fail-open skipped all
+# of them. Probed at most once, and only when a board gate would block.
+_board_gate_cache = []
+
+def _board_gate_enforced():
+    if _board_gate_cache:
+        return _board_gate_cache[0]
+    ok = True
+    try:
+        import glob, subprocess
+        if (os.environ.get('BOARD_GATE_DISABLED', '0') == '1'
+                or glob.glob(os.path.join(os.path.expanduser('~'), '.claude', 'BOARD_GATE_DISABLED*'))):
+            ok = False
+        else:
+            root = os.environ.get('CLAUDE_PROJECT_DIR') or subprocess.run(
+                ['git', 'rev-parse', '--show-toplevel'], capture_output=True, text=True, timeout=5,
+            ).stdout.strip()
+            cli = os.path.join(root, 'scripts', 'linear-brain.js') if root else ''
+            ok = bool(cli) and os.path.isfile(cli) and subprocess.run(
+                ['node', cli, '--probe', '--timeout-ms', '4000'],
+                cwd=root, capture_output=True, timeout=12,
+            ).returncode == 0
+            if not ok:
+                sys.stderr.write('⚠️  Linear card gates skipped: Linear is unreachable or erroring. '
+                                 'Continue untracked; put the Outcome text in your final message (CLAUDE.md §6).\n')
+    except Exception:
+        ok = False
+    _board_gate_cache.append(ok)
+    return ok
 
 events = []  # list of (kind, payload)
 # kinds: 'tool' payload=(name,input,tool_use_id) | 'text' payload=str | 'result' payload=(tool_use_id, text)
@@ -293,25 +459,10 @@ for i in range(len(events) - 1, -1, -1):
 # an ordinary conversational turn. Kill switch: SESSION_STATUS_GATE_DISABLE=1.
 if os.environ.get('SESSION_STATUS_GATE_DISABLE', '0') != '1':
     try:
-        did_substantial_work = total_qualifying_edits > 0
-        if not did_substantial_work:
-            for _kind, _payload in events:
-                if _kind != 'tool':
-                    continue
-                _name, _inp, _tid = _payload
-                if _name in (
-                    'mcp__github__create_pull_request',
-                    'mcp__github__merge_pull_request',
-                    'mcp__github__push_files',
-                    'mcp__github__create_or_update_file',
-                ):
-                    did_substantial_work = True
-                    break
-                if _name == 'Bash':
-                    _cmd = _inp.get('command') or ''
-                    if re.search(r'\bgit\s+(push|commit)\b', _cmd) or re.search(r'\bgh\s+pr\s+(merge|create)\b', _cmd):
-                        did_substantial_work = True
-                        break
+        did_substantial_work = total_qualifying_edits > 0 or any(
+            _kind == 'tool' and _is_work_tool(_payload[0], _payload[1])
+            for _kind, _payload in events
+        )
         # NOTE: deliberately does NOT require `_last_msg` to be non-empty (ship-check
         # adversarial review, task a7d9c07f) — a turn whose last action is a tool call
         # with no closing text has _last_msg == '' and genuinely has no status line.
@@ -359,28 +510,105 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
     try:
         _opened_pr = False
         _merged_pr = False
+        _landed_pushed = False     # pushed to land/** (git or MCP create_branch/dispatch)
+        _land_followed = False     # checked a workflow run after that push
+        # Anchored: `git push origin HEAD:refs/heads/land/x`, `... HEAD:land/x`,
+        # `git push origin land/x` — not `foo-land/`.
+        _land_push_re = re.compile(r'git\s+push\b[^\n;&|]*\s(\S*:)?(refs/heads/)?land/')
         for _kind, _payload in events:
             if _kind != 'tool':
                 continue
             _name, _inp, _tid = _payload
+            _inp = _inp if isinstance(_inp, dict) else {}
             if _name == 'mcp__github__create_pull_request':
                 _opened_pr = True
             elif _name == 'mcp__github__merge_pull_request':
                 _merged_pr = True
-        if _opened_pr and not _merged_pr and _last_msg and 'NO-VERIFY:' not in _last_msg:
+            elif _name == 'Bash' and _land_push_re.search(_inp.get('command') or ''):
+                _landed_pushed = True
+            elif _name == 'mcp__github__create_branch' and str(_inp.get('branch') or '').startswith('land/'):
+                _landed_pushed = True
+            elif (_name == 'mcp__github__actions_run_trigger'
+                  and 'land' in str(_inp.get('workflow_id') or '')):
+                _landed_pushed = True
+            elif _landed_pushed and _name in ('mcp__github__actions_get', 'mcp__github__actions_list'):
+                _land_followed = True
+        _msg_ok = bool(_last_msg) and 'NO-VERIFY:' not in _last_msg
+        _stripped_owner = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
+        # OWNERMERGE (2026-09-27): the owner never merges — this repo lands via
+        # land/** (land.yml). "NOT SAFE TO EXIT — waiting on your merge" used
+        # to satisfy the blocker regex below; three iOS sessions in one day
+        # parked finished work that way. Merge-asks only: "waiting on your
+        # decision" / DECISION NEEDED stay legitimate.
+        # Addressed-to-you forms only: "the owner ... merge" reads as a
+        # description of the rule ("never ask the owner to merge") and false-
+        # positived on the very session that shipped this gate. Quoted and
+        # backticked spans are dropped too, so citing the phrase is safe.
+        # Review-asks too (2026-09-28): the owner never REVIEWS either.
+        # Session 01Fn6CXk parked PR #947 ~11h on "NOT SAFE TO EXIT — PR still
+        # open and unreviewed" / "ready for your review", neither of which
+        # matched the merge-only forms above. "Waiting ..." (not "wait") so a
+        # description like "never wait for review" doesn't trip it.
+        # Patterns: _MERGE_ASK_RE / _REVIEW_ASK_RE via _owner_ask() (top of script).
+        _owner_scan = re.sub(r'`[^`\n]*`|"[^"\n]*"|\u201c[^\u201d\n]*\u201d', '', _stripped_owner)
+        if (_msg_ok and (_opened_pr or _landed_pushed) and not _merged_pr
+                and _owner_ask(_owner_scan)):
+            print("OWNERMERGE")
+            sys.exit(0)
+        # A land/** push is follow-through, but not proof it landed (land.yml
+        # can refuse): SAFE TO EXIT additionally needs a later run check.
+        if (_msg_ok and _landed_pushed and not _land_followed and not _merged_pr
+                and re.search(r'^SAFE TO EXIT\b', _stripped_owner.strip().splitlines()[-1] if _stripped_owner.strip() else '')):
+            print("LANDUNCHECKED")
+            sys.exit(0)
+        if _landed_pushed:
+            _merged_pr = True
+        if _opened_pr and not _merged_pr and _msg_ok:
             # Strip fences here too (ship-check adversarial review found this
             # asymmetric with the status gate above) — a quoted example
             # containing blocker-shaped text must not satisfy the check.
             # Bare "blocked" dropped in favor of "blocked on" — too generic on
             # its own (matched unrelated "the cron is blocked on rate limits").
+            # `NOT SAFE TO EXIT` and `draft (by design|pending)` no longer
+            # count (2026-09-28): the status-line gate REQUIRES every
+            # substantial-work message to end in (NOT) SAFE TO EXIT, so
+            # accepting it here meant ANY parked PR passed. A still-running CI
+            # run is the one common legitimate wait, so it's named explicitly;
+            # anything else goes on a `PR-BLOCKER: <specific reason>` line.
             _pr_stripped = re.sub(r'```.*?```', '', _last_msg, flags=re.DOTALL)
-            _blocker_re = re.compile(
-                r'\b(CI(\s+is)?\s+red|merge conflict|blocked on|DECISION NEEDED:|NOT SAFE TO EXIT|draft (by design|pending))\b',
-                re.IGNORECASE,
-            )
-            if not _blocker_re.search(_pr_stripped):
+            # `DECISION NEEDED:` sits outside the \b(...)\b group: a trailing
+            # \b can never match after the colon, so it silently never matched
+            # before — the bare NOT SAFE TO EXIT alternative masked that.
+            if not _pr_blocker_stated(_pr_stripped):
                 print("PRUNMERGED")
                 sys.exit(0)
+    except Exception:
+        pass  # fail-open — never let this gate crash the rest of the script
+
+# ─── Card-first gate (added 2026-09-28) ─────────────────────────────────────
+# CLAUDE.md §6: every session files (or claims) its Linear card at the start.
+# Cloud had no enforcement — the local ~/.claude notion-card-required-* gates
+# never fire here — and the SessionStart banner still pointed at the retired
+# notion-brain.js, so a session (01Fn6CXk, 2026-09-27) edited, pushed and
+# merged a PR with no card at all. A Stop-time check, not a PreToolUse one on
+# commit: a /plan-review found a PreToolUse gate too easy to wedge (compaction,
+# stderr-only markers, subagents) for an every-commit block. Runs AFTER the
+# PR gates so a card-less session that parks a PR hits the PR gate first.
+# Stands down (and falls through) via _board_gate_enforced().
+# Bypass: `NO-CARD: <reason ≥10 chars>`. Kill switch: CARD_GATE_DISABLE=1.
+if os.environ.get('CARD_GATE_DISABLE', '0') != '1':
+    try:
+        _did_work_nc = any(
+            _kind == 'tool' and _is_work_tool(_payload[0], _payload[1])
+            for _kind, _payload in events
+        )
+        _nc_msg = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
+        if (_did_work_nc and 'NO-VERIFY:' not in _nc_msg
+                and not re.search(r'NO-CARD:\s*\S.{9,}', _nc_msg)
+                and not _session_has_card()
+                and _board_gate_enforced()):
+            print("NOCARD")
+            sys.exit(0)
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
@@ -419,7 +647,7 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
 # this repo's own docs/commit conventions routinely quote the literal example
 # `--status Done` INSIDE an unrelated --outcome/--notes argument's prose, and
 # a whole-string regex can't tell that from a real flag — see
-# _notion_closeout_status()'s comment near the top of this script for the
+# _board_closeout_status()'s comment near the top of this script for the
 # fix). Deliberately a separate, self-contained block (not nested in the
 # session-status-line gate above, and NOT reusing its locals) so
 # SESSION_STATUS_GATE_DISABLE can't accidentally also disable this gate via a
@@ -429,26 +657,7 @@ if os.environ.get('WRAPUP_GATE_DISABLE', '0') != '1':
     try:
         _last_work_idx = None
         for _i, (_kind, _payload) in enumerate(events):
-            if _kind != 'tool':
-                continue
-            _name, _inp, _tid = _payload
-            _is_work = False
-            if _name in ('Edit', 'Write', 'NotebookEdit'):
-                _fp = _inp.get('file_path', '') or ''
-                if _fp.endswith(CODE_EXTS) and not any(s in _fp for s in EXEMPT_SUBSTRINGS):
-                    _is_work = True
-            elif _name in (
-                'mcp__github__create_pull_request',
-                'mcp__github__merge_pull_request',
-                'mcp__github__push_files',
-                'mcp__github__create_or_update_file',
-            ):
-                _is_work = True
-            elif _name == 'Bash':
-                _cmd = _inp.get('command') or ''
-                if re.search(r'\bgit\s+(push|commit)\b', _cmd) or re.search(r'\bgh\s+pr\s+(merge|create)\b', _cmd):
-                    _is_work = True
-            if _is_work:
+            if _kind == 'tool' and _is_work_tool(_payload[0], _payload[1]):
                 _last_work_idx = _i
 
         if _last_work_idx is not None and _last_msg and 'NO-VERIFY:' not in _last_msg:
@@ -467,11 +676,12 @@ if os.environ.get('WRAPUP_GATE_DISABLE', '0') != '1':
                         continue
                     _name2, _inp2, _tid2 = _payload2
                     if _name2 == 'Bash':
-                        _status_val = _notion_closeout_status(_inp2.get('command') or '')
-                        if _status_val in ('done', 'paused'):
+                        _status_val = _board_closeout_status(_inp2.get('command') or '')
+                        if (_status_val in _CLOSEOUT_STATES
+                                and not _CLOSEOUT_REFUSED_RE.search(tool_results_by_id.get(_tid2, '') or '')):
                             _wrapup_closed_out = True
                             break
-                if not _wrapup_closed_out:
+                if not _wrapup_closed_out and _board_gate_enforced():
                     print("NOWRAPUP")
                     sys.exit(0)
     except Exception:
@@ -1280,13 +1490,26 @@ if [[ "$result" == "FALSESAFE" ]]; then
   exit 2
 fi
 
+if [[ "$result" == "OWNERMERGE" ]]; then
+  echo "🛑 BLOCKED: you asked the owner to merge or review. The owner never merges or reviews PRs in this repo. Once CI is green, land it yourself: git push origin HEAD:refs/heads/land/<name> (land.yml rebases onto main, re-runs the blocking gates, fast-forwards main; MCP fallback: mcp__github__create_branch land/<name> or dispatch land.yml with branch=<name>). Follow the Land run to LANDED, close the PR, then report. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+if [[ "$result" == "LANDUNCHECKED" ]]; then
+  echo "🛑 BLOCKED: you pushed to land/** but claim SAFE TO EXIT without checking the Land run. land.yml can refuse a branch. Check the run (mcp__github__actions_list / actions_get on land.yml) and report LANDED or the refusal. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
 if [[ "$result" == "PRUNMERGED" ]]; then
-  echo "🛑 BLOCKED: a PR was opened via the GitHub MCP connector this session but never merged, with no stated blocker. This project's owner does not review PRs — merge it yourself once CI is green, or say exactly what's blocking it (cloud-memory/feedback_no_review_offers_user_not_technical.md). Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: a PR was opened via the GitHub MCP connector this session but never landed, with no stated blocker. This project's owner does not review or merge PRs — once CI is green, land it yourself: git push origin HEAD:refs/heads/land/<name> (land.yml rebases, re-runs the gates, fast-forwards main), follow the Land run, then close the PR. Or state the blocker: CI still running, CI red, a merge conflict, a DECISION NEEDED:, or a line PR-BLOCKER: <specific reason>. NOT SAFE TO EXIT alone, or waiting on review, is not a blocker (cloud-memory/feedback_no_review_offers_user_not_technical.md). Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "NOCARD" ]]; then
+  echo "🛑 BLOCKED: this session did real work (edit/commit/push/PR) but never filed or claimed its Linear card (CLAUDE.md §6: card first). Run: node scripts/linear-brain.js create '<title>' --dispatch --notes '...## Acceptance criteria...' — or, if you were given an existing issue, node scripts/linear-session.js claim --issue=BRO-N. Notion is retired: never notion-brain.js. Bypass: NO-CARD: <reason, 10+ chars>." >&2
   exit 2
 fi
 
 if [[ "$result" == "NOWRAPUP" ]]; then
-  echo "🛑 BLOCKED: claiming SAFE TO EXIT after doing real work, but no evidence this session's Notion card was actually closed out (a 'node scripts/notion-brain.js update ... --status Done' or '--status Paused' call after that work). Run /wrap-up for real — a well-formatted status line, or even having invoked the /wrap-up skill, is not proof its mandatory Notion close-out (CLAUDE.md §6) actually happened. Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: claiming SAFE TO EXIT after real work, but this session's Linear card was never closed out after that work. Run: node scripts/linear-brain.js update BRO-N --state Done (needs a PR-EVIDENCE line or an Acceptance-criteria check; a refused update doesn't count). To pause, or when Done is refused (cloud clones are shallow, so PR-EVIDENCE can't be verified there): node scripts/linear-session.js report --issue=BRO-N --status=paused --summary=\"...\" (Linear has no Paused state; this sets Backlog). Invoking /wrap-up alone is not proof. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 

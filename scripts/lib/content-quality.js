@@ -3078,6 +3078,13 @@ function extractHighConfidenceAuthor(html) {
  * @param {number} [opts.minMentionsShort=1] - Threshold for text <1500 chars
  * @returns {{ valid: boolean, reason?: string, mentionCount: number, threshold: number, htmlTitle: string|null, htmlTitleMatch: boolean|null }}
  */
+// Bump when validateContentMentionsShow changes what it rejects. A
+// url_content_mismatch recorded under an older version gets one fresh fetch
+// (failed-fetch-policy.js shouldReopenStaleContentMismatch): the rule was
+// loosened repeatedly (diacritics, titleMatch, punctuation) but abandoned
+// ledger entries were never re-examined (BRO-4185 H).
+const URL_CONTENT_CHECK_VERSION = 2;
+
 function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   const minLong = opts.minMentionsLong != null ? opts.minMentionsLong : 3;
   const minShort = opts.minMentionsShort != null ? opts.minMentionsShort : 1;
@@ -3416,6 +3423,7 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
 }
 
 module.exports = {
+  URL_CONTENT_CHECK_VERSION,
   isGarbageContent,
   hasReviewContent,
   assessTextQuality,

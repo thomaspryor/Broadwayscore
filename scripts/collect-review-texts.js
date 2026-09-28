@@ -105,19 +105,19 @@ const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { extractArticleText: extractArticleTextFromHtml } = require('./lib/article-extractor');
 
 // Text cleaning (entity decoding, junk stripping)
-const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS } = require('./lib/text-cleaning');
+const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS, hasStrippableConsentLayer } = require('./lib/text-cleaning');
 
 // LLM-based content verification
 const { verifyContent, quickValidityCheck, resolveCvMarket, contentHash } = require('./lib/content-verifier');
 const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-registry');
 
 // Content quality detection (garbage/invalid content filter)
-const { assessTextQuality, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor } = require('./lib/content-quality');
+const { assessTextQuality, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
 const { runScoreExtractorPrePass } = require('./lib/score-extractor-prepass');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
-const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
+const { isTourReviewExcerpt, tourContextForShow, isFilmTvReview } = require('./lib/excerpt-validation');
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const {
   NO_DATE_SENTINEL,
@@ -148,7 +148,7 @@ const {
   isWithinTourLeg,
   shouldPreserveExclusionFlagsOnUrlRecovery,
 } = require('./lib/wrong-production-autoclear');
-const { shouldRetryGarbageConsentWall } = require('./lib/consent-refetch');
+const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browserbase-caps');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
@@ -546,7 +546,7 @@ const UNRELIABLE_TITLE_OUTLETS = new Set(['pages-on-stages']);
 
 // Domain alias matching — imported from shared lib (scraper.js)
 const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats } = require('./lib/scraper');
-const { shouldCountFailure, isPermanentlyFailed } = require('./lib/failed-fetch-policy');
+const { shouldCountFailure, isPermanentlyFailed, shouldReopenStaleContentMismatch } = require('./lib/failed-fetch-policy');
 const { consultBrightData } = require('./lib/brightdata-caps');
 const { recordBdCall } = require('./lib/bd-telemetry');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
@@ -5263,14 +5263,15 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
 
     // Tour detection (skip tour-stop shows)
     let isTourStop = false;
+    let tourShow = null;
     try {
       if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
-      const sm = _showsJsonCache.shows.find(s => s.id === showIdForTour);
-      if (sm && sm.status === 'tour-stop') isTourStop = true;
+      tourShow = _showsJsonCache.shows.find(s => s.id === showIdForTour) || null;
+      if (tourShow && tourShow.status === 'tour-stop') isTourStop = true;
     } catch (e) { /* shows.json unavailable */ }
 
     if (!isTourStop) {
-      const tourCheck = isTourReviewExcerpt(introText);
+      const tourCheck = isTourReviewExcerpt(introText, tourContextForShow(tourShow));
       if (tourCheck.isTourReview) {
         data.possibleTourReview = true;
         data.tourSignal = tourCheck.signal;
@@ -5947,7 +5948,11 @@ function findReviewsToProcess() {
           // so the same 14-day clock that gates collector-flagged retries gates
           // these. A separate field didn't survive the fetch path's rewrite
           // (verified 2026-06-28 — consentRefetchAt was dropped, re-fetch looped).
-          const storedTextIsGarbage = isGarbageContent(data.fullText || '').isGarbage;
+          // A stored text that OPENS with a strippable IAB consent layer counts
+          // too (BRO-4185 A): the article sits after the block, but the verifier
+          // read only the consent text and flagged the review. Quarantined text
+          // (fullText nulled into wrongFullText) is checked the same way.
+          const storedTextIsGarbage = storedTextNeedsConsentRefetch(data);
           const garbageRetryAllowed = shouldRetryGarbageConsentWall({
             hasGarbageStoredText: storedTextIsGarbage,
             lastRetryMs: data.wrongShowRetryAt ? new Date(data.wrongShowRetryAt).getTime() : null,
@@ -5964,6 +5969,7 @@ function findReviewsToProcess() {
           // Mark retry attempt — the post-fetch handler stamps wrongShowRetryAt
           // (success clears the flag; failure starts the 14-day cooldown).
           data._wrongShowRetrying = true;
+          if (hasStrippableConsentLayer(data.fullText || data.wrongFullText || '')) data._consentLayerRetry = true;
         }
 
         // Skip if already has good text (unless retrying failed or filtering by reason)
@@ -5976,7 +5982,9 @@ function findReviewsToProcess() {
           // Re-process showNotMentioned reviews for URL discovery (even if they have long text)
           const needsUrlDiscovery = data.showNotMentioned === true && !data._showNotMentionedDiscoveryAttempted;
           // Re-collect if existing fullText is garbage (cookie consent, GDPR banners, etc.)
-          const hasGarbageText = textLen > 0 && isGarbageContent(data.fullText).isGarbage;
+          const hasGarbageText = textLen > 0 && (isGarbageContent(data.fullText).isGarbage
+            || hasStrippableConsentLayer(data.fullText));
+          if (hasStrippableConsentLayer(data.fullText || data.wrongFullText || '')) data._consentLayerRetry = true;
           // Always re-try truncated/needs-rescrape reviews - they have text but it's incomplete or garbage
           if (!isTruncated && !needsUrlDiscovery && !hasGarbageText && !urlCorrectedRefetch && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
             continue;
@@ -6008,7 +6016,14 @@ function findReviewsToProcess() {
         // corrected URL is a strong signal the next fetch will succeed, and
         // the OLD url's failure history says nothing about the NEW one.
         const fetchFailureEntry = failedFetchesByReviewId.get(reviewId);
-        if (fetchFailureEntry && !urlCorrectedRefetch) {
+        // A content mismatch judged by an older version of the content check
+        // gets one fresh fetch under the current rule (BRO-4185 H).
+        const reopenStaleMismatch = shouldReopenStaleContentMismatch(fetchFailureEntry, data, URL_CONTENT_CHECK_VERSION);
+        if (reopenStaleMismatch) {
+          data.contentMismatchReopenedFor = URL_CONTENT_CHECK_VERSION;
+          try { fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
+        }
+        if (fetchFailureEntry && !urlCorrectedRefetch && !reopenStaleMismatch) {
           const fetchGate = shouldRetryFetch(showsById.get(showId) || null, data, fetchFailureEntry);
           if (!fetchGate.shouldRetry && CONFIG.reviewFilter.size === 0 && !CONFIG.showFilter) {
             logExclusion({
@@ -6132,6 +6147,11 @@ function findReviewsToProcess() {
           fetchAttempts: fileAttempts,
           wrongShow: data.wrongShow || false,
           wrongShowReason: data.wrongShowReason || null,
+          // Retry markers set by the gates above. They were never copied onto
+          // the queued review, so the post-fetch outcome handler (clear on
+          // success, cooldown stamp on failure) only ran for the SERP path.
+          _wrongShowRetrying: data._wrongShowRetrying === true,
+          _consentLayerRetry: data._consentLayerRetry === true,
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
@@ -6374,6 +6394,7 @@ function recordFailedFetch(review, reason, details = {}) {
     critic: review.critic,
     url: review.url,
     failureReason: reason,
+    ...(reason === 'url_content_mismatch' ? { checkVersion: URL_CONTENT_CHECK_VERSION } : {}),
     failureCount: counts ? prevCount + 1 : prevCount,
     lastFailedAt: new Date().toISOString(),
     firstFailedAt: existing?.firstFailedAt || new Date().toISOString(),
@@ -6864,6 +6885,24 @@ async function processReview(review) {
         }
         delete postData._wrongShowRetrying;
         fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
+      } catch (e) {}
+    }
+
+    // Consent-layer refetch (BRO-4185 A): the "not a review" verdict that set
+    // isNonReview judged a consent banner. A fresh, clean, high-confidence
+    // verdict on the stripped article releases it.
+    if (review._consentLayerRetry && review.filePath) {
+      try {
+        const postData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        if (shouldReleaseConsentLayerNonReview(postData)) {
+          postData.isNonReview = false;
+          if (postData.rejectionReason === 'not_a_review') postData.rejectionReason = null;
+          postData.isNonReviewReason = null;
+          postData.nonReviewOverride = 'collect-review-texts: consent-layer refetch re-verified as a review (BRO-4185 A)';
+          postData.nonReviewOverrideAt = new Date().toISOString();
+          fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
+          console.log('    ✓ isNonReview cleared — consent-layer refetch re-verified as a review');
+        }
       } catch (e) {}
     }
 

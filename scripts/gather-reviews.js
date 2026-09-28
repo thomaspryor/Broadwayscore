@@ -1066,7 +1066,7 @@ async function searchShowScore(show) {
     console.log('    Curated URL failed, falling back to slug variations...');
   }
 
-  const year = new Date(show.openingDate).getFullYear();
+  const year = productionYear(show);
   const titleSlug = slugify(show.title);
   const titleNoColonSlug = slugify(show.title.replace(/:/g, ''));
   const isOffBroadway = show.category === 'off-broadway';
@@ -2917,6 +2917,21 @@ function validateBWWRoundupGeography(reviews, html, showId, isWestEnd = false) {
 }
 
 /**
+ * Production year for search queries / URL guesses. `new Date(null)` is
+ * 1970, so an open show with no openingDate searched for "... review 1970"
+ * (same null-date bug class as validateBWWRoundupYear). Falls back to the
+ * first performance, then the catalog id's year, then this year.
+ */
+function productionYear(show) {
+  for (const d of [show && show.openingDate, show && show.previewsStartDate]) {
+    const y = d ? new Date(d).getFullYear() : NaN;
+    if (Number.isFinite(y) && y > 1900) return y;
+  }
+  const m = String((show && show.id) || '').match(/-(\d{4})$/);
+  return m ? parseInt(m[1], 10) : new Date().getFullYear();
+}
+
+/**
  * Validate BWW roundup publish year against show's opening date.
  * Catches wrong-year roundups where BWW's fuzzy routing serves an older production's
  * roundup (e.g., The Other Place 2013 roundup served for a 2026 show).
@@ -2924,10 +2939,30 @@ function validateBWWRoundupGeography(reviews, html, showId, isWestEnd = false) {
  * Extracts datePublished from JSON-LD or URL year and rejects if too old.
  * @returns {Array} reviews (empty if roundup is wrong year, unchanged otherwise)
  */
-function validateBWWRoundupYear(reviews, html, showOpeningDate, showId, bwwUrl) {
+// opts.openEnded: the show has no recorded openingDate, so showOpeningDate is
+// its first preview (or id year). Press night can land many months after the
+// first preview (repertory: mas-sabe-el-saulo-por-viejo, previews 2025-12-19),
+// so the "published after opening" limit widens from 6 to 18 months, the same
+// width as the before-opening limit. A much later production of the title
+// (stale stuck-in-previews entry) is still rejected.
+function validateBWWRoundupYear(reviews, html, showOpeningDate, showId, bwwUrl, opts = {}) {
   if (reviews.length === 0) return reviews;
 
-  const showDate = new Date(showOpeningDate);
+  // null/'' must short-circuit BEFORE new Date(): new Date(null) is 1970-01-01,
+  // a VALID date, so the NaN guard below never fired and every roundup for a
+  // null-openingDate show was rejected as "~670 months after opening". That
+  // silently discarded the BWW roundup for every show stuck in previews
+  // (our-sinatra 2026-09-27), so Check 2d never got the review signal it
+  // needs to flip the show open. Callers pass previewsStartDate as fallback;
+  // a show with NO dates (announced) anchors on its id's production year so
+  // an older production's roundup is still rejected.
+  let anchor = showOpeningDate;
+  if (!anchor) {
+    const y = String(showId || '').match(/-(\d{4})$/);
+    if (!y) return reviews;
+    anchor = `${y[1]}-07-01`;
+  }
+  const showDate = new Date(anchor);
   if (isNaN(showDate.getTime())) return reviews; // can't validate without valid date
 
   // 1. Extract datePublished from JSON-LD (most reliable)
@@ -2974,7 +3009,8 @@ function validateBWWRoundupYear(reviews, html, showOpeningDate, showId, bwwUrl) 
 
   // Also reject if roundup was published more than 6 months AFTER opening
   // (unlikely to be a legitimate roundup — might be a revival or re-run)
-  if (monthsDiff < -6) {
+  const maxMonthsAfter = opts.openEnded ? 18 : 6;
+  if (monthsDiff < -maxMonthsAfter) {
     console.log(`    ⚠ REJECTING BWW roundup: published ${roundupDate.toISOString().slice(0, 10)} but show opened ${showOpeningDate} (roundup is ${-monthsDiff} months after opening)`);
     return [];
   }
@@ -4134,7 +4170,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     console.log(`[PRIOR-RUN] ${showId}: in previews but declares priorRuns/tourLegs — discovering reviews from the earlier run/tour stop`);
   }
 
-  const year = new Date(show.openingDate).getFullYear();
+  const year = productionYear(show);
   console.log(`Title: ${show.title}`);
   console.log(`Year: ${year}`);
   console.log(`Status: ${show.status}`);
@@ -4444,7 +4480,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       // Validate geographic accuracy — filter non-local outlets, reject if majority are wrong
       bwwReviews = validateBWWRoundupGeography(bwwReviews, bwwResult.html, showId, isWestEnd);
       // Validate publish year — reject roundups from older productions of the same title
-      bwwReviews = validateBWWRoundupYear(bwwReviews, bwwResult.html, show.openingDate, showId, bwwResult.url);
+      bwwReviews = validateBWWRoundupYear(bwwReviews, bwwResult.html, show.openingDate || show.previewsStartDate, showId, bwwResult.url, { openEnded: !show.openingDate });
       health.bww.extracted = bwwReviews.length;
       foundReviews.push(...bwwReviews);
       // Archive the page
@@ -5937,6 +5973,7 @@ module.exports = {
   extractBWWRoundupReviews,
   sanitizeBwwJsonLd,
   validateBWWRoundupYear,
+  productionYear,
   validateBWWRoundupGeography,
   createReviewFile,
   gatherReviewsForShow,

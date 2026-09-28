@@ -3616,10 +3616,10 @@ function explainExclusion(data, show, filePath) {
     data.textFetchedAt > (process.env.CONTAMINATION_AUDIT_CUTOFF || '2026-02-13T00:00:00Z') &&
     !data.rejectedBy
   ) {
-    const { isTourReviewExcerpt, isFilmTvReview } = require('./excerpt-validation');
+    const { isTourReviewExcerpt, tourContextForShow, isFilmTvReview } = require('./excerpt-validation');
     const introText = data.fullText.slice(0, 600);
     if (!data.allowTourSignal && show?.status !== 'tour-stop' && show?.type !== 'special') {
-      const tourCheck = isTourReviewExcerpt(introText, { currentShowId: show?.id, currentShowTitle: show?.title });
+      const tourCheck = isTourReviewExcerpt(introText, tourContextForShow(show));
       if (tourCheck.isTourReview) return 'tourContaminationInText';
     }
     if (!data.allowFilmSignal) {

@@ -183,11 +183,104 @@ function evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit, mentionsIssu
 }
 
 /**
+ * GitHub REST fallback (BRO-4206). Cloud sessions run in a shallow clone with
+ * no `gh` binary, so every local predicate above answers null there and every
+ * cloud Done was refused. done-evidence-remote.js (the nightly sweep) already
+ * asks GitHub the same question; this is the close-time version.
+ *
+ * Synchronous because checkLinearDoneTransition is: one child `node` running
+ * gh-api-client.js fetchGitHubJSON (auth from GH_TOKEN/GITHUB_TOKEN in the
+ * inherited env, never argv; ledger-logged like every other direct API call).
+ * The URL goes in on stdin. Null on ANY failure — the gate refuses on null.
+ */
+const HTTP_CHILD_SRC = `
+const { fetchGitHubJSON } = require(${JSON.stringify(require('node:path').join(__dirname, 'gh-api-client.js'))});
+let url = '';
+process.stdin.on('data', d => { url += d; }).on('end', async () => {
+  try {
+    const j = await fetchGitHubJSON(url.trim(), { caller: 'done-evidence-verify.js' });
+    process.stdout.write(JSON.stringify(j));
+  } catch { process.exit(1); }
+});`;
+
+function defaultHttpGetJson(url, { timeoutMs = 20000 } = {}) {
+  try {
+    const out = execFileSync(process.execPath, ['-e', HTTP_CHILD_SRC], {
+      input: url, encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'],
+      timeout: timeoutMs, maxBuffer: 16 * 1024 * 1024,
+    });
+    return out ? JSON.parse(out) : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Remote lookups against `originRepo`, memoised per factory so one close-out
+ * costs at most one call per SHA / PR. Disabled (every answer null) when the
+ * origin is unknown: a bare SHA must never be checked against a guessed repo.
+ *
+ * commit(sha): GET compare/main...{sha}. "behind"/"identical" = the SHA is an
+ * ancestor of main (done-evidence-remote.js commitIsOnMain's mapping). In that
+ * direction merge_base_commit IS the SHA, so its message comes free and the
+ * response stays small (the {sha}...main direction carries main's whole diff
+ * and overflowed 1 MB on a 95-commit-old SHA). "ahead"/"diverged" answer
+ * onMain:null, not false: a land/** tip is rebased before main fast-forwards,
+ * so an honest branch-tip SHA reads "diverged", and only the local git-cherry
+ * check can tell it from an unlanded one. Unknown never accuses; the nightly
+ * sweep (done-evidence-remote.js) deliberately calls "diverged" broken.
+ *
+ * pull(n): GET pulls/{n} → {merged, mergeSha, state, text}.
+ */
+function makeRemoteLookup({ originRepo = null, httpGetJson = defaultHttpGetJson, log = () => {} } = {}) {
+  const commits = new Map();
+  const pulls = new Map();
+  const base = originRepo ? `https://api.github.com/repos/${originRepo}` : null;
+  return {
+    enabled: Boolean(base),
+    commit(sha) {
+      if (!base || !sha) return null;
+      if (commits.has(sha)) return commits.get(sha);
+      const j = httpGetJson(`${base}/compare/main...${encodeURIComponent(sha)}?per_page=1`);
+      let r = null;
+      if (j && typeof j.status === 'string') {
+        const landed = j.status === 'behind' || j.status === 'identical';
+        const mb = landed && j.merge_base_commit && j.merge_base_commit.commit;
+        r = { onMain: landed ? true : null, status: j.status, message: mb && typeof mb.message === 'string' ? mb.message : null };
+        log(`[done-evidence-verify] GitHub compare main...${sha}: ${j.status}`);
+      } else {
+        log(`[done-evidence-verify] GitHub compare main...${sha}: no answer`);
+      }
+      commits.set(sha, r);
+      return r;
+    },
+    pull(n) {
+      if (!base || !n) return null;
+      if (pulls.has(n)) return pulls.get(n);
+      const j = httpGetJson(`${base}/pulls/${Number(n)}`);
+      let r = null;
+      if (j && typeof j.merged === 'boolean') {
+        r = {
+          merged: j.merged,
+          mergeSha: j.merged && j.merge_commit_sha ? String(j.merge_commit_sha).toLowerCase() : null,
+          state: j.merged ? 'MERGED' : String(j.state || 'unknown').toUpperCase(),
+          text: `${j.title || ''}\n${j.body || ''}`,
+        };
+      } else {
+        log(`[done-evidence-verify] GitHub pulls/${n}: no answer`);
+      }
+      pulls.set(n, r);
+      return r;
+    },
+  };
+}
+
+/**
  * Real mentionsIssue: does the landed commit's message (or, for a PR, its
  * title/body) name the issue? Commits in this repo carry `BRO-N` routinely.
  * null when the text cannot be read — the gate then refuses as unverified.
  */
-function makeMentionsIssue({ cwd = process.cwd(), originRepo = null, timeoutMs = 15000, log = () => {} } = {}) {
+function makeMentionsIssue({ cwd = process.cwd(), originRepo = null, timeoutMs = 15000, log = () => {}, remote = null } = {}) {
   // `[^A-Za-z0-9]` (a '-' IS allowed before the id): this repo's merge
   // subjects read "Merge branch 'job/linear-BRO-3431-mu34ri7q'" and
   // "worktree-bro-3429-watchdog-park" — the id follows a hyphen.
@@ -195,6 +288,7 @@ function makeMentionsIssue({ cwd = process.cwd(), originRepo = null, timeoutMs =
   const git = (args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: 'pipe', timeout: timeoutMs });
   return function mentionsIssue({ sha, prNumber, issueIdentifier }) {
     const re = idRe(issueIdentifier);
+    let msg = null;
     try {
       // The cited commit's OWN message only. A merge commit's parent range is
       // deliberately NOT scanned: for a sync merge ("Merge remote-tracking
@@ -204,24 +298,35 @@ function makeMentionsIssue({ cwd = process.cwd(), originRepo = null, timeoutMs =
       // attributed to 35 issues). A merge whose subject names the branch
       // ("Merge branch 'job/linear-BRO-N-x'") still attributes; otherwise cite
       // the fix commit itself, which the refusal text says.
-      if (re.test(git(['log', '-1', '--format=%B', sha]))) return true;
+      msg = git(['log', '-1', '--format=%B', sha]);
     } catch (err) {
       log(`[done-evidence-verify] could not read commit ${sha}: ${String(err.message).slice(0, 120)}`);
-      return null;
     }
-    if (prNumber && originRepo) {
-      try {
-        const out = execFileSync('gh', ['pr', 'view', String(prNumber), '--repo', originRepo, '--json', 'title,body'], {
-          cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: timeoutMs,
-        });
-        const j = JSON.parse(out);
-        return re.test(`${j.title || ''}\n${j.body || ''}`);
-      } catch (err) {
-        log(`[done-evidence-verify] could not read PR #${prNumber}: ${String(err.message).slice(0, 120)}`);
-        return null;
-      }
+    // Not in this (shallow) clone: the remote compare's merge-base message,
+    // which is only filled in when the SHA is on main.
+    if (msg === null && remote) {
+      const rc = remote.commit(sha);
+      msg = rc && rc.message !== null ? rc.message : null;
     }
-    return false;
+    if (msg !== null && re.test(msg)) return true;
+    if (!(prNumber && originRepo)) return msg === null ? null : false;
+    let prText = null;
+    try {
+      const out = execFileSync('gh', ['pr', 'view', String(prNumber), '--repo', originRepo, '--json', 'title,body'], {
+        cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: timeoutMs,
+      });
+      const j = JSON.parse(out);
+      prText = `${j.title || ''}\n${j.body || ''}`;
+    } catch (err) {
+      log(`[done-evidence-verify] could not read PR #${prNumber}: ${String(err.message).slice(0, 120)}`);
+    }
+    if (prText === null && remote) {
+      const rp = remote.pull(prNumber);
+      prText = rp ? rp.text : null;
+    }
+    if (prText !== null && re.test(prText)) return true;
+    // Anything unread stays unknown rather than "does not mention".
+    return msg === null || prText === null ? null : false;
   };
 }
 
@@ -243,7 +348,20 @@ function detectOriginRepo(cwd = process.cwd()) {
  * false; an existing non-ancestor gets a patch-equivalence check so a
  * rebase-rewritten SHA still counts; a merge commit gets no such shortcut.
  */
-function makeIsCommitOnMain({ cwd = process.cwd(), log = () => {} } = {}) {
+function makeIsCommitOnMain({ cwd = process.cwd(), log = () => {}, remote = null } = {}) {
+  const local = makeLocalIsCommitOnMain({ cwd, log });
+  if (!remote || !remote.enabled) return local;
+  // Local answers first (it alone can prove "definitively not" and see a
+  // rebased patch); GitHub only settles what local could not (BRO-4206).
+  return function isCommitOnMain(sha) {
+    const r = local(sha);
+    if (r !== null) return r;
+    const rc = remote.commit(sha);
+    return rc && rc.onMain === true ? true : null;
+  };
+}
+
+function makeLocalIsCommitOnMain({ cwd = process.cwd(), log = () => {} } = {}) {
   const { isAncestor, isShallowRepo } = require('./landing-verify.js');
   const { fetchOriginMain } = require('./card-premises-auditor.js');
   const git = (args, timeout = 15000) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: 'pipe', timeout }).trim();
@@ -257,7 +375,7 @@ function makeIsCommitOnMain({ cwd = process.cwd(), log = () => {} } = {}) {
 
   return function isCommitOnMain(sha) {
     if (shallow) {
-      log(`[done-evidence-verify] shallow clone — ${sha} cannot be verified from here`);
+      log(`[done-evidence-verify] shallow clone — ${sha} cannot be verified locally`);
       return null;
     }
     // Refresh FIRST, once per factory. main is not force-push-proof here:
@@ -300,7 +418,7 @@ function makeIsCommitOnMain({ cwd = process.cwd(), log = () => {} } = {}) {
  * through gh's default-repo config. Null on any failure (unauthenticated,
  * rate-limited, no such PR) — the gate then refuses as unverified.
  */
-function makeGetPrMergeCommit({ cwd = process.cwd(), originRepo = null, timeoutMs = 15000, log = () => {} } = {}) {
+function makeGetPrMergeCommit({ cwd = process.cwd(), originRepo = null, timeoutMs = 15000, log = () => {}, remote = null } = {}) {
   return function getPrMergeCommit(n) {
     if (!originRepo) return null;
     try {
@@ -312,7 +430,8 @@ function makeGetPrMergeCommit({ cwd = process.cwd(), originRepo = null, timeoutM
       return { sha, state: (j && j.state) || null };
     } catch (err) {
       log(`[done-evidence-verify] gh pr view ${n} failed: ${String(err.message).slice(0, 120)}`);
-      return null;
+      const rp = remote ? remote.pull(n) : null;
+      return rp ? { sha: rp.mergeSha, state: rp.state } : null;
     }
   };
 }
@@ -324,11 +443,12 @@ function makeGetPrMergeCommit({ cwd = process.cwd(), originRepo = null, timeoutM
  *   name it — see evaluateEvidence. The CLIs always pass it.
  * @returns {(prRef: {body?: string}) => {verified: boolean|null, reason: string, checked: object[]}}
  */
-function makeVerifyEvidence({ cwd = process.cwd(), issueIdentifier = null, log = () => {} } = {}) {
+function makeVerifyEvidence({ cwd = process.cwd(), issueIdentifier = null, log = () => {}, httpGetJson } = {}) {
   const originRepo = detectOriginRepo(cwd);
-  const isCommitOnMain = makeIsCommitOnMain({ cwd, log });
-  const getPrMergeCommit = makeGetPrMergeCommit({ cwd, originRepo, log });
-  const mentionsIssue = makeMentionsIssue({ cwd, originRepo, log });
+  const remote = makeRemoteLookup({ originRepo, httpGetJson, log });
+  const isCommitOnMain = makeIsCommitOnMain({ cwd, log, remote });
+  const getPrMergeCommit = makeGetPrMergeCommit({ cwd, originRepo, log, remote });
+  const mentionsIssue = makeMentionsIssue({ cwd, originRepo, log, remote });
   return function verifyEvidence(prRef) {
     const refs = extractEvidenceRefs(prRef && prRef.body, { originRepo });
     return evaluateEvidence(refs, { isCommitOnMain, getPrMergeCommit, mentionsIssue, issueIdentifier });
@@ -342,5 +462,6 @@ module.exports = {
   makeIsCommitOnMain,
   makeGetPrMergeCommit,
   makeMentionsIssue,
+  makeRemoteLookup,
   makeVerifyEvidence,
 };

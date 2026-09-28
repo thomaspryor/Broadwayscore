@@ -25,6 +25,7 @@
  *   node scripts/clear-stale-wrong-production-flags.js --llm        # dry-run + LLM second-opinion
  *   node scripts/clear-stale-wrong-production-flags.js --llm --apply  # write to disk
  *   node scripts/clear-stale-wrong-production-flags.js --show=ID    # filter to one show
+ *   node scripts/clear-stale-wrong-production-flags.js --opened-within-days=21  # recent shows only (daily run)
  *   node scripts/clear-stale-wrong-production-flags.js --dir=PATH   # alt review-texts dir
  *
  * Without --llm the predicate is the only gate. NOT RECOMMENDED for
@@ -39,7 +40,13 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { isLikelyStaleWrongProduction } = require('./lib/review-guards');
+const { isLikelyStaleWrongProduction, isReviewWithinOwnProductionWindow } = require('./lib/review-guards');
+const { isGarbageContent, classifyContentTier } = require('./lib/content-quality');
+const {
+  isCollectorWrongProductionCandidate,
+  restoreQuarantinedText,
+  stampCollectorWpRejection,
+} = require('./lib/collector-wp-release');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 
@@ -58,6 +65,12 @@ const FORCE_BULK = args.includes('--force-bulk');
 const SHOW_FILTER = (args.find(a => a.startsWith('--show=')) || '').split('=')[1] || '';
 const DIR_OVERRIDE = (args.find(a => a.startsWith('--dir=')) || '').split('=')[1] || '';
 const SHOWS_OVERRIDE = (args.find(a => a.startsWith('--shows=')) || '').split('=')[1] || '';
+// --opened-within-days=N: only shows whose earliest date (previews/opening)
+// is within the last N days. The weekly Saturday sweep leaves a false flag set
+// on opening weekend in place for up to 7 days — past the newsletter send and
+// the opening-night broadcast (BRO-4185: Table 17 / First Night was flagged
+// Saturday evening, hours after that week's sweep).
+const OPENED_WITHIN_DAYS = parseInt((args.find(a => a.startsWith('--opened-within-days=')) || '').split('=')[1] || '', 10) || 0;
 
 if (APPLY && !USE_LLM) {
   console.error('REFUSED: --apply requires --llm. Predicate alone is too weak for wrongProduction.');
@@ -73,6 +86,14 @@ const showsArr = Array.isArray(showsRaw) ? showsRaw : (showsRaw.shows || []);
 const showById = Object.create(null);
 for (const s of showsArr) if (s && s.id) showById[s.id] = s;
 
+function openedWithinDays(show, days) {
+  const earliest = [show.previewsStartDate, show.openingDate].filter(Boolean).sort()[0];
+  const t = Date.parse(earliest || '');
+  if (Number.isNaN(t)) return false;
+  const age = (Date.now() - t) / 86400000;
+  return age >= -7 && age <= days;
+}
+
 const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR, { withFileTypes: true })
   .filter(d => d.isDirectory() && !d.name.startsWith('.') && !d.name.startsWith('_'))
   .map(d => d.name)
@@ -81,6 +102,7 @@ const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR, { withFileTypes: true })
 let scanned = 0;
 let flagged = 0;
 let predicateMatches = 0;
+let collectorMatches = 0;
 let llmConfirmed = 0;
 let llmRejected = 0;
 let llmErrors = 0;
@@ -91,6 +113,7 @@ for (const showId of showDirs) {
   if (SHOW_FILTER && showId !== SHOW_FILTER) continue;
   const show = showById[showId];
   if (!show) continue;
+  if (OPENED_WITHIN_DAYS && !openedWithinDays(show, OPENED_WITHIN_DAYS)) continue;
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   let files;
   try {
@@ -103,9 +126,38 @@ for (const showId of showDirs) {
     try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
     if (data.wrongProduction !== true) continue;
     flagged++;
-    if (!isLikelyStaleWrongProduction(data, show)) continue;
-    predicateMatches++;
-    candidates.push({ showId, file: f, filePath, data, show });
+    if (isLikelyStaleWrongProduction(data, show)) {
+      predicateMatches++;
+      candidates.push({ showId, file: f, filePath, data, show, kind: 'stale' });
+      continue;
+    }
+    // BRO-4185 C: the collector's own LLM flag, text quarantined in
+    // wrongFullText, dated inside this show's run. Same Sonnet check below,
+    // on the quarantined text.
+    if (isCollectorWrongProductionCandidate(data, show, {
+      inOwnWindow: isReviewWithinOwnProductionWindow,
+      isGarbage: (t) => isGarbageContent(t).isGarbage,
+    })) {
+      collectorMatches++;
+      candidates.push({ showId, file: f, filePath, data, show, kind: 'collector-quarantined' });
+    }
+  }
+}
+
+// BRO-4185 C: at most this many collector-quarantined candidates per run,
+// newest first. Keeps a backlog drain inside FIX_SURGE_THRESHOLD and the
+// daily/weekly Sonnet budget; the rest wait for the next run.
+const COLLECTOR_PER_RUN_CAP = 25;
+{
+  const collector = candidates.filter(c => c.kind === 'collector-quarantined');
+  if (collector.length > COLLECTOR_PER_RUN_CAP) {
+    const keep = new Set(collector
+      .sort((a, b) => (Date.parse(b.data.publishDate) || 0) - (Date.parse(a.data.publishDate) || 0))
+      .slice(0, COLLECTOR_PER_RUN_CAP));
+    for (let i = candidates.length - 1; i >= 0; i--) {
+      if (candidates[i].kind === 'collector-quarantined' && !keep.has(candidates[i])) candidates.splice(i, 1);
+    }
+    console.log(`Collector-quarantined candidates capped at ${COLLECTOR_PER_RUN_CAP} of ${collector.length} this run (newest first).`);
   }
 }
 
@@ -114,7 +166,7 @@ async function llmVerify(c) {
   if (!apiKey) {
     throw new Error('ANTHROPIC_API_KEY not set — re-run without --llm or export the key');
   }
-  const fullText = String(c.data.fullText || '');
+  const fullText = String((c.kind === 'collector-quarantined' ? c.data.wrongFullText : c.data.fullText) || '');
   const excerpt = fullText.length > 4000 ? fullText.slice(0, 4000) + '\n[…truncated]' : fullText;
   const prompt = `You are auditing whether a review-text file is a real review of a SPECIFIC theatrical PRODUCTION (not just the same play in a different production).
 
@@ -219,6 +271,7 @@ Reply with JSON only: {"isThisProduction": true|false, "confidence": "high"|"med
   console.log(`Scanned: ${scanned} files`);
   console.log(`wrongProduction=true: ${flagged}`);
   console.log(`Predicate matches: ${predicateMatches}`);
+  console.log(`Collector-quarantined candidates: ${collectorMatches}`);
   if (USE_LLM) {
     console.log(`LLM confirmed stale (high-conf only): ${llmConfirmed}`);
     console.log(`LLM rejected (genuine wrong-production OR low-conf): ${llmRejected}`);
@@ -237,10 +290,24 @@ Reply with JSON only: {"isThisProduction": true|false, "confidence": "high"|"med
     process.exit(1);
   }
 
+  // Collector-quarantined candidates the LLM did not confirm: stamp the text
+  // hash so the next sweep does not re-ask about the same text. Errors are
+  // not stamped (retry next run).
+  const nowIso = new Date().toISOString();
+  for (const d of decisions) {
+    if (d.verdict || d.error || d.c.kind !== 'collector-quarantined') continue;
+    const orig = fs.readFileSync(d.c.filePath, 'utf8');
+    stampCollectorWpRejection(d.c.data, nowIso);
+    fs.writeFileSync(d.c.filePath, JSON.stringify(d.c.data, null, 2) + (orig.endsWith('\n') ? '\n' : ''));
+  }
+
   for (const d of toClear) {
     const orig = fs.readFileSync(d.c.filePath, 'utf8');
     const hadTrailingNewline = orig.endsWith('\n');
-    const clearNote = `[${new Date().toISOString().slice(0, 10)} cleared stale wrongProduction — predicate + Sonnet (high-conf) confirmed real review of ${d.c.show.title} — Notion 34e637c5-416f-811d]`;
+    const clearNote = d.c.kind === 'collector-quarantined'
+      ? `[${nowIso.slice(0, 10)} cleared collector wrongProduction — Sonnet (high-conf) confirmed the quarantined text is a review of ${d.c.show.title}; text restored — BRO-4185 C]`
+      : `[${nowIso.slice(0, 10)} cleared stale wrongProduction — predicate + Sonnet (high-conf) confirmed real review of ${d.c.show.title} — Notion 34e637c5-416f-811d]`;
+    if (d.c.kind === 'collector-quarantined') restoreQuarantinedText(d.c.data, classifyContentTier);
     clearWrongProductionFlags(d.c.data, { source: 'clear-stale-wrong-production-flags.js', reason: clearNote });
     d.c.data.wrongProductionManualClear = true;
     d.c.data.wrongProductionClearedNote = clearNote;

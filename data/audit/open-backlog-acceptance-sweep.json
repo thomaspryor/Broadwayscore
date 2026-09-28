@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-09-27T12:33:42.436Z",
+  "generatedAt": "2026-09-28T14:35:49.626Z",
   "shadow": true,
-  "checkoutSha": "6aa0d7a95e64a429327175c753e8aec275b8d1a0",
-  "totalCandidates": 1591,
-  "eligibleCandidates": 52,
+  "checkoutSha": "bc314492cbe40d55788c94c95005fb5ccd0bc928",
+  "totalCandidates": 1611,
+  "eligibleCandidates": 53,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 16,
+    "pass": 15,
     "fail": 0,
-    "unverifiable": 14
+    "unverifiable": 15
   },
   "alreadyDone": [
     {
@@ -102,16 +102,16 @@
       "name": "Newsletter: editorial override lever for WE-edition Broadway secondary opening (BRO-2598 follow-up)",
       "verifyCmd": "node --test scripts/newsletter/newsworthiness.test.mjs",
       "detail": null
-    },
-    {
-      "id": "BRO-2443",
-      "name": "Register data/audit/guard-escalation-state.json for key-level merge reconciliation",
-      "verifyCmd": "node --test scripts/lib/core-data-merge-registry.test.mjs",
-      "detail": null
     }
   ],
   "failing": [],
   "unverifiable": [
+    {
+      "id": "BRO-4196",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 146633ms (timeout — no verdict)"
+    },
     {
       "id": "BRO-4165",
       "name": "land.yml: blobless rebase fails 'upload-pack: not our ref' / 'could not fetch from promisor remote' — misreported as a conflict",
@@ -128,7 +128,7 @@
       "id": "BRO-4063",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every scripts/ root file with the shred signature and no fold is in the frozen baseline\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 145965ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 123265ms (timeout — no verdict)"
     },
     {
       "id": "BRO-4049",

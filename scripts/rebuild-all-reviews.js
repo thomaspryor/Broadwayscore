@@ -40,7 +40,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
-const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview, excerptMentionsFormerCast } = require('./lib/excerpt-validation');
+const { excerptMentionsWrongShow, isTourReviewExcerpt, tourContextForShow, isFilmTvReview, excerptMentionsFormerCast } = require('./lib/excerpt-validation');
 const {
   shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome, isPromoTeaser,
   hasListingChrome, stripListingPrelude, isTagCloudExcerpt, isMidWordTruncation,
@@ -57,6 +57,7 @@ const { recoverDisplayBylinesForShow, resolveCriticName } = require('./lib/bylin
 const { mergeManualEntries } = require('./lib/manual-entry-merge');
 const { isStaleScoreInput, markRescoreNeeded } = require('./lib/rescore-flagging');
 const { isLondonMarket, isUkOutletUrl, isBroadwayCategory } = require('./lib/venue-classification');
+const { isValidBroadwayCopy, shouldClearStaleObTransfer } = require('./lib/ob-transfer-guard');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { explainOutletDomainMismatch } = require('./lib/outlet-domain-validation');
@@ -75,8 +76,10 @@ const {
   shouldAutoClearWrongProductionTourLeg,
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
+  isDatedGuardNote,
   shouldAutoClearAnticipatoryGrace,
   shouldAutoClearWrongProductionUkDualMarket,
+  shouldAutoClearStaleLondonOutletCrossMarket,
 } = require('./lib/wrong-production-autoclear');
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
@@ -816,7 +819,7 @@ function selectBestExcerpt(data, showTitle) {
 
     // Layer 4: Tour review detection (only for non-tour-stop shows)
     if (data._showStatus !== 'tour-stop') {
-      const tourCheck = isTourReviewExcerpt(excerpt, { currentShowId: showId, currentShowTitle: showTitle });
+      const tourCheck = isTourReviewExcerpt(excerpt, tourContextForShow(showById[showId]) || { currentShowId: showId, currentShowTitle: showTitle });
       if (tourCheck.isTourReview) {
         if (!stats.tourExcerptFlags) stats.tourExcerptFlags = [];
         stats.tourExcerptFlags.push({ showId, source, signal: tourCheck.signal });
@@ -1333,6 +1336,10 @@ function normalizeUrlForDedup(url) {
     return canon.replace(/^https?:\/\//, '').replace(/^www\./, '');
 }
 const crossShowUrlIndex = new Map();
+// Every show a URL is filed under, flagged files included (crossShowUrlIndex
+// skips flagged files). Used so a stale-flag self-heal never releases a copy
+// of a review that is also filed under another production of the same title.
+const urlShowIdsAll = new Map();
 {
   for (const sid of showDirs) {
     if (skipCrossShowDupeIds.has(sid)) continue; // _skipCrossShowDupe: test shows excluded from index
@@ -1341,8 +1348,13 @@ const crossShowUrlIndex = new Map();
     for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
       try {
         const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
+        const allNorm = normalizeUrlForDedup(d.url);
+        if (allNorm) {
+          if (!urlShowIdsAll.has(allNorm)) urlShowIdsAll.set(allNorm, new Set());
+          urlShowIdsAll.get(allNorm).add(sid);
+        }
         if (d.wrongProduction || d.wrongShow) continue;
-        const norm = normalizeUrlForDedup(d.url);
+        const norm = allNorm;
         if (!norm) continue;
         const existing = crossShowUrlIndex.get(norm);
         if (existing && existing.showId !== sid) {
@@ -1373,6 +1385,7 @@ const crossShowFingerprints = new Map();
 // the URL in the crossShowUrlIndex and blocks the Broadway version.
 {
   let transferFlagged = 0;
+  let transferReleased = 0;
   // Build title→shows map for transfer detection
   const showsByTitle = new Map();
   const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
@@ -1388,20 +1401,61 @@ const crossShowFingerprints = new Map();
     const bwShows = group.filter(isBroadwayCategory);
     if (obShows.length === 0 || bwShows.length === 0) continue;
 
+    // BRO-4192: collect URLs of VALID Broadway copies only (not a misfiled
+    // OB-era review sitting in the Broadway dir, not a flagged record), and
+    // clear stale ob-broadway-transfer flags on in-run OB reviews whose URL no
+    // longer has a valid Broadway twin. The flag used to be sticky, so a
+    // corrected Broadway dir never released the OB original (cats-the-jellicle-
+    // ball-off-broadway-2024 lost its NYT Critic's Pick this way).
+    const validBwUrlsByShow = new Map();
+    const allValidBwUrls = new Set();
+    for (const bw of bwShows) {
+      const bwDir = path.join(reviewTextsDir, bw.id);
+      const urls = new Set();
+      if (fs.existsSync(bwDir)) {
+        for (const f of fs.readdirSync(bwDir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json')) {
+          try {
+            const d = JSON.parse(fs.readFileSync(path.join(bwDir, f), 'utf8'));
+            if (isValidBroadwayCopy(d, bw)) {
+              const n = normalizeUrlForDedup(d.url);
+              if (n) { urls.add(n); allValidBwUrls.add(n); }
+            }
+          } catch {}
+        }
+      }
+      validBwUrlsByShow.set(bw.id, urls);
+    }
+    for (const ob of obShows) {
+      const obDir = path.join(reviewTextsDir, ob.id);
+      if (!fs.existsSync(obDir)) continue;
+      for (const f of fs.readdirSync(obDir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json')) {
+        try {
+          const fp = path.join(obDir, f);
+          const d = JSON.parse(fs.readFileSync(fp, 'utf8'));
+          const norm = d.url ? normalizeUrlForDedup(d.url) : null;
+          if (!shouldClearStaleObTransfer(d, !!(norm && allValidBwUrls.has(norm)), ob)) continue;
+          const wasNote = d.wrongProductionNote || d.wrongProductionReason;
+          d.wrongProduction = false;
+          d.wrongProductionAutoCleared = `rebuild: ob-broadway-transfer released — no valid Broadway copy shares the URL and the review is dated inside ${ob.id}'s run (was: ${wasNote})`;
+          d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+          delete d.wrongProductionNote;
+          delete d.wrongProductionReason;
+          if (isStaleScoreInput(d, ob, fp)) {
+            markRescoreNeeded(d, 'wrongProduction false-positive cleared (stale ob-broadway-transfer)');
+          }
+          safeWriteReview(fp, d, { force: true });
+          transferReleased++;
+        } catch {}
+      }
+    }
+
     for (const bw of bwShows) {
       // Only flag if Broadway show has opened (status !== 'previews')
       if (bw.status === 'previews') continue;
       const bwDir = path.join(reviewTextsDir, bw.id);
       if (!fs.existsSync(bwDir)) continue;
 
-      // Collect Broadway URLs
-      const bwUrls = new Set();
-      for (const f of fs.readdirSync(bwDir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json')) {
-        try {
-          const d = JSON.parse(fs.readFileSync(path.join(bwDir, f), 'utf8'));
-          if (d.url) bwUrls.add(normalizeUrlForDedup(d.url));
-        } catch {}
-      }
+      const bwUrls = validBwUrlsByShow.get(bw.id) || new Set();
 
       // Flag matching OB files
       for (const ob of obShows) {
@@ -1437,6 +1491,9 @@ const crossShowFingerprints = new Map();
   }
   if (transferFlagged > 0) {
     console.log(`OB→Broadway transfer guard: flagged ${transferFlagged} OB reviews with shared URLs`);
+  }
+  if (transferReleased > 0) {
+    console.log(`OB→Broadway transfer guard: released ${transferReleased} stale ob-broadway-transfer flags (BRO-4192)`);
   }
 }
 
@@ -1564,7 +1621,7 @@ const crossShowFingerprints = new Map();
         // recovered 2026-06-28 (e.g. all-my-sons-west-end-2025 Guardian/Arifa
         // Akbar, held by a long-gone 2025-07-01 date).
         if (reviewDate && d.wrongProduction === true &&
-            String(d.wrongProductionNote || '').startsWith('Pre-opening guard:') &&
+            isDatedGuardNote(d.wrongProductionNote) &&
             !d.wrongProductionManualClear && d.humanReviewedWrongProduction !== false &&
             !d.allowEarlyDate) {
           const dgDecision = evaluateDateGuard({ pubDate: reviewDate, show: showRecord, outletId: d.outletId });
@@ -1803,7 +1860,7 @@ const crossShowFingerprints = new Map();
           // target (totoro contamination, Notion 39b637c5-416f-815e) — leave it.
           const existingData = JSON.parse(fs.readFileSync(expectedPath, 'utf8'));
           const mergeResult = mergeUniqueReviewFields(existingData, d);
-          if (mergeResult.action === 'skip-flagged-source') { skippedFlaggedCount++; continue; }
+          if (mergeResult.action !== 'merged') { skippedFlaggedCount++; continue; }
           if (mergeResult.changed) {
             safeWriteReview(expectedPath, existingData);
           }
@@ -1869,7 +1926,7 @@ const crossShowFingerprints = new Map();
           // target (totoro contamination, Notion 39b637c5-416f-815e) — leave it.
           const existingData = JSON.parse(fs.readFileSync(expectedPath, 'utf8'));
           const mergeResult = mergeUniqueReviewFields(existingData, d);
-          if (mergeResult.action === 'skip-flagged-source') { skippedFlaggedCount++; continue; }
+          if (mergeResult.action !== 'merged') { skippedFlaggedCount++; continue; }
           if (mergeResult.changed) {
             safeWriteReview(expectedPath, existingData);
           }
@@ -3072,6 +3129,45 @@ showDirs.forEach(showId => {
             }
           } catch {}
         }
+      }
+      // Reverse of the block above: a stale "Cross-market: London outlet" flag on a
+      // Broadway / off-Broadway show, written before the outlet became dual-market
+      // (observer.com / NY Observer: 182 files). Only the outlet's own primary,
+      // non-UK domain clears; UK Observer files on theguardian.com or with no URL
+      // keep their flag. Decision lives in wrong-production-autoclear.js.
+      if (data.wrongProduction === true && !data.wrongProductionOverride && data.url
+          && (showCat === 'broadway' || showCat === 'off-broadway')
+          && (data.wrongProductionNote || '').startsWith('Cross-market: London outlet')) {
+        try {
+          const revRawOutlet = (data.outletId || data.outlet || '').toLowerCase();
+          const revCanonical = normalizeOutletCanonical(revRawOutlet);
+          const revInfo = (outletRegistry.outlets || {})[revCanonical] || {};
+          const revHost = (new URL(data.url).hostname || '').toLowerCase().replace(/^www\./, '');
+          const revPrimary = String(revInfo.domain || '').toLowerCase().replace(/^www\./, '');
+          let revDateMismatch = false;
+          if (data.publishDate && showDateMap[showId]) {
+            const rd = parseDate(data.publishDate);
+            if (rd && (showDateMap[showId] - rd) > PRE_WINDOW_DAYS * 86400000) revDateMismatch = true;
+          }
+          if (shouldAutoClearStaleLondonOutletCrossMarket(data, {
+            isNycMarketShow: true,
+            outletIsDualMarket: DUAL_MARKET_OUTLETS.has(revCanonical) || DUAL_MARKET_OUTLETS.has(revRawOutlet),
+            urlOnOutletPrimaryDomain: !!revPrimary && (revHost === revPrimary || revHost.endsWith('.' + revPrimary)),
+            isUkUrl: isUkOutletUrl(data.url) || /\.(co|org)\.uk$/.test(revHost),
+            isDateMismatch: revDateMismatch,
+            isShowListingUrl: require('./lib/cross-production-guards').isEvergreenListingUrl(data.url),
+            cvBlocksClear: cvBlocksUkWrongProductionAutoClear(data.contentVerification),
+            inOwnProductionWindow: isReviewWithinOwnProductionWindow(showById[showId], data.publishDate),
+            urlFiledUnderOtherShow: ((urlShowIdsAll.get(normalizeUrlForDedup(data.url)) || new Set()).size > 1),
+          })) {
+            delete data.wrongProduction;
+            delete data.wrongProductionNote;
+            data.wrongProductionAutoCleared = `rebuild: dual-market outlet on its own US domain (${revHost})`;
+            data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+            try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
+            stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
+          }
+        } catch {}
       }
       // allowEarlyDate/allowCrossMarket override wrongProduction — user explicitly approved the review.
       // EXCEPT: if there's an explicit wrongProductionReason (manual flag, audit-driven, CV-promoted)
@@ -4598,7 +4694,7 @@ showDirs.forEach(showId => {
         // theatermania's review opens "This star-studded touring production..." which is
         // accurate, not contamination from a different sit-down production).
         if (!data.allowTourSignal && showStatusMap[showId] !== 'tour-stop' && showById[showId]?.type !== 'special') {
-          const tourCheck = isTourReviewExcerpt(introText, { currentShowId: showId, currentShowTitle: showTitleMap[showId] });
+          const tourCheck = isTourReviewExcerpt(introText, tourContextForShow(showById[showId]) || { currentShowId: showId, currentShowTitle: showTitleMap[showId] });
           if (tourCheck.isTourReview) {
             flagForHumanReview(data, 'possible-tour-fulltext',
               `Tour signal in fullText intro: ${tourCheck.signal}`);
