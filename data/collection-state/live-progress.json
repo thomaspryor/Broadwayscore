@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-09-28T09:55:23.954Z",
-  "processed": 7,
-  "failed": 27,
-  "successRate": "20.6%",
+  "updatedAt": "2026-09-28T12:03:53.122Z",
+  "processed": 33,
+  "failed": 121,
+  "successRate": "21.4%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 16,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 2,
-    "brightdata": 0,
+    "scrapingbee": 10,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 6
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-09-28T09:46:48.867Z",
@@ -60,6 +60,17 @@
       "t": "2026-09-28T09:54:13.445Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-28T11:43:56.293Z",
+      "event": "bb-session",
+      "session": "63d1271c",
+      "url": "https://www.thetimes.com/culture/music/article/sting-interview-police-last-ship-"
+    },
+    {
+      "t": "2026-09-28T11:43:57.108Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
