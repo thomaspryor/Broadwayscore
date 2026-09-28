@@ -591,30 +591,24 @@ if [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/scripts/lib/disk-space-check.js" ] &&
   fi
 fi
 
-# ABOUT THE OWNER (BRO-4234): cloud sessions never load the Mac-only global
-# ~/.claude/CLAUDE.md, which is where these facts lived, so sessions assumed a
-# technical owner at a terminal who reviews PRs. This banner is injected on
-# startup, resume and compact. Cloud-only (CLAUDE_CODE_REMOTE): on the Mac the
-# owner IS at a computer ~90% of the time. Second opinion 2026-09-28: scope
-# to chat replies, carve decisions that stay the owner's, keep the Stop hook's
-# closing line, branch on the iPhone entrypoint, cover unattended sessions.
+# GLOBAL INSTRUCTIONS for cloud sessions (BRO-4237, replaces the BRO-4234
+# printed owner banner). Cloud sessions have no ~/.claude, so the owner's
+# global rules (who they are, how to talk to them, what never to do) never
+# reached them. Fetch them from the private thomaspryor/claude-config repo
+# with the session's own GitHub token and install them as ~/.claude/CLAUDE.md
+# + anti-slop-rules.md: Claude Code loads that natively for the session AND
+# its subagents (proved by a fresh test session, 2026-09-28), while printed
+# banner text reaches neither subagents nor anything past the output cap.
+# Private (nothing committed to this public repo) and always current. Fails
+# open; never touches a ~/.claude file without the GENERATED marker.
+# Kill switch: CLOUD_GLOBAL_RULES_DISABLED=1.
 # repo-only: never copy this block into the ~/.claude/hooks master.
-if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ]; then
-  cat << 'EOF'
-ABOUT THE OWNER (for your chat replies; Linear comments, PR bodies and commits stay technical, with paths and evidence):
-- Not technical. Plain English, no jargon, no commands for them to run, never "review the diff/PR".
-- Never reviews or merges PRs. Land your own work (rule 7).
-EOF
-  if [ "${CLAUDE_CODE_ENTRYPOINT:-}" = "remote_mobile" ]; then
-    echo "- They are on the Claude iPhone app: they can't run commands or see this container. Links are fine (they can tap them). Do every step yourself; if something truly needs their Mac, say so in one line."
-  else
-    echo "- They may be on a phone or at their Mac in a browser. Either way, don't ask them to run anything; give clickable links, not file paths."
+if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${CLOUD_GLOBAL_RULES_DISABLED:-}" != "1" ] \
+   && command -v node >/dev/null 2>&1; then
+  GI_DIR="${CLAUDE_PROJECT_DIR:-$REPO_ROOT}"
+  if [ -f "$GI_DIR/scripts/sync-global-instructions.js" ]; then
+    node "$GI_DIR/scripts/sync-global-instructions.js" install --home "$HOME" >/dev/null 2>&1 || true
   fi
-  cat << 'EOF'
-- Each reply: what changed for them, what is still running, what they need to do (usually nothing). Phone-short. Decide technical calls yourself; money, irreversible or destructive actions, emails to real people, and product or taste calls get a short DECISION NEEDED with your recommendation. End with the SAFE TO EXIT / NOT SAFE TO EXIT line.
-- No human in this session (Routine, scheduled or automated prompt): don't wait for answers. Take the safe default, skip anything irreversible or expensive, and record what you skipped.
-
-EOF
 fi
 
 cat << 'EOF'
