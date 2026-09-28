@@ -124,8 +124,9 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Files:** none
 - **Description:** Dispatch `rebuild-reviews.yml`; after it commits, `node scripts/check-prod-deploy.js HEAD --wait`; read the live `public/data/shows/romeo-and-juliet-off-broadway-2026.json`; then wait for the next `push-review-texts` run and re-read the file on origin/main.
 - **Acceptance criteria:**
-  - VERIFY: live show JSON `cs` is below 60 and `rc` is 26 (was 27)
+  - VERIFY: live show JSON `rc` is 26 (was 27) and carries no The Stage row; `cs` moves down (the audit's 57 assumes all ten West End relays removed, which is S1-T1's batch)
   - VERIFY: after the first origin/main commit in the review-texts repo that follows ours (any workflow using the `push-review-texts` action, e.g. `collect-review-texts.yml`), the file still has `wrongProduction: true`
+  - RESULT 2026-09-28: review-texts commit 7fd45367; rebuild run 10487 succeeded 16:34 UTC; web main and the live site both serve rc 26, no Stage row, cs 63.06 (was 63.71). Survival check pending (S0-T10).
 
 ### Task S0-T9: Ramp unit 2: retire the phantom row by hand and confirm it stays gone
 - **Complexity:** S
@@ -369,10 +370,10 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Description:** Replace the raw fetch with `fetchPage()` (scraper.js) per the scraper rule; keep the JSON-LD parse.
 - **Acceptance criteria:** VERIFY: `node scripts/discover-new-shows.js --dry-run --source=olt` (or the equivalent flag) logs a non-zero OLT count locally
 
-### Task S4-T5: Last-success markers for Theatremonkey and Lortel
+### Task S4-T5: Last-success markers for Theatremonkey and Lortel; fix the Theatremonkey venue gap
 - **Complexity:** S | **Depends on:** None | **Parallel:** Yes
-- **Files:** scripts/enrich-west-end-dates.js, scripts/promote-ob-venue-candidates.js (Lortel :539), scripts/lib/playbill-broadway-schedule.js (reuse the marker pattern at :34)
-- **Description:** Write `data/audit/<source>-last-success.json` on a non-empty parse; log a soft-404 warning after 3 consecutive empties.
+- **Files:** scripts/discover-new-shows.js (Theatremonkey index path, ~:749 TM_INDEX_URL and its candidate filter), scripts/enrich-west-end-dates.js, scripts/promote-ob-venue-candidates.js (Lortel :539), scripts/lib/playbill-broadway-schedule.js (reuse the marker pattern at :34)
+- **Description:** Root cause seen in the Sprint 0 dry-run: "Theatremonkey: skipped 80 candidates — index has no venue data (card #1060)", so the source has returned 0 in every run since it was added; the index page lists titles only and each show page carries the venue. Fetch venue from the show page (bounded, cached) or drop the venue requirement for Theatremonkey candidates that match an OLT/TodayTix title. Also: OLT returned 100 shows locally in the same run, so its 22-run zero streak is a CI-fetch problem, which S4-T4's `fetchPage()` port addresses. Write `data/audit/<source>-last-success.json` on a non-empty parse; log a soft-404 warning after 3 consecutive empties.
 - **Acceptance criteria:** VERIFY: unit test for the marker helper; a run against the current Lortel 404 logs the warning
 
 ### Task S4-T6: `NON_THEATRE_VENUE_RE` and the ingest gate
