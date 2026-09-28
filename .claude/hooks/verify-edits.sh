@@ -204,7 +204,7 @@ def _board_closeout_status(cmd):
 
 # A Done the board's own gate refused (linear-brain exit 5 "❌", linear-session
 # "REFUSED" / doneGateRefused:true) left the card open — it is not a close-out.
-_CLOSEOUT_REFUSED_RE = re.compile(r'REFUSED|❌|"doneGateRefused"\s*:\s*true')
+_CLOSEOUT_REFUSED_RE = re.compile(r'\bREFUSED\b|❌|"doneGateRefused"\s*:\s*true')
 
 # One definition of "the session did real work" for every gate below: a code
 # edit, a git commit/push, `gh pr create|merge`, or a GitHub MCP write.
@@ -219,6 +219,8 @@ def _is_work_tool(name, inp):
     inp = inp if isinstance(inp, dict) else {}
     if name in ('Edit', 'Write', 'NotebookEdit'):
         fp = inp.get('file_path', '') or ''
+        if fp.startswith('/tmp/') or '/scratchpad/' in fp:
+            return False  # throwaway analysis scripts, not repo work
         return fp.endswith(CODE_EXTS) and not any(s in fp for s in EXEMPT_SUBSTRINGS)
     if name in _WORK_MCP_TOOLS:
         return True
@@ -236,9 +238,7 @@ def _is_work_tool(name, inp):
 # BRO-2663) arrives as user text, and a dispatched session should `claim` its
 # issue anyway — the block message says how.
 _CARD_CMD_RE = re.compile(r'linear-brain\.js\s+create\b|linear-session\.js\s+claim\b')
-_CARD_RESULT_RE = re.compile(
-    r'__BOARD_CARD_ID__=BRO-\d+|__LINEAR_ISSUE_ID__=[0-9A-Za-z-]{8,}|"identifier"\s*:\s*"BRO-\d+"'
-)
+_CARD_RESULT_RE = re.compile(r'\bBRO-\d+\b|__LINEAR_ISSUE_ID__=[0-9A-Za-z-]{8,}')
 
 def _session_has_card():
     for kind, payload in events:
@@ -252,6 +252,100 @@ def _session_has_card():
         if _CARD_RESULT_RE.search(tool_results_by_id.get(tid, '') or ''):
             return True
     return False
+
+# Owner-asks the PR gate blocks (the owner never merges OR reviews). Merge-asks
+# since 2026-09-27; review-asks since 2026-09-28 (session 01Fn6CXk parked PR
+# #947 ~11h on "NOT SAFE TO EXIT — PR still open and unreviewed"). A match
+# preceded in the same clause by a negation ("without waiting for review",
+# "no need for your review", "doesn't need a review") describes the rule and
+# doesn't count.
+_MERGE_ASK_RE = re.compile(
+    r"\byour\s+(merge|to merge)\b|\bfor you to merge\b"
+    r"|\bready (for you )?to merge\b|\bwaiting on your merge\b"
+    r"|\bonce you merge\b|\bafter you merge\b|\bmerge it when\b",
+    re.IGNORECASE,
+)
+_REVIEW_Q = r"((a|an|the|human|owner'?s?|your)\s+){0,2}"
+_REVIEW_N = r"(review|reviewers?|approval|sign-?off)"
+_REVIEW_ASK_RE = re.compile(
+    r"\bunreviewed\b|\bplease review\b|\b(ready )?for your " + _REVIEW_N + r"\b"
+    r"|\bwait(ing)? (on|for) " + _REVIEW_Q + _REVIEW_N + r"\b"
+    r"|\b(awaiting|pending|blocked on) " + _REVIEW_Q + _REVIEW_N + r"\b"
+    r"|\bneeds? (a|an|your|human|owner'?s?)\s+" + _REVIEW_N + r"\b",
+    re.IGNORECASE,
+)
+_NEGATION_RE = re.compile(r"\b(no|not|never|without)\b|n't\b", re.IGNORECASE)
+
+def _owner_ask(text):
+    # The status line's own "NOT" is not a negation of what follows it.
+    text = re.sub(r'\b(NOT )?SAFE TO EXIT\b', ' ', text or '')
+    for rx in (_MERGE_ASK_RE, _REVIEW_ASK_RE):
+        for m in rx.finditer(text):
+            clause = re.split(r'[.;:!?\n—–]', text[max(0, m.start() - 30):m.start()])[-1]
+            if not _NEGATION_RE.search(clause):
+                return True
+    return False
+
+# Legitimate reasons a PR is still open. NOT a bare `NOT SAFE TO EXIT` (the
+# status-line gate requires that line on every work turn, so accepting it let
+# ANY parked PR pass) and not "draft pending".
+_PR_BLOCKER_RE = re.compile(
+    r"\b(CI|checks?|tests?|test\.yml|land\.yml|(the )?land run|(the )?build)('s|\s+(is|are|has|have))?"
+    r"\s+(still\s+|currently\s+)?(running|pending|in[ -]progress|queued|red|failing|failed)\b"
+    r"|\bCI\s+(hasn'?t|has not|isn'?t|is not)\s+(finished|completed|done|green)\b"
+    r"|\bwaiting (on|for) (the )?(CI|checks?|tests?|test\.yml|land\.yml|land run|build)\b"
+    r"|\bmerge conflicts?\b|\bblocked on\b",
+    re.IGNORECASE,
+)
+_DECISION_LINE_RE = re.compile(r"^[\s>*_-]*DECISION NEEDED:", re.MULTILINE)
+_PR_BLOCKER_LINE_RE = re.compile(r"^[\s>*_-]*PR-BLOCKER:\**\s*(.*)$", re.MULTILINE)
+
+def _pr_blocker_stated(text):
+    if _PR_BLOCKER_RE.search(text) or _DECISION_LINE_RE.search(text):
+        return True
+    for m in _PR_BLOCKER_LINE_RE.finditer(text):
+        reason = m.group(1).strip(' *_')
+        # A PR-BLOCKER that is really "waiting on the owner" is the review ask
+        # this gate exists to stop.
+        if (len(reason) >= 10 and not _owner_ask(reason)
+                and not re.search(r"\b(owner|you|your)\b", reason, re.IGNORECASE)):
+            return True
+    return False
+
+# Board gates (NOCARD, NOWRAPUP) stand down when the owner flipped the
+# board-gate escape hatch (board-gate-escape-hatch.md) or when Linear can't
+# answer (CLAUDE.md §6: "If Linear is down: warn, continue untracked"). Decided
+# HERE, in-process, so a stood-down board gate falls through to every later
+# gate (PR, UNVERIFIED, scoring, visual, ship-check) instead of exiting the
+# hook — a ship-check review found the earlier bash-side fail-open skipped all
+# of them. Probed at most once, and only when a board gate would block.
+_board_gate_cache = []
+
+def _board_gate_enforced():
+    if _board_gate_cache:
+        return _board_gate_cache[0]
+    ok = True
+    try:
+        import glob, subprocess
+        if (os.environ.get('BOARD_GATE_DISABLED', '0') == '1'
+                or glob.glob(os.path.join(os.path.expanduser('~'), '.claude', 'BOARD_GATE_DISABLED*'))):
+            ok = False
+        else:
+            root = os.environ.get('CLAUDE_PROJECT_DIR') or subprocess.run(
+                ['git', 'rev-parse', '--show-toplevel'], capture_output=True, text=True, timeout=5,
+            ).stdout.strip()
+            cli = os.path.join(root, 'scripts', 'linear-brain.js') if root else ''
+            ok = bool(cli) and os.path.isfile(cli) and subprocess.run(
+                ['node', cli, '--probe', '--timeout-ms', '4000'],
+                cwd=root, capture_output=True, timeout=12,
+            ).returncode == 0
+            if not ok:
+                sys.stderr.write('⚠️  Linear card gates skipped: Linear is unreachable or erroring. '
+                                 'Continue untracked; put the Outcome text in your final message (CLAUDE.md §6).\n')
+    except Exception:
+        ok = False
+    _board_gate_cache.append(ok)
+    return ok
 
 events = []  # list of (kind, payload)
 # kinds: 'tool' payload=(name,input,tool_use_id) | 'text' payload=str | 'result' payload=(tool_use_id, text)
@@ -394,32 +488,6 @@ if os.environ.get('SESSION_STATUS_GATE_DISABLE', '0') != '1':
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
-# ─── Card-first gate (added 2026-09-28) ─────────────────────────────────────
-# CLAUDE.md §6: every session files (or claims) its Linear card at the start.
-# Cloud had no enforcement — the local ~/.claude notion-card-required-* gates
-# never fire here — and the SessionStart banner still pointed at the retired
-# notion-brain.js, so a session (01Fn6CXk, 2026-09-27) edited, pushed and
-# merged a PR with no card at all. A Stop-time check, not a PreToolUse one on
-# commit: a /plan-review found a PreToolUse gate too easy to wedge (compaction,
-# stderr-only markers, subagents) for an every-commit block. The bash side
-# fails open when Linear is unreachable/erroring (§6: "warn, continue
-# untracked") and honours the board-gate escape hatch.
-# Bypass: `NO-CARD: <reason ≥10 chars>`. Kill switch: CARD_GATE_DISABLE=1.
-if os.environ.get('CARD_GATE_DISABLE', '0') != '1':
-    try:
-        _did_work_nc = any(
-            _kind == 'tool' and _is_work_tool(_payload[0], _payload[1])
-            for _kind, _payload in events
-        )
-        _nc_msg = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
-        if (_did_work_nc and 'NO-VERIFY:' not in _nc_msg
-                and not re.search(r'NO-CARD:\s*\S.{9,}', _nc_msg)
-                and not _session_has_card()):
-            print("NOCARD")
-            sys.exit(0)
-    except Exception:
-        pass  # fail-open — never let this gate crash the rest of the script
-
 # ─── PR follow-through gate (added 2026-08-23) ───────────────────────────────
 # Cloud sessions have no `gh` CLI (see .claude/CLOUD.md) and create/merge PRs
 # via the GitHub MCP connector (mcp__github__create_pull_request /
@@ -474,20 +542,10 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         # open and unreviewed" / "ready for your review", neither of which
         # matched the merge-only forms above. "Waiting ..." (not "wait") so a
         # description like "never wait for review" doesn't trip it.
-        _owner_merge_re = re.compile(
-            r"\byour\s+(merge|to merge)\b|\bfor you to merge\b"
-            r"|\bready (for you )?to merge\b|\bwaiting on your merge\b"
-            r"|\bonce you merge\b|\bafter you merge\b|\bmerge it when\b"
-            r"|\b(ready )?for your review\b|\bunreviewed\b"
-            r"|\bwaiting (on|for) (a |the |human |owner |your )?(review|reviewers?|approval)\b"
-            r"|\bawaiting (your |human |owner )?(review|approval)\b"
-            r"|\bneeds? (a |your |human |owner )review\b"
-            r"|\bblocked on (a |the |human |owner |your )?(review|approval)\b",
-            re.IGNORECASE,
-        )
+        # Patterns: _MERGE_ASK_RE / _REVIEW_ASK_RE via _owner_ask() (top of script).
         _owner_scan = re.sub(r'`[^`\n]*`|"[^"\n]*"|\u201c[^\u201d\n]*\u201d', '', _stripped_owner)
         if (_msg_ok and (_opened_pr or _landed_pushed) and not _merged_pr
-                and _owner_merge_re.search(_owner_scan)):
+                and _owner_ask(_owner_scan)):
             print("OWNERMERGE")
             sys.exit(0)
         # A land/** push is follow-through, but not proof it landed (land.yml
@@ -514,16 +572,36 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
             # `DECISION NEEDED:` sits outside the \b(...)\b group: a trailing
             # \b can never match after the colon, so it silently never matched
             # before — the bare NOT SAFE TO EXIT alternative masked that.
-            _blocker_re = re.compile(
-                r'\b(CI(\s+is)?\s+red|merge conflict|blocked on'
-                r'|(CI|checks?|tests?|the land run)(\s+(is|are))?\s+(still\s+)?(running|pending|in progress|queued))\b'
-                r'|^DECISION NEEDED:'
-                r'|^\s*PR-BLOCKER:\s*\S.{9,}',
-                re.IGNORECASE | re.MULTILINE,
-            )
-            if not _blocker_re.search(_pr_stripped):
+            if not _pr_blocker_stated(_pr_stripped):
                 print("PRUNMERGED")
                 sys.exit(0)
+    except Exception:
+        pass  # fail-open — never let this gate crash the rest of the script
+
+# ─── Card-first gate (added 2026-09-28) ─────────────────────────────────────
+# CLAUDE.md §6: every session files (or claims) its Linear card at the start.
+# Cloud had no enforcement — the local ~/.claude notion-card-required-* gates
+# never fire here — and the SessionStart banner still pointed at the retired
+# notion-brain.js, so a session (01Fn6CXk, 2026-09-27) edited, pushed and
+# merged a PR with no card at all. A Stop-time check, not a PreToolUse one on
+# commit: a /plan-review found a PreToolUse gate too easy to wedge (compaction,
+# stderr-only markers, subagents) for an every-commit block. Runs AFTER the
+# PR gates so a card-less session that parks a PR hits the PR gate first.
+# Stands down (and falls through) via _board_gate_enforced().
+# Bypass: `NO-CARD: <reason ≥10 chars>`. Kill switch: CARD_GATE_DISABLE=1.
+if os.environ.get('CARD_GATE_DISABLE', '0') != '1':
+    try:
+        _did_work_nc = any(
+            _kind == 'tool' and _is_work_tool(_payload[0], _payload[1])
+            for _kind, _payload in events
+        )
+        _nc_msg = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
+        if (_did_work_nc and 'NO-VERIFY:' not in _nc_msg
+                and not re.search(r'NO-CARD:\s*\S.{9,}', _nc_msg)
+                and not _session_has_card()
+                and _board_gate_enforced()):
+            print("NOCARD")
+            sys.exit(0)
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
@@ -596,7 +674,7 @@ if os.environ.get('WRAPUP_GATE_DISABLE', '0') != '1':
                                 and not _CLOSEOUT_REFUSED_RE.search(tool_results_by_id.get(_tid2, '') or '')):
                             _wrapup_closed_out = True
                             break
-                if not _wrapup_closed_out:
+                if not _wrapup_closed_out and _board_gate_enforced():
                     print("NOWRAPUP")
                     sys.exit(0)
     except Exception:
@@ -1416,35 +1494,6 @@ fi
 if [[ "$result" == "PRUNMERGED" ]]; then
   echo "🛑 BLOCKED: a PR was opened via the GitHub MCP connector this session but never landed, with no stated blocker. This project's owner does not review or merge PRs — once CI is green, land it yourself: git push origin HEAD:refs/heads/land/<name> (land.yml rebases, re-runs the gates, fast-forwards main), follow the Land run, then close the PR. Or state the blocker: CI still running, CI red, a merge conflict, a DECISION NEEDED:, or a line PR-BLOCKER: <specific reason>. NOT SAFE TO EXIT alone, or waiting on review, is not a blocker (cloud-memory/feedback_no_review_offers_user_not_technical.md). Bypass: NO-VERIFY: <reason>." >&2
   exit 2
-fi
-
-# Board gates (NOCARD, NOWRAPUP) stand down when the owner flipped the
-# board-gate escape hatch (board-gate-escape-hatch.md) or when Linear can't
-# answer (CLAUDE.md §6: "If Linear is down: warn, continue untracked") — the
-# session could not satisfy them anyway. The probe runs only on the blocking path.
-_board_gate_off() {
-  local h
-  for h in "$HOME/.claude/BOARD_GATE_DISABLED"*; do
-    if [ -e "$h" ] || [ -L "$h" ]; then return 0; fi
-  done
-  [ "${BOARD_GATE_DISABLED:-0}" = "1" ]
-}
-# 0 only when linear-brain.js --probe says healthy; erroring (3), unreachable
-# (4), a missing CLI or any crash all fail open.
-_linear_healthy() {
-  local root="${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null)}"
-  [ -n "$root" ] && [ -f "$root/scripts/linear-brain.js" ] || return 1
-  (cd "$root" && timeout 12 node scripts/linear-brain.js --probe --timeout-ms 4000 >/dev/null 2>&1)
-}
-
-if [[ "$result" == "NOCARD" || "$result" == "NOWRAPUP" ]]; then
-  if _board_gate_off; then
-    exit 0
-  fi
-  if ! _linear_healthy; then
-    echo "⚠️  Linear card gate skipped: Linear is unreachable or erroring. Continue untracked and put the Outcome text in your final message (CLAUDE.md §6)." >&2
-    exit 0
-  fi
 fi
 
 if [[ "$result" == "NOCARD" ]]; then

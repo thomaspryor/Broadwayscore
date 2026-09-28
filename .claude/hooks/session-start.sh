@@ -578,7 +578,7 @@ CRITICAL SESSION RULES (CLAUDE.md has full text — these 7 are the most-violate
 4. FIX, DON'T REPORT: discovered issues get fixed now, not listed for later.
 5. KEEP GOING: do natural follow-ups (rebuild, deploy, fix adjacent). Don't offer handoffs to "a new session" — banned phrase list in CLAUDE.md §5.
 6. TERSE OUTPUT: short answers, no trailing recap, drop pleasantries. Output tokens cost ~5x input — verbose explanation is the single biggest token leak Claude controls. Verification evidence still required (rule 2); cut narration, keep proof.
-7. PRs: the owner NEVER reviews them. Open ready (not draft) and merge it yourself once the diff's own checks pass (CLAUDE.md §1). "Waiting on review" is never a reason to leave a PR open.
+7. PRs: the owner NEVER reviews or merges them. Land it yourself: `git push origin HEAD:refs/heads/land/<name>`, follow the Land run, close the PR (CLOUD.md § Landing). "Waiting on review" is never a reason to leave a PR open.
 Flow: implement → /did-it-work → /ship-check → /wrap-up. Don't stop between skills unless user said stop or you hit a real blocker.
 EOF
 

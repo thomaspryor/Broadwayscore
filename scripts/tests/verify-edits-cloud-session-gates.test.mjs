@@ -794,6 +794,7 @@ test('review ask: "ready for your review" → BLOCKED', skipNoRepoHook, () => {
 test('review ask: "waiting on reviewers" → BLOCKED', skipNoRepoHook, () => {
   const r = runOnPr('review-waiting-reviewers', 'Everything is green.\n\nNOT SAFE TO EXIT — waiting on reviewers for PR #42.');
   assertBlocked(r, '"waiting on reviewers" is a review ask');
+  assert.match(r.stderr, /never merges or reviews/i, `OWNERMERGE must be the gate that fired, got: ${r.stderr.slice(0, 300)}`);
 });
 
 test('bare NOT SAFE TO EXIT is no longer a stated blocker → BLOCKED (PRUNMERGED)', skipNoRepoHook, () => {
@@ -805,6 +806,7 @@ test('bare NOT SAFE TO EXIT is no longer a stated blocker → BLOCKED (PRUNMERGE
 test('"draft pending" is no longer a stated blocker → BLOCKED', skipNoRepoHook, () => {
   const r = runOnPr('draft-pending', 'Opened PR #42 as a draft pending follow-up.\n\nNOT SAFE TO EXIT — draft pending.');
   assertBlocked(r, 'a draft is not a blocker');
+  assert.match(r.stderr, /land it yourself/i, `PRUNMERGED must be the gate that fired, got: ${r.stderr.slice(0, 300)}`);
 });
 
 test('CI still running is a legitimate blocker → ALLOWED', skipNoRepoHook, () => {
@@ -820,6 +822,7 @@ test('explicit PR-BLOCKER line with a specific reason → ALLOWED', skipNoRepoHo
 test('PR-BLOCKER with a throwaway reason (<10 chars) → BLOCKED', skipNoRepoHook, () => {
   const r = runOnPr('pr-blocker-short', 'PR-BLOCKER: wip\n\nNOT SAFE TO EXIT — later.');
   assertBlocked(r, 'a token with no real reason must not satisfy the gate');
+  assert.match(r.stderr, /land it yourself/i, `got: ${r.stderr.slice(0, 300)}`);
 });
 
 test('describing the rule in backticks is not a review ask → ALLOWED', skipNoRepoHook, () => {
@@ -945,5 +948,117 @@ test('NOWRAPUP fails open when Linear is unreachable', skipNoRepoHook, () => {
   const transcript = writeTranscript(dir, [GIT_PUSH]);
   const r = runHook(transcript, 'Pushed.\n\nSAFE TO EXIT — pushed.', { STUB_PROBE_EXIT: '4' });
   assertAllowed(r, 'a session cannot close out on a board it cannot reach');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ─────────── ship-check findings (2026-09-28): fall-through + phrasing ───────
+// A stood-down board gate (Linear down / escape hatch) must fall through to
+// every later gate, not exit the hook. The first draft exited from bash and
+// skipped UNVERIFIED/scoring/PR gates — Linear down replayed the incident.
+
+test('P0 regression: NOCARD standing down (Linear unreachable) still runs the UNVERIFIED gate → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('nocard-fallthrough');
+  const transcript = writeTranscript(dir, [QUALIFYING_EDIT], { card: false });
+  const r = runHook(transcript, 'Edited scoring.ts.\n\nNOT SAFE TO EXIT — not verified yet.', { STUB_PROBE_EXIT: '4' });
+  assertBlocked(r, 'a stood-down card gate must not wave through an unverified edit');
+  assert.match(r.stderr, /unverified edit/i, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('P0 regression: NOWRAPUP standing down (Linear unreachable) still runs the UNVERIFIED gate → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('nowrapup-fallthrough');
+  const transcript = writeTranscript(dir, [QUALIFYING_EDIT, GIT_PUSH]);
+  const r = runHook(transcript, 'Pushed.\n\nSAFE TO EXIT — pushed.', { STUB_PROBE_EXIT: '4' });
+  assertBlocked(r, 'a stood-down close-out gate must not wave through an unverified edit');
+  assert.match(r.stderr, /unverified edit/i, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('P0 regression: escape hatch on, no card, PR parked → the PR gate still fires', skipNoRepoHook, () => {
+  const dir = makeTmpDir('hatch-pr');
+  const transcript = writeTranscript(dir, [CREATE_PR], { card: false });
+  const r = runHook(transcript, 'Opened PR #42.\n\nNOT SAFE TO EXIT — PR open.', { BOARD_GATE_DISABLED: '1' });
+  assertBlocked(r, 'the board escape hatch must not disable the PR gate');
+  assert.match(r.stderr, /land it yourself/i, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('ordering: no card AND a parked PR → the PR gate fires first', skipNoRepoHook, () => {
+  const dir = makeTmpDir('order-pr-first');
+  const transcript = writeTranscript(dir, [CREATE_PR], { card: false });
+  const r = runHook(transcript, 'NOT SAFE TO EXIT — PR #947 still open and unreviewed.');
+  assertBlocked(r, 'parked PR without a card');
+  assert.match(r.stderr, /never merges or reviews/i, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+for (const [label, msg] of [
+  ['blocked-owners-review', "Everything's green.\n\nNOT SAFE TO EXIT — blocked on the owner's review of PR #947."],
+  ['blocked-signoff', 'Green.\n\nNOT SAFE TO EXIT — blocked on your sign-off.'],
+  ['checks-pending-approval', 'NOT SAFE TO EXIT — checks pending your approval.'],
+  ['please-review', 'Please review PR #947 when you can; CI still running.\n\nNOT SAFE TO EXIT — CI still running.'],
+  ['pr-blocker-owner', 'PR-BLOCKER: waiting for the owner to look at it\n\nNOT SAFE TO EXIT — see blocker.'],
+]) {
+  test(`false-pass closed: "${msg.split('\n').pop().slice(0, 60)}" → BLOCKED`, skipNoRepoHook, () => {
+    const r = runOnPr(`fp-${label}`, msg);
+    assertBlocked(r, 'a review ask in any wording must block');
+  });
+}
+
+for (const [label, msg] of [
+  ['waiting-for-ci', 'Opened PR #42.\n\nNOT SAFE TO EXIT — waiting for CI on PR #42.'],
+  ['ci-apostrophe', "NOT SAFE TO EXIT — CI's still running on PR #42."],
+  ['ci-currently', 'NOT SAFE TO EXIT — CI is currently running.'],
+  ['testyml-running', 'NOT SAFE TO EXIT — test.yml is running.'],
+  ['land-run-running', 'NOT SAFE TO EXIT — Land run still running.'],
+  ['ci-failed', 'CI failed on PR #42 (tsc). Fixing.\n\nNOT SAFE TO EXIT — fixing CI.'],
+  ['merge-conflicts', 'NOT SAFE TO EXIT — merge conflicts with main on PR #42.'],
+  ['bold-decision', '**DECISION NEEDED:** pricing tier for /biz.\n\nNOT SAFE TO EXIT — answer the decision.'],
+  ['bullet-pr-blocker', '- PR-BLOCKER: land.yml refused: tsc error in src/lib/scoring.ts\n\nNOT SAFE TO EXIT — fixing.'],
+]) {
+  test(`false-block closed: "${msg.split('\n').pop().slice(0, 60)}" → ALLOWED`, skipNoRepoHook, () => {
+    const r = runOnPr(`fb-${label}`, msg);
+    assertAllowed(r, 'a legitimate technical wait must pass');
+  });
+}
+
+for (const [label, msg] of [
+  ['without-waiting', 'Landed via land/fix-x without waiting for review.\n\nSAFE TO EXIT — landed and verified.'],
+  ['no-need', 'Landed; no need for your review.\n\nSAFE TO EXIT — landed and verified.'],
+  ['doesnt-need', "Landed. This doesn't need a review.\n\nSAFE TO EXIT — landed and verified."],
+]) {
+  test(`negated review wording after a land is not an ask (${label}) → ALLOWED`, skipNoRepoHook, () => {
+    const dir = makeTmpDir(`neg-${label}`);
+    const transcript = writeTranscript(dir, [CREATE_PR, LAND_PUSH, LAND_RUN_CHECK, LINEAR_CLOSEOUT_DONE]);
+    const r = runHook(transcript, msg);
+    assertAllowed(r, 'describing that no review is needed must not trip OWNERMERGE');
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+}
+
+test('NOCARD: a scratch analysis script in /tmp is not repo work → ALLOWED without a card', skipNoRepoHook, () => {
+  const r = runCard('nocard-scratch', [
+    toolUse('Write', { file_path: '/tmp/claude-0/x/scratchpad/analyze.py', content: 'print(1)' }),
+    toolUse('Bash', { command: 'python3 /tmp/claude-0/x/scratchpad/analyze.py' }),
+  ], 'The answer is 1.\n\nNOT SAFE TO EXIT — just answered a question.');
+  assertAllowed(r, 'throwaway scripts outside the repo need no card');
+});
+
+test('NOCARD: create output truncated by `| tail -3` still counts (BRO id survives) → ALLOWED', skipNoRepoHook, () => {
+  const create = toolUse('Bash', { command: 'node scripts/linear-brain.js create "x" --dispatch --notes "y" 2>&1 | tail -3' }, 'ISSUE-FILED: BRO-9005 ("x") — state=Todo\n\n⚠️  ACCEPTANCE CRITERIA DO NOT ARM — this card cannot be closed as filed.');
+  assertAllowed(runCard('nocard-tail', [create, GIT_PUSH], NOT_SAFE), 'the BRO id in the create result is enough');
+});
+
+test('NOCARD: create piped to `jq -r .identifier` (bare BRO-N) → ALLOWED', skipNoRepoHook, () => {
+  const create = toolUse('Bash', { command: 'node scripts/linear-brain.js create "x" --dispatch --notes "y" 2>/dev/null | jq -r .identifier' }, 'BRO-9006');
+  assertAllowed(runCard('nocard-jq', [create, GIT_PUSH], NOT_SAFE), 'a bare identifier from the create command counts');
+});
+
+test('NOWRAPUP: ECONNREFUSED in a retried-but-successful close-out is not a refusal → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-econnrefused');
+  const closeout = toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-9001 --state Done --comment "PR-EVIDENCE: merged deployed checked (x)"' }, '⏳ Linear HTTP retry 1 (ECONNREFUSED)\n{"identifier":"BRO-9001","state":"Done"}\nISSUE-UPDATED: BRO-9001 — state=Done — commented');
+  const transcript = writeTranscript(dir, [GIT_PUSH, closeout]);
+  const r = runHook(transcript, 'Pushed and closed.\n\nSAFE TO EXIT — card Done.');
+  assertAllowed(r, 'REFUSED must be word-anchored');
   fs.rmSync(dir, { recursive: true, force: true });
 });
