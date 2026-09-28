@@ -13,7 +13,9 @@
     "delirium-off-broadway-2026/arlekinplayers--unknown.json",
     "cosi-fan-tutte-off-broadway-2026/operawire--francisco-salazar.json",
     "macbeth-off-broadway-2026/playbill--dan-meyer.json",
-    "macbeth-off-broadway-2026/playbill--unknown.json"
+    "macbeth-off-broadway-2026/playbill--unknown.json",
+    "truly-howard-hughes-off-broadway-2026/cititour--unknown.json",
+    "in-honor-of-jean-michel-basquiat-off-broadway-2026/broadwayworld--fred-mason.json"
   ],
   "failed": [
     "midnight-off-broadway-2026/cititour--unknown.json",
@@ -80,7 +82,21 @@
     "macbeth-off-broadway-2026/huffpost--gazelle-emami.json",
     "macbeth-off-broadway-2026/huffpost--unknown.json",
     "macbeth-off-broadway-2026/i-paper--fiona-mountford.json",
-    "macbeth-off-broadway-2026/independent--alice-saville.json"
+    "macbeth-off-broadway-2026/independent--alice-saville.json",
+    "macbeth-off-broadway-2026/seen-and-heard-international--clive-peacock.json",
+    "macbeth-off-broadway-2026/standard--nick-curtis.json",
+    "macbeth-off-broadway-2026/talkclassical--unknown.json",
+    "macbeth-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "macbeth-off-broadway-2026/thestage--unknown.json",
+    "macbeth-off-broadway-2026/whatsonstage--sarah-crompton.json",
+    "macbeth-off-broadway-2026/woman-around-town--unknown.json",
+    "the-invention-of-love-off-broadway-2026/nytg--unknown.json",
+    "the-invention-of-love-off-broadway-2026/thestage--ian-shine.json",
+    "the-hope-theory-off-broadway-2026/nytg--bridget-gross.json",
+    "america-who-hurt-you-off-broadway-2026/playbill--unknown.json",
+    "conflicted-off-broadway-2026/daily-mail--rebecca-lawrence.json",
+    "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
+    "in-honor-of-jean-michel-basquiat-off-broadway-2026/exeunt-magazine--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -99,9 +115,12 @@
     "scrapingbee": [
       "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json",
       "the-secret-circus-musical-off-broadway-2026/mommypoppins--unknown.json",
-      "delirium-off-broadway-2026/nytimes--elisabeth-vincentelli.json"
+      "delirium-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+      "truly-howard-hughes-off-broadway-2026/cititour--unknown.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "in-honor-of-jean-michel-basquiat-off-broadway-2026/broadwayworld--fred-mason.json"
+    ],
     "archiveToday": [],
     "archive": [
       "tru-off-west-end-2026/whatsonstage--alex-wood.json",
@@ -111,7 +130,7 @@
     ]
   },
   "startTime": "2026-09-28T03:07:49.908Z",
-  "lastProcessed": "macbeth-off-broadway-2026/playbill--unknown.json",
+  "lastProcessed": "in-honor-of-jean-michel-basquiat-off-broadway-2026/exeunt-magazine--unknown.json",
   "log": [
     {
       "t": "2026-09-28T03:18:15.019Z",
@@ -180,6 +199,40 @@
       "t": "2026-09-28T04:06:51.602Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-28T05:41:06.126Z",
+      "event": "bb-session",
+      "session": "f7c74b7a",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-28T05:41:06.855Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-28T05:41:24.535Z",
+      "event": "bb-session",
+      "session": "e03fe094",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-28T05:41:25.157Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-28T05:44:33.853Z",
+      "event": "bb-session",
+      "session": "c87e64d3",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    },
+    {
+      "t": "2026-09-28T05:44:49.847Z",
+      "event": "bb-session",
+      "session": "56a47ad8",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
     }
   ]
 }
