@@ -20,6 +20,8 @@
  *   node scripts/replay-pending-bylines.js --shows=show1,show2
  *   node scripts/replay-pending-bylines.js --all-opera
  *   node scripts/replay-pending-bylines.js --all-open --time-budget-min=16
+ *   node scripts/replay-pending-bylines.js --all-open --closed-within-days=90   (open + recently closed)
+ *   node scripts/replay-pending-bylines.js --all-pending --time-budget-min=16  (every show with a _pending dir)
  */
 
 const fs = require('fs');
@@ -33,6 +35,7 @@ const { extractPublishDate } = require('./lib/article-extractor');
 const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { findExistingFileForUrl: findExistingFileForUrlShared } = require('./lib/review-url-clusters');
+const { isRecentlyLive } = require('./lib/show-liveness');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -41,6 +44,18 @@ const USAGE = `replay-pending-bylines.js — Files in data/review-texts/_pending
 Usage:
   node scripts/replay-pending-bylines.js [options]
   node scripts/replay-pending-bylines.js --help, -h    print this usage and exit
+
+Scope (one of):
+  --show=ID | --shows=ID1,ID2 | --all-opera
+  --all-open                 every open/previews show with a _pending dir
+  --all-pending              every show with a _pending dir (closed included)
+
+Options:
+  --closed-within-days=N     with --all-open: also drain shows that CLOSED within
+                             the last N days (a show closing the week its reviews
+                             land otherwise never drains — audit S7-T7)
+  --time-budget-min=N        stop cleanly after N minutes (remaining shows deferred)
+  --dry-run                  report what would be promoted, write nothing
 `;
 
 // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
@@ -107,6 +122,41 @@ const allPending = args.includes('--all-pending');
 const dryRun = args.includes('--dry-run');
 const timeBudget = createRunBudget(parseTimeBudgetMin(args));
 
+/**
+ * `--closed-within-days=N` → N (0 when absent, malformed, or non-positive).
+ * Only meaningful with --all-open; --all-pending already covers every show.
+ */
+function parseClosedWithinDays(argv) {
+  const raw = (argv || []).find(a => typeof a === 'string' && a.startsWith('--closed-within-days='));
+  if (!raw) return 0;
+  const n = parseInt(raw.split('=')[1], 10);
+  return Number.isInteger(n) && n > 0 ? n : 0;
+}
+const closedWithinDays = parseClosedWithinDays(args);
+
+// The historical --all-open allowlist: open + previews only. 'upcoming' is
+// deliberately absent — nothing can be stranded in _pending for a show that
+// has not started performances. `--closed-within-days=N` widens it to rows
+// that closed at most N days ago, through the shared liveness predicate
+// (scripts/lib/show-liveness.js, audit S7-T7). With N=0 (the default) the
+// options below reproduce the old `['open','previews'].includes(status)`
+// filter by construction (tests/unit/show-liveness.test.mjs).
+const PENDING_DRAIN_LIVE_STATUSES = Object.freeze(['open', 'previews']);
+
+function pendingDrainLivenessOptions(closedWithin = 0, today = new Date()) {
+  return {
+    liveStatuses: PENDING_DRAIN_LIVE_STATUSES,
+    allowClosed: closedWithin > 0,
+    withinDays: closedWithin,
+    today,
+  };
+}
+
+/** Pure: should --all-open drain this show's _pending dir? */
+function isPendingDrainEligible(show, closedWithin = 0, today = new Date()) {
+  return isRecentlyLive(show, pendingDrainLivenessOptions(closedWithin, today));
+}
+
 const PENDING_ROOT = path.join(__dirname, '../data/review-texts/_pending');
 const REVIEW_TEXTS_ROOT = path.join(__dirname, '../data/review-texts');
 
@@ -131,8 +181,10 @@ function listShowIdsWithPending() {
 function listOpenShowIdsWithPending() {
   const showsPath = path.join(__dirname, '../data/shows.json');
   const data = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
-  const statusById = new Map((data.shows || data).map(s => [s.id, s.status]));
-  return listShowIdsWithPending().filter(id => ['open', 'previews'].includes(statusById.get(id)));
+  const showById = new Map((data.shows || data).map(s => [s.id, s]));
+  // A _pending dir with no shows.json row is not eligible (isRecentlyLive
+  // returns false for a missing show) — same as the old status lookup.
+  return listShowIdsWithPending().filter(id => isPendingDrainEligible(showById.get(id), closedWithinDays));
 }
 
 function showIds() {
@@ -141,7 +193,7 @@ function showIds() {
   if (allOpera) return listOperaShowIds();
   if (allOpen) return listOpenShowIdsWithPending();
   if (allPending) return listShowIdsWithPending();
-  console.error('Usage: --show=ID | --shows=ID1,ID2 | --all-opera | --all-open | --all-pending');
+  console.error('Usage: --show=ID | --shows=ID1,ID2 | --all-opera | --all-open [--closed-within-days=N] | --all-pending');
   process.exit(1);
 }
 
@@ -341,12 +393,23 @@ async function processShow(showId) {
   return { promoted, kept, rejected };
 }
 
-module.exports = { pendingPromoteRejectReason, NON_THEATRE_SECTIONS, findExistingFileForUrl };
+module.exports = {
+  pendingPromoteRejectReason,
+  NON_THEATRE_SECTIONS,
+  findExistingFileForUrl,
+  // Liveness of the --all-open scope (audit S7-T7) — exported for
+  // tests/unit/show-liveness.test.mjs.
+  PENDING_DRAIN_LIVE_STATUSES,
+  pendingDrainLivenessOptions,
+  isPendingDrainEligible,
+  parseClosedWithinDays,
+};
 
 if (require.main === module) {
   (async () => {
     const ids = showIds();
-    console.log(`Processing ${ids.length} show(s)${dryRun ? ' [DRY RUN]' : ''}\n`);
+    const scopeNote = allOpen && closedWithinDays > 0 ? ` (open/previews + closed within ${closedWithinDays}d)` : '';
+    console.log(`Processing ${ids.length} show(s)${scopeNote}${dryRun ? ' [DRY RUN]' : ''}\n`);
 
     let totalPromoted = 0, totalKept = 0, totalRejected = 0;
     for (const id of ids) {

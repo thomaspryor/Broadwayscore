@@ -142,6 +142,8 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd, hasJsonLdType } = require('./lib/jsonld');
+// OLT listing reader shared with scripts/enrich-west-end-dates.js (audit S7-T10).
+const { parseOltTheaterEvents, extractJsonLdBlocks } = require('./lib/olt-enrichment');
 const { findConflictingShowId } = require('./lib/show-score-url-map');
 
 const USAGE = `discover-new-shows.js — Broadway New Show Discovery.
@@ -966,66 +968,55 @@ async function fetchShowsFromOfficialLondonTheatre() {
     return [];
   }
 
-  // Parse JSON-LD TheaterEvent blocks (each is a standalone <script type="application/ld+json">)
-  const dom = new JSDOM(html);
-  const ldScripts = dom.window.document.querySelectorAll('script[type="application/ld+json"]');
+  // Parse JSON-LD TheaterEvent blocks (each is a standalone <script type="application/ld+json">).
+  // The reader lives in scripts/lib/olt-enrichment.js (audit S7-T10) so the
+  // West End date/age backfill (scripts/enrich-west-end-dates.js) parses the
+  // exact same page the exact same way; it also fixes the venue: OLT's
+  // `location.name` is the venue's URL and `location.title` the human name
+  // on every live entry (verified 2026-09-28), and the inline reader this
+  // replaced took `.name`.
+  const ldBlockCount = extractJsonLdBlocks(html).length;
   const shows = [];
   const seen = new Set();
 
-  for (const script of ldScripts) {
-    try {
-      for (const data of parseJsonLd(script.textContent)) {
-        if (!hasJsonLdType(data, 'TheaterEvent')) continue;
-        // Skip any with subEvent nesting (season containers)
-        if (data.subEvent) continue;
+  for (const event of parseOltTheaterEvents(html)) {
+    const title = event.title;
+    if (!title || title.length < 3 || seen.has(title.toLowerCase())) continue;
 
-      const title = (data.name || '').trim()
-        .replace(/&#8217;|&#8216;|[\u2018\u2019]/g, "'")  // Curly quotes → straight
-        .replace(/&#8220;|&#8221;|[\u201C\u201D]/g, '"')  // Curly double quotes → straight
-        .replace(/&#8211;|[\u2013]/g, '–').replace(/&#8212;|[\u2014]/g, '—')
-        .replace(/&#038;/g, '&').replace(/&amp;/g, '&');
-      if (!title || title.length < 3 || seen.has(title.toLowerCase())) continue;
+    // Apply shared filters
+    const titleLower = title.toLowerCase();
+    if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
+    if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
 
-      // Apply shared filters
-      const titleLower = title.toLowerCase();
-      if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
-      if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
-
-      // OLT's JSON-LD location can be missing/blank on a malformed entry —
-      // same #994-class leak, guarded here rather than resurrected via
-      // `|| 'TBA'` (card #1060).
-      const rawVenue = typeof data.location === 'object' ? data.location.name : data.location;
-      const venue = sanitizeVenueForWrite(rawVenue);
-      if (!venue) {
-        if (verbose) console.log(`  [SKIP] "${title}" — OLT venue "${rawVenue || ''}" is a placeholder/blob, deferring to next run (card #1060)`);
-        continue;
-      }
-      // London paths reject non-theatre venues and receiving-house tour stops
-      // outright (2026 audit, BRO-4204 — docs/show-inclusion-policy.md).
-      if (isNonTheatreVenue(venue) || isLondonReceivingHouse(venue)) {
-        if (verbose) console.log(`  [FILTERED] "${title}" — OLT venue "${venue}" is a non-theatre venue or receiving house`);
-        continue;
-      }
-      const endDate = data.endDate === 'null' || data.endDate === null ? null : data.endDate || null;
-
-      seen.add(titleLower);
-      const description = (data.description || '').substring(0, 500);
-      const genre = classifyGenre({ title, venue, description });
-      shows.push({
-        title,
-        venue,
-        slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-        openingDate: null,
-        previewsStartDate: data.startDate || null,
-        closingDate: endDate,
-        ...(genre ? { genre } : {}),
-        category: applyGenreCategoryOverride('west-end', genre),
-        description,
-      });
-      }
-    } catch (e) {
-      // Skip malformed JSON-LD blocks
+    // OLT's JSON-LD location can be missing/blank on a malformed entry —
+    // same #994-class leak, guarded here rather than resurrected via
+    // `|| 'TBA'` (card #1060).
+    const venue = sanitizeVenueForWrite(event.venue);
+    if (!venue) {
+      if (verbose) console.log(`  [SKIP] "${title}" — OLT venue "${event.venue || ''}" is a placeholder/blob, deferring to next run (card #1060)`);
+      continue;
     }
+    // London paths reject non-theatre venues and receiving-house tour stops
+    // outright (2026 audit, BRO-4204 — docs/show-inclusion-policy.md).
+    if (isNonTheatreVenue(venue) || isLondonReceivingHouse(venue)) {
+      if (verbose) console.log(`  [FILTERED] "${title}" — OLT venue "${venue}" is a non-theatre venue or receiving house`);
+      continue;
+    }
+
+    seen.add(titleLower);
+    const description = (event.description || '').substring(0, 500);
+    const genre = classifyGenre({ title, venue, description });
+    shows.push({
+      title,
+      venue,
+      slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      openingDate: null,
+      previewsStartDate: event.startDate,
+      closingDate: event.endDate,
+      ...(genre ? { genre } : {}),
+      category: applyGenreCategoryOverride('west-end', genre),
+      description,
+    });
   }
 
   // Guards
@@ -1038,7 +1029,7 @@ async function fetchShowsFromOfficialLondonTheatre() {
     return [];
   }
 
-  console.log(`  OLT: ${ldScripts.length} JSON-LD blocks, ${shows.length} TheaterEvent shows parsed`);
+  console.log(`  OLT: ${ldBlockCount} JSON-LD blocks, ${shows.length} TheaterEvent shows parsed`);
   return shows;
 }
 

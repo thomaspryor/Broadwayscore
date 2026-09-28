@@ -7,9 +7,11 @@
 #
 # This workflow does NOT rebuild reviews.json or trigger a deploy. It only mutates
 # `data/review-texts/{showId}/*.json` (sets isNonReview / wrongProduction / wrongShow
-# / criticName) and pushes those changes back to the broadway-review-texts private
-# repo. The next rebuild-reviews / rebuild-fast run picks the flags up and excludes
-# affected reviews via isIncludableForRebuild.
+# / criticName), drains the `_pending/` no-byline sink (6-hourly for open shows,
+# weekly for every show — see the drain_scope input), and pushes those changes
+# back to the broadway-review-texts private repo. The next rebuild-reviews /
+# rebuild-fast run picks the flags up and excludes affected reviews via
+# isIncludableForRebuild.
 #
 # Per CLAUDE.md §15 (Test Extraction Pattern): all four enrichment scripts already
 # live in scripts/ and are exercised independently. This workflow is just plumbing.
@@ -31,6 +33,18 @@ on:
     # Every 6 hours, offset 30min from the daily 4 AM rebuild and the 5 AM scoring
     # cron so they don't collide. Times: 04:30, 10:30, 16:30, 22:30 UTC.
     - cron: '30 4,10,16,22 * * *'
+    # Weekly, Sunday 01:30 UTC (2026 data audit S7-T8): the same enrichment
+    # chain, but the _pending no-byline drain runs with --all-pending (EVERY
+    # show with a _pending dir, closed included) instead of --all-open. The
+    # 6-hourly --all-open drain never reaches a show that closed the week
+    # its reviews landed, so 107 shows / 287 files sat stranded (86 of those
+    # shows closed; Othello Off-Broadway had 34 waiting vs 2 live and no
+    # score). Which drain runs is decided from github.event.schedule in the
+    # "Resolve pending-drain scope" step — never from the wall clock (GHA
+    # crons fire late). The weekly run swaps the open drain for the
+    # all-pending one under the same 16-min budget / 20-min timeout, so the
+    # job's worst-case runtime is unchanged.
+    - cron: '30 1 * * 0'
   workflow_dispatch:
     inputs:
       skip_classify_non_reviews:
@@ -53,6 +67,15 @@ on:
         required: false
         default: 'false'
         type: string
+      drain_scope:
+        description: 'Which shows the _pending no-byline drain covers: open (open/previews — the 6-hourly default), closed-90d (open/previews + shows closed in the last 90 days), all-pending (every show with a _pending dir — the weekly cron scope)'
+        required: false
+        default: 'open'
+        type: choice
+        options:
+          - open
+          - closed-90d
+          - all-pending
 
 permissions:
   contents: write
@@ -174,19 +197,79 @@ jobs:
         continue-on-error: true
         timeout-minutes: 15
 
+      # Which shows the _pending drain below covers (audit S7-T8). A dispatch
+      # names it via the drain_scope input; the weekly Sunday cron
+      # ('30 1 * * 0') is all-pending; every other run (the 6-hourly crons,
+      # a dispatch that left the input blank) is the historical open scope.
+      # Keyed off github.event.schedule, the literal cron string that fired,
+      # never the wall clock — GHA crons fire 30 min-3 h late (see
+      # enrich-west-end-dates.yml's mode detection for the incident).
+      - name: Resolve pending-drain scope
+        id: drain-scope
+        env:
+          INPUT_SCOPE: ${{ inputs.drain_scope }}
+          EVENT_NAME: ${{ github.event_name }}
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          SCOPE="$INPUT_SCOPE"
+          if [ -z "$SCOPE" ]; then
+            if [ "$EVENT_NAME" = "schedule" ] && [ "$SCHEDULE" = "30 1 * * 0" ]; then
+              SCOPE="all-pending"
+            else
+              SCOPE="open"
+            fi
+          fi
+          case "$SCOPE" in
+            open|closed-90d|all-pending) ;;
+            *)
+              echo "::warning::unknown drain_scope '$SCOPE' — falling back to 'open'"
+              SCOPE="open"
+              ;;
+          esac
+          echo "Pending drain scope: $SCOPE (event=$EVENT_NAME schedule='$SCHEDULE')"
+          echo "scope=$SCOPE" >> "$GITHUB_OUTPUT"
+
       # Drain the _pending/ no-byline sink for all open shows. Multi-critic-outlet
       # hits (Times/Standard/Guardian) route to _pending awaiting byline extraction,
       # but nothing drained it for non-opera shows — 500+ real reviews across 70+
       # WE/Broadway shows stranded. See data/audit/we-discovery-diagnosis.md.
-      - name: Drain pending no-byline reviews (open shows)
-        if: inputs.skip_backfill_critics != 'true'
+      # Scope open → --all-open (open/previews, unchanged 6-hourly behaviour);
+      # scope closed-90d → --all-open --closed-within-days=90 (also shows that
+      # closed in the last 90 days, via scripts/lib/show-liveness.js).
+      - name: Drain pending no-byline reviews (open shows, or open + closed-90d)
+        if: inputs.skip_backfill_critics != 'true' && steps.drain-scope.outputs.scope != 'all-pending'
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
-        run: node scripts/replay-pending-bylines.js --all-open --time-budget-min=16 2>&1 | tee -a /tmp/locked-skip.log
+          DRAIN_SCOPE: ${{ steps.drain-scope.outputs.scope }}
+        run: |
+          FLAGS="--all-open"
+          if [ "$DRAIN_SCOPE" = "closed-90d" ]; then
+            FLAGS="$FLAGS --closed-within-days=90"
+          fi
+          echo "Running: node scripts/replay-pending-bylines.js $FLAGS --time-budget-min=16"
+          node scripts/replay-pending-bylines.js $FLAGS --time-budget-min=16 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+        timeout-minutes: 20
+
+      # Weekly (Sunday cron) or on dispatch with drain_scope=all-pending: drain
+      # EVERY show that has a _pending dir, closed shows included — the
+      # --all-pending flag already existed in the script, nothing scheduled it.
+      # Same env, same 16-min budget and 20-min timeout as the open drain it
+      # replaces on this run; the budget defers the remainder to next week
+      # rather than letting the job time out.
+      - name: Drain pending no-byline reviews (all pending, weekly)
+        if: inputs.skip_backfill_critics != 'true' && steps.drain-scope.outputs.scope == 'all-pending'
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: node scripts/replay-pending-bylines.js --all-pending --time-budget-min=16 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
         timeout-minutes: 20
 
