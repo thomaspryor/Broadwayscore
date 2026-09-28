@@ -1,73 +1,108 @@
 {
-  "runDate": "2026-09-28T08:29:14.573Z",
+  "runDate": "2026-09-28T09:55:38.904Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "tru-off-west-end-2026",
+    "showFilter": "how-shakespeare-saved-my-life-off-broadway-2026,la-boheme-off-broadway-2026,midnight-off-broadway-2026,tru-off-west-end-2026,the-urmetazoan-off-west-end-2026,elf-lyons-the-woman-on-the-edge-off-broadway-2026,the-secret-circus-musical-off-broadway-2026,human-things-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 5,
+    "processed": 7,
+    "failed": 27,
     "skipped": 0,
-    "successRate": "16.7%"
+    "successRate": "20.6%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 5,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Attempts": 15,
+    "tier1Success": 9,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 6,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
-    "tier3_6Attempts": 1,
+    "tier2Attempts": 8,
+    "tier2Success": 6,
+    "tier3Attempts": 6,
+    "tier3Success": 3,
+    "tier3_6Attempts": 6,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 0,
-    "totalFailed": 5,
-    "scrapingBeePageCredits": 10,
+    "tier4Attempts": 15,
+    "tier4Success": 1,
+    "totalFailed": 27,
+    "scrapingBeePageCredits": 26,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "browserbaseSessionsUsed": 6,
+    "browserbaseMinutesUsed": 3,
+    "urlDiscoveryAttempts": 13,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "tru-off-west-end-2026/west-end-best-friend--unknown.json"
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json",
+    "tru-off-west-end-2026/west-end-best-friend--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/mommypoppins--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/stagebuddy--unknown.json"
   ],
   "failed": [
     "tru-off-west-end-2026/guardian--unknown.json",
+    "midnight-off-broadway-2026/cititour--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "midnight-off-broadway-2026/broadwayworld--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "midnight-off-broadway-2026/one-minute-critic--ryan-leeds.json",
     "tru-off-west-end-2026/bestoftheatre--cecil-glover.json",
     "tru-off-west-end-2026/london-theatre--unknown.json",
     "tru-off-west-end-2026/thestage--sam-marlowe.json",
-    "tru-off-west-end-2026/whatsonstage--alex-wood.json"
+    "tru-off-west-end-2026/whatsonstage--alex-wood.json",
+    "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json",
+    "la-boheme-off-broadway-2026/nytimes--anthony-tommasini.json",
+    "la-boheme-off-broadway-2026/new-york-classical-review--rick-perdian.json",
+    "the-urmetazoan-off-west-end-2026/timeout-london--unknown.json",
+    "human-things-off-broadway-2026/broadwayworld--backstage-live-with-richard-ridge.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/front-row-center--elizabeth-ann-foster.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "la-boheme-off-broadway-2026/operawire--francisco-salazar.json",
+    "la-boheme-off-broadway-2026/seen-and-heard-international--daniel-meyer.json",
+    "la-boheme-off-broadway-2026/seen-and-heard-international--robert-beattie.json",
+    "the-urmetazoan-off-west-end-2026/datathistle--unknown.json",
+    "the-urmetazoan-off-west-end-2026/thestage--holly-omahony.json",
+    "the-urmetazoan-off-west-end-2026/thestage--the-stage.json"
   ],
   "tierDetails": {
     "playwright": [
-      "tru-off-west-end-2026/west-end-best-friend--unknown.json"
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json",
+      "tru-off-west-end-2026/west-end-best-friend--unknown.json",
+      "the-secret-circus-musical-off-broadway-2026/stagebuddy--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json",
+      "the-secret-circus-musical-off-broadway-2026/mommypoppins--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
@@ -79,6 +114,34 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
+    },
+    "The Stage": {
+      "count": 2,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Vulture": {
+      "count": 1,
+      "domain": "events.newyorkfamily.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "donyc": {
+      "count": 1,
+      "domain": "donyc.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Talkin' Broadway": {
+      "count": 1,
+      "domain": "talkinbroadway.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
     }
   },
   "urlDiscoveries": []
