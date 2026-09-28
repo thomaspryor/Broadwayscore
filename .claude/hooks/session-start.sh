@@ -355,15 +355,36 @@ fi
 # normal, not the incident's hazard (second-opinion review, BRO-2663 plan
 # review). Extracted to a lib (not inlined like the CORE-DATA block above) so
 # it's unit-tested — see scripts/tests/session-start-staleness.test.mjs.
+#
+# BRO-4229: in a CLOUD session the check also fast-forwards the checkout when
+# nothing can be lost (trySyncCodeCheckout), so hook fixes landed on main reach
+# sessions already in flight. It targets $CLAUDE_PROJECT_DIR, where the hook
+# wrappers in .claude/settings.json read their scripts from, even when $PWD is
+# a worktree. Never runs on the Mac: this file self-skips there (top of file),
+# and the gate below also requires CLAUDE_CODE_REMOTE=true.
+CODE_DIR="$REPO_ROOT"
+CODE_SYNC=no
+if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -n "${CLAUDE_PROJECT_DIR:-}" ]; then
+  CODE_DIR="$CLAUDE_PROJECT_DIR"
+  CODE_SYNC=yes
+fi
 if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } \
-   && [ -n "$REPO_ROOT" ] && [[ "$PWD" != *"/.claude/worktrees/"* ]] \
-   && [ -f "$REPO_ROOT/scripts/lib/code-checkout-staleness.js" ] \
+   && [ -n "$CODE_DIR" ] && [[ "$CODE_DIR" != *"/.claude/worktrees/"* ]] \
+   && [ -f "$CODE_DIR/scripts/lib/code-checkout-staleness.js" ] \
    && command -v node >/dev/null 2>&1; then
   CODE_STALE_MSG=$(node -e '
-    const { runCodeCheckoutStalenessCheck } = require(process.argv[1]);
-    const r = runCodeCheckoutStalenessCheck({ repoDir: process.argv[2] });
+    const lib = require(process.argv[1]);
+    const repoDir = process.argv[2];
+    const r = lib.runCodeCheckoutStalenessCheck({ repoDir });
+    if (process.argv[3] === "yes" && r.behind > 0) {
+      const s = lib.trySyncCodeCheckout({ repoDir, behind: r.behind, ahead: r.ahead });
+      const synced = lib.formatCodeCheckoutSyncMessage(s, repoDir);
+      if (synced) { console.log(synced); process.exit(0); }
+      if (r.message) console.log(`${r.message}\n   (auto-sync skipped: ${s.reason})`);
+      process.exit(0);
+    }
     if (r.message) console.log(r.message);
-  ' "$REPO_ROOT/scripts/lib/code-checkout-staleness.js" "$REPO_ROOT" 2>/dev/null || true)
+  ' "$CODE_DIR/scripts/lib/code-checkout-staleness.js" "$CODE_DIR" "$CODE_SYNC" 2>/dev/null || true)
   if [ -n "$CODE_STALE_MSG" ]; then
     echo ""
     echo "$CODE_STALE_MSG"
