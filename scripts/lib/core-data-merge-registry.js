@@ -1803,6 +1803,12 @@ const CORE_DATA_MERGE_REGISTRY = [
   // union merge (by id / by archived row id) BEFORE the first CI writer lands.
   { file: 'retired-show-ids.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, retireId() in scripts/lib/retired-show-ids.js from human sessions; no workflow writer yet (2026 data audit S0-T2)' },
   { file: 'deleted-shows.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, retireId() in scripts/lib/retired-show-ids.js (archive of deleted rows beside retired-show-ids.json); no workflow writer yet (2026 data audit S0-T2)' },
+  // 2026 data audit (S5-T9): retired critic slug → canonical slug, a flat
+  // {old: canonical} object read by scripts/lib/critic-slug-aliases.js at
+  // prebuild (scripts/build-slug-redirects.js). Hand-edited from human
+  // sessions only; S7-T3 (diacritic fold) may add a script writer — promote
+  // to 'active' with a keyed union merge before any CI writer lands.
+  { file: 'critic-slug-aliases.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, human sessions editing the core-data repo; read-only for scripts/lib/critic-slug-aliases.js; no workflow writer yet (2026 data audit S5-T9)' },
 ];
 
 /**

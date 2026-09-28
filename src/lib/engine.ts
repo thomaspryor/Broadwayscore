@@ -109,6 +109,11 @@ export interface RawShow {
   homepageInclude?: boolean;           // force onto homepage grid (e.g. star-driven previews)
   homepageExclude?: boolean;           // veto from homepage grid
   priorRuns?: PriorRun[];
+  // Old ids/slugs this row absorbed when duplicate entries were merged (full
+  // ids and year-less slugs). scripts/build-slug-redirects.js turns them into
+  // /show/* 301s; data-core.ts getShowBySlug() resolves them for the routes
+  // the middleware does not cover (S5-T7).
+  aliases?: string[];
 }
 
 export interface RawReview {
