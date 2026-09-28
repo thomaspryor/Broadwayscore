@@ -84,7 +84,10 @@
     "tru-off-west-end-2026/west-end-best-friend--unknown.json",
     "table-17-off-west-end-2026/londontheatredirect--agata-kucharska.json",
     "tru-off-west-end-2026/broadwayworld--unknown.json",
-    "tru-off-west-end-2026/liamodell--unknown.json"
+    "tru-off-west-end-2026/liamodell--unknown.json",
+    "tru-off-west-end-2026/whatsonstage--alex-wood.json",
+    "table-17-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "table-17-off-west-end-2026/londonlivinglarge--unknown.json"
   ],
   "failed": [
     "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
@@ -289,14 +292,12 @@
     "tru-off-west-end-2026/timeout-london--unknown.json",
     "tru-off-west-end-2026/bestoftheatre--cecil-glover.json",
     "tru-off-west-end-2026/london-theatre--unknown.json",
-    "tru-off-west-end-2026/whatsonstage--alex-wood.json",
     "table-17-off-west-end-2026/bachtrack--unknown.json",
     "table-17-off-west-end-2026/london-box-office--stuart-king.json",
-    "table-17-off-west-end-2026/londonlivinglarge--london-living-large.json",
-    "table-17-off-west-end-2026/londonlivinglarge--unknown.json",
     "table-17-off-west-end-2026/nysr--roma-torre.json",
     "table-17-off-west-end-2026/thestage--neil-norman.json",
-    "tru-off-west-end-2026/thestage--sam-marlowe.json"
+    "tru-off-west-end-2026/thestage--sam-marlowe.json",
+    "table-17-off-west-end-2026/thestage--the-stage.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -354,7 +355,9 @@
       "tru-off-west-end-2026/theatre-weekly--unknown.json",
       "tru-off-west-end-2026/west-end-best-friend--unknown.json",
       "table-17-off-west-end-2026/londontheatredirect--agata-kucharska.json",
-      "tru-off-west-end-2026/liamodell--unknown.json"
+      "tru-off-west-end-2026/liamodell--unknown.json",
+      "table-17-off-west-end-2026/londonlivinglarge--london-living-large.json",
+      "table-17-off-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -365,7 +368,8 @@
       "pre-existing-condition-off-broadway-2026/cititour--unknown.json",
       "the-rocky-horror-show-2026/theatrely--unknown.json",
       "schmigadoon-2026/theatrely--unknown.json",
-      "tru-off-west-end-2026/broadwayworld--unknown.json"
+      "tru-off-west-end-2026/broadwayworld--unknown.json",
+      "tru-off-west-end-2026/whatsonstage--alex-wood.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -382,7 +386,7 @@
     ]
   },
   "startTime": "2026-09-27T15:29:12.676Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "table-17-off-west-end-2026/thestage--the-stage.json",
   "log": [
     {
       "t": "2026-09-27T21:33:10.015Z",
@@ -463,6 +467,23 @@
       "event": "bb-session",
       "session": "a67c6eb4",
       "url": "https://bachtrack.com/concert-event/the-haunted-keyboard-chelsea-table-stage-20-"
+    },
+    {
+      "t": "2026-09-28T02:01:48.445Z",
+      "event": "bb-session",
+      "session": "5be2adeb",
+      "url": "https://bachtrack.com/concert-event/the-haunted-keyboard-chelsea-table-stage-20-"
+    },
+    {
+      "t": "2026-09-28T02:02:07.086Z",
+      "event": "bb-session",
+      "session": "332f550b",
+      "url": "https://bachtrack.com/concert-event/the-haunted-keyboard-chelsea-table-stage-20-"
     }
+  ],
+  "recoveredAfterFailure": [
+    "tru-off-west-end-2026/whatsonstage--alex-wood.json",
+    "table-17-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "table-17-off-west-end-2026/londonlivinglarge--unknown.json"
   ]
 }
