@@ -203,10 +203,33 @@ function hasNamedDifferentDirectorSignal(cvIssues, cvReasoning, show, fullText) 
 function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, publishDate, cvContext) {
   let resultWpConfidence = wpConfidence;
   let resultFilmTvFlag = filmTvFlag;
+  // wrongShow (CV wrongArticle + wrongProduction → the rebuild's wrongShow
+  // family, or a classifier verdict) shares the single CV confidence field.
+  // Audit S6-T4 (BRO-4204): the in-window veto below covers it too.
+  const wsFlag = !!(cvContext && cvContext.wrongShow);
+  let resultWsConfidence = wpConfidence;
 
   const strongDifferent =
     !!(cvContext && hasStrongDifferentShowSignal(cvContext.issues, cvContext.reasoning)) ||
     !!(cvContext && hasNamedDifferentDirectorSignal(cvContext.issues, cvContext.reasoning, cvContext.show, cvContext.fullText));
+
+  // In-window + slug-match veto (audit S6-T4, BRO-4204). The 30-day rule
+  // below is the opening-week safety net; this is the run-long one: a review
+  // whose URL slug names the show, published inside the production's own run
+  // window (previews − 14d … closing + 14d, or opening ± 30d when the show
+  // has no closingDate), is about THIS production whatever the outlet's tier
+  // — tier gating stays out of the guard layer. The 2026-09 audit sample:
+  // 8 of 12 hidden T1/T2 reviews were exactly this shape. The strong-signal
+  // bypass (Schmigadoon EBT markers, Hamlet FRC named director) still wins:
+  // a slug match says which title, not which staging of it.
+  let inWindowSlugMatch = false;
+  if (!strongDifferent && cvContext && cvContext.show && cvContext.url && publishDate) {
+    inWindowSlugMatch = isInWindowSlugMatchedReview({ url: cvContext.url, publishDate }, cvContext.show);
+    if (inWindowSlugMatch) {
+      if (wpFlag) resultWpConfidence = 'low';
+      if (wsFlag) resultWsConfidence = 'low';
+    }
+  }
 
   if (!strongDifferent && openingDate && publishDate) {
     // BRO-2835: these were `new Date(...)`, which returns Invalid Date for an
@@ -228,6 +251,7 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
       const daysDiff = Math.abs((publish.getTime() - opening.getTime()) / 86400000);
       if (daysDiff <= 30) {
         if (wpFlag) resultWpConfidence = 'low';
+        if (wsFlag) resultWsConfidence = 'low';
         if (filmTvFlag) resultFilmTvFlag = false;
       }
     }
@@ -235,8 +259,10 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
 
   return {
     wpConfidence: resultWpConfidence,
+    wsConfidence: resultWsConfidence,
     filmTvFlag: resultFilmTvFlag,
     bypassedForStrongSignal: strongDifferent,
+    inWindowSlugMatch,
   };
 }
 
@@ -287,6 +313,236 @@ function isReviewWithinOwnProductionWindow(show, publishDate, opts = {}) {
   const lowerBound = startMs - leadDays * 86400000;
   const upperBound = upperMs + lagDays * 86400000;
   return publishMs >= lowerBound && publishMs <= upperBound;
+}
+
+// ---------------------------------------------------------------------------
+// In-window + slug-match veto for CV/classifier wrongProduction / wrongShow
+// flags (2026 data audit S6-T4, BRO-4204)
+// ---------------------------------------------------------------------------
+//
+// The audit sampled 12 hidden tier-1/2 reviews: 8 were in-window reviews
+// whose URL slug named the show, flagged wrongProduction or wrongShow by the
+// contentVerification pass (rebuild 'CV-promoted: …' promotions) or the
+// classify-wrong-production / classify-wrong-show LLM scripts, which read
+// truncated or context-heavy text and mistook a real review for a preview,
+// a feature, or another staging. Neither the classifier nor the rebuild's
+// promotion chain had a "published inside its own run, slug names the
+// show" veto — applyTemporalOverrides only knew opening ± 30 days.
+//
+// Wiring (all four sit on the same helper so they cannot drift):
+//   • applyTemporalOverrides (CV time, content-verifier.js): confidence → low
+//   • explainExclusion's wrongProduction / wrongShow branches (guard layer)
+//   • rebuild-all-reviews.js's inline wrongProduction / wrongShow gates
+//   • scoring-delta.js decideInclusion (the §12.7 replay)
+//
+// Scope — deliberately narrow. Only flags whose provenance IS a CV /
+// classifier verdict are vetoed (isCvSourcedWrongProduction /
+// isCvSourcedWrongShow). Date-gate flags (ingest-anticipatory-gate, the
+// pre-window date guard, cross-show URL dedup), cross-market region flags
+// (wrongProductionNote), ensemble rejections (rejectionReason), human
+// confirmations (humanReviewedWrongProduction: true) and manual reasons
+// (hamlet-off-broadway-2026's 54 backfilled reasons) are untouched. The
+// strong-signal bypass — Schmigadoon EBT markers, Hamlet FRC named-director
+// — also wins here: a slug match says which title, not which staging. And a
+// file whose CURRENT CV verdict still affirms the flag at high confidence
+// keeps it (currentCvVerdictStands — see its docstring for the corpus
+// evidence: the guard layer's vetoable population is the STALE flags, whose
+// CV was later re-verified false but never cleared on disk).
+// Measured 2026-09-28 with the real predicate over all 18,227 flagged files:
+// 510 CV/classifier flags are in-window + slug-matched; after the
+// current-verdict carve-out and the wrong-content / invalid-tier parity
+// refusal below, every remaining candidate is either already cleared (the
+// venue-rename stale class — Roundabout's American Airlines → Todd Haimes,
+// Cort → James Earl Jones, Brooks Atkinson → Lena Horne — carries
+// wrongProductionOverride from reverify-era-venue-wrongprod, 2026-07-20) or
+// still held by another rule, so the live corpus does not move. The rule's
+// value is the CV-time downgrade for new verdicts and prevention for the
+// next un-stamped promotion (scoring-delta: 0 flips; §12.7 corpus scan in
+// the BRO-4204 S6 report).
+
+/** Lead before previews (or opening when there are no previews). */
+const IN_WINDOW_VETO_LEAD_DAYS = 14;
+/** Lag after closing (or after opening when closing is the later date). */
+const IN_WINDOW_VETO_LAG_DAYS = 14;
+/** Symmetric window around opening for a show with no closingDate. */
+const IN_WINDOW_VETO_NO_CLOSING_DAYS = 30;
+
+const CV_PROMOTED_WRONG_PRODUCTION_REASON_RE = /^CV-promoted\b/;
+const CV_OR_CLASSIFIER_WRONG_SHOW_REASON_RE = /^(?:CV-promoted\b|LLM\b)/;
+
+function _stripApostrophes(s) {
+  return String(s || '').replace(/[‘’']/g, '');
+}
+
+/**
+ * Does the URL's path slug name the show? Two or more distinctive title
+ * tokens (same tokenizer as isLikelyStaleWrongShow) must appear in the slug;
+ * a title with at most one distinctive token ("Data", "Job", "The Pass",
+ * "Oh, Mary!") must appear whole — articles included — as a contiguous run
+ * of slug words, so "celebrity-sex-pass-review" does not match The Pass.
+ * Apostrophes are dropped on both sides ("Abigail's Party" ⇔ abigails-party).
+ */
+function urlSlugMatchesShowTitle(url, title) {
+  if (!url || !title) return false;
+  let pathname;
+  try { pathname = new URL(String(url)).pathname; } catch { return false; }
+  const slugText = _stripApostrophes(pathname.replace(/\.[a-z0-9]+$/i, '')).toLowerCase();
+  const cleanTitle = _stripApostrophes(title);
+  const titleTokens = _wrongShowTitleTokens(cleanTitle);
+  if (titleTokens.length >= 2) {
+    const urlTokens = new Set(_wrongShowTitleTokens(slugText));
+    let overlap = 0;
+    for (const t of titleTokens) if (urlTokens.has(t)) overlap++;
+    return overlap >= 2;
+  }
+  const phrase = cleanTitle.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  if (!phrase) return false;
+  const slugWords = ' ' + slugText.replace(/[^a-z0-9]+/g, ' ').trim() + ' ';
+  return slugWords.includes(' ' + phrase + ' ');
+}
+
+/**
+ * The veto's production window: previews − 14d … closing + 14d (via
+ * isReviewWithinOwnProductionWindow, which takes the later of opening /
+ * closing as the upper anchor), or opening ± 30d for a show with no
+ * closingDate. Same date parsers as applyTemporalOverrides (ordinal
+ * publishDates, pre-1970 openings).
+ */
+function isWithinInWindowVetoWindow(show, publishDate) {
+  if (!show || !publishDate) return false;
+  const { parseDate: pd, parseHistoricalDate: phd } = require('./date-utils');
+  const publish = publishDate instanceof Date ? publishDate : (pd(publishDate) || phd(publishDate));
+  if (!publish || isNaN(publish.getTime())) return false;
+  if (show.closingDate) {
+    return isReviewWithinOwnProductionWindow(show, publish, {
+      leadDays: IN_WINDOW_VETO_LEAD_DAYS, lagDays: IN_WINDOW_VETO_LAG_DAYS,
+    });
+  }
+  if (!show.openingDate) return false;
+  return isReviewWithinOwnProductionWindow({ openingDate: show.openingDate }, publish, {
+    leadDays: IN_WINDOW_VETO_NO_CLOSING_DAYS, lagDays: IN_WINDOW_VETO_NO_CLOSING_DAYS,
+  });
+}
+
+/**
+ * The pure date + slug test: URL slug names the show AND publishDate is
+ * inside the veto window. No provenance or strong-signal logic — callers
+ * that hold a CV verdict layer that on (cvFlagVetoedInWindow below;
+ * applyTemporalOverrides has already computed strongDifferent).
+ */
+function isInWindowSlugMatchedReview(data, show) {
+  if (!data || !show || !data.url || !data.publishDate || !show.title) return false;
+  if (!urlSlugMatchesShowTitle(data.url, show.title)) return false;
+  return isWithinInWindowVetoWindow(show, data.publishDate);
+}
+
+/**
+ * wrongProduction whose provenance is a CV promotion ('CV-promoted: …' —
+ * NOT 'CV-low-but-strong-signal', that path is the strong-signal bypass) or
+ * classify-wrong-production.js (llmClassified). A wrongProductionNote or
+ * wrongProductionDetectedBy means a date / cross-market / cross-show-URL /
+ * ingest gate set the flag; rejectionReason means the scoring ensemble did.
+ */
+function isCvSourcedWrongProduction(data) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (data.wrongProductionNote || data.wrongProductionDetectedBy) return false;
+  if (data.humanReviewedWrongProduction === true) return false;
+  if (data.rejectionReason) return false;
+  return CV_PROMOTED_WRONG_PRODUCTION_REASON_RE.test(String(data.wrongProductionReason || ''))
+    || data.llmClassified === 'wrongProduction';
+}
+
+/**
+ * wrongShow whose provenance is a CV promotion ('CV-promoted: …',
+ * 'CV-promoted (film/TV): …') or classify-wrong-show.js ('LLM: …',
+ * 'LLM (medium): …'). Same exclusions as the wrongProduction sibling.
+ */
+function isCvSourcedWrongShow(data) {
+  if (!data || data.wrongShow !== true) return false;
+  if (data.wrongShowNote) return false;
+  if (data.humanReviewedWrongShow === true) return false;
+  if (data.rejectionReason) return false;
+  return CV_OR_CLASSIFIER_WRONG_SHOW_REASON_RE.test(String(data.wrongShowReason || ''));
+}
+
+/** The strong-signal bypass, read off the file's own CV verdict. */
+function hasStrongDifferentProductionSignal(data, show) {
+  const cv = data && data.contentVerification;
+  if (!cv) return false;
+  return hasStrongDifferentShowSignal(cv.issues, cv.reasoning)
+    || hasNamedDifferentDirectorSignal(cv.issues, cv.reasoning, show, data.fullText);
+}
+
+/**
+ * Should a CV/classifier-sourced wrongProduction / wrongShow flag be treated
+ * as low-confidence (i.e. NOT exclude the review)?
+ *
+ * @param {object} data - review-texts file contents
+ * @param {object} show - shows.json entry (title + dates; creativeTeam for the named-director bypass)
+ * @param {'wrongProduction'|'wrongShow'} kind
+ * @param {{ urlFiledUnderOtherShow?: boolean }} [ctx] - callers with the
+ *   rebuild's urlShowIdsAll index pass true when the same URL is also filed
+ *   under another production: releasing this copy would double-count it
+ *   with the copy the cross-show URL dedup already kept. explainExclusion has
+ *   no index and passes nothing (a documented over-count, same class as its
+ *   other context-free limitations).
+ * @returns {boolean}
+ */
+function cvFlagVetoedInWindow(data, show, kind, ctx = {}) {
+  if (!data || !show) return false;
+  const sourced = kind === 'wrongShow' ? isCvSourcedWrongShow(data) : isCvSourcedWrongProduction(data);
+  if (!sourced) return false;
+  if (ctx && ctx.urlFiledUnderOtherShow === true) return false;
+  // The collector's / promotion's wrong-content stamps are lifted only by a
+  // real clear (explainExclusion's wrongContentFlagsUncleared and
+  // contentTierInvalid rules read the clear breadcrumbs, never this veto),
+  // and rebuild-all-reviews.js's inline loop has no gate of its own for
+  // either field — so a veto that released such a file would put it into
+  // reviews.json while every guard-layer caller still reports it excluded.
+  // Treating the flag as low-confidence is not a clear; parity wins.
+  if (data.incompleteReason === 'wrong_content' || data.contentTier === 'invalid') return false;
+  if (hasStrongDifferentProductionSignal(data, show)) return false;
+  if (currentCvVerdictStands(data, kind)) return false;
+  return isInWindowSlugMatchedReview(data, show);
+}
+
+/**
+ * The file's CURRENT contentVerification verdict affirms this same flag at
+ * high confidence — the flag is fresh, not stale, and the guard layer does
+ * not second-guess it.
+ *
+ * Why this carve-out exists (corpus scan 2026-09-28, the real predicate over
+ * all 18,227 flagged files): 510 CV/classifier flags are in-window +
+ * slug-matched; the 37 with no other exclusion split into two classes.
+ * 23 are STALE — a later CV pass flipped wrongProduction back to false
+ * ("legitimate Broadway review at the American Airlines Theatre, the
+ * correct pre-2023 name": the Roundabout / Cort / Brooks Atkinson venue
+ * renames); those already carry wrongProductionOverride from
+ * reverify-era-venue-wrongprod (2026-07-20) and are included today. 14
+ * still carry a high-confidence cv.wrongProduction naming another staging (Steppenwolf,
+ * Atlanta's Alliance, Pasadena Playhouse, Arena Stage, the National
+ * Theatre…) — and their publishDates sit on opening night / opening + 1,
+ * i.e. the aggregator's stamped date, so "inside the run window" says
+ * nothing about them; about half are real wrong-production reviews
+ * (tuck-everlasting-2016/variety is the 2015 Atlanta review, this-is-our-
+ * youth-2014/timeout is the Chicago page). A veto that released them would
+ * put pans of other productions into live scores. Those verdicts were
+ * written by bulk re-verification, outside applyTemporalOverrides — the
+ * CV-time path keeps downgrading (it runs before the verdict is stored,
+ * exactly like the 30-day opening-week rule it extends).
+ *
+ * For wrongShow the CV shape behind the flag is wrongArticle (and/or
+ * wrongProduction); a high-confidence wrongArticle that no human has
+ * cleared is explainExclusion's own cvWrongArticleHighConfidence rule, so
+ * releasing the wrongShow flag under it would only move the exclusion, and
+ * the rebuild's inline loop (which has no such rule) would diverge.
+ */
+function currentCvVerdictStands(data, kind) {
+  const cv = data && data.contentVerification;
+  if (!cv || cv.confidence !== 'high') return false;
+  if (cv.wrongProduction === true) return true;
+  if (kind === 'wrongShow' && cv.wrongArticle === true && !cvWrongArticleManuallyCleared(data)) return true;
+  return false;
 }
 
 /**
@@ -3382,13 +3638,19 @@ function explainExclusion(data, show, filePath) {
   // was missed by both task #1017 fix commits (e8f88878b24, aa65ba15880),
   // which only touched the 3 downstream gates below. A file with a fresh
   // auto-clear stamp never reached those — it was excluded right here.)
+  //
+  // In-window + slug-match veto (audit S6-T4, BRO-4204): a CV/classifier-
+  // sourced flag on a review whose URL slug names the show, published inside
+  // the production's own run window, is a low-confidence flag — it does not
+  // exclude. Mirrored by rebuild-all-reviews.js's inline gate and
+  // scoring-delta.js; see cvFlagVetoedInWindow for the provenance scope.
   if (data.wrongProduction === true) {
     const cleared =
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||
       data.humanReviewedWrongProduction === false ||
       isFreshWpAutoCleared(data);
-    if (!cleared) return 'wrongProduction';
+    if (!cleared && !cvFlagVetoedInWindow(data, show, 'wrongProduction')) return 'wrongProduction';
   }
 
   // wrongShow — manual clears via wrongShowCleared() (5-flag check, single
@@ -3402,8 +3664,12 @@ function explainExclusion(data, show, filePath) {
   // set but the data + URL signals strongly indicate a real review of THIS
   // show, isLikelyStaleWrongShow defers to the rebuild. Conservative — see
   // helper docstring for the full filter chain.
+  //
+  // In-window + slug-match veto (audit S6-T4): same rule as the
+  // wrongProduction branch above, for CV-promoted / classifier wrongShow.
   if (data.wrongShow === true) {
-    if (!wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)) return 'wrongShow';
+    if (!wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)
+        && !cvFlagVetoedInWindow(data, show, 'wrongShow')) return 'wrongShow';
   }
   if (data.wrongAttribution === true) return 'wrongAttribution';
   // outletDomainUnvalidated (task #1926, paranormal-activity-2026 incident):
@@ -4549,6 +4815,17 @@ module.exports = {
   pickBestDtliSlug,
   applyTemporalOverrides,
   isReviewWithinOwnProductionWindow,
+  // In-window + slug-match veto (audit S6-T4)
+  IN_WINDOW_VETO_LEAD_DAYS,
+  IN_WINDOW_VETO_LAG_DAYS,
+  IN_WINDOW_VETO_NO_CLOSING_DAYS,
+  urlSlugMatchesShowTitle,
+  isWithinInWindowVetoWindow,
+  isInWindowSlugMatchedReview,
+  isCvSourcedWrongProduction,
+  isCvSourcedWrongShow,
+  currentCvVerdictStands,
+  cvFlagVetoedInWindow,
   isSameTitleDifferentYearFalsePositive,
   isPrematureReviewForUnopenedShow,
   PRE_OPENING_LEAD_DAYS,

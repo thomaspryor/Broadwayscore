@@ -1068,8 +1068,22 @@ function decideInclusion(review, show, guards) {
     } catch {}
   }
 
-  if (review.wrongShow === true && !wrongShowCleared) return { included: false, reason: 'wrongShow' };
-  if (review.wrongProduction === true && !wrongProductionCleared) return { included: false, reason: 'wrongProduction' };
+  // In-window + slug-match veto (audit S6-T4, BRO-4204): mirrors review-guards.js
+  // explainExclusion and rebuild-all-reviews.js's inline wrongProduction /
+  // wrongShow gates — a CV/classifier-sourced flag on a review whose URL slug
+  // names the show, published inside the production's own run window, is a
+  // low-confidence flag (not excluded). Optional-typed: the baseline may
+  // predate cvFlagVetoedInWindow, in which case the baseline side keeps
+  // excluding and a veto-driven inclusion shows up as a flip here.
+  const inWindowVetoed = (kind) => {
+    if (typeof guards.cvFlagVetoedInWindow !== 'function') return false;
+    const k = urlKeyForCrossShowIndex(review.url, guards);
+    return guards.cvFlagVetoedInWindow(review, show, kind, {
+      urlFiledUnderOtherShow: !!k && (getUrlShowIdsAll(guards).get(k) || new Set()).size > 1,
+    });
+  };
+  if (review.wrongShow === true && !wrongShowCleared && !inWindowVetoed('wrongShow')) return { included: false, reason: 'wrongShow' };
+  if (review.wrongProduction === true && !wrongProductionCleared && !inWindowVetoed('wrongProduction')) return { included: false, reason: 'wrongProduction' };
   // Flat/unconditional, matching isIncludableForRebuild (review-guards.js) and
   // rebuild-all-reviews.js:3305 — no auto-clear path exists for this field
   // (unlike wrongShow/wrongProduction above). crossOutletVerified/
@@ -1532,6 +1546,11 @@ function main() {
       status: s.status || 'open',
       priorRuns: s.priorRuns || null,
       tourLegs: s.tourLegs || null,
+      // title + creativeTeam (audit S6-T4, BRO-4204): read by the
+      // cvFlagVetoedInWindow replay in decideInclusion — the URL-slug ⇔ title
+      // match and the named-different-director strong-signal bypass.
+      title: s.title || null,
+      creativeTeam: s.creativeTeam || null,
     });
   }
 

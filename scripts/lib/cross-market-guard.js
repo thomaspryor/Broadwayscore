@@ -545,6 +545,217 @@ function evaluateUrlPathCrossMarketGuard({ urlPathImpliesOppositeMarket, opposit
   return { shouldFlag: true, exemptedByPriorRun: false, matchedVenue: null };
 }
 
+// ---------------------------------------------------------------------------
+// Null-URL aggregator-relay guard (2026 data audit S6-T1, BRO-4204)
+// ---------------------------------------------------------------------------
+//
+// Dual-market outlets (everything `isDualMarket: true` in the registry —
+// Variety, FT, The Times, Guardian, Daily Mail, The Stage, WhatsOnStage …)
+// are exempt from BOTH region guards above by design: they legitimately
+// review both markets, so their region says nothing about which production
+// a file covers. The URL-based guards (URL-path cross-market, cross-show URL
+// dedup, isUkUrl) then carry the load — and every one of them is a no-op
+// when the file has NO URL. Theatre Record relays are exactly that shape:
+// source 'theatre-record', url null, text + critic + date only. The 2026-04
+// relays of the London Harold Pinter "Romeo and Juliet" (Marmion, Hemming,
+// Saville, Davis, Clapp, Marlowe, Crompton, Shafer, Marcolina) were rerouted
+// onto romeo-and-juliet-off-broadway-2026 (the Delacorte production) by a
+// same-title/same-year reroute and no guard could see them: nine West End
+// reviews scored a NYC show.
+//
+// The signal that IS available with no URL: the same critic has a review of
+// the same-title production in the OTHER market within days of this file's
+// publishDate, and that other show's run window contains the date while
+// this show's does not. A critic does not review two productions of one
+// title in two cities in the same week; the copy sitting outside its own
+// run window is the relay of the other city's review.
+//
+// Symmetry matters (corpus scan 2026-09-28: 283 dual-market null-URL relay
+// files with a same-critic other-market sibling; the 23 unflagged ones were
+// ALL the legitimate West End side of a pair, e.g. the-playboy-of-the-
+// western-world-west-end-2025/daily-mail--robert-gore-langton.json, whose
+// sibling sits in the already-flagged 1971 NYC folder). "A sibling exists in
+// the other market" is true of BOTH copies; without the run-window test the
+// rule would exclude the real review along with the relay. Hence
+// findSiblingInOtherMarket only returns a sibling when THIS show's run
+// window excludes the date and the sibling's run window includes it.
+
+/**
+ * `source` values that mean the file was created from an aggregator's relay
+ * of another outlet's review (often with no URL of its own). Kept
+ * self-contained — this file has no top-level requires so scoring-delta's
+ * per-side sandbox can load it standalone — and pinned by
+ * tests/unit/cross-market-null-url.test.mjs to stay a superset of
+ * aggregator-domains.js's isAggregatorReviewSource so the two cannot drift.
+ * Prefix semantics (startsWith) mirror that function: 'lbo' also covers
+ * 'lbo-roundup', 'show-score' also covers 'show-score-playwright'.
+ */
+const AGGREGATOR_RELAY_SOURCE_PREFIXES = [
+  'theatre-record',
+  'westendtheatre', 'theatre-reviews', 'stagedoor', 'thestage-roundup', 'lbo',
+  'show-score', 'dtli', 'bww-roundup', 'bww-reviews', 'nyc-theatre', 'playbill-verdict',
+];
+
+function isAggregatorRelaySource(source) {
+  if (!source || typeof source !== 'string') return false;
+  const s = source.toLowerCase();
+  return AGGREGATOR_RELAY_SOURCE_PREFIXES.some((p) => s.startsWith(p));
+}
+
+/** Title key for same-title matching: lowercase alphanumerics only. */
+function normalizeTitleKey(title) {
+  return String(title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+/** Critic key; null for the unknown/unnamed placeholders (never a match). */
+function normalizeCriticKey(name) {
+  const k = String(name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (!k || k === 'unknown' || k === 'unnamed' || k === 'staff') return null;
+  return k;
+}
+
+/**
+ * The two markets this guard reasons about. Regional / tour / other
+ * categories return null — they are neither side of a West End ⟷ NYC pair.
+ */
+function crossMarketOfCategory(category) {
+  const cat = String(category || 'broadway').toLowerCase();
+  if (cat === 'west-end' || cat === 'off-west-end') return 'uk';
+  if (cat === 'broadway' || cat === 'off-broadway') return 'us';
+  return null;
+}
+
+const RELAY_RUN_WINDOW_GRACE_DAYS = 14;
+const RELAY_RUN_WINDOW_NO_CLOSING_DAYS = 365;
+const RELAY_SIBLING_TOLERANCE_DAYS = 3;
+
+/**
+ * A production's run window for the relay guard: [earliest of previews /
+ * opening − 14d, end + 14d], where end is closingDate, or "now" for a show
+ * still open / in previews (a 2021 Times review of the 1986 West End Phantom
+ * is inside that show's run), or opening + 365d for a closed show with no
+ * closingDate. Returns null when the show carries no start date at all —
+ * unknown, which the caller must never read as "outside".
+ */
+function relayRunWindow(show, nowMs = Date.now()) {
+  if (!show) return null;
+  const starts = [show.previewsStartDate, show.previewDate, show.openingDate]
+    .map((v) => (v ? new Date(v).getTime() : NaN))
+    .filter((v) => !isNaN(v));
+  if (!starts.length) return null;
+  const startMs = Math.min(...starts);
+  const latestStartMs = Math.max(...starts);
+  const closeMs = show.closingDate ? new Date(show.closingDate).getTime() : NaN;
+  const status = String(show.status || '').toLowerCase();
+  let endMs;
+  if (!isNaN(closeMs)) endMs = Math.max(closeMs, latestStartMs);
+  else if (status === 'open' || status === 'previews') endMs = Math.max(nowMs, latestStartMs);
+  else endMs = latestStartMs + RELAY_RUN_WINDOW_NO_CLOSING_DAYS * 86400000;
+  const grace = RELAY_RUN_WINDOW_GRACE_DAYS * 86400000;
+  return { startMs: startMs - grace, endMs: endMs + grace };
+}
+
+/** true / false, or null when the show's window is unknown. */
+function relayRunWindowContains(show, publishMs, nowMs = Date.now()) {
+  const w = relayRunWindow(show, nowMs);
+  if (!w || !Number.isFinite(publishMs)) return null;
+  return publishMs >= w.startMs && publishMs <= w.endMs;
+}
+
+/**
+ * (normalized title → market → critic) index of every review file's
+ * publishDate, built once per rebuild from ALL show directories (flagged
+ * files included — a flagged sibling still fails the run-window test below,
+ * and the legitimate side of a pair is usually unflagged).
+ *
+ * @param {Array<{showId:string, file?:string, criticName?:string, publishDate?:string, show:object}>} entries
+ *   `show` is the shows.json entry (title, category, dates, status).
+ * @param {(v:any)=>Date|null} [parseDateFn] - date-utils parseDate; falls back to new Date()
+ * @returns {Map<string, Array<{showId:string, file:string|null, publishMs:number, show:object}>>}
+ */
+function buildCrossMarketCriticIndex(entries, parseDateFn) {
+  const index = new Map();
+  for (const e of entries || []) {
+    if (!e || !e.show) continue;
+    const market = crossMarketOfCategory(e.show.category);
+    if (!market) continue;
+    const titleKey = normalizeTitleKey(e.show.title);
+    const criticKey = normalizeCriticKey(e.criticName);
+    if (!titleKey || !criticKey) continue;
+    const parsed = parseDateFn ? parseDateFn(e.publishDate) : (e.publishDate ? new Date(e.publishDate) : null);
+    const publishMs = parsed ? new Date(parsed).getTime() : NaN;
+    if (isNaN(publishMs)) continue;
+    const key = `${titleKey}|${market}|${criticKey}`;
+    if (!index.has(key)) index.set(key, []);
+    index.get(key).push({ showId: e.showId, file: e.file || null, publishMs, show: e.show });
+  }
+  return index;
+}
+
+/**
+ * The same critic's review of the same-title production in the OTHER
+ * market, published within RELAY_SIBLING_TOLERANCE_DAYS of this file — but
+ * only when this show's own run window EXCLUDES the publishDate and the
+ * sibling show's run window INCLUDES it (the symmetry breaker described in
+ * the section comment). Returns null otherwise, including when either
+ * window is unknown.
+ *
+ * @param {Map} index - from buildCrossMarketCriticIndex
+ * @param {{ show: object, criticName?: string, publishDate?: string }} file
+ * @param {{ parseDate?: Function, toleranceDays?: number, nowMs?: number }} [opts]
+ * @returns {{ showId: string, file: string|null, publishMs: number, diffDays: number }|null}
+ */
+function findSiblingInOtherMarket(index, { show, criticName, publishDate } = {}, opts = {}) {
+  if (!index || !show) return null;
+  const market = crossMarketOfCategory(show.category);
+  if (!market) return null;
+  const titleKey = normalizeTitleKey(show.title);
+  const criticKey = normalizeCriticKey(criticName);
+  if (!titleKey || !criticKey) return null;
+  const parsed = opts.parseDate ? opts.parseDate(publishDate) : (publishDate ? new Date(publishDate) : null);
+  const publishMs = parsed ? new Date(parsed).getTime() : NaN;
+  if (isNaN(publishMs)) return null;
+  const nowMs = Number.isFinite(opts.nowMs) ? opts.nowMs : Date.now();
+  if (relayRunWindowContains(show, publishMs, nowMs) !== false) return null;
+  const tolMs = (Number.isFinite(opts.toleranceDays) ? opts.toleranceDays : RELAY_SIBLING_TOLERANCE_DAYS) * 86400000;
+  const other = market === 'us' ? 'uk' : 'us';
+  let best = null;
+  for (const c of index.get(`${titleKey}|${other}|${criticKey}`) || []) {
+    if (c.showId === show.id) continue;
+    const diffMs = Math.abs(c.publishMs - publishMs);
+    if (diffMs > tolMs) continue;
+    if (relayRunWindowContains(c.show, c.publishMs, nowMs) !== true) continue;
+    if (!best || diffMs < best.diffMs) {
+      best = { showId: c.showId, file: c.file, publishMs: c.publishMs, diffMs, diffDays: Math.round(diffMs / 86400000) };
+    }
+  }
+  return best;
+}
+
+/**
+ * Pure classifier: should a URL-less review on a dual-market outlet be
+ * excluded as the relay of the other market's review?
+ *
+ * @param {object} a
+ * @param {boolean} a.hasUrl - the file carries a URL (the URL guards apply instead)
+ * @param {boolean} a.outletIsDualMarket - registry isDualMarket (the region guards apply otherwise)
+ * @param {object|boolean|null} a.siblingInOtherMarket - findSiblingInOtherMarket()'s result (or a boolean)
+ * @param {string|null|undefined} a.source - the file's `source`
+ * @returns {{ shouldFlag: boolean, reason: string }}
+ */
+function classifyDualMarketNullUrl({ hasUrl, outletIsDualMarket, siblingInOtherMarket, source } = {}) {
+  if (hasUrl) return { shouldFlag: false, reason: 'has-url: the URL-based cross-market guards apply' };
+  if (!outletIsDualMarket) return { shouldFlag: false, reason: 'not-dual-market: the region-based cross-market guards apply' };
+  if (!isAggregatorRelaySource(source)) return { shouldFlag: false, reason: `not-an-aggregator-relay: source "${source || ''}"` };
+  if (!siblingInOtherMarket) return { shouldFlag: false, reason: 'no-cross-market-sibling' };
+  const sib = typeof siblingInOtherMarket === 'object' && siblingInOtherMarket ? siblingInOtherMarket : null;
+  const where = sib ? ` (${sib.showId}${sib.file ? '/' + sib.file : ''}, ${sib.diffDays ?? 0}d apart)` : '';
+  return {
+    shouldFlag: true,
+    reason: `Cross-market null-URL relay: "${source}" relay with no URL; the same critic reviewed the same-title production in the other market${where} and this show's run window does not contain the publish date`,
+  };
+}
+
 module.exports = {
   UK_SIDE_REGIONS,
   UK_SELF_HEAL_REGIONS,
@@ -562,4 +773,18 @@ module.exports = {
   evaluateForwardCrossMarketGuard,
   evaluateReverseLondonCrossMarketGuard,
   evaluateUrlPathCrossMarketGuard,
+  // Null-URL aggregator-relay guard (audit S6-T1)
+  AGGREGATOR_RELAY_SOURCE_PREFIXES,
+  RELAY_RUN_WINDOW_GRACE_DAYS,
+  RELAY_RUN_WINDOW_NO_CLOSING_DAYS,
+  RELAY_SIBLING_TOLERANCE_DAYS,
+  isAggregatorRelaySource,
+  normalizeTitleKey,
+  normalizeCriticKey,
+  crossMarketOfCategory,
+  relayRunWindow,
+  relayRunWindowContains,
+  buildCrossMarketCriticIndex,
+  findSiblingInOtherMarket,
+  classifyDualMarketNullUrl,
 };
