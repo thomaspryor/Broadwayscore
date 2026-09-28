@@ -1062,3 +1062,24 @@ test('NOWRAPUP: ECONNREFUSED in a retried-but-successful close-out is not a refu
   assertAllowed(r, 'REFUSED must be word-anchored');
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+// Linear has no "Paused" state: linear-brain rejects `--state Paused` with ❌,
+// and a pause is `--state Backlog` (what `report --status=paused` sets).
+test('NOWRAPUP: linear-brain --state Backlog is a close-out → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-backlog');
+  const closeout = toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-9007 --state Backlog --comment "parked"' }, 'ISSUE-UPDATED: BRO-9007 — state=Backlog — commented');
+  const transcript = writeTranscript(dir, [GIT_PUSH, closeout]);
+  const r = runHook(transcript, 'Pushed and parked.\n\nSAFE TO EXIT — card parked.');
+  assertAllowed(r, 'Backlog is how Linear spells a pause');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('NOWRAPUP: linear-brain --state Paused (rejected by Linear) is not a close-out → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-paused-rejected');
+  const closeout = toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-9008 --state Paused' }, '❌ unknown state "Paused". Valid states: In Review, Canceled, Todo, Backlog, Duplicate, Done, In Progress');
+  const transcript = writeTranscript(dir, [GIT_PUSH, closeout]);
+  const r = runHook(transcript, 'Pushed and paused.\n\nSAFE TO EXIT — card paused.');
+  assertBlocked(r, 'a rejected state change left the card open');
+  assert.match(r.stderr, /status=paused/, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});

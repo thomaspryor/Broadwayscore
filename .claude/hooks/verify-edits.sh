@@ -172,7 +172,9 @@ def _strip_heredocs(cmd: str) -> str:
 # --outcome/--notes values, per CLAUDE.md's heredoc commit-message rule) —
 # without it, shlex.split would raise on essentially every real invocation.
 # Linear replaced the Notion board (CLAUDE.md §6): `linear-brain.js update
-# BRO-N --state Done|Paused` is the same close-out, spelled --state. Before
+# BRO-N --state Done` is the same close-out, spelled --state. Linear has no
+# "Paused" state (linear-brain rejects it); a pause is --state Backlog, which
+# is what `linear-session.js report --status=paused` sets. Before
 # 2026-09-27 only notion-brain.js counted, so a session that closed out on
 # Linear could never honestly claim SAFE TO EXIT and fell back to "NOT SAFE
 # TO EXIT — waiting on your merge" (the owner-merge ask OWNERMERGE blocks).
@@ -201,6 +203,11 @@ def _board_closeout_status(cmd):
             if tok.startswith(flag + '='):
                 return tok.split('=', 1)[1].strip().lower()
     return None
+
+# Close-out values across the three CLIs: done/paused (notion-brain --status,
+# linear-session report --status) and Linear's real state names for a
+# finished or parked card (linear-brain --state).
+_CLOSEOUT_STATES = ('done', 'paused', 'backlog', 'canceled', 'duplicate')
 
 # A Done the board's own gate refused (linear-brain exit 5 "❌", linear-session
 # "REFUSED" / doneGateRefused:true) left the card open — it is not a close-out.
@@ -670,7 +677,7 @@ if os.environ.get('WRAPUP_GATE_DISABLE', '0') != '1':
                     _name2, _inp2, _tid2 = _payload2
                     if _name2 == 'Bash':
                         _status_val = _board_closeout_status(_inp2.get('command') or '')
-                        if (_status_val in ('done', 'paused')
+                        if (_status_val in _CLOSEOUT_STATES
                                 and not _CLOSEOUT_REFUSED_RE.search(tool_results_by_id.get(_tid2, '') or '')):
                             _wrapup_closed_out = True
                             break
@@ -1502,7 +1509,7 @@ if [[ "$result" == "NOCARD" ]]; then
 fi
 
 if [[ "$result" == "NOWRAPUP" ]]; then
-  echo "🛑 BLOCKED: claiming SAFE TO EXIT after real work, but this session's Linear card was never closed out after that work. Run: node scripts/linear-brain.js update BRO-N --state Done (needs a PR-EVIDENCE line or an Acceptance-criteria check; a refused update doesn't count) or --state Paused; for a claimed issue, node scripts/linear-session.js report --issue=BRO-N --status=done|paused. Invoking /wrap-up alone is not proof. Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: claiming SAFE TO EXIT after real work, but this session's Linear card was never closed out after that work. Run: node scripts/linear-brain.js update BRO-N --state Done (needs a PR-EVIDENCE line or an Acceptance-criteria check; a refused update doesn't count). To pause, or when Done is refused (cloud clones are shallow, so PR-EVIDENCE can't be verified there): node scripts/linear-session.js report --issue=BRO-N --status=paused --summary=\"...\" (Linear has no Paused state; this sets Backlog). Invoking /wrap-up alone is not proof. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 
