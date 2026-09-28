@@ -504,6 +504,8 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Description:** Replace the hardcoded 75/30 thresholds; add a regression test.
 - **Acceptance criteria:** VERIFY: test: 74 maps to Positive, 48 to Negative
 
+> **Delegated 2026-09-28:** S6-T8a through S6-T8e are owned by a separate session (owner handed it a standalone prompt). This session does not touch scripts/lib/text-quality.js, scripts/lib/llm-confidence.js, the adjudication queue, or the rescore flag until that session reports back on BRO-4204. S6-T8f (residual weighting) stays here.
+
 ### Task S6-T8a: Diagnose the confidence cap on unanimous verdicts (owner D4: attack the root cause)
 - **Complexity:** S | **Depends on:** None | **Parallel:** Yes
 - **Files:** scratchpad script only (reads /home/user/broadway-review-texts; calls `scripts/lib/text-quality.js getBestTextForScoring` and `scripts/lib/llm-confidence.js capLlmConfidence` offline, no model calls)
