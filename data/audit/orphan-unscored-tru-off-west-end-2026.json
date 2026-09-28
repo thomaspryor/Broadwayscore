@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "tru-off-west-end-2026",
   "openingDate": "2026-09-27",
-  "detectedAt": "2026-09-28T00:32:43.495Z",
+  "detectedAt": "2026-09-28T01:03:33.948Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -57,23 +57,6 @@
       "eligibilityReason": null
     },
     {
-      "file": "timeout-london--unknown.json",
-      "outletId": "timeout-london",
-      "criticName": "Unknown",
-      "url": "https://www.timeout.com/london/theatre/tru",
-      "fullTextLen": 2089,
-      "dispatchActionable": false,
-      "skipReason": "not_scoreable",
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
-    },
-    {
       "file": "west-end-best-friend--unknown.json",
       "outletId": "west-end-best-friend",
       "criticName": "News Desk",
@@ -108,9 +91,9 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 6,
+  "orphanCount": 5,
   "dispatchableOrphanCount": 0,
-  "blockedOrphanCount": 6,
+  "blockedOrphanCount": 5,
   "blockBroadcast": true,
   "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
