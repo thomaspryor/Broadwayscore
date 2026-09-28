@@ -694,6 +694,12 @@ jobs:
           # discovery-source-coverage.json fix above, ship-check finding).
           git add data/audit/discovery-reconciliation-log.json 2>/dev/null || true
           git add data/audit/playbill-broadway-last-success.json 2>/dev/null || true
+          # S4-T4/T5 (2026 data audit): per-source last-success markers and the
+          # Theatremonkey show-page venue cache — without these three the cache
+          # never fills across runs and the empty-parse streaks never accumulate.
+          git add data/audit/olt-last-success.json 2>/dev/null || true
+          git add data/audit/theatremonkey-last-success.json 2>/dev/null || true
+          git add data/audit/theatremonkey-venue-cache.json 2>/dev/null || true
           git add data/audit/broadway-source-coverage-gaps.json 2>/dev/null || true
           git add data/audit/broadway-source-coverage-state.json 2>/dev/null || true
           # OB + OWE venue-page staging (BRO-182 adversarial review, 2026-08-26):

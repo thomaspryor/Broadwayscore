@@ -236,12 +236,15 @@ const NON_THEATER_PATTERNS = [
 // work-in-progress nights, venue "events" listings and sports double-headers.
 // A word-anchored regex rather than more NON_THEATER_PATTERNS substrings so
 // 'festival' cannot hit "Festen" and 'panel' cannot hit "Panelbeater".
+// Concert-tour titles ("Rachel Zegler – Live in London", "X in Concert") added
+// after the S4-T5 Theatremonkey dry-run admitted one at @sohoplace; 0 tracked
+// titles match either form (corpus check 2026-09-28).
 // Corpus-checked 2026-09-28 against every title in shows.json (3,073 rows):
 // each token hits only the audit's junk rows (Kilburn High Road Festival,
 // Migrant Qa Panel, Nt Live All My Sons 12a Tbc, Stiles Drewe Best New Song
 // Prize 2026, Edinburgh Fringe Comedy Previews, Rosie Jones: Anyone But Me
 // (WIP), Bar Events, Barbarians v Wales Double Header) and nothing tracked.
-const NON_THEATRE_TITLE_RE = /^nt live\b|\bfestival\b|\bpanel\b|\bq ?& ?a\b|\bqa\b|\bscreening\b|\bprize\b|\(wip\)|\bwork[- ]in[- ]progress\b|\bcomedy previews\b|\bfringe previews\b|\bdouble header\b|^(?:bar|venue|special) events\b/i;
+const NON_THEATRE_TITLE_RE = /^nt live\b|\blive in (?:london|new york|concert)\b|\bin concert\b|\bfestival\b|\bpanel\b|\bq ?& ?a\b|\bqa\b|\bscreening\b|\bprize\b|\(wip\)|\bwork[- ]in[- ]progress\b|\bcomedy previews\b|\bfringe previews\b|\bdouble header\b|^(?:bar|venue|special) events\b/i;
 
 // TodayTix top-level categories that are never a staged production. Checked
 // on the raw TodayTix object (`show.category.name`); the same value is written
