@@ -1,66 +1,47 @@
 {
-  "generatedAt": "2026-09-21T17:14:16.665Z",
-  "verdict": "regressed",
-  "reason": "onDisk: recall 0.722 vs 0.881 median over 4 prior run(s) — down 0.159 (threshold 0.15), yield 3.25 vs 19.15 URLs/show; onDisk: recall 0.722 vs 0.881 median over 4 prior run(s) — down 0.159 (threshold 0.15), yield 3.25 vs 19.15 URLs/show",
-  "regressions": [
-    {
-      "level": "families",
-      "arm": "onDisk",
-      "baseline": 0.881,
-      "current": 0.722,
-      "drop": 0.159,
-      "rule": "week-on-week",
-      "reason": "recall 0.722 vs 0.881 median over 4 prior run(s) — down 0.159 (threshold 0.15), yield 3.25 vs 19.15 URLs/show"
-    },
-    {
-      "level": "arms",
-      "arm": "onDisk",
-      "baseline": 0.881,
-      "current": 0.722,
-      "drop": 0.159,
-      "rule": "week-on-week",
-      "reason": "recall 0.722 vs 0.881 median over 4 prior run(s) — down 0.159 (threshold 0.15), yield 3.25 vs 19.15 URLs/show"
-    }
-  ],
+  "generatedAt": "2026-09-28T18:46:53.372Z",
+  "verdict": "ok",
+  "reason": "3 search method(s) within 0.15 of their 4-run median",
+  "regressions": [],
   "comparedArms": 3,
-  "trendEntries": 5,
+  "trendEntries": 6,
   "latest": {
-    "date": "2026-09-21",
-    "generatedAt": "2026-09-21T17:14:16.665Z",
+    "date": "2026-09-28",
+    "generatedAt": "2026-09-28T18:46:53.372Z",
     "naivePages": 2,
-    "shows": 4,
+    "shows": 3,
     "excluded": {
-      "settling": 1
+      "settling": 2
     },
-    "truthUrls": 18,
-    "onDiskUrls": 13,
-    "newFromNaive": 5,
+    "truthUrls": 54,
+    "onDiskUrls": 52,
+    "newFromNaive": 2,
     "families": {
-      "naive": 0.778,
-      "onDisk": 0.722,
-      "scoped": 0.222
+      "naive": 0.296,
+      "onDisk": 0.963,
+      "scoped": 0.185
     },
     "arms": {
-      "naive-p0": 0.5,
-      "naive-p1": 0.389,
-      "onDisk": 0.722,
-      "scoped-q0": 0.111,
-      "scoped-q1": 0.167,
-      "scoped-q2": 0.167
+      "naive-p0": 0.204,
+      "naive-p1": 0.111,
+      "onDisk": 0.963,
+      "scoped-q0": 0.074,
+      "scoped-q1": 0.093,
+      "scoped-q2": 0.093
     },
-    "combinedRecall": 0.722,
+    "combinedRecall": 0.963,
     "familyYield": {
-      "naive": 3.5,
-      "onDisk": 3.25,
-      "scoped": 1
+      "naive": 5.333,
+      "onDisk": 17.333,
+      "scoped": 3.333
     },
     "armYield": {
-      "naive-p0": 2.25,
-      "naive-p1": 1.75,
-      "onDisk": 3.25,
-      "scoped-q0": 0.5,
-      "scoped-q1": 0.75,
-      "scoped-q2": 0.75
+      "naive-p0": 3.667,
+      "naive-p1": 2,
+      "onDisk": 17.333,
+      "scoped-q0": 1.333,
+      "scoped-q1": 1.667,
+      "scoped-q2": 1.667
     },
     "armsFailed": {
       "naive-p0": 0,
@@ -73,20 +54,28 @@
     "unavailableArms": [],
     "byCategory": {
       "off-broadway": {
-        "shows": 4,
-        "truthUrls": 18,
+        "shows": 2,
+        "truthUrls": 34,
         "families": {
-          "naive": 0.778,
-          "onDisk": 0.722,
-          "scoped": 0.222
+          "naive": 0.294,
+          "onDisk": 0.971,
+          "scoped": 0
+        }
+      },
+      "off-west-end": {
+        "shows": 1,
+        "truthUrls": 20,
+        "families": {
+          "naive": 0.3,
+          "onDisk": 0.95,
+          "scoped": 0.5
         }
       }
     },
     "sampleIds": [
-      "spandex-off-broadway-2026",
-      "the-hope-theory-off-broadway-2026",
-      "gimme-a-sign-off-broadway-2026",
-      "conflicted-off-broadway-2026"
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026",
+      "tru-off-west-end-2026",
+      "midnight-off-broadway-2026"
     ]
   }
 }
