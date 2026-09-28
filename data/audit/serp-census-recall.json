@@ -1,576 +1,168 @@
 {
-  "generatedAt": "2026-09-21T17:14:16.665Z",
+  "generatedAt": "2026-09-28T18:46:53.372Z",
   "naivePages": 2,
   "settlingHours": 24,
   "totals": {
-    "shows": 4,
+    "shows": 3,
     "excluded": [
       {
-        "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+        "showId": "degenerates-off-broadway-2026",
         "state": "settling",
-        "reason": "opened 17h ago (<24h) — SERP indexing still settling"
+        "reason": "opened 19h ago (<24h) — SERP indexing still settling"
+      },
+      {
+        "showId": "school-girls-or-the-african-mean-girls-play-2026",
+        "state": "settling",
+        "reason": "opened 19h ago (<24h) — SERP indexing still settling"
       }
     ],
-    "undatedCandidates": 6,
-    "truthUrls": 18,
-    "scopedUrls": 4,
-    "naiveUrls": 14,
-    "onDiskUrls": 13,
-    "newFromNaive": 5,
+    "undatedCandidates": 2,
+    "truthUrls": 54,
+    "scopedUrls": 10,
+    "naiveUrls": 16,
+    "onDiskUrls": 52,
+    "newFromNaive": 2,
     "perArm": {
       "naive-p0": {
-        "found": 9,
-        "queries": 4,
+        "found": 11,
+        "queries": 3,
         "failed": 0,
-        "recall": 0.5
+        "recall": 0.204
       },
       "naive-p1": {
-        "found": 7,
-        "queries": 4,
-        "failed": 0,
-        "recall": 0.389
-      },
-      "onDisk": {
-        "found": 13,
-        "queries": 4,
-        "failed": 0,
-        "recall": 0.722
-      },
-      "scoped-q0": {
-        "found": 2,
-        "queries": 4,
+        "found": 6,
+        "queries": 3,
         "failed": 0,
         "recall": 0.111
       },
-      "scoped-q1": {
-        "found": 3,
-        "queries": 4,
-        "failed": 0,
-        "recall": 0.167
-      },
-      "scoped-q2": {
-        "found": 3,
+      "onDisk": {
+        "found": 52,
         "queries": 3,
         "failed": 0,
-        "recall": 0.167
+        "recall": 0.963
+      },
+      "scoped-q0": {
+        "found": 4,
+        "queries": 3,
+        "failed": 0,
+        "recall": 0.074
+      },
+      "scoped-q1": {
+        "found": 5,
+        "queries": 3,
+        "failed": 0,
+        "recall": 0.093
+      },
+      "scoped-q2": {
+        "found": 5,
+        "queries": 2,
+        "failed": 0,
+        "recall": 0.093
       }
     },
     "perFamily": {
       "naive": {
-        "found": 14,
+        "found": 16,
         "arms": 2,
         "failed": 0,
-        "recall": 0.778
+        "recall": 0.296
       },
       "onDisk": {
-        "found": 13,
+        "found": 52,
         "arms": 1,
         "failed": 0,
-        "recall": 0.722
+        "recall": 0.963
       },
       "scoped": {
-        "found": 4,
+        "found": 10,
         "arms": 3,
         "failed": 0,
-        "recall": 0.222
+        "recall": 0.185
       }
     },
     "byCategory": {
       "off-broadway": {
-        "shows": 4,
-        "truthUrls": 18,
+        "shows": 2,
+        "truthUrls": 34,
         "families": {
           "naive": {
-            "found": 14,
+            "found": 10,
             "arms": 2,
             "failed": 0,
-            "recall": 0.778
+            "recall": 0.294
           },
           "onDisk": {
-            "found": 13,
+            "found": 33,
             "arms": 1,
             "failed": 0,
-            "recall": 0.722
+            "recall": 0.971
           },
           "scoped": {
-            "found": 4,
+            "found": 0,
             "arms": 3,
             "failed": 0,
-            "recall": 0.222
+            "recall": 0
+          }
+        }
+      },
+      "off-west-end": {
+        "shows": 1,
+        "truthUrls": 20,
+        "families": {
+          "naive": {
+            "found": 6,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.3
+          },
+          "onDisk": {
+            "found": 19,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.95
+          },
+          "scoped": {
+            "found": 10,
+            "arms": 3,
+            "failed": 0,
+            "recall": 0.5
           }
         }
       }
     },
-    "scopedRecall": 0.222,
-    "naiveRecall": 0.778
+    "scopedRecall": 0.185,
+    "naiveRecall": 0.296
   },
   "shows": [
     {
-      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
-      "title": "Catarina and the Beauty of Killing Fascists",
-      "market": "west-end",
-      "openingDate": "2026-09-21",
+      "showId": "degenerates-off-broadway-2026",
+      "title": "Degenerates",
+      "market": "off-broadway",
+      "openingDate": "2026-09-28",
       "sampleState": "settling",
-      "sampleReason": "opened 17h ago (<24h) — SERP indexing still settling",
-      "geo": "gb",
-      "naiveQuery": "Catarina and the Beauty of Killing Fascists National Theatre review",
-      "counts": {
-        "truth": 6,
-        "scoped": 1,
-        "naive": 6,
-        "onDisk": 2
-      },
-      "recall": {
-        "scoped": 0.167,
-        "naive": 1,
-        "onDisk": 0.333,
-        "censusPlusDisk": 0.5
-      },
-      "newFromNaive": [
-        "https://thetheatretimes.com/catarina-and-the-beauty-of-killing-fascists-at-the-tampere-theatre-festival-do-we-defend-democracy-by-breaking-its-rules/",
-        "https://www.londontheatre.co.uk/theatre-news/news/catarina-and-the-beauty-of-killing-fascists-to-have-uk-premiere-at-the-national",
-        "https://www.timeout.com/london/theatre/catarina-and-the-beauty-of-killing-fascists"
-      ],
-      "missedByCensus": [
-        "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre",
-        "https://thetheatretimes.com/catarina-and-the-beauty-of-killing-fascists-at-the-tampere-theatre-festival-do-we-defend-democracy-by-breaking-its-rules/",
-        "https://www.theatremonkey.com/show/catarina-and-the-beauty-of-killing-fascists/",
-        "https://www.londontheatre.co.uk/theatre-news/news/catarina-and-the-beauty-of-killing-fascists-to-have-uk-premiere-at-the-national",
-        "https://www.timeout.com/london/theatre/catarina-and-the-beauty-of-killing-fascists"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"Catarina and the Beauty of Killing Fascists\" West End review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 1,
-          "urls": [
-            "https://www.thestage.co.uk/features/tiago-rodrigues-on-catarina-and-the-beauty-of-killing-fascists-national-theatre-london"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"Catarina and the Beauty of Killing Fascists\" review national",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "Catarina and the Beauty of Killing Fascists National Theatre review",
-          "page": 0,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 3,
-          "urls": [
-            "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre",
-            "https://thetheatretimes.com/catarina-and-the-beauty-of-killing-fascists-at-the-tampere-theatre-festival-do-we-defend-democracy-by-breaking-its-rules/",
-            "https://www.theatremonkey.com/show/catarina-and-the-beauty-of-killing-fascists/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "Catarina and the Beauty of Killing Fascists National Theatre review",
-          "page": 1,
-          "geo": "gb",
-          "raw": 10,
-          "accepted": 3,
-          "urls": [
-            "https://www.londontheatre.co.uk/theatre-news/news/catarina-and-the-beauty-of-killing-fascists-to-have-uk-premiere-at-the-national",
-            "https://www.thestage.co.uk/features/tiago-rodrigues-on-catarina-and-the-beauty-of-killing-fascists-national-theatre-london",
-            "https://www.timeout.com/london/theatre/catarina-and-the-beauty-of-killing-fascists"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 2,
-          "accepted": 2,
-          "urls": [
-            "https://www.theguardian.com/stage/2026/aug/27/catarina-and-the-beauty-of-killing-fascists-tiago-rodrigues-national-theatre",
-            "https://www.theatremonkey.com/show/catarina-and-the-beauty-of-killing-fascists/"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "spandex-off-broadway-2026",
-      "title": "Spandex",
-      "market": "off-broadway",
-      "openingDate": "2026-09-19",
-      "sampleState": "measured",
-      "sampleReason": "opened 3d ago",
+      "sampleReason": "opened 19h ago (<24h) — SERP indexing still settling",
       "geo": "us",
-      "naiveQuery": "Spandex Asylum NYC review",
-      "counts": {
-        "truth": 4,
-        "scoped": 1,
-        "naive": 2,
-        "onDisk": 3
-      },
-      "recall": {
-        "scoped": 0.25,
-        "naive": 0.5,
-        "onDisk": 0.75,
-        "censusPlusDisk": 0.75
-      },
-      "newFromNaive": [
-        "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197749"
-      ],
-      "missedByCensus": [
-        "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/",
-        "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197749",
-        "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197747"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"Spandex\" Off-Broadway review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 1,
-          "urls": [
-            "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"Spandex\" review asylum",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "Spandex Asylum NYC review",
-          "page": 0,
-          "geo": "us",
-          "raw": 10,
-          "accepted": 2,
-          "urls": [
-            "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/",
-            "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197749"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "Spandex Asylum NYC review",
-          "page": 1,
-          "geo": "us",
-          "raw": 10,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 3,
-          "accepted": 3,
-          "urls": [
-            "https://www.nytimes.com/2026/08/22/theater/tiffany-darwish-spandex-musical.html",
-            "https://www.picturethispost.com/asylum-nyc-presents-spandex-the-musical-preview/",
-            "https://www.tixr.com/groups/asylumnyc/events/tiffany-in-spandex-the-musical-197747"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "the-hope-theory-off-broadway-2026",
-      "title": "The Hope Theory",
-      "market": "off-broadway",
-      "openingDate": "2026-09-17",
-      "sampleState": "measured",
-      "sampleReason": "opened 5d ago",
-      "geo": "us",
-      "naiveQuery": "The Hope Theory New York City Center/Stage II review",
-      "counts": {
-        "truth": 7,
-        "scoped": 2,
-        "naive": 7,
-        "onDisk": 4
-      },
-      "recall": {
-        "scoped": 0.286,
-        "naive": 1,
-        "onDisk": 0.571,
-        "censusPlusDisk": 0.571
-      },
-      "newFromNaive": [
-        "https://www.show-score.com/off-broadway-shows/the-hope-theory",
-        "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
-        "https://stageraw.com/the-hope-theory/"
-      ],
-      "missedByCensus": [
-        "https://www.show-score.com/off-broadway-shows/the-hope-theory",
-        "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
-        "https://www.theatreinla.com/the-hope-theory/reviews/10524/",
-        "https://stageraw.com/the-hope-theory/",
-        "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"The Hope Theory\" Off-Broadway review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 1,
-          "urls": [
-            "https://www.theatermania.com/news/review-in-the-hope-theory-helder-guimaraes-attempts-to-conjure-magic-from-his-immigration-story_1854157/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"The Hope Theory\" review york",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 2,
-          "urls": [
-            "https://www.theatermania.com/news/review-in-the-hope-theory-helder-guimaraes-attempts-to-conjure-magic-from-his-immigration-story_1854157/",
-            "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q2",
-          "query": "\"The Hope Theory\" Guimarães review",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 2,
-          "urls": [
-            "https://www.theatermania.com/news/review-in-the-hope-theory-helder-guimaraes-attempts-to-conjure-magic-from-his-immigration-story_1854157/",
-            "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "The Hope Theory New York City Center/Stage II review",
-          "page": 0,
-          "geo": "us",
-          "raw": 10,
-          "accepted": 4,
-          "urls": [
-            "https://www.theatermania.com/news/review-in-the-hope-theory-helder-guimaraes-attempts-to-conjure-magic-from-his-immigration-story_1854157/",
-            "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7",
-            "https://www.show-score.com/off-broadway-shows/the-hope-theory",
-            "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "The Hope Theory New York City Center/Stage II review",
-          "page": 1,
-          "geo": "us",
-          "raw": 10,
-          "accepted": 5,
-          "urls": [
-            "https://thetheatretimes.com/the-hope-theory-a-recipe-for-believing-in-your-dreams/",
-            "https://www.theatreinla.com/the-hope-theory/reviews/10524/",
-            "https://www.show-score.com/off-broadway-shows/the-hope-theory",
-            "https://stageraw.com/the-hope-theory/",
-            "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 4,
-          "accepted": 4,
-          "urls": [
-            "https://www.newyorktheatreguide.com/theatre-news/news/helder-guimaraess-the-hope-theory-to-play-off-broadway",
-            "https://www.theatermania.com/news/review-in-the-hope-theory-helder-guimaraes-attempts-to-conjure-magic-from-his-immigration-story_1854157/",
-            "https://www.theatreinla.com/the-hope-theory/reviews/10524/",
-            "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "gimme-a-sign-off-broadway-2026",
-      "title": "Gimme a Sign!",
-      "market": "off-broadway",
-      "openingDate": "2026-09-17",
-      "sampleState": "measured",
-      "sampleReason": "opened 5d ago",
-      "geo": "us",
-      "naiveQuery": "Gimme a Sign! SoHo Playhouse review",
-      "counts": {
-        "truth": 6,
-        "scoped": 0,
-        "naive": 4,
-        "onDisk": 5
-      },
-      "recall": {
-        "scoped": 0,
-        "naive": 0.667,
-        "onDisk": 0.833,
-        "censusPlusDisk": 0.833
-      },
-      "newFromNaive": [
-        "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/"
-      ],
-      "missedByCensus": [
-        "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign",
-        "https://theweereview.com/review/bailey-swilley-gimme-a-sign/",
-        "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/",
-        "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign",
-        "https://donyc.com/events/2026/9/20/gimme-a-sign-tickets",
-        "https://thecomedybureau.com/show/gimme-a-sign-in-nyc-2/2026-09-17/"
-      ],
-      "arms": [
-        {
-          "arm": "scoped-q0",
-          "query": "\"Gimme a Sign!\" Off-Broadway review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"Gimme a Sign!\" review soho",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q2",
-          "query": "\"Gimme a Sign!\" Swilley review",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 0,
-          "urls": [],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "Gimme a Sign! SoHo Playhouse review",
-          "page": 0,
-          "geo": "us",
-          "raw": 10,
-          "accepted": 2,
-          "urls": [
-            "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign",
-            "https://theweereview.com/review/bailey-swilley-gimme-a-sign/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p1",
-          "query": "Gimme a Sign! SoHo Playhouse review",
-          "page": 1,
-          "geo": "us",
-          "raw": 10,
-          "accepted": 2,
-          "urls": [
-            "https://www.theatrevillage.co.uk/gimme-a-sign-at-edinburgh-fringe-by-bailey-swilley/",
-            "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "onDisk",
-          "query": null,
-          "page": null,
-          "geo": null,
-          "raw": 5,
-          "accepted": 5,
-          "urls": [
-            "https://donyc.com/events/2026/9/20/gimme-a-sign-tickets",
-            "https://ouchmagazine.com/blogs/entertainment/bailey-swilleys-gimme-a-sign",
-            "https://www.sohoplayhouse.com/see-a-show/gimme-a-sign",
-            "https://thecomedybureau.com/show/gimme-a-sign-in-nyc-2/2026-09-17/",
-            "https://theweereview.com/review/bailey-swilley-gimme-a-sign/"
-          ],
-          "ok": true,
-          "error": null
-        }
-      ]
-    },
-    {
-      "showId": "conflicted-off-broadway-2026",
-      "title": "Conflicted",
-      "market": "off-broadway",
-      "openingDate": "2026-09-17",
-      "sampleState": "measured",
-      "sampleReason": "opened 5d ago",
-      "geo": "us",
-      "naiveQuery": "Conflicted SoHo Playhouse review",
+      "naiveQuery": "Degenerates Playwrights Horizons/Peter Jay Sharp Theater review",
       "counts": {
         "truth": 1,
-        "scoped": 1,
+        "scoped": 0,
         "naive": 1,
         "onDisk": 1
       },
       "recall": {
-        "scoped": 1,
+        "scoped": 0,
         "naive": 1,
         "onDisk": 1,
         "censusPlusDisk": 1
       },
       "newFromNaive": [],
-      "missedByCensus": [],
+      "missedByCensus": [
+        "https://melodramamag.com/shows/degenerates/"
+      ],
       "arms": [
         {
           "arm": "scoped-q0",
-          "query": "\"Conflicted\" Off-Broadway review 2026",
+          "query": "\"Degenerates\" Off-Broadway review 2026",
           "page": 0,
           "geo": null,
           "raw": 10,
@@ -581,51 +173,38 @@
         },
         {
           "arm": "scoped-q1",
-          "query": "\"Conflicted\" review soho",
+          "query": "\"Degenerates\" review playwrights",
           "page": 0,
           "geo": null,
           "raw": 10,
-          "accepted": 1,
-          "urls": [
-            "https://www.sohoplayhouse.com/see-a-show/conflicted"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q2",
-          "query": "\"Conflicted\" Katz review",
-          "page": 0,
-          "geo": null,
-          "raw": 10,
-          "accepted": 1,
-          "urls": [
-            "https://www.sohoplayhouse.com/see-a-show/conflicted"
-          ],
+          "accepted": 0,
+          "urls": [],
           "ok": true,
           "error": null
         },
         {
           "arm": "naive-p0",
-          "query": "Conflicted SoHo Playhouse review",
+          "query": "Degenerates Playwrights Horizons/Peter Jay Sharp Theater review",
           "page": 0,
           "geo": "us",
           "raw": 10,
           "accepted": 1,
           "urls": [
-            "https://www.sohoplayhouse.com/see-a-show/conflicted"
+            "https://melodramamag.com/shows/degenerates/"
           ],
           "ok": true,
           "error": null
         },
         {
           "arm": "naive-p1",
-          "query": "Conflicted SoHo Playhouse review",
+          "query": "Degenerates Playwrights Horizons/Peter Jay Sharp Theater review",
           "page": 1,
           "geo": "us",
           "raw": 10,
-          "accepted": 0,
-          "urls": [],
+          "accepted": 1,
+          "urls": [
+            "https://melodramamag.com/shows/degenerates/"
+          ],
           "ok": true,
           "error": null
         },
@@ -637,7 +216,546 @@
           "raw": 1,
           "accepted": 1,
           "urls": [
-            "https://www.sohoplayhouse.com/see-a-show/conflicted"
+            "https://melodramamag.com/shows/degenerates/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "school-girls-or-the-african-mean-girls-play-2026",
+      "title": "School Girls; Or, The African Mean Girls Play",
+      "market": "broadway",
+      "openingDate": "2026-09-28",
+      "sampleState": "settling",
+      "sampleReason": "opened 19h ago (<24h) — SERP indexing still settling",
+      "geo": "us",
+      "naiveQuery": "School Girls; Or, The African Mean Girls Play Samuel J. Friedman Theatre review",
+      "counts": {
+        "truth": 14,
+        "scoped": 4,
+        "naive": 3,
+        "onDisk": 9
+      },
+      "recall": {
+        "scoped": 0.286,
+        "naive": 0.214,
+        "onDisk": 0.643,
+        "censusPlusDisk": 0.857
+      },
+      "newFromNaive": [
+        "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
+        "https://exeuntnyc.com/reviews/review-school-girls-african-mean-girls-play-lucille-lortel-theatre/"
+      ],
+      "missedByCensus": [
+        "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
+        "https://exeuntnyc.com/reviews/review-school-girls-african-mean-girls-play-lucille-lortel-theatre/",
+        "https://aroundthetownchicago.com/theatre-reviews/school-girls-or-the-african-mean-girls-play/",
+        "https://www.theguardian.com/stage/2023/jun/18/school-girls-or-the-african-mean-girls-play-review-lyric-hammersmith",
+        "https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html",
+        "https://www.standard.co.uk/culture/theatre/school-girls-or-the-african-mean-girls-play-lyric-hammersmith-review-b1087967.html",
+        "https://www.theatreinchicago.com/school-girls-or-the-african-mean-girls-play/11303/",
+        "https://www.thestage.co.uk/reviews/school-girls-or-the-african-mean-girls-play-review",
+        "https://www.timeout.com/london/theatre/school-girls-or-the-african-mean-girls-play-review",
+        "https://www.thetimes.co.uk/article/school-girls-or-the-africa-mean-girls-play-review-c26fjdvzq"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"School Girls; Or, The African Mean Girls Play\" Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 3,
+          "urls": [
+            "https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway-2026",
+            "https://www.sun-sentinel.com/2026/09/08/review-brevo-theatres-school-girls-or-the-african-mean-girls-play-is-a-hoot-but-also-biting-censure/",
+            "https://www.goldderby.com/theater/2026/school-girls-african-mean-girls-play-cast-interviews-broadway-tonys/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"School Girls; Or, The African Mean Girls Play\" review samuel",
+          "page": 0,
+          "geo": null,
+          "raw": 8,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q2",
+          "query": "\"School Girls; Or, The African Mean Girls Play\" Bioh review",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 3,
+          "urls": [
+            "https://www.sun-sentinel.com/2026/09/08/review-brevo-theatres-school-girls-or-the-african-mean-girls-play-is-a-hoot-but-also-biting-censure/",
+            "https://www.theatermania.com/news/jocelyn-bioh-to-join-cast-of-her-play-school-girls-or-the-african-mean-girls-play-for-four-performances_1854797/",
+            "https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway-2026"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "School Girls; Or, The African Mean Girls Play Samuel J. Friedman Theatre review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "School Girls; Or, The African Mean Girls Play Samuel J. Friedman Theatre review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://exeuntnyc.com/reviews/review-school-girls-african-mean-girls-play-lucille-lortel-theatre/",
+            "https://www.sun-sentinel.com/2026/09/08/review-brevo-theatres-school-girls-or-the-african-mean-girls-play-is-a-hoot-but-also-biting-censure/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 9,
+          "accepted": 9,
+          "urls": [
+            "https://aroundthetownchicago.com/theatre-reviews/school-girls-or-the-african-mean-girls-play/",
+            "https://www.theguardian.com/stage/2023/jun/18/school-girls-or-the-african-mean-girls-play-review-lyric-hammersmith",
+            "https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html",
+            "https://www.sun-sentinel.com/2026/09/08/review-brevo-theatres-school-girls-or-the-african-mean-girls-play-is-a-hoot-but-also-biting-censure/",
+            "https://www.standard.co.uk/culture/theatre/school-girls-or-the-african-mean-girls-play-lyric-hammersmith-review-b1087967.html",
+            "https://www.theatreinchicago.com/school-girls-or-the-african-mean-girls-play/11303/",
+            "https://www.thestage.co.uk/reviews/school-girls-or-the-african-mean-girls-play-review",
+            "https://www.timeout.com/london/theatre/school-girls-or-the-african-mean-girls-play-review",
+            "https://www.thetimes.co.uk/article/school-girls-or-the-africa-mean-girls-play-review-c26fjdvzq"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "elf-lyons-the-woman-on-the-edge-off-broadway-2026",
+      "title": "Elf Lyons: The Woman on the Edge",
+      "market": "off-broadway",
+      "openingDate": "2026-09-27",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "geo": "us",
+      "naiveQuery": "Elf Lyons: The Woman on the Edge SoHo Playhouse review",
+      "counts": {
+        "truth": 21,
+        "scoped": 0,
+        "naive": 5,
+        "onDisk": 21
+      },
+      "recall": {
+        "scoped": 0,
+        "naive": 0.238,
+        "onDisk": 1,
+        "censusPlusDisk": 1
+      },
+      "newFromNaive": [],
+      "missedByCensus": [
+        "https://www.sohoplayhouse.com/see-a-show/elf-lyons-the-woman-on-the-edge",
+        "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/",
+        "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
+        "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
+        "https://www.voicemag.uk/review/16817/elf-lyons-is-the-woman-on-the-edge",
+        "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
+        "https://broadwaybaby.com/shows/elf-lyons-is-the-woman-on-the-edge/832666",
+        "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/",
+        "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
+        "https://getthechance.wales/2026/08/13/review-elf-lyons-is-the-woman-on-the-edge-edinburgh-fringe-by-hannah-goslin/",
+        "https://www.mickperrin.com/tours/elf-lyons-is-the-woman-on-the-edge/",
+        "https://one4review.co.uk/2026/08/elf-lyons-is-the-woman-on-the-edge-4/",
+        "https://www.paperweightmag.com/review-elf-lyons-is-the-woman-on-the-edge/",
+        "https://snackmag.co.uk/elf-lyons-is-the-woman-on-the-edge-fringe-review-5-stars",
+        "https://sohotheatre.com/events/elf-lyons-is-the-woman-on-the-edge/",
+        "https://list.co.uk/news/elf-lyons-is-the-woman-on-the-edge-comedy-review-clever-and-profound-48789",
+        "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
+        "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/",
+        "https://theweereview.com/review/elf-lyons-is-the-woman-on-the-edge/",
+        "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review",
+        "https://todolist.london/elf-lyons-is-the-woman-on-the-edge-at-edinburgh-fringe-2026/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Elf Lyons: The Woman on the Edge\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 3,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Elf Lyons: The Woman on the Edge\" review soho",
+          "page": 0,
+          "geo": null,
+          "raw": 5,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q2",
+          "query": "\"Elf Lyons: The Woman on the Edge\" Lyons review",
+          "page": 0,
+          "geo": null,
+          "raw": 5,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Elf Lyons: The Woman on the Edge SoHo Playhouse review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 3,
+          "urls": [
+            "https://www.sohoplayhouse.com/see-a-show/elf-lyons-the-woman-on-the-edge",
+            "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/",
+            "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Elf Lyons: The Woman on the Edge SoHo Playhouse review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 3,
+          "urls": [
+            "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
+            "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
+            "https://www.voicemag.uk/review/16817/elf-lyons-is-the-woman-on-the-edge"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 21,
+          "accepted": 21,
+          "urls": [
+            "https://www.beyondthejoke.co.uk/content/17820/elf-lyons-edge",
+            "https://broadwaybaby.com/shows/elf-lyons-is-the-woman-on-the-edge/832666",
+            "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
+            "https://festmag.com/2026/08/11/review-elf-lyons-is-the-woman-on-the-edge/",
+            "https://fringereview.co.uk/review/edinburgh-fringe/2026/elf-lyons-is-the-woman-on-the-edge/",
+            "https://getthechance.wales/2026/08/13/review-elf-lyons-is-the-woman-on-the-edge-edinburgh-fringe-by-hannah-goslin/",
+            "https://www.mickperrin.com/tours/elf-lyons-is-the-woman-on-the-edge/",
+            "https://one4review.co.uk/2026/08/elf-lyons-is-the-woman-on-the-edge-4/",
+            "https://www.paperweightmag.com/review-elf-lyons-is-the-woman-on-the-edge/",
+            "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
+            "https://snackmag.co.uk/elf-lyons-is-the-woman-on-the-edge-fringe-review-5-stars",
+            "https://www.sohoplayhouse.com/see-a-show/elf-lyons-the-woman-on-the-edge",
+            "https://sohotheatre.com/events/elf-lyons-is-the-woman-on-the-edge/",
+            "https://list.co.uk/news/elf-lyons-is-the-woman-on-the-edge-comedy-review-clever-and-profound-48789",
+            "https://theatreandtonic.co.uk/edinburgh-fringe/elf-lyons-is-the-woman-on-the-edge-at-pleasance-courtyard-review",
+            "https://theqr.co.uk/2026/08/09/edfringe-review-elf-lyons-is-the-woman-on-the-edge-2/",
+            "https://theweereview.com/review/elf-lyons-is-the-woman-on-the-edge/",
+            "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review",
+            "https://todolist.london/elf-lyons-is-the-woman-on-the-edge-at-edinburgh-fringe-2026/",
+            "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/",
+            "https://www.voicemag.uk/review/16817/elf-lyons-is-the-woman-on-the-edge"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-west-end-2026",
+      "title": "Tru",
+      "market": "off-west-end",
+      "openingDate": "2026-09-27",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "geo": "gb",
+      "naiveQuery": "Tru Menier Chocolate Factory review",
+      "counts": {
+        "truth": 20,
+        "scoped": 10,
+        "naive": 6,
+        "onDisk": 19
+      },
+      "recall": {
+        "scoped": 0.5,
+        "naive": 0.3,
+        "onDisk": 0.95,
+        "censusPlusDisk": 0.95
+      },
+      "newFromNaive": [
+        "https://www.westendbestfriend.co.uk/news/review-tru-menier-chocolate-factory"
+      ],
+      "missedByCensus": [
+        "https://www.westendbestfriend.co.uk/news/review-tru-menier-chocolate-factory",
+        "https://readaboutstuff.com/2026/09/28/review-tru-menier-chocolate-factory-london/",
+        "https://www.ft.com/content/843bd598-2633-4ffb-8b89-f4e926f26cf2",
+        "https://how2london.co.uk/tru-truman-capote-play-menier-chocolate-factory/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=GZKHRD",
+        "https://southlondon.co.uk/area/southwark/review-tru-at-menier-chocolate-factory/",
+        "https://www.standard.co.uk/culture/theatre/tru-at-menier-chocolate-factory-review-b1298631.html",
+        "https://www.thestage.co.uk/reviews/tru-review-menier-chocolate-factory-london",
+        "https://www.westendbestfriend.co.uk/news/charlotte-damboise-tru-menier-chocolate-factory",
+        "https://www.whatsonstage.com/news/tru-with-jesse-tyler-ferguson-and-charlotte-damboise-first-look-photos_1732563/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Tru\" West End review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 4,
+          "urls": [
+            "https://www.londontheatre.co.uk/reviews/tru-review-menier-chocolate-factory",
+            "https://monstagigz.com/2026/09/19/theatre-review-tru-starring-jesse-tyler-ferguson-at-the-menier-chocolate-factory/",
+            "https://www.thereviewshub.com/tru-menier-chocolate-factory-london/",
+            "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Tru\" review menier",
+          "page": 0,
+          "geo": null,
+          "raw": 9,
+          "accepted": 5,
+          "urls": [
+            "https://www.theguardian.com/stage/2026/sep/28/tru-review-a-five-star-performance-of-a-three-star-script-about-the-life-of-truman-capote",
+            "https://www.timeout.com/london/theatre/tru-review",
+            "https://www.londontheatre.co.uk/reviews/tru-review-menier-chocolate-factory",
+            "https://www.broadwayworld.com/westend/article/Review-TRU-Starring-Jesse-Tyler-Ferguson-Menier-Chocolate-Factory-20260927",
+            "https://www.telegraph.co.uk/theatre/what-to-see/tru-menier-chocolate-factory-review/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q2",
+          "query": "\"Tru\" Allen review",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 5,
+          "urls": [
+            "https://www.londontheatre.co.uk/reviews/tru-review-menier-chocolate-factory",
+            "https://theatreweekly.com/review-tru-at-menier-chocolate-factory/",
+            "https://monstagigz.com/2026/09/19/theatre-review-tru-starring-jesse-tyler-ferguson-at-the-menier-chocolate-factory/",
+            "https://liamodell.com/2026/09/27/tru-review-menier-chocolate-factory-london-jesse-tyler-ferguson-charlotte-damboise-truman-capote-jay-presson-allen/",
+            "https://www.timeout.com/london/theatre/tru-review"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Tru Menier Chocolate Factory review",
+          "page": 0,
+          "geo": "gb",
+          "raw": 9,
+          "accepted": 6,
+          "urls": [
+            "https://liamodell.com/2026/09/27/tru-review-menier-chocolate-factory-london-jesse-tyler-ferguson-charlotte-damboise-truman-capote-jay-presson-allen/",
+            "https://www.westendbestfriend.co.uk/news/review-tru-menier-chocolate-factory",
+            "https://monstagigz.com/2026/09/19/theatre-review-tru-starring-jesse-tyler-ferguson-at-the-menier-chocolate-factory/",
+            "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory",
+            "https://theatreweekly.com/review-tru-at-menier-chocolate-factory/",
+            "https://readaboutstuff.com/2026/09/28/review-tru-menier-chocolate-factory-london/"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Tru Menier Chocolate Factory review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 19,
+          "accepted": 19,
+          "urls": [
+            "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory",
+            "https://www.broadwayworld.com/westend/article/Review-TRU-Starring-Jesse-Tyler-Ferguson-Menier-Chocolate-Factory-20260927",
+            "https://www.ft.com/content/843bd598-2633-4ffb-8b89-f4e926f26cf2",
+            "https://www.theguardian.com/stage/2026/sep/28/tru-review-a-five-star-performance-of-a-three-star-script-about-the-life-of-truman-capote",
+            "https://how2london.co.uk/tru-truman-capote-play-menier-chocolate-factory/",
+            "https://liamodell.com/2026/09/27/tru-review-menier-chocolate-factory-london-jesse-tyler-ferguson-charlotte-damboise-truman-capote-jay-presson-allen/",
+            "http://www.lightingandsoundamerica.com/news/story.asp?ID=GZKHRD",
+            "https://www.londontheatre.co.uk/reviews/tru-review-menier-chocolate-factory",
+            "https://monstagigz.com/2026/09/19/theatre-review-tru-starring-jesse-tyler-ferguson-at-the-menier-chocolate-factory/",
+            "https://readaboutstuff.com/2026/09/28/review-tru-menier-chocolate-factory-london/",
+            "https://southlondon.co.uk/area/southwark/review-tru-at-menier-chocolate-factory/",
+            "https://www.standard.co.uk/culture/theatre/tru-at-menier-chocolate-factory-review-b1298631.html",
+            "https://www.telegraph.co.uk/theatre/what-to-see/tru-menier-chocolate-factory-review/",
+            "https://theatreweekly.com/review-tru-at-menier-chocolate-factory/",
+            "https://www.thereviewshub.com/tru-menier-chocolate-factory-london/",
+            "https://www.thestage.co.uk/reviews/tru-review-menier-chocolate-factory-london",
+            "https://www.timeout.com/london/theatre/tru-review",
+            "https://www.westendbestfriend.co.uk/news/charlotte-damboise-tru-menier-chocolate-factory",
+            "https://www.whatsonstage.com/news/tru-with-jesse-tyler-ferguson-and-charlotte-damboise-first-look-photos_1732563/"
+          ],
+          "ok": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "showId": "midnight-off-broadway-2026",
+      "title": "Midnight",
+      "market": "off-broadway",
+      "openingDate": "2026-09-27",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "geo": "us",
+      "naiveQuery": "Midnight Daryl Roth Theatre review",
+      "counts": {
+        "truth": 13,
+        "scoped": 0,
+        "naive": 5,
+        "onDisk": 12
+      },
+      "recall": {
+        "scoped": 0,
+        "naive": 0.385,
+        "onDisk": 0.923,
+        "censusPlusDisk": 0.923
+      },
+      "newFromNaive": [
+        "https://podcasts.apple.com/us/podcast/off-broadway-review-roundup-mexodus-bigfoot-11-to-midnight/id1745550785"
+      ],
+      "missedByCensus": [
+        "https://www.darylroththeatre.com/production/midnight/",
+        "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall",
+        "https://www.newyorktheatreguide.com/theatre-news/news/todrick-hall-musical-midnight-to-make-off-broadway-debut-this-fall",
+        "https://podcasts.apple.com/us/podcast/off-broadway-review-roundup-mexodus-bigfoot-11-to-midnight/id1745550785",
+        "https://people.com/todrick-hall-original-musical-midnight-heads-to-new-york-exclusive-12001238",
+        "https://www.broadway-show-tickets.com/plays/midnight-new_york-tickets/",
+        "https://www.chicagotribune.com/2026/09/08/chicago-theater-report-steppenwolf-star-casting/",
+        "https://cititour.com/NYC_Events/NYC-HIP-HOP-VS-REGGAE-SATURDAY-MIDNIGHT-YACHT-PARTY-CRUISE-PIER-36-2026/34996",
+        "https://deadline.com/2026/09/midnight-madness-revisited-tiff-next-box-office-obsession-1237105994/",
+        "https://www.nyc.com/broadway_tickets/midnight.442588552075689984/",
+        "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
+        "https://www.tickadoo.com/new-york/midnight",
+        "https://www.whatsonstage.com/news/midnight-at-the-never-get-with-ben-platt-at-menier-chocolate-factory-review_1727718/"
+      ],
+      "arms": [
+        {
+          "arm": "scoped-q0",
+          "query": "\"Midnight\" Off-Broadway review 2026",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "scoped-q1",
+          "query": "\"Midnight\" review daryl",
+          "page": 0,
+          "geo": null,
+          "raw": 10,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Midnight Daryl Roth Theatre review",
+          "page": 0,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 2,
+          "urls": [
+            "https://www.darylroththeatre.com/production/midnight/",
+            "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Midnight Daryl Roth Theatre review",
+          "page": 1,
+          "geo": "us",
+          "raw": 10,
+          "accepted": 3,
+          "urls": [
+            "https://www.newyorktheatreguide.com/theatre-news/news/todrick-hall-musical-midnight-to-make-off-broadway-debut-this-fall",
+            "https://podcasts.apple.com/us/podcast/off-broadway-review-roundup-mexodus-bigfoot-11-to-midnight/id1745550785",
+            "https://people.com/todrick-hall-original-musical-midnight-heads-to-new-york-exclusive-12001238"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "onDisk",
+          "query": null,
+          "page": null,
+          "geo": null,
+          "raw": 12,
+          "accepted": 12,
+          "urls": [
+            "https://www.broadway-show-tickets.com/plays/midnight-new_york-tickets/",
+            "https://www.chicagotribune.com/2026/09/08/chicago-theater-report-steppenwolf-star-casting/",
+            "https://cititour.com/NYC_Events/NYC-HIP-HOP-VS-REGGAE-SATURDAY-MIDNIGHT-YACHT-PARTY-CRUISE-PIER-36-2026/34996",
+            "https://www.darylroththeatre.com/production/midnight/",
+            "https://deadline.com/2026/09/midnight-madness-revisited-tiff-next-box-office-obsession-1237105994/",
+            "https://www.nyc.com/broadway_tickets/midnight.442588552075689984/",
+            "https://www.newyorktheatreguide.com/theatre-news/news/todrick-hall-musical-midnight-to-make-off-broadway-debut-this-fall",
+            "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
+            "https://people.com/todrick-hall-original-musical-midnight-heads-to-new-york-exclusive-12001238",
+            "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall",
+            "https://www.tickadoo.com/new-york/midnight",
+            "https://www.whatsonstage.com/news/midnight-at-the-never-get-with-ben-platt-at-menier-chocolate-factory-review_1727718/"
           ],
           "ok": true,
           "error": null
@@ -649,42 +767,42 @@
   "onDiskUnavailable": false,
   "trend": {
     "entry": {
-      "date": "2026-09-21",
-      "generatedAt": "2026-09-21T17:14:16.665Z",
+      "date": "2026-09-28",
+      "generatedAt": "2026-09-28T18:46:53.372Z",
       "naivePages": 2,
-      "shows": 4,
+      "shows": 3,
       "excluded": {
-        "settling": 1
+        "settling": 2
       },
-      "truthUrls": 18,
-      "onDiskUrls": 13,
-      "newFromNaive": 5,
+      "truthUrls": 54,
+      "onDiskUrls": 52,
+      "newFromNaive": 2,
       "families": {
-        "naive": 0.778,
-        "onDisk": 0.722,
-        "scoped": 0.222
+        "naive": 0.296,
+        "onDisk": 0.963,
+        "scoped": 0.185
       },
       "arms": {
-        "naive-p0": 0.5,
-        "naive-p1": 0.389,
-        "onDisk": 0.722,
-        "scoped-q0": 0.111,
-        "scoped-q1": 0.167,
-        "scoped-q2": 0.167
+        "naive-p0": 0.204,
+        "naive-p1": 0.111,
+        "onDisk": 0.963,
+        "scoped-q0": 0.074,
+        "scoped-q1": 0.093,
+        "scoped-q2": 0.093
       },
-      "combinedRecall": 0.722,
+      "combinedRecall": 0.963,
       "familyYield": {
-        "naive": 3.5,
-        "onDisk": 3.25,
-        "scoped": 1
+        "naive": 5.333,
+        "onDisk": 17.333,
+        "scoped": 3.333
       },
       "armYield": {
-        "naive-p0": 2.25,
-        "naive-p1": 1.75,
-        "onDisk": 3.25,
-        "scoped-q0": 0.5,
-        "scoped-q1": 0.75,
-        "scoped-q2": 0.75
+        "naive-p0": 3.667,
+        "naive-p1": 2,
+        "onDisk": 17.333,
+        "scoped-q0": 1.333,
+        "scoped-q1": 1.667,
+        "scoped-q2": 1.667
       },
       "armsFailed": {
         "naive-p0": 0,
@@ -697,82 +815,71 @@
       "unavailableArms": [],
       "byCategory": {
         "off-broadway": {
-          "shows": 4,
-          "truthUrls": 18,
+          "shows": 2,
+          "truthUrls": 34,
           "families": {
-            "naive": 0.778,
-            "onDisk": 0.722,
-            "scoped": 0.222
+            "naive": 0.294,
+            "onDisk": 0.971,
+            "scoped": 0
+          }
+        },
+        "off-west-end": {
+          "shows": 1,
+          "truthUrls": 20,
+          "families": {
+            "naive": 0.3,
+            "onDisk": 0.95,
+            "scoped": 0.5
           }
         }
       },
       "sampleIds": [
-        "spandex-off-broadway-2026",
-        "the-hope-theory-off-broadway-2026",
-        "gimme-a-sign-off-broadway-2026",
-        "conflicted-off-broadway-2026"
+        "elf-lyons-the-woman-on-the-edge-off-broadway-2026",
+        "tru-off-west-end-2026",
+        "midnight-off-broadway-2026"
       ]
     },
     "judgement": {
-      "verdict": "regressed",
-      "reason": "onDisk: recall 0.722 vs 0.881 median over 4 prior run(s) — down 0.159 (threshold 0.15), yield 3.25 vs 19.15 URLs/show; onDisk: recall 0.722 vs 0.881 median over 4 prior run(s) — down 0.159 (threshold 0.15), yield 3.25 vs 19.15 URLs/show",
-      "regressions": [
-        {
-          "level": "families",
-          "arm": "onDisk",
-          "baseline": 0.881,
-          "current": 0.722,
-          "drop": 0.159,
-          "rule": "week-on-week",
-          "reason": "recall 0.722 vs 0.881 median over 4 prior run(s) — down 0.159 (threshold 0.15), yield 3.25 vs 19.15 URLs/show"
-        },
-        {
-          "level": "arms",
-          "arm": "onDisk",
-          "baseline": 0.881,
-          "current": 0.722,
-          "drop": 0.159,
-          "rule": "week-on-week",
-          "reason": "recall 0.722 vs 0.881 median over 4 prior run(s) — down 0.159 (threshold 0.15), yield 3.25 vs 19.15 URLs/show"
-        }
-      ],
+      "verdict": "ok",
+      "reason": "3 search method(s) within 0.15 of their 4-run median",
+      "regressions": [],
       "latest": {
-        "date": "2026-09-21",
-        "generatedAt": "2026-09-21T17:14:16.665Z",
+        "date": "2026-09-28",
+        "generatedAt": "2026-09-28T18:46:53.372Z",
         "naivePages": 2,
-        "shows": 4,
+        "shows": 3,
         "excluded": {
-          "settling": 1
+          "settling": 2
         },
-        "truthUrls": 18,
-        "onDiskUrls": 13,
-        "newFromNaive": 5,
+        "truthUrls": 54,
+        "onDiskUrls": 52,
+        "newFromNaive": 2,
         "families": {
-          "naive": 0.778,
-          "onDisk": 0.722,
-          "scoped": 0.222
+          "naive": 0.296,
+          "onDisk": 0.963,
+          "scoped": 0.185
         },
         "arms": {
-          "naive-p0": 0.5,
-          "naive-p1": 0.389,
-          "onDisk": 0.722,
-          "scoped-q0": 0.111,
-          "scoped-q1": 0.167,
-          "scoped-q2": 0.167
+          "naive-p0": 0.204,
+          "naive-p1": 0.111,
+          "onDisk": 0.963,
+          "scoped-q0": 0.074,
+          "scoped-q1": 0.093,
+          "scoped-q2": 0.093
         },
-        "combinedRecall": 0.722,
+        "combinedRecall": 0.963,
         "familyYield": {
-          "naive": 3.5,
-          "onDisk": 3.25,
-          "scoped": 1
+          "naive": 5.333,
+          "onDisk": 17.333,
+          "scoped": 3.333
         },
         "armYield": {
-          "naive-p0": 2.25,
-          "naive-p1": 1.75,
-          "onDisk": 3.25,
-          "scoped-q0": 0.5,
-          "scoped-q1": 0.75,
-          "scoped-q2": 0.75
+          "naive-p0": 3.667,
+          "naive-p1": 2,
+          "onDisk": 17.333,
+          "scoped-q0": 1.333,
+          "scoped-q1": 1.667,
+          "scoped-q2": 1.667
         },
         "armsFailed": {
           "naive-p0": 0,
@@ -785,20 +892,28 @@
         "unavailableArms": [],
         "byCategory": {
           "off-broadway": {
-            "shows": 4,
-            "truthUrls": 18,
+            "shows": 2,
+            "truthUrls": 34,
             "families": {
-              "naive": 0.778,
-              "onDisk": 0.722,
-              "scoped": 0.222
+              "naive": 0.294,
+              "onDisk": 0.971,
+              "scoped": 0
+            }
+          },
+          "off-west-end": {
+            "shows": 1,
+            "truthUrls": 20,
+            "families": {
+              "naive": 0.3,
+              "onDisk": 0.95,
+              "scoped": 0.5
             }
           }
         },
         "sampleIds": [
-          "spandex-off-broadway-2026",
-          "the-hope-theory-off-broadway-2026",
-          "gimme-a-sign-off-broadway-2026",
-          "conflicted-off-broadway-2026"
+          "elf-lyons-the-woman-on-the-edge-off-broadway-2026",
+          "tru-off-west-end-2026",
+          "midnight-off-broadway-2026"
         ]
       },
       "comparedArms": 3,
