@@ -5838,6 +5838,15 @@ function findReviewsToProcess() {
   const failedFetches = new Set();  // For retry mode: IDs to include
   const failedFetchesByReviewId = new Map(); // reviewId → ledger entry, for the per-file gate below
   let permanentSkipCount = 0;
+  // Per-run caps on retry work that must hit the network (BRO-4185): the
+  // consent/garbage drain and the one-time stale-mismatch reopen. Uncapped,
+  // the 2026-09-28 12:39 run spent its whole 300-min job budget on
+  // WhatsOnStage URLs timing out at 90s each and was cancelled. Drain entries
+  // that can be re-verified from stored text need no fetch and are uncapped.
+  const DRAIN_NETWORK_PER_RUN = 15;
+  const MISMATCH_REOPEN_PER_RUN = 20;
+  let drainNetworkSelected = 0;
+  let mismatchReopenSelected = 0;
   const failedPath = path.join(CONFIG.reviewTextsDir, 'failed-fetches.json');
   if (fs.existsSync(failedPath)) {
     try {
@@ -5953,11 +5962,15 @@ function findReviewsToProcess() {
           // read only the consent text and flagged the review. Quarantined text
           // (fullText nulled into wrongFullText) is checked the same way.
           const storedTextIsGarbage = storedTextNeedsConsentRefetch(data);
-          const garbageRetryAllowed = shouldRetryGarbageConsentWall({
+          let garbageRetryAllowed = shouldRetryGarbageConsentWall({
             hasGarbageStoredText: storedTextIsGarbage,
             lastRetryMs: data.wrongShowRetryAt ? new Date(data.wrongShowRetryAt).getTime() : null,
             nowMs: Date.now(),
           });
+          if (garbageRetryAllowed && !salvageConsentPrefixedStoredText(data)) {
+            if (drainNetworkSelected >= DRAIN_NETWORK_PER_RUN) garbageRetryAllowed = false;
+            else drainNetworkSelected++;
+          }
           // 14-day cooldown for collector-flagged retries; a URL correction is a
           // strong signal the next fetch will succeed, so it bypasses the cooldown.
           const retryAllowed = (isCollectorFlagged && retryAge > 14 * 24 * 60 * 60 * 1000)
@@ -5982,8 +5995,13 @@ function findReviewsToProcess() {
           // Re-process showNotMentioned reviews for URL discovery (even if they have long text)
           const needsUrlDiscovery = data.showNotMentioned === true && !data._showNotMentionedDiscoveryAttempted;
           // Re-collect if existing fullText is garbage (cookie consent, GDPR banners, etc.)
-          const hasGarbageText = textLen > 0 && (isGarbageContent(data.fullText).isGarbage
-            || hasStrippableConsentLayer(data.fullText));
+          let hasGarbageText = textLen > 0 && isGarbageContent(data.fullText).isGarbage;
+          if (!hasGarbageText && textLen > 0 && hasStrippableConsentLayer(data.fullText)) {
+            // Consent-prefixed text: free when the stored article can be
+            // re-verified, otherwise a capped network refetch.
+            if (salvageConsentPrefixedStoredText(data)) hasGarbageText = true;
+            else if (drainNetworkSelected < DRAIN_NETWORK_PER_RUN) { drainNetworkSelected++; hasGarbageText = true; }
+          }
           if (hasStrippableConsentLayer(data.fullText || data.wrongFullText || '')) data._consentLayerRetry = true;
           // Always re-try truncated/needs-rescrape reviews - they have text but it's incomplete or garbage
           if (!isTruncated && !needsUrlDiscovery && !hasGarbageText && !urlCorrectedRefetch && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
@@ -6018,11 +6036,12 @@ function findReviewsToProcess() {
         const fetchFailureEntry = failedFetchesByReviewId.get(reviewId);
         // A content mismatch judged by an older version of the content check
         // gets one fresh fetch under the current rule (BRO-4185 H).
-        const reopenStaleMismatch = shouldReopenStaleContentMismatch(fetchFailureEntry, data, URL_CONTENT_CHECK_VERSION);
-        if (reopenStaleMismatch) {
-          data.contentMismatchReopenedFor = URL_CONTENT_CHECK_VERSION;
-          try { fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n'); } catch (e) {}
-        }
+        // Capped per run; the once-per-version stamp is written when the
+        // review is actually processed (processReview), so a reopen that
+        // falls past this run's review limit keeps its attempt.
+        const reopenStaleMismatch = mismatchReopenSelected < MISMATCH_REOPEN_PER_RUN
+          && shouldReopenStaleContentMismatch(fetchFailureEntry, data, URL_CONTENT_CHECK_VERSION);
+        if (reopenStaleMismatch) mismatchReopenSelected++;
         if (fetchFailureEntry && !urlCorrectedRefetch && !reopenStaleMismatch) {
           const fetchGate = shouldRetryFetch(showsById.get(showId) || null, data, fetchFailureEntry);
           if (!fetchGate.shouldRetry && CONFIG.reviewFilter.size === 0 && !CONFIG.showFilter) {
@@ -6152,6 +6171,7 @@ function findReviewsToProcess() {
           // success, cooldown stamp on failure) only ran for the SERP path.
           _wrongShowRetrying: data._wrongShowRetrying === true,
           _consentLayerRetry: data._consentLayerRetry === true,
+          _mismatchReopen: reopenStaleMismatch,
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
@@ -6597,6 +6617,16 @@ async function processReview(review) {
       stats.totalFailed++;
       return { success: false, error: 'show_not_mentioned_no_url' };
     }
+  }
+
+  // Stale-mismatch reopen (BRO-4185 H): stamp the once-per-version attempt now
+  // that this review is really being fetched.
+  if (review._mismatchReopen && review.filePath) {
+    try {
+      const d = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+      d.contentMismatchReopenedFor = URL_CONTENT_CHECK_VERSION;
+      fs.writeFileSync(review.filePath, JSON.stringify(d, null, 2) + '\n');
+    } catch (e) {}
   }
 
   // Safety: no URL means we can't fetch (prevents crash on no_url reviews that missed SERP)
