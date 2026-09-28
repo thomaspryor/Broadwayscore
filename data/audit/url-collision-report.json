@@ -1,39 +1,12 @@
 {
-  "generatedAt": "2026-09-28T12:38:44.707Z",
+  "generatedAt": "2026-09-28T20:11:06.671Z",
   "summary": {
-    "total": 5,
-    "high": 0,
-    "medium": 4,
-    "low": 1
+    "total": 7,
+    "high": 2,
+    "medium": 3,
+    "low": 2
   },
   "collisions": [
-    {
-      "url": "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514/",
-      "normalizedUrl": "https://theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514",
-      "candidates": [
-        {
-          "showId": "cats-the-jellicle-ball-2026",
-          "file": "theatermania--zachary-stewart.json",
-          "publishDate": "2026-04-08",
-          "openingDate": "2026-04-07",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "theatermania"
-        },
-        {
-          "showId": "cats-the-jellicle-ball-off-broadway-2024",
-          "file": "theatermania--zachary-stewart.json",
-          "publishDate": "June 20th, 2024",
-          "openingDate": "2024-06-10",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "theatermania"
-        }
-      ],
-      "suggestedWinner": "cats-the-jellicle-ball-2026",
-      "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 but also 10 days from cats-the-jellicle-ball-off-broadway-2024",
-      "confidence": "medium"
-    },
     {
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
       "normalizedUrl": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
@@ -89,6 +62,33 @@
       "confidence": "medium"
     },
     {
+      "url": "https://newyorktheater.me/2026/02/05/hans-litten-the-jew-who-cross-examined-hitler-review/",
+      "normalizedUrl": "https://newyorktheater.me/2026/02/05/hans-litten-the-jew-who-cross-examined-hitler-review",
+      "candidates": [
+        {
+          "showId": "hans-litten-the-jew-who-crossexamined-hitler-2026",
+          "file": "nyt-theater--jonathan-mandell.json",
+          "publishDate": "February 5th, 2026",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "nyt-theater"
+        },
+        {
+          "showId": "hans-litten-the-jew-who-crossexamined-hitler-off-broadway-2026",
+          "file": "nyt-theater--jonathan-mandell.json",
+          "publishDate": "February 5, 2026",
+          "openingDate": "2026-01-30",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nyt-theater"
+        }
+      ],
+      "suggestedWinner": "hans-litten-the-jew-who-crossexamined-hitler-off-broadway-2026",
+      "reason": "publishDate February 5, 2026 is 6 days from hans-litten-the-jew-who-crossexamined-hitler-off-broadway-2026 opening (2026-01-30)",
+      "confidence": "high"
+    },
+    {
       "url": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
       "normalizedUrl": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road",
       "candidates": [
@@ -113,6 +113,33 @@
       ],
       "suggestedWinner": "little-bear-ridge-road-2025",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://newyorktheater.me/2025/10/14/masquerade-review/",
+      "normalizedUrl": "https://newyorktheater.me/2025/10/14/masquerade-review",
+      "candidates": [
+        {
+          "showId": "masquerade-2025",
+          "file": "nyt-theater--jonathan-mandell.json",
+          "publishDate": "October 14th, 2025",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "nyt-theater"
+        },
+        {
+          "showId": "masquerade-off-broadway-2025",
+          "file": "nyt-theater--unknown.json",
+          "publishDate": "2026-05-27",
+          "openingDate": "2025-09-29",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nyt-theater"
+        }
+      ],
+      "suggestedWinner": "masquerade-off-broadway-2025",
+      "reason": "publishDate 2026-05-27 is 240+ days from all openings; defaulting to most recent production",
       "confidence": "low"
     },
     {
@@ -141,6 +168,33 @@
       "suggestedWinner": "stereophonic-2024",
       "reason": "publishDate 2024-04-19 is 0 days from stereophonic-2024 but also 13 days from stereophonic-off-broadway-2023",
       "confidence": "medium"
+    },
+    {
+      "url": "https://newyorktheater.me/2026/02/24/the-reservoir-review/",
+      "normalizedUrl": "https://newyorktheater.me/2026/02/24/the-reservoir-review",
+      "candidates": [
+        {
+          "showId": "the-reservoir-2026",
+          "file": "nyt-theater--jonathan-mandell.json",
+          "publishDate": "February 24th, 2026",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "nyt-theater"
+        },
+        {
+          "showId": "the-reservoir-off-broadway-2026",
+          "file": "nyt-theater--jonathan-mandell.json",
+          "publishDate": "February 24, 2026",
+          "openingDate": "2026-02-05",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nyt-theater"
+        }
+      ],
+      "suggestedWinner": "the-reservoir-off-broadway-2026",
+      "reason": "publishDate February 24, 2026 is 19 days from the-reservoir-off-broadway-2026 opening (2026-02-05)",
+      "confidence": "high"
     }
   ]
 }
