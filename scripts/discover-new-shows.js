@@ -1336,6 +1336,13 @@ const VENUE_PAGE_EXCLUDE_PATTERNS = [
   'saturday seminar', 'holiday club', 'young company', 'young creatives',
   'directing lab', 'friday company', 'coffee concert', 'on screen',
   'youth theatre', 'writing lab',
+  // Orange Tree "Acting Lab" / "Acting Lab Devised Theatre" (BRO-4204
+  // S4-T11 promoter dry-run, 2026-09-28) — participation courses listed
+  // under the same /whats-on/<slug> pattern as productions. Corpus-audited:
+  // zero title collisions across 3,073 shows.json rows. NOT a bare
+  // 'conference' for "Sat Conference 2026": "Conference of the Birds" is a
+  // real, staged play.
+  'acting lab',
 ];
 
 // Per-venue candidate cap (mirrors OB_VENUE_CAP below) — one bad parser
@@ -1417,7 +1424,26 @@ async function fetchSingleVenuePage(venue) {
     }
   }
 
-  if (html.length < 1000) return [];
+  return parseVenueListingPage(venue, html);
+}
+
+/**
+ * Pure parse of a VENUE_LISTING_PAGES venue's what's-on HTML into candidate
+ * rows — the second half of fetchSingleVenuePage, split out (BRO-4204
+ * S4-T11) so scripts/promote-owe-venue-candidates.js can re-fetch a venue
+ * page through fetchPage() and ask "is this staged title still listed?"
+ * with the SAME link pattern, title derivation and exclusion rules that
+ * staged the candidate in the first place (CLAUDE.md §15: one parser, never
+ * a copy in the promoter). Returns [] for a page too short to be a real
+ * listing (a soft-404 / interstitial), which callers treat as "nothing
+ * parsed", never as "the venue lists nothing".
+ *
+ * @param {{name: string, url: string, linkPattern: RegExp, titleFromSlug?: boolean, hasJsonLd?: boolean, category: string}} venue
+ * @param {string} html
+ * @returns {Array<object>} candidate rows in the staging shape
+ */
+function parseVenueListingPage(venue, html) {
+  if (typeof html !== 'string' || html.length < 1000) return [];
 
   const dom = new JSDOM(html);
   const doc = dom.window.document;
@@ -3286,6 +3312,7 @@ module.exports = {
   VENUE_PAGE_EXCLUDE_PATTERNS,
   VENUE_LISTING_PAGES,
   fetchSingleVenuePage,
+  parseVenueListingPage,
   shouldExcludeVenueShow,
   applyVerifiedIbdbCreativeTeam,
   mintCandidateId,

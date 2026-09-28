@@ -1266,7 +1266,10 @@ on:
       # promoter + its test still need their own entries so a solo edit
       # triggers CI.
       - 'scripts/promote-we-aggregator-candidates.js'
-      - 'scripts/we-promotion-job-summary.js'
+      # BRO-4204 S4-T11/T12: the Off-West End venue-page promoter
+      # (tests/unit/promote-owe-venue-candidates.test.mjs). Its job-summary
+      # builder, scripts/we-promotion-job-summary.js, is path-listed above.
+      - 'scripts/promote-owe-venue-candidates.js'
       - 'tests/unit/promote-we-aggregator-auto.test.mjs'
       # Transfer auto-detection (pure lib + driver, 2026-07-11)
       - 'scripts/detect-regional-transfers.js'

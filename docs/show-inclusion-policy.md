@@ -45,6 +45,14 @@ Elizabeth Hall, 10 reviews) and Silver Manhattan (Bowery Ballroom, 3 reviews)
 stay in and stay scored while Harry Connick Jr. at Carnegie Hall does not get
 in. A production critics review is a production.
 
+The one promoter that is **not** an aggregator promoter is
+`scripts/promote-owe-venue-candidates.js` (S4-T11): it admits rows from the
+Off-West End venue-page staging file, and a venue's own what's-on listing is
+not review evidence, so it applies the same ingest gates as discovery
+(`isNonTheatreVenue()`, `isLondonReceivingHouse()`, `isNonTheaterContent()`
+with `market: 'london'`, the venue-page title exclusions) before confirming a
+candidate against the live venue page.
+
 ## Rows already in the file
 
 The owner's decision for the audit (rule D3): keep a row if it has any review,

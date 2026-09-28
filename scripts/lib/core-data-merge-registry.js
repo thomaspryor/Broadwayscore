@@ -844,12 +844,42 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (update-show-status.yml), group shows-json-writer (cancel-in-progress: false).',
   },
   {
+    // BRO-4204 S4-T11/T12: two producers since the Off-West End promoter
+    // landed — discover-new-shows.js stages (update-show-status.yml) and
+    // scripts/promote-owe-venue-candidates.js prunes (promote-owe-venue-
+    // candidates.yml). Both workflows sit in the SAME `shows-json-writer`
+    // concurrency group (cancel-in-progress: false), so the two commits are
+    // mutually exclusive — the grosses.json shape checkEntry() accepts, not
+    // a true single writer. Same-host protection is lib/owe-venue-
+    // staging.js's updateStaging (withFileLock).
     file: 'audit/owe-venue-candidates.json',
     surface: 'public-repo',
     status: 'single-writer',
     apiFallbackSafe: true,
     concurrencyGroup: 'shows-json-writer',
-    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (update-show-status.yml), group shows-json-writer (cancel-in-progress: false).',
+    verifiedBy: '2026-09-28 (BRO-4204 S4-T12): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js) against real .github/workflows/*.yml — 2 writers (update-show-status.yml "Commit and push changes"; promote-owe-venue-candidates.yml "Commit OWE promotion audit log + pruned staging" via git-add-existing.sh), BOTH group shows-json-writer (cancel-in-progress: false) — mutually exclusive, no real race. Previously 2026-09-14 (BRO-3071): 1 writer (update-show-status.yml).',
+  },
+  {
+    // BRO-4204 S4-T12: the OWE promoter's state file (what this run
+    // promoted / dropped) — same shape as audit/we-last-promotion-ids.json;
+    // read by promote-owe-venue-candidates.yml's job-summary step, written
+    // only by a non-dry-run scripts/promote-owe-venue-candidates.js run.
+    file: 'audit/owe-last-promotion-ids.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-28 (BRO-4204 S4-T12): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js) against real .github/workflows/*.yml — 1 writer (promote-owe-venue-candidates.yml, git-add-existing.sh in its "Commit OWE promotion audit log + pruned staging" step), group shows-json-writer (cancel-in-progress: false).',
+  },
+  {
+    // BRO-4204 S4-T12: the OWE promoter's append-only jsonl audit log —
+    // same shape and single-writer story as audit/we-promotion-log.jsonl.
+    file: 'audit/owe-promotion-log.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-28 (BRO-4204 S4-T12): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js) against real .github/workflows/*.yml — 1 writer (promote-owe-venue-candidates.yml, git-add-existing.sh in its "Commit OWE promotion audit log + pruned staging" step), group shows-json-writer (cancel-in-progress: false).',
   },
   {
     file: 'audit/playbill-broadway-last-success.json',
