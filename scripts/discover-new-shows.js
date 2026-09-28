@@ -237,7 +237,12 @@ const NON_THEATRE_TITLE_RE = /^nt live\b|\bfestival\b|\bpanel\b|\bq ?& ?a\b|\bqa
 // on the raw TodayTix object (`show.category.name`); the same value is written
 // to shows.json as `todayTixCategory`. "Concerts" is how Betty Buckley at Joe's
 // Pub and Harry Connick Jr. at Carnegie Hall reached the Off-Broadway list.
-const NON_THEATRE_TODAYTIX_CATEGORIES = new Set(['Concerts', 'Events', 'Landmarks', 'Films', 'Conversations']);
+// "Events" is deliberately NOT here: on the live NYC feed it also carries NYU
+// Skirball's international theatre (Milo Rau, Romeo Castellucci, Dead Centre,
+// Manual Cinema), which the NYT reviews — and the owner's rule (2026 audit,
+// D3) is to keep anything that gets or might get reviewed. Junk that rides
+// "Events" still falls to the title regex, the venue gate and the one-night gate.
+const NON_THEATRE_TODAYTIX_CATEGORIES = new Set(['Concerts', 'Landmarks', 'Films', 'Conversations']);
 
 // TodayTix categories that vouch for a listing at a non-theatre venue: a
 // TodayTix Off-Broadway row at Radio City / Carnegie Hall / 54 Below is
@@ -342,8 +347,8 @@ function isNonTheaterContent(show, { market = 'nyc' } = {}) {
   const subcatNames = (show.subcategories || []).map(sc => sc.name);
   if (subcatNames.includes('Classical')) return true; // Opera
 
-  // Gate 1b: TodayTix top-level category — Concerts, Events, Landmarks,
-  // Films and Conversations are never staged productions, whatever the venue.
+  // Gate 1b: TodayTix top-level category — Concerts, Landmarks, Films and
+  // Conversations are never staged productions, whatever the venue.
   if (NON_THEATRE_TODAYTIX_CATEGORIES.has(show.category?.name)) return true;
 
   // Gate 2: Venue blocklist — categorically non-theater venues
