@@ -137,3 +137,26 @@ describe('shouldReleaseConsentLayerNonReview', () => {
     assert.strictEqual(shouldReleaseConsentLayerNonReview({ ...base, fullText: CONSENT_LAYER + ARTICLE }), false);
   });
 });
+
+describe('salvageConsentPrefixedStoredText', () => {
+  const LONG = ARTICLE + ' ' + ARTICLE;
+  const { salvageConsentPrefixedStoredText } = require('../../scripts/lib/consent-refetch');
+  it('returns the stripped article from a consent-prefixed fullText', () => {
+    assert.ok(salvageConsentPrefixedStoredText({ fullText: CONSENT_LAYER + LONG }).startsWith('Faith is pulled'));
+  });
+  it('returns the stripped quarantined text when fullText is empty', () => {
+    assert.ok(salvageConsentPrefixedStoredText({ fullText: null, wrongFullText: CONSENT_LAYER + LONG }).startsWith('Faith is pulled'));
+  });
+  it('prefers a clean refilled fullText over the quarantined capture', () => {
+    const clean = 'Yousef Sweid is absolutely clear of the difficulties. '.repeat(40);
+    assert.equal(salvageConsentPrefixedStoredText({ fullText: clean, wrongFullText: CONSENT_LAYER + LONG, wrongShow: true }), clean);
+  });
+  it('returns null for a plain review and for a consent block with no article after it', () => {
+    assert.equal(salvageConsentPrefixedStoredText({ fullText: LONG }), null);
+    assert.equal(salvageConsentPrefixedStoredText({ fullText: CONSENT_LAYER }), null);
+  });
+  it('a flagged file with a consent-captured quarantine enters the drain', () => {
+    assert.equal(storedTextNeedsConsentRefetch({ fullText: LONG, wrongFullText: CONSENT_LAYER + LONG, wrongShow: true }), true);
+    assert.equal(storedTextNeedsConsentRefetch({ fullText: LONG, wrongFullText: CONSENT_LAYER + LONG }), false);
+  });
+});

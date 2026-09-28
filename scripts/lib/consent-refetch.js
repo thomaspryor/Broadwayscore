@@ -57,6 +57,12 @@ function storedTextNeedsConsentRefetch(data) {
   const { isGarbageContent } = require('./content-quality');
   const { hasStrippableConsentLayer } = require('./text-cleaning');
   const full = typeof data.fullText === 'string' ? data.fullText : '';
+  // A flagged file whose QUARANTINED text is a consent capture: its flag was
+  // set on that capture even if fullText has since been refilled with the
+  // real article (Between the River and the Sea / WhatsOnStage).
+  const q = typeof data.wrongFullText === 'string' ? data.wrongFullText : '';
+  const flagged = data.wrongShow === true || data.isNonReview === true || data.wrongProduction === true;
+  if (flagged && q && hasStrippableConsentLayer(q)) return true;
   if (full) return isGarbageContent(full).isGarbage || hasStrippableConsentLayer(full);
   const quarantined = typeof data.wrongFullText === 'string' ? data.wrongFullText : '';
   if (!quarantined) return false;
@@ -86,7 +92,36 @@ function shouldReleaseConsentLayerNonReview(data) {
   return true;
 }
 
+/**
+ * The article a consent-prefixed capture already holds, with the consent layer
+ * stripped, or null. Lets the drain re-verify stored text instead of
+ * refetching an outlet that is currently unreachable (WhatsOnStage on
+ * 2026-09-28: Playwright 'paywall', ScrapingBee 500, every review timing out
+ * at 90s). Uses fullText, or the quarantined wrongFullText when fullText is
+ * empty. Requires 1,500+ chars of non-garbage text after stripping.
+ */
+function salvageConsentPrefixedStoredText(data) {
+  if (!data) return null;
+  const { stripConsentLayerPrefix, hasStrippableConsentLayer } = require('./text-cleaning');
+  const { isGarbageContent } = require('./content-quality');
+  const usable = (t) => t.length >= 1500 && !isGarbageContent(t).isGarbage && !hasStrippableConsentLayer(t);
+  const full = typeof data.fullText === 'string' ? data.fullText : '';
+  const q = typeof data.wrongFullText === 'string' ? data.wrongFullText : '';
+  if (full && hasStrippableConsentLayer(full)) {
+    const stripped = stripConsentLayerPrefix(full);
+    return usable(stripped) ? stripped : null;
+  }
+  if (q && hasStrippableConsentLayer(q)) {
+    // fullText refilled with a clean article since the flag: verify that.
+    if (full && usable(full)) return full;
+    const stripped = stripConsentLayerPrefix(q);
+    return usable(stripped) ? stripped : null;
+  }
+  return null;
+}
+
 module.exports = {
+  salvageConsentPrefixedStoredText,
   shouldRetryGarbageConsentWall,
   storedTextNeedsConsentRefetch,
   shouldReleaseConsentLayerNonReview,
