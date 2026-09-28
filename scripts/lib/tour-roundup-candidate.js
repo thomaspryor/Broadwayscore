@@ -45,4 +45,35 @@ function tourCandidateFor(slug, matchedShow, shows) {
   return { broadwayShowId: matchedShow.id, title: matchedShow.title };
 }
 
-module.exports = { isNationalTourRoundupSlug, tourCandidateFor };
+/**
+ * Merge candidates into the JSON ledger at file (one row per Broadway show,
+ * keeping the first-seen time). Returns the number of rows tracked.
+ */
+function recordTourCandidates(file, candidates, now = new Date().toISOString()) {
+  const fs = require('fs');
+  let rows = [];
+  try { rows = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { rows = []; }
+  if (!Array.isArray(rows)) rows = [];
+  const byId = new Map(rows.map(r => [r.broadwayShowId, r]));
+  for (const c of candidates) {
+    const prev = byId.get(c.broadwayShowId);
+    byId.set(c.broadwayShowId, { ...c, firstSeen: (prev && prev.firstSeen) || now, lastSeen: now });
+  }
+  const out = [...byId.values()].sort((a, b) => a.broadwayShowId.localeCompare(b.broadwayShowId));
+  fs.writeFileSync(file, JSON.stringify(out, null, 2) + '\n');
+  return out.length;
+}
+
+/**
+ * Rows still worth suggesting: the show exists, is Broadway, and has no tour
+ * entry of its title yet (a tour added since the roundup settles the row).
+ */
+function openTourCandidates(rows, shows) {
+  const byId = new Map((shows || []).map(s => [s.id, s]));
+  return (rows || []).filter(r => {
+    const show = byId.get(r.broadwayShowId);
+    return !!show && !!tourCandidateFor(r.slug || 'national-tour', show, shows);
+  });
+}
+
+module.exports = { isNationalTourRoundupSlug, tourCandidateFor, recordTourCandidates, openTourCandidates };
