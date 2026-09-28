@@ -93,8 +93,8 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', 
   // runs, and an unbounded `fetch`/`worktree add` can wait forever on a
   // contended lock or a stalled remote — a hang is worse than a failure,
   // because a failure fails OPEN and a hang does not (Codex ship-check P0).
-  // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
   try {
+    // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
     execFileSync('git', ['fetch', ...depthArgs, 'origin', 'main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
   } catch (err) {
     // BRO-4241: cloud clones can't deepen (`fatal: error in object: unshallow
