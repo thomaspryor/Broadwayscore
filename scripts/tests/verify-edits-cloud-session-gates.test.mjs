@@ -75,12 +75,37 @@ const CARD_CREATE = toolUse(
 // and their results interleave turn-by-turn). Every fixture files a Linear
 // card first (CLAUDE.md §6) unless `card: false` — so the card-first gate
 // stays out of the way of tests about the other gates.
+function notice(text) {
+  return { _notice: text };
+}
+
+function attachmentNotice(text) {
+  return { _attachment: text };
+}
+
 function writeTranscript(dir, toolCalls, { card = true, userText = 'please do the work' } = {}) {
   const p = path.join(dir, 'transcript.jsonl');
   const lines = [
     JSON.stringify({ type: 'user', message: { role: 'user', content: [{ type: 'text', text: userText }] } }),
   ];
-  for (const { _result, ...call } of card ? [CARD_CREATE, ...toolCalls] : toolCalls) {
+  for (const { _result, _notice, _attachment, ...call } of card ? [CARD_CREATE, ...toolCalls] : toolCalls) {
+    if (typeof _attachment === 'string') {
+      // Mid-turn delivery of the same notices: an `attachment` record with
+      // type 'queued_command' and the notice in `prompt` (real shape seen
+      // 2026-09-28 for four finished agents that had NO user record at all).
+      lines.push(JSON.stringify({ type: 'attachment', attachment: { type: 'queued_command', commandMode: 'task-notification', prompt: _attachment } }));
+      continue;
+    }
+    if (typeof _notice === 'string') {
+      // A harness notice (<task-notification>, <agent-message> hand-back,
+      // queued-Routine notice) — and the owner's own typed prompt — is a user
+      // record whose content is a plain STRING, not a list. The hook's parser
+      // only reads list content for user_text, so a list-shaped fixture here
+      // would pass in the harness and fail in production (/second-opinion
+      // finding on the in-flight gate, 2026-09-28).
+      lines.push(JSON.stringify({ type: 'user', message: { role: 'user', content: _notice } }));
+      continue;
+    }
     lines.push(JSON.stringify({
       type: 'assistant',
       message: { role: 'assistant', content: [call] },
@@ -1081,5 +1106,225 @@ test('NOWRAPUP: linear-brain --state Paused (rejected by Linear) is not a close-
   const r = runHook(transcript, 'Pushed and paused.\n\nSAFE TO EXIT — card paused.');
   assertBlocked(r, 'a rejected state change left the card open');
   assert.match(r.stderr, /status=paused/, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ─── In-flight-work gate (INFLIGHT, 2026-09-28) ─────────────────────────────
+// Owner evidence: a session with ten background agents, a Land run and two
+// scheduled check-ins in flight closed a turn on "SAFE TO EXIT"; the owner
+// reads that line as "kill this session now". These fixtures mirror the real
+// transcript shapes: agentId in the Agent tool_result, trigger ids in the
+// send_later / create_trigger tool_result JSON, and completions as
+// STRING-content user records (see notice()).
+const AGENT_ID = 'a0ef4eb5c89b9f21b';
+const AGENT_BG = toolUse('Agent', { description: 'S4 agent A', prompt: 'do the thing', run_in_background: true },
+  `Async agent launched successfully.\nagentId: ${AGENT_ID} (internal ID - do not mention to user.)\nThe agent is working in the background.`);
+const AGENT_FG = toolUse('Agent', { description: 'quick lookup', prompt: 'look' }, 'Here is the answer: 42.');
+const AGENT_DONE = notice(`<task-notification>\n<task-id>${AGENT_ID}</task-id>\n<tool-use-id>toolu_x</tool-use-id>\n<status>completed</status>\n<summary>Agent "S4 agent A" finished</summary>\n</task-notification>`);
+const AGENT_FAILED = notice(`<task-notification>\n<task-id>${AGENT_ID}</task-id>\n<status>failed</status>\n<summary>Agent "S4 agent A" failed</summary>\n</task-notification>`);
+const AGENT_HANDBACK = notice(`Another Claude session sent a message:\n<agent-message from="${AGENT_ID}">\n[Subagent hand-back] The report follows:\n  done, nothing edited\n</agent-message>`);
+const AGENT_RESUME = toolUse('SendMessage', { to: AGENT_ID, summary: 'one more thing', message: 'also check X' }, 'Message sent.');
+const AGENT_STOP = toolUse('TaskStop', { task_id: AGENT_ID }, 'Stopped.');
+const FAR = '2099-01-01T12:00:00Z';
+const PAST = '2001-01-01T12:00:00Z';
+const SEND_LATER_FUTURE = toolUse('mcp__Claude_Code_Remote__send_later', { delay_minutes: 60, message: 'Land check-in: re-check run 123' },
+  `{"fire_at":"${FAR}","now":"2026-09-28T20:08:23Z","trigger_id":"trig_01FUTURE"}`);
+const SEND_LATER_FIRED = toolUse('mcp__Claude_Code_Remote__send_later', { delay_minutes: 1, message: 'Land check-in: re-check run 123' },
+  `{"fire_at":"${PAST}","now":"2001-01-01T11:59:00Z","trigger_id":"trig_01PAST"}`);
+const SEND_LATER_FAILED = toolUse('mcp__Claude_Code_Remote__send_later', { delay_minutes: 60, message: 'x' }, 'Error: rate limited');
+const DELETE_FUTURE = toolUse('mcp__Claude_Code_Remote__delete_trigger', { trigger_id: 'trig_01FUTURE' }, '{"trigger":{"id":"trig_01FUTURE","name":"Land check-in"}}');
+const CRON_SELF = toolUse('mcp__Claude_Code_Remote__create_trigger', { name: 'hourly poll', prompt: 'poll CI', cron_expression: '0 * * * *', initiation: 'own_followup' },
+  '{"trigger":{"id":"trig_01CRON","name":"hourly poll","cron_expression":"0 * * * *","enabled":true,"persist_session":true}}');
+const CRON_DISABLE = toolUse('mcp__Claude_Code_Remote__update_trigger', { trigger_id: 'trig_01CRON', enabled: false }, '{"trigger":{"id":"trig_01CRON","enabled":false}}');
+const CRON_OTHER_SESSION = toolUse('mcp__Claude_Code_Remote__create_trigger', { name: 'nightly', prompt: 'run', cron_expression: '0 3 * * *', create_new_session_on_fire: true, initiation: 'human_request' },
+  '{"trigger":{"id":"trig_01FRESH","name":"nightly","cron_expression":"0 3 * * *","enabled":true}}');
+const ONESHOT_PUSHED = toolUse('mcp__Claude_Code_Remote__update_trigger', { trigger_id: 'trig_01PAST', run_once_at: FAR }, '{"trigger":{"id":"trig_01PAST","run_once_at":"' + FAR + '"}}');
+const SAFE_MSG = 'All done.\n\nSAFE TO EXIT — nothing outstanding.';
+const NOT_SAFE_MSG = 'Agents still running.\n\nNOT SAFE TO EXIT — one background agent still working; it hands back when done.';
+
+function assertInflight(r, message) {
+  assertBlocked(r, message);
+  assert.match(r.stderr, /in flight/i, `expected the INFLIGHT message, got: ${r.stderr.slice(0, 400)}`);
+}
+
+test('INFLIGHT: background Agent launched, no completion notice, SAFE TO EXIT → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent');
+  const transcript = writeTranscript(dir, [AGENT_BG, LINEAR_CLOSEOUT_DONE]);
+  const r = runHook(transcript, SAFE_MSG);
+  assertInflight(r, 'a live background agent dies with the session');
+  assert.match(r.stderr, new RegExp(AGENT_ID), 'the block names the live agent id');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: same transcript with NOT SAFE TO EXIT → ALLOWED (the honest line while work is in flight)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent-notsafe');
+  const transcript = writeTranscript(dir, [AGENT_BG]);
+  assertAllowed(runHook(transcript, NOT_SAFE_MSG), 'NOT SAFE TO EXIT is what the gate asks for');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: agent completion arrives as a STRING-content <task-notification> → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent-done');
+  const transcript = writeTranscript(dir, [AGENT_BG, AGENT_DONE, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'a completed agent is not in flight');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: completion delivered mid-turn as an `attachment` record (queued_command prompt), no user record → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent-attachment');
+  const done = attachmentNotice(`<task-notification>\n<task-id>${AGENT_ID}</task-id>\n<status>completed</status>\n<summary>Agent "S4 agent A" finished</summary>\n</task-notification>`);
+  assertAllowed(runHook(writeTranscript(dir, [AGENT_BG, done, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'mid-turn delivery shape must count');
+  const handback = attachmentNotice(`<agent-message from="${AGENT_ID}">\n[Subagent hand-back] report\n</agent-message>`);
+  assertAllowed(runHook(writeTranscript(dir, [AGENT_BG, handback, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'mid-turn hand-back shape must count');
+  const unrelated = attachmentNotice('<task-notification>\n<task-id>someone-else</task-id>\n<status>completed</status>\n</task-notification>');
+  assertInflight(runHook(writeTranscript(dir, [AGENT_BG, unrelated, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'a notice for a different id does not complete this agent');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: <status>failed</status> notice also completes the agent → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent-failed');
+  const transcript = writeTranscript(dir, [AGENT_BG, AGENT_FAILED, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'a failed agent is finished, not live');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: <agent-message from=…> hand-back completes the agent → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent-handback');
+  const transcript = writeTranscript(dir, [AGENT_BG, AGENT_HANDBACK, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'the hand-back is the completion');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: TaskStop on the agent completes it → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent-stop');
+  const transcript = writeTranscript(dir, [AGENT_BG, AGENT_STOP, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'a stopped agent is not live');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: SendMessage to a finished agent resumes it — live again until its next completion → BLOCKED, then ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent-resume');
+  const blocked = writeTranscript(dir, [AGENT_BG, AGENT_DONE, AGENT_RESUME, LINEAR_CLOSEOUT_DONE]);
+  assertInflight(runHook(blocked, SAFE_MSG), 'a resumed agent is in flight again');
+  const allowed = writeTranscript(dir, [AGENT_BG, AGENT_DONE, AGENT_RESUME, AGENT_HANDBACK, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(allowed, SAFE_MSG), 'its second hand-back completes it');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT false-positive guard: a foreground Agent (report returned inline, no agentId) is never in flight', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent-fg');
+  const transcript = writeTranscript(dir, [AGENT_FG, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'foreground agents finish before the tool returns');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT false-positive guard: a background Bash command is deliberately NOT tracked', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-bash-bg');
+  const bg = toolUse('Bash', { command: 'sleep 999', run_in_background: true, description: 'wait' },
+    'Command running in background with ID: b1e9y745t. Output is being written to: /tmp/x.output.');
+  const transcript = writeTranscript(dir, [bg, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'two of four background commands in a real transcript finished with no notice');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: self-bound send_later still ahead of now, never deleted, SAFE TO EXIT → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-sendlater');
+  const transcript = writeTranscript(dir, [SEND_LATER_FUTURE, LINEAR_CLOSEOUT_DONE]);
+  const r = runHook(transcript, SAFE_MSG);
+  assertInflight(r, 'a check-in scheduled into this session dies with it');
+  assert.match(r.stderr, /trig_01FUTURE/, 'the block names the trigger id');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: send_later deleted via delete_trigger → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-sendlater-deleted');
+  const transcript = writeTranscript(dir, [SEND_LATER_FUTURE, DELETE_FUTURE, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'a deleted trigger is not in flight');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: send_later whose fire_at is already past has fired → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-sendlater-fired');
+  const transcript = writeTranscript(dir, [SEND_LATER_FIRED, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'the firing never echoes the id; time is the signal');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: update_trigger pushing a fired one-shot\'s run_once_at into the future re-arms it → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-sendlater-pushed');
+  const transcript = writeTranscript(dir, [SEND_LATER_FIRED, ONESHOT_PUSHED, LINEAR_CLOSEOUT_DONE]);
+  assertInflight(runHook(transcript, SAFE_MSG), 'the re-armed one-shot is live again');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: a failed send_later call (no trigger id in its result) schedules nothing → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-sendlater-failed');
+  const transcript = writeTranscript(dir, [SEND_LATER_FAILED, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'nothing was scheduled');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: self-bound cron Routine (create_trigger result shape {"trigger":{"id"}}) never deleted → BLOCKED; disabled via update_trigger → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-cron');
+  assertInflight(runHook(writeTranscript(dir, [CRON_SELF, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'a recurring wake-up into this session is live until deleted');
+  assertAllowed(runHook(writeTranscript(dir, [CRON_SELF, CRON_DISABLE, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'enabled:false ends it');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT false-positive guard: a Routine that fires into a fresh or other session is not this session\'s to keep alive', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-cron-other');
+  const other = toolUse('mcp__Claude_Code_Remote__create_trigger', { name: 'wake sibling', prompt: 'go', run_once_at: FAR, persistent_session_id: 'session_01XYZ', initiation: 'own_followup' },
+    '{"trigger":{"id":"trig_01SIBLING","run_once_at":"' + FAR + '"}}');
+  const transcript = writeTranscript(dir, [CRON_OTHER_SESSION, other, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'create_new_session_on_fire / persistent_session_id Routines survive this session');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT precedence: it blocks before the wrap-up gate, and NOT SAFE TO EXIT with a live agent needs no close-out', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-precedence');
+  // Work done, no Linear close-out, live agent: the message must be INFLIGHT
+  // (what to fix first), not NOWRAPUP.
+  const r = runHook(writeTranscript(dir, [GIT_PUSH, AGENT_BG]), SAFE_MSG);
+  assertInflight(r, 'in-flight work is reported before the missing close-out');
+  assert.doesNotMatch(r.stderr, /Linear card was never closed out/, 'one block per turn: INFLIGHT, not NOWRAPUP');
+  assertAllowed(runHook(writeTranscript(dir, [GIT_PUSH, AGENT_BG]), NOT_SAFE_MSG), 'the honest line passes every gate');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: independent of SESSION_STATUS_GATE_DISABLE (own last-line parse, no shared locals)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-independent');
+  const transcript = writeTranscript(dir, [AGENT_BG, LINEAR_CLOSEOUT_DONE]);
+  assertInflight(runHook(transcript, SAFE_MSG, { SESSION_STATUS_GATE_DISABLE: '1' }), 'disabling the status-line gate must not disable this one');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT bypass: NO-VERIFY: allows SAFE TO EXIT with a live agent', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-noverify');
+  const transcript = writeTranscript(dir, [AGENT_BG, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, 'NO-VERIFY: owner asked to end now, agent is throwaway.\n\nSAFE TO EXIT — per owner.'), 'explicit bypass');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT kill switch: INFLIGHT_GATE_DISABLE=1', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-killswitch');
+  const transcript = writeTranscript(dir, [AGENT_BG, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG, { INFLIGHT_GATE_DISABLE: '1' }), 'kill switch');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT false-positive guard: a fenced example containing "SAFE TO EXIT" is not a claim; the real last line is NOT SAFE', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-fenced');
+  const transcript = writeTranscript(dir, [AGENT_BG]);
+  assertAllowed(runHook(transcript, 'Example line:\n```\nSAFE TO EXIT — example\n```\n\nNOT SAFE TO EXIT — agent still running.'), 'fenced text is stripped');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('regression: existing user_text consumers unchanged — a STRING-content owner prompt does not become user_text (NO-VERIFY turn boundary untouched)', skipNoRepoHook, () => {
+  // The parser now emits string-content user records as 'user_notice', a kind
+  // only the in-flight gate reads. A string prompt between an edit and its
+  // verification must not change any other gate's outcome vs. before.
+  const dir = makeTmpDir('inflight-user-notice-isolated');
+  const transcript = writeTranscript(dir, [GIT_PUSH, notice('owner typed something'), LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'a plain string user record is inert for every other gate');
   fs.rmSync(dir, { recursive: true, force: true });
 });

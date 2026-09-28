@@ -64,6 +64,12 @@ Check for:
    `gh`→MCP mapping. This step is still MANDATORY on cloud; "no `gh` CLI"
    is not a reason to skip it, only a reason to use a different tool.
 
+   Also count this session's own background agents (no hand-back yet) and
+   any `send_later` / `create_trigger` check-in scheduled into THIS session
+   that has not fired or been deleted. The Stop hook enforces that part
+   (INFLIGHT): SAFE TO EXIT with any of them live is blocked, because the
+   owner reads SAFE TO EXIT as "I can close or kill this session now".
+
    **If anything is still running or queued: STOP. Do not proceed to Phase 4.**
    - Monitor in background (check every 30-60s)
    - When it completes, check the conclusion
