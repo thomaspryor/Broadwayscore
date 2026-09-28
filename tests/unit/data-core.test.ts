@@ -209,6 +209,8 @@ describe('market partitioning', () => {
     for (const s of getWestEndShows()) partitioned.add(s.id);
     for (const s of getOffWestEndShows()) partitioned.add(s.id);
     for (const s of getOffBroadwayShows()) partitioned.add(s.id);
+    // National tours (BRO-4211) are their own flag-gated partition.
+    for (const s of allShows.filter(x => x.category === 'tour')) partitioned.add(s.id);
     const missing = Array.from(allIds).filter(id => !partitioned.has(id));
     // Known hidden IDs the public hubs deliberately exclude.
     const HIDDEN = new Set(['abba-voyage-off-west-end-2026']);

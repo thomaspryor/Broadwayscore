@@ -12,7 +12,7 @@
  * Score conversion: (ratingValue / 5.0) * 100
  *
  * Usage:
- *   node scripts/scrape-broadway-com-audience.js [--show=hamilton-2015] [--limit=10] [--dry-run] [--verbose]
+ *   node scripts/scrape-broadway-com-audience.js [--show=hamilton-2015 | --shows=a,b,c] [--limit=10] [--dry-run] [--verbose]
  */
 
 const fs = require('fs');
@@ -31,6 +31,13 @@ const {
 // Parse command line args
 const args = process.argv.slice(2);
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
+// BRO-4242: --shows=a,b,c processes a batch in ONE process (one listing fetch,
+// one job). The opening-night orchestrator used to dispatch one workflow run
+// per show (35 per tick, ~100 runs/day), each paying full job setup.
+const showsArg = args.find(a => a.startsWith('--shows='))?.split('=')[1];
+const showIdFilter = showsArg
+  ? showsArg.split(',').map(s => s.trim()).filter(Boolean)
+  : (showFilter ? [showFilter] : null);
 const limitArg = args.find(a => a.startsWith('--limit='));
 const showLimit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
 const dryRun = args.includes('--dry-run');
@@ -438,25 +445,29 @@ async function main() {
 
   // Apply filters
   let toProcess = matches;
-  if (showFilter) {
-    toProcess = matches.filter(m => m.show.id === showFilter);
-    // If show not found in matches, try constructing URL from title directly
-    if (toProcess.length === 0) {
-      const show = showsData.shows.find(s => s.id === showFilter || s.slug === showFilter);
+  if (showIdFilter) {
+    toProcess = [];
+    for (const wanted of showIdFilter) {
+      const listed = matches.filter(m => m.show.id === wanted);
+      if (listed.length > 0) { toProcess.push(...listed); continue; }
+      // Not in listing/sitemap: try constructing the URL from the title directly
+      const show = showsData.shows.find(s => s.id === wanted || s.slug === wanted);
       if (show) {
         const titleSlug = show.title.toLowerCase()
           .replace(/['']/g, '')
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/^-|-$/g, '');
-        toProcess = [{
+        toProcess.push({
           bc: { title: show.title, slug: titleSlug, url: `https://www.broadway.com/shows/${titleSlug}/` },
           show,
           confidence: 'constructed',
-        }];
-        console.log(`Show ${showFilter} not in listing/sitemap, trying constructed URL: /shows/${titleSlug}/`);
+        });
+        console.log(`Show ${wanted} not in listing/sitemap, trying constructed URL: /shows/${titleSlug}/`);
+      } else {
+        console.log(`Show ${wanted} not found in shows.json — skipping`);
       }
     }
-    console.log(`Filtered to show: ${showFilter} (${toProcess.length} matches)`);
+    console.log(`Filtered to show${showIdFilter.length > 1 ? 's' : ''}: ${showIdFilter.join(', ')} (${toProcess.length} matches)`);
   }
   if (showLimit) {
     toProcess = toProcess.slice(0, showLimit);
@@ -561,6 +572,16 @@ async function main() {
     } catch (e) {
       console.error(`  ERROR ${show.id}: ${e.message}`);
       errors++;
+    }
+
+    // BRO-4242: checkpoint every 10 shows so a batched run killed by the
+    // workflow's timeout keeps what it already scraped (the old one-run-per-show
+    // dispatch saved each show independently). Entries are only ever added in
+    // this loop, so this cannot trip the entry-count guard below.
+    if (!dryRun && updated > 0 && (i + 1) % 10 === 0 && i < toProcess.length - 1) {
+      if (!audienceBuzz._meta.sources.includes('Broadway.com')) audienceBuzz._meta.sources.push('Broadway.com');
+      saveAudienceBuzz(audienceBuzz);
+      console.log(`  (checkpoint saved after ${i + 1} shows)`);
     }
 
     // Rate limit

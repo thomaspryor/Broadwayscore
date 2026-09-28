@@ -33,10 +33,10 @@ on:
         default: false
 
 concurrency:
-  # per-run group intended: prevents the orchestrator's back-to-back dispatches from
-  # dropping each other at GitHub's 1-pending-queue limit. This workflow is
-  # dispatched in a loop (once per show) during opening-night audience refresh,
-  # so a shared group would lose the middle dispatches. See Cats 2026-04-07 postmortem.
+  # per-run group intended: prevents back-to-back dispatches (orchestrator ticks,
+  # update-show-status opened-shows) from dropping each other at GitHub's
+  # 1-pending-queue limit. Since BRO-4242 the orchestrator sends ONE batched
+  # dispatch per tick (it used to loop once per show). See Cats 2026-04-07 postmortem.
   # (task #922 audit, 2026-08-03)
   group: broadway-com-${{ github.run_id }}
   cancel-in-progress: false
@@ -90,11 +90,11 @@ jobs:
           SHOW_INPUT="${{ inputs.show }}"
 
           if [ -n "$SHOWS_INPUT" ]; then
-            # Multiple shows: run once per show with 120s timeout each
-            IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS_INPUT"
-            for SHOW_ID in "${SHOW_ARRAY[@]}"; do
-              timeout 120 node scripts/scrape-broadway-com-audience.js $BASE_ARGS --show="$SHOW_ID" || echo "⚠ $SHOW_ID timed out or failed (exit $?), continuing..."
-            done
+            # Multiple shows: ONE process (one listing fetch) for the whole batch
+            # (BRO-4242 — was one process per show, and the orchestrator used to
+            # dispatch one whole workflow run per show). Bounded well inside the
+            # job's 60-minute timeout.
+            timeout 2700 node scripts/scrape-broadway-com-audience.js $BASE_ARGS --shows="$SHOWS_INPUT" || echo "⚠ batch timed out or failed (exit $?), continuing..."
           elif [ -n "$SHOW_INPUT" ]; then
             timeout 300 node scripts/scrape-broadway-com-audience.js $BASE_ARGS --show="$SHOW_INPUT"
           else

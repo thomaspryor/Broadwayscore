@@ -4741,7 +4741,7 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Run wrongShow auto-clear ensemble corpus scan (needs review-texts), Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-28T20:19:18.017Z",
+      "lastSeen": "2026-09-28T20:24:18.309Z",
       "lastNotifiedAt": "2026-09-28T11:41:47.830Z",
       "lastSurfacedAt": "2026-09-28T11:41:47.830Z",
       "notifyCount": 5,
@@ -5802,23 +5802,17 @@
       "linearIdentifier": null,
       "silentRefires": 1
     },
-    "test-yml:red:Unit Tests:93a67e1f": {
+    "land:land/bro-4236-prompt-blocker": {
       "status": "open",
-      "disposition": "auto",
-      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every off-Broadway venue-complex subVenueSlugs entry resolves to a real shows.json venue\"",
-      "firstSeen": "2026-09-28T20:21:06.102Z",
-      "lastSeen": "2026-09-28T20:21:06.102Z",
-      "lastNotifiedAt": "2026-09-28T20:21:06.102Z",
-      "lastSurfacedAt": null,
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/bro-4236-prompt-blocker",
+      "firstSeen": "2026-09-28T20:21:25.489Z",
+      "lastSeen": "2026-09-28T20:21:25.489Z",
+      "lastNotifiedAt": "2026-09-28T20:21:25.489Z",
+      "lastSurfacedAt": "2026-09-28T20:21:25.489Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-4253",
-      "dispatch": {
-        "requestedAt": "2026-09-28T20:21:06.102Z",
-        "mode": "dispatch-at-filing",
-        "runId": "36476588393",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36476588393"
-      }
+      "linearIdentifier": null
     }
   }
 }
