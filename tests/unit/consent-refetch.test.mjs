@@ -160,3 +160,12 @@ describe('salvageConsentPrefixedStoredText', () => {
     assert.equal(storedTextNeedsConsentRefetch({ fullText: LONG, wrongFullText: CONSENT_LAYER + LONG }), false);
   });
 });
+
+describe('salvageConsentPrefixedStoredText once per file', () => {
+  const { salvageConsentPrefixedStoredText } = require('../../scripts/lib/consent-refetch');
+  it('returns null once consentSalvageVerifiedAt is stamped', () => {
+    const LONG = ARTICLE + ' ' + ARTICLE;
+    assert.ok(salvageConsentPrefixedStoredText({ fullText: CONSENT_LAYER + LONG }));
+    assert.equal(salvageConsentPrefixedStoredText({ fullText: CONSENT_LAYER + LONG, consentSalvageVerifiedAt: '2026-09-28T00:00:00Z' }), null);
+  });
+});

@@ -5967,7 +5967,12 @@ function findReviewsToProcess() {
             lastRetryMs: data.wrongShowRetryAt ? new Date(data.wrongShowRetryAt).getTime() : null,
             nowMs: Date.now(),
           });
-          if (garbageRetryAllowed && !salvageConsentPrefixedStoredText(data)) {
+          const storedSalvageable = !!salvageConsentPrefixedStoredText(data);
+          if (storedSalvageable) {
+            // No fetch involved: the network cooldown does not apply, and the
+            // once-per-file stamp (consentSalvageVerifiedAt) stops repeats.
+            garbageRetryAllowed = true;
+          } else if (garbageRetryAllowed) {
             if (drainNetworkSelected >= DRAIN_NETWORK_PER_RUN) garbageRetryAllowed = false;
             else drainNetworkSelected++;
           }
@@ -5982,7 +5987,9 @@ function findReviewsToProcess() {
           // Mark retry attempt — the post-fetch handler stamps wrongShowRetryAt
           // (success clears the flag; failure starts the 14-day cooldown).
           data._wrongShowRetrying = true;
-          if (hasStrippableConsentLayer(data.fullText || data.wrongFullText || '')) data._consentLayerRetry = true;
+          // Either field: a clean refilled fullText can sit beside the
+          // consent-captured wrongFullText the flag was set on.
+          if (hasStrippableConsentLayer(data.fullText || '') || hasStrippableConsentLayer(data.wrongFullText || '')) data._consentLayerRetry = true;
         }
 
         // Skip if already has good text (unless retrying failed or filtering by reason)
@@ -6002,7 +6009,7 @@ function findReviewsToProcess() {
             if (salvageConsentPrefixedStoredText(data)) hasGarbageText = true;
             else if (drainNetworkSelected < DRAIN_NETWORK_PER_RUN) { drainNetworkSelected++; hasGarbageText = true; }
           }
-          if (hasStrippableConsentLayer(data.fullText || data.wrongFullText || '')) data._consentLayerRetry = true;
+          if (hasStrippableConsentLayer(data.fullText || '') || hasStrippableConsentLayer(data.wrongFullText || '')) data._consentLayerRetry = true;
           // Always re-try truncated/needs-rescrape reviews - they have text but it's incomplete or garbage
           if (!isTruncated && !needsUrlDiscovery && !hasGarbageText && !urlCorrectedRefetch && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
             continue;
@@ -6042,7 +6049,10 @@ function findReviewsToProcess() {
         const reopenStaleMismatch = mismatchReopenSelected < MISMATCH_REOPEN_PER_RUN
           && shouldReopenStaleContentMismatch(fetchFailureEntry, data, URL_CONTENT_CHECK_VERSION);
         if (reopenStaleMismatch) mismatchReopenSelected++;
-        if (fetchFailureEntry && !urlCorrectedRefetch && !reopenStaleMismatch) {
+        // A stored-text re-verify fetches nothing, so the fetch-retry
+        // lifecycle (abandonment/cooldown) does not apply to it.
+        const storedTextOnly = data._consentLayerRetry === true && !!salvageConsentPrefixedStoredText(data);
+        if (fetchFailureEntry && !urlCorrectedRefetch && !reopenStaleMismatch && !storedTextOnly) {
           const fetchGate = shouldRetryFetch(showsById.get(showId) || null, data, fetchFailureEntry);
           if (!fetchGate.shouldRetry && CONFIG.reviewFilter.size === 0 && !CONFIG.showFilter) {
             logExclusion({
@@ -6172,6 +6182,7 @@ function findReviewsToProcess() {
           _wrongShowRetrying: data._wrongShowRetrying === true,
           _consentLayerRetry: data._consentLayerRetry === true,
           _mismatchReopen: reopenStaleMismatch,
+          _storedSalvage: data._consentLayerRetry === true && !!salvageConsentPrefixedStoredText(data),
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
@@ -6185,6 +6196,18 @@ function findReviewsToProcess() {
   // then by outlet tier priority
   const closedShowMode = process.env.CLOSED_SHOW_MODE === 'true';
   reviews.sort((a, b) => compareReviewPriority(a, b, { closedShowMode }));
+  // Stored-text re-verifies (consent-prefixed captures, BRO-4185 A) need no
+  // fetch, only one verification call, so they go first: ranked by show
+  // recency they sat past the 300-review cut on older shows run after run.
+  {
+    const salvage = reviews.filter(r => r._storedSalvage);
+    if (salvage.length) {
+      const rest = reviews.filter(r => !r._storedSalvage);
+      reviews.length = 0;
+      reviews.push(...salvage, ...rest);
+      console.log(`  Stored-text re-verifies queued first: ${salvage.length}`);
+    }
+  }
 
   // Log sort stats
   const neverAttempted = reviews.filter(r => r.fetchAttempts === 0).length;
@@ -6651,6 +6674,13 @@ async function processReview(review) {
       try {
         const stored = salvageConsentPrefixedStoredText(JSON.parse(fs.readFileSync(review.filePath, 'utf8')));
         if (stored) {
+          // Stamp first: updateReviewJson re-reads the file, so this persists
+          // whatever the verdict, and the file is not re-verified next run.
+          try {
+            const d = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+            d.consentSalvageVerifiedAt = new Date().toISOString();
+            fs.writeFileSync(review.filePath, JSON.stringify(d, null, 2) + '\n');
+          } catch (e) {}
           result = { text: stored, method: 'stored-text-consent-stripped', html: null, attempts: null };
           console.log(`  ↺ Using stored text with the consent layer stripped (${stored.length} chars) — no refetch`);
         }
