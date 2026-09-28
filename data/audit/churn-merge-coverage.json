@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-28T10:32:42.069Z",
+    "generatedAt": "2026-09-28T12:59:39.415Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -9,139 +9,143 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 2,
-    "exemptCount": 7,
+    "exemptCount": 8,
     "coveredCount": 18,
-    "highChurnTracked": 27
+    "highChurnTracked": 28
   },
   "flagged": [
     {
       "path": "data/audit/guard-escalation-state.json",
-      "churn": 49
+      "churn": 52
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 35
+      "churn": 37
     }
   ],
   "exempt": [
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 61
+      "churn": 63
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 61
+      "churn": 63
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 61
-    },
-    {
-      "path": "data/llm-scoring-runs.json",
-      "churn": 49
-    },
-    {
-      "path": "public/data/stats-reviews.json",
-      "churn": 43
+      "churn": 63
     },
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 40
+      "churn": 53
+    },
+    {
+      "path": "data/llm-scoring-runs.json",
+      "churn": 53
+    },
+    {
+      "path": "public/data/stats-reviews.json",
+      "churn": 44
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 35
+      "churn": 37
+    },
+    {
+      "path": "public/data/shows/man-to-man-west-end-2026.json",
+      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 101,
+      "churn": 106,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 87,
+      "churn": 91,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 86,
+      "churn": 89,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 86,
+      "churn": 89,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 86,
+      "churn": 89,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 76,
+      "churn": 83,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 67,
+      "churn": 70,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-elf-lyons-the-woman-on-the-edge-off-broadway-2026.json",
-      "churn": 61,
+      "churn": 63,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-macbeth-off-broadway-2026.json",
-      "churn": 61,
+      "churn": 63,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-the-secret-circus-musical-off-broadway-2026.json",
-      "churn": 61,
+      "churn": 63,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-tru-off-west-end-2026.json",
-      "churn": 61,
+      "churn": 63,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 61,
+      "churn": 63,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 49,
+      "churn": 53,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 35,
+      "churn": 37,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 35,
+      "churn": 37,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 35,
+      "churn": 37,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 34,
+      "churn": 36,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 31,
+      "churn": 34,
       "mergeAttr": "ours"
     }
   ]
