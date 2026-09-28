@@ -440,6 +440,25 @@ function normalizeOutlet(outletName) {
   return slug;
 }
 
+// Garbage prefixes (CSA., MC., etc.) that sometimes lead a scraped byline.
+// Module-level so scripts/lib/critic-display-name.js applies the SAME strip
+// before its alias lookup instead of carrying a second copy (audit S7-T1).
+const CRITIC_JUNK_PREFIX_RE = /^(CSA\.|MC\.|MS\.|MR\.|DR\.)\s*/i;
+
+// CMS boilerplate scraped as a byline is not a critic. "Posted By: Aidan
+// O'Connor" extracted as critic "Posted By" minted a phantom MDTG critic and
+// a duplicate review on the live CrazySexyCool page (2026-07-09) — the
+// manual-entry dedup matches on outlet+critic, so a junk byline defeats it.
+// Mapping to 'unknown' routes these through the Unknown-byline guards instead.
+// Lowercase, trailing ':'/'.' already stripped by the caller. Exported so the
+// emission-time placeholder list (critic-display-name.js) is a superset of
+// this set by construction rather than a drifting copy (audit S7-T1).
+const JUNK_BYLINES = new Set([
+  'posted by', 'written by', 'by', 'staff', 'staff writer', 'staff reports',
+  'admin', 'administrator', 'ri-admin', 'editor', 'editorial staff', 'contributor',
+  'guest', 'guest contributor', 'press release', 'newsdesk', 'news desk',
+]);
+
 /**
  * Normalize a critic name to its canonical form.
  * Returns the canonical critic name (lowercase, hyphenated).
@@ -449,7 +468,7 @@ function normalizeCritic(criticName) {
 
   // Clean up garbage prefixes (CSA., MC., etc.) that sometimes appear
   let cleaned = criticName
-    .replace(/^(CSA\.|MC\.|MS\.|MR\.|DR\.)\s*/i, '')
+    .replace(CRITIC_JUNK_PREFIX_RE, '')
     .replace(/^\s*&nbsp;\s*/i, '')
     .trim();
 
@@ -457,16 +476,6 @@ function normalizeCritic(criticName) {
 
   const lower = cleaned.toLowerCase().trim();
 
-  // CMS boilerplate scraped as a byline is not a critic. "Posted By: Aidan
-  // O'Connor" extracted as critic "Posted By" minted a phantom MDTG critic and
-  // a duplicate review on the live CrazySexyCool page (2026-07-09) — the
-  // manual-entry dedup matches on outlet+critic, so a junk byline defeats it.
-  // Mapping to 'unknown' routes these through the Unknown-byline guards instead.
-  const JUNK_BYLINES = new Set([
-    'posted by', 'written by', 'by', 'staff', 'staff writer', 'staff reports',
-    'admin', 'administrator', 'ri-admin', 'editor', 'editorial staff', 'contributor',
-    'guest', 'guest contributor', 'press release', 'newsdesk', 'news desk',
-  ]);
   if (JUNK_BYLINES.has(lower.replace(/[:.]+$/, '').trim())) return 'unknown';
 
   // Check against all aliases
@@ -2457,6 +2466,8 @@ module.exports = {
   isProfileUrl,
   isSuspiciousOutletId,
   CRITIC_ALIASES,
+  JUNK_BYLINES,
+  CRITIC_JUNK_PREFIX_RE,
   AGGREGATOR_SCORE_SOURCES,
 };
 
