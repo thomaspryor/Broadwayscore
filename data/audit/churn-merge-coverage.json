@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-28T12:59:39.415Z",
+    "generatedAt": "2026-09-28T14:06:56.055Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -16,136 +16,136 @@
   "flagged": [
     {
       "path": "data/audit/guard-escalation-state.json",
-      "churn": 52
+      "churn": 53
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 37
+      "churn": 38
     }
   ],
   "exempt": [
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 63
+      "churn": 64
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 63
+      "churn": 64
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 63
+      "churn": 64
     },
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 53
+      "churn": 59
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 53
+      "churn": 55
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 44
+      "churn": 45
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 37
+      "churn": 38
     },
     {
       "path": "public/data/shows/man-to-man-west-end-2026.json",
-      "churn": 30
+      "churn": 31
     }
   ],
   "covered": [
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 106,
+      "churn": 110,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 91,
+      "churn": 94,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 89,
+      "churn": 92,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 89,
+      "churn": 92,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 89,
+      "churn": 92,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 83,
+      "churn": 86,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 70,
+      "churn": 71,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-elf-lyons-the-woman-on-the-edge-off-broadway-2026.json",
-      "churn": 63,
+      "churn": 64,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-macbeth-off-broadway-2026.json",
-      "churn": 63,
+      "churn": 64,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-the-secret-circus-musical-off-broadway-2026.json",
-      "churn": 63,
+      "churn": 64,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-tru-off-west-end-2026.json",
-      "churn": 63,
+      "churn": 64,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 63,
+      "churn": 64,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 53,
+      "churn": 55,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 37,
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 37,
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 37,
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 36,
+      "churn": 37,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 34,
+      "churn": 36,
       "mergeAttr": "ours"
     }
   ]
