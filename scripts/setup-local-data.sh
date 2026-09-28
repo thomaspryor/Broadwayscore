@@ -219,7 +219,9 @@ done
 # Review texts (gitignored as a whole, so a directory link is safe): a new
 # worktree has none, which makes every review-texts script and test fail for
 # reasons unrelated to the change (BRO-4241).
-if [ ! -e "$DATA_DIR/review-texts" ] && [ -d "$MAIN_REPO/data/review-texts" ] && [ "$MAIN_REPO/data" != "$DATA_DIR" ]; then
+# --link-only only: with --all the copy below would write THROUGH the link into
+# the main checkout's review texts.
+if [ "$LINK_ONLY" = 1 ] && [ ! -e "$DATA_DIR/review-texts" ] && [ -d "$MAIN_REPO/data/review-texts" ] && [ "$MAIN_REPO/data" != "$DATA_DIR" ]; then
   ln -s "$MAIN_REPO/data/review-texts" "$DATA_DIR/review-texts"
   echo "Review texts: linked from main checkout"
 fi

@@ -103,7 +103,7 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', 
     // repo. Never fall back to `fetch --depth=1` in `repo` itself: that
     // rewrites .git/shallow, orphans local main from origin/main and breaks
     // later rebases and ancestry checks (see shallow-fetch-args.js).
-    if (pinnedSha) throw err;
+    if (!shouldCloneAfterFetchFailure(err, pinnedSha)) throw err;
     return makeStandaloneCheckout({ repo, prefix });
   }
   // Pin to the SHA we just fetched, not the moving ref: between this fetch and
@@ -143,6 +143,21 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', 
   // (Codex, second pass). node_modules is the one that breaks EVERY command.
   const prepared = fs.existsSync(path.join(wt, 'node_modules'));
   return { dir, wt, repo, sha, prepared };
+}
+
+/**
+ * BRO-4241: fall back to a standalone clone ONLY for the shallow-clone
+ * "can't deepen" failure. A timeout, lock contention or an offline host keeps
+ * failing fast as before: a 5-minute clone on every ordinary fetch hiccup
+ * would stall synchronous close-time callers (Codex-style review finding).
+ * Never when the caller pinned a sha (the merge-gate baseline needs that
+ * exact commit, which a depth-1 clone of main may not contain).
+ */
+function shouldCloneAfterFetchFailure(err, pinnedSha) {
+  if (pinnedSha) return false;
+  if (!err || err.signal) return false; // killed by our own timeout
+  const text = `${err.stderr || ''} ${err.message || ''}`;
+  return /unshallow|error in object/i.test(text);
 }
 
 /**
@@ -259,4 +274,4 @@ function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS, prepa
   return { status: 'fail', detail: last };
 }
 
-module.exports = { makeFreshCheckout, removeCheckout, runVerify, DEFAULT_REPO, CHECK_TIMEOUT_MS };
+module.exports = { makeFreshCheckout, removeCheckout, runVerify, shouldCloneAfterFetchFailure, DEFAULT_REPO, CHECK_TIMEOUT_MS };

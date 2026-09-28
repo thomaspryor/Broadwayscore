@@ -58,3 +58,17 @@ test('BRO-3446: a command whose path DOES exist still runs and can pass', () => 
     fs.rmSync(cwd, { recursive: true, force: true });
   }
 });
+
+// BRO-4241: only the shallow clone's "can't deepen" failure falls back to a
+// standalone clone; timeouts, lock contention and pinned shas fail as before.
+test('shouldCloneAfterFetchFailure: only the unshallow failure, never pinned or timed out', () => {
+  const { shouldCloneAfterFetchFailure } = require('./acceptance-check-core.js');
+  const unshallow = Object.assign(new Error('Command failed: git fetch --deepen=200 origin main'), { stderr: Buffer.from('fatal: error in object: unshallow 3d8ddac0cc42d7f7e400eafe9bc0405097075768\n') });
+  assert.equal(shouldCloneAfterFetchFailure(unshallow, null), true);
+  assert.equal(shouldCloneAfterFetchFailure(unshallow, 'abc123'), false);
+  const timedOut = Object.assign(new Error('spawnSync git ETIMEDOUT'), { signal: 'SIGTERM', stderr: Buffer.from('unshallow') });
+  assert.equal(shouldCloneAfterFetchFailure(timedOut, null), false);
+  const lock = Object.assign(new Error('Command failed'), { stderr: Buffer.from("fatal: Unable to create '/x/.git/shallow.lock': File exists.") });
+  assert.equal(shouldCloneAfterFetchFailure(lock, null), false);
+  assert.equal(shouldCloneAfterFetchFailure(null, null), false);
+});

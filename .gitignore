@@ -45,6 +45,9 @@ next-env.d.ts
 
 # Review texts (copyrighted full-text reviews — stored in private repo thomaspryor/broadway-review-texts)
 data/review-texts/
+# BRO-4241: setup-local-data.sh --link-only makes data/review-texts a symlink in
+# worktrees; a trailing-slash pattern only matches directories, so ignore the link too.
+/data/review-texts
 
 # Aggregator archive (copyrighted scraped HTML — stored in private repo thomaspryor/broadway-review-texts)
 data/aggregator-archive/
