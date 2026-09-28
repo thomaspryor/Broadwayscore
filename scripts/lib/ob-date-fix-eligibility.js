@@ -25,7 +25,17 @@
  * same code (CLAUDE.md §15).
  */
 
+const { isRecentlyLive } = require('./show-liveness');
+
 const ELIGIBLE_STATUSES = new Set(['open', 'previews', 'upcoming', 'announced']);
+
+// Liveness for the OB date fixer: the four ELIGIBLE_STATUSES outright, never
+// a closed row by recency — a closed row is admitted ONLY by the exact
+// Playbill-year match below (the Romeo & Juliet Suite hazard is about title
+// reuse, not about how recently the row closed). Reproduces the historical
+// `ELIGIBLE_STATUSES.has(status)` by construction (audit S7-T7;
+// tests/unit/show-liveness.test.mjs pins the equivalence).
+const OB_DATE_FIX_LIVENESS = Object.freeze({ liveStatuses: Object.freeze([...ELIGIBLE_STATUSES]), allowClosed: false });
 
 function toYear(value) {
   if (value === null || value === undefined || value === '') return null;
@@ -58,7 +68,7 @@ function getShowOpeningYear(show) {
  */
 function isStatusEligibleForDateFix(show, { includeClosedWhenYearMatches = false } = {}) {
   if (!show) return false;
-  if (ELIGIBLE_STATUSES.has(show.status)) return true;
+  if (isRecentlyLive(show, OB_DATE_FIX_LIVENESS)) return true;
   return show.status === 'closed' && !!includeClosedWhenYearMatches;
 }
 
@@ -75,7 +85,7 @@ function isStatusEligibleForDateFix(show, { includeClosedWhenYearMatches = false
  */
 function isEligibleForDateFix(show, playbillYear, { includeClosedWhenYearMatches = false } = {}) {
   if (!show) return false;
-  if (ELIGIBLE_STATUSES.has(show.status)) return true;
+  if (isRecentlyLive(show, OB_DATE_FIX_LIVENESS)) return true;
   if (show.status !== 'closed' || !includeClosedWhenYearMatches) return false;
   const showYear = getShowOpeningYear(show);
   const pageYear = toYear(playbillYear);
@@ -84,6 +94,7 @@ function isEligibleForDateFix(show, playbillYear, { includeClosedWhenYearMatches
 
 module.exports = {
   ELIGIBLE_STATUSES,
+  OB_DATE_FIX_LIVENESS,
   getShowOpeningYear,
   isStatusEligibleForDateFix,
   isEligibleForDateFix,
