@@ -69,16 +69,23 @@ function main() {
     const toDir = path.join(reviewTextsDir, plan.tourId);
     const counts = {};
     const at = new Date().toISOString();
-    for (const { fromId, file, data, key } of decideTourSweep(plan, listFiles)) {
+    for (const { fromId, file, data, key: decided } of decideTourSweep(plan, listFiles)) {
+      let key = decided;
+      if (key === 'tour-review' && execute) {
+        fs.mkdirSync(toDir, { recursive: true });
+        const res = safeWriteReview(path.join(toDir, file), prepareTourMove(data, { fromShowId: fromId, tourId: plan.tourId, at }), { merge: false });
+        if (!res || res.wrote === false) {
+          // The guard refused or quarantined it (_pending/<tour>/): keep the
+          // Broadway file, or the review would be on neither show.
+          key = `write-refused:${(res && res.skipped) || 'unknown'}`;
+        } else {
+          fs.unlinkSync(path.join(reviewTextsDir, fromId, file));
+          if (res.autoFlaggedWrongProduction) key = 'moved-but-reflagged';
+        }
+      }
       counts[key] = (counts[key] || 0) + 1;
       console.log(`  ${key.padEnd(22)} ${fromId}/${file}`);
-      if (key !== 'tour-review') continue;
-      if (execute) {
-        fs.mkdirSync(toDir, { recursive: true });
-        safeWriteReview(path.join(toDir, file), prepareTourMove(data, { fromShowId: fromId, tourId: plan.tourId, at }), { merge: false });
-        fs.unlinkSync(path.join(reviewTextsDir, fromId, file));
-      }
-      totalMoved++;
+      if (key === 'tour-review' || key === 'moved-but-reflagged') totalMoved++;
     }
     console.log(`${execute ? 'EXECUTE' : 'DRY-RUN'} ${plan.fromIds.join(',')} -> ${plan.tourId}: ${JSON.stringify(counts)}\n`);
   }

@@ -106,10 +106,27 @@ test('planTourSweep: every Broadway production of the title, never other markets
   const plans = planTourSweep(shows);
   assert.equal(plans.length, 1);
   assert.deepEqual(plans[0].fromIds, ['bj-2019', 'bj-2022']);
-  assert.deepEqual(plans[0].ctx, { broadwayOpeningDate: '2019-04-25', tourLaunchDate: '2022-12-01', tourClosingDate: '2025-09-14', otherToursOfTitle: 0 });
-  const two = planTourSweep([...shows, { id: 'bj-tour-2027', title: 'Beetlejuice', category: 'tour', tourOf: 'bj-2022', status: 'open' }]);
-  assert.equal(two.find(p => p.tourId === 'bj-tour-2027').ctx.otherToursOfTitle, 1);
-  assert.equal(two.find(p => p.tourId === 'bj-tour-2027').ctx.tourClosingDate, null);
+  assert.deepEqual(plans[0].ctx, { broadwayOpeningDate: '2019-04-25', tourLaunchDate: '2022-12-01', tourClosingDate: '2025-09-14', otherToursOfTitle: 0, nextTourLaunchDate: null, siblingTourUndated: false });
+  // A second tour with no launch date yet: neither tour can take a review.
+  const undated = planTourSweep([...shows, { id: 'bj-tour-2027', title: 'Beetlejuice', category: 'tour', tourOf: 'bj-2022', status: 'open' }]);
+  assert.equal(undated.find(p => p.tourId === 'bj-tour-2027').ctx.otherToursOfTitle, 1);
+  assert.equal(undated.find(p => p.tourId === 'bj-tour-2027').ctx.tourClosingDate, null);
+  assert.ok(undated.every(p => p.ctx.siblingTourUndated));
+});
+
+test('two dated tours of one title: every dated review goes to exactly one', () => {
+  const shows = [
+    { id: 'sh-2023', title: 'Shucked', category: 'broadway', openingDate: '2023-04-04' },
+    { id: 'sh-tour-2024', title: 'Shucked', category: 'tour', tourOf: 'sh-2023', status: 'closed', openingDate: '2024-10-20', closingDate: '2026-06-07' },
+    { id: 'sh-tour-2027', title: 'Shucked', category: 'tour', tourOf: 'sh-2023', status: 'open', openingDate: '2026-07-15' },
+  ];
+  const [first, second] = ['sh-tour-2024', 'sh-tour-2027'].map(id => planTourSweep(shows).find(p => p.tourId === id));
+  assert.equal(first.ctx.nextTourLaunchDate, '2026-07-15');
+  // 2026-07-20 fits the first tour's close+60d AND the second's launch: only the second takes it.
+  for (const date of ['2025-03-01', '2026-06-20', '2026-07-20', '2027-01-10']) {
+    const takers = [first, second].filter(p => classifyTourBackfill({ ...tourFlag, publishDate: date }, p.ctx).action === 'move');
+    assert.equal(takers.length, 1, `${date} -> ${takers.map(p => p.tourId)}`);
+  }
 });
 
 test('decideTourSweep: one move per review URL across Broadway folders; filename collisions and URLs already on the tour stay put', () => {
