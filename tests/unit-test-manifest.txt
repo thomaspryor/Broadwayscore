@@ -872,6 +872,7 @@ tests/unit/settings-hook-paths.test.mjs
 tests/unit/should-defer-cv-wrong-show.test.mjs
 tests/unit/should-skip-locked-enrichment.test.mjs
 tests/unit/should-skip-poller-update.test.mjs
+tests/unit/show-dedup-crosslink.test.mjs
 tests/unit/show-dedup-slash-venue-globe-national.test.mjs
 tests/unit/show-dedup-slug-prefix.test.mjs
 tests/unit/show-dedup-temporal.test.mjs
@@ -961,7 +962,9 @@ tests/unit/validate-added-review-ownership.test.mjs
 tests/unit/validate-bww-roundup-open-ended.test.mjs
 tests/unit/validate-bww-roundup-year-null-opening.test.mjs
 tests/unit/validate-data-cross-market-check.test.mjs
+tests/unit/validate-data-dry-run.test.mjs
 tests/unit/validate-data-push-refusal-sentinel.test.mjs
+tests/unit/validate-data-retired-warn.test.mjs
 tests/unit/validate-data-unscored-review-texts.test.mjs
 tests/unit/validate-data-venue-complex-wiring.test.mjs
 tests/unit/validate-review-texts.test.js
