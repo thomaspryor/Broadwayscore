@@ -4269,10 +4269,10 @@
       "disposition": "auto",
       "title": "Time-bomb test armed: scripts/clear-stale-roundup-flags.test.mjs — --apply clears a stale flag (individual review on a whitelisted per-outlet URL) and leaves a genuine roundup page flagged",
       "firstSeen": "2026-09-21T20:01:42.771Z",
-      "lastSeen": "2026-09-21T20:01:42.771Z",
-      "lastNotifiedAt": "2026-09-21T20:01:42.771Z",
+      "lastSeen": "2026-09-28T21:14:16.689Z",
+      "lastNotifiedAt": "2026-09-28T21:14:16.689Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-3992"
     },
@@ -5855,6 +5855,18 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "time-bomb-tests:unit:tests/unit/cookie-renewal.test.mjs::acquireLock is fail-closed while the holder is alive, reclaims a dead holder": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/cookie-renewal.test.mjs — acquireLock is fail-closed while the holder is alive, reclaims a dead holder",
+      "firstSeen": "2026-09-28T21:14:18.285Z",
+      "lastSeen": "2026-09-28T21:14:18.285Z",
+      "lastNotifiedAt": "2026-09-28T21:14:18.285Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4257"
     }
   }
 }
