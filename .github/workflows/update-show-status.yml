@@ -362,6 +362,23 @@ jobs:
         run: node scripts/enrich-wikipedia-runtimes.js --limit=20
         continue-on-error: true
 
+      # National tours (BRO-4262): launch/closing dates from Tours To You,
+      # confirmed by Wikipedia; a close needs a positive signal, never an
+      # empty listing. Also gives tours their Broadway parent's art/synopsis.
+      # Report-only until 2026-10-06 unless the TOUR_DATES_MODE repo variable
+      # says otherwise (off|report|write). Status flips stay date-driven.
+      - name: Enrich national tours (dates, parent art)
+        # lint-allow-swallow: best-effort enrichment; a failure must not block status updates, problems land in data/audit/tour-dates.json; digest surfacing is BRO-4262 follow-up
+        if: ${{ inputs.skip_discovery != 'true' }}
+        env:
+          TOUR_DATES_MODE: ${{ vars.TOUR_DATES_MODE }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/enrich-tour-dates.js --write
+        continue-on-error: true
+        timeout-minutes: 8
+
       # Second self-heal pass: discovery + IBDB enrichment above can attach an
       # original production's ibdbUrl to a freshly discovered revival stub —
       # that's exactly what blocked the commit daily 2026-07-03→05 and again

@@ -218,6 +218,19 @@ jobs:
         run: node scripts/gc-display-field-artifacts.js --fix
         continue-on-error: true
 
+      # National tours (BRO-4262): intake files tour-stop reviews on the tour
+      # directly; this mops up any that still land on the Broadway show. It
+      # holds (moves nothing, ::warning::) past 20 moves or 10% of a Broadway
+      # folder. push-review-texts ships the moves. Kill switch: repo variable
+      # TOUR_SWEEP=off (or =report to only log).
+      - name: Sweep national-tour reviews to their tour entries
+        # lint-allow-swallow: best-effort mop-up; a failure must not block the rebuild, holds print ::warning:: and land in data/audit/tour-sweep.json; digest surfacing is BRO-4262 follow-up
+        if: inputs.skip_enrichment != 'true'
+        env:
+          TOUR_SWEEP: ${{ vars.TOUR_SWEEP }}
+        run: node scripts/sweep-tour-reviews.js --auto 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
       - name: Rebuild reviews.json
         id: rebuild
         env:

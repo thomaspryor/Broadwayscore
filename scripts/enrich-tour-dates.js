@@ -17,16 +17,19 @@
  *   node scripts/enrich-tour-dates.js            report only (default)
  *   node scripts/enrich-tour-dates.js --write    write shows.json
  *   node scripts/enrich-tour-dates.js --show=ID  one tour
- * TOUR_DATES_MODE=off skips the run entirely (kill switch for the workflow).
+ * TOUR_DATES_MODE=off|report|write (repo variable) wins; unset = report-only
+ * until tour-automation-mode.js LIVE_FROM, then write.
  */
 
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { tourAutomationMode } = require('./lib/tour-automation-mode');
 const { decideTourDates, scheduleSlugs, parseTourSchedule } = require('./lib/tour-schedule');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
+const { applyTourInheritance } = require('./lib/tour-family');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -103,8 +106,9 @@ async function fetchSchedule(tour, fetchPage) {
 async function main() {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
-  if (process.env.TOUR_DATES_MODE === 'off') { console.log('TOUR_DATES_MODE=off — skipping'); return; }
-  const write = argv.includes('--write') && process.env.TOUR_DATES_MODE !== 'report';
+  const mode = tourAutomationMode(process.env.TOUR_DATES_MODE);
+  if (mode === 'off') { console.log('TOUR_DATES_MODE=off — skipping'); return; }
+  const write = argv.includes('--write') && mode === 'write';
   const only = (argv.find(a => a.startsWith('--show=')) || '').split('=')[1] || null;
   const { fetchPage } = require('./lib/scraper');
 
@@ -129,6 +133,14 @@ async function main() {
 
   const toWrite = results.filter(r => Object.keys(r.write).length);
   const applied = [];
+  if (write && !only) {
+    // Tours take their Broadway parent's art and synopsis when they have none
+    // (tour-family.js); here too so a newly created tour has them the same day.
+    const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_PATH);
+    const snapshot = loadShows();
+    const inherited = applyTourInheritance(snapshot.shows);
+    if (inherited.length) { saveShows(snapshot); console.log(`Parent art/synopsis given to: ${inherited.join(', ')}`); }
+  }
   if (write && toWrite.length) {
     const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_PATH);
     const snapshot = loadShows();

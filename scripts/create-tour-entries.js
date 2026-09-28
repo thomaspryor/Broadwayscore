@@ -20,12 +20,14 @@
  * Usage:
  *   node scripts/create-tour-entries.js           report only (default)
  *   node scripts/create-tour-entries.js --write   write shows.json + candidates file
- * TOUR_AUTOCREATE=off skips; TOUR_AUTOCREATE=report forces report-only.
+ * TOUR_AUTOCREATE=off|report|write (repo variable) wins; unset = report-only
+ * until tour-automation-mode.js LIVE_FROM, then write.
  */
 
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { tourAutomationMode } = require('./lib/tour-automation-mode');
 const { openTourCandidates } = require('./lib/tour-roundup-candidate');
 const { decideTourDates } = require('./lib/tour-schedule');
 const { buildTourEntry } = require('./lib/tour-entry');
@@ -43,9 +45,9 @@ const USAGE = `create-tour-entries.js — create national-tour entries from roun
 async function main() {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
-  const mode = process.env.TOUR_AUTOCREATE || '';
+  const mode = tourAutomationMode(process.env.TOUR_AUTOCREATE);
   if (mode === 'off') { console.log('TOUR_AUTOCREATE=off — skipping'); return; }
-  const write = argv.includes('--write') && mode !== 'report';
+  const write = argv.includes('--write') && mode === 'write';
   if (!fs.existsSync(CANDIDATES)) { console.log('No tour candidates recorded.'); return; }
 
   const { fetchSchedule, fetchWikiText } = require('./enrich-tour-dates');
