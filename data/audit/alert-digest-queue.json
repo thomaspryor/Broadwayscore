@@ -58,5 +58,65 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-28T15:26:29.687Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-how-shakespeare-saved-my-life-off-broadway-2026",
+    "title": "Unhandled CV.wrongProduction on How Shakespeare Saved My Life",
+    "description": "timeout/Raven Snook (timeout--raven-snook.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] While the review matches the expected critic (Raven S — https://www.timeout.com/newyork/theater/how-shakespeare-saved-my-life-jacob-ming-trent-review",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-28T15:34:39.476Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:how-shakespeare-saved-my-life-off-broadway-2026",
+    "title": "Shipped review missing publishDate on How Shakespeare Saved My Life",
+    "description": "culturesauce/Thom Geier SHIPPED with no publishDate — cannot confirm post-opening: https://culturesauce.com/how-shakespeare-saved-my-life-treats-the-bard-as-life-coach-off-broadway-review/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-28T15:34:39.479Z"
+  },
+  {
+    "conditionKey": "opening-night-revival-unverified-how-shakespeare-saved-my-life-off-broadway-2026",
+    "title": "Unverified revival on How Shakespeare Saved My Life",
+    "description": "how-shakespeare-saved-my-life-off-broadway-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-28T15:34:39.483Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:tru-off-west-end-2026",
+    "title": "Auto-remediation gave up on tru-off-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"tru-off-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-28T15:34:43.334Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:elf-lyons-the-woman-on-the-edge-off-broadway-2026",
+    "title": "Auto-remediation gave up on elf-lyons-the-woman-on-the-edge-off-broadway-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"elf-lyons-the-woman-on-the-edge-off-broadway-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-28T15:34:47.681Z"
   }
 ]
