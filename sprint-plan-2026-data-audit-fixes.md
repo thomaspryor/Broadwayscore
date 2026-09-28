@@ -7,7 +7,7 @@ Fix the 15 live data defects found by the 2026 audit and the seven pipeline mech
 
 Repo split: web repo `/home/user/Broadwayscore` (code, workflows, public derived files); core data `/root/broadway-scorecard-data` (shows.json, slug maps, aliases; symlinked from `data/`); review texts `/home/user/broadway-review-texts` (one file per review, `_pending/` strand; linked at `~/broadway-review-texts`). CI rebuilds `reviews.json` (`rebuild-reviews.yml`), never local.
 
-Edit protocol for every data task (from the plan review and the sprint critique): `git pull` the target repo immediately before editing; one batch per commit; push immediately; after the first origin/main commit that follows ours (for review texts that is the next `collect-review-texts.yml` or any workflow using the `push-review-texts` action), re-read `origin/main` and assert the change survived; review-file edits only through `safeWriteReview` with the field's breadcrumb (`wrongProductionOverride`/`wrongShow` clear/`originalScoreCleared` + reason; `llmScore` and `isNonReview` are protected too); every deleted shows.json row archived to `deleted-shows-2026-09.json` **in the core-data repo** beside `retired-show-ids.json` (never in the web repo's tracked `data/audit/`, §11); closing-date edits stamped `humanCorrectedClosingDate`.
+Edit protocol for every data task (from the plan review and the sprint critique): `git pull` the target repo immediately before editing; one batch per commit; push immediately; after the first origin/main commit that follows ours (for review texts that is the next `collect-review-texts.yml` or any workflow using the `push-review-texts` action), re-read `origin/main` and assert the change survived; review-file edits only through `safeWriteReview` with the field's breadcrumb (`wrongProductionOverride`/`wrongShow` clear/`originalScoreCleared` + reason; `llmScore` and `isNonReview` are protected too); every deleted shows.json row archived to `deleted-shows.json` **in the core-data repo** beside `retired-show-ids.json` (never in the web repo's tracked `data/audit/`, §11); closing-date edits stamped `humanCorrectedClosingDate`.
 
 **Single writer rule (sprint critique):** in data sprints, subagents never commit. Each subagent writes a patch or a JSON list of intended edits to the scratchpad; the coordinator applies them serially, one batch per commit, one push at a time, so `S1-T7`-style survival checks can attribute any revert.
 
@@ -49,7 +49,7 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Complexity:** S
 - **Depends on:** None
 - **Parallel:** Yes
-- **Files:** scripts/lib/retired-show-ids.js (new: `loadRetiredIds()`, `isRetiredId(id)`, `retireId(id, {reason, archivedRow})`), core-data repo: retired-show-ids.json and deleted-shows-2026-09.json (new, seeded empty), tests/unit/retired-show-ids.test.mjs (new)
+- **Files:** scripts/lib/retired-show-ids.js (new: `loadRetiredIds()`, `isRetiredId(id)`, `retireId(id, {reason, archivedRow})`), core-data repo: retired-show-ids.json and deleted-shows.json (new, seeded empty), tests/unit/retired-show-ids.test.mjs (new)
 - **Description:** A small JSON list `{id, reason, retiredAt}` plus a loader. `retireId` appends to the list and to the archive (full row). Both files live in the core-data repo (they are core data, §11), resolved the same way `shows.json` is.
 - **Acceptance criteria:**
   - VERIFY: `node --test tests/unit/retired-show-ids.test.mjs` passes (load, isRetired, retire appends both files)
@@ -85,7 +85,7 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Complexity:** M
 - **Depends on:** S0-T2
 - **Parallel:** Yes
-- **Files:** scripts/lib/reconcile-shows-fields.js (:101-110), .github/actions/push-core-data/action.yml (:429-444 inline node; :59 `CORE_FILES` add `retired-show-ids.json` and `deleted-shows-2026-09.json` so CI writes to them are pushed), tests/unit/reconcile-retired-ids.test.mjs (new)
+- **Files:** scripts/lib/reconcile-shows-fields.js (:101-110), .github/actions/push-core-data/action.yml (:429-444 inline node; :59 `CORE_FILES` add `retired-show-ids.json` and `deleted-shows.json` so CI writes to them are pushed), tests/unit/reconcile-retired-ids.test.mjs (new)
 - **Description:** `reconcileShowsJson` never re-adds an id present in the retired list even when the base snapshot lacks it. The action passes the retired list through and pushes the two new core files. (Composite action is §18-gated: the executing session records `review-gate.mjs --query=record-plan` first.)
 - **Acceptance criteria:**
   - VERIFY: `node --test tests/unit/reconcile-retired-ids.test.mjs` passes (remote has id, base lacks it, id retired: not re-added; same without retirement: re-added)
@@ -124,24 +124,27 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Files:** none
 - **Description:** Dispatch `rebuild-reviews.yml`; after it commits, `node scripts/check-prod-deploy.js HEAD --wait`; read the live `public/data/shows/romeo-and-juliet-off-broadway-2026.json`; then wait for the next `push-review-texts` run and re-read the file on origin/main.
 - **Acceptance criteria:**
-  - VERIFY: live show JSON `cs` is below 60 and `rc` is 26 (was 27)
+  - VERIFY: live show JSON `rc` is 26 (was 27) and carries no The Stage row; `cs` moves down (the audit's 57 assumes all ten West End relays removed, which is S1-T1's batch)
   - VERIFY: after the first origin/main commit in the review-texts repo that follows ours (any workflow using the `push-review-texts` action, e.g. `collect-review-texts.yml`), the file still has `wrongProduction: true`
+  - RESULT 2026-09-28: review-texts commit 7fd45367; rebuild run 10487 succeeded 16:34 UTC; web main and the live site both serve rc 26, no Stage row, cs 63.06 (was 63.71). Survival: a later CI commit (a067cc5a) re-tiered the file to invalid/wrong_content and kept wrongProduction:true and the revoked override; S0-T10 re-checks at 24h.
 
 ### Task S0-T9: Ramp unit 2: retire the phantom row by hand and confirm it stays gone
 - **Complexity:** S
 - **Depends on:** S0-T6
 - **Parallel:** No
-- **Files:** /root/broadway-scorecard-data/shows.json, data/retired-show-ids.json, data/audit/deleted-shows-2026-09.json
+- **Files:** /root/broadway-scorecard-data/shows.json, data/retired-show-ids.json, data/deleted-shows.json
 - **Description:** Remove `tabdates-off-west-end-2026` (title "?tab=dates"), archive the row, add the retired entry, commit and push core data. Wait for one `update-show-status` run.
 - **Acceptance criteria:**
   - VERIFY: after the next `update-show-status` run, `git -C /root/broadway-scorecard-data show origin/main:shows.json | grep -c tabdates-off-west-end-2026` prints 0
+  - RESULT 2026-09-28: the row was already gone. The owner deleted it on 2026-09-22 (core-data f5f7a1c, BRO-3915); the audit saw it because the container's core-data clone dated from 2026-09-22 01:06 UTC and was first refreshed at 14:59 UTC on 09-28 (reflog). Ramp 2 therefore registered the retirement instead of deleting: the archived row was pulled from `f5f7a1c^:shows.json` and `retireId(..., {blockTitleVenue: true})` wrote `retired-show-ids.json` + `deleted-shows.json`; pushed as core-data df15a61. `matchesRetired` hits by id and by title+venue ("?TAB=DATES"/"hampstead theatre"), and not for a real Hampstead show. The grep prints 0 on origin/main now; the 24h check confirms the registry entry survives CI's push-core-data (CORE_FILES gained both files in S0-T6) and the row stays absent.
+  - AUDIT SNAPSHOT NOTE: every shows.json count in the audit report's §3.1/3.2/3.5 that came from `scratchpad/agentE` (validate-data errors, duplicates, titleCase fields, date/status counts) was computed on that 09-22 snapshot. A fresh `validate-data.js --dry-run` on 09-28 reports 0 errors (was 17: both duplicate clusters and all 14 titleCase rows were fixed by other sessions in the interval) and 98 upcoming-with-null-openingDate rows (was 109). Sprint 2 (S2-T*) re-verifies each shows-level count against a freshly pulled shows.json before touching a row; counts taken from the live site (`public/data`) or from the review-texts repo are unaffected.
 
 ### Task S0-T10: 24-hour gate re-check
 - **Complexity:** S
 - **Depends on:** S0-T8, S0-T9
 - **Parallel:** No
 - **Files:** none (scheduled with `send_later`, 24h)
-- **Description:** Re-run the two survival greps (S0-T8's file on origin/main; S0-T9's `grep -c` on origin/main shows.json) 24 hours after the ramp. Owner decision: continue into Sprint 1 automatically on success; stop and report on any revert.
+- **Description:** Re-run the two survival checks 24 hours after the ramp: S0-T8's file on origin/main still carries `wrongProduction: true` and the revoked override; S0-T9's registry entry is still on origin/main of core data (`git show origin/main:retired-show-ids.json | grep -c tabdates` prints 1) and the row is still absent from shows.json (`grep -c` prints 0). Owner decision: continue into Sprint 1 automatically on success; stop and report on any revert.
 - **Acceptance criteria:**
   - VERIFY: both greps still pass 24h later, output pasted on BRO-4204
 
@@ -165,10 +168,10 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Complexity:** S
 - **Depends on:** S0-T8
 - **Parallel:** Yes
-- **Files:** 9 files in romeo-and-juliet-off-broadway-2026/, 5 in much-ado-about-nothing-2026/ (list in scratchpad, `source: "theatre-record"`, unflagged)
-- **Description:** Same field set as S0-T7, one commit.
+- **Files:** the 36 remaining files with `wrongProductionOverrideSetBy: "migrate-reroute-backlog.js"` (scratchpad `migration-override-hits.json`): 9 more on romeo-and-juliet-off-broadway-2026 and 5 on much-ado-about-nothing-2026 (Theatre Record, unflagged: flag exactly as S0-T7); 15 Theatre Record files on a-christmas-carol/macbeth/medea (already flagged but still carrying `wrongProductionOverride: true`: revoke the override the same way so the state is no longer self-contradictory); 7 with URLs on older NYC shows (a-christmas-carol-2022 nytg, beetlejuice-2019 artsfuse, falsettos-2016 nytg, how-to-succeed-2011 ew, little-shop-2019 nytg, macbeth-off-broadway-2026 broadwayworld, tru-off-broadway-2026 theater-life: read each; keep the ones whose URL is a review of that production, revoke the rest).
+- **Description:** Same field set as S0-T7 (flag + revoked override + `humanReviewedWrongProduction`), one commit. Lesson from the ramp: the flag alone does not exclude while `wrongProductionOverride` is true; revoking it with `false` is a value, not a clear, so the push guard leaves it.
 - **Acceptance criteria:**
-  - VERIFY: a node one-liner over both dirs counts 0 files with `source === "theatre-record"` and no `wrongProduction`
+  - VERIFY: a node one-liner over the corpus counts 0 files with `wrongProductionOverride === true` and `wrongProductionOverrideSetBy === "migrate-reroute-backlog.js"` on NYC-market shows with a Theatre Record source; `explainExclusion` returns `wrongProduction` for every flagged file
 
 ### Task S1-T2: Flag the four other wrong-production reviews
 - **Complexity:** S
@@ -342,6 +345,13 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Description:** Dispatch `rebuild-reviews.yml`; confirm live `cs` on the touched shows; dispatch the gather workflow (`gather-reviews.yml`) for every-brilliant-thing-2026 and death-of-a-salesman-2026 so the DTLI remap is exercised now; for sabrage-off-west-end-2026 and othello-off-broadway-2026 read `reviewsRemainingForScore` and the min-review rule to explain the missing score and fix the data cause if any.
 - **Acceptance criteria:** VERIFY: after the gather run, Every Brilliant Thing and Death of a Salesman `rc` are higher than before it; Sabrage/Othello either show `cs` or the reason is written in the scratchpad
 
+**PROGRESS 2026-09-28 (review-texts 11084bf5, 83dcefe8; web data maps in this batch):**
+- S3-T1: DTLI map: every-brilliant-thing-2026 -> every-brilliant-thing-2, death-of-a-salesman-2026 -> death-of-a-salesman-3 (35/33 mentions of 2026 vs 1). The other 47 unsuffixed 2026 slugs were probed for -2/-3 pages: none exists, and 35 of the 47 base pages carry no 2026 review items (DTLI has no page for them yet). The maps live in the web repo's data/, not core data as the plan said.
+- S3-T2: only the-other-place needed a change (-> the-other-place-the-shed); the-peculiar-patriot and pre-existing-condition already point at pages that carry the 2026 production.
+- S3-T3: 15 files cleared (8 wrongProduction, 7 wrongShow). The wrongShow ones were CV "preview/feature" verdicts at high confidence with no human hatch in explainExclusion, so review-guards.js gained cvWrongArticleManuallyCleared() (wrongArticleManualClear / humanReviewedWrongArticle:false, both already PROTECTED) at both CV gates, and their "invalid" tier (derived from the same verdict) was restored to complete. Kept flagged: Mother Russia (pre-opening), Paranormal Activity (roundup), The Receptionist Marshall (pre-opening), The Unknown NYT pair (byline unresolved; text duplicated under two bylines). NYSR Garry Starr byline fixed from the article text.
+- S3-T4: the local "clean but absent" recomputation is too noisy (165 hits: unknown-critic and excerpt-only duplicates the rebuild dedups); the authoritative list needs the CI rebuild's exclusion ledger, which is not committed anywhere reachable. Deferred to S7-T? tooling (persist the ledger as an artifact) rather than guessed.
+- S3-T5: Sabrage (2 reviews) and Othello (2 live, 34 in the no-byline pending strand) sit under the minimum-review threshold; the strand drain (replay-pending-bylines.js) needs the CI workflow input from S7 and is tracked in S8.
+
 ---
 
 ## Sprint 4: Discovery and ingestion hardening
@@ -369,10 +379,10 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Description:** Replace the raw fetch with `fetchPage()` (scraper.js) per the scraper rule; keep the JSON-LD parse.
 - **Acceptance criteria:** VERIFY: `node scripts/discover-new-shows.js --dry-run --source=olt` (or the equivalent flag) logs a non-zero OLT count locally
 
-### Task S4-T5: Last-success markers for Theatremonkey and Lortel
+### Task S4-T5: Last-success markers for Theatremonkey and Lortel; fix the Theatremonkey venue gap
 - **Complexity:** S | **Depends on:** None | **Parallel:** Yes
-- **Files:** scripts/enrich-west-end-dates.js, scripts/promote-ob-venue-candidates.js (Lortel :539), scripts/lib/playbill-broadway-schedule.js (reuse the marker pattern at :34)
-- **Description:** Write `data/audit/<source>-last-success.json` on a non-empty parse; log a soft-404 warning after 3 consecutive empties.
+- **Files:** scripts/discover-new-shows.js (Theatremonkey index path, ~:749 TM_INDEX_URL and its candidate filter), scripts/enrich-west-end-dates.js, scripts/promote-ob-venue-candidates.js (Lortel :539), scripts/lib/playbill-broadway-schedule.js (reuse the marker pattern at :34)
+- **Description:** Root cause seen in the Sprint 0 dry-run: "Theatremonkey: skipped 80 candidates — index has no venue data (card #1060)", so the source has returned 0 in every run since it was added; the index page lists titles only and each show page carries the venue. Fetch venue from the show page (bounded, cached) or drop the venue requirement for Theatremonkey candidates that match an OLT/TodayTix title. Also: OLT returned 100 shows locally in the same run, so its 22-run zero streak is a CI-fetch problem, which S4-T4's `fetchPage()` port addresses. Write `data/audit/<source>-last-success.json` on a non-empty parse; log a soft-404 warning after 3 consecutive empties.
 - **Acceptance criteria:** VERIFY: unit test for the marker helper; a run against the current Lortel 404 logs the warning
 
 ### Task S4-T6: `NON_THEATRE_VENUE_RE` and the ingest gate
@@ -503,11 +513,11 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Description:** Pure classifier `({hasUrl, outletIsDualMarket, siblingInOtherMarket, source})` returning `{shouldFlag, reason}`; the rebuild builds a `(critic, publishDate)` index per normalized title across markets in the pre-pass. Theatre Record source with no URL on a NYC show and a London sibling is flagged.
 - **Acceptance criteria:** VERIFY: unit test with the R&J case flags, with a Broadway-only critic does not
 
-### Task S6-T2: Guard the Theatre Record ingest at the writer
+### Task S6-T2: Guard the cross-market reroute in `migrate-reroute-backlog.js`
 - **Complexity:** S | **Depends on:** None | **Parallel:** Yes
-- **Files:** the writer that produced the 64 NYC files (trace: `grep -rn "source: 'theatre-record'\|source: \"theatre-record\"" scripts/`; extract-theatre-record.js already filters :522-531), test
-- **Description:** Whichever path wrote them refuses shows outside west-end/off-west-end unless `priorRuns` names a London run.
-- **Acceptance criteria:** VERIFY: test: a NYC show id is refused; a London id accepted; the writer is named in the commit message
+- **Files:** scripts/migrate-reroute-backlog.js (`--cross-market` mode, :112-160: reroutes a file to a same-title sibling in the other market by publish-year proximity and stamps `wrongProductionOverride: true`), tests
+- **Description:** Root cause found during the ramp (S0-T7): the R&J Stage file had been routed by title to `romeo-and-juliet-1977`, then the migration's cross-market rescue moved it to the NYC 2026 show because the publish year matched, and set the override, which makes `explainExclusion` include the review whatever the flag says. 37 files carry `wrongProductionOverrideSetBy: migrate-reroute-backlog.js`, all on NYC-market shows, 30 from Theatre Record. Fix: a cross-market reroute may only target a show in the SAME market as the review's source/outlet region (a Theatre Record or London-outlet file never lands on a NYC show unless `priorRuns` names a London run), and a reroute never sets `wrongProductionOverride`; it records a `rerouteNote` only and leaves the classifier to decide.
+- **Acceptance criteria:** VERIFY: unit test: a theatre-record file with a NYC target is refused, a London target accepted, and no override field is written; the 37 files are listed in the PR
 
 ### Task S6-T3: (moved to S1-T0)
 
