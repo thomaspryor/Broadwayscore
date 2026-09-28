@@ -227,8 +227,8 @@ function getTourPromptContext() {
     'A review of ANY stop on the tour (any city, any theater, e.g. "now playing at the Fox Theatre") IS a review of',
     'THIS production and is valid. Mentions of the original Broadway run, its cast, its awards or its New York',
     'reviews are normal background, not evidence of a mismatch. Mark wrong_production only if the critic is',
-    'reviewing the original Broadway run in New York, a West End or UK production, or a separate regional,',
-    'community or school staging.',
+    'reviewing the original Broadway run in New York, a West End or UK production, a different national tour',
+    'of the same title (another year or another touring company), or a separate regional, community or school staging.',
   ].join(' ');
 }
 

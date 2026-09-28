@@ -198,4 +198,5 @@ test('tour market: label, detector and note (BRO-4211)', () => {
   for (const m of ['broadway', 'regional', 'west-end', null, undefined, '']) assert.equal(isTourMarket(m), false);
   assert.equal(isNonMetroMarket('tour'), false);
   assert.match(getTourPromptContext(), /ANY stop on the tour/);
+  assert.match(getTourPromptContext(), /different national tour/);
 });

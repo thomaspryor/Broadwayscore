@@ -260,6 +260,7 @@ KEY INDICATORS THE REVIEW IS ABOUT A DIFFERENT PRODUCTION:
 
 IMPORTANT NUANCES:
 - Long-running shows (Lion King, Wicked, Phantom, Chicago 1996 revival) have continuous runs spanning decades. A review from 2015 of Lion King is still about the 1997 production — it never closed. Only classify as wrong if the review is clearly about a touring or regional production.
+- If the prompt says the filed production is a NATIONAL TOUR, a review of any stop on that tour (any city, any theater) matches it. Do not mark it wrong for being a touring production.
 - The word "masks" in Lion King reviews refers to the COSTUMES (part of Julie Taymor's design), not COVID masks.
 - "Hamilton" mentioned in passing is a common cultural comparison, NOT evidence of wrong production.
 - "twitter" or "social media" in boilerplate (share buttons, bios) is NOT evidence.
