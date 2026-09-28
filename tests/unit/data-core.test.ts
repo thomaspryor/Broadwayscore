@@ -22,6 +22,7 @@ import {
   getWestEndShows,
   getOffWestEndShows,
   getOffBroadwayShows,
+  getToursOf,
   getAllLondonShows,
   getMarketStats,
   getShowsByStatus,
@@ -184,6 +185,12 @@ describe('getOffBroadwayShows', () => {
     for (const show of shows) {
       assert.strictEqual(show.category, 'off-broadway', `Show ${show.id} has wrong category`);
     }
+  });
+});
+
+describe('national tours with the tour flag off', () => {
+  test('getToursOf is empty, so no Broadway page links a 404 tour page (BRO-4211)', () => {
+    assert.deepEqual(getToursOf({ id: 'beetlejuice-2019', title: 'Beetlejuice', category: 'broadway' }), []);
   });
 });
 

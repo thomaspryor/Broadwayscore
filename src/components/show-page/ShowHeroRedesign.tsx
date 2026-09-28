@@ -381,7 +381,8 @@ function Inner({
 
   const venueLink = isWestEnd
     ? `/west-end/theater/${slugify(show.venue)}`
-    : isOffBroadway
+    // Regional and tour venues have no /theater page ("North American Tour" is not a house).
+    : isOffBroadway || show.category === 'regional' || show.category === 'tour'
       ? null
       : `/theater/${slugify(show.venue)}`;
 

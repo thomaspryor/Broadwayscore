@@ -51,6 +51,7 @@ const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligi
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd } = require('./lib/jsonld');
+const { isNationalTourRoundupSlug, tourCandidateFor, recordTourCandidates } = require('./lib/tour-roundup-candidate');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -1346,15 +1347,37 @@ async function landingDiscoverMode(shows, options = {}) {
 
   const matched = [];
   const unmatched = [];
+  const tourCandidates = [];
   for (const url of roundupUrls) {
     const slug = (url.split('/article/')[1] || '').replace(/[?#].*$/, '');
     const match = matchBwwRoundupSlugToShow(slug, shows);
+    // A national-tour roundup matches the Broadway show by title, and
+    // processShow's category guard would drop it after fetching. Suggest the
+    // tour to the owner instead when it isn't tracked yet (BRO-4211).
+    // Broadway matches only: a roundup matching a tour entry directly keeps the normal path.
+    if (match && (match.show.category || 'broadway') === 'broadway' && isNationalTourRoundupSlug(slug)) {
+      const cand = tourCandidateFor(slug, match.show, shows);
+      console.log(`  [TOUR]  ${match.show.id} ← ${slug.slice(0, 70)}${cand ? ' (suggesting a tour entry)' : ' (tour already tracked)'}`);
+      // Recorded here; scripts/route-tour-candidates.js turns the file into owner
+      // digest suggestions (only the landing job runs it and commits the alert files).
+      if (cand && !options.dryRun) tourCandidates.push({ ...cand, url, slug });
+      continue;
+    }
     if (match) {
       matched.push({ url, showId: match.show.id, slug });
       console.log(`  [MATCH] ${match.show.id} ← ${slug.slice(0, 70)}`);
     } else {
       unmatched.push({ url, slug });
       console.log(`  [MISS]  ${slug.slice(0, 70)}`);
+    }
+  }
+
+  if (tourCandidates.length) {
+    try {
+      const n = recordTourCandidates(path.join(__dirname, '../data/audit/tour-roundup-candidates.json'), tourCandidates);
+      console.log(`\nRecorded ${tourCandidates.length} national-tour candidate(s) (${n} tracked) for route-tour-candidates.js`);
+    } catch (e) {
+      console.log(`  [WARN] Could not record tour candidates: ${e.message}`);
     }
   }
 

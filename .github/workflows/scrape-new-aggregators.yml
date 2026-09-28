@@ -559,6 +559,14 @@ jobs:
           [ -z "$TB" ] && TB=22
           node scripts/scrape-bww-reviews.js --landing-discover --time-budget-min=$TB
 
+      # BRO-4211: national-tour roundups for a Broadway show with no tour entry,
+      # recorded by the step above, become owner digest suggestions. Before the
+      # commit step below, which stages the files routeAlert writes.
+      - name: Suggest national tours to add
+        if: always()
+        continue-on-error: true
+        run: node scripts/route-tour-candidates.js
+
       - name: Push review-texts to private repo (BWW landing)
         if: always()
         uses: ./.github/actions/push-review-texts
@@ -607,10 +615,20 @@ jobs:
           # whole 90s cap with zero transfer progress, so only ~4-6 retries fit
           # inside the 900s deadline above. Matches BRO-334/BRO-346.
           GIT_NET_TIMEOUT_SEC: '30'
+          # The alert files below are merged JSON other jobs also write; same
+          # setting as the scrape-playbill-verdict commit step.
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/bww-roundup-unmatched.json 2>/dev/null || true
+          # tour-roundup-candidates.json + alert-digest-queue.json + alert-ledger.json
+          # + alert-router-attempts.jsonl: route-tour-candidates.js (step above)
+          # routes national-tour roundups for a Broadway show with no tour entry
+          # through routeAlert(disposition:'digest') as an "add this tour?"
+          # decision (BRO-4211). routeAlert writes these on this runner; unstaged,
+          # the digest line dies with it (same reason as the Playbill Verdict
+          # commit step above).
+          bash scripts/lib/git-add-existing.sh data/audit/bww-roundup-unmatched.json data/audit/tour-roundup-candidates.json data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
           if ! git diff --staged --quiet; then
             git commit -m "data: BWW landing-page unmatched roundups audit [skip ci]"
             bash scripts/lib/push-with-retry.sh

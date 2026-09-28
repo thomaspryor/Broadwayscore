@@ -40,6 +40,7 @@ export function getHeroDurationSuffix(show: DurationSuffixShowInput): string | n
   if (show.category === 'west-end') return 'in the West End';
   if (show.category === 'off-broadway') return 'Off-Broadway';
   if (show.category === 'regional') return null;
+  if (show.category === 'tour') return 'on tour';
   return 'on Broadway';
 }
 

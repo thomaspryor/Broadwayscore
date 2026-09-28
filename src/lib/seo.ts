@@ -171,6 +171,9 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
   // Event spec requires startDate. Fall back to previewsStartDate when openingDate
   // isn't yet announced.
   const startDate = show.openingDate || show.previewsStartDate;
+  // A national tour (BRO-4211) has no single theater: "North American Tour" is
+  // not a PerformingArtsTheater or a postal address, and no venue presents it.
+  const isTour = show.category === 'tour';
   const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'TheaterEvent',
@@ -178,20 +181,24 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
     description: show.synopsis,
     url: `${BASE_URL}/show/${show.slug}`,
     inLanguage: 'en',
-    location: {
-      '@type': 'PerformingArtsTheater',
-      name: show.venue,
-      address: toPostalAddress(show.theaterAddress || show.venue, country),
-    },
+    location: isTour
+      ? { '@type': 'Place', name: show.venue, address: { '@type': 'PostalAddress', addressCountry: country } }
+      : {
+          '@type': 'PerformingArtsTheater',
+          name: show.venue,
+          address: toPostalAddress(show.theaterAddress || show.venue, country),
+        },
     // GSC flags Events missing "organizer". We don't track producers, so the
     // presenting theater is the closest honest entity we always have.
     // organizerUrl (our /theater/{slug} entity page, Broadway-only) clears the
     // follow-up "Missing field 'url' (in 'organizer')" GSC warning.
-    organizer: {
-      '@type': 'Organization',
-      name: show.venue,
-      ...(organizerUrl && { url: organizerUrl }),
-    },
+    ...(!isTour && {
+      organizer: {
+        '@type': 'Organization',
+        name: show.venue,
+        ...(organizerUrl && { url: organizerUrl }),
+      },
+    }),
     ...(startDate && { startDate }),
     ...(show.closingDate && { endDate: show.closingDate }),
     ...(show.images?.hero && { image: toAbsoluteUrl(show.images.hero) }),
@@ -558,8 +565,9 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null): 
   const isLondon = isLondonMarket(show.category);
   const isOffBroadway = show.category === 'off-broadway';
   const isRegional = show.category === 'regional';
+  const isTour = show.category === 'tour';
   const isOpera = isOperaShow(show);
-  const marketLabel = isOpera ? 'at the Met' : isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'in a regional production' : 'on Broadway';
+  const marketLabel = isOpera ? 'at the Met' : isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'in a regional production' : isTour ? 'on tour' : 'on Broadway';
 
   const faqs: { question: string; answer: string }[] = [];
 
@@ -621,7 +629,9 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null): 
   const openingDateStr = formatFAQDate(show.openingDate);
   const closingDateStr = formatFAQDate(show.closingDate);
   const previewsStartStr = formatFAQDate(show.previewsStartDate);
-  faqs.push({
+  // A tour's venue is "North American Tour" and its itinerary isn't tracked, so the
+  // running/where answers would be wrong ("playing at North American Tour"). Skip them.
+  if (!isTour) faqs.push({
     question: `Is ${show.title} still running ${marketLabel}?`,
     answer: show.status === 'open'
       ? `Yes, ${show.title} is currently playing at ${show.venue} ${marketLabel}.${closingDateStr ? ` It is scheduled to close on ${closingDateStr}.` : ''}`
@@ -633,7 +643,7 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null): 
   });
 
   // Q: Where is it playing?
-  if (show.status !== 'closed') {
+  if (show.status !== 'closed' && !isTour) {
     faqs.push({
       question: `Where is ${show.title} playing ${marketLabel}?`,
       answer: `${show.title} is playing at ${show.venue}${show.theaterAddress ? `, located at ${show.theaterAddress}` : ''}.`,
@@ -704,9 +714,12 @@ export function generateBrowseFAQSchema(
   const isLondon = shows.length > 0 && isLondonMarket(shows[0].category);
   const isOffBroadway = shows.length > 0 && shows[0].category === 'off-broadway';
   const isRegional = shows.length > 0 && shows[0].category === 'regional';
-  const marketLabel = isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'in a regional production' : 'on Broadway';
+  const isTour = shows.length > 0 && shows[0].category === 'tour';
+  const marketLabel = isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'in a regional production' : isTour ? 'on tour' : 'on Broadway';
   const outletNames = isLondon
     ? 'The Guardian, Telegraph, Time Out, and WhatsOnStage'
+    : isTour
+    ? 'the local newspapers in each city the tour visits'
     : 'The New York Times, Vulture, and Variety';
   if (shows.length === 0) return null;
 

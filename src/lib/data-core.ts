@@ -18,7 +18,6 @@ import { getShowGrosses } from './data-grosses';
 import { getAudienceBuzz } from './data-audience';
 import { isOperaShow } from './show-market';
 import { belongsOnWestEndListing, belongsOnOffWestEndHub } from './genre';
-import { featureFlags } from '@/config/feature-flags';
 import { isCategoryEnabled } from './markets';
 import { isHomepageNotable, isAcclaimedKnownPropertyRevival, notabilityRank, NOTABILITY_THRESHOLDS, type NotabilitySignals } from './homepage-notability';
 import { getShowCommercial } from './data-commercial';
@@ -199,6 +198,30 @@ export function getOffBroadwayShows(): ComputedShow[] {
  */
 export function getRegionalShows(): ComputedShow[] {
   return getAllShows().filter(show => show.category === 'regional');
+}
+
+/** North American national tours (category 'tour', BRO-4211). */
+export function getTourShows(): ComputedShow[] {
+  return getAllShows().filter(show => show.category === 'tour');
+}
+
+/**
+ * National tours of a Broadway production, for its "On tour" line. A tour's
+ * tourOf names one Broadway run, but every Broadway production of the same
+ * title gets the line (Beetlejuice tours from beetlejuice-2019, and the 2022
+ * and 2025 returns are the pages people land on). Empty while the tour flag
+ * is off, so a flag-off build never links to a 404.
+ */
+export function getToursOf(show: Pick<ComputedShow, 'id' | 'title' | 'category'>): ComputedShow[] {
+  if (!isCategoryEnabled('tour')) return [];
+  if (show.category && show.category !== 'broadway') return [];
+  const title = show.title.trim().toLowerCase();
+  return getAllShows().filter(t => {
+    if (t.category !== 'tour' || !t.tourOf) return false;
+    if (t.tourOf === show.id) return true;
+    const parent = getShowById(t.tourOf);
+    return !!parent && parent.title.trim().toLowerCase() === title;
+  });
 }
 
 /**
@@ -1087,6 +1110,7 @@ export function getBrowseList(slug: string): BrowseList | undefined {
     : config.source === 'off-broadway' ? getOffBroadwayShows()
     : config.source === 'off-west-end' ? getOffWestEndShows()
     : config.source === 'regional' ? getRegionalShows()
+    : config.source === 'tour' ? getTourShows()
     : getBroadwayShows();
 
   // Context for data-dependent filters and custom sorts
@@ -1168,9 +1192,11 @@ export function getAllBrowseSlugs(): string[] {
   // + sitemap both enumerate through here) — their card links point at
   // /show/ pages that regionalSlugAllowed excludes, i.e. 404s. Mirrors the
   // regional gating on detail params/search/sitemap above (ship-check P1).
-  return getBrowseSlugsFromConfig().filter(slug =>
-    featureFlags.regional || BROWSE_PAGES[slug]?.source !== 'regional'
-  );
+  // Every flag-gated category (regional, tour) goes through markets.json.
+  return getBrowseSlugsFromConfig().filter(slug => {
+    const source = BROWSE_PAGES[slug]?.source;
+    return !source || isCategoryEnabled(source);
+  });
 }
 
 /**

@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { classifyTourBackfill, prepareTourMove } = require('../../scripts/lib/tour-backfill.js');
+const { classifyTourBackfill, prepareTourMove, planTourSweep, decideTourSweep } = require('../../scripts/lib/tour-backfill.js');
 
 const tourFlag = { wrongProduction: true, wrongProductionReason: 'BWW regional/tour review (denver)', url: 'https://www.denverpost.com/x' };
 
@@ -76,4 +76,77 @@ test('a wrong_production rejection is set aside on the move; other rejections st
   assert.equal(moved.routedPriorVerdicts.rejectionReason, 'wrong_production');
   const kept = prepareTourMove({ ...base, rejectionReason: 'not_a_review' }, { fromShowId: 'shucked-2023', tourId: 'shucked-tour-2024' });
   assert.equal(kept.rejectionReason, 'not_a_review');
+});
+
+test('a closed tour: dated reviews long after closing stay put; undated ones move only if seen before closing', () => {
+  const ctx = { tourLaunchDate: '2022-12-01', tourClosingDate: '2025-09-14' };
+  assert.equal(classifyTourBackfill({ ...tourFlag, publishDate: '2025-10-20' }, ctx).action, 'move'); // within 60 days
+  assert.equal(classifyTourBackfill({ ...tourFlag, publishDate: '2027-02-01' }, ctx).reason, 'after-tour-close');
+  assert.equal(classifyTourBackfill({ ...tourFlag, firstSeenAt: '2024-03-01T00:00:00Z' }, ctx).action, 'move');
+  assert.equal(classifyTourBackfill({ ...tourFlag, textFetchedAt: '2027-01-05T00:00:00Z' }, ctx).reason, 'undated-after-close');
+  assert.equal(classifyTourBackfill({ ...tourFlag }, ctx).reason, 'undated-after-close'); // never seen: unknown
+  // An open tour (no closing date) keeps taking undated reviews.
+  assert.equal(classifyTourBackfill({ ...tourFlag }, { tourLaunchDate: '2022-12-01' }).action, 'move');
+});
+
+test('two tours of one title: an undated review is ambiguous', () => {
+  assert.equal(classifyTourBackfill({ ...tourFlag }, { otherToursOfTitle: 1 }).reason, 'ambiguous-tour');
+  assert.equal(classifyTourBackfill({ ...tourFlag, publishDate: '2024-01-01' }, { otherToursOfTitle: 1 }).action, 'move');
+});
+
+test('planTourSweep: every Broadway production of the title, never other markets', () => {
+  const shows = [
+    { id: 'bj-2019', title: 'Beetlejuice', category: 'broadway', openingDate: '2019-04-25' },
+    { id: 'bj-2022', title: 'Beetlejuice', category: 'broadway' },
+    { id: 'bj-we-2026', title: 'Beetlejuice', category: 'west-end' },
+    { id: 'hamilton-2015', title: 'Hamilton', category: 'broadway' },
+    { id: 'bj-tour-2022', title: 'Beetlejuice', category: 'tour', tourOf: 'bj-2019', status: 'closed', openingDate: '2022-12-01', closingDate: '2025-09-14' },
+    { id: 'orphan-tour', title: 'X', category: 'tour', tourOf: 'missing' },
+  ];
+  const plans = planTourSweep(shows);
+  assert.equal(plans.length, 1);
+  assert.deepEqual(plans[0].fromIds, ['bj-2019', 'bj-2022']);
+  assert.deepEqual(plans[0].ctx, { broadwayOpeningDate: '2019-04-25', tourLaunchDate: '2022-12-01', tourClosingDate: '2025-09-14', otherToursOfTitle: 0, nextTourLaunchDate: null, siblingTourUndated: false });
+  // A second tour with no launch date yet: neither tour can take a review.
+  const undated = planTourSweep([...shows, { id: 'bj-tour-2027', title: 'Beetlejuice', category: 'tour', tourOf: 'bj-2022', status: 'open' }]);
+  assert.equal(undated.find(p => p.tourId === 'bj-tour-2027').ctx.otherToursOfTitle, 1);
+  assert.equal(undated.find(p => p.tourId === 'bj-tour-2027').ctx.tourClosingDate, null);
+  assert.ok(undated.every(p => p.ctx.siblingTourUndated));
+});
+
+test('two dated tours of one title: every dated review goes to exactly one', () => {
+  const shows = [
+    { id: 'sh-2023', title: 'Shucked', category: 'broadway', openingDate: '2023-04-04' },
+    { id: 'sh-tour-2024', title: 'Shucked', category: 'tour', tourOf: 'sh-2023', status: 'closed', openingDate: '2024-10-20', closingDate: '2026-06-07' },
+    { id: 'sh-tour-2027', title: 'Shucked', category: 'tour', tourOf: 'sh-2023', status: 'open', openingDate: '2026-07-15' },
+  ];
+  const [first, second] = ['sh-tour-2024', 'sh-tour-2027'].map(id => planTourSweep(shows).find(p => p.tourId === id));
+  assert.equal(first.ctx.nextTourLaunchDate, '2026-07-15');
+  // 2026-07-20 fits the first tour's close+60d AND the second's launch: only the second takes it.
+  for (const date of ['2025-03-01', '2026-06-20', '2026-07-20', '2027-01-10']) {
+    const takers = [first, second].filter(p => classifyTourBackfill({ ...tourFlag, publishDate: date }, p.ctx).action === 'move');
+    assert.equal(takers.length, 1, `${date} -> ${takers.map(p => p.tourId)}`);
+  }
+});
+
+test('decideTourSweep: one move per review URL across Broadway folders; filename collisions and URLs already on the tour stay put', () => {
+  const r = (url, extra = {}) => ({ ...tourFlag, url, ...extra });
+  const folders = {
+    'bj-tour': [{ file: 'post--a.json', data: r('https://post.example/review-1') }],
+    'bj-2019': [{ file: 'post--b.json', data: r('https://post.example/review-1/') }], // already on the tour
+    'bj-2022': [
+      { file: 'gazette--jane.json', data: r('https://gazette.example/r') },
+      { file: 'post--a.json', data: r('https://other.example/x') }, // same filename as a tour file
+      { file: 'clean.json', data: { url: 'https://c.example', wrongProduction: false } },
+    ],
+    'bj-2025': [{ file: 'gazette--unknown.json', data: r('https://gazette.example/r') }], // same URL, other byline
+  };
+  const plan = { tourId: 'bj-tour', fromIds: ['bj-2019', 'bj-2022', 'bj-2025'], ctx: {} };
+  const rows = decideTourSweep(plan, id => folders[id] || []);
+  assert.deepEqual(rows.map(x => `${x.fromId}/${x.file}:${x.key}`), [
+    'bj-2019/post--b.json:duplicate-on-tour',
+    'bj-2022/gazette--jane.json:tour-review',
+    'bj-2022/post--a.json:target-collision',
+    'bj-2025/gazette--unknown.json:duplicate-on-tour',
+  ]);
 });

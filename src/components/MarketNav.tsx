@@ -38,12 +38,15 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   // Regional (non-NYC US) shows: distinct pill label; dropdown links to the
   // pre-Broadway browse page (no dedicated hub yet).
   const isRegional = marketId === 'regional';
+  // National tours (BRO-4211): own pill label; dropdown links to the tours browse page.
+  // Flag-checked: with the flag off a /show/*-tour-YYYY URL is a 404 and must not read as "Tours".
+  const isTour = marketId === 'tour' && featureFlags.tour;
   // Don't apply opera domain branding when user has explicitly navigated to
   // another market (off-broadway, west-end, off-west-end, regional). The opera
   // domain flag only matters on opera-specific pages.
-  const isExplicitNonOperaMarket = isWestEnd || isOffWestEnd || isOffBroadway || isRegional;
+  const isExplicitNonOperaMarket = isWestEnd || isOffWestEnd || isOffBroadway || isRegional || isTour;
   const isOpera = (isOperaDomain || isOperaShowPage || isOperaPage) && !isExplicitNonOperaMarket;
-  const isBroadway = !isWestEnd && !isOffWestEnd && !isOffBroadway && !isRegional && !isOpera;
+  const isBroadway = !isWestEnd && !isOffWestEnd && !isOffBroadway && !isRegional && !isTour && !isOpera;
   const currentMarket = isWestEnd || isOffWestEnd ? 'west-end' : 'nyc';
 
   const closeDropdown = useCallback(() => setIsOpen(false), []);
@@ -87,14 +90,16 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                   ? 'bg-violet-500/[0.12] border-violet-500/25 text-violet-300 hover:bg-violet-500/20'
                   : isRegional
                     ? 'bg-emerald-500/[0.12] border-emerald-500/25 text-emerald-300 hover:bg-emerald-500/20'
-                    : 'bg-white/[0.06] border-white/[0.12] text-gray-300 hover:bg-white/10 hover:text-white'
+                    : isTour
+                      ? 'bg-sky-500/[0.12] border-sky-500/25 text-sky-300 hover:bg-sky-500/20'
+                      : 'bg-white/[0.06] border-white/[0.12] text-gray-300 hover:bg-white/10 hover:text-white'
           }
         `}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-label="Switch market"
       >
-        {isOpera ? 'Opera' : isOffBroadway ? 'Off-Bway' : isOffWestEnd ? 'Off-WE' : isRegional ? 'Regional' : currentMarket === 'nyc' ? 'Broadway' : 'West End'}
+        {isOpera ? 'Opera' : isOffBroadway ? 'Off-Bway' : isOffWestEnd ? 'Off-WE' : isRegional ? 'Regional' : isTour ? 'Tours' : currentMarket === 'nyc' ? 'Broadway' : 'West End'}
         {/* Always visible — below 400px this used to be `hidden`, so the pill
             read as a plain label with no dropdown cue on narrow phones (task
             #78: rage clicks on "Broadway" traced to missing affordance here).
@@ -189,6 +194,28 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
               </div>
               {isRegional && (
                 <svg className="w-4 h-4 text-emerald-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+            </Link>
+          )}
+          {featureFlags.tour && (
+            <Link
+              href="/browse/broadway-national-tours"
+              className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
+                isTour ? 'bg-sky-500/[0.10]' : 'hover:bg-white/[0.04]'
+              }`}
+              onClick={() => setIsOpen(false)}
+            >
+              <div className="flex items-center gap-2">
+                <span className={`w-1.5 h-1.5 rounded-full ${isTour ? 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.5)]' : 'bg-sky-500/60'}`} />
+                <div>
+                  <div className={`text-sm font-semibold ${isTour ? 'text-sky-200' : 'text-white'}`}>National Tours</div>
+                  <div className="text-[11px] text-gray-500">Broadway shows on the road</div>
+                </div>
+              </div>
+              {isTour && (
+                <svg className="w-4 h-4 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
               )}

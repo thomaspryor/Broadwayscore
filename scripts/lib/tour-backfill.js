@@ -5,8 +5,8 @@
  * wrongProduction on a Broadway show because they review the national tour,
  * move to that tour's own entry, and how each file is rewritten on the way.
  *
- * Pure functions so the rules are testable; scripts/audit-we-market-misroutes.js
- * --scope=tour does the file moves.
+ * Pure functions so the rules are testable; scripts/sweep-tour-reviews.js does
+ * the file moves.
  *
  * Pilot lessons encoded here (Beetlejuice, 2026-09-28):
  * - The tour text sits in wrongFullText, not fullText.
@@ -34,10 +34,24 @@ function toDate(s) {
   return Number.isNaN(d.getTime()) ? null : d;
 }
 
+// A tour closes; later reviews of the same title belong to a later tour (Shucked
+// has a second one from 2026). Reviews trail the last stop by a few weeks.
+const AFTER_CLOSE_SLACK_MS = 60 * 86400000;
+
+/** Earliest time the pipeline saw this file: the stand-in date for an undated review. */
+function firstSeen(data) {
+  const ts = [data.firstSeenAt, data.urlDiscoveredAt, data.textFetchedAt].map(toDate).filter(Boolean);
+  return ts.length ? new Date(Math.min(...ts.map(d => d.getTime()))) : null;
+}
+
 /**
  * Decide whether one file moves from a Broadway show to its tour.
  * Returns { action: 'move' | 'skip', reason }.
- * ctx: { broadwayOpeningDate?, tourLaunchDate? } (ISO strings; either may be null).
+ * ctx: { broadwayOpeningDate?, tourLaunchDate?, tourClosingDate?, otherToursOfTitle?,
+ *        nextTourLaunchDate?, siblingTourUndated? } (ISO strings may be null). With two
+ * tours of one title, each dated review belongs to exactly one: a tour's window
+ * ends where the next one's begins (nextTourLaunchDate); with either launch date
+ * unknown the split can't be made (siblingTourUndated).
  */
 function classifyTourBackfill(data, ctx = {}) {
   if (!data || data.wrongProduction !== true) return { action: 'skip', reason: 'not-flagged' };
@@ -62,6 +76,21 @@ function classifyTourBackfill(data, ctx = {}) {
   if (pub && bway && pub < bway) return { action: 'skip', reason: 'before-broadway-opening' };
   // Allow a week of slack: roundups and first-stop reviews can predate the official launch listing.
   if (pub && launch && pub.getTime() < launch.getTime() - 7 * 86400000) return { action: 'skip', reason: 'before-tour-launch' };
+  if (ctx.siblingTourUndated) return { action: 'skip', reason: 'ambiguous-tour' };
+  const next = toDate(ctx.nextTourLaunchDate);
+  if (pub && next && pub.getTime() >= next.getTime() - 7 * 86400000) return { action: 'skip', reason: 'later-tour' };
+  const close = toDate(ctx.tourClosingDate);
+  if (pub && close && pub.getTime() > close.getTime() + AFTER_CLOSE_SLACK_MS) return { action: 'skip', reason: 'after-tour-close' };
+  if (!pub) {
+    // With two tours of one title an undated review can't be placed.
+    if ((ctx.otherToursOfTitle || 0) > 0) return { action: 'skip', reason: 'ambiguous-tour' };
+    // A closed tour only takes an undated review the pipeline saw before it closed;
+    // one first seen later is more likely a review of the next production.
+    if (close) {
+      const seen = firstSeen(data);
+      if (!seen || seen.getTime() > close.getTime() + AFTER_CLOSE_SLACK_MS) return { action: 'skip', reason: 'undated-after-close' };
+    }
+  }
 
   return { action: 'move', reason: 'tour-review' };
 }
@@ -107,4 +136,81 @@ function prepareTourMove(data, { fromShowId, tourId, at = new Date().toISOString
   return out;
 }
 
-module.exports = { classifyTourBackfill, prepareTourMove, BROADWAY_RELATIVE_FIELDS };
+const normTitle = (t) => String(t || '').trim().toLowerCase();
+
+/**
+ * One entry per tour: which Broadway show folders to sweep and the date context.
+ * Every BROADWAY production sharing the tourOf parent's title is a source
+ * (Beetlejuice tour reviews landed on beetlejuice-2022 and -2025, not only the
+ * parent 2019); other markets never are (beetlejuice-west-end-2026 is a
+ * different production, and the UK filter only catches files that say so).
+ */
+function planTourSweep(shows) {
+  const byId = new Map(shows.map(s => [s.id, s]));
+  const tours = shows.filter(s => s.category === 'tour' && s.tourOf && byId.has(s.tourOf));
+  return tours.map(tour => {
+    const parent = byId.get(tour.tourOf);
+    const title = normTitle(parent.title);
+    const fromIds = shows
+      .filter(s => (s.category || 'broadway') === 'broadway' && normTitle(s.title) === title)
+      .map(s => s.id)
+      .sort();
+    const siblings = tours.filter(t => t.id !== tour.id && normTitle(byId.get(t.tourOf).title) === title);
+    const otherToursOfTitle = siblings.length;
+    const siblingTourUndated = siblings.length > 0 && (!tour.openingDate || siblings.some(t => !t.openingDate));
+    const later = siblings.map(t => t.openingDate).filter(d => d && tour.openingDate && d > tour.openingDate).sort();
+    return {
+      tourId: tour.id,
+      fromIds,
+      ctx: {
+        broadwayOpeningDate: parent.openingDate || null,
+        tourLaunchDate: tour.openingDate || null,
+        tourClosingDate: tour.status === 'closed' ? (tour.closingDate || null) : null,
+        otherToursOfTitle,
+        nextTourLaunchDate: later[0] || null,
+        siblingTourUndated,
+      },
+    };
+  });
+}
+
+/**
+ * Decide every file for one plan from planTourSweep. listFiles(showId) returns
+ * [{ file, data }] for that show folder ([] when missing). Returns one row per
+ * tour-flagged file: { fromId, file, data, key }, where key 'tour-review' means
+ * move it. Duplicates are caught by URL, not filename: the same review can sit
+ * on two Broadway folders under different bylines (denverpost--unknown vs
+ * denverpost--john-moore). Shared by scripts/sweep-tour-reviews.js (which moves
+ * the 'tour-review' rows in order) and validate-data's pending-sweep warning.
+ */
+function decideTourSweep(plan, listFiles) {
+  const { normalizeUrl } = require('./review-normalization');
+  const onTour = new Set();
+  const tourFiles = new Set();
+  for (const { file, data } of listFiles(plan.tourId)) {
+    tourFiles.add(file);
+    if (data && data.url) onTour.add(normalizeUrl(data.url));
+  }
+  const rows = [];
+  for (const fromId of plan.fromIds) {
+    for (const { file, data } of listFiles(fromId)) {
+      if (!data || file.startsWith('_')) continue;
+      const d = classifyTourBackfill(data, plan.ctx);
+      if (d.reason === 'not-flagged' || d.reason === 'flag-not-tour') continue;
+      let key = d.reason;
+      if (d.action === 'move') {
+        const u = data.url ? normalizeUrl(data.url) : null;
+        if (u && onTour.has(u)) key = 'duplicate-on-tour';
+        else if (tourFiles.has(file)) key = 'target-collision';
+      }
+      if (key === 'tour-review') {
+        if (data.url) onTour.add(normalizeUrl(data.url));
+        tourFiles.add(file);
+      }
+      rows.push({ fromId, file, data, key });
+    }
+  }
+  return rows;
+}
+
+module.exports = { classifyTourBackfill, prepareTourMove, planTourSweep, decideTourSweep, BROADWAY_RELATIVE_FIELDS };
