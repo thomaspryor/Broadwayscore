@@ -22,6 +22,7 @@ const { applyTemporalOverrides, applyVenueClassificationCarveout } = require('./
 const { buildVenueContext: _expandVenueContext } = require('./venue-aliases');
 const { getCvStyle } = require('./outlet-canonicalize');
 const { hasOpinionLanguage } = require('./content-quality');
+const { stripConsentLayerPrefix } = require('./text-cleaning');
 
 /**
  * Extract a sensible publication year from a URL path.
@@ -379,6 +380,10 @@ async function callWithFallback(prompt) {
  * @returns {Object} { isValid, confidence, issues, truncated, wrongArticle, wrongProduction, isFilmTv, reasoning, verifiedBy, urlYearConflict }
  */
 async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url, show }) {
+  // Judge the article, not a consent layer captured ahead of it: the prompt
+  // shows only the first 2,500 chars, which for WhatsOnStage captures was
+  // entirely IAB consent text (BRO-4185 A).
+  scrapedText = stripConsentLayerPrefix(scrapedText);
   if (!scrapedText || scrapedText.length < 200) {
     return {
       isValid: false,
