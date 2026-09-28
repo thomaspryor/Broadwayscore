@@ -1026,6 +1026,7 @@ const stats = {
     'explicit-letterGrade': 0,
     'human-review': 0,
     'originalScore-priority0': 0,
+    'aggregatorStars-relay': 0,     // P0.5 scored from a relayed known-star-outlet rating (S6-T5)
     llmScore: 0,
     'llmScore-thumb-validated': 0,  // Both thumbs agree with LLM direction
     'llmScore-thumb-boosted': 0,   // Single thumb agrees with LLM direction
@@ -4852,7 +4853,7 @@ showDirs.forEach(showId => {
       }
 
       const { score, source } = scoreResult;
-      stats.scoreSources[source]++;
+      stats.scoreSources[source] = (stats.scoreSources[source] || 0) + 1;
 
       // Warn if file's showId disagrees with directory (data integrity issue)
       if (data.showId && data.showId !== showId) {
@@ -4869,6 +4870,10 @@ showDirs.forEach(showId => {
         outlet: (getOutletDisplayName(canonicalOutletId) || data.outlet || data.outletId || 'Unknown').replace(/\s{2,}/g, ' '),
         assignedScore: score,
         scoreSource: source,
+        // S6-T6: both aggregator thumbs disagree with the v6 verdict by two
+        // buckets — the verdict ships, and the adjudication queue (reason
+        // 'both-thumbs-disagree-with-llm' in needs-human-review.json) gets it.
+        ...(scoreResult.needsAdjudication ? { needsAdjudication: true } : {}),
         bucket: scoreToBucket(score),
         thumb: scoreToThumb(score),
         // Normalize URL-as-critic-name (scraper captured the byline href, not
@@ -4911,8 +4916,8 @@ showDirs.forEach(showId => {
         })(),
         originalRating: (source === 'originalScore-priority0' || source === 'originalScore-showscore-downgraded')
           ? data.originalScore || null
-          : source === 'aggregatorStars-fallback'
-          ? data.aggregatorStars || null
+          : (source === 'aggregatorStars-relay' || source === 'aggregatorStars-fallback')
+          ? data.aggregatorStars || null  // S6-T5: the relayed star that drove the score IS the displayed rating
           : null,  // Don't display star rating when it wasn't used for scoring
         pullQuote: (() => {
           data._showStatus = showStatusMap[showId];

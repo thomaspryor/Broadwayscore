@@ -68,10 +68,18 @@ const { classifyContentTier } = require('./content-quality');
  * @param {boolean} [opts.wrongShowOnly] - Scope the clear to wrongShow only; leave
  *   wrongProduction (top-level and embedded CV) untouched and stamp wrongShowOverride
  *   instead of wrongProductionOverride. See module doc above.
+ * @param {boolean} [opts.noOverrideStamp] - Clear the flags but do NOT grant
+ *   wrongProductionOverride (step 4 skipped). For callers that MOVE a file to a
+ *   different production rather than assert the current one is right: the
+ *   target's own wrongProduction guards must still run against the moved
+ *   review. Added for migrate-reroute-backlog.js --cross-market (BRO-4204 audit
+ *   S6-T2) — its year-proximity reroutes stamped the blanket override and
+ *   force-included 37 London reviews on NYC shows (revoked by S1-T1). The
+ *   caller records its own breadcrumbs (reroutedFrom / reroutedAt).
  * @returns {object} the same data object, for chaining
  */
 function clearWrongProductionFlags(data, opts = {}) {
-  const { source, reason = '', wrongShowOnly = false } = opts;
+  const { source, reason = '', wrongShowOnly = false, noOverrideStamp = false } = opts;
   if (!source) throw new Error('clearWrongProductionFlags: opts.source is required');
 
   // 1. Top-level flags
@@ -121,6 +129,8 @@ function clearWrongProductionFlags(data, opts = {}) {
     data.wrongShowOverride = true;
     data.wrongShowOverrideReason = `${source}${reason ? `: ${reason}` : ''}`.trim();
     data.wrongShowOverrideAt = new Date().toISOString();
+  } else if (noOverrideStamp) {
+    // Reroute callers: flags cleared, no blanket exemption granted (see opts doc).
   } else {
     data.wrongProductionOverride = true;
     data.wrongProductionOverrideReason = `${source}${reason ? `: ${reason}` : ''}`.trim();

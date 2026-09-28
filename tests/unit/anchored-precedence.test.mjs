@@ -161,10 +161,14 @@ describe('anchored-v6 precedence', () => {
     assert.strictEqual(res.source, 'adjudicated');
   });
 
+  // originalScore fixtures below use the star form: since BRO-4204 audit S6-T5
+  // a bare numeric originalScore under a non-outlet-verified scoreSource is not
+  // a published rating and no longer scores at P0.5 (see
+  // scripts/lib/rebuild-helpers.published-rating-gate.test.mjs).
   it('anchored-v6 with no llmScore falls through to originalScore', () => {
     const data = makeData({
       scoreSource: 'anchored-v6',
-      originalScore: 80,
+      originalScore: '4/5',
       // llmScore missing — anchored stamping requires llmScore, but be defensive
     });
     const res = getBestScore(data);
@@ -176,7 +180,7 @@ describe('anchored-v6 precedence', () => {
     const data = makeData({
       scoreSource: 'anchored-v6',
       llmScore: { score: null },
-      originalScore: 80,
+      originalScore: '4/5',
     });
     const res = getBestScore(data);
     assert.strictEqual(res.source, 'originalScore-priority0');
@@ -186,7 +190,7 @@ describe('anchored-v6 precedence', () => {
     const data = makeData({
       scoreSource: 'anchored-v6',
       llmScore: { score: 150 },
-      originalScore: 80,
+      originalScore: '4/5',
     });
     const res = getBestScore(data);
     // 150 is out of [0, 100] — anchored path is skipped, P0.5 runs.
