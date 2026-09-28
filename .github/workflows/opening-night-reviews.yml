@@ -291,7 +291,10 @@ jobs:
                 workflow_id: 'update-reddit-sentiment.yml',
                 ref: 'main',
                 inputs: {
-                  shows: '${{ steps.find.outputs.shows }}'
+                  shows: '${{ steps.find.outputs.shows }}',
+                  // Opening night is the one moment Reddit moves fast — bypass the
+                  // 20h freshness skip the orchestrator's repeat dispatches use (BRO-4215).
+                  skip_fresh_hours: '0'
                 }
               });
               console.log('Triggered Reddit sentiment for: ${{ steps.find.outputs.shows }}');

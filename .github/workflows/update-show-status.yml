@@ -1177,7 +1177,9 @@ jobs:
                 workflow_id: 'update-reddit-sentiment.yml',
                 ref: 'main',
                 inputs: {
-                  shows: '${{ steps.filter.outputs.opened_shows }}'
+                  shows: '${{ steps.filter.outputs.opened_shows }}',
+                  // Just opened — bypass the 20h freshness skip (BRO-4215).
+                  skip_fresh_hours: '0'
                 }
               });
               console.log('Triggered Reddit sentiment workflow for opened shows: ${{ steps.filter.outputs.opened_shows }}');

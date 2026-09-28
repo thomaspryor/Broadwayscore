@@ -352,6 +352,7 @@ async function collectShowComments(show) {
       });
     } catch (e) {
       console.error(`  Search failed in r/${subreddit}: ${e.message}`);
+      showFetchFailed = true;
       continue;
     }
 
@@ -407,6 +408,7 @@ async function collectShowComments(show) {
       comments.push(...srComments);
     } catch (e) {
       console.error(`  Comment collection failed in r/${sr}: ${e.message}`);
+      showFetchFailed = true;
     }
   }
 
@@ -434,8 +436,16 @@ async function collectShowComments(show) {
 /**
  * Process a single show
  */
+// BRO-4215 ship-check: set when a search, comment fetch, or classification
+// call FAILED for the current show (vs. genuinely finding no Reddit signal).
+// processShow returns null for both; only a clean no-data run may stamp
+// redditLastAttempted, or a partial proxy/LLM outage would mark every show
+// "fresh" and suppress retries for the whole --skip-fresh-hours window.
+let showFetchFailed = false;
+
 async function processShow(show) {
   console.log(`\nProcessing: ${show.title}`);
+  showFetchFailed = false;
 
   // 1-3. Search + collect + clean comments (each tagged with its thread title).
   const collected = await collectShowComments(show);
@@ -451,6 +461,7 @@ async function processShow(show) {
     classifications = await classifyAllComments(show.title, filtered, 150, 'gemini', 4, showContext);
   } catch (e) {
     console.error(`  Classification failed: ${e.message}`);
+    showFetchFailed = true;
     return null;
   }
 
@@ -712,7 +723,7 @@ async function main() {
             console.log(`  Saved to audience-buzz.json (${successful}/${shows.length} complete)`);
           }
         }
-      } else if ((refreshStale || skipFreshHours > 0) && !dryRun && !shardMode && !redditData) {
+      } else if ((refreshStale || skipFreshHours > 0) && !dryRun && !shardMode && !redditData && !showFetchFailed) {
         // BRO-4215: also stamped under --skip-fresh-hours, or a no-data show (typical
         // for a new opening) would never look fresh and be re-scraped every dispatch.
         // No Reddit data this run (no qualifying posts / below MIN items). Stamp an

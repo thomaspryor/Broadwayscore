@@ -291,9 +291,7 @@ function scrapingDogRequest(apiKey, url, tier) {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
-        // SD bills on any response it returns (200/400/401/403 alike) — the
-        // request reached its proxy and a page-fetch happened, whatever the
-        // outcome. Record once per response here so every branch below stays
+        // Record once per response here so every branch below stays
         // billing-neutral (only the parse outcome, not the credit amount, may
         // still change per branch).
         // SD bills only successful requests (provider-telemetry sdBilledCredits;
