@@ -267,7 +267,9 @@ async function main() {
   // 12-23% for weeks (Reddit Sentiment + Show Score rows discarded at runner
   // exit) and the same gap would have alerted on 29 days back to 2026-08-02.
   // disposition 'auto' files a card and dispatches a fix session, so a gap is
-  // worked instead of observed. One conditionKey per provider.
+  // worked instead of observed. One conditionKey per provider. Wrapped so a
+  // router failure here can never skip the stale-ledger alert below.
+  try {
   for (const gap of gaps) {
     const { routeAlert } = require('./lib/owner-alert-router');
     const pctText = gap.pcts.map((p) => `${Math.round(p * 100)}%`).join(', ');
@@ -297,6 +299,9 @@ async function main() {
         resolveCondition(`provider-spend:attribution-gap:${provider}`, { reason: `attributedPct ${Math.round(pct * 100)}% on ${DAY}` });
       }
     }
+  }
+  } catch (err) {
+    console.log(`::warning::attribution-gap alerting failed: ${err.message}`);
   }
 
   // BRO-3227: fires independently of the overspend/unmeasured breach above —
