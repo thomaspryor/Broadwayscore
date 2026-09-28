@@ -345,6 +345,13 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Description:** Dispatch `rebuild-reviews.yml`; confirm live `cs` on the touched shows; dispatch the gather workflow (`gather-reviews.yml`) for every-brilliant-thing-2026 and death-of-a-salesman-2026 so the DTLI remap is exercised now; for sabrage-off-west-end-2026 and othello-off-broadway-2026 read `reviewsRemainingForScore` and the min-review rule to explain the missing score and fix the data cause if any.
 - **Acceptance criteria:** VERIFY: after the gather run, Every Brilliant Thing and Death of a Salesman `rc` are higher than before it; Sabrage/Othello either show `cs` or the reason is written in the scratchpad
 
+**PROGRESS 2026-09-28 (review-texts 11084bf5, 83dcefe8; web data maps in this batch):**
+- S3-T1: DTLI map: every-brilliant-thing-2026 -> every-brilliant-thing-2, death-of-a-salesman-2026 -> death-of-a-salesman-3 (35/33 mentions of 2026 vs 1). The other 47 unsuffixed 2026 slugs were probed for -2/-3 pages: none exists, and 35 of the 47 base pages carry no 2026 review items (DTLI has no page for them yet). The maps live in the web repo's data/, not core data as the plan said.
+- S3-T2: only the-other-place needed a change (-> the-other-place-the-shed); the-peculiar-patriot and pre-existing-condition already point at pages that carry the 2026 production.
+- S3-T3: 15 files cleared (8 wrongProduction, 7 wrongShow). The wrongShow ones were CV "preview/feature" verdicts at high confidence with no human hatch in explainExclusion, so review-guards.js gained cvWrongArticleManuallyCleared() (wrongArticleManualClear / humanReviewedWrongArticle:false, both already PROTECTED) at both CV gates, and their "invalid" tier (derived from the same verdict) was restored to complete. Kept flagged: Mother Russia (pre-opening), Paranormal Activity (roundup), The Receptionist Marshall (pre-opening), The Unknown NYT pair (byline unresolved; text duplicated under two bylines). NYSR Garry Starr byline fixed from the article text.
+- S3-T4: the local "clean but absent" recomputation is too noisy (165 hits: unknown-critic and excerpt-only duplicates the rebuild dedups); the authoritative list needs the CI rebuild's exclusion ledger, which is not committed anywhere reachable. Deferred to S7-T? tooling (persist the ledger as an artifact) rather than guessed.
+- S3-T5: Sabrage (2 reviews) and Othello (2 live, 34 in the no-byline pending strand) sit under the minimum-review threshold; the strand drain (replay-pending-bylines.js) needs the CI workflow input from S7 and is tracked in S8.
+
 ---
 
 ## Sprint 4: Discovery and ingestion hardening

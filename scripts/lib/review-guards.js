@@ -1251,6 +1251,18 @@ function isLikelyStaleRoundupFlag(data) {
  * file with no current score and no path back into reviews.json. Discovered
  * during the wrongShow stale-flag audit (Notion 34e637c5-416f-8121).
  */
+/**
+ * A human has read the article and overruled a contentVerification
+ * wrongArticle verdict. Mirrors review-write-guard.js's _wrongArticleCleared
+ * (wrongArticleManualClear: true, or the explicit humanReviewedWrongArticle:
+ * false assertion); both fields are PROTECTED there, so CI restores cannot
+ * drop the clear. Audit S3-T3 (BRO-4204).
+ */
+function cvWrongArticleManuallyCleared(data) {
+  if (!data) return false;
+  return data.wrongArticleManualClear === true || data.humanReviewedWrongArticle === false;
+}
+
 function wrongShowCleared(data) {
   if (!data) return false;
   // Note: isCombinedReview alone is NOT sufficient. It's set whenever a URL
@@ -3663,9 +3675,16 @@ function explainExclusion(data, show, filePath) {
   // 34f637c5-416f-810d) lose the override on delegation. Adding it here keeps both
   // predicates symmetric and preserves the registry-aware behavior.
   if (data.suspectedMisattribution === true && !isLikelyStaleSuspectedMisattribution(data, getCriticRegistry())) return 'suspectedMisattribution';
+  // Human hatch (BRO-4204 audit S3-T3): the CV pass reads truncated or
+  // context-heavy text and calls a real in-window review a "preview" or
+  // "feature" (NYSR / newyorktheater.me reviews open with background
+  // paragraphs). The same protected breadcrumb family that clears
+  // wrongAttribution/wrongFullText (review-write-guard.js _wrongArticleCleared)
+  // says a human read the article and it IS this show's review.
   if (
     data.contentVerification?.wrongArticle === true &&
-    data.contentVerification?.confidence === 'high'
+    data.contentVerification?.confidence === 'high' &&
+    !cvWrongArticleManuallyCleared(data)
   ) return 'cvWrongArticleHighConfidence';
 
   // Garbage text or non-review content flagged by collection pipeline or LLM ensemble.
@@ -4252,11 +4271,13 @@ function isRejectedNonReview(data) {
   // wrongArticle gated on high confidence to match isIncludableForRebuild's
   // exact exclusion (line ~2588): a medium/low-confidence CV false-positive on a
   // real T1/T2 review must NOT reopen discovery / mark it non-retrieved.
-  if (cv && cv.wrongArticle === true && cv.confidence === 'high') return true;
+  if (cv && cv.wrongArticle === true && cv.confidence === 'high' && !cvWrongArticleManuallyCleared(data)) return true;
   // articleType is a distinct classification signal (rebuild doesn't gate on it);
   // an interview/feature/preview/news classification is a non-review regardless
   // of the wrongArticle-boolean confidence.
-  if (cv && NON_REVIEW_CV_ARTICLE_TYPES.has(cv.articleType)) return true;
+  // ...unless a human read the article and cleared the CV verdict (same hatch
+  // as the wrongArticle line above): the articleType came from the same pass.
+  if (cv && NON_REVIEW_CV_ARTICLE_TYPES.has(cv.articleType) && !cvWrongArticleManuallyCleared(data)) return true;
   // contentTier 'invalid' with no manual clear (the wrongShowCleared escape above
   // already returned for the human-cleared case) → garbage / unusable page.
   if (data.contentTier === 'invalid') return true;
@@ -4549,6 +4570,7 @@ module.exports = {
   isStaleCvPromotedWrongShow,
   computeCvIsStale,
   isNonReviewDemotedByFreshCV,
+  cvWrongArticleManuallyCleared,
   wrongShowCleared,
   isLikelyStaleSuspectedMisattribution,
   getCriticRegistry,
