@@ -393,10 +393,37 @@ export function getCurrentShows(): ComputedShow[] {
 }
 
 /**
- * Get a single show by slug
+ * Raw-row lookup by a slug that is NOT the row's current slug: its `id`
+ * (year-suffixed where the slug is year-less, e.g. hamilton-west-end-2021 →
+ * hamilton-west-end) or any entry of its `aliases[]` (the old ids and slugs a
+ * row kept when duplicate entries were merged — full ids and year-less slugs
+ * both). An id match wins over an alias match. Exact `slug` matches are the
+ * caller's job and take precedence. Pure; exported for tests (2026 data audit,
+ * S5-T7). scripts/build-slug-redirects.js applies the same two rules when it
+ * emits the /show/* redirect map.
+ */
+export function findShowByIdOrAlias<T extends { id: string; slug: string; aliases?: string[] }>(
+  rows: readonly T[],
+  slug: string
+): T | undefined {
+  if (!slug) return undefined;
+  return (
+    rows.find(row => row.id === slug) ??
+    rows.find(row => Array.isArray(row.aliases) && row.aliases.includes(slug))
+  );
+}
+
+/**
+ * Get a single show by slug. Falls back to the show's id or a merged row's
+ * old id/slug (`aliases`), mirroring what src/middleware.ts redirects for
+ * /show/* — routes with no middleware (api/badge, embed, opengraph-image)
+ * rely on this to resolve the same URLs.
  */
 export function getShowBySlug(slug: string): ComputedShow | undefined {
-  return getAllShows().find(show => show.slug === slug);
+  const exact = getAllShows().find(show => show.slug === slug);
+  if (exact) return exact;
+  const raw = findShowByIdOrAlias(shows, slug);
+  return raw ? getShowById(raw.id) : undefined;
 }
 
 /**
