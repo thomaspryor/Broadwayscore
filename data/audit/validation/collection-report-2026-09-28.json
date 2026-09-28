@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-28T01:19:28.869Z",
+  "runDate": "2026-09-28T02:02:14.532Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,38 +11,38 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 83,
-    "failed": 209,
+    "processed": 85,
+    "failed": 210,
     "skipped": 0,
-    "successRate": "28.4%"
+    "successRate": "28.8%"
   },
   "tierBreakdown": {
-    "playwright": 53,
+    "playwright": 54,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 5,
+    "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 9
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 2,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 56,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 57,
+    "scrapingBeePageCredits": 11,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -133,7 +133,9 @@
     "mamma-mia-west-end-2021/harry-theatre-life--unknown.json",
     "tru-off-west-end-2026/theatre-weekly--unknown.json",
     "tru-off-west-end-2026/west-end-best-friend--unknown.json",
-    "table-17-off-west-end-2026/londontheatredirect--agata-kucharska.json"
+    "table-17-off-west-end-2026/londontheatredirect--agata-kucharska.json",
+    "tru-off-west-end-2026/broadwayworld--unknown.json",
+    "tru-off-west-end-2026/liamodell--unknown.json"
   ],
   "failed": [
     "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
@@ -344,7 +346,8 @@
     "table-17-off-west-end-2026/londonlivinglarge--london-living-large.json",
     "table-17-off-west-end-2026/londonlivinglarge--unknown.json",
     "table-17-off-west-end-2026/nysr--roma-torre.json",
-    "table-17-off-west-end-2026/thestage--neil-norman.json"
+    "table-17-off-west-end-2026/thestage--neil-norman.json",
+    "tru-off-west-end-2026/thestage--sam-marlowe.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -400,7 +403,8 @@
       "mamma-mia-west-end-2021/harry-theatre-life--unknown.json",
       "tru-off-west-end-2026/theatre-weekly--unknown.json",
       "tru-off-west-end-2026/west-end-best-friend--unknown.json",
-      "table-17-off-west-end-2026/londontheatredirect--agata-kucharska.json"
+      "table-17-off-west-end-2026/londontheatredirect--agata-kucharska.json",
+      "tru-off-west-end-2026/liamodell--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -410,7 +414,8 @@
       "the-secret-circus-musical-off-broadway-2026/mommypoppins--unknown.json",
       "pre-existing-condition-off-broadway-2026/cititour--unknown.json",
       "the-rocky-horror-show-2026/theatrely--unknown.json",
-      "schmigadoon-2026/theatrely--unknown.json"
+      "schmigadoon-2026/theatrely--unknown.json",
+      "tru-off-west-end-2026/broadwayworld--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
