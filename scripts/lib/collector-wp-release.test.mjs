@@ -12,7 +12,7 @@ const {
   restoreQuarantinedText,
   stampCollectorWpRejection,
   quarantinedTextHash,
-} = require('../../scripts/lib/collector-wp-release');
+} = require('./collector-wp-release');
 
 const show = { id: 'disgraced-2014', title: 'Disgraced', openingDate: '2014-10-23' };
 const text = 'Ayad Akhtar\'s Disgraced arrives on Broadway with a ferocious dinner party. '.repeat(40);
