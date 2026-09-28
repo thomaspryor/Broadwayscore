@@ -78,6 +78,7 @@ const {
   isDatedGuardNote,
   shouldAutoClearAnticipatoryGrace,
   shouldAutoClearWrongProductionUkDualMarket,
+  shouldAutoClearStaleLondonOutletCrossMarket,
 } = require('./lib/wrong-production-autoclear');
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
@@ -1334,6 +1335,10 @@ function normalizeUrlForDedup(url) {
     return canon.replace(/^https?:\/\//, '').replace(/^www\./, '');
 }
 const crossShowUrlIndex = new Map();
+// Every show a URL is filed under, flagged files included (crossShowUrlIndex
+// skips flagged files). Used so a stale-flag self-heal never releases a copy
+// of a review that is also filed under another production of the same title.
+const urlShowIdsAll = new Map();
 {
   for (const sid of showDirs) {
     if (skipCrossShowDupeIds.has(sid)) continue; // _skipCrossShowDupe: test shows excluded from index
@@ -1342,8 +1347,13 @@ const crossShowUrlIndex = new Map();
     for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
       try {
         const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
+        const allNorm = normalizeUrlForDedup(d.url);
+        if (allNorm) {
+          if (!urlShowIdsAll.has(allNorm)) urlShowIdsAll.set(allNorm, new Set());
+          urlShowIdsAll.get(allNorm).add(sid);
+        }
         if (d.wrongProduction || d.wrongShow) continue;
-        const norm = normalizeUrlForDedup(d.url);
+        const norm = allNorm;
         if (!norm) continue;
         const existing = crossShowUrlIndex.get(norm);
         if (existing && existing.showId !== sid) {
@@ -3073,6 +3083,45 @@ showDirs.forEach(showId => {
             }
           } catch {}
         }
+      }
+      // Reverse of the block above: a stale "Cross-market: London outlet" flag on a
+      // Broadway / off-Broadway show, written before the outlet became dual-market
+      // (observer.com / NY Observer: 182 files). Only the outlet's own primary,
+      // non-UK domain clears; UK Observer files on theguardian.com or with no URL
+      // keep their flag. Decision lives in wrong-production-autoclear.js.
+      if (data.wrongProduction === true && !data.wrongProductionOverride && data.url
+          && (showCat === 'broadway' || showCat === 'off-broadway')
+          && (data.wrongProductionNote || '').startsWith('Cross-market: London outlet')) {
+        try {
+          const revRawOutlet = (data.outletId || data.outlet || '').toLowerCase();
+          const revCanonical = normalizeOutletCanonical(revRawOutlet);
+          const revInfo = (outletRegistry.outlets || {})[revCanonical] || {};
+          const revHost = (new URL(data.url).hostname || '').toLowerCase().replace(/^www\./, '');
+          const revPrimary = String(revInfo.domain || '').toLowerCase().replace(/^www\./, '');
+          let revDateMismatch = false;
+          if (data.publishDate && showDateMap[showId]) {
+            const rd = parseDate(data.publishDate);
+            if (rd && (showDateMap[showId] - rd) > PRE_WINDOW_DAYS * 86400000) revDateMismatch = true;
+          }
+          if (shouldAutoClearStaleLondonOutletCrossMarket(data, {
+            isNycMarketShow: true,
+            outletIsDualMarket: DUAL_MARKET_OUTLETS.has(revCanonical) || DUAL_MARKET_OUTLETS.has(revRawOutlet),
+            urlOnOutletPrimaryDomain: !!revPrimary && (revHost === revPrimary || revHost.endsWith('.' + revPrimary)),
+            isUkUrl: isUkOutletUrl(data.url) || /\.(co|org)\.uk$/.test(revHost),
+            isDateMismatch: revDateMismatch,
+            isShowListingUrl: require('./lib/cross-production-guards').isEvergreenListingUrl(data.url),
+            cvBlocksClear: cvBlocksUkWrongProductionAutoClear(data.contentVerification),
+            inOwnProductionWindow: isReviewWithinOwnProductionWindow(showById[showId], data.publishDate),
+            urlFiledUnderOtherShow: ((urlShowIdsAll.get(normalizeUrlForDedup(data.url)) || new Set()).size > 1),
+          })) {
+            delete data.wrongProduction;
+            delete data.wrongProductionNote;
+            data.wrongProductionAutoCleared = `rebuild: dual-market outlet on its own US domain (${revHost})`;
+            data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+            try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
+            stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
+          }
+        } catch {}
       }
       // allowEarlyDate/allowCrossMarket override wrongProduction — user explicitly approved the review.
       // EXCEPT: if there's an explicit wrongProductionReason (manual flag, audit-driven, CV-promoted)
