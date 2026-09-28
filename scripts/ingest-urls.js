@@ -22,7 +22,7 @@ const { downstreamWorkflows } = require('./lib/ingest-downstream');
 
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { resolveOutletFromUrl } = require('./lib/review-normalization');
-const { extractArticleTextFromUrl } = require('./lib/article-extractor');
+const { extractArticleTextFromUrl, extractPublishDate } = require('./lib/article-extractor');
 const { extractAuthorFromHtml } = require('./lib/content-quality');
 const { execErrorDetail } = require('./lib/exec-error-detail');
 
@@ -156,6 +156,7 @@ async function main() {
     let fullText = null;
     let fetchMethod = null;
     let criticName = null;
+    let publishDate = null;
     if (fetchPage && !noFetch) {
       try {
         if (verbose) console.log(`    Fetching text...`);
@@ -170,6 +171,12 @@ async function main() {
           // ingest as 'Unknown' created an --unknown file that a later rebuild
           // merged into the named sibling and deleted (BRO-4185 follow-up).
           try { criticName = extractAuthorFromHtml(result.content, extracted || '', { url }) || null; } catch { criticName = null; }
+          // Page metadata date (article:published_time / JSON-LD / <time>),
+          // from the HTML already in hand. Without it the file's date came
+          // from a later LLM guess, which slipped years and tripped the date
+          // guard on in-window reviews (BRO-4185 B). Merges fill it only
+          // when the file has none.
+          try { publishDate = extractPublishDate(result.content, url) || null; } catch { publishDate = null; }
           if (extracted && extracted.length >= 200) {
             fullText = extracted;
             if (verbose) console.log(`    ✓ Extracted ${fullText.length} chars (article body) via ${fetchMethod}`);
@@ -194,6 +201,7 @@ async function main() {
       source: 'ingest-urls',
       fields: {},
     };
+    if (publishDate) input.publishDate = publishDate;
 
     if (fullText) {
       input.fields.fullText = fullText;
