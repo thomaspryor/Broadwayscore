@@ -438,7 +438,87 @@ function partitionOrphansForFix(orphans, threshold, force) {
   return { fixable, surgingFields };
 }
 
+/**
+ * BRO-4192: does the on-disk record carry a LIVE pointer in `field` AND a
+ * clear breadcrumb at the same time? That contradiction means an earlier clear
+ * was re-set, and safeWriteReview's protected-field restore will then refuse a
+ * normal (non-force) clear: it reads the existing breadcrumb as "flag
+ * deliberately re-set over a prior clear" and puts the pointer back. The heal
+ * must write such records with force (it LOAD-MODIFY-SAVEs the full object).
+ *
+ * @param {object} data - the record as read from disk, before modification
+ * @param {'duplicateOf'|'duplicateTextOf'} field
+ * @returns {boolean}
+ */
+function hasStaleClearBreadcrumb(data, field) {
+  if (!data || !data[field]) return false;
+  return data.duplicateClearReason != null && String(data.duplicateClearReason).trim() !== '';
+}
+
+/**
+ * BRO-4192: when an orphaned pointer's target is invalid but ANOTHER sibling
+ * with the same URL is still a legitimate canonical, clearing the pointer
+ * re-admits a second copy of one article (all-my-sons-2019 Vulture double
+ * count) or lets a misattributed byline take over the canonical slot
+ * (mother-play-2024 NYT "Jesse Schulman" over Jesse Green). Pick that sibling
+ * so the heal can RETARGET the pointer instead of clearing it.
+ *
+ * @param {{file:string, url?:string}} loser
+ * @param {string} targetFile - the invalidated current target
+ * @param {{file:string, data:object}[]} siblings - every record in the show dir
+ * @param {(data:object) => boolean} isExcluded - rebuild exclusion, ignoring duplicate pointers
+ * @returns {string|null} sibling file to point at, or null to clear as before
+ */
+function pickRetargetSibling(loser, targetFile, siblings, isExcluded) {
+  if (!loser || !loser.url) return null;
+  const want = normalizeUrl(loser.url);
+  if (!want) return null;
+  for (const s of siblings || []) {
+    if (!s || !s.data || s.file === loser.file || s.file === targetFile) continue;
+    if (!s.data.url || normalizeUrl(s.data.url) !== want) continue;
+    if (s.data.duplicateOf || s.data.duplicateTextOf) continue; // point at a canonical, not another loser
+    if (isExcluded(s.data)) continue;
+    return s.file;
+  }
+  return null;
+}
+
+/**
+ * BRO-4192: several same-URL losers orphaned by ONE invalidated target
+ * (mother-play-2024 NYT: jesse-green + a misattributed jesse-schulman copy,
+ * both → a rejected alexis-soloski). Clearing them one by one let the write
+ * guard's collision check pick the survivor by file order, which swapped the
+ * live byline. Pick one winner per group up front: the member already
+ * published in reviews.json (so the live entry doesn't change), else the first.
+ *
+ * Pure. Returns Map<`${showId}/${loserFile}`, winnerFile> covering every member of every
+ * group with 2+ members (the winner maps to itself).
+ * @param {Array<{showId:string,loserFile:string,targetFile:string,url?:string,outletId?:string,criticName?:string}>} orphans
+ * @param {Set<string>} publishedKeys `${showId}|${outletId}|${criticName.toLowerCase()}`
+ */
+function pickOrphanGroupWinners(orphans, publishedKeys) {
+  const groups = new Map();
+  for (const o of orphans || []) {
+    const u = o && o.url ? normalizeUrl(o.url) : '';
+    if (!u) continue;
+    const k = `${o.showId}|${o.targetFile}|${u}`;
+    if (!groups.has(k)) groups.set(k, []);
+    groups.get(k).push(o);
+  }
+  const winners = new Map();
+  for (const members of groups.values()) {
+    if (members.length < 2) continue;
+    const pubKey = m => `${m.showId}|${m.outletId || ''}|${String(m.criticName || '').toLowerCase()}`;
+    const winner = members.find(m => publishedKeys && publishedKeys.has(pubKey(m))) || members[0];
+    for (const m of members) winners.set(`${m.showId}/${m.loserFile}`, winner.loserFile);
+  }
+  return winners;
+}
+
 module.exports = {
+  pickOrphanGroupWinners,
+  pickRetargetSibling,
+  hasStaleClearBreadcrumb,
   SUBSTANTIVE_BODY_CHARS,
   HEAL_CLEAR_BREADCRUMB_PREFIX,
   isTargetInvalidated,

@@ -57,6 +57,7 @@ const { recoverDisplayBylinesForShow, resolveCriticName } = require('./lib/bylin
 const { mergeManualEntries } = require('./lib/manual-entry-merge');
 const { isStaleScoreInput, markRescoreNeeded } = require('./lib/rescore-flagging');
 const { isLondonMarket, isUkOutletUrl, isBroadwayCategory } = require('./lib/venue-classification');
+const { isValidBroadwayCopy, shouldClearStaleObTransfer } = require('./lib/ob-transfer-guard');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { explainOutletDomainMismatch } = require('./lib/outlet-domain-validation');
@@ -1374,6 +1375,7 @@ const crossShowFingerprints = new Map();
 // the URL in the crossShowUrlIndex and blocks the Broadway version.
 {
   let transferFlagged = 0;
+  let transferReleased = 0;
   // Build title→shows map for transfer detection
   const showsByTitle = new Map();
   const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
@@ -1389,20 +1391,61 @@ const crossShowFingerprints = new Map();
     const bwShows = group.filter(isBroadwayCategory);
     if (obShows.length === 0 || bwShows.length === 0) continue;
 
+    // BRO-4192: collect URLs of VALID Broadway copies only (not a misfiled
+    // OB-era review sitting in the Broadway dir, not a flagged record), and
+    // clear stale ob-broadway-transfer flags on in-run OB reviews whose URL no
+    // longer has a valid Broadway twin. The flag used to be sticky, so a
+    // corrected Broadway dir never released the OB original (cats-the-jellicle-
+    // ball-off-broadway-2024 lost its NYT Critic's Pick this way).
+    const validBwUrlsByShow = new Map();
+    const allValidBwUrls = new Set();
+    for (const bw of bwShows) {
+      const bwDir = path.join(reviewTextsDir, bw.id);
+      const urls = new Set();
+      if (fs.existsSync(bwDir)) {
+        for (const f of fs.readdirSync(bwDir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json')) {
+          try {
+            const d = JSON.parse(fs.readFileSync(path.join(bwDir, f), 'utf8'));
+            if (isValidBroadwayCopy(d, bw)) {
+              const n = normalizeUrlForDedup(d.url);
+              if (n) { urls.add(n); allValidBwUrls.add(n); }
+            }
+          } catch {}
+        }
+      }
+      validBwUrlsByShow.set(bw.id, urls);
+    }
+    for (const ob of obShows) {
+      const obDir = path.join(reviewTextsDir, ob.id);
+      if (!fs.existsSync(obDir)) continue;
+      for (const f of fs.readdirSync(obDir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json')) {
+        try {
+          const fp = path.join(obDir, f);
+          const d = JSON.parse(fs.readFileSync(fp, 'utf8'));
+          const norm = d.url ? normalizeUrlForDedup(d.url) : null;
+          if (!shouldClearStaleObTransfer(d, !!(norm && allValidBwUrls.has(norm)), ob)) continue;
+          const wasNote = d.wrongProductionNote || d.wrongProductionReason;
+          d.wrongProduction = false;
+          d.wrongProductionAutoCleared = `rebuild: ob-broadway-transfer released — no valid Broadway copy shares the URL and the review is dated inside ${ob.id}'s run (was: ${wasNote})`;
+          d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+          delete d.wrongProductionNote;
+          delete d.wrongProductionReason;
+          if (isStaleScoreInput(d, ob, fp)) {
+            markRescoreNeeded(d, 'wrongProduction false-positive cleared (stale ob-broadway-transfer)');
+          }
+          safeWriteReview(fp, d, { force: true });
+          transferReleased++;
+        } catch {}
+      }
+    }
+
     for (const bw of bwShows) {
       // Only flag if Broadway show has opened (status !== 'previews')
       if (bw.status === 'previews') continue;
       const bwDir = path.join(reviewTextsDir, bw.id);
       if (!fs.existsSync(bwDir)) continue;
 
-      // Collect Broadway URLs
-      const bwUrls = new Set();
-      for (const f of fs.readdirSync(bwDir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json')) {
-        try {
-          const d = JSON.parse(fs.readFileSync(path.join(bwDir, f), 'utf8'));
-          if (d.url) bwUrls.add(normalizeUrlForDedup(d.url));
-        } catch {}
-      }
+      const bwUrls = validBwUrlsByShow.get(bw.id) || new Set();
 
       // Flag matching OB files
       for (const ob of obShows) {
@@ -1438,6 +1481,9 @@ const crossShowFingerprints = new Map();
   }
   if (transferFlagged > 0) {
     console.log(`OB→Broadway transfer guard: flagged ${transferFlagged} OB reviews with shared URLs`);
+  }
+  if (transferReleased > 0) {
+    console.log(`OB→Broadway transfer guard: released ${transferReleased} stale ob-broadway-transfer flags (BRO-4192)`);
   }
 }
 

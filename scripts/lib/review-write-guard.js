@@ -1779,6 +1779,14 @@ function safeWriteReview(filePath, newData, options = {}) {
       try {
         colliderData = JSON.parse(fs.readFileSync(path.join(path.dirname(filePath), collider), 'utf-8'));
       } catch { /* unreadable collider — fall back to marking dup (historical behavior) */ }
+      // BRO-4192: the inclusion check behind the invalid-collider rule needs the
+      // show record; the parent dir IS the show id (same rule as the showId
+      // backstop below), so fill it where a writer omitted it.
+      const dirShowId = path.basename(path.dirname(filePath));
+      if (dirShowId && !dirShowId.startsWith('_') && !dirShowId.startsWith('.')) {
+        if (colliderData && !colliderData.showId) colliderData.showId = dirShowId;
+        if (!newData.showId) newData.showId = dirShowId;
+      }
       // Sibling loader for the N-hop cycle walk, seeded with the collider read
       // above so it costs no extra I/O in the (overwhelmingly common) 2-node
       // case; only walking past the collider touches disk again.
@@ -2000,6 +2008,46 @@ function wouldFormDuplicateCycle(thisBasename, candidateTarget, loadSibling) {
 const SUBSTANTIVE_BODY_CHARS = 500;
 const NEAR_EMPTY_BODY_CHARS = 200;
 
+/**
+ * BRO-4192: true when the same-URL collider is itself invalidated
+ * (wrongShow / wrongProduction / nonReview / rejected, via the heal module's
+ * canonical isTargetInvalidated) while the incoming record is not. Such a
+ * collider is not a legitimate canonical, so the incoming record must stay
+ * primary. Without this, heal-orphaned-duplicate-pointers cleared 97 pointers
+ * per rebuild and this collision check re-set every one in the same write
+ * (e.g. you-got-older 2026 Helen Shaw buried under a misfiled 2014 Isherwood
+ * review, hiding its NYT Critic's Pick).
+ *
+ * Lazy require: orphaned-duplicate-pointer-heal.js requires this module at
+ * load time, so a top-level require here would be circular.
+ */
+function isInvalidCollisionCanonical(newData, colliderData) {
+  if (!newData || !colliderData) return false;
+  return isExcludedIgnoringDuplicate(colliderData) && !isExcludedIgnoringDuplicate(newData);
+}
+
+/**
+ * Would the rebuild exclude this record for a reason OTHER than its own
+ * duplicate pointer? Uses the canonical predicate (review-guards
+ * explainExclusion) with duplicateOf/duplicateTextOf blanked, so "is this a
+ * legitimate canonical?" matches what actually ships. The heal's narrower
+ * isTargetInvalidated disagrees with the rebuild on some records (e.g. a raw
+ * wrongProduction the rebuild still includes: all-my-sons-2019 Vulture Sara
+ * Holdren), and using it here admitted a same-URL double count.
+ * Falls back to isTargetInvalidated when the show record is unavailable
+ * (pure unit tests, orphan dirs).
+ */
+function isExcludedIgnoringDuplicate(rec) {
+  if (!rec) return false;
+  const show = rec.showId ? _getShowById(rec.showId) : null;
+  if (!show) {
+    const { isTargetInvalidated } = require('./orphaned-duplicate-pointer-heal.js');
+    return isTargetInvalidated(rec);
+  }
+  const { explainExclusion } = require('./review-guards');
+  return explainExclusion({ ...rec, duplicateOf: null, duplicateTextOf: null }, show, null) !== null;
+}
+
 function shouldMarkUrlCollisionDuplicate(newData, colliderData) {
   // A prior cleanup pass explicitly reviewed this URL collision and cleared it
   // as a false positive (_duplicateOfCleared breadcrumb — e.g. two distinct
@@ -2011,6 +2059,8 @@ function shouldMarkUrlCollisionDuplicate(newData, colliderData) {
   // Can't read the collider → defer to historical behavior (mark duplicate). We
   // only keep the new file primary when we can PROVE the collider is thinner.
   if (!colliderData) return true;
+  // BRO-4192: never bury a valid review under an invalid same-URL sibling.
+  if (isInvalidCollisionCanonical(newData, colliderData)) return false;
   const newLen = String((newData && newData.fullText) || '').trim().length;
   const colLen = String((colliderData && colliderData.fullText) || '').trim().length;
   // New file has a real body AND the collider is (near-)empty → new file is the
@@ -2055,6 +2105,7 @@ function shouldMarkPostCorrectionDuplicate(newData, colliderData) {
   if (!newData) return false;
   if (newData._duplicateOfCleared) return false;
   if (!colliderData) return false;
+  if (isInvalidCollisionCanonical(newData, colliderData)) return false;
   const newLen = String(newData.fullText || '').trim().length;
   if (newLen >= NEAR_EMPTY_BODY_CHARS) return false;
   // Sole-score guard: a bodyless file can still be the pair's only scored copy
@@ -2278,15 +2329,22 @@ function checkUrlCollision(filePath, newData) {
     return null;
   }
   const normNew = _normalizeUrlForCollision(newData.url);
+  // BRO-4192: prefer a VALID same-URL sibling. The write-time decision now
+  // declines to bury a valid record under an invalid collider, so returning an
+  // invalid sibling first would hide a valid twin and admit a double count
+  // (all-my-sons-2019 Vulture: Jesse Green + Sara Holdren, one URL).
+  let firstInvalid = null;
   for (const f of files) {
     try {
       const data = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8'));
       if (data.url && typeof data.url === 'string' && _normalizeUrlForCollision(data.url) === normNew) {
-        return f;
+        if (!data.showId && !path.basename(dir).startsWith('_')) data.showId = path.basename(dir);
+        if (!isExcludedIgnoringDuplicate(data)) return f;
+        if (!firstInvalid) firstInvalid = f;
       }
     } catch { /* skip unreadable */ }
   }
-  return null;
+  return firstInvalid;
 }
 
 // Normalize a URL for collision comparison.
@@ -2927,4 +2985,4 @@ function _flipFlopShouldTakeIncoming(existingUrl, incomingUrl) {
   return !!host(existingUrl) && host(existingUrl) === host(incomingUrl);
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming };
+module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming };

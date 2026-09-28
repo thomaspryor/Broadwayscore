@@ -4,6 +4,9 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
+  hasStaleClearBreadcrumb,
+  pickRetargetSibling,
+  pickOrphanGroupWinners,
   isTargetInvalidated,
   hasSubstantiveUnflaggedContent,
   shouldClearOrphanedDuplicatePointer,
@@ -497,4 +500,69 @@ test('partitionOrphansForFix: force=true bypasses the guard entirely, even when 
 test('partitionOrphansForFix: empty input — nothing fixable, nothing surging', () => {
   assert.deepEqual(partitionOrphansForFix([], 10, false), { fixable: [], surgingFields: [] });
   assert.deepEqual(partitionOrphansForFix(undefined, 10, false), { fixable: [], surgingFields: [] });
+});
+
+// BRO-4192: live pointer + existing clear breadcrumb = an earlier clear that was
+// re-set; a normal safeWriteReview restores the pointer, so the heal must force.
+test('hasStaleClearBreadcrumb: live pointer with a leftover clear breadcrumb', () => {
+  // moulin-rouge-2019 wsj--terry-teachout.json shape
+  assert.equal(hasStaleClearBreadcrumb({ duplicateOf: 'wsj--unknown.json', duplicateClearReason: 'heal ... on 2026-09-27' }, 'duplicateOf'), true);
+  assert.equal(hasStaleClearBreadcrumb({ duplicateTextOf: 'a.json', duplicateClearReason: 'x' }, 'duplicateTextOf'), true);
+});
+
+test('hasStaleClearBreadcrumb: false without a live pointer or without a breadcrumb', () => {
+  assert.equal(hasStaleClearBreadcrumb({ duplicateOf: 'a.json' }, 'duplicateOf'), false);
+  assert.equal(hasStaleClearBreadcrumb({ duplicateOf: 'a.json', duplicateClearReason: '  ' }, 'duplicateOf'), false);
+  assert.equal(hasStaleClearBreadcrumb({ duplicateOf: null, duplicateClearReason: 'x' }, 'duplicateOf'), false);
+  assert.equal(hasStaleClearBreadcrumb(null, 'duplicateOf'), false);
+});
+
+// BRO-4192: retarget an orphan at a valid same-URL canonical instead of
+// clearing it (clearing would admit a second copy of one article).
+test('pickRetargetSibling: picks a valid same-URL sibling, skipping loser, target, pointers and excluded', () => {
+  const url = 'https://www.vulture.com/article/all-my-sons-review.html';
+  const siblings = [
+    { file: 'vulture--jesse-green.json', data: { url } },                        // the loser itself
+    { file: 'vulture--old.json', data: { url } },                                // the invalidated target
+    { file: 'vulture--dup.json', data: { url, duplicateOf: 'x.json' } },         // another loser
+    { file: 'vulture--bad.json', data: { url: url + '?utm_source=x', bad: true } }, // excluded
+    { file: 'vulture--other-url.json', data: { url: 'https://www.vulture.com/other.html' } },
+    { file: 'vulture--sara-holdren.json', data: { url: url + '/' } },
+  ];
+  const isExcluded = d => d.bad === true;
+  assert.equal(pickRetargetSibling({ file: 'vulture--jesse-green.json', url }, 'vulture--old.json', siblings, isExcluded), 'vulture--sara-holdren.json');
+});
+
+test('pickRetargetSibling: null when no eligible sibling or no URL', () => {
+  const url = 'https://example.com/r';
+  assert.equal(pickRetargetSibling({ file: 'a.json', url }, 't.json', [{ file: 'b.json', data: { url, duplicateOf: 'a.json' } }], () => false), null);
+  assert.equal(pickRetargetSibling({ file: 'a.json' }, 't.json', [{ file: 'b.json', data: { url } }], () => false), null);
+});
+
+// mother-play-2024 NYT: jesse-green + misattributed jesse-schulman both pointed
+// at a rejected alexis-soloski. The winner must be the byline already live.
+test('pickOrphanGroupWinners: prefers the member already published', () => {
+  const url = 'https://www.nytimes.com/2024/04/25/theater/mother-play-review.html';
+  const orphans = [
+    { showId: 'mother-play-2024', loserFile: 'nytimes--jesse-schulman.json', targetFile: 'nytimes--alexis-soloski.json', url, outletId: 'nytimes', criticName: 'Jesse Schulman' },
+    { showId: 'mother-play-2024', loserFile: 'nytimes--jesse-green.json', targetFile: 'nytimes--alexis-soloski.json', url: url + '/', outletId: 'nytimes', criticName: 'Jesse Green' },
+  ];
+  const w = pickOrphanGroupWinners(orphans, new Set(['mother-play-2024|nytimes|jesse green']));
+  assert.equal(w.get('mother-play-2024/nytimes--jesse-green.json'), 'nytimes--jesse-green.json');
+  assert.equal(w.get('mother-play-2024/nytimes--jesse-schulman.json'), 'nytimes--jesse-green.json');
+});
+
+test('pickOrphanGroupWinners: first member wins when none is published; singletons and other shows are separate', () => {
+  const url = 'https://example.com/r';
+  const orphans = [
+    { showId: 's1', loserFile: 'a.json', targetFile: 't.json', url },
+    { showId: 's1', loserFile: 'b.json', targetFile: 't.json', url },
+    { showId: 's2', loserFile: 'a.json', targetFile: 't.json', url },       // same file name, other show
+    { showId: 's1', loserFile: 'c.json', targetFile: 'u.json', url },       // other target
+  ];
+  const w = pickOrphanGroupWinners(orphans, new Set());
+  assert.equal(w.get('s1/a.json'), 'a.json');
+  assert.equal(w.get('s1/b.json'), 'a.json');
+  assert.equal(w.has('s2/a.json'), false);
+  assert.equal(w.has('s1/c.json'), false);
 });

@@ -192,3 +192,58 @@ test('post-correction: a scored bodyless file still defers when the sibling can 
     { fullText: body(3000) }
   ), true);
 });
+
+// BRO-4192: a valid review must never be buried under an INVALID same-URL
+// sibling. heal-orphaned-duplicate-pointers cleared 97 such pointers per
+// rebuild and this collision check re-set every one in the same write.
+test('valid review is NOT marked duplicate of a wrongProduction same-URL sibling', () => {
+  // you-got-older 2026: Helen Shaw (valid) vs a misfiled 2014 Isherwood copy.
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(5420) },
+    { fullText: body(5355), wrongProduction: true },
+  ), false);
+});
+
+test('valid review is NOT marked duplicate of a rejected / nonReview / wrongShow sibling', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate({ fullText: body(4543) },
+    { fullText: body(4644), nonReviewFlag: true, rejectedBy: 'ensemble-scoreability-check' }), false);
+  assert.equal(shouldMarkPostCorrectionDuplicate({ fullText: '' },
+    { fullText: body(3000), wrongShow: true }), false);
+});
+
+test('when BOTH records are invalid the historical dedup still applies', () => {
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(3000), rejectedBy: 'ensemble-scoreability-check' },
+    { fullText: body(2900), wrongProduction: true },
+  ), true);
+});
+
+test('a manually cleared wrongProduction flag does not count as invalid', () => {
+  // Retraction breadcrumbs keep the collider a legitimate canonical (BRO-3092).
+  assert.equal(shouldMarkUrlCollisionDuplicate(
+    { fullText: body(3000) },
+    { fullText: body(2900), wrongProduction: true, wrongProductionManualClear: true },
+  ), true);
+});
+
+// BRO-4192: with a known show, validity follows the rebuild's own inclusion
+// rule (explainExclusion) and ignores the record's own duplicate pointer.
+test('isExcludedIgnoringDuplicate: show-aware, ignores duplicateOf', () => {
+  const { isExcludedIgnoringDuplicate, _setShowsCacheForTest } = require('../../scripts/lib/review-write-guard.js');
+  const show = { id: 'bro4192-test-show', title: 'Test Show', status: 'closed', openingDate: '2024-04-25', closingDate: '2024-06-30' };
+  _setShowsCacheForTest(new Map([[show.id, show]]));
+  try {
+    const good = {
+      showId: show.id, outletId: 'nytimes', outlet: 'New York Times', criticName: 'Jesse Green',
+      url: 'https://www.nytimes.com/2024/04/25/theater/test-show-review.html', publishDate: 'April 25, 2024',
+      fullText: body(3000), contentTier: 'complete', assignedScore: 81,
+    };
+    assert.equal(isExcludedIgnoringDuplicate(good), false);
+    // A live duplicate pointer does not make the record itself invalid.
+    assert.equal(isExcludedIgnoringDuplicate({ ...good, duplicateOf: 'nytimes--other.json' }), false);
+    // A standing ensemble rejection does.
+    assert.equal(isExcludedIgnoringDuplicate({ ...good, rejectedAt: '2026-03-02T00:00:00Z', rejectedBy: 'ensemble-scoreability-check' }), true);
+  } finally {
+    _setShowsCacheForTest(null);
+  }
+});
