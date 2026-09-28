@@ -251,7 +251,7 @@ test('dry-run plan lists every key, ref and path and writes nothing', () => {
     const text = formatPlan(plan);
     assert.ok(text.includes('git mv: review-texts:' + OLD));
     assert.ok(text.includes('summary:'));
-  } finally { fs.rmSync(fx.base, { recursive: true, force: true }); }
+  } finally { fs.rmSync(fx.base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('apply renames everything; grep over the copies finds only aliases and redirects', () => {
@@ -346,7 +346,7 @@ test('apply renames everything; grep over the copies finds only aliases and redi
     assert.equal(again.resume, true);
     assert.equal(again.changes.length, 0);
     assert.equal(again.moves.length, 0);
-  } finally { fs.rmSync(fx.base, { recursive: true, force: true }); }
+  } finally { fs.rmSync(fx.base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('year-less slug: slug-keyed files are left alone and the alias set still carries the year-less slug', () => {
@@ -366,7 +366,7 @@ test('year-less slug: slug-keyed files are left alone and the alias set still ca
     assert.equal(row.slug, 'fixture-musical');
     assert.deepEqual(row.aliases, [OLD]);
     assert.deepEqual(Object.keys(readJson(path.join(fx.core, 'commercial.json')).shows), ['fixture-musical', OTHER]);
-  } finally { fs.rmSync(fx.base, { recursive: true, force: true }); }
+  } finally { fs.rmSync(fx.base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('refusals: target exists, old id missing, retired target, slug/alias clash, path collision, bad ids', () => {
@@ -421,7 +421,7 @@ test('refusals: target exists, old id missing, retired target, slug/alias clash,
     const noCore = planShowIdRename(OLD, NEW, { web: fx.web, coreData: null, reviewTexts: fx.rt, scanCode: false });
     assert.equal(noCore.ok, false);
     assert.ok(noCore.refusals[0].includes('shows.json not found'));
-  } finally { fs.rmSync(fx.base, { recursive: true, force: true }); }
+  } finally { fs.rmSync(fx.base, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('buildSqlMigration emits one UPDATE per confirmed show_id table and documents the rest', () => {

@@ -29,6 +29,7 @@
  */
 
 const { slugify } = require('./review-normalization');
+const { foldDiacritics } = require('./title-match');
 const { isPersonShapedName } = require('./outlet-name-shape');
 
 /** The alias-string → slug form detect-critic-typos.js has always used. */
@@ -146,7 +147,7 @@ function buildOutletSlugs(outletRegistry) {
   for (const [id, o] of Object.entries(outlets)) {
     add(id);
     if (o && typeof o.displayName === 'string') {
-      const spaced = o.displayName.toLowerCase().replace(/\([^)]*\)/g, ' ').replace(/[^a-z0-9]+/g, ' ').trim();
+      const spaced = foldDiacritics(o.displayName).toLowerCase().replace(/\([^)]*\)/g, ' ').replace(/[^a-z0-9]+/g, ' ').trim();
       if (isPersonShapedName(spaced)) continue;
       add(slugify(o.displayName));
       add(spaced.replace(/ /g, '-'));

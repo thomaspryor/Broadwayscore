@@ -9,6 +9,7 @@
  *
  * Run: npx tsx --test tests/unit/show-slug-aliases.test.ts
  */
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural — the real-data cases only assert that whatever id/alias exists in the live shows.json resolves through getShowBySlug; no factual value is pinned.
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';

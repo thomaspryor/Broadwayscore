@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 'use strict';
+// venue-write-guard-ok: the log/rejection/summary objects and the dedup pool copy candidate or existing-row venues for reporting only; the one shows.json write goes through buildWestEndAggregatorShowEntry + the shows write guard, unchanged by S4-T9/T10.
 /**
  * West End aggregator-roundup auto-promotion backstop (task #1466 — the WE
  * analogue of promote-ob-venue-candidates.js's off-broadway aggregator path).
