@@ -759,5 +759,34 @@
       }
     ],
     "queuedAt": "2026-09-28T09:57:04.821Z"
+  },
+  {
+    "conditionKey": "land:land/cross-market-london-selfheal",
+    "title": "Landing blocked: unit-tests-node red on land/cross-market-london-selfheal",
+    "description": "land.yml did not land land/cross-market-london-selfheal: the unit-tests-node gate went red at 21a9b6844b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36409682859",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/cross-market-london-selfheal"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "21a9b6844b7426d72026e741da2d1f43e7602b46"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36409682859"
+      }
+    ],
+    "queuedAt": "2026-09-28T11:00:29.397Z"
   }
 ]
