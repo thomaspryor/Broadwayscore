@@ -483,6 +483,35 @@ function pickRetargetSibling(loser, targetFile, siblings, isExcluded) {
   return null;
 }
 
+const TEXT_TWIN_MIN_CHARS = 500;
+const TEXT_TWIN_PREFIX_CHARS = 300;
+function textTwinKey(text) {
+  const t = String(text || '').replace(/\s+/g, ' ').trim().toLowerCase();
+  return t.length >= TEXT_TWIN_MIN_CHARS ? t.slice(0, TEXT_TWIN_PREFIX_CHARS) : null;
+}
+
+/**
+ * BRO-4192: a loser whose pointer is being cleared may be the same article as a
+ * valid sibling under a DIFFERENT URL id (the-piano-lesson-2022 Variety:
+ * Aramide Tinubu …-1235402373 and Charles Isherwood …-1235404957, identical
+ * body). Clearing would ship both. Returns the first valid same-outlet sibling
+ * whose body opens identically, else null; the heal then leaves the pointer.
+ */
+function pickTextTwinSibling(loser, targetFile, siblings, isExcluded) {
+  if (!loser || !loser.data) return null;
+  const want = textTwinKey(loser.data.fullText);
+  if (!want) return null;
+  for (const s of siblings || []) {
+    if (!s || !s.data || s.file === loser.file || s.file === targetFile) continue;
+    if (s.data.outletId !== loser.data.outletId) continue;
+    if (s.data.duplicateOf || s.data.duplicateTextOf) continue;
+    if (textTwinKey(s.data.fullText) !== want) continue;
+    if (isExcluded(s.data)) continue;
+    return s.file;
+  }
+  return null;
+}
+
 /**
  * BRO-4192: several same-URL losers orphaned by ONE invalidated target
  * (mother-play-2024 NYT: jesse-green + a misattributed jesse-schulman copy,
@@ -495,8 +524,9 @@ function pickRetargetSibling(loser, targetFile, siblings, isExcluded) {
  * group with 2+ members (the winner maps to itself).
  * @param {Array<{showId:string,loserFile:string,targetFile:string,url?:string,outletId?:string,criticName?:string}>} orphans
  * @param {Set<string>} publishedKeys `${showId}|${outletId}|${criticName.toLowerCase()}`
+ * @param {(member: object) => boolean} [isExcluded] true → the rebuild would exclude this member
  */
-function pickOrphanGroupWinners(orphans, publishedKeys) {
+function pickOrphanGroupWinners(orphans, publishedKeys, isExcluded) {
   const groups = new Map();
   for (const o of orphans || []) {
     const u = o && o.url ? normalizeUrl(o.url) : '';
@@ -509,13 +539,18 @@ function pickOrphanGroupWinners(orphans, publishedKeys) {
   for (const members of groups.values()) {
     if (members.length < 2) continue;
     const pubKey = m => `${m.showId}|${m.outletId || ''}|${String(m.criticName || '').toLowerCase()}`;
-    const winner = members.find(m => publishedKeys && publishedKeys.has(pubKey(m))) || members[0];
+    // Prefer members the rebuild would include; never hand the group to an
+    // excluded winner when a valid one exists.
+    const valid = typeof isExcluded === 'function' ? members.filter(m => !isExcluded(m)) : members;
+    const pool = valid.length ? valid : members;
+    const winner = pool.find(m => publishedKeys && publishedKeys.has(pubKey(m))) || pool[0];
     for (const m of members) winners.set(`${m.showId}/${m.loserFile}`, winner.loserFile);
   }
   return winners;
 }
 
 module.exports = {
+  pickTextTwinSibling,
   pickOrphanGroupWinners,
   pickRetargetSibling,
   hasStaleClearBreadcrumb,

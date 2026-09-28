@@ -7,6 +7,7 @@ const {
   hasStaleClearBreadcrumb,
   pickRetargetSibling,
   pickOrphanGroupWinners,
+  pickTextTwinSibling,
   isTargetInvalidated,
   hasSubstantiveUnflaggedContent,
   shouldClearOrphanedDuplicatePointer,
@@ -565,4 +566,37 @@ test('pickOrphanGroupWinners: first member wins when none is published; singleto
   assert.equal(w.get('s1/b.json'), 'a.json');
   assert.equal(w.has('s2/a.json'), false);
   assert.equal(w.has('s1/c.json'), false);
+});
+
+test('pickOrphanGroupWinners: an excluded member never wins over a valid one', () => {
+  const url = 'https://example.com/r';
+  const orphans = [
+    { showId: 's1', loserFile: 'a.json', targetFile: 't.json', url, outletId: 'o', criticName: 'A', bad: true },
+    { showId: 's1', loserFile: 'b.json', targetFile: 't.json', url, outletId: 'o', criticName: 'B' },
+  ];
+  // a is published but excluded; b wins.
+  const w = pickOrphanGroupWinners(orphans, new Set(['s1|o|a']), m => m.bad === true);
+  assert.equal(w.get('s1/a.json'), 'b.json');
+  assert.equal(w.get('s1/b.json'), 'b.json');
+});
+
+test('pickTextTwinSibling: same outlet + same opening body under another URL', () => {
+  const body = 'Every family has a skeleton or two in its closet. ' + 'x'.repeat(600);
+  const loser = { file: 'variety--aramide-tinubu.json', data: { outletId: 'variety', fullText: body } };
+  const siblings = [
+    loser,
+    { file: 'variety--marilyn-stasio.json', data: { outletId: 'variety', fullText: body } },          // the target
+    { file: 'nytimes--x.json', data: { outletId: 'nytimes', fullText: body } },                      // other outlet
+    { file: 'variety--dup.json', data: { outletId: 'variety', fullText: body, duplicateOf: 'a' } },  // a loser
+    { file: 'variety--charles-isherwood.json', data: { outletId: 'variety', fullText: '  ' + body.replace('. ', '.\n\n') + ' more' } },
+  ];
+  assert.equal(pickTextTwinSibling(loser, 'variety--marilyn-stasio.json', siblings, () => false), 'variety--charles-isherwood.json');
+  assert.equal(pickTextTwinSibling(loser, 'variety--marilyn-stasio.json', siblings, d => d.fullText.endsWith('more')), null);
+});
+
+test('pickTextTwinSibling: short or different bodies never match', () => {
+  const short = { file: 'a.json', data: { outletId: 'o', fullText: 'short' } };
+  assert.equal(pickTextTwinSibling(short, 't.json', [{ file: 'b.json', data: { outletId: 'o', fullText: 'short' } }], () => false), null);
+  const a = { file: 'a.json', data: { outletId: 'o', fullText: 'a'.repeat(600) } };
+  assert.equal(pickTextTwinSibling(a, 't.json', [{ file: 'b.json', data: { outletId: 'o', fullText: 'b'.repeat(600) } }], () => false), null);
 });

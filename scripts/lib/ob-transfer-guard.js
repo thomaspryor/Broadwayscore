@@ -19,7 +19,11 @@
 
 const { isEffectivelyWrongProductionOrShow } = require('./content-quality.js');
 
-const EARLY_GRACE_DAYS = 30;
+// Matches the rebuild's pre-opening guard (flags at 90+ days early), so a
+// Broadway copy that can still ship under the Broadway show keeps counting.
+const EARLY_GRACE_DAYS = 90;
+// Open-ended OB runs (no closingDate): same horizon the pick audit uses.
+const OPEN_RUN_DAYS = 400;
 
 function toTime(d) {
   if (!d) return NaN;
@@ -62,7 +66,10 @@ function isDatedWithinObRun(obRecord, obShow) {
   if (!start || Number.isNaN(pub)) return false;
   const grace = 14 * 86400000;
   if (pub < Date.parse(start) - grace) return false;
-  if (obShow.closingDate && pub > Date.parse(obShow.closingDate) + grace) return false;
+  const end = obShow.closingDate
+    ? Date.parse(obShow.closingDate) + grace
+    : Date.parse(start) + OPEN_RUN_DAYS * 86400000;
+  if (pub > end) return false;
   return true;
 }
 
@@ -79,6 +86,7 @@ function shouldClearStaleObTransfer(obRecord, sharedWithValidBroadwayCopy, obSho
   if (!obRecord || obRecord.wrongProduction !== true) return false;
   if (obRecord.wrongProductionReason !== 'ob-broadway-transfer') return false;
   if (obRecord.humanReviewedWrongProduction === true) return false;
+  if (obRecord._locked === true) return false; // the release force-writes; never touch a locked file
   if (sharedWithValidBroadwayCopy) return false;
   return isDatedWithinObRun(obRecord, obShow);
 }

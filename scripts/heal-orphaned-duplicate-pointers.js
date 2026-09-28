@@ -54,6 +54,7 @@ const {
   hasStaleClearBreadcrumb,
   pickRetargetSibling,
   pickOrphanGroupWinners,
+  pickTextTwinSibling,
 } = require('./lib/orphaned-duplicate-pointer-heal');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -262,6 +263,9 @@ function flatten(chains) {
 
 let retargeted = 0;
 let keptIncludedTarget = 0;
+let skippedLocked = 0;
+let keptForTextTwin = 0;
+let skippedExcludedLoser = 0;
 function fix(orphans) {
   let cleared = 0;
   const day = new Date().toISOString().slice(0, 10);
@@ -270,14 +274,24 @@ function fix(orphans) {
   const described = orphans.filter(o => o.field === 'duplicateOf').map(o => {
     try {
       const d = JSON.parse(fs.readFileSync(path.join(REVIEW_TEXTS_DIR, o.showId, o.loserFile), 'utf-8'));
-      return { ...o, url: d.url, outletId: d.outletId, criticName: d.criticName };
+      return { ...o, url: d.url, outletId: d.outletId, criticName: d.criticName, data: { ...d, showId: d.showId || o.showId } };
     } catch { return o; }
   });
-  const groupWinners = pickOrphanGroupWinners(described, loadPublishedKeys());
+  const groupWinners = pickOrphanGroupWinners(described, loadPublishedKeys(), m => !m.data || isExcludedIgnoringDuplicate(m.data));
   for (const o of orphans) {
     const dir = path.join(REVIEW_TEXTS_DIR, o.showId);
     const filePath = path.join(dir, o.loserFile);
     const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    // BRO-4192: several writes below force past the guard, which also skips
+    // the _locked preserve. A locked file is never the heal's to change.
+    if (data._locked === true) { skippedLocked++; continue; }
+    // BRO-4192: when the loser is itself excluded by the rebuild, clearing its
+    // pointer changes nothing shipped, and the write guard re-marks it on the
+    // same write (both records invalid → historical dedup). Leave it.
+    if (o.field === 'duplicateOf' && isExcludedIgnoringDuplicate({ ...data, showId: data.showId || o.showId })) {
+      skippedExcludedLoser++;
+      continue;
+    }
     // BRO-4192: a live pointer that ALREADY carries a clear breadcrumb (an
     // earlier clear that was re-set) can never be cleared by a normal
     // safeWriteReview — the protected-field restore treats an existing
@@ -311,6 +325,15 @@ function fix(orphans) {
         })
         .filter(Boolean);
       const retarget = pickRetargetSibling({ file: o.loserFile, url: data.url }, o.targetFile, siblings, isExcludedIgnoringDuplicate);
+      const textTwin = retarget ? null : pickTextTwinSibling({ file: o.loserFile, data }, o.targetFile, siblings, isExcludedIgnoringDuplicate);
+      if (textTwin) {
+        // Same article under another URL id. Clearing would ship both, and a
+        // duplicateTextOf retarget doesn't hold (the rebuild's 500-char
+        // fingerprint breaks on injected "related stories" blocks). The loser
+        // stays hidden behind its current pointer, as it is today.
+        keptForTextTwin++;
+        continue;
+      }
       const groupWinner = o.field === 'duplicateOf' ? groupWinners.get(`${o.showId}/${o.loserFile}`) : null;
       const target = retarget || (groupWinner && groupWinner !== o.loserFile ? groupWinner : null);
       if (target) {
@@ -450,7 +473,7 @@ function main() {
         orphans: fixable,
       }, null, 2) + '\n');
     } catch (e) { console.warn(`[heal-orphaned-duplicate-pointers] could not write audit report: ${e.message}`); }
-    console.log(`\nCleared ${cleared} orphaned pointer(s); retargeted ${retargeted} to a valid same-URL canonical; kept ${keptIncludedTarget} whose target the rebuild still includes (BRO-4192).`);
+    console.log(`\nCleared ${cleared} orphaned pointer(s); retargeted ${retargeted} to a valid same-URL canonical; kept ${keptForTextTwin} with a same-body twin under another URL; ${keptIncludedTarget} whose target the rebuild still includes; skipped ${skippedLocked} locked and ${skippedExcludedLoser} whose own record the rebuild excludes (BRO-4192).`);
     console.log('Re-run the rebuild to pick up the re-admitted reviews.');
     process.exit(0);
   }

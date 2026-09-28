@@ -62,3 +62,17 @@ test('never touches operator-confirmed or differently-reasoned flags', () => {
   assert.equal(shouldClearStaleObTransfer(flagged({ wrongProductionReason: 'pre-opening' }), false, obShow), false);
   assert.equal(shouldClearStaleObTransfer({ ...flagged(), wrongProduction: false }, false, obShow), false);
 });
+
+test('review-fix: locked files and far-out dates in open-ended runs are never released', () => {
+  const openOb = { id: 'x-off-broadway', openingDate: '2024-01-10', closingDate: null };
+  const rec = { wrongProduction: true, wrongProductionReason: 'ob-broadway-transfer', publishDate: 'January 12, 2024' };
+  assert.equal(shouldClearStaleObTransfer(rec, false, openOb), true);
+  assert.equal(shouldClearStaleObTransfer({ ...rec, _locked: true }, false, openOb), false);
+  assert.equal(shouldClearStaleObTransfer({ ...rec, publishDate: 'March 1, 2026' }, false, openOb), false);
+});
+
+test('review-fix: a Broadway copy up to 90 days early still counts (matches the pre-opening guard)', () => {
+  const bw = { id: 'x-2024', previewsStartDate: '2024-06-01', openingDate: '2024-06-20' };
+  assert.equal(isValidBroadwayCopy({ url: 'u', publishDate: 'April 1, 2024' }, bw), true);
+  assert.equal(isValidBroadwayCopy({ url: 'u', publishDate: 'January 1, 2024' }, bw), false);
+});
