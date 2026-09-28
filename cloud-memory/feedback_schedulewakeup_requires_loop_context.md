@@ -12,6 +12,6 @@ ScheduleWakeup requires a `prompt` field tied to an active `/loop` (dynamic-mode
 
 **Why:** hit this twice in the same session (BRO-4070) trying to use it as a generic delay/backoff mechanism while waiting on a long-running background `Bash` task (a `land.yml` CI landing, ~19 min). Both calls errored immediately.
 
-**Update 2026-09-28 (BRO-4236):** the error text is literal: the call fails only when `prompt` is omitted. With a `prompt` it schedules and fires outside `/loop` (used 3x in session_01SHmLUA3WZ9ubXrDUB9bowt; the wakeup arrived as a new turn). It caps at 3600s and is the prompt-free replacement for `send_later`, which the blocker hook now denies.
+**Update 2026-09-28 (BRO-4236):** the error text is literal: the call fails only when `prompt` is omitted. With a `prompt` it schedules outside `/loop`, caps at 3600s, and does not prompt the owner. It is NOT reliable: in session_01SHmLUA3WZ9ubXrDUB9bowt one wakeup fired and a later one never did, and a refused land.yml run went unnoticed for ~1h. For anything that must be followed up, wait in-turn (run_in_background Bash loop or Monitor) instead.
 
 **How to apply:** to wait on a background `Bash` task or poll external state (CI run status, a landing ref, a ledger row) without a `/loop` in play, use `Monitor` with a polling command instead — it streams events back without requiring a `/loop` prompt, and re-arms cleanly on expiry. Reserve `ScheduleWakeup` for actual `/loop` dynamic-pacing turns.

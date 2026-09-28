@@ -32,7 +32,7 @@ case "$tool" in
   mcp__Claude_Code_Remote__create_trigger|mcp__claude-code-remote__create_trigger)
     initiation="$(printf '%s' "$input" | jq -r '.tool_input.initiation // ""' 2>/dev/null)"
     case "$initiation" in human_request|human_schedule) exit 0 ;; esac
-    deny "Blocked: send_later and create_trigger put an approval prompt on the owner's phone every time (BRO-4236), so they are reserved for reminders or schedules the owner's own message asked for. For your own check-ins: ScheduleWakeup (always pass a prompt; max 3600s) to resume this session later, Monitor to wait on a command in this turn, or subscribe_pr_activity when a PR exists. Do not retry with the other scheduling tool."
+    deny "Blocked: send_later and create_trigger put an approval prompt on the owner's phone every time (BRO-4236), so they are reserved for reminders or schedules the owner's own message asked for. For your own check-ins: to follow work that must finish (a land.yml run, a deploy), wait in this turn with a run_in_background Bash loop or Monitor (e.g. poll until the land/<name> ref is deleted, which land.yml does on success); subscribe_pr_activity when a PR exists; ScheduleWakeup (always pass a prompt; max 3600s) only as a best-effort nudge, since it can fail to fire. Do not retry with the other scheduling tool."
     ;;
   mcp__Claude_Code_Remote__add_repo|mcp__claude-code-remote__add_repo)
     owner="$(printf '%s' "$input" | jq -r '.tool_input.owner // "" | ascii_downcase' 2>/dev/null)"
