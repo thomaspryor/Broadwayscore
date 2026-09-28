@@ -106,7 +106,18 @@ function venuesMatch(a, b) {
   // canonical-venue-consumers.test.mjs pass without the local strip, and all
   // 356 distinct shows.json venues normalize identically. (BRO-2567)
   const normA = normalizeVenueName(a);
-  return normA !== '' && normA === normalizeVenueName(b);
+  const normB = normalizeVenueName(b);
+  if (normA === '') return false;
+  // Separator-insensitive full-name equality: "59E59 Theaters, Theater C" ≡
+  // "59E59 Theaters - Theater C". Without it candidate-dedup (the venue-page
+  // promotion path) saw two venues and let TodayTix's "Crazy Mama" land as a
+  // duplicate of the catalog entry (2026-09-28). Whole-string equality only,
+  // so sibling rooms (Theater A vs Theater B) stay distinct.
+  return normA === normB || punctFreeVenue(normA) === punctFreeVenue(normB);
+}
+
+function punctFreeVenue(v) {
+  return String(v || '').replace(/[\s,\-–—]+/g, ' ').trim();
 }
 
 const KNOWN_DUPLICATES = {
