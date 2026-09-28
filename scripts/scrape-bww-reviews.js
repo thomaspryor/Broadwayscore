@@ -1354,7 +1354,8 @@ async function landingDiscoverMode(shows, options = {}) {
     // A national-tour roundup matches the Broadway show by title, and
     // processShow's category guard would drop it after fetching. Suggest the
     // tour to the owner instead when it isn't tracked yet (BRO-4211).
-    if (match && isNationalTourRoundupSlug(slug)) {
+    // Broadway matches only: a roundup matching a tour entry directly keeps the normal path.
+    if (match && (match.show.category || 'broadway') === 'broadway' && isNationalTourRoundupSlug(slug)) {
       const cand = tourCandidateFor(slug, match.show, shows);
       console.log(`  [TOUR]  ${match.show.id} ← ${slug.slice(0, 70)}${cand ? ' (suggesting a tour entry)' : ' (tour already tracked)'}`);
       if (cand && !options.dryRun) {

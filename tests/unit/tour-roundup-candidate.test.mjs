@@ -17,6 +17,7 @@ test('national tour roundup slugs are recognised; UK tours and look-alike words 
     'Review-Roundup-DEATH-BECOMES-HER-Launches-National-Tour-20260915',
     'Review-Roundup-BEETLEJUICE-Haunts-Houses-Across-the-US-on-its-National-Tour-20221221',
     'Review-Roundup-SHUCKED-on-Tour-20241106',
+    'Review-Roundup-HADESTOWN-Tour-Launches-in-Houston-20231010',
   ]) assert.equal(isNationalTourRoundupSlug(s), true, s);
   for (const s of [
     'Review-Roundup-HADESTOWN-Opens-on-Broadway-20190417',

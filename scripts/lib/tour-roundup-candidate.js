@@ -16,7 +16,7 @@
 // "...-Launches-North-AMERICAN-Tour-...", "...-Embarks-on-National-Tour-...",
 // "...-on-Tour-...", "...-US-Tour-...". Anchored to slug words so a title word
 // like "Tourist" or "Detour" doesn't count.
-const TOUR_SLUG_RE = /(?:^|-)(?:north-american|national|us|first-national|touring)-tour(?:-|$)|(?:^|-)on-tour(?:-|$)|(?:^|-)tour-(?:launch|kicks-off|opens|begins)(?:-|$)/i;
+const TOUR_SLUG_RE = /(?:^|-)(?:north-american|national|us|first-national|touring)-tour(?:-|$)|(?:^|-)on-tour(?:-|$)|(?:^|-)tour-(?:launch(?:es)?|kicks-off|opens|begins)(?:-|$)/i;
 // A UK or West End tour is not the North American tour.
 const UK_SLUG_RE = /(?:^|-)(?:uk|uk-and-ireland|uk-ireland|west-end)(?:-|$)/i;
 
