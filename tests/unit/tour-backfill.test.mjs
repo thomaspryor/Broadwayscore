@@ -45,6 +45,8 @@ test('dated reviews before the Broadway opening or the tour launch stay put', ()
   assert.equal(classifyTourBackfill({ ...tourFlag, publishDate: '2023-05-01' }, ctx).reason, 'before-tour-launch');
   assert.equal(classifyTourBackfill({ ...tourFlag, publishDate: '2024-07-28' }, ctx).action, 'move'); // within a week of launch
   assert.equal(classifyTourBackfill({ ...tourFlag }, ctx).action, 'move'); // undated: no date rule applies
+  // Real case: a 2019 Broadway review in beetlejuice-2025 whose note says "not the 2025 tour stop".
+  assert.equal(classifyTourBackfill({ ...tourFlag, publishDate: 'April 29th, 2019' }, ctx).reason, 'before-broadway-opening');
 });
 
 test('prepareTourMove restores the text, sets aside Broadway-relative verdicts, stamps provenance', () => {
