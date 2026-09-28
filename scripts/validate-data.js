@@ -3029,7 +3029,7 @@ function validateP0ScoreCoverage() {
  * Scans review-text source files for regional BWW URLs and local paper tour indicators
  * that don't have wrongProduction set. Warns if >30% of a show's reviews are regional.
  */
-function validateTourReviewContamination() {
+function validateTourReviewContamination(shows = []) {
   info('Checking for unflagged tour/regional review contamination...');
 
   const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
@@ -3046,7 +3046,10 @@ function validateTourReviewContamination() {
     return;
   }
 
-  const showDirs = listShowDirs(reviewTextsDir);
+  // A national-tour entry's reviews ARE tour reviews (BRO-4211), so its
+  // folder is not contaminated by them. Same exemption as rebuild-all-reviews.
+  const tourIds = new Set((shows || []).filter(s => s && s.category === 'tour').map(s => s.id));
+  const showDirs = listShowDirs(reviewTextsDir).filter(d => !tourIds.has(d));
 
   let totalUnflagged = 0;
   const contaminated = [];
@@ -5387,7 +5390,7 @@ function runValidation() {
   console.log('');
   validateLotteryRushData(shows);
   console.log('');
-  validateTourReviewContamination();
+  validateTourReviewContamination(shows);
   console.log('');
   validateCrossMarketSourceFiles();
   console.log('');
