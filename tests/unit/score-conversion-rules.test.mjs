@@ -272,6 +272,46 @@ describe('Score Conversion Rules', () => {
     });
   });
 
+  // BRO-4204 S7-T11: the audit's 96 "unparseable" ratings were all `NN%`
+  // strings (80% x32, 70% x17, 100% x15, 90%, 60%, 40%, 50%). A percent is
+  // already on the 0-100 scale, so the expected score is the number itself.
+  describe('Percent Conversions (NN%)', () => {
+    it('"80%" = 80 (type percent)', () => {
+      const result = parseRating('80%');
+      assert.strictEqual(result.type, 'percent');
+      assert.strictEqual(result.expected, 80);
+      assert.strictEqual(result.unparseable, false);
+    });
+
+    it('tolerates whitespace, decimals and the word "percent"', () => {
+      assert.strictEqual(getExpectedScore('72.5 %'), 72.5);
+      assert.strictEqual(getExpectedScore(' 100% '), 100);
+      assert.strictEqual(getExpectedScore('60 percent'), 60);
+    });
+
+    it('every NN% value the 2026 audit found parses', () => {
+      for (const v of ['80%', '70%', '100%', '90%', '60%', '40%', '50%']) {
+        assert.strictEqual(parseRating(v).unparseable, false, v);
+        assert.strictEqual(getExpectedScore(v), parseInt(v, 10), v);
+      }
+    });
+
+    it('out-of-range percents stay unparseable', () => {
+      assert.strictEqual(parseRating('101%').unparseable, true);
+      assert.strictEqual(parseRating('-5%').unparseable, true);
+    });
+
+    it('validateScore treats a percent like any other convertible rating', () => {
+      const ok = validateScore('80%', 78, 10);
+      assert.strictEqual(ok.valid, true);
+      assert.strictEqual(ok.expected, 80);
+      assert.strictEqual(ok.reason, 'correct');
+      const bad = validateScore('40%', 85, 10);
+      assert.strictEqual(bad.valid, false);
+      assert.strictEqual(bad.reason, 'miscalculated');
+    });
+  });
+
   describe('validateScore', () => {
     it('correct score within tolerance passes', () => {
       const result = validateScore('B+', 78, 10);

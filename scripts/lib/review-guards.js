@@ -40,28 +40,115 @@ function shouldSkipScoredReview(data, reviewFilterSize = 0) {
  * highest numeric suffix (e.g. "giant-2" over "giant") — the suffix indicates
  * production order. This prevents old bare slugs from blocking the correct revival slug.
  *
+ * Year rule (BRO-4204 S7-T9, 2026 data audit): a candidate whose review items
+ * ALL predate the show's year is a different production's page and is
+ * rejected outright, whatever its suffix. The audit found
+ * every-brilliant-thing-2026 mapped to the 2014 page (3 reviews, 2014) while
+ * `every-brilliant-thing-2`, 17 reviews from 2026, sat unmapped;
+ * hamlet-2026 → `hamlet-broadway` (5 reviews, all 2008); death-of-a-salesman-2026
+ * → the 2012 page. The suffix preference alone cannot see that: DTLI's
+ * suffixes are creation order, not year, and a bare slug is often the CURRENT
+ * production. The caller probes each candidate page and passes the years it
+ * found (extractDtliReviewYears); a candidate with no probe result, or an
+ * empty page (no reviews yet — a pre-opening page), is NOT rejected: absence
+ * of evidence is not a wrong year.
+ *
  * @param {string} showId - Our show ID (e.g. "giant-2026", "hamilton")
  * @param {string[]} slugs - Candidate DTLI slug strings (e.g. ["giant", "giant-2"])
- * @returns {string} The best slug
+ * @param {object} [opts]
+ * @param {Record<string, number[]>|Map<string, number[]>} [opts.reviewYearsBySlug] -
+ *   review-item years per probed candidate slug
+ * @param {number|string|null} [opts.showYear] - the production's year (opening
+ *   year preferred; defaults to the id's trailing year)
+ * @returns {string|null} The best slug, or null when every candidate is rejected
  */
-function pickBestDtliSlug(showId, slugs) {
+function pickBestDtliSlug(showId, slugs, opts = {}) {
   if (!slugs || slugs.length === 0) return null;
-  let best = slugs[0];
-  if (slugs.length > 1) {
-    const showYearMatch = showId.match(/-(\d{4})$/);
-    const showYear = showYearMatch ? parseInt(showYearMatch[1]) : null;
-    if (showYear) {
-      const withSuffix = slugs.filter(s => /-\d+$/.test(s));
-      if (withSuffix.length > 0) {
-        best = withSuffix.sort((a, b) => {
-          const nA = parseInt((a.match(/-(\d+)$/) || [0, 0])[1]);
-          const nB = parseInt((b.match(/-(\d+)$/) || [0, 0])[1]);
-          return nB - nA;
-        })[0];
-      }
+  const showYearMatch = String(showId || '').match(/-(\d{4})$/);
+  const idYear = showYearMatch ? parseInt(showYearMatch[1], 10) : null;
+  const showYear = opts.showYear != null && String(opts.showYear).match(/^\d{4}$/)
+    ? parseInt(String(opts.showYear), 10)
+    : idYear;
+
+  // Year rule: drop every candidate whose probed review years all predate the show.
+  const yearsFor = (slug) => {
+    const src = opts.reviewYearsBySlug;
+    if (!src) return null;
+    const v = src instanceof Map ? src.get(slug) : src[slug];
+    return Array.isArray(v) ? v : null;
+  };
+  const candidates = showYear
+    ? slugs.filter((s) => !dtliSlugPredatesShow(yearsFor(s), showYear))
+    : slugs.slice();
+  if (candidates.length === 0) return null;
+
+  let best = candidates[0];
+  if (candidates.length > 1 && idYear) {
+    const withSuffix = candidates.filter(s => /-\d+$/.test(s));
+    if (withSuffix.length > 0) {
+      best = withSuffix.sort((a, b) => {
+        const nA = parseInt((a.match(/-(\d+)$/) || [0, 0])[1]);
+        const nB = parseInt((b.match(/-(\d+)$/) || [0, 0])[1]);
+        return nB - nA;
+      })[0];
     }
   }
   return best;
+}
+
+/**
+ * The year rule itself: true when the page carries at least one dated review
+ * item and EVERY one of them is from before `showYear`. An undated or empty
+ * page never predates anything (see pickBestDtliSlug).
+ *
+ * @param {number[]|null|undefined} reviewYears
+ * @param {number|string} showYear
+ */
+function dtliSlugPredatesShow(reviewYears, showYear) {
+  const y = parseInt(String(showYear), 10);
+  if (!Number.isFinite(y)) return false;
+  if (!Array.isArray(reviewYears)) return false;
+  const years = reviewYears.map((v) => parseInt(String(v), 10)).filter((v) => Number.isFinite(v) && v >= 1990 && v <= 2100);
+  if (years.length === 0) return false;
+  return years.every((v) => v < y);
+}
+
+/**
+ * Years of the review items on a DTLI show page. DTLI renders each notice in
+ * a `review-item` / `poster-review-item` block with the date in
+ * `<div class="review-item-date">December 14, 2014</div>` (same block
+ * gather-reviews.js's extractDTLIReviews reads). Only the date element is
+ * read — the page's own header, sidebar and "more shows" tiles carry other
+ * years and must not count.
+ *
+ * @param {string} html
+ * @returns {number[]} one entry per dated review item, in page order
+ */
+function extractDtliReviewYears(html) {
+  if (!html || typeof html !== 'string') return [];
+  const years = [];
+  const re = /class="review-item-date"[^>]*>([^<]*)/gi;
+  let m;
+  while ((m = re.exec(html)) !== null) {
+    const y = (m[1].match(/\b(19|20)\d{2}\b/) || [])[0];
+    if (y) years.push(parseInt(y, 10));
+  }
+  return years;
+}
+
+/**
+ * The year a DTLI candidate has to reach for a show: opening year, else
+ * previews year, else the id's trailing year, else null (no rule applies —
+ * an un-yeared id like `hamilton` is the current production by convention).
+ */
+function dtliShowYear(show) {
+  if (!show) return null;
+  for (const d of [show.openingDate, show.previewsStartDate]) {
+    const m = typeof d === 'string' ? d.match(/^(\d{4})-\d{2}-\d{2}/) : null;
+    if (m) return parseInt(m[1], 10);
+  }
+  const idMatch = String(show.id || '').match(/-(\d{4})$/);
+  return idMatch ? parseInt(idMatch[1], 10) : null;
 }
 
 /**
@@ -4813,6 +4900,9 @@ module.exports = {
   buildMultiProdYearGuard,
   shouldSkipScoredReview,
   pickBestDtliSlug,
+  dtliSlugPredatesShow,
+  extractDtliReviewYears,
+  dtliShowYear,
   applyTemporalOverrides,
   isReviewWithinOwnProductionWindow,
   // In-window + slug-match veto (audit S6-T4)

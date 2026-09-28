@@ -30,6 +30,7 @@ const {
 } = require('./lib/not-found-cache');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { findConflictingShowId } = require('./lib/show-score-url-map');
+const { parseShowScorePagination, showScorePaginationPages } = require('./lib/show-score-discover');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '../data');
@@ -156,10 +157,18 @@ function archiveExists(aggregator: string, showId: string): boolean {
 //   1. Stored URL from data/show-score-urls.json (authoritative for OB shows where
 //      Show Score's slug is {title}-{venue} not {title} — KENREX 2026-04-28 root cause)
 //   2. Title-derived URL patterns (fallback for shows missing from the URL map)
-// After landing on a valid page, scroll the critic-reviews carousel to render all
-// tiles. Show Score lazy-renders past the first ~8 visible — without scrolling,
-// the saved HTML undercounts critic reviews (KENREX had 11 critics but static
-// fetch only captured 8).
+// After landing on a valid page, render the critic tiles past the first 8 by
+// calling Show Score's own pagination endpoint from the page context and
+// appending the returned tiles into the carousel before page.content() is
+// saved (BRO-4204 S7-T9). Show Score server-renders only 8 critic tiles;
+// tiles 9..N exist solely as /shows/{slug}/paginate_critic_reviews?page=N
+// JSON fragments, which the site loads on a click of the carousel's next
+// arrow — NOT on scroll. The previous "scroll the container to the right"
+// loop (2026-04-28) never triggered a single pagination request, so it
+// broke out after two idle iterations and every archived page with >8
+// critics saved exactly 8 tiles: 357 of the 361 rows in
+// data/audit/show-score-extraction-gaps.json read `extracted: 8`, 24 of them
+// 2026 shows (bug-2026: 8 of 19). Reproduction + probe: docs/audit/show-score-8-tile-note.md.
 async function fetchShowScore(page: Page, showId: string, shows: Record<string, Show>, urlMappings: Record<string, string>): Promise<FetchResult> {
   const show = shows[showId];
   if (!show) {
@@ -268,41 +277,66 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
         continue; // Try next pattern
       }
 
-      // Read on-page critic count BEFORE scrolling so we know when to stop.
+      // Read on-page critic count BEFORE rendering so we know how many tiles to expect.
       const headingText = html.match(/Critic Reviews \((\d+)\)/);
       const expectedCount = headingText ? parseInt(headingText[1], 10) : 0;
 
-      // Render the full carousel by scrolling its container to the right until
-      // the tile count stops growing OR matches the heading count. The carousel
-      // root element has class `js-show-page-v2__critic-reviews`.
-      // Bounded loop: max 12 iterations (≥ ~96 tiles at 8/page), each with a
-      // post-scroll wait for lazy-rendering; abort if 2 consecutive iterations
-      // produce zero new tiles.
-      if (expectedCount > 8) {
-        let lastCount = 0;
-        let stableIterations = 0;
-        for (let i = 0; i < 12; i++) {
-          const tilesBefore = await page.locator('.review-tile-v2.-critic').count();
-          if (tilesBefore >= expectedCount) break;
-          await page.evaluate(() => {
-            const el = document.querySelector('.js-show-page-v2__critic-reviews');
-            if (el) el.scrollLeft = el.scrollWidth;
-          });
-          await page.waitForTimeout(800);
-          const tilesAfter = await page.locator('.review-tile-v2.-critic').count();
-          if (tilesAfter === tilesBefore) {
-            stableIterations++;
-            if (stableIterations >= 2) break;
-          } else {
-            stableIterations = 0;
+      // Render tiles 9..N through the site's own pagination endpoint (see the
+      // fetchShowScore header): same-origin fetch from the page context, then
+      // append each returned tile wrapper into the carousel's element
+      // container so page.content() below serialises the full set exactly as
+      // a fully-paged carousel would. Page list comes from the shared helper
+      // (2..ceil(N/8)+1); the loop stops at the first empty/short fragment or
+      // a page that adds no new tile id, so a stale heading can't loop.
+      const { nextPagePath, totalCount } = parseShowScorePagination(html);
+      const pagesToFetch = showScorePaginationPages(Math.max(totalCount, expectedCount));
+      if (pagesToFetch.length > 0 && !nextPagePath) {
+        console.warn(`  ⚠️  [show-score] ${showId}: heading says ${expectedCount} critic reviews but no data-next-page-path — format change? archiving the initial 8 only`);
+      }
+      if (pagesToFetch.length > 0 && nextPagePath) {
+        const appended = await page.evaluate(async ({ nextPagePath, pages }) => {
+          const root = document.querySelector('.js-show-page-v2__critic-reviews');
+          if (!root) return { added: 0, pagesFetched: 0, reason: 'no carousel root' };
+          const container = root.querySelector('.js-scrollable-block__elements') || root;
+          const seen = new Set(Array.from(document.querySelectorAll('.review-tile-v2.-critic')).map((el) => el.id));
+          let added = 0;
+          let pagesFetched = 0;
+          for (const p of pages) {
+            let body;
+            try {
+              const resp = await fetch(`${nextPagePath}?page=${p}`, { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+              if (!resp.ok) return { added, pagesFetched, reason: `page ${p} HTTP ${resp.status}` };
+              body = await resp.json();
+            } catch (e) {
+              return { added, pagesFetched, reason: `page ${p} failed: ${(e && e.message) || e}` };
+            }
+            pagesFetched++;
+            const fragment = body && typeof body.html === 'string' ? body.html : '';
+            if (fragment.trim().length < 10) break; // {"html":" "} — past the last page
+            const tmp = document.createElement('div');
+            tmp.innerHTML = fragment;
+            let addedThisPage = 0;
+            for (const tile of Array.from(tmp.querySelectorAll('.review-tile-v2.-critic'))) {
+              if (tile.id && seen.has(tile.id)) continue;
+              if (tile.id) seen.add(tile.id);
+              // Keep Show Score's own wrapper around the tile so the archive has the
+              // same shape a fully-paged carousel would have.
+              container.appendChild(tile.closest('.js-scrollable-block__element') || tile);
+              addedThisPage++;
+            }
+            added += addedThisPage;
+            if (addedThisPage === 0) break;
           }
-          lastCount = tilesAfter;
-        }
+          return { added, pagesFetched };
+        }, { nextPagePath, pages: pagesToFetch });
+        console.log(`  [show-score] ${showId}: +${appended.added} paginated critic tile(s) over ${appended.pagesFetched} page(s) (heading ${expectedCount}, data-total-count ${totalCount})${appended.reason ? ` — ${appended.reason}` : ''}`);
       }
 
-      // Re-capture HTML AFTER scroll so saved file has all rendered tiles
+      // Re-capture HTML AFTER pagination so saved file has all rendered tiles.
+      // Distinct ids: Show Score renders each tile's `critic_review_N` id twice
+      // (the tile and an inner anchor), so a raw match count is 2x the tiles.
       html = await page.content();
-      const finalTiles = (html.match(/id=['"]critic_review_\d+['"]/g) || []).length;
+      const finalTiles = new Set(html.match(/id=['"]critic_review_\d+['"]/g) || []).size;
 
       // BRO-4055: ownedByOtherShow above only filters GUESSED patterns
       // before navigation — it can't see a redirect. A pattern nobody owns
@@ -331,7 +365,7 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
       const ratio = expectedCount > 0 ? `${finalTiles}/${expectedCount}` : `${finalTiles}/?`;
       console.log(`  [show-score] ${showId}: captured ${ratio} critic tiles`);
       if (expectedCount > 0 && finalTiles < expectedCount) {
-        console.warn(`  ⚠️  [show-score] ${showId}: only ${finalTiles} of ${expectedCount} critic tiles rendered (carousel scroll may have hit a stall)`);
+        console.warn(`  ⚠️  [show-score] ${showId}: only ${finalTiles} of ${expectedCount} critic tiles rendered (pagination endpoint short or changed) — extract-show-score-reviews.js will report the gap`);
       }
 
       return { showId, aggregator: 'show-score', success: true };

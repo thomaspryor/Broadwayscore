@@ -125,6 +125,27 @@ function parseShowScorePagination(html) {
 }
 
 /**
+ * The pagination pages to request after the initial render: 2..ceil(N/8)+1
+ * (the "+1 safety page" is the empty `{"html":" "}` terminator Show Score
+ * returns past the last page), or [] when the first 8 already cover N.
+ * Shared by fetchAllShowScoreReviewUrls below and by
+ * scripts/fetch-aggregator-pages.ts's archive renderer (BRO-4204 S7-T9) so
+ * the two can't drift on the page-count rule.
+ *
+ * @param {number|string} totalCount - data-total-count / "Critic Reviews (N)"
+ * @param {number} [perPage=8]
+ * @returns {number[]}
+ */
+function showScorePaginationPages(totalCount, perPage = 8) {
+  const n = parseInt(String(totalCount), 10);
+  if (!Number.isFinite(n) || n <= perPage) return [];
+  const last = Math.ceil(n / perPage) + 1; // safety margin
+  const pages = [];
+  for (let p = 2; p <= last; p++) pages.push(p);
+  return pages;
+}
+
+/**
  * Fetch ALL Show Score critic review URLs for a show, following pagination.
  *
  * @param {string} pageUrl - the show's Show Score page URL
@@ -142,9 +163,8 @@ async function fetchAllShowScoreReviewUrls(pageUrl, fetchHtml) {
   initial.forEach(u => all.add(u));
 
   const { nextPagePath, totalCount } = parseShowScorePagination(html);
-  if (nextPagePath && totalCount > 8) {
-    const maxPages = Math.ceil(totalCount / 8) + 1; // safety margin
-    for (let page = 2; page <= maxPages; page++) {
+  if (nextPagePath) {
+    for (const page of showScorePaginationPages(totalCount)) {
       let body = '';
       try { body = await fetchHtml(`https://www.show-score.com${nextPagePath}?page=${page}`); } catch { break; }
       if (!body) break;
@@ -181,5 +201,6 @@ module.exports = {
   extractShowScoreReviewUrls,
   extractReadMoreUrls,
   parseShowScorePagination,
+  showScorePaginationPages,
   fetchAllShowScoreReviewUrls,
 };

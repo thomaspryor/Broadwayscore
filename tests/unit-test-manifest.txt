@@ -502,6 +502,7 @@ tests/unit/done-semantics-gate.test.mjs
 tests/unit/dtli-homepage-scan-revival-tiebreak.test.mjs
 tests/unit/dtli-sibling-reroute.test.mjs
 tests/unit/dtli-slug-discover.test.mjs
+tests/unit/dtli-slug-year-rule.test.mjs
 tests/unit/dtli-thumbs-extraction.test.mjs
 tests/unit/duplicate-cycle.test.mjs
 tests/unit/duplicate-dispatch-guard.test.mjs
@@ -574,6 +575,7 @@ tests/unit/high-society-2026-west-end.test.mjs
 tests/unit/homepage-interactive-labels.test.mjs
 tests/unit/human-review-score-provisional.test.mjs
 tests/unit/ibdb-table-columns.test.mjs
+tests/unit/id-year-drift.test.mjs
 tests/unit/image-healing.test.mjs
 tests/unit/image-optimizer-exposure.test.mjs
 tests/unit/image-presence.test.mjs
@@ -796,6 +798,7 @@ tests/unit/rebuild-fast-push-timeout.test.mjs
 tests/unit/rebuild-helpers.test.mjs
 tests/unit/rebuild-publish-fail-closed.test.mjs
 tests/unit/rebuild-reviews-push-timeout.test.mjs
+tests/unit/rebuild-score-source-stats.test.mjs
 tests/unit/reconcile-broadcast-state.test.mjs
 tests/unit/reconcile-bww-roundup-ledger.test.mjs
 tests/unit/reconcile-merged-json-jsonl-hardening.test.mjs
@@ -917,6 +920,7 @@ tests/unit/show-match-verifier.test.mjs
 tests/unit/show-matching-date-disambiguation.test.mjs
 tests/unit/show-page-rage-clicks.test.mjs
 tests/unit/show-proof-rage-clicks.test.mjs
+tests/unit/show-score-archive-pagination.test.mjs
 tests/unit/show-score-pagination-regex.test.mjs
 tests/unit/show-score-profile-parser.test.mjs
 tests/unit/shows-write-guard.test.mjs

@@ -51,7 +51,7 @@ const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribu
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
-const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl, compareFilesForDedupPriority, applyScoreRelevantMigrations } = require('./lib/rebuild-helpers');
+const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl, compareFilesForDedupPriority, applyScoreRelevantMigrations, SCORE_SOURCE_LABELS } = require('./lib/rebuild-helpers');
 const { normalizeCriticName } = require('./lib/byline-normalization');
 const { recoverDisplayBylinesForShow, resolveCriticName } = require('./lib/byline-recovery');
 const { displayCriticName } = require('./lib/critic-display-name');
@@ -1020,24 +1020,22 @@ const stats = {
   totalReviews: 0,
   skippedNoScore: 0,
   skippedDuplicate: 0,
+  // BRO-4204 S7-T11: seed EVERY label getBestScore() can emit (its
+  // SCORE_SOURCE_LABELS, in priority order) so `_meta.stats.scoreSources`
+  // reports 0 — never absent, never null — for a source no review hit this
+  // run. Before this the seed listed a hand-copied subset: 'llm-v6',
+  // 'anchored-v6' and 'adjudicated' (the three MAIN sources) were missing,
+  // and until S6-T5 made the counter below safe for unlisted labels,
+  // `undefined++` produced NaN, which JSON serialised as null in reviews.json.
+  // The four 'explicit-*' keys are legacy (extraction moved to collection
+  // time); they stay at 0 because the summary at the bottom still sums them.
   scoreSources: {
     'explicit-stars': 0,
     'explicit-outOf': 0,
     'explicit-slash': 0,
     'explicit-letterGrade': 0,
-    'human-review': 0,
-    'originalScore-priority0': 0,
-    'aggregatorStars-relay': 0,     // P0.5 scored from a relayed known-star-outlet rating (S6-T5)
-    llmScore: 0,
-    'llmScore-thumb-validated': 0,  // Both thumbs agree with LLM direction
-    'llmScore-thumb-boosted': 0,   // Single thumb agrees with LLM direction
-    'llmScore-lowconf': 0,
-    'llmScore-review': 0,
-    assignedScore: 0,
-    originalScore: 0,
-    bucket: 0,
-    'bwwScore-fallback': 0,
-    thumb: 0
+    ...Object.fromEntries(SCORE_SOURCE_LABELS.map((label) => [label, 0])),
+    originalScore: 0,               // legacy key kept for the stats-shape consumers
   },
   // explicitOverrideLlm removed — extraction now at collection time
   thumbValidatedLlm: 0,    // Count how many times thumb validated low-conf LLM direction

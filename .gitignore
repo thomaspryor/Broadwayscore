@@ -359,6 +359,16 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # scripts/lib/venue-classification.js and scripts/validate-data.js, so it has
 # to be committed rather than scratch/local like the rest of /docs/.
 !/docs/show-inclusion-policy.md
+# BRO-4204 (2026 data audit, S5-T4 / S7-T9): two audit records other
+# sessions act on — the per-id root-cause table behind the id-year-drift
+# WARN (the S8-T1 rename worklist) and the Show-Score 8-tile reproduction
+# that fetch-aggregator-pages.ts's header points at. /docs/* excludes the
+# docs/audit DIRECTORY, so it is re-included, its other contents re-excluded,
+# and only these two files negated (the /docs/experiments/ pattern above).
+!/docs/audit/
+/docs/audit/*
+!/docs/audit/id-year-drift-2026.md
+!/docs/audit/show-score-8-tile-note.md
 /memory/
 /data/deep-research/
 /data/theater-research/

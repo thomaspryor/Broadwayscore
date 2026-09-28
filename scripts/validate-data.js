@@ -22,6 +22,7 @@ const path = require('path');
 const { tourImageProblems } = require('./lib/tour-family');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { loadRetiredIdsSafe, checkRetiredIds } = require('./lib/validate-retired-ids');
+const { checkIdYearDrift } = require('./lib/id-year-drift');
 
 // --dry-run (Sprint 0 / S0-T1): run every check, print every verdict, exit with
 // the same code — but never touch disk. Three write paths honour it: the
@@ -496,6 +497,16 @@ function validateRetiredIds(shows) {
   const { retired, error: loadError } = loadRetiredIdsSafe();
   if (loadError) warn(`Retired-id registry could not be loaded (${loadError}) — treating as empty`);
   checkRetiredIds(shows, retired, { warn, ok });
+}
+
+// BRO-4204 S5-T4: a non-closed show whose id year matches neither its opening
+// year nor its previews year (evita-2026 opening 2027-03-25, wanted-2022
+// opening 2026-11-08). WARN only — the id is a live URL; renaming it is
+// S8-T1's tooled job (rename-show-id.js + redirects), never an auto-fix here.
+// Decision logic: scripts/lib/id-year-drift.js (unit-tested with real rows).
+function validateIdYearDrift(shows) {
+  info('Checking id year against opening/previews dates...');
+  checkIdYearDrift(shows, { warn, ok });
 }
 
 // ===========================================
@@ -5366,6 +5377,7 @@ function runValidation() {
   validateStatus(shows);
   validateShowTypes(shows);
   validateDates(shows);
+  validateIdYearDrift(shows);
   validateTourLegs(shows);
   validateSlugs(shows);
   validateImageUrls(shows);

@@ -560,6 +560,39 @@ function aggregatorStarsCorroboratedByFullText(data) {
  * @param {function} [opts.flagForHumanReview] - Callback for flagging reviews
  * @returns {{ score: number, source: string } | null}
  */
+/**
+ * Every `source` label getBestScore() can emit, in priority order. BRO-4204
+ * S7-T11: rebuild-all-reviews.js initialises `_meta.stats.scoreSources` from
+ * this list so a label that no review hits in a given rebuild still reports 0
+ * (not absent — and, before S6-T5 made the counter safe, not `null`: the
+ * three main sources 'llm-v6'/'anchored-v6'/'adjudicated' were missing from
+ * the seed object, `undefined++` produced NaN and JSON serialised it as null).
+ * tests/unit/rebuild-score-source-stats.test.mjs scans this function's source
+ * so a new `source: '…'` literal without a matching entry here fails CI.
+ */
+const SCORE_SOURCE_LABELS = Object.freeze([
+  'human-review',
+  'adjudicated',
+  'anchored-v6',
+  'llm-v6',
+  'originalScore-priority0',
+  'aggregatorStars-relay',
+  'llmScore-override-star-conflict',
+  'originalScore-inline-recovery',
+  'llmScore-override-inline-recovery-conflict',
+  'llmScore',
+  'originalScore-showscore-downgraded',
+  'llmScore-lowconf',
+  'llmScore-review',
+  'assignedScore',
+  'bucket',
+  'bwwScore-fallback',
+  'aggregatorStars-fallback',
+  'thumb',
+  'llmScore-thumb-validated',
+  'llmScore-thumb-boosted',
+]);
+
 function getBestScore(data, opts = {}) {
   const stats = opts.stats || {};
   const flagForHumanReview = opts.flagForHumanReview || (() => {});
@@ -1277,6 +1310,7 @@ module.exports = {
   isContentVerificationActive,
   aggregatorStarsCorroboratedByFullText,
   getBestScore,
+  SCORE_SOURCE_LABELS,
   // URL date extraction
   extractDateFromUrl,
   // Dedup tiebreaking

@@ -102,14 +102,27 @@ function isoDateOrNull(value) {
 // carries the suffix (e.g. round-tripped through another discovery path)
 // doesn't get it appended a second time, which used to produce IDs like
 // `beetlejuice-the-musical-west-end-west-end-2026` (BRO-3237).
+//
+// Provisional year (BRO-4204 S5-T4). When NO date names the production the
+// year falls back to the current year — and that is where the audit's 22
+// wrong-year ids came from: a source (TodayTix, a venue season page, the
+// Playbill schedule) listed the title before any date, the row was minted as
+// `<slug>-2026`, the dates arrived through enrichment months later saying
+// 2027, and nothing ever renamed the id. The fallback itself is still the
+// right call (a dateless announcement must get SOME id), so instead of
+// changing it we stamp `idYearProvisional: true` on the minted row. That is
+// the breadcrumb validate-data's id-year-drift WARN reports and the S8-T1
+// rename tool can key on: a provisional year that later disagrees with the
+// dates is a rename candidate, a deliberate year is not.
 function mintCandidateId(show, now = new Date()) {
   const openingDate = isoDateOrNull(show.openingDate);
   const closingDate = isoDateOrNull(show.closingDate);
   const previewsStartDate = isoDateOrNull(show.previewsStartDate);
-  const idYear = productionIdYear({ openingDate, previewsStartDate, unconfirmedStartDate: show.unconfirmedStartDate })
-    || String(now.getFullYear());
+  const datedYear = productionIdYear({ openingDate, previewsStartDate, unconfirmedStartDate: show.unconfirmedStartDate });
+  const idYearProvisional = !datedYear;
+  const idYear = datedYear || String(now.getFullYear());
   const marketSlug = withMarketSuffix(slugify(show.title), show.category);
-  return { openingDate, closingDate, previewsStartDate, idYear, marketSlug, showId: `${marketSlug}-${idYear}` };
+  return { openingDate, closingDate, previewsStartDate, idYear, idYearProvisional, marketSlug, showId: `${marketSlug}-${idYear}` };
 }
 
 // Strict exact-match set of the 41 official Broadway houses (canonical + aliases),
@@ -2673,7 +2686,7 @@ async function discoverShows() {
     // market-suffix idempotency note (BRO-3237). Nothing between there and
     // here mutates `show`, so this is byte-for-byte the id the retired-id
     // check just cleared.
-    const { openingDate, closingDate, previewsStartDate, idYear, marketSlug, showId } = minted;
+    const { openingDate, closingDate, previewsStartDate, idYear, idYearProvisional, marketSlug, showId } = minted;
 
     // Guard: skip if generated ID collides with existing DB or batch.
     if (existingIds.has(showId)) {
@@ -2723,6 +2736,9 @@ async function discoverShows() {
       openingDate,
       previewsStartDate,
       closingDate,
+      // S5-T4: only stamped when the id year is the current-year fallback —
+      // see mintCandidateId. A dated row carries no flag at all.
+      ...(idYearProvisional ? { idYearProvisional: true } : {}),
     });
   }
 

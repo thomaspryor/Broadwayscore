@@ -11,12 +11,26 @@
  *   node scripts/discover-dtli-slugs.js --dry-run    # Print matches without writing
  *   node scripts/discover-dtli-slugs.js --verify     # Check mapped URLs still work
  *   node scripts/discover-dtli-slugs.js --force      # Re-discover even for mapped shows
+ *                                                    # (re-probes each mapped id's current
+ *                                                    # slug through the year rule too)
+ *   node scripts/discover-dtli-slugs.js --force --shows=hamlet-2026,bug-2026
+ *                                                    # Limit (re-)matching to these ids
+ *
+ * Year rule (BRO-4204 S7-T9): before a slug is assigned to a show whose year
+ * is known (opening year, else previews year, else the id's trailing year),
+ * the candidate page is fetched and its review-item years read. A page whose
+ * dated reviews ALL predate the show is a different production's page and is
+ * rejected — every-brilliant-thing-2026 had been mapped to the 2014 page,
+ * hamlet-2026 to the 2008 one. Under --force a mapped id whose current slug
+ * fails the rule is unmapped (logged), so the next gather stops reading the
+ * wrong production's notices. Decision logic: pickBestDtliSlug /
+ * dtliSlugPredatesShow / extractDtliReviewYears in scripts/lib/review-guards.js.
  */
 
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { pickBestDtliSlug } = require('./lib/review-guards');
+const { pickBestDtliSlug, dtliSlugPredatesShow, extractDtliReviewYears, dtliShowYear } = require('./lib/review-guards');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.json');
@@ -26,6 +40,15 @@ const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const VERIFY = args.includes('--verify');
 const FORCE = args.includes('--force');
+// --shows=a,b (or --shows a,b): only these show ids are (re-)matched and probed.
+const SHOW_FILTER = (() => {
+  const eq = args.find(a => a.startsWith('--shows='));
+  const idx = args.indexOf('--shows');
+  const raw = eq ? eq.slice('--shows='.length) : (idx >= 0 ? args[idx + 1] : null);
+  if (!raw) return null;
+  const ids = raw.split(',').map(s => s.trim()).filter(Boolean);
+  return ids.length ? new Set(ids) : null;
+})();
 
 function httpGet(url) {
   return new Promise((resolve, reject) => {
@@ -285,6 +308,32 @@ function matchDtliSlug(dtliSlug, indices) {
 }
 
 /**
+ * Year-rule probe: fetch each candidate's DTLI page and read its review-item
+ * years. A failed fetch yields null (= no evidence; pickBestDtliSlug never
+ * rejects on a null), an empty page yields [] (same treatment).
+ *
+ * @param {string[]} slugs
+ * @param {(url: string) => Promise<{ok: boolean, body?: string}>} [fetchFn] - injectable for tests
+ * @returns {Promise<Record<string, number[]|null>>}
+ */
+async function probeCandidateYears(slugs, fetchFn = httpGet) {
+  const out = {};
+  for (const slug of slugs) {
+    const result = await fetchFn(`https://didtheylikeit.com/shows/${slug}/`);
+    out[slug] = result && result.ok && result.body ? extractDtliReviewYears(result.body) : null;
+    await sleep(200); // Be gentle
+  }
+  return out;
+}
+
+function describeYears(years) {
+  if (years === null || years === undefined) return 'probe failed';
+  if (years.length === 0) return 'no dated reviews';
+  const uniq = [...new Set(years)].sort();
+  return `${years.length} review(s), ${uniq.join('/')}`;
+}
+
+/**
  * Verify that mapped URLs still return 200
  */
 async function verifyMappedUrls(slugMap) {
@@ -375,6 +424,7 @@ async function main() {
   // This prevents "first wins" bias where the bare slug (e.g. "giant") locks out
   // the correct revival slug (e.g. "giant-2") for shows that are revivals.
   const candidatesByShow = {}; // showId → [{ dtliSlug, ...match }]
+  const showsById = new Map(shows.map(s => [s.id, s]));
 
   for (const dtliSlug of uniqueSlugs) {
     // Skip if already mapped (unless --force)
@@ -386,6 +436,7 @@ async function main() {
 
     const match = matchDtliSlug(dtliSlug, indices);
     if (match) {
+      if (SHOW_FILTER && !SHOW_FILTER.has(match.showId)) continue;
       if (!candidatesByShow[match.showId]) candidatesByShow[match.showId] = [];
       candidatesByShow[match.showId].push({ dtliSlug, ...match });
     } else {
@@ -394,10 +445,34 @@ async function main() {
     }
   }
 
+  // --force re-probes every mapped id's CURRENT slug through the year rule,
+  // even when the sitemap matched no other candidate for it (that is the
+  // every-brilliant-thing case: the wrong page was the only mapping).
+  if (FORCE) {
+    for (const [showId, mappedSlug] of existingReverse) {
+      if (SHOW_FILTER && !SHOW_FILTER.has(showId)) continue;
+      if (!candidatesByShow[showId]) candidatesByShow[showId] = [];
+      if (!candidatesByShow[showId].some(c => c.dtliSlug === mappedSlug)) {
+        candidatesByShow[showId].push({ dtliSlug: mappedSlug, showId, confidence: 'high', matchType: 'existing-mapping' });
+      }
+    }
+  }
+
   // Pick the best slug for each show from its candidates.
   // For revival shows (ID has year suffix like -2026), prefer the DTLI slug with a
   // numeric suffix (e.g. "giant-2" over "giant") — the suffix indicates production order.
   // This prevents old-production bare slugs from blocking the correct revival slug.
+  //
+  // Year rule (S7-T9): when the show's year is known, every candidate page is
+  // probed first and a page whose dated reviews all predate the show is
+  // rejected — see the header. `unmappedByYear` collects mapped ids whose
+  // current slug failed under --force; they are removed at write time.
+  const unmappedByYear = {}; // showId → rejected slug
+  let yearRuleRejections = 0;
+  const probeTargets = Object.entries(candidatesByShow).filter(([showId]) => !(existingReverse.has(showId) && !FORCE));
+  const probeCount = probeTargets.reduce((n, [showId, candidates]) => n + (dtliShowYear(showsById.get(showId) || { id: showId }) ? candidates.length : 0), 0);
+  if (probeCount > 0) console.log(`\nYear rule: probing ${probeCount} candidate page(s) across ${probeTargets.length} show(s)...`);
+
   for (const [showId, candidates] of Object.entries(candidatesByShow)) {
     // Don't overwrite high-confidence existing mappings with low-confidence new ones
     if (existingReverse.has(showId) && !FORCE) {
@@ -405,12 +480,41 @@ async function main() {
       continue;
     }
 
+    const show = showsById.get(showId) || { id: showId };
+    const showYear = dtliShowYear(show);
+    const mappedSlug = existingReverse.get(showId) || null;
+    const slugs = candidates.map(c => c.dtliSlug);
+    const reviewYearsBySlug = showYear ? await probeCandidateYears(slugs) : null;
+
     // Revival preference: for shows with a year suffix (e.g. giant-2026), pick the DTLI slug
     // with the highest numeric suffix (e.g. giant-2 over giant). Logic lives in review-guards.js.
-    const bestSlug = pickBestDtliSlug(showId, candidates.map(c => c.dtliSlug));
+    const bestSlug = pickBestDtliSlug(showId, slugs, { reviewYearsBySlug, showYear });
+    if (reviewYearsBySlug) {
+      for (const s of slugs) {
+        if (dtliSlugPredatesShow(reviewYearsBySlug[s], showYear)) {
+          yearRuleRejections++;
+          console.log(`  ✗ Year rule: ${showId} (${showYear}) rejects ${s} — ${describeYears(reviewYearsBySlug[s])}${s === mappedSlug ? ' [current mapping]' : ''}`);
+        }
+      }
+    }
+    if (!bestSlug) {
+      if (mappedSlug && dtliSlugPredatesShow(reviewYearsBySlug && reviewYearsBySlug[mappedSlug], showYear)) {
+        unmappedByYear[showId] = mappedSlug;
+        console.log(`  ⚠ ${showId}: current mapping ${mappedSlug} fails the year rule and no candidate replaces it — will be UNMAPPED`);
+      }
+      continue;
+    }
+
     let best = candidates.find(c => c.dtliSlug === bestSlug) || candidates[0];
+    if (best.dtliSlug === mappedSlug) {
+      // Re-probed under --force and the existing mapping still wins — nothing to write.
+      continue;
+    }
     if (best.dtliSlug !== candidates[0].dtliSlug) {
       console.log(`  ⚡ Revival preference: ${showId} → ${best.dtliSlug} (over ${candidates.map(c => c.dtliSlug).filter(s => s !== best.dtliSlug).join(', ')})`);
+    }
+    if (mappedSlug) {
+      console.log(`  ↻ ${showId}: ${mappedSlug} → ${best.dtliSlug}${reviewYearsBySlug ? ` (${describeYears(reviewYearsBySlug[best.dtliSlug])})` : ''}`);
     }
 
     allMatches[showId] = best;
@@ -421,6 +525,7 @@ async function main() {
   console.log(`  New matches: ${newMatches}`);
   console.log(`  Already mapped (skipped): ${skippedExisting}`);
   console.log(`  Unmatched DTLI slugs: ${unmatched}`);
+  console.log(`  Year-rule rejections: ${yearRuleRejections} (unmapping ${Object.keys(unmappedByYear).length})`);
 
   // Print confidence breakdown
   const byConfidence = { high: 0, medium: 0, low: 0 };
@@ -449,12 +554,22 @@ async function main() {
     }
   }
 
+  if (Object.keys(unmappedByYear).length > 0) {
+    console.log(`\nUnmapped by the year rule:`);
+    for (const [showId, slug] of Object.entries(unmappedByYear)) {
+      console.log(`  ${showId} ✗ ${slug}`);
+    }
+  }
+
   if (DRY_RUN) {
     console.log('\n[DRY RUN] No changes written.');
     return;
   }
 
-  // Step 3: Merge new matches into slug map
+  // Step 3: Merge new matches into slug map; drop mappings the year rule rejected.
+  for (const showId of Object.keys(unmappedByYear)) {
+    delete slugMap.shows[showId];
+  }
   for (const [showId, m] of Object.entries(allMatches)) {
     slugMap.shows[showId] = m.dtliSlug;
   }

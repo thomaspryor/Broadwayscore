@@ -25,6 +25,7 @@ const {
   isPublishedRatingEvidence,
   isUnambiguousRatingString,
   isOnStarLadder,
+  SCORE_SOURCE_LABELS,
 } = require('./rebuild-helpers.js');
 const { OUTLET_VERIFIED_SOURCES, KNOWN_STAR_OUTLETS } = require('./score-extractors.js');
 
@@ -168,6 +169,11 @@ describe('rebuild-all-reviews.js emits the relayed star as originalRating', () =
   test('source text maps aggregatorStars-relay → data.aggregatorStars', () => {
     const src = fs.readFileSync(path.join(HERE, '..', 'rebuild-all-reviews.js'), 'utf8');
     assert.match(src, /source === 'aggregatorStars-relay' \|\| source === 'aggregatorStars-fallback'\)\s*\n?\s*\? data\.aggregatorStars \|\| null/);
-    assert.match(src, /'aggregatorStars-relay': 0/);
+    // S7-T11: the stats seed is derived from SCORE_SOURCE_LABELS (every label
+    // getBestScore emits) instead of a hand-copied list, so the relay counter
+    // is seeded at 0 through the spread — assert the label is in the list and
+    // the seed spreads it.
+    assert.ok(SCORE_SOURCE_LABELS.includes('aggregatorStars-relay'));
+    assert.match(src, /\.\.\.Object\.fromEntries\(SCORE_SOURCE_LABELS\.map\(\(label\) => \[label, 0\]\)\)/);
   });
 });
