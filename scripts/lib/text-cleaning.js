@@ -405,6 +405,41 @@ function stripCrossReferences(text) {
     .replace(/Read\s+\w[^.]*?★+☆*[^.]*?review here\.?/gi, '');
 }
 
+// IAB TCF consent-layer text that some fetchers capture AHEAD of the article
+// (WhatsOnStage's CMP: "Please note that your choices apply across all our
+// subdomains..." followed by ~6,500 chars of purpose/vendor notices). The
+// article follows the block, so the text is not garbage, but the content
+// verifier reads only the first 2,500 chars and judged 78 such captures
+// "junk, not a review" (BRO-4185 A). Stripped only when the text OPENS with a
+// known consent-layer marker AND the block's closing sentence is found, so a
+// review that merely mentions consent is never touched.
+const CONSENT_LAYER_START_PATTERNS = [
+  /your\s+choices\s+apply\s+across\s+all\s+our\s+subdomains/i,
+  /we\s+and\s+our\s+partners\s+process\s+data\s+to\s+provide/i,
+];
+const CONSENT_LAYER_START_WINDOW = 600;
+const CONSENT_LAYER_END_SCAN_LIMIT = 20000;
+const CONSENT_LAYER_END_RE = /in\s+support\s+of\s+the\s+purposes\s+(?:explained|exposed)\s+in\s+this\s+notice\./gi;
+
+function stripConsentLayerPrefix(text) {
+  if (!text || typeof text !== 'string') return text;
+  const head = text.slice(0, CONSENT_LAYER_START_WINDOW);
+  if (!CONSENT_LAYER_START_PATTERNS.some(re => re.test(head))) return text;
+  const endRe = new RegExp(CONSENT_LAYER_END_RE.source, CONSENT_LAYER_END_RE.flags);
+  let lastEnd = -1;
+  let m;
+  while ((m = endRe.exec(text)) && m.index < CONSENT_LAYER_END_SCAN_LIMIT) {
+    lastEnd = m.index + m[0].length;
+  }
+  if (lastEnd < 0) return text;
+  return text.slice(lastEnd).trim();
+}
+
+/** True when stripConsentLayerPrefix would remove a consent-layer prefix. */
+function hasStrippableConsentLayer(text) {
+  return !!text && typeof text === 'string' && stripConsentLayerPrefix(text) !== text;
+}
+
 function cleanText(text) {
   if (!text) return text;
 
@@ -412,6 +447,9 @@ function cleanText(text) {
 
   // Step 1: Decode HTML entities
   cleaned = decodeHtmlEntities(cleaned);
+
+  // Step 1b: Strip a leading IAB consent-layer block (see stripConsentLayerPrefix)
+  cleaned = stripConsentLayerPrefix(cleaned);
 
   // Step 2: Strip control characters (keep \n, \r, \t)
   cleaned = cleaned.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
@@ -450,6 +488,8 @@ module.exports = {
   stripTrailingJunk,
   stripCrossReferences,
   cleanText,
+  stripConsentLayerPrefix,
+  hasStrippableConsentLayer,
   TRAILING_JUNK_PATTERNS,
   hasUndecodedHtmlEntities,
   hasJsonLdArtifact,

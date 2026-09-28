@@ -45,4 +45,50 @@ function shouldRetryGarbageConsentWall({ hasGarbageStoredText, lastRetryMs, nowM
   return age > REFETCH_COOLDOWN_MS;
 }
 
-module.exports = { shouldRetryGarbageConsentWall, REFETCH_COOLDOWN_MS };
+/**
+ * True when a review's stored text is a consent-wall capture worth re-fetching:
+ * garbage outright, or text that OPENS with a strippable IAB consent layer
+ * (BRO-4185 A: WhatsOnStage captures put ~6,500 chars of consent notices ahead
+ * of the article, the verifier read only those and flagged the review). When
+ * fullText was quarantined into wrongFullText, that text is checked instead.
+ */
+function storedTextNeedsConsentRefetch(data) {
+  if (!data) return false;
+  const { isGarbageContent } = require('./content-quality');
+  const { hasStrippableConsentLayer } = require('./text-cleaning');
+  const full = typeof data.fullText === 'string' ? data.fullText : '';
+  if (full) return isGarbageContent(full).isGarbage || hasStrippableConsentLayer(full);
+  const quarantined = typeof data.wrongFullText === 'string' ? data.wrongFullText : '';
+  if (!quarantined) return false;
+  return isGarbageContent(quarantined).isGarbage || hasStrippableConsentLayer(quarantined);
+}
+
+const CV_PROMOTED_NON_REVIEW_PREFIXES = ['CV-promoted (not a review):', 'Collector LLM'];
+
+/**
+ * After a consent-layer refetch: release an isNonReview flag that the content
+ * verifier set on the consent text, once a fresh verdict on the stripped
+ * article says it is a review at high confidence. Only the verifier-promoted
+ * family is eligible; classifier-set and manual flags are left alone.
+ */
+function shouldReleaseConsentLayerNonReview(data) {
+  if (!data || data.isNonReview !== true) return false;
+  const reason = typeof data.isNonReviewReason === 'string' ? data.isNonReviewReason : '';
+  if (!CV_PROMOTED_NON_REVIEW_PREFIXES.some(p => reason.startsWith(p))) return false;
+  const cv = data.contentVerification;
+  if (!cv || cv.isValid !== true) return false;
+  if (cv.wrongArticle === true || cv.wrongProduction === true || cv.isFilmTv === true) return false;
+  if (cv.articleType !== 'review') return false;
+  if ((cv.articleTypeConfidence || cv.confidence) !== 'high') return false;
+  const { hasStrippableConsentLayer } = require('./text-cleaning');
+  const full = typeof data.fullText === 'string' ? data.fullText : '';
+  if (full.length < 500 || hasStrippableConsentLayer(full)) return false;
+  return true;
+}
+
+module.exports = {
+  shouldRetryGarbageConsentWall,
+  storedTextNeedsConsentRefetch,
+  shouldReleaseConsentLayerNonReview,
+  REFETCH_COOLDOWN_MS,
+};

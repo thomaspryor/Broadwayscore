@@ -60,3 +60,80 @@ describe('shouldRetryGarbageConsentWall', () => {
     assert.strictEqual(shouldRetryGarbageConsentWall({}), false);
   });
 });
+
+// BRO-4185 A: WhatsOnStage captures open with an IAB consent layer (~6,500
+// chars) ahead of the real article. Synthetic fixture built from the
+// consent layer's actual opening and closing sentences.
+const { storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview } = require('../../scripts/lib/consent-refetch');
+const { stripConsentLayerPrefix, hasStrippableConsentLayer, cleanText } = require('../../scripts/lib/text-cleaning');
+
+const CONSENT_LAYER = 'Please note that your choices apply across all our subdomains. Once you give consent, a floating button will appear at the bottom of your screen, allowing you to change or withdraw your consent at any time. '
+  + 'Number of Vendors seeking consent or relying on legitimate interest: 777 '.repeat(20)
+  + 'With your acceptance, certain characteristics specific to your device might be requested and used to distinguish it from other devices (such as the installed fonts or plugins, the resolution of your screen) in support of the purposes explained in this notice. ';
+const ARTICLE = 'Faith is pulled in many different ways in this new show. Jeezus! follows an adolescent Peruvian Catholic caught between devotion and desire. '
+  + 'The performances crackle, the direction never flags, and the score lands every joke while finding real sincerity underneath. '.repeat(8);
+
+describe('stripConsentLayerPrefix', () => {
+  it('removes a leading consent layer and keeps the article', () => {
+    const out = stripConsentLayerPrefix(CONSENT_LAYER + ARTICLE);
+    assert.ok(out.startsWith('Faith is pulled'), out.slice(0, 80));
+    assert.strictEqual(hasStrippableConsentLayer(CONSENT_LAYER + ARTICLE), true);
+  });
+
+  it('cleanText strips it too', () => {
+    assert.ok(cleanText(CONSENT_LAYER + ARTICLE).startsWith('Faith is pulled'));
+  });
+
+  it('leaves text untouched when the consent marker is not at the front', () => {
+    const t = ARTICLE + ' ' + CONSENT_LAYER;
+    assert.strictEqual(stripConsentLayerPrefix(t), t);
+    assert.strictEqual(hasStrippableConsentLayer(t), false);
+  });
+
+  it('leaves text untouched when the closing sentence is missing', () => {
+    const t = 'Please note that your choices apply across all our subdomains. ' + ARTICLE;
+    assert.strictEqual(stripConsentLayerPrefix(t), t);
+  });
+
+  it('leaves a plain review untouched', () => {
+    assert.strictEqual(stripConsentLayerPrefix(ARTICLE), ARTICLE);
+  });
+});
+
+describe('storedTextNeedsConsentRefetch', () => {
+  it('true for a consent-prefixed fullText', () => {
+    assert.strictEqual(storedTextNeedsConsentRefetch({ fullText: CONSENT_LAYER + ARTICLE }), true);
+  });
+  it('true for a consent-prefixed quarantined wrongFullText when fullText is null', () => {
+    assert.strictEqual(storedTextNeedsConsentRefetch({ fullText: null, wrongFullText: CONSENT_LAYER + ARTICLE }), true);
+  });
+  it('false for a real review', () => {
+    assert.strictEqual(storedTextNeedsConsentRefetch({ fullText: ARTICLE }), false);
+  });
+  it('false when quarantined text is a real (other-show) review', () => {
+    assert.strictEqual(storedTextNeedsConsentRefetch({ fullText: null, wrongFullText: ARTICLE }), false);
+  });
+});
+
+describe('shouldReleaseConsentLayerNonReview', () => {
+  const cleanCv = { isValid: true, wrongArticle: false, wrongProduction: false, isFilmTv: false, articleType: 'review', articleTypeConfidence: 'high' };
+  const base = { isNonReview: true, isNonReviewReason: 'CV-promoted (not a review): The scraped content is cookie consent', contentVerification: cleanCv, fullText: ARTICLE };
+
+  it('releases a CV-promoted flag after a clean high-confidence re-verify', () => {
+    assert.strictEqual(shouldReleaseConsentLayerNonReview(base), true);
+  });
+  it('releases a Collector LLM flag too', () => {
+    assert.strictEqual(shouldReleaseConsentLayerNonReview({ ...base, isNonReviewReason: 'Collector LLM: not a review (other)' }), true);
+  });
+  it('keeps a classifier-set flag', () => {
+    assert.strictEqual(shouldReleaseConsentLayerNonReview({ ...base, isNonReviewReason: 'gemini: interview' }), false);
+  });
+  it('keeps the flag when the fresh verdict is not a high-confidence review', () => {
+    assert.strictEqual(shouldReleaseConsentLayerNonReview({ ...base, contentVerification: { ...cleanCv, articleType: 'news' } }), false);
+    assert.strictEqual(shouldReleaseConsentLayerNonReview({ ...base, contentVerification: { ...cleanCv, articleTypeConfidence: 'medium' } }), false);
+    assert.strictEqual(shouldReleaseConsentLayerNonReview({ ...base, contentVerification: { ...cleanCv, wrongArticle: true } }), false);
+  });
+  it('keeps the flag when stored text still opens with the consent layer', () => {
+    assert.strictEqual(shouldReleaseConsentLayerNonReview({ ...base, fullText: CONSENT_LAYER + ARTICLE }), false);
+  });
+});

@@ -106,6 +106,7 @@ const {
   FLAGGED_RECOVERY_CAP,
   isEmptyBodyFile,
   isRecoverableFlaggedFile,
+  hostFallbackVouchers,
   isRecoverableUncitedStub,
   STAR_SOURCE_BY_REFERENCE,
   decideEmptyBodyRecovery,
@@ -977,7 +978,10 @@ async function auditShow(show, opts = {}) {
     const exactMatches = dirFilesAll.filter(d => d.url && normalizeReviewUrl(d.url) === aggNorm);
     const dirFiles = exactMatches.length > 0
       ? exactMatches
-      : dirFilesAll.filter(d => !d.url || classifyReviewUrl(d.url).ok);
+      : hostFallbackVouchers(
+        dirFilesAll.filter(d => !d.url || classifyReviewUrl(d.url).ok),
+        d => isCoveredFile(d, show),
+      );
     if (dirFiles.length === 0) {
       // Before calling it missing: is this the SAME outlet's review we already
       // hold, published on another host that outlet has registered? The Pass

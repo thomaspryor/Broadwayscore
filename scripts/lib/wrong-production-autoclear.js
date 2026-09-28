@@ -919,6 +919,50 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
   return true;
 }
 
+/**
+ * Reverse direction of shouldAutoClearWrongProductionUkDualMarket: a stale
+ * "Cross-market: London outlet ..." flag on a Broadway / off-Broadway show,
+ * written before the outlet was registered as dual-market.
+ *
+ * observer.com (NY Observer: Rex Reed, David Cote) carried 182 such flags on
+ * NYC shows although `observer` is now isDualMarket, and the reverse guard no
+ * longer fires for dual outlets, so nothing ever re-checked them (BRO-4185
+ * follow-up). The same outletId also holds UK Observer reviews (Susannah
+ * Clapp, Clare Brennan) with no URL or a theguardian.com URL; those flags are
+ * genuine, so the clear requires the review's own URL to be on the outlet's
+ * registered primary domain, and that domain must not be a UK one.
+ *
+ * Two more gates came from the corpus dry run: the same review URL is often
+ * copied onto older productions of the title (Hello, Dolly! 2017 review on the
+ * 1978 and 1995 entries, with a fabricated 1978 date), so the clear also needs
+ * the publish date inside this production's own run AND the URL filed under no
+ * other show.
+ *
+ * ctx: { isNycMarketShow, outletIsDualMarket, urlOnOutletPrimaryDomain,
+ *        isUkUrl, isDateMismatch, isShowListingUrl, cvBlocksClear,
+ *        inOwnProductionWindow, urlFiledUnderOtherShow }
+ */
+function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (data.wrongProductionOverride) return false;
+  if (!ctx.isNycMarketShow) return false;
+  if (!data.url) return false;
+  const wpNote = data.wrongProductionNote || '';
+  if (!wpNote.startsWith('Cross-market: London outlet')) return false;
+  if (hasAdjudicatedNote(data)) return false;
+  if (data.wrongProductionReason) return false;
+  if (ctx.isDateMismatch) return false;
+  if (!ctx.outletIsDualMarket) return false;
+  if (!ctx.urlOnOutletPrimaryDomain || ctx.isUkUrl) return false;
+  if (ctx.cvBlocksClear) return false;
+  if (ctx.isShowListingUrl) return false;
+  if (!ctx.inOwnProductionWindow) return false;
+  if (ctx.urlFiledUnderOtherShow) return false;
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
+  return true;
+}
+
 module.exports = {
   DATE_ONLY_AUTO_REASONS,
   REVIEW_LAG_GRACE_DAYS,
@@ -943,4 +987,5 @@ module.exports = {
   shouldAutoClearAnticipatoryGrace,
   shouldPreserveExclusionFlagsOnUrlRecovery,
   shouldAutoClearWrongProductionUkDualMarket,
+  shouldAutoClearStaleLondonOutletCrossMarket,
 };

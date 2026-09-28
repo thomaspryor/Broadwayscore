@@ -105,7 +105,7 @@ const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { extractArticleText: extractArticleTextFromHtml } = require('./lib/article-extractor');
 
 // Text cleaning (entity decoding, junk stripping)
-const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS } = require('./lib/text-cleaning');
+const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS, hasStrippableConsentLayer } = require('./lib/text-cleaning');
 
 // LLM-based content verification
 const { verifyContent, quickValidityCheck, resolveCvMarket, contentHash } = require('./lib/content-verifier');
@@ -148,7 +148,7 @@ const {
   isWithinTourLeg,
   shouldPreserveExclusionFlagsOnUrlRecovery,
 } = require('./lib/wrong-production-autoclear');
-const { shouldRetryGarbageConsentWall } = require('./lib/consent-refetch');
+const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browserbase-caps');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
@@ -5948,7 +5948,11 @@ function findReviewsToProcess() {
           // so the same 14-day clock that gates collector-flagged retries gates
           // these. A separate field didn't survive the fetch path's rewrite
           // (verified 2026-06-28 — consentRefetchAt was dropped, re-fetch looped).
-          const storedTextIsGarbage = isGarbageContent(data.fullText || '').isGarbage;
+          // A stored text that OPENS with a strippable IAB consent layer counts
+          // too (BRO-4185 A): the article sits after the block, but the verifier
+          // read only the consent text and flagged the review. Quarantined text
+          // (fullText nulled into wrongFullText) is checked the same way.
+          const storedTextIsGarbage = storedTextNeedsConsentRefetch(data);
           const garbageRetryAllowed = shouldRetryGarbageConsentWall({
             hasGarbageStoredText: storedTextIsGarbage,
             lastRetryMs: data.wrongShowRetryAt ? new Date(data.wrongShowRetryAt).getTime() : null,
@@ -5965,6 +5969,7 @@ function findReviewsToProcess() {
           // Mark retry attempt — the post-fetch handler stamps wrongShowRetryAt
           // (success clears the flag; failure starts the 14-day cooldown).
           data._wrongShowRetrying = true;
+          if (hasStrippableConsentLayer(data.fullText || data.wrongFullText || '')) data._consentLayerRetry = true;
         }
 
         // Skip if already has good text (unless retrying failed or filtering by reason)
@@ -5977,7 +5982,9 @@ function findReviewsToProcess() {
           // Re-process showNotMentioned reviews for URL discovery (even if they have long text)
           const needsUrlDiscovery = data.showNotMentioned === true && !data._showNotMentionedDiscoveryAttempted;
           // Re-collect if existing fullText is garbage (cookie consent, GDPR banners, etc.)
-          const hasGarbageText = textLen > 0 && isGarbageContent(data.fullText).isGarbage;
+          const hasGarbageText = textLen > 0 && (isGarbageContent(data.fullText).isGarbage
+            || hasStrippableConsentLayer(data.fullText));
+          if (hasStrippableConsentLayer(data.fullText || data.wrongFullText || '')) data._consentLayerRetry = true;
           // Always re-try truncated/needs-rescrape reviews - they have text but it's incomplete or garbage
           if (!isTruncated && !needsUrlDiscovery && !hasGarbageText && !urlCorrectedRefetch && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
             continue;
@@ -6133,6 +6140,11 @@ function findReviewsToProcess() {
           fetchAttempts: fileAttempts,
           wrongShow: data.wrongShow || false,
           wrongShowReason: data.wrongShowReason || null,
+          // Retry markers set by the gates above. They were never copied onto
+          // the queued review, so the post-fetch outcome handler (clear on
+          // success, cooldown stamp on failure) only ran for the SERP path.
+          _wrongShowRetrying: data._wrongShowRetrying === true,
+          _consentLayerRetry: data._consentLayerRetry === true,
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
@@ -6865,6 +6877,24 @@ async function processReview(review) {
         }
         delete postData._wrongShowRetrying;
         fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
+      } catch (e) {}
+    }
+
+    // Consent-layer refetch (BRO-4185 A): the "not a review" verdict that set
+    // isNonReview judged a consent banner. A fresh, clean, high-confidence
+    // verdict on the stripped article releases it.
+    if (review._consentLayerRetry && review.filePath) {
+      try {
+        const postData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        if (shouldReleaseConsentLayerNonReview(postData)) {
+          postData.isNonReview = false;
+          if (postData.rejectionReason === 'not_a_review') postData.rejectionReason = null;
+          postData.isNonReviewReason = null;
+          postData.nonReviewOverride = 'collect-review-texts: consent-layer refetch re-verified as a review (BRO-4185 A)';
+          postData.nonReviewOverrideAt = new Date().toISOString();
+          fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
+          console.log('    ✓ isNonReview cleared — consent-layer refetch re-verified as a review');
+        }
       } catch (e) {}
     }
 
