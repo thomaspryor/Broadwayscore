@@ -43,6 +43,7 @@ const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { scrapePlaybillOBData } = require('./lib/playbill-ob-schedule');
 const { withMarketSuffix } = require('./lib/market-slug');
 const { scrapeLortel } = require('./enrich-off-broadway-dates');
+const { recordParseResult } = require('./lib/source-last-success');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
 const { decideReviewThresholdPromotion } = require('./lib/review-threshold');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
@@ -541,6 +542,11 @@ async function main() {
     } catch (e) {
       console.warn(`  Lortel scrape failed (${e.message}); proceeding with Playbill only.`);
     }
+    // S4-T5 (2026 data audit, BRO-4204): data/audit/lortel-last-success.json.
+    // A failed fetch and an empty parse both count as empty — the page has
+    // been a 404 since 2026-07-22, and three empties in a row now log the
+    // soft-404 warning instead of "Lortel: 0 entries." scrolling past unread.
+    recordParseResult('lortel', lortelEntries.length);
   }
 
   const promoted = [];

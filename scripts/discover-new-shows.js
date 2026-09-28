@@ -29,6 +29,7 @@
  * Broadway shows use IBDB for dates, so this doesn't apply to BW paths.
  *
  * Usage: node scripts/discover-new-shows.js [--dry-run] [--include-off-broadway] [--include-west-end]
+ *        [--tm-page-budget=N]   Theatremonkey show pages fetched per run for venues (default 20; env TM_VENUE_PAGE_BUDGET)
  */
 
 const fs = require('fs');
@@ -144,6 +145,13 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseJsonLd, hasJsonLdType } = require('./lib/jsonld');
 // OLT listing reader shared with scripts/enrich-west-end-dates.js (audit S7-T10).
 const { parseOltTheaterEvents, extractJsonLdBlocks } = require('./lib/olt-enrichment');
+// S4-T5 (2026 data audit, BRO-4204): per-source last-success markers and the
+// Theatremonkey show-page venue resolver (pure decision logic in the lib, §15).
+const { recordParseResult } = require('./lib/source-last-success');
+const {
+  TM_INDEX_URL, titleKey, parseTheatremonkeyIndex, extractTheatremonkeyVenue, extractTheatremonkeyDates,
+  parseVenuePageBudget, loadVenueCache, saveVenueCache, planVenueFetches, recordVenueResult,
+} = require('./lib/theatremonkey-venue');
 const { findConflictingShowId } = require('./lib/show-score-url-map');
 
 const USAGE = `discover-new-shows.js — Broadway New Show Discovery.
@@ -856,70 +864,183 @@ async function fetchShowsFromTodayTixLondon() {
   return showsList;
 }
 
-// ── Theatremonkey — supplementary WE discovery source (catches shows TodayTix/OLT miss) ──
+// ── London listing fetch (scraper rule) ──
+//
+// Every London listing page below goes through fetchPage() (scripts/lib/
+// scraper.js: Scrapingdog → Bright Data → ScrapingBee → Playwright). The raw
+// https.get() this replaced for OLT 403'd on every Actions runner for 23
+// consecutive runs (CI log 2026-09-27, run 36322077623: "OLT fetch failed
+// (HTTP 403)") while returning ~100 shows locally — the G6 TLS-fingerprint
+// class in the scraper-reference skill, and exactly what the provider chain
+// exists for (S4-T4, 2026 data audit BRO-4204).
+//
+// The plain fetch() after it is NOT a scraping tier: fetchPage() has no
+// provider-less path (no keys + no Playwright → "All scraping methods
+// failed"), so a local run without scraper keys would report every London
+// source dark and the source counts could never be verified off-CI. It runs
+// only once fetchPage() has thrown or returned a stub, uses undici fetch()
+// (never https.get — G6) with an AbortSignal timeout, and in CI is reached
+// only after the whole provider chain has already failed.
+const LONDON_FETCH_HEADERS = {
+  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Accept': 'text/html,application/xhtml+xml',
+  'Accept-Language': 'en-GB,en;q=0.9',
+};
 
-const TM_INDEX_URL = 'https://www.theatremonkey.com/shows/';
-
-async function fetchShowsFromTheatremonkey() {
-  console.log('Fetching West End shows from Theatremonkey...');
+async function fetchLondonListingHtml(url, { label = url, minBytes = 3000 } = {}) {
+  let why;
   try {
-    const response = await fetch(TM_INDEX_URL, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)', Accept: 'text/html' },
-      signal: AbortSignal.timeout(15000),
-    });
-    if (!response.ok) {
-      console.log(`  Theatremonkey returned HTTP ${response.status}`);
-      return [];
-    }
-    const html = await response.text();
-    const cheerio = require('cheerio');
-    const $ = cheerio.load(html);
-    const seen = new Set();
-    const showsList = [];
-    let skippedNoVenue = 0;
+    const result = await fetchPage(url);
+    const html = result?.content || '';
+    if (html.length >= minBytes) return { html, via: result.source || 'fetchPage' };
+    why = `${html.length} bytes (< ${minBytes})`;
+  } catch (e) {
+    why = e.message;
+  }
+  console.log(`  ${label}: fetchPage() gave ${why} — trying plain fetch()`);
+  // Literal timeout: scripts/discover-new-shows.test.mjs scopes its BRO-108
+  // guard to `AbortSignal.timeout(<number>)` at each fetch() site.
+  const response = await fetch(url, {
+    headers: LONDON_FETCH_HEADERS,
+    redirect: 'follow',
+    signal: AbortSignal.timeout(20000),
+  });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const html = await response.text();
+  if (html.length < minBytes) throw new Error(`content suspiciously short (${html.length} bytes)`);
+  return { html, via: 'direct-fetch' };
+}
 
-    $('a[href*="/show/"]').each((_, el) => {
-      const href = $(el).attr('href') || '';
-      const match = href.match(/\/show\/([^/]+)\/?$/);
-      if (!match) return;
-      const slug = match[1];
-      if (slug === 'shows' || seen.has(slug)) return;
-      const title = $(el).text().trim();
-      if (title.length < 2 || /^(Read more|Show Details|Reviews)/i.test(title)) return;
-      seen.add(slug);
+// ── Theatremonkey — supplementary WE discovery source (catches shows TodayTix/OLT miss) ──
+//
+// The index lists titles only; the venue is on each show page. Card #1060
+// closed the `venue: 'TBA'` leak by skipping every candidate, which left this
+// source contributing 0 for 23 consecutive CI runs ("skipped 78 candidates —
+// index has no venue data"). S4-T5 (2026 data audit, BRO-4204) adds the
+// per-show-page fetch that comment called for: bounded (--tm-page-budget=N /
+// TM_VENUE_PAGE_BUDGET, default 20 pages a run), cached across runs in
+// data/audit/theatremonkey-venue-cache.json (keyed by show URL), and index
+// titles that are not already a London show in shows.json are fetched first
+// — they are the only ones that can become new rows, so the budget lands on
+// them even before the cache fills. Venue strings go through
+// sanitizeVenueForWrite and the non-theatre / receiving-house gate exactly
+// like the OLT and LT paths. Decision logic: scripts/lib/theatremonkey-venue.js.
+const TM_VENUE_PAGE_BUDGET = parseVenuePageBudget(process.argv.slice(2), process.env);
+const TM_PAGE_DELAY_MS = 500;
 
-      // Clean Disney's prefix for consistency
-      const cleanedTitle = title.replace(/^Disney's\s+/i, '');
-      // The TM index genuinely carries no venue data (it's on each show's own
-      // page, which this scraper doesn't fetch) — unlike every other source
-      // in this file, there is no real value to fall back to here, only a
-      // fabricated one. Writing 'TBA' was exactly the #994-class leak this
-      // card (#1060) exists to close, so skip instead of writing a
-      // placeholder. This makes TM contribute 0 shows going forward — an
-      // accepted coverage tradeoff (design decision, not a guess): TM is a
-      // supplementary source layered under TodayTix/OLT in the dedup
-      // priority order, so titles it alone would have caught are lost until
-      // someone adds a per-show-page fetch for venue.
-      skippedNoVenue++;
-    });
-    if (skippedNoVenue > 0) {
-      console.log(`  Theatremonkey: skipped ${skippedNoVenue} candidates — index has no venue data (card #1060)`);
-    }
-
-    console.log(`Theatremonkey: ${showsList.length} shows on index`);
-    // showsList is always empty now (card #1060 — TM has no venue data, so
-    // every candidate is skipped, never pushed). The old "0 shows parsed"
-    // check would fire on every successful run. seen.size === 0 means the
-    // /show/ link selector itself matched nothing — the real HTML-structure
-    // regression this warning exists to catch.
-    if (html.length > 10000 && seen.size === 0) {
-      console.error('⚠️  WARNING: Theatremonkey page loaded but 0 candidates found — HTML structure may have changed');
-    }
-    return showsList;
+async function fetchShowsFromTheatremonkey(existingShows = []) {
+  console.log('Fetching West End shows from Theatremonkey...');
+  let html;
+  try {
+    ({ html } = await fetchLondonListingHtml(TM_INDEX_URL, { label: 'Theatremonkey index', minBytes: 10000 }));
   } catch (err) {
     console.log(`  Theatremonkey fetch failed: ${err.message}`);
     return [];
   }
+
+  const indexEntries = parseTheatremonkeyIndex(html);
+  console.log(`Theatremonkey: ${indexEntries.length} shows on index`);
+  if (indexEntries.length === 0) {
+    // A full-size page where the /show/ link selector matched nothing is the
+    // HTML-structure regression this warning exists to catch.
+    console.error('⚠️  WARNING: Theatremonkey page loaded but 0 candidates found — HTML structure may have changed');
+    return [];
+  }
+
+  const cache = loadVenueCache();
+  const existingLondonTitles = new Set(
+    existingShows.filter(s => s && isLondonMarket(s.category)).map(s => titleKey(s.title))
+  );
+  const plan = planVenueFetches(indexEntries, cache, {
+    budget: TM_VENUE_PAGE_BUDGET,
+    prioritize: (entry) => !existingLondonTitles.has(titleKey(entry.title)),
+  });
+  console.log(`  Theatremonkey: ${plan.fromCache.length} venues from cache, ${plan.toFetch.length} show pages to fetch (budget ${TM_VENUE_PAGE_BUDGET}), ${plan.deferred.length} deferred to a later run, ${plan.knownNoVenue} known without a venue`);
+
+  const resolved = plan.fromCache.map(e => ({ ...e, showingFrom: null, showingTo: null }));
+  let attempted = 0;
+  for (const entry of plan.toFetch) {
+    if (timeBudget.exceeded()) {
+      console.log(`  ⏱ Time budget reached — stopping Theatremonkey show-page fetches after ${attempted}`);
+      break;
+    }
+    if (attempted > 0) await new Promise(resolve => setTimeout(resolve, TM_PAGE_DELAY_MS));
+    attempted++;
+    try {
+      const { html: pageHtml } = await fetchLondonListingHtml(entry.url, { label: `Theatremonkey ${entry.slug}`, minBytes: 5000 });
+      // Sanitize BEFORE caching so a placeholder/blob venue line is cached as
+      // 'no-venue' (retried in 7 days) rather than resurfacing every run.
+      const rawVenue = extractTheatremonkeyVenue(pageHtml);
+      const venue = rawVenue ? sanitizeVenueForWrite(rawVenue) : null;
+      if (venue) {
+        recordVenueResult(cache, entry, { status: 'ok', venue });
+        resolved.push({ ...entry, venue, ...extractTheatremonkeyDates(pageHtml) });
+        if (verbose) console.log(`  [TM] "${entry.title}" → ${venue}`);
+      } else {
+        recordVenueResult(cache, entry, { status: 'no-venue' });
+        if (verbose) console.log(`  [TM] "${entry.title}" — show page has no usable venue line ("${rawVenue || ''}"), retry in 7 days`);
+      }
+    } catch (err) {
+      recordVenueResult(cache, entry, { status: /HTTP 404/.test(err.message) ? 'not-found' : 'error', error: err.message });
+      console.log(`  Theatremonkey: ${entry.slug} — ${err.message}`);
+    }
+  }
+  if (attempted > 0) {
+    try {
+      saveVenueCache(cache);
+    } catch (e) {
+      console.log(`  ⚠️  Theatremonkey venue cache not saved (${e.message})`);
+    }
+  }
+
+  const showsList = [];
+  const seen = new Set();
+  let skippedNoVenue = 0;
+  let filtered = 0;
+  for (const entry of resolved) {
+    const title = entry.title;
+    const titleLower = title.toLowerCase();
+    if (title.length < 3 || seen.has(titleLower)) continue;
+    if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
+    if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
+
+    // Same guards as OLT/LT: a placeholder/blob never reaches shows.json
+    // (card #1060), and London paths reject non-theatre venues and
+    // receiving-house tour stops outright (BRO-4204).
+    const venue = sanitizeVenueForWrite(entry.venue);
+    if (!venue) {
+      skippedNoVenue++;
+      if (verbose) console.log(`  [SKIP] "${title}" — Theatremonkey venue "${entry.venue || ''}" is a placeholder/blob (card #1060)`);
+      continue;
+    }
+    if (isNonTheatreVenue(venue) || isLondonReceivingHouse(venue)) {
+      filtered++;
+      if (verbose) console.log(`  [FILTERED] "${title}" — Theatremonkey venue "${venue}" is a non-theatre venue or receiving house`);
+      continue;
+    }
+
+    seen.add(titleLower);
+    const genre = classifyGenre({ title, venue });
+    // Venue-based classification, as the LT path does: Theatremonkey is a
+    // West End index, so only a known Off-West End house that is NOT also a
+    // West End house is filed as off-west-end.
+    const baseCategory = isOffWestEndVenue(venue) && !isWestEndVenue(venue) ? 'off-west-end' : 'west-end';
+    showsList.push({
+      title,
+      venue,
+      slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      openingDate: null,
+      previewsStartDate: entry.showingFrom || null,
+      closingDate: entry.showingTo || null,
+      ...(genre ? { genre } : {}),
+      category: applyGenreCategoryOverride(baseCategory, genre),
+      description: '',
+    });
+  }
+
+  const awaitingFetch = plan.deferred.length + (plan.toFetch.length - attempted);
+  console.log(`  Theatremonkey: ${showsList.length} candidates with a venue (${skippedNoVenue} placeholder venues skipped, ${filtered} non-theatre/receiving-house filtered, ${awaitingFetch} awaiting a show-page fetch)`);
+  return showsList;
 }
 
 // ── Official London Theatre (SOLT) — supplementary WE discovery source ──
@@ -929,44 +1050,14 @@ const OLT_URL = 'https://officiallondontheatre.com/theatre-tickets/';
 async function fetchShowsFromOfficialLondonTheatre() {
   console.log('Fetching West End shows from Official London Theatre (SOLT)...');
 
-  // Plain HTTPS — site serves static HTML with JSON-LD, no scraping service needed
-  const html = await new Promise((resolve, reject) => {
-    const req = https.get(OLT_URL, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml',
-        'Accept-Language': 'en-GB,en;q=0.9',
-      },
-      timeout: 20000,
-    }, (res) => {
-      // Follow one redirect (301/302/307/308)
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        const redirectReq = https.get(res.headers.location, {
-          headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html' },
-          timeout: 20000,
-        }, (res2) => {
-          if (res2.statusCode !== 200) { reject(new Error(`HTTP ${res2.statusCode} after redirect`)); res2.resume(); return; }
-          let d = '';
-          res2.on('data', chunk => d += chunk);
-          res2.on('end', () => resolve(d));
-        }).on('error', reject);
-        redirectReq.on('timeout', () => { redirectReq.destroy(); reject(new Error('Timeout after redirect')); });
-        res.resume();
-        return;
-      }
-      if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode}`)); res.resume(); return; }
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => resolve(data));
-    });
-    req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('Timeout')); });
-  });
-
-  if (html.length < 3000) {
-    console.log(`  OLT: content suspiciously short (${html.length} bytes), skipping`);
-    return [];
-  }
+  // S4-T4 (2026 data audit, BRO-4204): fetchPage() per the scraper rule. The
+  // raw https.get() this replaced ("static HTML, no scraping service needed")
+  // was 403'd on every Actions runner — see fetchLondonListingHtml above.
+  // A short body (< 3000 bytes) throws there and surfaces as "OLT fetch
+  // failed (content suspiciously short …)" in the caller, same outcome as
+  // the old inline skip.
+  const { html, via } = await fetchLondonListingHtml(OLT_URL, { label: 'OLT', minBytes: 3000 });
+  if (verbose) console.log(`  OLT: ${html.length} bytes via ${via}`);
 
   // Parse JSON-LD TheaterEvent blocks (each is a standalone <script type="application/ld+json">).
   // The reader lives in scripts/lib/olt-enrichment.js (audit S7-T10) so the
@@ -2107,7 +2198,7 @@ async function discoverShows() {
     const [todayTixResult, oltResult, tmResult, ltResult, venueResult] = await Promise.allSettled([
       fetchShowsFromTodayTixLondon(),
       fetchShowsFromOfficialLondonTheatre(),
-      fetchShowsFromTheatremonkey(),
+      fetchShowsFromTheatremonkey(data.shows),
       fetchShowsFromLondonTheatre(),
       fetchShowsFromOweVenues()
     ]);
@@ -2138,6 +2229,17 @@ async function discoverShows() {
     } else {
       console.log(`Found ${tmShows.length} West End shows via Theatremonkey`);
     }
+
+    // S4-T5 (2026 data audit, BRO-4204): per-source last-success markers,
+    // data/audit/<source>-last-success.json, written on EVERY parse — a
+    // non-empty parse stamps `at`/`count`; a rejection or an empty parse
+    // bumps the marker's empty streak, and three in a row logs the soft-404
+    // warning (scripts/lib/source-last-success.js). Deliberately NOT gated
+    // on --dry-run like the coverage telemetry further down: a dry run still
+    // fetched and parsed the page, and "when did this source last work" is a
+    // fact about the source, not about what we did with the result.
+    recordParseResult('olt', oltShows.length);
+    recordParseResult('theatremonkey', tmShows.length);
 
     if (ltResult.status === 'rejected') {
       console.log(`⚠️  LondonTheatre.co.uk fetch failed (${ltResult.reason?.message}), continuing with other sources`);
