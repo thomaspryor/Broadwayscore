@@ -463,6 +463,7 @@ tests/unit/discover-new-shows-gates.test.mjs
 tests/unit/discover-new-shows-owe.test.mjs
 tests/unit/discover-outlet-serp-preserves-exclusion-flags.test.mjs
 tests/unit/discovery-production-match.test.mjs
+tests/unit/discovery-retired-id.test.mjs
 tests/unit/discovery-source-coverage.test.mjs
 tests/unit/discovery-validation-setdiff.test.mjs
 tests/unit/dispatch-capacity-force-threading.test.mjs
@@ -771,6 +772,7 @@ tests/unit/rebuild-reviews-push-timeout.test.mjs
 tests/unit/reconcile-broadcast-state.test.mjs
 tests/unit/reconcile-bww-roundup-ledger.test.mjs
 tests/unit/reconcile-merged-json-jsonl-hardening.test.mjs
+tests/unit/reconcile-retired-ids.test.mjs
 tests/unit/recoupment-classify.test.mjs
 tests/unit/recoupment-model.test.mjs
 tests/unit/recoupment-progress-label.test.mjs
@@ -791,6 +793,7 @@ tests/unit/resend-we-audience-routing.test.mjs
 tests/unit/restore-protected-fields-cv-clear.test.mjs
 tests/unit/restore-protected-fields-outlet-registry.test.mjs
 tests/unit/restore-protected-fields-stale-checkout.test.mjs
+tests/unit/retired-show-ids.test.mjs
 tests/unit/reverify-clear-guards.test.mjs
 tests/unit/reverify-stale-cv-title-mismatch-guard.test.mjs
 tests/unit/reverse-discovery-freshness.test.mjs
