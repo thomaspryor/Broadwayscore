@@ -16,7 +16,7 @@ const textQuality = require('../lib/text-quality.js');
 // same thing but could drift on the first time someone broadens opera
 // detection (e.g. to non-Met houses).
 const { isOperaShow } = require('../lib/opera-prompt-context');
-const { getMarketLabel, isNonMetroMarket, getRegionalPromptContext } = require('../lib/market-label');
+const { getMarketLabel, isNonMetroMarket, getRegionalPromptContext, isTourMarket, getTourPromptContext } = require('../lib/market-label');
 
 // ========================================
 // TYPES
@@ -181,10 +181,16 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
     // as "Regional (US, outside New York)" — card #1405.
     const marketLabel = isOpera ? 'Opera (Metropolitan Opera)'
       : getMarketLabel(review.category, review.venue);
-    const venueInfo = review.venue ? ` at ${review.venue}` : '';
+    // A tour's venue is "North American Tour", not a theater; the tour note
+    // below says every stop counts (BRO-4211).
+    const isTour = !isOpera && isTourMarket(review.category);
+    const venueInfo = review.venue && !isTour ? ` at ${review.venue}` : '';
     contextParts.push(`Show: ${review.showTitle}${venueInfo} (${marketLabel})`);
     if (!isOpera && isNonMetroMarket(review.category)) {
       contextParts.push(getRegionalPromptContext(review.venue));
+    }
+    if (isTour) {
+      contextParts.push(getTourPromptContext());
     }
     if (isOpera) {
       contextParts.push('NOTE: This is an opera production at the Metropolitan Opera. Reviews discussing opera, the Met, conductors, sopranos/tenors/bass voices, libretto, arias, and musical performance ARE valid for this show — do NOT flag the review as wrong_show or wrong_production for being about opera at the Met.');

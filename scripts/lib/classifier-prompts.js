@@ -13,7 +13,7 @@ const {
   getOperaWrongProductionContext,
   getOperaWrongShowContext,
 } = require('./opera-prompt-context');
-const { getMarketLabel, isNonMetroMarket, getRegionalPromptContext } = require('./market-label');
+const { getMarketLabel, isNonMetroMarket, getRegionalPromptContext, isTourMarket, getTourPromptContext } = require('./market-label');
 
 /**
  * Build the wrong-PRODUCTION classifier user prompt.
@@ -60,6 +60,8 @@ function buildWrongProductionUserPrompt({ show, result, reviewData, revivals }) 
   const marketLabel = getMarketLabel(market, show && show.venue);
   const regionalNote = isNonMetroMarket(market)
     ? `\n\n${getRegionalPromptContext(show && show.venue)}`
+    : isTourMarket(market)
+    ? `\n\n${getTourPromptContext()}`
     : '';
 
   // Opera-aware framing — see scripts/lib/opera-prompt-context.js for the
