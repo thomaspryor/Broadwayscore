@@ -52,6 +52,19 @@
  *                        missing openingDate (the auto-apply class).
  *   --time-budget-min=N  Wall-clock budget in minutes for Phase 3's per-show
  *                        loop (0/omitted = unlimited).
+ *   --include-closed-when-year-matches
+ *                        Also admit `closed` OB rows (2026 audit S2-T11: 92
+ *                        rows with openingDate==previewsStartDate + 148 with
+ *                        no openingDate, mostly closed). A closed row is fixed
+ *                        ONLY from its Playbill production page, and only when
+ *                        that page's year equals the row's own year (see
+ *                        scripts/lib/ob-date-fix-eligibility.js) — never from
+ *                        the schedule article / Lortel, which list upcoming
+ *                        runs (the Romeo & Juliet Suite hazard, below). Closed
+ *                        rows still pass the normal candidate + Phase 3 scope
+ *                        filters: combine with --fix-unconfirmed for the
+ *                        same-date class, and --phase3-broad for closed rows
+ *                        with no openingDate outside the 120-day lookback.
  *
  * Audit output: data/audit/date-enrichment-corrections.json (per-script entries
  * appended each run; uniform schema across WE + OB scripts).
@@ -71,6 +84,11 @@ const { validateChangeStability } = require('./lib/change-stability-guard');
 const { serpQuery } = require('./lib/url-discovery');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const {
+  isStatusEligibleForDateFix,
+  isEligibleForDateFix,
+  getShowOpeningYear,
+} = require('./lib/ob-date-fix-eligibility');
 
 const USAGE = `enrich-off-broadway-dates.js — Off-Broadway Date Enrichment Script.
 
@@ -112,6 +130,10 @@ const initialBackfill = args.includes('--initial-backfill');
 // 0–3 SERP+fetch per day in steady state. `--phase3-broad` opts in to probing
 // every Phase-3-eligible candidate (initial backfill use only).
 const phase3Broad = args.includes('--phase3-broad');
+// Closed rows are admitted to the pool, but take a date only from a Playbill
+// production page whose year equals their own (scripts/lib/ob-date-fix-
+// eligibility.js). Off by default — byte-for-byte the pre-flag behaviour.
+const includeClosedWhenYearMatches = args.includes('--include-closed-when-year-matches');
 const missingOnly = !force && !fixUnconfirmed;
 const showArg = args.find(a => a.startsWith('--show='));
 const showFilter = showArg ? showArg.split('=')[1] : null;
@@ -530,7 +552,7 @@ async function scrapePlaybillProductionPages(candidateShows, alreadyMatchedShowI
   const queue = candidateShows.filter(s => {
     if (alreadyMatchedShowIds.has(s.id)) return false;
     if (broad) return true;
-    return isPhase3DefaultCandidate(s, today);
+    return isPhase3DefaultCandidate(s, today, { includeClosed: !!opts.includeClosed });
   });
   console.log(`Queue: ${queue.length} candidate shows not covered by schedule article` +
     (broad ? ' [broad]' : ' [same-date-only — pass --phase3-broad to widen]'));
@@ -555,7 +577,10 @@ async function scrapePlaybillProductionPages(candidateShows, alreadyMatchedShowI
     if (!dates || !dates.opening) {
       return { ok: false, reason: 'no-opening-date-on-page' };
     }
-    return { ok: true, dates };
+    // The page's own production year (title, else URL slug). Phase 4's
+    // closed-row admission requires it to EQUAL the row's year.
+    const playbillYear = getPlaybillPageYear(html) ?? getPlaybillUrlYear(url);
+    return { ok: true, dates, playbillYear };
   };
 
   for (const show of queue) {
@@ -615,7 +640,7 @@ async function scrapePlaybillProductionPages(candidateShows, alreadyMatchedShowI
       continue;
     }
 
-    const { dates } = result;
+    const { dates, playbillYear } = result;
     // Page validated — cache the URL for future runs.
     if (!usedCache) {
       urlCache.shows[show.id] = url;
@@ -629,6 +654,7 @@ async function scrapePlaybillProductionPages(candidateShows, alreadyMatchedShowI
       opening: dates.opening,
       source: 'playbill-production-page',
       url,
+      playbillYear,
     });
     console.log(`  ${show.id}: preview=${dates.firstPreview || '(none)'}, opening=${dates.opening} [${url}]`);
   }
@@ -739,13 +765,16 @@ function isNullOpeningFill(show, entry) {
  * status=previews indefinitely. Small class (~10 shows), bounded SERP cost.
  */
 const PHASE3_NULL_OPENING_LOOKBACK_DAYS = 120;
-function isPhase3DefaultCandidate(show, today) {
+function isPhase3DefaultCandidate(show, today, opts = {}) {
   if (!show) return false;
   if (show.openingDate && show.previewsStartDate && show.openingDate === show.previewsStartDate) return true;
   if (show.openingDate || !show.previewsStartDate || show.previewsStartDate > today) return false;
   // Live shows only, and only recent ones: closed one-off events and
   // long-running attractions with no press night would burn SERP every run.
-  if (show.status !== 'previews' && show.status !== 'open') return false;
+  // --include-closed-when-year-matches (opts.includeClosed) admits closed
+  // rows to the same recency window; older closed rows need --phase3-broad.
+  const admittedClosed = !!opts.includeClosed && show.status === 'closed';
+  if (show.status !== 'previews' && show.status !== 'open' && !admittedClosed) return false;
   return daysBetween(show.previewsStartDate, today) <= PHASE3_NULL_OPENING_LOOKBACK_DAYS;
 }
 
@@ -844,7 +873,11 @@ function appendAudit(entries) {
   existing.runs.push({
     runAt: new Date().toISOString(),
     script: 'enrich-off-broadway-dates',
-    mode: { dryRun, verify, force, fixUnconfirmed, initialBackfill, showFilter },
+    mode: {
+      dryRun, verify, force, fixUnconfirmed, initialBackfill, showFilter,
+      // Only recorded when set, so audit output is unchanged without the flag.
+      ...(includeClosedWhenYearMatches ? { includeClosedWhenYearMatches: true } : {}),
+    },
     entries,
   });
   // Keep last 50 runs.
@@ -857,7 +890,7 @@ async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   console.log('=== Off-Broadway Date Enrichment ===');
-  console.log(`Mode: ${verify ? 'verify' : dryRun ? 'dry-run' : 'apply'}${fixUnconfirmed ? ' +fix-unconfirmed' : ''}${force ? ' +force' : ''}${initialBackfill ? ' +initial-backfill' : ''}${showFilter ? ` (show=${showFilter})` : ''}`);
+  console.log(`Mode: ${verify ? 'verify' : dryRun ? 'dry-run' : 'apply'}${fixUnconfirmed ? ' +fix-unconfirmed' : ''}${force ? ' +force' : ''}${initialBackfill ? ' +initial-backfill' : ''}${includeClosedWhenYearMatches ? ' +include-closed-when-year-matches' : ''}${showFilter ? ` (show=${showFilter})` : ''}`);
   console.log('');
 
   const data = loadShows();
@@ -871,8 +904,13 @@ async function main() {
   // Romeo & Juliet Suite 2026 (status=closed) got its dates overwritten with
   // a 2026-06-11 future production's data before this guard existed (caught
   // in /ship-check 2026-04-29; reverted in private repo).
-  const ELIGIBLE_STATUSES = new Set(['open', 'previews', 'upcoming', 'announced']);
-  let obShows = allShows.filter(s => s.category === 'off-broadway' && ELIGIBLE_STATUSES.has(s.status));
+  //
+  // --include-closed-when-year-matches (2026 audit S2-T11) is the one
+  // exception: a closed row enters the pool here, but takes a date ONLY from
+  // a Playbill production page whose year equals the row's own — checked per
+  // match in Phase 4 via isEligibleForDateFix. The allowlist itself lives in
+  // scripts/lib/ob-date-fix-eligibility.js (shared with the unit test).
+  let obShows = allShows.filter(s => s.category === 'off-broadway' && isStatusEligibleForDateFix(s, { includeClosedWhenYearMatches }));
   console.log(`Off-Broadway shows in shows.json: ${obShows.length}`);
   if (showFilter) {
     obShows = obShows.filter(s => s.id === showFilter || s.slug === showFilter);
@@ -892,6 +930,16 @@ async function main() {
         : obShows;
   console.log(`Candidate shows for enrichment: ${candidateShows.length}`);
   console.log('');
+
+  // Closed rows (in the pool only under --include-closed-when-year-matches)
+  // never title-match against the schedule article or Lortel: both list
+  // upcoming runs, so a title hit on a closed row IS the Romeo & Juliet Suite
+  // hazard — and it would also mark the row "already matched", skipping its
+  // Phase 3 production-page probe, the only source that carries a year. They
+  // are reached by Phase 3 and matched by explicit id in Phase 4. No-ops
+  // without the flag (the pool then holds no closed rows).
+  const titleMatchShows = obShows.filter(s => s.status !== 'closed');
+  const titleMatchCandidates = candidateShows.filter(s => s.status !== 'closed');
 
   // Phase 1: Playbill OB schedule (primary source).
   const playbillEntries = await scrapePlaybillOB();
@@ -918,22 +966,29 @@ async function main() {
   console.log('');
   const alreadyMatched = new Set();
   for (const entry of merged) {
-    const result = matchTitleToShow(entry.title, candidateShows, { market: 'off-broadway' });
+    const result = matchTitleToShow(entry.title, titleMatchCandidates, { market: 'off-broadway' });
     if (result?.confidence === 'high' && result.show.category === 'off-broadway') {
       alreadyMatched.add(result.show.id);
     }
   }
   const urlCache = loadPlaybillUrlCache();
-  const phase3 = await scrapePlaybillProductionPages(candidateShows, alreadyMatched, urlCache, { broad: phase3Broad });
+  const phase3 = await scrapePlaybillProductionPages(candidateShows, alreadyMatched, urlCache, {
+    broad: phase3Broad,
+    includeClosed: includeClosedWhenYearMatches,
+  });
   for (const e of phase3.entries) {
+    // playbillYear rides on the merged entry (Phase 4's closed-row check), not
+    // in the audit raw blob, so audit output is unchanged without the flag.
+    const { playbillYear, ...rawEntry } = e;
     merged.push({
       title: e.title,
       showId: e.showId, // surfaces in Phase 4 as a direct-match shortcut
       firstPreview: e.firstPreview,
       opening: e.opening,
+      playbillYear,
       sources: ['playbill-production-page'],
       confidence: 'single-source',
-      raw: { 'playbill-production-page': { ...e } },
+      raw: { 'playbill-production-page': rawEntry },
     });
   }
   // Save the URL cache even in dry-run/verify mode. The cache is discovery
@@ -954,6 +1009,9 @@ async function main() {
   // Phase 4: Match to shows.json and compute changes.
   const changes = [];
   const auditEntries = [];
+  // Closed rows refused in Phase 4 because their Playbill page year differs
+  // from the row's own year (--include-closed-when-year-matches only).
+  const closedSkippedYearMismatch = new Set();
 
   // Carry Phase 3 misses through to audit output so operators can see *why*
   // an audit-only show stayed audit-only (no Playbill URL, page mismatch,
@@ -993,9 +1051,35 @@ async function main() {
       // candidates when a title has both Broadway and OB productions. Passing
       // 'broadway' would filter to !cat||cat==='broadway' and silently drop
       // the OB show from candidates. (Caught in /ship-check 2026-04-29.)
-      const result = matchTitleToShow(entry.title, obShows, { market: 'off-broadway' });
+      const result = matchTitleToShow(entry.title, titleMatchShows, { market: 'off-broadway' });
       if (!acceptScheduleMatch(result, entry)) continue;
       show = result.show;
+    }
+
+    // Closed rows (pool-admitted only by --include-closed-when-year-matches)
+    // take a date ONLY from a Playbill production page whose year equals the
+    // row's own year. Schedule/Lortel entries carry no page year, so a closed
+    // row can never take a date from them (Romeo & Juliet Suite hazard). Every
+    // other pool status is unconditionally eligible — see the lib.
+    if (!isEligibleForDateFix(show, entry.playbillYear ?? null, { includeClosedWhenYearMatches })) {
+      const pageYear = entry.playbillYear ?? 'unknown';
+      const showYear = getShowOpeningYear(show) ?? 'unknown';
+      closedSkippedYearMismatch.add(show.id);
+      console.warn(`  SKIP ${show.id}: closed row — Playbill year ${pageYear} != show year ${showYear} [${entry.sources.join('+')}]`);
+      auditEntries.push({
+        showId: show.id,
+        title: show.title,
+        confidence: entry.confidence,
+        sources: entry.sources,
+        currentOpening: show.openingDate,
+        currentPreviews: show.previewsStartDate,
+        currentSource: show.openingDateSource,
+        proposedOpening: entry.opening,
+        proposedPreviews: entry.firstPreview,
+        reason: `closed-row-playbill-year-mismatch (page=${pageYear}, show=${showYear})`,
+        raw: entry.raw,
+      });
+      continue;
     }
     const isCandidate = candidateShows.some(s => s.id === show.id);
 
@@ -1213,6 +1297,20 @@ async function main() {
   } else if (changes.length > 0) {
     console.log('');
     console.log(`(${verify ? 'verify' : 'dry-run'} mode — no writes)`);
+  }
+
+  // Closed-row summary (--include-closed-when-year-matches only): closed rows
+  // in the pool, how many got a change, how many were refused for a Playbill
+  // year mismatch (each refused id is also logged at its SKIP line above).
+  if (includeClosedWhenYearMatches) {
+    const closedIds = new Set(obShows.filter(s => s.status === 'closed').map(s => s.id));
+    const closedChanged = new Set(changes.filter(c => closedIds.has(c.id)).map(c => c.id));
+    const verb = (!verify && !dryRun) ? 'applied' : 'proposed (no writes)';
+    console.log('');
+    console.log(`Closed rows (--include-closed-when-year-matches): ${closedIds.size} in pool | ${closedChanged.size} ${verb} | ${closedSkippedYearMismatch.size} skipped (Playbill year mismatch)`);
+    if (closedSkippedYearMismatch.size > 0) {
+      console.log(`  skipped: ${[...closedSkippedYearMismatch].join(', ')}`);
+    }
   }
 
   // Always append audit (even on dry-run, so operators can review).
