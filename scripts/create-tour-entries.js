@@ -56,6 +56,8 @@ async function main() {
   const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
   const byId = new Map(shows.map(s => [s.id, s]));
   const open = openTourCandidates(rows, shows);
+  // A retired id must never come back (data/retired-show-ids.json, core-data).
+  const retiredIds = { has: (id) => { try { return require('./lib/retired-show-ids').isRetiredId(id); } catch { return false; } } };
   console.log(`${open.length} open tour candidate(s)${write ? '' : ' (report only)'}`);
 
   const results = [];
@@ -69,7 +71,7 @@ async function main() {
     const decision = scheduleUrl
       ? decideTourDates(probe, html, wiki, new Date(), { seenAt: c.firstSeen || c.lastSeen })
       : { write: {}, notes: [], problem: 'no Tours To You page found for this title' };
-    const built = buildTourEntry({ parent, shows, decision, roundupUrl: c.url, scheduleUrl });
+    const built = buildTourEntry({ parent, shows, decision, roundupUrl: c.url, scheduleUrl, retiredIds });
     if (built.skip) console.log(`  stays a suggestion: ${built.skip}`);
     else console.log(`  ${write ? 'creating' : 'would create'} ${built.entry.id} (${built.entry.openingDate}..${built.entry.closingDate || 'running'})`);
     results.push({ candidate: c.broadwayShowId, roundupUrl: c.url, scheduleUrl, notes: decision.notes, skip: built.skip || null, entry: built.entry || null });

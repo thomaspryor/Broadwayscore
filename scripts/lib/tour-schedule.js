@@ -32,7 +32,7 @@ function decode(s) {
   return String(s || '')
     .replace(/<[^>]+>/g, '')
     .replace(/&nbsp;|&#160;/g, ' ')
-    .replace(/&#8211;|&#8212;|&ndash;|&mdash;/g, '–')
+    .replace(/&#8211;|&#8212;|&#x201[34];|&ndash;|&mdash;/gi, '–')
     .replace(/&amp;/g, '&')
     .replace(/&#8217;|&rsquo;/g, "'")
     .replace(/\s+/g, ' ')
@@ -65,7 +65,9 @@ function parseDateRange(cell) {
   }
   m = s.match(/^([A-Za-z]+)\.? (\d{1,2})–([A-Za-z]+)\.? (\d{1,2}), (\d{4})$/);
   if (m) {
-    const a = utc(+m[5], monthIndex(m[1]), +m[2]);
+    // "December 30–January 4, 2026": the year belongs to the end date.
+    const crossesYear = monthIndex(m[3]) < monthIndex(m[1]);
+    const a = utc(+m[5] - (crossesYear ? 1 : 0), monthIndex(m[1]), +m[2]);
     const b = utc(+m[5], monthIndex(m[3]), +m[4]);
     return a && b && b >= a ? { start: a, end: b } : null;
   }
@@ -153,7 +155,11 @@ function wikiNames(wikiText, d) {
  * Kimberly Akimbo's Utica previews before the Denver launch, when named).
  */
 function segmentLaunch(seg, wikiText) {
-  const row = seg.rows.find(r => wikiNames(wikiText, r.start));
+  // Only an opener: a mid-tour stop's date can appear in the article too.
+  // 120 days covers a sit-down run before the tour proper (Life of Pi:
+  // Toronto in September, Baltimore launch in December).
+  const limit = seg.start.getTime() + 120 * DAY;
+  const row = seg.rows.find(r => r.start.getTime() <= limit && wikiNames(wikiText, r.start));
   return row ? row.start : null;
 }
 
@@ -184,15 +190,28 @@ function pickSegment(segments, tour, wikiText, { seenAt } = {}) {
 }
 
 /**
- * Closed year ranges the schedule page states for a tour, e.g. "First North
- * American Tour (2024–2026)". An open range ("2022–") is not a closing.
+ * Closed year ranges stated for the NORTH AMERICAN tour: Wikipedia section
+ * headings ("=== North American tour (2024–2026) ===") and the schedule page's
+ * headings/history labels ("First North American Tour (2024–2026)"). Body text
+ * and sidebars are ignored, and so is anything naming a UK tour: a loose match
+ * could close a running US tour. An open range ("2022–") is not a closing.
  */
-function statedClosedRanges(html) {
-  const text = decode(String(html || '').replace(/<(script|style)[\s\S]*?<\/\1>/g, ' '));
+function statedClosedRanges(source) {
+  const raw = String(source || '');
+  const wikiHeadings = raw.match(/^=+[^=\n]+=+\s*$/gm) || [];
+  // Headings, and a list item's own text up to its nested list (Tours To You's
+  // History tab: <li><span>First North American Tour</span> (2024–2026)<ul>…).
+  const htmlLabels = [
+    ...(raw.match(/<h[1-6][^>]*>[\s\S]{0,200}?<\/h[1-6]>/gi) || []),
+    ...(raw.match(/<li[^>]*>[\s\S]{0,200}?(?=<ul|<\/li>)/gi) || []),
+  ].map(decode);
   const out = [];
-  const re = /\btour\b[^.()]{0,40}\(?\s*(\d{4})\s*[–-]\s*(\d{4})\b/gi;
-  let m;
-  while ((m = re.exec(text))) out.push({ from: +m[1], to: +m[2] });
+  for (const line of [...wikiHeadings, ...htmlLabels]) {
+    const text = decode(line);
+    if (/\b(uk|west end|london|australia|canad)/i.test(text)) continue;
+    const m = text.match(/\b(north american|national|us)\s+tour\b[^()]{0,20}\(?\s*(\d{4})\s*[–-]\s*(\d{4})\b/i);
+    if (m) out.push({ from: +m[2], to: +m[3] });
+  }
   return out;
 }
 
@@ -232,7 +251,8 @@ function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = 
   // heading ("=== North American tour (2024–2026) ===").
   const stated = [...statedClosedRanges(scheduleHtml), ...statedClosedRanges(wikiText)]
     .some(r => r.from === launchYear && r.to === seg.end.getUTCFullYear());
-  if (seg.end < now && !tour.closingDate) {
+  const ended = seg.end.getTime() + DAY <= now.getTime();
+  if (ended && !tour.closingDate) {
     if (wikiNames(wikiText, seg.end)) write.closingDate = iso(seg.end);
     else if (stated) write.closingDate = iso(seg.end);
     else if (separateTourStarted) write.closingDate = iso(seg.end);

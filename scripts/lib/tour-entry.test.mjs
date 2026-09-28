@@ -48,3 +48,24 @@ test('a second tour is a candidate once the first has closed; created rows drop 
   const rows = [{ broadwayShowId: 'beetlejuice-2019', slug }, { broadwayShowId: 'beetlejuice-2019', slug, createdTourId: 'beetlejuice-tour-2026' }];
   assert.equal(openTourCandidates(rows, [bway, closed]).length, 1);
 });
+
+test('retired ids are never re-created', () => {
+  const r = buildTourEntry({ parent, shows: [parent], decision: ok, roundupUrl: 'u', retiredIds: new Set(['kimberly-akimbo-tour-2024']), now: NOW });
+  assert.match(r.skip, /retired/);
+});
+
+test('a new roundup for the same show starts a fresh candidate (later tour)', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const { recordTourCandidates } = require('./tour-roundup-candidate.js');
+  const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'tourcand-')), 'c.json');
+  fs.writeFileSync(file, JSON.stringify([{ broadwayShowId: 'b', slug: 'old-National-Tour', firstSeen: '2022-12-10', createdTourId: 'b-tour-2022', notifiedAt: 'x' }]));
+  recordTourCandidates(file, [{ broadwayShowId: 'b', slug: 'old-National-Tour' }], '2026-02-20');
+  assert.equal(JSON.parse(fs.readFileSync(file, 'utf8'))[0].createdTourId, 'b-tour-2022', 'same roundup keeps its state');
+  recordTourCandidates(file, [{ broadwayShowId: 'b', slug: 'new-National-Tour' }], '2026-02-20');
+  const row = JSON.parse(fs.readFileSync(file, 'utf8'))[0];
+  assert.equal(row.createdTourId, undefined);
+  assert.equal(row.notifiedAt, undefined);
+  assert.equal(row.firstSeen, '2026-02-20');
+});

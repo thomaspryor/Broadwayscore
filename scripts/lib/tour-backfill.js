@@ -238,7 +238,8 @@ function sweepHoldReason(pending, fromIds, folderSize, { maxMoves = 20, maxShare
   if (pending.length > maxMoves) return `${pending.length} moves > cap ${maxMoves}`;
   for (const id of fromIds) {
     const n = pending.filter(r => r.fromId === id).length;
-    if (n > 0 && n > maxShare * Math.max(1, folderSize(id))) return `${n} of ${folderSize(id)} files in ${id} (> ${Math.round(maxShare * 100)}%)`;
+    // Tiny folders: a couple of moves is not a flood.
+    if (n > 2 && n > maxShare * folderSize(id)) return `${n} of ${folderSize(id)} files in ${id} (> ${Math.round(maxShare * 100)}%)`;
   }
   return null;
 }

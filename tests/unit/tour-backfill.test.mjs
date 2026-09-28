@@ -161,4 +161,5 @@ test('scheduled sweep holds a flood instead of moving it (BRO-4262)', async () =
   assert.equal(sweepHoldReason(rows(3), ['wicked-2003'], () => 400), null);
   assert.match(sweepHoldReason(rows(21), ['wicked-2003'], () => 400), /cap 20/);
   assert.match(sweepHoldReason(rows(5), ['wicked-2003'], () => 30), /> 10%/);
+  assert.equal(sweepHoldReason(rows(2), ['tiny-2024'], () => 4), null, 'two moves from a tiny folder is not a flood');
 });

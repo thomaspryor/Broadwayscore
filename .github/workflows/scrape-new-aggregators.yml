@@ -515,7 +515,9 @@ jobs:
     # (no `time_budget_min` input) + ~3min checkout/npm-ci overhead observed
     # = ~25min before the commit step can even start, + 900s(15min) new
     # deadline = ~40min. 45min leaves ~5min of margin over that worst case.
-    timeout-minutes: 45
+    # 45->60 (BRO-4262): the tour auto-create, its core-data push and the
+    # gather dispatch add up to ~12 min ahead of the audit commit step.
+    timeout-minutes: 60
     needs: [scrape-lbo-roundups]
     if: ${{ always() && (github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'bww-landing') }}
 

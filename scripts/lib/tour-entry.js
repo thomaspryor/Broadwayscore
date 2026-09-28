@@ -11,7 +11,7 @@
  * tour roundup exemption), the roundup as tourLaunchEvidence.
  */
 
-const { tourInheritance, toursOfTitle } = require('./tour-family');
+const { tourInheritance, toursOfTitle, tourImageProblems } = require('./tour-family');
 
 /** Parent id without its year: beetlejuice-2019 -> beetlejuice. */
 function baseSlug(parentId) {
@@ -25,10 +25,11 @@ function baseSlug(parentId) {
  * @param {{write:{openingDate?,closingDate?}, notes:string[], problem?:string}} args.decision decideTourDates result for a blank tour
  * @param {string} args.roundupUrl BWW national-tour roundup
  * @param {string} [args.scheduleUrl] Tours To You page used
+ * @param {Set<string>} [args.retiredIds] ids from data/retired-show-ids.json
  * @param {Date} [args.now]
  * @returns {{entry: object} | {skip: string}}
  */
-function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, now = new Date() }) {
+function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, retiredIds = null, now = new Date() }) {
   if (!parent || (parent.category || 'broadway') !== 'broadway') return { skip: 'parent is not a Broadway show' };
   if (!decision || decision.problem) return { skip: `dates: ${(decision && decision.problem) || 'no decision'}` };
   const launch = decision.write && decision.write.openingDate;
@@ -43,6 +44,7 @@ function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, now 
 
   const id = `${baseSlug(parent.id)}-tour-${launch.slice(0, 4)}`;
   if ((shows || []).some(s => s.id === id || s.slug === id)) return { skip: `id ${id} already exists` };
+  if (retiredIds && retiredIds.has(id)) return { skip: `id ${id} is retired` };
 
   const close = decision.write.closingDate || null;
   const entry = {
@@ -68,6 +70,8 @@ function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, now 
     images: { hero: null, thumbnail: null, poster: null },
   };
   Object.assign(entry, tourInheritance(entry, parent) || {});
+  const imageProblems = tourImageProblems(entry, shows);
+  if (imageProblems.length) return { skip: `images: ${imageProblems.join('; ')}` };
   return { entry };
 }
 

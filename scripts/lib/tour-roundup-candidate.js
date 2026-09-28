@@ -59,8 +59,12 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
   if (!Array.isArray(rows)) rows = [];
   const byId = new Map(rows.map(r => [r.broadwayShowId, r]));
   for (const c of candidates) {
-    const prev = byId.get(c.broadwayShowId);
-    // Keep notifiedAt: a roundup seen again must not re-ask the owner.
+    let prev = byId.get(c.broadwayShowId);
+    // A different roundup for the same show is a later tour (BRO-4262): start
+    // it fresh, or the first tour's firstSeen/createdTourId/notifiedAt would
+    // hide it for good. The same roundup seen again keeps notifiedAt, so the
+    // owner isn't asked twice.
+    if (prev && prev.slug && c.slug && prev.slug !== c.slug) prev = undefined;
     byId.set(c.broadwayShowId, { ...prev, ...c, firstSeen: (prev && prev.firstSeen) || now, lastSeen: now });
   }
   const out = [...byId.values()].sort((a, b) => a.broadwayShowId.localeCompare(b.broadwayShowId));
