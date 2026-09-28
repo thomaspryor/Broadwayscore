@@ -136,13 +136,15 @@ Sprint 0 is the manual pass for the automation that follows (retirement tool, re
 - **Description:** Remove `tabdates-off-west-end-2026` (title "?tab=dates"), archive the row, add the retired entry, commit and push core data. Wait for one `update-show-status` run.
 - **Acceptance criteria:**
   - VERIFY: after the next `update-show-status` run, `git -C /root/broadway-scorecard-data show origin/main:shows.json | grep -c tabdates-off-west-end-2026` prints 0
+  - RESULT 2026-09-28: the row was already gone. The owner deleted it on 2026-09-22 (core-data f5f7a1c, BRO-3915); the audit saw it because the container's core-data clone dated from 2026-09-22 01:06 UTC and was first refreshed at 14:59 UTC on 09-28 (reflog). Ramp 2 therefore registered the retirement instead of deleting: the archived row was pulled from `f5f7a1c^:shows.json` and `retireId(..., {blockTitleVenue: true})` wrote `retired-show-ids.json` + `deleted-shows.json`; pushed as core-data df15a61. `matchesRetired` hits by id and by title+venue ("?TAB=DATES"/"hampstead theatre"), and not for a real Hampstead show. The grep prints 0 on origin/main now; the 24h check confirms the registry entry survives CI's push-core-data (CORE_FILES gained both files in S0-T6) and the row stays absent.
+  - AUDIT SNAPSHOT NOTE: every shows.json count in the audit report's §3.1/3.2/3.5 that came from `scratchpad/agentE` (validate-data errors, duplicates, titleCase fields, date/status counts) was computed on that 09-22 snapshot. A fresh `validate-data.js --dry-run` on 09-28 reports 0 errors (was 17: both duplicate clusters and all 14 titleCase rows were fixed by other sessions in the interval) and 98 upcoming-with-null-openingDate rows (was 109). Sprint 2 (S2-T*) re-verifies each shows-level count against a freshly pulled shows.json before touching a row; counts taken from the live site (`public/data`) or from the review-texts repo are unaffected.
 
 ### Task S0-T10: 24-hour gate re-check
 - **Complexity:** S
 - **Depends on:** S0-T8, S0-T9
 - **Parallel:** No
 - **Files:** none (scheduled with `send_later`, 24h)
-- **Description:** Re-run the two survival greps (S0-T8's file on origin/main; S0-T9's `grep -c` on origin/main shows.json) 24 hours after the ramp. Owner decision: continue into Sprint 1 automatically on success; stop and report on any revert.
+- **Description:** Re-run the two survival checks 24 hours after the ramp: S0-T8's file on origin/main still carries `wrongProduction: true` and the revoked override; S0-T9's registry entry is still on origin/main of core data (`git show origin/main:retired-show-ids.json | grep -c tabdates` prints 1) and the row is still absent from shows.json (`grep -c` prints 0). Owner decision: continue into Sprint 1 automatically on success; stop and report on any revert.
 - **Acceptance criteria:**
   - VERIFY: both greps still pass 24h later, output pasted on BRO-4204
 

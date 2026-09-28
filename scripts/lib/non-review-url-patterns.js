@@ -338,6 +338,76 @@ function namedNonReviewReason(url) {
   return null;
 }
 
+/**
+ * Listing pages scored as reviews (2026 data audit, S1-T0).
+ *
+ * URL SHAPES that are never an article, whoever discovered them: a review
+ * INDEX, an aggregator/listing site's own SHOW page, a bare homepage. Found
+ * live on the site: talkinbroadway.com/page/world/index.html (Talkin'
+ * Broadway's review index, scored on 3 shows), londontheatrehub.co.uk/shows/
+ * equus/ and /shows/heathers-the-musical/ (show pages with an "Editorial
+ * Team" byline), whatsonstage.com/shows/london-theatre/west-end-theatre/
+ * war-horse_1712421/ (WOS reviews live under /reviews/), broadwayworld.com/
+ * shows/Grangeville-334944.html (BWW reviews live under /article/).
+ *
+ * HOST-SPECIFIC on purpose — a host-agnostic /shows/ rule would eat real
+ * reviews: didtheylikeit.com/shows/<show>/<review-slug>/ and
+ * broadwaybaby.com/shows/<slug>/<id> are genuine review URLs. Same trap as
+ * the removed bare /article/ rule in NON_REVIEW_PATH_PATTERNS above.
+ *
+ * Kept separate from NAMED_NON_REVIEW_URL_PATTERNS: that list is a
+ * discovery-time reject that review-guards.js only applies at scoring time
+ * for unvetted-SERP sources (several of its entries are host-wide). Every
+ * entry here is a path-scoped listing shape that is safe to exclude at
+ * scoring time regardless of source, so review-guards.js's explainExclusion
+ * reads it unconditionally ('listingPageUrl', escape hatch
+ * listingPageUrlManualClear).
+ */
+const LISTING_PAGE_URL_PATTERNS = [
+  // Talkin' Broadway's review index pages (/page/world/index.html and any
+  // other .../index.html). Its reviews are /page/<section>/<slug>.html.
+  { host: /(^|\.)talkinbroadway\.com$/, path: /\/index\.html$/i, reason: 'review-index-page' },
+  // London Theatre Hub /shows/<slug>/ show pages ("Editorial Team" byline).
+  { host: /(^|\.)londontheatrehub\.co\.uk$/, path: /^\/shows\//i, reason: 'show-listing-page' },
+  // WhatsOnStage /shows/<region>/<area>/<slug>_<id>/ show pages; reviews /reviews/.
+  { host: /(^|\.)whatsonstage\.com$/, path: /^\/shows\//i, reason: 'show-listing-page' },
+  // BWW /shows/<Title>-<id>.html show pages; reviews live under /article/.
+  // Broader than the NAMED_NON_REVIEW_URL_PATTERNS entry above (which needs a
+  // /shows/<id>/<sub-page> segment): the bare show page is a listing too.
+  { host: /(^|\.)broadwayworld\.com$/, path: /^\/shows\//i, reason: 'show-listing-page' },
+  // TheaterMania /shows/ show pages; reviews live under /news/review-…/.
+  { host: /(^|\.)theatermania\.com$/, path: /^\/shows\//i, reason: 'show-listing-page' },
+  // Show Score catalog/show pages (its per-critic review records are captured
+  // from the aggregator page itself, never cited at these paths).
+  { host: /(^|\.)show-score\.com$/, path: /^\/(broadway-shows|off-broadway-shows|shows)\//i, reason: 'show-listing-page' },
+];
+
+/**
+ * Is this URL a listing page (see LISTING_PAGE_URL_PATTERNS) or a bare host?
+ *
+ * Bare host = empty or "/" path AND no query string. The query-string
+ * condition matters: WordPress "?p=<id>" permalinks on critics' own sites
+ * (susangranger.com/?p=10339, starwatchbyline.com/?p=15756 — real scored
+ * reviews) have a "/" path but are articles, not homepages.
+ *
+ * @param {string} url
+ * @returns {string|null} short reason label, or null (including unparsable input)
+ */
+function listingPageUrlReason(url) {
+  if (typeof url !== 'string') return null;
+  let u;
+  try { u = new URL(url); } catch { return null; }
+  const host = u.hostname.replace(/^www\./, '').toLowerCase();
+  const pathname = u.pathname || '';
+  for (const p of LISTING_PAGE_URL_PATTERNS) {
+    if (!p.host.test(host)) continue;
+    if (!p.path.test(pathname)) continue;
+    return p.reason;
+  }
+  if ((pathname === '' || pathname === '/') && !u.search) return 'bare-host';
+  return null;
+}
+
 // Host normalization, moved VERBATIM from audit-show-review-gap.js (task
 // #1073) so classifyReviewUrl and every caller share ONE implementation.
 // The audit now imports these instead of carrying its own copy.
@@ -463,6 +533,8 @@ module.exports = {
   NON_REVIEW_PATH_PATTERNS,
   NAMED_NON_REVIEW_URL_PATTERNS,
   namedNonReviewReason,
+  LISTING_PAGE_URL_PATTERNS,
+  listingPageUrlReason,
   registrableHost,
   hostOf,
   classifyReviewUrl,

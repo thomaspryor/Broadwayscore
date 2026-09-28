@@ -3408,8 +3408,18 @@ showDirs.forEach(showId => {
       // page with scraped booking copy (westendtheatre.com show pages on
       // NYSM/Dinosaur World/Crocodile, WOS /shows/ aggregate stubs) sat as a
       // scoreable "review". Manual overrides win: a human-scored file is trusted.
+      // Audit S1-T0 (BRO-4204): the same gate also honours the host-scoped
+      // listing-page shapes in non-review-url-patterns.js (Talkin' Broadway's
+      // review index, London Theatre Hub / WhatsOnStage / BroadwayWorld /
+      // TheaterMania /shows/ pages, bare hosts) that explainExclusion returns
+      // 'listingPageUrl' for — this loop does not delegate to explainExclusion,
+      // so without this line a scored show page still reached reviews.json.
+      // listingPageUrlManualClear: true is the human hatch for a genuine review
+      // whose only URL on file is the outlet's show page.
       if (data.url && !data.humanReviewScore && !data.manualContentTier
-          && require('./lib/cross-production-guards').isEvergreenListingUrl(data.url)) {
+          && (require('./lib/cross-production-guards').isEvergreenListingUrl(data.url)
+            || (data.listingPageUrlManualClear !== true
+              && require('./lib/non-review-url-patterns').listingPageUrlReason(data.url)))) {
         logExclusion("skippedListingPage", showId, file, data);
         stats.skippedListingPage = (stats.skippedListingPage || 0) + 1;
         return;
