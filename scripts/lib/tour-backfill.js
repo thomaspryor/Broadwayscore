@@ -29,7 +29,8 @@ function reasonText(data) {
 
 function toDate(s) {
   if (!s) return null;
-  const d = new Date(s);
+  // "April 29th, 2019" is Invalid Date as written; drop the ordinal suffix.
+  const d = new Date(String(s).replace(/(\d)(?:st|nd|rd|th)\b/gi, '$1'));
   return Number.isNaN(d.getTime()) ? null : d;
 }
 

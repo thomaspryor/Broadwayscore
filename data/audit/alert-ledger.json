@@ -1502,13 +1502,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-09-27T16:10:32.981Z",
-      "lastNotifiedAt": "2026-09-21T17:36:41.780Z",
+      "lastSeen": "2026-09-28T19:06:26.167Z",
+      "lastNotifiedAt": "2026-09-28T19:06:26.167Z",
       "lastSurfacedAt": null,
-      "notifyCount": 5,
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": "BRO-2864",
-      "silentRefires": 6
+      "linearIdentifier": "BRO-2864"
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1523,7 +1522,7 @@
       "silentRefires": 15
     },
     "cron-health:Enrich Off-Broadway Dates": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Enrich Off-Broadway Dates",
@@ -1533,7 +1532,8 @@
       "lastSurfacedAt": "2026-09-27T16:10:32.880Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-28T19:06:30.562Z"
     },
     "cron-health:Opening Night Checklist": {
       "status": "resolved",
@@ -1626,13 +1626,13 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-09-27T16:10:32.976Z",
+      "lastSeen": "2026-09-28T19:06:26.162Z",
       "lastNotifiedAt": "2026-09-24T16:18:57.029Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-3656",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -2585,7 +2585,7 @@
       "resolveReason": "backfill sweep (BRO-2765 fix): confirmed hasRealImage()===true on disk"
     },
     "cron-health:Check Opening Night Drift": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Check Opening Night Drift",
@@ -2595,7 +2595,8 @@
       "lastSurfacedAt": "2026-09-27T16:10:32.874Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-28T19:06:30.556Z"
     },
     "cron-health-chronic:Enrich Off-Broadway Dates": {
       "status": "resolved",
@@ -3862,7 +3863,7 @@
         "runId": "36353075509",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36353075509"
       },
-      "resolvedAt": "2026-09-28T19:00:03.015Z",
+      "resolvedAt": "2026-09-28T19:13:42.196Z",
       "resolveReason": "job-green"
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
@@ -4740,13 +4741,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Run wrongShow auto-clear ensemble corpus scan (needs review-texts), Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-28T18:50:30.344Z",
+      "lastSeen": "2026-09-28T19:05:17.039Z",
       "lastNotifiedAt": "2026-09-28T11:41:47.830Z",
       "lastSurfacedAt": "2026-09-28T11:41:47.830Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -5714,6 +5715,24 @@
       "cardId": null,
       "linearIdentifier": null,
       "resolvedAt": "2026-09-28T18:29:53.649Z"
+    },
+    "test-yml:red:E2E Tests:c6fb9021": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: E2E Tests / Run unit tests — \"broadway + west-end + off-west-end + off-broadway covers all shows (modulo hidden)\"",
+      "firstSeen": "2026-09-28T19:13:42.247Z",
+      "lastSeen": "2026-09-28T19:13:42.247Z",
+      "lastNotifiedAt": "2026-09-28T19:13:42.247Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4247",
+      "dispatch": {
+        "requestedAt": "2026-09-28T19:13:42.247Z",
+        "mode": "dispatch-at-filing",
+        "runId": "36468765686",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36468765686"
+      }
     }
   }
 }
