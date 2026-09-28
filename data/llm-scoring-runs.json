@@ -237254,36 +237254,20 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-09-28T13:00:30.521Z",
-    "completedAt": "2026-09-28T13:04:23.408Z",
+    "startedAt": "2026-09-28T13:35:26.765Z",
+    "completedAt": "2026-09-28T13:35:56.376Z",
     "totalReviews": 44954,
-    "processed": 28,
-    "skipped": 44914,
-    "errors": 3,
+    "processed": 4,
+    "skipped": 44947,
+    "errors": 0,
     "tokensUsed": {
-      "input": 197561,
-      "output": 10251,
-      "total": 509580
+      "input": 33197,
+      "output": 1659,
+      "total": 89700
     },
-    "costUsd": 0.85116085,
-    "runId": "36423201340",
-    "errorDetails": [
-      {
-        "showId": "oh-mary-off-broadway-2024",
-        "outletId": "queerty",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "falsettos-2016",
-        "outletId": "observer",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "red-2010",
-        "outletId": "observer",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ],
+    "costUsd": 0.17545175000000002,
+    "runId": "36423982583",
+    "errorDetails": [],
     "validation": [
       {
         "showId": "11-to-midnight-off-broadway-2026",
@@ -246329,9 +246313,9 @@
         "showId": "how-shakespeare-saved-my-life-off-broadway-2026",
         "ourDistribution": {
           "up": 5,
-          "flat": 3,
+          "flat": 4,
           "down": 0,
-          "total": 8
+          "total": 9
         },
         "hasDisagreement": false
       },
@@ -251545,10 +251529,10 @@
       {
         "showId": "paranormal-activity-west-end-2025",
         "ourDistribution": {
-          "up": 18,
+          "up": 19,
           "flat": 5,
           "down": 3,
-          "total": 26
+          "total": 27
         },
         "hasDisagreement": false
       },
@@ -259578,10 +259562,10 @@
       {
         "showId": "tru-off-west-end-2026",
         "ourDistribution": {
-          "up": 7,
-          "flat": 1,
+          "up": 8,
+          "flat": 2,
           "down": 0,
-          "total": 8
+          "total": 10
         },
         "hasDisagreement": false
       },
@@ -260330,10 +260314,10 @@
       {
         "showId": "white-rabbit-red-rabbit-west-end-2026",
         "ourDistribution": {
-          "up": 8,
+          "up": 7,
           "flat": 4,
           "down": 0,
-          "total": 12
+          "total": 11
         },
         "hasDisagreement": false
       },
@@ -260710,19 +260694,19 @@
     ]
   },
   {
-    "startedAt": "2026-09-28T13:05:28.763Z",
-    "completedAt": "2026-09-28T13:12:15.820Z",
-    "totalReviews": 182,
-    "processed": 182,
+    "startedAt": "2026-09-28T13:36:29.283Z",
+    "completedAt": "2026-09-28T13:42:55.013Z",
+    "totalReviews": 176,
+    "processed": 176,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 470085,
-      "output": 43924,
-      "total": 514009
+      "input": 459650,
+      "output": 41722,
+      "total": 501372
     },
-    "costUsd": 1.3331276,
-    "runId": "36423201340",
+    "costUsd": 1.2892744999999999,
+    "runId": "36423982583",
     "errorDetails": []
   }
 ]
