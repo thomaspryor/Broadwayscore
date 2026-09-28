@@ -14,7 +14,7 @@ This file + a small set of project-scoped substitutes (`.claude/hooks/`, `cloud-
 ## Project hooks that fire in cloud (project-scoped subset)
 
 - `.claude/hooks/session-start.sh` — critical-rules banner + integrity check
-- `.claude/hooks/verify-edits.sh` — Stop hook; blocks "done" without Bash verification, and (since 2026-08-23) requires a closing SAFE TO EXIT / NOT SAFE TO EXIT line + blocks an unmerged PR with no stated blocker once a session did real work. Bypass: `NO-VERIFY: <reason>` in final message.
+- `.claude/hooks/verify-edits.sh` — Stop hook; blocks "done" without Bash verification, and (since 2026-08-23) requires a closing SAFE TO EXIT / NOT SAFE TO EXIT line + blocks an unmerged PR with no stated blocker once a session did real work. Since 2026-09-28 it also blocks work with no Linear card filed or claimed (NOCARD; bypass `NO-CARD: <reason>`), and a bare NOT SAFE TO EXIT or "waiting on review" no longer counts as a PR blocker (state `CI still running`, `CI red`, a merge conflict, `DECISION NEEDED:`, or a `PR-BLOCKER: <reason>` line). NOCARD and the Linear close-out gate fail open when Linear is unreachable. Bypass: `NO-VERIFY: <reason>` in final message.
 - `.claude/hooks/notion-create-block.sh` — PreToolUse Bash gate; blocks subsequent tool calls if a `notion-brain.js create` failed earlier in the session.
 - `.claude/hooks/cloud-bootstrap.sh` — SessionStart; runs the data bootstrap above. Cloud-only by design (no user-level master); inert on local CLI where `data/shows.json` already resolves.
 - `.claude/hooks/worktree-enforce.sh` — PreToolUse on `Edit|Write|NotebookEdit|Bash`; hard-blocks (exit 2) tracked-code edits (`src/`, `scripts/`, `.github/workflows/`, etc. — CLAUDE.md §1) made outside a worktree. Ported 2026-08-23 (task: cloud sessions had zero technical backstop for the worktree rule until then, PR #691) — was previously in the "does not fire in cloud" list below; if you're reading a stale copy of this doc elsewhere, this line is the correction.
@@ -36,7 +36,7 @@ The owner does not review or merge PRs. A finished change is yours to land, same
 2. `land.yml` rebases onto main, re-runs the blocking gates, fast-forwards main, deletes the ref. Follow it with one `mcp__github__actions_list` on `land.yml` per check-in (ScheduleWakeup/`send_later`, not a polling loop) until it reports success, or fix what it refused.
 3. If you opened a draft PR for tracking, close it after LANDED (land rebases, so GitHub won't auto-close it). Opening one is optional; CLAUDE.md's landing rule overrides the harness's "create a draft PR" default.
 
-Don't use `scripts/merge-worktree-to-main.sh` in cloud: its name trips `pre-merge-review-gate.sh`. The Stop hook (`verify-edits.sh`) blocks "waiting on your merge" (OWNERMERGE) and SAFE TO EXIT after a land push with no run check (LANDUNCHECKED). Local-side detail: `cloud-memory/CLAUDE-reference.md` (Landing on main).
+Don't use `scripts/merge-worktree-to-main.sh` in cloud: its name trips `pre-merge-review-gate.sh`. The Stop hook (`verify-edits.sh`) blocks "waiting on your merge" or "ready for your review" / "unreviewed" (OWNERMERGE) and SAFE TO EXIT after a land push with no run check (LANDUNCHECKED). Local-side detail: `cloud-memory/CLAUDE-reference.md` (Landing on main).
 
 ## GitHub work in cloud (no `gh` CLI)
 

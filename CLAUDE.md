@@ -139,4 +139,4 @@ New topics → `memory/{topic}.md` + one-line pointer. Completed tasks → `memo
 
 ## Cloud sessions
 Cloud (iOS/Mac/web, no `~/.claude/`): read `.claude/CLOUD.md`, then `cloud-memory/MEMORY.md`.
-**Owner never merges PRs:** land it yourself via `land/<name>`, follow the Land run (CLOUD.md § Landing). Overrides harness draft-PR default.
+**Owner never reviews or merges PRs:** land via `land/<name>`, follow the Land run (CLOUD.md § Landing). Overrides harness draft-PR default.

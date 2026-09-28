@@ -56,31 +56,51 @@ function makeTmpDir(label) {
   return fs.mkdtempSync(path.join(os.tmpdir(), `verify-edits-cloud-gates-${label}-`));
 }
 
-function toolUse(name, input) {
-  return { type: 'tool_use', name, id: `tu-${randomUUID()}`, input };
+// `result` is the tool_result text the hook will see for this call (default
+// 'ok'). The card-first and close-out gates key on the CLI's own success
+// output, so those fixtures need a realistic result, not a placeholder.
+function toolUse(name, input, result = 'ok') {
+  return { type: 'tool_use', name, id: `tu-${randomUUID()}`, input, _result: result };
 }
+
+// What `linear-brain.js create` really prints: stdout JSON + stderr marker.
+const CARD_CREATE = toolUse(
+  'Bash',
+  { command: 'node scripts/linear-brain.js create "Fix the thing" --dispatch --notes "## Acceptance criteria\\n`npx tsc --noEmit`"' },
+  '{\n  "identifier": "BRO-9001",\n  "url": "https://linear.app/x/issue/BRO-9001"\n}\n__BOARD_CARD_ID__=BRO-9001\nISSUE-FILED: BRO-9001',
+);
 
 // Builds a transcript with an arbitrary sequence of assistant tool_use calls,
 // each in its own assistant turn (mirrors real transcripts, where tool calls
-// and their results interleave turn-by-turn).
-function writeTranscript(dir, toolCalls) {
+// and their results interleave turn-by-turn). Every fixture files a Linear
+// card first (CLAUDE.md §6) unless `card: false` — so the card-first gate
+// stays out of the way of tests about the other gates.
+function writeTranscript(dir, toolCalls, { card = true, userText = 'please do the work' } = {}) {
   const p = path.join(dir, 'transcript.jsonl');
   const lines = [
-    JSON.stringify({ type: 'user', message: { role: 'user', content: [{ type: 'text', text: 'please do the work' }] } }),
+    JSON.stringify({ type: 'user', message: { role: 'user', content: [{ type: 'text', text: userText }] } }),
   ];
-  for (const call of toolCalls) {
+  for (const { _result, ...call } of card ? [CARD_CREATE, ...toolCalls] : toolCalls) {
     lines.push(JSON.stringify({
       type: 'assistant',
       message: { role: 'assistant', content: [call] },
     }));
     lines.push(JSON.stringify({
       type: 'user',
-      message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: call.id, content: 'ok' }] },
+      message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: call.id, content: _result ?? 'ok' }] },
     }));
   }
   fs.writeFileSync(p, lines.join('\n') + '\n');
   return p;
 }
+
+// The board gates (NOCARD/NOWRAPUP) call `node scripts/linear-brain.js --probe`
+// under $CLAUDE_PROJECT_DIR before blocking, and fail open unless it exits 0.
+// A stub repo root keeps the tests offline and deterministic; STUB_PROBE_EXIT
+// picks the verdict (0 healthy / 3 erroring / 4 unreachable).
+const STUB_ROOT = fs.mkdtempSync(path.join(os.tmpdir(), 'veg-stubroot-'));
+fs.mkdirSync(path.join(STUB_ROOT, 'scripts'));
+fs.writeFileSync(path.join(STUB_ROOT, 'scripts', 'linear-brain.js'), 'process.exit(Number(process.env.STUB_PROBE_EXIT || 0));\n');
 
 function runHook(transcriptPath, lastAssistantMessage, env = {}) {
   const stdin = JSON.stringify({
@@ -96,7 +116,7 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}) {
     const r = spawnSync('bash', [REPO_HOOK], {
       input: stdin,
       encoding: 'utf8',
-      env: { ...process.env, ...env, HOME: fakeHomeDir },
+      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', ...env, HOME: fakeHomeDir },
       timeout: HOOK_TIMEOUT_MS,
       killSignal: 'SIGKILL',
     });
@@ -743,5 +763,187 @@ test('regression: a fully clean session, standalone check (edit + verify + push 
   ]);
   const r = runHook(transcript, 'Fixed, verified, pushed.\n\nSAFE TO EXIT — verified with tsc, pushed to branch.');
   assertAllowed(r, 'a fully clean, fully reported session must pass all gates');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ─────────── review-parking + bare NOT SAFE TO EXIT (2026-09-28) ────────────
+// Session 01Fn6CXk held PR #947 for ~11h ending every turn on "NOT SAFE TO
+// EXIT — PR still open and unreviewed". OWNERMERGE only knew merge-asks, and
+// PRUNMERGED accepted the bare NOT SAFE TO EXIT line the status gate requires
+// on every such turn — so nothing ever fired.
+
+function runOnPr(label, msg, env = {}) {
+  const dir = makeTmpDir(label);
+  const transcript = writeTranscript(dir, [CREATE_PR]);
+  const r = runHook(transcript, msg, env);
+  fs.rmSync(dir, { recursive: true, force: true });
+  return r;
+}
+
+test('INCIDENT REPLAY: "NOT SAFE TO EXIT — PR still open and unreviewed" → BLOCKED', skipNoRepoHook, () => {
+  const r = runOnPr('review-incident', 'Still open, still draft, no new activity.\n\nNOT SAFE TO EXIT — PR #947 still open and unreviewed; next silent check-in at 00:13 UTC.');
+  assertBlocked(r, 'parking a PR as "unreviewed" is a review ask');
+  assert.match(r.stderr, /never merges or reviews/i, `got: ${r.stderr.slice(0, 300)}`);
+});
+
+test('review ask: "ready for your review" → BLOCKED', skipNoRepoHook, () => {
+  const r = runOnPr('review-ready-for-your', 'NEEDS YOU — PR #947 is ready for your review.\n\nNOT SAFE TO EXIT — CI still running on PR #947.');
+  assertBlocked(r, 'asking the owner to review must block even with a real blocker alongside');
+});
+
+test('review ask: "waiting on reviewers" → BLOCKED', skipNoRepoHook, () => {
+  const r = runOnPr('review-waiting-reviewers', 'Everything is green.\n\nNOT SAFE TO EXIT — waiting on reviewers for PR #42.');
+  assertBlocked(r, '"waiting on reviewers" is a review ask');
+});
+
+test('bare NOT SAFE TO EXIT is no longer a stated blocker → BLOCKED (PRUNMERGED)', skipNoRepoHook, () => {
+  const r = runOnPr('bare-notsafe', 'Opened PR #42.\n\nNOT SAFE TO EXIT — PR #42 open.');
+  assertBlocked(r, 'the status line alone must not satisfy the PR gate');
+  assert.match(r.stderr, /land it yourself/i, `got: ${r.stderr.slice(0, 300)}`);
+});
+
+test('"draft pending" is no longer a stated blocker → BLOCKED', skipNoRepoHook, () => {
+  const r = runOnPr('draft-pending', 'Opened PR #42 as a draft pending follow-up.\n\nNOT SAFE TO EXIT — draft pending.');
+  assertBlocked(r, 'a draft is not a blocker');
+});
+
+test('CI still running is a legitimate blocker → ALLOWED', skipNoRepoHook, () => {
+  const r = runOnPr('ci-running', 'Opened PR #42; test.yml started 1 min ago.\n\nNOT SAFE TO EXIT — CI still running on PR #42, check-in scheduled.');
+  assertAllowed(r, 'waiting on a running CI run is legitimate');
+});
+
+test('explicit PR-BLOCKER line with a specific reason → ALLOWED', skipNoRepoHook, () => {
+  const r = runOnPr('pr-blocker', 'Land refused it.\nPR-BLOCKER: land.yml refused: tsc error in src/lib/scoring.ts:42\n\nNOT SAFE TO EXIT — fixing the tsc error next.');
+  assertAllowed(r, 'a specific PR-BLOCKER reason must pass');
+});
+
+test('PR-BLOCKER with a throwaway reason (<10 chars) → BLOCKED', skipNoRepoHook, () => {
+  const r = runOnPr('pr-blocker-short', 'PR-BLOCKER: wip\n\nNOT SAFE TO EXIT — later.');
+  assertBlocked(r, 'a token with no real reason must not satisfy the gate');
+});
+
+test('describing the rule in backticks is not a review ask → ALLOWED', skipNoRepoHook, () => {
+  const r = runOnPr('review-quoted', 'The gate now blocks `waiting on review` and `unreviewed`.\n\nNOT SAFE TO EXIT — CI still running on PR #42.');
+  assertAllowed(r, 'quoted/backticked phrases are dropped before the OWNERMERGE scan');
+});
+
+// ─────────────────────────── card-first gate (NOCARD) ───────────────────────
+// CLAUDE.md §6: the session files or claims its Linear card first. Session
+// 01Fn6CXk edited, pushed and merged a PR without one; the SessionStart banner
+// still said notion-brain.js.
+
+function runCard(label, calls, msg, { env = {}, userText } = {}) {
+  const dir = makeTmpDir(label);
+  const transcript = writeTranscript(dir, calls, { card: false, ...(userText ? { userText } : {}) });
+  const r = runHook(transcript, msg, env);
+  fs.rmSync(dir, { recursive: true, force: true });
+  return r;
+}
+const NOT_SAFE = 'Pushed.\n\nNOT SAFE TO EXIT — deploy still running.';
+
+test('NOCARD: real work (push) with no Linear card → BLOCKED', skipNoRepoHook, () => {
+  const r = runCard('nocard-block', [GIT_PUSH], NOT_SAFE);
+  assertBlocked(r, 'work without a card must block');
+  assert.match(r.stderr, /Linear card/i, `got: ${r.stderr.slice(0, 300)}`);
+  assert.doesNotMatch(r.stderr, /notion-brain\.js create/, 'must not send sessions to the retired Notion CLI');
+});
+
+test('NOCARD: a code edit alone also needs a card → BLOCKED', skipNoRepoHook, () => {
+  const r = runCard('nocard-edit', [QUALIFYING_EDIT, toolUse('Bash', { command: 'npx tsc --noEmit' })], 'Edited and type-checked.\n\nNOT SAFE TO EXIT — not pushed yet.');
+  assertBlocked(r, 'editing code is work; the card comes first');
+});
+
+test('NOCARD: linear-brain create with its real output → ALLOWED', skipNoRepoHook, () => {
+  const r = runCard('nocard-create', [CARD_CREATE, GIT_PUSH], NOT_SAFE);
+  assertAllowed(r, 'a created card satisfies the gate');
+});
+
+test('NOCARD: create piped through 2>/dev/null (stdout JSON only) → ALLOWED', skipNoRepoHook, () => {
+  const create = toolUse('Bash', { command: 'node scripts/linear-brain.js create "x" --dispatch --notes "y" 2>/dev/null' }, '{\n  "identifier": "BRO-9002",\n  "url": "https://linear.app/x"\n}');
+  const r = runCard('nocard-create-stdout', [create, GIT_PUSH], NOT_SAFE);
+  assertAllowed(r, 'the stdout identifier alone proves the create succeeded');
+});
+
+test('NOCARD: linear-session claim of an existing issue → ALLOWED', skipNoRepoHook, () => {
+  const claim = toolUse('Bash', { command: 'node scripts/linear-session.js claim --issue=BRO-4201' }, '__LINEAR_ISSUE_ID__=abd2a457-d618-464b-8143-ce2ac3955110\n{"identifier":"BRO-4201","action":"claimed"}');
+  const r = runCard('nocard-claim', [claim, GIT_PUSH], NOT_SAFE);
+  assertAllowed(r, 'claiming an existing issue satisfies the gate');
+});
+
+test('NOCARD: a create that FAILED (no marker in its result) → BLOCKED', skipNoRepoHook, () => {
+  const failed = toolUse('Bash', { command: 'node scripts/linear-brain.js create "x" --notes "y"' }, '❌ Card creation must decide: pass --dispatch to work it now, or --park "<reason>".');
+  const r = runCard('nocard-create-failed', [failed, GIT_PUSH], NOT_SAFE);
+  assertBlocked(r, 'a rejected create is not a card');
+});
+
+test('NOCARD spoof guard: grepping the marker out of source does not count → BLOCKED', skipNoRepoHook, () => {
+  const grep = toolUse('Bash', { command: 'grep -n "__BOARD_CARD_ID__" scripts/linear-brain.js' }, "646:  console.error(`__BOARD_CARD_ID__=BRO-1`);");
+  const r = runCard('nocard-spoof', [grep, GIT_PUSH], NOT_SAFE);
+  assertBlocked(r, 'the marker must come from a real create/claim result, not any tool output');
+});
+
+test('NOCARD: a BRO-N merely mentioned in user text (e.g. an injected banner) is not a card → BLOCKED, and the message says to claim it', skipNoRepoHook, () => {
+  const r = runCard('nocard-mention', [GIT_PUSH], NOT_SAFE, { userText: 'STALE CODE CHECKOUT: a checkout once read a landed commit as reverted (BRO-2663). Work BRO-4201.' });
+  assertBlocked(r, 'injected context citing an issue must not satisfy the gate');
+  assert.match(r.stderr, /linear-session\.js claim --issue=BRO-N/, `got: ${r.stderr.slice(0, 300)}`);
+});
+
+test('NOCARD bypass: NO-CARD with a real reason → ALLOWED; a throwaway one → BLOCKED', skipNoRepoHook, () => {
+  assertAllowed(runCard('nocard-bypass', [GIT_PUSH], 'Pushed a typo fix.\nNO-CARD: one-character typo in a comment\n\nNOT SAFE TO EXIT — deploy running.'), 'NO-CARD with a reason');
+  assertBlocked(runCard('nocard-bypass-short', [GIT_PUSH], 'Pushed.\nNO-CARD: typo\n\nNOT SAFE TO EXIT — deploy running.'), 'NO-CARD needs 10+ chars');
+});
+
+test('NOCARD fails open when Linear is unreachable (probe exit 4) or erroring (exit 3)', skipNoRepoHook, () => {
+  const r4 = runCard('nocard-unreachable', [GIT_PUSH], NOT_SAFE, { env: { STUB_PROBE_EXIT: '4' } });
+  assertAllowed(r4, 'Linear down → continue untracked (CLAUDE.md §6)');
+  assert.match(r4.stderr, /unreachable or erroring/i, 'must warn, not stay silent');
+  assertAllowed(runCard('nocard-erroring', [GIT_PUSH], NOT_SAFE, { env: { STUB_PROBE_EXIT: '3' } }), 'erroring (e.g. no LINEAR_API_KEY) also fails open');
+});
+
+test('NOCARD honours the board-gate escape hatch and its own kill switch', skipNoRepoHook, () => {
+  assertAllowed(runCard('nocard-hatch', [GIT_PUSH], NOT_SAFE, { env: { BOARD_GATE_DISABLED: '1' } }), 'BOARD_GATE_DISABLED=1');
+  assertAllowed(runCard('nocard-kill', [GIT_PUSH], NOT_SAFE, { env: { CARD_GATE_DISABLE: '1' } }), 'CARD_GATE_DISABLE=1');
+});
+
+test('NOCARD false-positive guard: a read-only turn needs no card → ALLOWED', skipNoRepoHook, () => {
+  const r = runCard('nocard-readonly', [toolUse('Read', { file_path: 'src/lib/scoring.ts' })], 'scoring.ts:42 applies the tier weight.');
+  assertAllowed(r, 'answering a question is not work');
+});
+
+// ─────────────────── wrap-up close-out on Linear (2026-09-28) ───────────────
+
+test('NOWRAPUP: a linear-brain Done that the done-gate REFUSED is not a close-out → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-linear-refused');
+  const refused = toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-9001 --state Done' }, '\n❌ REFUSED — BRO-9001 has no done-evidence (PR-EVIDENCE line or Acceptance criteria).\nExit code 5');
+  const transcript = writeTranscript(dir, [GIT_PUSH, refused]);
+  const r = runHook(transcript, 'Pushed and closed the card.\n\nSAFE TO EXIT — done.');
+  assertBlocked(r, 'the card is still open after a refused update');
+  assert.match(r.stderr, /Linear card was never closed out/i, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('NOWRAPUP: linear-session report --status=done (claimed issue) → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-linear-report');
+  const report = toolUse('Bash', { command: 'node scripts/linear-session.js report --issue=BRO-4201 --status=done --summary="shipped"' }, '__LINEAR_ISSUE_ID__=abc12345-0000\n{"identifier":"BRO-4201","status":"done","stateName":"Done","doneGateRefused":false}');
+  const transcript = writeTranscript(dir, [GIT_PUSH, report]);
+  const r = runHook(transcript, 'Pushed and reported.\n\nSAFE TO EXIT — reported done.');
+  assertAllowed(r, 'report is the close-out verb for a claimed issue');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('NOWRAPUP: linear-session report whose done-gate refused → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-linear-report-refused');
+  const report = toolUse('Bash', { command: 'node scripts/linear-session.js report --issue=BRO-4201 --status=done --summary="shipped"' }, '{"identifier":"BRO-4201","status":"done","stateName":"In Progress","doneGateRefused":true}\n❌ REFUSED (no-evidence)');
+  const transcript = writeTranscript(dir, [GIT_PUSH, report]);
+  const r = runHook(transcript, 'Pushed and reported.\n\nSAFE TO EXIT — reported done.');
+  assertBlocked(r, 'a refused report leaves the card open');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('NOWRAPUP fails open when Linear is unreachable', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-linear-down');
+  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const r = runHook(transcript, 'Pushed.\n\nSAFE TO EXIT — pushed.', { STUB_PROBE_EXIT: '4' });
+  assertAllowed(r, 'a session cannot close out on a board it cannot reach');
   fs.rmSync(dir, { recursive: true, force: true });
 });
