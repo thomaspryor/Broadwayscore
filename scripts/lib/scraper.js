@@ -318,6 +318,10 @@ function _checkScrapingdogQuotaOnce() {
         req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
       });
       const acct = JSON.parse(body);
+      // BRO-4215: timestamped balance reading in every CI log (mirrors "[SB Credits]").
+      // Sampling these across job logs vs ledger rows per interval is how an
+      // attribution gap gets traced to the workflow causing it.
+      if (Number.isFinite(acct.requestUsed)) console.log(`[SD Credits] ${acct.requestUsed} used of ${acct.requestLimit}`);
       const { skip, logLine } = shouldSkipScrapingdogAtRuntime(acct);
       if (logLine) console.warn(`  ⚠️  ${logLine}`);
       if (skip) {
