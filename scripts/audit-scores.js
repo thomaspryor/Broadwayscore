@@ -91,7 +91,7 @@ function checkLetterGrade(rating, score) {
 }
 
 function checkSentimentPlaceholder(rating) {
-  return rating && rating.startsWith('Sentiment:');
+  return typeof rating === 'string' && rating.startsWith('Sentiment:');
 }
 
 // Analyze each review

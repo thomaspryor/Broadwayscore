@@ -24,6 +24,7 @@ const {
   publishedRatingEvidence,
   isPublishedRatingEvidence,
   isUnambiguousRatingString,
+  isOnStarLadder,
 } = require('./rebuild-helpers.js');
 const { OUTLET_VERIFIED_SOURCES, KNOWN_STAR_OUTLETS } = require('./score-extractors.js');
 
@@ -72,6 +73,42 @@ describe('publishedRatingEvidence', () => {
     assert.equal(publishedRatingEvidence(80, { starRating: '4/5' }), 'starRating');
     assert.equal(publishedRatingEvidence(80, { starRating: '' }), null);
   });
+
+  // 'star-ladder' (S6-T5 follow-up): the strict gate's scoring-delta replaced
+  // ~50 T1 star relays (Time Out 60/80, Guardian 80/100, Times UK 80) with LLM
+  // reads. A bare number ON the outlet's registry star ladder is that relay.
+  test('bare number on the outlet\'s star ladder (registry starScale) is a published rating; off the ladder stays ambiguous', () => {
+    assert.equal(publishedRatingEvidence(60, { outletId: 'timeout', source: 'web-search' }, { starScale: 5 }), 'star-ladder');
+    assert.equal(publishedRatingEvidence('100', { outletId: 'guardian' }, { starScale: 5 }), 'star-ladder');
+    assert.equal(publishedRatingEvidence(75, { outletId: 'usatoday' }, { starScale: 4 }), 'star-ladder', '3 of 4 stars');
+    assert.equal(publishedRatingEvidence(75, { outletId: 'timeout' }, { starScale: 5 }), null, 'Rocky Horror\'s 75 is not on a 5-star ladder');
+    assert.equal(publishedRatingEvidence(70, { outletId: 'timeout' }, { starScale: 5 }), null, 'half stars are not relayed as whole-star numbers');
+    assert.equal(publishedRatingEvidence(88, { outletId: 'ew' }, { starScale: null }), null, 'no starScale → no ladder');
+    assert.equal(publishedRatingEvidence(80, { outletId: 'nydailynews' }, { starScale: undefined }), null);
+    assert.equal(publishedRatingEvidence(0, { outletId: 'timeout' }, { starScale: 5 }), null, '0 stars is not a rung');
+    assert.equal(publishedRatingEvidence(120, { outletId: 'timeout' }, { starScale: 5 }), null);
+    assert.equal(isOnStarLadder(80, 5), true);
+    assert.equal(isOnStarLadder(80, 4), false);
+    assert.equal(isOnStarLadder('60', 5), true);
+    assert.equal(isOnStarLadder('3/5', 5), false, 'strings that are not bare numbers are the unambiguous path, not the ladder');
+  });
+
+  test('star ladder reads the real registry by outletId when no override is given (timeout=5, usatoday=4, ew=none)', () => {
+    assert.equal(publishedRatingEvidence(60, { outletId: 'timeout' }), 'star-ladder');
+    assert.equal(publishedRatingEvidence(75, { outletId: 'usatoday' }), 'star-ladder');
+    assert.equal(publishedRatingEvidence(75, { outletId: 'timeout' }), null);
+    assert.equal(publishedRatingEvidence(88, { outletId: 'ew' }), null);
+    assert.equal(publishedRatingEvidence(80, { outletId: 'no-such-outlet' }), null);
+  });
+
+  test('getBestScore: Time Out web-search 60 (★★★ relay) keeps originalScore-priority0; the same 60 at an outlet with no star scale falls to the LLM', () => {
+    const base = { source: 'web-search', originalScore: 60, fullText: 'x'.repeat(300), llmScore: { score: 71, confidence: 'high' }, ensembleData: { modelAgreement: 'unanimous' } };
+    const timeout = getBestScore({ ...base, outletId: 'timeout' });
+    assert.equal(timeout.source, 'originalScore-priority0', JSON.stringify(timeout));
+    assert.equal(timeout.score, 60);
+    const noScale = getBestScore({ ...base, outletId: 'nytg' });
+    assert.notEqual(noScale.source, 'originalScore-priority0', JSON.stringify(noScale));
+  });
 });
 
 describe('getBestScore P0.5 gate', () => {
@@ -111,9 +148,11 @@ describe('getBestScore P0.5 gate', () => {
     assert.deepEqual(result, { score: 80, source: 'aggregatorStars-relay' });
   });
 
-  test('ambiguous originalScore falls through to a usable aggregatorStars relay', () => {
+  test('ambiguous (off-ladder) originalScore falls through to a usable aggregatorStars relay', () => {
+    // 82 is not a rung of the Guardian's 5-star ladder (80 would be ★★★★ and
+    // count as 'star-ladder' evidence), so it is a bare relayed number.
     const result = getBestScore({
-      outletId: 'guardian', source: 'web-search', originalScore: 80, aggregatorStars: '4/5',
+      outletId: 'guardian', source: 'web-search', originalScore: 82, aggregatorStars: '4/5',
       fullText: 'x'.repeat(300), llmScore: { score: 90, confidence: 'high' }, ensembleData: {},
     });
     assert.deepEqual(result, { score: 80, source: 'aggregatorStars-relay' });
