@@ -52,7 +52,26 @@ const DEFAULT_LEDGER = path.join(__dirname, '..', '..', 'data', 'audit', 'linear
  * @param {string} [row.targetState] the state name the issue was moved to
  * @param {string} [ledgerPath]     override for tests; defaults to DEFAULT_LEDGER
  */
-function appendBypassRow(row, ledgerPath = DEFAULT_LEDGER) {
+/**
+ * BRO-4241: a cloud session (CLAUDE_CODE_REMOTE=true) must not write the
+ * tracked ledger. Each row left an uncommitted file behind; committing and
+ * landing it counted as new work, which re-tripped the Stop hook's
+ * "close out after your last work" check and forced another bypass, in a loop.
+ * The bypass is still recorded, as a DONE-GATE-BYPASS line on the Linear
+ * issue itself (bypassCommentLine below), which is durable and machine-wide.
+ */
+function shouldWriteLedgerFile(env = process.env) {
+  return !(env && env.CLAUDE_CODE_REMOTE === 'true');
+}
+
+/** One greppable line recording a bypass on the Linear issue itself. */
+function bypassCommentLine({ mechanism, reason, targetState } = {}) {
+  const why = String(reason || '').replace(/\s+/g, ' ').trim();
+  return `DONE-GATE-BYPASS: mechanism=${mechanism || 'unknown'} target=${targetState || 'unknown'}${why ? ` reason=${why}` : ''}`;
+}
+
+function appendBypassRow(row, ledgerPath = DEFAULT_LEDGER, env = process.env) {
+  if (ledgerPath === DEFAULT_LEDGER && !shouldWriteLedgerFile(env)) return { written: false, reason: 'cloud-session' };
   const abs = path.resolve(ledgerPath);
   fs.mkdirSync(path.dirname(abs), { recursive: true });
   const record = {
@@ -82,4 +101,4 @@ function readBypassRows(ledgerPath = DEFAULT_LEDGER) {
   return rows;
 }
 
-module.exports = { DEFAULT_LEDGER, appendBypassRow, readBypassRows };
+module.exports = { DEFAULT_LEDGER, appendBypassRow, readBypassRows, shouldWriteLedgerFile, bypassCommentLine };
