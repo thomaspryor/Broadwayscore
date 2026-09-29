@@ -1700,5 +1700,46 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-29T13:28:34.104Z"
+  },
+  {
+    "conditionKey": "time-to-publish-sla:unmeasurable",
+    "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
+    "description": "Scope: 2 opening window(s): the-standard-of-living-west-end-2026 (2026-09-29), school-girls-or-the-african-mean-girls-play-2026 (2026-09-28)\n0 review(s) still in flight.\nStage log currently starts at 2026-09-17T15:01:26.003Z.\nThis is NOT a pass — the SLA had too little to judge.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T13:35:55.370Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:school-girls-or-the-african-mean-girls-play-2026",
+    "title": "Content mismatch on School Girls; Or, The African Mean Girls Play",
+    "description": "theatrely/Joey Sims (theatrely--joey-sims.json) SHIPPED but fullText never mentions 'School Girls; Or, The African Mean Girls Play' (303 chars): https://www.theatrely.com/post/a-fabulous-school-girls-or-the-african-mean-girls-play-finally-makes-it-to-broadway",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T13:39:17.730Z"
+  },
+  {
+    "conditionKey": "broadcast-gate:checklist:school-girls-or-the-african-mean-girls-play-2026",
+    "title": "Opening Night Broadcast Blocked — Checklist Errors",
+    "description": "Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Shows",
+        "value": "school-girls-or-the-african-mean-girls-play-2026"
+      }
+    ],
+    "queuedAt": "2026-09-29T13:39:17.861Z"
   }
 ]
