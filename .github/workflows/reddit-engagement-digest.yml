@@ -9,8 +9,9 @@ on:
     # twice-daily (01:00/13:00 UTC) to once-daily — a second same-day run
     # would just overwrite this one's snapshot before the morning email ever
     # read it, silently dropping its threads. Runs BEFORE daily-digest.yml
-    # (06:30 UTC) / opening-digest.yml (06:15 UTC) / the loop start (07:30
-    # UTC) so the snapshot is same-day fresh — same reasoning as those two.
+    # (06:30 UTC) / the loop start (07:30 UTC) so the snapshot is same-day
+    # fresh. The draft-opening-posts job (BRO-4333) feeds opening-digest.yml
+    # (11:00 UTC), which reads data/audit/reddit-post-drafts.json.
     - cron: '0 6 * * *'
 
   workflow_dispatch:
@@ -125,3 +126,65 @@ jobs:
         with:
           title: 'Reddit Engagement Digest Failed'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+  # BRO-4333: draft "reviews are in" Reddit posts for West End / Off-West End /
+  # Off-Broadway openings. The opening digest email (opening-digest.yml, 11:00
+  # UTC) shows them with a one-tap prefilled Reddit link. Its own job so a slow
+  # draft can't eat the engagement digest's time budget above, and a digest
+  # timeout can't drop the drafts.
+  draft-opening-posts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Draft Reddit opening posts
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="--dry-run"
+          fi
+          node scripts/draft-reddit-opening-posts.js $ARGS
+
+      - name: Commit drafts
+        if: always()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -f data/audit/reddit-post-drafts.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "data: Update Reddit opening-post drafts [automated]"
+            bash scripts/lib/push-with-retry.sh
+          else
+            echo "No changes to Reddit opening-post drafts"
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Reddit Opening-Post Drafts Failed'
