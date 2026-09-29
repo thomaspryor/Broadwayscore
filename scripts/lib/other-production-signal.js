@@ -224,7 +224,35 @@ function otherProductionSignal(review, show, opts = {}) {
 // included reviews: every remaining hit was a real other-production review).
 const URL_SIGNALS = Object.freeze(['url-edition-market', 'url-year']);
 
+/**
+ * Audit the live corpus: included reviews (data/reviews.json) whose URL proves
+ * another production. Exit 1 when any are found. Pure over its inputs.
+ */
+function auditIncludedReviews(reviews, shows) {
+  const byId = new Map(shows.map((s) => [s.id, s]));
+  const hits = [];
+  for (const r of reviews) {
+    const show = byId.get(r.showId);
+    if (!show || !showMarket(show)) continue;
+    const sig = otherProductionSignal(r, show, { only: URL_SIGNALS });
+    if (sig) hits.push({ showId: r.showId, outletId: r.outletId, publishDate: r.publishDate || null, url: r.url, ...sig });
+  }
+  return hits;
+}
+
+if (require.main === module) {
+  const path = require('path');
+  const root = path.join(__dirname, '..', '..');
+  const R = require(path.join(root, 'data', 'reviews.json'));
+  const S = require(path.join(root, 'data', 'shows.json'));
+  const hits = auditIncludedReviews(R.reviews || R, S.shows || S);
+  for (const h of hits) console.log(`${h.signal} | ${h.showId} | ${h.outletId} | ${h.publishDate} | ${h.url}`);
+  console.log(`other-production audit: ${hits.length} included review(s) whose url proves another production`);
+  process.exit(hits.length ? 1 : 0);
+}
+
 module.exports = {
+  auditIncludedReviews,
   otherProductionSignal,
   URL_SIGNALS,
   urlPathYear,

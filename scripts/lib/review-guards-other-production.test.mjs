@@ -189,6 +189,16 @@ test('only: restricts to the named signals', () => {
   assert.equal(otherProductionSignal(dateOnly, SCHOOL_GIRLS, { only: ['url-edition-market', 'url-year'] }), null);
 });
 
+test('auditIncludedReviews reports URL-proven other productions only', () => {
+  const { auditIncludedReviews } = require('./other-production-signal.js');
+  const hits = auditIncludedReviews(
+    [GUARDIAN_2023, GUARDIAN_2026, { outletId: 'times-uk', url: 'https://www.thetimes.co.uk/article/x', publishDate: '2023-06-15' }]
+      .map(r => ({ ...r, showId: SCHOOL_GIRLS.id })),
+    [SCHOOL_GIRLS],
+  );
+  assert.deepEqual(hits.map(h => [h.outletId, h.signal]), [['guardian', 'url-year']]);
+});
+
 test('WET post dated before a London revival previews is another production', () => {
   const revival = { id: 'hamlet-west-end-2026', title: 'Hamlet', category: 'west-end', previewsStartDate: '2026-05-01', openingDate: '2026-05-10' };
   assert.ok(wetPostOtherProduction(revival, 'https://www.westendtheatre.com/123/reviews/hamlet-review-roundup/', '2023-06-15'));
