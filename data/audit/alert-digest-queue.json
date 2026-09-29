@@ -1079,5 +1079,30 @@
       }
     ],
     "queuedAt": "2026-09-29T07:58:00.218Z"
+  },
+  {
+    "conditionKey": "direct-push:ea298bfdc33b95ee3c497723268b0ebb3b5a9307",
+    "title": "Direct push to main: ea298bfdc3 by thomaspryor",
+    "description": "ea298bfdc3 reached main WITHOUT going through land.yml (no row in data/audit/landings.jsonl). Pushed by thomaspryor (committer GitHub). Head commit: Merge In Previews shelf into Shows Starting Soon (#825) Direct pushes skip the delta-vs-base gates; sessions must land via scripts/merge-worktree-to-main.sh (BRO-3425). Compare: https://github.com/thomaspryor/Broadwayscore/compare/77eb7d369294e036e00faf414ad9191536bec736...ea298bfdc33b95ee3c497723268b0ebb3b5a9307 Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36540778246",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "sha",
+        "value": "ea298bfdc33b95ee3c497723268b0ebb3b5a9307"
+      },
+      {
+        "name": "actor",
+        "value": "thomaspryor"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36540778246"
+      }
+    ],
+    "queuedAt": "2026-09-29T08:15:46.372Z"
   }
 ]
