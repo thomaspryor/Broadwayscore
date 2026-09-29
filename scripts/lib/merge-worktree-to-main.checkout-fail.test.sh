@@ -101,7 +101,7 @@ if [ "$code1" -eq 0 ]; then
   echo "FAIL[1]: script exited 0 after a checkout-main failure (stash-then-abort silent-success bug is LIVE). Output:"
   echo "$out1" | tail -20 | sed 's/^/    /'
   fail=1
-elif ! echo "$out1" | grep -q "could not checkout main"; then
+elif ! grep -q "could not checkout main" <<<"$out1"; then
   echo "FAIL[1]: expected the 'could not checkout main' message; got none. Output:"
   echo "$out1" | tail -20 | sed 's/^/    /'
   fail=1
@@ -150,7 +150,7 @@ else
     echo "FAIL[2]: script exited 0 with an unresolved UU conflict in the working tree. Output:"
     echo "$out2" | tail -20 | sed 's/^/    /'
     fail=1
-  elif ! echo "$out2" | grep -q "existing MERGE_HEAD in"; then
+  elif ! grep -q "existing MERGE_HEAD in" <<<"$out2"; then
     # Non-zero alone isn't enough — an earlier, unrelated failure (mutex,
     # branch resolution, git incompatibility) would also exit non-zero and
     # falsely pass this case without ever exercising the intended path.
