@@ -1,8 +1,17 @@
 {
   "_meta": {
-    "description": "Versionless slug → most recent production redirect map",
-    "generatedAt": "2026-09-28T13:08:46.499Z",
-    "totalRedirects": 2740
+    "description": "Versionless slug → most recent production redirect map; criticRedirects = retired critic slug → canonical slug; nameRedirects = per route family, pre-S7-T3 (unfolded) person/place slug → live slug",
+    "generatedAt": "2026-09-29T12:27:47.675Z",
+    "totalRedirects": 2821,
+    "totalCriticRedirects": 51,
+    "totalNameRedirects": 307,
+    "nameRedirectCounts": {
+      "creative": 32,
+      "theater": 0,
+      "westEndTheater": 1,
+      "offBroadwayTheater": 1,
+      "cast": 273
+    }
   },
   "redirects": {
     "13": {
@@ -2847,10 +2856,6 @@
     },
     "the-government-inspector": {
       "target": "the-government-inspector-1994",
-      "permanent": true
-    },
-    "damn-yankees": {
-      "target": "damn-yankees-1994",
       "permanent": true
     },
     "the-flowering-peach": {
@@ -6533,6 +6538,74 @@
       "target": "mystic-pizza-regional-2025",
       "permanent": true
     },
+    "beetlejuice-tour": {
+      "target": "beetlejuice-tour-2026",
+      "permanent": false
+    },
+    "shucked-tour": {
+      "target": "shucked-tour-2024",
+      "permanent": true
+    },
+    "life-of-pi-tour": {
+      "target": "life-of-pi-tour-2024",
+      "permanent": true
+    },
+    "and-juliet-tour": {
+      "target": "and-juliet-tour-2024",
+      "permanent": true
+    },
+    "book-of-mormon-tour": {
+      "target": "book-of-mormon-tour-2022",
+      "permanent": true
+    },
+    "buena-vista-social-club-tour": {
+      "target": "buena-vista-social-club-tour-2026",
+      "permanent": true
+    },
+    "death-becomes-her-tour": {
+      "target": "death-becomes-her-tour-2026",
+      "permanent": true
+    },
+    "hells-kitchen-tour": {
+      "target": "hells-kitchen-tour-2025",
+      "permanent": true
+    },
+    "jersey-boys-tour": {
+      "target": "jersey-boys-tour-2026",
+      "permanent": true
+    },
+    "maybe-happy-ending-tour": {
+      "target": "maybe-happy-ending-tour-2026",
+      "permanent": true
+    },
+    "mrs-doubtfire-tour": {
+      "target": "mrs-doubtfire-tour-2025",
+      "permanent": true
+    },
+    "the-great-gatsby-tour": {
+      "target": "the-great-gatsby-tour-2026",
+      "permanent": true
+    },
+    "the-notebook-tour": {
+      "target": "the-notebook-tour-2025",
+      "permanent": true
+    },
+    "the-outsiders-tour": {
+      "target": "the-outsiders-tour-2025",
+      "permanent": true
+    },
+    "the-phantom-of-the-opera-tour": {
+      "target": "the-phantom-of-the-opera-tour-2025",
+      "permanent": true
+    },
+    "waitress-tour": {
+      "target": "waitress-tour-2026",
+      "permanent": true
+    },
+    "water-for-elephants-tour": {
+      "target": "water-for-elephants-tour-2025",
+      "permanent": true
+    },
     "the-lost-boys-2026": {
       "target": "the-lost-boys",
       "permanent": true
@@ -6991,10 +7064,6 @@
     },
     "spread-off-broadway-2026": {
       "target": "spread-off-broadway",
-      "permanent": true
-    },
-    "betty-buckley-random-notes-off-broadway-2026": {
-      "target": "betty-buckley-random-notes-off-broadway",
       "permanent": true
     },
     "entangled-12-scenes-in-a-circle-k-off-the-i40-in-new-mexico-off-broadway-2026": {
@@ -7885,10 +7954,6 @@
       "target": "a-woman-among-women-off-broadway",
       "permanent": true
     },
-    "the-karate-kid-the-musical-west-end-2026": {
-      "target": "the-karate-kid-the-musical-west-end",
-      "permanent": true
-    },
     "burlesque-west-end-2026": {
       "target": "burlesque-west-end",
       "permanent": true
@@ -8147,10 +8212,6 @@
     },
     "a-midsummer-nights-dream-west-end-2026": {
       "target": "a-midsummer-nights-dream-west-end",
-      "permanent": true
-    },
-    "gabbys-dollhouse-live-off-west-end-2026": {
-      "target": "gabbys-dollhouse-live-off-west-end",
       "permanent": true
     },
     "the-p-word-off-west-end-2026": {
@@ -8429,14 +8490,6 @@
       "target": "churchills-urinal-a-new-comedy-by-and-starring-rosie-holt-with-additional-material-off-west-end",
       "permanent": true
     },
-    "senior-dance-production-off-broadway-2026": {
-      "target": "senior-dance-production-off-broadway",
-      "permanent": true
-    },
-    "juilliard-opera-presents-verdis-falstaff-off-broadway-2026": {
-      "target": "juilliard-opera-presents-verdis-falstaff-off-broadway",
-      "permanent": true
-    },
     "toussaint-douglass-accessible-pigeon-material-off-west-end-2026": {
       "target": "toussaint-douglass-accessible-pigeon-material-off-west-end",
       "permanent": true
@@ -8465,10 +8518,6 @@
       "target": "the-pushover-by-john-patrick-shanley-off-broadway",
       "permanent": true
     },
-    "soledad-barrio-and-noche-flamenca-aqua-fresca-off-broadway-2026": {
-      "target": "soledad-barrio-and-noche-flamenca-aqua-fresca-off-broadway",
-      "permanent": true
-    },
     "mas-sabe-el-saulo-por-viejo-off-broadway-2025": {
       "target": "mas-sabe-el-saulo-por-viejo-off-broadway",
       "permanent": true
@@ -8495,10 +8544,6 @@
     },
     "qawwali-live-with-hussain-brothers-off-west-end-2026": {
       "target": "qawwali-live-with-hussain-brothers-off-west-end",
-      "permanent": true
-    },
-    "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026": {
-      "target": "yokos-husbands-killers-japanese-wife-gloria-off-broadway",
       "permanent": true
     },
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026": {
@@ -8567,14 +8612,6 @@
     },
     "360-allstars-off-west-end-2026": {
       "target": "360-allstars-off-west-end",
-      "permanent": true
-    },
-    "meow-meow-off-broadway-2026": {
-      "target": "meow-meow-off-broadway",
-      "permanent": true
-    },
-    "harry-connick-jr-off-broadway-2026": {
-      "target": "harry-connick-jr-off-broadway",
       "permanent": true
     },
     "stephane-wrembels-django-a-gogo-off-broadway-2026": {
@@ -8689,10 +8726,6 @@
       "target": "the-place-we-made-off-west-end",
       "permanent": true
     },
-    "barbarians-v-wales-double-header-off-west-end-2026": {
-      "target": "barbarians-v-wales-double-header-off-west-end",
-      "permanent": true
-    },
     "fish-off-broadway-2026": {
       "target": "fish-off-broadway",
       "permanent": true
@@ -8737,10 +8770,6 @@
       "target": "good-time-charlie-off-broadway",
       "permanent": true
     },
-    "be-like-blippi-off-west-end-2026": {
-      "target": "be-like-blippi-off-west-end",
-      "permanent": true
-    },
     "my-sons-a-queer-but-what-can-you-do-west-end-2026": {
       "target": "my-sons-a-queer-but-what-can-you-do-west-end",
       "permanent": true
@@ -8767,14 +8796,6 @@
     },
     "small-off-broadway-2026": {
       "target": "small-off-broadway",
-      "permanent": true
-    },
-    "theres-a-bear-on-my-chair-off-west-end-2026": {
-      "target": "theres-a-bear-on-my-chair-off-west-end",
-      "permanent": true
-    },
-    "migrant-qa-panel-off-west-end-2026": {
-      "target": "migrant-qa-panel-off-west-end",
       "permanent": true
     },
     "scratching-the-itch-off-west-end-2026": {
@@ -8811,14 +8832,6 @@
     },
     "raising-hare-an-evening-with-chloe-dalton-off-west-end-2026": {
       "target": "raising-hare-an-evening-with-chloe-dalton-off-west-end",
-      "permanent": true
-    },
-    "kilburn-high-road-festival-off-west-end-2026": {
-      "target": "kilburn-high-road-festival-off-west-end",
-      "permanent": true
-    },
-    "nt-live-all-my-sons-12a-tbc-off-west-end-2026": {
-      "target": "nt-live-all-my-sons-12a-tbc-off-west-end",
       "permanent": true
     },
     "a-hard-days-night-off-west-end-2026": {
@@ -8863,14 +8876,6 @@
     },
     "grown-up-nights-jim-hensons-fraggle-rock-back-to-the-rock-live-off-broadway-2026": {
       "target": "grown-up-nights-jim-hensons-fraggle-rock-back-to-the-rock-live-off-broadway",
-      "permanent": true
-    },
-    "noughts-and-crosses-off-west-end-2026": {
-      "target": "noughts-and-crosses-off-west-end",
-      "permanent": true
-    },
-    "kavakos-conducts-dvorak-schumann-and-brahms-off-west-end-2026": {
-      "target": "kavakos-conducts-dvorak-schumann-and-brahms-off-west-end",
       "permanent": true
     },
     "celebrity-autobiography-2026": {
@@ -9153,10 +9158,6 @@
       "target": "forest-high-and-the-glitch-in-the-system-a-new-sci-fi-musical-off-broadway",
       "permanent": true
     },
-    "peppa-pigs-big-family-show-west-end-2026": {
-      "target": "peppa-pigs-big-family-show-west-end",
-      "permanent": true
-    },
     "high-school-musical-off-west-end-2026": {
       "target": "high-school-musical-off-west-end",
       "permanent": true
@@ -9277,10 +9278,6 @@
       "target": "pride-a-creative-celebration-off-west-end",
       "permanent": true
     },
-    "edinburgh-fringe-comedy-previews-off-west-end-2026": {
-      "target": "edinburgh-fringe-comedy-previews-off-west-end",
-      "permanent": true
-    },
     "the-jonathan-larson-project-off-west-end-2026": {
       "target": "the-jonathan-larson-project-off-west-end",
       "permanent": true
@@ -9385,10 +9382,6 @@
       "target": "rockers-off-west-end",
       "permanent": true
     },
-    "nt-live-les-liaisons-dangereuses-off-west-end-2026": {
-      "target": "nt-live-les-liaisons-dangereuses-off-west-end",
-      "permanent": true
-    },
     "dad-dont-read-this-off-broadway-2026": {
       "target": "dad-dont-read-this-off-broadway",
       "permanent": true
@@ -9423,10 +9416,6 @@
     },
     "alvin-ailey-american-dance-theater-legacy-west-end-2026": {
       "target": "alvin-ailey-american-dance-theater-legacy-west-end",
-      "permanent": true
-    },
-    "ukaff-hostile-special-qa-off-west-end-2026": {
-      "target": "ukaff-hostile-special-qa-off-west-end",
       "permanent": true
     },
     "everybody-to-kenmure-street-off-west-end-2026": {
@@ -9697,10 +9686,6 @@
       "target": "kings-2-off-west-end",
       "permanent": true
     },
-    "bridget-everett-and-patti-lupone-knockouts-off-broadway-2026": {
-      "target": "bridget-everett-and-patti-lupone-knockouts-off-broadway",
-      "permanent": true
-    },
     "are-you-mad-at-me-off-broadway-2026": {
       "target": "are-you-mad-at-me-off-broadway",
       "permanent": true
@@ -9775,10 +9760,6 @@
     },
     "weve-been-here-before-a-one-woman-musical-off-broadway-2026": {
       "target": "weve-been-here-before-a-one-woman-musical-off-broadway",
-      "permanent": true
-    },
-    "big-wheel-at-electric-summer-off-west-end-2026": {
-      "target": "big-wheel-at-electric-summer-off-west-end",
       "permanent": true
     },
     "from-the-heart-west-end-2026": {
@@ -9879,10 +9860,6 @@
     },
     "compost-whats-left-off-west-end-2026": {
       "target": "compost-whats-left-off-west-end",
-      "permanent": true
-    },
-    "the-seven-deadly-sins-the-human-voice-off-west-end-2026": {
-      "target": "the-seven-deadly-sins-the-human-voice-off-west-end",
       "permanent": true
     },
     "room-on-the-broom-live-on-stage-west-end-2026": {
@@ -10009,10 +9986,6 @@
       "target": "the-kings-ransom-west-end",
       "permanent": true
     },
-    "sylvia-off-west-end-2026": {
-      "target": "sylvia-off-west-end",
-      "permanent": true
-    },
     "abigails-party-richmond-theatre-west-end-2026": {
       "target": "abigails-party-richmond-theatre-west-end",
       "permanent": true
@@ -10111,10 +10084,6 @@
     },
     "golden-boy-off-west-end-2026": {
       "target": "golden-boy-off-west-end",
-      "permanent": true
-    },
-    "bar-events-off-west-end-2026": {
-      "target": "bar-events-off-west-end",
       "permanent": true
     },
     "unfinished-business-off-west-end-2026": {
@@ -10269,10 +10238,6 @@
       "target": "september-l-davis-the-apology-tour-off-broadway",
       "permanent": true
     },
-    "cirque-alice-off-west-end-2026": {
-      "target": "cirque-alice-off-west-end",
-      "permanent": true
-    },
     "almeida-for-free-cleansed-off-west-end-2026": {
       "target": "almeida-for-free-cleansed-off-west-end",
       "permanent": true
@@ -10289,10 +10254,6 @@
       "target": "after-all-these-years-off-broadway",
       "permanent": true
     },
-    "stiles-drewe-best-new-song-prize-2026-off-west-end-2026": {
-      "target": "stiles-drewe-best-new-song-prize-2026-off-west-end",
-      "permanent": true
-    },
     "a-ghost-in-your-ear-off-broadway-2026": {
       "target": "a-ghost-in-your-ear-off-broadway",
       "permanent": true
@@ -10303,10 +10264,6 @@
     },
     "barcelona-west-end-2024": {
       "target": "barcelona-west-end",
-      "permanent": true
-    },
-    "roller-rink-at-electric-summer-off-west-end-2026": {
-      "target": "roller-rink-at-electric-summer-off-west-end",
       "permanent": true
     },
     "degenerates-off-broadway-2026": {
@@ -10441,10 +10398,6 @@
       "target": "the-bathroom-attendant-off-broadway",
       "permanent": true
     },
-    "michael-r-jackson-wake-up-call-off-broadway-2026": {
-      "target": "michael-r-jackson-wake-up-call-off-broadway",
-      "permanent": true
-    },
     "the-ford-hill-project-off-broadway-2026": {
       "target": "the-ford-hill-project",
       "permanent": true
@@ -10531,10 +10484,6 @@
     },
     "becoming-hamlet-off-broadway-2026": {
       "target": "becoming-hamlet-off-broadway",
-      "permanent": true
-    },
-    "mulan-off-broadway-2026": {
-      "target": "mulan-off-broadway",
       "permanent": true
     },
     "toc-toc-off-broadway-2026": {
@@ -10685,10 +10634,6 @@
       "target": "million-dollar-quartet-off-west-end",
       "permanent": true
     },
-    "sherlock-holmes-and-the-12-days-of-christmas-off-west-end-2026": {
-      "target": "sherlock-holmes-and-the-12-days-of-christmas-off-west-end",
-      "permanent": true
-    },
     "pride-bridge-theatre-off-west-end-2026": {
       "target": "pride-bridge-theatre-off-west-end",
       "permanent": true
@@ -10781,16 +10726,8 @@
       "target": "the-ask-off-broadway",
       "permanent": true
     },
-    "legally-blondes-orfeh-unbound-off-broadway-2026": {
-      "target": "legally-blondes-orfeh-unbound-off-broadway",
-      "permanent": true
-    },
     "parcel-from-america-off-broadway-2026": {
       "target": "parcel-from-america-off-broadway",
-      "permanent": true
-    },
-    "jeanna-de-waal-songs-i-love-to-sing-off-broadway-2026": {
-      "target": "jeanna-de-waal-songs-i-love-to-sing-off-broadway",
       "permanent": true
     },
     "night-of-january-16th-off-broadway-2026": {
@@ -10817,10 +10754,6 @@
       "target": "love-me-off-broadway",
       "permanent": true
     },
-    "taylor-mac-a-24-decade-history-of-popular-music-off-west-end-2026": {
-      "target": "taylor-mac-a-24-decade-history-of-popular-music-off-west-end",
-      "permanent": true
-    },
     "texas-in-paris-off-broadway-2027": {
       "target": "texas-in-paris-off-broadway",
       "permanent": true
@@ -10845,20 +10778,12 @@
       "target": "an-evening-with-an-immigrant-off-west-end",
       "permanent": true
     },
-    "rosie-jones-anyone-but-me-wip-off-west-end-2026": {
-      "target": "rosie-jones-anyone-but-me-wip-off-west-end",
-      "permanent": true
-    },
     "truths-a-dog-must-to-kennel-off-west-end-2026": {
       "target": "truths-a-dog-must-to-kennel-off-west-end",
       "permanent": true
     },
     "spandex-off-broadway-2026": {
       "target": "spandex-off-broadway",
-      "permanent": true
-    },
-    "darren-criss-live-at-the-royal-albert-hall-off-west-end-2026": {
-      "target": "darren-criss-live-at-the-royal-albert-hall-off-west-end",
       "permanent": true
     },
     "danny-and-the-deep-blue-sea-off-broadway-2023": {
@@ -10901,12 +10826,412 @@
       "target": "legally-blonde-west-end",
       "permanent": true
     },
-    "ari-emanuel-an-evening-with-the-dealmaker-who-reshaped-hollywood-off-west-end-2026": {
-      "target": "ari-emanuel-an-evening-with-the-dealmaker-who-reshaped-hollywood-off-west-end",
-      "permanent": true
-    },
     "strictly-come-dancing-london-off-west-end-2027": {
       "target": "strictly-come-dancing-london-off-west-end",
+      "permanent": true
+    },
+    "moonrise-a-theatrical-dinner-experience-at-paradise-club-off-broadway-2026": {
+      "target": "moonrise-a-theatrical-dinner-experience-at-paradise-club-off-broadway",
+      "permanent": true
+    },
+    "a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026": {
+      "target": "a-homo-alone-2-yikes-we-did-it-again-off-west-end",
+      "permanent": true
+    },
+    "into-the-woods-noel-coward-west-end-2026": {
+      "target": "into-the-woods-noel-coward-west-end",
+      "permanent": true
+    },
+    "harry-potter-and-the-cursed-child-one-part-west-end-2026": {
+      "target": "harry-potter-and-the-cursed-child-one-part-west-end",
+      "permanent": true
+    },
+    "arcadia-duke-of-yorks-west-end-2026": {
+      "target": "arcadia-duke-of-yorks-west-end",
+      "permanent": true
+    },
+    "damn-yankees-2027": {
+      "target": "damn-yankees",
+      "permanent": true
+    },
+    "repro-eco-tomorrow-is-now-off-broadway-2026": {
+      "target": "repro-eco-tomorrow-is-now-off-broadway",
+      "permanent": true
+    },
+    "lost-in-del-valle-return-off-broadway-2026": {
+      "target": "lost-in-del-valle-return-off-broadway",
+      "permanent": true
+    },
+    "the-choir-of-man-marble-arch-off-west-end-2026": {
+      "target": "the-choir-of-man-marble-arch-off-west-end",
+      "permanent": true
+    },
+    "cinderella-lyric-hammersmith-off-west-end-2026": {
+      "target": "cinderella-lyric-hammersmith-off-west-end",
+      "permanent": true
+    },
+    "jane-eyre-rose-kingston-off-west-end-2026": {
+      "target": "jane-eyre-rose-kingston-off-west-end",
+      "permanent": true
+    },
+    "the-cherry-orchard-riverside-studios-off-west-end-2026": {
+      "target": "the-cherry-orchard-riverside-studios-off-west-end",
+      "permanent": true
+    },
+    "sylvia-west-end-2023": {
+      "target": "sylvia-west-end",
+      "permanent": true
+    },
+    "bluebirds-off-west-end-2026": {
+      "target": "bluebirds-off-west-end",
+      "permanent": true
+    },
+    "speculations-off-west-end-2026": {
+      "target": "speculations-off-west-end",
+      "permanent": true
+    },
+    "shakespeare-unplugged-off-west-end-2026": {
+      "target": "shakespeare-unplugged-off-west-end",
+      "permanent": true
+    },
+    "big-man-little-man-off-west-end-2026": {
+      "target": "big-man-little-man-off-west-end",
+      "permanent": true
+    },
+    "not-quite-my-type-off-west-end-2026": {
+      "target": "not-quite-my-type-off-west-end",
+      "permanent": true
+    },
+    "monsters-a-killer-new-musical-comedy-off-west-end-2026": {
+      "target": "monsters-a-killer-new-musical-comedy-off-west-end",
+      "permanent": true
+    },
+    "outrageous-what-the-frock-crystal-carrington-off-west-end-2026": {
+      "target": "outrageous-what-the-frock-crystal-carrington-off-west-end",
+      "permanent": true
+    },
+    "wives-maids-off-west-end-2026": {
+      "target": "wives-maids-off-west-end",
+      "permanent": true
+    },
+    "cranford-off-west-end-2026": {
+      "target": "cranford-off-west-end",
+      "permanent": true
+    },
+    "constanze-off-west-end-2026": {
+      "target": "constanze-off-west-end",
+      "permanent": true
+    },
+    "king-lear-2-off-west-end-2026": {
+      "target": "king-lear-2-off-west-end",
+      "permanent": true
+    },
+    "richard-ii-off-west-end-2026": {
+      "target": "richard-ii-off-west-end",
+      "permanent": true
+    },
+    "the-vortex-off-west-end-2026": {
+      "target": "the-vortex-off-west-end",
+      "permanent": true
+    },
+    "mortal-wounds-off-west-end-2026": {
+      "target": "mortal-wounds-off-west-end",
+      "permanent": true
+    },
+    "sapling-off-west-end-2026": {
+      "target": "sapling-off-west-end",
+      "permanent": true
+    },
+    "infamous-anne-off-west-end-2026": {
+      "target": "infamous-anne-off-west-end",
+      "permanent": true
+    },
+    "its-unlikely-off-west-end-2026": {
+      "target": "its-unlikely-off-west-end",
+      "permanent": true
+    },
+    "the-graddys-london-semi-finals-off-west-end-2026": {
+      "target": "the-graddys-london-semi-finals-off-west-end",
+      "permanent": true
+    },
+    "taken-the-unofficial-musical-off-west-end-2026": {
+      "target": "taken-the-unofficial-musical-off-west-end",
+      "permanent": true
+    },
+    "fly-you-fools-off-west-end-2026": {
+      "target": "fly-you-fools-off-west-end",
+      "permanent": true
+    },
+    "triumph-off-west-end-2026": {
+      "target": "triumph-off-west-end",
+      "permanent": true
+    },
+    "860-2026": {
+      "target": "860",
+      "permanent": true
+    },
+    "angels-bone-west-end-2026": {
+      "target": "angels-bone-west-end",
+      "permanent": true
+    },
+    "cadel-lungs-on-legs-west-end-2026": {
+      "target": "cadel-lungs-on-legs-west-end",
+      "permanent": true
+    },
+    "dick-whittington-and-his-cat-west-end-2026": {
+      "target": "dick-whittington-and-his-cat-west-end",
+      "permanent": true
+    },
+    "frankenstein-west-end-2027": {
+      "target": "frankenstein-west-end",
+      "permanent": true
+    },
+    "inala-west-end-2026": {
+      "target": "inala-west-end",
+      "permanent": true
+    },
+    "the-little-match-girl-west-end-2026": {
+      "target": "the-little-match-girl-west-end",
+      "permanent": true
+    },
+    "matthew-bournes-cinderella-off-west-end-2026": {
+      "target": "matthew-bournes-cinderella-off-west-end",
+      "permanent": true
+    },
+    "nutcracker-west-end-2026": {
+      "target": "nutcracker-west-end",
+      "permanent": true
+    },
+    "peter-pan-west-end-2026": {
+      "target": "peter-pan-west-end",
+      "permanent": true
+    },
+    "pulman-and-stilgoe-hooray-for-hollywood-west-end-2026": {
+      "target": "pulman-and-stilgoe-hooray-for-hollywood-west-end",
+      "permanent": true
+    },
+    "representasian-an-evening-of-asian-talent-west-end-2026": {
+      "target": "representasian-an-evening-of-asian-talent-west-end",
+      "permanent": true
+    },
+    "nerdy-prudes-must-die-off-west-end-2027": {
+      "target": "nerdy-prudes-must-die-off-west-end",
+      "permanent": true
+    },
+    "guess-how-much-i-love-you-west-end-2026": {
+      "target": "guess-how-much-i-love-you-west-end",
+      "permanent": true
+    },
+    "america-the-beautiful-chapter-1-off-west-end-2026": {
+      "target": "america-the-beautiful-chapter-1-off-west-end",
+      "permanent": true
+    },
+    "christmas-carol-goes-wrong-apollo-west-end-2025": {
+      "target": "christmas-carol-goes-wrong-apollo-west-end",
+      "permanent": true
+    },
+    "a-ghost-in-your-ear-off-west-end-2026": {
+      "target": "a-ghost-in-your-ear-off-west-end",
+      "permanent": true
+    },
+    "indian-ink-off-west-end-2025": {
+      "target": "indian-ink-off-west-end",
+      "permanent": true
+    },
+    "bird-grove-off-west-end-2026": {
+      "target": "bird-grove-off-west-end",
+      "permanent": true
+    },
+    "stage-kiss-off-west-end-2026": {
+      "target": "stage-kiss-off-west-end",
+      "permanent": true
+    },
+    "american-psycho-off-west-end-2026": {
+      "target": "american-psycho-off-west-end",
+      "permanent": true
+    },
+    "ballad-lines-off-west-end-2026": {
+      "target": "ballad-lines-off-west-end",
+      "permanent": true
+    },
+    "miles-off-west-end-2026": {
+      "target": "miles-off-west-end",
+      "permanent": true
+    },
+    "children-of-the-night-off-west-end-2026": {
+      "target": "children-of-the-night-off-west-end",
+      "permanent": true
+    },
+    "invisible-me-off-west-end-2026": {
+      "target": "invisible-me-off-west-end",
+      "permanent": true
+    },
+    "slaughterhouse-five-off-west-end-2026": {
+      "target": "slaughterhouse-five-off-west-end",
+      "permanent": true
+    },
+    "cable-street-off-west-end-2026": {
+      "target": "cable-street-off-west-end",
+      "permanent": true
+    },
+    "daniels-husband-off-west-end-2025": {
+      "target": "daniels-husband-off-west-end",
+      "permanent": true
+    },
+    "lost-atoms-off-west-end-2026": {
+      "target": "lost-atoms-off-west-end",
+      "permanent": true
+    },
+    "after-miss-julie-off-west-end-2026": {
+      "target": "after-miss-julie-off-west-end",
+      "permanent": true
+    },
+    "two-halves-of-guinness-off-west-end-2026": {
+      "target": "two-halves-of-guinness-off-west-end",
+      "permanent": true
+    },
+    "choir-boy-off-west-end-2026": {
+      "target": "choir-boy-off-west-end",
+      "permanent": true
+    },
+    "blue-mist-off-west-end-2026": {
+      "target": "blue-mist-off-west-end",
+      "permanent": true
+    },
+    "the-last-days-of-liz-truss-off-west-end-2026": {
+      "target": "the-last-days-of-liz-truss-off-west-end",
+      "permanent": true
+    },
+    "age-is-a-feeling-off-west-end-2026": {
+      "target": "age-is-a-feeling-off-west-end",
+      "permanent": true
+    },
+    "hole-off-west-end-2026": {
+      "target": "hole-off-west-end",
+      "permanent": true
+    },
+    "crybabies-the-scaring-off-west-end-2026": {
+      "target": "crybabies-the-scaring-off-west-end",
+      "permanent": true
+    },
+    "already-perfect-off-west-end-2026": {
+      "target": "already-perfect-off-west-end",
+      "permanent": true
+    },
+    "here-comes-j-edgar-off-west-end-2026": {
+      "target": "here-comes-j-edgar-off-west-end",
+      "permanent": true
+    },
+    "safe-haven-off-west-end-2026": {
+      "target": "safe-haven-off-west-end",
+      "permanent": true
+    },
+    "monstering-the-rocketman-off-west-end-2026": {
+      "target": "monstering-the-rocketman-off-west-end",
+      "permanent": true
+    },
+    "bitch-boxer-off-west-end-2026": {
+      "target": "bitch-boxer-off-west-end",
+      "permanent": true
+    },
+    "ukraine-unbroken-off-west-end-2026": {
+      "target": "ukraine-unbroken-off-west-end",
+      "permanent": true
+    },
+    "dear-jack-dear-louise-off-west-end-2026": {
+      "target": "dear-jack-dear-louise-off-west-end",
+      "permanent": true
+    },
+    "iphigenia-off-west-end-2026": {
+      "target": "iphigenia-off-west-end",
+      "permanent": true
+    },
+    "flush-off-west-end-2026": {
+      "target": "flush-off-west-end",
+      "permanent": true
+    },
+    "a-fine-idea-off-west-end-2026": {
+      "target": "a-fine-idea-off-west-end",
+      "permanent": true
+    },
+    "orphans-off-west-end-2026": {
+      "target": "orphans-off-west-end",
+      "permanent": true
+    },
+    "dear-liar-off-west-end-2026": {
+      "target": "dear-liar-off-west-end",
+      "permanent": true
+    },
+    "a-slow-fire-off-west-end-2026": {
+      "target": "a-slow-fire-off-west-end",
+      "permanent": true
+    },
+    "eggs-arent-that-easy-to-make-off-west-end-2026": {
+      "target": "eggs-arent-that-easy-to-make-off-west-end",
+      "permanent": true
+    },
+    "player-off-west-end-2026": {
+      "target": "player-off-west-end",
+      "permanent": true
+    },
+    "who-killed-marilyn-off-west-end-2026": {
+      "target": "who-killed-marilyn-off-west-end",
+      "permanent": true
+    },
+    "grindr-mom-off-west-end-2026": {
+      "target": "grindr-mom-off-west-end",
+      "permanent": true
+    },
+    "the-sound-of-absence-off-west-end-2026": {
+      "target": "the-sound-of-absence-off-west-end",
+      "permanent": true
+    },
+    "hold-the-line-off-west-end-2026": {
+      "target": "hold-the-line-off-west-end",
+      "permanent": true
+    },
+    "the-name-off-west-end-2026": {
+      "target": "the-name-off-west-end",
+      "permanent": true
+    },
+    "the-dasslers-off-west-end-2026": {
+      "target": "the-dasslers-off-west-end",
+      "permanent": true
+    },
+    "i-made-you-a-mixtape-off-west-end-2026": {
+      "target": "i-made-you-a-mixtape-off-west-end",
+      "permanent": true
+    },
+    "reel-life-off-west-end-2026": {
+      "target": "reel-life-off-west-end",
+      "permanent": true
+    },
+    "the-pass-off-west-end-2026": {
+      "target": "the-pass-off-west-end",
+      "permanent": true
+    },
+    "ancient-grease-off-west-end-2026": {
+      "target": "ancient-grease-off-west-end",
+      "permanent": true
+    },
+    "three-men-in-a-boat-off-west-end-2026": {
+      "target": "three-men-in-a-boat-off-west-end",
+      "permanent": true
+    },
+    "top-gunchained-off-west-end-2026": {
+      "target": "top-gunchained-off-west-end",
+      "permanent": true
+    },
+    "stick-man-off-west-end-2026": {
+      "target": "stick-man-off-west-end",
+      "permanent": true
+    },
+    "dick-whittington-adults-only-off-west-end-2026": {
+      "target": "dick-whittington-adults-only-off-west-end",
+      "permanent": true
+    },
+    "michael-r-jackson-wake-up-call-off-broadway-2026": {
+      "target": "michael-r-jackson-wake-up-call-off-broadway",
       "permanent": true
     },
     "thornton-wilders-the-emporium-off-broadway-2026": {
@@ -10957,6 +11282,14 @@
       "target": "bone-wars-off-broadway",
       "permanent": true
     },
+    "the-seven-deadly-sins-the-human-voice-off-west-end-2026": {
+      "target": "the-human-voice-the-seven-deadly-sins-west-end",
+      "permanent": true
+    },
+    "the-seven-deadly-sins-the-human-voice-off-west-end": {
+      "target": "the-human-voice-the-seven-deadly-sins-west-end",
+      "permanent": true
+    },
     "louis-katz-conflicted-off-broadway-2026": {
       "target": "conflicted-off-broadway",
       "permanent": true
@@ -10964,6 +11297,377 @@
     "louis-katz-conflicted-off-broadway": {
       "target": "conflicted-off-broadway",
       "permanent": true
+    }
+  },
+  "criticRedirects": {
+    "alison-adato": "allison-adato",
+    "allan-fitter": "alan-fitter",
+    "andrzej-lukowsksi": "andrzej-lukowski",
+    "anna-ryan": "anya-ryan",
+    "bethan-warriner-she-her": "bethan-warriner",
+    "brian-scott-lipon": "brian-scott-lipton",
+    "britany-crowell": "brittany-crowell",
+    "by-bridget-galton": "bridget-galton",
+    "by-charles-isherwood": "charles-isherwood",
+    "christoher-kelly": "christopher-kelly",
+    "clive-davis-chief-theatre-critic": "clive-davis",
+    "daniel-d-addario-variety": "daniel-d-addario",
+    "davd-barbour": "david-barbour",
+    "dave-b-everything-theatre": "dave-b",
+    "david-tereschuck": "david-tereshchuk",
+    "debra-craine-chief-dance-critic": "debra-craine",
+    "eric-haagensen": "erik-haagensen",
+    "holly-o-mahony-the-guardian": "holly-o-mahony",
+    "holly-o-mahony-time-out-london": "holly-o-mahony",
+    "j-kelly-nestruck": "kelly-nestruck",
+    "joe-dziemianowics": "joe-dziemianowicz",
+    "joe-dziemianowiczny": "joe-dziemianowicz",
+    "johnpeter": "john-peter",
+    "jose-sol-s": "jose-solis",
+    "juan-a-ram-rez": "juan-a-ramirez",
+    "juan-a-ramirez-the-guardian": "juan-a-ramirez",
+    "julie-fisher-she-her": "julie-fisher",
+    "laura-collins-hughes-the-new-york-times": "laura-collins-hughes",
+    "lisa-martland-br": "lisa-martland",
+    "maddie-white-she-her": "maddie-white",
+    "mateo-moreno-critic": "mateo-moreno",
+    "megan-o-neill-she-her": "megan-o-neill",
+    "michael-covene": "michael-coveney",
+    "michaelcoveney": "michael-coveney",
+    "nicholas-de-jongh-evening-standard": "nicholas-de-jongh",
+    "nilg-n-yusuf": "nilgun-yusuf",
+    "oviya-thirumalai-she-her": "oviya-thirumalai",
+    "paultaylor": "paul-taylor",
+    "peter-hempstead": "pete-hempstead",
+    "rafer-guzm-n": "rafer-guzman",
+    "raffaello-sero": "raffaella-sero",
+    "robert-hoffler": "robert-hofler",
+    "ron-fassler-critic": "ron-fassler",
+    "ronnie-reich": "ronni-reich",
+    "rose-bernardo": "melissa-rose-bernardo",
+    "sara-holdren-jackson-mchenry-vulture": "sara-holdren-jackson-mchenry",
+    "sheridan-morley-express-uk": "sheridan-morley",
+    "steve-babyak": "steven-babyak",
+    "thomas-geier": "thom-geier",
+    "tony-zinman": "toby-zinman",
+    "victor-gluck-editor-in-chief": "victor-gluck"
+  },
+  "nameRedirects": {
+    "creative": {
+      "bj-rn-ulvaeus": "bjorn-ulvaeus",
+      "abba-benny-andersson-bj-rn-ulvaeus": "abba-benny-andersson-bjorn-ulvaeus",
+      "leon-ren": "leon-rene",
+      "otis-ren": "otis-rene",
+      "matthew-l-pez": "matthew-lopez",
+      "anne-tourni": "anne-tournie",
+      "mois-s-kaufman": "moises-kaufman",
+      "ana-s-mitchell": "anais-mitchell",
+      "no-l-coward": "noel-coward-2",
+      "daniel-mess": "daniel-messe",
+      "alain-boublil-and-claude-michel-sch-nberg": "alain-boublil-and-claude-michel-schonberg",
+      "claude-michel-sch-nberg": "claude-michel-schonberg",
+      "philippe-decoufl": "philippe-decoufle",
+      "colm-t-ib-n": "colm-toibin",
+      "mark-ta-irglov": "marketa-irglova",
+      "quiara-alegr-a-hudes": "quiara-alegria-hudes",
+      "robin-lef-vre": "robin-lefevre",
+      "moli-re": "moliere",
+      "ren-e-taylor-and-joe-bologna": "renee-taylor-and-joe-bologna",
+      "benny-andersson-and-bj-rn-ulvaeus": "benny-andersson-and-bjorn-ulvaeus",
+      "andr-heller": "andre-heller",
+      "georges-feydeau-and-maurice-desvallier-s": "georges-feydeau-and-maurice-desvallieres",
+      "janusz-j-zefowicz": "janusz-jozefowicz",
+      "mary-bracken-phillips-and-janusz-j-zefowicz": "mary-bracken-phillips-and-janusz-jozefowicz",
+      "norman-ren": "norman-rene",
+      "claudio-segovia-and-h-ctor-orezzoli": "claudio-segovia-and-hector-orezzoli",
+      "jos-quintero": "jose-quintero",
+      "g-ran-graffman": "goran-graffman",
+      "ren-e-taylor-and-joseph-bologna": "renee-taylor-and-joseph-bologna",
+      "jos-ferrer": "jose-ferrer",
+      "ferenc-moln-r": "ferenc-molnar",
+      "jean-claude-carri-re": "jean-claude-carriere"
+    },
+    "theater": {},
+    "westEndTheater": {
+      "no-l-coward-theatre": "noel-coward-theatre"
+    },
+    "offBroadwayTheater": {
+      "repertorio-espa-ol-spanish-theatre-repertory": "repertorio-espanol-spanish-theatre-repertory"
+    },
+    "cast": {
+      "h-ctor-jaime-mercado": "hector-jaime-mercado",
+      "ren-e-klapmeyer": "renee-klapmeyer",
+      "lynda-grav-tt": "lynda-gravatt",
+      "dimitri-joseph-mo-se": "dimitri-joseph-moise",
+      "jack-e-harry": "jackee-harry",
+      "ren-ceballos": "rene-ceballos",
+      "ren-clemente": "rene-clemente",
+      "lillian-col-n": "lillian-colon",
+      "david-thom": "david-thome",
+      "rosal-col-n": "rosal-colon",
+      "jessica-grov": "jessica-grove",
+      "siobh-n-mckenna": "siobhan-mckenna",
+      "jer-kwab": "jere-kwabe",
+      "teddy-ca-ez": "teddy-canez",
+      "chik-johnson": "chike-johnson",
+      "ciar-n-o-reilly": "ciaran-o-reilly",
+      "ram-n-ramos": "ramon-ramos",
+      "robert-jim-nez": "robert-jimenez",
+      "pamela-br-ll": "pamela-brull",
+      "dul-hill": "dule-hill",
+      "nikki-ren-e-daniels": "nikki-renee-daniels",
+      "noa-nev": "noa-neve",
+      "andr-de-shields": "andre-de-shields",
+      "march-nt-davis": "marchant-davis",
+      "tiffany-franc-s": "tiffany-frances",
+      "ren-e-elise-goldsberry": "renee-elise-goldsberry",
+      "christ-pheren-nomura": "christopheren-nomura",
+      "kristin-rudr-d": "kristin-rudrud",
+      "hel-ne-yorke": "helene-yorke",
+      "ma-t-alina": "maite-alina",
+      "si-n-phillips": "sian-phillips",
+      "michael-iv-n-carrier": "michael-ivan-carrier",
+      "charity-ang-l-dawson": "charity-angel-dawson",
+      "kathryn-boul": "kathryn-boule",
+      "kimberly-faur": "kimberly-faure",
+      "ra-l-esparza": "raul-esparza",
+      "ren-rivera": "rene-rivera",
+      "zo-wanamaker": "zoe-wanamaker",
+      "ngel-lozada": "angel-lozada",
+      "al-na-watters": "alena-watters",
+      "housso-s-mon": "housso-semon",
+      "andr-a-burns": "andrea-burns",
+      "rosal-col-n-2": "rosal-colon-2",
+      "liza-col-n-zayas": "liza-colon-zayas",
+      "ciara-ren-e": "ciara-renee",
+      "ren-auberjonois": "rene-auberjonois",
+      "claire-bath": "claire-bathe",
+      "romain-frug": "romain-fruge",
+      "le-clanch-du-rand": "le-clanche-du-rand",
+      "j-van-dansberry": "jovan-dansberry",
+      "c-line-alwyn": "celine-alwyn",
+      "eljko-ivanek": "zeljko-ivanek",
+      "lynette-g-dupr": "lynette-g-dupre",
+      "ang-lica-beliard": "angelica-beliard",
+      "carlos-fal": "carlos-falu",
+      "h-ctor-juan-maisonet": "hector-juan-maisonet",
+      "mel-sem": "mel-seme",
+      "jes-s-pupo": "jesus-pupo",
+      "kim-faur": "kim-faure",
+      "ala-a": "alaia",
+      "mat-as-de-la-flor": "matias-de-la-flor",
+      "l-f-d-ran": "sola-fadiran",
+      "adam-makk": "adam-makke",
+      "duane-boutt": "duane-boutte",
+      "natascia-a-d-az": "natascia-a-diaz",
+      "alexies-s-nchez": "alexies-sanchez",
+      "ren-e-fleming": "renee-fleming",
+      "mich-le-du-verney": "michele-du-verney",
+      "ciar-n-hinds": "ciaran-hinds",
+      "ram-n-flowers": "ramon-flowers",
+      "emilee-dupr": "emilee-dupre",
+      "ren-e-marino": "renee-marino",
+      "julie-garny": "julie-garnye",
+      "ana-villafa-e": "ana-villafane",
+      "sebasti-n-yatra": "sebastian-yatra",
+      "red-concepci-n": "red-concepcion",
+      "jennifer-fouch": "jennifer-fouche",
+      "obba-babatund": "obba-babatunde",
+      "m-a-harrison": "mya-harrison",
+      "sof-a-vergara": "sofia-vergara",
+      "ren-m-ceballos": "rene-m-ceballos",
+      "george-de-la-pe-a": "george-de-la-pena",
+      "tom-cousin": "tome-cousin",
+      "se-n-martin-hingston": "sean-martin-hingston",
+      "ren-e-brna": "renee-brna",
+      "quentin-mar": "quentin-mare",
+      "mart-n-sol": "martin-sola",
+      "salom-mazard": "salome-mazard",
+      "judine-hawkins-rich-rd": "judine-hawkins-richard",
+      "sin-ad-cusack": "sinead-cusack",
+      "cl-mence-po-sy": "clemence-poesy",
+      "br-d-brennan": "brid-brennan",
+      "br-d-n-neachtain": "brid-ni-neachtain",
+      "sarita-col-n": "sarita-colon",
+      "fran-oise-dorner": "francoise-dorner",
+      "jill-andr": "jill-andre",
+      "andr-jordan": "andre-jordan",
+      "tom-s-matos": "tomas-matos",
+      "paola-l-zaro": "paola-lazaro",
+      "br-an-f-o-byrne": "brian-f-o-byrne",
+      "andr-garner": "andre-garner",
+      "jennifer-s-nchez": "jennifer-sanchez",
+      "herv-villechaize": "herve-villechaize",
+      "ismael-kouyat": "ismael-kouyate",
+      "keith-k-hl": "keith-kuhl",
+      "juan-jos-amador": "juan-jose-amador",
+      "jos-cort-s": "jose-cortes",
+      "juan-fern-ndez": "juan-fernandez",
+      "antonio-n-ez": "antonio-nunez",
+      "ris-collins": "rise-collins",
+      "zo-taleporos": "zoe-taleporos",
+      "becca-k-tte": "becca-kotte",
+      "jos-restrepo": "jose-restrepo",
+      "randy-andr-davis": "randy-andre-davis",
+      "nancy-ren-e-braun": "nancy-renee-braun",
+      "hunter-capell-n": "hunter-capellan",
+      "bel-n-moyano": "belen-moyano",
+      "eddie-noel-rodr-guez": "eddie-noel-rodriguez",
+      "eliseo-rom-n": "eliseo-roman",
+      "judine-rich-rd": "judine-richard",
+      "judine-rich-rd-2": "judine-richard-2",
+      "javier-mu-oz": "javier-munoz",
+      "den-e-benton": "denee-benton",
+      "rub-n-j-carbajal": "ruben-j-carbajal",
+      "oge-agulu": "oge-agulue",
+      "stephanie-gomer-z": "stephanie-gomerez",
+      "kal-a-leverette": "kalea-leverette",
+      "tynia-ren-brandon": "tynia-rene-brandon",
+      "am-lie-berg": "amelie-berg",
+      "jean-jacques-gu-roult": "jean-jacques-gueroult",
+      "zobe-da-jaua": "zobeida-jaua",
+      "maril-marini": "marilu-marini",
+      "j-r-me-nicolin": "jerome-nicolin",
+      "eulaul-jennings": "eulaula-jennings",
+      "dyll-n-burnside": "dyllon-burnside",
+      "robin-de-jes-s": "robin-de-jesus",
+      "gerianne-p-rez": "gerianne-perez",
+      "ren-e-taylor": "renee-taylor",
+      "allison-rene-manson": "allison-renee-manson",
+      "corinne-melan-on": "corinne-melancon",
+      "ren-e-stork": "renee-stork",
+      "mauricio-p-rez": "mauricio-perez",
+      "aime-ffion-edwards": "aimee-ffion-edwards",
+      "andr-holland": "andre-holland",
+      "ren-e-warren": "renee-warren",
+      "mart-n-santangelo": "martin-santangelo",
+      "jason-manuel-olaz-bal": "jason-manuel-olazabal",
+      "s-amus-forde": "seamus-forde",
+      "mont-russell": "monte-russell",
+      "chlo-campbell": "chloe-campbell",
+      "jaquez-andr-sims": "jaquez-andre-sims",
+      "jes-s-del-orden": "jesus-del-orden",
+      "ciar-n-mccarthy": "ciaran-mccarthy",
+      "philip-hern-ndez": "philip-hernandez",
+      "jes-s-garcia": "jesus-garcia",
+      "chlo-wright": "chloe-wright",
+      "h-l-ne-delavault": "helene-delavault",
+      "v-ronique-dietschy": "veronique-dietschy",
+      "agn-s-host": "agnes-host",
+      "amber-ef": "amber-efe",
+      "ciar-n-sheehan": "ciaran-sheehan",
+      "h-ctor-mercado": "hector-mercado",
+      "michelle-r-os": "michelle-rios",
+      "genevi-ve-wa-te": "genevieve-waite",
+      "rene-rapp": "renee-rapp",
+      "bria-jen-williams": "bria-jene-williams",
+      "kirsten-aim-e": "kirsten-aimee",
+      "siobh-n-mccarthy": "siobhan-mccarthy",
+      "tr-frazier": "tre-frazier",
+      "janay-mcalpine": "janaye-mcalpine",
+      "chada": "chadae",
+      "gabe-mart-nez": "gabe-martinez",
+      "pepe-mu-oz": "pepe-munoz",
+      "andr-ward": "andre-ward-2",
+      "ra-l-contreras": "raul-contreras",
+      "andr-s-quintero": "andres-quintero",
+      "luis-valos": "luis-avalos",
+      "ashley-p-rez-flanagan": "ashley-perez-flanagan",
+      "bart-n": "barton",
+      "se-n-griffin": "sean-griffin",
+      "camila-can-flavi": "camila-cano-flavia",
+      "david-k-thom": "david-k-thome",
+      "eliana-estev-o": "eliana-estevao",
+      "bei-ola": "beicola",
+      "brech": "brecho",
+      "garcia-de-arag-o": "garcia-de-aragao",
+      "tom-de-bebedouro": "tome-de-bebedouro",
+      "jos-roberto-ferreira": "jose-roberto-ferreira",
+      "monica-gon-alves": "monica-goncalves",
+      "lucia-helena-m-ximo": "lucia-helena-maximo",
+      "marcos-neg-o": "marcos-negao",
+      "emmanuel-l-pez-alonso": "emmanuel-lopez-alonso",
+      "peter-bosch": "peter-bosche",
+      "pauline-casi-o": "pauline-casino",
+      "zo-roberts": "zoe-roberts",
+      "doron-j-paul": "doron-jepaul",
+      "ricardo-v-zquez": "ricardo-vazquez",
+      "cher-lvarez": "cher-alvarez",
+      "na-l-jammal": "nael-jammal",
+      "brian-cal": "brian-cali",
+      "kerry-bish": "kerry-bishe",
+      "nicholas-barr-n": "nicholas-barron",
+      "tatianna-c-rdoba": "tatianna-cordoba",
+      "alia-le-n": "alia-leon",
+      "andy-se-or": "andy-senor",
+      "maria-pag-s": "maria-pages",
+      "dont-bonner": "donte-bonner",
+      "daniel-bravo-hern-ndez": "daniel-bravo-hernandez",
+      "g-an-p-rez": "gian-perez",
+      "alex-pa-z": "alex-paez",
+      "chlo-bryan": "chloe-bryan",
+      "lamont-peterson": "lamonte-peterson",
+      "lamont-des-fontaines": "lamonte-des-fontaines",
+      "cordelia-gonz-lez": "cordelia-gonzalez",
+      "olivia-negr-n": "olivia-negron",
+      "roosevelt-andr-credit": "roosevelt-andre-credit",
+      "michel-la-fl-che": "michel-la-fleche",
+      "andr-solomon-glover": "andre-solomon-glover",
+      "raven-symon": "raven-symone",
+      "keri-ren-fuller": "keri-rene-fuller",
+      "chant-adams": "chante-adams",
+      "ren-e-veneziale": "renee-veneziale",
+      "amanda-casta-os": "amanda-castanos",
+      "se-n-campion": "sean-campion",
+      "carlo-alb-n": "carlo-alban",
+      "desir-e-duarte": "desiree-duarte",
+      "carlos-sierra-l-pez": "carlos-sierra-lopez",
+      "robert-m-jim-nez": "robert-m-jimenez",
+      "elba-ber-n": "elba-beron",
+      "ra-l-lavi": "raul-lavie",
+      "elsa-mar-a-mayoral": "elsa-maria-mayoral",
+      "h-ctor-mayoral": "hector-mayoral",
+      "n-lida": "nelida",
+      "mar-a-nieves": "maria-nieves",
+      "mar-a-rivarola": "maria-rivarola",
+      "alba-sol-s": "alba-solis",
+      "juan-corval-n": "juan-corvalan",
+      "ver-nica-gardella": "veronica-gardella",
+      "fernando-jim-nez": "fernando-jimenez",
+      "alejandra-mantin-n": "alejandra-mantinan",
+      "yeni-pati-o": "yeni-patino",
+      "lan": "elan",
+      "jos-joaqu-n-garc-a": "jose-joaquin-garcia",
+      "elise-hern-ndez": "elise-hernandez",
+      "frank-negr-n": "frank-negron",
+      "ray-rodr-guez-rosa": "ray-rodriguez-rosa",
+      "ram-n-salda-a": "ramon-saldana",
+      "p-draic-delaney": "padraic-delaney",
+      "rafael-west-vall-s": "rafael-west-valles",
+      "margaret-lam-e": "margaret-lamee",
+      "sebastian-roch": "sebastian-roche",
+      "ashton-mu-iz": "ashton-muniz",
+      "arturo-lu-s-soria": "arturo-luis-soria",
+      "juliana-mart-nez": "juliana-martinez",
+      "tatiana-nu-ez": "tatiana-nunez",
+      "aur-lien-bernarek": "aurelien-bernarek",
+      "jo-n-bertrand": "joan-bertrand",
+      "mael-osa-stafford": "maeliosa-stafford",
+      "andr-steve-thompson": "andre-steve-thompson",
+      "carol-ann-plant": "carol-ann-plante",
+      "jos-fern-ndez": "jose-fernandez",
+      "yul-v-zquez": "yul-vazquez",
+      "peter-j-back": "peter-joback",
+      "christian-ebek": "christian-sebek",
+      "ine-u-cheallaigh": "aine-ui-cheallaigh",
+      "harvey-guill-n": "harvey-guillen",
+      "michaela-ja-rodriguez": "michaela-jae-rodriguez",
+      "cristina-ra": "cristina-rae",
+      "natonia-mon-t": "natonia-monet",
+      "doron-j-paul-mitchell": "doron-jepaul-mitchell",
+      "ui-seng-fran-ois": "ui-seng-francois",
+      "gizel-jim-nez": "gizel-jimenez",
+      "ren-e-feder": "renee-feder"
     }
   }
 }
