@@ -10,8 +10,10 @@
  *
  * Guardrails, all enforced by applyReviewFieldEdit (pure, no I/O):
  *   - field allowlist (REVIEW_TEXT_EDITABLE_FIELDS): verdict flags, their
- *     human-clear markers, byline/date and the rejection fields. Never text,
- *     scores or pipeline bookkeeping.
+ *     human-clear markers, byline/date, the rejection fields, and (BRO-4275)
+ *     the human score override and the pull quote. Never fullText, the URL,
+ *     LLM/ensemble scores or pipeline bookkeeping. Score and quote values are
+ *     range/verbatim checked (FIELD_VALUE_CHECKS).
  *   - compare-and-set: the current value must equal action.oldValue, so a plan
  *     never overwrites something CI changed after it was written.
  *   - _locked records are refused.
@@ -34,7 +36,37 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   'isNotReviewManualClear',
   // duplicate pointer (a clear needs duplicateClearReason alongside it)
   'duplicateOf', 'duplicateReason', 'duplicateClearReason',
+  // score override (BRO-4275): humanReviewScore is the one score the rebuild
+  // always honours (rebuild-helpers.js P0), so a cloud session can correct an
+  // LLM misread without touching llmScore/ensemble bookkeeping.
+  'humanReviewScore', 'humanReviewScoreProvisional', 'humanReviewNote',
+  // the pull quote shown on the site (BRO-4275). `url` stays out: a URL change
+  // trips url-change-invariant.js, which wipes fullText/score and refetches.
+  'llmPullQuote',
 ];
+
+// Per-field value checks beyond "scalar". Returns an error string or null.
+const FIELD_VALUE_CHECKS = {
+  // No null: both are write-guard PROTECTED_FIELDS with no clear breadcrumb,
+  // so a clear would be silently restored on write.
+  humanReviewScore: (v) => (Number.isInteger(v) && v >= 1 && v <= 100
+    ? null : 'humanReviewScore must be an integer 1-100'),
+  humanReviewScoreProvisional: (v) => (v === null || typeof v === 'boolean'
+    ? null : 'humanReviewScoreProvisional must be boolean or null'),
+  humanReviewNote: (v) => (typeof v === 'string' && v.trim().length > 0
+    ? null : 'humanReviewNote must be a non-empty string'),
+  // A pull quote is printed as the critic's words, so it must be verbatim
+  // from the stored review text (whitespace/quote-mark insensitive).
+  llmPullQuote: (v, record) => {
+    if (v === null) return null;
+    if (typeof v !== 'string' || v.trim().length < 20) return 'llmPullQuote must be a string of 20+ chars';
+    const norm = (t) => String(t || '').replace(/[\u2018\u2019\u201c\u201d'"]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
+    if (!record.fullText || !norm(record.fullText).includes(norm(v))) {
+      return 'llmPullQuote must appear verbatim in the review fullText';
+    }
+    return null;
+  },
+};
 
 function isScalar(v) {
   return v === null || ['string', 'number', 'boolean'].includes(typeof v);
@@ -56,6 +88,9 @@ function applyReviewFieldEdit(record, action, stamp) {
   if (!isScalar(newValue) || !isScalar(oldValue === undefined ? null : oldValue)) {
     return { ok: false, reason: `${field}: oldValue/newValue must be scalar or null` };
   }
+  const valueCheck = FIELD_VALUE_CHECKS[field];
+  const valueError = valueCheck ? valueCheck(newValue, record) : null;
+  if (valueError) return { ok: false, reason: valueError };
   if (record._locked === true) return { ok: false, reason: 'record is _locked' };
   const current = record[field] === undefined ? null : record[field];
   const expected = oldValue === undefined ? null : oldValue;
