@@ -1076,8 +1076,65 @@ function preserveFlaggedFields(filePath, review) {
  * @param {boolean} [options.merge=true] - If true, merge with existing; if false, replace (still protected)
  * @returns {{ wrote: boolean, preserved: string[] }} Which protected fields were preserved
  */
+// Quarantine writes to _pending/<show>/ bypass safeWriteReview, so they need
+// the same sparse-checkout check: in a sparse clone a tracked _pending file
+// outside the sparse set would otherwise be replaced wholesale.
+function _writeQuarantine(pendingPath, content) {
+  if (require('./sparse-checkout-guard').isPathHiddenBySparseCheckout(pendingPath)) {
+    console.error(`[review-write-guard] NOT quarantining to ${pendingPath}: tracked but outside this sparse checkout`);
+    return false;
+  }
+  fs.writeFileSync(pendingPath, content);
+  return true;
+}
+
+// A quarantine that could not be saved must not be reported with a
+// quarantinedPath: writeReviewOrThrow treats that as a completed move and the
+// caller would delete the source (Codex ship-check 2026-09-25).
+const QUARANTINE_NOT_SAVED = { wrote: false, skipped: 'hidden-by-sparse-checkout' };
+
+/**
+ * safeWriteReview for MOVE/MERGE-then-delete callers: throws when the write
+ * did not land, so the caller's following unlink of the source never runs.
+ * safeWriteReview reports refusals (locked, quarantined, sparse-hidden target,
+ * conflict-marked target) as {wrote:false}; callers that ignored the result
+ * and deleted the source lost the review (review 2026-09-25: rebuild reroute,
+ * merge-slug-directories, audit-we-market-misroutes).
+ */
+function writeReviewOrThrow(filePath, newData, options = {}) {
+  const r = safeWriteReview(filePath, newData, options);
+  // A quarantine (date-implausible, cross-market, recreated-excluded-url)
+  // saved the payload to _pending/, so the move DID complete; throwing there
+  // would turn a finished move into a retry + error on every rebuild (review
+  // round 3). Only a refusal that saved the payload nowhere keeps the source.
+  if (!r || (r.wrote === false && !r.quarantinedPath)) {
+    throw new Error(`write to ${path.basename(filePath)} did not land (${(r && r.skipped) || 'no result'}) — source kept`);
+  }
+  return r;
+}
+
 function safeWriteReview(filePath, newData, options = {}) {
   const { force = false, merge = true } = options;
+  // A file missing only because this checkout is sparse is not new: writing it
+  // replaces the committed review wholesale on the next commit (2026-09-25,
+  // the-children-2017 WSJ; sparse-checkout-guard.js). Not bypassable by force.
+  if (require('./sparse-checkout-guard').isPathHiddenBySparseCheckout(filePath)) {
+    console.error(`[review-write-guard] BLOCKED write to ${path.basename(filePath)}: tracked in git but outside this sparse checkout`);
+    return { wrote: false, skipped: 'hidden-by-sparse-checkout' };
+  }
+  // An on-disk file with committed conflict markers can't be parsed, so the
+  // preserve/merge logic below would see "no existing record" and overwrite it
+  // with whichever side the caller read, silently dropping the other side's
+  // fields (e.g. a newer human override). Refuse; a person resolves it, then
+  // any writer works again. Deliberate repair flows pass overwriteConflicted.
+  if (!options.overwriteConflicted) {
+    let onDiskRaw = null;
+    try { onDiskRaw = fs.readFileSync(filePath, 'utf8'); } catch { /* absent/unreadable: nothing to protect */ }
+    if (onDiskRaw && require('./conflict-markers').hasConflictMarkers(onDiskRaw)) {
+      console.error(`[review-write-guard] BLOCKED write to ${path.basename(filePath)}: file on disk has git conflict markers — resolve it first`);
+      return { wrote: false, skipped: 'on-disk-conflict-markers' };
+    }
+  }
   const preserved = [];
   let lockedSkipped = false;
   // Set true by the date-plausibility/cross-market write-time guard (card
@@ -1282,7 +1339,7 @@ function safeWriteReview(filePath, newData, options = {}) {
               pendingReason: 'date_implausible',
               _dateImplausibleDetail: `publishDate ${newData.publishDate} is ${verdict.daysBefore}d before earliest show date ${verdict.earliestDate}`,
             };
-            fs.writeFileSync(pendingPath, JSON.stringify(quarantined, null, 2) + '\n');
+            if (!_writeQuarantine(pendingPath, JSON.stringify(quarantined, null, 2) + '\n')) return { ...QUARANTINE_NOT_SAVED };
             console.warn(`[review-write-guard] date-implausible: ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${verdict.daysBefore}d before earliest date, not within priorRuns)`);
             return { wrote: false, skipped: 'date_implausible', quarantinedPath: pendingPath, daysBefore: verdict.daysBefore };
           }
@@ -1327,11 +1384,11 @@ function safeWriteReview(filePath, newData, options = {}) {
                 const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
                 fs.mkdirSync(pendingDir, { recursive: true });
                 const pendingPath = path.join(pendingDir, path.basename(filePath));
-                fs.writeFileSync(pendingPath, JSON.stringify({
+                if (!_writeQuarantine(pendingPath, JSON.stringify({
                   ...newData,
                   pendingReason: 'cross_market_contamination',
                   _crossMarketDetail: detail,
-                }, null, 2) + '\n');
+                }, null, 2) + '\n')) return { ...QUARANTINE_NOT_SAVED };
                 console.warn(`[review-write-guard] cross-market (class A): ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${detail})`);
                 return {
                   wrote: false,
@@ -1534,9 +1591,15 @@ function safeWriteReview(filePath, newData, options = {}) {
             delete newData.urlVerified; delete newData.urlVerifiedAuto; delete newData.urlVerifiedNote;
           }
           const inv = applyUrlChangeInvariant(existing, newData, { fileLabel: path.basename(filePath) });
-          if (liftAutoPin && newData._urlChangedClear && Array.isArray(newData._urlChangedClear.cleared)) {
-            // Breadcrumb so restore-protected-fields.js treats the lifted pin as an
-            // intentional clear, not a loss to restore (urlVerified* are PROTECTED).
+          if (liftAutoPin) {
+            // Breadcrumb so the push-review-texts action's PROTECTED_FIELDS restore
+            // (isIntentionalClear) treats the lifted pin as intentional. The
+            // invariant only writes a fresh _urlChangedClear when it cleared
+            // something else, so build one for THIS swap when it didn't.
+            const bc = newData._urlChangedClear;
+            if (!(inv.changed && bc && bc.to === newData.url && Array.isArray(bc.cleared))) {
+              newData._urlChangedClear = { from: existing.url, to: newData.url, at: new Date().toISOString(), cleared: [] };
+            }
             for (const f of ['urlVerified', 'urlVerifiedAuto', 'urlVerifiedNote']) {
               if (!newData._urlChangedClear.cleared.includes(f)) newData._urlChangedClear.cleared.push(f);
             }
@@ -1621,11 +1684,11 @@ function safeWriteReview(filePath, newData, options = {}) {
         const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
         fs.mkdirSync(pendingDir, { recursive: true });
         const pendingPath = path.join(pendingDir, path.basename(filePath));
-        fs.writeFileSync(pendingPath, JSON.stringify({
+        if (!_writeQuarantine(pendingPath, JSON.stringify({
           ...newData,
           pendingReason: 'recreated_previously_excluded_url',
           _recreatedPreviouslyExcludedUrlDetail: `url previously carried ${clearedOrphan.clearedFields.join('/')} on ${clearedOrphan.filename}, cleared ${clearedOrphan.at || 'at an unknown date'} when that file's own url changed away from this one`,
-        }, null, 2) + '\n');
+        }, null, 2) + '\n')) return { ...QUARANTINE_NOT_SAVED };
         console.warn(`[review-write-guard] ${path.basename(filePath)}: quarantined to _pending/${parentDirName}/${path.basename(filePath)} — url previously excluded (${clearedOrphan.clearedFields.join(', ')}) on ${clearedOrphan.filename}, cleared via url change, no live verdict to rescue`);
         return { wrote: false, skipped: 'recreated_previously_excluded_url', quarantinedPath: pendingPath };
       }
@@ -2654,6 +2717,11 @@ function safeRenameReview(srcPath, dstPath, options = {}) {
     return { wrote: false, skipped: 'noop' };
   }
 
+  if (require('./sparse-checkout-guard').isPathHiddenBySparseCheckout(dstPath)) {
+    console.error(`[review-write-guard] Refusing rename onto ${path.basename(dstPath)}: tracked but outside this sparse checkout`);
+    return { wrote: false, skipped: 'hidden-by-sparse-checkout' };
+  }
+
   if (fs.existsSync(dstPath)) {
     return { wrote: false, skipped: 'conflict', conflictPath: dstPath };
   }
@@ -3012,4 +3080,4 @@ function _urlCorroboration(url, record) {
   return n;
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming };
+module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming, writeReviewOrThrow };
