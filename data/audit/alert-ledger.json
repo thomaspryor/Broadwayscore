@@ -141,19 +141,17 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T10:25:25.725Z",
-      "lastNotifiedAt": "2026-09-29T03:38:46.630Z",
+      "lastSeen": "2026-09-29T16:20:41.341Z",
+      "lastNotifiedAt": "2026-09-29T16:20:41.341Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
-      "notifyCount": 108,
+      "notifyCount": 109,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 10,
-      "resolvedAt": "2026-09-29T14:55:00.265Z"
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3864,7 +3862,9 @@
         "runId": "36353075509",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36353075509"
       },
-      "absentRunIds": [],
+      "absentRunIds": [
+        "36595156888"
+      ],
       "silentRefires": 4
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
@@ -5855,16 +5855,14 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "lastSeen": "2026-09-29T14:55:02.180Z",
+      "lastSeen": "2026-09-29T16:20:41.338Z",
       "lastNotifiedAt": "2026-09-29T14:55:02.180Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-4255",
-      "absentRunIds": [
-        "36506774213",
-        "36511066143"
-      ]
+      "absentRunIds": [],
+      "silentRefires": 1
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "open",
@@ -6221,13 +6219,13 @@
       "disposition": "digest",
       "title": "Shipped review missing publishDate on School Girls; Or, The African Mean Girls Play",
       "firstSeen": "2026-09-29T08:38:17.183Z",
-      "lastSeen": "2026-09-29T15:57:47.324Z",
+      "lastSeen": "2026-09-29T16:19:37.726Z",
       "lastNotifiedAt": "2026-09-29T08:38:17.183Z",
       "lastSurfacedAt": "2026-09-29T08:38:17.183Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-publish-date-pre-opening:missing:the-standard-of-living-west-end-2026": {
       "status": "open",
@@ -6516,7 +6514,7 @@
       "linearIdentifier": null
     },
     "land:land/bro-4358-ss-dead-url": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: rebase red on land/bro-4358-ss-dead-url",
       "firstSeen": "2026-09-29T15:52:18.691Z",
@@ -6525,7 +6523,8 @@
       "lastSurfacedAt": "2026-09-29T15:52:18.691Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-29T16:23:46.389Z"
     },
     "opening-night-remediation-exhausted-empty-cast:hay-fever-west-end-2026": {
       "status": "open",
@@ -6539,17 +6538,23 @@
       "cardId": null,
       "linearIdentifier": null
     },
-    "land:land/reddit-post-email": {
+    "test-yml:red:Unit Tests:7ff9b6a6": {
       "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: rebase red on land/reddit-post-email",
-      "firstSeen": "2026-09-29T16:17:45.815Z",
-      "lastSeen": "2026-09-29T16:17:45.815Z",
-      "lastNotifiedAt": "2026-09-29T16:17:45.815Z",
-      "lastSurfacedAt": "2026-09-29T16:17:45.815Z",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"fewer than 50 outlets have a null domain\"",
+      "firstSeen": "2026-09-29T16:20:26.278Z",
+      "lastSeen": "2026-09-29T16:20:26.278Z",
+      "lastNotifiedAt": "2026-09-29T16:20:26.278Z",
+      "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": "BRO-4362",
+      "dispatch": {
+        "requestedAt": "2026-09-29T16:20:26.278Z",
+        "mode": "dispatch-at-filing",
+        "runId": "36595156888",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36595156888"
+      }
     }
   }
 }

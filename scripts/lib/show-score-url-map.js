@@ -68,4 +68,38 @@ function findConflictingShowId(urlMap, showId, url) {
   return null;
 }
 
-module.exports = { findDuplicateUrls, findConflictingShowId };
+/**
+ * True when HTML is Show Score's "not found" page. Show Score serves
+ * <title>The page you were looking for doesn't exist (404)</title> with a
+ * "404 &ndash; Not Found" heading; the scraper used to look only for
+ * "Page not found" / "404 -", missed it, and treated a dead cached URL as a
+ * transient fetch failure it kept retrying forever (BRO-4358).
+ */
+//
+// Deliberately strict: a true result deletes a cached URL, so it only matches
+// Show Score's own 404 template, never a page carrying a JSON-LD
+// aggregateRating (a real show page whose review text happens to say "404").
+function isShowScoreNotFoundPage(html) {
+  if (!html || typeof html !== 'string') return false;
+  if (/"aggregateRating"/.test(html)) return false;
+  return /<title>[^<]*doesn(?:'|&#39;|’)t exist \(404\)/i.test(html)
+    || /404\s*(?:&ndash;|–)\s*Not Found/i.test(html);
+}
+
+/**
+ * What to do with a cached URL that returned Show Score's 404 page, given the
+ * result of rediscovering the show (BRO-4358). Pure so it can be tested.
+ *   'keep'    — rediscovery found the SAME url valid again (a one-off 404), or
+ *               the per-run rediscovery budget is spent: leave the cache as is.
+ *   'replace' — a different valid page that no other show owns.
+ *   'drop'    — nothing usable found: uncache it so the next run's listings
+ *               discovery gets another go.
+ */
+function decideDeadUrlAction({ deadUrl, rediscoveredUrl, conflictId, budgetLeft }) {
+  if (!(budgetLeft > 0)) return 'keep';
+  if (rediscoveredUrl && rediscoveredUrl === deadUrl) return 'keep';
+  if (rediscoveredUrl && !conflictId) return 'replace';
+  return 'drop';
+}
+
+module.exports = { findDuplicateUrls, findConflictingShowId, isShowScoreNotFoundPage, decideDeadUrlAction };
