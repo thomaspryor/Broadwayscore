@@ -146,13 +146,13 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T05:34:14.014Z",
+      "lastSeen": "2026-09-29T06:04:15.826Z",
       "lastNotifiedAt": "2026-09-29T03:38:46.630Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
       "notifyCount": 108,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3847,7 +3847,7 @@
       "resolvedAt": "2026-09-22T16:48:58.111Z"
     },
     "test-yml:red:Unit Tests:0858c92a": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
@@ -3865,8 +3865,11 @@
       },
       "absentRunIds": [
         "36522185916",
-        "36525679478"
-      ]
+        "36525679478",
+        "36528035457"
+      ],
+      "resolvedAt": "2026-09-29T06:04:15.816Z",
+      "resolveReason": "stale-signature"
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
       "status": "resolved",
@@ -5833,13 +5836,13 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every off-Broadway venue-complex subVenueSlugs entry resolves to a real shows.json venue\"",
       "firstSeen": "2026-09-28T20:47:43.893Z",
-      "lastSeen": "2026-09-29T05:34:14.010Z",
+      "lastSeen": "2026-09-29T06:04:15.823Z",
       "lastNotifiedAt": "2026-09-28T20:47:43.893Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4253",
-      "silentRefires": 12,
+      "silentRefires": 13,
       "absentRunIds": []
     },
     "we-aggregator-go-live:ballet-shoes-west-end-2025": {
