@@ -131,9 +131,29 @@ function isActionableRescore(data, ctx) {
   return commonSelectionSkipReason(data, ctx, { starRatingApplies: false }) === null;
 }
 
-/** Phase 3 (--stale-scores). Mirrors index.ts's staleScores filter. */
+/** Phase 3 (--stale-scores). Mirrors index.ts's staleScores filter.
+ *
+ * Corpus-wide sweep, deliberately narrow (pre-ensemble scores only): widening
+ * it pulls the ~650-review ensemble backlog into a nightly rescore with no A/B
+ * check (CLAUDE.md section 13). That backlog is drained once, with the A/B on,
+ * under BRO-4332's follow-up; show-scoped healing uses isActionableStaleForShow.
+ */
+function isActionableStale(data, ctx) {
+  if (!data.fullText || data.fullText.length < 1000) return false;
+  if (!data.llmScore || !data.llmScore.score) return false;
+  if (data.needsRescore || data.ensembleData || data.rescoreCompletedAt) return false;
+  const textSource = data.llmMetadata && data.llmMetadata.textSource;
+  if (textSource && textSource.type === 'fullText') return false;
+  if (!hasExcerpt(data)) return false;
+  return commonSelectionSkipReason(data, ctx, {}) === null;
+}
+
+/**
+ * Show-scoped stale check for --include-stale (opening-night poller/express).
+ */
 //
-// BRO-4332: this used to also exclude `ensembleData` and `rescoreCompletedAt`.
+// BRO-4332: unlike the corpus sweep above, this does NOT exclude
+// `ensembleData` / `rescoreCompletedAt`.
 // Every modern score carries ensembleData, so the sweep never touched an
 // ensemble score taken off an excerpt — the exact state opening night leaves
 // behind when text is collected in one CI job and scored in another whose
@@ -143,7 +163,7 @@ function isActionableRescore(data, ctx) {
 // is stale only if getBestTextForScoring() would hand the LLM the fullText
 // NOW, so a rescore always ends with textSource.type === 'fullText' and drops
 // out of this predicate.
-function isActionableStale(data, ctx) {
+function isActionableStaleForShow(data, ctx) {
   if (!data.fullText || data.fullText.length < 1000) return false;
   if (!data.llmScore || !data.llmScore.score) return false;
   if (data.needsRescore === true) return false; // phase 2 owns flagged files
@@ -198,7 +218,7 @@ function countStaleForShow(reviewTextsDir, showId, show) {
     let data;
     try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch (_) { continue; }
     const ctx = { show: show || undefined, showTitle: show && show.title, filePath };
-    if (isActionableStale(data, ctx)) n++;
+    if (isActionableStaleForShow(data, ctx)) n++;
   }
   return n;
 }
@@ -308,6 +328,7 @@ module.exports = {
   isActionableUnscored,
   isActionableRescore,
   isActionableStale,
+  isActionableStaleForShow,
   staleAttemptFingerprint,
   markStaleRescoreAttempt,
   countStaleForShow,

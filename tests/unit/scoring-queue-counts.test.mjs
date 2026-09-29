@@ -21,6 +21,7 @@ const {
   isActionableUnscored,
   isActionableRescore,
   isActionableStale,
+  isActionableStaleForShow,
   markStaleRescoreAttempt,
   countStaleForShow,
   isActionableEmergencyRetry,
@@ -229,9 +230,11 @@ describe('phase 2/3/4 predicates', () => {
       ensembleData: { claudeScore: 74, openaiScore: 82, geminiScore: 88 },
       llmMetadata: { textSource: { type: 'excerpt', status: 'excerpt-only' } },
     });
-    assert.equal(isActionableStale(f, {}), true);
+    assert.equal(isActionableStaleForShow(f, {}), true);
+    // The corpus-wide sweep keeps excluding ensemble scores (no mass rescore without A/B).
+    assert.equal(isActionableStale(f, {}), false);
     // Re-scored earlier (rescoreCompletedAt) but still off an excerpt: still stale.
-    assert.equal(isActionableStale({ ...f, rescoreCompletedAt: '2026-09-01T00:00:00.000Z' }, {}), true);
+    assert.equal(isActionableStaleForShow({ ...f, rescoreCompletedAt: '2026-09-01T00:00:00.000Z' }, {}), true);
   });
 
   test('stale: a locked human score is not re-queued', () => {
@@ -241,8 +244,8 @@ describe('phase 2/3/4 predicates', () => {
       bwwExcerpt: 'A brisk, funny evening.',
       humanReviewScore: 90,
     });
-    assert.equal(isActionableStale(f, {}), false);
-    assert.equal(isActionableStale({ ...f, humanReviewScoreProvisional: true }, {}), true);
+    assert.equal(isActionableStaleForShow(f, {}), false);
+    assert.equal(isActionableStaleForShow({ ...f, humanReviewScoreProvisional: true }, {}), true);
   });
 
   test('stale: not re-queued when the scorer would still pick the excerpt (no rescore loop)', () => {
@@ -252,7 +255,7 @@ describe('phase 2/3/4 predicates', () => {
       bwwExcerpt: 'A brisk, funny evening.',
       misattributedFullText: true, // getBestTextForScoring falls back to excerpts
     });
-    assert.equal(isActionableStale(f, {}), false);
+    assert.equal(isActionableStaleForShow(f, {}), false);
   });
 
   test('stale: one attempt per text version, re-armed when the text changes', () => {
@@ -262,13 +265,13 @@ describe('phase 2/3/4 predicates', () => {
       bwwExcerpt: 'A brisk, funny evening.',
       llmMetadata: { textSource: { type: 'excerpt' } },
     });
-    assert.equal(isActionableStale(f, {}), true);
+    assert.equal(isActionableStaleForShow(f, {}), true);
     markStaleRescoreAttempt(f);
     assert.equal(f.staleRescoreAttemptedFor, 2000);
     // The attempt ended on the excerpt again (trim/refusal/API failure): not re-picked.
-    assert.equal(isActionableStale(f, {}), false);
+    assert.equal(isActionableStaleForShow(f, {}), false);
     // Recovered/longer text re-arms it.
-    assert.equal(isActionableStale({ ...f, fullText: 'y'.repeat(2600) }, {}), true);
+    assert.equal(isActionableStaleForShow({ ...f, fullText: 'y'.repeat(2600) }, {}), true);
   });
 
   test('countStaleForShow: counts only actionable stale files in the show dir', () => {

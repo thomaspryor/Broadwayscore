@@ -89,17 +89,15 @@ const {
   isActionableUnscored,
   isActionableRescore,
   isActionableStale,
+  isActionableStaleForShow,
   isActionableEmergencyRetry,
   markStaleRescoreAttempt,
 } = require('../lib/scoring-queue-counts');
 
-// BRO-4332: stale (excerpt-scored, full text since landed) rescores per run.
-// --include-stale piggybacks on a show-scoped unscored pass, so it stays small
-// and never crowds out new reviews (they sort first). --stale-scores stays
-// under the >100-file A/B distribution gate, which a text-quality upgrade is
-// expected to move and would otherwise abort every run, pinning the cascade.
+// BRO-4332: --include-stale piggybacks on a show-scoped unscored pass and
+// re-scores at most this many excerpt-scored reviews whose full text has
+// landed, after the new reviews, so it never crowds them out.
 const STALE_PER_SHOW_PASS = 10;
-const STALE_SCORES_RUN_CAP = 90;
 
 import { detectMultiShow } from './multi-show-detector';
 import { trimMultiShowText } from './trim-multi-show';
@@ -1103,11 +1101,6 @@ async function main(): Promise<void> {
     // excerpt. Predicate shared with the cascade gate's counter (task #652).
     filesToProcess = allFiles.filter(f => isActionableStale(f.data as any, queueCtx(f)));
     console.log(`Filtering to stale-scored reviews (fullText + old excerpt-based score): ${filesToProcess.length} reviews\n`);
-    if (filesToProcess.length > STALE_SCORES_RUN_CAP) {
-      console.log(`Capping stale rescore at ${STALE_SCORES_RUN_CAP} this run (${filesToProcess.length - STALE_SCORES_RUN_CAP} left for the next)\n`);
-      filesToProcess = filesToProcess.slice(0, STALE_SCORES_RUN_CAP);
-    }
-    for (const f of filesToProcess) staleSelected.add(f.path);
   } else if (options.upgradeEnsemble) {
     // Filter to reviews with old single-model llmScore but no ensemble scoring
     // Exclude quality-flagged reviews (same pre-filter as scoring pipeline)
@@ -1146,7 +1139,7 @@ async function main(): Promise<void> {
       // minutes before its body arrives; nothing else re-queues it that night.
       if ((f.data as any).llmScore) {
         if (options.includeStale && staleIncluded < STALE_PER_SHOW_PASS &&
-            isActionableStale(f.data as any, queueCtx(f))) {
+            isActionableStaleForShow(f.data as any, queueCtx(f))) {
           staleIncluded++;
           staleSelected.add(f.path);
           return true;
@@ -2066,7 +2059,7 @@ async function main(): Promise<void> {
 
     // One stale attempt per text version, persisted just before the attempt so
     // one that ends on the excerpt again or fails without writing is not
-    // re-picked every poll cycle (BRO-4332; see isActionableStale). A
+    // re-picked every poll cycle (BRO-4332; see isActionableStaleForShow). A
     // multi-show trim that saves shorter text re-arms it once, then it stops.
     if (staleSelected.has(filePath) && !options.dryRun) {
       markStaleRescoreAttempt(reviewFile as any);
