@@ -53,6 +53,23 @@ test('a single shared-sounding word does not vouch: a Mean Girls URL that says "
   assert.equal(r.matchedShowId, 'mean-girls-2018');
 });
 
+test('own review that keeps only the subtitle phrase is not cross-show (one word, but next to the contained title)', () => {
+  assert.equal(check(SG, 'https://example.com/theater/the-african-mean-girls-play-is-sharp-and-funny/'), null);
+  assert.equal(check(SG, 'https://example.com/reviews/african-mean-girls-play-review-broadway/'), null);
+});
+
+test('a word next to the contained title in the URL but not in this show\'s slug does not vouch alone', () => {
+  const r = check(SG, 'https://example.com/reviews/mean-girls-school-edition-review/');
+  assert.ok(r, 'expected a mismatch');
+  assert.equal(r.matchedShowId, 'mean-girls-2018');
+});
+
+test('vouching words match whole path words only (preschool is not school)', () => {
+  const r = check(SG, 'https://example.com/reviews/mean-girls-review-preschool-african-american-cast/');
+  assert.ok(r, 'expected a mismatch');
+  assert.equal(r.matchedShowId, 'mean-girls-2018');
+});
+
 test('the containment carve-out does not weaken unrelated mismatches', () => {
   const r = check('schmigadoon-2026', 'https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-radcliffe.html');
   assert.ok(r, 'expected a mismatch');

@@ -114,3 +114,19 @@ test('budget: explicit value wins, env is the fallback, default is 240 s', () =>
   assert.equal(_internal.DEFAULT_TB_BUDGET_MS, 240000);
   if (prev !== undefined) process.env.TB_DIRECT_URL_BUDGET_MS = prev;
 });
+
+test('budget: a blank or junk env value means unset, never a zero budget', () => {
+  const prev = process.env.TB_DIRECT_URL_BUDGET_MS;
+  for (const v of ['', '   ', 'abc', '-5']) {
+    process.env.TB_DIRECT_URL_BUDGET_MS = v;
+    assert.equal(_internal.tbBudgetMs(undefined), _internal.DEFAULT_TB_BUDGET_MS, `env ${JSON.stringify(v)}`);
+  }
+  process.env.TB_DIRECT_URL_BUDGET_MS = ' 9000 ';
+  assert.equal(_internal.tbBudgetMs(undefined), 9000);
+  if (prev !== undefined) process.env.TB_DIRECT_URL_BUDGET_MS = prev; else delete process.env.TB_DIRECT_URL_BUDGET_MS;
+});
+
+test('buildTbCandidateUrls tolerates a missing title instead of throwing', () => {
+  assert.doesNotThrow(() => buildTbCandidateUrls(null, 2026));
+  assert.doesNotThrow(() => buildTbCandidateUrls(undefined, 2026));
+});
