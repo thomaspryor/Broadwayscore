@@ -145,7 +145,7 @@ setup fail 2
 OUT="$(run_script fail)"; RC=$?
 echo "$OUT" | sed 's/^/    /'
 if [ "$RC" -ne 0 ]; then ok "script exited non-zero (got $RC)"; else bad "script exited 0 — should have refused"; fi
-if echo "$OUT" | grep -qi "post-merge test floor"; then ok "failure message names the post-merge test floor"; else bad "no post-merge-test-floor wording in output"; fi
+if grep -qi "post-merge test floor" <<<"$OUT"; then ok "failure message names the post-merge test floor"; else bad "no post-merge-test-floor wording in output"; fi
 # Not pushed: origin/main must still be at the pre-feature-merge tip.
 D="$TMP/fail"
 git -C "$D/main" fetch -q origin main
@@ -158,7 +158,7 @@ fi
 # script didn't discard the work — it's sitting in the main worktree for the
 # operator to fix, same recovery shape as the syntax floor / push audits.
 LOCAL_LOG="$(git -C "$D/main" log --oneline -10 --all 2>&1)"
-if echo "$LOCAL_LOG" | grep -qi "feature: touch dummy-helper"; then
+if grep -qi "feature: touch dummy-helper" <<<"$LOCAL_LOG"; then
   ok "the merge commit is intact locally (not discarded) for the operator to fix"
 else
   bad "local main lost the merge — should stay intact per the recovery message"
@@ -182,7 +182,7 @@ setup killswitch 2
 OUT="$(cd "$TMP/killswitch/main" && MERGE_SKIP_POST_MERGE_TEST_GATE=1 bash scripts/merge-worktree-to-main.sh feature 2>&1)"; RC=$?
 echo "$OUT" | sed 's/^/    /'
 if [ "$RC" -eq 0 ]; then ok "kill switch suppresses the gate (exit 0) despite the failing contract test"; else bad "kill switch did not bypass the gate (got $RC)"; fi
-if echo "$OUT" | grep -q "MERGE_SKIP_POST_MERGE_TEST_GATE=1"; then ok "skip message names the kill switch"; else bad "no kill-switch skip message in output"; fi
+if grep -q "MERGE_SKIP_POST_MERGE_TEST_GATE=1" <<<"$OUT"; then ok "skip message names the kill switch"; else bad "no kill-switch skip message in output"; fi
 
 # BRO-3962 regression pin: run the script from a SEPARATE worktree (the
 # normal, worktree-first way every session actually invokes it), with a
