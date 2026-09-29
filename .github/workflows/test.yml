@@ -721,6 +721,11 @@ on:
       # to either would otherwise run in ZERO CI jobs.
       - 'scripts/analyze-traffic-sources.js'
       - 'scripts/tests/analyze-traffic-sources.test.mjs'
+      # BRO-4327: the ad-hoc HogQL runner behind posthog-adhoc-query.yml and
+      # its scripts/tests/ test (registered in tests/unit-test-manifest.txt,
+      # not globbed) — same reason as the two entries above.
+      - 'scripts/posthog-adhoc-query.js'
+      - 'scripts/tests/posthog-adhoc-query.test.mjs'
       # Task #692: summarizeBwwRoundupMisses() (in the file above) + its digest
       # formatter bwwRoundupMissBacklogResults() (scripts/health-check.js, already
       # path-listed elsewhere). Test lives in tests/unit/ (node --test batch, not
