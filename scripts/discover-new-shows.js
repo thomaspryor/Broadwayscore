@@ -1136,7 +1136,12 @@ async function fetchShowsFromOfficialLondonTheatre() {
       previewsStartDate: event.startDate,
       closingDate: event.endDate,
       ...(genre ? { genre } : {}),
-      category: applyGenreCategoryOverride('west-end', genre),
+      // Venue-based like the Theatremonkey loop below (2026-09-29): OLT lists
+      // Off-West End houses too, and a hardcoded 'west-end' minted ids such as
+      // dick-whittington-and-his-cat-west-end-2026 for the King's Head, which
+      // validate-data then re-categorised off-west-end — leaving the id suffix
+      // wrong for good (the S8-T1 rename class, 96 rows by the audit's count).
+      category: applyGenreCategoryOverride(isOffWestEndVenue(venue) && !isWestEndVenue(venue) ? 'off-west-end' : 'west-end', genre),
       description,
     });
   }
@@ -1222,9 +1227,7 @@ async function fetchShowsFromLondonTheatre() {
           .replace(/&apos;/g, "'");
         if (!title || title.length < 3 || seen.has(title.toLowerCase())) continue;
 
-        const titleLower = title.toLowerCase();
-        if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
-        if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
+        if (londonListingTitleRejected(title)) continue; // substring lists + NON_THEATRE_TITLE_RE
 
         // Same #994-class leak as OLT above: LT's JSON-LD location can be
         // missing/blank on a malformed entry — guard instead of resurrecting
@@ -1596,9 +1599,11 @@ function cleanVenueTitle(raw) {
 }
 
 function shouldExcludeVenueShow(title) {
-  const lower = title.toLowerCase();
-  if (NON_THEATER_PATTERNS.some(p => lower.includes(p))) return true;
-  if (WE_EXTRA_PATTERNS.some(p => lower.includes(p))) return true;
+  // londonListingTitleRejected = the two substring lists + NON_THEATRE_TITLE_RE
+  // (2026-09-29: "Bar Events" and "Stiles + Drewe Best New Song Prize" reached
+  // shows.json through venue pages because only the substring lists ran here).
+  if (londonListingTitleRejected(title)) return true;
+  const lower = String(title || '').toLowerCase();
   if (VENUE_PAGE_EXCLUDE_PATTERNS.some(p => lower.includes(p))) return true;
   return false;
 }

@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isNonTheaterContent, londonListingTitleRejected } = require('../../scripts/discover-new-shows.js');
+const { isNonTheaterContent, londonListingTitleRejected, shouldExcludeVenueShow } = require('../../scripts/discover-new-shows.js');
 
 function gateCandidate(title) {
   return {
@@ -110,4 +110,13 @@ test('londonListingTitleRejected: the OLT/Theatremonkey title gate rejects conce
   }
   assert.equal(londonListingTitleRejected(''), false);
   assert.equal(londonListingTitleRejected(undefined), false);
+});
+
+test('shouldExcludeVenueShow (venue-page candidates) runs the same title gate: events, screenings and prizes never reach staging', () => {
+  for (const title of ['Bar Events', 'NT Live: Les Liaisons Dangereuses', 'Stiles + Drewe Best New Song Prize 2026', 'Rachel Zegler – Live in London']) {
+    assert.equal(shouldExcludeVenueShow(title), true, `${title} must be excluded`);
+  }
+  for (const title of ['Flush', 'A Ghost in Your Ear', 'Dick Whittington and His Cat']) {
+    assert.equal(shouldExcludeVenueShow(title), false, `${title} must be kept`);
+  }
 });
