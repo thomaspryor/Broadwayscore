@@ -64,34 +64,41 @@ function keyOf(entry) {
   return entry.candidateHash || null;
 }
 
-function mergeObVenueCandidates(ours, remote) {
-  const oursList = Array.isArray(ours) ? ours : [];
-  const remoteList = Array.isArray(remote) ? remote : [];
-
-  const oursKeys = new Set();
-  for (const e of oursList) {
-    const k = keyOf(e);
-    if (k) oursKeys.add(k);
-  }
-
-  const merged = [...oursList];
-  let added = 0;
-  let kept = 0;
-  for (const e of remoteList) {
-    const k = keyOf(e);
-    if (k && oursKeys.has(k)) {
-      kept++; // shared key — ours already present, keep ours
-      continue;
+/**
+ * Factory: the same key-union merge for any bare-array candidate staging file
+ * (BRO-4268 second-opinion finding: the Off-West End file needs the exact
+ * same rules and two hand-written twins would drift). `keyOf(entry)` returns
+ * the natural key or null; keyless rows on either side pass through as
+ * documented above.
+ */
+function makeVenueCandidatesMerge(keyOfFn) {
+  return function mergeVenueCandidates(ours, remote) {
+    const oursList = Array.isArray(ours) ? ours : [];
+    const remoteList = Array.isArray(remote) ? remote : [];
+    const oursKeys = new Set();
+    for (const e of oursList) {
+      const k = keyOfFn(e);
+      if (k) oursKeys.add(k);
     }
-    merged.push(e);
-    if (k) oursKeys.add(k);
-    added++;
-  }
-
-  return {
-    merged,
-    stats: { added, kept, total: merged.length },
+    const merged = [...oursList];
+    let added = 0;
+    let kept = 0;
+    for (const e of remoteList) {
+      const k = keyOfFn(e);
+      if (k && oursKeys.has(k)) {
+        kept++; // shared key — ours already present, keep ours
+        continue;
+      }
+      merged.push(e);
+      if (k) oursKeys.add(k);
+      added++;
+    }
+    return {
+      merged,
+      stats: { added, kept, total: merged.length },
+    };
   };
 }
+const mergeObVenueCandidates = makeVenueCandidatesMerge(keyOf);
 
-module.exports = { mergeObVenueCandidates, keyOf };
+module.exports = { mergeObVenueCandidates, keyOf, makeVenueCandidatesMerge };

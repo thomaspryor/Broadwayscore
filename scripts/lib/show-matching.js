@@ -642,10 +642,18 @@ function matchTitleToShow(externalTitle, shows, options) {
     // Without this, only the non-accented production exact-matches and short-circuits
     // before multi-production disambiguation ever runs. Found 2026-07-20: this caused
     // 195 chronologically-impossible les-miserables-1987 entries in a historical backfill.
+    // Fold "&" to "and" on both sides (2026-09-29): shows.json spells the same
+    // title both ways across productions ("Romeo and Juliet" at the Harold
+    // Pinter 2026, "Romeo & Juliet" at the Coliseum 2027). Without the fold the
+    // spelling that happens to match exactly short-circuits here alone — a
+    // WestEndTheatre round-up headlined "Romeo & Juliet" matched the unopened
+    // 2027 row instead of the reviewed 2026 one — and pickBestProduction never
+    // sees the other production to disambiguate by date/status.
     const exactMatches = [];
+    const variantFolded = foldAmpersand(variant);
     for (const show of shows) {
-      const showTitle = (show.title || '').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-      if (showTitle === variant) {
+      const showTitle = foldAmpersand((show.title || '').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, ''));
+      if (showTitle === variantFolded) {
         exactMatches.push(show);
       }
     }
@@ -771,6 +779,11 @@ const TITLE_GENERIC_WORDS = new Set([
  * Prevents false negatives when shows.json has "Misérables" but text has "Miserables",
  * or title has curly ' but text has straight '.
  */
+/** "&" and "and" are the same word in a title ("Romeo & Juliet" / "Romeo and Juliet"). */
+function foldAmpersand(s) {
+  return String(s || '').replace(/\s*&\s*/g, ' and ').replace(/\s+/g, ' ').trim();
+}
+
 function normalizeForMatching(s) {
   return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')  // strip diacritics
     .replace(/[\u2018\u2019\u201A\u2032]/g, "'")             // curly single → straight

@@ -24,15 +24,15 @@
 
 const fs = require('fs');
 const path = require('path');
-const crypto = require('crypto');
 const { withFileLock } = require('./file-lock');
 
 const STAGING_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'owe-venue-candidates.json');
 
-function candidateHash({ title, venue }) {
-  const norm = `${(title || '').toLowerCase().trim()}|${(venue || '').toLowerCase().trim()}`;
-  return crypto.createHash('sha256').update(norm).digest('hex').slice(0, 16);
-}
+// The key function lives in owe-candidate-hash.js (write-free) so the push-
+// time merger can import it without dragging this file's fs writes onto the
+// safe-form allowlisted audits' require graph (BRO-4268); re-exported here
+// so every existing caller keeps its import.
+const { candidateHash } = require('./owe-candidate-hash');
 
 // `stagingPath` on every function below defaults to the real STAGING_PATH;
 // it exists so tests (and only tests) can exercise the real locked
