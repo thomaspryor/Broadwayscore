@@ -69,7 +69,7 @@ export default function FantasyLeaderboardTable() {
       <div className="flex-1 flex items-center gap-2">
         <input
           type="email"
-          className="flex-1 bg-surface-raised border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors"
+          className="flex-1 bg-surface-raised border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors"
           placeholder="Find your team by email..."
           value={emailFilter}
           onChange={e => setEmailFilter(e.target.value)}
@@ -86,7 +86,7 @@ export default function FantasyLeaderboardTable() {
       <div className="flex-1 flex items-center gap-2">
         <input
           type="text"
-          className="flex-1 bg-surface-raised border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors disabled:opacity-40"
+          className="flex-1 bg-surface-raised border border-white/10 rounded-lg px-3 py-2 text-base sm:text-sm text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors disabled:opacity-40"
           placeholder="Filter by league name..."
           value={leagueFilter}
           onChange={e => setLeagueFilter(e.target.value)}

@@ -655,7 +655,7 @@ export default function ImportShows({
                     onChange={(e) => setProfileInput(e.target.value)}
                     onKeyDown={(e) => { if (e.key === 'Enter' && profileInput.trim()) { setSource('show-score'); handleShowScoreFetch(); } }}
                     placeholder="show-score.com/member/your-name"
-                    className="flex-1 min-w-0 px-3 py-2 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-brand/50"
+                    className="flex-1 min-w-0 px-3 py-2 text-base sm:text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-600 focus:outline-none focus:border-brand/50"
                   />
                   <button
                     onClick={() => { setSource('show-score'); handleShowScoreFetch(); }}

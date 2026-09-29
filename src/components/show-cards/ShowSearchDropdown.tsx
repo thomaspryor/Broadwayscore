@@ -110,7 +110,7 @@ export default function ShowSearchDropdown({
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => {
               if (e.key === 'Escape') onClose();
-              if (e.key === 'Enter' && results.length > 0) onSelect(results[0]);
+              if (e.key === 'Enter' && results.length > 0 && !(isDisabled?.(results[0]) ?? false)) onSelect(results[0]);
             }}
             placeholder={placeholder}
             className="w-full sm:w-52 px-3 py-2 sm:py-1.5 pl-8 text-base sm:text-xs bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand/50"
