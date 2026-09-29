@@ -34,3 +34,12 @@ test('a video on two known shows is dropped from both', () => {
   assert.deepEqual(kept, { 'hamlet-off-broadway-2026': [r('y')] });
   assert.equal(dropped.length, 2);
 });
+
+test('url-less reviews are kept on known shows and never treated as duplicates', () => {
+  const { kept, dropped } = filterPublishableReviews(
+    { a: [{ score: 1 }], b: [{ score: 2 }], gone: [{ score: 3 }] },
+    new Set(['a', 'b']),
+  );
+  assert.deepEqual(kept, { a: [{ score: 1 }], b: [{ score: 2 }] });
+  assert.deepEqual(dropped.map(d => d.showId), ['gone']);
+});
