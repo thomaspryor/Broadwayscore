@@ -32,6 +32,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
+import { createRequire } from 'node:module';
 import { checkByteCap } from './lib/check-claude-md-byte-cap.js';
 
 const REPO_ROOT = path.resolve(new URL('.', import.meta.url).pathname, '..');
@@ -376,6 +377,19 @@ before(() => {
       killSignal: 'SIGKILL',
     });
     if (added.status !== 0) throw new Error(`worktree add failed (status ${added.status}): ${added.stderr}`);
+    // A git worktree has no node_modules, and under os.tmpdir() node cannot
+    // walk up to the repo's. When the branch under test touches scripts/**/*.js
+    // or a workflow, the full hook runs lint-workflow-guards.sh ledger-coverage,
+    // which needs acorn, and blocked on "acorn is not installed" before ever
+    // reaching the byte-cap check (land.yml refused BRO-4328 on 2026-09-29).
+    // Link the real node_modules so the fixture behaves like a real checkout.
+    // Resolve it the way node would from the repo (a worktree checkout may
+    // find it in a parent directory rather than REPO_ROOT/node_modules).
+    let nodeModules = null;
+    try {
+      nodeModules = path.dirname(path.dirname(createRequire(path.join(REPO_ROOT, 'package.json')).resolve('acorn/package.json')));
+    } catch { /* acorn not installed: the hook's own fail-closed message is the right outcome */ }
+    if (nodeModules) fs.symlinkSync(nodeModules, path.join(hookWorktreeDir, 'node_modules'), 'dir');
 
     // Both fixture commits are built HERE, sequentially, rather than inside
     // individual test() bodies — node's test runner does not guarantee
