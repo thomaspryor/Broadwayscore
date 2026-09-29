@@ -239,8 +239,8 @@ Use subagents liberally! For all parts.
 
 Tell the user the file has been written and give a brief summary (sprint count, total tasks, key risks).
 
-### Notion Update (BWSC projects only)
+### Linear Update (BWSC projects only)
 
-After writing the plan file, update the session's Notion card:
-1. Append to Outcome: `### Plan created\n[Sprint count, task count, key risks — 3-4 lines max]`
+After writing the plan file, comment on the session's Linear issue (`node scripts/linear-brain.js update BRO-N --comment "..."`):
+1. Comment: `### Plan created\n[Sprint count, task count, key risks — 3-4 lines max]`
 2. This ensures the plan survives if the session is interrupted before implementation begins.

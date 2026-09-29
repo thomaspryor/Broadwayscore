@@ -341,7 +341,7 @@ The only valid reasons to defer:
 
 "Would take 30 minutes" is not a blocker. "Is non-trivial" is not a blocker. Just do the work.
 
-For anything genuinely blocked: card it in Notion (per `feedback_notion_card_context.md`), and if it's technical + self-contained, DISPATCH it yourself (`node scripts/bsc-next.js --id <task#>` in Broadwayscore, ending with a `DISPATCHED:` line) rather than leaving it as a paste-prompt. KEEP WORKING on the rest. Never leave a found issue in limbo, and never end the loop with a question when there is more work you can do.
+For anything genuinely blocked: file it as a Linear issue (`node scripts/linear-brain.js create ... --notes "..."`, context rules per `feedback_notion_card_context.md`), and if it's technical + self-contained, DISPATCH it yourself (`node scripts/linear-next.js --id BRO-N` in Broadwayscore, ending with a `DISPATCHED:` line) rather than leaving it as a paste-prompt. KEEP WORKING on the rest. Never leave a found issue in limbo, and never end the loop with a question when there is more work you can do.
 
 **After all issues are resolved — record the verdict (BWSC repo, MANDATORY):**
 
@@ -353,11 +353,11 @@ node scripts/lib/review-gate.mjs --query=record --reviewer=ship-check --result=p
 
 **Then:** proceed to `/what-else` and then `/wrap-up` without waiting for the user to ask. The flow is: ship-check → record verdict → what-else → wrap-up. Keep going.
 
-### Phase 9: Notion checkpoint (BWSC projects only)
+### Phase 9: Linear checkpoint (BWSC projects only)
 
-Before proceeding to /what-else, verify the Notion card exists and is current:
-1. Search for this session's "In progress" card
-2. If found: update Notes with ship-check results (pass/fail, P0/P1 counts)
-3. If NOT found: **stop and create it now** — this was a process failure (startup hook rule #1). Flag it to the user.
+Before proceeding to /what-else, verify the session's Linear issue exists and is current:
+1. Use the `BRO-N` from this session's `linear-brain.js create` / `linear-session.js claim` output.
+2. If found: `node scripts/linear-brain.js update BRO-N --comment "ship-check: <pass/fail>, P0/P1 counts"`.
+3. If NOT found: **stop and file it now** (`linear-brain.js create ... --park`) — this was a process failure (startup hook rule #1). Flag it to the user.
 
-**⚠️ This is a mid-session checkpoint only.** The card is still "In progress". Final Status update (Done/Paused) happens in `/wrap-up`, which MUST run before the session ends. Do not skip wrap-up — orphaned "In progress" cards are a recurring problem.
+**⚠️ This is a mid-session checkpoint only.** The issue stays "In Progress". The close-out (Done, or Backlog when paused) happens in `/wrap-up`, which MUST run before the session ends. Do not skip wrap-up — orphaned "In Progress" issues are a recurring problem, and the Stop hook blocks SAFE TO EXIT without it. Notion is retired: a Notion update does not count.
