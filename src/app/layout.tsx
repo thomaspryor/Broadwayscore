@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import ScrollToTop from '@/components/ScrollToTop';
 import HeaderSearch from '@/components/HeaderSearch';
@@ -19,12 +18,10 @@ import HeaderHamburger from '@/components/HeaderHamburger';
 import HeaderUserIcon from '@/components/HeaderUserIcon';
 import HeaderSecondaryMarketLink from '@/components/HeaderSecondaryMarketLink';
 
-const inter = Inter({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800', '900'],
-  display: 'swap',
-  variable: '--font-inter',
-});
+// Inter is self-hosted (see the @font-face block at the top of globals.css for
+// why next/font/google was removed). This is the one file the browser needs for
+// first paint — the latin-ext subset loads on demand via its unicode-range.
+const INTER_LATIN_WOFF2 = '/fonts/Inter-latin-var.3100e775.woff2';
 
 // Static OG image (API routes don't work with static export)
 const homeOgImageUrl = `${BASE_URL}/og/home.png`;
@@ -88,9 +85,16 @@ export default function RootLayout({
   const marketStats = getMarketStats();
 
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en">
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link
+          rel="preload"
+          href={INTER_LATIN_WOFF2}
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
         <link rel="alternate" type="application/rss+xml" title="Broadway Scorecard" href="/rss.xml" />
         {/* Preconnect to image CDN for faster LCP */}
         <link
