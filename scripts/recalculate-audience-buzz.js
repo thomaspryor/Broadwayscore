@@ -17,6 +17,7 @@ const fs = require('fs');
 const path = require('path');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { createAudienceBuzzWriteGuard } = require('./lib/audience-buzz-write-guard');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 // Resolve data dir: --data-dir flag > DATA_DIR env > default
 const cliDataDir = process.argv.find(a => a.startsWith('--data-dir='));
@@ -54,6 +55,12 @@ for (const [showId, show] of Object.entries(audienceBuzz.shows)) {
   const oldScore = show.combinedScore;
   const showData = showMap[showId];
   const showInfo = showData ? { closingDate: showData.closingDate, status: showData.status, category: showData.category } : undefined;
+  // Broadway.com is US only; a London show's entry is the Broadway production's.
+  if (show.sources?.broadwayCom && showData && isLondonMarket(showData.category)) {
+    console.log(`${showId}: dropping Broadway.com source (London show, score ${show.sources.broadwayCom.score})`);
+    delete show.sources.broadwayCom;
+    updated++;
+  }
   const { score, weights } = calculateCombinedScore(show.sources, showInfo);
 
   if (score !== null) {

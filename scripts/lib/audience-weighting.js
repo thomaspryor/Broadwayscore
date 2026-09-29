@@ -17,6 +17,12 @@
  *          merge-reddit-shards.js, merge-show-score-shards.js
  */
 
+// Inlined from venue-classification.isLondonMarket: requiring that module pulls
+// dynamic data requires into safe-form check scripts' graphs
+// (safe-form-allowlist.test.mjs). Keep the two in sync.
+const LONDON_CATEGORIES = new Set(['west-end', 'off-west-end']);
+const isLondonMarket = (category) => LONDON_CATEGORIES.has(category);
+
 const MIN_REDDIT_ITEMS = 50;
 const REDDIT_RECENCY_YEARS = 3;
 const MAX_SINGLE_SOURCE_WEIGHT = 0.80;
@@ -80,7 +86,9 @@ function calculateCombinedScore(sources, showInfo) {
   if (sources.theatr?.score != null && sources.theatr.reviewCount >= MIN_THEATR_VOTES) {
     active.push({ name: 'theatr', score: sources.theatr.score, volume: sources.theatr.reviewCount });
   }
-  if (sources.broadwayCom?.score != null && sources.broadwayCom.reviewCount > 0) {
+  // Broadway.com is US only: on a London show it can only be the Broadway
+  // production's rating (4 West End shows carried one, 2026-09-29).
+  if (sources.broadwayCom?.score != null && sources.broadwayCom.reviewCount > 0 && !isLondonMarket(showInfo?.category)) {
     active.push({ name: 'broadwayCom', score: sources.broadwayCom.score, volume: sources.broadwayCom.reviewCount });
   }
   if (sources.seatplan?.score != null && sources.seatplan.reviewCount > 0) {

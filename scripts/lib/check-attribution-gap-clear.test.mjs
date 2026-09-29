@@ -5,19 +5,16 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { latestPct } = require('../check-attribution-gap-clear.js');
+const { spawnSync } = require('node:child_process');
+const path = require('node:path');
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
 
-test('latestPct reads the latest day by date, not file order', () => {
-  const lines = [
-    JSON.stringify({ day: '2026-09-27', attributedPct: { scrapingbee: 0.17 } }),
-    JSON.stringify({ day: '2026-09-29', attributedPct: { scrapingbee: 0.93 } }),
-    JSON.stringify({ day: '2026-09-28', attributedPct: { scrapingbee: 0.4 } }),
-    'not json',
-  ];
-  assert.deepEqual(latestPct(lines, 'scrapingbee'), { day: '2026-09-29', pct: 0.93 });
-  assert.deepEqual(latestPct(lines, 'brightdata'), { day: '2026-09-29', pct: null }, 'unmeasured provider -> null');
-  assert.deepEqual(latestPct([], 'scrapingbee'), { day: null, pct: null });
+// The verdict logic itself is tested in provider-spend-core.test.mjs
+// (attributionWindowVerdict); this file covers the CLI and its safe form.
+test('CLI: --help exits 0, unknown provider exits 2', () => {
+  const cli = path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'check-attribution-gap-clear.js');
+  assert.equal(spawnSync(process.execPath, [cli, '--help']).status, 0);
+  assert.equal(spawnSync(process.execPath, [cli, '--provider=bogus']).status, 2);
 });
 
 test('the card VERIFY command is a safe check form; other providers or shell tails are not', () => {

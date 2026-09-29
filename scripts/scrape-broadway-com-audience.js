@@ -452,7 +452,11 @@ async function main() {
       if (listed.length > 0) { toProcess.push(...listed); continue; }
       // Not in listing/sitemap: try constructing the URL from the title directly
       const show = showsData.shows.find(s => s.id === wanted || s.slug === wanted);
-      if (show) {
+      if (show && isLondonMarket(show.category)) {
+        // Broadway.com is US only: a title-built URL for a West End id would
+        // pick up the Broadway production's rating.
+        console.log(`Show ${wanted} is a London-market show — skipping (Broadway.com is US only)`);
+      } else if (show) {
         const titleSlug = show.title.toLowerCase()
           .replace(/['']/g, '')
           .replace(/[^a-z0-9]+/g, '-')
@@ -468,6 +472,13 @@ async function main() {
       }
     }
     console.log(`Filtered to show${showIdFilter.length > 1 ? 's' : ''}: ${showIdFilter.join(', ')} (${toProcess.length} matches)`);
+  }
+  // Broadway.com is US only. Listing matches can still land on a London id
+  // (4 West End shows carried the Broadway production's rating, 2026-09-29).
+  const londonDropped = toProcess.filter(m => isLondonMarket(m.show.category));
+  if (londonDropped.length > 0) {
+    console.log(`Dropping ${londonDropped.length} London-market match(es): ${londonDropped.map(m => m.show.id).join(', ')}`);
+    toProcess = toProcess.filter(m => !isLondonMarket(m.show.category));
   }
   if (showLimit) {
     toProcess = toProcess.slice(0, showLimit);
@@ -491,7 +502,10 @@ async function main() {
   // attempts IN A ROW also come back empty, stop retrying for the rest of
   // this run — a real bot-block would keep recovering via Playwright, so a
   // miss streak signals "no data exists" rather than "still blocked."
-  const FALLBACK_MISS_CIRCUIT_BREAKER = 5;
+  // Targeted --show/--shows runs are exempt: before BRO-4242 each show ran in
+  // its own process, so the streak never carried across shows. A batched
+  // opening-night list is short and every entry is expected to have data.
+  const FALLBACK_MISS_CIRCUIT_BREAKER = showIdFilter ? Infinity : 5;
   let consecutiveFallbackMisses = 0;
 
   for (let i = 0; i < toProcess.length; i++) {
