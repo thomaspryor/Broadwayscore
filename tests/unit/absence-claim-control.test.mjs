@@ -60,7 +60,8 @@ test('a message with no absence language is unaffected', (t) => {
 // wrap-up block because a line quoted BRO-4137's own 195-char title
 // ("...search returned nothing..."). The gate strips quoted spans before
 // calling the lib (hooks/lib/transcript.py), and that stripper capped spans at
-// 160 chars, so the title leaked through. The g7-long-* / g3-long-* fixtures
+// 160 chars, so the title leaked through; titles next to a ref now strip at
+// any length (transcript.py _TITLED_REF_SPAN_RE). The g7-long-* / g3-long-* fixtures
 // pin both directions: a long quoted title passes, an unquoted claim on the
 // same line still blocks.
 test('finish-line-gate fixture suite passes, including the long-quoted-title fixtures', (t) => {
@@ -81,6 +82,10 @@ test('finish-line-gate fixture suite passes, including the long-quoted-title fix
     'g7-long-quoted-title-passes (exit=0)',
     'g7-long-quoted-title-plus-unquoted-claim-blocks (exit=2)',
     'g3-long-quoted-title-passes (exit=0)',
+    // Only titles next to a card/workspace ref strip at any length; a long
+    // quoted conclusion or a claim between inch marks must still block.
+    'g7-long-quoted-conclusion-blocks (exit=2)',
+    'g7-claim-between-inch-marks-blocks (exit=2)',
     'g7-absence-claim-no-control-blocks (exit=2)',
     'g7-absence-claim-with-control-passes (exit=0)',
   ]) {
