@@ -224,6 +224,18 @@ function findExistingFileForUrl(showId, outletId, url) {
   return findExistingFileForUrlShared(REVIEW_TEXTS_ROOT, showId, outletId, url);
 }
 
+/**
+ * A _pending stub is redundant once a primary file already carries its url
+ * and the stub itself holds nothing a primary could lack: no byline, no text
+ * (BRO-4271). Pure; `landedFile` is findExistingFileForUrl's result.
+ */
+function isRedundantPendingStub(data, landedFile) {
+  if (!landedFile || !data) return false;
+  const hasByline = data.criticName && String(data.criticName).toLowerCase() !== 'unknown';
+  const hasText = typeof data.fullText === 'string' && data.fullText.trim().length > 0;
+  return !hasByline && !hasText;
+}
+
 async function processShow(showId) {
   const pendingDir = path.join(PENDING_ROOT, showId);
   if (!fs.existsSync(pendingDir)) {
@@ -261,6 +273,19 @@ async function processShow(showId) {
     if (!url) {
       console.log(`  [${file}] no URL — skip`);
       kept++;
+      continue;
+    }
+
+    // Already landed (BRO-4271): a byline-less textless stub whose url a
+    // primary file for this show already carries is a leftover, not a pending
+    // review. School Girls 2026 kept two such nysr--<hash> stubs after the BWW
+    // roundup created nysr--steven-suskin / nysr--frank-scheck from the same
+    // urls; they had to be deleted by hand. A stub with text is kept.
+    const landed = findExistingFileForUrl(showId, data.outletId, url);
+    if (isRedundantPendingStub(data, landed)) {
+      console.log(`  [${file}] url already filed as ${landed} — dropping textless pending stub`);
+      if (!dryRun) fs.unlinkSync(filepath);
+      rejected++;
       continue;
     }
 
@@ -397,6 +422,7 @@ module.exports = {
   pendingPromoteRejectReason,
   NON_THEATRE_SECTIONS,
   findExistingFileForUrl,
+  isRedundantPendingStub,
   // Liveness of the --all-open scope (audit S7-T7) — exported for
   // tests/unit/show-liveness.test.mjs.
   PENDING_DRAIN_LIVE_STATUSES,

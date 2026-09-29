@@ -230,6 +230,8 @@ const collision = detectIngestCollision({
   criticName,
   url,
   publishDate,
+  // Other-production carve-out + opening window (BRO-4271).
+  show,
   forceClearStale,
 });
 if (!collision.ok) {

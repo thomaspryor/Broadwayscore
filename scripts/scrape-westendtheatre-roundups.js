@@ -21,6 +21,8 @@
 const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
+const { isLondonMarket } = require('./lib/venue-classification');
+const { otherProductionSignal } = require('./lib/other-production-signal');
 const {
   normalizeOutlet,
   findExistingReviewFile,
@@ -399,11 +401,26 @@ function saveReview(review) {
   return result.filepath;
 }
 
+/**
+ * Shows a WET roundup may be matched to: London-market rows only (BRO-4271).
+ * WET is a West End aggregator; a Broadway row sharing the title is never
+ * the production a WET roundup reviews.
+ */
+function wetCandidateShows(allShows) {
+  return (allShows || []).filter(s => isLondonMarket(s.category));
+}
+
+/** Other-production signal for a WET post matched to `show`, or null. */
+function wetPostOtherProduction(show, postUrl, postDate) {
+  return otherProductionSignal({ url: postUrl || null, publishDate: postDate || null }, show);
+}
+
 // --- Main ---
 
 async function main() {
   const shows = loadShows();
   const allShows = Array.isArray(shows) ? shows : Object.values(shows);
+  const londonShows = wetCandidateShows(allShows);
 
   console.log('📰 WestEndTheatre.com Review Roundup Scraper');
   console.log(`   Dry run: ${dryRun}`);
@@ -490,7 +507,13 @@ async function main() {
     // `date`: the round-up's publish date, so a title with several West End
     // productions (Romeo and Juliet 2026 / Romeo & Juliet 2027) resolves to the
     // run whose window contains the post — reviews belong to the run that opened.
-    const matchResult = matchTitleToShow(showTitle, allShows, { market: 'west-end', date: postDate || undefined });
+    // London shows only (BRO-4271): WET is a West End aggregator, so a roundup
+    // for a London production must never land on a Broadway row that merely
+    // shares its title. Before this, the 2023 Lyric Hammersmith School Girls
+    // roundup matched the 2026 Broadway show (the London run is not in
+    // shows.json, so market was only a tie-break preference) and six London
+    // reviews squatted its outlet slots on opening night.
+    const matchResult = matchTitleToShow(showTitle, londonShows, { market: 'west-end', date: postDate || undefined });
     if (!matchResult || !matchResult.show) {
       stats.skippedNoMatch++;
       if (showFilter || dryRun) console.log(`  [NO MATCH] "${showTitle}" (from: ${stripHtml(wpTitle)})`);
@@ -504,6 +527,17 @@ async function main() {
     }
 
     const show = matchResult.show;
+
+    // Same title, earlier production: a roundup posted well before this
+    // production's previews reviews a prior London run (revival/return).
+    {
+      const op = wetPostOtherProduction(show, postUrl, postDate);
+      if (op) {
+        stats.skippedOtherProduction = (stats.skippedOtherProduction || 0) + 1;
+        console.log(`  [OTHER PRODUCTION] "${showTitle}" → ${show.id}: ${op.detail} — skipped`);
+        continue;
+      }
+    }
 
     // Content validation: verify the matched show's title actually appears in the
     // post title or body. Prevents wrong-show archives when extractShowTitle strips
@@ -658,6 +692,7 @@ async function main() {
   console.log(`  No match:       ${stats.skippedNoMatch}`);
   console.log(`  Low confidence: ${stats.skippedLowConfidence}`);
   console.log(`  Content mismatch: ${stats.skippedContentMismatch}`);
+  console.log(`  Other production: ${stats.skippedOtherProduction || 0}`);
   console.log(`  No table:       ${stats.skippedNoTable}`);
   console.log(`  Cached no-ratings skips: ${stats.skippedCachedNoRatings}`);
   console.log(`  Rendered-page fetches:   ${stats.pageFetches}`);
@@ -679,7 +714,7 @@ async function main() {
   }
 }
 
-module.exports = { extractStarRatings, extractSectionReviews, extractShowTitle, stripHtml, fetchRenderedPageHtml, isCachedNoRatings, NO_RATINGS_RECHECK_DAYS };
+module.exports = { wetCandidateShows, wetPostOtherProduction, extractStarRatings, extractSectionReviews, extractShowTitle, stripHtml, fetchRenderedPageHtml, isCachedNoRatings, NO_RATINGS_RECHECK_DAYS };
 
 if (require.main === module) {
   main()

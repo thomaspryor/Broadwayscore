@@ -336,6 +336,9 @@ if (!show) {
     // Revival/returning-production carve-out: a fresh review in this show's opening
     // window must not be blocked by a prior-production file (2026-07-04 WE fix).
     openingDate: show.openingDate,
+    // Other-production carve-out (BRO-4271): a flagged prior-production file
+    // under a different filename no longer blocks this show's own review.
+    show,
     forceClearStale,
   });
   if (!collision.ok) {
