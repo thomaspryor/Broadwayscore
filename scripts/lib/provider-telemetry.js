@@ -26,7 +26,9 @@ const path = require('path');
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
 const LEDGER_PATH = path.join(REPO_ROOT, 'data', 'audit', 'scraper-spend-ledger.jsonl');
-const MAX_LEDGER_LINES = 20000; // ~2-3 months at current call volume; oldest lines drop first
+// ~3 days at 2026-09 volume (10-15K rows/day). check-provider-spend.js reads
+// yesterday's rows ~13:00Z today, so the ledger must hold ~37h at minimum.
+const MAX_LEDGER_LINES = 45000;
 const TAG_BY_PROVIDER = {
   brightdata: 'BD',
   scrapingbee: 'SB',
@@ -73,6 +75,24 @@ function _ledgerPath() {
   return LEDGER_PATH;
 }
 
+/**
+ * Pure: keep the newest `max` ledger lines BY TIMESTAMP. The file is
+ * merge=union in .gitattributes, so after concurrent CI pushes it is not in
+ * time order (2026-09-29: line 0 was from that day, 09-19 rows sat ~24K lines
+ * down). Slicing off the first lines therefore deleted recent rows and cut
+ * provider attribution. Every row is written as JSON.stringify({ ts, ... }),
+ * so the leading `{"ts":"<ISO>"` prefix sorts chronologically without a parse;
+ * a line without that prefix sorts first and is dropped before any real row.
+ */
+function trimLedgerLines(lines, max = MAX_LEDGER_LINES) {
+  if (lines.length <= max) return lines;
+  const key = (l) => (l.startsWith('{"ts":"') ? l.slice(7, 31) : '');
+  const sorted = lines
+    .map((l, i) => [key(l), i, l])
+    .sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : a[1] - b[1]));
+  return sorted.slice(sorted.length - max).map((e) => e[2]);
+}
+
 function _appendLedgerLine(record) {
   const ledgerPath = _ledgerPath();
   try {
@@ -82,7 +102,7 @@ function _appendLedgerLine(record) {
       lines = fs.readFileSync(ledgerPath, 'utf8').split('\n').filter(Boolean);
     } catch { /* first write */ }
     lines.push(JSON.stringify(record));
-    if (lines.length > MAX_LEDGER_LINES) lines = lines.slice(lines.length - MAX_LEDGER_LINES);
+    lines = trimLedgerLines(lines);
     fs.writeFileSync(ledgerPath, lines.join('\n') + '\n');
   } catch {
     // Ledger persistence must never break scraping — the stdout line still fired.
@@ -166,6 +186,15 @@ function _dayOf(ts) {
   return typeof ts === 'string' ? ts.slice(0, 10) : null;
 }
 
+// `scope` is a UTC day ('YYYY-MM-DD') or a { from, to } ISO window (from
+// inclusive, to exclusive). ScrapingBee/Scrapingdog billing is a counter
+// delta between two readings ~24h apart, not a UTC day, so their attribution
+// compares against ledger rows in that same window (check-provider-spend.js).
+function _inScope(ts, scope) {
+  if (typeof scope === 'string') return _dayOf(ts) === scope;
+  return typeof ts === 'string' && !!scope && ts >= scope.from && ts < scope.to;
+}
+
 /**
  * Count ledger calls per provider for one UTC day.
  * @param {Array<Object>} ledgerRecords - raw parsed ledger lines
@@ -175,7 +204,7 @@ function _dayOf(ts) {
 function countCallsByProvider(ledgerRecords, day) {
   const counts = {};
   for (const r of ledgerRecords || []) {
-    if (!r || _dayOf(r.ts) !== day) continue;
+    if (!r || !_inScope(r.ts, day)) continue;
     counts[r.provider] = (counts[r.provider] || 0) + 1;
   }
   return counts;
@@ -188,7 +217,7 @@ function countCallsByProvider(ledgerRecords, day) {
 function topCallers(ledgerRecords, day, provider, n = 5) {
   const counts = {};
   for (const r of ledgerRecords || []) {
-    if (!r || _dayOf(r.ts) !== day || r.provider !== provider) continue;
+    if (!r || !_inScope(r.ts, day) || r.provider !== provider) continue;
     const key = r.script || 'unknown';
     counts[key] = (counts[key] || 0) + 1;
   }
@@ -210,7 +239,7 @@ function topCallers(ledgerRecords, day, provider, n = 5) {
 function creditsByProvider(ledgerRecords, day) {
   const sums = {};
   for (const r of ledgerRecords || []) {
-    if (!r || _dayOf(r.ts) !== day) continue;
+    if (!r || !_inScope(r.ts, day)) continue;
     const credits = typeof r.credits === 'number' && Number.isFinite(r.credits) ? r.credits : 0;
     sums[r.provider] = (sums[r.provider] || 0) + credits;
   }
@@ -227,7 +256,7 @@ function creditsByProvider(ledgerRecords, day) {
 function topCallersByCredits(ledgerRecords, day, provider, n = 5) {
   const sums = {};
   for (const r of ledgerRecords || []) {
-    if (!r || _dayOf(r.ts) !== day || r.provider !== provider) continue;
+    if (!r || !_inScope(r.ts, day) || r.provider !== provider) continue;
     const key = r.script || 'unknown';
     const credits = typeof r.credits === 'number' && Number.isFinite(r.credits) ? r.credits : 0;
     sums[key] = (sums[key] || 0) + credits;
@@ -352,4 +381,5 @@ module.exports = {
   sdBilledCredits,
   LEDGER_PATH,
   MAX_LEDGER_LINES,
+  trimLedgerLines,
 };
