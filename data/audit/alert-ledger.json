@@ -5826,7 +5826,7 @@
       "resolvedAt": "2026-09-28T21:34:36.649Z"
     },
     "test-yml:red:Unit Tests:93a67e1f": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every off-Broadway venue-complex subVenueSlugs entry resolves to a real shows.json venue\"",
       "firstSeen": "2026-09-28T20:47:43.893Z",
@@ -5839,8 +5839,11 @@
       "silentRefires": 17,
       "absentRunIds": [
         "36536362078",
-        "36538656177"
-      ]
+        "36538656177",
+        "36550210048"
+      ],
+      "resolvedAt": "2026-09-29T09:49:19.430Z",
+      "resolveReason": "stale-signature"
     },
     "we-aggregator-go-live:ballet-shoes-west-end-2025": {
       "status": "open",
