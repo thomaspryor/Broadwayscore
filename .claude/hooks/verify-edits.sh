@@ -47,11 +47,23 @@ fi
 # EXIT and skipped review, /what-else and /wrap-up unchecked. Now each gate
 # blocks at most once per chain (the Mac finish-line gate's per-gate markers),
 # with a hard cap of VE_CHAIN_BLOCK_CAP blocks so an unsatisfiable gate can
-# never loop. Codes that blocked are listed in $_ve_chain_file; the EXIT trap
-# near the block messages records a code when this run blocks (exit 2).
+# never loop. Codes that blocked are listed in $_ve_chain_file (one key per
+# line; the finish chain's key is its exact missing-step set, so a shrinking
+# set re-blocks); the EXIT trap near the block messages records a key when
+# this run blocks (exit 2). Every hook runs on a chain's first Stop
+# (stop_hook_active false), so the ledger is emptied there: nothing from an
+# earlier chain survives, even when another Stop hook blocked first.
 stop_hook_active=$(echo "$input" | jq -r '.stop_hook_active // false' 2>/dev/null)
 VE_CHAIN_BLOCK_CAP=4
 _ve_chain_file="/tmp/verify-edits-chain-$(printf '%s' "$transcript" | cksum | cut -d' ' -f1)"
+if [ "$stop_hook_active" = "true" ]; then
+  # Unwritable ledger: nothing could be recorded, so blocking again could loop
+  # forever. Fall back to the old let-it-through behavior.
+  { : >> "$_ve_chain_file"; } 2>/dev/null || exit 0
+  [ "$({ wc -l < "$_ve_chain_file"; } 2>/dev/null || echo 0)" -ge "$VE_CHAIN_BLOCK_CAP" ] && exit 0
+else
+  { : > "$_ve_chain_file"; } 2>/dev/null
+fi
 
 # CRITICAL (card #233, 2026-07-20): at the live Stop event the final assistant
 # message's TEXT is not yet flushed to the transcript file (tool_use/tool_result
@@ -66,31 +78,36 @@ export VE_LAST_MSG=$(echo "$input" | jq -r '.last_assistant_message // empty' 2>
 export VE_REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && pwd)"
 
 export VE_SKIP_CODES=""
-if [ "$stop_hook_active" = "true" ] && [ -f "$_ve_chain_file" ]; then
+if [ "$stop_hook_active" = "true" ]; then
   VE_SKIP_CODES=$(paste -sd, "$_ve_chain_file" 2>/dev/null)
 fi
 result=$(python3 - "$transcript" <<'PYEOF'
 import hashlib, json, sys, os, re, shlex
 
-# Per-gate loop guard (BRO-4367): codes that already blocked in this
+# Per-gate loop guard (BRO-4367): keys that already blocked in this
 # turn-chain (bash passes them in VE_SKIP_CODES) must not hide the gates
-# after them. An early gate raises _VeAlreadyBlocked from _ve_block(); every
-# early gate sits in a `try: ... except Exception: pass`, so evaluation falls
-# through to the next gate. Terminal verdicts go through _ve_final(), which
-# swaps an already-blocked verdict for the finish-chain result.
+# after them. Every early-gate call site is `if <cond>: _ve_block(code)`
+# followed by independent checks, so an already-blocked gate just returns and
+# evaluation continues. Terminal verdicts go through _ve_final(), which swaps
+# an already-blocked verdict for the finish-chain result. Keep _ve_key in
+# step with the bash _ve_code computation near the block messages.
 _VE_SKIP = set(c for c in os.environ.get('VE_SKIP_CODES', '').split(',') if c)
 
-class _VeAlreadyBlocked(Exception):
-    pass
+def _ve_key(code):
+    head, _, rest = code.partition(':')
+    return head + ':' + rest.split(':', 1)[0] if head == 'NOCHAIN' else head
+
+def _ve_seen(code):
+    return _ve_key(code) in _VE_SKIP
 
 def _ve_block(code):
-    if code.split(':', 1)[0] in _VE_SKIP:
-        raise _VeAlreadyBlocked(code)
+    if _ve_seen(code):
+        return
     print(code)
     sys.exit(0)
 
 def _ve_final(code):
-    if code.split(':', 1)[0] in _VE_SKIP:
+    if _ve_seen(code):
         code = _chain_or_ok()
     print(code)
     sys.exit(0)
@@ -736,7 +753,7 @@ if os.environ.get('INFLIGHT_GATE_DISABLE', '0') != '1':
             for _aid_l, (_idx_l, _lab_l) in _agent_start.items():
                 if _agent_done.get(_aid_l, -1) < _idx_l:
                     _live.append('%s [%s]' % (_lab_l, _aid_l))
-            if _live:
+            if _live and not _ve_seen('INFLIGHT'):
                 sys.stderr.write('   still in flight: ' + '; '.join(_live[:8])
                                  + ('; +%d more' % (len(_live) - 8) if len(_live) > 8 else '') + '\n')
                 _ve_block("INFLIGHT")
@@ -1035,7 +1052,7 @@ for _i in range(len(events) - 1, -1, -1):
     if _k == 'text':
         _txt = _p or ''
         _m = _HUMAN_TIME_ESTIMATE_RE.search(_txt)
-        if _m and 'NO-VERIFY:' not in _txt and 'HUMAN_TIME_ESTIMATE' not in _VE_SKIP:
+        if _m and 'NO-VERIFY:' not in _txt and not _ve_seen('HUMAN_TIME_ESTIMATE'):
             print(f"HUMAN_TIME_ESTIMATE:{_m.group(1)}")
             sys.exit(0)
         break  # only the most recent assistant_text counts
@@ -1228,7 +1245,7 @@ def _chain_or_ok():
         return 'OK'
     try:
         r = _chain_result() or 'OK'
-        return 'OK' if r.split(':', 1)[0] in _VE_SKIP else r
+        return 'OK' if _ve_seen(r) else r
     except Exception:
         return 'OK'   # fail open
 
@@ -1829,22 +1846,21 @@ _ve_final(f"UNVERIFIED:{basename}")
 PYEOF
 )
 
-# Per-gate loop guard (see LOOP GUARD above): a code that already blocked in
-# this chain, or a chain at the cap, lets this Stop through.
+# Per-gate loop guard (see LOOP GUARD above). The ledger key mirrors python's
+# _ve_key(): the code, or for the finish chain NOCHAIN:<missing steps>.
+# Backstop: a key that already blocked in this chain lets this Stop through
+# (python should already have skipped it).
 _ve_code="${result%%:*}"
-if [ "$stop_hook_active" = "true" ]; then
-  if grep -qxF -- "$_ve_code" "$_ve_chain_file" 2>/dev/null \
-     || [ "$(wc -l < "$_ve_chain_file" 2>/dev/null || echo 0)" -ge "$VE_CHAIN_BLOCK_CAP" ]; then
-    exit 0
-  fi
+if [ "$_ve_code" = "NOCHAIN" ]; then
+  _ve_rest="${result#NOCHAIN:}"
+  _ve_code="NOCHAIN:${_ve_rest%%:*}"
+fi
+if [ "$stop_hook_active" = "true" ] && grep -qxF -- "$_ve_code" "$_ve_chain_file" 2>/dev/null; then
+  exit 0
 fi
 _ve_record_block() {
   [ "$1" = "2" ] || return 0
-  if [ "$stop_hook_active" = "true" ]; then
-    printf '%s\n' "$_ve_code" >> "$_ve_chain_file" 2>/dev/null
-  else
-    printf '%s\n' "$_ve_code" > "$_ve_chain_file" 2>/dev/null
-  fi
+  printf '%s\n' "$_ve_code" >> "$_ve_chain_file" 2>/dev/null
 }
 trap '_ve_record_block $?' EXIT
 

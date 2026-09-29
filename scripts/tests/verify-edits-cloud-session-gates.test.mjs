@@ -21,7 +21,7 @@
 // than the gap it closes. Every BLOCK case here is paired with at least one
 // ALLOW case proving the gate doesn't over-fire.
 
-import { test } from 'node:test';
+import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -83,8 +83,16 @@ function attachmentNotice(text) {
   return { _attachment: text };
 }
 
+// Every hook run leaves a per-chain loop-guard ledger in /tmp keyed by the
+// transcript path (BRO-4367); remove them all when the file finishes.
+const WRITTEN_TRANSCRIPTS = new Set();
+after(() => {
+  for (const t of WRITTEN_TRANSCRIPTS) fs.rmSync(chainFileFor(t), { force: true, recursive: true });
+});
+
 function writeTranscript(dir, toolCalls, { card = true, userText = 'please do the work' } = {}) {
   const p = path.join(dir, 'transcript.jsonl');
+  WRITTEN_TRANSCRIPTS.add(p);
   const lines = [
     JSON.stringify({ type: 'user', message: { role: 'user', content: [{ type: 'text', text: userText }] } }),
   ];
@@ -1612,7 +1620,7 @@ test('parity: a big session (>15 code edits) needs /ship-check or /code-review, 
     'small session: /second-opinion still counts');
 });
 
-test('parity: every missing step is named in ONE block (a second Stop in the chain is not re-blocked for the same gate)', skipNoRepoHook, () => {
+test('parity: every missing step is named in ONE block', skipNoRepoHook, () => {
   const r = chain('parity-all', [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
   assertBlocked(r, 'nothing ran');
   assert.match(r.stderr, /does not count\): \/ship-check.*then \/what-else, then \/wrap-up/, `got: ${r.stderr.slice(0, 400)}`);
@@ -1676,6 +1684,45 @@ test('loop guard: blocks are capped per chain', skipNoRepoHook, () => {
   fs.writeFileSync(chainFileFor(t), 'A\nB\nC\nD\n');
   assertAllowed(runHook(t, CLOSED, {}, true), 'cap reached');
   fs.rmSync(chainFileFor(t), { force: true });
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ship-check findings on the loop guard (2026-09-29).
+test('loop guard: partial progress on the finish chain re-blocks until every step ran', skipNoRepoHook, () => {
+  const dir = makeTmpDir('loopguard-partial');
+  const t = writeTranscript(dir, [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE]);
+  assertBlocked(runHook(t, CLOSED), 'nothing ran');
+  // Ran only /ship-check, claims again in the same chain.
+  writeTranscript(dir, [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE, SHIP_CHECK]);
+  const r2 = runHook(t, CLOSED, {}, true);
+  assertBlocked(r2, 'what-else and wrap-up still missing');
+  assert.match(r2.stderr, /does not count\): \/what-else, then \/wrap-up/, `got: ${r2.stderr.slice(0, 300)}`);
+  // Same missing set again: let through (no loop).
+  assertAllowed(runHook(t, CLOSED, {}, true), 'same missing set is not re-blocked');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('loop guard: a ledger from an earlier chain is cleared at the next chain\'s first Stop', skipNoRepoHook, () => {
+  const dir = makeTmpDir('loopguard-stale');
+  const t = writeTranscript(dir, [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE]);
+  fs.writeFileSync(chainFileFor(t), 'NOCHAIN:review,what-else,wrap-up\nA\nB\nC\n');
+  // New chain, first Stop is clean for this hook (mid-work), another Stop hook blocks.
+  assertAllowed(runHook(t, 'Working.\n\nNOT SAFE TO EXIT — still editing.'), 'mid-work stop');
+  // Next Stop arrives with stop_hook_active=true because the OTHER hook blocked.
+  const r = runHook(t, CLOSED, {}, true);
+  assertBlocked(r, 'stale ledger must not skip the chain gate');
+  assert.match(r.stderr, /finish chain is incomplete/, `got: ${r.stderr.slice(0, 300)}`);
+  assert.doesNotMatch(r.stderr, /No such file/, 'no stray shell noise in the block message');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('loop guard: an unwritable ledger falls back to letting the Stop through (never loops)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('loopguard-unwritable');
+  const t = writeTranscript(dir, [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE]);
+  fs.rmSync(chainFileFor(t), { force: true });
+  fs.mkdirSync(chainFileFor(t));   // a directory: appends fail
+  assertAllowed(runHook(t, CLOSED, {}, true), 'cannot record, so must not block again');
+  fs.rmSync(chainFileFor(t), { force: true, recursive: true });
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
