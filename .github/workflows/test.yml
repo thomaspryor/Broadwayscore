@@ -3236,6 +3236,13 @@ on:
       # a root-level scripts/ file with no test of its own — path-listed so a
       # solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/apply-orphan-grace-period.js'
+      # BRO-4375: cyrus-webhook-drain.js's decision logic (scripts/lib/cyrus-
+      # drain-backoff.js, colocated-tested) is covered by the scripts/lib/**
+      # glob above, but this thin CLI wrapper is a root-level scripts/ file
+      # with no test of its own — path-listed so a solo edit triggers CI
+      # (feedback_test_yml_push_path_allowlist). Its own commit (e6345f21adb,
+      # 2026-09-25) landed touching only this file and triggered zero CI.
+      - 'scripts/cyrus-webhook-drain.js'
   pull_request:
     branches: [main]
   schedule:

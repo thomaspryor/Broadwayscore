@@ -21,6 +21,7 @@ const os = require('node:os');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { nextIdleOnSuccess, nextSleepMs } = require('./lib/cyrus-drain-backoff.js');
 
 const USAGE = `cyrus-webhook-drain.js — pull queued Linear webhook deliveries from the
 Vercel relay and replay each one byte-for-byte at the local Cyrus edge worker.
@@ -244,7 +245,7 @@ async function main() {
     try {
       const processed = await drainOnce(secret, port);
       backoff = INTERVAL_MS;
-      idle = processed > 0 ? INTERVAL_MS : Math.min(Math.max(idle, INTERVAL_MS) * 2, IDLE_MAX_MS);
+      idle = nextIdleOnSuccess(processed, idle, INTERVAL_MS, IDLE_MAX_MS);
     } catch (err) {
       log(`ERROR ${err.message}`);
       // Record the failure too: a status file that only updates on success is
@@ -253,7 +254,7 @@ async function main() {
       backoff = Math.min(backoff * 2, 60000);
       idle = INTERVAL_MS;
     }
-    await new Promise((resolve) => setTimeout(resolve, Math.max(backoff, idle)));
+    await new Promise((resolve) => setTimeout(resolve, nextSleepMs(backoff, idle)));
   }
 }
 
