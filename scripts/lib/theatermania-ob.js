@@ -269,6 +269,7 @@ function findTmCoverageGaps({ rows, venuesById, genresById, shows, pendingShows 
   for (const g of titleGaps) {
     const cand = byTitle.get(g.title) || g;
     if (checkForDuplicate(cand, live).isDuplicate) continue;
+    if (findTmSameTitleShow(cand, all)) continue; // discovery's TM fallback: same verdict here
     // Discovery skips a row that matches a closed catalogued run (it reads
     // as the same show), so it can never close this gap on its own: name the
     // closed row so the alert says what a human has to do.
@@ -276,6 +277,45 @@ function findTmCoverageGaps({ rows, venuesById, genresById, shows, pendingShows 
     gaps.push(closed.isDuplicate && closed.existingShow ? { ...g, closedMatch: closed.existingShow.id } : g);
   }
   return { gaps, parsedCount: parsed.length, skippedCount, gatedCount: parsed.length - kept.length };
+}
+
+/**
+ * Same-title fallback for TheaterMania candidates (ship-check review).
+ * TM names venues coarsely ("Theatre Row" for our "Theatre Row, Theatre 5",
+ * "Culture Club" for "The Night Egg at the Culture Club"), and
+ * checkForDuplicate reads a different venue as a different production, so a
+ * show we already carry could be re-minted once its id year or slug drifts.
+ * TodayTix has its id index for this; TM rows get an exact-title match in
+ * the NYC pool instead, limited to a row that is still running or whose
+ * dates are within a year of the candidate's. A same-title revival years
+ * later is still treated as new.
+ *
+ * @returns {object|null} the existing show this candidate duplicates
+ */
+function findTmSameTitleShow(candidate, shows) {
+  const { getMarketPool } = require('./venue-classification');
+  const key = titleKeyLoose(candidate.title);
+  if (!key) return null;
+  const candDate = candidate.openingDate || candidate.previewsStartDate || null;
+  for (const s of shows || []) {
+    if (!s || !s.title || getMarketPool(s.category) !== 'nyc') continue;
+    if (titleKeyLoose(s.title) !== key) continue;
+    if (['open', 'previews', 'upcoming', 'announced'].includes(s.status)) return s;
+    const sDate = s.openingDate || s.previewsStartDate || s.unconfirmedStartDate || null;
+    if (candDate && sDate && Math.abs(Date.parse(candDate) - Date.parse(sDate)) <= 366 * 86400000) return s;
+  }
+  return null;
+}
+
+// Case, punctuation, diacritics and articles removed. Exact match on this key
+// only; no prefix or fuzzy step (that is checkForDuplicate's job).
+function titleKeyLoose(title) {
+  return foldDiacritics(String(title || '').toLowerCase())
+    .replace(/[‘’']/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\b(?:the|a|an)\b/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 /**
@@ -357,6 +397,7 @@ module.exports = {
   resolveTmVenue,
   parseTmOffBroadwayRow,
   findTmCoverageGaps,
+  findTmSameTitleShow,
   decideTmCoverageOutcome,
   fetchTmOffBroadway,
 };

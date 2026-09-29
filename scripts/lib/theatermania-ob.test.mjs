@@ -122,6 +122,9 @@ test('pending-fix add-show plans dedupe TheaterMania candidates (BRO-4377 overla
       { type: 'add-show', show: { id: 'fantasma-off-broadway-2026', title: 'Fantasma', slug: 'fantasma', venue: '59E59 Theaters', category: 'off-broadway', openingDate: '2026-11-22' } },
       { type: 'data-edit', field: 'x' },
     ] } },
+    { issueNumber: 'bro-3', status: 'validation-failed', plan: { actions: [
+      { type: 'add-show', show: { id: 'y-off-broadway-2026', title: 'Failed Plan Show', venue: 'HERE' } },
+    ] } },
     { issueNumber: 'bro-2', status: 'partial', plan: { actions: [
       { type: 'add-show', show: { id: 'x-off-broadway-2026', title: 'Partial Plan Show', venue: 'HERE' } },
     ] } },
@@ -195,4 +198,25 @@ test('coverage diff: queued + live matches are covered, a closed-only match is a
   assert.equal(decideTmCoverageOutcome({ rawCount: 0, currentCount: 0 }).blind, true);
   assert.equal(decideTmCoverageOutcome({ rawCount: 300, currentCount: 0 }).blind, true);
   assert.equal(decideTmCoverageOutcome({ rawCount: 300, currentCount: 91 }).blind, false);
+});
+
+test('TheaterMania same-title fallback catches coarse venue names, not old revivals', () => {
+  const { findTmSameTitleShow } = require('./theatermania-ob.js');
+  const shows = [
+    { id: 'night-of-january-16th-off-broadway-2026', title: 'Night of January 16th', venue: 'Theatre Row, Theatre 5', category: 'off-broadway', status: 'upcoming' },
+    { id: 'hamlet-off-broadway-1999', title: 'Hamlet', venue: 'Theatre Row', category: 'off-broadway', status: 'closed', openingDate: '1999-03-01' },
+    { id: 'truly-howard-hughes-off-broadway-2026', title: 'Truly, Howard Hughes', venue: 'Theater at St. Jean', category: 'off-broadway', status: 'closed', openingDate: '2026-09-17', closingDate: '2026-09-20' },
+    { id: 'london-x', title: 'Drunk Dracula', venue: 'Soho', category: 'west-end', status: 'open' },
+  ];
+  const c = (title, openingDate) => ({ title, venue: 'Theatre Row', category: 'off-broadway', openingDate });
+  assert.equal(findTmSameTitleShow(c('Night of January 16th', '2026-10-11'), shows)?.id, 'night-of-january-16th-off-broadway-2026');
+  assert.equal(findTmSameTitleShow(c('Truly Howard Hughes', '2026-09-17'), shows)?.id, 'truly-howard-hughes-off-broadway-2026', 'punctuation-insensitive, closed but same dates');
+  assert.equal(findTmSameTitleShow(c('Hamlet', '2026-11-01'), shows), null, 'a 1999 closed run is a different production');
+  assert.equal(findTmSameTitleShow(c('Drunk Dracula', '2026-10-01'), shows), null, 'London rows never match');
+});
+
+test('HERE alias keeps a room qualifier', () => {
+  const r = checkForDuplicate({ title: 'Arias With a Twist', venue: 'HERE', category: 'off-broadway' },
+    [{ id: 'a', slug: 'arias-with-a-twist', title: 'Arias with a Twist', venue: 'HERE Arts Center (Mainstage)', category: 'off-broadway', openingDate: '2026-09-23' }]);
+  assert.equal(r.isDuplicate, true);
 });

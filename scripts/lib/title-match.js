@@ -228,7 +228,9 @@ const VENUE_ALIASES = [
   // is a separate room.
   {
     canonical: 'here arts center',
-    matches: [/^here(?:\s+arts?\s+cent(?:er|re))?$/i],
+    // Optional trailing "(Mainstage)"-style room qualifier: the alias check
+    // returns before the parenthetical strip, so both spellings must hit.
+    matches: [/^here(?:\s+arts?\s+cent(?:er|re))?(?:\s*\([^)]*\))?$/i],
   },
   {
     canonical: 'art gural',

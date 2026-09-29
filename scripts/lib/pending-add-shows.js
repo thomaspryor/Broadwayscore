@@ -9,11 +9,12 @@
  * that the TheaterMania source (BRO-4381) lists too. Discovery and the OB
  * coverage guard treat these as already known.
  *
- * 'pending' and 'applied' plans count ('applied' shows are already in
- * shows.json, so including them only covers a lagging data clone). A
- * 'rejected' plan never adds anything, and a 'partial' one may have refused
- * the very add-show action in question, so neither may hide a real show from
- * discovery or the coverage guard (ship-check review).
+ * Only 'pending' and 'applied' plans count ('applied' shows are already in
+ * shows.json, so including them only covers a lagging data clone). Every
+ * other status ('rejected', 'partial', 'validation-failed', anything new
+ * execute-approved-fix.js writes) may mean the add-show never happened, and
+ * such a plan must not hide a real show from discovery or the coverage guard
+ * (ship-check review). Allowlist, not denylist, for that reason.
  */
 
 'use strict';
@@ -23,7 +24,7 @@ const path = require('path');
 const { slugify } = require('./deduplication');
 
 const DEFAULT_DIR = path.join(__dirname, '..', '..', 'data', 'pending-fixes');
-const IGNORED_STATUSES = new Set(['rejected', 'partial']);
+const COUNTED_STATUSES = new Set(['pending', 'applied']);
 
 /**
  * @param {object[]} plans parsed pending-fix plan files
@@ -32,7 +33,7 @@ const IGNORED_STATUSES = new Set(['rejected', 'partial']);
 function addShowsFromPlans(plans) {
   const out = [];
   for (const plan of plans || []) {
-    if (!plan || IGNORED_STATUSES.has(plan.status)) continue;
+    if (!plan || !COUNTED_STATUSES.has(plan.status)) continue;
     const actions = (plan.plan && Array.isArray(plan.plan.actions)) ? plan.plan.actions : [];
     for (const a of actions) {
       if (a && a.type === 'add-show' && a.show && typeof a.show.title === 'string' && a.show.title) {

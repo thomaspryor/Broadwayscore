@@ -56,7 +56,7 @@ const { classifyGenre, applyGenreCategoryOverride } = require('./lib/genre-class
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isNonTheatreVenue, isLondonReceivingHouse, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
 const showsWriteGuard = require('./lib/shows-write-guard');
-const { fetchTmOffBroadway, parseTmOffBroadwayRow } = require('./lib/theatermania-ob');
+const { fetchTmOffBroadway, parseTmOffBroadwayRow, findTmSameTitleShow } = require('./lib/theatermania-ob');
 const { loadPendingAddShows } = require('./lib/pending-add-shows');
 const { matchesRetired } = require('./lib/retired-show-ids');
 
@@ -2716,6 +2716,21 @@ async function discoverShows() {
         existingId: duplicateCheck.existingShow?.id
       });
       continue;
+    }
+
+    // BRO-4381 ship-check: TheaterMania's coarse venue names defeat the venue
+    // half of checkForDuplicate; an exact title in the NYC pool, still
+    // running or within a year, is the same production.
+    if (show._discoverySource === 'theatermania-ob') {
+      const twin = findTmSameTitleShow(show, data.shows) || findTmSameTitleShow(show, pendingAddShows);
+      if (twin) {
+        skippedDuplicates.push({
+          title: show.title,
+          reason: `TheaterMania same-title match (venue "${show.venue}" vs "${twin.venue}")${twin._pendingFix ? `, queued by pending-fix plan ${twin._pendingFix}` : ''}`,
+          existingId: twin.id,
+        });
+        continue;
+      }
     }
 
     // BRO-4381: a show queued by a pending-fix add-show plan (e.g. BRO-4377's
