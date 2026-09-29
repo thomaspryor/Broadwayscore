@@ -1284,5 +1284,34 @@
       }
     ],
     "queuedAt": "2026-09-29T09:23:28.237Z"
+  },
+  {
+    "conditionKey": "land:land/reddit-opening-posts-2",
+    "title": "Landing blocked: unit-tests-node red on land/reddit-opening-posts-2",
+    "description": "land.yml did not land land/reddit-opening-posts-2: the unit-tests-node gate went red at 7b6324fa1c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36545979248",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/reddit-opening-posts-2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "7b6324fa1cc484f147af39a904651293dd76b4e9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36545979248"
+      }
+    ],
+    "queuedAt": "2026-09-29T09:25:35.490Z"
   }
 ]
