@@ -1157,5 +1157,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-29T08:38:22.324Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4332-stale-rescore",
+    "title": "Landing blocked: rebase red on land/bro-4332-stale-rescore",
+    "description": "land.yml did not land land/bro-4332-stale-rescore: the rebase gate went red at 4eb9f32fd6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36545256358",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4332-stale-rescore"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "4eb9f32fd6553a641e59f76f536837f9855eacb6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36545256358"
+      }
+    ],
+    "queuedAt": "2026-09-29T08:52:16.801Z"
   }
 ]
