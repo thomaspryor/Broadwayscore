@@ -86,6 +86,118 @@ function shouldRetryExpress({ reviewFiles, show, isRetry }) {
   return { retry: thin, thin, reason };
 }
 
+// ---------------------------------------------------------------------------
+// BRO-4334: truncated-T1 refetch schedule.
+//
+// School Girls opening night: the NYT review landed as page one only and
+// nothing re-collected it — the poller only collects when it discovers NEW
+// reviews, and the same-night retry above only fires for thin coverage. The
+// hourly dispatch-due cron now also looks (via reviews.json, which it already
+// has from the core-data checkout) for Tier-1 reviews stuck at contentTier
+// 'truncated' on shows inside their opening window, and schedules Express
+// is_retry re-runs (the collector always re-fetches truncated reviews) at
+// roughly +1h / +3h / +12h after it first sees them.
+// Each tick re-checks; once no truncated T1 remains the rest are skipped.
+// ---------------------------------------------------------------------------
+
+const THIN_COVERAGE_KIND = 'thin-coverage';
+const TRUNCATED_REFETCH_KIND = 'truncated-t1-refetch';
+const TRUNCATED_REFETCH_OFFSETS_HOURS = Object.freeze([1, 3, 12]);
+// Shows whose openingDate is within this many days (or tomorrow, for
+// timezone slop) count as inside their opening window.
+const OPENING_WINDOW_DAYS = 3;
+
+/** Legacy entries carry no `kind`; they are the same-night thin-coverage retry. */
+function isThinCoverageEntry(e) {
+  return Boolean(e) && (e.kind || THIN_COVERAGE_KIND) === THIN_COVERAGE_KIND;
+}
+
+function isTruncatedRefetchEntry(e) {
+  return Boolean(e) && e.kind === TRUNCATED_REFETCH_KIND;
+}
+
+/** Express market input for a show ('broadway' | 'west-end'). */
+function marketForShow(show) {
+  const m = show && (show.market || show.category);
+  return m === 'west-end' || m === 'off-west-end' ? 'west-end' : 'broadway';
+}
+
+function inOpeningWindow(show, nowMs, windowDays = OPENING_WINDOW_DAYS) {
+  const opened = Date.parse(show && show.openingDate ? show.openingDate : '');
+  if (!Number.isFinite(opened)) return false;
+  return nowMs - opened <= windowDays * 86400000 && opened - nowMs <= 86400000;
+}
+
+/**
+ * Shows in their opening window that have Tier-1 reviews with truncated text.
+ *
+ * @param {object} args
+ * @param {Array<object>} args.reviews reviews.json rows ({showId, outletId, contentTier})
+ * @param {Array<object>} args.shows shows.json rows
+ * @param {string} args.nowIso
+ * @param {(outletId: string, opts: object) => number} args.getTier outlet-tiers getTier
+ * @param {number} [args.windowDays]
+ * @returns {Array<{showId: string, market: string, outletIds: string[]}>}
+ */
+function findTruncatedT1Shows({ reviews, shows, nowIso, getTier, windowDays = OPENING_WINDOW_DAYS }) {
+  const nowMs = new Date(nowIso).getTime();
+  const openShows = new Map();
+  for (const show of Array.isArray(shows) ? shows : []) {
+    if (show && show.id && inOpeningWindow(show, nowMs, windowDays)) openShows.set(show.id, show);
+  }
+  if (openShows.size === 0) return [];
+  const byShow = new Map();
+  for (const r of Array.isArray(reviews) ? reviews : []) {
+    if (!r || r.contentTier !== 'truncated') continue;
+    const show = openShows.get(r.showId);
+    if (!show) continue;
+    if (getTier(r.outletId, { showCategory: show.category }) !== 1) continue;
+    if (!byShow.has(r.showId)) byShow.set(r.showId, { showId: r.showId, market: marketForShow(show), outletIds: [] });
+    byShow.get(r.showId).outletIds.push(r.outletId);
+  }
+  return [...byShow.values()];
+}
+
+/**
+ * Schedule the +1h/+3h/+12h refetches for each candidate show that has none
+ * yet (attempted or not — one schedule per show per queue lifetime; the
+ * 3-day prune outlives the opening window, so a show is never re-planned).
+ *
+ * @returns {{entries: Array<object>, changed: boolean, planned: string[]}}
+ */
+function planTruncatedRefetches(entries, candidates, nowIso) {
+  let list = Array.isArray(entries) ? entries : [];
+  const planned = [];
+  for (const c of Array.isArray(candidates) ? candidates : []) {
+    if (list.some((e) => isTruncatedRefetchEntry(e) && e.showId === c.showId)) continue;
+    list = list.concat(TRUNCATED_REFETCH_OFFSETS_HOURS.map((h) => ({
+      kind: TRUNCATED_REFETCH_KIND,
+      showId: c.showId,
+      market: c.market,
+      queuedAt: nowIso,
+      dueAt: computeDueAt(nowIso, h),
+      offsetHours: h,
+      outletIds: c.outletIds,
+      attempted: false,
+    })));
+    planned.push(c.showId);
+  }
+  return { entries: list, changed: planned.length > 0, planned };
+}
+
+/**
+ * Mark exactly one entry attempted (matched on showId + queuedAt + dueAt +
+ * kind — the three refetch entries of one plan share showId and queuedAt).
+ */
+function markEntryAttempted(entries, entry, nowIso, extra = {}) {
+  return (Array.isArray(entries) ? entries : []).map((e) =>
+    e.showId === entry.showId && e.queuedAt === entry.queuedAt && e.dueAt === entry.dueAt
+      && (e.kind || THIN_COVERAGE_KIND) === (entry.kind || THIN_COVERAGE_KIND)
+      ? { ...e, ...extra, attempted: true, attemptedAt: nowIso }
+      : e
+  );
+}
+
 /** UTC ISO instant `delayHours` after `nowIso`. */
 function computeDueAt(nowIso, delayHours = DEFAULT_RETRY_DELAY_HOURS) {
   return new Date(new Date(nowIso).getTime() + delayHours * 3600 * 1000).toISOString();
@@ -103,7 +215,9 @@ function computeDueAt(nowIso, delayHours = DEFAULT_RETRY_DELAY_HOURS) {
  */
 function enqueueRetry(entries, { showId, market, nowIso, delayHours = DEFAULT_RETRY_DELAY_HOURS }) {
   const list = Array.isArray(entries) ? entries : [];
-  const alreadyOutstanding = list.some((e) => e.showId === showId && !e.attempted);
+  // Only same-night thin-coverage entries (no `kind`) block a new one — a
+  // queued truncated-T1 refetch (BRO-4334) is a different retry.
+  const alreadyOutstanding = list.some((e) => isThinCoverageEntry(e) && e.showId === showId && !e.attempted);
   if (alreadyOutstanding) {
     return { entries: list, changed: false };
   }
@@ -137,7 +251,7 @@ function selectDueRetries(entries, nowIso) {
  */
 function markAttempted(entries, showId, queuedAt, nowIso, extra = {}) {
   return (Array.isArray(entries) ? entries : []).map((e) =>
-    e.showId === showId && e.queuedAt === queuedAt
+    isThinCoverageEntry(e) && e.showId === showId && e.queuedAt === queuedAt
       ? { ...e, ...extra, attempted: true, attemptedAt: nowIso }
       : e
   );
@@ -163,4 +277,15 @@ module.exports = {
   selectDueRetries,
   markAttempted,
   pruneStale,
+  THIN_COVERAGE_KIND,
+  TRUNCATED_REFETCH_KIND,
+  TRUNCATED_REFETCH_OFFSETS_HOURS,
+  OPENING_WINDOW_DAYS,
+  isThinCoverageEntry,
+  isTruncatedRefetchEntry,
+  marketForShow,
+  inOpeningWindow,
+  findTruncatedT1Shows,
+  planTruncatedRefetches,
+  markEntryAttempted,
 };

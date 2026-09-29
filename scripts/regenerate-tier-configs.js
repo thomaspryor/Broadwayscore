@@ -16,6 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const { buildSkipConfig } = require('./lib/domain-tier-skip');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { tallyFileAttempts, toSkipStats } = require('./lib/tier-attempt-stats');
 
 // Parse args
 const args = process.argv.slice(2);
@@ -78,16 +79,9 @@ for (const showDir of showDirs) {
       const domain = getDomain(data.url);
       if (!domain) continue;
 
-      if (data.fetchAttempts && Array.isArray(data.fetchAttempts) && data.fetchAttempts.length > 0) {
-        filesWithAttempts++;
-        for (const attempt of data.fetchAttempts) {
-          const tierId = normalizeTierId(attempt.method, attempt.tier);
-          if (!stats[domain]) stats[domain] = {};
-          if (!stats[domain][tierId]) stats[domain][tierId] = { successes: 0, failures: 0 };
-          if (attempt.success) stats[domain][tierId].successes++;
-          else stats[domain][tierId].failures++;
-        }
-      }
+      // BRO-4334: partial text (flagged by the collector, or retroactively a
+      // 'truncated' file's winning attempt) tallies as a failure for ordering.
+      if (tallyFileAttempts(stats, domain, data, normalizeTierId)) filesWithAttempts++;
     } catch {}
   }
 }
@@ -128,7 +122,8 @@ for (const k of Object.keys(tierOrder).sort()) sortedOrder[k] = tierOrder[k];
 // went unreviewed for months after SD became a supported tier).
 let existingSkipConfig = {};
 try { existingSkipConfig = JSON.parse(fs.readFileSync(SKIP_PATH, 'utf8')); } catch {}
-const sortedSkip = buildSkipConfig(stats, existingSkipConfig, {
+// Partial text is not a dead end — skip-listing counts partial as success.
+const sortedSkip = buildSkipConfig(toSkipStats(stats), existingSkipConfig, {
   skipThreshold: SKIP_THRESHOLD,
   now: new Date().toISOString().slice(0, 10),
 });

@@ -14,6 +14,12 @@ import {
   selectDueRetries,
   markAttempted,
   pruneStale,
+  TRUNCATED_REFETCH_KIND,
+  findTruncatedT1Shows,
+  planTruncatedRefetches,
+  markEntryAttempted,
+  marketForShow,
+  inOpeningWindow,
 } from './express-retry-decision.js';
 
 const NOW = '2026-08-25T09:09:00.000Z';
@@ -167,4 +173,69 @@ test('pruneStale: drops entries older than maxAgeDays regardless of attempted', 
   ];
   const result = pruneStale(entries, '2026-08-26T00:00:00.000Z', 3);
   assert.deepEqual(result.map((e) => e.showId), ['recent']);
+});
+
+// ---------------------------------------------------------------------------
+// BRO-4334: truncated-T1 refetch schedule
+// ---------------------------------------------------------------------------
+
+const REFETCH_NOW = '2026-09-29T09:00:00.000Z';
+const fakeTier = (outletId) => ({ nytimes: 1, guardian: 1, theatermania: 2 }[outletId] || 3);
+const SHOWS = [
+  { id: 'school-girls-2026', openingDate: '2026-09-28', category: 'broadway' },
+  { id: 'tru-off-west-end-2026', openingDate: '2026-09-27', category: 'off-west-end' },
+  { id: 'old-show-2026', openingDate: '2026-08-01', category: 'broadway' },
+];
+
+test('findTruncatedT1Shows: T1 + truncated + opening window only', () => {
+  const reviews = [
+    { showId: 'school-girls-2026', outletId: 'nytimes', contentTier: 'truncated' },
+    { showId: 'school-girls-2026', outletId: 'theatermania', contentTier: 'truncated' }, // T2
+    { showId: 'tru-off-west-end-2026', outletId: 'guardian', contentTier: 'complete' },
+    { showId: 'old-show-2026', outletId: 'nytimes', contentTier: 'truncated' }, // outside window
+  ];
+  const out = findTruncatedT1Shows({ reviews, shows: SHOWS, nowIso: REFETCH_NOW, getTier: fakeTier });
+  assert.deepEqual(out, [{ showId: 'school-girls-2026', market: 'broadway', outletIds: ['nytimes'] }]);
+});
+
+test('marketForShow / inOpeningWindow', () => {
+  assert.equal(marketForShow({ category: 'off-west-end' }), 'west-end');
+  assert.equal(marketForShow({ market: 'west-end' }), 'west-end');
+  assert.equal(marketForShow({ category: 'off-broadway' }), 'broadway');
+  const now = Date.parse(REFETCH_NOW);
+  assert.equal(inOpeningWindow({ openingDate: '2026-09-28' }, now), true);
+  assert.equal(inOpeningWindow({ openingDate: '2026-09-30' }, now), true, 'tomorrow (tz slop)');
+  assert.equal(inOpeningWindow({ openingDate: '2026-10-05' }, now), false, 'future');
+  assert.equal(inOpeningWindow({ openingDate: '2026-09-20' }, now), false, 'past window');
+  assert.equal(inOpeningWindow({}, now), false);
+});
+
+test('planTruncatedRefetches: +1h/+3h/+12h once per show', () => {
+  const cand = [{ showId: 'school-girls-2026', market: 'broadway', outletIds: ['nytimes'] }];
+  const first = planTruncatedRefetches([], cand, REFETCH_NOW);
+  assert.equal(first.changed, true);
+  assert.deepEqual(first.entries.map((e) => e.dueAt), [
+    '2026-09-29T10:00:00.000Z', '2026-09-29T12:00:00.000Z', '2026-09-29T21:00:00.000Z',
+  ]);
+  assert.ok(first.entries.every((e) => e.kind === TRUNCATED_REFETCH_KIND && !e.attempted));
+  const again = planTruncatedRefetches(first.entries, cand, '2026-09-29T10:00:00.000Z');
+  assert.equal(again.changed, false);
+  assert.equal(again.entries.length, 3);
+});
+
+test('refetch entries: due selection, single-entry marking, no interference with thin retries', () => {
+  const cand = [{ showId: 'school-girls-2026', market: 'broadway', outletIds: ['nytimes'] }];
+  let entries = planTruncatedRefetches([], cand, REFETCH_NOW).entries;
+  // a thin-coverage retry for the same show can still be enqueued
+  const thin = enqueueRetry(entries, { showId: 'school-girls-2026', market: 'broadway', nowIso: REFETCH_NOW });
+  assert.equal(thin.changed, true);
+  entries = thin.entries;
+  const due = selectDueRetries(entries, '2026-09-29T12:30:00.000Z').filter((e) => e.kind === TRUNCATED_REFETCH_KIND);
+  assert.deepEqual(due.map((e) => e.offsetHours), [1, 3]);
+  entries = markEntryAttempted(entries, due[0], '2026-09-29T12:30:00.000Z');
+  assert.deepEqual(entries.filter((e) => e.kind === TRUNCATED_REFETCH_KIND).map((e) => e.attempted), [true, false, false]);
+  // legacy markAttempted (thin retry) must not touch refetch entries sharing showId+queuedAt
+  entries = markAttempted(entries, 'school-girls-2026', REFETCH_NOW, '2026-09-29T12:31:00.000Z');
+  assert.deepEqual(entries.filter((e) => e.kind === TRUNCATED_REFETCH_KIND).map((e) => e.attempted), [true, false, false]);
+  assert.equal(entries.find((e) => !e.kind).attempted, true);
 });

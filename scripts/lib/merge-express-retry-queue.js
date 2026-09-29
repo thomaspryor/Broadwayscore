@@ -29,9 +29,13 @@
 //     "-X ours" rebase strategy already applied upstream).
 //   * Order: ours first (original order preserved), then remote-only entries
 //     appended in remote order — deterministic, minimal diff.
+//   * BRO-4334: entries with a `kind` (truncated-t1-refetch) come in sets that
+//     share showId+queuedAt (one per +1h/+3h/+12h offset), so their key also
+//     carries kind and dueAt. Legacy (kind-less) keys are unchanged.
 function keyOf(entry) {
   if (!entry || typeof entry !== 'object') return null;
   if (!entry.showId || !entry.queuedAt) return null;
+  if (entry.kind) return `${entry.kind}|${entry.showId}|${entry.queuedAt}|${entry.dueAt || ''}`;
   return `${entry.showId}|${entry.queuedAt}`;
 }
 

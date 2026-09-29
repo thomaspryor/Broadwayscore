@@ -276,6 +276,17 @@ const DOMAIN_TIER_ORDER = (() => {
 // Domain-specific tier skip list — tiers with 3+ failures and 0 successes per domain.
 // These are proven dead ends. Skipping saves 15-30s per tier per review.
 const { getSkippedTiers } = require('./lib/domain-tier-skip');
+// BRO-4334: hard-paywall completeness gate (tier loop + contentTier override)
+const {
+  decideTierResult: decidePaywallTierResult,
+  assessPaywallCompleteness,
+  isHardPaywallUrl,
+  shouldKeepStoredText,
+  escalateAfterPartial,
+  needsPaywallRecheck,
+  truncatedTierPatch,
+  SCRAPED_SOURCE_METHODS,
+} = require('./lib/paywall-completeness');
 const DOMAIN_TIER_SKIP = (() => {
   try {
     return require('./config/domain-tier-skip.json');
@@ -3701,9 +3712,24 @@ async function fetchReviewText(review) {
 
   const attempts = [];
   let bestResult = null; // Track longest non-empty text from garbage tiers
+  // BRO-4334: best non-garbage but INCOMPLETE result on a hard-paywall domain
+  // (e.g. ScrapingBee returning only page one of an NYT review). Kept while
+  // later tiers (logged-in Browserbase, cookies, archive) get a chance.
+  let bestPartial = null;
+  // Once a partial is in hand, later tiers must finish inside the per-review
+  // REVIEW_TIMEOUT or the whole review is dropped (partial included). Stop
+  // trying — and cap each tier's timeout — 30s before that deadline (leaves
+  // room for processReview's post-fetch validation/verification + write).
+  // Anchored on processReview's start (the REVIEW_TIMEOUT race's clock), not
+  // this call's — pre-fetch work and a URL-discovery retry share the budget.
+  const reviewStartedAt = Number.isFinite(review._reviewStartedAt) ? review._reviewStartedAt : Date.now();
+  const partialDeadline = reviewStartedAt + Math.max(CONFIG.reviewTimeout - 30000, 20000);
 
-  for (const tier of chain) {
-    // Bail conditions
+  let queue = [...chain];
+  while (queue.length > 0) {
+    const tier = queue.shift();
+    // Bail conditions (a partial already in hand is returned below instead)
+    if (bestPartial && (ctx._bail404 || ctx.consecutive404Count >= 2)) break;
     if (ctx._bail404) {
       throw new Error(`URL returned 404 (archive also failed): ${JSON.stringify(attempts)}`);
     }
@@ -3720,11 +3746,21 @@ async function fetchReviewText(review) {
       continue;
     }
 
+    let tierTimeoutMs = tier.timeoutMs;
+    if (bestPartial) {
+      const remaining = partialDeadline - Date.now();
+      if (remaining < 5000) {
+        console.log(`  [Tier ${tier.tierNumber}] Skipped — review time budget spent; keeping best partial`);
+        break;
+      }
+      tierTimeoutMs = tierTimeoutMs ? Math.min(tierTimeoutMs, remaining) : remaining;
+    }
+
     // Execute tier
     console.log(`  [Tier ${tier.tierNumber}] ${tier.label}...`);
     let result;
     try {
-      result = await withTimeout(tier.execute(url), tier.timeoutMs, tier.id);
+      result = await withTimeout(tier.execute(url), tierTimeoutMs, tier.id);
     } catch (error) {
       console.log(`    ✗ Failed: ${error.message}`);
       attempts.push({ tier: tier.tierNumber, method: tier.method, success: false, error: error.message });
@@ -3759,8 +3795,54 @@ async function fetchReviewText(review) {
     if (tier.method === 'archive-first' || tier.method === 'archive') {
       accepted.archiveData = result;
     }
+
+    // BRO-4334 completeness gate (hard-paywall domains only; a no-op elsewhere):
+    // partial text keeps the loop going so later tiers can deliver the whole
+    // review; the best partial is the fallback if none does.
+    const paywallDecision = decidePaywallTierResult({
+      best: bestPartial,
+      // _onSuccess defers this tier's success hook until (unless) the partial
+      // is the one finally returned.
+      candidate: { ...accepted, _onSuccess: tier.onSuccess ? () => tier.onSuccess(review, result) : null },
+      url,
+      criticName: review.criticName || review.critic, // queued reviews carry `critic`
+    });
+    if (paywallDecision.action === 'continue') {
+      const a = paywallDecision.assessment;
+      console.log(`    ⚠ ${tier.id} returned partial text (${a.reasons.join(', ')}) — trying next tier`);
+      // Record as a non-success so regenerate-tier-configs ranks this tier by
+      // COMPLETE results, not by "returned something" (partial: true lets it
+      // exempt the tier from the dead-end skip list).
+      const last = attempts[attempts.length - 1];
+      if (last) { last.success = false; last.partial = true; last.error = `partial: ${a.reasons.join(', ')}`; }
+      // First partial: run the logged-in tiers next (see escalateAfterPartial).
+      if (!bestPartial) queue = escalateAfterPartial(queue);
+      bestPartial = paywallDecision.best;
+      // Unlock the credentialed tiers' shouldRun (browserbase, direct-cookies,
+      // amp, archive-today). Deliberately NOT tier.onFailure: the page exists,
+      // so archive-first's failure cooldown / archive-404's _bail404 must not fire.
+      ctx.sawPaywall = true;
+      ctx.anyTierFailed = true;
+      if (tier.id === 'archive-first' || tier.id === 'archive-404-recovery' || tier.id === 'archive-final') ctx._archiveTierRan = true;
+      if (tier.id === 'archive-cdx' || tier.id === 'archive-cdx-final') ctx._archiveCdxRan = true;
+      continue;
+    }
+
     if (tier.onSuccess) tier.onSuccess(review, result);
     return accepted;
+  }
+
+  // Hard-paywall: no tier produced complete text — use the best partial
+  // (longest assessed body). processReview + updateReviewJson then tier it
+  // 'truncated' so the opening-window refetch picks it up again.
+  if (bestPartial) {
+    console.log(`  ⚠ No tier returned complete text — using best partial via ${bestPartial.method} (${bestPartial.assessment.length} chars: ${bestPartial.assessment.reasons.join(', ')})`);
+    if (bestPartial._onSuccess) bestPartial._onSuccess();
+    const { assessment, _onSuccess, ...partial } = bestPartial;
+    partial.attempts = attempts;
+    partial.partial = true;
+    partial.paywallAssessment = assessment;
+    return partial;
   }
 
   // All tiers exhausted — return best-of-garbage if available
@@ -5402,33 +5484,40 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // minimum char counts when text came from a proxy source.
   if (data.contentTier === 'complete' && data.fullText && data.url) {
     // Conservative thresholds: below these, the review is almost certainly truncated.
-    // NYT median is ~6200 chars; 3000 catches clearly truncated without false-flagging
-    // legitimate capsule reviews. Only applies to proxy-scraped text.
-    const PAYWALL_MIN_CHARS = {
-      'nytimes.com': 3000,
-      'newyorker.com': 3000,
-      'wsj.com': 2500,
-      'washingtonpost.com': 2500,
-      'ft.com': 2000,
-      'vulture.com': 2500,
-      'nymag.com': 2500,
-      'bloomberg.com': 2000,
-    };
+    // Only applies to proxy/browser-scraped text.
+    // Hard-paywall domains (NYT, New Yorker, WSJ, WaPo, Chicago Tribune) use
+    // the completeness assessment in lib/paywall-completeness.js (BRO-4334):
+    // per-domain floor (NYT 4,500) unless the text ends with the production
+    // info box, and a trailing byline / missing end punctuation on a short
+    // text counts as a cut-off. The table below covers the remaining
+    // long-form paywalled outlets with the original plain length floor.
+    const PAYWALL_MIN_CHARS = require('./lib/paywall-completeness').SOFT_PAYWALL_MIN_CHARS;
     // Includes playwright/browserbase: paywall truncation is just as common from authenticated
     // browser sessions as from proxy requests (short text = paywall hit, not a capsule review)
-    const PROXY_METHODS = new Set(['brightdata', 'scrapingbee', 'scrapingbee_premium', 'archive', 'playwright', 'browserbase']);
+    const PROXY_METHODS = SCRAPED_SOURCE_METHODS;
     try {
       const urlHost = new URL(data.url).hostname.replace(/^www\./, '');
-      const minChars = PAYWALL_MIN_CHARS[urlHost];
       const isProxy = PROXY_METHODS.has(data.sourceMethod);
-      if (minChars && isProxy && data.fullText.length < minChars) {
+      let truncReason = null;
+      if (isProxy && isHardPaywallUrl(data.url)) {
+        const pa = assessPaywallCompleteness(data.fullText, data.url, { criticName: data.criticName || review.criticName });
+        if (!pa.complete) {
+          truncReason = `Paywall truncation: ${pa.reasons.join(', ')} for ${urlHost} (source: ${data.sourceMethod})`;
+        }
+      } else {
+        const minChars = PAYWALL_MIN_CHARS[urlHost];
+        if (minChars && isProxy && data.fullText.length < minChars) {
+          truncReason = `Paywall truncation: ${data.fullText.length} chars < ${minChars} min for ${urlHost} (source: ${data.sourceMethod})`;
+        }
+      }
+      if (truncReason) {
         data.contentTier = 'truncated';
-        data.tierReason = `Paywall truncation: ${data.fullText.length} chars < ${minChars} min for ${urlHost} (source: ${data.sourceMethod})`;
+        data.tierReason = truncReason;
         data.contentTierReason = data.tierReason;
         data.textStatus = 'truncated';
         data.textQuality = 'truncated';
         data.isFullReview = false;
-        console.log(`    ⚠ Paywall truncation override: ${urlHost} ${data.fullText.length} chars < ${minChars} (${data.sourceMethod})`);
+        console.log(`    ⚠ ${truncReason}`);
       }
     } catch (e) { /* invalid URL — skip */ }
   }
@@ -6065,8 +6154,16 @@ function findReviewsToProcess() {
         // (important: wrong_content reviews may have long text from the *wrong* page)
         if (CONFIG.incompleteReasonFilter.length === 0) {
           const textLen = data.fullText ? data.fullText.length : 0;
+          // BRO-4334: inside the opening window, a hard-paywall text labelled
+          // 'complete' that fails the completeness assessment (e.g. page one of
+          // an NYT review) is re-fetched like a truncated one.
+          const paywallRecheck = needsPaywallRecheck(data);
+          if (paywallRecheck) {
+            console.log(`  ↻ ${file}: stored hard-paywall text looks partial — re-fetching`);
+            data._paywallRecheck = true;
+          }
           const isTruncated = data.textQuality === 'truncated' || data.textStatus === 'truncated'
-            || data.contentTier === 'truncated' || data.contentTier === 'needs-rescrape';
+            || data.contentTier === 'truncated' || data.contentTier === 'needs-rescrape' || paywallRecheck;
           // Re-process showNotMentioned reviews for URL discovery (even if they have long text)
           const needsUrlDiscovery = data.showNotMentioned === true && !data._showNotMentionedDiscoveryAttempted;
           // Re-collect if existing fullText is garbage (cookie consent, GDPR banners, etc.)
@@ -6250,6 +6347,7 @@ function findReviewsToProcess() {
           _mismatchReopen: reopenStaleMismatch,
           _networkDrain: data._networkDrain === true,
           _storedSalvage: data._consentLayerRetry === true && !!salvageConsentPrefixedStoredText(data),
+          _paywallRecheck: data._paywallRecheck === true,
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
@@ -6632,6 +6730,9 @@ function stampSalvage(review) {
 }
 
 async function processReview(review) {
+  // BRO-4334: fetchReviewText's partial-text deadline counts from here (main()
+  // stamps it just before the REVIEW_TIMEOUT race; this covers other callers).
+  if (!Number.isFinite(review._reviewStartedAt)) review._reviewStartedAt = Date.now();
   console.log(`\n${'━'.repeat(60)}`);
   console.log(`Processing: ${review.outlet} - ${review.critic}`);
   console.log(`URL: ${review.url}`);
@@ -6787,6 +6888,37 @@ async function processReview(review) {
       } catch (e) { /* fall through to a normal fetch */ }
     }
     if (!result) result = await fetchReviewText(review);
+
+    // BRO-4334: a re-fetch of a truncated hard-paywall review that again got
+    // only partial text must not overwrite a stored text that is as good or
+    // better (complete beats partial, otherwise longer wins). In the
+    // opening-window recheck path (stored text already failed the assessment)
+    // the new text must ALSO be strictly longer than the stored text — a
+    // re-fetch that returns less is never an improvement.
+    if ((result.partial || review._paywallRecheck) && review.filePath) {
+      try {
+        const stored = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        const storedLen = (stored.fullText || '').length;
+        // A COMPLETE re-fetch always wins over a stored partial; only a
+        // partial one has to be strictly longer (ship-check P2, BRO-4334).
+        const notLonger = result.partial && review._paywallRecheck && storedLen > 0 && (result.text || '').length <= storedLen;
+        if (notLonger || shouldKeepStoredText({ storedText: stored.fullText, newText: result.text, url: review.url, criticName: stored.criticName || review.criticName })) {
+          console.log(`  ↺ Re-fetch (${result.text.length} chars via ${result.method}) is no better than the stored text (${storedLen} chars) — keeping stored text`);
+          // A stored text still labelled 'complete' is re-labelled truncated so
+          // reviews.json / the opening-window refetch see it as incomplete.
+          const patch = truncatedTierPatch(stored);
+          if (patch) {
+            Object.assign(stored, patch);
+            fs.writeFileSync(review.filePath, JSON.stringify(stored, null, 2) + '\n');
+            console.log(`    → Re-labelled stored text: ${patch.tierReason}`);
+          }
+          // Feed the BRO-787 retry gate, else every collector run re-picks the
+          // file and re-runs the escalated chain (Browserbase included).
+          recordFailedFetch(review, 'partial_no_improvement', { storedLength: storedLen, newLength: result.text.length, method: result.method });
+          return { success: false, error: 'partial_no_improvement' };
+        }
+      } catch (e) { /* unreadable file — fall through to the normal write */ }
+    }
 
     console.log(`  ✓ SUCCESS via ${result.method} (${result.text.length} chars)`);
 
@@ -7586,6 +7718,7 @@ async function main() {
       let result;
       let reviewTimer;
       try {
+        review._reviewStartedAt = Date.now(); // BRO-4334: fetchReviewText's partial-text deadline
         result = await Promise.race([
           processReview(review),
           new Promise((_, reject) => {
