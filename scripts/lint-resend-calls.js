@@ -70,7 +70,7 @@ const ALLOWLIST = new Set([
   // it sends nothing. If a future edit adds a `method:` or a /send|/emails call here,
   // this comment is falsified and the entry must come back out.
   'scripts/newsletter/verify-sent-vs-state.mjs',
-  'scripts/monitor-scheduled-email-count.js', // GET /emails read-only monitor (card #510) — routeAlert() for the actual alert, this is just data collection
+  'scripts/lib/resend-owner-emails.js', // GET /emails read-only history reader (BRO-4373; moved out of monitor-scheduled-email-count.js, card #510) — shared by the monitor and check-morning-digest-sent.js, which alert via routeAlert()
   'scripts/send-follow-notifications.js',
   'scripts/newsletter/create-broadcast-draft.mjs',
   'scripts/newsletter/send-test.mjs',

@@ -4742,13 +4742,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Audit review contamination, Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-29T21:39:11.253Z",
+      "lastSeen": "2026-09-29T21:57:23.828Z",
       "lastNotifiedAt": "2026-09-29T12:18:28.491Z",
       "lastSurfacedAt": "2026-09-29T12:18:28.491Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -6745,7 +6745,7 @@
       "linearIdentifier": null
     },
     "land:land/job/linear-BRO-4373-mun14cqh": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4373-mun14cqh",
       "firstSeen": "2026-09-29T19:42:45.972Z",
@@ -6755,7 +6755,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-09-29T21:59:52.776Z"
     },
     "scheduled-email-missing:morning-digest:2026-09-28": {
       "status": "open",
@@ -6920,6 +6921,18 @@
       "lastSeen": "2026-09-29T21:50:33.440Z",
       "lastNotifiedAt": "2026-09-29T21:50:33.440Z",
       "lastSurfacedAt": "2026-09-29T21:50:33.440Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/job/linear-BRO-4387-mun6krwj": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4387-mun6krwj",
+      "firstSeen": "2026-09-29T21:57:36.227Z",
+      "lastSeen": "2026-09-29T21:57:36.227Z",
+      "lastNotifiedAt": "2026-09-29T21:57:36.227Z",
+      "lastSurfacedAt": "2026-09-29T21:57:36.227Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
