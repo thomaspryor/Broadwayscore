@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-29T14:31:35.485Z",
+  "timestamp": "2026-09-29T15:30:10.502Z",
   "stats": {
-    "totalReviews": 45033,
-    "alreadyFlagged": 18347,
+    "totalReviews": 45152,
+    "alreadyFlagged": 18369,
     "dateGuardCatches": 233,
-    "directorMismatch": 1160,
+    "directorMismatch": 1161,
     "tvFilmSignals": 1326,
     "londonSignals": 1232,
     "offBroadwaySignals": 514,
     "yearMismatch": 101,
-    "noPublishDate": 3932
+    "noPublishDate": 4024
   },
   "findings": [
     {
@@ -1119,7 +1119,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 75,
+      "score": 74,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -5456,6 +5456,7 @@
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "queerty--matthew-wexler.json",
+      "score": 77,
       "publishDate": "2024-06-20",
       "url": "https://www.queerty.com/cats-the-jellicle-ball-spins-dips-and-yes-catwalks-in-a-fierce-reimagining-of-the-80s-megahit-20240620",
       "findings": [
@@ -6870,7 +6871,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2026-06-29",
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6884,7 +6885,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 82,
+      "score": 80,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6898,7 +6899,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2025-10-08",
       "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
       "findings": [
@@ -7080,7 +7081,7 @@
     {
       "showId": "daniels-husband-off-west-end-2025",
       "file": "firstnightmagazine--unknown.json",
-      "score": null,
+      "score": 62,
       "publishDate": "2025-12-10",
       "url": "https://firstnightmagazine.com/2025/12/10/review-of-daniels-husband-undefined-premise-delivers-an-unbalanced-marriage-of-ideas/",
       "findings": [
@@ -9111,7 +9112,7 @@
     {
       "showId": "equus-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
-      "score": 84,
+      "score": 83,
       "publishDate": "2026-05-19",
       "url": "https://www.londontheatre.co.uk/reviews/equus-review-menier-chocolate-factory",
       "findings": [
@@ -15636,7 +15637,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2025-12-12",
       "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283?srsltid=AfmBOopZW29rEZK9Fg8EKA2nVqf0gU1fVIrWNIjC9D0Sf-uihs3xV8FN",
       "findings": [
@@ -15799,7 +15800,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "plays-international--jeremy-malies.json",
-      "score": 79,
+      "score": 75,
       "publishDate": "2025-12-15",
       "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
       "findings": [
@@ -16619,7 +16620,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-03-27",
       "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
       "findings": [
@@ -16750,7 +16751,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 81,
+      "score": 78,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
@@ -20164,6 +20165,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2025",
+      "file": "shepherd-express--anne-siegel.json",
+      "score": null,
+      "publishDate": "2025-10-02",
+      "url": "https://shepherdexpress.com/culture/theater/beloved-mrs-doubtfire-returns-this-time-as-a-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
         }
       ]
     },
@@ -30926,6 +30941,7 @@
     {
       "showId": "the-notebook-tour-2025",
       "file": "broadwayworld--roy-berko.json",
+      "score": 78,
       "publishDate": "2025-09-14",
       "url": "https://www.broadwayworld.com/cleveland/article/Review-THE-NOTEBOOK-THE-MUSICAL-at-Connor-Place-Key-Bank-Broadway-Series-20250914",
       "findings": [
@@ -31326,6 +31342,7 @@
     {
       "showId": "the-outsiders-tour-2025",
       "file": "broadwayworld--joni-lorraine.json",
+      "score": 92,
       "publishDate": "2025-10-23",
       "url": "https://www.broadwayworld.com/austin/article/Review-THE-OUTSIDERS-at-Bass-Concert-Hall-20251023",
       "findings": [
@@ -36910,7 +36927,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "all-that-dazzles-uk--sam-woodward.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-09-04",
       "url": "https://www.allthatdazzles.co.uk/post/review-a-month-in-the-country-donmar-warehouse",
       "findings": [
@@ -37007,7 +37024,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "theartsdispatch--the-arts-dispatch.json",
-      "score": 75,
+      "score": 80,
       "publishDate": "2026-09-13",
       "url": "https://theartsdispatch.substack.com/p/a-month-in-the-country-review-donmar",
       "findings": [
@@ -38885,7 +38902,7 @@
     {
       "showId": "between-the-river-and-the-sea-west-end-2026",
       "file": "west-end-best-friend--alexandra-tullah.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2026-04-21",
       "url": "https://www.westendbestfriend.co.uk/news/review-between-the-river-and-the-sea-royal-court-theatre",
       "findings": [
@@ -38899,6 +38916,7 @@
     {
       "showId": "between-the-river-and-the-sea-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
+      "score": 82,
       "publishDate": "2026-04-21",
       "url": "https://www.whatsonstage.com/news/between-the-river-and-the-sea-at-the-royal-court-review_1719016/",
       "findings": [
@@ -39719,7 +39737,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-05-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-care-young-vic",
       "findings": [
@@ -41233,7 +41251,7 @@
     {
       "showId": "dear-liar-off-west-end-2026",
       "file": "north-west-end--michelle-knight.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2026-02-12",
       "url": "https://northwestend.com/dear-liar-jermyn-street-theatre/",
       "findings": [
@@ -43334,7 +43352,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-09-16",
       "url": "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review",
       "findings": [
@@ -43348,7 +43366,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "londonlivinglarge--london-living-large.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2026-09-18",
       "url": "https://www.londonlivinglarge.com/2026/09/golden-boy-almeida-theatre-sep-8-oct-31.html",
       "findings": [
@@ -43696,6 +43714,7 @@
     {
       "showId": "guess-how-much-i-love-you-west-end-2026",
       "file": "loureviews--louise-penn.json",
+      "score": 93,
       "publishDate": "2026-01-31",
       "url": "https://loureviews.blog/2026/01/31/play-review-guess-how-much-i-love-you-royal-court/",
       "findings": [
@@ -43938,7 +43957,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 82,
+      "score": 78,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
@@ -46823,7 +46842,7 @@
     {
       "showId": "krapps-last-tape-godots-todo-list-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": null,
+      "score": 60,
       "publishDate": "2026-05-12",
       "url": "https://www.whatsonstage.com/news/godots-to-do-list-and-krapps-last-tape-at-the-royal-court-review_1720939/",
       "findings": [
@@ -47764,7 +47783,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 76,
+      "score": 75,
       "publishDate": "2026-09-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
       "findings": [
@@ -47930,6 +47949,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "loureviews--louise-penn.json",
+      "score": 77,
       "publishDate": "2026-09-29",
       "url": "https://loureviews.blog/2026/09/29/play-review-man-to-man-at-royal-court/",
       "findings": [
@@ -48262,7 +48282,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "artsdesk--demetrios-matheou.json",
-      "score": 82,
+      "score": 81,
       "publishDate": null,
       "url": "http://theartsdesk.com/theatre/mass-donmar-warehouse-review-purgatorial-cat-and-mouse",
       "findings": [
@@ -48290,7 +48310,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 61,
+      "score": 62,
       "publishDate": "2026-04-30",
       "url": "https://www.londontheatre.co.uk/reviews/mass-review-donmar-warehouse",
       "findings": [
