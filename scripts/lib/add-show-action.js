@@ -43,8 +43,22 @@ function applyAddShow(shows, action) {
     if (!from) return { ok: false, reason: `add-show: crossLinkFrom "${action.crossLinkFrom}" not found` };
     if (!show.openingDate) return { ok: false, reason: 'add-show: crossLinkFrom needs show.openingDate' };
   }
+  // priorRunOf: the reverse link, for a return engagement added after the
+  // original run (lost-in-del-valle-return-off-broadway-2026 shape): the NEW
+  // entry carries priorRuns pointing at the existing earlier run.
+  let prior = null;
+  if (action.priorRunOf) {
+    prior = shows.find(s => s.id === action.priorRunOf);
+    if (!prior) return { ok: false, reason: `add-show: priorRunOf "${action.priorRunOf}" not found` };
+  }
 
-  shows.push({ ...show, venue: sanitizeVenueForWrite(show.venue), discoverySource: show.discoverySource || 'manual-user-request' });
+  const added = { ...show, venue: sanitizeVenueForWrite(show.venue), discoverySource: show.discoverySource || 'manual-user-request' };
+  if (prior) {
+    const run = { id: prior.id, venue: prior.venue, openingDate: prior.openingDate || null };
+    if (prior.closingDate) run.closingDate = prior.closingDate;
+    added.priorRuns = [run];
+  }
+  shows.push(added);
   if (from) {
     from.priorRuns = from.priorRuns || [];
     if (!from.priorRuns.some(r => r.id === show.id)) {
@@ -54,7 +68,7 @@ function applyAddShow(shows, action) {
       from.priorRuns.push(run);
     }
   }
-  return { ok: true, msg: `shows.json: added ${show.id}${from ? ` (priorRuns link on ${from.id})` : ''}` };
+  return { ok: true, msg: `shows.json: added ${show.id}${from ? ` (priorRuns link on ${from.id})` : ''}${prior ? ` (priorRuns -> ${prior.id})` : ''}` };
 }
 
 module.exports = { applyAddShow };

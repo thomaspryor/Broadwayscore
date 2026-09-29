@@ -3211,7 +3211,7 @@ async function discoverShows() {
           // way a future date is no evidence previews have begun.
           openingDate = show.openingDate;
           status = decidePrematurePreviews(
-            { status: 'previews', openingDate, openingDateSource: 'showscore' },
+            { status: 'previews', openingDate, openingDateSource: 'showscore', previewsStartDate: show.previewsStartDate || null },
             new Date().toISOString().slice(0, 10),
           ) ? 'upcoming' : 'previews';
         }

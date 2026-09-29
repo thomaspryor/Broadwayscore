@@ -747,10 +747,13 @@ async function updateShowStatuses() {
       }
     }
 
-    // Check 2d: previews → upcoming when performances haven't begun
+    // Check 2g: previews → upcoming when performances haven't begun
     // (lib/premature-previews.js; BRO-4377: KEVIN!!!!! showed "In Previews"
     // in September for a run starting December 5). Runs before Check 2b so
-    // a show whose date is today moves straight on.
+    // a show whose date is today moves straight on. Trade-off: a ShowScore
+    // "Opens X" date with no previewsStartDate reads as upcoming until X
+    // even if previews began; enrichers that later supply previewsStartDate
+    // restore 'previews' via Check 2b.
     {
       const premature = decidePrematurePreviews(show, new Date().toISOString().slice(0, 10));
       if (premature) {

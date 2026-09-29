@@ -1,8 +1,8 @@
 {
   "issueNumber": "bro-4377",
-  "planId": "4ebd6fbf-87ef-4ff6-82a2-950e59f1871f",
+  "planId": "f1f45a01-2402-4d8b-af7f-730a131de025",
   "status": "pending",
-  "createdAt": "2026-09-29T19:59:52.754Z",
+  "createdAt": "2026-09-29T20:07:06.351Z",
   "submitter": {
     "name": null,
     "email": null
@@ -21,10 +21,9 @@
       "Add big-feelings-off-broadway-2026",
       "Add fantasma-off-broadway-2026",
       "Add les-enfants-terribles-off-broadway-2026",
-      "Set going-bacharach-the-songs-of-an-icon-off-broadway-2026.closingDate \"2026-02-22\" -> \"2026-11-29\"",
-      "Set going-bacharach-the-songs-of-an-icon-off-broadway-2026.status \"closed\" -> \"open\"",
-      "Set lost-in-del-valle-off-broadway-2026.closingDate \"2026-05-03\" -> \"2026-10-14\"",
-      "Set lost-in-del-valle-off-broadway-2026.status \"closed\" -> \"open\"",
+      "Set going-bacharach-the-songs-of-an-icon-off-broadway-2026.previewsStartDate null -> \"2026-01-08\"",
+      "Set going-bacharach-the-songs-of-an-icon-off-broadway-2026.openingDate \"2026-01-08\" -> \"2026-01-12\"",
+      "Add going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
       "Add two-girls-off-broadway-2026",
       "Add hospital-hour-off-broadway-2026",
       "Add queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
@@ -537,37 +536,87 @@
         "type": "data-edit",
         "file": "shows.json",
         "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
-        "field": "closingDate",
-        "oldValue": "2026-02-22",
-        "newValue": "2026-11-29",
-        "description": "Same production returned to the Marjorie S. Deane Little Theater: first performance Sep 9, reopened Sep 16, closing Nov 29, 2026 (https://playbill.com/article/going-bacharach-will-return-off-broadway-this-fall, https://www.goingbacharach.com/)"
+        "field": "previewsStartDate",
+        "oldValue": null,
+        "newValue": "2026-01-08",
+        "description": "Playbill production page (https://playbill.com/production/going-bacharach-off-broadway-marjorie-s-deane-little-theater-the-west-side-y-2026): first preview Jan 8 2026 (was stored as the opening date)"
       },
       {
         "type": "data-edit",
         "file": "shows.json",
         "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
-        "field": "status",
-        "oldValue": "closed",
-        "newValue": "open",
-        "description": "Return engagement currently running (Sep 9 - Nov 29, 2026)"
+        "field": "openingDate",
+        "oldValue": "2026-01-08",
+        "newValue": "2026-01-12",
+        "description": "Playbill production page (https://playbill.com/production/going-bacharach-off-broadway-marjorie-s-deane-little-theater-the-west-side-y-2026): opening date Jan 12 2026"
       },
       {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "lost-in-del-valle-off-broadway-2026",
-        "field": "closingDate",
-        "oldValue": "2026-05-03",
-        "newValue": "2026-10-14",
-        "description": "Encore run of the same production at SoHo Playhouse: previews Sep 14, opening Sep 23, closing Oct 14, 2026 (https://www.sohoplayhouse.com/see-a-show/lost-in-del-valle, https://playbill.com/article/lost-in-del-valle-will-get-an-encore-at-soho-playhouse)"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "lost-in-del-valle-off-broadway-2026",
-        "field": "status",
-        "oldValue": "closed",
-        "newValue": "open",
-        "description": "Encore run currently performing (through Oct 14, 2026)"
+        "type": "add-show",
+        "priorRunOf": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
+        "description": "Return engagement, same pattern as lost-in-del-valle-return-off-broadway-2026. Playbill (https://playbill.com/article/going-bacharach-will-return-off-broadway-this-fall): begins Sep 9, officially opens Sep 16; closing Nov 29 per https://www.goingbacharach.com/ and Playbill casting article.",
+        "show": {
+          "id": "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
+          "title": "Going Bacharach: The Songs of an Icon",
+          "slug": "going-bacharach-the-songs-of-an-icon-return-off-broadway",
+          "venue": "The Marjorie S. Deane Little Theater",
+          "theaterAddress": "10 West 64th Street, New York, NY 10023",
+          "status": "open",
+          "type": "musical",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "return-engagement"
+          ],
+          "discoverySource": "manual-user-request",
+          "ibdbRevivalChecked": true,
+          "images": {},
+          "previewsStartDate": "2026-09-09",
+          "openingDate": "2026-09-16",
+          "closingDate": "2026-11-29",
+          "openingDateSource": "playbill",
+          "runtime": "2h 15m",
+          "synopsis": "A musical revue of Burt Bacharach's songbook, sung by a rotating trio of vocalists with a five-piece band, returning for a 12-week encore engagement.",
+          "creativeTeam": [
+            {
+              "name": "David Zippel",
+              "role": "Director"
+            },
+            {
+              "name": "Will Friedwald",
+              "role": "Co-creator"
+            },
+            {
+              "name": "Adrian Galante",
+              "role": "Music Director"
+            },
+            {
+              "name": "Tedd Firth",
+              "role": "Music Supervisor"
+            }
+          ],
+          "cast": [
+            {
+              "name": "Hilary Kole",
+              "role": "Vocalist"
+            },
+            {
+              "name": "John Pagano",
+              "role": "Vocalist"
+            },
+            {
+              "name": "Alyssa Wray",
+              "role": "Vocalist"
+            }
+          ],
+          "ticketLinks": [
+            {
+              "platform": "OvationTix",
+              "url": "https://ci.ovationtix.com/37106/production/1285497",
+              "priceFrom": null
+            }
+          ]
+        }
       },
       {
         "type": "add-show",
