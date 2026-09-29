@@ -11,12 +11,19 @@
  *     from trailing average, applies current CS/AG tiers (assumed to hold),
  *     computes E[awards] from tony-win-probabilities.json. Outputs
  *     data/fantasy-ev.json. This is the input to price-fantasy-league.js.
+ *     (Pre-season, before Gold Derby odds exist, generate-fantasy-config.js
+ *     --refreeze prices from scripts/lib/fantasy-pricing.js instead.)
  *
  * Scoring pillars:
  * 1. CriticScore: points based on critic tier (Critical Gold = 30 pts)
  * 2. AudienceGrade: points based on audience letter grade (A+ = 25 pts)
  * 3. Box Office: 0.30 points per $100K weekly gross (Broadway only)
- * 4. Awards: Tonys + Drama Desk + Outer Critics + Drama League
+ * 4. Awards: Tonys + Drama Desk + Outer Critics + Drama League + NYDCC + Lortel + Obie
+ *
+ * Per-show output also carries `weeklyBoxOffice` (week-ending → points) and
+ * `openingDate` so the leaderboard can score each ENTRY from the week it
+ * drafted and lock critic/audience points for shows that had already opened
+ * (scripts/lib/fantasy-helpers.js computeLeaderboard, src/lib/data-fantasy.ts).
  *
  * Usage: node scripts/compute-fantasy-scores.js [--mode=realized|projection] [--dry-run]
  */
@@ -25,11 +32,11 @@ const fs = require('fs');
 const path = require('path');
 const {
   computeAwardsPoints,
-  sumGrossesInRange,
   projectRemainingGrosses,
   computeExpectedAwardsPoints,
   validateTonyPredictions,
 } = require('./lib/fantasy-helpers');
+const seasonConfig = require('../src/config/fantasy-season.json');
 
 // ── Load data ───────────────────────────────────────────────────────
 const dataDir = path.join(__dirname, '..', 'data');
@@ -41,6 +48,11 @@ const awardsData = JSON.parse(fs.readFileSync(path.join(dataDir, 'awards.json'),
 const { scoring, shows: fantasyShows, _meta: meta } = fantasyConfig;
 const weeks = grossesRaw.weeks || {};
 
+if (meta.season !== seasonConfig.season) {
+  console.error(`fantasy-league.json is for season ${meta.season} but src/config/fantasy-season.json says ${seasonConfig.season}. Run generate-fantasy-config.js first.`);
+  process.exit(1);
+}
+
 // ── Scoring tier thresholds (from src/config/scoring.ts) ────────────
 function getCriticLabel(score) {
   if (score >= 83) return 'Critical Gold';
@@ -50,27 +62,13 @@ function getCriticLabel(score) {
   return 'Critical Miss';
 }
 
-function getAudienceGrade(score) {
-  if (score == null) return null;
-  if (score >= 90) return 'A+';
-  if (score >= 88) return 'A';
-  if (score >= 83) return 'A-';
-  if (score >= 78) return 'B+';
-  if (score >= 73) return 'B';
-  if (score >= 68) return 'B-';
-  if (score >= 63) return 'C+';
-  if (score >= 58) return 'C';
-  if (score >= 53) return 'C-';
-  if (score >= 48) return 'D';
-  return 'F';
-}
-
 // ── Compute box office points ───────────────────────────────────────
 function computeBoxOfficePoints(showSlug, scoringStart, scoringEnd) {
   const pointsPer100K = scoring.boxOffice.pointsPer100K;
   let totalPoints = 0;
   let weekCount = 0;
   let totalGross = 0;
+  const weekly = {};
 
   const sortedWeeks = Object.keys(weeks).sort();
   for (const weekDate of sortedWeeks) {
@@ -78,10 +76,11 @@ function computeBoxOfficePoints(showSlug, scoringStart, scoringEnd) {
 
     const weekData = weeks[weekDate];
     // Grosses keyed by slug (without year suffix usually)
-    // Try both slug and common variants
     const entry = weekData[showSlug];
     if (entry && entry.gross) {
-      totalPoints += (entry.gross / 100000) * pointsPer100K;
+      const pts = Math.round((entry.gross / 100000) * pointsPer100K * 100) / 100;
+      weekly[weekDate] = pts;
+      totalPoints += pts;
       totalGross += entry.gross;
       weekCount++;
     }
@@ -91,6 +90,7 @@ function computeBoxOfficePoints(showSlug, scoringStart, scoringEnd) {
     points: Math.round(totalPoints * 100) / 100,
     weekCount,
     totalGross,
+    weekly,
   };
 }
 
@@ -104,7 +104,9 @@ if (!['realized', 'projection'].includes(mode)) {
 }
 
 // Projection mode: load tony-win-probabilities.json (external signal).
-// Validate strictly — a silent {} would collapse all prices to $5.
+// Validate strictly — a silent {} would collapse all prices to $5, and a
+// stale prior-season file (the 2026 Tonys, say) would price this season's
+// shows off last season's nominees.
 let tonyPredictions = null;
 if (mode === 'projection') {
   const predsPath = path.join(dataDir, 'tony-win-probabilities.json');
@@ -116,6 +118,11 @@ if (mode === 'projection') {
   const v = validateTonyPredictions(tonyPredictions);
   if (!v.ok) {
     console.error(`tony-win-probabilities.json failed validation: ${v.reason}`);
+    process.exit(1);
+  }
+  const predSeason = Number(tonyPredictions._meta?.season);
+  if (predSeason !== seasonConfig.tonyCeremonyYear) {
+    console.error(`tony-win-probabilities.json is for the ${predSeason || 'unknown'} Tonys; this season scores the ${seasonConfig.tonyCeremonyYear} Tonys. Refresh it (scrape-gold-derby-tonys.js --season=${seasonConfig.tonyCeremonyYear}) or use generate-fantasy-config.js --refreeze for pre-season pricing.`);
     process.exit(1);
   }
   console.error(`Validated tony-win-probabilities.json: ${JSON.stringify(v.stats)}`);
@@ -132,6 +139,9 @@ if (sortedWeeks.length > 0) {
 
 for (const [showId, show] of Object.entries(fantasyShows)) {
   // CriticScore points — same in both modes (current tier assumed to hold).
+  // Shows that opened before the season's scoring start are locked for
+  // everyone (their score was public before the draft opened); shows opening
+  // later are locked per entry in computeLeaderboard.
   let criticScorePoints = 0;
   let criticTier = null;
   if (show.criticScore != null && show.eligible.criticScore) {
@@ -153,6 +163,7 @@ for (const [showId, show] of Object.entries(fantasyShows)) {
   let boxOfficePoints = 0;
   let boxOfficeWeeks = 0;
   let boxOfficeTotal = 0;
+  let weeklyBoxOffice = {};
   let projectedRemainingGross = 0;
   let projectionConfidence = null;
   if (show.eligible.boxOffice) {
@@ -160,6 +171,7 @@ for (const [showId, show] of Object.entries(fantasyShows)) {
     boxOfficePoints = bo.points;
     boxOfficeWeeks = bo.weekCount;
     boxOfficeTotal = bo.totalGross;
+    weeklyBoxOffice = bo.weekly;
 
     if (mode === 'projection' && latestWeek && latestWeek < meta.scoringEnd) {
       const isClosed = show.status === 'closed';
@@ -203,6 +215,8 @@ for (const [showId, show] of Object.entries(fantasyShows)) {
     boxOfficePoints,
     awardsPoints,
     totalPoints,
+    weeklyBoxOffice,
+    openingDate: show.openingDate || null,
     breakdown: {
       criticTier,
       audienceGrade: audGrade,
@@ -239,6 +253,8 @@ const output = {
     lastUpdated: new Date().toISOString(),
     weekEnding: latestWeek,
     season: meta.season,
+    scoringStart: meta.scoringStart,
+    earlyBirdCutoff: meta.earlyBirdCutoff || null,
     ...(mode === 'projection' ? {
       predictionSource: tonyPredictions?._meta?.source || null,
       predictionLastUpdated: tonyPredictions?._meta?.lastUpdated || null,
