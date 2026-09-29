@@ -242,7 +242,11 @@ async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = 
   // Fallback: TB always shows the latest review at /page/world/index.html.
   // Title format: `Talkin' Broadway on Broadway Review: "{TITLE}" {date}`.
   // Verify the quoted title matches the show before accepting.
-  if (!overrideUrl && !overBudget()) {
+  if (!overrideUrl && overBudget()) {
+    logger.log(`  Talkin' Broadway: time budget exhausted after ${tried}/${candidates.length} candidates — skipping the index.html fallback`);
+    return { found: false, reason: `time budget exhausted after ${tried} of ${candidates.length} candidates (index fallback skipped)` };
+  }
+  if (!overrideUrl) {
     const indexUrl = `${TB_HOST}/page/world/index.html`;
     logger.log(`  Talkin' Broadway: trying index.html fallback...`);
     try {

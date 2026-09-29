@@ -47,6 +47,12 @@ test('generic tokens (play, broadway, review) never vouch for the containing sho
   assert.equal(r.matchedShowId, 'mean-girls-2018');
 });
 
+test('a single shared-sounding word does not vouch: a Mean Girls URL that says "high-school" is still a mismatch', () => {
+  const r = check(SG, 'https://example.com/reviews/mean-girls-high-school-satire-review/');
+  assert.ok(r, 'expected a mismatch');
+  assert.equal(r.matchedShowId, 'mean-girls-2018');
+});
+
 test('the containment carve-out does not weaken unrelated mismatches', () => {
   const r = check('schmigadoon-2026', 'https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-radcliffe.html');
   assert.ok(r, 'expected a mismatch');

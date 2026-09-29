@@ -125,7 +125,12 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
       if (contained) {
         const otherTokens = new Set([...other.slug.split('-'), ...otherIdSlug.split('-')]);
         const vouching = [...thisTokens].filter(t => !otherTokens.has(t));
-        if (vouching.some(t => urlPath.includes(t))) continue;
+        // One token is not enough: a real Mean Girls review whose slug happens to say
+        // "high-school" must still be caught. Two of this show's own words (or all of
+        // them when it has only one) have to appear before the URL is trusted.
+        const needed = Math.min(2, vouching.length);
+        const present = vouching.filter(t => urlPath.includes(t)).length;
+        if (needed > 0 && present >= needed) continue;
       }
       if (urlPath.includes(other.slug)) {
         return { matchedShowId: other.id, matchedTitle: other.title, showTitle: thisShow.title };
