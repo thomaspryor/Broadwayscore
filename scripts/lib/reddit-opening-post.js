@@ -300,11 +300,12 @@ Anyone catch it recently? We're coming over from NYC in two weeks before Fringe,
 
 westendscorecard.com/show/trainspotting-the-musical-west-end
 ---
-Another (Broadway, 40 upvotes), showing a gentle way to deliver a low score:
+Another (Aug 2026, 39 upvotes), short and personal, with a real question:
 ---
-The Fear of 13 opened tonight with a 61 CriticScore. 21 reviews, 9 mixed, 6 negative, 6 positive, 0 raves.
+As a Jellicle Ball lover, this feels a little too soon lol
+(I know it's a very different market, very different show, etc)
 
-That's a rough landing for a show with this much going for it. Adrien Brody, Tessa Thompson, an acclaimed documentary as source material ... Well, actually, those are all pretty niche things, so perhaps this was always a hard sell?
+31 reviews, too?! It's wild to me how many more theater critics London has compared to Broadway. A broadway show is lucky to hit 20, and most of those are theater specific online outlets now. Does anyone know the real story behind that?
 ---
 
 WHAT GOT HIM DOWNVOTED OR PILED ON:
@@ -348,8 +349,34 @@ HARD RULES:
   as "NN/100" or "a NN".
 `.trim();
 
-function buildUserPrompt(facts) {
-  return `FACT SHEET (JSON):
+/**
+ * His best recent "reviews are in" style posts, freshest voice first. Pulled
+ * live each run so the examples never go stale (owner ask 2026-09-29: keep the
+ * examples recent). posts: Arctic Shift rows.
+ */
+function pickRecentExamples(posts, { nowMs = Date.now(), maxAgeDays = 120, n = 3 } = {}) {
+  const cutoff = nowMs / 1000 - maxAgeDays * 86400;
+  return (posts || [])
+    .filter(p => p && p.selftext && p.selftext.length > 150 && (p.created_utc || 0) >= cutoff)
+    .filter(p => THEATER_SUBS.has(String(p.subreddit || '').toLowerCase()))
+    .filter(p => /\d{1,3}\s*\/\s*100|\bscores? (an? )?\d{2}\b|\bgets an? \d{2}\b|reviews are in/i.test(p.title))
+    .sort((a, b) => (b.score || 0) - (a.score || 0))
+    .slice(0, n)
+    .map(p => ({
+      date: new Date(p.created_utc * 1000).toISOString().slice(0, 10),
+      subreddit: p.subreddit,
+      upvotes: p.score,
+      title: p.title,
+      body: p.selftext.replace(/https?:\/\/preview\.redd\.it\S+/g, '').trim().slice(0, 1400),
+    }));
+}
+
+function buildUserPrompt(facts, examples = []) {
+  const ex = examples.length
+    ? `HIS MOST RECENT WELL-RECEIVED POSTS (match this voice, not these facts):\n${examples.map(e =>
+      `--- r/${e.subreddit}, ${e.date}, ${e.upvotes} upvotes\nTITLE: ${e.title}\n${e.body}`).join('\n\n')}\n---\n\n`
+    : '';
+  return `${ex}FACT SHEET (JSON):
 ${JSON.stringify(facts, null, 2)}
 
 Write the post for r/${facts.subreddit}.
@@ -582,6 +609,7 @@ module.exports = {
   makeSeenLookup,
   normTitle,
   buildUserPrompt,
+  pickRecentExamples,
   lintDraft,
   stripDashes,
   quotedSpans,
