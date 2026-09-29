@@ -82,7 +82,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
 # the branch that ships a newer script never defers to the older origin
 # copy (2026-09-20: a byte-compare did exactly that and the old copy merged
 # the WIP branch into the shared main checkout).
-MERGE_SCRIPT_VERSION=2
+MERGE_SCRIPT_VERSION=3
 # Runs BEFORE any lib is sourced: a detached copy (`git show origin/main:… >
 # /tmp/x.sh && bash /tmp/x.sh`) has no scripts/lib beside it, and an old
 # worktree's copy may lack libs a newer version needs — so the re-exec
@@ -429,6 +429,14 @@ land_via_landing_branch() {
         # non-empty AND no '+': an EMPTY cherry (merge-only branch, or a
         # failed cherry) is no evidence at all, never equivalence.
         proof="patch-equivalent (rebased by land.yml)"
+      elif [ -n "$landed_sha" ] && is_landed "$landed_sha" "$DEFAULT_BRANCH"; then
+        # land.yml rebased, and a neighbouring commit shifted the diff context
+        # (e.g. an adjacent manifest line), so patch-ids drift and `git cherry`
+        # shows '+' for a commit that DID land (2026-09-29, BRO-4374: tip
+        # f9b37e2cae -> c82ddbb0cfc). The landings.jsonl row keyed by our exact
+        # tip, confirmed on origin, is land.yml's own record; prove_and_finish
+        # still runs the file + content-survival checks below.
+        proof="landings.jsonl row (rebased by land.yml; patch-id drifted)"
       else
         die "land run reported success but ${tip:0:10}'s commits are on origin/$DEFAULT_BRANCH neither as ancestors nor as equivalent patches — inspect ${run_url:-the land.yml run} before assuming anything landed"
       fi
