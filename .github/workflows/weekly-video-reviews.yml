@@ -131,6 +131,9 @@ jobs:
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          # fetchPage()'s cheapest tier, tried before Bright Data.
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
           # 2 Bright Data requests per YouTube video; bounds a --refresh run.
           BD_REQ_BUDGET: '400'
         run: |
