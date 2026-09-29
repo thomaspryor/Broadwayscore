@@ -880,5 +880,34 @@
       }
     ],
     "queuedAt": "2026-09-29T06:17:51.729Z"
+  },
+  {
+    "conditionKey": "land:land/stage-guards",
+    "title": "Landing blocked: rebase red on land/stage-guards",
+    "description": "land.yml did not land land/stage-guards: the rebase gate went red at f598a50e56. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36530885869",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/stage-guards"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "f598a50e562334195bb94a3f7a8577e04ceeb64c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36530885869"
+      }
+    ],
+    "queuedAt": "2026-09-29T06:26:01.240Z"
   }
 ]
