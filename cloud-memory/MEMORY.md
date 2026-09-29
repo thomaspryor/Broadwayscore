@@ -36,6 +36,7 @@
 - [Stray symlink crashes pipeline](feedback_stray_symlink_crashes_pipeline.md) — committed abs-path symlink dangles in CI; use listShowDirs()
 - [audit-review-contamination strict CI gate](feedback_audit_contamination_strict_mode.md) — strict A/B/C fail CI; B = false-pos wrongProduction
 - [Commit data repo edits IMMEDIATELY](feedback_data_repos_clobber_uncommitted.md) — rebase clobbers uncommitted; no reset-hard+rsync ([[feedback_reset_rsync_wipes_ci_fields.md]]); gh api PUT /contents/ if git broken ([[feedback_gh_api_emergency_commit.md]])
+- [Stale origin/main, prefer reclone](feedback_stale_origin_main_prefer_shallow_reclone.md) — fetch hangs/no-ops stale; retry EnterWorktree once or shallow-clone to /tmp
 
 ## ⚙️ CI / GitHub Actions / workflows
 - [Workflow cascade prevention](feedback_workflow_cascade_prevention.md) — trace dispatch graph; circular chains → 1000+ runs/day
