@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "school-girls-or-the-african-mean-girls-play-2026",
   "openingDate": "2026-09-28",
-  "detectedAt": "2026-09-29T09:20:21.260Z",
+  "detectedAt": "2026-09-29T09:28:23.162Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "dtli--unknown.json",
+      "outletId": "dtli",
+      "criticName": "Unknown",
+      "url": "https://didtheylikeit.com/shows/school-girls-or-the-african-mean-girls-play/",
+      "fullTextLen": 7124,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "nydailynews--chris-jones.json",
       "outletId": "nydailynews",
@@ -23,8 +40,8 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 2,
   "blockedOrphanCount": 0,
   "blockBroadcast": true,
   "lastDispatch": "suppressed-cooldown",
