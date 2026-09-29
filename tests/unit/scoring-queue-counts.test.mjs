@@ -21,6 +21,8 @@ const {
   isActionableUnscored,
   isActionableRescore,
   isActionableStale,
+  markStaleRescoreAttempt,
+  countStaleForShow,
   isActionableEmergencyRetry,
   countScoringQueues,
 } = require('../../scripts/lib/scoring-queue-counts.js');
@@ -251,6 +253,39 @@ describe('phase 2/3/4 predicates', () => {
       misattributedFullText: true, // getBestTextForScoring falls back to excerpts
     });
     assert.equal(isActionableStale(f, {}), false);
+  });
+
+  test('stale: one attempt per text version, re-armed when the text changes', () => {
+    const f = scoreableFile({
+      fullText: 'y'.repeat(2000),
+      llmScore: { score: 81 },
+      bwwExcerpt: 'A brisk, funny evening.',
+      llmMetadata: { textSource: { type: 'excerpt' } },
+    });
+    assert.equal(isActionableStale(f, {}), true);
+    markStaleRescoreAttempt(f);
+    assert.equal(f.staleRescoreAttemptedFor, 2000);
+    // The attempt ended on the excerpt again (trim/refusal/API failure): not re-picked.
+    assert.equal(isActionableStale(f, {}), false);
+    // Recovered/longer text re-arms it.
+    assert.equal(isActionableStale({ ...f, fullText: 'y'.repeat(2600) }, {}), true);
+  });
+
+  test('countStaleForShow: counts only actionable stale files in the show dir', () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'stale-count-'));
+    const dir = path.join(tmp, 'demo-show');
+    fs.mkdirSync(dir);
+    const stale = scoreableFile({
+      fullText: 'y'.repeat(2000), llmScore: { score: 81 }, bwwExcerpt: 'A brisk, funny evening.',
+      llmMetadata: { textSource: { type: 'excerpt' } },
+    });
+    const fresh = { ...stale, llmMetadata: { textSource: { type: 'fullText' } } };
+    fs.writeFileSync(path.join(dir, 'a--one.json'), JSON.stringify(stale));
+    fs.writeFileSync(path.join(dir, 'b--two.json'), JSON.stringify(fresh));
+    fs.writeFileSync(path.join(dir, '_blocklist.json'), JSON.stringify({ urls: [] }));
+    assert.equal(countStaleForShow(tmp, 'demo-show', { title: 'Demo' }), 1);
+    assert.equal(countStaleForShow(tmp, 'missing-show', {}), 0);
+    fs.rmSync(tmp, { recursive: true, force: true });
   });
 
   test('emergency: only un-retried singleModelEmergency files count', () => {

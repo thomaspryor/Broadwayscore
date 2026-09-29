@@ -15,6 +15,7 @@
  *   --outdated            Re-score reviews with promptVersion older than current PROMPT_VERSION
  *   --force-full-run      Skip the A/B distribution check (required for --outdated runs >100 reviews)
  *   --stale-scores        Score reviews with stale excerpt-based scores that now have fullText
+ *   --include-stale       With an unscored pass: also re-score up to 10 excerpt-scored reviews whose fullText has landed
  *   --retry-emergency     Retry stuck singleModelEmergency reviews once (clears flag if 2+ models succeed)
  *   --ensemble-source=X   Only rescore reviews with this ensembleSource (e.g. two-model-fallback)
  *   --score-range=MIN-MAX Only process reviews with existing LLM score in this range (e.g. 78-82)
@@ -89,7 +90,16 @@ const {
   isActionableRescore,
   isActionableStale,
   isActionableEmergencyRetry,
+  markStaleRescoreAttempt,
 } = require('../lib/scoring-queue-counts');
+
+// BRO-4332: stale (excerpt-scored, full text since landed) rescores per run.
+// --include-stale piggybacks on a show-scoped unscored pass, so it stays small
+// and never crowds out new reviews (they sort first). --stale-scores stays
+// under the >100-file A/B distribution gate, which a text-quality upgrade is
+// expected to move and would otherwise abort every run, pinning the cascade.
+const STALE_PER_SHOW_PASS = 10;
+const STALE_SCORES_RUN_CAP = 90;
 
 import { detectMultiShow } from './multi-show-detector';
 import { trimMultiShowText } from './trim-multi-show';
@@ -635,6 +645,7 @@ function parseArgs(): ScoringPipelineOptions & {
   groundTruth: boolean;
   needsRescore: boolean;
   staleScores: boolean;
+  includeStale: boolean;
   outdated: boolean;
   forceFullRun: boolean;
   ensembleSource?: string;
@@ -748,6 +759,7 @@ function parseArgs(): ScoringPipelineOptions & {
     groundTruth: args.includes('--ground-truth'),
     needsRescore: args.includes('--needs-rescore'),
     staleScores: args.includes('--stale-scores'),
+    includeStale: args.includes('--include-stale'),
     outdated,
     forceFullRun: args.includes('--force-full-run'),
     ensembleSource,
@@ -1040,6 +1052,7 @@ async function main(): Promise<void> {
 
   // Filter based on mode
   let filesToProcess: typeof allFiles;
+  const staleSelected = new Set<string>();
   if (options.needsRescore) {
     // Filter to reviews flagged for rescoring (had excerpt-based score, now have fullText)
     let blockedSkipped = 0;
@@ -1090,6 +1103,11 @@ async function main(): Promise<void> {
     // excerpt. Predicate shared with the cascade gate's counter (task #652).
     filesToProcess = allFiles.filter(f => isActionableStale(f.data as any, queueCtx(f)));
     console.log(`Filtering to stale-scored reviews (fullText + old excerpt-based score): ${filesToProcess.length} reviews\n`);
+    if (filesToProcess.length > STALE_SCORES_RUN_CAP) {
+      console.log(`Capping stale rescore at ${STALE_SCORES_RUN_CAP} this run (${filesToProcess.length - STALE_SCORES_RUN_CAP} left for the next)\n`);
+      filesToProcess = filesToProcess.slice(0, STALE_SCORES_RUN_CAP);
+    }
+    for (const f of filesToProcess) staleSelected.add(f.path);
   } else if (options.upgradeEnsemble) {
     // Filter to reviews with old single-model llmScore but no ensemble scoring
     // Exclude quality-flagged reviews (same pre-filter as scoring pipeline)
@@ -1121,14 +1139,16 @@ async function main(): Promise<void> {
     let unscoredBlockedSkipped = 0;
     let staleIncluded = 0;
     filesToProcess = allFiles.filter(f => {
-      // BRO-4332: a show-scoped pass (opening-night poller / express / fast
-      // path) also takes that show's excerpt-scored reviews whose full text
-      // has since landed. Text and score are written by different CI jobs on
+      // BRO-4332: with --include-stale (opening-night poller / express) the
+      // pass also takes excerpt-scored reviews whose full text has since
+      // landed. Text and score are written by different CI jobs on
       // opening night, so a review is often scored off its aggregator excerpt
       // minutes before its body arrives; nothing else re-queues it that night.
       if ((f.data as any).llmScore) {
-        if (options.showId && isActionableStale(f.data as any, queueCtx(f))) {
+        if (options.includeStale && staleIncluded < STALE_PER_SHOW_PASS &&
+            isActionableStale(f.data as any, queueCtx(f))) {
           staleIncluded++;
+          staleSelected.add(f.path);
           return true;
         }
         return false;
@@ -1298,7 +1318,12 @@ async function main(): Promise<void> {
 
   // Prioritize: full-text first, open shows first, newer shows first
   const showPriority = loadShowPriority();
-  const validFiles = prioritizeReviews(validFilesUnsorted, showPriority);
+  const prioritized = prioritizeReviews(validFilesUnsorted, showPriority);
+  // Stale rescores go after genuinely new work so a --limit never drops a new
+  // review in favour of re-scoring an old one (BRO-4332).
+  const validFiles = options.includeStale
+    ? [...prioritized.filter(f => !staleSelected.has(f.path)), ...prioritized.filter(f => staleSelected.has(f.path))]
+    : prioritized;
   const fullTextCount = validFiles.filter(f => !!(f.data as any).fullText && (f.data as any).fullText.length >= 200).length;
   console.log(`Priority sort: ${fullTextCount} full-text reviews first, then ${validFiles.length - fullTextCount} excerpt-only\n`);
 
@@ -1313,6 +1338,17 @@ async function main(): Promise<void> {
   const finalFiles = options.limit
     ? shardedFiles.slice(0, options.limit)
     : shardedFiles;
+
+  // One stale attempt per text version, persisted BEFORE scoring so an attempt
+  // that ends on the excerpt again or fails without writing is not re-picked
+  // every cycle (BRO-4332; see isActionableStale).
+  if (!options.dryRun && staleSelected.size > 0) {
+    for (const f of finalFiles) {
+      if (!staleSelected.has(f.path)) continue;
+      markStaleRescoreAttempt(f.data as any);
+      fs.writeFileSync(f.path, JSON.stringify(f.data, null, 2) + '\n');
+    }
+  }
 
   // Summary
   console.log('=== LLM Review Scoring Pipeline ===\n');
@@ -2568,6 +2604,7 @@ Options:
   --all                 Process all shows (default if no --show)
   --unscored-only       Only score reviews without existing LLM scores (default)
   --rescore             Re-score even if already scored
+  --include-stale       With an unscored pass: also re-score up to 10 excerpt-scored reviews whose fullText has landed
   --needs-rescore       Only score reviews flagged with needsRescore=true
   --retry-emergency     Retry stuck singleModelEmergency reviews once (one-shot per file)
   --outdated            Re-score reviews with promptVersion older than current

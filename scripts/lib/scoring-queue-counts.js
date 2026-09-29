@@ -153,9 +153,54 @@ function isActionableStale(data, ctx) {
   if (textSource && textSource.type === 'fullText') return false;
   if (!hasExcerpt(data) && !(textSource && textSource.type === 'excerpt')) return false;
   if (isBlockedFromRescore(data)) return false;
+  // One attempt per text version. The scorer can still land on the excerpt
+  // (multi-show trim, a refusal, an API failure that stamps nothing), and
+  // without this a poller cycle would re-pick the same file every 15 minutes.
+  // A text change (length) re-arms it, same idiom as isBlockedFromRescore.
+  if (data.staleRescoreAttemptedFor === staleAttemptFingerprint(data)) return false;
   const best = getBestTextForScoring(data);
   if (!best || best.type !== 'fullText') return false;
   return commonSelectionSkipReason(data, ctx, { starRatingApplies: false }) === null;
+}
+
+/** The fingerprint a stale rescore attempt is stamped with: fullText length. */
+function staleAttemptFingerprint(data) {
+  return typeof (data && data.fullText) === 'string' ? data.fullText.length : 0;
+}
+
+/**
+ * Stamp a stale-rescore attempt on the record (mutates, returns it). Callers
+ * persist it BEFORE scoring so a failure that writes nothing still counts.
+ */
+function markStaleRescoreAttempt(data) {
+  data.staleRescoreAttemptedFor = staleAttemptFingerprint(data);
+  return data;
+}
+
+/**
+ * Number of actionable stale files for one show, using the same ctx shape as
+ * index.ts's queueCtx (show record, title, file path) so the opening-night
+ * poller's ANY_READY gate and the scorer's selection agree.
+ *
+ * @param {string} reviewTextsDir - data/review-texts
+ * @param {string} showId
+ * @param {{title?:string}} [show] - shows.json record
+ * @returns {number}
+ * @throws on an unreadable show dir other than "missing"
+ */
+function countStaleForShow(reviewTextsDir, showId, show) {
+  const dir = path.join(reviewTextsDir, showId);
+  if (!fs.existsSync(dir)) return 0;
+  let n = 0;
+  for (const f of fs.readdirSync(dir)) {
+    if (!f.endsWith('.json') || f.startsWith('_')) continue;
+    const filePath = path.join(dir, f);
+    let data;
+    try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch (_) { continue; }
+    const ctx = { show: show || undefined, showTitle: show && show.title, filePath };
+    if (isActionableStale(data, ctx)) n++;
+  }
+  return n;
 }
 
 /** Phase 4 (--retry-emergency). Mirrors index.ts's retryEmergency filter. */
@@ -263,6 +308,9 @@ module.exports = {
   isActionableUnscored,
   isActionableRescore,
   isActionableStale,
+  staleAttemptFingerprint,
+  markStaleRescoreAttempt,
+  countStaleForShow,
   isActionableEmergencyRetry,
   countScoringQueues,
 };
