@@ -18,7 +18,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, decideCancelledLandRetry, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
+  landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, decideCancelledLandRetry, decideCancelledWait, MAX_CANCEL_RETRIES, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
   isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks,
   isPromisorFetchFailure,
 } = require('./land-branch.js');
@@ -122,13 +122,27 @@ test('shouldRetry is bounded by maxAttempts', () => {
   assert.equal(shouldRetry(MAX_ATTEMPTS, MAX_ATTEMPTS), false);
 });
 
+test('decideCancelledWait: resume once the server re-triggered the cancelled Land run, else keep waiting', () => {
+  // 2026-09-29, run 36629730821: the server had already re-run it (attempt 4, in_progress)
+  assert.equal(decideCancelledWait({ status: 'in_progress', attempt: '4', attemptBefore: '3' }), 'resume');
+  assert.equal(decideCancelledWait({ status: 'queued', attempt: '1', attemptBefore: '1' }), 'resume');
+  // attempt bumped but the API still reports the old completed state
+  assert.equal(decideCancelledWait({ status: 'completed', attempt: 2, attemptBefore: 1 }), 'resume');
+  // still the cancelled attempt
+  assert.equal(decideCancelledWait({ status: 'completed', attempt: '1', attemptBefore: '1' }), 'wait');
+  // gh failed: the script's fallback line is "completed 0"
+  assert.equal(decideCancelledWait({ status: 'completed', attempt: '0', attemptBefore: '1' }), 'wait');
+  assert.equal(decideCancelledWait({}), 'wait');
+});
+
 test('decideCancelledLandRetry (BRO-4379): retries only a cancelled Land with green Checks, unchanged tip, budget left', () => {
   const base = { landConclusion: 'cancelled', checksConclusion: 'success', remoteTip: 'a'.repeat(40), tip: 'a'.repeat(40), retriesUsed: 0 };
   assert.deepEqual(decideCancelledLandRetry(base).retry, true);
   assert.deepEqual([0, 1, 2].map(n => decideCancelledLandRetry({ ...base, retriesUsed: n }).backoffSec), [30, 60, 120]);
-  // budget: 3 re-triggers max
-  assert.equal(decideCancelledLandRetry({ ...base, retriesUsed: 3 }).retry, false);
-  assert.equal(decideCancelledLandRetry({ ...base, retriesUsed: 5 }).retry, false);
+  // budget matches the server-side re-trigger: MAX_ATTEMPTS attempts = MAX_ATTEMPTS-1 re-runs
+  assert.equal(MAX_CANCEL_RETRIES, require('./land-retry-on-cancel.js').MAX_ATTEMPTS - 1);
+  assert.equal(decideCancelledLandRetry({ ...base, retriesUsed: MAX_CANCEL_RETRIES - 1 }).retry, true);
+  assert.equal(decideCancelledLandRetry({ ...base, retriesUsed: MAX_CANCEL_RETRIES }).retry, false);
   assert.equal(decideCancelledLandRetry({ ...base, retriesUsed: 1, maxRetries: 1 }).retry, false);
   // Land job not cancelled (failure/success/unknown) or Checks not green → no retry
   for (const landConclusion of ['failure', 'success', 'skipped', '', null, undefined]) assert.equal(decideCancelledLandRetry({ ...base, landConclusion }).retry, false);
@@ -758,10 +772,20 @@ test('lands a multi-commit branch needing 3-way merges from a blobless clone, wi
   } finally { w.cleanup(); }
 });
 
-test('BRO-4379 wiring: the session landing script consults decideCancelledLandRetry and reruns with --failed inside a bounded loop', () => {
+test('BRO-4379 wiring: the session landing script consults decideCancelledLandRetry, then WAITS for the server-side re-trigger instead of re-running itself', () => {
   const sh = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', ['merge', 'worktree-to', 'main.sh'].join('-')), 'utf8');
   assert.match(sh, /decideCancelledLandRetry/);
-  assert.match(sh, /gh run rerun "\$run_id" --failed/);
+  assert.match(sh, /decideCancelledWait/);
   assert.match(sh, /cancel_retries/);
-  assert.doesNotMatch(sh, /gh run rerun "\$run_id"(?! --failed)/, 'a plain rerun would repeat the Checks gauntlet');
+  // A local rerun races land-retry-cancelled.yml: once the server has re-run
+  // the job, `gh run rerun` fails "already running" and the script used to
+  // print a false REFUSED (run 36629730821, 2026-09-29).
+  assert.doesNotMatch(sh, /gh run rerun/, 'the landing script must not re-run land.yml itself');
+  // the grace wait stays inside the shared budget and ends in a resumable TIMEOUT
+  assert.match(sh, /grace_end=\$budget_deadline/);
+  assert.match(sh, /TIMEOUT: \$BRANCH — land run cancelled/);
+  // no re-trigger seen within the grace window is not proof of refusal (Codex review)
+  assert.match(sh, /TIMEOUT: \$BRANCH — land run cancelled while pending and no server re-trigger seen/);
+  // a run that went live again between the waiter's verdict and the re-read keeps waiting
+  assert.match(sh, /run_status" != "completed"/);
 });
