@@ -186,7 +186,10 @@ describe('recordSerpAttempt/resolveStaleWrongProductionRecovery ordering — a h
 });
 
 describe('shouldRetryUrlDiscovery / recordSerpAttempt — stale_wrong_production reuses the retry/cooldown SHAPE under its OWN namespaced fields', () => {
-  const openWindowShow = { id: 'x', category: 'broadway', status: 'open', openingDate: new Date().toISOString().slice(0, 10) };
+  // Opened 3 days ago: inside openWindow and past the opening-night
+  // publication moment. An openingDate of TODAY lands in the BRO-4281
+  // pre-publication window (never abandons), which this suite is not about.
+  const openWindowShow = { id: 'x', category: 'broadway', status: 'open', openingDate: new Date(Date.now() - 3 * 86400000).toISOString().slice(0, 10) };
 
   it('allows the first attempt', () => {
     const gate = shouldRetryUrlDiscovery(openWindowShow, { incompleteReason: 'stale_wrong_production' });

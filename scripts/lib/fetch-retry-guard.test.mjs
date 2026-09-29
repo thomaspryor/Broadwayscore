@@ -18,7 +18,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { shouldRetryFetch, recordFetchAttempt } = require('./review-guards.js');
+const { shouldRetryFetch, recordFetchAttempt, getPublicationMoment, isPrePublication } = require('./review-guards.js');
 
 const DAY = 86400000;
 const daysAgo = (n) => new Date(Date.now() - n * DAY).toISOString();
@@ -276,5 +276,170 @@ describe('end-to-end: closed>180d show gets 0 retries on 404, 2 on transient', (
     assert.equal(deadGate.shouldRetry, true); // 2 < strict max 3
     const transientGate = shouldRetryFetch(openWindowShow, {}, { failureReason: 'timeout', failureCount: 4 });
     assert.equal(transientGate.shouldRetry, true); // 4 < lenient max 5
+  });
+});
+
+// ============================================================
+// Pre-publication failures (BRO-4281)
+// ============================================================
+// Replays School Girls 2026-09-28: the pinned Talkin' Broadway URL failed at
+// 23:15 UTC on opening day and was cooled down until 05:15 UTC, but reviews
+// published ~01:00 UTC (openingDate midnight UTC + 25h).
+
+function withNow(iso, fn) {
+  const realNow = Date.now;
+  const fixed = Date.parse(iso);
+  Date.now = () => fixed;
+  try { return fn(); } finally { Date.now = realNow; }
+}
+
+const schoolGirls = { id: 'school-girls-2026', status: 'previews', openingDate: '2026-09-28', category: 'broadway' };
+const PUB_ISO = '2026-09-29T01:00:00.000Z';
+
+describe('getPublicationMoment / isPrePublication', () => {
+  test('broadway publishes openingDate + 25h, west-end + 21h', () => {
+    assert.equal(new Date(getPublicationMoment(schoolGirls)).toISOString(), PUB_ISO);
+    assert.equal(new Date(getPublicationMoment({ ...schoolGirls, category: 'off-broadway' })).toISOString(), PUB_ISO);
+    assert.equal(new Date(getPublicationMoment({ ...schoolGirls, category: 'west-end' })).toISOString(), '2026-09-28T21:00:00.000Z');
+    assert.equal(new Date(getPublicationMoment({ ...schoolGirls, category: 'off-west-end' })).toISOString(), '2026-09-28T21:00:00.000Z');
+  });
+
+  test('no parseable openingDate → null / never pre-publication', () => {
+    assert.equal(getPublicationMoment({ status: 'previews' }), null);
+    assert.equal(getPublicationMoment({ status: 'previews', openingDate: 'TBA' }), null);
+    assert.equal(getPublicationMoment(null), null);
+    assert.equal(isPrePublication({ status: 'previews' }), false);
+  });
+
+  test('window is [publication - 1 day, publication)', () => {
+    const pub = Date.parse(PUB_ISO);
+    assert.equal(isPrePublication(schoolGirls, pub - DAY - 1), false);
+    assert.equal(isPrePublication(schoolGirls, pub - DAY), true);
+    assert.equal(isPrePublication(schoolGirls, Date.parse('2026-09-28T23:15:00Z')), true);
+    assert.equal(isPrePublication(schoolGirls, pub - 1), true);
+    assert.equal(isPrePublication(schoolGirls, pub), false);
+  });
+
+  test('closed shows are never pre-publication', () => {
+    assert.equal(isPrePublication({ ...schoolGirls, status: 'closed' }, Date.parse('2026-09-28T23:15:00Z')), false);
+  });
+
+  test('status open (opening day already flipped) still counts', () => {
+    assert.equal(isPrePublication({ ...schoolGirls, status: 'open' }, Date.parse('2026-09-28T23:15:00Z')), true);
+  });
+});
+
+describe('recordFetchAttempt — pre-publication failures (BRO-4281)', () => {
+  test('School Girls replay: cooldown capped at the publication moment, not 05:15', () => {
+    const u = withNow('2026-09-28T23:15:00Z', () =>
+      recordFetchAttempt(schoolGirls, {}, { failureReason: 'fetch_failed', failureCount: 1 }));
+    assert.equal(u.fetchRetryAfter, PUB_ISO);
+    assert.equal(u.fetchPrePubFailures, 1);
+    assert.equal(u.fetchDiscoveryAbandoned, undefined);
+  });
+
+  test('earlier in the window the normal 6h cooldown still applies (spend stays bounded)', () => {
+    const u = withNow('2026-09-28T02:00:00Z', () =>
+      recordFetchAttempt(schoolGirls, {}, { failureReason: 'fetch_failed', failureCount: 1 }));
+    assert.equal(u.fetchRetryAfter, '2026-09-28T08:00:00.000Z');
+    assert.equal(u.fetchPrePubFailures, 1);
+  });
+
+  test('never abandons in the window, even past the tiered max (strict and lenient)', () => {
+    for (const [reason, count] of [['url_dead_404', 3], ['fetch_failed', 5], ['fetch_failed', 9]]) {
+      const u = withNow('2026-09-28T23:15:00Z', () =>
+        recordFetchAttempt(schoolGirls, { fetchPrePubFailures: 2 }, { failureReason: reason, failureCount: count }));
+      assert.equal(u.fetchDiscoveryAbandoned, undefined, `${reason}/${count}`);
+      assert.equal(u.fetchPrePubFailures, 3);
+      assert.equal(u.fetchRetryAfter, PUB_ISO);
+    }
+  });
+
+  test('west-end window caps at openingDate + 21h', () => {
+    const we = { ...schoolGirls, category: 'west-end' };
+    const u = withNow('2026-09-28T19:30:00Z', () =>
+      recordFetchAttempt(we, {}, { failureReason: 'fetch_failed', failureCount: 1 }));
+    assert.equal(u.fetchRetryAfter, '2026-09-28T21:00:00.000Z');
+  });
+
+  test('more than a day before publication → normal behavior (no tally, can abandon)', () => {
+    const u = withNow('2026-09-27T23:00:00Z', () =>
+      recordFetchAttempt(schoolGirls, {}, { failureReason: 'fetch_failed', failureCount: 1 }));
+    assert.equal(u.fetchRetryAfter, '2026-09-28T05:00:00.000Z');
+    assert.equal(u.fetchPrePubFailures, undefined);
+    const a = withNow('2026-09-27T23:00:00Z', () =>
+      recordFetchAttempt(schoolGirls, {}, { failureReason: 'fetch_failed', failureCount: 5 }));
+    assert.deepEqual(a, { fetchDiscoveryAbandoned: true });
+  });
+
+  test('closed show in the window → normal behavior', () => {
+    const closed = { ...schoolGirls, status: 'closed', closingDate: '2026-09-27' };
+    const a = withNow('2026-09-28T23:15:00Z', () =>
+      recordFetchAttempt(closed, {}, { failureReason: 'fetch_failed', failureCount: 3 }));
+    assert.deepEqual(a, { fetchDiscoveryAbandoned: true });
+  });
+
+  test('after publication: pre-publication failures do not count toward the max', () => {
+    // 5 ledger failures, 4 of them pre-publication → 1 counts; lenient max 5.
+    const u = withNow('2026-09-29T02:00:00Z', () =>
+      recordFetchAttempt(schoolGirls, { fetchPrePubFailures: 4 }, { failureReason: 'fetch_failed', failureCount: 5 }));
+    assert.equal(u.fetchDiscoveryAbandoned, undefined);
+    assert.equal(u.fetchPrePubFailures, undefined);
+    assert.equal(u.fetchRetryAfter, '2026-09-29T08:00:00.000Z');
+    // Post-publication budget exhausted: 9 failures, 4 pre-publication → 5 counts.
+    const a = withNow('2026-09-29T02:00:00Z', () =>
+      recordFetchAttempt(schoolGirls, { fetchPrePubFailures: 4 }, { failureReason: 'fetch_failed', failureCount: 9 }));
+    assert.deepEqual(a, { fetchDiscoveryAbandoned: true });
+  });
+
+  test('after publication with no tally: identical to today (abandons at max)', () => {
+    const a = withNow('2026-09-29T02:00:00Z', () =>
+      recordFetchAttempt(schoolGirls, {}, { failureReason: 'fetch_failed', failureCount: 5 }));
+    assert.deepEqual(a, { fetchDiscoveryAbandoned: true });
+  });
+
+  test('simulated opening eve: a persistently failing URL gets a bounded number of attempts', () => {
+    // Retry as soon as each cooldown expires from pub-1d until pub.
+    let t = Date.parse(PUB_ISO) - DAY;
+    let review = {};
+    let failureCount = 0;
+    let attempts = 0;
+    while (t < Date.parse(PUB_ISO)) {
+      failureCount++;
+      attempts++;
+      const u = withNow(new Date(t).toISOString(), () =>
+        recordFetchAttempt(schoolGirls, review, { failureReason: 'fetch_failed', failureCount }));
+      assert.equal(u.fetchDiscoveryAbandoned, undefined);
+      review = { ...review, ...u };
+      t = Date.parse(u.fetchRetryAfter);
+    }
+    assert.equal(attempts, 4); // 6h cooldown over 24h
+    assert.equal(review.fetchRetryAfter, PUB_ISO);
+    // ...and the full post-publication budget is still available.
+    const gate = withNow('2026-09-29T01:00:00Z', () =>
+      shouldRetryFetch(schoolGirls, review, { failureReason: 'fetch_failed', failureCount }));
+    assert.equal(gate.shouldRetry, true);
+    assert.equal(gate.reason, 'lenient_retry');
+  });
+});
+
+describe('shouldRetryFetch — subtracts fetchPrePubFailures (BRO-4281)', () => {
+  test('pre-publication failures leave the budget untouched', () => {
+    const gate = shouldRetryFetch(openWindowShow, { fetchPrePubFailures: 5 }, { failureReason: 'fetch_failed', failureCount: 5 });
+    assert.equal(gate.shouldRetry, true);
+    assert.equal(gate.reason, 'lenient_retry');
+  });
+
+  test('a tally larger than the ledger count clamps to zero, never negative', () => {
+    const gate = shouldRetryFetch(openWindowShow, { fetchPrePubFailures: 9 }, { failureReason: 'url_dead_404', failureCount: 2 });
+    assert.equal(gate.shouldRetry, true);
+    assert.equal(gate.reason, 'strict_retry');
+  });
+
+  test('post-publication failures still hit the max with the same label', () => {
+    const gate = shouldRetryFetch(openWindowShow, { fetchPrePubFailures: 2 }, { failureReason: 'url_dead_404', failureCount: 5 });
+    assert.equal(gate.shouldRetry, false);
+    assert.equal(gate.reason, 'max_retries_reached');
+    assert.deepEqual(gate.updates, { fetchDiscoveryAbandoned: true });
   });
 });

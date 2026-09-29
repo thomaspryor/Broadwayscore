@@ -103,6 +103,8 @@ const ACTION_EXTRA_PROTECTED = [
   'serpDiscoveryAbandoned',
   'fetchRetryAfter',
   'fetchDiscoveryAbandoned',
+  'fetchPrePubFailures',
+  'serpPrePubCount',
   'rescoreBlockedReason',
   'rescoreBlockedAt',
   'rescoreBlockedTextLength',

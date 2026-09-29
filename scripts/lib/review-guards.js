@@ -2965,6 +2965,8 @@ function checkLlmVerificationAgainstKeywords(show, text, cv) {
 //   - serpRetryAfter (ISO timestamp — don't SERP before this)
 //   - serpRetryCount (int — cumulative SERP attempts for this file)
 //   - serpDiscoveryAbandoned (bool — permanent gate, only cleared manually)
+//   - serpPrePubCount / staleWpPrePubCount (int — attempts in the
+//     pre-publication window, BRO-4281; subtracted before the max check)
 //
 // See: sprint-plan-serp-cost-reduction.md, /second-opinion review
 
@@ -3056,6 +3058,77 @@ function classifyLifecycle(show) {
   return 'openMature';
 }
 
+// ---------------------------------------------------------------------------
+// Pre-publication window (BRO-4281)
+// ---------------------------------------------------------------------------
+//
+// Opening-night reviews publish the evening of openingDate (ET for Broadway,
+// UK time for the West End), so a fetch or SERP that fails in the day BEFORE
+// that is expected: the page is not up yet. Treating such a failure like any
+// other stamped a 6h fetch / 24h SERP cooldown that outlasted the moment the
+// reviews dropped (School Girls 2026-09-28: a pinned Talkin' Broadway URL
+// failed at 23:15 UTC and was cooled down until 05:15 UTC; reviews published
+// ~01:00 UTC) and spent retry budget toward abandonment.
+//
+// For a failure in [publication - 1 day, publication) on a non-closed show:
+//   - the recorded cooldown is capped at the publication moment (never later)
+//   - the attempt never abandons
+//   - it is tallied in a separate counter (fetchPrePubFailures /
+//     serpPrePubCount / staleWpPrePubCount) that the max-retries checks
+//     subtract, so pre-publication attempts don't use the post-publication
+//     budget.
+// The normal lifecycle cooldown still applies inside the window (only its
+// END is capped), so spend stays bounded: at most a handful of attempts in
+// the day before opening, then normal behavior. A shorter fixed cooldown
+// (15/30 min over openingDate -1d..+3d) was tried and backed out for making
+// Browserbase/SERP spend unbounded on persistently failing URLs.
+
+// Publication moment = openingDate at UTC midnight + this offset. 25h ≈ 9pm
+// ET on opening night; 21h ≈ 10pm BST.
+const PUBLICATION_OFFSET_MS = Object.freeze({
+  westEnd: 21 * 3600 * 1000,
+  default: 25 * 3600 * 1000,
+});
+const PRE_PUBLICATION_WINDOW_MS = DAY_MS;
+
+/**
+ * Expected moment opening-night reviews publish, as epoch ms, or null when
+ * the show has no parseable YYYY-MM-DD openingDate.
+ *
+ * @param {Object|null} show - shows.json entry
+ * @returns {number|null}
+ */
+function getPublicationMoment(show) {
+  if (!show || typeof show !== 'object' || typeof show.openingDate !== 'string') return null;
+  const m = show.openingDate.match(/^(\d{4}-\d{2}-\d{2})/);
+  if (!m) return null;
+  const midnight = Date.parse(`${m[1]}T00:00:00Z`);
+  if (isNaN(midnight)) return null;
+  const category = show.category || '';
+  const isWestEnd = category === 'west-end' || category === 'off-west-end';
+  return midnight + (isWestEnd ? PUBLICATION_OFFSET_MS.westEnd : PUBLICATION_OFFSET_MS.default);
+}
+
+/**
+ * True when `now` falls in the day before opening-night reviews publish on a
+ * show that is not closed. See the block comment above.
+ *
+ * @param {Object|null} show - shows.json entry
+ * @param {number} [now=Date.now()]
+ * @returns {boolean}
+ */
+function isPrePublication(show, now = Date.now()) {
+  if (!show || typeof show !== 'object' || show.status === 'closed') return false;
+  const pub = getPublicationMoment(show);
+  if (pub === null) return false;
+  return now < pub && now >= pub - PRE_PUBLICATION_WINDOW_MS;
+}
+
+/** Non-negative integer counter read, tolerant of missing/garbage values. */
+function _counter(v) {
+  return typeof v === 'number' && v > 0 ? Math.floor(v) : 0;
+}
+
 /**
  * Decide whether a review should be re-SERPed for URL discovery.
  *
@@ -3100,6 +3173,7 @@ function shouldRetryUrlDiscovery(show, review) {
   const countField = isStaleWrongProduction ? 'staleWpRetryCount' : 'serpRetryCount';
   const afterField = isStaleWrongProduction ? 'staleWpRetryAfter' : 'serpRetryAfter';
   const abandonedField = isStaleWrongProduction ? 'staleWrongProductionRecoveryAbandoned' : 'serpDiscoveryAbandoned';
+  const prePubField = isStaleWrongProduction ? 'staleWpPrePubCount' : 'serpPrePubCount';
 
   // Not in a gated state → let callers proceed (e.g. collector-flagged
   // wrongShow retries via existing wrongShowRetryAt path are not this gate's
@@ -3114,7 +3188,8 @@ function shouldRetryUrlDiscovery(show, review) {
   }
 
   const lifecycle = classifyLifecycle(show);
-  const count = typeof review[countField] === 'number' ? review[countField] : 0;
+  // Pre-publication attempts (BRO-4281) don't use the post-publication budget.
+  const count = Math.max(0, _counter(review[countField]) - _counter(review[prePubField]));
 
   // wrong_content / stale_wrong_production: hard retry cap
   if (isWrongContent || isStaleWrongProduction) {
@@ -3176,25 +3251,35 @@ function recordSerpAttempt(show, review) {
   const countField = isStaleWrongProduction ? 'staleWpRetryCount' : 'serpRetryCount';
   const afterField = isStaleWrongProduction ? 'staleWpRetryAfter' : 'serpRetryAfter';
   const abandonedField = isStaleWrongProduction ? 'staleWrongProductionRecoveryAbandoned' : 'serpDiscoveryAbandoned';
+  const prePubField = isStaleWrongProduction ? 'staleWpPrePubCount' : 'serpPrePubCount';
 
   const prevCount = typeof review[countField] === 'number' ? review[countField] : 0;
   const newCount = prevCount + 1;
   const updates = { [countField]: newCount };
 
   const lifecycle = classifyLifecycle(show);
+  const now = Date.now();
+  const cooldown = COOLDOWN_MS[lifecycle] ?? (7 * DAY_MS);
+
+  // Pre-publication (BRO-4281): never abandon, don't spend post-publication
+  // budget, and never cool down past the publication moment.
+  if (isPrePublication(show, now)) {
+    updates[prePubField] = _counter(review[prePubField]) + 1;
+    updates[afterField] = new Date(Math.min(now + cooldown, getPublicationMoment(show))).toISOString();
+    return updates;
+  }
 
   // wrong_content / stale_wrong_production: check if this attempt just hit the cap → abandon
   if (isWrongContent || isStaleWrongProduction) {
     const max = MAX_RETRIES_WRONG_CONTENT[lifecycle] ?? 1;
-    if (newCount >= max) {
+    if (Math.max(0, newCount - _counter(review[prePubField])) >= max) {
       updates[abandonedField] = true;
       return updates;
     }
   }
 
   // Still have retries → set next cooldown
-  const cooldown = COOLDOWN_MS[lifecycle] ?? (7 * DAY_MS);
-  updates[afterField] = new Date(Date.now() + cooldown).toISOString();
+  updates[afterField] = new Date(now + cooldown).toISOString();
 
   return updates;
 }
@@ -3227,6 +3312,8 @@ function recordSerpAttempt(show, review) {
 // MANUAL_FIELDS):
 //   - fetchRetryAfter (ISO timestamp — don't re-fetch before this)
 //   - fetchDiscoveryAbandoned (bool — permanent gate, only cleared manually)
+//   - fetchPrePubFailures (int — failures in the pre-publication window,
+//     BRO-4281; subtracted from the ledger failureCount before the max check)
 
 // Max additional fetch attempts once a failure is on record, keyed by show
 // lifecycle. "Strict" reasons (confirmed-dead 404/410, garbage_content) use
@@ -3300,7 +3387,8 @@ function shouldRetryFetch(show, review, failureEntry) {
   const lifecycle = classifyLifecycle(show);
   const maxTable = isStrict ? MAX_RETRIES_FETCH_STRICT : MAX_RETRIES_FETCH_LENIENT;
   const max = maxTable[lifecycle] ?? (isStrict ? 3 : 5);
-  const count = typeof failureEntry.failureCount === 'number' ? failureEntry.failureCount : 0;
+  // Pre-publication failures (BRO-4281) don't use the post-publication budget.
+  const count = Math.max(0, _counter(failureEntry.failureCount) - _counter(review.fetchPrePubFailures));
 
   if (count >= max) {
     return {
@@ -3332,12 +3420,13 @@ function shouldRetryFetch(show, review, failureEntry) {
  * Call this only on failure — a successful fetch has no retry state to
  * advance (and clear-on-success is handled separately by clearFailureFlags).
  *
- * Returns { fetchRetryAfter } or { fetchDiscoveryAbandoned: true } — a patch
+ * Returns { fetchRetryAfter, fetchPrePubFailures? } or
+ * { fetchDiscoveryAbandoned: true } — a patch
  * the caller merges into the review file before writing.
  *
  * @param {Object|null} show - shows.json entry
- * @param {Object} review - Review-text file data (pre-update; unused today, kept
- *   for signature parity with recordSerpAttempt and future use)
+ * @param {Object} review - Review-text file data (pre-update; reads
+ *   fetchPrePubFailures)
  * @param {{failureReason?: string, failureCount?: number}} failureEntry - the
  *   ledger entry AFTER this attempt's failure was recorded
  * @returns {Object} Patch to apply
@@ -3352,14 +3441,25 @@ function recordFetchAttempt(show, review, failureEntry) {
   const lifecycle = classifyLifecycle(show);
   const maxTable = isStrict ? MAX_RETRIES_FETCH_STRICT : MAX_RETRIES_FETCH_LENIENT;
   const max = maxTable[lifecycle] ?? (isStrict ? 3 : 5);
-  const count = typeof failureEntry.failureCount === 'number' ? failureEntry.failureCount : 0;
+  const prePub = _counter(review && review.fetchPrePubFailures);
+  const now = Date.now();
+  const cooldown = FETCH_COOLDOWN_MS[lifecycle] ?? (24 * 3600 * 1000);
 
+  // Pre-publication (BRO-4281): never abandon, don't spend post-publication
+  // budget, and never cool down past the publication moment.
+  if (isPrePublication(show, now)) {
+    return {
+      fetchRetryAfter: new Date(Math.min(now + cooldown, getPublicationMoment(show))).toISOString(),
+      fetchPrePubFailures: prePub + 1,
+    };
+  }
+
+  const count = Math.max(0, _counter(failureEntry.failureCount) - prePub);
   if (count >= max) {
     return { fetchDiscoveryAbandoned: true };
   }
 
-  const cooldown = FETCH_COOLDOWN_MS[lifecycle] ?? (24 * 3600 * 1000);
-  return { fetchRetryAfter: new Date(Date.now() + cooldown).toISOString() };
+  return { fetchRetryAfter: new Date(now + cooldown).toISOString() };
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
@@ -4971,6 +5071,8 @@ module.exports = {
   recordSerpAttempt,
   shouldRetryFetch,
   recordFetchAttempt,
+  getPublicationMoment,
+  isPrePublication,
   isEligibleForStaleWrongProductionRecovery,
   resolveStaleWrongProductionRecovery,
   pickRerouteTarget,

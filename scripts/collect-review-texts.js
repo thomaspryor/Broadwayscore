@@ -6492,20 +6492,27 @@ function recordFailedFetch(review, reason, details = {}) {
   // lifecycle-tiered fetch retry gate state (fetchRetryAfter /
   // fetchDiscoveryAbandoned — BRO-787). Both live on the same file, so one
   // read+write covers them.
+  // The on-disk file is read first so recordFetchAttempt sees its
+  // fetchPrePubFailures counter (BRO-4281), not a possibly stale in-memory copy.
+  const reviewFilePath = path.join(CONFIG.reviewTextsDir, review.reviewId);
+  let reviewData = null;
+  try {
+    if (fs.existsSync(reviewFilePath)) reviewData = JSON.parse(fs.readFileSync(reviewFilePath, 'utf8'));
+  } catch (e) {
+    reviewData = null;
+  }
   let fetchAttemptUpdates = {};
   if (counts) {
     try {
       if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
       const showMeta = _showsJsonCache.shows.find(s => s.id === review.showId) || null;
-      fetchAttemptUpdates = recordFetchAttempt(showMeta, review, entry);
+      fetchAttemptUpdates = recordFetchAttempt(showMeta, reviewData || review, entry);
     } catch (e) {
       // Non-fatal — worst case, no cooldown/abandonment is stamped this run
     }
   }
   try {
-    const reviewFilePath = path.join(CONFIG.reviewTextsDir, review.reviewId);
-    if (fs.existsSync(reviewFilePath)) {
-      const reviewData = JSON.parse(fs.readFileSync(reviewFilePath, 'utf8'));
+    if (reviewData) {
       const reasonResult = classifyIncompleteReason(reviewData, entry);
       if (reasonResult) {
         reviewData.incompleteReason = reasonResult.incompleteReason;
@@ -6526,6 +6533,8 @@ function recordFailedFetch(review, reason, details = {}) {
     console.log(`    ⚠ Permanently failed (${entry.failureCount} attempts, reason: ${reason}) — will skip on future runs`);
   } else if (!counts) {
     console.log(`    ⏸ Recorded as ${reason} (failureCount held at ${entry.failureCount}) — retried normally once the cap lifts`);
+  } else if (fetchAttemptUpdates.fetchPrePubFailures) {
+    console.log(`    ⏳ Pre-publication fetch failure — cooldown until ${fetchAttemptUpdates.fetchRetryAfter} (capped at the publication moment; ${entry.failureCount} attempts, reason: ${reason})`);
   } else if (fetchAttemptUpdates.fetchRetryAfter) {
     console.log(`    ⏳ Fetch cooldown until ${fetchAttemptUpdates.fetchRetryAfter} (${entry.failureCount} attempts, reason: ${reason})`);
   }

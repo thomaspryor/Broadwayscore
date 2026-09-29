@@ -136,6 +136,12 @@ function clearFailureFlags(data, opts = {}) {
     data.serpRetryCount = null;
     cleared.push('serpRetryCount');
   }
+  // Pre-publication SERP tally (BRO-4281) is subtracted from serpRetryCount,
+  // so it must reset with it or it would inflate a later cycle's budget.
+  if (data.serpPrePubCount != null && data.url) {
+    data.serpPrePubCount = null;
+    cleared.push('serpPrePubCount');
+  }
   if (data.serpDiscoveryAbandoned === true && data.url && data.fullText) {
     // Only clear serpDiscoveryAbandoned if we actually have content now — URL alone
     // could be a pre-seeded URL that hasn't been verified by SERP
@@ -158,6 +164,12 @@ function clearFailureFlags(data, opts = {}) {
   if (data.fetchRetryAfter != null && hasFetch) {
     data.fetchRetryAfter = null;
     cleared.push('fetchRetryAfter');
+  }
+  // Pre-publication fetch tally (BRO-4281): the ledger entry it offsets is
+  // removed on success (clearFailedFetch), so it resets with fetchRetryAfter.
+  if (data.fetchPrePubFailures != null && hasFetch) {
+    data.fetchPrePubFailures = null;
+    cleared.push('fetchPrePubFailures');
   }
   if (data.fetchDiscoveryAbandoned === true && hasFetch) {
     data.fetchDiscoveryAbandoned = null;
