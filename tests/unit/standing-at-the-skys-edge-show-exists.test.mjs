@@ -61,5 +61,12 @@ test("Standing at the Sky's Edge dates match the Playbill-cross-validated West E
 test("Standing at the Sky's Edge is flagged provisional with its manual-verification source recorded", () => {
   const show = loadShow();
   assert.equal(show.discoverySource, 'manual-user-request');
-  assert.equal(show.provisional, true);
+  // The row started life provisional; the 2026 data audit (S2-T12) verified
+  // its venue and dates against Playbill and cleared the flag with a
+  // provisionalClearedBy breadcrumb. Either state is the tracked one — what
+  // must never happen is a silent clear with no record.
+  if (show.provisional !== true) {
+    assert.match(String(show.provisionalClearedBy || ''), /Playbill/i,
+      'provisional was cleared without a recorded Playbill verification (provisionalClearedBy)');
+  }
 });
