@@ -1104,5 +1104,34 @@
       }
     ],
     "queuedAt": "2026-09-29T08:15:46.372Z"
+  },
+  {
+    "conditionKey": "land:land/font-selfhost",
+    "title": "Landing blocked: unit-tests-node red on land/font-selfhost",
+    "description": "land.yml did not land land/font-selfhost: the unit-tests-node gate went red at 087f3ee72b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36540542463",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/font-selfhost"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "087f3ee72b6ae35be1f0b4d055a9b08fdcb46f6e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36540542463"
+      }
+    ],
+    "queuedAt": "2026-09-29T08:33:48.078Z"
   }
 ]
