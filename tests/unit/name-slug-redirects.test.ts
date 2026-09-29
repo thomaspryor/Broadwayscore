@@ -38,7 +38,8 @@ import {
   getAllOffBroadwayTheaters,
   getOffBroadwayTheaterBySlug,
 } from '../../src/lib/data-core';
-import { getAllActorProfiles, getActorBySlug } from '../../src/lib/data-actors';
+// src/lib/data-actors statically imports the gitignored data/cast-manifest.json,
+// so it is loaded lazily (below) rather than at module top — see castEntries.
 import { NAME_REDIRECT_PREFIXES, type NameRedirectFamily, type SlugRedirectMap } from '../../src/lib/slug-redirects';
 
 const require = createRequire(import.meta.url);
@@ -66,7 +67,25 @@ const jsEmitter = require('../../scripts/lib/name-slug-redirects.js') as { NAME_
 const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url));
 const BUILD_SCRIPT = join(REPO_ROOT, 'scripts', 'build-slug-redirects.js');
 const shows = (require('../../data/shows.json') as { shows: RawShow[] }).shows;
-const castEntries = (require('../../data/cast-manifest.json') as { entries: CastEntry[] }).entries;
+// data/cast-manifest.json is gitignored and built by scripts/build-cast-manifest.js
+// (prebuild, the TypeScript Check job and land.yml's gauntlet). test.yml's
+// Unit Tests job never builds it, so a hard require failed the whole file there
+// (main red after batch 4, 2026-09-29). A missing manifest is the same case as
+// the empty cloud stub: the cast test below skips, everything else still runs.
+const castEntries = ((): CastEntry[] => {
+  try {
+    return (require('../../data/cast-manifest.json') as { entries: CastEntry[] }).entries;
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === 'MODULE_NOT_FOUND') return [];
+    throw err;
+  }
+})();
+type ActorsModule = typeof import('../../src/lib/data-actors');
+let actorsModule: ActorsModule | null = null;
+const actors = (): ActorsModule => {
+  if (!actorsModule) actorsModule = require('../../src/lib/data-actors') as ActorsModule;
+  return actorsModule;
+};
 const trackedCompact = require('../../data/slug-redirects-compact.json') as Record<string, string>;
 
 // Array.from() throughout — downlevelIteration is off in tsconfig (same as src/).
@@ -117,7 +136,7 @@ describe('parity: the JS page-name sources reproduce the TS page builders on the
       const identities = sources.actorIdentitiesInPageOrder(castEntries, ids);
       const slugs = urlSlug.assignUniqueSlugs(identities.map((a) => a.name));
       const js = new Map(identities.map((a, i) => [a.ibdbPersonId, { name: a.name, slug: slugs[i] }]));
-      const ts = getAllActorProfiles();
+      const ts = actors().getAllActorProfiles();
       assert.ok(ts.length > 0);
       assert.equal(js.size, ts.length);
       for (const p of ts) assert.deepEqual(js.get(p.ibdbPersonId), { name: p.name, slug: p.slug }, `${p.name} (${p.ibdbPersonId})`);
@@ -166,7 +185,7 @@ const LOOKUPS: Record<NameRedirectFamily, Lookup> = {
   theater: getTheaterBySlug,
   westEndTheater: getLondonTheaterBySlug,
   offBroadwayTheater: getOffBroadwayTheaterBySlug,
-  cast: getActorBySlug,
+  cast: (slug, redirects) => actors().getActorBySlug(slug, redirects),
 };
 
 function assertFamilyResolves(map: SlugRedirectMap, family: NameRedirectFamily, viaDefault: boolean) {
@@ -230,6 +249,10 @@ describe('lookups fall back through the map (real data through the real build sc
 
   test('an unknown slug is still undefined for every lookup', () => {
     for (const family of Object.keys(LOOKUPS) as NameRedirectFamily[]) {
+      // The cast lookup loads src/lib/data-actors, which needs the gitignored
+      // cast manifest; without it (Unit Tests job, cloud stub) the family is
+      // covered by the cast test's skip above, not by a load failure here.
+      if (family === 'cast' && castEntries.length === 0) continue;
       assert.equal(LOOKUPS[family]('no-such-page-xyz-123'), undefined, family);
       assert.equal(LOOKUPS[family]('no-such-page-xyz-123', compact), undefined, family);
     }
