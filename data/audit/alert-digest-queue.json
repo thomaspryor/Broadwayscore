@@ -938,5 +938,34 @@
       }
     ],
     "queuedAt": "2026-09-29T06:31:09.906Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4272-roundup-ingest",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-4272-roundup-ingest",
+    "description": "land.yml did not land land/bro-4272-roundup-ingest: the scripts-lib-tests gate went red at 763451d61d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36529679176",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4272-roundup-ingest"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "763451d61d08da0bb063372bdb0ac68ca407d6c1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36529679176"
+      }
+    ],
+    "queuedAt": "2026-09-29T06:38:34.078Z"
   }
 ]
