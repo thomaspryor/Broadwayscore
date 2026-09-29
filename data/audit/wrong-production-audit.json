@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-29T05:25:17.025Z",
+  "timestamp": "2026-09-29T09:18:54.404Z",
   "stats": {
-    "totalReviews": 44591,
-    "alreadyFlagged": 18242,
-    "dateGuardCatches": 234,
-    "directorMismatch": 1104,
+    "totalReviews": 44797,
+    "alreadyFlagged": 18256,
+    "dateGuardCatches": 233,
+    "directorMismatch": 1107,
     "tvFilmSignals": 1322,
     "londonSignals": 1216,
     "offBroadwaySignals": 513,
-    "yearMismatch": 101,
-    "noPublishDate": 3858
+    "yearMismatch": 102,
+    "noPublishDate": 4031
   },
   "findings": [
     {
@@ -1384,6 +1384,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (5x) more than 2016 (0x). 2026 matches production: american-psycho-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "american-psycho-off-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "http://www.theartsdesk.com/theatre/american-psycho-almeida-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from american-psycho-2016"
         }
       ]
     },
@@ -4229,6 +4242,7 @@
     {
       "showId": "carmen-off-broadway-2025",
       "file": "financialtimes--george-grella.json",
+      "score": 78,
       "publishDate": "2024-01-02",
       "url": "https://www.ft.com/content/376a1a78-c5d5-4432-aaa4-2d10b3d54f29",
       "findings": [
@@ -6167,7 +6181,7 @@
     {
       "showId": "christmas-carol-goes-wrong-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 84,
+      "score": 83,
       "publishDate": "2025-12-16",
       "url": "https://www.londonboxoffice.co.uk/news/post/christmas-carol-goes-wrong-apollo-theatre-review",
       "findings": [
@@ -6221,19 +6235,8 @@
     },
     {
       "showId": "christmas-carol-goes-wrong-west-end-2026",
-      "file": "thestage--holly-o.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 3274d before show (2017-12-31 vs 2026-12-18)"
-        }
-      ]
-    },
-    {
-      "showId": "christmas-carol-goes-wrong-west-end-2026",
       "file": "timeout-london--anya-ryan.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2025-12-15",
       "url": "https://www.timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
       "findings": [
@@ -6842,7 +6845,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-06-29",
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6856,7 +6859,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 82,
+      "score": 81,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6870,7 +6873,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "2025-10-08",
       "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
       "findings": [
@@ -9069,7 +9072,7 @@
     {
       "showId": "equus-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
-      "score": 83,
+      "score": 84,
       "publishDate": "2026-05-19",
       "url": "https://www.londontheatre.co.uk/reviews/equus-review-menier-chocolate-factory",
       "findings": [
@@ -10964,24 +10967,6 @@
       ]
     },
     {
-      "showId": "giant-royal-court-off-west-end-2024",
-      "file": "whatsonstage--sarah-crompton.json",
-      "publishDate": "2024-09-27",
-      "url": "https://www.whatsonstage.com/news/giant-with-john-lithgow-to-be-shown-in-cinemas_1721213/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: giant-2026"
-        }
-      ]
-    },
-    {
       "showId": "giant-west-end-2025",
       "file": "broadwayworld--cindy-marcolina.json",
       "score": 97,
@@ -12174,7 +12159,7 @@
     },
     {
       "showId": "gypsy-2024",
-      "file": "cbsnews--shania-russell.json",
+      "file": "cbsnews--mo-rocca.json",
       "score": null,
       "publishDate": null,
       "url": "https://www.cbsnews.com/news/audra-mcdonald-on-gypsy-and-playing-the-mother-of-all-stage-mothers/",
@@ -15472,7 +15457,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
-      "score": 80,
+      "score": 82,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
       "findings": [
@@ -16581,7 +16566,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-03-27",
       "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
       "findings": [
@@ -16712,7 +16697,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
@@ -20206,7 +20191,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 89,
+      "score": 90,
       "publishDate": "2026-06-23",
       "url": "https://www.standard.co.uk/culture/theatre/much-ado-about-nothing-shakespeare-globe-2026-b1287248.html",
       "findings": [
@@ -25738,7 +25723,7 @@
     },
     {
       "showId": "spamalot-2005",
-      "file": "cbsnews--shania-russell.json",
+      "file": "cbsnews--rebecca-leung.json",
       "score": null,
       "publishDate": "2005-04-22",
       "url": "https://www.cbsnews.com/news/spamalot-pokes-fun-at-broadway/",
@@ -29975,6 +29960,47 @@
       ]
     },
     {
+      "showId": "the-great-gatsby-2024",
+      "file": "dallasvoice--rich-lopez.json",
+      "score": 60,
+      "publishDate": "2026-02-19",
+      "url": "https://dallasvoice.com/stage-notes-kdt-partners-with-art-galleries-review-of-bds-the-great-gatsby/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: the-great-gatsby-tour-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "chicago-sun-times--catey-sullivan.json",
+      "score": 67,
+      "publishDate": "2026-04-24",
+      "url": "https://chicago.suntimes.com/theater/2026/04/24/review-great-gatsby-musical-broadway-chicago-theater-things-to-do",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "trib-live--alexis-papalia.json",
+      "publishDate": "2026-05-27",
+      "url": "https://triblive.com/aande/theater-arts/review-musical-adaptation-of-the-great-gatsby-at-the-benedum-center-is-heavy-on-style/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
       "showId": "the-great-society-2019",
       "file": "nyt-theater--david-nounou.json",
       "score": 63,
@@ -31478,6 +31504,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "file": "british-theatre--douglas-mayo.json",
+      "score": 73,
+      "publishDate": "2021-08-21",
+      "url": "https://www.britishtheatre.com/posts/review-the-phantom-of-the-opera-her-majestys-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2025 (2x) more than 1986 (0x). 2025 matches production: the-phantom-of-the-opera-tour-2025"
         }
       ]
     },
@@ -34199,6 +34244,20 @@
       ]
     },
     {
+      "showId": "waitress-tour-2026",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "score": 65,
+      "publishDate": null,
+      "url": "https://www.nydailynews.com/entertainment/theater-arts/jessie-mueller-star-turn-baked-perfection-waitress-article-1.2610433",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from waitress-2021"
+        }
+      ]
+    },
+    {
       "showId": "walking-with-ghosts-2022",
       "file": "theater-life--samuel-l-leiter.json",
       "score": 65,
@@ -36282,7 +36341,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "theartsdispatch--the-arts-dispatch.json",
-      "score": 79,
+      "score": 81,
       "publishDate": "2026-09-13",
       "url": "https://theartsdispatch.substack.com/p/a-month-in-the-country-review-donmar",
       "findings": [
@@ -38981,7 +39040,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-05-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-care-young-vic",
       "findings": [
@@ -38995,7 +39054,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-05-20",
       "url": "https://www.londontheatre.co.uk/reviews/care-review-young-vic",
       "findings": [
@@ -40646,7 +40705,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
-      "score": 81,
+      "score": 82,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
       "findings": [
@@ -42582,7 +42641,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2026-09-16",
       "url": "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review",
       "findings": [
@@ -42596,7 +42655,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "londonlivinglarge--london-living-large.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-09-18",
       "url": "https://www.londonlivinglarge.com/2026/09/golden-boy-almeida-theatre-sep-8-oct-31.html",
       "findings": [
@@ -43173,7 +43232,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
@@ -44950,6 +45009,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "indian-ink-off-west-end-2025",
+      "file": "london-theatre--matt-wolf.json",
+      "publishDate": "2025-12-16",
+      "url": "https://www.londontheatre.co.uk/reviews/indian-ink-review-hampstead-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -46902,7 +46974,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 76,
+      "score": 78,
       "publishDate": "2026-09-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
       "findings": [
@@ -46985,7 +47057,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "guardian--mark-lawson.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-09-11",
       "url": "https://www.theguardian.com/stage/2026/sep/12/man-to-man-review-tilda-swinton-royal-court-theatre",
       "findings": [
@@ -47387,7 +47459,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "artsdesk--demetrios-matheou.json",
-      "score": 79,
+      "score": 82,
       "publishDate": null,
       "url": "http://theartsdesk.com/theatre/mass-donmar-warehouse-review-purgatorial-cat-and-mouse",
       "findings": [
@@ -47401,7 +47473,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-04-30",
       "url": "https://www.theguardian.com/stage/2026/apr/30/mass-review-donmar-warehouse-london",
       "findings": [
@@ -47415,7 +47487,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 61,
+      "score": 62,
       "publishDate": "2026-04-30",
       "url": "https://www.londontheatre.co.uk/reviews/mass-review-donmar-warehouse",
       "findings": [
@@ -47889,7 +47961,7 @@
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2024-09-18",
       "url": "https://www.londonboxoffice.co.uk/news/post/moulin-rouge-review",
       "findings": [
@@ -48032,20 +48104,6 @@
       "score": 72,
       "publishDate": "2025-11-01",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/wendy-and-peter-pan-review-a-jumble-of-good-ideas-sntv0grd3",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "my-neighbour-totoro-west-end-2025",
-      "file": "whatsonstage--tom-millward.json",
-      "score": null,
-      "publishDate": "2025-03-21",
-      "url": "https://www.whatsonstage.com/news/my-neighbour-totoro-celebrates-its-official-west-end-opening-night_1670554/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -48956,7 +49014,7 @@
     {
       "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
       "file": "guardian--david-jays.json",
-      "score": 61,
+      "score": 60,
       "publishDate": "2026-04-16",
       "url": "https://www.theguardian.com/stage/2026/apr/16/one-flew-over-the-cuckoos-nest-review-old-vic-london-aaron-pierre-clint-dyer-giles-terera-olivia-williams",
       "findings": [
@@ -48970,7 +49028,7 @@
     {
       "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 58,
+      "score": 55,
       "publishDate": "2026-04-15",
       "url": "https://www.timeout.com/london/theatre/one-flew-over-the-cuckoos-nest-8-review",
       "findings": [
@@ -55486,20 +55544,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"nytw\""
-        }
-      ]
-    },
-    {
-      "showId": "the-phantom-of-the-opera-west-end-1986",
-      "file": "british-theatre--douglas-mayo.json",
-      "score": 73,
-      "publishDate": "2021-08-21",
-      "url": "https://www.britishtheatre.com/posts/review-the-phantom-of-the-opera-her-majestys-theatre-london",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

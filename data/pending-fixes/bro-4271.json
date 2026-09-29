@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4271",
   "planId": "735da409-f6c1-435d-be0a-ef9f802f2849",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-09-29T05:53:28.781Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,13 @@
         "description": "Undo a date inherited from a reverted wrong-edition url (BRO-4271); the file stays wrongProduction"
       }
     ]
-  }
+  },
+  "executedAt": "2026-09-29T09:17:08.459Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-girls-or-the-african-mean-girls-play-2026/timeout-london--alice-saville.json publishDate: \"2026-09-10\" -> \"2023-06-15\""
+    }
+  ]
 }
