@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-29T03:31:08.238Z",
+  "generated": "2026-09-29T04:00:15.199Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 22,
+  "count": 20,
   "orphans": [
     {
       "showId": "all-my-sons-2019",
@@ -29,13 +29,6 @@
       "loserFile": "nytimes--elisabeth-vincentelli.json",
       "targetFile": "nytimes--ben-brantley.json",
       "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after nytimes--elisabeth-vincentelli.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "kevin-off-broadway-2026",
-      "loserFile": "independent--unknown.json",
-      "targetFile": "independent--tom-murray.json",
-      "reason": "orphaned-duplicate-heal: independent--tom-murray.json was flagged invalid after independent--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -130,10 +123,10 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "the-rocky-horror-show-2026",
-      "loserFile": "billboard--unknown.json",
-      "targetFile": "billboard--joe-lynch.json",
-      "reason": "orphaned-duplicate-heal: billboard--joe-lynch.json was flagged invalid after billboard--unknown.json was pointed at it",
+      "showId": "the-price-off-west-end-2026",
+      "loserFile": "whatsonstage--tanyel-gumushan.json",
+      "targetFile": "whatsonstage--alun-hood.json",
+      "reason": "orphaned-duplicate-heal: whatsonstage--alun-hood.json was flagged invalid after whatsonstage--tanyel-gumushan.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -141,13 +134,6 @@
       "loserFile": "ap--unknown.json",
       "targetFile": "ap--mark-kennedy.json",
       "reason": "orphaned-duplicate-heal: ap--mark-kennedy.json was flagged invalid after ap--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-story-west-end-2026",
-      "loserFile": "radio-times--unknown.json",
-      "targetFile": "radio-times--matthew-trask.json",
-      "reason": "orphaned-duplicate-heal: radio-times--matthew-trask.json was flagged invalid after radio-times--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

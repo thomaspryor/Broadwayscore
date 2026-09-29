@@ -1,113 +1,15 @@
 {
-  "generatedAt": "2026-09-29T01:51:26.865Z",
-  "promoted": [
-    {
-      "id": "bluebirds-off-west-end-2026",
-      "source": "venue-page:finborough-theatre",
-      "sourceUrl": "https://www.finboroughtheatre.co.uk/"
-    },
-    {
-      "id": "speculations-off-west-end-2026",
-      "source": "venue-page:marylebone-theatre",
-      "sourceUrl": "https://marylebonetheatre.com/"
-    },
-    {
-      "id": "shakespeare-unplugged-off-west-end-2026",
-      "source": "venue-page:marylebone-theatre",
-      "sourceUrl": "https://marylebonetheatre.com/"
-    },
-    {
-      "id": "big-man-little-man-off-west-end-2026",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": "https://theotherpalace.co.uk/whats-on/"
-    },
-    {
-      "id": "not-quite-my-type-off-west-end-2026",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": "https://theotherpalace.co.uk/whats-on/"
-    },
-    {
-      "id": "monsters-a-killer-new-musical-comedy-off-west-end-2026",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": "https://theotherpalace.co.uk/whats-on/"
-    },
-    {
-      "id": "outrageous-what-the-frock-crystal-carrington-off-west-end-2026",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": "https://theotherpalace.co.uk/whats-on/"
-    },
-    {
-      "id": "wives-maids-off-west-end-2026",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": "https://www.orangetreetheatre.co.uk/whats-on/"
-    },
-    {
-      "id": "cranford-off-west-end-2026",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": "https://www.orangetreetheatre.co.uk/whats-on/"
-    },
-    {
-      "id": "constanze-off-west-end-2026",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": "https://www.orangetreetheatre.co.uk/whats-on/"
-    },
-    {
-      "id": "king-lear-2-off-west-end-2026",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": "https://www.orangetreetheatre.co.uk/whats-on/"
-    },
-    {
-      "id": "richard-ii-off-west-end-2026",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": "https://www.orangetreetheatre.co.uk/whats-on/"
-    },
-    {
-      "id": "the-vortex-off-west-end-2026",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": "https://www.orangetreetheatre.co.uk/whats-on/"
-    },
-    {
-      "id": "mortal-wounds-off-west-end-2026",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": "https://www.orangetreetheatre.co.uk/whats-on/"
-    },
-    {
-      "id": "sapling-off-west-end-2026",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": "https://www.orangetreetheatre.co.uk/whats-on/"
-    },
-    {
-      "id": "infamous-anne-off-west-end-2026",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": "https://www.orangetreetheatre.co.uk/whats-on/"
-    },
-    {
-      "id": "its-unlikely-off-west-end-2026",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": "https://theotherpalace.co.uk/whats-on/"
-    },
-    {
-      "id": "the-graddys-london-semi-finals-off-west-end-2026",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": "https://theotherpalace.co.uk/whats-on/"
-    },
-    {
-      "id": "taken-the-unofficial-musical-off-west-end-2026",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": "https://theotherpalace.co.uk/whats-on/"
-    },
-    {
-      "id": "fly-you-fools-off-west-end-2026",
-      "source": "venue-page:southwark-playhouse",
-      "sourceUrl": "https://southwarkplayhouse.co.uk/"
-    },
-    {
-      "id": "triumph-off-west-end-2026",
-      "source": "venue-page:almeida-theatre",
-      "sourceUrl": "https://almeida.co.uk/whats-on/"
-    }
-  ],
+  "generatedAt": "2026-09-29T04:03:29.510Z",
+  "promoted": [],
   "rejected": [
+    {
+      "title": "Triumph",
+      "venue": "Almeida Theatre",
+      "source": "venue-page:almeida-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as triumph-off-west-end-2026 (normalized-equal)"
+    },
     {
       "title": "Golden Boy",
       "venue": "Almeida Theatre",
@@ -197,14 +99,6 @@
       "reason": "matches retired bar-events-off-west-end-2026 by id — never re-add (data/retired-show-ids.json)"
     },
     {
-      "title": "Amplify",
-      "venue": "New Diorama Theatre",
-      "source": "venue-page:new-diorama-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as amplify-off-west-end-2026 (normalized-equal)"
-    },
-    {
       "title": "The First Year",
       "venue": "New Diorama Theatre",
       "source": "venue-page:new-diorama-theatre",
@@ -237,14 +131,6 @@
       "reason": "already in shows.json as operation-mincemeat-west-end-2024 (london-pool-title-equal (venue \"New Diorama Theatre\" vs \"Fortune Theatre\"))"
     },
     {
-      "title": "Annie Wobbler Revisited",
-      "venue": "Finborough Theatre",
-      "source": "venue-page:finborough-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as annie-wobbler-revisited-off-west-end-2026 (normalized-equal)"
-    },
-    {
       "title": "What The Animals Say",
       "venue": "Finborough Theatre",
       "source": "venue-page:finborough-theatre",
@@ -269,6 +155,14 @@
       "reason": "already in shows.json as it-comes-in-waves-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "Bluebirds",
+      "venue": "Finborough Theatre",
+      "source": "venue-page:finborough-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as bluebirds-off-west-end-2026 (normalized-equal)"
+    },
+    {
       "title": "Remember Your Lovers",
       "venue": "Finborough Theatre",
       "source": "venue-page:finborough-theatre",
@@ -285,14 +179,6 @@
       "reason": "already in shows.json as voices-from-ukraine-overview-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "The Grocers Evening",
-      "venue": "Finborough Theatre",
-      "source": "venue-page:finborough-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as the-grocers-evening-off-west-end-2026 (normalized-equal)"
-    },
-    {
       "title": "Tartuffe Remixed",
       "venue": "Marylebone Theatre",
       "source": "venue-page:marylebone-theatre",
@@ -301,28 +187,28 @@
       "reason": "already in shows.json as tartuffe-remixed-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "Speculations",
+      "venue": "Marylebone Theatre",
+      "source": "venue-page:marylebone-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as speculations-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Shakespeare Unplugged",
+      "venue": "Marylebone Theatre",
+      "source": "venue-page:marylebone-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as shakespeare-unplugged-off-west-end-2026 (normalized-equal)"
+    },
+    {
       "title": "What We Talk About When We Talk About Anne Frank",
       "venue": "Marylebone Theatre",
       "source": "venue-page:marylebone-theatre",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as what-we-talk-about-when-we-talk-about-anne-frank-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "The Producers",
-      "venue": "Menier Chocolate Factory",
-      "source": "venue-page:menier-chocolate-factory",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as the-producers-west-end-2025 (london-pool-title-equal (venue \"Menier Chocolate Factory\" vs \"Garrick Theatre\"))"
-    },
-    {
-      "title": "Midnight At The Never Get",
-      "venue": "Menier Chocolate Factory",
-      "source": "venue-page:menier-chocolate-factory",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as midnight-at-the-never-get-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Tru",
@@ -339,54 +225,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as fourteen-again-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Kimberly Akimbo",
-      "venue": "Hampstead Theatre",
-      "source": "venue-page:hampstead-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as kimberly-akimbo-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "?tab=dates",
-      "venue": "Hampstead Theatre",
-      "source": "venue-page:hampstead-theatre",
-      "sourceUrl": null,
-      "kind": "skip-retired",
-      "reason": "matches retired tabdates-off-west-end-2026 by id — never re-add (data/retired-show-ids.json)"
-    },
-    {
-      "title": "The Urmetazoan",
-      "venue": "Hampstead Theatre",
-      "source": "venue-page:hampstead-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as the-urmetazoan-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Dogstar",
-      "venue": "Hampstead Theatre",
-      "source": "venue-page:hampstead-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as dogstar-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Jumpers",
-      "venue": "Hampstead Theatre",
-      "source": "venue-page:hampstead-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as jumpers-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Mother Russia",
-      "venue": "Hampstead Theatre",
-      "source": "venue-page:hampstead-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as mother-russia-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Table 17",
@@ -435,278 +273,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as giant-the-play-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Shamilton",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as shamilton-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Deep Heat Rivalry",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as deep-heat-rivalry-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Janet Street Porter",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as janet-street-porter-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "An Oak Tree",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
-    },
-    {
-      "title": "Stiles Drewe Best New Song Prize 2026",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-retired",
-      "reason": "matches retired stiles-drewe-best-new-song-prize-2026-off-west-end-2026 by id — never re-add (data/retired-show-ids.json)"
-    },
-    {
-      "title": "Garry Starr Classic Penguins",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
-    },
-    {
-      "title": "A Homo Alone 2 Yikes We Did It Again",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Studio\"))"
-    },
-    {
-      "title": "Feeling Afraid",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as feeling-afraid-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Acting Lab",
-      "venue": "Orange Tree Theatre",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "\"Acting Lab\" matches a venue-page exclusion phrase (VENUE_PAGE_EXCLUDE_PATTERNS / NON_THEATER_PATTERNS) — not a production"
-    },
-    {
-      "title": "Acting Lab Devised Theatre",
-      "venue": "Orange Tree Theatre",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "\"Acting Lab Devised Theatre\" matches a venue-page exclusion phrase (VENUE_PAGE_EXCLUDE_PATTERNS / NON_THEATER_PATTERNS) — not a production"
-    },
-    {
-      "title": "A Small And Quiet Light",
-      "venue": "Orange Tree Theatre",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as a-small-and-quiet-light-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "The Fidelio Trio",
-      "venue": "Orange Tree Theatre",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue page https://www.orangetreetheatre.co.uk/whats-on/ no longer lists \"The Fidelio Trio\" (11 listed) — dropped from staging; discovery re-stages it if it reappears"
-    },
-    {
-      "title": "Impressions From Debussy To Coltrane",
-      "venue": "Orange Tree Theatre",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "\"Impressions From Debussy To Coltrane\" matches a venue-page exclusion phrase (VENUE_PAGE_EXCLUDE_PATTERNS / NON_THEATER_PATTERNS) — not a production"
-    },
-    {
-      "title": "Murder Cathedral",
-      "venue": "Orange Tree Theatre",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as murder-cathedral-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Schubert Die Schone Mullerin",
-      "venue": "Orange Tree Theatre",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "\"Schubert Die Schone Mullerin\" matches a venue-page exclusion phrase (VENUE_PAGE_EXCLUDE_PATTERNS / NON_THEATER_PATTERNS) — not a production"
-    },
-    {
-      "title": "Schubert Winterreise",
-      "venue": "Orange Tree Theatre",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "\"Schubert Winterreise\" matches a venue-page exclusion phrase (VENUE_PAGE_EXCLUDE_PATTERNS / NON_THEATER_PATTERNS) — not a production"
-    },
-    {
-      "title": "Solace Of Pilgrims A Lenten Journey",
-      "venue": "Orange Tree Theatre",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "\"Solace Of Pilgrims A Lenten Journey\" matches a venue-page exclusion phrase (VENUE_PAGE_EXCLUDE_PATTERNS / NON_THEATER_PATTERNS) — not a production"
-    },
-    {
-      "title": "The Sound Of Shakespeare",
-      "venue": "Orange Tree Theatre",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "\"The Sound Of Shakespeare\" matches a venue-page exclusion phrase (VENUE_PAGE_EXCLUDE_PATTERNS / NON_THEATER_PATTERNS) — not a production"
-    },
-    {
-      "title": "David Owen Morris Made In England",
-      "venue": "Orange Tree Theatre",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue page https://www.orangetreetheatre.co.uk/whats-on/ no longer lists \"David Owen Morris Made In England\" (11 listed) — dropped from staging; discovery re-stages it if it reappears"
-    },
-    {
-      "title": "Holy Fool",
-      "venue": "Park Theatre",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as holy-fool-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Lara Ricote Inkling",
-      "venue": "Park Theatre",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as lara-ricote-inkling-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Lou Wall Where Are All The Tall Grandmas",
-      "venue": "Park Theatre",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as lou-wall-where-are-all-the-tall-grandmas-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Shostakovich In Seven Parts",
-      "venue": "Park Theatre",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue page https://parktheatre.co.uk/whats-on/ no longer lists \"Shostakovich In Seven Parts\" (9 listed) — dropped from staging; discovery re-stages it if it reappears"
-    },
-    {
-      "title": "Olga Koch Fat Tom Cruise",
-      "venue": "Park Theatre",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as olga-koch-fat-tom-cruise-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "An Audience With Martin Freeman And Romesh Ranganathan",
-      "venue": "Park Theatre",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue page https://parktheatre.co.uk/whats-on/ no longer lists \"An Audience With Martin Freeman And Romesh Ranganathan\" (9 listed) — dropped from staging; discovery re-stages it if it reappears"
-    },
-    {
-      "title": "Helen Bauer Working And God Willing Progressing Wip",
-      "venue": "Park Theatre",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue page https://parktheatre.co.uk/whats-on/ no longer lists \"Helen Bauer Working And God Willing Progressing Wip\" (9 listed) — dropped from staging; discovery re-stages it if it reappears"
-    },
-    {
-      "title": "Bull",
-      "venue": "Park Theatre",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as bull-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "The Pianist",
-      "venue": "Park Theatre",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as the-pianist-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "The Revlon Girl",
-      "venue": "Park Theatre",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as the-revlon-girl-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Florence",
-      "venue": "Park Theatre",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as florence-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Goblin",
-      "venue": "Park Theatre",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as goblin-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "The Silence And The Noise",
-      "venue": "Park Theatre",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as the-silence-and-the-noise-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Miss Bennet Christmas At Pemberley",
-      "venue": "Park Theatre",
-      "source": "venue-page:park-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as miss-bennet-christmas-at-pemberley-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "David Owen Norris Made In England",
-      "venue": "Orange Tree Theatre",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "\"David Owen Norris Made In England\" matches a venue-page exclusion phrase (VENUE_PAGE_EXCLUDE_PATTERNS / NON_THEATER_PATTERNS) — not a production"
     },
     {
       "title": "Jane Eyre",
@@ -765,12 +331,244 @@
       "reason": "already in shows.json as relative-motion-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "Fly You Fools",
+      "venue": "Southwark Playhouse",
+      "source": "venue-page:southwark-playhouse",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as fly-you-fools-off-west-end-2026 (normalized-equal)"
+    },
+    {
       "title": "Private Jones",
       "venue": "Southwark Playhouse",
       "source": "venue-page:southwark-playhouse",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as private-jones-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Deep Heat Rivalry",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as deep-heat-rivalry-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "An Oak Tree",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
+    },
+    {
+      "title": "Stiles Drewe Best New Song Prize 2026",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-retired",
+      "reason": "matches retired stiles-drewe-best-new-song-prize-2026-off-west-end-2026 by id — never re-add (data/retired-show-ids.json)"
+    },
+    {
+      "title": "Big Man Little Man",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as big-man-little-man-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Not Quite My Type",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as not-quite-my-type-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Its Unlikely",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as its-unlikely-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "The Graddys London Semi Finals",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as the-graddys-london-semi-finals-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Garry Starr Classic Penguins",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
+    },
+    {
+      "title": "Monsters A Killer New Musical Comedy",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as monsters-a-killer-new-musical-comedy-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Outrageous What The Frock Crystal Carrington",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as outrageous-what-the-frock-crystal-carrington-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Taken The Unofficial Musical",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as taken-the-unofficial-musical-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "A Homo Alone 2 Yikes We Did It Again",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as a-homo-alone-2-yikes-we-did-it-again-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Studio\"))"
+    },
+    {
+      "title": "Feeling Afraid",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as feeling-afraid-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "A Small And Quiet Light",
+      "venue": "Orange Tree Theatre",
+      "source": "venue-page:orange-tree-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as a-small-and-quiet-light-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Murder Cathedral",
+      "venue": "Orange Tree Theatre",
+      "source": "venue-page:orange-tree-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as murder-cathedral-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Wives Maids",
+      "venue": "Orange Tree Theatre",
+      "source": "venue-page:orange-tree-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as wives-maids-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Cranford",
+      "venue": "Orange Tree Theatre",
+      "source": "venue-page:orange-tree-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as cranford-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Constanze",
+      "venue": "Orange Tree Theatre",
+      "source": "venue-page:orange-tree-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as constanze-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "King Lear 2",
+      "venue": "Orange Tree Theatre",
+      "source": "venue-page:orange-tree-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as king-lear-2-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Richard Ii",
+      "venue": "Orange Tree Theatre",
+      "source": "venue-page:orange-tree-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as richard-ii-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "The Vortex",
+      "venue": "Orange Tree Theatre",
+      "source": "venue-page:orange-tree-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as the-vortex-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Mortal Wounds",
+      "venue": "Orange Tree Theatre",
+      "source": "venue-page:orange-tree-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as mortal-wounds-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Sapling",
+      "venue": "Orange Tree Theatre",
+      "source": "venue-page:orange-tree-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as sapling-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Infamous Anne",
+      "venue": "Orange Tree Theatre",
+      "source": "venue-page:orange-tree-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as infamous-anne-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Holy Fool",
+      "venue": "Park Theatre",
+      "source": "venue-page:park-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as holy-fool-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Bull",
+      "venue": "Park Theatre",
+      "source": "venue-page:park-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as bull-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "The Pianist",
+      "venue": "Park Theatre",
+      "source": "venue-page:park-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as the-pianist-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "The Revlon Girl",
+      "venue": "Park Theatre",
+      "source": "venue-page:park-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as the-revlon-girl-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Drag Tales",
@@ -781,12 +579,36 @@
       "reason": "already in shows.json as drag-tales-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "Sat Conference 2026",
-      "venue": "Marylebone Theatre",
-      "source": "venue-page:marylebone-theatre",
+      "title": "Florence",
+      "venue": "Park Theatre",
+      "source": "venue-page:park-theatre",
       "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "\"Sat Conference 2026\" matches a venue-page exclusion phrase (VENUE_PAGE_EXCLUDE_PATTERNS / NON_THEATER_PATTERNS) — not a production"
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as florence-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Goblin",
+      "venue": "Park Theatre",
+      "source": "venue-page:park-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as goblin-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "The Silence And The Noise",
+      "venue": "Park Theatre",
+      "source": "venue-page:park-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as the-silence-and-the-noise-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Miss Bennet Christmas At Pemberley",
+      "venue": "Park Theatre",
+      "source": "venue-page:park-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as miss-bennet-christmas-at-pemberley-off-west-end-2026 (normalized-equal)"
     }
   ]
 }

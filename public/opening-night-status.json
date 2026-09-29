@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-29T03:34:40.896Z",
+  "generatedAt": "2026-09-29T04:04:30.814Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "west-end",
       "type": "play",
       "openingDate": "2026-09-29",
-      "status": "previews",
+      "status": "open",
       "slug": "the-standard-of-living-west-end",
       "thumbnail": "/images/shows/the-standard-of-living-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -112,23 +112,23 @@
       "status": "open",
       "slug": "school-girls-or-the-african-mean-girls-play",
       "thumbnail": "/images/shows/school-girls-or-the-african-mean-girls-play-2026/thumbnail.webp",
-      "siteScore": 81.61,
+      "siteScore": 82.01,
       "liveScore": 82,
-      "scoreDrift": 0.39000000000000057,
+      "scoreDrift": -0.010000000000005116,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
-      "t1": 4,
-      "t2": 8,
+      "total": 19,
+      "t1": 6,
+      "t2": 11,
       "t3": 2,
-      "positive": 12,
+      "positive": 17,
       "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 8,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -141,10 +141,6 @@
         "detail": "Ready — awaiting send"
       },
       "missingT1": [
-        {
-          "name": "Vulture",
-          "isDualMarket": false
-        },
         {
           "name": "The Hollywood Reporter",
           "isDualMarket": false
@@ -188,12 +184,12 @@
           "isDualMarket": false
         },
         {
-          "name": "Entertainment Weekly",
+          "name": "New York Post",
           "isDualMarket": false
         },
         {
-          "name": "New York Post",
-          "isDualMarket": false
+          "name": "BroadwayWorld",
+          "isDualMarket": true
         },
         {
           "name": "amNewYork",
@@ -210,6 +206,10 @@
         {
           "name": "Observer",
           "isDualMarket": true
+        },
+        {
+          "name": "Playbill",
+          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",
@@ -437,6 +437,18 @@
           "t2": 8,
           "t3": 2,
           "p": 12,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-29T04:04:30.814Z",
+          "rc": 19,
+          "s": 82.01,
+          "t1": 6,
+          "t2": 11,
+          "t3": 2,
+          "p": 17,
           "m": 2,
           "n": 0,
           "bc": "waiting"
