@@ -43,7 +43,7 @@ const { isStaleScoreInput, markRescoreNeeded } = require('./rescore-flagging');
 const { isHumanClearedWrongProduction: _isHumanClearedWrongProduction, neutralizeStaleFlagsOnBodyReplacement } = require('./stale-flag-neutralization');
 const { detectRoundupDigest, detectPullQuoteCompilation } = require('./roundup-digest');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
-const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
+const { classifyMarketRouting, buildSiblingIndex, tourDecision } = require('./market-routing');
 const { sanitizeCriticName } = require('./byline-normalization');
 const { evaluateCreditedPersonAsCritic } = require('./creative-as-critic');
 
@@ -516,6 +516,19 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // (a Dallas tour-stop review under a Broadway show entry), zero remaining
   // false positives.
   if (isLikelyTourReview(input.url, showId)) {
+    // A tour-stop review of a title with a national tour on file goes to that
+    // tour instead of being dropped (BRO-4262). No tour window match = skip as before.
+    const visited = _rerouteVisited || new Set();
+    const tour = tourDecision(showId, _getSiblingIndex().get(showId), {
+      url: input.url,
+      publishDate: input.publishDate || input.fields?.publishDate,
+      dateSource: input.dateSource || input.fields?.dateSource,
+    });
+    if (tour && !visited.has(tour.targetShowId)) {
+      visited.add(showId);
+      console.warn(`  ⤳ Tour reroute: ${showId} → ${tour.targetShowId} (${tour.reason})`);
+      return createOrMergeReviewFile(tour.targetShowId, input, { ...options, _rerouteVisited: visited });
+    }
     console.warn(`  ⚠️  Skipping tour/regional review: ${input.url} for ${showId}`);
     return { action: 'skipped', reason: 'tour-review' };
   }
@@ -612,6 +625,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       url: input.url,
       outletId,
       publishDate: pubDateStr,
+      dateSource: input.dateSource || input.fields?.dateSource,
       category: showCategory,
       allowCrossMarket: fields.allowCrossMarket === true,
       visited,

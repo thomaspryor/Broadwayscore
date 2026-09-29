@@ -21,6 +21,7 @@
  * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing|--missing-only] [--bad-images] [--dry-run] [--audit-existing] [--force-google]
  */
 
+const { isTourShow, applyTourInheritance } = require('./lib/tour-family');
 require('./lib/load-env').loadEnv();
 
 const https = require('https');
@@ -2766,6 +2767,7 @@ async function main() {
     // Include all statuses — hero gaps exist across all eras
     shows = showsData.shows;
     shows = shows.filter(s => {
+      if (isTourShow(s)) return false; // tours inherit the parent's art (BRO-4262)
       if (!s.images) return false;
       const hasThumbOrPoster = s.images.thumbnail || s.images.poster;
       const hasHero = s.images.hero;
@@ -2853,6 +2855,22 @@ async function main() {
       dryRunResults = [];
       fs.mkdirSync(DRY_RUN_DIR, { recursive: true });
       console.log(`\nAuto-enabled DRY-RUN mode for safety (use --dry-run explicitly to suppress this message)`);
+    }
+  }
+
+  // National tours never title-search: TodayTix/SERP match on title and hand a
+  // tour its Broadway or West End art. They take the parent's archived art
+  // instead (BRO-4262).
+  const tourCount = shows.filter(isTourShow).length;
+  if (tourCount) {
+    shows = shows.filter(s => !isTourShow(s));
+    console.log(`Skipping ${tourCount} national tour(s): they inherit their Broadway parent's art`);
+  }
+  if (!dryRunMode) {
+    const inherited = applyTourInheritance(showsData.shows);
+    if (inherited.length) {
+      console.log(`Tours given their parent's art/synopsis: ${inherited.join(', ')}`);
+      saveShows(showsData);
     }
   }
 

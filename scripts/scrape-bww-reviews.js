@@ -52,6 +52,7 @@ const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligi
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd } = require('./lib/jsonld');
 const { isNationalTourRoundupSlug, tourCandidateFor, recordTourCandidates } = require('./lib/tour-roundup-candidate');
+const { runningTourFor } = require('./lib/tour-family');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -682,6 +683,12 @@ async function discoverBwwRoundup(show, showId, options = {}) {
   const validRoundupUrls = roundupUrls.filter(url => {
     const urlSlug = (url.split('/article/')[1] || '').replace(/-/g, ' ').toLowerCase();
     if (!titleWordsMatch(searchTitle, urlSlug)) return false;
+    // A national tour takes only its own tour roundups (BRO-4262).
+    if (show.category === 'tour') {
+      if (isNationalTourRoundupSlug(url.split('/article/')[1] || '')) return true;
+      console.log(`  [SKIP] roundup: not a national-tour roundup for a tour entry: ${url.split('/article/')[1] || url}`);
+      return false;
+    }
     // General non-Broadway check (tours, streaming, off-Broadway, etc.)
     // For off-Broadway shows, allow off-Broadway content through
     if (isNotBroadway(urlSlug, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category), allowOpera: isOpera, allowRegional: show.category === 'regional' })) {
@@ -1253,7 +1260,7 @@ async function processShow(show, showId, options = {}) {
       console.log(`    Extracted ${reviews.length} reviews from roundup (${format} format)${averageRating ? ` (avg: ${averageRating}%)` : ''}`);
 
       for (const review of reviews) {
-        if (review.outlet && isNotBroadway(review.outlet, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category), allowOpera: show.type === 'opera', allowRegional: show.category === 'regional' })) {
+        if (review.outlet && isNotBroadway(review.outlet, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category), allowOpera: show.type === 'opera', allowRegional: show.category === 'regional', allowTour: show.category === 'tour' })) {
           stats.skippedGuards++;
           continue;
         }
@@ -1361,6 +1368,12 @@ async function landingDiscoverMode(shows, options = {}) {
       // Recorded here; scripts/route-tour-candidates.js turns the file into owner
       // digest suggestions (only the landing job runs it and commits the alert files).
       if (cand && !options.dryRun) tourCandidates.push({ ...cand, url, slug });
+      // Tour already tracked: send the roundup to the running tour (BRO-4262).
+      const target = cand ? null : runningTourFor(match.show, shows);
+      if (target) {
+        matched.push({ url, showId: target, slug });
+        console.log(`  [MATCH] ${target} ← ${slug.slice(0, 70)} (tour)`);
+      }
       continue;
     }
     if (match) {

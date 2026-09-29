@@ -32,6 +32,7 @@ const {
 } = require('./lib/wikipedia-synopsis-match');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { isValidSynopsis, classifyBadSynopsis } = require('./lib/synopsis-validation');
+const { isTourShow } = require('./lib/tour-family');
 const { verifyProductionMatch } = require('./lib/synopsis-production-match');
 const { CLAUDE_OPUS } = require('./lib/models');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
@@ -208,7 +209,9 @@ async function main() {
   // production-history placeholder, stale future-tense, or otherwise invalid).
   // Previously only empty synopses were re-enriched, so placeholders written
   // pre-opening sat live forever (1536 incident, 2026-06-21).
-  let targets = shows.filter(s => classifyBadSynopsis(s).bad);
+  // National tours take their Broadway parent's synopsis (same story); a
+  // Wikipedia title search found the wrong article for them (BRO-4262).
+  let targets = shows.filter(s => !isTourShow(s) && classifyBadSynopsis(s).bad);
 
   if (ONLY_SHOW) {
     targets = targets.filter(s => s.id === ONLY_SHOW);
