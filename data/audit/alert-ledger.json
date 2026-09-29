@@ -146,13 +146,13 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T00:37:58.954Z",
+      "lastSeen": "2026-09-29T01:25:17.331Z",
       "lastNotifiedAt": "2026-09-28T23:01:05.135Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
       "notifyCount": 107,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -5830,13 +5830,13 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every off-Broadway venue-complex subVenueSlugs entry resolves to a real shows.json venue\"",
       "firstSeen": "2026-09-28T20:47:43.893Z",
-      "lastSeen": "2026-09-29T00:37:58.887Z",
+      "lastSeen": "2026-09-29T01:25:10.566Z",
       "lastNotifiedAt": "2026-09-28T20:47:43.893Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4253",
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "we-aggregator-go-live:ballet-shoes-west-end-2025": {
       "status": "open",
@@ -5874,7 +5874,10 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4255",
-      "silentRefires": 6
+      "silentRefires": 6,
+      "absentRunIds": [
+        "36506774213"
+      ]
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "open",
@@ -5948,6 +5951,24 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 1
+    },
+    "test-yml:red:E2E Tests:7c6d379c": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: E2E Tests / Run unit tests — \"handles accented/special characters by removing them\"",
+      "firstSeen": "2026-09-29T01:25:10.594Z",
+      "lastSeen": "2026-09-29T01:25:10.594Z",
+      "lastNotifiedAt": "2026-09-29T01:25:10.594Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4264",
+      "dispatch": {
+        "requestedAt": "2026-09-29T01:25:10.594Z",
+        "mode": "dispatch-at-filing",
+        "runId": "36506774213",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36506774213"
+      }
     }
   }
 }
