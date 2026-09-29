@@ -100,7 +100,7 @@ Never put review text or reader contact details in a plan: the file is public.
 
 ## GitHub work in cloud (no `gh` CLI)
 
-Cloud has no `gh` CLI — CLAUDE.md's `gh run`/`gh workflow run`/`gh secret set` runbooks don't run as written. Use the GitHub MCP connector; the full step-by-step mapping (and where it has no equivalent, e.g. secret rotation) is in `cloud-memory/feedback_gh_cli_to_github_mcp_mapping.md`. Key traps: no `--jq` (filter in code), job logs live on the blocked `*.blob.core.windows.net` and overflow context (save to a file, slice), and monitoring is a `run_in_background` Bash loop polling the public API (`curl https://api.github.com/repos/thomaspryor/Broadwayscore/actions/workflows/<file>/runs?...`, works without a token) or a single `get_workflow_run` per turn, never ScheduleWakeup alone (best-effort; see Landing). Full job logs: `curl` the API's `actions/jobs/<id>/logs` redirect into a file (reachable 2026-09-29) and slice it.
+Cloud has no `gh` CLI — CLAUDE.md's `gh run`/`gh workflow run`/`gh secret set` runbooks don't run as written. Use the GitHub MCP connector (no equivalent for secret rotation: that stays on the owner's Mac). Key traps: no `--jq` (filter in code), job logs live on the blocked `*.blob.core.windows.net` and overflow context (save to a file, slice), and monitoring is a `run_in_background` Bash loop polling the public API (`curl https://api.github.com/repos/thomaspryor/Broadwayscore/actions/workflows/<file>/runs?...`, works without a token) or a single `get_workflow_run` per turn, never ScheduleWakeup alone (best-effort; see Landing). Full job logs: `curl` the API's `actions/jobs/<id>/logs` redirect into a file (reachable 2026-09-29) and slice it.
 
 ## Key gaps cloud has vs local
 
