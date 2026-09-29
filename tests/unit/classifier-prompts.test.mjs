@@ -192,3 +192,26 @@ test('wrong-show: truncates long text at 2000 chars', () => {
   });
   assert.match(prompt, /first 2000 chars/);
 });
+
+test('classifier prompt tells the model any tour stop counts (BRO-4211)', () => {
+  const prompt = buildWrongProductionUserPrompt({
+    show: { title: 'Shucked', market: 'tour', venue: 'North American Tour' },
+    result: { showId: 'shucked-tour-2024', showYear: 2024, signals: [] },
+    reviewData: { fullText: 'Shucked is now playing at the Fox Theatre in St. Louis.' },
+    revivals: [],
+  });
+  assert.match(prompt, /North American national tour/);
+  assert.match(prompt, /ANY stop on the tour/);
+  assert.doesNotMatch(prompt, /REGIONAL production/);
+  assert.doesNotMatch(prompt, /\(Broadway opening/);
+});
+
+test('classifier prompt has no tour note for Broadway', () => {
+  const prompt = buildWrongProductionUserPrompt({
+    show: { title: 'Shucked', market: 'broadway', venue: 'Nederlander Theatre' },
+    result: { showId: 'shucked-2023', showYear: 2023, signals: [] },
+    reviewData: { fullText: 'text' },
+    revivals: [],
+  });
+  assert.doesNotMatch(prompt, /NATIONAL TOUR/);
+});

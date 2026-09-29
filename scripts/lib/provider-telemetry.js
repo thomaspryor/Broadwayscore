@@ -54,7 +54,17 @@ function _hostOf(url) {
 // every recordProviderCall() in a test run was writing real rows here until
 // this was added (caught while shipping task #752).
 function _ledgerPath() {
-  return process.env.SCRAPER_SPEND_LEDGER_PATH || LEDGER_PATH;
+  if (process.env.SCRAPER_SPEND_LEDGER_PATH) return process.env.SCRAPER_SPEND_LEDGER_PATH;
+  // BRO-4220: under `node --test` (Node sets NODE_TEST_CONTEXT in every test
+  // process, and child processes inherit it) never default to the real
+  // committed ledger. ~40 test files reach a record*Call path without setting
+  // SCRAPER_SPEND_LEDGER_PATH; a local run appended fake rows and, via
+  // rotation, dropped real ones (1,289 in one BRO-4215 run). Real script runs
+  // never have NODE_TEST_CONTEXT, so production writes are unchanged.
+  if (process.env.NODE_TEST_CONTEXT) {
+    return path.join(require('os').tmpdir(), `scraper-spend-ledger.test-${process.pid}.jsonl`);
+  }
+  return LEDGER_PATH;
 }
 
 function _appendLedgerLine(record) {

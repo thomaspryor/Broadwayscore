@@ -1,114 +1,20 @@
 {
-  "updatedAt": "2026-09-28T22:48:23.686Z",
-  "processed": 120,
-  "failed": 121,
-  "successRate": "49.8%",
+  "updatedAt": "2026-09-28T23:53:02.991Z",
+  "processed": 202,
+  "failed": 179,
+  "successRate": "53.0%",
   "tierBreakdown": {
-    "playwright": 51,
+    "playwright": 95,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 8,
     "directCookies": 3,
-    "scrapingbee": 34,
-    "brightdata": 5,
+    "scrapingbee": 46,
+    "brightdata": 9,
     "archiveToday": 0,
-    "archive": 17
+    "archive": 42
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 23,
   "recentActivity": [
-    {
-      "t": "2026-09-28T21:56:15.505Z",
-      "event": "bb-session",
-      "session": "b64917fd",
-      "url": "https://www.thetimes.com/article/b5d6bd62-4c17-11ee-a041-9c691fc04ff2"
-    },
-    {
-      "t": "2026-09-28T21:56:16.070Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-28T22:04:26.566Z",
-      "event": "bb-session",
-      "session": "2504fd45",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
-    },
-    {
-      "t": "2026-09-28T22:04:27.226Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-28T22:05:59.171Z",
-      "event": "bb-session",
-      "session": "2e98173a",
-      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
-    },
-    {
-      "t": "2026-09-28T22:05:59.718Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-09-28T22:10:03.391Z",
-      "event": "bb-session",
-      "session": "ea02d875",
-      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
-    },
-    {
-      "t": "2026-09-28T22:10:03.999Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-09-28T22:11:06.161Z",
-      "event": "bb-session",
-      "session": "3efda056",
-      "url": "https://www.wsj.com/arts-culture/books/auslander-review-the-lives-of-outsiders-a"
-    },
-    {
-      "t": "2026-09-28T22:11:06.724Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-28T22:21:55.468Z",
-      "event": "bb-session",
-      "session": "a90cefb3",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-09-28T22:21:59.584Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-28T22:22:23.801Z",
-      "event": "bb-session",
-      "session": "05aa036d",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-09-28T22:22:28.052Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-28T22:23:50.158Z",
-      "event": "bb-session",
-      "session": "73563b4f",
-      "url": "http://www.wsj.com/articles/SB106748686155075900"
-    },
-    {
-      "t": "2026-09-28T22:23:50.675Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-28T22:24:09.345Z",
-      "event": "bb-session",
-      "session": "773d72e9",
-      "url": "http://www.wsj.com/articles/SB106748686155075900"
-    },
     {
       "t": "2026-09-28T22:24:09.847Z",
       "event": "bb-cookie-inject",
@@ -124,6 +30,102 @@
       "t": "2026-09-28T22:31:32.459Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-28T22:52:26.158Z",
+      "event": "bb-session",
+      "session": "21b1cb2a",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-09-28T22:52:26.800Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-28T22:55:45.554Z",
+      "event": "bb-session",
+      "session": "daf5d762",
+      "url": "https://www.thestage.co.uk/review-round-ups/game-of-thrones-the-mad-king-review-"
+    },
+    {
+      "t": "2026-09-28T22:55:46.086Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-28T23:00:47.463Z",
+      "event": "bb-session",
+      "session": "69069b02",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-09-28T23:01:07.564Z",
+      "event": "bb-session",
+      "session": "d8d40438",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-09-28T23:15:57.129Z",
+      "event": "bb-session",
+      "session": "26d2fb00",
+      "url": "https://www.facebook.com/RoyalNottingham/posts/choose-life-choose-trainspotting-"
+    },
+    {
+      "t": "2026-09-28T23:16:15.724Z",
+      "event": "bb-session",
+      "session": "a36d106b",
+      "url": "https://www.facebook.com/RoyalNottingham/posts/choose-life-choose-trainspotting-"
+    },
+    {
+      "t": "2026-09-28T23:27:42.434Z",
+      "event": "bb-session",
+      "session": "a0747033",
+      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
+    },
+    {
+      "t": "2026-09-28T23:29:40.042Z",
+      "event": "bb-session",
+      "session": "f5a76370",
+      "url": "https://www.nytimes.com/2026/06/15/theater/jessie-buckley-romeo-and-juliet-strea"
+    },
+    {
+      "t": "2026-09-28T23:29:40.567Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-28T23:29:59.257Z",
+      "event": "bb-session",
+      "session": "a96452df",
+      "url": "https://www.nytimes.com/2026/06/15/theater/jessie-buckley-romeo-and-juliet-strea"
+    },
+    {
+      "t": "2026-09-28T23:29:59.763Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-28T23:44:41.279Z",
+      "event": "bb-session",
+      "session": "6a800b4b",
+      "url": "https://www.nytimes.com/2026/05/28/theater/the-maids-review-yerin-ha-kip-william"
+    },
+    {
+      "t": "2026-09-28T23:44:41.855Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-28T23:44:59.342Z",
+      "event": "bb-session",
+      "session": "254dc86f",
+      "url": "https://www.nytimes.com/2026/05/28/theater/the-maids-review-yerin-ha-kip-william"
+    },
+    {
+      "t": "2026-09-28T23:44:59.828Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

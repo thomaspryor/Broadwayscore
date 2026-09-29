@@ -102,6 +102,8 @@ function shouldReleaseConsentLayerNonReview(data) {
  */
 function salvageConsentPrefixedStoredText(data) {
   if (!data) return null;
+  // Once per file: a stored-text verdict stands until the text changes.
+  if (data.consentSalvageVerifiedAt) return null;
   const { stripConsentLayerPrefix, hasStrippableConsentLayer } = require('./text-cleaning');
   const { isGarbageContent } = require('./content-quality');
   const usable = (t) => t.length >= 1500 && !isGarbageContent(t).isGarbage && !hasStrippableConsentLayer(t);

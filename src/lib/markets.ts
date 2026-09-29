@@ -12,6 +12,8 @@ interface MarketRow {
   market: string;
   minReviews: number;
   featureFlag: string | null;
+  /** Web flag switched on in code (the featureFlags getter returns true). */
+  launched?: boolean;
   hideFromAppFeed: boolean;
 }
 
