@@ -457,9 +457,16 @@ land_via_landing_branch() {
         log "land run went red but ${tip:0:10}'s patches ARE on origin/$DEFAULT_BRANCH — treating as landed; inspect ${run_url:-the run} for the red step"
         prove_and_finish "$tip" "$fork" "$late_sha" "patch-equivalent (run red after the push)" "$land_name" "$run_url" "$t0"
       fi
-      local conclusion="failure" gate="unknown" checks_c="" land_c="" attempt_now=""
+      local conclusion="failure" gate="unknown" checks_c="" land_c="" attempt_now="" run_status="completed"
       if [ -n "$run_id" ] && command -v gh >/dev/null 2>&1; then
-        read -r conclusion checks_c land_c attempt_now gate < <(cd "$push_dir" && gh run view "$run_id" --json conclusion,jobs,attempt --jq '[.conclusion, ([.jobs[] | select(.name=="Checks") | .conclusion] | first // "none"), ([.jobs[] | select(.name=="Land") | .conclusion] | first // "none"), (.attempt // 1 | tostring), ([.jobs[] | select(.conclusion=="failure") | .steps[] | select(.conclusion=="failure") | .name] | first // "unknown")] | join(" ")' 2>/dev/null || echo "failure none none 1 unknown")
+        read -r run_status conclusion checks_c land_c attempt_now gate < <(cd "$push_dir" && gh run view "$run_id" --json status,conclusion,jobs,attempt --jq '[.status, (.conclusion // "none"), ([.jobs[] | select(.name=="Checks") | .conclusion] | first // "none"), ([.jobs[] | select(.name=="Land") | .conclusion] | first // "none"), (.attempt // 1 | tostring), ([.jobs[] | select(.conclusion=="failure") | .steps[] | select(.conclusion=="failure") | .name] | first // "unknown")] | join(" ")' 2>/dev/null || echo "completed failure none none 1 unknown")
+      fi
+      # The server re-trigger can make the run live again between wait-for-run's
+      # verdict and this re-read: that is not a verdict at all, keep waiting.
+      if [ "$run_status" != "completed" ] && [ "$(date +%s)" -lt "$budget_deadline" ]; then
+        log "land run is live again (status $run_status, attempt $attempt_now) — resuming the wait"
+        cancel_retries=$(( cancel_retries + 1 ))
+        continue
       fi
       if [ "$conclusion" = "cancelled" ] && command -v node >/dev/null 2>&1; then
         local remote_tip decision retry_flag backoff_s why _w st at
@@ -493,7 +500,10 @@ land_via_landing_branch() {
             echo "TIMEOUT: $BRANCH — land run cancelled and the wait budget ran out before a server re-trigger${run_url:+ ($run_url)}; refs/heads/$land_name is in place — re-run this script to resume."
             exit 2
           fi
-          log "no server re-trigger within ${grace_s}s — land-retry-cancelled.yml may have refused it (land-started-work, branch-gone, superseded-tip, attempts-exhausted) or be queued behind runners; check ${run_url:-the run} before assuming nothing will land"
+          # Not seeing a re-trigger (slow runner, gh read failing) is not proof
+          # the server refused: end resumable, never REFUSED/"nothing reached main".
+          echo "TIMEOUT: $BRANCH — land run cancelled while pending and no server re-trigger seen within ${grace_s}s${run_url:+ ($run_url)}. land-retry-cancelled.yml may still re-run it (runner queue), or may have refused (land-started-work, branch-gone, superseded-tip, attempts-exhausted). refs/heads/$land_name is in place — re-run this script to resume the wait; if the run stays cancelled, push an empty commit to $BRANCH and re-run to land it fresh."
+          exit 2
         else
           log "land run cancelled; not re-triggering: ${why}"
         fi

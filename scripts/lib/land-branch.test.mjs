@@ -784,4 +784,8 @@ test('BRO-4379 wiring: the session landing script consults decideCancelledLandRe
   // the grace wait stays inside the shared budget and ends in a resumable TIMEOUT
   assert.match(sh, /grace_end=\$budget_deadline/);
   assert.match(sh, /TIMEOUT: \$BRANCH — land run cancelled/);
+  // no re-trigger seen within the grace window is not proof of refusal (Codex review)
+  assert.match(sh, /TIMEOUT: \$BRANCH — land run cancelled while pending and no server re-trigger seen/);
+  // a run that went live again between the waiter's verdict and the re-read keeps waiting
+  assert.match(sh, /run_status" != "completed"/);
 });
