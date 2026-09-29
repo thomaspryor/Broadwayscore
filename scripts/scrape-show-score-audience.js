@@ -305,6 +305,13 @@ async function fetchWithFallback(url, retries = 2) {
         if (html) return html;
         break; // null = no key, skip retries
       } catch (error) {
+        // A 404 from the target won't change on retry, and every retry is
+        // billed: fall straight through so Playwright can return the 404 page
+        // for isShowScoreNotFoundPage (BRO-4358 ship-check).
+        if (/^ScrapingBee HTTP 404\b/.test(error.message)) {
+          if (verbose) console.log('  ScrapingBee got HTTP 404, falling through without retrying...');
+          break;
+        }
         if (attempt > retries) {
           if (verbose) console.log(`  ScrapingBee exhausted after ${retries + 1} attempts: ${error.message}`);
           break; // Fall through to next provider
@@ -571,9 +578,9 @@ async function discoverShowScoreUrl(show) {
     // revival's plain "-broadway" slug is often the older production's page,
     // and matching it first would hide the revival's "-broadway-<year>" page
     // behind a conflict (BRO-4358; also prevents 3+ production dupes).
-    const existingOwner = Object.entries(urlData.shows || {}).find(([id, u]) => u === url && id !== show.id);
+    const existingOwner = findConflictingShowId(urlData.shows || {}, show.id, url);
     if (existingOwner) {
-      if (verbose) console.log(`  Skip: ${url} (already cached for ${existingOwner[0]})`);
+      if (verbose) console.log(`  Skip: ${url} (already cached for ${existingOwner})`);
       continue;
     }
     try {
@@ -622,6 +629,17 @@ async function rediscoverAfterDeadUrl(show, deadUrl) {
     showFetchFailed = true;
     return null;
   }
+
+  // One cheap re-check first: a brief 404 on a URL discovery can't re-guess
+  // (off-Broadway venue slugs, listings-found URLs) would otherwise be dropped.
+  try {
+    const again = await fetchWithFallback(deadUrl, 0);
+    if (again && !isShowScoreNotFoundPage(again) && again.includes('"aggregateRating"')) {
+      console.log(`  Kept ${deadUrl}: it loaded fine on a re-check`);
+      return deadUrl;
+    }
+  } catch (_) { /* still dead or unreachable: go on to rediscovery */ }
+
   deadUrlRediscoveriesLeft--;
   if (!urlData._discoveryAttempts) urlData._discoveryAttempts = {};
   urlData._discoveryAttempts[show.id] = new Date().toISOString();
