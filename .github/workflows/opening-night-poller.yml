@@ -337,6 +337,7 @@ jobs:
             UNSCORED=$(node -e "
               const fs = require('fs');
               const path = require('path');
+              const { isStaleScoreInput } = require('./scripts/lib/rescore-flagging');
               const dir = path.join('data', 'review-texts', '$SHOW_ID');
               if (!fs.existsSync(dir)) { console.log(0); process.exit(0); }
               let n = 0;
@@ -349,13 +350,18 @@ jobs:
                   // does NOT count as scored — composite still needs LLM.
                   const hasScore = d.llmScore != null || d.humanReviewScore != null;
                   if (!hasScore && !d.wrongProduction && !d.wrongShow && !d.isRoundupArticle) n++;
+                  // Scored off a roundup excerpt but full text is now on disk
+                  // (or already queued for that rescore). School Girls 2026:
+                  // 6 of 19 reviews sat at excerpt scores for hours because
+                  // nothing counted them as work.
+                  else if (hasScore && (d.needsRescore === true || isStaleScoreInput(d))) n++;
                 } catch (_) {}
               }
               console.log(n);
             " 2>/dev/null || echo 0)
             if [ "$UNSCORED" -gt 0 ]; then
               ANY_READY=true
-              echo "  → $UNSCORED unscored review(s) waiting for $SHOW_ID"
+              echo "  → $UNSCORED unscored or excerpt-scored review(s) waiting for $SHOW_ID"
             fi
             # Balusters postmortem CLASS 4 — collect shows needing Guardian redispatch
             if grep -q "\[GUARDIAN\] Guardian URL discovered without originalScore" "$PER_SHOW_OUT" 2>/dev/null; then
@@ -622,6 +628,16 @@ jobs:
             SCORE_TOTAL=$((SCORE_TOTAL + 1))
             SCORE_RC=0
             npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble 2>&1 || SCORE_RC=$?
+            # Rescore reviews first scored off a roundup excerpt whose full
+            # text has since arrived (often from a parallel job, so the
+            # collect-time trigger never saw a score to invalidate). The
+            # normal pass above skips anything already scored.
+            node scripts/audit-stale-score-input.js --fix --show="$SHOW_ID" 2>&1 || true
+            PENDING_RESCORE=$(grep -l '"needsRescore": true' "data/review-texts/$SHOW_ID"/*.json 2>/dev/null | wc -l | tr -d ' ')
+            if [ "${PENDING_RESCORE:-0}" -gt 0 ]; then
+              echo "  Rescoring $PENDING_RESCORE excerpt-scored review(s) on full text for $SHOW_ID"
+              npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble --needs-rescore 2>&1 || SCORE_RC=$?
+            fi
             if [ "$SCORE_RC" -ne 0 ]; then
               SCORE_FAILED=$((SCORE_FAILED + 1))
               echo "  ⚠️ scoring exited $SCORE_RC for $SHOW_ID — counted as a score-stage failure"

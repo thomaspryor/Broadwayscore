@@ -489,6 +489,19 @@ jobs:
       # (rescoreCompletedAt), so the step is idempotent.
       # Skipped when the main pass already ran in rescore mode.
       # Kill switch: set repo variable DISABLE_RESCORE_DRAIN=1.
+      # Turn excerpt-based scores whose full text has since arrived into
+      # rescore requests before the capped drain below picks them up. The
+      # collect-time trigger only fires when a score already exists; when the
+      # text lands first (another job) and an excerpt score is merged on top,
+      # nothing flagged it (School Girls 2026-09-29: 6 of 19 reviews). The
+      # predicate skips human/extracted-star scores and files already rescored
+      # on the current text (no re-flag loop). Own if: so it still runs when
+      # the drain is skipped; the drain's cap bounds spend.
+      - name: Flag excerpt-scored reviews that now have full text
+        if: github.event_name == 'schedule' && steps.check-needed.outputs.skip != 'true'
+        continue-on-error: true
+        run: node scripts/audit-stale-score-input.js --fix
+
       - name: Drain needsRescore backlog (capped, scheduled only)
         if: github.event_name == 'schedule' && steps.check-needed.outputs.skip != 'true' && steps.check-needed.outputs.run_rescore != 'true' && vars.DISABLE_RESCORE_DRAIN != '1'
         run: |
