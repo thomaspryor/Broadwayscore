@@ -850,6 +850,11 @@ function isCrossMarket(newShow, existing) {
  * `showId` / `productionId` equals it. Ids are compared as non-empty
  * strings only, so two rows without ids never read as linked
  * (undefined === undefined). Symmetric in its arguments.
+ *
+ * `distinctFrom` (string[] of show ids, or { id } objects) is the third
+ * link: concurrent sibling productions at one venue that are neither a
+ * transfer nor a return (a family panto and its adults-only version).
+ * Either row may carry it.
  */
 function isCrossLinked(a, b) {
   if (!a || !b) return false;
@@ -861,7 +866,18 @@ function isCrossLinked(a, b) {
     return runs.some(r => r === id ||
       (r && typeof r === 'object' && (r.id === id || r.showId === id || r.productionId === id)));
   };
-  return namesPriorRun(a, idOf(b)) || namesPriorRun(b, idOf(a));
+  // `distinctFrom`: an explicit "these are two productions, not one" link
+  // for rows the transfer/prior-run vocabulary cannot describe — e.g. the
+  // King's Head's family panto and its adults-only twin, running side by side
+  // at the same venue with overlapping dates (audit S8-T3). Bare id strings or
+  // { id } objects; dangling ids name no row and exempt nothing.
+  const namesDistinct = (show, id) => {
+    if (!id) return false;
+    const list = Array.isArray(show.distinctFrom) ? show.distinctFrom : [];
+    return list.some(d => d === id || (d && typeof d === 'object' && d.id === id));
+  };
+  return namesPriorRun(a, idOf(b)) || namesPriorRun(b, idOf(a))
+    || namesDistinct(a, idOf(b)) || namesDistinct(b, idOf(a));
 }
 
 /**
