@@ -1141,6 +1141,34 @@ function outletOwnsUrlDomainIgnoringPath(outletId, url) {
 // edition pair (see outlet-registry-domain-collisions.js's EDITION_PAIRS).
 const PATH_SPLIT_EDITION_HOSTS = new Set(['timeout.com', 'timeout.co.uk']);
 
+// Time Out city editions that are NEITHER registered outlet (2026-09-29
+// ship-check: /chicago, /sydney, … used to fall through to T1 "timeout").
+// First path segment, lowercased. /newyork and any non-city path (the
+// long-standing NY convention: /theater-reviews, /movies, bare origin) stay
+// "timeout"; /london and /uk, and every timeout.co.uk URL, are Time Out London.
+const TIMEOUT_OTHER_CITY_EDITIONS = new Set([
+  'chicago', 'los-angeles', 'miami', 'boston', 'washington-dc', 'san-francisco',
+  'las-vegas', 'austin', 'philadelphia', 'seattle', 'atlanta', 'new-orleans', 'nashville',
+  'sydney', 'melbourne', 'australia', 'edinburgh', 'manchester', 'birmingham', 'bristol',
+  'dublin', 'paris', 'barcelona', 'madrid', 'lisbon', 'porto', 'berlin', 'rome', 'milan',
+  'amsterdam', 'hong-kong', 'singapore', 'tokyo', 'dubai', 'mumbai', 'delhi',
+  'mexico-city', 'buenos-aires', 'sao-paulo', 'rio-de-janeiro', 'montreal', 'toronto',
+  'cape-town', 'tel-aviv', 'istanbul', 'bangkok', 'seoul', 'shanghai', 'beijing',
+]);
+
+/**
+ * Which registered Time Out outlet a timeout.com / timeout.co.uk URL belongs
+ * to: 'timeout-london', 'timeout' (New York), or null for another city
+ * edition. Single source for resolveOutletFromUrl's path split.
+ */
+function timeoutEditionForPath(hostname, urlPath) {
+  const first = String(urlPath || '').toLowerCase().split('/').filter(Boolean)[0] || '';
+  if (hostname === 'timeout.co.uk') return 'timeout-london';
+  if (first === 'london' || first.startsWith('london-') || first === 'uk') return 'timeout-london';
+  if (TIMEOUT_OTHER_CITY_EDITIONS.has(first)) return null;
+  return 'timeout';
+}
+
 /**
  * Resolve an outlet from a URL ONLY when its host is a DECLARED path-split
  * edition domain (currently timeout.com/timeout.co.uk) — where the path,
@@ -1459,10 +1487,12 @@ function resolveOutletFromUrl(url) {
     // timeout.com hosts both Time Out New York and Time Out London under different paths
     const urlPath = parsedUrl.pathname.toLowerCase();
     if (hostname === 'timeout.com' || hostname === 'timeout.co.uk') {
-      if (urlPath.startsWith('/london')) {
-        return { outletId: 'timeout-london', displayName: 'Time Out London' };
-      }
-      return { outletId: 'timeout', displayName: 'Time Out New York' };
+      const edition = timeoutEditionForPath(hostname, urlPath);
+      if (edition === 'timeout-london') return { outletId: 'timeout-london', displayName: 'Time Out London' };
+      if (edition === 'timeout') return { outletId: 'timeout', displayName: 'Time Out New York' };
+      // Another city edition (Chicago, Sydney, …): neither registered outlet.
+      // Resolve nothing rather than hand it T1 Time Out New York's weight.
+      return null;
     }
 
     const domainIndex = buildDomainToOutletIndex();

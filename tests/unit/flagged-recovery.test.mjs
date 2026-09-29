@@ -250,6 +250,21 @@ describe('filledDateOutsideWindow (post-fill guard, Tender/Sessions 2026-07-24)'
     assert.equal(filledDateOutsideWindow('2021-11-15', null), false);
     assert.equal(filledDateOutsideWindow('not-a-date', '2026-07-09'), false);
   });
+  test('a date inside a declared priorRuns / tourLegs window is this production', () => {
+    // My Son's a Queer: Apollo 2026, declared Ambassadors 2023 run (i-paper review 2023-02-02).
+    const show = { priorRuns: [{ venue: 'Ambassadors Theatre', openingDate: '2023-01-25', closingDate: '2023-04-01' }] };
+    assert.equal(filledDateOutsideWindow('2023-02-02', '2026-09-17', show), false);
+    assert.equal(filledDateOutsideWindow('2021-02-02', '2026-09-17', show), true, 'outside every declared run still flags');
+    assert.equal(filledDateOutsideWindow('2023-02-02', '2026-09-17', { tourLegs: [{ startDate: '2023-01-01', endDate: '2023-03-01' }] }), false);
+    assert.equal(filledDateOutsideWindow('2023-02-02', '2026-09-17'), true, 'no show passed keeps the old behaviour');
+  });
+  test('its note is a date-guard flag a later priorRuns declaration auto-clears', () => {
+    const { filledDateOutsideWindowNote } = req2('../../scripts/lib/flagged-recovery.js');
+    const { shouldAutoClearWrongProductionPriorRun } = req2('../../scripts/lib/wrong-production-autoclear.js');
+    const show = { priorRuns: [{ openingDate: '2023-01-25', closingDate: '2023-04-01' }] };
+    const d = { wrongProduction: true, publishDate: '2023-02-02', wrongProductionNote: filledDateOutsideWindowNote('2023-02-02', '2026-09-17') };
+    assert.equal(shouldAutoClearWrongProductionPriorRun(d, show), true);
+  });
 });
 
 // BRO-4185 F: host-level coverage fallback must not let a flagged-out file

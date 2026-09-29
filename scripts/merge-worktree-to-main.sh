@@ -371,7 +371,7 @@ land_via_landing_branch() {
   if [ "$remote_land" = "$tip" ]; then
     log "origin/$land_name is already at ${tip:0:10} — resuming the wait for land.yml (no re-push)"
   elif ! pout=$(git -C "$push_dir" push origin "$tip:refs/heads/$land_name" 2>&1); then
-    if echo "$pout" | grep -qiE 'non-fast-forward|fetch first|\[rejected\]'; then
+    if grep -qiE 'non-fast-forward|fetch first|\[rejected\]' <<<"$pout"; then
       log "  origin/$land_name exists from an earlier attempt — replacing it"
       pout=$(git -C "$push_dir" push --force origin "$tip:refs/heads/$land_name" 2>&1) || { echo "$pout" >&2; die "push to $land_name failed"; }
     else
@@ -949,7 +949,7 @@ else
         log "ancestry check UNKNOWN (shallow checkout) — treating as not-yet-confirmed, retrying"
       fi
     fi
-    if echo "$OUT" | grep -qiE "could not resolve host|failed to connect|timed out" || [ "$FETCHED" = 0 ]; then
+    if grep -qiE "could not resolve host|failed to connect|timed out" <<<"$OUT" || [ "$FETCHED" = 0 ]; then
       restore_stash; die "GitHub unreachable (network) — re-run when connectivity returns. Local merge is intact."
     fi
     log "push not yet confirmed landed (attempt $attempt) — merging remote and retrying"

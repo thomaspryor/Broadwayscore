@@ -18,5 +18,22 @@
   "keyQuote": "so like Tammy Faye herself this musical is very good but slightly flawed I give Tammy Faye four stars",
   "scoredAt": "2026-04-19T08:34:03.513Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/yd6ZJXr9cMU/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/yd6ZJXr9cMU/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "I'm here at the Almeida theater to see tummy Faye",
+    "reason": "The review is about a production at the Almeida Theatre, indicating it is in London, not the assigned Broadway production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is at the Almeida Theatre, which is a well-known venue in London, not New York City, indicating a different production location.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:39.080Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The review is about a production at the Almeida Theatre, indicating it is in London, not the assigned Broadway production in New York City."
 }

@@ -10,10 +10,10 @@
  *      days ago and have enough reviews (scripts/lib/reddit-opening-post.js).
  *   2. Builds a fact sheet from public/data/shows/{id}.json (the live site's
  *      numbers) and has Claude write the post in the owner's voice, using a
- *      style guide distilled from his real posts. A lint pass refuses wrong
+ *      style guide distilled from the owner's real posts. A lint pass refuses wrong
  *      scores and AI tells; on failure it falls back to a plain template.
- *   3. Saves drafts to data/audit/reddit-post-drafts.json. The daily opening
- *      digest (send-opening-digest.js) shows them at the top with a
+ *   3. Saves drafts to data/audit/reddit-post-drafts.json. The next step,
+ *      send-reddit-post-email.js, emails each new draft on its own with a
  *      "post it" link that opens Reddit with title + body filled in.
  *   4. Checks the owner's recent Reddit posts (Arctic Shift archive, no Reddit
  *      credentials needed) and marks drafts posted so the email stops asking.
@@ -69,20 +69,6 @@ function loadSlims(shows) {
     if (j) slims.set(s.id, j);
   }
   return slims;
-}
-
-function peersByMarket(shows, slims) {
-  const out = {};
-  for (const s of shows) {
-    const m = lib.marketOf(s);
-    if (!lib.SUBREDDIT_BY_MARKET[m]) continue;
-    if (s.status !== 'open' && s.status !== 'previews') continue;
-    const slim = slims.get(s.id);
-    if (!slim || typeof slim.cs !== 'number') continue;
-    if ((slim.rc || 0) < lib.MIN_REVIEWS[m] / 2) continue;
-    (out[m] = out[m] || []).push({ id: s.id, cs: slim.cs });
-  }
-  return out;
 }
 
 // ── LLM ─────────────────────────────────────────────────────────────────────
@@ -207,7 +193,7 @@ async function main() {
   if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const shows = loadShows();
   const slims = loadSlims(shows);
-  const peers = peersByMarket(shows, slims);
+  const peers = lib.buildPeers(shows, slims);
   const seenLookup = lib.makeSeenLookup(loadJSON(SEEN_PATH, { shows: [] }), { sinceYear: Number(TODAY.slice(0, 4)) - 1 });
   let drafts = loadJSON(DRAFTS_PATH, null) || { _meta: {}, drafts: {} };
 
@@ -219,8 +205,8 @@ async function main() {
     if (after > before) console.log(`  marked ${after - before} draft(s) posted`);
   }
 
-  // Freshest voice: his top roundup posts from the last 4 months, widening to
-  // a year if he's been quiet. Falls back to the static style guide examples.
+  // Freshest voice: the owner's top roundup posts from the last 4 months, widening to
+  // a year if they've been quiet. Falls back to the static style guide examples.
   let examples = lib.pickRecentExamples(posts || [], { maxAgeDays: 120 });
   if (examples.length < 2) examples = lib.pickRecentExamples(posts || [], { maxAgeDays: 365 });
   console.log(`  voice examples: ${examples.map(e => `${e.date} (${e.upvotes})`).join(', ') || 'none, using built-in'}`);
@@ -248,7 +234,18 @@ async function main() {
       ...draft,
       submitUrl: lib.submitUrl(c.facts.subreddit, draft.title, draft.body),
       oldRedditSubmitUrl: lib.oldRedditSubmitUrl(c.facts.subreddit, draft.title, draft.body),
+      crosspostSubreddit: c.facts.crosspostSubreddit || null,
+      crosspostSubmitUrl: c.facts.crosspostSubreddit ? lib.submitUrl(c.facts.crosspostSubreddit, draft.title, draft.body) : null,
     };
+    // A redraft (retry after an LLM outage, or --show) keeps the email
+    // stamps and posted state, so it never re-sends a "new post" email or
+    // revives a draft the owner already posted (ship-check 2026-09-29).
+    const prev = drafts.drafts[c.show.id];
+    if (prev) {
+      for (const k of ['createdAt', 'emailedAt', 'reminderAt', 'status', 'postedAt', 'postedUrl', 'postedSubreddit', 'postedScore']) {
+        if (prev[k] !== undefined) entry[k] = prev[k];
+      }
+    }
     drafts.drafts[c.show.id] = entry;
     console.log(`\n── r/${entry.subreddit} · ${entry.showTitle} (${source}${problems.length ? `, fell back: ${problems.join('; ')}` : ''})`);
     console.log(`TITLE: ${entry.title}\n\n${entry.body}\n`);

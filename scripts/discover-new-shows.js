@@ -56,7 +56,10 @@ const { classifyGenre, applyGenreCategoryOverride } = require('./lib/genre-class
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isNonTheatreVenue, isLondonReceivingHouse, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
 const showsWriteGuard = require('./lib/shows-write-guard');
+const { fetchTmOffBroadway, parseTmOffBroadwayRow, findTmSameTitleShow } = require('./lib/theatermania-ob');
+const { loadPendingAddShows } = require('./lib/pending-add-shows');
 const { matchesRetired } = require('./lib/retired-show-ids');
+const { decidePrematurePreviews } = require('./lib/premature-previews');
 
 // Tags each candidate with which discovery source produced it (BRO-2072) so
 // reconcileMatchedShow() below can require multi-source agreement before
@@ -687,6 +690,35 @@ async function fetchShowsFromPlaybillOB() {
     };
   });
   return transformed.filter(Boolean);
+}
+
+/**
+ * Off-Broadway discovery via TheaterMania's WordPress REST API (market 98,
+ * BRO-4381). Covers the small/independent houses (HERE, 59E59, Theatre Row,
+ * Cherry Lane, Axis, The Cell...) that neither TodayTix nor Playbill's OB
+ * schedule carries. Parsing lives in scripts/lib/theatermania-ob.js; rows are
+ * run through the same isNonTheaterContent / isOneNightShow gates as every
+ * other NYC source, and each candidate is provisional (Playbill cross-check
+ * via validate-show-venue.js --all-provisional).
+ */
+async function fetchShowsFromTheaterManiaOB() {
+  console.log('Fetching Off-Broadway shows from TheaterMania API...');
+  const { rows, venuesById, genresById, pagesFetched, rawCount } = await fetchTmOffBroadway();
+  const parsed = [];
+  let skipped = 0;
+  for (const row of rows) {
+    const r = parseTmOffBroadwayRow(row, { venuesById, genresById });
+    if (r.skip) {
+      skipped++;
+      if (verbose) console.log(`  [SKIP] TheaterMania "${(row.title && row.title.rendered) || row.id}" — ${r.skip}`);
+      continue;
+    }
+    parsed.push(r);
+  }
+  const kept = parsed.filter(({ gateShape }) => !isNonTheaterContent(gateShape) && !isOneNightShow(gateShape));
+  const gated = parsed.length - kept.length;
+  console.log(`TheaterMania OB: ${rawCount} rows over ${pagesFetched} page(s), ${rows.length} current, ${parsed.length} parsed${skipped ? ` (${skipped} skipped: venue/date)` : ''}, ${kept.length} after gates${gated ? ` (${gated} filtered)` : ''}`);
+  return kept.map(k => k.candidate);
 }
 
 /**
@@ -2219,6 +2251,25 @@ async function discoverShows() {
       sourceCounts.playbillOB = 0;
       console.log(`⚠️  Playbill OB schedule failed (${e.message}), continuing with other sources`);
     }
+    // TheaterMania OB listings (BRO-4381) — flat-pushed like Playbill OB, so
+    // checkForDuplicate / the twin guard / the pending-fix guard adjudicate.
+    try {
+      const tmOBShows = await fetchShowsFromTheaterManiaOB();
+      sourceCounts.theatermaniaOB = tmOBShows.length;
+      // The live feed carries ~90 current rows before gates; twice the
+      // per-venue cap leaves room for a busy season while still stopping a
+      // parser regression that admits the historical 7,900-row market.
+      const TM_OB_CAP = OB_VENUE_CAP * 2;
+      if (tmOBShows.length > TM_OB_CAP) {
+        console.error(`::error::TheaterMania OB returned ${tmOBShows.length} candidates (cap: ${TM_OB_CAP}) — likely parser regression. Skipping this source only.`);
+        process.exitCode = 1;
+      } else {
+        discoveredShows.push(...tagSource(tmOBShows, 'theatermania-ob'));
+      }
+    } catch (e) {
+      sourceCounts.theatermaniaOB = 0;
+      console.log(`⚠️  TheaterMania OB failed (${e.message}), continuing with other sources`);
+    }
     // OB venue listings — fan out to scrapeVenueListing per venue, capture
     // results to staging (NOT directly to shows.json). The promotion script
     // (scripts/promote-ob-venue-candidates.js, V-T6b) is what eventually
@@ -2451,6 +2502,10 @@ async function discoverShows() {
   // Built once from the pre-existing corpus rather than per candidate.
   const discoveryVenueVocabulary = buildVenueVocabulary(data.shows);
 
+  // Shows queued by pending-fix add-show plans (BRO-4381) — see the guard in
+  // the candidate loop below.
+  const pendingAddShows = loadPendingAddShows();
+
   // Build todaytixId index for fast dedup
   const existingTodaytixIds = new Map();
   for (const s of data.shows) {
@@ -2660,6 +2715,36 @@ async function discoverShows() {
         title: show.title,
         reason: duplicateCheck.reason,
         existingId: duplicateCheck.existingShow?.id
+      });
+      continue;
+    }
+
+    // BRO-4381 ship-check: TheaterMania's coarse venue names defeat the venue
+    // half of checkForDuplicate; an exact title in the NYC pool, still
+    // running or within a year, is the same production.
+    if (show._discoverySource === 'theatermania-ob') {
+      const twin = findTmSameTitleShow(show, data.shows) || findTmSameTitleShow(show, pendingAddShows);
+      if (twin) {
+        skippedDuplicates.push({
+          title: show.title,
+          reason: `TheaterMania same-title match (venue "${show.venue}" vs "${twin.venue}")${twin._pendingFix ? `, queued by pending-fix plan ${twin._pendingFix}` : ''}`,
+          existingId: twin.id,
+        });
+        continue;
+      }
+    }
+
+    // BRO-4381: a show queued by a pending-fix add-show plan (e.g. BRO-4377's
+    // 16 OB shows) is not in shows.json until execute-approved-fix applies it.
+    // Minting a discovery row first would leave two rows once the plan
+    // applies (add-show refuses an existing id, not a same-show row under a
+    // different id).
+    const pendingCheck = checkForDuplicate(show, pendingAddShows);
+    if (pendingCheck.isDuplicate) {
+      skippedDuplicates.push({
+        title: show.title,
+        reason: `Queued by pending-fix plan ${pendingCheck.existingShow?._pendingFix || '?'}: ${pendingCheck.reason}`,
+        existingId: pendingCheck.existingShow?.id,
       });
       continue;
     }
@@ -3120,9 +3205,15 @@ async function discoverShows() {
           status = 'open';
           openingDate = show.openingDate || null;
         } else {
-          // "Opens Mar 08" — the date IS the opening date (not preview date)
-          status = 'previews';
-          openingDate = show.openingDate; // ShowScore "Opens" date = press night
+          // "Opens Mar 08" — usually press night, but for a show that hasn't
+          // started it can be the first performance (PHYL's "Opens Oct 03"
+          // was its first preview; press night Oct 22, BRO-4377). Either
+          // way a future date is no evidence previews have begun.
+          openingDate = show.openingDate;
+          status = decidePrematurePreviews(
+            { status: 'previews', openingDate, openingDateSource: 'showscore', previewsStartDate: show.previewsStartDate || null },
+            new Date().toISOString().slice(0, 10),
+          ) ? 'upcoming' : 'previews';
         }
       } else if (show.openingDate) {
         openingDate = show.openingDate;
@@ -3132,7 +3223,12 @@ async function discoverShows() {
 
         if (openingDateObj > today) {
           status = 'upcoming';
-        } else if (show.category === 'off-broadway' && !show.ibdbUrl) {
+        } else if (show.category === 'off-broadway' && !show.ibdbUrl &&
+                   !(show.previewsStartDate && show.previewsStartDate < openingDate)) {
+          // Skipped when the source gave a distinct, earlier first preview
+          // (TheaterMania, Playbill OB): then openingDate is a real press
+          // night, and overwriting previewsStartDate with it loses the
+          // first-preview date (BRO-4381).
           // OB shows without IBDB-confirmed dates: TodayTix startDate is the first
           // performance (previews), not press night. Default to 'previews' to avoid
           // prematurely marking shows as 'open' and collecting wrong-production reviews.
@@ -3199,6 +3295,14 @@ async function discoverShows() {
         // title-crossref or known-show call).
         ...(detection.revivalSource ? { revivalSource: detection.revivalSource } : {}),
         ...(detection.revivalSourceUrl ? { revivalSourceUrl: detection.revivalSourceUrl } : {}),
+        // BRO-4381: the provisional flag + discoverySource that the TodayTix
+        // venue fallback and TheaterMania set on a candidate were dropped
+        // here (showEntry is built field-by-field), so the Playbill
+        // cross-check (validate-show-venue.js --all-provisional) never saw
+        // those rows. Same for the quarantined TodayTix start date.
+        ...(show.provisional === true ? { provisional: true } : {}),
+        ...(show.discoverySource ? { discoverySource: show.discoverySource } : {}),
+        ...(show.unconfirmedStartDate ? { unconfirmedStartDate: show.unconfirmedStartDate } : {}),
       };
 
       // Persist TodayTix category for future type detection (backfill on re-runs)

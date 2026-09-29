@@ -21,6 +21,9 @@ const REQUIRED_OVERRIDES = [
   'allowTourSignal',
   'allowTourSignalReason',
   'allowFilmSignal',
+  // Written with allowFilmSignal by adjudicate-review-queue.js's legit-verdict
+  // branches (scripts/lib/contamination-allow-signal.js).
+  'allowFilmSignalReason',
   'routedFromShowId',
   'wrongProductionManualClear',
   'wrongArticleManualClear',

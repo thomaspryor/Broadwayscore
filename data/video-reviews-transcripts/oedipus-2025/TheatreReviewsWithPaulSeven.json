@@ -18,5 +18,22 @@
   "keyQuote": "a production comes along and reminds me why I fell in love with theater why at its best it's a Transcendent experience a production like edus",
   "scoredAt": "2026-04-19T08:28:28.134Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/Nar1UAEDanQ/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/Nar1UAEDanQ/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "I'm here at the winds to see edus",
+    "reason": "The reviewer mentions being at 'the winds', which suggests a location other than Broadway, New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The reviewer states they are at 'the winds' to see 'edus', and the assigned production is on Broadway in New York City, making 'the winds' a different location.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:04.603Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The reviewer mentions being at 'the winds', which suggests a location other than Broadway, New York City."
 }

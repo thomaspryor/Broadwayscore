@@ -66,7 +66,7 @@ const REPLACE_CLEAR_FIELDS = new Set([
   'wrongShowAutoClearedAt',
   'contentTier', 'contentTierReason',
   'incompleteReason', 'incompleteDetail',
-  'rejectionReason', 'rejectedBy', 'rejectionReasoning',
+  'rejectionReason', 'rejectedBy', 'rejectionReasoning', 'rejectedAt',
   'fetchAttempts', 'lastFetchDate',
   'contentVerification',
   // BRO-3225 (codex adversarial review): the retraction breadcrumb

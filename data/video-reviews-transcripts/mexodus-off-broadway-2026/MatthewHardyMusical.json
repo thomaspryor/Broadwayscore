@@ -18,5 +18,20 @@
   "keyQuote": "Even with the reservations, I think Mexodus is absolutely worth your time.",
   "scoredAt": "2026-04-19T08:27:49.058Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/aP5NRaCwqq8/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/aP5NRaCwqq8/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "Mexus playing off Broadway at the Audible Manetta Lane Theater",
+    "reason": "The review is about 'Mexus' at the Audible Manetta Lane Theater, not the assigned production at the Daryl Roth Theatre.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": false,
+      "reason": "The evidence shows the video is about a different theater in the same city, not a different city or country.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:55:59.012Z"
+  }
 }

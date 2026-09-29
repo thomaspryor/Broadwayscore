@@ -36,9 +36,61 @@ const {
   quickValidityCheck,
   resolveCvMarket,
   buildVerificationPrompt,
+  buildPriorRunHint,
 } = require('./content-verifier.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// ============================================================
+// 0. Declared priorRuns / tourLegs reach the prompt
+// ============================================================
+
+test('prompt lists declared priorRuns and tourLegs as THIS production', () => {
+  const { prompt } = buildVerificationPrompt({
+    scrapedText: 'x'.repeat(300),
+    showTitle: 'My Neighbour Totoro',
+    outletName: 'The Telegraph',
+    openingDate: '2025-12-10',
+    market: 'west-end',
+    priorRuns: [{ venue: 'Barbican Theatre', openingDate: '2022-10-08', closingDate: '2023-01-21' }],
+    tourLegs: [{ venue: 'Curran Theatre', startDate: '2026-11-01', endDate: '2027-01-05' }],
+  });
+  assert.match(prompt, /DECLARED EARLIER RUNS \/ TOUR LEGS OF THIS PRODUCTION/);
+  assert.match(prompt, /Barbican Theatre \(2022-10-08 to 2023-01-21\)/);
+  assert.match(prompt, /Curran Theatre \(2026-11-01 to 2027-01-05\)/);
+  assert.match(prompt, /IS a review of THIS production/);
+  assert.match(prompt, /is still wrongProduction/);
+});
+
+test('prompt carries no prior-run hint when the show declares none', () => {
+  for (const extra of [{}, { priorRuns: [], tourLegs: [] }, { priorRuns: null, tourLegs: undefined }]) {
+    const { prompt } = buildVerificationPrompt({
+      scrapedText: 'x'.repeat(300),
+      showTitle: 'Hamilton',
+      outletName: 'Variety',
+      openingDate: '2015-08-06',
+      market: 'broadway',
+      ...extra,
+    });
+    assert.doesNotMatch(prompt, /DECLARED EARLIER RUNS/);
+  }
+  assert.equal(buildPriorRunHint(undefined, undefined), '');
+});
+
+test('buildPriorRunHint: missing dates / venue degrade, newlines are flattened', () => {
+  const hint = buildPriorRunHint([{ openingDate: '2022-01-01' }, { venue: 'Garrick\nTheatre' }], null);
+  assert.match(hint, /earlier run \(2022-01-01 to unknown\)/);
+  assert.match(hint, /; Garrick Theatre\./);
+});
+
+test('verifyContent threads show.priorRuns / show.tourLegs into the prompt builder', () => {
+  // verifyContent calls an LLM, so assert the wiring at the call site: the
+  // collector passes `show`, and verifyContent must forward its runs.
+  const src = fs.readFileSync(path.join(__dirname, 'content-verifier.js'), 'utf8');
+  const call = src.slice(src.indexOf('async function verifyContent('), src.indexOf('const result = await callWithFallback(prompt)'));
+  assert.match(call, /priorRuns:\s*show && show\.priorRuns/);
+  assert.match(call, /tourLegs:\s*show && show\.tourLegs/);
+});
 
 // ============================================================
 // 1. originalOpeningDate fallback (implemented as corrected openingDate)

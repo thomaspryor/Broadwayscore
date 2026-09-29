@@ -18,5 +18,22 @@
   "keyQuote": "what we end up with is an incredibly polished laugh out loud Musical and one that deserves to run and run I'm happy to give it five stars",
   "scoredAt": "2026-04-19T08:29:13.705Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/eVXoDjcdroE/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/eVXoDjcdroE/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "I'm here at the fortune theater in a very wet Covent Garden to see operation mince meat",
+    "reason": "The review is about a production in London at the Fortune Theatre, not the assigned Broadway production in New York.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The evidence clearly states the review is about a production at the Fortune Theatre in Covent Garden, London, which is a different city and country from the assigned Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:09.066Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The review is about a production in London at the Fortune Theatre, not the assigned Broadway production in New York."
 }

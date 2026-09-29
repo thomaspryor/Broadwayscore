@@ -32,6 +32,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
+import { createRequire } from 'node:module';
 import { checkByteCap } from './lib/check-claude-md-byte-cap.js';
 
 const REPO_ROOT = path.resolve(new URL('.', import.meta.url).pathname, '..');
@@ -357,12 +358,24 @@ function commitInClone(relPath, content, message) {
   const full = path.join(hookWorktreeDir, relPath);
   fs.mkdirSync(path.dirname(full), { recursive: true });
   fs.writeFileSync(full, content);
-  spawnSync('git', ['add', '-A'], { cwd: hookWorktreeDir, timeout: GIT_TIMEOUT_MS });
-  spawnSync('git', ['-c', 'user.email=test@example.com', '-c', 'user.name=Test', 'commit', '-q', '-m', message, '--no-verify'], {
+  // Stage only this file and check both git calls. `git add -A` scanned the
+  // whole worktree under a 15s timeout; on a loaded land.yml runner it timed
+  // out, the commit then had nothing to commit, HEAD stayed on the previous
+  // fixture commit, and the "oversized CLAUDE.md" test pushed a sha without
+  // the CLAUDE.md change: the hook correctly passed and the test failed with
+  // an empty "0 !== 1" (land.yml refused BRO-4328 on 2026-09-29).
+  const before = gitOut(hookWorktreeDir, ['rev-parse', 'HEAD']);
+  const add = spawnSync('git', ['add', '--', relPath], { cwd: hookWorktreeDir, encoding: 'utf8', timeout: HOOK_TIMEOUT_MS });
+  if (add.status !== 0) throw new Error(`git add ${relPath} failed (status ${add.status}, signal ${add.signal}): ${add.stderr}`);
+  const commit = spawnSync('git', ['-c', 'user.email=test@example.com', '-c', 'user.name=Test', 'commit', '-q', '-m', message, '--no-verify'], {
     cwd: hookWorktreeDir,
-    timeout: GIT_TIMEOUT_MS,
+    encoding: 'utf8',
+    timeout: HOOK_TIMEOUT_MS,
   });
-  return gitOut(hookWorktreeDir, ['rev-parse', 'HEAD']);
+  if (commit.status !== 0) throw new Error(`fixture commit "${message}" failed (status ${commit.status}, signal ${commit.signal}): ${commit.stderr}`);
+  const after = gitOut(hookWorktreeDir, ['rev-parse', 'HEAD']);
+  if (after === before) throw new Error(`fixture commit "${message}" did not move HEAD`);
+  return after;
 }
 
 before(() => {
@@ -376,6 +389,19 @@ before(() => {
       killSignal: 'SIGKILL',
     });
     if (added.status !== 0) throw new Error(`worktree add failed (status ${added.status}): ${added.stderr}`);
+    // A git worktree has no node_modules, and under os.tmpdir() node cannot
+    // walk up to the repo's. When the branch under test touches scripts/**/*.js
+    // or a workflow, the full hook runs lint-workflow-guards.sh ledger-coverage,
+    // which needs acorn, and blocked on "acorn is not installed" before ever
+    // reaching the byte-cap check (land.yml refused BRO-4328 on 2026-09-29).
+    // Link the real node_modules so the fixture behaves like a real checkout.
+    // Resolve it the way node would from the repo (a worktree checkout may
+    // find it in a parent directory rather than REPO_ROOT/node_modules).
+    let nodeModules = null;
+    try {
+      nodeModules = path.dirname(path.dirname(createRequire(path.join(REPO_ROOT, 'package.json')).resolve('acorn/package.json')));
+    } catch { /* acorn not installed: the hook's own fail-closed message is the right outcome */ }
+    if (nodeModules) fs.symlinkSync(nodeModules, path.join(hookWorktreeDir, 'node_modules'), 'dir');
 
     // Both fixture commits are built HERE, sequentially, rather than inside
     // individual test() bodies — node's test runner does not guarantee

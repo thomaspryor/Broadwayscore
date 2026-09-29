@@ -50,6 +50,7 @@ const { applyPaywallTierOverride } = require('./lib/paywall-completeness');
 const { shouldDeferCvWrongShow } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
+const { runOutletMismatchCleanup, renameAndRepoint, makeDirIO } = require('./lib/outlet-mismatch-heal');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, tourContextForShow, isFilmTvReview, excerptMentionsFormerCast } = require('./lib/excerpt-validation');
@@ -59,7 +60,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, hasStructuralStarScore, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, hasStructuralStarScore, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, rejectedAtHumanCleared, isTimestampAfter } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
@@ -99,7 +100,6 @@ const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evalu
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
 const { safeWriteReview, writeReviewOrThrow, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
-const { isPathHiddenBySparseCheckout } = require('./lib/sparse-checkout-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 const { writeShowExclusionsFile } = require('./lib/rebuild-exclusion-audit');
@@ -1864,7 +1864,7 @@ const crossShowFingerprints = new Map();
 // from the --unknown file into it and delete the stale --unknown file. This prevents duplicate
 // entries in validate-review-texts.js (which keys on JSON criticName, not filename).
 {
-  let renamedCount = 0, mergedCount = 0, errorCount = 0, skippedFlaggedCount = 0;
+  let renamedCount = 0, mergedCount = 0, errorCount = 0, skippedFlaggedCount = 0, skippedLockedCount = 0;
   for (const sid of showDirs) {
     const sDir = path.join(reviewTextsDir, sid);
     const unknownFiles = fs.readdirSync(sDir).filter(f => f.endsWith('.json') && f.includes('--unknown'));
@@ -1896,20 +1896,24 @@ const crossShowFingerprints = new Map();
           fs.unlinkSync(filePath);
           mergedCount++;
         } else {
-          // No named file — just rename
-          if (isPathHiddenBySparseCheckout(expectedPath)) throw new Error(`rename target ${path.basename(expectedPath)} is outside this sparse checkout — source kept`);
-          fs.renameSync(filePath, expectedPath);
+          // No named file — rename through the write guard (moves the
+          // llm-score sidecar, refuses sparse-hidden targets) and repoint
+          // sibling duplicate pointers at the old name (2026-09-29 ship-check:
+          // a raw rename left broken_duplicate_ref siblings).
+          renameAndRepoint(makeDirIO(sDir, false), f, expectedFilename, d, sid);
           renamedCount++;
         }
       } catch (e) {
+        if (e.code === 'LOCKED') { skippedLockedCount++; continue; } // _locked refused the rename
         errorCount++;
         console.warn(`  [stale-unknown] Error processing ${sid}/${f}: ${e.message}`);
       }
     }
   }
-  if (renamedCount > 0 || mergedCount > 0 || skippedFlaggedCount > 0) {
-    console.log(`Stale --unknown cleanup: ${renamedCount} renamed, ${mergedCount} merged+deleted, ${skippedFlaggedCount} flagged tombstones left in place${errorCount ? `, ${errorCount} errors` : ''}`);
+  if (renamedCount > 0 || mergedCount > 0 || skippedFlaggedCount > 0 || skippedLockedCount > 0) {
+    console.log(`Stale --unknown cleanup: ${renamedCount} renamed, ${mergedCount} merged+deleted, ${skippedFlaggedCount} flagged tombstones left in place${skippedLockedCount ? `, ${skippedLockedCount} skipped (_locked)` : ''}${errorCount ? `, ${errorCount} errors` : ''}`);
   }
+  stats.staleUnknownSkippedLocked = skippedLockedCount;
   stats.staleUnknownRenamed = renamedCount;
   stats.staleUnknownMerged = mergedCount;
   stats.staleUnknownSkippedFlagged = skippedFlaggedCount;
@@ -1931,50 +1935,30 @@ const crossShowFingerprints = new Map();
 // -never-get-west-end-2026 / trainspotting-the-musical-west-end-2026,
 // 2026-08-22): a "Rebuild Reviews (Fast)" run silently undid a prior manual
 // fix that had restored the correct _blocklist.json filename.
+//
+// URL edition first (2026-09-29): a name-derived outletId can disagree with a
+// path-split edition URL (timeout.com/london filed as "timeout"). The JSON
+// outletId + outlet are rewritten before the rename/merge below, which is
+// keyed on the JSON outletId: renaming alone would be flipped back next run,
+// and scoring would keep reading the wrong edition's tier.
+//
+// Flagged tombstones (2026-09-29): a misnamed exclusion-flagged source is
+// refused by mergeUniqueReviewFields and used to stay forever. It is now
+// deleted when flaggedTombstoneDecision says nothing can be lost (target
+// excluded for the same URL, source excluded today, no operator assertion,
+// sibling pointers repointed to the target first).
+//
+// The pass lives in scripts/lib/outlet-mismatch-heal.js (runOutletMismatchCleanup)
+// so scripts/heal-outlet-mismatch.js can apply it to the corpus on its own.
 {
-  let renamedCount = 0, mergedCount = 0, errorCount = 0, skippedFlaggedCount = 0;
-  for (const sid of showDirs) {
-    const sDir = path.join(reviewTextsDir, sid);
-    for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json') && x !== BLOCKLIST_FILENAME)) {
-      try {
-        const filePath = path.join(sDir, f);
-        if (!fs.existsSync(filePath)) continue; // File may have been renamed by Pass 1
-        const fileOutlet = f.split('--')[0];
-        const d = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        const jsonOutlet = normalizeOutletCanonical(d.outletId || d.outlet);
-        if (!jsonOutlet || !fileOutlet || jsonOutlet === fileOutlet) continue;
-        const expectedFilename = generateReviewFilename(jsonOutlet, d.criticName || 'Unknown');
-        if (expectedFilename === f) continue;
-        const expectedPath = path.join(sDir, expectedFilename);
-        if (fs.existsSync(expectedPath)) {
-          // Named file exists — merge unique fields, delete stale.
-          // Guarded: an exclusion-flagged source never folds into an unflagged
-          // target (totoro contamination, Notion 39b637c5-416f-815e) — leave it.
-          const existingData = JSON.parse(fs.readFileSync(expectedPath, 'utf8'));
-          const mergeResult = mergeUniqueReviewFields(existingData, d);
-          if (mergeResult.action !== 'merged') { skippedFlaggedCount++; continue; }
-          if (mergeResult.changed) {
-            writeReviewOrThrow(expectedPath, existingData);
-          }
-          // Cascade-clear duplicateOf siblings before unlinking (see Pass 1).
-          cascadeClearDuplicateRefs(sDir, f);
-          fs.unlinkSync(filePath);
-          mergedCount++;
-        } else {
-          // No correctly-named file — just rename
-          if (isPathHiddenBySparseCheckout(expectedPath)) throw new Error(`rename target ${path.basename(expectedPath)} is outside this sparse checkout — source kept`);
-          fs.renameSync(filePath, expectedPath);
-          renamedCount++;
-        }
-      } catch (e) {
-        errorCount++;
-        console.warn(`  [outlet-mismatch] Error processing ${sid}/${f}: ${e.message}`);
-      }
-    }
+  const r = runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById });
+  const { renamedCount, mergedCount, errorCount, skippedFlaggedCount, editionFixedCount, tombstoneDeletedCount, skippedLockedCount } = r;
+  if (renamedCount > 0 || mergedCount > 0 || skippedFlaggedCount > 0 || editionFixedCount > 0 || tombstoneDeletedCount > 0 || skippedLockedCount > 0) {
+    console.log(`Stale outlet-mismatch cleanup: ${editionFixedCount} URL-edition outletId fixes, ${renamedCount} renamed, ${mergedCount} merged+deleted, ${tombstoneDeletedCount} flagged tombstones deleted, ${skippedFlaggedCount} flagged tombstones left in place${skippedLockedCount ? `, ${skippedLockedCount} skipped (_locked)` : ''}${errorCount ? `, ${errorCount} errors` : ''}`);
   }
-  if (renamedCount > 0 || mergedCount > 0 || skippedFlaggedCount > 0) {
-    console.log(`Stale outlet-mismatch cleanup: ${renamedCount} renamed, ${mergedCount} merged+deleted, ${skippedFlaggedCount} flagged tombstones left in place${errorCount ? `, ${errorCount} errors` : ''}`);
-  }
+  stats.staleOutletSkippedLocked = skippedLockedCount;
+  stats.staleOutletEditionFixed = editionFixedCount;
+  stats.staleOutletTombstonesDeleted = tombstoneDeletedCount;
   stats.staleOutletRenamed = renamedCount;
   stats.staleOutletMerged = mergedCount;
   stats.staleOutletSkippedFlagged = skippedFlaggedCount;
@@ -4297,10 +4281,13 @@ showDirs.forEach(showId => {
       // Hamlet (rejected 2026-04-20 as wrong_production) slipped back into reviews.json after
       // clear-failure-flags nulled its rejectionReason.
       if (data.rejectedAt && typeof data.rejectedAt === 'string') {
-        const reFetched = data.textFetchedAt && typeof data.textFetchedAt === 'string' && data.textFetchedAt > data.rejectedAt;
+        const reFetched = isTimestampAfter(data.textFetchedAt, data.rejectedAt);
         // Same structural-star-score exception as the rejectionReason guard above
-        // (BRO-2282) — mirrors review-guards.js explainExclusion's rejectedAt block.
-        if (!reFetched && !hasStructuralStarScore(data)) {
+        // (BRO-2282) — mirrors review-guards.js explainExclusion's rejectedAt block,
+        // including its human-clear deferral (rejectedAtHumanCleared): without it
+        // a human wrongShow/wrongProduction clear left the review excluded here
+        // while explainExclusion called it includable.
+        if (!reFetched && !hasStructuralStarScore(data) && !rejectedAtHumanCleared(data)) {
           logExclusion("skippedRejectedAt", showId, file, data);
           stats.skippedRejectedAt = (stats.skippedRejectedAt || 0) + 1;
           return;
