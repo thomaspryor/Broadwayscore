@@ -6533,13 +6533,13 @@
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/video-production-verify",
       "firstSeen": "2026-09-29T15:29:46.283Z",
-      "lastSeen": "2026-09-29T17:41:21.402Z",
+      "lastSeen": "2026-09-29T18:43:27.306Z",
       "lastNotifiedAt": "2026-09-29T15:29:46.283Z",
       "lastSurfacedAt": "2026-09-29T15:29:46.283Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-4358-ss-dead-url": {
       "status": "resolved",
@@ -6597,6 +6597,18 @@
       "cardId": null,
       "linearIdentifier": "BRO-4362",
       "silentRefires": 1
+    },
+    "land:land/font-selfhost-v3": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/font-selfhost-v3",
+      "firstSeen": "2026-09-29T18:41:23.838Z",
+      "lastSeen": "2026-09-29T18:41:23.838Z",
+      "lastNotifiedAt": "2026-09-29T18:41:23.838Z",
+      "lastSurfacedAt": "2026-09-29T18:41:23.838Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }

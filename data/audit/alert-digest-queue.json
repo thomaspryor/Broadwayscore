@@ -2020,6 +2020,35 @@
     "queuedAt": "2026-09-29T18:16:12.572Z"
   },
   {
+    "conditionKey": "land:land/font-selfhost-v3",
+    "title": "Landing blocked: rebase red on land/font-selfhost-v3",
+    "description": "land.yml did not land land/font-selfhost-v3: the rebase gate went red at bccc6f3968. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36613533415",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/font-selfhost-v3"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "bccc6f39683b070c8d48f72d28ca10f641f1a050"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36613533415"
+      }
+    ],
+    "queuedAt": "2026-09-29T18:41:23.839Z"
+  },
+  {
     "conditionKey": "red-first-skip:BRO-4264",
     "title": "Red-first dispatch skipped BRO-4264 — no job spawned (no-safe-verify)",
     "description": "The BRO-4054 red-first pass skipped \"main test.yml red: E2E Tests / Run unit tests — \"handles accented/special characters by removing them\"\" (BRO-4264) this tick with reason \"no-safe-verify\" — no dispatch was attempted and no job was spawned. Unless this reason clears on its own (e.g. the daily cap resetting), the card will keep sitting here with nobody looking at it.",
