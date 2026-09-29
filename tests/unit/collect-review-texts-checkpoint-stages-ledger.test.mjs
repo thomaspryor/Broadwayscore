@@ -26,5 +26,5 @@ test('commitChanges stages the scraper-spend ledger with collection state', () =
   const files = git('show', '--name-only', '--format=', 'HEAD').trim().split('\n');
   assert.ok(files.includes('data/audit/scraper-spend-ledger.jsonl'), files.join(','));
   assert.ok(files.includes('data/collection-state/state.json'), files.join(','));
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 });
