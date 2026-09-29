@@ -301,7 +301,14 @@ async function main() {
       console.error(`  Draft created: ${draftId}`);
       console.error(`  Review at: ${draftUrl}`);
 
-      // Step 3: notify owner via Resend transactional email
+      // Step 3: notify owner via Resend transactional email. Scorer warnings
+      // (e.g. a running show with no grosses row for its slug, which would
+      // silently score $0 box office all season) ride along so they are seen
+      // weekly instead of only in the Actions log.
+      const scorerWarnings = Array.isArray(scoresData._meta?.warnings) ? scoresData._meta.warnings : [];
+      const warningsHtml = scorerWarnings.length
+        ? `<p style="color:#b45309;font-weight:bold;margin-top:16px;">Scorer warnings (${scorerWarnings.length}):</p><ul style="color:#92400e;font-size:13px;">${scorerWarnings.map(w => `<li>${escapeHtml(String(w))}</li>`).join('')}</ul>`
+        : '';
       const notificationHtml = `
 <p>A weekly fantasy league email draft is ready for your review in Resend.</p>
 <table style="margin:16px 0;border-collapse:collapse;">
@@ -310,6 +317,7 @@ async function main() {
   <tr><td style="padding:4px 12px 4px 0;color:#666">Audience sync</td><td>${syncSummary}</td></tr>
   <tr><td style="padding:4px 12px 4px 0;color:#666">Subject</td><td>${subject}</td></tr>
 </table>
+${warningsHtml}
 <p><a href="${draftUrl}" style="background:#0066cc;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;display:inline-block;font-weight:bold;">Review &amp; Send Draft in Resend &rarr;</a></p>
 <p style="color:#888;font-size:12px;margin-top:16px;">Direct link: ${draftUrl}</p>`;
 
