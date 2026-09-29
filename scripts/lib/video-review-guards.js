@@ -22,6 +22,7 @@ function filterPublishableReviews(reviewsByShow, knownShowIds) {
   for (const [showId, reviews] of Object.entries(reviewsByShow)) {
     if (!knownShowIds.has(showId)) continue;
     for (const r of reviews) {
+      if (!r.videoUrl) continue; // no URL: can't be a cross-show duplicate
       if (!showsByUrl.has(r.videoUrl)) showsByUrl.set(r.videoUrl, new Set());
       showsByUrl.get(r.videoUrl).add(showId);
     }
@@ -35,7 +36,7 @@ function filterPublishableReviews(reviewsByShow, knownShowIds) {
     }
     const ok = [];
     for (const r of reviews) {
-      if (showsByUrl.get(r.videoUrl).size > 1) {
+      if (r.videoUrl && showsByUrl.get(r.videoUrl).size > 1) {
         dropped.push({ showId, videoUrl: r.videoUrl, reason: `same video on ${[...showsByUrl.get(r.videoUrl)].join(', ')}` });
       } else {
         ok.push(r);
