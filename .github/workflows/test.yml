@@ -487,6 +487,12 @@ on:
       # tests/unit-test-manifest.txt (tests/** already globbed above).
       - 'scripts/opening-night-pipeline-verify.js'
       - 'scripts/opening-night-pipeline.test.mjs'
+      # BRO-4273: top-level CLI shelled out to by push-with-retry.sh; its test
+      # (scripts/lib/check-post-rebase-survival.test.mjs) is in the manifest.
+      - 'scripts/check-post-rebase-survival.js'
+      # Data-repo pre-commit hook guarded by that test's static --no-renames
+      # check (scripts/hooks/** is already globbed below).
+      - 'scripts/data-repo-hooks/pre-commit'
       # BRO-103 cloud-memory merge-aware sync. Same shape as the
       # opening-night-pipeline pair above: the merge logic lives in
       # scripts/lib/cloud-memory-merge.js (already covered by scripts/lib/**),

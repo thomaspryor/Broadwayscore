@@ -84,6 +84,12 @@ concurrency:
   # Market-scoped when the dispatcher passes market (orchestrator always does),
   # so BW and WE orchestrators keep their pollers parallel to each other and
   # update-show-status's market-less opener dispatch doesn't compete with them.
+  # Deliberately NOT one shared group for every review-texts writer (BRO-4273):
+  # that would queue the targeted per-show poller behind a 60-min auto run on
+  # opening night. Concurrent pushes are push-with-retry.sh's job; run
+  # 36511035811's "dropped _pending stubs" abort was a rename-detection false
+  # positive in the survival check (fixed there with --no-renames), not a
+  # lost write.
   group: opening-night-poller-${{ inputs.show_id || inputs.market || 'auto-discovery' }}
   cancel-in-progress: false
 
@@ -113,7 +119,26 @@ jobs:
           # #209 incident (53ff06a4a7a, 2026-07-19: a second root merged into main,
           # doubling clone weight + corrupting per-file history). Full history keeps
           # merge-base resolvable so every commit stays properly parented.
+          #
+          # filter: blob:none (BRO-4273) keeps that full commit graph (a
+          # partial clone is NOT shallow, so merge-base still resolves) but
+          # skips downloading every historical file version. The full-blob
+          # clone took 25-30 min per run (runs 36493405907..36511035811),
+          # about half of each run, delaying reviews by ~30 min. Blobs the
+          # job actually needs (working tree, rebase inputs) are fetched on
+          # demand. Same setup as land.yml, which also pushes main.
           fetch-depth: 0
+          filter: blob:none
+
+      # BRO-4273: blob:none makes rebase/diff fetch missing blobs over the
+      # network, outside push-with-retry.sh's per-op timeout wrappers. Give
+      # those lazy fetches git's own low-speed abort (same 1KB/s for 45s the
+      # helper applies to fetch/push) so a stalled one fails instead of
+      # hanging until the job timeout.
+      - name: Guard lazy blob fetches against stalls
+        run: |
+          git config --local http.lowSpeedLimit 1000
+          git config --local http.lowSpeedTime 45
 
       # BRO-66: REVIEW_TEXTS_TOKEN is a classic PAT — 5000 req/hr across ALL
       # API calls from that token, shared by every workflow that checks out
@@ -548,6 +573,10 @@ jobs:
           # Explicit opening-night marker for the BD breaker — this step runs a
           # general-purpose collector that must NOT be exempt for bulk runs.
           BD_OPENING_NIGHT: '1'
+          # BRO-4273: written after the final checkpoint; the Verify step
+          # reads it so a collect that finished but was killed on exit (or
+          # skipped slow URLs) reads as degraded, not crashed.
+          COLLECT_SUMMARY_FILE: ${{ runner.temp }}/collect-summary.json
         run: node scripts/collect-review-texts.js --aggressive
         continue-on-error: true
         timeout-minutes: 12
@@ -968,6 +997,7 @@ jobs:
           DEPLOY_VERIFIED: ${{ steps.deploy_verify.outputs.verified }}
           DEPLOY_TIMED_OUT: ${{ steps.deploy_verify.outputs.timed_out }}
           DEPLOY_REASON: ${{ steps.deploy_verify.outputs.reason }}
+          COLLECT_SUMMARY_FILE: ${{ runner.temp }}/collect-summary.json
         run: |
           COLLECT_ATTEMPTED=false
           [ "$COLLECT_ATTEMPTED_RAW" = "true" ] && COLLECT_ATTEMPTED=true
