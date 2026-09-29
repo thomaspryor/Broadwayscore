@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { detectTranscriptOutages, findStaleCreators } = require('../../scripts/lib/video-pipeline-health.js');
+const { detectTranscriptOutages, findStaleCreators, isVideoSpecificError } = require('../../scripts/lib/video-pipeline-health.js');
 
 test('the 2026-09-28 run (0 extracted, every attempt errored) is an outage', () => {
   assert.deepEqual(
@@ -43,4 +43,18 @@ test('stale creator scans are flagged, fresh ones are not', () => {
   ], now);
   assert.deepEqual(stale.map(s => s.handle), ['twoMissed', 'never']);
   assert.equal(stale[0].ageDays, 21);
+});
+
+test('dead-video errors are video-specific; extractor breakage is not', () => {
+  for (const e of [
+    'ERROR: [youtube] abc: Video unavailable. This video has been removed by the uploader',
+    'ERROR: [youtube] abc: Private video. Sign in if you\'ve been granted access to this video',
+    'ERROR: [youtube] abc: Join this channel to get access to members-only content like this video',
+    'ERROR: [TikTok] 123: This post is unavailable',
+  ]) assert.equal(isVideoSpecificError(e), true, e);
+  for (const e of [
+    'ERROR: [TikTok] 7689696072578501901: Unexpected response from webpage request; please report this issue',
+    "ERROR: [youtube] -s0nkIWAiqw: Sign in to confirm you're not a bot. Use --cookies-from-browser",
+    'ERROR: [tiktok:user] tylernabinger: Failed to parse JSON',
+  ]) assert.equal(isVideoSpecificError(e), false, e);
 });

@@ -24,7 +24,7 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const { detectTranscriptOutages } = require('../lib/video-pipeline-health');
+const { detectTranscriptOutages, isVideoSpecificError } = require('../lib/video-pipeline-health');
 
 // Exit code for "a whole platform's extractor is broken" (BRO-4323): the
 // workflow keeps publishing what the healthy platform produced, then fails
@@ -126,7 +126,7 @@ function main() {
       const stats = byPlatform[data.platform] || (byPlatform[data.platform] = { attempted: 0, extracted: 0, errored: 0, sampleError: null });
       stats.attempted++;
       if (transcript) stats.extracted++;
-      else if (lastError) {
+      else if (lastError && !isVideoSpecificError(lastError)) {
         stats.errored++;
         if (!stats.sampleError) stats.sampleError = lastError;
       }
