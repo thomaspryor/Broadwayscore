@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-29T16:25:24.759Z",
+  "timestamp": "2026-09-29T16:38:52.207Z",
   "stats": {
-    "totalReviews": 45222,
-    "alreadyFlagged": 18390,
+    "totalReviews": 45233,
+    "alreadyFlagged": 18391,
     "dateGuardCatches": 237,
     "directorMismatch": 1162,
     "tvFilmSignals": 1327,
-    "londonSignals": 1232,
+    "londonSignals": 1233,
     "offBroadwaySignals": 514,
     "yearMismatch": 101,
-    "noPublishDate": 4039
+    "noPublishDate": 4043
   },
   "findings": [
     {
@@ -55752,6 +55752,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-last-ship-west-end-2026",
+      "file": "theartsdispatch--the-arts-dispatch.json",
+      "publishDate": "2026-09-27",
+      "url": "https://theartsdispatch.substack.com/p/the-last-ship-review-theatre-royal",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
