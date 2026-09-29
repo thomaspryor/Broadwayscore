@@ -8,10 +8,14 @@
  * Data residential IPs first) can make: the watch page, whose player
  * response lists caption tracks, and the chosen track as json3.
  *
- * The parsing is pure (unit tested in tests/unit/youtube-captions.test.mjs);
- * fetchYouTubeTranscript takes the fetchers as arguments so tests and other
- * callers can inject them.
+ * The parsing is pure (unit tested in tests/unit/youtube-captions.test.mjs).
+ * fetchYouTubeTranscript calls scraper.js directly (so the scraper-spend
+ * ledger guard in scripts/lib/ledger-coverage-check.js can see the fetchPage
+ * call and require callers' workflows to commit the ledger); tests inject
+ * fakes through the optional second argument.
  */
+
+const scraper = require('./scraper');
 
 /** Balanced-brace JSON object starting at text[start] === '{'. Returns the substring or null. */
 function sliceJsonObject(text, start) {
@@ -74,12 +78,15 @@ function toYmd(publishDate) {
 
 /**
  * @param {string} videoId
- * @param {{fetchPage: Function, fetchJSON: Function}} fetchers scraper.js functions
+ * @param {{fetchPage?: Function, fetchJSON?: Function}} [fetchers] test overrides; defaults to scraper.js
  * @returns {Promise<{transcript: string, publishedAt: string|null, source: string}>}
  * @throws Error whose message starts "ERROR:" (collect-transcripts.js counts it as a yt error)
  */
-async function fetchYouTubeTranscript(videoId, { fetchPage, fetchJSON }) {
-  const page = await fetchPage(`https://www.youtube.com/watch?v=${videoId}&hl=en`, { skipVerify: true });
+async function fetchYouTubeTranscript(videoId, fetchers = {}) {
+  const watchUrl = `https://www.youtube.com/watch?v=${videoId}&hl=en`;
+  const page = fetchers.fetchPage
+    ? await fetchers.fetchPage(watchUrl, { skipVerify: true })
+    : await scraper.fetchPage(watchUrl, { skipVerify: true });
   const player = parsePlayerResponse(page && page.content);
   if (!player) throw new Error(`ERROR: [youtube-fetchpage] ${videoId}: no player response in watch page (${page?.source || 'no source'})`);
   const status = player.playabilityStatus?.status;
@@ -90,7 +97,14 @@ async function fetchYouTubeTranscript(videoId, { fetchPage, fetchJSON }) {
   const track = pickCaptionTrack(player.captions?.playerCaptionsTracklistRenderer?.captionTracks);
   if (!track || !track.baseUrl) return { transcript: '', publishedAt, source: page.source };
   const url = track.baseUrl.startsWith('http') ? track.baseUrl : `https://www.youtube.com${track.baseUrl}`;
-  const payload = await fetchJSON(`${url}${url.includes('?') ? '&' : '?'}fmt=json3`);
+  const trackUrl = `${url}${url.includes('?') ? '&' : '?'}fmt=json3`;
+  const payload = fetchers.fetchJSON ? await fetchers.fetchJSON(trackUrl) : await scraper.fetchJSON(trackUrl);
+  // A track that answers without an events array is a blocked/empty response
+  // (e.g. a PO-token requirement), not a video with no captions: report it so
+  // the outage check can see it.
+  if (!payload || !Array.isArray(payload.events)) {
+    throw new Error(`ERROR: [youtube-fetchpage] ${videoId}: caption track returned no events (${page.source})`);
+  }
   return { transcript: json3ToText(payload), publishedAt, source: page.source };
 }
 

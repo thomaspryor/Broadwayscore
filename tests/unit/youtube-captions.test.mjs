@@ -52,6 +52,8 @@ test('end to end with injected fetchers; bot wall throws an ERROR: message', asy
     fetchJSON: async (url) => { assert.match(url, /kind=asr&fmt=json3$/); return { events: [{ segs: [{ utf8: 'Great show' }] }] }; },
   };
   assert.deepEqual(await fetchYouTubeTranscript('abc', fetchers), { transcript: 'Great show', publishedAt: '20260910', source: 'brightdata' });
+  // A track with no events array is a blocked response, not "no captions".
+  await assert.rejects(fetchYouTubeTranscript('abc', { ...fetchers, fetchJSON: async () => ({}) }), /caption track returned no events/);
   const walled = { fetchPage: async () => ({ content: `ytInitialPlayerResponse = {"playabilityStatus":{"status":"LOGIN_REQUIRED","reason":"Sign in"}};`, source: 'brightdata' }), fetchJSON: async () => ({}) };
   await assert.rejects(fetchYouTubeTranscript('abc', walled), /^Error: ERROR: \[youtube-fetchpage\] abc: LOGIN_REQUIRED/);
 });

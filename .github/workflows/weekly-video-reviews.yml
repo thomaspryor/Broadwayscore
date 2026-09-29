@@ -131,6 +131,8 @@ jobs:
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          # 2 Bright Data requests per YouTube video; bounds a --refresh run.
+          BD_REQ_BUDGET: '400'
         run: |
           set -euo pipefail
           ARGS=()
@@ -199,6 +201,16 @@ jobs:
         run: |
           set -euo pipefail
           node scripts/video-reviews/backfill-thumbnails.js
+
+      # The YouTube caption fallback goes through fetchPage(), which writes
+      # Bright Data rows to the tracked spend ledger. Commit them BEFORE the
+      # main commit so push-with-retry.sh never rebases over a dirty tree.
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: weekly-video-reviews
 
       # Only commit if all 8 steps succeeded. Avoids shipping inconsistent state
       # (e.g. transcripts collected but video-reviews.json not yet rebuilt).

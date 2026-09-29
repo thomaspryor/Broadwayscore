@@ -33,9 +33,8 @@ const { fetchYouTubeTranscript } = require('../lib/youtube-captions');
 const YOUTUBE_FETCHPAGE_FALLBACK = !!(process.env.BRIGHTDATA_TOKEN || process.env.SCRAPINGBEE_API_KEY);
 
 async function youtubeFallback(videoId) {
-  const { fetchPage, fetchJSON } = require('../lib/scraper');
   try {
-    const r = await fetchYouTubeTranscript(videoId, { fetchPage, fetchJSON });
+    const r = await fetchYouTubeTranscript(videoId);
     return { transcript: r.transcript || null, publishedAt: r.publishedAt, error: null }; // '' = no captions
   } catch (err) {
     const msg = String(err.message || err);
