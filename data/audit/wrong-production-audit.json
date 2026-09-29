@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-29T16:17:12.252Z",
+  "timestamp": "2026-09-29T16:25:24.759Z",
   "stats": {
     "totalReviews": 45222,
-    "alreadyFlagged": 18386,
+    "alreadyFlagged": 18390,
     "dateGuardCatches": 237,
-    "directorMismatch": 1161,
-    "tvFilmSignals": 1326,
+    "directorMismatch": 1162,
+    "tvFilmSignals": 1327,
     "londonSignals": 1232,
     "offBroadwaySignals": 514,
     "yearMismatch": 101,
-    "noPublishDate": 4046
+    "noPublishDate": 4039
   },
   "findings": [
     {
@@ -1119,7 +1119,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 74,
+      "score": 73,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -1763,6 +1763,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 5\""
+        }
+      ]
+    },
+    {
+      "showId": "ancient-grease-off-west-end-2026",
+      "file": "broadwayworld--franco-milazzo.json",
+      "score": null,
+      "publishDate": "2026-03-16",
+      "url": "https://www.broadwayworld.com/westend/article/Review-ANCIENT-GREASE-The-Vaults-20260316",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -3714,6 +3728,19 @@
       "score": 97,
       "publishDate": "2023-12-23T09:35:37",
       "url": "https://theaterlife.com/buena-vista-social-club-3/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
+        }
+      ]
+    },
+    {
+      "showId": "buena-vista-social-club-tour-2026",
+      "file": "broadwayworld--michael-rabice.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/buffalo/article/Review-BUENA-VISTA-SOCIAL-CLUB-at-Sheas-Buffalo-Theatre-20260917",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -6871,7 +6898,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-06-29",
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6885,7 +6912,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 80,
+      "score": 82,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -15511,7 +15538,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
-      "score": 79,
+      "score": 81,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
       "findings": [
@@ -15637,7 +15664,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
-      "score": 82,
+      "score": 79,
       "publishDate": "2025-12-12",
       "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283?srsltid=AfmBOopZW29rEZK9Fg8EKA2nVqf0gU1fVIrWNIjC9D0Sf-uihs3xV8FN",
       "findings": [
@@ -15800,7 +15827,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "plays-international--jeremy-malies.json",
-      "score": 75,
+      "score": 78,
       "publishDate": "2025-12-15",
       "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
       "findings": [
@@ -16620,7 +16647,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 76,
+      "score": 78,
       "publishDate": "2026-03-27",
       "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
       "findings": [
@@ -16751,7 +16778,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
@@ -20171,7 +20198,7 @@
     {
       "showId": "mrs-doubtfire-tour-2025",
       "file": "shepherd-express--anne-siegel.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2025-10-02",
       "url": "https://shepherdexpress.com/culture/theater/beloved-mrs-doubtfire-returns-this-time-as-a-musical/",
       "findings": [
@@ -20213,7 +20240,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-06-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-shakespeares-globe-review",
       "findings": [
@@ -26537,7 +26564,7 @@
     {
       "showId": "stick-man-off-west-end-2026",
       "file": "whatsonstage--michael-coveney.json",
-      "score": null,
+      "score": 81,
       "publishDate": "2011-08-07",
       "url": "https://www.whatsonstage.com/news/stick-man-live-on-stage_7898/",
       "findings": [
@@ -37038,7 +37065,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "theartsdispatch--the-arts-dispatch.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "2026-09-13",
       "url": "https://theartsdispatch.substack.com/p/a-month-in-the-country-review-donmar",
       "findings": [
@@ -38356,7 +38383,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-06-28",
       "url": "https://www.londontheatre1.com/reviews/archduke-royal-court/",
       "findings": [
@@ -43366,7 +43393,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-09-16",
       "url": "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review",
       "findings": [
@@ -43380,7 +43407,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "londonlivinglarge--london-living-large.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-09-18",
       "url": "https://www.londonlivinglarge.com/2026/09/golden-boy-almeida-theatre-sep-8-oct-31.html",
       "findings": [
@@ -43971,7 +43998,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
@@ -47797,7 +47824,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 75,
+      "score": 77,
       "publishDate": "2026-09-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
       "findings": [
@@ -47880,7 +47907,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "guardian--mark-lawson.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-09-11",
       "url": "https://www.theguardian.com/stage/2026/sep/12/man-to-man-review-tilda-swinton-royal-court-theatre",
       "findings": [
@@ -48310,7 +48337,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-04-30",
       "url": "https://www.theguardian.com/stage/2026/apr/30/mass-review-donmar-warehouse-london",
       "findings": [
@@ -48798,7 +48825,7 @@
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2024-09-18",
       "url": "https://www.londonboxoffice.co.uk/news/post/moulin-rouge-review",
       "findings": [
@@ -52286,7 +52313,7 @@
     {
       "showId": "stick-man-off-west-end-2026",
       "file": "londonpubtheatres--paula-david.json",
-      "score": null,
+      "score": 96,
       "publishDate": "2025-12-07",
       "url": "https://www.londonpubtheatres.com/review-stick-man-at-bloomsbury-theatre-4-dec-2025-4-jan-2026",
       "findings": [
@@ -52300,7 +52327,7 @@
     {
       "showId": "stick-man-off-west-end-2026",
       "file": "musicaltheatremusings--sarah-mcpartlan.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2025-12-07",
       "url": "https://musicaltheatremusings.co.uk/stick-man-bloomsbury-theatre/",
       "findings": [
@@ -52314,7 +52341,7 @@
     {
       "showId": "stick-man-off-west-end-2026",
       "file": "plays-to-see--rivka-jacobson.json",
-      "score": null,
+      "score": 89,
       "publishDate": "2025-12-08",
       "url": "https://playstosee.com/reviews/stick-man-children-theatre/",
       "findings": [
