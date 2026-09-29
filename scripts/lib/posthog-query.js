@@ -2,7 +2,9 @@
  * posthog-query.js — Shared PostHog HogQL query helpers.
  *
  * Single source of truth for all PostHog query logic.
- * Used by posthog-weekly-insights.js and posthog-friction-analyzer.js.
+ * Used by posthog-weekly-insights.js, posthog-friction-analyzer.js,
+ * analyze-traffic-sources.js, lib/traffic-history.js and (phQueryFull +
+ * REAL_USERS_WHERE) posthog-adhoc-query.js.
  *
  * Env: POSTHOG_PERSONAL_API_KEY
  */
@@ -16,7 +18,13 @@ function getApiKey() {
   return key;
 }
 
-async function phQuery(hogql) {
+/**
+ * Full query response ({ columns, results, types, ... }). Every fixed-query
+ * caller below knows its own column order and only wants `results`, so they
+ * keep using phQuery; scripts/posthog-adhoc-query.js needs the column names
+ * to head a table for a statement it has never seen (BRO-4327).
+ */
+async function phQueryFull(hogql) {
   const res = await fetch(`${API_BASE}/api/projects/${PROJECT_ID}/query/`, {
     method: 'POST',
     headers: {
@@ -24,9 +32,19 @@ async function phQuery(hogql) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ query: { kind: 'HogQLQuery', query: hogql } }),
+    // A hung socket would otherwise run to the calling job's timeout, which
+    // reports `cancelled` and emits nothing; 4 min still outlasts a PostHog
+    // 504 (~5 min is the observed worst case, and callers retry on timeout).
+    signal: AbortSignal.timeout(240000),
   });
-  if (!res.ok) throw new Error(`PostHog API ${res.status}: ${await res.text()}`);
-  const data = await res.json();
+  // Body sliced: a 504 comes back as a full HTML page, which would otherwise
+  // land verbatim in a table cell or a log line.
+  if (!res.ok) throw new Error(`PostHog API ${res.status}: ${(await res.text()).slice(0, 500)}`);
+  return res.json();
+}
+
+async function phQuery(hogql) {
+  const data = await phQueryFull(hogql);
   return data.results || [];
 }
 
@@ -207,6 +225,7 @@ async function getPromoClicks() {
 
 module.exports = {
   phQuery,
+  phQueryFull,
   REAL_USERS_WHERE,
   authCheck,
   tracked,

@@ -245,6 +245,7 @@ scripts/tests/notion-write-paths-retired.test.mjs
 scripts/tests/observable-before-absence.test.mjs
 scripts/tests/opening-night-monitor-kill-switch-staleness.test.mjs
 scripts/tests/orphan-task-reconciliation.test.mjs
+scripts/tests/posthog-adhoc-query.test.mjs
 scripts/tests/provider-spend-ledger-commit-ordering.test.mjs
 scripts/tests/provider-spend-ledger-freshness-row.test.mjs
 scripts/tests/pull-quote-quality.test.mjs
@@ -863,6 +864,7 @@ tests/unit/review-write-guard.test.mjs
 tests/unit/reviews-json-single-outlet-writer.test.mjs
 tests/unit/revival-cross-reference.test.mjs
 tests/unit/roundup-digest.test.mjs
+tests/unit/roundup-gap-alert.test.mjs
 tests/unit/roundup-host-patterns.test.mjs
 tests/unit/roundup-hyperlink-reviews.test.mjs
 tests/unit/roundup-rebuild-guard.test.mjs
@@ -902,6 +904,7 @@ tests/unit/send-daily-digest.test.mjs
 tests/unit/seo-anomaly-detection.test.mjs
 tests/unit/seo-cwv-field-scope.test.mjs
 tests/unit/serp-burst-caps.test.mjs
+tests/unit/serp-burst-ledger.test.mjs
 tests/unit/serp-burst-tripwire.test.mjs
 tests/unit/serp-cache.test.mjs
 tests/unit/serp-negative-cache-policy.test.mjs

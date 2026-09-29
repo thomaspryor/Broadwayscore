@@ -679,6 +679,65 @@ describe('isRoundupUrl — WhatsOnStage review round-ups', () => {
   });
 });
 
+describe('isRoundupUrl — Playbill Verdict roundup slugs (BRO-4272, School Girls 2026-09-28)', () => {
+  // Real corpus slugs that were stored as playbill--unknown.json "reviews" and missed
+  // by the three fixed Playbill patterns.
+  const ROUNDUPS = [
+    'reviews-are-out-for-school-girls-or-the-african-mean-girls-play-on-broadway',
+    'reviews-are-in-for-little-bear-ridge-road-on-broadway',
+    'the-reviews-are-in-for-dominique-morisseaus-bad-kreyol',
+    'read-the-reviews-for-an-american-daughter-off-broadway',
+    'read-the-reviews-gypsy-on-broadway-starring-audra-mcdonald',
+    'read-reviews-for-kiss-me-kate-on-broadway',
+    'what-did-reviews-say-about-macbeth-at-the-metropolitan-opera',
+    'what-did-critics-think-of-charlie-and-the-chocolate-factory-on-broadway',
+    'what-do-the-critics-think-of-art-on-broadway',
+    'reviews-what-do-critics-think-of-fat-ham-on-broadway',
+    'did-reviewers-find-magic-in-schmigadoon',
+    'how-did-critics-review-mark-ruffalo-and-danny-devito-in-the-price',
+    'are-reviewers-over-the-moon-about-off-broadways-a-walk-on-the-moon',
+    'the-verdict-critics-review-new-broadway-musical-rocky-com-215993',
+    'the-verdict-read-reviews-for-broadways-the-gin-game-with-james-earl-jones-and-cicely-tyson-com-367216',
+    'eurydice-starring-maya-hawke-and-brian-darcy-james-gets-extended-read-the-reviews',
+    'becky-shaw-verdict',
+  ];
+  for (const slug of ROUNDUPS) {
+    test(`playbill.com/article/${slug} → roundup`, () => {
+      assert.strictEqual(isRoundupUrl(`https://playbill.com/article/${slug}`).isRoundup, true);
+    });
+  }
+
+  test('www. and /news/article/ forms match too', () => {
+    assert.strictEqual(isRoundupUrl('https://www.playbill.com/news/article/reviews-are-out-for-x-on-broadway').isRoundup, true);
+  });
+
+  // The only two playbill-outlet rows live in reviews.json: must stay unmatched.
+  test('live Playbill rows are NOT roundups (week-in-review column, on-the-record)', () => {
+    assert.strictEqual(isRoundupUrl('https://playbill.com/article/playbill-theatre-week-in-review-april-14-20-critics-love-starcatcher-one-man-and-clybourne-park-com-199201').isRoundup, false);
+    assert.strictEqual(isRoundupUrl('https://playbill.com/article/on-the-record-the-light-in-the-piazza-and-little-women-com-126426').isRoundup, false);
+  });
+
+  test('Playbill news/feature slugs without the roundup words are NOT roundups', () => {
+    assert.strictEqual(isRoundupUrl('https://playbill.com/article/school-girls-or-the-african-mean-girls-play-opens-on-broadway').isRoundup, false);
+    assert.strictEqual(isRoundupUrl('https://playbill.com/article/review-the-big-show-is-a-delight').isRoundup, false);
+  });
+
+  test('critics/reviews words deep in a long slug do not count (first six words only)', () => {
+    assert.strictEqual(isRoundupUrl('https://playbill.com/article/jocelyn-bioh-and-whitney-white-talk-about-the-play-that-critics-loved').isRoundup, false);
+  });
+
+  test('look-alike host and non-Playbill hosts are NOT matched', () => {
+    assert.strictEqual(isRoundupUrl('https://notplaybill.com/article/reviews-are-out-for-x').isRoundup, false);
+    assert.strictEqual(isRoundupUrl('https://www.nytimes.com/article/reviews-are-out-for-x').isRoundup, false);
+  });
+
+  test('a Playbill roundup is page-as-review only for the playbill outlet', () => {
+    const url = 'https://playbill.com/article/reviews-are-out-for-school-girls-or-the-african-mean-girls-play-on-broadway';
+    assert.strictEqual(isRoundupPageAsReview({ url, outletId: 'playbill' }), true);
+    assert.strictEqual(isRoundupPageAsReview({ url, outletId: 'guardian' }), false);
+  });
+});
+
 describe('isRoundupUrl — BWW /reviews/ critics-aggregation page (Whoopi Monologues 2026-07-14)', () => {
   test('broadwayworld.com/reviews/{slug} → roundup', () => {
     const r = isRoundupUrl('https://www.broadwayworld.com/reviews/the-whoopi-monologues');
