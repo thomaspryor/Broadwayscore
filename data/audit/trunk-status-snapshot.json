@@ -1,22 +1,73 @@
 {
-  "generatedAt": "2026-09-28T14:43:12.359Z",
+  "generatedAt": "2026-09-29T13:35:44.683Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "3bc879ce5cef2c34602c75433f8ecb71b1675a06",
-  "state": "GREEN",
-  "consecutiveFailures": 0,
-  "consecutiveSuccesses": 22,
-  "greenSince": "2026-09-27T22:50:01Z",
-  "greenForHours": 15.886488611111112,
+  "latestRunHeadSha": "05ce9ed02b95107951886232153af599ce4aed22",
+  "state": "RED",
+  "consecutiveFailures": 2,
+  "consecutiveSuccesses": 0,
+  "greenSince": null,
+  "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": null,
-  "redForHours": null,
+  "redSince": "2026-09-29T12:13:42Z",
+  "redForHours": 1.3674119444444444,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-09-28T13:39:20Z",
-  "latestFailedRunId": null,
-  "latestFailedRunUrl": null,
-  "decidedRuns": 64,
-  "failingJobs": [],
-  "failingPaths": [],
-  "topFailingJob": null
+  "lastSuccessAt": "2026-09-29T11:03:57Z",
+  "latestFailedRunId": "36567444751",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36567444751",
+  "decidedRuns": 97,
+  "failingJobs": [
+    {
+      "name": "Unit Tests",
+      "steps": [
+        "Run unit tests (no-data-dependency)"
+      ]
+    },
+    {
+      "name": "Data Validation",
+      "steps": [
+        "Audit review contamination",
+        "Audit outlet-registry gaps"
+      ]
+    },
+    {
+      "name": "Test Summary",
+      "steps": [
+        "Check results"
+      ]
+    }
+  ],
+  "failingPaths": [
+    {
+      "path": "tests/unit/image-presence.test.mjs",
+      "job": "Unit Tests",
+      "step": "UNKNOWN STEP",
+      "evidence": "not ok 6269 - no scored show is currently flagged imageless past the self-heal threshold (similar shows)"
+    },
+    {
+      "path": "scripts/lib/dummy-helper.test.mjs",
+      "job": "Unit Tests",
+      "step": "UNKNOWN STEP",
+      "evidence": "not ok 1 - foo returns the contracted value"
+    },
+    {
+      "path": "scripts/merge-worktree-to-main.sh",
+      "job": "Unit Tests",
+      "step": "UNKNOWN STEP",
+      "evidence": "❌ post-merge test floor failed — scroll up to the 'post-merge test floor: FAILED (...)' line for the gate's own reason, which distinguishes a NEW-since-origin/main scripts/lib/ colocated test failure "
+    },
+    {
+      "path": "scripts/audit-self-contradictory-clear-drained.test.mjs",
+      "job": "Data Validation",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]Process completed with exit code 1."
+    },
+    {
+      "path": "scripts/audit-broadway-category-predicate.js",
+      "job": "Data Validation",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]Process completed with exit code 1."
+    }
+  ],
+  "topFailingJob": "Unit Tests"
 }
