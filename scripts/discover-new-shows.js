@@ -1250,7 +1250,7 @@ async function fetchShowsFromLondonTheatre() {
         // Venue-based classification: most are OWE, but reclassify if at a WE venue
         const category = isWestEndVenue(venue) ? 'west-end' : 'off-west-end';
 
-        seen.add(titleLower);
+        seen.add(title.toLowerCase());
         shows.push({
           title,
           venue,
