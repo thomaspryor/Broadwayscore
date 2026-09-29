@@ -450,7 +450,7 @@ async function main() {
         ...(usedUrl ? { url: usedUrl } : {}),
       };
 
-      const showInfo = { closingDate: show.closingDate, status: show.status };
+      const showInfo = { closingDate: show.closingDate, status: show.status, category: show.category };
       const combined = calculateCombinedScore(showEntry.sources, showInfo);
       if (combined.score != null) {
         showEntry.combinedScore = combined.score;

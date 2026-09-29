@@ -56,12 +56,18 @@ for (const [showId, show] of Object.entries(audienceBuzz.shows)) {
   const showData = showMap[showId];
   const showInfo = showData ? { closingDate: showData.closingDate, status: showData.status, category: showData.category } : undefined;
   // Broadway.com is US only; a London show's entry is the Broadway production's.
+  let droppedBroadwayCom = false;
   if (show.sources?.broadwayCom && showData && isLondonMarket(showData.category)) {
     console.log(`${showId}: dropping Broadway.com source (London show, score ${show.sources.broadwayCom.score})`);
     delete show.sources.broadwayCom;
-    updated++;
+    droppedBroadwayCom = true;
   }
   const { score, weights } = calculateCombinedScore(show.sources, showInfo);
+  if (droppedBroadwayCom) {
+    updated++;
+    // It was the only qualifying source: don't leave its grade behind.
+    if (score === null) { delete show.combinedScore; delete show.designation; delete show.weights; }
+  }
 
   if (score !== null) {
     show.combinedScore = score;
