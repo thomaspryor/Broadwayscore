@@ -20,13 +20,18 @@ function enabledFeatures(featuresEnv = process.env.NEXT_PUBLIC_FEATURES) {
  * categories that explicitly declare a feature flag.
  */
 function isCategoryEnabled(category, featuresEnv) {
-  const flag = MARKETS[category]?.featureFlag;
-  return !flag || enabledFeatures(featuresEnv).has(flag);
+  const row = MARKETS[category];
+  const flag = row?.featureFlag;
+  return !flag || row.launched === true || enabledFeatures(featuresEnv).has(flag);
 }
 
 /** True when this category must be withheld from public/data (the iOS app feed). */
 function isHiddenFromAppFeed(category, featuresEnv) {
-  return Boolean(MARKETS[category]?.hideFromAppFeed) && !isCategoryEnabled(category, featuresEnv);
+  // Env flag only, never `launched`: launching a category on the website must
+  // not push it into the iOS app before the app can show it (BRO-4254).
+  const row = MARKETS[category];
+  if (!row?.hideFromAppFeed) return false;
+  return !(row.featureFlag && enabledFeatures(featuresEnv).has(row.featureFlag));
 }
 
 module.exports = { MARKETS, VALID_CATEGORIES, isCategoryEnabled, isHiddenFromAppFeed };

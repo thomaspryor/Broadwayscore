@@ -76,8 +76,10 @@ export const featureFlags = {
   get regional() { return has('regional'); },
   /** National tours of Broadway shows (category:'tour', BRO-4211). Gates the same
    *  surfaces as `regional` plus the public/data app feed (see src/config/markets.json).
-   *  Enable via NEXT_PUBLIC_FEATURES=tour. */
-  get tour() { return has('tour'); },
+   *  Launched 2026-09-28 in code (owner has no Vercel env access); keep in step with
+   *  `launched: true` on the tour row of src/config/markets.json. The iOS app feed
+   *  still needs NEXT_PUBLIC_FEATURES=tour (BRO-4254). */
+  get tour() { return true; }, // launched 2026-09-28 — flag retained for cleanup
   get tonyPeople() { return has('tonyPeople'); },
   get sectionJumpLinks() { return has('sectionJumpLinks'); },
   get userAccounts() { return has('userAccounts'); },
