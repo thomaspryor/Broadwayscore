@@ -1402,8 +1402,8 @@ function validateImageFiles(shows) {
 // images.* under /images/shows/<another id>/ renders that show's art on this
 // page. Only linked productions (transferredTo/transferOf/tourParent/tourOf)
 // or an ALLOWED_SHARED_IMAGES entry in scripts/lib/cross-show-images.js may share.
-// Offenders in CROSS_SHOW_IMAGES_BASELINE (known when the gate shipped) warn;
-// any other offender is an error.
+// Every offender is an error (CROSS_SHOW_IMAGES_BASELINE, the warn-only list,
+// is empty since the BRO-4380 data fix applied).
 
 function validateCrossShowImages(shows) {
   info('Checking images.* paths use the show\'s own image directory...');

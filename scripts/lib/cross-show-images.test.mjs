@@ -72,10 +72,9 @@ test('tours are left to tour-family.js (same-title Broadway art is allowed there
   assert.deepEqual(crossShowImageProblems(tour, [tour], {}), []);
 });
 
-test('baseline lists known offenders only, never a linked production', () => {
+test('baseline is empty: every cross-show path fails validate-data', () => {
   const { CROSS_SHOW_IMAGES_BASELINE } = require('./cross-show-images.js');
-  assert.ok(CROSS_SHOW_IMAGES_BASELINE.has('phyl-off-broadway-2026'));
-  assert.ok(!CROSS_SHOW_IMAGES_BASELINE.has('paranormal-activity-chicago-regional-2025'));
+  assert.equal(CROSS_SHOW_IMAGES_BASELINE.size, 0);
 });
 
 test('the fetcher wires the per-show picker and the applyImages guard', async () => {
