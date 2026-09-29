@@ -1050,5 +1050,34 @@
       }
     ],
     "queuedAt": "2026-09-29T07:43:14.738Z"
+  },
+  {
+    "conditionKey": "land:land/1mc-reviews-missing",
+    "title": "Landing blocked: rebase red on land/1mc-reviews-missing",
+    "description": "land.yml did not land land/1mc-reviews-missing: the rebase gate went red at 90f8150166. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36539420823",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/1mc-reviews-missing"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "90f81501660f2a6f5e5f3108b3716fa68ff363d5"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36539420823"
+      }
+    ],
+    "queuedAt": "2026-09-29T07:58:00.218Z"
   }
 ]
