@@ -1,5 +1,37 @@
 [
   {
+    "startedAt": "2026-09-28T00:24:12.564Z",
+    "completedAt": "2026-09-28T00:30:27.774Z",
+    "totalReviews": 178,
+    "processed": 178,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 461414,
+      "output": 41583,
+      "total": 502997
+    },
+    "costUsd": 1.2942371,
+    "runId": "36360403924",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-28T00:52:50.929Z",
+    "completedAt": "2026-09-28T00:52:53.894Z",
+    "totalReviews": 44925,
+    "processed": 0,
+    "skipped": 44924,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 3610,
+      "output": 108,
+      "total": 10930
+    },
+    "costUsd": 0.02523715,
+    "runId": "36362491018",
+    "errorDetails": []
+  },
+  {
     "startedAt": "2026-09-28T00:52:55.496Z",
     "completedAt": "2026-09-28T00:59:23.046Z",
     "totalReviews": 176,
@@ -237106,24 +237138,8 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-09-29T18:05:08.547Z",
-    "completedAt": "2026-09-29T18:05:36.967Z",
-    "totalReviews": 7,
-    "processed": 5,
-    "skipped": 2,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 31149,
-      "output": 1666,
-      "total": 76019
-    },
-    "costUsd": 0.1183782,
-    "runId": "36606235381",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-29T18:05:38.872Z",
-    "completedAt": "2026-09-29T18:05:38.880Z",
+    "startedAt": "2026-09-29T18:37:49.320Z",
+    "completedAt": "2026-09-29T18:37:49.322Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -237134,119 +237150,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "36606235381",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-29T18:09:49.702Z",
-    "completedAt": "2026-09-29T18:09:55.816Z",
-    "totalReviews": 60,
-    "processed": 1,
-    "skipped": 59,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 5377,
-      "output": 337,
-      "total": 14001
-    },
-    "costUsd": 0.0212303,
-    "runId": "36599222023",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-29T18:09:57.666Z",
-    "completedAt": "2026-09-29T18:09:57.691Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "36599222023",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-29T18:04:57.416Z",
-    "completedAt": "2026-09-29T18:06:58.225Z",
-    "totalReviews": 45686,
-    "processed": 12,
-    "skipped": 45658,
-    "errors": 3,
-    "tokensUsed": {
-      "input": 129650,
-      "output": 5721,
-      "total": 338520
-    },
-    "costUsd": 0.5419298,
-    "runId": "36605151187",
-    "errorDetails": [
-      {
-        "showId": "lost-in-del-valle-return-off-broadway-2026",
-        "outletId": "sohoplayhouse",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "maybe-happy-ending-tour-2026",
-        "outletId": "broadwayworld",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "mrs-doubtfire-tour-2025",
-        "outletId": "boston-globe",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-09-29T18:07:00.233Z",
-    "completedAt": "2026-09-29T18:13:44.524Z",
-    "totalReviews": 177,
-    "processed": 177,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 462871,
-      "output": 42439,
-      "total": 505310
-    },
-    "costUsd": 1.2976471,
-    "runId": "36605151187",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-29T18:18:15.445Z",
-    "completedAt": "2026-09-29T18:18:15.457Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "36606794965",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-29T18:22:27.354Z",
-    "completedAt": "2026-09-29T18:22:27.359Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "36606799566",
+    "runId": "36609108921",
     "errorDetails": []
   }
 ]
