@@ -42,8 +42,8 @@ test('only file is wrongProduction (older production) -> true-missed-discovery',
   assert.equal(r.signals.reviewTexts.otherProductionPaths.length, 1);
 });
 
-test('only file is wrongShow with no date -> true-missed-discovery', () => {
-  const r = run({ [`${SHOW}/fixture-outlet--a-critic.json`]: { ...base, publishDate: null, wrongShow: true } });
+test('wrongShow file dated before previews -> true-missed-discovery', () => {
+  const r = run({ [`${SHOW}/fixture-outlet--a-critic.json`]: { ...base, publishDate: '2019-01-01', wrongShow: true } });
   assert.equal(r.state, 'true-missed-discovery');
 });
 
@@ -68,6 +68,21 @@ test('other-production file does not mask a valid current-production file', () =
     [`${SHOW}/fixture-outlet--new.json`]: { ...base, criticName: 'New', publishDate: '2026-09-11' },
   });
   assert.equal(r.state, 'in-pipeline-awaiting-deploy');
+});
+
+test('undated wrongProduction file stays ingested-but-excluded (unknown date is never other-production)', () => {
+  const r = run({ [`${SHOW}/fixture-outlet--a-critic.json`]: { ...base, publishDate: null, wrongProduction: true } });
+  assert.equal(r.state, 'ingested-but-excluded');
+});
+
+test('isOtherProductionFile: no previewsStartDate, priorRuns, unreadable', () => {
+  const old = { publishDate: '2016-05-01' };
+  assert.equal(isOtherProductionFile({ data: old, pending: true }, { openingDate: '2026-09-10' }, null), false);
+  assert.equal(isOtherProductionFile({ data: old, pending: true }, show, null), true);
+  const withPrior = { ...show, priorRuns: [{ openingDate: '2016-04-01', closingDate: '2016-09-01' }] };
+  assert.equal(isOtherProductionFile({ data: old, pending: true }, withPrior, null), false);
+  assert.equal(isOtherProductionFile({ data: null, pending: true }, show, null), false);
+  assert.equal(isOtherProductionFile({ data: { publishDate: '2026-09-09' }, pending: true }, { openingDate: '2026-09-10' }, null), false);
 });
 
 test('isOtherProductionFile: in-window _pending file is current', () => {
