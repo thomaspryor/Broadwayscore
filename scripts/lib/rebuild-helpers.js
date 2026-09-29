@@ -695,10 +695,24 @@ function getBestScore(data, opts = {}) {
     const hasVerifiedStarScore = data.originalScore
       && OUTLET_VERIFIED_SOURCES.has(data.scoreSource)
       && OUTLET_STAR_AUTHORITATIVE.has(data.outletId);
-    if (!hasVerifiedStarScore) {
+    // Same rule for a star-anchored verdict (BRO-4287): anchored-v6 already
+    // pins the score inside the critic's published-star band, so an
+    // adjudication outside that band (±2, as the marker staleness guard below)
+    // contradicts the star. Seen live: Six WE Lost in Theatreland, 5-star band
+    // 91-100, shipped as 40 because the adjudicator invented a "2/5 stars".
+    // Exception: an adjudication that read the text and explicitly sided with
+    // the LLM against the star (Electra WE Daily Mail: a mis-extracted 5/5 on
+    // a negative review) is a reasoned dispute of the star itself, so it stands.
+    // Auto-accepts carry a stale LLM score and "sided with stars" verdicts that
+    // land outside the star band contradict themselves; neither stands.
+    const anchoredBand = data.scoreSource === 'anchored-v6' && data.llmScore && data.llmScore.band;
+    const disputesStar = /^Auto-adjudicated \([^)]*sided with llm\)/.test(data.adjudicationNote || '');
+    const outsideAnchoredBand = !!(anchoredBand && typeof anchoredBand.floor === 'number' && !disputesStar
+      && (data.adjudicatedScore < anchoredBand.floor - 2 || data.adjudicatedScore > anchoredBand.ceiling + 2));
+    if (!hasVerifiedStarScore && !outsideAnchoredBand) {
       return { score: data.adjudicatedScore, source: 'adjudicated' };
     }
-    inc('adjudicationSkippedExplicitStars');
+    inc(outsideAnchoredBand ? 'adjudicationSkippedOutsideStarBand' : 'adjudicationSkippedExplicitStars');
   }
 
   // P0.4: anchored-v6 / llm-v6 (Phase B Sprint 3, 2026-05-16)
@@ -782,7 +796,9 @@ function getBestScore(data, opts = {}) {
       // S6-T6 / BRO-4287: the aggregator editors' thumbs contradict the v6
       // verdict → emit the verdict unchanged but queue it for adjudication.
       const thumbCheck = aggregatorThumbCheck(data, v6Score, { anchored: effectiveV6Source === 'anchored-v6' });
-      if (thumbCheck.flag) {
+      // Already adjudicated but P0a declined it (outside the star band):
+      // re-queueing would re-adjudicate the same file every day.
+      if (thumbCheck.flag && !data.adjudicatedScore) {
         inc(thumbCheck.flag.reason === 'both-thumbs-disagree-with-llm' ? 'bothThumbsOpposeV6Verdict' : 'aggregatorThumbFlagV6');
         flagForHumanReview(data, thumbCheck.flag.reason, `${effectiveV6Source} ${thumbCheck.flag.detail}`);
         return { score: v6Score, source: effectiveV6Source, needsAdjudication: true };
