@@ -26,6 +26,7 @@ import assert from 'node:assert';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 import {
@@ -99,11 +100,60 @@ describe('font wiring: the 2026-08-16 incident shapes', () => {
     assert.ok(checks(dir).includes('primary-family-undefined'));
   });
 
+  test('flags a DYNAMIC next/font import too', () => {
+    // `await import('next/font/google')` reaches the same loader as a static
+    // import, so matching only `from '...'` would let the fix walk right back in.
+    const dir = repoFixture({
+      layout: `const m = await import('next/font/google');\nconst F = '/fonts/i.woff2';\n`,
+    });
+    assert.ok(checks(dir).includes('next-font-reintroduced'));
+  });
+
   test('a commented-out next/font import is not a failure', () => {
     const dir = repoFixture({
       layout: `// import { Inter } from 'next/font/google';\n/* from 'next/font/google' */\nconst F = '/fonts/i.woff2';\n`,
     });
     assert.deepEqual(checks(dir), []);
+  });
+});
+
+describe('font wiring: the filename must still describe the bytes', () => {
+  // /fonts/ is served immutable for a year, so swapping bytes under an
+  // unchanged filename serves the wrong font to returning visitors for a year,
+  // silently. Existence alone never catches that.
+  test('flags a content-hashed file whose bytes no longer match its name', () => {
+    const dir = repoFixture({
+      css: `@font-face{font-family:'InterVariable';src:url('/fonts/Inter-latin-var.deadbeef.woff2') format('woff2')}`,
+      layout: `const F = '/fonts/Inter-latin-var.deadbeef.woff2';\n`,
+      fontFiles: ['fonts/Inter-latin-var.deadbeef.woff2'],
+    });
+    assert.ok(checks(dir).includes('content-hash-mismatch'));
+  });
+
+  test('accepts a file whose name matches its real hash', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'font-hash-'));
+    const bytes = 'woff2-bytes';
+    const h = createHash('sha256').update(bytes).digest('hex').slice(0, 8);
+    const name = `Inter-latin-var.${h}.woff2`;
+    const write = (rel, content) => {
+      fs.mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true });
+      fs.writeFileSync(path.join(dir, rel), content);
+    };
+    write(`public/fonts/${name}`, bytes);
+    write(
+      'src/app/globals.css',
+      `@font-face{font-family:'InterVariable';src:url('/fonts/${name}') format('woff2')}\n`
+    );
+    write(
+      'tailwind.config.ts',
+      `export default {\n  theme: {\n    fontFamily: {\n      sans: ['InterVariable', 'Arial'],\n    },\n  },\n}\n`
+    );
+    write('src/app/layout.tsx', `const F = '/fonts/${name}';\n`);
+    assert.deepEqual(checks(dir), []);
+  });
+
+  test('a filename with no hash segment is left alone', () => {
+    assert.deepEqual(checks(repoFixture()), []);
   });
 });
 

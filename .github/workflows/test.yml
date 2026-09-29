@@ -43,6 +43,13 @@ on:
       # edit to the wrapper (e.g. the read-screen/rename loop) would otherwise
       # trigger ZERO CI, the same gap task #1745 documents.
       - 'scripts/cmux-auth-stall-watchdog.js'
+      # scripts/check-font-integrity.js (BRO-4329) is the guard that keeps
+      # next/font and var() out of the font stack after the 2026-08-16 serif
+      # incident. It lives at the top level of scripts/, not under
+      # scripts/lib/**, and tests/unit/font-integrity.test.mjs requires it
+      # directly — so a solo edit weakening the guard would otherwise trigger
+      # ZERO CI, the same gap task #1745 documents.
+      - 'scripts/check-font-integrity.js'
       - 'scripts/cmux-auth-stall-watchdog.test.mjs'
       # scripts/audit-we-closing-dates.js (BRO-1158) is the I/O orchestrator for
       # scripts/lib/{we-closing-date-extract,we-closing-date-classify,westend-slug-discovery}.js

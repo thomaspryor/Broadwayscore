@@ -49,6 +49,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `check-font-integrity.js — guard the self-hosted font wiring at the source level.
@@ -191,9 +192,16 @@ function analyze(paths = {}) {
 
   // 1. next/font must not come back — its class name is a hash of a live
   //    network response, which is what desynced HTML from CSS in the first place.
-  for (const file of walk(abs(p.srcDir), ['.ts', '.tsx', '.js', '.jsx'])) {
+  for (const file of walk(abs(p.srcDir), ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs'])) {
     const body = stripJsComments(fs.readFileSync(file, 'utf8'));
-    if (/from\s+['"]next\/font/.test(body) || /require\(\s*['"]next\/font/.test(body)) {
+    // Static import, require, and dynamic import() all reach the same loader,
+    // so all three have to be caught — matching only `from 'next/font'` would
+    // let `await import('next/font/google')` walk the fix straight back in.
+    if (
+      /from\s+['"]next\/font/.test(body) ||
+      /require\(\s*['"]next\/font/.test(body) ||
+      /import\(\s*['"]next\/font/.test(body)
+    ) {
       failures.push({
         check: 'next-font-reintroduced',
         detail:
@@ -262,6 +270,31 @@ function analyze(paths = {}) {
             `@font-face for "${face.family}" points at ${src}, which does not exist in ` +
             `${p.publicDir}/. Users would get a 404 and no font.`,
         });
+        continue;
+      }
+      // The filename embeds sha256(bytes).slice(0,8) — that is the contract
+      // update-inter-font.js writes. Existence alone is not enough: /fonts/ is
+      // served `immutable` for a year (vercel.json), so replacing the bytes
+      // while keeping the filename would serve the WRONG font to every
+      // returning visitor, for a year, with nothing reporting it. Verify the
+      // name still describes the bytes.
+      const named = src.match(/\.([0-9a-f]{8})\.woff2$/);
+      if (named) {
+        const actual = crypto
+          .createHash('sha256')
+          .update(fs.readFileSync(onDisk))
+          .digest('hex')
+          .slice(0, 8);
+        if (actual !== named[1]) {
+          failures.push({
+            check: 'content-hash-mismatch',
+            detail:
+              `${src} is named for content hash ${named[1]} but its bytes hash to ${actual}. ` +
+              `The file was replaced without renaming it. /fonts/ is served immutable for a ` +
+              `year, so every returning visitor would keep the stale font indefinitely. ` +
+              `Re-run scripts/update-inter-font.js, which names each file after its bytes.`,
+          });
+        }
       }
     }
   }
