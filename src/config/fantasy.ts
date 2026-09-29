@@ -243,9 +243,9 @@ export function isDraftClosed(now: Date = new Date()): boolean {
   return now > new Date(DRAFT_DEADLINE);
 }
 
-/** Check if the draft has opened yet */
+/** Check if the draft is open: on or after DRAFT_OPENS (a New York calendar date) and before the deadline */
 export function isDraftOpen(now: Date = new Date()): boolean {
-  return now >= new Date(`${DRAFT_OPENS}T00:00:00-04:00`) && !isDraftClosed(now);
+  return nyDate(now.toISOString()) >= DRAFT_OPENS && !isDraftClosed(now);
 }
 
 /**

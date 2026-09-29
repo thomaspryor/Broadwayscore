@@ -54,8 +54,15 @@ describe('fantasy-season.json is the single source of truth', () => {
     assert.deepEqual(league.scoring, seasonConfig.scoring);
   });
 
-  test('the weekly scores snapshot is for this season', () => {
+  test('the weekly scores snapshot is for this season and carries the per-entry fields', () => {
     assert.equal(scores._meta.season, seasonConfig.season);
+    // Without weeklyBoxOffice the leaderboard falls back to all-or-nothing
+    // box office (entryPickPoints legacy branch), which silently mis-scores
+    // late drafters. Every show must carry it.
+    for (const [id, s] of Object.entries(scores.showScores as Record<string, { weeklyBoxOffice?: unknown; openingDate?: unknown }>)) {
+      assert.equal(typeof s.weeklyBoxOffice, 'object', `${id} is missing weeklyBoxOffice`);
+      assert.ok('openingDate' in s, `${id} is missing openingDate`);
+    }
   });
 
   test('season dates are ordered: draft opens < scoring start < early-bird cutoff < deadline < scoring end', () => {

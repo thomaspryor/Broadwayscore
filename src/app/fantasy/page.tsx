@@ -3,6 +3,7 @@ import { getFantasySeasonInfo, getFantasyShowsSorted } from '@/lib/data-fantasy'
 import {
   CRITIC_SCORE_POINTS,
   AUDIENCE_GRADE_POINTS,
+  BOX_OFFICE_POINTS_PER_100K,
   AWARDS_POINTS,
   PRIZE_DESCRIPTION,
   DRAFT_OPENS,
@@ -48,6 +49,24 @@ export default function FantasyLandingPage() {
   const alreadyOpen = shows.filter(s => !s.eligible.criticScore && s.status !== 'closed');
   const seasonLabel = FANTASY_TONY_WINDOW.label;
   const deadlineDate = draftDeadlineDate();
+
+  // Worked example for "Scoring in 30 seconds", computed from the live point
+  // tables so the numbers can never drift from the rules.
+  const exampleWeeks = 20;
+  const exampleNoms = 6;
+  const exampleCritic = CRITIC_SCORE_POINTS['Critical Gold'];
+  const exampleAudience = AUDIENCE_GRADE_POINTS['A-'];
+  const exampleBoxOffice = Math.round(exampleWeeks * 10 * BOX_OFFICE_POINTS_PER_100K);
+  const exampleAwards = (exampleNoms - 1) * AWARDS_POINTS.tonyNom + AWARDS_POINTS.tonyWin + AWARDS_POINTS.tonyBestMusical;
+  const example = {
+    weeks: exampleWeeks,
+    noms: exampleNoms,
+    critic: exampleCritic,
+    audience: exampleAudience,
+    boxOffice: exampleBoxOffice,
+    awards: exampleAwards,
+    total: exampleCritic + exampleAudience + exampleBoxOffice + exampleAwards,
+  };
 
   const calendar = [
     { date: DRAFT_OPENS, label: 'Draft opens' },
@@ -105,6 +124,37 @@ export default function FantasyLandingPage() {
         </div>
       </section>
 
+      {/* Already open */}
+      {alreadyOpen.length > 0 && (
+        <section className="max-w-3xl mx-auto px-4 py-6">
+          <div className="bg-surface-raised/50 rounded-xl p-6 border border-brand/20">
+            <h2 className="text-lg font-bold mb-2">
+              {alreadyOpen.length === 1 ? 'One show has' : `${alreadyOpen.length} shows have`} already opened
+            </h2>
+            <p className="text-sm text-gray-400 mb-3">
+              {alreadyOpen.map(s => s.title).join(' and ')} opened before the draft, so their reviews are already public.
+              They earn box office and awards points only, and their prices reflect that.
+              The same rule applies to any show that opens before you draft: you can still pick it, but critic and audience points go only to players who drafted it before opening night.
+            </p>
+            <ul className="text-sm text-gray-300 space-y-2">
+              {alreadyOpen.map(s => (
+                <li key={s.id} className="flex items-start justify-between gap-4">
+                  <span className="min-w-0">
+                    <span className="block">{s.title}</span>
+                    <span className="block text-xs text-gray-500">
+                      {s.criticScore != null && <>CriticScore {Math.round(s.criticScore)}</>}
+                      {s.criticScore != null && s.openingDate && ' · '}
+                      {s.openingDate && <>opened {shortDate(s.openingDate)}</>}
+                    </span>
+                  </span>
+                  <span className="font-mono text-emerald-400 shrink-0">${s.price}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
       {/* How It Works */}
       <section className="max-w-3xl mx-auto px-4 py-12">
         <h2 className="text-2xl font-bold mb-8 text-center">How It Works</h2>
@@ -137,36 +187,25 @@ export default function FantasyLandingPage() {
         </div>
       </section>
 
-      {/* Already open */}
-      {alreadyOpen.length > 0 && (
-        <section className="max-w-3xl mx-auto px-4 py-6">
-          <div className="bg-surface-raised/50 rounded-xl p-6 border border-brand/20">
-            <h2 className="text-lg font-bold mb-2">
-              {alreadyOpen.length === 1 ? 'One show has' : `${alreadyOpen.length} shows have`} already opened
-            </h2>
-            <p className="text-sm text-gray-400 mb-3">
-              {alreadyOpen.map(s => s.title).join(' and ')} opened before the draft, so their reviews are already public.
-              They earn box office and awards points only, and their prices reflect that.
-              The same rule applies to any show that opens before you draft: you can still pick it, but critic and audience points go only to players who drafted it before opening night.
-            </p>
-            <ul className="text-sm text-gray-300 space-y-2">
-              {alreadyOpen.map(s => (
-                <li key={s.id} className="flex items-start justify-between gap-4">
-                  <span className="min-w-0">
-                    <span className="block">{s.title}</span>
-                    <span className="block text-xs text-gray-500">
-                      {s.criticScore != null && <>CriticScore {Math.round(s.criticScore)}</>}
-                      {s.criticScore != null && s.openingDate && ' · '}
-                      {s.openingDate && <>opened {shortDate(s.openingDate)}</>}
-                    </span>
-                  </span>
-                  <span className="font-mono text-emerald-400 shrink-0">${s.price}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      )}
+      {/* Worked example */}
+      <section className="max-w-3xl mx-auto px-4 py-6">
+        <div className="bg-surface-raised/30 rounded-xl p-6 border border-white/5">
+          <h2 className="text-lg font-bold mb-2">Scoring in 30 seconds</h2>
+          <p className="text-sm text-gray-400 mb-3">
+            Say you draft a new musical before it opens. Here is how a great season adds up:
+          </p>
+          <ul className="text-sm text-gray-300 space-y-1.5">
+            <li className="flex justify-between gap-4"><span>Opens to Critical Gold reviews</span><span className="font-mono text-gray-300 shrink-0">{example.critic} pts</span></li>
+            <li className="flex justify-between gap-4"><span>Audiences give it an A-</span><span className="font-mono text-gray-300 shrink-0">{example.audience} pts</span></li>
+            <li className="flex justify-between gap-4"><span>Grosses $1M a week for {example.weeks} weeks</span><span className="font-mono text-gray-300 shrink-0">{example.boxOffice} pts</span></li>
+            <li className="flex justify-between gap-4"><span>{example.noms} Tony nominations, wins Best Musical</span><span className="font-mono text-gray-300 shrink-0">{example.awards} pts</span></li>
+            <li className="flex justify-between gap-4 border-t border-white/10 pt-1.5 font-semibold text-white"><span>Season total from one pick</span><span className="font-mono shrink-0">{example.total} pts</span></li>
+          </ul>
+          <p className="text-xs text-gray-600 mt-3">
+            A flop earns a few box office points and nothing else. That gap is the whole game.
+          </p>
+        </div>
+      </section>
 
       {/* Scoring */}
       <section className="max-w-3xl mx-auto px-4 py-12">
@@ -334,7 +373,7 @@ export default function FantasyLandingPage() {
             },
             {
               q: 'How do show prices work?',
-              a: `Each show has a price from $5 to $35 based on how many points it is projected to earn: its Tony prospects, its box office outlook, how many weeks it runs, and, for shows that already opened, the score it has. You have $${info.budget} for up to ${info.teamSize} slots, so you need a mix of big bets and value picks. Every price comes with a one-line rationale in the Draft Guide.`,
+              a: `Each show has a price from $5 to $35 based on how many points it is projected to earn: its Tony prospects, its box office outlook, how many weeks it runs, and, for shows that already opened, the score it has. Prices are set when the draft opens and do not change during the season. You have $${info.budget} for up to ${info.teamSize} slots, so you need a mix of big bets and value picks. Every price comes with a one-line rationale in the Draft Guide.`,
             },
             {
               q: 'What is the best strategy?',

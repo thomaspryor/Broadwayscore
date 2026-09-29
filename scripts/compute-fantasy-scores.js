@@ -232,6 +232,21 @@ for (const [showId, show] of Object.entries(fantasyShows)) {
   };
 }
 
+// Box office is keyed by slug in grosses-history.json. A slug mismatch (the
+// grosses scraper naming a show differently from shows.json) would silently
+// score $0 every week, so flag any running Broadway show with no grosses row
+// in the last three reported weeks.
+const warnings = [];
+const recentWeeks = sortedWeeks.slice(-3);
+for (const [showId, show] of Object.entries(fantasyShows)) {
+  if (!show.eligible.boxOffice || !['open', 'previews'].includes(show.status)) continue;
+  const seen = recentWeeks.some(w => weeks[w]?.[show.slug]?.gross > 0);
+  if (!seen) {
+    warnings.push(`${showId}: no grosses row for slug "${show.slug}" in ${recentWeeks.join(', ')} (status ${show.status}); check the slug against grosses-history.json`);
+  }
+}
+for (const w of warnings) console.error(`WARNING: ${w}`);
+
 // Sort by total points for summary
 const ranked = Object.entries(showScores)
   .sort((a, b) => b[1].totalPoints - a[1].totalPoints);
@@ -255,6 +270,7 @@ const output = {
     season: meta.season,
     scoringStart: meta.scoringStart,
     earlyBirdCutoff: meta.earlyBirdCutoff || null,
+    warnings,
     ...(mode === 'projection' ? {
       predictionSource: tonyPredictions?._meta?.source || null,
       predictionLastUpdated: tonyPredictions?._meta?.lastUpdated || null,
