@@ -25,9 +25,12 @@
  * than textFetchedAt, so this predicate stops matching — no loop) when the new
  * text is junk too.
  *
- * Deliberately NOT matched:
+ * Deliberately NOT matched by the text-quality predicate:
  *   - wrong_production / wrong_show: a re-fetch of the same URL does not
- *     refute a verdict about WHICH production/show the article covers.
+ *     refute a verdict about WHICH production/show the article covers. (A
+ *     wrong_production verdict issued WITHOUT the show's declared earlier
+ *     runs/tour legs in the prompt IS re-checked, by the separate
+ *     isPreContextWrongProduction predicate below, BRO-4391.)
  *   - human verdicts: manual-* / human-* / audit-* rejectedBy, isNotReview,
  *     isNonReview, humanReviewScore, manualContentTier, _locked, and
  *     contradicted-flag-basis.js's hasHumanAssertedFlag.
@@ -37,6 +40,8 @@
 
 const { hasHumanAssertedFlag } = require('./contradicted-flag-basis');
 const { isTimestampAfter } = require('./review-guards');
+const { findMatchingPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
+const { clearWrongProductionFlags } = require('./wrong-production-clear');
 
 const TEXT_QUALITY_REASONS = new Set(['not_a_review', 'garbage_text', 'truncated_text']);
 const AUTOMATED_REJECTERS = new Set(['ensemble-scoreability-check', 'news-article-heuristic-check']);
@@ -47,6 +52,7 @@ const NON_COMPLETE_TIERS = new Set(['invalid', 'stub', 'excerpt']);
 
 const REJECTION_FIELDS = ['rejectionReason', 'rejectedAt', 'rejectedBy', 'rejectionReasoning'];
 const NONREVIEW_FIELDS = ['nonReviewFlag', 'nonReviewType', 'nonReviewEvidence', 'nonReviewFlaggedAt', 'nonReviewMethod'];
+const RECHECK_RESCORE_REASON = 'wrong_production verdict predates declared runs/tour legs in the scoring prompt (re-check with runs context)';
 const RESCORE_REASON = 'stale automated text verdict cleared (fullText re-fetched after rejection)';
 
 // undefined/null rejectedBy is NOT automated: 451 corpus rejections carry a
@@ -201,6 +207,60 @@ function neutralizeStaleAutomatedTextVerdict(d, now) {
 }
 
 /**
+ * BRO-4391: an automated wrong_production rejection on a review dated inside
+ * one of the show's DECLARED priorRuns/tourLegs windows, never re-judged with
+ * that runs context. The ensemble rejected these (The Car Man at Curve
+ * Leicester, 2026-08-03) before tourLegs reached the prompt (BRO-4154/4148) or
+ * before the priorRuns were declared; audit-autoclear-vs-ensemble then restored
+ * wrongProduction from the "unanimous" pre-context verdict, so a real review
+ * stayed excluded forever. One re-check per file: productionVerdictRecheckedAt
+ * (PROTECTED_FIELDS) retires the predicate, and a re-rejection WITH context
+ * stands.
+ *
+ * @param {object} d - review record
+ * @param {object} show - shows.json entry (priorRuns / tourLegs)
+ */
+function isPreContextWrongProduction(d, show) {
+  if (!d || !show || typeof d !== 'object') return false;
+  if (d.rejectionReason !== 'wrong_production' || d.rejectedBy !== 'ensemble-scoreability-check') return false;
+  if (d.productionVerdictRecheckedAt) return false;
+  if (!d.publishDate) return false;
+  // A body too short to judge cannot be re-scored into a different verdict.
+  if (typeof d.fullText !== 'string' || d.fullText.trim().length < COMPLETE_TEXT_MIN) return false;
+  if (hasHumanVerdict(d)) return false;
+  if (d.wrongProductionManualClear === true || d.wrongProductionOverride === true ||
+      d.humanReviewedWrongProduction != null || d.wrongShow === true || d.duplicateOf) return false;
+  return !!findMatchingPriorRun(d.publishDate, show.priorRuns) || isWithinTourLeg(d.publishDate, show.tourLegs);
+}
+
+/**
+ * Clear a pre-context wrong_production verdict + flag, park the score from
+ * that verdict, stamp productionVerdictRecheckedAt, breadcrumb it. Does NOT
+ * raise needsRescore (the sweep checks isScoreable first). Mutates.
+ *
+ * @returns {boolean} true when cleared
+ */
+function neutralizePreContextWrongProduction(d, show, now) {
+  if (!isPreContextWrongProduction(d, show)) return false;
+  const at = now || new Date().toISOString();
+  const prior = {
+    clearedAt: at, clearedBy: 'pre-context-wrong-production-recheck', textFetchedAt: d.textFetchedAt,
+    wrongProduction: d.wrongProduction ?? null, rejectionAgreeCount: d.rejectionAgreeCount ?? null,
+  };
+  _clearInto(d, REJECTION_FIELDS, prior);
+  if (d.promptVersion != null) { prior.promptVersion = d.promptVersion; d.promptVersion = null; }
+  // noOverrideStamp: this is a re-judge request, not a human "genuine" verdict;
+  // wrongProductionOverride would exempt the file from every later guard.
+  clearWrongProductionFlags(d, { source: 'pre-context-wrong-production-recheck', reason: 'ensemble wrong_production verdict predates declared runs/tour legs (BRO-4391)', noOverrideStamp: true });
+  delete d.wrongProductionRestoredNote;
+  const parked = parkTextDerivedScore(d, at);
+  if (parked) prior.parkedScore = parked;
+  d.productionVerdictRecheckedAt = at;
+  _pushBreadcrumb(d, prior);
+  return true;
+}
+
+/**
  * collect-review-texts.js re-fetch path: the file just got a fresh body, so an
  * automated text-quality rejection of the OLD body is void. Clears it, parks
  * the old-text score and requeues the file. Leaves wrong_production /
@@ -230,9 +290,12 @@ module.exports = {
   staleAutomatedTextVerdicts,
   neutralizeStaleAutomatedTextVerdict,
   clearAutomatedTextRejectionOnRefetch,
+  isPreContextWrongProduction,
+  neutralizePreContextWrongProduction,
   parkTextDerivedScore,
   isTextDerivedScoreSource,
   TEXT_QUALITY_REASONS,
   COMPLETE_TEXT_MIN,
   RESCORE_REASON,
+  RECHECK_RESCORE_REASON,
 };

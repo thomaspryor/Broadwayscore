@@ -250,3 +250,68 @@ test('P2-2: allow* flags never transfer between merged files', () => {
     assert.equal(isTransferableField(f), false, f);
   }
 });
+
+// BRO-4391: shape of the-car-man-west-end-2026/east-midlands-theatre--unknown.json
+// (Curve Leicester review, ensemble wrong_production before tourLegs reached the prompt).
+const {
+  isPreContextWrongProduction,
+  neutralizePreContextWrongProduction,
+} = require('./stale-automated-text-verdict.js');
+const { scanAutoclearVsEnsembleViolations, classifyAutoclearVsEnsemble } = require('./autoclear-vs-ensemble-scan.js');
+const { PROTECTED_FIELDS } = require('./review-write-guard.js');
+
+const CAR_MAN_SHOW = { id: 'the-car-man-west-end-2026', tourLegs: [{ venue: 'Curve', startDate: '2026-06-15', endDate: '2026-06-27' }] };
+function carManRecord(over = {}) {
+  return {
+    showId: 'the-car-man-west-end-2026', outletId: 'east-midlands-theatre', criticName: 'Unknown',
+    url: 'https://eastmidlandstheatre.com/2026/06/17/review-the-car-man-curve-leicester/',
+    fullText: BODY, textFetchedAt: '2026-08-03T00:49:14.207Z', publishDate: '2026-06-17',
+    contentTier: 'invalid', incompleteReason: 'wrong_content', wrongProduction: true,
+    rejectedAt: '2026-08-03T01:04:49.113Z', rejectedBy: 'ensemble-scoreability-check',
+    rejectionReason: 'wrong_production', rejectionAgreeCount: 2, promptVersion: '5.4.0',
+    wrongProductionAutoCleared: 'rebuild: UK URL on London show', wrongProductionRestoredNote: '[restored]',
+    ...over,
+  };
+}
+
+test('BRO-4391: Car Man Curve review is requeued once, never again after the stamp', () => {
+  const d = carManRecord();
+  assert.equal(isPreContextWrongProduction(d, CAR_MAN_SHOW), true);
+  assert.equal(neutralizePreContextWrongProduction(d, CAR_MAN_SHOW, '2026-09-29T20:00:00.000Z'), true);
+  assert.equal(d.rejectionReason, null);
+  assert.equal(d.wrongProduction, undefined);
+  assert.equal(d.productionVerdictRecheckedAt, '2026-09-29T20:00:00.000Z');
+  assert.equal(d.priorAutomatedTextVerdicts.at(-1).clearedBy, 'pre-context-wrong-production-recheck');
+  assert.equal(isIncludableForRebuild(d, CAR_MAN_SHOW), true);
+  // stamp set => no second requeue, even if the scorer re-rejects with context
+  assert.equal(isPreContextWrongProduction(d, CAR_MAN_SHOW), false);
+  const reRejected = { ...d, rejectionReason: 'wrong_production', rejectedBy: 'ensemble-scoreability-check', wrongProduction: true, rejectedAt: '2026-09-30T00:00:00Z' };
+  assert.equal(isPreContextWrongProduction(reRejected, CAR_MAN_SHOW), false);
+  assert.equal(neutralizePreContextWrongProduction(reRejected, CAR_MAN_SHOW), false);
+});
+
+test('BRO-4391: needs a declared window, an automated ensemble verdict, no human verdict', () => {
+  assert.equal(isPreContextWrongProduction(carManRecord({ publishDate: '2026-03-01' }), CAR_MAN_SHOW), false);
+  assert.equal(isPreContextWrongProduction(carManRecord(), { id: 'x' }), false);
+  assert.equal(isPreContextWrongProduction(carManRecord({ rejectedBy: 'manual-triage' }), CAR_MAN_SHOW), false);
+  assert.equal(isPreContextWrongProduction(carManRecord({ humanReviewedWrongProduction: true }), CAR_MAN_SHOW), false);
+  assert.equal(isPreContextWrongProduction(carManRecord({ fullText: 'short' }), CAR_MAN_SHOW), false);
+  const priorRunShow = { priorRuns: [{ openingDate: '2025-01-01', closingDate: '2025-03-01' }] };
+  assert.equal(isPreContextWrongProduction(carManRecord({ publishDate: '2025-02-01' }), priorRunShow), true);
+});
+
+test('BRO-4391: audit-autoclear-vs-ensemble does not restore from the pre-context verdict', () => {
+  // The audit only reasons about files whose flag was auto-cleared while an ensemble verdict stood.
+  const d = carManRecord({ wrongProduction: false });
+  assert.equal(classifyAutoclearVsEnsemble(d, { reason: 'wrong_production', autoClearedField: 'wrongProductionAutoCleared', flagField: 'wrongProduction' }).isViolation, true);
+  const rechecked = { ...d, productionVerdictRecheckedAt: '2026-09-29T20:00:00Z' };
+  const r = classifyAutoclearVsEnsemble(rechecked, { reason: 'wrong_production', autoClearedField: 'wrongProductionAutoCleared', flagField: 'wrongProduction' });
+  assert.equal(r.isViolation, false);
+  // a rejection issued AFTER the recheck (with context) is still deferred to
+  const post = { ...rechecked, rejectedAt: '2026-10-01T00:00:00Z' };
+  assert.equal(classifyAutoclearVsEnsemble(post, { reason: 'wrong_production', autoClearedField: 'wrongProductionAutoCleared', flagField: 'wrongProduction' }).isViolation, true);
+});
+
+test('BRO-4391: the recheck stamp survives safeWriteReview (PROTECTED_FIELDS)', () => {
+  assert.ok(PROTECTED_FIELDS.includes('productionVerdictRecheckedAt'));
+});

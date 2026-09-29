@@ -14,6 +14,10 @@
  * recoveries (recover-*-browser.js, collect-review-texts.js re-fetches) heal
  * without anyone noticing them first.
  *
+ * Also (BRO-4391): an ensemble wrong_production rejection on a review dated
+ * inside a declared priorRuns/tourLegs window that was never re-judged with
+ * those runs in the prompt is cleared + requeued ONCE (productionVerdictRecheckedAt).
+ *
  * Per file: the verdict moves into priorAutomatedTextVerdicts[], the live
  * fields are null-assigned (never deleted), every score computed from the old
  * text is parked in the same breadcrumb (so the file publishes nothing until
@@ -37,7 +41,7 @@ const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { shouldRefuseSurge } = require('./lib/wrong-show-blocker-cleanup');
-const { staleAutomatedTextVerdicts, neutralizeStaleAutomatedTextVerdict, RESCORE_REASON } = require('./lib/stale-automated-text-verdict');
+const { staleAutomatedTextVerdicts, neutralizeStaleAutomatedTextVerdict, isPreContextWrongProduction, neutralizePreContextWrongProduction, RESCORE_REASON, RECHECK_RESCORE_REASON } = require('./lib/stale-automated-text-verdict');
 const { markRescoreNeeded } = require('./lib/rescore-flagging');
 const { isScoreable } = require('./lib/is-scoreable');
 
@@ -88,9 +92,13 @@ function scan(dir, shows, showFilter) {
       const fp = path.join(showPath, file);
       let data;
       try { data = JSON.parse(fs.readFileSync(fp, 'utf8')); } catch { continue; }
+      const show = shows.get(showDir);
       const kinds = staleAutomatedTextVerdicts(data);
+      // BRO-4391: wrong_production verdicts issued before the declared
+      // priorRuns/tourLegs were in the prompt get one re-judge with them.
+      if (!kinds.length && isPreContextWrongProduction(data, show)) kinds.push('wrongProductionRecheck');
       if (!kinds.length) continue;
-      matches.push({ path: fp, rel: `${showDir}/${file}`, show: shows.get(showDir), kinds, data });
+      matches.push({ path: fp, rel: `${showDir}/${file}`, show, kinds, data });
     }
   }
   return matches;
@@ -110,11 +118,13 @@ function processRecord(m, now) {
     nonReviewType: d.nonReviewType ?? null,
   };
   const trial = JSON.parse(JSON.stringify(d));
-  neutralizeStaleAutomatedTextVerdict(trial, now);
+  const recheck = m.kinds.includes('wrongProductionRecheck');
+  const neutralize = (rec) => (recheck ? neutralizePreContextWrongProduction(rec, m.show, now) : neutralizeStaleAutomatedTextVerdict(rec, now));
+  neutralize(trial);
   const scoreable = isScoreable(trial, m.show, m.path);
   if (scoreable) {
-    neutralizeStaleAutomatedTextVerdict(d, now);
-    markRescoreNeeded(d, RESCORE_REASON, now);
+    neutralize(d);
+    markRescoreNeeded(d, recheck ? RECHECK_RESCORE_REASON : RESCORE_REASON, now);
   }
   const last = scoreable ? d.priorAutomatedTextVerdicts[d.priorAutomatedTextVerdicts.length - 1] : null;
   return {
