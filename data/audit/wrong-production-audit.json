@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-29T12:01:30.877Z",
+  "timestamp": "2026-09-29T12:16:29.711Z",
   "stats": {
-    "totalReviews": 44909,
-    "alreadyFlagged": 18288,
+    "totalReviews": 44999,
+    "alreadyFlagged": 18293,
     "dateGuardCatches": 233,
-    "directorMismatch": 1109,
-    "tvFilmSignals": 1323,
+    "directorMismatch": 1116,
+    "tvFilmSignals": 1324,
     "londonSignals": 1222,
     "offBroadwaySignals": 513,
     "yearMismatch": 102,
-    "noPublishDate": 3994
+    "noPublishDate": 4072
   },
   "findings": [
     {
@@ -513,6 +513,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2004 (2x) more than 2014 (0x). 2004 matches production: a-raisin-in-the-sun-2004"
+        }
+      ]
+    },
+    {
+      "showId": "a-slow-fire-off-west-end-2026",
+      "file": "timeout-london--unknown.json",
+      "score": null,
+      "publishDate": "2026-08-25",
+      "url": "https://www.timeout.com/london/theatre/a-slow-fire-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -30900,6 +30914,60 @@
       ]
     },
     {
+      "showId": "the-notebook-tour-2025",
+      "file": "san-francisco-chronicle--lily-janiak.json",
+      "publishDate": null,
+      "url": "https://www.sfchronicle.com/entertainment/theater/article/notebook-review-sf-21336695.php",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
+      "file": "the-news-herald--mark-meszoros.json",
+      "publishDate": null,
+      "url": "https://www.news-herald.com/2025/09/15/the-notebook-at-playhouse-square-review-sweeping-us-off-our-feet/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
+      "file": "weho-times--shaena-engle.json",
+      "publishDate": null,
+      "url": "https://wehotimes.com/the-notebook-a-tale-of-memory-and-love-at-the-hollywood-pantages/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
       "showId": "the-office-a-musical-parody-off-broadway-2018",
       "file": "thepopbreak--rob-crowther-iv.json",
       "score": 91,
@@ -30980,6 +31048,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "file": "toronto-star--glenn-sumi.json",
+      "publishDate": null,
+      "url": "https://www.thestar.com/entertainment/stage/mirvishs-the-outsiders-features-a-spectacular-canadian-made-rumble-scene--too-bad-the-songs-fail-to-land/article_4406149d-a1b1-48d4-b44a-11c55fdd1939.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
         }
       ]
     },
@@ -31520,6 +31601,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-tour-2025",
+      "file": "minnesota-monthly--jerrod-sumner.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.minnesotamonthly.com/arts-entertainment/theater-dance/review-the-phantom-mask-returns/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
         }
       ]
     },
@@ -34547,19 +34642,6 @@
     {
       "showId": "water-for-elephants-tour-2025",
       "file": "broadwayworld--jeffrey-kare.json",
-      "publishDate": null,
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "broadwayworld--taylor-clemons.json",
       "publishDate": null,
       "url": null,
       "findings": [
