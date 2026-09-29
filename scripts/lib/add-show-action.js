@@ -54,7 +54,7 @@ function applyAddShow(shows, action) {
 
   const added = { ...show, venue: sanitizeVenueForWrite(show.venue), discoverySource: show.discoverySource || 'manual-user-request' };
   if (prior) {
-    const run = { id: prior.id, venue: prior.venue, openingDate: prior.openingDate || null };
+    const run = { id: prior.id, venue: sanitizeVenueForWrite(prior.venue), openingDate: prior.openingDate || null };
     if (prior.closingDate) run.closingDate = prior.closingDate;
     added.priorRuns = [run];
   }
