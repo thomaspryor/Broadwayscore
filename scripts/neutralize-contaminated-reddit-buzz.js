@@ -77,7 +77,7 @@ function main() {
     const before = x.combinedScore;
     // Project the post-suppression score (used for both the dry-run report and
     // the real recompute) by evaluating weighting on a reddit-suppressed copy.
-    const showInfo = show ? { status: show.status, closingDate: show.closingDate } : undefined;
+    const showInfo = show ? { status: show.status, closingDate: show.closingDate, category: show.category } : undefined;
     const projectedSources = { ...sources, reddit: { ...reddit, suppressed: true } };
     const { score: projected } = calculateCombinedScore(projectedSources, showInfo);
     if (apply) {
