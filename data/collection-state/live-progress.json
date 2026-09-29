@@ -1,19 +1,132 @@
 {
-  "updatedAt": "2026-09-29T21:22:37.697Z",
-  "processed": 7,
-  "failed": 1,
-  "successRate": "87.5%",
+  "updatedAt": "2026-09-29T21:53:34.148Z",
+  "processed": 118,
+  "failed": 39,
+  "successRate": "75.2%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 62,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 19,
+    "scrapingbee": 9,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 15
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 16,
+  "recentActivity": [
+    {
+      "t": "2026-09-29T21:09:26.517Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-29T21:22:16.292Z",
+      "event": "bb-session",
+      "session": "60c54287",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
+    },
+    {
+      "t": "2026-09-29T21:22:27.664Z",
+      "event": "bb-session",
+      "session": "c5ed31bf",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-09-29T21:24:55.592Z",
+      "event": "bb-session",
+      "session": "8e868a46",
+      "url": "https://parade.com/news/neil-patrick-harris-returns-to-broadway-in-revival-of-a-"
+    },
+    {
+      "t": "2026-09-29T21:25:13.418Z",
+      "event": "bb-session",
+      "session": "ec0c7797",
+      "url": "https://parade.com/news/neil-patrick-harris-returns-to-broadway-in-revival-of-a-"
+    },
+    {
+      "t": "2026-09-29T21:32:33.157Z",
+      "event": "bb-session",
+      "session": "049dfc47",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-story-review-hectorin"
+    },
+    {
+      "t": "2026-09-29T21:32:33.711Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-29T21:35:12.000Z",
+      "event": "bb-session",
+      "session": "93cf4e2c",
+      "url": "https://www.nytimes.com/2026/09/03/theater/electra-persona-national-theatre-cate"
+    },
+    {
+      "t": "2026-09-29T21:35:12.612Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-29T21:35:31.242Z",
+      "event": "bb-session",
+      "session": "99728b7b",
+      "url": "https://www.nytimes.com/2026/09/03/theater/electra-persona-national-theatre-cate"
+    },
+    {
+      "t": "2026-09-29T21:35:31.739Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-29T21:38:10.653Z",
+      "event": "bb-session",
+      "session": "ba721e1a",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-09-29T21:38:11.171Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-29T21:38:28.522Z",
+      "event": "bb-session",
+      "session": "a0cd0721",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-09-29T21:38:29.007Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-29T21:47:08.204Z",
+      "event": "bb-session",
+      "session": "a7b89cb5",
+      "url": "https://deadline.com/2026/02/rege-jean-page-great-gatsby-theater-adaptation-star"
+    },
+    {
+      "t": "2026-09-29T21:49:10.433Z",
+      "event": "bb-session",
+      "session": "742f30d6",
+      "url": "https://www.nytimes.com/2025/10/29/theater/bat-boy-phantom-of-opera.html"
+    },
+    {
+      "t": "2026-09-29T21:49:10.921Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-29T21:49:29.554Z",
+      "event": "bb-session",
+      "session": "99d430d9",
+      "url": "https://www.nytimes.com/2025/10/29/theater/bat-boy-phantom-of-opera.html"
+    },
+    {
+      "t": "2026-09-29T21:49:29.997Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
