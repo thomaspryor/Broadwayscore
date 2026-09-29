@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-09-29T16:31:12.191Z",
+  "generatedAt": "2026-09-29T21:22:06.801Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 174,
-  "clean": 171,
+  "checked": 173,
+  "clean": 170,
   "defective": 3,
   "byType": {
-    "unreachable": 1,
-    "missing-from-prod": 1,
-    "score-drift": 2
+    "missing-from-prod": 2,
+    "score-drift": 1,
+    "unreachable": 1
   },
   "shows": [
     {
@@ -28,42 +28,42 @@
       "deployedCount": null
     },
     {
-      "showId": "who-killed-marilyn-off-west-end-2026",
-      "title": "Who Killed Marilyn?",
-      "openingDate": "2026-08-21",
+      "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
+      "title": "The Cherry Orchard",
+      "openingDate": "2026-09-17",
       "ok": false,
       "defects": [
         {
           "type": "missing-from-prod",
-          "detail": "3 scored outlet(s) absent from the deployed payload: daily-mail, standard, whatsonstage"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed payload has no numeric cs (local 34.67)"
+          "detail": "1 scored outlet(s) absent from the deployed payload: broadwayworld"
         }
       ],
       "missingFromProd": [
-        "daily-mail",
-        "standard",
-        "whatsonstage"
+        "broadwayworld"
       ],
-      "localCount": 4,
-      "deployedCount": 1
+      "localCount": 11,
+      "deployedCount": 10
     },
     {
-      "showId": "three-men-in-a-boat-off-west-end-2026",
-      "title": "Three Men in a Boat",
-      "openingDate": "2026-09-23",
+      "showId": "burlesque-west-end-2026",
+      "title": "Burlesque",
+      "openingDate": "2025-07-22",
       "ok": false,
       "defects": [
         {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: london-theatre-reviews"
+        },
+        {
           "type": "score-drift",
-          "detail": "deployed cs 77.27 vs local 76.67 (Δ0.6)"
+          "detail": "deployed cs 62.87 vs local 63.87 (Δ1)"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 3,
-      "deployedCount": 3
+      "missingFromProd": [
+        "london-theatre-reviews"
+      ],
+      "localCount": 17,
+      "deployedCount": 16
     }
   ]
 }
