@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-28T22:41:30.111Z",
+  "generated": "2026-09-29T01:26:26.483Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 20,
+  "count": 19,
   "orphans": [
     {
       "showId": "all-my-sons-2019",
@@ -50,13 +50,6 @@
       "loserFile": "timeout--sam-marlowe.json",
       "targetFile": "timeout-london--sam-marlowe.json",
       "reason": "orphaned-duplicate-heal: timeout-london--sam-marlowe.json was flagged invalid after timeout--sam-marlowe.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "midnight-at-the-never-get-west-end-2026",
-      "loserFile": "everything-theatre--unknown.json",
-      "targetFile": "everything-theatre--irene-lloyd.json",
-      "reason": "orphaned-duplicate-heal: everything-theatre--irene-lloyd.json was flagged invalid after everything-theatre--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
