@@ -146,8 +146,8 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T20:32:31.863Z",
-      "lastNotifiedAt": "2026-09-29T19:39:12.553Z",
+      "lastSeen": "2026-09-29T20:37:45.536Z",
+      "lastNotifiedAt": "2026-09-29T16:20:41.341Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
       "notifyCount": 111,
       "cardId": null,
@@ -5883,7 +5883,7 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "lastSeen": "2026-09-29T20:32:31.853Z",
+      "lastSeen": "2026-09-29T20:37:45.502Z",
       "lastNotifiedAt": "2026-09-29T14:55:02.180Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
@@ -6594,7 +6594,7 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"fewer than 50 outlets have a null domain\"",
       "firstSeen": "2026-09-29T17:52:27.963Z",
-      "lastSeen": "2026-09-29T20:32:31.860Z",
+      "lastSeen": "2026-09-29T20:37:45.532Z",
       "lastNotifiedAt": "2026-09-29T17:52:27.963Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -6785,7 +6785,7 @@
       "linearIdentifier": null
     },
     "land:land/worktree-absence-guard-4137": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: rebase red on land/worktree-absence-guard-4137",
       "firstSeen": "2026-09-29T20:04:40.702Z",
@@ -6794,7 +6794,8 @@
       "lastSurfacedAt": "2026-09-29T20:04:40.702Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-29T20:36:58.239Z"
     },
     "land:land/job/linear-BRO-4049-mun2wijz": {
       "status": "open",
@@ -6816,6 +6817,18 @@
       "lastSeen": "2026-09-29T20:29:25.291Z",
       "lastNotifiedAt": "2026-09-29T20:29:25.291Z",
       "lastSurfacedAt": "2026-09-29T20:29:25.291Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-4377-ob-coverage": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-4377-ob-coverage",
+      "firstSeen": "2026-09-29T20:37:42.224Z",
+      "lastSeen": "2026-09-29T20:37:42.224Z",
+      "lastNotifiedAt": "2026-09-29T20:37:42.224Z",
+      "lastSurfacedAt": "2026-09-29T20:37:42.224Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
