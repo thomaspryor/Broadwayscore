@@ -275,6 +275,8 @@ on:
       # edit to either triggers CI.
       - 'scripts/scrape-mezzanine-audience.js'
       - 'scripts/scrape-mezzanine-audience.test.mjs'
+      - 'scripts/triage-review-gap.js'
+      - 'scripts/triage-review-gap.test.mjs'
       # tests/unit/scrape-nysr-preserves-exclusion-flags.test.mjs
       - 'scripts/scrape-nysr-reviews.js'
       # tests/unit/scrape-theatre-reviews-preserves-exclusion-flags.test.mjs
