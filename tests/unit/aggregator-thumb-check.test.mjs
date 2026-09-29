@@ -115,3 +115,50 @@ describe('getBestScore wiring: score unchanged, queued exactly once', () => {
     assert.equal(flags.length, 0);
   });
 });
+
+describe('P0a: adjudication cannot leave a star-anchored band', () => {
+  // Six WE / Lost in Theatreland: anchored-v6 99 in a 91-100 (5-star) band,
+  // adjudicator wrote 40 citing a "2/5 stars" the review does not carry.
+  const SIX = {
+    outletId: 'lost-in-theatreland', scoreSource: 'anchored-v6', adjudicatedScore: 40,
+    llmScore: { score: 99, confidence: 'high', band: { floor: 91, ceiling: 100, fraction: 0.9 } },
+    ensembleData: {}, fullText: 'x'.repeat(300), dtliThumb: null, bwwThumb: null,
+  };
+  const run = (data) => {
+    const flags = []; const stats = {};
+    const result = getBestScore(data, { stats, flagForHumanReview: (d, reason) => flags.push(reason) });
+    return { result, flags, stats };
+  };
+
+  test('out-of-band adjudication is skipped; the anchored verdict ships', () => {
+    const { result, stats } = run(SIX);
+    assert.deepEqual(result, { score: 99, source: 'anchored-v6' });
+    assert.equal(stats.adjudicationSkippedOutsideStarBand, 1);
+  });
+
+  test('in-band adjudication (±2) still wins', () => {
+    assert.deepEqual(run({ ...SIX, adjudicatedScore: 90 }).result, { score: 90, source: 'adjudicated' });
+    assert.deepEqual(run({ ...SIX, adjudicatedScore: 95 }).result, { score: 95, source: 'adjudicated' });
+  });
+
+  test('an adjudication that explicitly disputed the star from the text still stands', () => {
+    const disputed = { ...SIX, adjudicatedScore: 60,
+      adjudicationNote: 'Auto-adjudicated (high confidence, sided with llm): Despite the 5/5 star rating, the verdict is negative.' };
+    assert.deepEqual(run(disputed).result, { score: 60, source: 'adjudicated' });
+    const withStars = { ...SIX, adjudicationNote: 'Auto-adjudicated (high confidence, sided with stars): 2/5 stars.' };
+    assert.deepEqual(run(withStars).result, { score: 99, source: 'anchored-v6' });
+    const autoAccepted = { ...SIX, adjudicationNote: 'Auto-accepted after 3 uncertain adjudications - LLM original score retained' };
+    assert.deepEqual(run(autoAccepted).result, { score: 99, source: 'anchored-v6' });
+  });
+
+  test('llm-v6 (no band) adjudication is unaffected', () => {
+    const noBand = { ...SIX, scoreSource: 'llm-v6', llmScore: { score: 99, confidence: 'high' } };
+    assert.deepEqual(run(noBand).result, { score: 40, source: 'adjudicated' });
+  });
+
+  test('a declined adjudication is not re-queued every day', () => {
+    const { result, flags } = run({ ...SIX, dtliThumb: 'Down', bwwThumb: 'Down', llmScore: { ...SIX.llmScore, score: 92 } });
+    assert.deepEqual(result, { score: 92, source: 'anchored-v6' });
+    assert.equal(flags.length, 0);
+  });
+});
