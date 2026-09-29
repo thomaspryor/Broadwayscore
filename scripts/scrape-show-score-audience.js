@@ -606,7 +606,8 @@ async function discoverShowScoreUrl(show) {
 
 /**
  * BRO-4358: drop a cached URL that returned Show Score's 404 page and try to
- * find the show's current page. Returns the new URL (already cached) or null.
+ * find the show's current page. Returns the URL to scrape now (a replacement,
+ * or the same URL when it loaded fine on the retry; already cached) or null.
  * With no replacement the show is left uncached, so the listings-discovery
  * step of the next run gets another go at it.
  */
@@ -616,6 +617,9 @@ async function rediscoverAfterDeadUrl(show, deadUrl) {
   // strip the whole cache in one run.
   if (!(deadUrlRediscoveriesLeft > 0)) {
     console.log(`  Dead URL for ${show.id} left in place: rediscovery budget for this run is spent`);
+    // Not a clean "no data" result: don't stamp it fresh, so the next run
+    // retries it instead of waiting out --skip-fresh-hours.
+    showFetchFailed = true;
     return null;
   }
   deadUrlRediscoveriesLeft--;
@@ -632,6 +636,7 @@ async function rediscoverAfterDeadUrl(show, deadUrl) {
   let result = null;
   if (action === 'keep') {
     shows[show.id] = deadUrl;
+    result = deadUrl; // caller re-scrapes it this run
     console.log(`  Kept ${deadUrl}: it loaded fine on the retry`);
   } else if (action === 'replace') {
     shows[show.id] = url;
