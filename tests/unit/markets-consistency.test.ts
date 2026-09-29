@@ -63,16 +63,30 @@ test('script-side reader exposes the same categories', () => {
   assert.deepEqual([...jsMarkets.VALID_CATEGORIES].sort(), rows.map(([c]) => c).sort());
 });
 
-test('flag gate: tour hidden and withheld from the app feed until NEXT_PUBLIC_FEATURES has tour', () => {
-  assert.equal(jsMarkets.isCategoryEnabled('tour', ''), false);
+test('tour: launched on the web in code, still withheld from the app feed until the env flag (BRO-4211, BRO-4254)', () => {
+  assert.equal(jsMarkets.isCategoryEnabled('tour', ''), true);
   assert.equal(jsMarkets.isHiddenFromAppFeed('tour', ''), true);
-  assert.equal(jsMarkets.isCategoryEnabled('tour', 'regional,tour'), true);
-  assert.equal(jsMarkets.isHiddenFromAppFeed('tour', 'tour'), false);
-  // regional predates the app-feed gate and stays in the feed either way.
+  assert.equal(jsMarkets.isHiddenFromAppFeed('tour', 'regional,tour'), false);
+  assert.equal(featureFlags.tour, true);
+  // regional is not launched: the env gate still decides it.
   assert.equal(jsMarkets.isCategoryEnabled('regional', ''), false);
+  assert.equal(jsMarkets.isCategoryEnabled('regional', 'regional'), true);
   assert.equal(jsMarkets.isHiddenFromAppFeed('regional', ''), false);
-  // Categories without a flag are never hidden; unknown categories are not hidden.
-  assert.equal(jsMarkets.isCategoryEnabled('broadway', ''), true);
-  assert.equal(jsMarkets.isHiddenFromAppFeed('broadway', ''), false);
-  assert.equal(jsMarkets.isCategoryEnabled(undefined, ''), true);
+});
+
+test('launched in markets.json exactly when the featureFlags getter is hard-wired true', () => {
+  // Web (featureFlags) and script (markets.js) gates must agree with no env set.
+  for (const [category, row] of Object.entries(TS_MARKETS) as [string, any][]) {
+    if (!row.featureFlag) continue;
+    const webOn = (featureFlags as unknown as Record<string, boolean>)[row.featureFlag] === true;
+    assert.equal(jsMarkets.isCategoryEnabled(category, ''), webOn, category);
+    assert.equal(row.launched === true, webOn, category);
+  }
+});
+
+test('unflagged categories are always public and in the app feed', () => {
+  for (const c of ['broadway', 'off-broadway', 'west-end', 'off-west-end', undefined]) {
+    assert.equal(jsMarkets.isCategoryEnabled(c, ''), true, String(c));
+    assert.equal(jsMarkets.isHiddenFromAppFeed(c, ''), false, String(c));
+  }
 });
