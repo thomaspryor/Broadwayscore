@@ -1522,6 +1522,25 @@ function stripFooterContent(text) {
 }
 
 /**
+ * Strip a trailing venue address ("Hayes Theater 240 West 44th Street New York,
+ * NY 10036") or "Listings and ticket information can be found here" line so the
+ * ending-punctuation check judges the review prose, not the trailer (BRO-4387).
+ * Only strips when the trailer is short and follows a punctuated sentence end,
+ * so a review truncated mid-sentence right before an address stays flagged.
+ */
+function stripVenueListingsTrailer(text) {
+  let t = text;
+  for (let i = 0; i < 2; i++) {
+    const listings = t.replace(/\s*Listings?\s+and\s+ticket\s+information\s+can\s+be\s+found\s+here\.?\s*$/i, '');
+    if (listings !== t) { t = listings; continue; }
+    const addr = /([.!?]["'\u201d\u2019)]?)\s+(?:[A-Z0-9][\w'’&-]*,?\s+){1,10}(?:NY|NJ|CT)\s+\d{5}(?:-\d{4})?\s*$/.exec(t);
+    if (addr) { t = t.slice(0, addr.index + addr[1].length); continue; }
+    break;
+  }
+  return t;
+}
+
+/**
  * Detect truncation signals in text
  * @param {string} text - Text to analyze
  * @returns {{ signals: string[], severeCount: number, moderateCount: number, likelyTruncated: boolean }}
@@ -1596,7 +1615,9 @@ function detectTruncationSignals(text) {
   // Check if text ends with proper punctuation (includes EW-style letter grades like B+, A-)
   // When footer junk is present, don't penalize for bad ending — the review likely
   // ends with proper punctuation before the footer.
-  const trimmed = text.trim();
+  // Venue-address / "Listings and ticket information" trailers (stagebuddy,
+  // theatreweekly) are not review prose: judge the ending on what precedes them.
+  const trimmed = stripVenueListingsTrailer(text.trim());
   if (!hasFooterJunk && trimmed.length > 100 && !/[.!?"'"")\]]$/.test(trimmed) && !/[.!?]\s*[A-DF][+-]?$/.test(trimmed)) {
     signals.push('no_ending_punctuation');
     moderateCount++;
@@ -3424,6 +3445,7 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
 
 module.exports = {
   URL_CONTENT_CHECK_VERSION,
+  stripVenueListingsTrailer,
   isGarbageContent,
   hasReviewContent,
   assessTextQuality,
