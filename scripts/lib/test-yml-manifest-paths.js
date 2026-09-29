@@ -154,6 +154,14 @@ const UNREGISTERED_TEST_QUARANTINE = new Map([
     'tests/unit/bro3887-cache-fix-acceptance.test.mjs',
     'BRO-3425 — runs in check-corpus-drift.yml (data-health), not test.yml: a deferred-effect probe on data/audit/scraper-spend-ledger.jsonl (gather-reviews credits/day). A live spend reading is not a code fact; in the unit batch it turned main red on 2026-09-24 (7,054 credits).',
   ],
+  [
+    'tests/unit/image-presence.test.mjs',
+    'BRO-3425 — runs in check-corpus-drift.yml (data-health), not test.yml: asserts no scored show in the live catalog is imageless past the self-heal threshold (Date.now()), which turns true whenever a newly scored show still lacks a poster. In the unit batch it turned main red on 2026-09-29 (5 West End shows) with no code change.',
+  ],
+  [
+    'tests/unit/outlet-registry-live-data.test.mjs',
+    'BRO-3425 — runs in check-corpus-drift.yml (data-health), not test.yml: null-domain ceiling + domain collisions over data/outlet-registry.json, which the rebuild auto-registers into and commits to main many times a day. In the unit batch it turned main red on 2026-09-29 (51 > 50) with no code change.',
+  ],
 ]);
 
 /** Repo-relative paths of every test file under SCANNED_TEST_DIRS. */
