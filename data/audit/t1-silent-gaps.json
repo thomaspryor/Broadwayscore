@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-29T02:37:21.498Z",
+  "generatedAt": "2026-09-29T09:20:40.945Z",
   "windowDays": 45,
-  "showsScanned": 81,
+  "showsScanned": 84,
   "gaps": [
     {
       "showId": "truly-howard-hughes-off-broadway-2026",
@@ -17,9 +17,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=truly-howard-hughes-off-broadway-2026",
       "firstSeen": "2026-09-09T14:56:32.660Z",
-      "fileAgeHours": 467.6799061111111,
+      "fileAgeHours": 474.4007697222222,
       "gapSeenAt": "2026-09-29T02:37:21.498Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 6.7220683333333335
     },
     {
       "showId": "tru-off-west-end-2026",
@@ -35,8 +35,26 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=tru-off-west-end-2026",
       "firstSeen": "2026-09-27T08:56:02.196Z",
-      "fileAgeHours": 41.688493888888885,
+      "fileAgeHours": 48.409365,
       "gapSeenAt": "2026-09-29T02:37:21.498Z",
+      "nonTerminalAgeHours": 6.7220683333333335
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "title": "Golden Boy",
+      "openingDate": "2026-09-15",
+      "file": "daily-mail--patrick-marmion.json",
+      "outletId": "daily-mail",
+      "tier": 1,
+      "type": "unscored",
+      "dispatchable": false,
+      "url": "https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
+      "firstSeen": "2026-09-22T16:40:31.606Z",
+      "fileAgeHours": 160.66794555555555,
+      "gapSeenAt": "2026-09-29T09:20:40.944Z",
       "nonTerminalAgeHours": 0
     },
     {
@@ -52,9 +70,27 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 59.71458194444445,
+      "fileAgeHours": 66.43546194444444,
       "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 56.89784083333333
+      "nonTerminalAgeHours": 63.619909166666666
+    },
+    {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "title": "Million Dollar Quartet",
+      "openingDate": "2026-09-14",
+      "file": "broadwayworld--michael-major.json",
+      "outletId": "broadwayworld",
+      "tier": 2,
+      "type": "unscored",
+      "dispatchable": false,
+      "url": "https://www.broadwayworld.com/westend/article/Video-MILLION-DOLLAR-QUARTET-Trailer-Released-Ahead-of-2026-London-Return-20260909",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=million-dollar-quartet-off-west-end-2026",
+      "firstSeen": "2026-09-17T08:13:24.884Z",
+      "fileAgeHours": 289.1199025,
+      "gapSeenAt": "2026-09-29T09:20:40.944Z",
+      "nonTerminalAgeHours": 0
     }
   ],
   "contradictions": []

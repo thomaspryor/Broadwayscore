@@ -1221,61 +1221,39 @@
     "queuedAt": "2026-09-29T08:55:26.913Z"
   },
   {
-    "conditionKey": "land:land/bro-4219",
-    "title": "Landing blocked: rebase red on land/bro-4219",
-    "description": "land.yml did not land land/bro-4219: the rebase gate went red at fa000d2c32. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36546253097",
-    "severity": "error",
+    "conditionKey": "review-gap:opening-window:la-boheme-off-broadway-2026",
+    "title": "Review gap — \"La Bohème\" missing 5 cited review(s)",
+    "description": "La Bohème (la-boheme-off-broadway-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=la-boheme-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-4219"
-      },
-      {
-        "name": "gate",
-        "value": "rebase"
-      },
-      {
-        "name": "tip",
-        "value": "fa000d2c328bae2cceb03269c07a29754d335c6f"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36546253097"
-      }
-    ],
-    "queuedAt": "2026-09-29T09:01:37.290Z"
+    "fields": [],
+    "queuedAt": "2026-09-29T09:20:33.934Z"
   },
   {
-    "conditionKey": "land:land/video-transcripts-fix",
-    "title": "Landing blocked: rebase red on land/video-transcripts-fix",
-    "description": "land.yml did not land land/video-transcripts-fix: the rebase gate went red at f85afba7d8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36547935179",
-    "severity": "error",
+    "conditionKey": "review-gap:opening-window:the-invention-of-love-off-broadway-2026",
+    "title": "Review gap — \"The Invention of Love\" missing 5 cited review(s)",
+    "description": "The Invention of Love (the-invention-of-love-off-broadway-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-invention-of-love-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/video-transcripts-fix"
-      },
-      {
-        "name": "gate",
-        "value": "rebase"
-      },
-      {
-        "name": "tip",
-        "value": "f85afba7d8205146ca26a7a587021c01fb3fe798"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36547935179"
-      }
-    ],
-    "queuedAt": "2026-09-29T09:16:58.232Z"
+    "fields": [],
+    "queuedAt": "2026-09-29T09:20:33.982Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:three-men-in-a-boat-off-west-end-2026",
+    "title": "Review gap — \"Three Men in a Boat\" missing 14 cited review(s)",
+    "description": "Three Men in a Boat (three-men-in-a-boat-off-west-end-2026): 14 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=three-men-in-a-boat-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T09:20:33.993Z"
   }
 ]
