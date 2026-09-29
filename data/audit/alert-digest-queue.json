@@ -735,5 +735,34 @@
       }
     ],
     "queuedAt": "2026-09-29T05:08:46.626Z"
+  },
+  {
+    "conditionKey": "land:land/tour-shipcheck-fixes",
+    "title": "Landing blocked: rebase red on land/tour-shipcheck-fixes",
+    "description": "land.yml did not land land/tour-shipcheck-fixes: the rebase gate went red at c4a804bbcb. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36526614981",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/tour-shipcheck-fixes"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "c4a804bbcb0404c551d065711c808a85470e124e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36526614981"
+      }
+    ],
+    "queuedAt": "2026-09-29T05:34:10.997Z"
   }
 ]
