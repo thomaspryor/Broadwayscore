@@ -28,7 +28,7 @@
 const https = require('https');
 const { decodeHtmlEntities } = require('./text-cleaning');
 const { foldDiacritics } = require('./title-match');
-const { sanitizeVenueForWrite, isNonNycVenue } = require('./venue-classification');
+const { sanitizeVenueForWrite, isNonNycVenue, isKnownOffBroadwayVenue } = require('./venue-classification');
 
 const TM_BASE = 'https://www.theatermania.com/wp-json/wp/v2';
 const TM_OB_MARKET_ID = 98;
@@ -206,10 +206,14 @@ function parseTmOffBroadwayRow(row, { venuesById = new Map(), genresById = new M
     category: 'off-broadway',
     description,
     source: 'theatermania-ob',
-    // TheaterMania is a listings site, not the producer: route every row
+    // Same rule as the TodayTix venue fallback (obFallbackFlags in
+    // discover-new-shows.js): a row at a venue we already classify as
+    // Off-Broadway needs no extra check; one at a venue we don't know goes
     // through validate-show-venue.js --all-provisional for a Playbill
-    // cross-check, like the TodayTix venue fallback and venue-page sources.
-    provisional: true,
+    // cross-check. Nothing clears `provisional`, and that sweep spends paid
+    // SERP/fetch credits daily, so flagging every TM row would grow the pool
+    // by ~15 shows a week for no gain (second-opinion review).
+    ...(isKnownOffBroadwayVenue(venue) ? {} : { provisional: true }),
     discoverySource: 'theatermania-ob',
     theatermaniaUrl: row.link || null,
     theatermaniaId: row.id || null,
@@ -257,10 +261,20 @@ function findTmCoverageGaps({ rows, venuesById, genresById, shows, pendingShows 
   // same venue): alerting on those would name shows we already carry. A
   // match to a closed row does not count, for the reason above.
   const { checkForDuplicate } = require('./deduplication');
-  const live = [...(shows || []), ...(pendingShows || [])].filter(s => s && s.title && s.status !== 'closed' &&
+  const live = [...(shows || []), ...(pendingShows || [])].filter(s => s && s.title && typeof s.slug === 'string' && s.status !== 'closed' &&
     !(s.closingDate && s.closingDate < new Date().toISOString().slice(0, 10)));
   const byTitle = new Map(kept.map(({ candidate }) => [candidate.title, candidate]));
-  const gaps = titleGaps.filter(g => !checkForDuplicate(byTitle.get(g.title) || g, live).isDuplicate);
+  const all = [...(shows || []), ...(pendingShows || [])].filter(s => s && s.title && typeof s.slug === 'string');
+  const gaps = [];
+  for (const g of titleGaps) {
+    const cand = byTitle.get(g.title) || g;
+    if (checkForDuplicate(cand, live).isDuplicate) continue;
+    // Discovery skips a row that matches a closed catalogued run (it reads
+    // as the same show), so it can never close this gap on its own: name the
+    // closed row so the alert says what a human has to do.
+    const closed = checkForDuplicate(cand, all);
+    gaps.push(closed.isDuplicate && closed.existingShow ? { ...g, closedMatch: closed.existingShow.id } : g);
+  }
   return { gaps, parsedCount: parsed.length, skippedCount, gatedCount: parsed.length - kept.length };
 }
 

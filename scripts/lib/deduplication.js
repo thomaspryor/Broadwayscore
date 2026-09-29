@@ -776,15 +776,26 @@ function colonSegmentKey(t) {
  * first colon ("Louis Katz: Conflicted" ~ "Conflicted", "Crazy Mama: A True
  * Story" ~ "Crazy Mama"). Title-only; callers must also require same venue.
  */
+// BRO-4381: listing sites drop taglines the catalogue keeps, joined by a
+// spaced dash ("ANON – a tempest at our kitchen table") or a "The (New)
+// Musical" suffix ("Copperfield! The New Musical"). A colon is not the only
+// subtitle separator.
+const SUBTITLE_SEPARATOR_RE = /:|\s[–—-]\s/;
+const MUSICAL_SUFFIX_RE = /\s+(?:the\s+)?(?:new\s+)?musical$/i;
+
 function isColonSegmentVariant(titleA, titleB) {
   const [short, long] = String(titleA || '').length <= String(titleB || '').length
     ? [titleA, titleB] : [titleB, titleA];
   const longStr = String(long || '');
-  const idx = longStr.indexOf(':');
-  if (idx < 0) return false;
   const key = colonSegmentKey(short);
   if (key.length < 4 || key === colonSegmentKey(longStr)) return false;
-  return key === colonSegmentKey(longStr.slice(0, idx)) || key === colonSegmentKey(longStr.slice(idx + 1));
+  const m = longStr.match(SUBTITLE_SEPARATOR_RE);
+  if (m) {
+    const head = longStr.slice(0, m.index);
+    const tail = longStr.slice(m.index + m[0].length);
+    if (key === colonSegmentKey(head) || key === colonSegmentKey(tail)) return true;
+  }
+  return MUSICAL_SUFFIX_RE.test(longStr) && key === colonSegmentKey(longStr.replace(MUSICAL_SUFFIX_RE, ''));
 }
 
 // Double-bill / pairing separators: " / " (spaced or not), " & ", " and ".

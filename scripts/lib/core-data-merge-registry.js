@@ -828,6 +828,26 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'shows-json-writer',
     verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (update-show-status.yml), group shows-json-writer (cancel-in-progress: false).',
   },
+  // BRO-4381: the Off-Broadway twin of the two entries above, written by
+  // scripts/check-off-broadway-source-coverage.js in the same update-shows
+  // job and staged by the same commit step. Registered in the same change
+  // that adds the git-add lines, so the step keeps its Git Data API fallback.
+  {
+    file: 'audit/off-broadway-source-coverage-gaps.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-29 (BRO-4381): sole writer scripts/check-off-broadway-source-coverage.js, run only by update-show-status.yml update-shows ("Check Off-Broadway source coverage"), group shows-json-writer (cancel-in-progress: false); mirrors audit/broadway-source-coverage-gaps.json.',
+  },
+  {
+    file: 'audit/off-broadway-source-coverage-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-29 (BRO-4381): sole writer scripts/check-off-broadway-source-coverage.js, run only by update-show-status.yml update-shows ("Check Off-Broadway source coverage"), group shows-json-writer (cancel-in-progress: false); mirrors audit/broadway-source-coverage-state.json. Read by the discovery-source-blind job.',
+  },
   {
     file: 'audit/discovery-source-coverage.json',
     surface: 'public-repo',

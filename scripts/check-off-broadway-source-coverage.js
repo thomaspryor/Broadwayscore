@@ -17,7 +17,11 @@
  * `guard` record). Shows queued by a pending-fix add-show plan count as
  * covered. When the feed is blind (fetch failed, 0 rows, or rows but none
  * current) the gaps file is left untouched, the state records
- * `guard: { blind: true }`, a Discord warning goes out and the exit code is 1.
+ * `guard: { blind: true }` and the exit code is 1; update-show-status.yml's
+ * discovery-source-blind job reads that record and turns the run red
+ * (scripts/check-discovery-source-blind.js), same as the Broadway guard.
+ * New gaps are logged through sendAlert (log-only at 'warning'; the daily
+ * digest carries it).
  *
  * Usage: node scripts/check-off-broadway-source-coverage.js [--dry-run]
  *          [--fixture=<json>] [--today=YYYY-MM-DD] [--audit-dir=<dir>] [--shows=<path>]
@@ -64,6 +68,7 @@ async function main(argv = process.argv.slice(2)) {
   } = require('./lib/theatermania-ob');
   const { loadPendingAddShows } = require('./lib/pending-add-shows');
   const { candidateKey } = require('./lib/reverse-discovery');
+  const { buildGuardState } = require('./check-broadway-source-coverage');
   const { isNonTheaterContent, isOneNightShow } = require('./discover-new-shows');
 
   const dryRun = argv.includes('--dry-run');
@@ -102,20 +107,11 @@ async function main(argv = process.argv.slice(2)) {
     console.error(`::error::Off-Broadway source-coverage guard is BLIND (TheaterMania: ${reason}) — gaps file left untouched, exiting 1.`);
     if (!dryRun) {
       fs.mkdirSync(auditDir, { recursive: true });
-      const state = readJsonOr(fs, statePath, {});
-      const wasBlind = !!(state.guard && state.guard.blind);
-      state.guard = { blind: true, count: null, reason, at: nowIso };
+      // The first-seen ledger is preserved: a blind run must not forget when
+      // gaps were first seen (same rule as the Broadway guard).
+      const state = buildGuardState(readJsonOr(fs, statePath, {}), { blind: true, count: null, reason, nowIso });
       fs.writeFileSync(statePath, JSON.stringify(state, null, 2) + '\n');
       console.log(`Wrote ${statePath} (guard.blind: true)`);
-      // Alert on the transition only, not every 30-min run while it stays blind.
-      if (!wasBlind) {
-        const { sendAlert } = require('./lib/discord-notify');
-        await sendAlert({
-          severity: 'warning',
-          title: 'Off-Broadway source coverage guard is blind',
-          description: `TheaterMania OB listings: ${reason}. Discovery's TheaterMania source is contributing nothing until this clears.`,
-        });
-      }
     }
     return outcome.exitCode;
   }
@@ -129,7 +125,7 @@ async function main(argv = process.argv.slice(2)) {
   console.log(`TheaterMania OB: ${feed.rows.length} current rows, ${parsedCount} parsed (${skippedCount} skipped: venue/date), ${gatedCount} filtered by gates; ${pendingShows.length} show(s) queued in pending-fix plans`);
 
   console.log(`\n${gaps.length} current Off-Broadway production(s) on TheaterMania missing from shows.json:`);
-  for (const g of gaps) console.log(`  "${g.title}" @ ${g.venue} (${g.date || 'no date'}${g.closingDate ? ` → ${g.closingDate}` : ''}) — ${g.url}`);
+  for (const g of gaps) console.log(`  "${g.title}" @ ${g.venue} (${g.date || 'no date'}${g.closingDate ? ` → ${g.closingDate}` : ''})${g.closedMatch ? ` [only closed row ${g.closedMatch} matches]` : ''} — ${g.url}`);
   if (gaps.length === 0) console.log('  (none)');
 
   if (dryRun) {
@@ -137,10 +133,10 @@ async function main(argv = process.argv.slice(2)) {
     return 0;
   }
 
-  const state = readJsonOr(fs, statePath, {});
+  let state = readJsonOr(fs, statePath, {});
   const fresh = gaps.filter(g => !state[candidateKey(g)]);
   for (const g of fresh) state[candidateKey(g)] = { firstSeen: nowIso, title: g.title };
-  state.guard = { blind: false, count: gaps.length, reason: outcome.reason, at: nowIso };
+  state = buildGuardState(state, { blind: false, count: gaps.length, reason: outcome.reason, nowIso });
 
   fs.mkdirSync(auditDir, { recursive: true });
   fs.writeFileSync(outPath, JSON.stringify({ generatedAt: nowIso, count: gaps.length, gaps }, null, 2) + '\n');
@@ -153,7 +149,7 @@ async function main(argv = process.argv.slice(2)) {
       severity: 'warning',
       title: `Off-Broadway source coverage: ${fresh.length} current production(s) missing from shows.json`,
       description: fresh.map(g =>
-        `**${g.title}** @ ${g.venue} (${g.date || 'no date'}) — TheaterMania lists it; shows.json doesn't.\n${g.url}`
+        `**${g.title}** @ ${g.venue} (${g.date || 'no date'}) — TheaterMania lists it; shows.json doesn't${g.closedMatch ? ` (only a closed row matches: ${g.closedMatch}; a return run needs a hand-added row, see .claude/CLOUD.md add-show)` : ''}.\n${g.url}`
       ).join('\n\n').slice(0, 3500),
     });
   }

@@ -41,7 +41,10 @@ test('preview + opening → both dates, opening marked theatermania (unconfirmed
   assert.equal(r.candidate.openingDateSource, 'theatermania');
   assert.equal(r.candidate.venue, '59E59 Theaters');
   assert.equal(r.candidate.category, 'off-broadway');
-  assert.equal(r.candidate.provisional, true);
+  assert.equal(r.candidate.provisional, undefined, '59E59 is a known OB venue: no Playbill cross-check needed');
+  const unknownVenue = parse(/^Queeney Todd/);
+  assert.equal(unknownVenue.candidate.venue, 'Judson Memorial Church');
+  assert.equal(unknownVenue.candidate.provisional, true, 'unknown venue → provisional');
   assert.equal(r.candidate.discoverySource, 'theatermania-ob');
   assert.equal(isUnconfirmedDateSource({ category: 'off-broadway', openingDateSource: 'theatermania' }), true,
     'a TheaterMania press night must stay overwritable by Playbill / review inference');
@@ -141,6 +144,13 @@ test('TheaterMania venue/title spellings dedupe against the catalogue spelling',
     [ob("Pretend It's Pretend", 'Claire Tow Theater', { previewsStartDate: '2027-01-28', openingDate: '2027-02-11' }),
       ob("Pretend It's Pretend", 'LCT3 at the Claire Tow Theater', { id: 'd-2026', slug: 'pretend-its-pretend', status: 'announced', unconfirmedStartDate: '2028-01-28' })],
   ];
+  // Live 2026-09-29 (second-opinion review): TM drops the catalogue's tagline.
+  cases.push(
+    [ob('Copperfield!', 'Duke on 42nd Street', { previewsStartDate: '2026-09-29' }),
+      ob('Copperfield! The New Musical', 'The Duke on 42nd Street', { id: 'g', slug: 'copperfield-the-new-musical', status: 'upcoming' })],
+    [ob('ANON', 'The Robert W. Wilson MCC Theater Space', { previewsStartDate: '2026-09-25' }),
+      ob('ANON – a tempest at our kitchen table', 'The Newman Mills Theatre at the Robert W. Wilson MCC Theatre Space', { id: 'h', slug: 'anon-a-tempest-at-our-kitchen-table', status: 'previews' })],
+  );
   for (const [cand, existing] of cases) {
     assert.equal(checkForDuplicate(cand, [existing]).isDuplicate, true, `${cand.title} @ ${cand.venue}`);
   }
