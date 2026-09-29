@@ -233,7 +233,11 @@ function isRedundantPendingStub(data, landedFile) {
   if (!landedFile || !data) return false;
   const hasByline = data.criticName && String(data.criticName).toLowerCase() !== 'unknown';
   const hasText = typeof data.fullText === 'string' && data.fullText.trim().length > 0;
-  return !hasByline && !hasText;
+  // Anything a primary might lack keeps the stub: a score or an excerpt.
+  const hasScore = data.originalScore != null && data.originalScore !== '';
+  const hasExcerpt = Object.keys(data).some((k) => /Excerpt$/.test(k)
+    && typeof data[k] === 'string' && data[k].trim().length > 0);
+  return !hasByline && !hasText && !hasScore && !hasExcerpt;
 }
 
 async function processShow(showId) {
@@ -247,11 +251,11 @@ async function processShow(showId) {
   const files = fs.readdirSync(pendingDir).filter(f => f.endsWith('.json'));
   console.log(`[${showId}] ${files.length} pending files to inspect (opening ${show?.openingDate || '?'})`);
 
-  let promoted = 0, kept = 0, rejected = 0;
+  let promoted = 0, kept = 0, rejected = 0, droppedRedundant = 0;
   for (const file of files) {
     if (timeBudget.exceeded()) {
       console.log(`  ⏱ Time budget (${timeBudget.minutes} min) reached — remaining files (and shows) deferred to next run.`);
-      return { promoted, kept, rejected, budgetExceeded: true };
+      return { promoted, kept, rejected, droppedRedundant, budgetExceeded: true };
     }
     const filepath = path.join(pendingDir, file);
     const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
@@ -285,7 +289,7 @@ async function processShow(showId) {
     if (isRedundantPendingStub(data, landed)) {
       console.log(`  [${file}] url already filed as ${landed} — dropping textless pending stub`);
       if (!dryRun) fs.unlinkSync(filepath);
-      rejected++;
+      droppedRedundant++;
       continue;
     }
 
@@ -415,7 +419,7 @@ async function processShow(showId) {
     promoted++;
   }
 
-  return { promoted, kept, rejected };
+  return { promoted, kept, rejected, droppedRedundant };
 }
 
 module.exports = {
@@ -437,18 +441,20 @@ if (require.main === module) {
     const scopeNote = allOpen && closedWithinDays > 0 ? ` (open/previews + closed within ${closedWithinDays}d)` : '';
     console.log(`Processing ${ids.length} show(s)${scopeNote}${dryRun ? ' [DRY RUN]' : ''}\n`);
 
-    let totalPromoted = 0, totalKept = 0, totalRejected = 0;
+    let totalPromoted = 0, totalKept = 0, totalRejected = 0, totalDropped = 0;
     for (const id of ids) {
-      const { promoted, kept, rejected, budgetExceeded } = await processShow(id);
+      const { promoted, kept, rejected, droppedRedundant, budgetExceeded } = await processShow(id);
       totalPromoted += promoted;
       totalKept += kept;
       totalRejected += rejected || 0;
+      totalDropped += droppedRedundant || 0;
       if (budgetExceeded) break;
     }
 
     console.log(`\n━━━ Replay complete ━━━`);
     console.log(`Promoted: ${totalPromoted}`);
     console.log(`Rejected (wrong-prod or wrong-year, deleted): ${totalRejected}`);
+    console.log(`Dropped (url already filed, stub had nothing extra): ${totalDropped}`);
     console.log(`Kept in _pending: ${totalKept}`);
   })().catch(e => {
     console.error(e);

@@ -291,13 +291,17 @@ function detectIngestCollision(opts = {}) {
     // is nothing to merge into. The Beaches protection still holds: a SAME
     // filename (same critic, or both Unknown) keeps blocking, because that
     // write would land on the flagged file.
-    if (show && !urlMatches) {
+    // Only for files FLAGGED wrongProduction/wrongShow: findExistingReviewFile
+    // never merges into those, so the incoming cannot inherit them. An
+    // unflagged (or merely auto-cleared) older file IS a merge target (an
+    // --unknown file accepts any named critic), so it keeps blocking.
+    const flaggedWrong = data.wrongProduction === true || data.wrongShow === true;
+    if (show && !urlMatches && flaggedWrong) {
       const incomingCriticSlug = normalizedCritic || 'unknown';
       const sameFilename = normalizeCritic(fileCritic) === incomingCriticSlug;
       if (!sameFilename) {
         const { otherProductionSignal } = require('./other-production-signal');
-        const flagged = data.wrongProduction === true || data.wrongShow === true;
-        if (otherProductionSignal(data, show, { useText: flagged })) continue;
+        if (otherProductionSignal(data, show, { useText: true })) continue;
       }
     }
     const hasStaleFlag = data.wrongProduction === true

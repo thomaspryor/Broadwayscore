@@ -142,6 +142,22 @@ test('collision: a flagged file with no other-production signal still blocks', (
   assert.equal(r.ok, false);
 });
 
+test('collision: an UNFLAGGED older --unknown file still blocks (it is a merge target)', () => {
+  // Ship-check repro: findExistingReviewFile merges any named critic into an
+  // --unknown file, so the carve-out must not open this path.
+  const old = { outletId: 'guardian', criticName: 'Unknown', url: 'https://www.theguardian.com/stage/2022/jan/01/x', publishDate: '2022-01-01' };
+  const showDir = tmpShowDir({ 'guardian--unknown.json': old });
+  const r = detectIngestCollision({ showDir, outletId: 'guardian', criticName: 'Juan A. Ramirez', url: GUARDIAN_2026.url, publishDate: '2026-01-01', show: { ...SCHOOL_GIRLS, previewsStartDate: '2024-09-01', openingDate: '2024-09-28' } });
+  assert.equal(r.ok, false);
+});
+
+test('pending stub: a stub carrying a score or excerpt is kept', () => {
+  const stub = { outletId: 'nysr', criticName: 'Unknown', url: 'https://nystagereview.com/2026/09/28/x/' };
+  assert.equal(isRedundantPendingStub({ ...stub, originalScore: '4/5' }, 'nysr--frank-scheck.json'), false);
+  assert.equal(isRedundantPendingStub({ ...stub, bwwExcerpt: 'quote' }, 'nysr--frank-scheck.json'), false);
+  assert.equal(isRedundantPendingStub({ ...stub, bwwExcerpt: null, originalScore: null }, 'nysr--frank-scheck.json'), true);
+});
+
 test('pending stub: byline-less textless stub whose url landed is redundant', () => {
   const stub = { outletId: 'nysr', criticName: 'Unknown', url: 'https://nystagereview.com/2026/09/28/x/', fullText: null };
   assert.equal(isRedundantPendingStub(stub, 'nysr--frank-scheck.json'), true);
