@@ -387,3 +387,26 @@ test('classifyReviewUrl: Playbill Verdict roundup slugs are roundup-page, real r
     'https://stageandcinema.com/2026/09/28/school-girls-broadway-review/',
   ]) assert.equal(classifyReviewUrl(u).ok, true, u);
 });
+
+test('BRO-4386: ticket-seller product pages are named non-reviews, blog posts are not', () => {
+  const reason = 'ticket-seller-product-page';
+  assert.equal(namedNonReviewReason('https://www.theatrebookings.com/play/the-standard-of-living'), reason);
+  assert.equal(namedNonReviewReason('https://www.bestoftheatre.co.uk/the-standard-of-living'), reason);
+  assert.equal(namedNonReviewReason('https://www.bestoftheatre.co.uk/the-standard-of-living/'), reason);
+  assert.equal(namedNonReviewReason('https://www.bestoftheatre.co.uk/blog/post/review-roundup-x'), null);
+  assert.equal(namedNonReviewReason('https://www.bestoftheatre.co.uk/blog'), null);
+  assert.equal(namedNonReviewReason('https://www.theatrebookings.com/blog/some-review'), null);
+});
+
+test('BRO-4386: allSourcesOnly returns only allSources entries; rebuild predicate covers submit-review-form', () => {
+  assert.equal(namedNonReviewReason('https://www.broadway.com/shows/x/', { allSourcesOnly: true }), null);
+  assert.equal(namedNonReviewReason('https://www.theatrebookings.com/play/x', { allSourcesOnly: true }), 'ticket-seller-product-page');
+  const { isNamedNonReviewUrlRecord } = require('./review-guards.js');
+  const url = 'https://www.bestoftheatre.co.uk/the-standard-of-living';
+  assert.ok(isNamedNonReviewUrlRecord({ url, source: 'submit-review-form' }));
+  assert.ok(isNamedNonReviewUrlRecord({ url, source: 'serp-discovery' }));
+  assert.ok(!isNamedNonReviewUrlRecord({ url, source: 'submit-review-form', namedNonReviewUrlManualClear: true }));
+  assert.ok(!isNamedNonReviewUrlRecord({ url: 'https://www.broadway.com/shows/x/', source: 'submit-review-form' }));
+  assert.ok(isNamedNonReviewUrlRecord({ url: 'https://www.broadway.com/shows/x/', source: 'serp-discovery' }));
+  assert.ok(!isNamedNonReviewUrlRecord({ url: 'https://www.bestoftheatre.co.uk/blog/post/review-roundup-x', source: 'submit-review-form' }));
+});

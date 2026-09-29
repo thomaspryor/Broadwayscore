@@ -3843,8 +3843,11 @@ function buildMultiProdYearGuard(shows) {
 function isNamedNonReviewUrlRecord(data) {
   return Boolean(
     data && data.url && data.namedNonReviewUrlManualClear !== true &&
-    require('./unvetted-serp-sources').isUnvettedSerpSource(data.source) &&
-    require('./non-review-url-patterns').namedNonReviewReason(data.url)
+    require('./non-review-url-patterns').namedNonReviewReason(data.url, {
+      // allSources entries (BRO-4386 ticket-seller product pages) are non-reviews
+      // whichever path wrote them: the leak came via submit-review-form.
+      allSourcesOnly: !require('./unvetted-serp-sources').isUnvettedSerpSource(data.source),
+    })
   );
 }
 
