@@ -603,6 +603,22 @@ function loadBaselineGuards() {
   const baselineLibDir = path.join(tmpDir, 'lib');
   fs.mkdirSync(baselineLibDir, { recursive: true });
 
+  // Materialize ALL of BASE_REF's scripts/lib first, so a transitive require
+  // added to any sandboxed guard resolves to its baseline copy. The hand-picked
+  // list below went stale twice: failed-fetch-policy.js (BRO-39) and
+  // title-match.js, a top-level cross-market-guard.js require that made every
+  // run die with MODULE_NOT_FOUND (BRO-4287). The explicit copies below remain
+  // for their working-tree fallback when BASE_REF predates a file.
+  try {
+    const stage = path.join(tmpDir, 'stage');
+    fs.mkdirSync(stage, { recursive: true });
+    execSync(`git archive ${BASE_REF} -- scripts/lib | tar -x -C '${stage}'`,
+      { cwd: REPO_ROOT, stdio: ['ignore', 'pipe', 'pipe'], shell: '/bin/bash' });
+    fs.cpSync(path.join(stage, 'scripts', 'lib'), baselineLibDir, { recursive: true });
+  } catch (e) {
+    throw new Error(`Could not archive ${BASE_REF}:scripts/lib — ${e.message}`);
+  }
+
   try {
     const guardsSrc = execSync(`git show ${BASE_REF}:scripts/lib/review-guards.js`, {
       cwd: REPO_ROOT, encoding: 'utf8',
@@ -670,9 +686,8 @@ function loadBaselineGuards() {
   const prPath = path.join(baselineLibDir, 'wrong-production-autoclear.js');
   delete require.cache[require.resolve(prPath)];
   // cross-market-guard.js carries the auto-clear ctx computation
-  // (outletIsUkSideSelfHealRegion). It has no top-level requires, so the
-  // sandbox copy loads standalone; its lazy inline requires resolve against
-  // the baseline copies already materialized alongside it.
+  // (outletIsUkSideSelfHealRegion). Its requires (top-level title-match, lazy
+  // inline ones) resolve against the full baseline scripts/lib copied above.
   const cmPath = path.join(baselineLibDir, 'cross-market-guard.js');
   delete require.cache[require.resolve(cmPath)];
   return {

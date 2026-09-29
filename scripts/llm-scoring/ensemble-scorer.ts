@@ -765,6 +765,13 @@ export class EnsembleReviewScorer {
       (reviewFile as any).confidenceOverride
     );
 
+    // BRO-4287: snapshot of the aggregator-thumb cross-check at scoring time.
+    // Thumbs usually land days after opening night, so the rebuild-time check
+    // in getBestScore (which queues disagreements for adjudication) is the
+    // real gate; this only records what was known when the score was made.
+    const { aggregatorThumbCheck } = require('../lib/rebuild-helpers.js');
+    const thumbCheck = aggregatorThumbCheck(reviewFile, ensembleResult.score);
+
     // Build the scored file
     const scoredFile: ScoredReviewFile = {
       ...reviewFile,
@@ -820,8 +827,8 @@ export class EnsembleReviewScorer {
         geminiBucket: ensembleResult.modelResults.gemini?.bucket,
         kimiBucket: ensembleResult.modelResults.kimi?.bucket,
         scoreDelta: this.calculateScoreDelta(ensembleResult),
-        thumbsMatch: null, // TODO: Re-implement thumbs validation
-        expectedThumb: null,
+        thumbsMatch: thumbCheck.thumbsMatch,
+        expectedThumb: thumbCheck.expectedThumb,
         needsReview: ensembleResult.needsReview || false,
         needsReviewReasons: ensembleResult.reviewReason ? [ensembleResult.reviewReason] : [],
         ensembleSource: ensembleResult.source,

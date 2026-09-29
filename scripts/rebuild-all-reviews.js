@@ -1057,16 +1057,10 @@ function getBestScore(data) {
   const result = _getBestScoreCore(data, { stats, flagForHumanReview });
 
   // Extra stat tracking (not part of core scoring logic):
-  // Borderline rave detection, bwwScore-LLM divergence, thumb-LLM disagreement at P1
+  // Borderline rave detection, bwwScore-LLM divergence
   if (result && result.source === 'llmScore' && data.llmScore) {
-    // Flag if BOTH thumbs agree with each other but disagree with LLM direction
-    const llmThumb = data.llmScore.score >= 70 ? 'Up' : data.llmScore.score >= 55 ? 'Flat' : 'Down';
-    const dtli = data.dtliThumb ? normalizeThumb(data.dtliThumb) : null;
-    const bww = data.bwwThumb ? normalizeThumb(data.bwwThumb) : null;
-    if (dtli && bww && dtli === bww && dtli !== llmThumb) {
-      flagForHumanReview(data, 'both-thumbs-disagree-with-llm',
-        `LLM=${data.llmScore.score} (${llmThumb}), both thumbs=${data.dtliThumb}`);
-    }
+    // Thumb-vs-LLM disagreement is flagged inside the core P1 path
+    // (aggregatorThumbCheck, BRO-4287) so it is queued exactly once.
     // bwwScore-LLM divergence stat
     if (data.bwwScore != null) {
       const bwwNorm = data.bwwScore * 10;

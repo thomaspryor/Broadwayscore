@@ -97,6 +97,77 @@ function bothThumbsOpposeVerdict(data, score) {
   return thumbDir !== verdictDir;
 }
 
+// A one-step gap (Down thumb vs a Mixed score, Up thumb vs a Mixed score) only
+// counts when the score sits at least this far inside Mixed from the thumb's
+// side: Down flags at >= 60, Up flags at <= 64. Scores right at the bucket
+// edge (55-59 vs Down, 65-69 vs Up) are calibration noise.
+const ONE_STEP_THUMB_MARGIN = 5;
+
+/**
+ * BRO-4287: cross-check an LLM verdict against the aggregator editors' thumbs
+ * (DTLI + BWW). Replaces the TODO that left ensembleData.thumbsMatch null.
+ * Never changes a score: a flagged review is queued for the existing
+ * adjudicator (adjudicate-review-queue.js), which is the only thing that may
+ * move it.
+ *
+ * expectedThumb: the two thumbs when they agree, or the single one present.
+ *   A decisive + Flat pair has no majority → null. Up vs Down → null + split flag.
+ * thumbsMatch: scoreToThumb(score) === expectedThumb (null when no expectation).
+ * flag: null | { reason, detail }
+ *   'both-thumbs-disagree-with-llm'    both thumbs agree and oppose the score
+ *   'aggregator-thumb-contradicts-llm' opposite direction, or one step past the margin
+ *   'aggregator-thumbs-split'          DTLI and BWW disagree Up vs Down
+ * A Flat expectation never flags (the adjudicator's audit found Flat thumbs
+ * wrong 83% of the time). anchored: true (a star-banded verdict) flags only an
+ * opposite-direction gap: the band already pins it to the critic's own star.
+ *
+ * @param {object} data   review-text record (dtliThumb / bwwThumb read)
+ * @param {number} score  the verdict being emitted
+ * @param {{anchored?: boolean}} [opts]
+ */
+function aggregatorThumbCheck(data, score, opts = {}) {
+  const none = { expectedThumb: null, thumbsMatch: null, flag: null };
+  if (!data || typeof score !== 'number' || !Number.isFinite(score)) return none;
+  const canon = (t) => {
+    const n = t ? normalizeThumb(t) : null;
+    return n === 'Up' || n === 'Flat' || n === 'Down' ? n : null;
+  };
+  const dtli = canon(data.dtliThumb);
+  const bww = canon(data.bwwThumb);
+  if (!dtli && !bww) return none;
+  const ours = scoreToThumb(score);
+  const label = `${dtli || '-'}/${bww || '-'}`;
+
+  if (dtli && bww && dtli !== bww) {
+    if (dtli !== 'Flat' && bww !== 'Flat' && !opts.anchored) {
+      return { ...none, flag: {
+        reason: 'aggregator-thumbs-split',
+        detail: `verdict ${score} (${scoreToBucket(score)}) vs split aggregator thumbs DTLI/BWW ${label}`,
+      } };
+    }
+    return none;
+  }
+
+  const expectedThumb = dtli || bww;
+  const thumbsMatch = ours === expectedThumb;
+  const result = { expectedThumb, thumbsMatch, flag: null };
+  if (thumbsMatch || expectedThumb === 'Flat') return result;
+
+  const opposite = ours !== 'Flat';
+  const pastMargin = expectedThumb === 'Down'
+    ? score >= 55 + ONE_STEP_THUMB_MARGIN
+    : score <= 69 - ONE_STEP_THUMB_MARGIN;
+  if (!opposite && (opts.anchored || !pastMargin)) return result;
+
+  const both = !!(dtli && bww);
+  result.flag = {
+    reason: both && opposite ? 'both-thumbs-disagree-with-llm' : 'aggregator-thumb-contradicts-llm',
+    detail: `verdict ${score} (${scoreToBucket(score)}) vs aggregator thumbs DTLI/BWW ${label}`
+      + ` — ${opposite ? 'opposite direction' : 'one bucket off'}, needsAdjudication`,
+  };
+  return result;
+}
+
 /**
  * BRO-4204 audit S6-T5: what makes an `originalScore` value a PUBLISHED rating
  * the P0.5 path may score from, as opposed to a bare number some upstream
@@ -708,13 +779,12 @@ function getBestScore(data, opts = {}) {
       && parseOriginalScore(data.originalScore, data.outletId) !== null;
     if (!llmV6HasLateStar) {
       const v6Score = data.llmScore.score;
-      // S6-T6: both aggregator editors disagree with the v6 verdict by two
-      // buckets → emit the verdict but mark it for the adjudication queue.
-      if (bothThumbsOpposeVerdict(data, v6Score)) {
-        inc('bothThumbsOpposeV6Verdict');
-        flagForHumanReview(data, 'both-thumbs-disagree-with-llm',
-          `${effectiveV6Source} verdict ${v6Score} (${scoreToBucket(v6Score)}) vs both aggregator thumbs `
-          + `${normalizeThumb(data.dtliThumb)}/${normalizeThumb(data.bwwThumb)} — two-bucket disagreement, needsAdjudication`);
+      // S6-T6 / BRO-4287: the aggregator editors' thumbs contradict the v6
+      // verdict → emit the verdict unchanged but queue it for adjudication.
+      const thumbCheck = aggregatorThumbCheck(data, v6Score, { anchored: effectiveV6Source === 'anchored-v6' });
+      if (thumbCheck.flag) {
+        inc(thumbCheck.flag.reason === 'both-thumbs-disagree-with-llm' ? 'bothThumbsOpposeV6Verdict' : 'aggregatorThumbFlagV6');
+        flagForHumanReview(data, thumbCheck.flag.reason, `${effectiveV6Source} ${thumbCheck.flag.detail}`);
         return { score: v6Score, source: effectiveV6Source, needsAdjudication: true };
       }
       return { score: v6Score, source: effectiveV6Source };
@@ -971,6 +1041,14 @@ function getBestScore(data, opts = {}) {
       if (!hasEnsemble) {
         inc('blockedSingleModel');
       } else {
+        // BRO-4287: same thumb cross-check as the v6 path (was an inline
+        // both-thumbs check in rebuild-all-reviews.js's wrapper).
+        const thumbCheck = aggregatorThumbCheck(data, data.llmScore.score);
+        if (thumbCheck.flag) {
+          inc('aggregatorThumbFlagP1');
+          flagForHumanReview(data, thumbCheck.flag.reason, `llmScore ${thumbCheck.flag.detail}`);
+          return { score: data.llmScore.score, source: 'llmScore', needsAdjudication: true };
+        }
         return { score: data.llmScore.score, source: 'llmScore' };
       }
     }
@@ -1295,6 +1373,8 @@ module.exports = {
   publishedRatingEvidence,
   isPublishedRatingEvidence,
   bothThumbsOpposeVerdict,
+  aggregatorThumbCheck,
+  ONE_STEP_THUMB_MARGIN,
   // Text cleaning
   normalizeThumb,
   normalizePublishDate,
