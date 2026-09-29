@@ -33,7 +33,12 @@ import {
 const PAGE_WEIGHT_BUDGETS: Record<string, PageWeight> = {
   '/': { documentBytes: 1_020_000, rscBytes: 980_000 },
   '/west-end': { documentBytes: 1_280_000, rscBytes: 950_000 },
-  '/off-broadway': { documentBytes: 910_000, rscBytes: 600_000 },
+  // 2026-09-29: /off-broadway RSC measured 603,641 on production after the
+  // 2026 data audit added Off-Broadway rows (sprint 2) — a real content
+  // increase, not #962 regressing. Re-derived with ~4% headroom (630,000)
+  // rather than the original x1.25 on purpose: #962 is still unresolved, so
+  // the ceiling tracks catalog growth instead of resetting the slack.
+  '/off-broadway': { documentBytes: 910_000, rscBytes: 630_000 },
   '/guides/best-broadway-musicals': { documentBytes: 460_000, rscBytes: 270_000 },
 };
 
