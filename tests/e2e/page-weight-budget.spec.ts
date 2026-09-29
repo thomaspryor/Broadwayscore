@@ -44,8 +44,10 @@ import {
  * 1,302,158/972,108/366 and 891,402/592,938/137) x1.1, rounded up to 10KB.
  */
 const PAGE_WEIGHT_BUDGETS: Record<string, CatalogBudget> = {
-  // 2026-09-29 production: 889,058 / 856,189 / 317 slugs (budget unchanged).
-  '/': { documentBytes: 1_020_000, rscBytes: 980_000, baselineItems: 317 },
+  // Not scaled: the homepage's 317 slugs (2026-09-29) are curated sections,
+  // not one market's catalog, so more shows there is a change to review, not
+  // growth. 2026-09-29 production: 889,058 doc / 856,189 rsc (budget unchanged).
+  '/': { documentBytes: 1_020_000, rscBytes: 980_000 },
   '/west-end': { documentBytes: 1_440_000, rscBytes: 1_070_000, baselineItems: 366 },
   '/off-broadway': { documentBytes: 990_000, rscBytes: 660_000, baselineItems: 137 },
   // Fixed-content guide page: no slugs in its payload, never scaled.

@@ -11,16 +11,18 @@
  * and turned main's Test Suite red). BRO-3247 fixed the registered-headline
  * case only.
  *
- * A record is a phantom when it has no critic (null / "Unknown") and its
- * outletId is exactly the slug of a critic name some OTHER record in the same
- * roundup carries under a different outlet. The phantom's excerpt/thumb are
+ * A record is a phantom when it has no critic (null / "Unknown"), no URL of
+ * its own, its outletId is not a registered outlet with a domain (a critic's
+ * own site such as carole-di-tosti is real and kept), and that outletId is
+ * exactly the slug of a critic name some OTHER record in the same roundup
+ * carries under a different outlet. The phantom's excerpt/thumb are
  * handed to the twin when the twin lacks them, then the phantom is dropped.
  */
 
 function slugifyName(name) {
   return String(name || '')
     .normalize('NFKD')
-    .replace(/[̀-ͯ]/g, '')
+    .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
@@ -32,9 +34,11 @@ function hasCritic(r) {
 
 /**
  * @param {object[]} reviews - records from one roundup (not mutated except for field hand-off onto twins)
+ * @param {{ hasDomain?: (outletId: string) => boolean }} [opts] - true when outletId is a registered outlet with a domain
  * @returns {{ kept: object[], dropped: Array<{ phantom: object, twin: object }> }}
  */
-function dropCriticNamePhantoms(reviews) {
+function dropCriticNamePhantoms(reviews, opts = {}) {
+  const hasDomain = opts.hasDomain || (() => false);
   const twinByCriticSlug = new Map();
   for (const r of reviews || []) {
     if (!hasCritic(r)) continue;
@@ -44,7 +48,8 @@ function dropCriticNamePhantoms(reviews) {
   const kept = [];
   const dropped = [];
   for (const r of reviews || []) {
-    const twin = !hasCritic(r) ? twinByCriticSlug.get(r.outletId) : null;
+    const candidate = !hasCritic(r) && !r.url && !hasDomain(r.outletId);
+    const twin = candidate ? twinByCriticSlug.get(r.outletId) : null;
     if (!twin) {
       kept.push(r);
       continue;

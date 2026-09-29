@@ -47,6 +47,19 @@ describe('dropCriticNamePhantoms', () => {
   });
 });
 
+describe('dropCriticNamePhantoms keeps real outlets named after a critic', () => {
+  const twin = () => ({ outletId: 'blogcritics', criticName: 'Carole Di Tosti' });
+  test('a registered outlet with a domain (critic\'s own site) is kept', () => {
+    const own = { outletId: 'carole-di-tosti', criticName: null };
+    const { kept } = dropCriticNamePhantoms([own, twin()], { hasDomain: (id) => id === 'carole-di-tosti' });
+    assert.equal(kept.length, 2);
+  });
+  test('a record with its own URL is kept', () => {
+    const own = { outletId: 'carole-di-tosti', criticName: null, url: 'https://caroleditosti.com/x' };
+    assert.equal(dropCriticNamePhantoms([own, twin()]).kept.length, 2);
+  });
+});
+
 describe('extractBWWRoundupReviews: unregistered headline outlet + bare author name', () => {
   test('does not emit the critic name as an outlet when the articleBody names the real outlet', () => {
     const ld = {

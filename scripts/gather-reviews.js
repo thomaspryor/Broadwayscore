@@ -164,6 +164,21 @@ const OUTLETS_PATH = path.join(__dirname, 'config', 'critic-outlets.json');
 const DTLI_SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.json');
 const SHOW_SCORE_URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
 const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
+const { dropCriticNamePhantoms } = require('./lib/bww-critic-name-phantoms');
+let _outletsWithDomain = null;
+// A registered outlet with a real domain (e.g. a critic's own site) is never
+// treated as a BWW critic-name phantom.
+function registeredOutletHasDomain(outletId) {
+  if (!_outletsWithDomain) {
+    try {
+      const reg = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
+      _outletsWithDomain = new Set(Object.entries(reg.outlets || {}).filter(([, o]) => o && o.domain).map(([id]) => id));
+    } catch {
+      _outletsWithDomain = new Set();
+    }
+  }
+  return _outletsWithDomain.has(outletId);
+}
 
 const {
   shouldQueryPerCritic: _shouldQueryPerCritic,
@@ -2800,8 +2815,7 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
 
   // Bare-critic-name phantoms whose headline outlet wasn't registered yet
   // (the case BRO-3247's registered-headline fallback above can't reach).
-  const { dropCriticNamePhantoms } = require('./lib/bww-critic-name-phantoms');
-  const { kept, dropped } = dropCriticNamePhantoms(reviews);
+  const { kept, dropped } = dropCriticNamePhantoms(reviews, { hasDomain: registeredOutletHasDomain });
   for (const { phantom, twin } of dropped) {
     console.log(`    [BWW RR] dropped phantom outlet "${phantom.outletId}" (critic name) — same review as ${twin.outletId} / ${twin.criticName}`);
   }
