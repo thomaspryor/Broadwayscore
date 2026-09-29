@@ -18,6 +18,7 @@ const {
   junkCandidateReason,
   findTheaterManiaCorroboration,
   venuesCompatible,
+  discoveryGateReason,
 } = require('./ob-cross-validation.js');
 const { OB_VENUE_CONFIGS, parseVenueListingHtml } = require('./venue-listing-discover.js');
 const {
@@ -27,6 +28,7 @@ const {
   extractDatedCards,
   htmlToDocument,
   cleanListingTitle,
+  isoDay,
 } = require('./ob-listing-platforms.js');
 const { statusFromDates, applyConfirmationDates, findExistingOB, buildShowEntry } = require('../promote-ob-venue-candidates.js');
 const { isNonTheaterContent, isOneNightShow } = require('../discover-new-shows.js');
@@ -278,4 +280,59 @@ test('cleanListingTitle: entities, curly quotes, shouting (3+ words; shorter tit
   assert.equal(cleanListingTitle('  SOMETHING VERY SPOOKY '), 'Something Very Spooky');
   assert.equal(cleanListingTitle('LOVE ME'), 'LOVE ME');
   assert.equal(cleanListingTitle('Rosie O&#8217;Donnell'), "Rosie O'Donnell");
+});
+
+// ── ship-check findings (2026-09-29) ───────────────────────────────────────
+
+test('weekend bookings are not runs: SoHo 4-show improv and kids weekends stay out', () => {
+  const decided = new Map(sohoCandidates().map(c => [c.title, decideVenueListingPromotion(c, { todayIso: TODAY, gates: GATES })]));
+  for (const t of ['TJ & Dave', 'Doktor Kaboom: Man of Science!']) {
+    assert.equal(decided.get(t).confirmed, false, t);
+    assert.match(decided.get(t).reason, /short booking/);
+  }
+  // Uncounted listings need a 3-day span.
+  const base = { title: 'Visiting Play', venue: 'Soho Playhouse', source: 'venue-page:soho-playhouse' };
+  assert.equal(decideVenueListingPromotion({ ...base, listingFirstDate: '2026-10-08', listingLastDate: '2026-10-09' }, { todayIso: TODAY }).confirmed, false);
+  assert.equal(decideVenueListingPromotion({ ...base, listingFirstDate: '2026-10-08', listingLastDate: '2026-10-10' }, { todayIso: TODAY }).confirmed, true);
+});
+
+test('OvationTix first date is the next on-sale performance: a mid-run show is running, not upcoming', () => {
+  const soho = sohoCandidates();
+  assert.ok(soho.every(c => c.listingFirstDateIsNext === true), 'OvationTix rows are flagged');
+  const c = { title: 'Mid Run', listingFirstDate: '2026-09-30', listingLastDate: '2026-10-18', listingFirstDateIsNext: true };
+  applyConfirmationDates(c, { source: 'venue-listing' }, TODAY);
+  assert.equal(c.previewsStartDate, null);
+  assert.equal(c.runningNow, true);
+  assert.equal(statusFromDates({ openingDate: null, previewsStartDate: null, runningNow: true }, TODAY), 'previews');
+  const later = { title: 'Later', listingFirstDate: '2026-12-02', listingLastDate: '2026-12-13', listingFirstDateIsNext: true };
+  applyConfirmationDates(later, { source: 'venue-listing' }, TODAY);
+  assert.equal(later.previewsStartDate, '2026-12-02', 'a first date well ahead is kept');
+});
+
+test('buildShowEntry: id year follows the run, not the calendar', () => {
+  const e = buildShowEntry({ title: 'Winter Thing', slug: 'winter-thing', venue: 'Soho Playhouse', category: 'off-broadway', source: 'venue-page:soho-playhouse', previewsStartDate: '2027-01-16' });
+  assert.equal(e.id, 'winter-thing-off-broadway-2027');
+});
+
+test('venuesCompatible matches whole words only', () => {
+  assert.equal(venuesCompatible('Art House', 'Martin Art House Stage'), true);
+  assert.equal(venuesCompatible('Art House', 'Smart Housekeeping Hall'), false);
+});
+
+test('parseDateRangeText: times, month-year and year-less numeric dates', () => {
+  assert.deepEqual(parseDateRangeText('Oct 3 – 7:30pm', { todayIso: TODAY }), { firstDate: '2026-10-03', lastDate: '2026-10-03' });
+  assert.deepEqual(parseDateRangeText('March 2027', { todayIso: TODAY }), { firstDate: null, lastDate: null });
+  assert.deepEqual(parseDateRangeText('10/3 - 11/16', { todayIso: TODAY }), { firstDate: '2026-10-03', lastDate: '2026-11-16' });
+  assert.deepEqual(parseDateRangeText('Starts Sep 9, 2026', { todayIso: TODAY }), { firstDate: '2026-09-09', lastDate: null });
+});
+
+test('isoDay converts zoned timestamps to the New York date', () => {
+  assert.equal(isoDay('2026-10-08T00:30:00Z'), '2026-10-07');
+  assert.equal(isoDay('2026-10-15T19:30:00'), '2026-10-15');
+  assert.equal(isoDay('2026-10-15 19:30'), '2026-10-15');
+});
+
+test('discoveryGateReason applies discovery gates (used on the TheaterMania route too)', () => {
+  assert.match(discoveryGateReason({ title: 'Big Screening Night', venue: 'Soho Playhouse' }, GATES) || '', /non-theatre/);
+  assert.equal(discoveryGateReason({ title: 'Hamlet', venue: 'Soho Playhouse', previewsStartDate: '2026-10-01', closingDate: '2026-11-01' }, GATES), null);
 });

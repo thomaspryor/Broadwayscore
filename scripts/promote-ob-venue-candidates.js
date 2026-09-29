@@ -44,7 +44,7 @@
 const fs = require('fs');
 const path = require('path');
 const { loadStaging, writeStagingCandidates, updateStaging } = require('./lib/venue-listing-discover');
-const { isCandidateConfirmed, decideCriticListingPromotion, preferCorroboratingTitle, decideVenueListingPromotion, venuesCompatible } = require('./lib/ob-cross-validation');
+const { isCandidateConfirmed, decideCriticListingPromotion, preferCorroboratingTitle, decideVenueListingPromotion, venuesCompatible, discoveryGateReason } = require('./lib/ob-cross-validation');
 const { fetchTmOffBroadway, parseTmOffBroadwayRow } = require('./lib/theatermania-ob');
 const { cleanListingTitle } = require('./lib/ob-listing-platforms');
 const { foldDiacritics } = require('./lib/title-match');
@@ -173,7 +173,8 @@ function validDateOrNull(v) {
  * @param {{openingDate: string|null, previewsStartDate: string|null}} dates
  * @param {string} [todayIso]
  */
-function statusFromDates({ openingDate, previewsStartDate }, todayIso = new Date().toISOString().slice(0, 10)) {
+function statusFromDates({ openingDate, previewsStartDate, runningNow = false }, todayIso = new Date().toISOString().slice(0, 10)) {
+  if (runningNow && !openingDate && !previewsStartDate) return 'previews';
   if (openingDate) {
     if (openingDate <= todayIso) return 'open';
     if (previewsStartDate && previewsStartDate <= todayIso) return 'previews';
@@ -189,7 +190,7 @@ function statusFromDates({ openingDate, previewsStartDate }, todayIso = new Date
  * listing's: TM separates first preview from press night, a box-office
  * listing only knows the first and last performance.
  */
-function applyConfirmationDates(candidate, { matchedDates, source }) {
+function applyConfirmationDates(candidate, { matchedDates, source }, todayIso = new Date().toISOString().slice(0, 10)) {
   if (matchedDates && (matchedDates.previewsStartDate || matchedDates.openingDate)) {
     candidate.previewsStartDate = matchedDates.previewsStartDate || null;
     candidate.openingDate = matchedDates.openingDate || null;
@@ -200,6 +201,18 @@ function applyConfirmationDates(candidate, { matchedDates, source }) {
   if (source === 'venue-listing' || (candidate.listingFirstDate && !candidate.previewsStartDate && !candidate.openingDate)) {
     candidate.previewsStartDate = candidate.listingFirstDate || null;
     candidate.closingDate = candidate.listingLastDate || null;
+    // An on-sale-only listing (OvationTix) whose next performance is within
+    // two days may well be mid-run: its real first performance is unknown,
+    // so leave previewsStartDate empty and mark it running rather than
+    // stamping a first-preview date that moves every day.
+    if (candidate.listingFirstDateIsNext && candidate.previewsStartDate) {
+      const soon = new Date(`${todayIso}T00:00:00Z`);
+      soon.setUTCDate(soon.getUTCDate() + 2);
+      if (candidate.previewsStartDate <= soon.toISOString().slice(0, 10)) {
+        candidate.previewsStartDate = null;
+        candidate.runningNow = true;
+      }
+    }
   }
 }
 
@@ -224,7 +237,10 @@ function buildShowEntry(candidate) {
   // — orchestrator must skip null-openingDate) — but a candidate that DOES
   // carry a well-formed date (--admin-force on a hand-verified entry, or a
   // future producer) has it preserved rather than discarded (BRO-160).
-  const year = new Date().getFullYear();
+  // Id year follows the run (a January 2027 run staged in 2026 is a -2027
+  // id; validate-data's id-year drift check reads it that way).
+  const firstDated = validDateOrNull(candidate.previewsStartDate) || validDateOrNull(candidate.openingDate);
+  const year = firstDated ? Number(firstDated.slice(0, 4)) : new Date().getFullYear();
   const slugBase = candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const category = resolveCandidateCategory(candidate);
   // withMarketSuffix() is idempotent -- guards against the same doubled-suffix
@@ -251,6 +267,7 @@ function buildShowEntry(candidate) {
     status: statusFromDates({
       openingDate: validDateOrNull(candidate.openingDate),
       previewsStartDate: validDateOrNull(candidate.previewsStartDate),
+      runningNow: candidate.runningNow === true,
     }),
     category: category || 'off-broadway',
     market: marketForCategory(category || 'off-broadway'),
@@ -624,7 +641,12 @@ async function main() {
   // AND venue (findTheaterManiaCorroboration). Fetched on the daily
   // --regional-only path too, which is where venue-page candidates now get
   // promoted without an operator.
-  const isVenuePageOB = c => c && c.category === 'off-broadway' && String(c.source || '').startsWith('venue-page:');
+  // Kill switch: OB_VENUE_AUTO_PROMOTE_DISABLED=1 takes venue-page candidates
+  // back out of the unattended daily path (they wait for an operator run, as
+  // before BRO-4396) without a code revert.
+  const venueAutoOff = regionalOnly && process.env.OB_VENUE_AUTO_PROMOTE_DISABLED === '1';
+  if (venueAutoOff) console.log('  OB_VENUE_AUTO_PROMOTE_DISABLED=1: venue-page candidates stay staged this run.');
+  const isVenuePageOB = c => !venueAutoOff && c && c.category === 'off-broadway' && String(c.source || '').startsWith('venue-page:');
   let theatermaniaEntries = [];
   if (!adminPromoteAll && staged.some(isVenuePageOB)) {
     try {
@@ -734,6 +756,12 @@ async function main() {
       // TheaterMania's title replaces a slug-derived one ("Diana Untold" →
       // "Diana: The Untold and Untrue Story"): only exact/subset matches at a
       // compatible venue carry matchedTitle (see isCandidateConfirmed).
+      // TheaterMania rows skip discovery's non-theatre / one-night gates here
+      // unless applied: discovery's own TM path applies them (ship-check).
+      if (confirmed && source === 'theatermania') {
+        const gate = discoveryGateReason({ ...c, ...(r.matchedDates || {}) }, getDiscoveryGates());
+        if (gate) { confirmed = false; reason = `${reason}; ${gate}`; source = null; }
+      }
       if (confirmed && source === 'theatermania' && r.matchedTitle) {
         const tmTitle = cleanListingTitle(r.matchedTitle);
         if (tmTitle && tmTitle !== c.title) {
@@ -932,7 +960,7 @@ async function main() {
           severity: 'info',
           disposition: 'digest',
           url: `https://broadwayscorecard.com/show/${p.entry.id}`,
-          description: `Auto-promoted from the venue's own listing (${p.confirmationReason}). Reviews ingest automatically once critics publish.`,
+          description: `Auto-promoted via ${p.confirmationSource === 'theatermania' ? 'a TheaterMania Off-Broadway listing' : 'the venue listing'} (${p.confirmationReason}). Reviews ingest automatically once critics publish.`,
         });
       } catch (e) {
         console.warn(`::warning::go-live digest queue failed for ${p.entry.id}: ${e.message} (promotion unaffected)`);

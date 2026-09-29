@@ -96,7 +96,10 @@ function venuesCompatible(a, b) {
   const na = norm(a); const nb = norm(b);
   if (!na || !nb) return false;
   const [shorter, longer] = na.length <= nb.length ? [na, nb] : [nb, na];
-  return shorter.split(' ').length >= 2 && longer.includes(shorter);
+  // Whole words only ("soho playhouse" in "huron club soho playhouse", not
+  // "art" in "martin"). Known residual: "Peter Jay Sharp Theater" (Playwrights
+  // Horizons) reads as compatible with "...at Symphony Space".
+  return shorter.split(' ').length >= 2 && ` ${longer} `.includes(` ${shorter} `);
 }
 
 function foldVenue(v) {
@@ -258,7 +261,12 @@ function isCandidateConfirmed(candidate, sources, options = {}) {
 // Undated venue-page candidates (the slug-title link readers) never pass
 // here; they still need Playbill/Lortel/TheaterMania.
 
-const MIN_LISTING_PERFORMANCES = 3;
+// A run, not a weekend booking (ship-check, 2026-09-29): with a performance
+// count, at least 5 (SoHo's 4-show improv and kids' weekends stay out); with
+// no count, the dates must span at least 3 days (NYU Skirball's 3-night
+// visiting productions are real, reviewed runs).
+const MIN_LISTING_PERFORMANCES = 5;
+const MIN_UNCOUNTED_SPAN_DAYS = 2;
 const MAX_LISTING_LEAD_DAYS = 365;
 const VENUE_LISTING_SOURCE_PREFIX = 'venue-page:';
 
@@ -302,33 +310,48 @@ function decideVenueListingPromotion(candidate, options = {}) {
   const lead = (Date.parse(`${first}T00:00:00Z`) - Date.parse(`${todayIso}T00:00:00Z`)) / DAY_MS;
   if (lead > MAX_LISTING_LEAD_DAYS) return no(`first performance ${first} is more than ${MAX_LISTING_LEAD_DAYS}d out`);
   const count = candidate.listingPerformanceCount;
+  const spanDays = (Date.parse(`${last}T00:00:00Z`) - Date.parse(`${first}T00:00:00Z`)) / DAY_MS;
   if (typeof count === 'number') {
-    if (count < MIN_LISTING_PERFORMANCES) return no(`only ${count} performance(s) listed — a one-off booking, not a run`);
+    if (count < MIN_LISTING_PERFORMANCES) return no(`only ${count} performance(s) listed — a short booking, not a run`);
   } else if (first === last) {
     return no(`one-night event (${first})`);
+  } else if (spanDays < MIN_UNCOUNTED_SPAN_DAYS) {
+    return no(`listed ${first} to ${last} only — a short booking, not a run`);
   }
 
+  const gateReason = discoveryGateReason({ ...candidate, listingFirstDate: first, listingLastDate: last }, gates);
+  if (gateReason) return no(gateReason);
+
+  const evidence = candidate.listingEvidence === 'editorial-listing' ? 'editorial venue listing' : "venue's own listing";
+  return {
+    confirmed: true,
+    source: 'venue-listing',
+    reason: `${evidence}: ${first} to ${last}${typeof count === 'number' ? `, ${count} performances` : ''}`,
+  };
+}
+
+/**
+ * Discovery's own non-theatre / one-night gates (injected), shared by the
+ * venue-listing and TheaterMania routes. Fails closed on a throwing gate.
+ * @returns {string|null} why the candidate fails, or null
+ */
+function discoveryGateReason(candidate, gates = {}) {
   const gateShape = {
     displayName: candidate.title,
     name: candidate.title,
     subcategories: [{ name: 'Off Broadway' }],
     venue: { name: candidate.venue },
     description: candidate.description || '',
-    startDate: first,
-    endDate: last,
+    startDate: candidate.listingFirstDate || candidate.previewsStartDate || candidate.openingDate || undefined,
+    endDate: candidate.listingLastDate || candidate.closingDate || undefined,
   };
   try {
-    if (gates.isNonTheaterContent && gates.isNonTheaterContent(gateShape)) return no('discovery non-theatre gate (isNonTheaterContent)');
-    if (gates.isOneNightShow && gates.isOneNightShow(gateShape)) return no('discovery one-night gate (isOneNightShow)');
+    if (gates.isNonTheaterContent && gates.isNonTheaterContent(gateShape)) return 'discovery non-theatre gate (isNonTheaterContent)';
+    if (gates.isOneNightShow && gates.isOneNightShow(gateShape)) return 'discovery one-night gate (isOneNightShow)';
   } catch (e) {
-    return no(`discovery gate threw (${e.message}) — refusing to confirm`);
+    return `discovery gate threw (${e.message}) — refusing to confirm`;
   }
-
-  return {
-    confirmed: true,
-    source: 'venue-listing',
-    reason: `venue's own listing: ${first} to ${last}${typeof count === 'number' ? `, ${count} performances` : ''}`,
-  };
+  return null;
 }
 
 // ---------------------------------------------------------------------------
@@ -492,6 +515,7 @@ function preferCorroboratingTitle(candidateTitle, matchedTitle) {
 module.exports = {
   isCandidateConfirmed,
   decideVenueListingPromotion,
+  discoveryGateReason,
   junkCandidateReason,
   findTheaterManiaCorroboration,
   venuesCompatible,

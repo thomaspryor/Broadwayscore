@@ -2295,7 +2295,10 @@ async function discoverShows() {
           }
           // Per-venue rolling-median anomaly gate. Fail-soft (warns + sets
           // exitCode but discovery continues for other venues).
-          checkVenueAnomaly(v.name, r.value.length);
+          // anomalyKey: a venue whose reader changed (BRO-4396: SoHo Playhouse
+          // moved to OvationTix, ~15 → ~32 rows) starts a fresh baseline
+          // instead of tripping the 2x-median gate for a week.
+          checkVenueAnomaly(v.anomalyKey || v.name, r.value.length);
           console.log(`  ${v.name}: ${r.value.length} candidates → staging`);
           all.push(...r.value);
         } else {

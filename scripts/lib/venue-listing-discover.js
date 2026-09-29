@@ -264,6 +264,9 @@ const OB_VENUE_CONFIGS = [
     url: 'https://ci.ovationtix.com/35583',
     strategy: 'ovationtix',
     ovationtixClientId: 35583,
+    // Fresh anomaly baseline: the OvationTix reader returns ~2x the rows the
+    // homepage links did, which would trip the 2x-median gate for a week.
+    anomalyKey: 'Soho Playhouse (OvationTix)',
     excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
     preferPlaywright: false,
     category: 'off-broadway',
@@ -303,10 +306,18 @@ const {
   extractDatedCards,
   fetchOvationTixBundle,
   fetchTribeEvents,
+  fetchSpektrixEvents,
+  parseSpektrixEvents,
+  extractJsonItems,
+  extractNextData,
+  parseNytgVenuePages,
+  getJson,
+  NYTG_BASE,
 } = require('./ob-listing-platforms');
 
 // Strategies whose payload is JSON from a ticketing/CMS API, not a page.
-const DATED_JSON_STRATEGIES = new Set(['ovationtix', 'tribe-events']);
+// venue-listing-discover.test.mjs replays these from .json fixtures.
+const DATED_JSON_STRATEGIES = new Set(['ovationtix', 'tribe-events', 'spektrix', 'json-api']);
 
 function parseVenueListingHtml(venue, html, { todayIso = new Date().toISOString().slice(0, 10) } = {}) {
   // Dated platform readers (BRO-4396) take a JSON payload (object or string)
@@ -328,9 +339,15 @@ function parseVenueListingHtml(venue, html, { todayIso = new Date().toISOString(
     if (typeof payload === 'string') {
       try { payload = JSON.parse(payload); } catch { return []; }
     }
-    rows = venue.strategy === 'ovationtix'
-      ? parseOvationTixBundle(payload, { clientId: venue.ovationtixClientId })
-      : parseTribeEvents(payload);
+    if (venue.strategy === 'ovationtix') rows = parseOvationTixBundle(payload, { clientId: venue.ovationtixClientId });
+    else if (venue.strategy === 'spektrix') rows = parseSpektrixEvents(payload, { genres: venue.spektrixGenres });
+    else if (venue.strategy === 'json-api') rows = extractJsonItems(payload, venue.jsonSpec);
+    else rows = parseTribeEvents(payload);
+  } else if (venue.strategy === 'nytg-venue') {
+    rows = parseNytgVenuePages(html);
+  } else if (venue.strategy === 'next-data') {
+    const data = extractNextData(html);
+    rows = data ? extractJsonItems(data, venue.jsonSpec) : [];
   } else {
     const dom = new JSDOM(html);
     const doc = dom.window.document;
@@ -381,6 +398,12 @@ function parseVenueListingHtml(venue, html, { todayIso = new Date().toISOString(
     ...(r.lastDate ? { listingLastDate: r.lastDate } : {}),
     ...(typeof r.performanceCount === 'number' ? { listingPerformanceCount: r.performanceCount } : {}),
     ...(r.url ? { listingUrl: absoluteUrl(r.url, venue.url) } : {}),
+    // OvationTix only returns performances still on sale, so its first date
+    // is the NEXT performance, not the first one (ship-check 2026-09-29: Elf
+    // Lyons began 2026-09-24, OvationTix said 2026-10-01).
+    ...(r.firstDate && venue.strategy === 'ovationtix' ? { listingFirstDateIsNext: true } : {}),
+    // NYTG is an editorial listing, not the venue's box office.
+    ...(venue.strategy === 'nytg-venue' ? { listingEvidence: 'editorial-listing' } : {}),
   }));
 }
 
@@ -510,6 +533,23 @@ async function scrapeVenueListing(venue) {
   if (venue.strategy === 'tribe-events') {
     const json = await fetchTribeEvents(venue.url);
     return parseVenueListingHtml(venue, json);
+  }
+  if (venue.strategy === 'spektrix') {
+    return parseVenueListingHtml(venue, await fetchSpektrixEvents(venue.spektrixUrl));
+  }
+  if (venue.strategy === 'json-api') {
+    return parseVenueListingHtml(venue, await getJson(venue.jsonUrl));
+  }
+  if (venue.strategy === 'nytg-venue') {
+    // One page per slug (Theatre Row's rooms each have their own), joined:
+    // parseNytgVenuePages reads every __NEXT_DATA__ block in the string.
+    const pages = [];
+    for (const slug of venue.nytgSlugs) {
+      const r = await fetchPage(`${NYTG_BASE}${slug}`, {});
+      if (r && r.content) pages.push(r.content);
+      else console.warn(`::warning::venue ${venue.name}: NYTG page ${slug} fetch returned empty content`);
+    }
+    return parseVenueListingHtml(venue, pages.join('\n'));
   }
 
   const maxAttempts = venue.flaky ? 3 : 1;

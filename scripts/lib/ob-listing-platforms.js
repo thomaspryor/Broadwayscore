@@ -53,10 +53,26 @@ function cleanListingTitle(raw) {
   return t;
 }
 
-/** Any date-ish value → 'YYYY-MM-DD' (local date part as written), or null. */
+const NY_DAY = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' });
+
+/**
+ * Any date-ish value → 'YYYY-MM-DD', or null. A timestamp carrying a zone
+ * ("2026-10-08T00:30:00Z", "...-04:00") is converted to its New York date
+ * (Vivenu stores performances in UTC, so a 8pm show reads as the next day);
+ * one without a zone is taken as written. Epoch numbers are ms (or s when
+ * small enough to be seconds).
+ */
 function isoDay(value) {
-  if (value == null) return null;
+  if (value == null || value === '') return null;
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    const d = new Date(value < 1e11 ? value * 1000 : value);
+    return Number.isNaN(d.getTime()) ? null : NY_DAY.format(d);
+  }
   const s = String(value).trim();
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})$/.test(s)) {
+    const d = new Date(s);
+    if (!Number.isNaN(d.getTime())) return NY_DAY.format(d);
+  }
   const m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!m) return null;
   const iso = `${m[1]}-${m[2]}-${m[3]}`;
@@ -216,7 +232,7 @@ function parseDateRangeText(text, { todayIso = new Date().toISOString().slice(0,
   if (!s) return { firstDate: null, lastDate: null };
   const tokens = [];
   // Month-name dates: "Oct 3", "October 3, 2026", "Oct. 3rd 2026"
-  const monthRe = /\b(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\.?\s+(\d{1,2})(?:st|nd|rd|th)?(?:,?\s+(\d{4}))?(?:\s*[-–—]\s*(\d{1,2})(?:st|nd|rd|th)?(?!\d|\s*[a-z/])(?:,?\s+(\d{4}))?)?/gi;
+  const monthRe = /\b(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\.?\s+(\d{1,2})(?!\d|:|\s*(?:am|pm)\b)(?:st|nd|rd|th)?(?:,?\s+(\d{4}))?(?:\s*[-–—]\s*(\d{1,2})(?:st|nd|rd|th)?(?!\d|:|\s*[a-z/])(?:,?\s+(\d{4}))?)?/gi;
   let m;
   while ((m = monthRe.exec(s)) !== null) {
     const mon = MONTHS[m[1].toLowerCase().replace(/\.$/, '')];
@@ -226,9 +242,9 @@ function parseDateRangeText(text, { todayIso = new Date().toISOString().slice(0,
     if (m[4]) tokens.push({ idx: m.index + 1, mon, day: Number(m[4]), year: m[5] ? Number(m[5]) : (m[3] ? Number(m[3]) : null) });
   }
   // Numeric dates: 10/3/26, 10/03/2026
-  const numRe = /\b(\d{1,2})\/(\d{1,2})\/(\d{2}|\d{4})\b/g;
+  const numRe = /\b(\d{1,2})\/(\d{1,2})(?:\/(\d{2}|\d{4}))?\b(?!\/)/g;
   while ((m = numRe.exec(s)) !== null) {
-    const y = m[3].length === 2 ? 2000 + Number(m[3]) : Number(m[3]);
+    const y = m[3] ? (m[3].length === 2 ? 2000 + Number(m[3]) : Number(m[3])) : null;
     tokens.push({ idx: m.index, mon: Number(m[1]), day: Number(m[2]), year: y });
   }
   if (tokens.length === 0) return { firstDate: null, lastDate: null };
@@ -272,6 +288,10 @@ function parseDateRangeText(text, { todayIso = new Date().toISOString().slice(0,
   if (isos.length === 1 && /\b(through|thru|until|till|closes|closing|ends)\b/i.test(s)) {
     return { firstDate: null, lastDate: sorted[0] };
   }
+  // "Starts Sep 9", "Previews begin Nov 5": the first date only, run end unknown.
+  if (isos.length === 1 && /\b(starts?|begins?|beginning|from|opens|previews)\b/i.test(s)) {
+    return { firstDate: sorted[0], lastDate: null };
+  }
   return { firstDate: sorted[0], lastDate: sorted[sorted.length - 1] };
 }
 
@@ -295,6 +315,143 @@ function extractDatedCards(doc, venue, { todayIso } = {}) {
     const { firstDate, lastDate } = parseDateRangeText(dateEl ? dateEl.textContent : '', { todayIso });
     const a = venue.linkSelector ? card.querySelector(venue.linkSelector) : (card.matches && card.matches('a[href]') ? card : card.querySelector('a[href]'));
     rows.push({ title, firstDate, lastDate, performanceCount: null, url: a ? a.getAttribute('href') : null });
+  }
+  return mergeByTitle(rows);
+}
+
+
+// ---------------------------------------------------------------------------
+// Spektrix (public /api/v3/events)
+// ---------------------------------------------------------------------------
+
+/**
+ * @param {object[]} events - GET https://<host>/<client>/api/v3/events
+ * @param {{genres?: string[], genreField?: string}} [opts] - keep only events
+ *   whose genre attribute is one of `genres` (PAC NYC lists DJ sets, talks
+ *   and access services on the same account).
+ */
+function parseSpektrixEvents(events, opts = {}) {
+  if (!Array.isArray(events)) return [];
+  const genreField = opts.genreField || 'attribute_Genre1';
+  const genres = opts.genres ? new Set(opts.genres.map(g => g.toLowerCase())) : null;
+  const rows = [];
+  for (const e of events) {
+    if (!e || !e.name) continue;
+    if (String(e.attribute_NoEventPage || '').toLowerCase() === 'true') continue;
+    if (genres && !genres.has(String(e[genreField] || '').toLowerCase())) continue;
+    rows.push({
+      title: cleanListingTitle(e.name),
+      firstDate: isoDay(e.firstInstanceDateTime),
+      lastDate: isoDay(e.lastInstanceDateTime),
+      // instanceDates is display text ("September 16-October 18"), not a
+      // list, so the performance count is unknown; the gate falls back to
+      // "at least two distinct dates".
+      performanceCount: null,
+      url: e.webUrl || null,
+    });
+  }
+  return mergeByTitle(rows.filter(r => r.title && (r.firstDate || r.lastDate)));
+}
+
+// ---------------------------------------------------------------------------
+// Generic JSON path reader (WordPress REST, PatronTicket, Next.js page data)
+// ---------------------------------------------------------------------------
+
+/**
+ * Values at a dotted path; `[]` flattens an array ("a.b[].c").
+ * @returns {unknown[]}
+ */
+function valuesAtPath(obj, path) {
+  if (!path) return [obj];
+  let cur = [obj];
+  for (const raw of String(path).split('.')) {
+    const flatten = raw.endsWith('[]');
+    const key = flatten ? raw.slice(0, -2) : raw;
+    const next = [];
+    for (const v of cur) {
+      if (v == null || typeof v !== 'object') continue;
+      const got = key === '' ? v : v[key];
+      if (got === undefined || got === null) continue;
+      if (flatten) { if (Array.isArray(got)) next.push(...got); }
+      else next.push(got);
+    }
+    cur = next;
+  }
+  return cur;
+}
+
+/**
+ * Read dated productions out of any JSON payload by config.
+ * @param {unknown} payload
+ * @param {{itemsPath: string, titleField: string, firstField?: string,
+ *   lastField?: string, datesField?: string, urlField?: string,
+ *   filterField?: string, filterAnyOf?: Array<string|number>}} spec
+ *   datesField (a path under each item to every performance date) gives
+ *   first/last/count when the item has no run fields.
+ */
+function extractJsonItems(payload, spec) {
+  const items = valuesAtPath(payload, spec.itemsPath);
+  const allow = spec.filterAnyOf ? new Set(spec.filterAnyOf.map(String)) : null;
+  const rows = [];
+  for (const it of items) {
+    if (!it || typeof it !== 'object') continue;
+    if (allow) {
+      const vals = valuesAtPath(it, spec.filterField).flatMap(v => (Array.isArray(v) ? v : [v])).map(String);
+      if (!vals.some(v => allow.has(v))) continue;
+    }
+    const title = cleanListingTitle(valuesAtPath(it, spec.titleField)[0]);
+    if (!title) continue;
+    let first = spec.firstField ? isoDay(valuesAtPath(it, spec.firstField)[0]) : null;
+    let last = spec.lastField ? isoDay(valuesAtPath(it, spec.lastField)[0]) : null;
+    let count = null;
+    if (spec.datesField) {
+      const days = valuesAtPath(it, spec.datesField).map(isoDay).filter(Boolean).sort();
+      if (days.length) {
+        first = first || days[0];
+        last = last || days[days.length - 1];
+        count = days.length;
+      }
+    }
+    const url = spec.urlField ? valuesAtPath(it, spec.urlField)[0] : null;
+    rows.push({ title, firstDate: first, lastDate: last, performanceCount: count, url: typeof url === 'string' ? url : null });
+  }
+  return mergeByTitle(rows);
+}
+
+/** The JSON a Next.js page embeds in <script id="__NEXT_DATA__">, or null. */
+function extractNextData(html) {
+  return extractAllNextData(html)[0] || null;
+}
+
+/** Every __NEXT_DATA__ payload in a string (several NYTG pages joined). */
+function extractAllNextData(html) {
+  const out = [];
+  const re = /<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/g;
+  let m;
+  while ((m = re.exec(String(html || ''))) !== null) {
+    try { out.push(JSON.parse(m[1])); } catch { /* skip a malformed block */ }
+  }
+  return out;
+}
+
+// New York Theatre Guide venue pages (/venues/<slug>) list each venue's
+// current productions with start and closing dates in their page data. Used
+// for rental houses whose own sites carry no listing, or sit behind a bot
+// challenge (The Public, Park Avenue Armory, Theatre Row). An editorial
+// listing like TheaterMania's, not the venue's own box office.
+const NYTG_VENUE_SPEC = {
+  itemsPath: 'props.pageProps.venueCurrentProducts[]',
+  titleField: 'displayName',
+  firstField: 'startingDate',
+  lastField: 'closingDate',
+};
+const NYTG_BASE = 'https://www.newyorktheatreguide.com/venues/';
+
+/** @param {string|string[]} htmls - one page per NYTG slug */
+function parseNytgVenuePages(htmls) {
+  const rows = [];
+  for (const html of [].concat(htmls || [])) {
+    for (const data of extractAllNextData(html)) rows.push(...extractJsonItems(data, NYTG_VENUE_SPEC));
   }
   return mergeByTitle(rows);
 }
@@ -328,19 +485,31 @@ const OVT_API = 'https://web.ovationtix.com/trs/api/rest';
 // A busy org lists ~30 productions; anything far past that is a parser or
 // API change, not a season.
 const OVT_MAX_PRODUCTIONS = 80;
+const OVT_PACE_MS = 250;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 async function fetchOvationTixBundle(clientId) {
   const headers = { clientId: String(clientId), newCIRequest: 'true' };
   const productions = await getJson(`${OVT_API}/Production?clientId=${encodeURIComponent(clientId)}`, { headers });
   if (!Array.isArray(productions)) throw new Error(`OvationTix ${clientId}: productions is not an array`);
   const performances = {};
-  for (const p of productions.slice(0, OVT_MAX_PRODUCTIONS)) {
-    try {
-      const d = await getJson(`${OVT_API}/Production(${p.id})/performance`, { headers });
-      performances[String(p.id)] = { performanceSummary: d.performanceSummary, performances: (d.performances || []).map(x => ({ startDate: x.startDate })) };
-    } catch (e) {
-      performances[String(p.id)] = { error: e.message };
+  const list = productions.slice(0, OVT_MAX_PRODUCTIONS);
+  let failed = 0;
+  for (const p of list) {
+    // Paced and retried once: back-to-back calls drew a 403 on a second run
+    // minutes later (ship-check 2026-09-29).
+    let d = null;
+    for (let attempt = 1; attempt <= 2 && !d; attempt++) {
+      await sleep(attempt === 1 ? OVT_PACE_MS : OVT_PACE_MS * 8);
+      try { d = await getJson(`${OVT_API}/Production(${p.id})/performance`, { headers }); } catch (e) { if (attempt === 2) performances[String(p.id)] = { error: e.message }; }
     }
+    if (d) performances[String(p.id)] = { performanceSummary: d.performanceSummary, performances: (d.performances || []).map(x => ({ startDate: x.startDate })) };
+    else failed++;
+  }
+  // A throttled run would otherwise drop productions silently (no dates →
+  // skipped). Fail the venue instead so discovery logs it as failed.
+  if (list.length && failed / list.length > 0.25) {
+    throw new Error(`OvationTix ${clientId}: ${failed}/${list.length} performance fetches failed`);
   }
   return { productions: productions.map(({ description, ...rest }) => rest), performances };
 }
@@ -362,12 +531,25 @@ async function fetchTribeEvents(siteUrl, { perPage = 50, maxPages = 4 } = {}) {
   return { events };
 }
 
+async function fetchSpektrixEvents(url) {
+  const json = await getJson(url);
+  if (!Array.isArray(json)) throw new Error(`Spektrix ${url}: events is not an array`);
+  return json;
+}
+
 /** Parse a listing HTML string into a Document (shared by the HTML readers). */
 function htmlToDocument(html) {
   return new JSDOM(html).window.document;
 }
 
 module.exports = {
+  parseSpektrixEvents,
+  valuesAtPath,
+  extractJsonItems,
+  extractNextData,
+  extractAllNextData,
+  parseNytgVenuePages,
+  NYTG_BASE,
   cleanListingTitle,
   isoDay,
   mergeByTitle,
@@ -380,4 +562,5 @@ module.exports = {
   getJson,
   fetchOvationTixBundle,
   fetchTribeEvents,
+  fetchSpektrixEvents,
 };
