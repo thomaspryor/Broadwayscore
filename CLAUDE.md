@@ -39,7 +39,7 @@ Use shared components from `src/components/show-cards/` — never create custom 
 **Run `/visual-qa` before any push touching UI files** (`src/**/*.{tsx,jsx,css,scss}`, `tailwind.config.*`, `src/app/**`): element crops + overflow probe + two-model LLM diff vs references. Stop hook blocks visual-correctness claims without a fresh verdict; pre-push hook blocks `git push`/`gh pr merge` without user `APPROVED: <verdictHash>`. Bypass: `NO-VERIFY: <reason>` or `ship immediately for: <reason>`. **Score badges sacred** (`w-20 sm:w-24`). Full rules: `memory/feedback_local_preview_before_push.md`.
 
 ### 6. Board = Linear, not the Notion Brain (MANDATORY — every session)
-**Linear is the source of truth — do NOT create Notion cards.** Notion is retired (mirror froze 2026-08-20): cards filed there have no Linear twin, so `linearMirrorGuard` can't dedupe them. Flow: `memory/notion-brain-workflow.md`.
+**Linear is the source of truth — do NOT create Notion cards.** Notion is retired (mirror froze 2026-08-20): cards filed there have no Linear twin, so `linearMirrorGuard` can't dedupe them. Flow: `memory/linear-board-workflow.md`.
 - **Session start:** `linear-brain.js create "<title>" --dispatch|--park "<reason>" --notes "..."`; output the URL. **Session end:** comment the Outcome (what/why/approach/gotchas) + Key Files, then `linear-brain.js update BRO-N --state Done`. Pause/refused Done: `linear-session.js report --status=paused`.
 - **Done is gated (exit 5):** needs `PR-EVIDENCE: merged deployed checked (<url>)`, or a safe-form command in `## Acceptance criteria` / a `VERIFY: <cmd>` line. Write it when you file, not when you close.
 - **New discoveries:** file a Linear issue (Todo), don't context-switch.

@@ -151,37 +151,36 @@ def _strip_heredocs(cmd: str) -> str:
             i += 1  # drop the terminator line, continue with the next tag's body
     return '\n'.join(out)
 
-# Extracts the --status value from a `notion-brain.js update` Bash command,
-# or None if this command isn't one. Used by the wrap-up-close-out gate below
-# to require concrete evidence a session's Notion card was actually closed
-# out (Done/Paused), not just that a Skill tool_use named 'wrap-up' appeared
-# somewhere (found insufficient — a plan /second-opinion review, 2026-08-25,
-# showed a bare regex `.*--status[= ]+"?(done|paused)"?` search across the
-# raw command string is exploitable: this repo's own docs/session text
-# routinely quotes the literal example `--status Done` INSIDE a --outcome/
-# --notes argument's prose value, e.g. `--outcome "...documented as e.g.
-# \`notion-brain.js update <id> --status Done\`..."` — a session (very
+# Extracts the close-out value from a Linear board close-out Bash command
+# (`linear-brain.js update BRO-N --state <X>` or `linear-session.js report
+# --status=<X>`), or None if this command isn't one. Used by the
+# wrap-up-close-out gate below to require concrete evidence the session's
+# Linear card was actually closed out, not just that a Skill tool_use named
+# 'wrap-up' appeared somewhere (found insufficient — a plan /second-opinion
+# review, 2026-08-25, showed a bare regex `.*--status[= ]+"?(done|paused)"?`
+# search across the raw command string is exploitable: this repo's own
+# docs/session text routinely quotes the literal example `--state Done`
+# INSIDE a --comment/--summary argument's prose value — a session (very
 # plausibly one editing this exact gate) could satisfy a whole-string regex
-# on quoted example text with a real --status of "In progress". Tokenizing
-# with shlex closes this: a quoted --outcome/--notes value collapses to ONE
-# token, so text "--status Done" embedded inside it is part of that token's
-# string content, never two separate top-level `--status`/`Done` tokens —
-# only a REAL, unquoted `--status` flag can ever match `tok == '--status'`
-# below. Heredoc-stripping runs first because shlex can't parse unbalanced
-# quotes inside heredoc-wrapped prose (this repo's own convention for long
-# --outcome/--notes values, per CLAUDE.md's heredoc commit-message rule) —
-# without it, shlex.split would raise on essentially every real invocation.
-# Linear replaced the Notion board (CLAUDE.md §6): `linear-brain.js update
-# BRO-N --state Done` is the same close-out, spelled --state. Linear has no
-# "Paused" state (linear-brain rejects it); a pause is --state Backlog, which
-# is what `linear-session.js report --status=paused` sets. Before
-# 2026-09-27 only notion-brain.js counted, so a session that closed out on
-# Linear could never honestly claim SAFE TO EXIT and fell back to "NOT SAFE
-# TO EXIT — waiting on your merge" (the owner-merge ask OWNERMERGE blocks).
-# `linear-session.js report --status=done|paused` is the close-out verb for an
-# issue the session CLAIMED (dispatched onto BRO-N) rather than created.
+# on quoted example text with a real state of "In Progress". Tokenizing
+# with shlex closes this: a quoted --comment/--summary value collapses to ONE
+# token, so text "--state Done" embedded inside it is part of that token's
+# string content, never two separate top-level `--state`/`Done` tokens —
+# only a REAL, unquoted flag can ever match `tok == flag` below.
+# Heredoc-stripping runs first because shlex can't parse unbalanced quotes
+# inside heredoc-wrapped prose (this repo's convention for long values, per
+# CLAUDE.md's heredoc commit-message rule) — without it, shlex.split would
+# raise on essentially every real invocation.
+# Linear replaced the Notion board (CLAUDE.md §6). Linear has no "Paused"
+# state (linear-brain rejects it); a pause is --state Backlog, which is what
+# `linear-session.js report --status=paused` sets. `linear-session.js report`
+# is the close-out verb for an issue the session CLAIMED (dispatched onto
+# BRO-N) rather than created.
+# `notion-brain.js update --status Done` counted here until 2026-09-29
+# (BRO-4274) and was removed: notion-brain's update path still WORKS (only
+# create is read-only), so a Notion update satisfied this gate while the
+# Linear card NOCARD requires stayed open on the board of record.
 _CLOSEOUT_SCRIPTS = (
-    ('notion-brain.js', 'update', '--status'),
     ('linear-brain.js', 'update', '--state'),
     ('linear-session.js', 'report', '--status'),
 )
@@ -204,9 +203,9 @@ def _board_closeout_status(cmd):
                 return tok.split('=', 1)[1].strip().lower()
     return None
 
-# Close-out values across the three CLIs: done/paused (notion-brain --status,
-# linear-session report --status) and Linear's real state names for a
-# finished or parked card (linear-brain --state).
+# Close-out values across both CLIs: done/paused (linear-session report
+# --status) and Linear's real state names for a finished or parked card
+# (linear-brain --state).
 _CLOSEOUT_STATES = ('done', 'paused', 'backlog', 'canceled', 'duplicate')
 
 # A Done the board's own gate refused (linear-brain exit 5 "❌", linear-session
@@ -799,9 +798,11 @@ if os.environ.get('CARD_GATE_DISABLE', '0') != '1':
 # into context — it doesn't verify the session actually DID anything wrap-up
 # mandates, so a token Skill call would satisfy the gate while changing
 # nothing about the real failure mode (the evidence session never touched
-# Notion). Redesigned to check for the concrete ARTIFACT wrap-up.md's Phase 4
-# requires instead of the tool-name gesture: this session's Notion tracking
-# card actually set to Done or Paused via `notion-brain.js update` — the one
+# its board card). Redesigned to check for the concrete ARTIFACT wrap-up.md's
+# Phase 4 requires instead of the tool-name gesture: this session's Linear
+# card actually closed out (Done, or parked in Backlog) via `linear-brain.js
+# update` / `linear-session.js report` (originally a Notion card via
+# notion-brain.js; Notion is retired, BRO-4274) — the one
 # phase CLAUDE.md §6 independently mandates for every session regardless of
 # size ("Session end: ... -> Done/Paused"), unlike /what-else (Phase 2, which
 # Quick sessions skip) or the async-op check (Phase 3 — out of scope for THIS
@@ -833,7 +834,14 @@ if os.environ.get('WRAPUP_GATE_DISABLE', '0') != '1':
             if _kind == 'tool' and _is_work_tool(_payload[0], _payload[1]):
                 _last_work_idx = _i
 
-        if _last_work_idx is not None and _last_msg and 'NO-VERIFY:' not in _last_msg:
+        # A session that declared NO-CARD and really has no card (none filed
+        # or claimed) has nothing to close; NOCARD accepted that, so NOWRAPUP
+        # must too. A session that DID file a card can't use NO-CARD to skip
+        # closing it (adversarial review, BRO-4274).
+        _wu_no_card = (bool(re.search(r'NO-CARD:\s*\S.{9,}', re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)))
+                       and not _session_has_card())
+        if (_last_work_idx is not None and _last_msg and 'NO-VERIFY:' not in _last_msg
+                and not _wu_no_card):
             _wu_stripped = re.sub(r'```.*?```', '', _last_msg, flags=re.DOTALL)
             _wu_lines = [ln.strip() for ln in _wu_stripped.strip().splitlines() if ln.strip()]
             _wu_divider_re = re.compile(r'^[\-=_*~─━│┃┌┐└┘•·\s]+$')
@@ -1687,7 +1695,7 @@ if [[ "$result" == "INFLIGHT" ]]; then
 fi
 
 if [[ "$result" == "NOWRAPUP" ]]; then
-  echo "🛑 BLOCKED: claiming SAFE TO EXIT after real work, but this session's Linear card was never closed out after that work. Run: node scripts/linear-brain.js update BRO-N --state Done (needs a PR-EVIDENCE line citing the landed commit URL, https://github.com/thomaspryor/Broadwayscore/commit/<sha on main>, which verifies through GitHub even in a shallow cloud clone, or an Acceptance-criteria check; a refused update doesn't count). To pause, or when Done is refused: node scripts/linear-session.js report --issue=BRO-N --status=paused --summary=\"...\" (Linear has no Paused state; this sets Backlog). Invoking /wrap-up alone is not proof. Bypass: NO-VERIFY: <reason>." >&2
+  echo "🛑 BLOCKED: claiming SAFE TO EXIT after real work, but this session's Linear card was never closed out after that work. Run: node scripts/linear-brain.js update BRO-N --state Done (needs a PR-EVIDENCE line citing the landed commit URL, https://github.com/thomaspryor/Broadwayscore/commit/<sha on main>, which verifies through GitHub even in a shallow cloud clone, or an Acceptance-criteria check; a refused update doesn't count). To pause, or when Done is refused: node scripts/linear-session.js report --issue=BRO-N --status=paused --summary=\"...\" (Linear has no Paused state; this sets Backlog). Invoking /wrap-up alone is not proof, and a notion-brain.js update does not count (Notion is retired). Bypass: NO-VERIFY: <reason> (or NO-CARD: <reason> if this session has no card by design)." >&2
   exit 2
 fi
 

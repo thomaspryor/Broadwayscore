@@ -132,11 +132,12 @@ const STANDING_RULES = [
   `questions for genuine owner decisions (money, product direction, irreversible actions), formatted as: ` +
   `"DECISION NEEDED: <plain-English stakes>. My recommendation: X because Y. Default: doing X unless you say otherwise."`,
   `5. NO PASTE-PROMPTS. Never end a turn by telling the owner to paste a prompt into another session. If work needs ` +
-  `to happen elsewhere, dispatch it yourself via bsc-next.js (or queue it as a Notion card for the nightly loop).`,
+  `to happen elsewhere, dispatch it yourself (linear-next.js --id BRO-N, or bsc-next.js for a task-list entry), or ` +
+  `file it with linear-brain.js create --dispatch. Never queue a Notion card: Notion is retired.`,
   `6. NO HUMAN-TERRITORY PICKS. Never dispatch or act on Marketing/Partnerships/human-action cards (see ` +
   `EXCLUDED_CATEGORIES in scripts/lib/autonomous-eligibility.js) — surface them to the owner, don't act on them.`,
   `7. STAY DISPOSABLE. Don't try to hold multi-day context yourself — rely on the externalized state (task list, ` +
-  `ledger, Notion, cmux workspaces) each time you orient, the same way this session just did. If this conversation ` +
+  `ledger, Linear, cmux workspaces) each time you orient, the same way this session just did. If this conversation ` +
   `runs long, a fresh \`bsc-conductor\` re-orients in about a minute; that's cheaper than an immortal session.`,
 ].join('\n\n');
 

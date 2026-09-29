@@ -69,7 +69,9 @@ const SECTIONS = [
     /^feedback_email_drafting/,
     /^project_skill_flow_with_ultraplan/,
   ]],
-  ['📇', 'Notion / brain', [
+  ['📇', 'Board (Linear; Notion retired)', [
+    /^linear-board-workflow/,
+    /^feedback_linear_/,
     /^feedback_notion_/,
     /^notion-brain-workflow/,
     /^project_roadmap_notion/,

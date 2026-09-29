@@ -2377,7 +2377,7 @@ async function checkAlertRouterDeadman(isCI) {
   const pageOwner = deadmanShouldPage({ consecutiveFailures, streakHours });
 
   // Self-page via disposition='human' directly from here — that path calls
-  // sendAlert() (Resend) and never shells out to notion-brain.js, so it
+  // sendAlert() (Resend) and never shells out to linear-brain.js, so it
   // survives even though the exact thing we just detected as broken is that
   // shell-out. Don't rely on the generic humanAction dispatch loop below,
   // which routes through disposition='auto' (the same broken path).
@@ -2408,7 +2408,7 @@ async function checkAlertRouterDeadman(isCI) {
     name: 'Alert Router: dispatch deadman',
     status: 'error',
     message,
-    hint: 'Check the notion-brain.js shell-out first (workflow env/dependency gap, e.g. missing npm ci) before assuming NOTION_API_KEY — read the actual last error above, not a guess.',
+    hint: 'Check the linear-brain.js shell-out first (workflow env/dependency gap, e.g. missing npm ci) before assuming LINEAR_API_KEY — read the actual last error above, not a guess.',
   }];
 }
 
@@ -3334,7 +3334,7 @@ async function checkStuckWorkInner() {
       name: 'Stuck work: paused P0/P1 cards',
       status: 'warn',
       message: `${pausedCritical.length} P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: ${pausedCritical.slice(0, 3).map(fmt).join('; ')}${awaitingNote ? ` (${awaitingNote} — not counted)` : ''}${recNote(rec.resolvedCounts.pausedCritical)}`,
-      hint: 'Triage: node scripts/notion-brain.js search --status Paused — un-pause + dispatch (bsc-next), resume a parked card (bsc-next --id N --force), close, or park with RECHECK-AFTER: YYYY-MM-DD',
+      hint: 'Triage in Linear (these are frozen Notion cards whose Linear twin is still open): node scripts/linear-brain.js find "<card title>" for the BRO-N, then dispatch (node scripts/linear-next.js --id BRO-N), close (linear-brain.js update BRO-N --state Done), or park with RECHECK-AFTER: YYYY-MM-DD',
     });
   } else {
     results.push({ name: 'Stuck work: paused P0/P1 cards', status: 'pass', message: `No stuck paused P0/P1 cards${awaitingNote ? ` (${awaitingNote})` : ''}${recNote(rec.resolvedCounts.pausedCritical)}` });
@@ -3345,7 +3345,7 @@ async function checkStuckWorkInner() {
       name: 'Stuck work: orphaned in-progress cards',
       status: 'warn',
       message: `${orphaned.length} In-progress card(s) untouched >48h — owning session likely dead. Oldest: ${orphaned.slice(0, 3).map(fmt).join('; ')}${recNote(rec.resolvedCounts.orphaned)}`,
-      hint: 'Triage: node scripts/notion-brain.js search --status "In progress" — re-dispatch, pause with a reason, or close',
+      hint: 'Triage in Linear (frozen Notion cards whose Linear twin is still open): node scripts/linear-brain.js find "<card title>" for the BRO-N, then re-dispatch (linear-next.js --id BRO-N), park with a reason, or close',
     });
   } else {
     results.push({ name: 'Stuck work: orphaned in-progress cards', status: 'pass', message: `No in-progress cards idle >48h${recNote(rec.resolvedCounts.orphaned)}` });

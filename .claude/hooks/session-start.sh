@@ -46,7 +46,7 @@ if [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/CLAUDE.md" ]; then
   fi
   # Fallback to the built-in list if the JSON yielded nothing (older checkout,
   # parse error, node missing) — keeps the check working everywhere.
-  [ -z "$PHRASES" ] && PHRASES=$'Notion Brain\nOpening Night Readiness\nTest Extraction Pattern\nEmail Broadcast Safety'
+  [ -z "$PHRASES" ] && PHRASES=$'Board = Linear\nOpening Night Readiness\nTest Extraction Pattern\nEmail Broadcast Safety'
   MISSING=""
   while IFS= read -r phrase; do
     [ -z "$phrase" ] && continue

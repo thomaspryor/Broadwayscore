@@ -97,7 +97,7 @@ Sort sparks into tiers with effort estimates:
 **Roadmap** (good ideas that don't need today's context):
 - [spark] — [why it matters]
 
-### Phase 5: Create Notion cards (MANDATORY — do not ask, just do it)
+### Phase 5: File Linear issues (MANDATORY — do not ask, just do it)
 
 **FILE ONLY WHAT THIS SESSION CANNOT FINISH (owner mandate 2026-09-08).** The
 previous version of this step said "For EVERY spark ... create a card. Do not
@@ -124,13 +124,9 @@ Batch related sparks into ONE issue rather than one per spark; four findings of
 the same class are one piece of work, not four.
 
 For each spark that survives all three tests, create a **Linear** issue via
-`node scripts/linear-brain.js create` (Notion has been read-only since
-2026-08-30 and its create exits 6 — the Notion instructions below are retained
-only for the field shapes, not the destination):
-- **Name:** the spark title
-- **Status:** "Not started"
-- **Priority:** P1 Next for parallel/urgent, P2 Later for roadmap items
-- **Tags:** appropriate subsystem tags
+`node scripts/linear-brain.js create "<spark title>" --park "<why it needs its own session>" --notes "..."`
+(`--dispatch` instead of `--park` for P0/P1; `--priority 1|2|3`). Notion is
+retired: its create exits 6, so never use `notion-brain.js`.
 - **Notes:** Self-contained handoff using this structure:
   ```
   ## Problem — [what's wrong or needed]
@@ -148,15 +144,14 @@ the three tests come first, and a session that fixes four sparks and files none
 has done the better job. Report what you fixed AND what you deliberately did
 not file, so the restraint is visible rather than looking like an omission.
 
-### Phase 5.5: Auto-dispatch every P0/P1 card you just created (MANDATORY — owner rule 2026-07-24)
+### Phase 5.5: Auto-dispatch every P0/P1 issue you just filed (MANDATORY — owner rule 2026-07-24)
 
-"I carded it" is NOT an endpoint for a P0/P1. Immediately after creating the cards, for EVERY card with Priority P0 Now or P1 Next that is technical + self-contained (no owner judgment call, no missing credentials):
+"I carded it" is NOT an endpoint for a P0/P1. Immediately after creating the cards, for EVERY issue filed at P0/P1 that is technical + self-contained (no owner judgment call, no missing credentials):
 ```bash
-node scripts/notion-tasks-sync.js pull            # mirror the new card into the task list
-node scripts/bsc-next.js --list                   # pending P0/P1s below the top-10 cutoff print in an explicit tail (fixed 2026-07-24)
-node scripts/bsc-next.js --id <task#>             # launch the workspace NOW
+node scripts/linear-next.js --id BRO-N            # launch a supervised worker NOW (`--dispatch` alone does not launch)
 ```
-Soft fan-out cap: more than ~3 auto-dispatches in one session → pause and confirm with the owner (each workspace is a paid session).
+Cloud sessions can't launch local workers; use `create_session` with the issue text, or say so in one line.
+Soft fan-out cap: more than ~8 auto-dispatches in one session → pause and confirm with the owner (each workspace is a paid session).
 Verify the launch output shows a workspace running, then report `DISPATCHED: workspace <name> — <card title>` as plain prose. Cards needing an owner decision stay undispated — say which decision blocks them. P2s stay backlog unless trivially dispatchable and clearly worth it.
 
 ### Phase 6: Act — do not ask

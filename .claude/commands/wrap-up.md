@@ -30,7 +30,7 @@ Summarize in 3-5 bullet points. Be specific — include file names, feature name
 
 **Otherwise**, run `/what-else` now to find adjacent improvements before context fades. This catches pattern reuse, cousin bugs, data quality issues, and compounding improvements that would be expensive to rediscover in a future session.
 
-For each finding, capture it for the roadmap (Phase 4 will create Notion cards).
+For each finding, capture it for the roadmap (Phase 4 files Linear issues for what can't be fixed now).
 
 ### Phase 2.5: Mobile App Feature Parity
 
@@ -87,13 +87,13 @@ Check for:
 
 ### Phase 4: Roadmap Update
 
-**Detect project type:** Check if this is a Notion-tracked project (same detection as session-start: `CLAUDE.md` contains "Broadway Scorecard").
+**Detect project type:** Check if this is a Linear-tracked project (same detection as session-start: `CLAUDE.md` contains "Broadway Scorecard").
 
-**If NOTION_PROJECT:** Update the Notion card instead of GitHub issues. See `memory/notion-brain-workflow.md` for database IDs and schema.
+**If LINEAR_PROJECT:** Close out the session's Linear issue instead of GitHub issues. Flow and commands: `memory/linear-board-workflow.md` (cloud: `cloud-memory/linear-board-workflow.md`). Notion is retired: never `notion-brain.js`, and a Notion update does not satisfy the Stop hook's close-out check.
 
-1. **Find the session's card:** Search Notion for cards with Status="In progress". If exactly 1 → use it. If multiple → list them and ask the user which one this session was working on. If none found → **this is a process failure** (the card should have been created at session start per startup hook rule #1). Create one now, but flag it to the user: "⚠️ Notion card was not created at session start — creating retroactively. This shouldn't happen."
-2. **Read existing Outcome** from the card (it may have content from a prior session). Prepend — never overwrite.
-3. **Write the Outcome using the MANDATORY template below.** Check the card's **Type** field and use the matching variant. Every section must be filled — no placeholders, no "N/A", no skipping. If a section truly doesn't apply, write "None identified" with a one-sentence explanation.
+1. **Find the session's card:** it is the `BRO-N` printed by this session's `linear-brain.js create` or `linear-session.js claim` at start (the NOCARD Stop hook requires one). If you truly can't find it in the transcript, `node scripts/linear-brain.js find "<distinctive title phrase>"`. If none was ever filed, **this is a process failure**: file it now with `linear-brain.js create ... --park`, and flag it to the user: "⚠️ Linear card was not created at session start — creating retroactively. This shouldn't happen."
+2. **Read the issue's existing comments** (a prior session may have posted an Outcome). Add a new Outcome comment; never rewrite someone else's.
+3. **Write the Outcome comment using the MANDATORY template below.** Pick the variant that matches the kind of work (fix, feature, expansion, data quality). Every section must be filled — no placeholders, no "N/A", no skipping. If a section truly doesn't apply, write "None identified" with a one-sentence explanation.
 
    **Type-specific additions** (add these sections AFTER the standard 4):
    - **Fix:** Add `### Root cause` and `### Prevention added` (prevention = a code/test/hook/CI change; a memory file alone doesn't count)
@@ -121,27 +121,27 @@ Check for:
    GOOD: "The DTLI slug map has 3 shows with duplicate slugs (giant, cats, wicked) — the parser picks the first match. If DTLI adds another production of these shows, the slug map needs manual disambiguation."]
 
    ### Discovered work
-   [New bugs found, improvements spotted, tech debt uncovered. Each should have a corresponding new Notion card.
+   [New bugs found, improvements spotted, tech debt uncovered. Each should have a corresponding Linear issue (or say why it was fixed now instead).
    Format: "- [card name] — [1-sentence description]"]
    ```
 
    **Self-check before writing:** Re-read your Outcome draft. For each section, ask: "Would someone who has never seen this codebase understand what happened and why?" If no, add detail. The Outcome is the permanent record — conversation context disappears, but this stays.
 
-4. **Fill Key Files** — every commit from this session (`git log --oneline --since="2 hours ago"`), any PRs created, key files changed. Format: `commit abc1234: [description]` one per line.
-5. **Set Tags** — tag with relevant subsystems (scoring, scraping, opening-night, west-end, off-broadway, commercial, email, ios-app, infra, data-quality)
-6. **Set Completed Date** if marking as Done: `"date:Completed Date:start": "YYYY-MM-DD"`
-7. **Set Status** → "Done" or "Paused" (if paused, add reason to Notes explaining what's left and what's blocking it)
-7a. **RECHECK-AFTER rule (task #695): if the fix's effect is only observable later — next cron run, next day's billing/data, next opening night — it may NOT go Done.** Set Status="Paused" instead, and add to Notes:
+4. **Key Files** go in the same Outcome comment — every commit from this session (`git log --oneline --since="2 hours ago"`), any PRs, key files changed. Format: `commit abc1234: [description]` one per line.
+5. **Evidence for Done:** add `PR-EVIDENCE: merged deployed checked (<landed commit or PR URL>)` to the comment, or make sure the issue carries a safe-form `VERIFY:` / `## Acceptance criteria` command. Without one the Done gate refuses (exit 5).
+6. **Post and close in one call:** `node scripts/linear-brain.js update BRO-N --state Done --comment "<Outcome + Key Files + PR-EVIDENCE>"` (heredoc for long text). For an issue this session CLAIMED: `node scripts/linear-session.js report --issue=BRO-N --status=done --summary="..." --key-files="a,b" --verification="..."`.
+7. **Paused instead of Done:** Linear has no Paused state. `node scripts/linear-session.js report --issue=BRO-N --status=paused --summary="<what's left and what blocks it>"` (sets Backlog), or `linear-brain.js update BRO-N --state Backlog --comment "..."`. Read the output: a `REFUSED`/`❌` result means the card is still open. **If step 6's Done was refused (exit 5), its comment was NOT posted** — the gate refuses before writing, so re-post the Outcome here via `--summary`, or add the missing evidence and re-run step 6.
+7a. **RECHECK-AFTER rule (task #695): if the fix's effect is only observable later — next cron run, next day's billing/data, next opening night — it may NOT go Done.** Pause it instead (step 7), with this in the summary/comment:
    ```
    RECHECK-AFTER: YYYY-MM-DD
 
    ## Acceptance criteria
    `<safe-form command>` passes
    ```
-   Pick RECHECK-AFTER as the earliest date the claim becomes checkable (e.g. "streak of N days" → N days out). The command MUST be one of the safe forms `scripts/lib/verify-gate.js` already accepts (`node --test <path>.test.mjs`, `npx tsc --noEmit`, `npx next lint`, `test -f <path>`) — write a real colocated test that asserts the live condition if no existing command covers it (see `scripts/verify-provider-spend-streak.test.mjs` for the pattern: a test that reads live repo data, not a fixture). `scripts/autonomous-acceptance-recheck.js` (hosted daily in `data-health-check.yml`) picks up Paused cards carrying this stamp once the date passes, re-runs the command against fresh `origin/main`, and reports pass/fail in shadow mode — it never auto-reopens or auto-completes the card; a passing recheck is your signal to come back and flip it to Done yourself (or the owner's, if it's their card).
-7.5. **If Status is "Done" and this session claimed a shared-task-list task** (via `TaskUpdate` at session start, per the startup seed prompt): mark that task `completed` via `TaskUpdate` now, in THIS still-live turn — not later. This is what lets the workspace-mark-done Stop hook (`~/.claude/hooks/workspace-mark-done.sh`) ✅-mark the workspace automatically on this session's own next Stop event; the hook only reads the local task-list mirror, and nothing else updates it on a normal timescale (Notion→local sync is on-demand, not cron'd). Skip if this session never claimed a task (ad hoc / non-dispatched sessions).
-8. **Create cards only for discovered work this session cannot finish** (Status="Not started", appropriate Priority and Tags). Apply the same three tests `/what-else` Phase 5 uses, in order: (1) can you just fix it now? then fix it — that is the default; (2) is an open issue or the roadmap already covering it? then say so and file nothing; (3) only if neither holds, file it, and the notes must name **why it needs its own session**. Batch related findings into ONE issue. Rationale, measured 2026-09-08: the board held 1,107 open at 3.1 filed per 1 closed, and 89% of a week's 361 new issues were session-authored rather than automated — the session-close ritual was manufacturing the backlog it reports. Report what you fixed AND what you deliberately did not file, so restraint reads as a decision rather than an omission.
-   **CRITICAL — every new card must be a self-contained handoff.** Use the Notes field with this template:
+   Pick RECHECK-AFTER as the earliest date the claim becomes checkable (e.g. "streak of N days" → N days out). The command MUST be one of the safe forms `scripts/lib/verify-gate.js` already accepts (`node --test <path>.test.mjs`, `npx tsc --noEmit`, `npx next lint`, `test -f <path>`) — write a real colocated test that asserts the live condition if no existing command covers it (see `scripts/verify-provider-spend-streak.test.mjs` for the pattern: a test that reads live repo data, not a fixture). `scripts/autonomous-acceptance-recheck.js` (hosted daily in `data-health-check.yml`) picks up paused (Backlog) issues carrying this stamp once the date passes, re-runs the command against fresh `origin/main`, and reports pass/fail in shadow mode — it never auto-reopens or auto-completes the card; a passing recheck is your signal to come back and flip it to Done yourself (or the owner's, if it's their card).
+7.5. **If the issue went Done and this session claimed a shared-task-list task** (via `TaskUpdate` at session start, per the startup seed prompt): mark that task `completed` via `TaskUpdate` now, in THIS still-live turn — not later. This is what lets the workspace-mark-done Stop hook (`~/.claude/hooks/workspace-mark-done.sh`) ✅-mark the workspace automatically on this session's own next Stop event; the hook only reads the local task-list mirror, and nothing else updates it on a normal timescale (board→local sync is on-demand, not cron'd). Skip if this session never claimed a task (ad hoc / non-dispatched sessions).
+8. **File issues only for discovered work this session cannot finish** (`node scripts/linear-brain.js create "<title>" --park "<why it needs its own session>" --notes "..."`, or `--dispatch` for P0/P1). Apply the same three tests `/what-else` Phase 5 uses, in order: (1) can you just fix it now? then fix it — that is the default; (2) is an open issue or the roadmap already covering it? then say so and file nothing; (3) only if neither holds, file it, and the notes must name **why it needs its own session**. Batch related findings into ONE issue. Rationale, measured 2026-09-08: the board held 1,107 open at 3.1 filed per 1 closed, and 89% of a week's 361 new issues were session-authored rather than automated — the session-close ritual was manufacturing the backlog it reports. Report what you fixed AND what you deliberately did not file, so restraint reads as a decision rather than an omission.
+   **CRITICAL — every new issue must be a self-contained handoff.** Use this template in `--notes`:
    ```
    ## Problem
    [Specific description — not just a label]
@@ -157,55 +157,35 @@ Check for:
    [How to verify the fix is complete]
    ```
    **Self-check:** "Could a fresh session start working on this card in under 2 minutes?" If no, add the missing context.
-9. **Fallback:** If Notion MCP calls fail at any point during this phase, output the FULL card update to the user so nothing is lost:
+9. **Fallback:** If Linear is unreachable at any point during this phase, do NOT fall back to Notion. Output the FULL close-out to the user so nothing is lost:
    ```
-   ## Notion Card Update (Manual — MCP failed)
-   - **Card:** [card name or URL]
-   - **Status:** Done (or Paused — [reason])
-   - **Completed Date:** [YYYY-MM-DD]
+   ## Linear Close-out (Manual — Linear unreachable)
+   - **Issue:** BRO-N (URL)
+   - **State:** Done (or Backlog — [reason])
    - **Outcome:** [full template above]
    - **Key Files:** [commits]
-   - **Tags:** [tags]
    ```
-   The Status update is the most critical part — without it, the card stays "In progress" forever and becomes an orphan.
+   The state change is the most critical part — without it, the issue stays "In Progress" forever and becomes an orphan.
 
-### Phase 4.5: Cross-session card sweep (NOTION_PROJECT only)
+### Phase 4.5: Cross-session card sweep (LINEAR_PROJECT only)
 
-**Why this exists:** the per-session Stop hook enforces a 1:1 session↔card mapping. Roadmap cards that no session "owns" never get closed by that hook, so they accumulate. This phase catches the common case where a session *incidentally* ships work listed on another open card.
+**Why this exists:** the per-session Stop hook enforces a 1:1 session↔card mapping. Issues that no session "owns" never get closed by that hook, so they accumulate. This phase catches the common case where a session *incidentally* ships work listed on another open issue.
 
 1. **Collect this session's footprint:**
    ```bash
-   # Files touched by this session's commits
    git log --name-only --since="3 hours ago" --pretty=format: | sort -u | grep -v '^$'
-   # Commit titles
    git log --oneline --since="3 hours ago"
    ```
 
-2. **Pull all OTHER open cards:**
-   ```bash
-   node scripts/notion-brain.js search --status "In progress" 2>&1 | \
-     python3 -c "import sys,json;d=json.load(sys.stdin);[print(x['id']+'|'+x['name']+'|'+(x.get('keyFiles','') or '')) for x in d]"
-   ```
-   Exclude this session's own card (already closed in Phase 4).
+2. **Look for other open issues naming the same work:** pick 2-3 distinctive phrases (a file basename this session changed, a function name, a feature noun) and run `node scripts/linear-brain.js find "<phrase>"` for each. It returns the first OPEN issue whose title or body contains the phrase, or null. Ignore this session's own issue.
 
-3. **Cross-reference — only flag if there's hard evidence:**
-   - For each open card with a populated `keyFiles` field, check whether this session touched ANY of those files.
-   - Extract 2-3 distinctive noun phrases from the card name. Grep this session's commit messages for those phrases.
-   - A card is a **candidate** only if it matches on files OR phrases. Generic overlap (e.g., both touched `scripts/rebuild-all-reviews.js`) is NOT enough — many cards name that file.
+3. **Only flag hard evidence:** a match on a generic file many issues name (e.g. `scripts/rebuild-all-reviews.js`) is NOT enough. The issue's problem statement must be something this session's commits actually fixed.
 
-4. **Surface candidates to the user** — don't auto-close:
-   ```
-   ### Possibly shipped by this session
-   - [card name] — you touched [file] / commit [SHA] title mentions [phrase]
-   - ...
-   ```
-   Ask: "Any of these closeable with today's work as outcome?" Let the user confirm per card before updating.
+4. **Close or surface:** if this session's commits plainly satisfy the issue's acceptance criteria, run them, then close it with `linear-brain.js update BRO-M --state Done --comment "Shipped incidentally by <commit>; <acceptance result>"`. If it's a judgment call, list it in the report as "possibly shipped by this session" with the evidence.
 
 5. **If zero candidates:** skip silently. Don't pad the report with "no matches found."
 
-**Scope note:** This phase only catches matches between THIS session and OTHER open cards. For the long tail of genuinely-stale roadmap cards that nobody has touched recently, run `/notion-sweep` weekly.
-
-**Otherwise (non-Notion projects):**
+**Otherwise (non-Linear projects):**
 
 Read the current roadmap:
 ```bash
@@ -283,20 +263,19 @@ Present a summary to the user:
 
 **Every deferred loose end must be dispatched or carry its own handoff** (the finish-line gate enforces this).
 
-**Dispatch-first (the default) — and dispatch at CREATION, not at report time (owner rule 2026-07-24: every P0/P1 that doesn't need an owner judgment call gets a workspace the moment it's carded; the nightly loop is the backstop, never the plan).** (`bsc-next --list` now prints pending P0/P1s below the top-10 cutoff in an explicit tail — fixed 2026-07-24.) If the item is technical + self-contained + carded (a Notion card / task-list entry exists — Phase 4 step 8 should have created one), do NOT hand the user a paste-prompt. Dispatch it yourself:
+**Dispatch-first (the default) — and dispatch at CREATION, not at report time (owner rule 2026-07-24: every P0/P1 that doesn't need an owner judgment call gets a workspace the moment it's carded; the nightly loop is the backstop, never the plan).** If the item is technical + self-contained + carded (a Linear issue exists — Phase 4 step 8 should have filed one), do NOT hand the user a paste-prompt. Dispatch it yourself:
 ```bash
-node scripts/bsc-next.js --list        # find the task # for the card
-node scripts/bsc-next.js --id <task#>  # launch a seeded Cmux workspace on it
+node scripts/linear-next.js --id BRO-N   # launch a supervised worker seeded from the issue
 ```
 Verify the output shows a workspace actually launched, then report it as a plain line of prose — NOT inside a code fence, the finish-line gate strips fenced text and won't see it:
 
 DISPATCHED: workspace <name> — <task subject>
 
-The card IS the handoff — bsc-next seeds the new workspace with its full Notion context. Gotchas:
-- **Card exists but isn't in the task list yet:** run `node scripts/notion-tasks-sync.js pull` (only P0/P1 cards mirror), then `--list` again to get the task #.
-- **Item isn't carded at all:** card it first (Phase 4 template, Priority P1), sync, then dispatch. A dispatch without a card has no context to seed.
+The issue IS the handoff — linear-next seeds the worker with its full description. Gotchas:
+- **Item isn't carded at all:** file it first (Phase 4 template, `--dispatch`, priority P1), then dispatch.
+- **Cloud session:** linear-next's local launch needs the owner's Mac. Use `create_session` with the issue text, or say so in one line. A dispatch without a card has no context to seed.
 - **Launch fails** (Cmux missing/errored): fall back to the DEFERRED + HANDOFF PROMPT format below and say the dispatch failed.
-- The gate verifies a bsc-next command actually ran this session — a DISPATCHED line without the launch gets blocked.
+- The gate verifies a linear-next (or bsc-next) command actually ran this session — a DISPATCHED line without the launch gets blocked.
 
 **Paste-prompt fallback (exception only).** Reserved for items that need a user decision first, or access this session lacks (different machine, missing credentials). Format:
 ```
@@ -304,9 +283,9 @@ DEFERRED: <what> — <which deferral bar it hits and why it can't be dispatched>
 HANDOFF PROMPT:
 <complete paste-ready prompt: task, key files, context, what was already tried, acceptance criteria>
 ```
-The user pastes the prompt into a fresh session and it works with zero extra context. A Notion card ID alone is NOT a handoff, and a paste-prompt for a fully-specified technical task is a process failure — dispatch it instead.
+The user pastes the prompt into a fresh session and it works with zero extra context. A bare issue ID alone is NOT a handoff, and a paste-prompt for a fully-specified technical task is a process failure — dispatch it instead.
 
-**End the report with a mandatory `### Next` section** that triages EVERY Notion card created this session and every recommendation you made, each into exactly one bucket:
+**End the report with a mandatory `### Next` section** that triages EVERY Linear issue filed this session and every recommendation you made, each into exactly one bucket:
 - **DONE-NOW** — you did it before ending (say what happened)
 - **DISPATCHED** — you launched it via bsc-next / linear-next (ref + exact title). Gate O makes you own its landing. If you dispatched two or more children and are closing, run `node scripts/fanout-verified.js --refs A,B --verify "<safe-form combined check>" --reason "..."` after the last one lands — Gate S refuses CLOSE ME without that ledger row (owner 2026-09-20: per-child LANDED lines are "spawn and hope").
 - **DEFERRED** — user-decision or different-machine items ONLY, with the deferral bar + HANDOFF PROMPT (format above); owner-judgment items go in a DECISION NEEDED block instead.

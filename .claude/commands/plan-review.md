@@ -362,8 +362,8 @@ node scripts/lib/review-gate.mjs --query=record-plan --reviewer=plan-review \
 
 Use `--result=fail` when the reviewers found P0 blockers the plan does not resolve. A fail verdict does not unblock; overturning it is the owner's call, recorded as `--reviewer=owner-override`.
 
-### Notion Update (BWSC projects only)
+### Linear Update (BWSC projects only)
 
-After the user approves a plan, update the session's Notion card:
-1. Append to Outcome: `### Plan approved\n[1-line summary of approach, scope (S/M/L), key changes from review]`
+After the user approves a plan, comment on the session's Linear issue (`node scripts/linear-brain.js update BRO-N --comment "..."`):
+1. Comment: `### Plan approved\n[1-line summary of approach, scope (S/M/L), key changes from review]`
 2. If the plan was rejected or needs major rework, note that too — it's a decision worth recording.
