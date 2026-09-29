@@ -375,3 +375,15 @@ test('any /whats-on/ listing without "review" in the path is blocked; outlet rev
     'https://www.afridiziak.com/reviews/darkling/',
   ]) assert.equal(domainFilters.isBlockedReviewUrl(u), false, u);
 });
+
+test('classifyReviewUrl: Playbill Verdict roundup slugs are roundup-page, real reviews pass (BRO-4272)', () => {
+  const { classifyReviewUrl } = require('./non-review-url-patterns.js');
+  const roundup = classifyReviewUrl('https://playbill.com/article/reviews-are-out-for-school-girls-or-the-african-mean-girls-play-on-broadway');
+  assert.equal(roundup.ok, false);
+  assert.equal(roundup.reason, 'roundup-page');
+  for (const u of [
+    'https://www.theguardian.com/stage/2026/sep/28/school-african-mean-girls-play-review',
+    'https://culturesauce.com/school-girls-african-mean-girls-play-broadway-review/',
+    'https://stageandcinema.com/2026/09/28/school-girls-broadway-review/',
+  ]) assert.equal(classifyReviewUrl(u).ok, true, u);
+});

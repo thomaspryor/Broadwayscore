@@ -73,7 +73,7 @@ test('Hop 4: poller.js parses --skip-serp and gates runSERPBackup behind !SKIP_S
   );
   // The normal SERP branch must STILL be guarded by `!SKIP_SERP && shouldRunSerp()`.
   // (The gate may now be one disjunct of a larger condition — see Hop 4b for the only
-  // permitted override — but the deferral guard itself must remain intact.)
+  // permitted overrides — but the deferral guard itself must remain intact.)
   assert.ok(
     /!SKIP_SERP\s*&&\s*shouldRunSerp\(\)/.test(POLLER_JS),
     'opening-night-poller.js: runSERPBackup is no longer gated on `!SKIP_SERP && shouldRunSerp()`. ' +
@@ -81,21 +81,31 @@ test('Hop 4: poller.js parses --skip-serp and gates runSERPBackup behind !SKIP_S
   );
 });
 
-test('Hop 4b: the ONLY override of --skip-serp is the capped WE SERP burst, kill-switchable', () => {
-  // 2026-06-05: the WE opening-night SERP burst (scripts/lib/serp-burst-caps.js) is the one
-  // sanctioned way SERP runs despite --skip-serp. It is ON by default (automated system) and
-  // disabled ONLY by the DISABLE_WE_SERP_BURST kill-switch — so the emergency off must exist,
+test('Hop 4b: the ONLY overrides of --skip-serp are the capped WE and Broadway SERP bursts, each kill-switchable', () => {
+  // 2026-06-05: the WE opening-night SERP burst (scripts/lib/serp-burst-caps.js) is the
+  // sanctioned way SERP runs despite --skip-serp. BRO-4272 (School Girls 2026) added the
+  // Broadway hourly sweep on the same gate with its own caps. Both are ON by default and
+  // disabled ONLY by their kill-switches (DISABLE_WE_SERP_BURST / DISABLE_BW_SERP_BURST),
   // and the override must still be cap-gated. If someone adds an unconditional bypass of
-  // SKIP_SERP, or removes the kill-switch, this guard fails.
+  // SKIP_SERP, or removes a kill-switch, this guard fails.
   assert.ok(
     /ENABLE_WE_SERP_BURST\s*=\s*process\.env\.DISABLE_WE_SERP_BURST\s*!==\s*'true'/.test(POLLER_JS),
-    'opening-night-poller.js: burst must be ON by default with a DISABLE_WE_SERP_BURST kill-switch.'
+    'opening-night-poller.js: WE burst must be ON by default with a DISABLE_WE_SERP_BURST kill-switch.'
   );
-  // serpBurstActive (the override) may only be set inside the SKIP_SERP && ENABLE_WE_SERP_BURST block.
   assert.ok(
-    /if\s*\(\s*SKIP_SERP\s*&&\s*ENABLE_WE_SERP_BURST\s*\)/.test(POLLER_JS),
+    /ENABLE_BW_SERP_BURST\s*=\s*process\.env\.DISABLE_BW_SERP_BURST\s*!==\s*'true'/.test(POLLER_JS),
+    'opening-night-poller.js: Broadway burst must be ON by default with a DISABLE_BW_SERP_BURST kill-switch.'
+  );
+  // The enable flag for this show is exactly one of the two kill-switched flags...
+  assert.ok(
+    /_burstEnabled\s*=\s*_isBwBurst\s*\?\s*ENABLE_BW_SERP_BURST\s*:\s*ENABLE_WE_SERP_BURST\s*;/.test(POLLER_JS),
+    'opening-night-poller.js: the burst enable flag must come from the WE/BW kill-switched flags only.'
+  );
+  // ...and serpBurstActive (the override) may only be set inside the SKIP_SERP && _burstEnabled block.
+  assert.ok(
+    /if\s*\(\s*SKIP_SERP\s*&&\s*_burstEnabled\s*\)/.test(POLLER_JS),
     'opening-night-poller.js: the SERP burst override is no longer gated on ' +
-      '`SKIP_SERP && ENABLE_WE_SERP_BURST` — an unflagged bypass would defeat the deferral.'
+      '`SKIP_SERP && _burstEnabled` — an unflagged bypass would defeat the deferral.'
   );
   // The burst override path must consult the cap helper (hard ceilings), not run unbounded.
   assert.ok(

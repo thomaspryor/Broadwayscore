@@ -4741,13 +4741,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Run wrongShow auto-clear ensemble corpus scan (needs review-texts), Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-29T10:32:34.567Z",
+      "lastSeen": "2026-09-29T11:08:58.383Z",
       "lastNotifiedAt": "2026-09-28T11:41:47.830Z",
       "lastSurfacedAt": "2026-09-28T11:41:47.830Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 38
+      "silentRefires": 41
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -6126,7 +6126,7 @@
       "resolvedAt": "2026-09-29T07:38:46.628Z"
     },
     "land:land/bro-4272-roundup-ingest": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: scripts-lib-tests red on land/bro-4272-roundup-ingest",
       "firstSeen": "2026-09-29T06:38:34.077Z",
@@ -6136,7 +6136,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-09-29T10:57:53.337Z"
     },
     "land:land/audit-owe-staging-merge-4": {
       "status": "resolved",
@@ -6347,7 +6348,7 @@
       "linearIdentifier": null
     },
     "land:land/posthog-adhoc-query": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: rebase red on land/posthog-adhoc-query",
       "firstSeen": "2026-09-29T09:29:43.114Z",
@@ -6356,7 +6357,8 @@
       "lastSurfacedAt": "2026-09-29T09:29:43.114Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-29T11:04:00.858Z"
     },
     "land:land/fantasy-2026-27-launch": {
       "status": "open",
@@ -6371,7 +6373,7 @@
       "linearIdentifier": null
     },
     "land:land/bro-4219": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-4219",
       "firstSeen": "2026-09-29T10:09:11.331Z",
@@ -6380,7 +6382,8 @@
       "lastSurfacedAt": "2026-09-29T10:09:11.331Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-29T10:53:52.124Z"
     }
   }
 }
