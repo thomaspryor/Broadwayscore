@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isNonTheaterContent, londonListingTitleRejected, shouldExcludeVenueShow } = require('../../scripts/discover-new-shows.js');
+const { isNonTheaterContent, londonListingTitleRejected } = require('../../scripts/discover-new-shows.js');
 
 function gateCandidate(title) {
   return {
