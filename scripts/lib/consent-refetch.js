@@ -82,8 +82,7 @@ function shouldReleaseConsentLayerNonReview(data) {
   const reason = typeof data.isNonReviewReason === 'string' ? data.isNonReviewReason : '';
   if (!CV_PROMOTED_NON_REVIEW_PREFIXES.some(p => reason.startsWith(p))) return false;
   const cv = data.contentVerification;
-  if (!cv || cv.isValid !== true) return false;
-  if (cv.wrongArticle === true || cv.wrongProduction === true || cv.isFilmTv === true) return false;
+  if (!verdictClearsReview(cv)) return false;
   if (cv.articleType !== 'review') return false;
   if ((cv.articleTypeConfidence || cv.confidence) !== 'high') return false;
   const { hasStrippableConsentLayer } = require('./text-cleaning');
@@ -134,6 +133,22 @@ function salvageConsentPrefixedStoredText(data) {
 }
 
 const VERIFIER_FLAG_PREFIXES = ['Collector LLM', 'CV-promoted'];
+
+/**
+ * Does a fresh verdict clear the review for release? Either a fully valid
+ * verdict, or a high-confidence "this is a review" whose only doubt is a
+ * LOW-confidence production question: the collector itself flags
+ * wrongProduction only at high/medium confidence, and low-confidence doubts
+ * come from the verifier's own temporal override (e.g. a review published a
+ * day after opening that mentions the show's earlier Berlin/Edinburgh runs).
+ */
+function verdictClearsReview(cv) {
+  if (!cv || cv.wrongArticle === true || cv.isFilmTv === true) return false;
+  if (cv.isValid === true) return true;
+  const articleIsReview = cv.articleType === 'review' && (cv.articleTypeConfidence || cv.confidence) === 'high';
+  const productionDoubt = cv.wrongProduction === true && (cv.confidence === 'high' || cv.confidence === 'medium');
+  return articleIsReview && !productionDoubt;
+}
 const isVerifierSetReason = (r) => typeof r === 'string' && VERIFIER_FLAG_PREFIXES.some(p => r.startsWith(p));
 
 /**
@@ -152,7 +167,7 @@ function applyVerifiedRetryOutcome(data, nowIso) {
   const out = { clearedWrongShow: false, clearedWrongProduction: false };
   if (!data) return out;
   const cv = data.contentVerification;
-  const clean = !!cv && cv.isValid === true && cv.wrongArticle !== true;
+  const clean = verdictClearsReview(cv);
   if (!clean) {
     data.wrongShowRetryAt = nowIso;
     return out;
@@ -178,6 +193,7 @@ function applyVerifiedRetryOutcome(data, nowIso) {
 }
 
 module.exports = {
+  verdictClearsReview,
   applyVerifiedRetryOutcome,
   salvageSourceHash,
   salvageConsentPrefixedStoredText,

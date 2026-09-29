@@ -141,7 +141,7 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -152,7 +152,8 @@
       "notifyCount": 108,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 10
+      "silentRefires": 10,
+      "resolvedAt": "2026-09-29T14:50:56.753Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3162,13 +3163,13 @@
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-29T13:49:50.714Z",
+      "lastSeen": "2026-09-29T14:38:55.133Z",
       "lastNotifiedAt": "2026-09-28T15:26:29.682Z",
       "lastSurfacedAt": "2026-09-28T15:26:29.682Z",
       "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3547,13 +3548,13 @@
       "disposition": "digest",
       "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
       "firstSeen": "2026-09-18T16:10:40.527Z",
-      "lastSeen": "2026-09-29T13:49:50.717Z",
+      "lastSeen": "2026-09-29T14:38:55.138Z",
       "lastNotifiedAt": "2026-09-28T15:26:29.687Z",
       "lastSurfacedAt": "2026-09-28T15:26:29.687Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "opening-night-remediation-exhausted-t1-missing:america-who-hurt-you-off-broadway-2026": {
       "status": "open",
@@ -3824,13 +3825,13 @@
       "disposition": "digest",
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-09-29T13:49:50.709Z",
+      "lastSeen": "2026-09-29T14:38:55.124Z",
       "lastNotifiedAt": "2026-09-28T15:26:29.672Z",
       "lastSurfacedAt": "2026-09-28T15:26:29.672Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4168,13 +4169,13 @@
       "disposition": "digest",
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-09-29T13:49:50.706Z",
+      "lastSeen": "2026-09-29T14:38:55.118Z",
       "lastNotifiedAt": "2026-09-28T15:26:29.664Z",
       "lastSurfacedAt": "2026-09-28T15:26:29.664Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -4722,13 +4723,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Audit review contamination, Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-29T12:25:27.302Z",
+      "lastSeen": "2026-09-29T14:45:02.312Z",
       "lastNotifiedAt": "2026-09-29T12:18:28.491Z",
       "lastSurfacedAt": "2026-09-29T12:18:28.491Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -5718,13 +5719,13 @@
       "disposition": "digest",
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
-      "lastSeen": "2026-09-29T13:49:50.699Z",
+      "lastSeen": "2026-09-29T14:38:55.108Z",
       "lastNotifiedAt": "2026-09-28T19:21:55.577Z",
       "lastSurfacedAt": "2026-09-28T19:21:55.577Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -5782,13 +5783,13 @@
       "disposition": "digest",
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-09-29T13:49:50.702Z",
+      "lastSeen": "2026-09-29T14:38:55.113Z",
       "lastNotifiedAt": "2026-09-28T19:48:00.401Z",
       "lastSurfacedAt": "2026-09-28T19:48:00.401Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -6485,6 +6486,18 @@
       "lastSeen": "2026-09-29T13:39:18.283Z",
       "lastNotifiedAt": "2026-09-29T13:39:18.283Z",
       "lastSurfacedAt": "2026-09-29T13:39:18.283Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "express-retry-still-thin:schtick-a-pole-in-it-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Opening Night Express retry still found thin review coverage for schtick-a-pole-in-it-off-broadway-2026",
+      "firstSeen": "2026-09-29T14:30:25.266Z",
+      "lastSeen": "2026-09-29T14:30:25.266Z",
+      "lastNotifiedAt": "2026-09-29T14:30:25.266Z",
+      "lastSurfacedAt": "2026-09-29T14:30:25.266Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

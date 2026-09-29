@@ -237,6 +237,11 @@ describe('lookups fall back through the map (real data through the real build sc
     let any = false;
     for (const family of Object.keys(NAME_REDIRECT_PREFIXES) as NameRedirectFamily[]) {
       if (keysOf(trackedCompact, family).length === 0) continue;
+      // The tracked map can carry cast entries (prebuild ran with the manifest)
+      // while this job has none — the cast lookup needs src/lib/data-actors and
+      // the gitignored manifest, so it is covered where the manifest exists
+      // (land gauntlet, TypeScript Check), not loaded blind here.
+      if (family === 'cast' && castEntries.length === 0) continue;
       any = true;
       assertFamilyResolves(trackedCompact, family, true);
     }

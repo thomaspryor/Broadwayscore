@@ -211,3 +211,27 @@ describe('applyVerifiedRetryOutcome', () => {
     assert.equal(d.wrongShowRetryAt, NOW);
   });
 });
+
+describe('verdictClearsReview', () => {
+  const { verdictClearsReview, applyVerifiedRetryOutcome } = require('../../scripts/lib/consent-refetch');
+  const base = { isValid: false, wrongArticle: false, articleType: 'review', articleTypeConfidence: 'high', wrongProduction: true, confidence: 'low' };
+  it('a high-confidence review with only a low-confidence production doubt clears', () => {
+    assert.equal(verdictClearsReview(base), true);
+  });
+  it('a medium/high production doubt does not', () => {
+    assert.equal(verdictClearsReview({ ...base, confidence: 'medium' }), false);
+    assert.equal(verdictClearsReview({ ...base, confidence: 'high' }), false);
+  });
+  it('a non-review or low article-type confidence does not', () => {
+    assert.equal(verdictClearsReview({ ...base, articleType: 'news' }), false);
+    assert.equal(verdictClearsReview({ ...base, articleTypeConfidence: 'low' }), false);
+    assert.equal(verdictClearsReview({ ...base, wrongArticle: true }), false);
+  });
+  it('releases a "not a review" wrongShow but never the wrongProduction on a low-confidence doubt', () => {
+    const d = { wrongShow: true, wrongShowReason: 'Collector LLM: not a review', wrongProduction: true, wrongProductionReason: 'Collector LLM: x', contentVerification: base };
+    const out = applyVerifiedRetryOutcome(d, '2026-09-29T00:00:00Z');
+    assert.equal(out.clearedWrongShow, true);
+    assert.equal(out.clearedWrongProduction, false);
+    assert.equal(d.wrongProduction, true);
+  });
+});
