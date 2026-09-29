@@ -1,5 +1,27 @@
 [
   {
+    "startedAt": "2026-09-28T02:01:45.165Z",
+    "completedAt": "2026-09-28T02:02:27.216Z",
+    "totalReviews": 44939,
+    "processed": 2,
+    "skipped": 44926,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 66384,
+      "output": 1997,
+      "total": 167211
+    },
+    "costUsd": 0.25656755,
+    "runId": "36366452732",
+    "errorDetails": [
+      {
+        "showId": "red-riding-hood-off-broadway-2026",
+        "outletId": "showify",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
     "startedAt": "2026-09-28T02:02:29.113Z",
     "completedAt": "2026-09-28T02:09:03.617Z",
     "totalReviews": 176,
@@ -237116,24 +237138,8 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-09-29T20:33:57.735Z",
-    "completedAt": "2026-09-29T20:34:02.822Z",
-    "totalReviews": 8,
-    "processed": 1,
-    "skipped": 7,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 4447,
-      "output": 315,
-      "total": 12572
-    },
-    "costUsd": 0.0309312,
-    "runId": "36621673106",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-29T20:34:04.702Z",
-    "completedAt": "2026-09-29T20:34:04.711Z",
+    "startedAt": "2026-09-29T20:52:52.611Z",
+    "completedAt": "2026-09-29T20:52:52.626Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -237144,7 +237150,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "36621673106",
+    "runId": "36623428424",
     "errorDetails": []
   }
 ]
