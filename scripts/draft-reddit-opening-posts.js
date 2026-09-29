@@ -186,7 +186,15 @@ async function fetchRecentOwnerPosts() {
 
 // ── Main ────────────────────────────────────────────────────────────────────
 
+const USAGE = `draft-reddit-opening-posts.js: draft Reddit "reviews are in" posts for WE/OWE/OB openings (BRO-4333).
+  --dry-run        print drafts, save nothing
+  --show=ID        force one show (any age)
+  --no-llm         template drafts only
+  --today=YYYY-MM-DD`;
+
 async function main() {
+  const { hasHelpFlag } = require('./lib/cli-help.js');
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const shows = loadShows();
   const slims = loadSlims(shows);
   const peers = peersByMarket(shows, slims);

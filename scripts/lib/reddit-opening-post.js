@@ -17,6 +17,10 @@
 
 'use strict';
 
+// venue-write-guard-ok: buildFacts only reads show.venue into an in-memory fact sheet for a Reddit draft; nothing writes it back to shows.json.
+
+const { foldDiacritics } = require('./title-match');
+
 const SUBREDDIT_BY_MARKET = {
   'west-end': 'TheWestEnd',
   'off-west-end': 'TheWestEnd',
@@ -237,7 +241,7 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
 // ── Owner's show history (data/shows-seen.json) ──────────────────────────────
 
 function normTitle(t) {
-  return String(t || '')
+  return foldDiacritics(String(t || ''))
     .toLowerCase()
     .replace(/\((?:west end|off-broadway|broadway)[^)]*\)/g, '')
     .replace(/^the\s+/, '')
