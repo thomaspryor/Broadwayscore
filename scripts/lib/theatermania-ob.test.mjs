@@ -42,8 +42,17 @@ test('preview + opening → both dates, opening marked theatermania (unconfirmed
   assert.equal(r.candidate.venue, '59E59 Theaters');
   assert.equal(r.candidate.category, 'off-broadway');
   assert.equal(r.candidate.provisional, undefined, '59E59 is a known OB venue: no Playbill cross-check needed');
-  const unknownVenue = parse(/^Queeney Todd/);
-  assert.equal(unknownVenue.candidate.venue, 'Judson Memorial Church');
+  // A venue not on data/off-broadway-venues.json. (This used the fixture's
+  // Judson Memorial Church row, which stopped being unknown once BRO-4377's
+  // shows landed and the list was regenerated — the list grows daily, so the
+  // test pins a venue that will never be on it.)
+  const qt = row(/^Queeney Todd/);
+  const unknownId = 990000001;
+  const unknownVenue = parseTmOffBroadwayRow(
+    { ...qt, acf: { ...qt.acf, the_venue: [unknownId] } },
+    { venuesById: new Map([...venuesById, [unknownId, { id: unknownId, title: { rendered: 'Zzyzx Test Loft' }, acf: { city: 'New York' } }]]), genresById },
+  );
+  assert.equal(unknownVenue.candidate.venue, 'Zzyzx Test Loft');
   assert.equal(unknownVenue.candidate.provisional, true, 'unknown venue → provisional');
   assert.equal(r.candidate.discoverySource, 'theatermania-ob');
   assert.equal(isUnconfirmedDateSource({ category: 'off-broadway', openingDateSource: 'theatermania' }), true,

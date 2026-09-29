@@ -88,6 +88,7 @@ const OB_VENUE_CONFIGS = [
   },
   {
     name: 'Signature Theatre',
+    coversVenues: ['Pershing Square Signature Center', 'Irene Diamond Stage'],
     url: 'https://signaturetheatre.org/productions/',
     strategy: 'selector',
     // .type-event includes both upcoming (5) and past (9). Upcoming-only
@@ -133,6 +134,8 @@ const OB_VENUE_CONFIGS = [
   },
   {
     name: 'Irish Rep',
+    // Venue strings this reader's listing covers (ob-venue-reader-coverage.js).
+    coversVenues: ['Irish Repertory Theatre', 'Irish Repertory Studio Theatre'],
     // Root page features h1 = current show (e.g. "The Loved Ones") and
     // h2.event-card__title = upcoming/recent productions.
     // Use combined selectors; exclude_patterns filters out "GALA 2026 |..."
@@ -253,16 +256,20 @@ const OB_VENUE_CONFIGS = [
   // exactly this reason before being added to shows.json by hand.
   {
     name: 'Soho Playhouse',
-    // Homepage (Squarespace) links each current/upcoming booking at
-    // /see-a-show/<slug> — plain fetch works, no JS rendering needed
-    // (verified 2026-09-09, ~426KB HTML). Slugs here are short marketing
-    // slugs, not full-title slugs (e.g. "bigfoot-ripped" for "Bigfoot
-    // Ripped My Dog In Half I Saw It") — same class of imprecision as
-    // Bedlam's slug-derived titles above; cross-validation reconciles the
-    // real title, this just has to surface the candidate at all.
-    url: 'https://www.sohoplayhouse.com/',
-    strategy: 'link',
-    linkPattern: /\/see-a-show\/[a-z0-9-]+\/?$/,
+    // BRO-4396: switched from the homepage's /see-a-show/<slug> links to the
+    // OvationTix org the venue sells every booking through
+    // (ci.ovationtix.com/35583). The homepage slugs were short marketing
+    // slugs ("diana-untold", "bigfoot-ripped"), so candidates carried a
+    // truncated title and no dates and could only promote on a Playbill
+    // match that small runs never get: 16 sat in staging until BRO-4377
+    // added two by hand. OvationTix gives the full production name and every
+    // performance date (verified live 2026-09-29: 32 productions).
+    url: 'https://ci.ovationtix.com/35583',
+    strategy: 'ovationtix',
+    ovationtixClientId: 35583,
+    // Fresh anomaly baseline: the OvationTix reader returns ~2x the rows the
+    // homepage links did, which would trip the 2x-median gate for a week.
+    anomalyKey: 'Soho Playhouse (OvationTix)',
     excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
     preferPlaywright: false,
     category: 'off-broadway',
@@ -284,6 +291,217 @@ const OB_VENUE_CONFIGS = [
     preferPlaywright: false,
     category: 'off-broadway',
   },
+
+  // ══ BRO-4396 (2026-09-29): every venue with 2+ Off-Broadway shows since
+  // 2025 that had no reader. Probed live 2026-09-29; fixtures in
+  // tests/fixtures/ob-discovery/. Generic platform readers first (one org id
+  // or endpoint per venue), per-site selectors only where no platform feed
+  // exists. Dated readers let the venue's own listing count as evidence
+  // (decideVenueListingPromotion); rows past their last date are dropped.
+  //
+  // ── OvationTix orgs (web.ovationtix.com public REST) ──
+  { name: 'WP Theater', url: 'https://ci.ovationtix.com/34655', strategy: 'ovationtix', ovationtixClientId: 34655, excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS, category: 'off-broadway' },
+  // Rental house with several rooms; one-show bookings drop out at the gate.
+  { name: 'The Players Theatre', coversVenues: ['Players Theatre Loft'], url: 'https://ci.ovationtix.com/277', strategy: 'ovationtix', ovationtixClientId: 277, excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS, category: 'off-broadway' },
+  { name: 'The Flea Theater', url: 'https://ci.ovationtix.com/14', strategy: 'ovationtix', ovationtixClientId: 14, excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS, category: 'off-broadway' },
+  { name: 'Axis Theatre', url: 'https://ci.ovationtix.com/133', strategy: 'ovationtix', ovationtixClientId: 133, excludeTitlePatterns: [...COMMON_OB_EXCLUDE_PATTERNS, /^ztest\b/i], category: 'off-broadway' },
+  { name: 'The Space at Irondale', url: 'https://ci.ovationtix.com/27285', strategy: 'ovationtix', ovationtixClientId: 27285, excludeTitlePatterns: [...COMMON_OB_EXCLUDE_PATTERNS, /^ztest\b/i, /^from the vault\b/i], category: 'off-broadway' },
+  // York Theatre Company's org; it plays the Theatre at St. Jean's. The
+  // "TWUSA:" rows are Theatreworks USA one-day children's shows.
+  { name: "Theater at St. Jean's", coversVenues: ["Theatre at St. Jean's", 'St. Jean'], url: 'https://ci.ovationtix.com/34375', strategy: 'ovationtix', ovationtixClientId: 34375, excludeTitlePatterns: [...COMMON_OB_EXCLUDE_PATTERNS, /^twusa\b/i], category: 'off-broadway' },
+  // ── Spektrix (public /api/v3/events) ──
+  { name: '59E59 Theaters', url: 'https://www.59e59.org/shows/', spektrixUrl: 'https://tickets.59e59.org/59e59/api/v3/events', strategy: 'spektrix', excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS, category: 'off-broadway' },
+  { name: 'Classic Stage Company', url: 'https://www.classicstage.org/', spektrixUrl: 'https://tickets.classicstage.org/classicstage/api/v3/events', strategy: 'spektrix', excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS, category: 'off-broadway' },
+  // Theatre for a New Audience's account (it plays its own Polonsky
+  // Shakespeare Center); test events are prefixed "zTest".
+  { name: 'Polonsky Shakespeare Center', coversVenues: ['Theatre for a New Audience'], url: 'https://www.tfana.org/', spektrixUrl: 'https://tickets.tfana.org/tfana/api/v3/events', strategy: 'spektrix', excludeTitlePatterns: [...COMMON_OB_EXCLUDE_PATTERNS, /^ztest\b/i, /\bseminar\b/i, /discussion group/i], category: 'off-broadway' },
+  // PAC NYC's account also sells DJ sets, talks, access services and a gala
+  // (52 current events, 4 of them theatre): keep the theatre genres only.
+  { name: 'Perelman Performing Arts Center', url: 'https://pacnyc.org/', spektrixUrl: 'https://system.spektrix.com/pacnyc/api/v3/events', strategy: 'spektrix', spektrixGenres: ['Theater', 'Musical Theater'], excludeTitlePatterns: [...COMMON_OB_EXCLUDE_PATTERNS, /^reading:/i], category: 'off-broadway' },
+  // ── JSON APIs ──
+  // NYU Skirball's WordPress 'performance' type with ACF run dates. Tags:
+  // 40 theater, 42 transdisciplinary, 43 dance (the catalog carries its
+  // dance: Kyle Abraham, De Keersmaeker); talks/screenings/comedy excluded.
+  {
+    name: 'NYU Skirball',
+    url: 'https://nyuskirball.org/whats-on/',
+    jsonUrl: 'https://nyuskirball.org/wp-json/wp/v2/performance?per_page=100&orderby=date&order=desc&_fields=id,title,link,meta.first_date,meta.last_date,performance_tag',
+    strategy: 'json-api',
+    jsonSpec: { itemsPath: '[]', titleField: 'title.rendered', firstField: 'meta.first_date', lastField: 'meta.last_date', urlField: 'link', filterField: 'performance_tag', filterAnyOf: [40, 42, 43] },
+    excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
+    category: 'off-broadway',
+  },
+  // Repertorio's Vue site reads this PatronTicket (Salesforce) feed.
+  {
+    name: 'Repertorio Español',
+    // Rotating repertory plus a stand-up series with the same shape (15
+    // dates over five months): its listing can't tell them apart.
+    selfEvidence: false,
+    url: 'https://repertorio.nyc/performances',
+    jsonUrl: 'https://repertorio.nyc/api/data',
+    strategy: 'json-api',
+    jsonSpec: { itemsPath: 'data.events[]', titleField: 'name', datesField: 'instances[].formattedDates.ISO8601', urlField: 'purchaseUrl', filterField: 'type', filterAnyOf: ['Tickets'] },
+    excludeTitlePatterns: [...COMMON_OB_EXCLUDE_PATTERNS, /gift certificates?/i, /subscriptions?/i],
+    category: 'off-broadway',
+  },
+  // ── Page-embedded data ──
+  // Cherry Lane sells through a Vivenu shop; its Next.js page data lists every
+  // performance (UTC; isoDay converts to the New York date).
+  {
+    name: 'Cherry Lane Theatre',
+    url: 'https://shows.cherrylanetheatre.org/',
+    strategy: 'next-data',
+    jsonSpec: { itemsPath: 'props.pageProps.sellerPage.events[]', titleField: 'name', datesField: 'start' },
+    excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
+    category: 'off-broadway',
+  },
+  // Tixr calendar: one JSON-LD Event per performance. Mostly a comedy club;
+  // single stand-up nights drop out at the run-length gate.
+  { name: 'Asylum NYC', selfEvidence: false, url: 'https://calendar.asylumnyc.com/', strategy: 'json-ld', excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS, category: 'off-broadway' },
+  // ── Dated cards on the venue's own page ──
+  {
+    name: 'New Victory Theater',
+    url: 'https://www.newvictory.org/tickets-and-events',
+    strategy: 'dated-selector',
+    // Public live runs only: school-day and sensory-friendly duplicates,
+    // workshops and teacher labs share the grid.
+    itemSelector: 'a.event-item[href*="-live-performance-"]:not([href$="-sensory-friendly"])',
+    titleSelector: '.event-item__title',
+    dateSelector: '.event-item__date',
+    excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
+    category: 'off-broadway',
+  },
+  {
+    name: 'HERE Arts Center',
+    url: 'https://here.org/shows/',
+    strategy: 'dated-selector',
+    itemSelector: '.wrap-collabsible',
+    titleSelector: '.lbl-toggle',
+    dateSelector: '.supporting-info',
+    excludeTitlePatterns: [...COMMON_OB_EXCLUDE_PATTERNS, /season$/i, /kick-?off party/i, /^urhere$/i, /^choose wonder\b/i],
+    category: 'off-broadway',
+  },
+  {
+    name: 'New York City Center',
+    // Mostly dance companies and comedy beside Encores! and the Stage II
+    // plays; the catalog carries none of the dance companies.
+    selfEvidence: false,
+    url: 'https://www.nycitycenter.org/tickets',
+    strategy: 'dated-selector',
+    itemSelector: 'a.event-item',
+    titleSelector: '.event-item__title',
+    dateSelector: '.event-item__date',
+    excludeTitlePatterns: [...COMMON_OB_EXCLUDE_PATTERNS, /^studio 5\b/i],
+    category: 'off-broadway',
+  },
+  {
+    name: 'Studio Seaview',
+    url: 'https://studioseaview.com/whats-on/',
+    strategy: 'dated-selector',
+    itemSelector: '.site-events__card',
+    titleSelector: '.site-events__card-title',
+    dateSelector: '.site-events__card-inner__content-dates',
+    linkSelector: 'a[href*="/show/"]',
+    excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
+    category: 'off-broadway',
+  },
+  {
+    name: 'New York Theatre Workshop',
+    // Season URL embeds the season; the anomaly gate fires when it rots.
+    url: 'https://www.nytw.org/2026-27-season/',
+    strategy: 'dated-selector',
+    itemSelector: '.show_box',
+    titleSelector: '.show_name',
+    dateSelector: '.show_dates',
+    // Co-productions play the partner's house (The Grief Eater Near North
+    // Bender, "in association with Roundabout", is at the Laura Pels and is
+    // read there).
+    itemMustNotMatch: /produced in association with/i,
+    excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
+    category: 'off-broadway',
+  },
+  {
+    name: 'A.R.T./New York Theatres',
+    coversVenues: ['Jeffrey and Paula Gural Theatre', 'A.R.T./New York'],
+    url: 'https://art-newyork.org/spaces/theatres/now-playing/',
+    strategy: 'dated-selector',
+    itemSelector: '.sugar-calendar-event-list-block__listview__event',
+    titleSelector: '.sugar-calendar-event-list-block__event__title',
+    dateSelector: '.sugar-calendar-event-list-block__event__datetime',
+    excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
+    category: 'off-broadway',
+  },
+  {
+    name: 'Laura Pels Theatre',
+    // Roundabout's page lists all its houses, Broadway included (Studio 54,
+    // Todd Haimes): keep cards that name the Laura Pels.
+    url: 'https://www.roundabouttheatre.org/shows',
+    strategy: 'dated-selector',
+    itemSelector: '.wp-block-roundabout-production',
+    itemMustMatch: /laura-pels/i,
+    titleSelector: '.production__title',
+    dateSelector: '.production__date-display',
+    excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
+    category: 'off-broadway',
+  },
+  {
+    name: 'Lincoln Center Theater',
+    // Exact houses only: "... at Lincoln Center" venues (David Geffen Hall,
+    // the Rose Theater) are not this listing.
+    coverageExact: ['Lincoln Center Theater - Mitzi E. Newhouse Theater', 'Mitzi E. Newhouse Theater', 'LCT3 at the Claire Tow Theater', 'Claire Tow Theater', 'Lincoln Center Theater'],
+    // Newhouse and Claire Tow only (the Beaumont is a Broadway house). The
+    // cards carry start labels, not ranges, so these rows need a second
+    // source (Playbill/TheaterMania) to promote.
+    url: 'https://www.lct.org/shows/',
+    strategy: 'dated-selector',
+    itemSelector: '.main-text-content > article',
+    itemMustMatch: /newhouse|claire tow/i,
+    titleSelector: 'a.title',
+    dateSelector: '.show-dates',
+    excludeTitlePatterns: [...COMMON_OB_EXCLUDE_PATTERNS, /season$/i],
+    category: 'off-broadway',
+  },
+  // ── New York Theatre Guide venue pages ──
+  // Rental houses with no listing of their own, and venues whose sites sit
+  // behind a bot challenge this reader cannot pass (The Public, Park Avenue
+  // Armory, Theatre Row's Ludus). An editorial listing, dated.
+  ...[
+    ['The Public Theater', ['public-theater'], ["Joe's Pub", 'Delacorte Theater']],
+    ['Lucille Lortel Theatre', ['lucille-lortel-theatre']],
+    ['New World Stages', ['new-world-stages']],
+    ['Daryl Roth Theatre', ['daryl-roth-theatre'], ['DR2 Theatre']],
+    ['Greenwich House Theater', ['greenwich-house-theater']],
+    ['Park Avenue Armory', ['park-avenue-armory'], null, { selfEvidence: false }],
+    ['Playwrights Horizons', ['playwrights-horizons']],
+    ['92NY', ['92ny-buttenwieser-hall']],
+    // Only Theatres Three and Four have NYTG pages; the coverage report must
+    // not count Theatre Five (or One, Two, Six) as read.
+    ['Theatre Row', ['theatre-row-theatre-three', 'theatre-row-theatre-four'], null, { coverageExact: ['Theatre Row - Theatre Three', 'Theatre Row - Theatre Four', 'Theatre Row (Theatre Three)', 'Theatre Row (Theatre Four)', 'Theatre Three at Theatre Row', 'Theatre Four at Theatre Row', 'Theatre Row – Theater Four', 'Theatre Row – Theatre Three'] }],
+    ['The Ruby Theatre', ['ruby-theatre']],
+    ['Orpheum Theatre', ['orpheum-theatre']],
+    ['The Marjorie S. Deane Little Theater', ['the-marjorie-s-deane-little-theater']],
+    // "West End Theatre" normalizes to "west end", which build-ob-venues.js
+    // blocklists (London), so its rows can only promote on a TheaterMania
+    // or Playbill match, never on this listing alone.
+    ['West End Theatre', ['the-west-end-theatre']],
+    ['Astor Place Theatre', ['astor-place-theatre']],
+    ['The Duke on 42nd Street', ['duke-on-42nd-street']],
+    // The Theater Center's two houses (Anne L. Bernstein, Jerry Orbach).
+    ['The Theater Center', ['the-theater-center', 'jerry-orbach-theatre'], ['Jerry Orbach Theatre']],
+    ["Theatre at St. Clement's", ['theatre-at-st-clements']],
+    ['Westside Theatre', ['westside-theatre']],
+    ['Stage 42', ['stage-42']],
+    ['East Village Basement', ['east-village-basement']],
+  ].map(([name, nytgSlugs, coversVenues, extra]) => ({
+    name,
+    ...(coversVenues ? { coversVenues } : {}),
+    ...(extra || {}),
+    url: `https://www.newyorktheatreguide.com/venues/${nytgSlugs[0]}`,
+    strategy: 'nytg-venue',
+    nytgSlugs,
+    excludeTitlePatterns: [...COMMON_OB_EXCLUDE_PATTERNS, /\btours?$/i],
+    category: 'off-broadway',
+  })),
 ];
 
 // ============================================================
@@ -295,29 +513,70 @@ const OB_VENUE_CONFIGS = [
  * Pure: no fetch, no IO. Fixture-testable.
  */
 const { foldDiacritics } = require('./title-match');
+const {
+  parseOvationTixBundle,
+  parseTribeEvents,
+  extractDatedJsonLdEvents,
+  extractDatedCards,
+  fetchOvationTixBundle,
+  fetchTribeEvents,
+  fetchSpektrixEvents,
+  parseSpektrixEvents,
+  extractJsonItems,
+  extractNextData,
+  parseNytgVenuePages,
+  getJson,
+  NYTG_BASE,
+} = require('./ob-listing-platforms');
 
-function parseVenueListingHtml(venue, html) {
-  if (!html || html.length < 50) return [];
+// Strategies whose payload is JSON from a ticketing/CMS API, not a page.
+// venue-listing-discover.test.mjs replays these from .json fixtures.
+const DATED_JSON_STRATEGIES = new Set(['ovationtix', 'tribe-events', 'spektrix', 'json-api']);
 
-  let titles;
+function parseVenueListingHtml(venue, html, { todayIso = new Date().toISOString().slice(0, 10) } = {}) {
+  // Dated platform readers (BRO-4396) take a JSON payload (object or string)
+  // instead of HTML; everything else is an HTML page.
+  const isJsonStrategy = DATED_JSON_STRATEGIES.has(venue.strategy);
+  if (!isJsonStrategy && (!html || typeof html !== 'string' || html.length < 50)) return [];
+  if (isJsonStrategy && !html) return [];
+
+  // rows: [{title, firstDate?, lastDate?, performanceCount?, url?}]
+  let rows;
   // `regex` strategy bypasses JSDOM entirely for sites that ship malformed
   // HTML which silently breaks the parser (MCC Theater has a `class=""`
   // typo on .c-col-card divs that makes JSDOM skip the whole subtree —
   // anchors inside become invisible to querySelectorAll).
   if (venue.strategy === 'regex') {
-    titles = extractByRegex(html, venue);
+    rows = extractByRegex(html, venue).map(title => ({ title }));
+  } else if (isJsonStrategy) {
+    let payload = html;
+    if (typeof payload === 'string') {
+      try { payload = JSON.parse(payload); } catch { return []; }
+    }
+    if (venue.strategy === 'ovationtix') rows = parseOvationTixBundle(payload, { clientId: venue.ovationtixClientId });
+    else if (venue.strategy === 'spektrix') rows = parseSpektrixEvents(payload, { genres: venue.spektrixGenres });
+    else if (venue.strategy === 'json-api') rows = extractJsonItems(payload, venue.jsonSpec);
+    else rows = parseTribeEvents(payload);
+  } else if (venue.strategy === 'nytg-venue') {
+    rows = parseNytgVenuePages(html);
+  } else if (venue.strategy === 'next-data') {
+    const data = extractNextData(html);
+    rows = data ? extractJsonItems(data, venue.jsonSpec) : [];
   } else {
     const dom = new JSDOM(html);
     const doc = dom.window.document;
     switch (venue.strategy) {
       case 'link':
-        titles = extractByLink(doc, venue);
+        rows = extractByLink(doc, venue).map(title => ({ title }));
         break;
       case 'selector':
-        titles = extractBySelector(doc, venue);
+        rows = extractBySelector(doc, venue).map(title => ({ title }));
         break;
       case 'json-ld':
-        titles = extractJsonLdTheaterEvents(doc).map(e => e.name).filter(Boolean);
+        rows = extractDatedJsonLdEvents(doc);
+        break;
+      case 'dated-selector':
+        rows = extractDatedCards(doc, venue, { todayIso });
         break;
       default:
         throw new Error(`Unknown venue.strategy: ${venue.strategy} for ${venue.name}`);
@@ -326,20 +585,54 @@ function parseVenueListingHtml(venue, html) {
 
   // Apply exclusion patterns (DATA not functions) + length bounds.
   const excludePatterns = venue.excludeTitlePatterns || [];
-  const filtered = titles
-    .map(t => (t || '').replace(/\s+/g, ' ').trim())
-    .filter(t => t.length >= 2 && t.length <= 160)
-    .filter(t => !excludePatterns.some(p => p.test(t)))
-    .filter((t, i, arr) => arr.indexOf(t) === i); // dedupe within page
+  const seen = new Set();
+  const filtered = [];
+  for (const r of rows) {
+    const title = String((r && r.title) || '').replace(/\s+/g, ' ').trim();
+    if (title.length < 2 || title.length > 160) continue;
+    if (excludePatterns.some(p => p.test(title))) continue;
+    if (seen.has(title)) continue; // dedupe within page
+    // A dated row that already finished is archive, not a current booking.
+    if (r.lastDate && r.lastDate < todayIso) continue;
+    seen.add(title);
+    filtered.push({ ...r, title });
+  }
 
-  return filtered.map(title => ({
-    title,
+  return filtered.map(r => ({
+    title: r.title,
     venue: venue.name,
-    slug: foldDiacritics(title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+    // Apostrophes dropped, not split ("Violet's" → violets), as catalog ids are.
+    slug: foldDiacritics(r.title).toLowerCase().replace(/['‘’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
     category: venue.category || 'off-broadway',
     source: `venue-page:${venue.name.toLowerCase().replace(/\s+/g, '-')}`,
     discoveredAt: new Date().toISOString(),
+    // The venue's own dates for this booking (BRO-4396). Only dated readers
+    // set them; decideVenueListingPromotion needs both to treat the listing
+    // as its own evidence.
+    ...(r.firstDate ? { listingFirstDate: r.firstDate } : {}),
+    ...(r.lastDate ? { listingLastDate: r.lastDate } : {}),
+    ...(typeof r.performanceCount === 'number' ? { listingPerformanceCount: r.performanceCount } : {}),
+    ...(r.url ? { listingUrl: absoluteUrl(r.url, venue.url) } : {}),
+    // OvationTix only returns performances still on sale, so its first date
+    // is the NEXT performance, not the first one (ship-check 2026-09-29: Elf
+    // Lyons began 2026-09-24, OvationTix said 2026-10-01).
+    ...(r.firstDate && venue.strategy === 'ovationtix' ? { listingFirstDateIsNext: true } : {}),
+    // NYTG is an editorial listing, not the venue's box office, and its
+    // closing date for an open-ended run is a booking horizon (Gazillion
+    // Bubble Show: 2007 to 2027-01-18), so it never becomes closingDate.
+    // Only a long run's date is treated as a horizon; a limited run's end
+    // date is its closing.
+    ...(venue.strategy === 'nytg-venue' ? { listingEvidence: 'editorial-listing' } : {}),
+    ...(venue.strategy === 'nytg-venue' && r.firstDate && r.lastDate && (Date.parse(r.lastDate) - Date.parse(r.firstDate)) > 180 * 86400000 ? { listingLastDateIsHorizon: true } : {}),
+    // Mixed-program venues (dance companies, stand-up, installations beside
+    // the plays): their own listing is not evidence that a row is a play, so
+    // their candidates need Playbill/TheaterMania to promote.
+    ...(venue.selfEvidence === false ? { listingEvidence: 'needs-corroboration' } : {}),
   }));
+}
+
+function absoluteUrl(href, base) {
+  try { return new URL(href, base).toString(); } catch { return href; }
 }
 
 // ============================================================
@@ -457,6 +750,32 @@ async function scrapeVenueListing(venue) {
   // (a) the HTML is suspiciously short (< minHtmlBytes), OR
   // (b) parsing returns 0 candidates AND we have a sentinel string that
   //     must appear in the real page (venue.htmlSentinel).
+  if (venue.strategy === 'ovationtix') {
+    const bundle = await fetchOvationTixBundle(venue.ovationtixClientId);
+    return parseVenueListingHtml(venue, bundle);
+  }
+  if (venue.strategy === 'tribe-events') {
+    const json = await fetchTribeEvents(venue.url);
+    return parseVenueListingHtml(venue, json);
+  }
+  if (venue.strategy === 'spektrix') {
+    return parseVenueListingHtml(venue, await fetchSpektrixEvents(venue.spektrixUrl));
+  }
+  if (venue.strategy === 'json-api') {
+    return parseVenueListingHtml(venue, await getJson(venue.jsonUrl));
+  }
+  if (venue.strategy === 'nytg-venue') {
+    // One page per slug (Theatre Row's rooms each have their own), joined:
+    // parseNytgVenuePages reads every __NEXT_DATA__ block in the string.
+    const pages = [];
+    for (const slug of venue.nytgSlugs) {
+      const r = await fetchPage(`${NYTG_BASE}${slug}`, {});
+      if (r && r.content) pages.push(r.content);
+      else console.warn(`::warning::venue ${venue.name}: NYTG page ${slug} fetch returned empty content`);
+    }
+    return parseVenueListingHtml(venue, pages.join('\n'));
+  }
+
   const maxAttempts = venue.flaky ? 3 : 1;
   const minHtmlBytes = venue.minHtmlBytes || 0;
   let html = '';
@@ -479,6 +798,37 @@ async function scrapeVenueListing(venue) {
     break;
   }
   return candidates;
+}
+
+/**
+ * Promise.allSettled over `items` with at most `limit` units in flight,
+ * results in input order (BRO-4396). `laneOf(item)` puts items in a named
+ * lane that runs as ONE unit, its items one after another: every OvationTix
+ * org shares a lane so that API sees a single caller (back-to-back parallel
+ * calls drew 403s).
+ */
+async function settledWithConcurrency(items, limit, fn, { laneOf } = {}) {
+  const results = new Array(items.length);
+  const units = [];
+  const lanes = new Map();
+  items.forEach((item, i) => {
+    const lane = laneOf ? laneOf(item) : null;
+    if (!lane) { units.push([i]); return; }
+    if (!lanes.has(lane)) { lanes.set(lane, []); units.push(lanes.get(lane)); }
+    lanes.get(lane).push(i);
+  });
+  let next = 0;
+  async function worker() {
+    while (next < units.length) {
+      const unit = units[next++];
+      for (const i of unit) {
+        try { results[i] = { status: 'fulfilled', value: await fn(items[i], i) }; }
+        catch (reason) { results[i] = { status: 'rejected', reason }; }
+      }
+    }
+  }
+  await Promise.all(Array.from({ length: Math.max(1, Math.min(limit, units.length)) }, worker));
+  return results;
 }
 
 // ============================================================
@@ -589,10 +939,12 @@ function writeStagingCandidates(newCandidates, stagingPath = STAGING_PATH) {
 
 module.exports = {
   STAGING_PATH,
+  DATED_JSON_STRATEGIES,
   OB_VENUE_CONFIGS,
   COMMON_OB_EXCLUDE_PATTERNS,
   parseVenueListingHtml,
   scrapeVenueListing,
+  settledWithConcurrency,
   extractByLink,
   extractBySelector,
   extractByRegex,
