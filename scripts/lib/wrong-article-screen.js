@@ -29,7 +29,7 @@ function countTitleMentions(text, show) {
   let best = 0;
   for (const t of titles) {
     // Longest variant counts; shorter prefixes of the same title must not double count.
-    const total = buildShowTitleVariants(t).reduce((m, v) => (v.length >= 4 ? Math.max(m, countVariant(norm, v)) : m), 0);
+    const total = buildShowTitleVariants(t).reduce((m, v) => (v.length >= 3 ? Math.max(m, countVariant(norm, v)) : m), 0);
     best = Math.max(best, total);
   }
   return best;
@@ -38,15 +38,19 @@ function countTitleMentions(text, show) {
 /**
  * @param {string} text
  * @param {Object} show - shows.json entry
- * @returns {{ applicable: boolean, suspect: boolean, titleMentions: number, identityKeyword: string|null }}
+ * @returns {{ applicable: boolean, sparseIdentity?: boolean, suspect: boolean, titleMentions: number, identityKeyword: string|null }}
  */
 function screenWrongArticle(text, show) {
   if (!show || typeof text !== 'string' || text.length < MIN_TEXT_CHARS) {
     return { applicable: false, suspect: false, titleMentions: 0, identityKeyword: null };
   }
   const titleMentions = countTitleMentions(text, show);
-  const identityKeyword = findShowKeywordInText(text, buildShowKeywordSet({ ...show, title: '' }));
-  return { applicable: true, suspect: !identityKeyword && titleMentions <= 1, titleMentions, identityKeyword };
+  const keywords = buildShowKeywordSet({ ...show, title: '' });
+  const identityKeyword = findShowKeywordInText(text, keywords);
+  // Sparse metadata (no cast/creative/venue) leaves nothing to corroborate a
+  // non-literal title mention, so the screen fails open rather than guess.
+  const sparseIdentity = keywords.size < 2;
+  return { applicable: true, sparseIdentity, suspect: !identityKeyword && titleMentions <= 1, titleMentions, identityKeyword };
 }
 
 module.exports = { screenWrongArticle, countTitleMentions, MIN_TEXT_CHARS };

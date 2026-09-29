@@ -13,7 +13,7 @@
  *
  *   node scripts/audit-wrong-article.js              # check (CI)
  *   node scripts/audit-wrong-article.js --list       # print unverified suspects as JSON
- *   node scripts/audit-wrong-article.js --record-verified   # mark ALL current suspects verified
+ *   node scripts/audit-wrong-article.js --record-verified   # merge ALL current suspects into the verified baseline
  *                                                    # (only after an Opus pass over --list)
  */
 
@@ -27,7 +27,8 @@ const ROOT = path.join(__dirname, '..');
 const TEXTS = process.env.REVIEW_TEXTS_DIR || path.join(ROOT, 'data', 'review-texts');
 const VERIFIED_PATH = path.join(ROOT, 'data', 'audit', 'wrong-article-verified.json');
 
-const hashText = (t) => crypto.createHash('sha1').update(t).digest('hex').slice(0, 12);
+// Whitespace-normalized so a re-fetch that only reflows the text keeps its verdict.
+const hashText = (t) => crypto.createHash('sha1').update(t.replace(/\s+/g, ' ').trim()).digest('hex').slice(0, 12);
 
 function loadShows() {
   const parsed = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
@@ -64,7 +65,7 @@ function main(argv) {
   try { verified = JSON.parse(fs.readFileSync(VERIFIED_PATH, 'utf8')); } catch { /* none yet */ }
 
   if (argv.includes('--record-verified')) {
-    const next = {};
+    const next = { ...verified }; // merge: a partial checkout must never shrink the baseline
     for (const s of suspects) next[s.file] = s.hash;
     fs.writeFileSync(VERIFIED_PATH, JSON.stringify(next, null, 2) + '\n');
     console.log(`recorded ${suspects.length} verified suspects → ${path.relative(ROOT, VERIFIED_PATH)}`);

@@ -1442,7 +1442,7 @@ function safeWriteReview(filePath, newData, options = {}) {
       const humanDecided = onDiskForArticle && (onDiskForArticle._locked === true || _wrongShowCleared(onDiskForArticle) || _freshWrongShowAutoClear(onDiskForArticle));
       if (show && textArriving && !humanDecided) {
         const verdict = require('./wrong-article-screen').screenWrongArticle(newData.fullText, show);
-        if (verdict.applicable && verdict.suspect && verdict.titleMentions === 0) {
+        if (verdict.applicable && !verdict.sparseIdentity && verdict.suspect && verdict.titleMentions === 0) {
           newData = {
             ...newData,
             wrongShow: true,

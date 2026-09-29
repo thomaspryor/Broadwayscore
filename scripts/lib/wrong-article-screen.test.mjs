@@ -79,3 +79,23 @@ test('write guard: a human wrongShow clear is respected', () => {
   });
   assert.notStrictEqual(out.wrongShow, true);
 });
+
+test('screen: sparse metadata (no cast/creative/venue) is flagged sparseIdentity; write guard fails open', () => {
+  const sparse = { id: 'zz-bro4383-sparse-2025', title: 'Six' };
+  const r = screenWrongArticle(WRONG, sparse);
+  assert.strictEqual(r.sparseIdentity, true);
+  guard._setShowsCacheForTest(new Map([[sparse.id, sparse]]));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4383s-'));
+  const dir = path.join(root, sparse.id);
+  fs.mkdirSync(dir, { recursive: true });
+  const file = path.join(dir, 'nyt-theater--unknown.json');
+  guard.safeWriteReview(file, { showId: sparse.id, outletId: 'nyt-theater', criticName: 'Unknown', url: 'https://example.com/s', fullText: WRONG }, { force: false });
+  assert.notStrictEqual(JSON.parse(fs.readFileSync(file, 'utf8')).wrongShow, true);
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('screen: 3-char titles are counted as mentions', () => {
+  const six = { id: 'x', title: 'Six', cast: [{ name: 'Someone Else' }] };
+  const txt = `Six is a pop-concert history lesson. ${filler(20)} Six ends with a bang. ${filler(20)}`;
+  assert.ok(screenWrongArticle(txt, six).titleMentions >= 2);
+});
