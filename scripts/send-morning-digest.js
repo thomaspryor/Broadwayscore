@@ -404,6 +404,7 @@ function autofixShouldDryRun({ dryRun = false, syncRefused = null, ownTag = DIGE
 // automation's own machinery (CI, dispatch, cmux ...) the owner can neither
 // see nor act on; those counts now live in the email's Technical details.
 const SUBJECT_NAME_MAX = 42;
+const SUBJECT_LIMIT = 120; // digest-content-invariants.js: subject must be < 120 chars
 function buildSubject({ health = null, autofixRows = null, awaitingOwner = null, needsYou = null, inReviewBacklog = null, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric',
@@ -432,7 +433,29 @@ function buildSubject({ health = null, autofixRows = null, awaitingOwner = null,
   const stale = view.staleApprovals
     ? ` · ⚠️ ${view.staleApprovals} approval${view.staleApprovals === 1 ? '' : 's'} waiting 48h+`
     : '';
-  return `Morning digest — ${dateLabel}${stale} · ${site} · ${ask}`;
+  // BRO-4141: digest-content-invariants requires < SUBJECT_LIMIT chars; a
+  // stale-approval prefix + long visitor-problem name + big decision count
+  // reached 128 and the invariant failed daily. Try progressively terser
+  // wordings of the least actionable parts; never drop the date or the ask.
+  const compose = (st, si) => `Morning digest — ${dateLabel}${st} · ${si} · ${ask}`;
+  let subject = compose(stale, site);
+  if (subject.length >= SUBJECT_LIMIT && view.siteState === 'affected') {
+    const names = visitorProblemNames(view);
+    const first = names[0] || 'site problem';
+    const more = names.length > 1 ? ` (+${names.length - 1} more)` : '';
+    const shown = Math.min(first.length, SUBJECT_NAME_MAX); // what the first pass rendered
+    const room = shown - (subject.length - (SUBJECT_LIMIT - 1));
+    if (room >= 8) subject = compose(stale, `⚠️ visitors affected: ${first.slice(0, room - 1).trimEnd()}…${more}`);
+  }
+  const terseSite = view.siteState === 'affected'
+    ? `⚠️ visitors affected (${Math.max(1, visitorProblemNames(view).length)})`
+    : view.siteState === 'minor' ? 'site mostly OK' : site;
+  const terseStale = view.staleApprovals ? ` · ⚠️ ${view.staleApprovals} waiting 48h+` : '';
+  for (const [st, si] of [[stale, terseSite], [terseStale, terseSite]]) {
+    if (subject.length < SUBJECT_LIMIT) break;
+    subject = compose(st, si);
+  }
+  return subject;
 }
 
 // Sections render via the SAME exported block renderers the old email used —

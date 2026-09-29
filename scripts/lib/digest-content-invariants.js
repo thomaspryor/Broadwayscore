@@ -106,7 +106,12 @@ function assertDigestInvariants(html, { health = null, subject, verifySecret } =
     violations.push(`Digest v3 renders NO Fix-this buttons (auto-dispatch replaced them) — found ${fixCount}`);
   }
   for (const h of FORBIDDEN_HEADINGS) {
-    if (html.includes(h)) violations.push(`forbidden section "${h}" rendered — deleted by the 2026-08-02 owner mandate`);
+    // Match the heading as rendered (text opening an element, followed by
+    // ":" or the tag end — renderNamedDigestBlock writes "Label: banner"), not
+    // any occurrence: a Linear card titled "Backlog drain R0-R6: ..." listed
+    // in the digest tripped this on every run from 2026-09-24 (BRO-4141).
+    const esc = h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    if (new RegExp(`>[^<A-Za-z0-9]{0,8}${esc}\\s*(?::|<)`).test(html)) violations.push(`forbidden section "${h}" rendered — deleted by the 2026-08-02 owner mandate`);
   }
   // Owner mandate 2026-08-02: a "Needs your attention" section with zero
   // clickable action links is a prose-only ask — banned. (view links or
