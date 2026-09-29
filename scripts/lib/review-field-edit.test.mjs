@@ -62,3 +62,17 @@ test('resolveReviewPath keeps paths inside review-texts', () => {
     assert.equal(resolveReviewPath(root, bad), null, String(bad));
   }
 });
+
+// Ship-check finding: the write guard can add side effects (auto-flag
+// wrongProduction on a date edit, duplicateOf on a URL collision). Those must
+// fail the action instead of reporting success.
+test('unexpectedChanges: ignores the edited field and the stamp, reports anything else', () => {
+  const { unexpectedChanges } = require('./review-field-edit.js');
+  const before = { criticName: 'A', publishDate: '2024-01-01', wrongProduction: undefined };
+  assert.deepEqual(unexpectedChanges(before, { ...before, publishDate: '2024-02-01', approvedFixes: [{}] }, 'publishDate'), []);
+  assert.deepEqual(
+    unexpectedChanges(before, { ...before, publishDate: '2024-02-01', wrongProduction: true, duplicateOf: 'x.json' }, 'publishDate'),
+    ['duplicateOf', 'wrongProduction'],
+  );
+  assert.deepEqual(unexpectedChanges({ a: null }, {}, 'b'), [], 'null and missing are the same');
+});

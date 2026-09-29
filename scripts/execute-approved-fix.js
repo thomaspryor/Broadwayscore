@@ -40,7 +40,7 @@ const audienceBuzzWriteGuard = require('./lib/audience-buzz-write-guard.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { applyAddShow } = require('./lib/add-show-action.js');
-const { applyReviewFieldEdit, resolveReviewPath } = require('./lib/review-field-edit.js');
+const { applyReviewFieldEdit, resolveReviewPath, unexpectedChanges } = require('./lib/review-field-edit.js');
 const { safeWriteReview } = require('./lib/review-write-guard.js');
 
 const __filename = fileURLToPath(import.meta.url);
@@ -308,6 +308,10 @@ function executeReviewFieldEdit(action, stamp) {
   if (JSON.stringify(got) !== JSON.stringify(action.newValue)) {
     return { ok: false, reason: `${action.file} ${action.field}: write guard kept ${JSON.stringify(got)}` };
   }
+  const extra = unexpectedChanges(record, after, action.field);
+  if (extra.length) {
+    return { ok: false, reason: `${action.file} ${action.field} applied, but the write guard also changed ${extra.join(', ')}; check the record before trusting it` };
+  }
   return { ok: true, msg: `${action.file} ${res.msg}` };
 }
 
@@ -403,6 +407,9 @@ async function main() {
     output('result', 'error');
     return;
   }
+
+  // Session-authored plans (BRO-4216) may omit submitter; step 7 reads it.
+  if (!planData.submitter || typeof planData.submitter !== 'object') planData.submitter = { name: null, email: null };
 
   // 2. Check status
   if (planData.status !== 'pending') {
