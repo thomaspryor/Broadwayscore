@@ -77,6 +77,13 @@ const { classifyMarketRouting, buildSiblingIndex, tourDecision } = require('./li
 const { isNationalTourRoundupSlug } = require('./lib/tour-roundup-candidate');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
+// 1 Minute Critic direct-discovery. Mirrors opening-night-poller.js Layer 2b:
+// omc-discovery covers OMC on a per-show RSS + date-window matcher, and was
+// wired into the poller in BRO-4322 — but this manual/backfill path had no
+// OMC coverage until now, so a `gather-reviews.js --show=…` re-ingest for
+// The Maids or Heated Rivalry would still miss 1MC despite the poller now
+// catching it on the cron. US markets only (omc-discovery is region=us).
+const { discoverNewReviews: discoverOMCReviews, OUTLET_NAME: OMC_OUTLET_NAME } = require('./lib/omc-discovery');
 const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { shouldTriggerRebuild } = require('./lib/gather-reviews-rebuild-trigger');
@@ -5232,6 +5239,38 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       console.log(`  [Site Search Total] ${siteSearchResults.length} review(s) found`);
     } catch (err) {
       console.log(`  Site search error: ${err.message}`);
+    }
+  }
+
+  // STEP 1d: 1 Minute Critic direct RSS (US markets only)
+  // Mirrors opening-night-poller.js Layer 2b. Free, per-show, runs
+  // regardless of --aggregators-only (RSS fetch, not paid SERP). Skips WE
+  // markets because omc-discovery is region=us and its 80% word-overlap
+  // matcher would misattribute a Broadway 1MC review to a shared-title WE
+  // transfer (Cats, Chicago, Fallen Angels).
+  if (isWestEnd) {
+    console.log(`\n[1d/4] SKIPPED 1 Minute Critic RSS (US-only outlet; show is west-end)`);
+  } else {
+    try {
+      const knownUrlsForOmc = new Set(foundReviews.map(r => r.url).filter(Boolean));
+      const omcResults = await discoverOMCReviews(showId, show, undefined, { verbose: true });
+      let added = 0;
+      for (const r of omcResults) {
+        if (!r.url || knownUrlsForOmc.has(r.url)) continue;
+        knownUrlsForOmc.add(r.url);
+        foundReviews.push({
+          showId,
+          outletId: r.outletId,
+          outlet: r.outlet || OMC_OUTLET_NAME,
+          criticName: r.criticName || 'Unknown',
+          url: r.url,
+          source: 'omc-discovery',
+        });
+        added++;
+      }
+      console.log(`\n[1d/4] ${OMC_OUTLET_NAME} RSS: ${added} new review(s)${omcResults.length > added ? ` (${omcResults.length - added} already known)` : ''}`);
+    } catch (err) {
+      console.log(`  OMC error: ${err.message}`);
     }
   }
 

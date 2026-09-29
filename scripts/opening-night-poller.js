@@ -1308,12 +1308,23 @@ async function runRSSFeeds(showTitle, knownUrls, openingDate = null, market = 'b
  * Independent from Layer 2 (rss-discovery.js) — that module's feed list does
  * not include the OMC feed, and adding it there would apply its market-gated
  * broad matcher; OMC needs its own per-show matcher (title + date-window +
- * `-review/`-slug guard). Runs for all markets.
+ * `-review/`-slug guard).
+ *
+ * Market-gated to US markets ONLY. omc-discovery's outlet registry entry
+ * is region=us, and its title matcher is 80% word-overlap — a shared-title
+ * transfer (Cats, Chicago, Fallen Angels have all had trans-Atlantic
+ * productions) would otherwise file a Broadway 1MC review onto the WE show.
+ * The prior abandoned integration had the same guard.
  *
  * @param {string} showId
  * @param {Object} show   Full show object (openingDate/previewsStartDate anchor discovery).
+ * @param {string} market Show's market (broadway | off-broadway | west-end | off-west-end | opera).
  */
-async function runOMC(showId, show) {
+async function runOMC(showId, show, market) {
+  if (market === 'west-end' || market === 'off-west-end') {
+    console.log(`\n[Layer 2b] 1 Minute Critic RSS... SKIPPED (US-only outlet; show is ${market})`);
+    return [];
+  }
   console.log('\n[Layer 2b] 1 Minute Critic RSS...');
   try {
     const results = await discoverOMCReviews(showId, show, undefined, { verbose: VERBOSE });
@@ -1680,7 +1691,7 @@ async function pollCycle() {
     ssrSiteSearchIds.length > 0
       ? runSiteSearch(show.title, ssrSiteSearchIds, knownUrls, market, show.openingDate || null, show)
       : Promise.resolve([]),
-    SKIP_OMC ? Promise.resolve([]) : runOMC(SHOW_ID, show),
+    SKIP_OMC ? Promise.resolve([]) : runOMC(SHOW_ID, show, market),
   ]);
   const aggResults = aggSettled.status === 'fulfilled' ? aggSettled.value : (console.log(`  [Layer 1] ERROR: ${aggSettled.reason?.message}`), []);
   const rssResults = rssSettled.status === 'fulfilled' ? rssSettled.value : (console.log(`  [Layer 2] ERROR: ${rssSettled.reason?.message}`), []);
@@ -1846,16 +1857,18 @@ async function pollCycle() {
       ? (Date.now() - new Date(show.openingDate).getTime()) / 86400000
       : 999;
 
-    // Broadway T3 SERP: ~12 historically high-activity Broadway T3 outlets
+    // Broadway T3 SERP: ~11 historically high-activity Broadway T3 outlets
     // Curated by 2024-26 review count (covers ~85% of T3 volume vs 800+ total).
-    // One Minute Critic added after Proof opening-night miss (2026-04-17).
     // Same 3h SERP gate as T1/T2 — Broadway T3 outlets DO publish opening night.
     // Cost: T3 sorted last, capped by 30/cycle budget. Once found, getFoundOutletIds
     // excludes them next cycle → natural decay.
+    // NOTE: 'one-minute-critic' removed 2026-09-29 — Layer 2b (runOMC) now covers
+    // it via free RSS on every cycle for all US markets, so a paid SERP retry
+    // would duplicate discovery work with no additional coverage.
     if (market === 'broadway') {
       const BROADWAY_T3_SERP_OUTLETS = [
         'theater-scene', 'theater-life', 'culturesauce', 'front-row-center',
-        'pages-on-stages', 'one-minute-critic', 'theatre-reviews-limited',
+        'pages-on-stages', 'theatre-reviews-limited',
         'cititour', 'digital-journal', 'stageandcinema', 'frontmezzjunkies',
         'exeunt-magazine', 'cote-notices',
       ];
