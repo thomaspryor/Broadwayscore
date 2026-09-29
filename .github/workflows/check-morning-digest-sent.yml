@@ -90,5 +90,7 @@ jobs:
           title: 'Check Morning Digest Sent Failed (cannot verify the digest)'
           severity: 'critical'
           email: 'true'
+          # A blind checker for 2 daily runs is worth an email; one blip is not.
+          min_consecutive_failures: '2'
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
