@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   splitStatements, expandLens, toMarkdownTable, renderReport, runStatements,
-  isTransientError, looksSilentlyCapped, MAX_RENDERED_ROWS,
+  isTransientError, looksSilentlyCapped, formatCell, MAX_RENDERED_ROWS,
 } = require('../posthog-adhoc-query.js');
 const { REAL_USERS_WHERE } = require('../lib/posthog-query.js');
 
@@ -43,25 +43,45 @@ test('toMarkdownTable caps rendered rows and says so', () => {
   assert.ok(md.includes(`showing ${MAX_RENDERED_ROWS} of ${MAX_RENDERED_ROWS + 7} rows`));
 });
 
-test('looksSilentlyCapped fires only for GROUP BY without LIMIT returning exactly 100 rows', () => {
-  assert.equal(looksSilentlyCapped('SELECT a, count() FROM events GROUP BY a', 100), true);
-  assert.equal(looksSilentlyCapped('SELECT a, count() FROM events GROUP BY a LIMIT 1000', 100), false);
-  assert.equal(looksSilentlyCapped('SELECT a, count() FROM events GROUP BY a', 99), false);
-  assert.equal(looksSilentlyCapped('SELECT count() FROM events', 100), false);
+test('formatCell keeps small fractions readable, escapes pipes inside JSON, dashes nulls', () => {
+  assert.equal(formatCell(0.0037), '0.00370');
+  assert.equal(formatCell(12.3456), '12.35');
+  assert.equal(formatCell(7), '7');
+  assert.equal(formatCell(['a|b']), '["a\\|b"]');
+  assert.equal(formatCell(null), '—');
+  assert.equal(formatCell('x\ny'), 'x y');
 });
 
-test('renderReport shows each statement, its table, failures, and the cap warning', () => {
+test('looksSilentlyCapped trusts hasMore when present, else exactly-100-rows-without-LIMIT', () => {
+  const rows100 = Array.from({ length: 100 }, (_, i) => [i]);
+  assert.equal(looksSilentlyCapped('SELECT a FROM events', { hasMore: true, results: rows100.slice(0, 5) }), true);
+  assert.equal(looksSilentlyCapped('SELECT a FROM events', { hasMore: false, results: rows100 }), false);
+  assert.equal(looksSilentlyCapped('SELECT a, count() FROM events GROUP BY a', { results: rows100 }), true);
+  assert.equal(looksSilentlyCapped('SELECT event, timestamp FROM events', { results: rows100 }), true);
+  assert.equal(looksSilentlyCapped('SELECT a FROM events GROUP BY a LIMIT 1000', { results: rows100 }), false);
+  assert.equal(looksSilentlyCapped('SELECT a FROM events', { results: rows100.slice(0, 99) }), false);
+});
+
+test('renderReport shows each statement, its table, failures, the cap warning, and survives ``` in a statement', () => {
   const md = renderReport([
-    { statement: 'SELECT a FROM t GROUP BY a', response: { columns: ['a'], results: Array.from({ length: 100 }, (_, i) => [i]) } },
+    { statement: 'SELECT a FROM t GROUP BY a', response: { columns: ['a'], hasMore: true, results: Array.from({ length: 100 }, (_, i) => [i]) } },
     { statement: 'SELECT boom', error: 'PostHog API 400: bad' },
+    { statement: "SELECT '```' AS fence", response: { columns: ['fence'], results: [['```']] } },
   ], { title: 'T' });
   assert.ok(md.startsWith('## T\n'));
   assert.ok(md.includes('### Statement 1'));
   assert.ok(md.includes('```sql\nSELECT a FROM t GROUP BY a\n```'));
   assert.ok(md.includes('100 row(s)'));
-  assert.ok(md.includes('Exactly 100 rows from a GROUP BY with no LIMIT'));
+  assert.ok(md.includes('Result is capped'));
   assert.ok(md.includes('### Statement 2'));
   assert.ok(md.includes('**FAILED:** PostHog API 400: bad'));
+  assert.ok(md.includes("````sql\nSELECT '```' AS fence\n````"));
+});
+
+test('toMarkdownTable does not blow the stack on very large result sets', () => {
+  const results = Array.from({ length: 200000 }, (_, i) => [i, i * 2]);
+  const md = toMarkdownTable({ columns: ['a', 'b'], results });
+  assert.ok(md.includes(`showing ${MAX_RENDERED_ROWS} of 200000 rows`));
 });
 
 test('isTransientError follows the analyze-traffic-sources rule: status first, then timeout text', () => {

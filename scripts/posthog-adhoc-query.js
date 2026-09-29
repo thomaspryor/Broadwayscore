@@ -65,19 +65,37 @@ function splitStatements(text) {
 const MAX_RENDERED_ROWS = 500;
 
 /**
- * PostHog's HogQL API silently caps GROUP BY results at ~100 rows when the
- * statement has no LIMIT (cloud-memory/feedback_posthog_hogql_default_row_limit.md).
- * Exactly 100 rows back from such a statement is the fingerprint.
+ * PostHog's HogQL API silently caps any SELECT without a LIMIT at ~100 rows
+ * (cloud-memory/feedback_posthog_hogql_default_row_limit.md). The response
+ * says so itself (`hasMore: true`), which is the signal used here; the
+ * regex fallback covers an older response shape that lacks the flag.
  */
-function looksSilentlyCapped(statement, rowCount) {
-  return rowCount === 100 && /\bGROUP\s+BY\b/i.test(statement) && !/\bLIMIT\b/i.test(statement);
+function looksSilentlyCapped(statement, response) {
+  if (response && typeof response.hasMore === 'boolean') return response.hasMore === true;
+  const rowCount = Array.isArray(response?.results) ? response.results.length : 0;
+  return rowCount === 100 && !/\bLIMIT\b/i.test(statement);
+}
+
+function escapeCell(text) {
+  return String(text).replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
 }
 
 function formatCell(value) {
   if (value === null || value === undefined) return '—';
-  if (typeof value === 'number') return Number.isInteger(value) ? String(value) : value.toFixed(2);
-  if (typeof value === 'object') return JSON.stringify(value);
-  return String(value).replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
+  if (typeof value === 'number') {
+    if (Number.isInteger(value)) return String(value);
+    // A click-through rate of 0.0037 must not print as 0.00: round only at
+    // magnitude >= 1, keep three significant digits below it.
+    return Math.abs(value) >= 1 ? value.toFixed(2) : value.toPrecision(3);
+  }
+  if (typeof value === 'object') return escapeCell(JSON.stringify(value));
+  return escapeCell(value);
+}
+
+/** Fences the statement so a ``` inside it cannot break out of the block. */
+function fenceSql(statement) {
+  const fence = statement.includes('```') ? '````' : '```';
+  return `${fence}sql\n${statement}\n${fence}\n`;
 }
 
 /**
@@ -88,7 +106,8 @@ function formatCell(value) {
 function toMarkdownTable({ columns, results }) {
   const rows = Array.isArray(results) ? results : [];
   if (rows.length === 0) return '_No rows_\n';
-  const width = Math.max(...rows.map((r) => (Array.isArray(r) ? r.length : 1)));
+  // reduce, not Math.max(...spread): the spread throws RangeError past ~120k rows.
+  const width = rows.reduce((w, r) => Math.max(w, Array.isArray(r) ? r.length : 1), 0);
   const headers = Array.isArray(columns) && columns.length === width
     ? columns.map(String)
     : Array.from({ length: width }, (_, i) => `col${i}`);
@@ -116,14 +135,14 @@ function renderReport(sections, { title = 'PostHog ad-hoc query' } = {}) {
   const parts = [`## ${title}\n`, `_${sections.length} statement(s) · ${new Date().toISOString()}_\n`];
   sections.forEach((section, i) => {
     parts.push(`### Statement ${i + 1}\n`);
-    parts.push('```sql\n' + section.statement + '\n```\n');
+    parts.push(fenceSql(section.statement));
     if (section.error) {
       parts.push(`**FAILED:** ${formatCell(section.error)}\n`);
     } else {
       const n = Array.isArray(section.response?.results) ? section.response.results.length : 0;
       parts.push(`${n} row(s)\n\n${toMarkdownTable(section.response || {})}`);
-      if (looksSilentlyCapped(section.statement, n)) {
-        parts.push('⚠️ **Exactly 100 rows from a GROUP BY with no LIMIT** — HogQL silently caps at ~100. Re-run with an explicit `LIMIT` well above the real row count.\n');
+      if (looksSilentlyCapped(section.statement, section.response)) {
+        parts.push('⚠️ **Result is capped** — PostHog reports more rows than it returned (HogQL silently caps a statement with no LIMIT at ~100). Re-run with an explicit `LIMIT` well above the real row count.\n');
       }
     }
   });
@@ -217,7 +236,7 @@ async function main(argv = process.argv.slice(2)) {
   return 0;
 }
 
-module.exports = { splitStatements, expandLens, toMarkdownTable, renderReport, runStatements, isTransientError, looksSilentlyCapped, MAX_RENDERED_ROWS };
+module.exports = { splitStatements, expandLens, toMarkdownTable, renderReport, runStatements, isTransientError, looksSilentlyCapped, formatCell, MAX_RENDERED_ROWS };
 
 if (require.main === module) {
   main().then((code) => process.exit(code), (err) => {

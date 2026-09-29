@@ -32,6 +32,10 @@ async function phQueryFull(hogql) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ query: { kind: 'HogQLQuery', query: hogql } }),
+    // A hung socket would otherwise run to the calling job's timeout, which
+    // reports `cancelled` and emits nothing; 4 min still outlasts a PostHog
+    // 504 (~5 min is the observed worst case, and callers retry on timeout).
+    signal: AbortSignal.timeout(240000),
   });
   // Body sliced: a 504 comes back as a full HTML page, which would otherwise
   // land verbatim in a table cell or a log line.
