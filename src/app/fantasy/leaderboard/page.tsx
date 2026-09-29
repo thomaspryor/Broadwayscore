@@ -30,7 +30,9 @@ export default function FantasyLeaderboardPage() {
           </a>
           <h1 className="text-2xl sm:text-3xl font-bold mt-2">Leaderboard</h1>
           <p className="text-gray-400 mt-1">
-            {seasonInfo.season} Season &middot; Scores through week of {seasonInfo.latestGrossesWeek || 'N/A'}
+            {seasonInfo.season} Season &middot; Scores through the week ending {seasonInfo.latestGrossesWeek
+              ? new Date(`${seasonInfo.latestGrossesWeek}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
+              : 'N/A'}
           </p>
         </div>
 

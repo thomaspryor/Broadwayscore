@@ -261,6 +261,11 @@ export function nyDate(iso: string): string {
   }).format(new Date(iso));
 }
 
+/** The draft deadline as a New York calendar date (the deadline is 11:59pm ET). */
+export function draftDeadlineDate(): string {
+  return nyDate(DRAFT_DEADLINE);
+}
+
 /**
  * The date an entry starts earning box office points. Early-bird entries
  * (drafted on or before EARLY_BIRD_CUTOFF) score from SCORING_START so the

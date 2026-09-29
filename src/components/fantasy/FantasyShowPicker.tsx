@@ -74,19 +74,21 @@ export default function FantasyShowPicker({
               <span className="text-[10px] bg-gray-500/20 text-gray-400 px-1.5 py-0.5 rounded">Closed</span>
             )}
           </div>
-          <div className="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
-            <span>{showFormatTitle(selectedShow.type)}</span>
-            {selectedShow.criticScore != null && (
-              <span className="text-yellow-400">
-                {!selectedShow.eligible.criticScore && `${ELIGIBILITY_MARKERS.criticScoreLocked} `}
-                Score: {Math.round(selectedShow.criticScore)}
+          <div className="flex items-center gap-x-2 gap-y-0.5 flex-wrap text-xs text-gray-400 mt-0.5">
+            <span className="whitespace-nowrap">{showFormatTitle(selectedShow.type)}</span>
+            {!selectedShow.eligible.criticScore ? (
+              <span className="text-yellow-400 whitespace-nowrap" title="Already open: box office and awards points only">
+                {ELIGIBILITY_MARKERS.criticScoreLocked} Already open
               </span>
-            )}
-            {selectedShow.audienceGrade != null && (
-              <span className="text-yellow-400">
-                {!selectedShow.eligible.audienceGrade && `${ELIGIBILITY_MARKERS.criticScoreLocked} `}
-                Grade: {selectedShow.audienceGrade}
-              </span>
+            ) : (
+              <>
+                {selectedShow.criticScore != null && (
+                  <span className="text-yellow-400 whitespace-nowrap">Score: {Math.round(selectedShow.criticScore)}</span>
+                )}
+                {selectedShow.audienceGrade != null && (
+                  <span className="text-yellow-400 whitespace-nowrap">Grade: {selectedShow.audienceGrade}</span>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -181,22 +183,27 @@ export default function FantasyShowPicker({
                         <span className="text-[10px] bg-gray-500/20 text-gray-400 px-1.5 py-0.5 rounded shrink-0">Closed</span>
                       )}
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
-                      <span>{showFormatTitle(show.type)}</span>
-                      {show.criticScore != null && (
-                        <span className="text-yellow-400">
-                          {!show.eligible.criticScore && `${ELIGIBILITY_MARKERS.criticScoreLocked} `}
-                          Score: {Math.round(show.criticScore)}
+                    <div className="flex items-center gap-x-2 gap-y-0.5 flex-wrap text-xs text-gray-400 mt-0.5">
+                      <span className="whitespace-nowrap">{showFormatTitle(show.type)}</span>
+                      {!show.eligible.criticScore ? (
+                        <span className="text-yellow-400 whitespace-nowrap" title="Already open: box office and awards points only">
+                          {ELIGIBILITY_MARKERS.criticScoreLocked} Already open{show.criticScore != null ? ` · Score ${Math.round(show.criticScore)}` : ''}
                         </span>
-                      )}
-                      {show.audienceGrade != null && (
-                        <span className="text-yellow-400">
-                          {!show.eligible.audienceGrade && `${ELIGIBILITY_MARKERS.criticScoreLocked} `}
-                          Grade: {show.audienceGrade}
-                        </span>
+                      ) : (
+                        <>
+                          {show.criticScore != null && (
+                            <span className="text-yellow-400 whitespace-nowrap">Score: {Math.round(show.criticScore)}</span>
+                          )}
+                          {show.audienceGrade != null && (
+                            <span className="text-yellow-400 whitespace-nowrap">Grade: {show.audienceGrade}</span>
+                          )}
+                          {show.openingDate && (
+                            <span className="text-gray-500 whitespace-nowrap">opens {new Date(`${show.openingDate}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}</span>
+                          )}
+                        </>
                       )}
                       {!show.eligible.boxOffice && (
-                        <span className="text-gray-500">† no box office</span>
+                        <span className="text-gray-500 whitespace-nowrap">† no box office</span>
                       )}
                     </div>
                   </div>
