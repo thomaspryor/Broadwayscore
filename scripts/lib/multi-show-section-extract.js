@@ -11,12 +11,14 @@
  * anchors on "Photo:"/"Credit:" captions and needs the full shows list.
  */
 
+const { foldDiacritics } = require('./title-match');
+
 const LABEL = '(?:Theat(?:er|re)|Off[- ]Off[- ]Broadway|Off[- ]Broadway|Broadway|Musical|Play|Opera|Dance|Cabaret|Concert|Film|Comedy)';
 // photographer runs straight into the label with no space: "(c) Rachel Louise BrownTheater: "
 const HEADING_RE = new RegExp(`\\(c\\)\\s(?:(?!\\(c\\))[^:\\n]){1,80}?(${LABEL}):\\s+`, 'g');
 
 function norm(s) {
-  return String(s || '').toLowerCase().replace(/[‘’']/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+  return foldDiacritics(String(s || '')).toLowerCase().replace(/[‘’']/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
 /** Every "<Title> (c) ...Label: <Title>" heading: [{ start, title }] in text order. */

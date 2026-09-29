@@ -69,3 +69,9 @@ test('classifyContentTier: complete review + venue address trailer is not trunca
     assert.equal(r.contentTier, 'complete', trailer);
   }
 });
+
+test('accented show titles match whole, not shredded at the accent', () => {
+  const t = 'Les Misérables (c) A BTheater: Les Misérables Body one text here. Pen Pals (c) C DTheater: Pen Pals Body two.';
+  const r = extractShowSection(t, 'Les Miserables');
+  assert.ok(r && /Body one/.test(r.text) && !/Body two/.test(r.text));
+});
