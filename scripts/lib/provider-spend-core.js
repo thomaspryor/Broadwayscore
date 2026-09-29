@@ -275,7 +275,7 @@ function renderSnapshot({
  * into one row per (provider, workflow, script, fn) with call count + summed
  * credits (S0-T6).
  *
- * WHY THIS EXISTS: the raw ledger rotates at MAX_LEDGER_LINES (45K, ~3 days) — under a
+ * WHY THIS EXISTS: the raw ledger rotates at MAX_LEDGER_LINES (45K, ~2-3 days) — under a
  * day at unthrottled Scrapingdog volume — so a 7-day attribution window
  * cannot be built by re-reading the raw ledger; it has already rotated past
  * yesterday by the time today's reconciliation runs. This produces the
