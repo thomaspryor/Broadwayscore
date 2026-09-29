@@ -706,5 +706,34 @@
       }
     ],
     "queuedAt": "2026-09-29T04:36:51.994Z"
+  },
+  {
+    "conditionKey": "land:land/audit-owe-staging-merge-2",
+    "title": "Landing blocked: scripts-lib-tests red on land/audit-owe-staging-merge-2",
+    "description": "land.yml did not land land/audit-owe-staging-merge-2: the scripts-lib-tests gate went red at ac5a4cf454. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36522649676",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/audit-owe-staging-merge-2"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "ac5a4cf454fe380dc1d049d7b6edd137b2b37e03"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36522649676"
+      }
+    ],
+    "queuedAt": "2026-09-29T05:08:46.626Z"
   }
 ]
