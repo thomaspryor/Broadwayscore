@@ -191,6 +191,16 @@ function executeDataEdit(action) {
     if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
       return { ok: false, reason: `${field}: current value doesn't match expected (data changed since plan was created)` };
     }
+    if (field === 'images') {
+      const { crossShowImageProblems } = require('./lib/cross-show-images.js');
+      if (!newValue || typeof newValue !== 'object' || Array.isArray(newValue)) {
+        return { ok: false, reason: 'images: newValue must be an object' };
+      }
+      const cross = crossShowImageProblems({ id: showId, images: newValue }, shows);
+      if (cross.length) {
+        return { ok: false, reason: `images: ${cross.map(c => `${c.key} -> ${c.owner}`).join(', ')} is another show's art (BRO-4380)` };
+      }
+    }
 
     shows[idx][field] = newValue;
     // `shows` was mutated in place and (for the object-root shape) IS

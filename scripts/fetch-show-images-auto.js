@@ -39,6 +39,7 @@ const { pruneEmptyShowImageDir, snapshotShowImageDir, runFetchWithCleanup } = re
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { findNewerSameTitleProduction } = require('./lib/canon-poster-art');
 const { buildRetryCandidateImages } = require('./lib/google-image-retry-candidate.js');
+const { pickOwnProductionPhotoFallback, stripCrossShowImages } = require('./lib/cross-show-images');
 const scraper = require('./lib/scraper');
 const { fetchPage, checkScrapingBeeCredits } = scraper;
 
@@ -1908,6 +1909,17 @@ function scoreCandidate(verifyResult, url) {
 // Verify images from a non-trusted tier.
 // Returns { images, verifyResult, url, tierName, score } for candidate collection,
 // or null if rejected.
+// Local /images/shows/ files an images object points at -> { absPath: Buffer }.
+function snapshotLocalImageFiles(images) {
+  const out = {};
+  for (const p of Object.values(images || {})) {
+    if (typeof p !== 'string' || !p.startsWith('/images/shows/')) continue;
+    const abs = path.join(__dirname, '..', 'public', p);
+    try { out[abs] = fs.readFileSync(abs); } catch { /* not written yet */ }
+  }
+  return out;
+}
+
 async function verifyAndCollect(images, show, tierName, verifyCtx) {
   if (!verifyCtx) {
     delete images._verifyBuffer;
@@ -1958,7 +1970,12 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
     console.log(`   ⚠ DEFERRED (production photo): ${result.description} — will use as fallback if no poster art`);
     verifyCtx.productionPhotos = (verifyCtx.productionPhotos || 0) + 1;
     verifyCtx.productionPhotoFallbacks = verifyCtx.productionPhotoFallbacks || [];
-    verifyCtx.productionPhotoFallbacks.push({ images, verifyResult: result, url: urlToVerify, tierName, score: -5, bufSize });
+    // showId: the list is run-wide (verifyCtx is shared by every show), so the
+    // last-resort step must only ever take this show's own entry (BRO-4380).
+    // files: the bytes its local paths hold NOW. Later Google candidates for this
+    // show rewrite the same thumbnail.jpg, so without this snapshot the fallback
+    // path ends up serving whatever rejected candidate was written last.
+    verifyCtx.productionPhotoFallbacks.push({ showId: show.id, images, files: snapshotLocalImageFiles(images), verifyResult: result, url: urlToVerify, tierName, score: -5, bufSize });
     return null;  // Don't add to main candidates yet
   }
 
@@ -2300,10 +2317,15 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   if (!existingThumb                                      // GUARD 1: Don't overwrite existing images
       && !isPinned                                         // GUARD 2: Never override pinned images
       && verifyCtx?.productionPhotoFallbacks?.length > 0) {
-    const best = verifyCtx.productionPhotoFallbacks[0];
-    if (best.bufSize > 5000) {                             // GUARD 3: Quality floor (>5KB)
+    // BRO-4380: [0] used to be whichever show deferred a photo first in the run,
+    // so later shows got that show's /images/shows/<other-id>/ paths.
+    const best = pickOwnProductionPhotoFallback(verifyCtx.productionPhotoFallbacks, show.id);
+    if (!best) {
+      console.log('   ✗ No production photo of this show to fall back on');
+    } else if (best.bufSize > 5000) {                             // GUARD 3: Quality floor (>5KB)
       console.log(`   ⚠ LAST RESORT: Using production photo — no poster art available (${(best.bufSize/1024).toFixed(0)} KB)`);
       verifyCtx.lastResort = (verifyCtx.lastResort || 0) + 1;
+      for (const [abs, bytes] of Object.entries(best.files || {})) fs.writeFileSync(abs, bytes);
       return best.images;
     } else {
       console.log(`   ✗ Production photo too small/no buffer (${best.bufSize} bytes), skipping`);
@@ -2488,6 +2510,9 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
   return results;
 }
 
+// Every show in the run, for applyImages' cross-show path guard (lineage links).
+let allShowsForImageGuard = [];
+
 // Apply fetched images to a show object, preserving existing local images
 // when the new fetch doesn't provide a replacement.
 function applyImages(show, images) {
@@ -2517,7 +2542,14 @@ function applyImages(show, images) {
     if (key.startsWith('_')) delete images[key];
   }
 
-  show.images = images;
+  // BRO-4380 backstop: never persist a path under another show's image dir
+  // unless the two are linked productions (or allowlisted). Also a fresh object,
+  // so no two shows ever share one images object by reference.
+  const { images: safe, dropped } = stripCrossShowImages(show.id, { ...images }, allShowsForImageGuard);
+  for (const d of dropped) {
+    console.log(`   ✗ Refusing ${d.key} for ${show.id}: ${d.path} belongs to ${d.owner}`);
+  }
+  show.images = safe;
 }
 
 // Generate a phone-friendly HTML comparison page for dry-run results
@@ -2649,6 +2681,7 @@ async function main() {
   console.log('='.repeat(60));
 
   const showsData = loadShows();
+  allShowsForImageGuard = showsData.shows;
   allShowsData = showsData;
 
   // ============================================================
