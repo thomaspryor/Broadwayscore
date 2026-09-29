@@ -17,7 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { PAGES_API, slugKey, titleKeys, runningTourCandidate, dedupeCandidates } = require('./lib/tour-discovery');
+const { PAGES_API, slugKeys, titleKeys, runningTourCandidate, dedupeCandidates } = require('./lib/tour-discovery');
 const { recordTourCandidates } = require('./lib/tour-roundup-candidate');
 
 const ROOT = path.join(__dirname, '..');
@@ -56,7 +56,7 @@ async function discoverRunningTours({ shows, budget = null, log = console.log })
   // Only pages whose title is a Broadway show are worth a fetch.
   const broadwayKeys = new Set();
   for (const s of shows) if ((s.category || 'broadway') === 'broadway') for (const k of titleKeys(s.title)) broadwayKeys.add(k);
-  const worth = slugs.filter(slug => broadwayKeys.has(slugKey(slug)));
+  const worth = slugs.filter(slug => slugKeys(slug).some(k => broadwayKeys.has(k)));
   log(`Tours To You: ${slugs.length} show pages, ${worth.length} with a Broadway title`);
   if (slugs.length < 100) throw new Error(`only ${slugs.length} show pages listed; the pages API may have changed`);
 

@@ -76,9 +76,14 @@ async function fetchWikiText(title) {
 }
 
 /** Plain GET. Tours To You is a public WordPress site with no bot wall. */
-function fetchText(url) {
+function fetchText(url, redirects = 3) {
   return new Promise((resolve, reject) => {
     https.get(url, { headers: { 'User-Agent': USER_AGENT }, timeout: 20000 }, (res) => {
+      // A renamed show page answers 301 (tourstoyou.org/shows/six/).
+      if ([301, 302, 307, 308].includes(res.statusCode) && res.headers.location && redirects > 0) {
+        res.resume();
+        return resolve(fetchText(new URL(res.headers.location, url).toString(), redirects - 1));
+      }
       if (res.statusCode !== 200) { res.resume(); return reject(new Error(`HTTP ${res.statusCode}`)); }
       let body = '';
       res.on('data', (c) => { body += c; });

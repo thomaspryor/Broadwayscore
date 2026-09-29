@@ -48,6 +48,8 @@ async function main() {
     // edit) before the owner is asked.
     const found = c.source === 'tourstoyou';
     if (found && Date.now() - Date.parse(c.firstSeen || 0) < 14 * 86400000) continue;
+    // Not launched yet: create-tour-entries.js decides it once it has.
+    if (found && c.segmentStart && c.segmentStart > new Date().toISOString().slice(0, 10)) continue;
     console.log(`${dryRun ? '[dry-run] would suggest' : 'suggesting'}: ${c.title} (${c.broadwayShowId}) ← ${c.url}`);
     if (dryRun) continue;
     try {

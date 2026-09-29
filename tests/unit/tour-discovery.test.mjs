@@ -133,3 +133,61 @@ test('a discovered row stays open until its show has a running tour', () => {
   const tour = { id: 'hells-kitchen-tour-2025', category: 'tour', tourOf: parent.id, status: 'open' };
   assert.equal(openTourCandidates([row1], [parent, tour]).length, 0);
 });
+
+test('ship-check: the whole title wins over a subtitle head; a numbered title is tried whole', () => {
+  const shows = [
+    { id: 'cats-1982', title: 'Cats', category: 'broadway', openingDate: '1982-10-07' },
+    { id: 'cats-the-jellicle-ball-2026', title: 'CATS: The Jellicle Ball', category: 'broadway', openingDate: '2026-04-01' },
+    { id: '9-to-5-2009', title: '9 to 5', category: 'broadway', openingDate: '2009-04-30' },
+  ];
+  assert.equal(parentForSlug('cats', shows, '2026-10-01').id, 'cats-1982');
+  assert.equal(parentForSlug('9-to-5-the-musical', shows, '2026-10-01').id, '9-to-5-2009');
+});
+
+test('ship-check: a segment an existing tour covers is not recorded again; an ended one is not running', () => {
+  const shows = [
+    { id: 'hells-kitchen-2024', title: "Hell's Kitchen", category: 'broadway', openingDate: '2024-04-20' },
+    { id: 'hells-kitchen-tour-2025', title: "Hell's Kitchen", category: 'tour', tourOf: 'hells-kitchen-2024', openingDate: '2025-10-10', closingDate: null },
+  ];
+  const html = page([
+    row('Cleveland, OH', 'Playhouse Square', 'October 10-26, 2025'),
+    row('Chicago, IL', 'Nederlander', 'March 3-22, 2026'),
+    row('Denver, CO', 'Buell', 'August 4-16, 2026'),
+    row('Detroit, MI', 'Fisher', 'September 20-October 30, 2026'),
+  ]);
+  assert.equal(runningTourCandidate({ slug: 'hells-kitchen', scheduleUrl: 'u', html, shows, now: NOW }).skip, 'already tracked as hells-kitchen-tour-2025');
+  const ended = page([row('Cleveland, OH', 'Playhouse Square', 'August 1-10, 2026'), row('Detroit, MI', 'Fisher', 'September 1-20, 2026')]);
+  assert.equal(runningTourCandidate({ slug: 'hells-kitchen', scheduleUrl: 'u', html: ended, shows: shows.slice(0, 1), now: NOW }).skip, 'no tour running now');
+});
+
+test('ship-check: another country\'s tour is never launch evidence; a UK sentence nearby does not block', () => {
+  const seg = segmentTourRows(parseTourSchedule(page([
+    row('Birmingham, AL', 'BJCC', 'March 10-15, 2026'),
+    row('Atlanta, GA', 'Fox', 'March 17-29, 2026'),
+  ])))[0];
+  assert.equal(segmentLaunch(seg, 'The UK tour began in March 2026 in Birmingham.'), null);
+  assert.equal(segmentLaunch(seg, 'The Australian tour opened on March 14, 2026.'), null);
+  const both = 'The UK tour began in Leeds in 2025. The North American tour began on March 10, 2026 in Birmingham, Alabama.';
+  assert.equal(segmentLaunch(seg, both).toISOString().slice(0, 10), '2026-03-10');
+});
+
+test('ship-check: opening night counts only in the first week of the first engagement', () => {
+  const seg = segmentTourRows(parseTourSchedule(page([
+    row('Toronto, ON', 'Ed Mirvish', 'March 1-June 30, 2026'),
+    row('Boston, MA', 'Emerson', 'July 7-19, 2026'),
+  ])))[0];
+  assert.equal(segmentLaunch(seg, 'The tour opened on May 14, 2026.'), null);
+  assert.equal(segmentLaunch(seg, 'The tour opened on March 5, 2026 in Toronto.').toISOString().slice(0, 10), '2026-03-01');
+});
+
+test('ship-check: an ambiguous row clears when the tour is no longer ambiguous', async () => {
+  const fs = require('node:fs'); const os = require('node:os'); const path = require('node:path');
+  const { recordTourCandidates } = require('../../scripts/lib/tour-roundup-candidate.js');
+  const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'tourcand-')), 'c.json');
+  const base = { broadwayShowId: 'six-2021', title: 'SIX', source: 'tourstoyou', slug: 'tourstoyou:six-the-musical:2022-03-29', segmentStart: '2022-03-29' };
+  recordTourCandidates(file, [{ ...base, ambiguous: 'six-2021: two' }], '2026-09-01T00:00:00Z');
+  recordTourCandidates(file, [base], '2026-09-02T00:00:00Z');
+  const [row1] = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.equal(row1.ambiguous, undefined);
+  assert.equal(row1.firstSeen, '2026-09-01T00:00:00Z', 'same slug keeps firstSeen');
+});

@@ -206,12 +206,32 @@ function segmentLaunch(seg, wikiText) {
   return row ? row.start : null;
 }
 
+// Tour text about another country's production is never evidence for a
+// North American launch ("the Australian tour opened ... 14 March 2026").
+const FOREIGN_PRODUCTION = /\b(uk|united kingdom|british|west end|england|scotland|ireland|irish|australia|australian|new zealand|germany|german|japan|japanese|korea|korean|china|chinese|europe|european|international)\b/i;
+
 /** Windows of wikitext around each mention of a tour, where launch facts sit. */
 function tourWindows(wikiText, radius = 300) {
   const t = String(wikiText || '');
   const out = [];
   for (const m of t.matchAll(/\btour(s|ing|ed)?\b/gi)) out.push(t.slice(Math.max(0, m.index - radius), m.index + radius));
   return out;
+}
+
+/**
+ * Sentences near a mention of a tour that could state a North American
+ * launch: they name a launch word and no other country's production. The
+ * launch fact (date, or city and month) must sit in one such sentence, so a
+ * UK tour sentence next door neither confirms nor blocks it.
+ */
+function launchSentences(wikiText) {
+  const out = new Set();
+  for (const w of tourWindows(wikiText, 250)) {
+    for (const s of w.split(/(?<=[.!?])\s+|\n+/)) {
+      if (LAUNCH_WORD.test(s) && !FOREIGN_PRODUCTION.test(s)) out.add(s);
+    }
+  }
+  return [...out];
 }
 
 const LAUNCH_WORD = /\b(launch|premier|began|begin|start|kick(ed|s)? off|open(ed|s)? (in|at|on))/i;
@@ -223,13 +243,18 @@ const LAUNCH_WORD = /\b(launch|premier|began|begin|start|kick(ed|s)? off|open(ed
  */
 function wikiNamesLaunch(prose, d) {
   const forms = wikiForms(d);
-  return tourWindows(prose, 250).some(w => LAUNCH_WORD.test(w) && forms.some(f => w.includes(f)));
+  return launchSentences(prose).some(s => forms.some(f => s.includes(f)));
 }
 
-/** A date inside the engagement (not its first day) named in tour text. */
+/**
+ * Opening night in the first week of the engagement (previews first), named
+ * in tour text. A week, not the whole engagement: a months-long sit-down
+ * would otherwise take any date in its run.
+ */
 function wikiNamesOpeningInside(wikiText, row) {
-  const windows = tourWindows(wikiText, 250).filter(w => LAUNCH_WORD.test(w));
-  for (let t = row.start.getTime() + DAY; t <= row.end.getTime(); t += DAY) {
+  const windows = launchSentences(wikiText);
+  const last = Math.min(row.end.getTime(), row.start.getTime() + 7 * DAY);
+  for (let t = row.start.getTime() + DAY; t <= last; t += DAY) {
     const forms = wikiForms(new Date(t));
     if (windows.some(w => forms.some(f => w.includes(f)))) return true;
   }
@@ -254,7 +279,7 @@ function wikiNamesLaunchCity(wikiText, row) {
   const month = MONTHS[mi];
   const seasons = Object.keys(SEASONS).filter(k => SEASONS[k].includes(mi)).join('|');
   const whenRe = new RegExp(`\\b(${month}(\\s+\\d{1,2},)?\\s+${y}|(${seasons})\\s+(of\\s+)?${y})\\b`, 'i');
-  return tourWindows(wikiText, 250).some(w => cityRe.test(w) && whenRe.test(w) && LAUNCH_WORD.test(w));
+  return launchSentences(wikiText).some(s => cityRe.test(s) && whenRe.test(s));
 }
 
 /**
@@ -294,12 +319,13 @@ function pickSegment(segments, tour, wikiText, { seenAt, segmentStart } = {}) {
 
 /**
  * The one tour segment running at now (from 30 days before its first
- * engagement to 30 days after its last), or null. Two running at once
- * (Hamilton's companies share a page) is ambiguous and returns null.
+ * engagement to its last), or null. A tour that has ended is not running:
+ * created from here it would be marked open (BRO-4331 covers closed tours).
+ * Two running at once (Hamilton's companies share a page) returns null.
  */
 function currentSegment(segments, now = new Date()) {
   const t = now.getTime();
-  const hit = segments.filter(s => s.rows.length > 1 && s.start.getTime() - 30 * DAY <= t && t <= s.end.getTime() + 30 * DAY);
+  const hit = segments.filter(s => s.rows.length > 1 && s.start.getTime() - 30 * DAY <= t && t <= s.end.getTime() + DAY);
   return hit.length === 1 ? hit[0] : null;
 }
 
