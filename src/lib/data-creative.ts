@@ -5,87 +5,28 @@
 import type { CreativeCategory, CreativeProfile, CreativeShowEntry, UnifiedCreativeProfile, UnifiedCreativeShowEntry } from './data-types';
 import { getBroadwayShows } from './data-core';
 import { slugify } from './data-core';
+import { getCategoriesForRole as getCategoriesForRoleJs } from '../../scripts/lib/creative-roles';
+import { creativeNamesInPageOrder } from '../../scripts/lib/page-name-sources';
+import { assignUniqueSlugs } from '../../scripts/lib/url-slug';
+import { resolveNameRedirect, type SlugRedirectMap } from './slug-redirects';
+// Retired-slug map (prebuild: scripts/build-slug-redirects.js) — getUnifiedCreativeProfile
+// falls back through it, exactly like data-reviews.ts getCriticBySlug()
+import slugRedirectsData from '../../data/slug-redirects-compact.json';
 
 // ============================================
 // Role mapping — which show.creativeTeam roles map to which page category
 // ============================================
 
-const ROLE_TO_CATEGORIES: Record<string, CreativeCategory[]> = {
-  // Director
-  'Director': ['director'],
-  'Directors': ['director'],
-  // Playwright / Book
-  'Playwright': ['playwright'],
-  'Book': ['playwright'],
-  'Written By': ['playwright'],
-  'Writer': ['playwright'],
-  'Book Writer': ['playwright'],
-  // Composer
-  'Music': ['composer'],
-  'Composer': ['composer'],
-  // Lyricist
-  'Lyrics': ['lyricist'],
-  'Lyricist': ['lyricist'],
-  // Combined roles — appear in multiple categories
-  'Music & Lyrics': ['composer', 'lyricist'],
-  'Music & Lyrics (catalog)': ['composer', 'lyricist'],
-  'Book & Lyrics': ['playwright', 'lyricist'],
-  'Lyrics & Book': ['playwright', 'lyricist'],
-  'Book, Music & Lyrics': ['playwright', 'composer', 'lyricist'],
-  'Music, Lyrics & Book': ['playwright', 'composer', 'lyricist'],
-  // Less common variants
-  'Co-Writer': ['playwright'],
-  'English Lyrics': ['lyricist'],
-  'Co-Director': ['director'],
-  'Book Writers': ['playwright'],
-};
-
-// Roles to exclude even if they contain "Director" (checked lowercase — the LLM
-// pipeline emits arbitrary case, see ROLE_TO_CATEGORIES_LOWER below)
-const EXCLUDED_DIRECTOR_ROLES = new Set([
-  'music director', 'music direction', 'artistic director',
-  'associate director', 'resident director',
-]);
-
-// Build a lowercase lookup so case-drift ("Book writer" vs "Book Writer") still maps.
-// Auto-fix-show-data.js writes whatever case the LLM emitted — data already has 37
-// entries with lowercase "Book writer" that the exact-case map silently dropped.
-const ROLE_TO_CATEGORIES_LOWER: Record<string, CreativeCategory[]> = {};
-for (const [k, v] of Object.entries(ROLE_TO_CATEGORIES)) {
-  ROLE_TO_CATEGORIES_LOWER[k.toLowerCase()] = v;
-}
-
+/**
+ * The role table and its compound-role splitting live in
+ * scripts/lib/creative-roles.js (ONE copy, shared with
+ * scripts/build-slug-redirects.js, which must know which creative-team names
+ * become pages — and in what order — to derive the retired-slug redirects;
+ * S7-T3 follow-up). Re-exported here so every site caller keeps importing it
+ * from this module.
+ */
 export function getCategoriesForRole(role: string): CreativeCategory[] {
-  // Direct match first (preserves any case-sensitive lookup callers may rely on)
-  if (ROLE_TO_CATEGORIES[role]) return ROLE_TO_CATEGORIES[role];
-
-  // Case-insensitive match next
-  const lowerMatch = ROLE_TO_CATEGORIES_LOWER[role.toLowerCase()];
-  if (lowerMatch) return lowerMatch;
-
-  const roleLower = role.toLowerCase();
-  if (EXCLUDED_DIRECTOR_ROLES.has(roleLower)) return [];
-
-  // Compound roles: split on comma/ampersand/slash/"and" and map each part.
-  // Handles "Director & Choreographer", "Book, Music, and Lyrics", "Composer/Lyricist",
-  // "Book & Director" — the unmatched parts (Choreographer, Sound Design, …) drop out.
-  // Multi-word parts like "Music Direction" or "Sound Design" stay whole and simply
-  // don't match, so excluded roles can't leak in through splitting.
-  const parts = role.split(/\s*(?:[,&/]|\band\b)\s*/i).map(p => p.trim()).filter(Boolean);
-  if (parts.length > 1) {
-    // Music-context guard: in "Music Supervisor & Director"-style credits the
-    // "Director" part is the music department's, not the show's stage director.
-    const isMusicContext = roleLower.includes('music');
-    const cats = new Set<CreativeCategory>();
-    for (const part of parts) {
-      if (EXCLUDED_DIRECTOR_ROLES.has(part.toLowerCase())) continue;
-      const mapped = ROLE_TO_CATEGORIES_LOWER[part.toLowerCase()];
-      if (mapped) mapped.forEach(c => { if (!(c === 'director' && isMusicContext)) cats.add(c); });
-    }
-    if (cats.size > 0) return Array.from(cats);
-  }
-
-  return [];
+  return getCategoriesForRoleJs(role);
 }
 
 // ============================================
@@ -283,6 +224,17 @@ function buildUnifiedProfiles() {
     }
   }
 
+  // Slugs, with collision numbering, from the ONE shared rule: the names in
+  // page order (scripts/lib/page-name-sources.js creativeNamesInPageOrder —
+  // the same walk as the loop above) through assignUniqueSlugs
+  // (scripts/lib/url-slug.js). scripts/build-slug-redirects.js replays exactly
+  // this over shows.json to derive the retired pre-fold slugs, so "Noël Coward"
+  // (`noel-coward-2`, because "Noel Coward" reached `noel-coward` first) redirects
+  // to the page it actually gets, never to the other person (S7-T3 follow-up).
+  const namesInPageOrder = creativeNamesInPageOrder(allShows);
+  const slugByName = new Map<string, string>();
+  assignUniqueSlugs(namesInPageOrder).forEach((slug, i) => slugByName.set(namesInPageOrder[i], slug));
+
   // Build profiles from accumulated data
   // Use Array.from() — downlevelIteration is disabled
   for (const [name, data] of Array.from(personMap.entries())) {
@@ -313,17 +265,12 @@ function buildUnifiedProfiles() {
       ? Math.min(...scoredShows.map(s => s.score!))
       : null;
 
-    // Slug with collision guard
-    let slug = slugify(name);
-    if (unifiedSlugMap.has(slug)) {
-      // Different person, same slug — append disambiguator
-      const existing = unifiedSlugMap.get(slug)!;
-      if (existing.name !== name) {
-        console.warn(`[data-creative] Slug collision: "${name}" and "${existing.name}" both slugify to "${slug}". Appending disambiguator.`);
-        let counter = 2;
-        while (unifiedSlugMap.has(`${slug}-${counter}`)) counter++;
-        slug = `${slug}-${counter}`;
-      }
+    // Slug with collision guard (assigned above; a numbered slug means a
+    // different person already owns slugify(name))
+    const slug = slugByName.get(name) ?? slugify(name);
+    if (slug !== slugify(name)) {
+      const existing = unifiedSlugMap.get(slugify(name));
+      console.warn(`[data-creative] Slug collision: "${name}" and "${existing?.name ?? '?'}" both slugify to "${slugify(name)}". Appending disambiguator.`);
     }
 
     const profile: UnifiedCreativeProfile = {
@@ -389,9 +336,21 @@ export function getCreativeLink(name: string, _role: string): string | null {
 // Unified profiles — public API
 // ============================================
 
-export function getUnifiedCreativeProfile(slug: string): UnifiedCreativeProfile | undefined {
+const nameRedirectMap: SlugRedirectMap = slugRedirectsData as Record<string, string>;
+
+/**
+ * @param redirects the compact redirect map — tests only; production callers
+ *   always resolve through the tracked data/slug-redirects-compact.json.
+ */
+export function getUnifiedCreativeProfile(slug: string, redirects: SlugRedirectMap = nameRedirectMap): UnifiedCreativeProfile | undefined {
   ensureBuilt();
-  return unifiedSlugMap.get(slug);
+  const exact = unifiedSlugMap.get(slug);
+  if (exact) return exact;
+  // Retired (pre-S7-T3, unfolded) slug → the live profile. Requests normally
+  // never get here — src/middleware.ts 301s first — but any caller holding an
+  // old slug (or a runtime without the middleware) still finds the page.
+  const live = resolveNameRedirect(redirects, 'creative', slug);
+  return live ? unifiedSlugMap.get(live) : undefined;
 }
 
 export function getAllUnifiedCreativeProfiles(): UnifiedCreativeProfile[] {

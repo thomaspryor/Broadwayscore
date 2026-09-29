@@ -24,8 +24,13 @@ import { getShowCommercial } from './data-commercial';
 import { getShowAwards } from './data-awards';
 import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs as getBrowseSlugsFromConfig } from '@/config/browse-pages';
 import { slugify as urlSlugify } from '../../scripts/lib/url-slug';
+import { stubTheaterName, HIDDEN_LONDON_IDS } from '../../scripts/lib/page-name-sources';
+import { resolveNameRedirect, type SlugRedirectMap } from './slug-redirects';
 // Import raw data (loaded at build time for static generation)
 import showsData from '../../data/shows.json';
+// Retired-slug map (prebuild: scripts/build-slug-redirects.js) — the theatre
+// lookups below fall back through it, exactly like data-reviews.ts getCriticBySlug()
+import slugRedirectsData from '../../data/slug-redirects-compact.json';
 import reviewsData from '../../data/reviews.json';
 import audienceData from '../../data/audience.json';
 import buzzData from '../../data/buzz.json';
@@ -154,15 +159,11 @@ export function getBroadwayShows(): ComputedShow[] {
   return getAllShows().filter(isBroadwayShow);
 }
 
-/**
- * IDs to exclude from London listings — non-theatre experiences that crept into
- * the data set (e.g. ABBA Voyage is a hologram concert at a purpose-built arena,
- * not theatre). These shows still exist as detail pages but are filtered out of
- * the West End / Off-West End hubs and OG data.
- */
-const HIDDEN_LONDON_IDS = new Set<string>([
-  'abba-voyage-off-west-end-2026',
-]);
+// IDs to exclude from London listings (ABBA Voyage: a hologram concert, not
+// theatre) — HIDDEN_LONDON_IDS, imported above from
+// scripts/lib/page-name-sources.js so the venue-redirect emitter
+// (scripts/build-slug-redirects.js) sees the same London show set as the
+// /west-end/theater venue index below.
 
 /**
  * Get all London shows for the West End hub (West End + Off-West End).
@@ -793,11 +794,33 @@ export function getAllTheaters(): Theater[] {
   return _theatersCache;
 }
 
+const nameRedirectMap: SlugRedirectMap = slugRedirectsData as Record<string, string>;
+
+/**
+ * Exact slug first; otherwise a retired (pre-S7-T3, unfolded) slug resolves
+ * to the live page through the compact redirect map. Requests normally
+ * never get here — src/middleware.ts 301s first — but any caller holding an
+ * old slug (or a runtime without the middleware) still finds the page.
+ */
+function findTheaterBySlug(
+  theaters: Theater[],
+  family: 'theater' | 'westEndTheater' | 'offBroadwayTheater',
+  slug: string,
+  redirects: SlugRedirectMap
+): Theater | undefined {
+  const exact = theaters.find(t => t.slug === slug);
+  if (exact) return exact;
+  const live = resolveNameRedirect(redirects, family, slug);
+  return live ? theaters.find(t => t.slug === live) : undefined;
+}
+
 /**
  * Get a single theater by slug
+ * @param redirects the compact redirect map — tests only; production callers
+ *   always resolve through the tracked data/slug-redirects-compact.json.
  */
-export function getTheaterBySlug(slug: string): Theater | undefined {
-  return getAllTheaters().find(t => t.slug === slug);
+export function getTheaterBySlug(slug: string, redirects: SlugRedirectMap = nameRedirectMap): Theater | undefined {
+  return findTheaterBySlug(getAllTheaters(), 'theater', slug, redirects);
 }
 
 /**
@@ -816,14 +839,6 @@ export function getAllTheaterSlugs(): string[] {
  * `allShows`, and `showCount` is left undefined and the UI renders "—".
  * Enrichment (Wikipedia/IBDB/curated tips) tracked as follow-up.
  */
-// Placeholder venue strings that should never generate their own venue page
-// (announced shows sometimes list "TBA" as the venue).
-const STUB_THEATER_PLACEHOLDER_VENUES = new Set(['TBA', 'TBD', 'tba', 'tbd', 'Unknown', 'unknown']);
-
-function normalizeVenueName(venue: string): string {
-  return venue.trim().replace(/\s+/g, ' ');
-}
-
 /**
  * Shared venue-index builder for markets with no curated theaterMetaData
  * (West End, off-Broadway) — every field beyond name/address/shows stays
@@ -834,14 +849,18 @@ function normalizeVenueName(venue: string): string {
  * strings (casing, stray whitespace: "SoHo Playhouse" vs "Soho Playhouse")
  * would otherwise slugify to the same URL and silently strand one variant's
  * shows behind an unreachable page (found in review before this shipped).
+ *
+ * The page name rule (trim, collapse whitespace, drop "_"-prefixed internals
+ * and TBA/TBD/Unknown placeholders) is scripts/lib/page-name-sources.js
+ * stubTheaterName(), shared with scripts/build-slug-redirects.js so the
+ * retired-slug redirects replay exactly the names that get pages.
  */
 function buildStubTheaterIndex(shows: ComputedShow[]): Theater[] {
   const theaterMap = new Map<string, { name: string; shows: ComputedShow[]; address?: string }>();
 
   for (const show of shows) {
-    if (!show.venue) continue;
-    const name = normalizeVenueName(show.venue);
-    if (!name || name.startsWith('_') || STUB_THEATER_PLACEHOLDER_VENUES.has(name)) continue;
+    const name = stubTheaterName(show.venue);
+    if (!name) continue;
     const slug = slugify(name);
     if (!slug) continue;
     const existing = theaterMap.get(slug) || { name, shows: [], address: show.theaterAddress };
@@ -885,10 +904,10 @@ export function getAllLondonTheaters(): Theater[] {
 }
 
 /**
- * Get a single London venue by slug
+ * Get a single London venue by slug (retired pre-fold slugs resolve too — see findTheaterBySlug)
  */
-export function getLondonTheaterBySlug(slug: string): Theater | undefined {
-  return getAllLondonTheaters().find(t => t.slug === slug);
+export function getLondonTheaterBySlug(slug: string, redirects: SlugRedirectMap = nameRedirectMap): Theater | undefined {
+  return findTheaterBySlug(getAllLondonTheaters(), 'westEndTheater', slug, redirects);
 }
 
 /**
@@ -906,10 +925,10 @@ export function getAllOffBroadwayTheaters(): Theater[] {
 }
 
 /**
- * Get a single off-Broadway venue by slug
+ * Get a single off-Broadway venue by slug (retired pre-fold slugs resolve too — see findTheaterBySlug)
  */
-export function getOffBroadwayTheaterBySlug(slug: string): Theater | undefined {
-  return getAllOffBroadwayTheaters().find(t => t.slug === slug);
+export function getOffBroadwayTheaterBySlug(slug: string, redirects: SlugRedirectMap = nameRedirectMap): Theater | undefined {
+  return findTheaterBySlug(getAllOffBroadwayTheaters(), 'offBroadwayTheater', slug, redirects);
 }
 
 /**

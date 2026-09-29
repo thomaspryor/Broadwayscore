@@ -17,7 +17,6 @@ set -e
 node scripts/validate-shows-prebuild.js
 node scripts/generate-show-lookup.js
 node scripts/generate-diary-data.js
-node scripts/build-slug-redirects.js
 # Actor slug manifest — collapses ~2400 data/cast/ files into a single ~1MB
 # JSON to keep Vercel's serverless bundle under the 300MB NFT limit.
 node scripts/build-actor-slugs-manifest.js
@@ -25,6 +24,11 @@ node scripts/build-actor-slugs-manifest.js
 # /cast/[slug] profile pages). Without this, every /cast/[slug] 404s because
 # next.config.js excludes data/cast/** from the serverless bundle.
 node scripts/build-cast-manifest.js
+# Slug redirects — AFTER the cast manifest: the "cast:" family of
+# data/slug-redirects-compact.json (retired pre-fold /cast/<slug> URLs, S7-T3
+# follow-up) is derived from data/cast-manifest.json, so this build's manifest
+# has to exist first or the map would carry the previous build's cast pages.
+node scripts/build-slug-redirects.js
 # Brand tokens — regenerate public/brand-tokens.json from canonical source
 node scripts/generate-brand-tokens.js
 # Outlet logos — regenerate src/config/outlet-logos-generated.json from the

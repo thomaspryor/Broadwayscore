@@ -71,8 +71,10 @@ describe('slugify', () => {
     assert.strictEqual(slugify('John   O\'Brien'), 'john-o-brien');
   });
 
-  test('handles accented/special characters by removing them', () => {
-    assert.strictEqual(slugify('José Rivera'), 'jos-rivera');
+  test('folds accented characters to ASCII (S7-T3: the shared scripts/lib/url-slug.js rule) and hyphenates the rest', () => {
+    assert.strictEqual(slugify('José Rivera'), 'jose-rivera');
+    assert.strictEqual(slugify('Noël Coward'), 'noel-coward');
+    assert.strictEqual(slugify('Søren & Co.'), 's-ren-co', 'a letter that does not decompose still falls to the hyphen rule');
   });
 
   test('handles empty string', () => {

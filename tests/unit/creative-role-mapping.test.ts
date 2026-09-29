@@ -11,10 +11,25 @@
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
+import { createRequire } from 'node:module';
 
 import { getCategoriesForRole } from '../../src/lib/data-creative';
 
+const require = createRequire(import.meta.url);
+// The table itself lives in scripts/lib/creative-roles.js since the S7-T3
+// follow-up (scripts/build-slug-redirects.js replays the creative-page name
+// order to derive retired-slug redirects); data-creative.ts re-exports it.
+const jsRoles = require('../../scripts/lib/creative-roles.js') as { getCategoriesForRole: (role: string) => string[] };
+
 const sorted = (role: string) => getCategoriesForRole(role).slice().sort();
+
+describe('wiring: the TS export is the shared scripts/lib/creative-roles.js table', () => {
+  test('agrees with the JS module on every shape (exact, case-drift, combined, compound, excluded, unknown)', () => {
+    for (const role of ['Director', 'book writer', 'Music & Lyrics', 'Director & Choreographer', 'Music Supervisor & Director', 'Book, Music, and Lyrics', 'Composer/Lyricist', 'Music Direction', 'associate director', 'Choreographer', '']) {
+      assert.deepStrictEqual(getCategoriesForRole(role), jsRoles.getCategoriesForRole(role), role);
+    }
+  });
+});
 
 describe('exact and case-insensitive matches', () => {
   test('Director maps to director', () => {
