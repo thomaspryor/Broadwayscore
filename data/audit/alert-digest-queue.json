@@ -72,18 +72,6 @@
     "queuedAt": "2026-09-28T15:34:47.681Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-holes-off-broadway-2026",
-    "title": "Review gap — \"The Holes\" missing 1 cited review(s)",
-    "description": "The Holes (the-holes-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-holes-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-28T16:16:03.857Z"
-  },
-  {
     "conditionKey": "land:land/audit-s0-safety-rails",
     "title": "Landing blocked: rebase red on land/audit-s0-safety-rails",
     "description": "land.yml did not land land/audit-s0-safety-rails: the rebase gate went red at b10d437df1. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36456544947",
@@ -1825,32 +1813,128 @@
     "queuedAt": "2026-09-29T15:57:50.543Z"
   },
   {
-    "conditionKey": "land:land/reddit-post-email",
-    "title": "Landing blocked: rebase red on land/reddit-post-email",
-    "description": "land.yml did not land land/reddit-post-email: the rebase gate went red at 7af2b99c78. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36596434085",
-    "severity": "error",
+    "conditionKey": "review-gap:opening-window:cosi-fan-tutte-off-broadway-2026",
+    "title": "Review gap — \"Così fan tutte\" missing 2 cited review(s)",
+    "description": "Così fan tutte (cosi-fan-tutte-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cosi-fan-tutte-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T16:28:12.019Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:human-things-off-broadway-2026",
+    "title": "Review gap — \"Human Things\" missing 2 cited review(s)",
+    "description": "Human Things (human-things-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=human-things-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T16:28:12.043Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:table-17-off-west-end-2026",
+    "title": "Review gap — \"Table 17\" missing 3 cited review(s)",
+    "description": "Table 17 (table-17-off-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=table-17-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T16:28:12.089Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-holes-off-broadway-2026",
+    "title": "Review gap — \"The Holes\" missing 1 cited review(s)",
+    "description": "The Holes (the-holes-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-holes-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T16:28:12.096Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-urmetazoan-off-west-end-2026",
+    "title": "Review gap — \"The Urmetazoan\" missing 2 cited review(s)",
+    "description": "The Urmetazoan (the-urmetazoan-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-urmetazoan-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T16:28:12.116Z"
+  },
+  {
+    "conditionKey": "deployed-coverage:stale",
+    "title": "Deployed coverage — the site is serving stale coverage (still open — BRO-3030)",
+    "description": "Still firing after 40 notifications since it was filed. Tracked at BRO-3030.\n\n3/174 show(s) differ between internal state and what prod serves.\nunreachable: 1\nmissing-from-prod: 1\nscore-drift: 2\nThe Cherry Orchard: unreachable\nWho Killed Marilyn?: missing-from-prod+score-drift\nThree Men in a Boat: score-drift",
+    "severity": "error",
+    "url": null,
+    "decision": true,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T16:31:12.205Z"
+  },
+  {
+    "conditionKey": "t1-coverage:new-gaps-24h",
+    "title": "T1 Coverage — new gaps past 24h (still open — BRO-3030)",
+    "description": "Still firing after 43 notifications since it was filed. Tracked at BRO-3030.\n\n13 T1/T2 outlet(s) still missing >24h after they became measurable (first 10 below; the rest escalate next run).",
+    "severity": "error",
+    "url": null,
+    "decision": true,
+    "decisionPrompt": null,
+    "model": null,
     "fields": [
       {
-        "name": "branch",
-        "value": "land/reddit-post-email"
+        "name": "Macbeth — nydailynews (165h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"macbeth-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
       },
       {
-        "name": "gate",
-        "value": "rebase"
+        "name": "Midnight — guardian (33h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"midnight-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
       },
       {
-        "name": "tip",
-        "value": "7af2b99c785785b7c98f504663554b064bf5fa45"
+        "name": "Midnight — standard (33h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"midnight-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
       },
       {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36596434085"
+        "name": "Midnight — telegraph (33h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"midnight-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Midnight — thestage (33h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"midnight-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Midnight — timeout (33h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"midnight-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Midnight — whatsonstage (33h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"midnight-off-broadway-2026\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Moulin Rouge! The Musical — financialtimes (42h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"moulin-rouge-the-musical-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Two Strangers (Carry a Cake Across New York) — nydailynews (1111h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"two-strangers-bway-2025\" -f max_tier=3 -f aggregators_only=false"
+      },
+      {
+        "name": "Wicked — daily-mail (42h)",
+        "value": "gh workflow run gather-reviews.yml -f shows=\"wicked-west-end-2021\" -f max_tier=3 -f aggregators_only=false"
       }
     ],
-    "queuedAt": "2026-09-29T16:17:45.815Z"
+    "queuedAt": "2026-09-29T16:31:12.305Z"
   }
 ]
