@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "lost-in-del-valle-return-off-broadway-2026",
   "openingDate": "2026-09-23",
-  "detectedAt": "2026-09-29T18:15:47.066Z",
+  "detectedAt": "2026-09-29T18:23:37.213Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -11,8 +11,8 @@
       "criticName": "Unknown",
       "url": "https://www.sohoplayhouse.com/see-a-show/lost-in-del-valle",
       "fullTextLen": 945,
-      "dispatchActionable": true,
-      "skipReason": null,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
       "rescoreBlockedReason": "input_validation_failed:body_too_short",
       "humanReviewScore": null,
       "adjudicatedScore": null,
@@ -24,9 +24,9 @@
     }
   ],
   "orphanCount": 1,
-  "dispatchableOrphanCount": 1,
-  "blockedOrphanCount": 0,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
