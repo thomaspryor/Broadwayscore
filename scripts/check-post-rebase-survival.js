@@ -49,7 +49,11 @@ function arg(name) {
 }
 
 function gitDiffAddedFiles(fromSha, toRef, pathPrefix) {
-  const args = ['diff', '--name-only', '--diff-filter=A', `${fromSha}..${toRef}`];
+  // --no-renames (BRO-4273): with rename detection on, a NEW file paired with an
+  // unrelated deletion in the same range (a _pending stub the concurrent run
+  // promoted) shows as R, drops out of --diff-filter=A, and a clean rebase
+  // is reported as a silent drop (poller run 36511035811).
+  const args = ['diff', '--no-renames', '--name-only', '--diff-filter=A', `${fromSha}..${toRef}`];
   if (pathPrefix) args.push('--', pathPrefix);
   try {
     // 30s timeout — a hung git op in CI should fail the check, not stall the

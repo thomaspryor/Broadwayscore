@@ -476,7 +476,9 @@ if (require.main === module) {
     // auto-resolution. Without T here, this second-layer check would report
     // "no modified files to check" on exactly that class, leaving it covered
     // ONLY by the resolve_conflicts() fix and not by this independent guard.
-    const diffArgs = ['diff', '--name-only', `--diff-filter=${diffFilter}`, `${baseSha}..${beforeSha}`];
+    // --no-renames (BRO-4273): a rename-paired ADDED file shows as R and would
+    // fall out of an A-including filter (check-push-ledger passes ACMT).
+    const diffArgs = ['diff', '--no-renames', '--name-only', `--diff-filter=${diffFilter}`, `${baseSha}..${beforeSha}`];
     if (pathPrefix) diffArgs.push('--', pathPrefix);
     modifiedFiles = execFileSync('git', diffArgs, { encoding: 'utf8', timeout: 30_000 })
       .split('\n')
