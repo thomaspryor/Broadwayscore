@@ -168,6 +168,12 @@ for f in "${SYMLINK_FILES[@]}"; do
     echo "  WARN: $f missing in core-data repo, skipping"
     continue
   fi
+  # --link-only never replaces a real file: a checkout that already has data
+  # keeps it (ship-check: it rewrote the tracked *.pre-symlink-backup file).
+  if [ "$LINK_ONLY" = 1 ] && { [ -L "$dst" ] || [ -f "$dst" ]; }; then
+    echo "  Kept existing $f"
+    continue
+  fi
   # If there's a regular file at the destination, back it up first (don't trash tracked data).
   if [ -f "$dst" ] && [ ! -L "$dst" ]; then
     mv "$dst" "${dst}.pre-symlink-backup"
@@ -184,6 +190,7 @@ COPY_COUNT=0
 for f in "${COPY_FILES[@]}"; do
   src="$CORE_DATA_DIR/$f"
   [ -f "$src" ] || continue
+  [ "$LINK_ONLY" = 1 ] && [ -e "$DATA_DIR/$f" ] && continue
   cp -f "$src" "$DATA_DIR/"
   COPY_COUNT=$((COPY_COUNT + 1))
 done

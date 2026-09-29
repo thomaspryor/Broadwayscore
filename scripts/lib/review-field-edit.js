@@ -84,4 +84,21 @@ function resolveReviewPath(reviewTextsDir, rel) {
   return abs;
 }
 
-module.exports = { REVIEW_TEXT_EDITABLE_FIELDS, applyReviewFieldEdit, resolveReviewPath };
+/**
+ * Keys the write guard changed besides the edited field and the provenance
+ * stamp. The guard may legitimately add side effects on a write (a date
+ * edit can auto-flag wrongProduction; the temporal guard can reset
+ * criticName; a URL collision can set duplicateOf). An approved fix must not
+ * report success while one of those quietly changed what ships (ship-check).
+ */
+function unexpectedChanges(before, after, field) {
+  const keys = new Set([...Object.keys(before || {}), ...Object.keys(after || {})]);
+  const changed = [];
+  for (const k of keys) {
+    if (k === field || k === 'approvedFixes') continue;
+    if (JSON.stringify(before[k] === undefined ? null : before[k]) !== JSON.stringify(after[k] === undefined ? null : after[k])) changed.push(k);
+  }
+  return changed.sort();
+}
+
+module.exports = { REVIEW_TEXT_EDITABLE_FIELDS, applyReviewFieldEdit, resolveReviewPath, unexpectedChanges };

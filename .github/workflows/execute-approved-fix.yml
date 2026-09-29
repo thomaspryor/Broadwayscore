@@ -126,7 +126,7 @@ jobs:
             if (!/^\d/.test(rawIssue)) {
               core.info(`Plan ${rawIssue} is not a GitHub issue; result=${result}`);
               const refused = parseInt(process.env.FIX_FAILED || '0') || 0;
-              if (result !== 'fixed' && result !== 'already-applied') core.setFailed(`Plan ${rawIssue}: ${result}`);
+              if (result !== 'fixed' && result !== 'already-applied' && result !== 'rejected') core.setFailed(`Plan ${rawIssue}: ${result}`);
               else if (refused > 0) core.setFailed(`Plan ${rawIssue}: ${refused} action(s) refused; see the Execute step log`);
               return;
             }

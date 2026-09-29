@@ -348,8 +348,12 @@ async function main(argv = process.argv.slice(2), deps = {}) {
           // BRO-4241: record the bypass on the issue too. The comment posts
           // before the state move (see ORDER MATTERS below), and in cloud
           // sessions it is the only record (the ledger file is skipped there).
-          const line = bypassCommentLine({ mechanism: bypassReason ? 'force' : 'env-disabled', reason: bypassReason, targetState: target.name });
-          args.comment = args.comment !== undefined ? `${args.comment}\n\n${line}` : line;
+          // Only when the card actually moves: re-running a close on a card
+          // already in the target state bypasses nothing (ship-check finding).
+          if (!(issue.state && issue.state.id === target.id)) {
+            const line = bypassCommentLine({ mechanism: bypassReason ? 'force' : 'env-disabled', reason: bypassReason, targetState: target.name });
+            args.comment = args.comment !== undefined ? `${args.comment}\n\n${line}` : line;
+          }
         }
         if (!bypassReason && process.env.LINEAR_DONE_GATE_DISABLED !== '1') {
           const commentText = typeof args.comment === 'string' ? args.comment : '';
