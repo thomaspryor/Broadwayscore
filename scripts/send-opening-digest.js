@@ -33,6 +33,7 @@
 
 const fs = require('fs');
 const { classifyBroadcastState } = require('./lib/missed-broadcasts');
+const { activeDrafts } = require('./lib/reddit-opening-post');
 const path = require('path');
 const https = require('https');
 
@@ -65,6 +66,7 @@ const SENT_PATH = path.join(DATA_DIR, 'opening-night-sent.json');
 const IMPORTANT_PATH = path.join(DATA_DIR, 'digest-important-shows.json');
 const EXCLUDED_PATH = path.join(DATA_DIR, 'digest-excluded-shows.json');
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
+const REDDIT_DRAFTS_PATH = path.join(DATA_DIR, 'audit', 'reddit-post-drafts.json');
 const SITE_URL = 'https://broadwayscorecard.com';
 
 // RULE 17 (email broadcast safety): transactional send to ONE explicit
@@ -650,8 +652,10 @@ function renderTable(rows, renderRow) {
 
 // The lead clause (no date) doubles as the folded-in morning email's
 // bannerText (card #497) — buildSubject appends the date on top of it.
-function buildDigestLead({ needsHelp, broadcastReady, comingUp }) {
+function buildDigestLead({ needsHelp, broadcastReady, comingUp, redditPosts = [] }) {
   const parts = [];
+  // BRO-4333: lead with it so the owner sees it in the inbox list.
+  if (redditPosts.length) parts.push(`${redditPosts.length} Reddit post${redditPosts.length === 1 ? '' : 's'} ready`);
   if (needsHelp.length) parts.push(`${needsHelp.length} need${needsHelp.length === 1 ? 's' : ''} help`);
   if (broadcastReady.length) parts.push(`${broadcastReady.length} broadcast-ready`);
   const openingToday = comingUp.filter(r => r.daysFromToday === 0).length;
@@ -711,7 +715,50 @@ function renderRegionBlock(regionKey, sections) {
     </div>`;
 }
 
-function buildHtml({ needsHelp, broadcastReady, comingUp, otherRecent, otherUpcoming, todayHuman }) {
+// ---------------------------------------------------------------------------
+// Reddit post ready (BRO-4333) — drafts from draft-reddit-opening-posts.js
+// ---------------------------------------------------------------------------
+
+function textBlock(s) {
+  return esc(s).replace(/\n/g, '<br>');
+}
+
+function renderRedditDraft(d) {
+  const label = `r/${d.subreddit} · ${d.showTitle} · ${d.score}/100 from ${d.reviewCount} reviews`;
+  const personal = (d.personalLines || []).length
+    ? `<div style="margin-top:10px;color:${TOKENS.textMuted};font-size:13px;line-height:1.5;"><strong style="color:${TOKENS.text};">Want it more personal?</strong> Paste one of these in, only if it's true:<br>${d.personalLines.map(l => `&bull; ${esc(l)}`).join('<br>')}</div>`
+    : '';
+  const pushback = d.expectedPushback
+    ? `<div style="margin-top:10px;color:${TOKENS.textMuted};font-size:13px;line-height:1.5;"><strong style="color:${TOKENS.text};">If someone says:</strong> ${esc(d.expectedPushback)}<br><strong style="color:${TOKENS.text};">You could reply:</strong> ${esc(d.suggestedReply)}</div>`
+    : '';
+  return `
+    <div style="margin:14px 0 22px 0;padding:16px 18px;background:${TOKENS.surfaceOverlay};border:1px solid ${TOKENS.border};border-radius:10px;">
+      <div style="color:${TOKENS.textDim};font-size:12px;font-weight:600;letter-spacing:0.02em;">${esc(label)}</div>
+      <div style="margin:14px 0 6px 0;">
+        <a href="${esc(d.submitUrl)}" style="display:inline-block;background:${TOKENS.brand};color:#1a1a1a;text-decoration:none;font-weight:800;font-size:15px;padding:12px 18px;border-radius:8px;">Open Reddit with this post filled in</a>
+      </div>
+      <div style="color:${TOKENS.textDim};font-size:11px;">Form comes up empty? Try the <a href="${esc(d.oldRedditSubmitUrl)}" style="color:${TOKENS.textMuted};">old Reddit version</a>, or copy the text below.</div>
+      <div style="margin-top:14px;padding:12px 14px;background:${TOKENS.surface};border-radius:8px;border:1px solid ${TOKENS.borderSubtle};">
+        <div style="color:${TOKENS.text};font-size:15px;font-weight:700;line-height:1.35;">${esc(d.title)}</div>
+        <div style="margin-top:10px;color:${TOKENS.text};font-size:14px;line-height:1.55;">${textBlock(d.body)}</div>
+      </div>
+      ${d.why ? `<div style="margin-top:12px;color:${TOKENS.textMuted};font-size:13px;line-height:1.5;"><strong style="color:${TOKENS.text};">Why it should land:</strong> ${esc(d.why)}</div>` : ''}
+      ${pushback}
+      ${personal}
+    </div>`;
+}
+
+function renderRedditBlock(redditPosts) {
+  if (!redditPosts || !redditPosts.length) return '';
+  return `
+    <div style="margin:28px 0 8px 0;">
+      <h2 style="margin:0 0 4px 0;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;color:${TOKENS.brand};">Reddit post ready <span style="color:${TOKENS.textDim};font-weight:500;">· ${redditPosts.length}</span></h2>
+      <div style="color:${TOKENS.textMuted};font-size:13px;">Reviews are in. Tap the button, give it a read, hit Post. This disappears once you've posted it.</div>
+      ${redditPosts.map(renderRedditDraft).join('')}
+    </div>`;
+}
+
+function buildHtml({ needsHelp, broadcastReady, comingUp, otherRecent, otherUpcoming, redditPosts = [], todayHuman }) {
   const summaryBits = [
     `${needsHelp.length} needs help`,
     `${broadcastReady.length} broadcast ready`,
@@ -735,7 +782,7 @@ function buildHtml({ needsHelp, broadcastReady, comingUp, otherRecent, otherUpco
     otherUpcoming: splitRegion(otherUpcoming).london,
   };
 
-  let body = renderRegionBlock('nyc', nycSections) + renderRegionBlock('london', londonSections);
+  let body = renderRedditBlock(redditPosts) + renderRegionBlock('nyc', nycSections) + renderRegionBlock('london', londonSections);
   if (!body) {
     body = `<div style="margin:48px 0;text-align:center;color:${TOKENS.textMuted};font-size:14px;">Nothing to report — no openings in the last or next 7 days.</div>`;
   }
@@ -837,6 +884,7 @@ async function main() {
 
   const rows = buildRows(showList, reviewMap, audience, sent, importantSet, excludedMap);
   const sections = classifyRows(rows);
+  sections.redditPosts = activeDrafts(loadJSON(REDDIT_DRAFTS_PATH), Date.now());
 
   const todayHuman = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   const subject = buildSubject(sections);
