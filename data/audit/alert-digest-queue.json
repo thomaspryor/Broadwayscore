@@ -2534,7 +2534,7 @@
   {
     "conditionKey": "land:land/bro-4396-all",
     "title": "Landing blocked: rebase red on land/bro-4396-all",
-    "description": "land.yml did not land land/bro-4396-all: the rebase gate went red at 9e628fa8ed. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4396-all @ 9e628fa8ed (origin/land/bro-4396-all) → origin/main @ e03b22336c REFUSED: rebase: branch would not rebase cleanly onto origin/main @ e03b22336c: Rebasing (1/1) error: could not apply 9e628fa8ed... feat(BRO-4396): Off-Broadway venue coverage: 54 listings readers, TheaterMania + own-listing corroboration, per-venue coverage alert hint: Resolve all conflicts manually, mark  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36644790728",
+    "description": "land.yml did not land land/bro-4396-all: the rebase gate went red at cd47011edf. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36647614918",
     "severity": "error",
     "url": null,
     "decision": false,
@@ -2551,13 +2551,13 @@
       },
       {
         "name": "tip",
-        "value": "9e628fa8ed877277b40ebeb4786c89c1dbbdf6ef"
+        "value": "cd47011edff2896776a20b97d48f50554eb3275a"
       },
       {
         "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36644790728"
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36647614918"
       }
     ],
-    "queuedAt": "2026-09-29T23:51:16.938Z"
+    "queuedAt": "2026-09-29T23:55:55.128Z"
   }
 ]
