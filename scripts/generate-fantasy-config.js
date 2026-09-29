@@ -2,30 +2,187 @@
 /**
  * generate-fantasy-config.js — Generates data/fantasy-league.json
  *
- * Reads shows.json + reviews.json, identifies eligible shows for the
- * current fantasy season, computes prices based on scoring potential,
- * and outputs the fantasy league configuration.
+ * Reads shows.json, the public slim show files (canonical CriticScore),
+ * audience-buzz.json and grosses-history.json; identifies the season's
+ * draftable shows; prices them; writes the fantasy league configuration.
  *
- * Usage: node scripts/generate-fantasy-config.js [--dry-run]
+ * Season constants come from src/config/fantasy-season.json (one file shared
+ * with the site and the API). Prices come from data/fantasy-league-frozen.json:
+ *
+ *   --refreeze   Rebuild the catalog AND prices from scratch with the
+ *                pre-season EV model (scripts/lib/fantasy-pricing.js +
+ *                data/fantasy-preseason-priors.json). Refused once the draft
+ *                has opened unless --force: entries already hold prices.
+ *   (default)    Keep every frozen show at its frozen price (never drop a show
+ *                a player may have drafted), refresh its mutable fields
+ *                (status, closing date, scores, image), and APPEND any newly
+ *                eligible show at a freshly computed price. The weekly
+ *                workflow runs this mode.
+ *   --dry-run    Print the config to stdout, write nothing.
+ *   --list       Print a price table to stderr.
+ *
+ * Usage: node scripts/generate-fantasy-config.js [--refreeze] [--force] [--dry-run] [--list]
  */
 
 const fs = require('fs');
 const path = require('path');
 const { isBroadwayCategory } = require('./lib/venue-classification');
+const pricing = require('./lib/fantasy-pricing');
 
-// ── Config (mirrors src/config/fantasy.ts) ──────────────────────────
-const SEASON = '2025-2026';
-const BUDGET = 100;
-const TEAM_SIZE = 8;
-const DRAFT_DEADLINE = '2026-02-07T05:00:00Z';
-const SCORING_START = '2026-02-01';
-const SCORING_END = '2026-06-15';
+const seasonConfig = require('../src/config/fantasy-season.json');
 
-// Shows that opened before this date have their CriticScore/AudienceGrade "locked in"
-// They can still earn box office and awards points
-const SCORE_LOCKOUT_DATE = SCORING_START;
+const SEASON = seasonConfig.season;
+const BUDGET = seasonConfig.budget;
+const TEAM_SIZE = seasonConfig.teamSize;
+const DRAFT_OPENS = seasonConfig.draftOpens;
+const DRAFT_DEADLINE = seasonConfig.draftDeadline;
+const SCORING_START = seasonConfig.scoringStart;
+const SCORING_END = seasonConfig.scoringEnd;
+const EARLY_BIRD_CUTOFF = seasonConfig.earlyBirdCutoff;
+const TONY_WINDOW = seasonConfig.tonyWindow;
+const SCORING = seasonConfig.scoring;
 
-// ── Scoring tier thresholds (from src/config/scoring.ts) ────────────
+const args = process.argv.slice(2);
+const dryRun = args.includes('--dry-run');
+const refreeze = args.includes('--refreeze');
+const force = args.includes('--force');
+const listPrices = args.includes('--list');
+
+// ── Load data ───────────────────────────────────────────────────────
+const dataDir = path.join(__dirname, '..', 'data');
+const slimDir = path.join(__dirname, '..', 'public', 'data', 'shows');
+const leaguePath = path.join(dataDir, 'fantasy-league.json');
+const frozenPath = path.join(dataDir, 'fantasy-league-frozen.json');
+const priorsPath = path.join(dataDir, 'fantasy-preseason-priors.json');
+const evPath = path.join(dataDir, 'fantasy-ev.json');
+
+const showsRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'shows.json'), 'utf8'));
+const shows = showsRaw.shows;
+const allShows = Array.isArray(shows) ? shows : Object.values(shows);
+const showById = new Map(allShows.map(s => [s.id, s]));
+
+const priorsRaw = fs.existsSync(priorsPath) ? JSON.parse(fs.readFileSync(priorsPath, 'utf8')) : { _meta: {}, shows: {} };
+if (priorsRaw._meta?.season && priorsRaw._meta.season !== SEASON) {
+  console.error(`WARNING: ${path.basename(priorsPath)} is for season ${priorsRaw._meta.season}, config is ${SEASON}. Tiers will default to 3.`);
+  priorsRaw.shows = {};
+}
+const weeklyGrossPriors = priorsRaw._meta?.weeklyGrossPriors || {};
+const categorySlots = priorsRaw._meta?.categorySlots || {};
+const normTitle = t => String(t || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+const priorsByTitle = Object.fromEntries(Object.entries(priorsRaw.byTitle || {}).filter(([k]) => !k.startsWith('_')));
+// Priors keyed by show id, with a normalized-title fallback for shows that
+// were announced (and tiered) before they existed in shows.json.
+const priorsById = new Proxy(priorsRaw.shows || {}, {
+  get(target, id) {
+    if (typeof id !== 'string') return undefined;
+    if (target[id]) return target[id];
+    const title = showById.get(id)?.title;
+    const byTitle = title ? priorsByTitle[normTitle(title)] : null;
+    if (byTitle) return byTitle;
+    return undefined;
+  },
+});
+
+let existingLeague = null;
+try { existingLeague = JSON.parse(fs.readFileSync(leaguePath, 'utf8')); } catch { /* first run */ }
+if (existingLeague && existingLeague._meta?.season !== SEASON) existingLeague = null;
+
+let frozen = null;
+try {
+  const raw = JSON.parse(fs.readFileSync(frozenPath, 'utf8'));
+  if (raw._meta?.season === SEASON) frozen = raw;
+  else console.error(`Ignoring frozen prices for season ${raw._meta?.season ?? 'unknown'} (config is ${SEASON}).`);
+} catch { /* no snapshot yet */ }
+
+const draftHasOpened = new Date() >= new Date(`${DRAFT_OPENS}T00:00:00-04:00`);
+if (refreeze && draftHasOpened && !force) {
+  console.error(`REFUSED: --refreeze after the draft opened (${DRAFT_OPENS}) would reprice shows players already drafted. Re-run with --force only if no entries exist.`);
+  process.exit(2);
+}
+if (!frozen && !refreeze) {
+  console.error('No frozen price snapshot for this season. Run with --refreeze to build one.');
+  process.exit(2);
+}
+
+// ── Audience data (audience-buzz.json has combinedScore per show) ───
+let audienceData = {};
+try {
+  const buzzRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'audience-buzz.json'), 'utf8'));
+  const buzzShows = buzzRaw.shows || buzzRaw;
+  for (const [showId, data] of Object.entries(buzzShows)) {
+    if (showId === '_meta' || showId === 'lastUpdated') continue;
+    if (data && data.combinedScore != null) audienceData[showId] = data;
+  }
+} catch (e) {
+  console.error('Warning: Could not load audience-buzz.json:', e.message);
+}
+
+// ── Grosses (trailing average for open shows) ───────────────────────
+let grossWeeks = {};
+try {
+  grossWeeks = JSON.parse(fs.readFileSync(path.join(dataDir, 'grosses-history.json'), 'utf8')).weeks || {};
+} catch (e) {
+  console.error('Warning: Could not load grosses-history.json:', e.message);
+}
+function trailingWeeklyGross(slug, n = 4) {
+  const weeks = Object.keys(grossWeeks).sort();
+  const observed = [];
+  for (let i = weeks.length - 1; i >= 0 && observed.length < n; i--) {
+    const row = grossWeeks[weeks[i]]?.[slug];
+    if (row && row.gross > 0) observed.push(row.gross);
+  }
+  if (observed.length === 0) return null;
+  return Math.round(observed.reduce((a, b) => a + b, 0) / observed.length);
+}
+
+// ── Venue capacity (weekly gross ceiling) ───────────────────────────
+let theaterMeta = {};
+try { theaterMeta = JSON.parse(fs.readFileSync(path.join(dataDir, 'theater-metadata.json'), 'utf8')); } catch { /* optional */ }
+const venueNorm = s => String(s || '').toLowerCase().replace(/theatre|theater/g, '').replace(/[^a-z]/g, '');
+const venueKeys = Object.keys(theaterMeta).filter(k => k !== '_meta');
+function venueCapacity(venue) {
+  if (!venue) return null;
+  if (theaterMeta[venue]?.capacity) return theaterMeta[venue].capacity;
+  const n = venueNorm(venue);
+  const hit = venueKeys.find(k => venueNorm(k) === n)
+    || venueKeys.find(k => n.includes(venueNorm(k)) || venueNorm(k).includes(n));
+  return hit ? theaterMeta[hit].capacity || null : null;
+}
+
+// ── Scores ──────────────────────────────────────────────────────────
+// CriticScore: the public slim file is the canonical, site-parity source
+// (scripts/lib/canonical-critic-scores.ts). Fall back to the shared scorer
+// only when a slim file is missing (fresh show before the next rebuild).
+const { computeCriticScore: sharedComputeCriticScore } = require('./lib/compute-critic-score');
+const outletRegistry = (() => { try { return require('../data/outlet-registry.json').outlets || {}; } catch { return {}; } })();
+let reviewsByShow = null;
+const MIN_REVIEWS_FOR_SCORE = 5;
+function computeCriticScore(showId) {
+  const slimPath = path.join(slimDir, `${showId}.json`);
+  if (fs.existsSync(slimPath)) {
+    try {
+      const slim = JSON.parse(fs.readFileSync(slimPath, 'utf8'));
+      return typeof slim.cs === 'number' ? slim.cs : null;
+    } catch { /* fall through */ }
+  }
+  if (!reviewsByShow) {
+    reviewsByShow = new Map();
+    try {
+      const reviews = JSON.parse(fs.readFileSync(path.join(dataDir, 'reviews.json'), 'utf8')).reviews || [];
+      for (const r of reviews) {
+        if (r.assignedScore == null) continue;
+        if (!reviewsByShow.has(r.showId)) reviewsByShow.set(r.showId, []);
+        reviewsByShow.get(r.showId).push(r);
+      }
+    } catch { /* no reviews.json */ }
+  }
+  const showReviews = reviewsByShow.get(showId) || [];
+  if (showReviews.length < MIN_REVIEWS_FOR_SCORE) return null;
+  const result = sharedComputeCriticScore(showReviews, outletRegistry, showById.get(showId)?.category);
+  return result ? result.s : null;
+}
+
+// Mirrors src/config/scoring.ts getCriticLabel (tests pin the two together).
 function getCriticLabel(score) {
   if (score >= 83) return 'Critical Gold';
   if (score >= 75) return 'Recommended';
@@ -34,301 +191,277 @@ function getCriticLabel(score) {
   return 'Critical Miss';
 }
 
-// ── Load data ───────────────────────────────────────────────────────
-const dataDir = path.join(__dirname, '..', 'data');
-const showsRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'shows.json'), 'utf8'));
-const reviewsRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'reviews.json'), 'utf8'));
-
-// Frozen prices — set once at season open, never recomputed by the cron.
-// Shape: { _meta: { frozenAt, method, k }, prices: { [showId]: number } }
-let frozenPrices = null;
-let frozenMeta = null;
-try {
-  const frozenPath = path.join(dataDir, 'fantasy-league-frozen.json');
-  const frozenRaw = JSON.parse(fs.readFileSync(frozenPath, 'utf8'));
-  frozenPrices = frozenRaw.prices || {};
-  frozenMeta = frozenRaw._meta || null;
-  console.error(`Loaded ${Object.keys(frozenPrices).length} frozen prices (method: ${frozenMeta?.method ?? 'unknown'}, frozen: ${frozenMeta?.frozenAt ?? 'unknown'})`);
-} catch (e) {
-  console.error(`WARNING: Could not load fantasy-league-frozen.json (${e.message}). Falling back to heuristic pricing — season prices will drift run-to-run.`);
+// Mirrors src/lib/audience-grade-utils.ts getAudienceGrade thresholds.
+function gradeFromAudienceScore(score) {
+  if (score == null) return null;
+  if (score >= 90) return 'A+';
+  if (score >= 88) return 'A';
+  if (score >= 83) return 'A-';
+  if (score >= 78) return 'B+';
+  if (score >= 73) return 'B';
+  if (score >= 68) return 'B-';
+  if (score >= 63) return 'C+';
+  if (score >= 58) return 'C';
+  if (score >= 53) return 'C-';
+  if (score >= 48) return 'D';
+  return 'F';
 }
-
-const shows = showsRaw.shows;
-const reviews = reviewsRaw.reviews;
-
-// ── Load audience data (from audience-buzz.json, NOT audience.json) ─
-// audience-buzz.json has combinedScore per show. audience.json is raw per-platform data.
-let audienceData = {};
-try {
-  const buzzRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'audience-buzz.json'), 'utf8'));
-  const buzzShows = buzzRaw.shows || buzzRaw;
-  for (const [showId, data] of Object.entries(buzzShows)) {
-    if (showId === '_meta' || showId === 'lastUpdated') continue;
-    if (data && data.combinedScore != null) {
-      audienceData[showId] = data;
-    }
-  }
-  console.error(`Loaded audience data for ${Object.keys(audienceData).length} shows`);
-} catch (e) {
-  console.error('Warning: Could not load audience-buzz.json:', e.message);
-}
-
-// ── Compute critic scores per show ──────────────────────────────────
-// v5 (2026-04-29): use shared compute-critic-score.js so weights stay in sync
-// with engine.ts. Was using inline TIER_WEIGHTS which drifted (T3=0.35 stale,
-// no T4, no per-region tier resolution).
-const { computeCriticScore: _sharedComputeCriticScore } = require('./lib/compute-critic-score');
-const _outletRegistry = (() => {
-  try { return require('../data/outlet-registry.json').outlets || {}; } catch { return {}; }
-})();
-const _showById = (() => {
-  const map = {};
-  for (const s of (require('../data/shows.json').shows || [])) map[s.id] = s;
-  return map;
-})();
-// Don't show a CriticScore until a show has at least this many reviews.
-// Matches the main app's "reliable score" floor — a single T3 review at 84
-// shouldn't be treated as equivalent to 10 reviews averaging 84.
-const MIN_REVIEWS_FOR_SCORE = 5;
-
-function computeCriticScore(showId) {
-  const showReviews = reviews.filter(r => r.showId === showId && r.assignedScore != null);
-  if (showReviews.length < MIN_REVIEWS_FOR_SCORE) return null;
-  const cat = _showById[showId]?.category;
-  const result = _sharedComputeCriticScore(showReviews, _outletRegistry, cat);
-  return result ? result.s : null;
-}
-
-// ── Compute audience grade per show ─────────────────────────────────
+const MIN_AUDIENCE_REVIEWS = 15;
 function getAudienceGrade(showId) {
   const data = audienceData[showId];
   if (!data || !data.sources) return null;
-
-  // Need enough reviews
   let totalReviews = 0;
-  for (const source of Object.values(data.sources)) {
-    totalReviews += source?.reviewCount || 0;
-  }
-  if (totalReviews < 15) return null;
-
-  const combinedScore = data.combinedScore;
-  if (combinedScore == null) return null;
-
-  if (combinedScore >= 90) return 'A+';
-  if (combinedScore >= 88) return 'A';
-  if (combinedScore >= 83) return 'A-';
-  if (combinedScore >= 78) return 'B+';
-  if (combinedScore >= 73) return 'B';
-  if (combinedScore >= 68) return 'B-';
-  if (combinedScore >= 63) return 'C+';
-  if (combinedScore >= 58) return 'C';
-  if (combinedScore >= 53) return 'C-';
-  if (combinedScore >= 48) return 'D';
-  return 'F';
+  for (const source of Object.values(data.sources)) totalReviews += source?.reviewCount || 0;
+  if (totalReviews < MIN_AUDIENCE_REVIEWS) return null;
+  return gradeFromAudienceScore(data.combinedScore);
 }
 
-// ── Tony Season Window ──────────────────────────────────────────────
-// Must match src/lib/data-tony-predictions.ts getTonySeasonWindow()
-// 2025-2026: April 28, 2025 to April 27, 2026
-const TONY_SEASON_START = '2025-04-28';
-const TONY_SEASON_END = '2026-04-27';
+// ── Eligibility ─────────────────────────────────────────────────────
+function inTonyWindow(show) {
+  return !!show.openingDate && show.openingDate >= TONY_WINDOW.start && show.openingDate <= TONY_WINDOW.end;
+}
 
-// ── Identify eligible shows ─────────────────────────────────────────
-function isEligible(show) {
+function isEligibleBroadway(show) {
   if (show._devOnly) return false;
-  const isBW = isBroadwayCategory(show);
-  const isOB = show.category === 'off-broadway';
-  if (!isBW && !isOB) return false;
-  if (show.type === 'special') return false;
-
-  // Must have opened within the Tony season window
-  if (!show.openingDate) return false;
-  if (show.openingDate < TONY_SEASON_START || show.openingDate > TONY_SEASON_END) return false;
-
-  return true;
+  if (priorsById[show.id]?.exclude) return false;
+  if (!isBroadwayCategory(show)) return false;
+  if (show.type === 'special' || show.type === 'opera') return false;
+  return inTonyWindow(show);
 }
 
-// ── Pricing algorithm ───────────────────────────────────────────────
-// Price reflects projected point potential. Widened to create meaningful
-// tradeoffs: you can't afford every Best Musical favorite in one team.
-//
-// Broadway ceiling: ~230 pts (30 CS + 25 AG + 60 BO + ~100 awards).
-// OB ceiling: ~65 pts (30 CS + 25 AG + ~10 off-BW awards, no BO, no Tonys).
-// Closed shows: no more box office accrues, but Tonys/CS/AG still live.
-function computePrice(show, criticScore) {
-  const isOB = show.category === 'off-broadway';
-  const isMusical = show.type === 'musical';
-  const isPreviews = show.status === 'previews';
-  const isClosed = show.status === 'closed';
+// Off-Broadway: the awards-eligible institutional houses (Lortel / Drama Desk /
+// OCC territory) plus the commercial houses that mount awards-caliber runs.
+const OB_VENUE_RE = /public theater|new york theatre workshop|playwrights horizons|new york city center|lct3|claire tow|mitzi e\. newhouse|lincoln center theater|atlantic theater|laura pels|roundabout|second stage|signature (theatre|center)|pershing square signature|vineyard theatre|mcc theater|newman mills|classic stage|irish repertory|st\. ann's warehouse|bam harvey|the shed|theatre for a new audience|polonsky|la mama|wp theater|rattlestick|ars nova|soho rep|minetta lane|studio seaview|daryl roth|orpheum theatre|greenwich house|lucille lortel|cherry lane|new world stages|westside theatre/i;
+const OB_MAX = 24;
 
-  // OB: narrow range ($5-14) — lower ceiling, no box office, no Tonys.
-  if (isOB) {
-    let obBase = 8;
-    if (criticScore) {
-      if (criticScore >= 85) obBase += 6;
-      else if (criticScore >= 80) obBase += 4;
-      else if (criticScore >= 75) obBase += 2;
-      else if (criticScore >= 65) obBase += 0;
-      else if (criticScore >= 55) obBase -= 2;
-      else obBase -= 3;
-    } else if (isPreviews) {
-      obBase += 1;
+function isEligibleOffBroadway(show) {
+  if (show._devOnly) return false;
+  if (priorsById[show.id]?.exclude) return false;
+  if (show.category !== 'off-broadway') return false;
+  if (!['play', 'musical'].includes(show.type)) return false;
+  if (!inTonyWindow(show)) return false;
+  if (show.status === 'closed') return false;
+  return OB_VENUE_RE.test(show.venue || '');
+}
+
+function selectOffBroadway(candidates) {
+  // Shows still to open earn on every pillar; already-open ones are
+  // CriticScore-locked (see below) so only award-caliber ones make the cut.
+  const tierOf = s => pricing.clampTier(priorsById[s.id]?.tier);
+  const notYetOpen = candidates
+    .filter(s => s.openingDate >= DRAFT_OPENS)
+    .sort((a, b) => (tierOf(b) - tierOf(a)) || a.openingDate.localeCompare(b.openingDate));
+  const alreadyOpen = candidates
+    .filter(s => s.openingDate < DRAFT_OPENS)
+    .map(s => ({ show: s, cs: computeCriticScore(s.id) }))
+    .filter(x => x.cs != null && x.cs >= 80)
+    .sort((a, b) => b.cs - a.cs)
+    .map(x => x.show);
+  return [...notYetOpen, ...alreadyOpen].slice(0, OB_MAX);
+}
+
+// ── Build the catalog ───────────────────────────────────────────────
+const bwEligible = allShows.filter(isEligibleBroadway);
+const obEligible = selectOffBroadway(allShows.filter(isEligibleOffBroadway));
+
+const catalogIds = new Set();
+const dropped = [];
+if (frozen && !refreeze) {
+  // Append-only: every frozen show stays draftable at its frozen price.
+  for (const id of Object.keys(frozen.prices)) catalogIds.add(id);
+  for (const s of bwEligible) {
+    if (!catalogIds.has(s.id)) {
+      const prior = priorsById[s.id];
+      console.error(`  NEW Broadway show since freeze: ${s.id} — pricing it now (${prior ? `tier ${prior.tier}` : 'NO PRIOR: default tier 3, set one in data/fantasy-preseason-priors.json'})`);
     }
-    if (isClosed) obBase -= 2;
-    return Math.max(5, Math.min(14, obBase));
+    catalogIds.add(s.id);
   }
-
-  // Broadway base by type — musicals have higher ceiling (box office + Tony Best Musical).
-  let base = isMusical ? 22 : 14;
-
-  // Critic score adjustment — stronger reward for Critical Gold (primary awards signal).
-  if (criticScore) {
-    if (criticScore >= 85) base += 12;      // Critical Gold+ (Best Musical/Play frontrunner)
-    else if (criticScore >= 80) base += 8;   // Critical Gold
-    else if (criticScore >= 75) base += 4;   // Recommended
-    else if (criticScore >= 65) base += 0;   // Worth Seeing
-    else if (criticScore >= 55) base -= 4;   // Skippable
-    else base -= 8;                           // Critical Miss
-  } else if (isPreviews) {
-    // Unknown CS — wildcard premium (upside if Gold, downside if weak).
-    base += 3;
+  // Off-Broadway additions only when the catalog still has room.
+  for (const s of obEligible) {
+    if (catalogIds.has(s.id)) continue;
+    const obCount = [...catalogIds].filter(id => (showById.get(id) || existingLeague?.shows?.[id])?.category === 'off-broadway').length;
+    if (obCount >= OB_MAX) break;
+    console.error(`  NEW Off-Broadway show since freeze: ${s.id} — pricing it now`);
+    catalogIds.add(s.id);
   }
-
-  // Closed shows: no further box office accrues (~60 pts of ceiling gone).
-  // Still eligible for Tony noms/wins + CS/AG adjustments, so not a huge discount.
-  if (isClosed) {
-    base -= 8;
-  }
-
-  // Clamp: BW $5-$34. $100 budget ~= 3 top contenders OR 6-8 value picks.
-  return Math.max(5, Math.min(34, base));
+} else {
+  for (const s of bwEligible) catalogIds.add(s.id);
+  for (const s of obEligible) catalogIds.add(s.id);
 }
 
-// ── Main ────────────────────────────────────────────────────────────
-const dryRun = process.argv.includes('--dry-run');
-
-const allShows = Object.values(shows);
-const eligibleShows = allShows.filter(isEligible);
-
-console.error(`Found ${eligibleShows.length} eligible shows (${eligibleShows.filter(isBroadwayCategory).length} BW, ${eligibleShows.filter(s => s.category === 'off-broadway').length} OB)`);
-
-// For prototype: limit OB to ~15 notable ones (highest scored, currently running)
-const bwShows = eligibleShows.filter(isBroadwayCategory);
-const obShows = eligibleShows.filter(s => s.category === 'off-broadway');
-
-// Select OB shows: top scored ones that are still running, then top closed
-const obScored = obShows
-  .map(s => ({ ...s, _score: computeCriticScore(s.id) }))
-  .filter(s => s._score != null)
-  .sort((a, b) => b._score - a._score);
-
-const obOpen = obScored.filter(s => s.status === 'open' || s.status === 'previews');
-const obClosed = obScored.filter(s => s.status === 'closed');
-// Take up to 10 running + 5 best closed = ~15 max
-const selectedOB = [
-  ...obOpen.slice(0, 10),
-  ...obClosed.slice(0, 5),
-];
-
-console.error(`Selected ${selectedOB.length} OB shows (${obOpen.length} open, ${obClosed.length} closed with scores)`);
-
-const finalShows = [...bwShows, ...selectedOB];
-
-// Build config
-const showsConfig = {};
-for (const show of finalShows) {
-  const criticScore = computeCriticScore(show.id);
-  const audGrade = getAudienceGrade(show.id);
-  const isBW = isBroadwayCategory(show);
-
-  // Prices are frozen for the season. Fall back to heuristic only if the
-  // snapshot is missing (dev/first-run); log any show that needs a fallback.
-  let price;
-  if (frozenPrices && frozenPrices[show.id] != null) {
-    price = frozenPrices[show.id];
+// Resolve show rows (a frozen show that vanished from shows.json keeps its
+// last published entry so drafted rosters never lose a title or its points).
+const catalog = [];
+for (const id of catalogIds) {
+  const row = showById.get(id);
+  if (row) { catalog.push(row); continue; }
+  const prev = existingLeague?.shows?.[id];
+  if (prev) {
+    console.error(`  WARN: ${id} no longer in shows.json — keeping last published entry`);
+    catalog.push({ id, title: prev.title, slug: prev.slug, type: prev.type, category: prev.category, status: prev.status, openingDate: prev.openingDate, closingDate: prev.closingDate ?? null, isRevival: prev.isRevival ?? false, images: prev.image ? { thumbnail: prev.image } : {} , _stale: true });
   } else {
-    price = computePrice(show, criticScore);
-    if (frozenPrices) console.error(`  WARN: ${show.id} not in frozen snapshot — using heuristic $${price}`);
+    dropped.push(id);
+    console.error(`  WARN: ${id} is in the frozen snapshot but unknown — dropped`);
   }
+}
 
+console.error(`Catalog: ${catalog.length} shows (${catalog.filter(isBroadwayCategory).length} BW, ${catalog.filter(s => s.category === 'off-broadway').length} OB)`);
+
+// ── Per-show facts ──────────────────────────────────────────────────
+const facts = new Map();
+for (const show of catalog) {
+  const criticScore = computeCriticScore(show.id);
+  const audienceGrade = getAudienceGrade(show.id);
+  // Locked for everyone when the show opened before the draft opened: its
+  // reviews were public before anyone could pick it. Shows opening later are
+  // locked per entry (computeLeaderboard: drafted on/after opening night).
+  const criticLocked = !!show.openingDate && show.openingDate < DRAFT_OPENS;
+  const isBW = isBroadwayCategory(show);
+  const trailing = isBW && ['open', 'previews'].includes(show.status) ? trailingWeeklyGross(show.slug) : null;
+  facts.set(show.id, { criticScore, audienceGrade, criticLocked, isBW, trailing });
+}
+
+// ── Pricing ─────────────────────────────────────────────────────────
+const categoryField = pricing.buildCategoryField(catalog.filter(s => isBroadwayCategory(s)), priorsById, categorySlots);
+
+function projectFor(show) {
+  const f = facts.get(show.id);
+  return pricing.projectShowPoints(show, {
+    scoring: SCORING,
+    scoringStart: SCORING_START,
+    scoringEnd: SCORING_END,
+    priors: priorsById[show.id] || {},
+    categoryField,
+    criticScore: f.criticScore,
+    audienceGrade: f.audienceGrade,
+    criticLocked: f.criticLocked,
+    trailingWeeklyGross: f.trailing,
+    weeklyGrossPriors,
+    venueCapacity: f.isBW ? venueCapacity(show.venue) : null,
+    getCriticLabel,
+  });
+}
+
+const projections = new Map();
+for (const show of catalog) projections.set(show.id, projectFor(show));
+
+let k;
+let frozenOut;
+if (frozen && !refreeze) {
+  k = frozen._meta.k;
+  frozenOut = { ...frozen, prices: { ...frozen.prices }, notes: { ...(frozen.notes || {}) }, ev: { ...(frozen.ev || {}) }, addedAt: { ...(frozen.addedAt || {}) } };
+  for (const show of catalog) {
+    if (frozenOut.prices[show.id] != null) continue;
+    const proj = projections.get(show.id);
+    frozenOut.prices[show.id] = pricing.priceFromEV(proj.totalPoints, k);
+    frozenOut.notes[show.id] = pricing.priceNoteFor(proj);
+    frozenOut.ev[show.id] = proj.totalPoints;
+    frozenOut.addedAt[show.id] = new Date().toISOString();
+  }
+} else {
+  const bwEvs = catalog.filter(s => isBroadwayCategory(s)).map(s => projections.get(s.id).totalPoints);
+  k = pricing.calibrateK(bwEvs, { targetTopPrice: 33, topN: 3 });
+  if (!k) { console.error('Could not calibrate k (no Broadway EV).'); process.exit(1); }
+  const frozenAt = new Date().toISOString();
+  frozenOut = {
+    _meta: {
+      season: SEASON,
+      frozenAt,
+      method: 'preseason-ev',
+      k,
+      targetTopPrice: 33,
+      priorsUpdatedAt: priorsRaw._meta?.updatedAt || null,
+      note: 'Season prices locked at draft open. generate-fantasy-config.js reads this file and emits these prices verbatim; shows announced later are appended here with addedAt. Never remove a show: players may have drafted it.',
+    },
+    prices: {},
+    notes: {},
+    ev: {},
+    addedAt: {},
+  };
+  for (const show of catalog) {
+    const proj = projections.get(show.id);
+    frozenOut.prices[show.id] = pricing.priceFromEV(proj.totalPoints, k);
+    frozenOut.notes[show.id] = pricing.priceNoteFor(proj);
+    frozenOut.ev[show.id] = proj.totalPoints;
+    frozenOut.addedAt[show.id] = frozenAt;
+  }
+}
+
+// ── Assemble config ─────────────────────────────────────────────────
+const showsConfig = {};
+for (const show of catalog) {
+  const f = facts.get(show.id);
   showsConfig[show.id] = {
-    price,
+    price: frozenOut.prices[show.id],
     eligible: {
-      criticScore: true, // all shows opened this season — score not locked
-      audienceGrade: true,
-      boxOffice: isBW, // only Broadway shows report grosses
-      tonys: isBW,     // only Broadway shows eligible for Tonys
+      criticScore: !f.criticLocked,
+      audienceGrade: !f.criticLocked,
+      boxOffice: f.isBW,
+      tonys: f.isBW && (priorsById[show.id]?.awardsEligible !== false),
     },
     title: show.title,
     type: show.type || 'play',
     category: show.category || 'broadway',
     status: show.status,
     openingDate: show.openingDate || null,
-    criticScore: criticScore,
-    audienceGrade: audGrade,
+    closingDate: show.closingDate || null,
+    isRevival: !!show.isRevival,
+    criticScore: f.criticScore,
+    audienceGrade: f.audienceGrade,
     slug: show.slug,
     image: show.images?.thumbnail || show.images?.poster || null,
+    priceNote: frozenOut.notes[show.id] || null,
   };
 }
 
 const config = {
   _meta: {
     season: SEASON,
+    draftOpens: DRAFT_OPENS,
     draftDeadline: DRAFT_DEADLINE,
     scoringStart: SCORING_START,
     scoringEnd: SCORING_END,
+    earlyBirdCutoff: EARLY_BIRD_CUTOFF,
+    tonyWindow: TONY_WINDOW,
     budget: BUDGET,
     teamSize: TEAM_SIZE,
     generatedAt: new Date().toISOString(),
-    pricing: frozenMeta
-      ? { source: 'frozen', frozenAt: frozenMeta.frozenAt, method: frozenMeta.method, k: frozenMeta.k ?? null }
-      : { source: 'heuristic', frozenAt: null, method: 'heuristic', k: null },
+    pricing: { source: 'frozen', frozenAt: frozenOut._meta.frozenAt, method: frozenOut._meta.method, k },
   },
   shows: showsConfig,
-  scoring: {
-    criticScore: {
-      'Critical Gold': 30,
-      'Recommended': 20,
-      'Worth Seeing': 12,
-      'Skippable': 4,
-      'Critical Miss': 0,
-    },
-    audienceGrade: {
-      'A+': 25, 'A': 20, 'A-': 16,
-      'B+': 10, 'B': 6, 'B-': 3,
-      'C+': 1, 'C': 0, 'C-': 0,
-      'D': 0, 'F': 0,
-    },
-    boxOffice: { pointsPer100K: 0.30 },
-    awards: {
-      tonyNom: 5, tonyWin: 20, tonyBestMusical: 30, tonyBestPlay: 30,
-      dramaLeagueNom: 2, dramaLeagueWin: 5,
-      outerCriticsNom: 2, outerCriticsWin: 5,
-      dramaDeskNom: 3, dramaDeskWin: 6,
-      nydccWin: 5,
-      lortelNom: 2, lortelWin: 5,
-      obieAward: 4,
-    },
-  },
+  scoring: SCORING,
 };
 
-// Stats
+// ── Report ──────────────────────────────────────────────────────────
 const prices = Object.values(showsConfig).map(s => s.price);
-const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length;
 const bwPrices = Object.values(showsConfig).filter(s => s.category === 'broadway').map(s => s.price);
 const obPrices = Object.values(showsConfig).filter(s => s.category === 'off-broadway').map(s => s.price);
+const avg = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0;
+console.error(`\nPricing summary (k=${k.toFixed(4)}):`);
+console.error(`  Total shows: ${prices.length}`);
+console.error(`  BW: avg $${avg(bwPrices).toFixed(0)}, range $${Math.min(...bwPrices)}-$${Math.max(...bwPrices)}`);
+if (obPrices.length) console.error(`  OB: avg $${avg(obPrices).toFixed(0)}, range $${Math.min(...obPrices)}-$${Math.max(...obPrices)}`);
+console.error(`  ${TEAM_SIZE}-show avg cost: $${(avg(prices) * TEAM_SIZE).toFixed(0)}`);
 
-console.error(`\nPricing summary:`);
-console.error(`  Total shows: ${Object.keys(showsConfig).length}`);
-console.error(`  BW: avg $${(bwPrices.reduce((a,b)=>a+b,0)/bwPrices.length).toFixed(0)}, range $${Math.min(...bwPrices)}-$${Math.max(...bwPrices)}`);
-if (obPrices.length) console.error(`  OB: avg $${(obPrices.reduce((a,b)=>a+b,0)/obPrices.length).toFixed(0)}, range $${Math.min(...obPrices)}-$${Math.max(...obPrices)}`);
-console.error(`  8-show avg cost: $${(avgPrice * 8).toFixed(0)}`);
+if (listPrices) {
+  console.error('\n  Price  EV     Tier  Show');
+  const rows = catalog.map(s => ({ s, p: projections.get(s.id) })).sort((a, b) => b.p.totalPoints - a.p.totalPoints);
+  for (const { s, p } of rows) {
+    const c = showsConfig[s.id];
+    console.error(`  $${String(c.price).padStart(2)}   ${p.totalPoints.toFixed(1).padStart(6)}  ${String(p.breakdown.tier)}     ${s.title.slice(0, 44).padEnd(46)} ${c.category === 'off-broadway' ? 'OB' : ''}${c.eligible.criticScore ? '' : ' ★locked'}  CS:${p.criticScorePoints.toFixed(0)} AG:${p.audienceGradePoints.toFixed(0)} BO:${p.boxOfficePoints.toFixed(0)} AW:${p.awardsPoints.toFixed(0)}`);
+  }
+}
 
+// ── Write ───────────────────────────────────────────────────────────
 if (dryRun) {
   console.log(JSON.stringify(config, null, 2));
   console.error('\n--dry-run: output to stdout only');
 } else {
-  const outPath = path.join(dataDir, 'fantasy-league.json');
-  fs.writeFileSync(outPath, JSON.stringify(config, null, 2) + '\n');
-  console.error(`\nWrote ${outPath}`);
+  fs.writeFileSync(leaguePath, JSON.stringify(config, null, 2) + '\n');
+  fs.writeFileSync(frozenPath, JSON.stringify(frozenOut, null, 2) + '\n');
+  // Transparency file: the projections behind every price.
+  const ev = { _meta: { mode: 'preseason', lastUpdated: new Date().toISOString(), season: SEASON, k, predictionSource: 'fantasy-preseason-priors.json' }, showScores: {} };
+  for (const show of catalog) ev.showScores[show.id] = projections.get(show.id);
+  fs.writeFileSync(evPath, JSON.stringify(ev, null, 2) + '\n');
+  console.error(`\nWrote ${leaguePath}, ${frozenPath}, ${evPath}`);
 }
