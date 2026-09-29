@@ -43,6 +43,11 @@ async function main() {
   let sent = 0;
   for (const c of open) {
     if (c.notifiedAt) continue;
+    // A tour found running on Tours To You (BRO-4325) gets two weeks for
+    // create-tour-entries.js to confirm it (a launch next week, a Wikipedia
+    // edit) before the owner is asked.
+    const found = c.source === 'tourstoyou';
+    if (found && Date.now() - Date.parse(c.firstSeen || 0) < 14 * 86400000) continue;
     console.log(`${dryRun ? '[dry-run] would suggest' : 'suggesting'}: ${c.title} (${c.broadwayShowId}) ← ${c.url}`);
     if (dryRun) continue;
     try {
@@ -54,7 +59,9 @@ async function main() {
         decision: true,
         decisionPrompt: `Add the ${c.title} national tour as a tracked tour?`,
         url: c.url,
-        description: `BroadwayWorld published a national-tour review roundup for ${c.title} (${c.broadwayShowId}), which has no tour entry. Add a category:'tour' entry with tourOf:${c.broadwayShowId}, then run node scripts/sweep-tour-reviews.js --tour=<id>.`,
+        description: `${found
+          ? `Tours To You lists a ${c.title} tour running since ${c.segmentStart}, but Wikipedia doesn't confirm its launch (or two companies share the page), so it wasn't added automatically.`
+          : `BroadwayWorld published a national-tour review roundup for ${c.title} (${c.broadwayShowId}), which has no tour entry.`} Add a category:'tour' entry with tourOf:${c.broadwayShowId}, then run node scripts/sweep-tour-reviews.js --tour=<id>.`,
         cooldownHours: 24 * 30,
       });
       c.notifiedAt = new Date().toISOString();

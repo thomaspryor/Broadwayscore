@@ -46,7 +46,7 @@ test('launch needs Wikipedia; close needs a positive signal', () => {
   ]);
   const tour = { id: 'x-tour-2024', title: 'X', openingDate: null, closingDate: null };
   assert.deepEqual(decideTourDates(tour, html, '', NOW).write, {}, 'no Wikipedia, no stated range: write nothing');
-  assert.deepEqual(decideTourDates(tour, html, 'began on December 7, 2024 in Baltimore', NOW).write, { openingDate: '2024-12-07' });
+  assert.deepEqual(decideTourDates(tour, html, 'The tour began on December 7, 2024 in Baltimore', NOW).write, { openingDate: '2024-12-07' });
   assert.deepEqual(
     decideTourDates(tour, html, 'The tour began on December 7, 2024 and closed on January 26, 2025', NOW).write,
     { openingDate: '2024-12-07', closingDate: '2025-01-26' },

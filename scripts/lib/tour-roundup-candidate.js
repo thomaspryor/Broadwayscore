@@ -81,7 +81,10 @@ function openTourCandidates(rows, shows) {
   return (rows || []).filter(r => {
     if (r.createdTourId) return false; // create-tour-entries.js made its entry (BRO-4262)
     const show = byId.get(r.broadwayShowId);
-    return !!show && !!tourCandidateFor(r.slug || 'national-tour', show, shows);
+    // A tour found running on Tours To You (tour-discovery.js) has no roundup
+    // slug; the same "no open tour of this title" test applies.
+    const slug = r.source === 'tourstoyou' ? 'national-tour' : (r.slug || 'national-tour');
+    return !!show && !!tourCandidateFor(slug, show, shows);
   });
 }
 

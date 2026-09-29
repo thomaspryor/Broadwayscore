@@ -1,0 +1,134 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const { titleKey, titleKeys, slugKey, parentForSlug, runningTourCandidate, dedupeCandidates } = require('../../scripts/lib/tour-discovery.js');
+const { decideTourDates, segmentLaunch, segmentTourRows, parseTourSchedule } = require('../../scripts/lib/tour-schedule.js');
+const { openTourCandidates } = require('../../scripts/lib/tour-roundup-candidate.js');
+const { buildTourEntry } = require('../../scripts/lib/tour-entry.js');
+
+const row = (city, venue, dates) => `<tr><td>${city}</td><td>${venue}</td><td>${dates}</td><td>2025-2026</td></tr>`;
+const page = rows => `<table><tr><th>Location</th><th>Venue</th><th>Dates</th><th>Season</th></tr>${rows.join('')}</table>`;
+const NOW = new Date('2026-09-29T00:00:00Z');
+
+const SHOWS = [
+  { id: 'moulin-rouge-2019', title: 'Moulin Rouge! The Musical', category: 'broadway', openingDate: '2019-07-25' },
+  { id: 'a-beautiful-noise-the-neil-diamond-musical-2022', title: 'A Beautiful Noise, The Neil Diamond Musical', category: 'broadway', openingDate: '2022-12-04' },
+  { id: 'the-wiz-1975', title: 'The Wiz', category: 'broadway', openingDate: '1975-01-05' },
+  { id: 'the-wiz-2024', title: 'The Wiz', category: 'broadway', openingDate: '2024-04-17' },
+  { id: 'the-wiz-2030', title: 'The Wiz', category: 'broadway', openingDate: '2030-01-01' },
+  { id: 'the-wiz-westend', title: 'The Wiz', category: 'westend', openingDate: '2025-01-01' },
+  { id: 'les-miserables-1987', title: 'Les Miserables', category: 'broadway', openingDate: '1987-03-12' },
+  { id: 'les-miserables-2014', title: 'Les Misérables', category: 'broadway', openingDate: '2014-03-23' },
+  { id: 'cinderella-2013', title: "Rodgers + Hammerstein's Cinderella", category: 'broadway', openingDate: '2013-03-03' },
+];
+
+test('title keys fold subtitles, "The Musical", diacritics and presenter prefixes', () => {
+  assert.equal(titleKey('Moulin Rouge! The Musical'), 'moulin-rouge');
+  assert.equal(slugKey('moulin-rouge-the-musical'), 'moulin-rouge');
+  assert.equal(slugKey('jersey-boys-1'), 'jersey-boys', 'WordPress dedupe suffix');
+  assert.equal(slugKey('legally-blonde-the-musical-2'), 'legally-blonde');
+  assert.ok(titleKeys('A Beautiful Noise, The Neil Diamond Musical').has('a-beautiful-noise'));
+  assert.ok(titleKeys('Two Strangers (Carry a Cake Across New York)').has('two-strangers'));
+  assert.equal(titleKey('Les Misérables'), titleKey('Les Miserables'));
+  assert.equal(slugKey('cinderella-1'), titleKey("Rodgers + Hammerstein's Cinderella"));
+  // A company page is not the title.
+  assert.notEqual(slugKey('hamilton-angelica'), titleKey('Hamilton'));
+});
+
+test('parent is the latest Broadway production before the tour, never another market', () => {
+  assert.equal(parentForSlug('the-wiz', SHOWS, '2025-02-22').id, 'the-wiz-2024');
+  assert.equal(parentForSlug('the-wiz', SHOWS, '2023-01-01').id, 'the-wiz-1975', 'a revival after the tour started is not its parent');
+  assert.equal(parentForSlug('les-miserables-1', SHOWS, '2026-01-01').id, 'les-miserables-2014');
+  assert.equal(parentForSlug('a-beautiful-noise', SHOWS, '2024-09-21').id, 'a-beautiful-noise-the-neil-diamond-musical-2022');
+  assert.equal(parentForSlug('blue-man-group', SHOWS, '2026-01-01'), null);
+});
+
+test('a running tour is a candidate; a finished or not-yet-listed one is not', () => {
+  const running = page([
+    row('Baltimore, MD', 'Hippodrome', 'February 22-March 2, 2025'),
+    row('Detroit, MI', 'Fisher', 'March 4-16, 2025'),
+    row('Boston, MA', 'Citizens Bank', 'August 1-12, 2025'),
+    row('Denver, CO', 'Buell', 'January 6-18, 2026'),
+    row('Seattle, WA', 'Paramount', 'June 2-14, 2026'),
+    row('Portland, OR', 'Keller', 'October 1-12, 2026'),
+  ]);
+  const r = runningTourCandidate({ slug: 'the-wiz', scheduleUrl: 'https://tourstoyou.org/shows/the-wiz/', html: running, shows: SHOWS, now: NOW });
+  assert.deepEqual(r.candidate, {
+    broadwayShowId: 'the-wiz-2024', title: 'The Wiz', source: 'tourstoyou',
+    slug: 'tourstoyou:the-wiz:2025-02-22', url: 'https://tourstoyou.org/shows/the-wiz/',
+    tourScheduleSlug: 'the-wiz', segmentStart: '2025-02-22',
+  });
+  const ended = page([row('Baltimore, MD', 'Hippodrome', 'February 22-March 2, 2025'), row('Detroit, MI', 'Fisher', 'March 4-16, 2025')]);
+  assert.equal(runningTourCandidate({ slug: 'the-wiz', scheduleUrl: 'u', html: ended, shows: SHOWS, now: NOW }).skip, 'no tour running now');
+  assert.equal(runningTourCandidate({ slug: 'the-wiz', scheduleUrl: 'u', html: '<p>new layout</p>', shows: SHOWS, now: NOW }).skip, 'schedule parsed to no engagements');
+  assert.equal(runningTourCandidate({ slug: 'stomp', scheduleUrl: 'u', html: running, shows: SHOWS, now: NOW }).skip, 'no Broadway show of this title');
+});
+
+test('two pages running the same show from different starts are ambiguous', () => {
+  const a = { broadwayShowId: 'hamilton-2015', segmentStart: '2020-09-22', tourScheduleSlug: 'hamilton' };
+  const b = { broadwayShowId: 'hamilton-2015', segmentStart: '2023-01-10', tourScheduleSlug: 'hamilton-1' };
+  const c = { broadwayShowId: 'jersey-boys-2005', segmentStart: '2026-09-08', tourScheduleSlug: 'jersey-boys' };
+  const d = { broadwayShowId: 'jersey-boys-2005', segmentStart: '2026-09-08', tourScheduleSlug: 'jersey-boys-1' };
+  const out = dedupeCandidates([a, b, c, d]);
+  assert.deepEqual(out.candidates.map(x => x.broadwayShowId), ['jersey-boys-2005'], 'the same tour on two pages is one candidate');
+  assert.equal(out.ambiguous.length, 1);
+});
+
+test('launch: citation dates never count; a stop in a table is not a launch', () => {
+  const seg = segmentTourRows(parseTourSchedule(page([
+    row('Providence, RI', 'PPAC', 'September 20-27, 2026'),
+    row('Boston, MA', 'Emerson', 'September 29-October 11, 2026'),
+  ])))[0];
+  // Come From Away: the date sat in a citation's access-date.
+  const cite = 'A North American tour began.<ref>{{Cite web |title=Tour |access-date=September 20, 2026}}</ref>';
+  assert.equal(segmentLaunch(seg, cite), null);
+  // Harry Potter: a table row naming the date without a launch word.
+  const table = 'North American tour stops: |Providence |20 September 2026 |27 September 2026';
+  assert.equal(segmentLaunch(seg, table), null);
+  const prose = 'The North American tour began on September 20, 2026 at PPAC in Providence.';
+  assert.equal(segmentLaunch(seg, prose).toISOString().slice(0, 10), '2026-09-20');
+});
+
+test('launch: opening night inside the first engagement, or the city with its month or season', () => {
+  const seg = segmentTourRows(parseTourSchedule(page([
+    row('Baltimore, MD', 'Hippodrome', 'September 27-October 5, 2025'),
+    row('Chicago, IL', 'Cadillac Palace', 'October 8-26, 2025'),
+  ])))[0];
+  const iso = d => d && d.toISOString().slice(0, 10);
+  assert.equal(iso(segmentLaunch(seg, 'The United States national tour premiered on September 30, 2025 at the Hippodrome.')), '2025-09-27');
+  assert.equal(iso(segmentLaunch(seg, 'A national tour began in September 2025, starting from the Hippodrome Theatre in Baltimore.')), '2025-09-27');
+  assert.equal(iso(segmentLaunch(seg, 'A North American tour is planned to launch in fall of 2025 in Baltimore.')), '2025-09-27');
+  // Beauty and the Beast: right city, wrong month.
+  assert.equal(segmentLaunch(seg, 'A new North American tour opened in June 2025 in Baltimore.'), null);
+  // A bare year is not enough.
+  assert.equal(segmentLaunch(seg, 'The tour will launch in Baltimore in 2025.'), null);
+  // A later stop mentioned without a launch word is not the launch.
+  assert.equal(segmentLaunch(seg, 'The tour played Chicago in October 2025.'), null);
+});
+
+test('a discovered tour is decided by its segment start and built with schedule evidence', () => {
+  const html = page([
+    row('Cleveland, OH', 'Playhouse Square', 'October 10-26, 2025'),
+    row('Detroit, MI', 'Fisher', 'October 28-November 9, 2025'),
+  ]);
+  const wiki = 'A touring production of the musical began at Playhouse Square in Cleveland, Ohio on October 10, 2025.';
+  const d = decideTourDates({ id: null, title: "Hell's Kitchen", openingDate: null, closingDate: null }, html, wiki, NOW, { segmentStart: '2025-10-10' });
+  assert.deepEqual(d.write, { openingDate: '2025-10-10' });
+  const parent = { id: 'hells-kitchen-2024', title: "Hell's Kitchen", category: 'broadway', type: 'musical', images: {} };
+  const built = buildTourEntry({ parent, shows: [parent], decision: d, roundupUrl: null, scheduleUrl: 'https://tourstoyou.org/shows/hells-kitchen/', now: NOW });
+  assert.equal(built.entry.id, 'hells-kitchen-tour-2025');
+  assert.equal(built.entry.discoverySource, 'tour-schedule:tourstoyou');
+  assert.match(built.entry.tourLaunchEvidence, /tourstoyou\.org\/shows\/hells-kitchen/);
+  assert.equal(built.entry.status, 'open');
+  assert.equal(buildTourEntry({ parent, shows: [parent], decision: d, now: NOW }).skip, 'no evidence URL (roundup or schedule)');
+});
+
+test('a discovered row stays open until its show has a running tour', () => {
+  const parent = { id: 'hells-kitchen-2024', title: "Hell's Kitchen", category: 'broadway' };
+  const row1 = { broadwayShowId: parent.id, title: parent.title, source: 'tourstoyou', slug: 'tourstoyou:hells-kitchen:2025-10-10' };
+  assert.equal(openTourCandidates([row1], [parent]).length, 1);
+  const tour = { id: 'hells-kitchen-tour-2025', category: 'tour', tourOf: parent.id, status: 'open' };
+  assert.equal(openTourCandidates([row1], [parent, tour]).length, 0);
+});

@@ -8,7 +8,9 @@
  *
  * Shape matches the hand-built tours (life-of-pi-tour-2024): provisional,
  * discoverySource 'aggregator-roundup:bww-tour-roundup' (validate-show-venue's
- * tour roundup exemption), the roundup as tourLaunchEvidence.
+ * tour roundup exemption), the roundup as tourLaunchEvidence. A tour found
+ * running on Tours To You (BRO-4325) has no roundup: 'tour-schedule:tourstoyou'
+ * and the schedule page as evidence.
  */
 
 const { tourInheritance, toursOfTitle, tourImageProblems } = require('./tour-family');
@@ -23,7 +25,7 @@ function baseSlug(parentId) {
  * @param {object} args.parent Broadway show the roundup matched
  * @param {Array} args.shows all shows (collision and sibling-tour checks)
  * @param {{write:{openingDate?,closingDate?}, notes:string[], problem?:string}} args.decision decideTourDates result for a blank tour
- * @param {string} args.roundupUrl BWW national-tour roundup
+ * @param {string} [args.roundupUrl] BWW national-tour roundup (none for a tour found running on Tours To You)
  * @param {string} [args.scheduleUrl] Tours To You page used
  * @param {Set<string>} [args.retiredIds] ids from data/retired-show-ids.json
  * @param {Date} [args.now]
@@ -31,6 +33,7 @@ function baseSlug(parentId) {
  */
 function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, retiredIds = null, now = new Date() }) {
   if (!parent || (parent.category || 'broadway') !== 'broadway') return { skip: 'parent is not a Broadway show' };
+  if (!roundupUrl && !scheduleUrl) return { skip: 'no evidence URL (roundup or schedule)' };
   if (!decision || decision.problem) return { skip: `dates: ${(decision && decision.problem) || 'no decision'}` };
   const launch = decision.write && decision.write.openingDate;
   if (!launch) return { skip: 'no launch date confirmed by two sources' };
@@ -62,8 +65,10 @@ function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, reti
     tourOf: parent.id,
     tags: ['tour'],
     provisional: true,
-    discoverySource: 'aggregator-roundup:bww-tour-roundup',
-    tourLaunchEvidence: `BroadwayWorld national-tour roundup ${roundupUrl}`,
+    ...(roundupUrl
+      ? { discoverySource: 'aggregator-roundup:bww-tour-roundup', tourLaunchEvidence: `BroadwayWorld national-tour roundup ${roundupUrl}` }
+      // Found running on Tours To You (tour-discovery.js, BRO-4325).
+      : { discoverySource: 'tour-schedule:tourstoyou', tourLaunchEvidence: `Tours To You schedule ${scheduleUrl}, launch confirmed by Wikipedia` }),
     statusSource: `auto-created ${today} (BRO-4262): ${scheduleUrl || 'Tours To You'} + Wikipedia; ${decision.notes.join('; ')}`,
     openingDateSource: 'tourstoyou+wikipedia',
     ...(close ? { closingDateSource: 'tourstoyou+wikipedia', closingDateUpdatedAt: today } : {}),
