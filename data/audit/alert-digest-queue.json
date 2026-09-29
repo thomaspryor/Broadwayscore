@@ -557,42 +557,6 @@
     "queuedAt": "2026-09-29T00:26:45.928Z"
   },
   {
-    "conditionKey": "opening-night-cv-wrongproduction-unhandled-school-girls-or-the-african-mean-girls-play-2026",
-    "title": "Unhandled CV.wrongProduction on School Girls; Or, The African Mean Girls Play",
-    "description": "talkinbroadway/James Wilson (talkinbroadway--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses the show as having premiered Off — https://www.talkinbroadway.com/page/world/SchoolGirls.html",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-29T02:02:48.503Z"
-  },
-  {
-    "conditionKey": "opening-night-publish-date-pre-opening:missing:school-girls-or-the-african-mean-girls-play-2026",
-    "title": "Shipped review missing publishDate on School Girls; Or, The African Mean Girls Play",
-    "description": "cititour/Brian Scott Lipton SHIPPED with no publishDate — cannot confirm post-opening: https://cititour.com/NYC_Broadway/School-Girls/1396\ntheatrely/Joey Sims SHIPPED with no publishDate — cannot confirm post-opening: https://www.theatrely.com/post/a-fabulous-school-girls-or-the-african-mean-girls-play-finally-makes-it-to-broadway",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-29T02:02:48.508Z"
-  },
-  {
-    "conditionKey": "opening-night-placeholder-synopsis-creation-stories-and-all-the-important-importants-off-broadway-2026",
-    "title": "Placeholder synopsis on creation stories and all the important importants",
-    "description": "synopsis for creation-stories-and-all-the-important-importants-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-29T02:02:52.993Z"
-  },
-  {
     "conditionKey": "opening-night-drift:tru-off-west-end-2026",
     "title": "Opening night drift: Tru (tru-off-west-end-2026)",
     "description": "Review counts do not reconcile for Tru (tru-off-west-end-2026): local review-texts=20, reviews.json aggregate=16, live production=16, drift=4 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
@@ -1133,5 +1097,65 @@
       }
     ],
     "queuedAt": "2026-09-29T08:33:48.078Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-school-girls-or-the-african-mean-girls-play-2026",
+    "title": "Unhandled CV.wrongProduction on School Girls; Or, The African Mean Girls Play",
+    "description": "talkinbroadway/James Wilson (talkinbroadway--james-wilson.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses the show as having premiered Off — https://www.talkinbroadway.com/page/world/SchoolGirls.html",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T08:38:17.176Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:short:school-girls-or-the-african-mean-girls-play-2026",
+    "title": "Shipped review too short to verify on School Girls; Or, The African Mean Girls Play",
+    "description": "theatrely/Joey Sims (theatrely--joey-sims.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.theatrely.com/post/a-fabulous-school-girls-or-the-african-mean-girls-play-finally-makes-it-to-broadway",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T08:38:17.180Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:school-girls-or-the-african-mean-girls-play-2026",
+    "title": "Shipped review missing publishDate on School Girls; Or, The African Mean Girls Play",
+    "description": "cititour/Brian Scott Lipton SHIPPED with no publishDate — cannot confirm post-opening: https://cititour.com/NYC_Broadway/School-Girls/1396\ntheatrely/Joey Sims SHIPPED with no publishDate — cannot confirm post-opening: https://www.theatrely.com/post/a-fabulous-school-girls-or-the-african-mean-girls-play-finally-makes-it-to-broadway",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T08:38:17.184Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:the-standard-of-living-west-end-2026",
+    "title": "Shipped review missing publishDate on The Standard Of Living",
+    "description": "bestoftheatre/null SHIPPED with no publishDate — cannot confirm post-opening: https://www.bestoftheatre.co.uk/the-standard-of-living\ntheatrebookings/null SHIPPED with no publishDate — cannot confirm post-opening: https://www.theatrebookings.com/play/the-standard-of-living",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T08:38:22.321Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-creation-stories-and-all-the-important-importants-off-broadway-2026",
+    "title": "Placeholder synopsis on creation stories and all the important importants",
+    "description": "synopsis for creation-stories-and-all-the-important-importants-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T08:38:22.324Z"
   }
 ]
