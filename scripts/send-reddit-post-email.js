@@ -74,7 +74,7 @@ function textBlock(s) {
 function buildHtml(d, kind) {
   const intro = kind === 'reminder'
     ? `Reviews for ${esc(d.showTitle)} are still fresh. Here's the draft again in case yesterday got away from you. This is the last nudge for this one.`
-    : `Reviews are in for ${esc(d.showTitle)}. Tap the button, give it a read, hit Post. You won't get this again once you've posted.`;
+    : `Reviews are in for ${esc(d.showTitle)}. Tap the button, give it a read, hit Post. These stop once your post shows up on Reddit.`;
   const note = (label, text) => text
     ? `<div style="margin-top:12px;color:${TOKENS.textMuted};font-size:14px;line-height:1.5;"><strong style="color:${TOKENS.text};">${label}</strong> ${text}</div>`
     : '';

@@ -17,7 +17,7 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Generate but do not write the digest snapshot'
+        description: 'Preview only: no digest snapshot written, no Reddit drafts saved, no draft emails sent'
         required: false
         default: 'false'
         type: boolean
