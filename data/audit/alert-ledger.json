@@ -146,13 +146,13 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T04:46:21.864Z",
+      "lastSeen": "2026-09-29T05:34:14.014Z",
       "lastNotifiedAt": "2026-09-29T03:38:46.630Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
       "notifyCount": 108,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3864,7 +3864,8 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36353075509"
       },
       "absentRunIds": [
-        "36522185916"
+        "36522185916",
+        "36525679478"
       ]
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
@@ -5832,13 +5833,13 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every off-Broadway venue-complex subVenueSlugs entry resolves to a real shows.json venue\"",
       "firstSeen": "2026-09-28T20:47:43.893Z",
-      "lastSeen": "2026-09-29T04:46:21.859Z",
+      "lastSeen": "2026-09-29T05:34:14.010Z",
       "lastNotifiedAt": "2026-09-28T20:47:43.893Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4253",
-      "silentRefires": 11,
+      "silentRefires": 12,
       "absentRunIds": []
     },
     "we-aggregator-go-live:ballet-shoes-west-end-2025": {
@@ -6026,6 +6027,30 @@
       "lastSeen": "2026-09-29T05:08:46.626Z",
       "lastNotifiedAt": "2026-09-29T05:08:46.626Z",
       "lastSurfacedAt": "2026-09-29T05:08:46.626Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/tour-shipcheck-fixes": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/tour-shipcheck-fixes",
+      "firstSeen": "2026-09-29T05:34:10.996Z",
+      "lastSeen": "2026-09-29T05:34:10.996Z",
+      "lastNotifiedAt": "2026-09-29T05:34:10.996Z",
+      "lastSurfacedAt": "2026-09-29T05:34:10.996Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/opening-night-guards-2026-09-29": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: bash-integration red on land/opening-night-guards-2026-09-29",
+      "firstSeen": "2026-09-29T05:37:36.859Z",
+      "lastSeen": "2026-09-29T05:37:36.859Z",
+      "lastNotifiedAt": "2026-09-29T05:37:36.859Z",
+      "lastSurfacedAt": "2026-09-29T05:37:36.859Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
