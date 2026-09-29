@@ -148,7 +148,7 @@ jobs:
           HELPER="$RUNNER_TEMP/land-rebase"; mkdir -p "$HELPER"
           for f in land-rebase.sh promisor-fetch-failure.js; do
             # HEAD fallback: the very landing that introduces the script.
-            git show "$BASE:scripts/lib/$f" > "$HELPER/$f" 2>/dev/null || git show "HEAD:scripts/lib/$f" > "$HELPER/$f" || { echo "::error::scripts/lib/$f exists on neither origin/main @ ${BASE:0:10} nor the branch"; exit 1; }
+            git show "$BASE:scripts/lib/$f" > "$HELPER/$f" 2>/dev/null || { echo "::warning::scripts/lib/$f not readable from origin/main @ ${BASE:0:10} — using the branch's copy"; git show "HEAD:scripts/lib/$f" > "$HELPER/$f"; } || { echo "::error::scripts/lib/$f exists on neither origin/main @ ${BASE:0:10} nor the branch"; exit 1; }
           done
           BRANCH="$BRANCH" bash "$HELPER/land-rebase.sh" "$BASE" "$BRANCH" || exit $?
           echo "rebased=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
