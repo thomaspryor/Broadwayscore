@@ -129,7 +129,32 @@ function forecastMonthly({ weeklyDemands, baseWeekly, monthlyCap = Infinity, wee
   };
 }
 
+/**
+ * One-line morning-digest summary of Claude Code demand (BRO-3026).
+ * dailyUsd: { 'YYYY-MM-DD': list-price $ } (UTC days). Reports the last COMPLETE
+ * UTC day plus the trailing-7-day mean; returns null when the trailing 7 days hold no
+ * data (scan saw nothing) so the digest omits the line rather than show $0.
+ * Always labelled list-price: this is demand, not the billed overflow.
+ */
+function renderClaudeSpendDigestLine(dailyUsd, now = new Date()) {
+  if (!dailyUsd || typeof dailyUsd !== 'object') return null;
+  const day = (offset) => new Date(now.getTime() - offset * 864e5).toISOString().slice(0, 10);
+  const last = day(1);
+  // A day with no transcripts is a real $0, but only trust that when the
+  // trailing week shows the scan saw data at all (empty scan = unknown).
+  let sum = 0;
+  let seen = 0;
+  for (let i = 1; i <= 7; i++) {
+    if (day(i) in dailyUsd) seen++;
+    sum += dailyUsd[day(i)] || 0;
+  }
+  if (!seen) return null;
+  const $ = (v) => '$' + Math.round(v).toLocaleString('en-US');
+  return `Claude Code demand ${last} (UTC): ${$(dailyUsd[last] || 0)} list-price · 7-day avg ${$(sum / 7)}/day (this Mac only; not the billed amount)`;
+}
+
 module.exports = {
+  renderClaudeSpendDigestLine,
   PRICES,
   ASSUMED_PRICE_TIERS,
   CACHE_WRITE_MULTIPLIER,

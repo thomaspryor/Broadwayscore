@@ -49,7 +49,7 @@ if (has('--help') || has('-h')) {
   --json            emit JSON only
   --no-write        skip writing the local snapshot
 
-Reads ~/.claude/projects/**/*.jsonl. Writes ~/.broadwayscore-state/claude-spend-snapshot.json.
+Reads ~/.claude/projects/**/*.jsonl. Writes ~/.broadwayscore-state/claude-spend-snapshot.json (incl. dailyUsd per UTC day).
 Calibration defaults come from the week of 2026-09-01..07, the one week where both
 demand and the billed figure were known. Re-derive them when you have a better week.`);
   process.exit(0);
@@ -170,6 +170,7 @@ const snapshot = {
   allowance,
   forecast,
   monthlyCapUsd: CAP,
+  dailyUsd: byDay,
 };
 
 if (JSON_ONLY) {

@@ -56,6 +56,7 @@ for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.
 
 const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon, readSyncRefused, SYNC_REFUSED_READ_FAILED } = require('./lib/digest-snapshots.js');
 const { renderTrunkDigestLine } = require('./lib/trunk-status.js');
+const { renderClaudeSpendDigestLine } = require('./lib/claude-session-spend.js');
 const {
   esc,
   renderHealthDigestBlock,
@@ -248,6 +249,21 @@ function localDispatchWatchdogLeakMessage() {
   if (!Number.isFinite(ageH) || ageH > 3) return null; // stale/unparseable heartbeat — unknown, not an alarm
   const holds = Array.isArray(hb.holds) ? hb.holds : [];
   return holds.find(h => String(h).startsWith(LAUNCHER_LEAK_HOLD_PREFIX)) || null;
+}
+
+// BRO-3026: Claude Code spend line. Runs the read-only forecaster over the last
+// 14 days of local transcripts (--no-write: the digest never touches the
+// snapshot). Fail-soft: any error omits the line — unknown, not zero.
+function localClaudeSpendLine() {
+  try {
+    const { execFileSync } = require('child_process');
+    const out = execFileSync(process.execPath, [path.join(REPO, 'scripts', 'forecast-claude-spend.js'), '--json', '--no-write', '--days=14'],
+      { encoding: 'utf8', timeout: 60000, maxBuffer: 16 * 1024 * 1024 });
+    return renderClaudeSpendDigestLine(JSON.parse(out).dailyUsd);
+  } catch (err) {
+    console.error(`[digest] WARN claude spend line skipped: ${String(err.message).slice(0, 120)}`);
+    return null;
+  }
 }
 
 function localRunnerHealthMessage() {
@@ -558,6 +574,10 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   const watchdogLeakMsg = localDispatchWatchdogLeakMessage();
   if (watchdogLeakMsg) {
     parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(watchdogLeakMsg)}</p>`);
+  }
+  const claudeSpendLine = localClaudeSpendLine();
+  if (claudeSpendLine) {
+    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(claudeSpendLine)}</p>`);
   }
   if (problemsNote) {
     parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(problemsNote)}</p>`);

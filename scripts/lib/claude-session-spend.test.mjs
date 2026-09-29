@@ -97,3 +97,25 @@ test('forecastMonthly is safe when nothing overflows', () => {
   assert.equal(f.capBindsAtP75, false);
   assert.equal(f.weeksToExhaustCapAtP75, Infinity);
 });
+
+import { renderClaudeSpendDigestLine } from './claude-session-spend.js';
+
+test('digest line: last complete UTC day + 7d avg, labelled list-price', () => {
+  const now = new Date('2026-09-10T07:30:00Z');
+  const d = {};
+  for (let i = 1; i <= 7; i++) d[new Date(now.getTime() - i * 864e5).toISOString().slice(0, 10)] = 1000;
+  d['2026-09-09'] = 3478;
+  const line = renderClaudeSpendDigestLine(d, now);
+  assert.match(line, /2026-09-09 \(UTC\): \$3,478 list-price/);
+  assert.match(line, /7-day avg \$1,354\/day/);
+  assert.match(line, /not the billed amount/);
+});
+
+test('digest line: null when no data in trailing week', () => {
+  const now = new Date('2026-09-10T07:30:00Z');
+  assert.equal(renderClaudeSpendDigestLine({}, now), null);
+  assert.equal(renderClaudeSpendDigestLine(null, now), null);
+  assert.equal(renderClaudeSpendDigestLine({ '2026-09-01': 5 }, now), null);
+  // quiet yesterday inside an active week is a real $0
+  assert.match(renderClaudeSpendDigestLine({ '2026-09-07': 700 }, now), /2026-09-09 \(UTC\): \$0 list-price · 7-day avg \$100\/day/);
+});
