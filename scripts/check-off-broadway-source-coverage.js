@@ -1,0 +1,170 @@
+#!/usr/bin/env node
+/**
+ * Off-Broadway source-coverage guard (BRO-4381). Mirrors
+ * check-broadway-source-coverage.js for the OB market.
+ *
+ * discover-new-shows.js now unions TheaterMania's Off-Broadway listings
+ * (market 98) into discovery, but a source can run fine and still leave a
+ * production out (a gate, a dedup false-positive, a title variant). This
+ * answers "which current OB productions does TheaterMania list that
+ * shows.json doesn't have?" directly, against an independent upstream list,
+ * the way the Broadway guard does against Playbill's schedule. It is how the
+ * 16 missing OB shows in BRO-4377 would have been named.
+ *
+ * Alert-only. NEVER writes shows.json. Writes
+ * data/audit/off-broadway-source-coverage-gaps.json (current view) and
+ * data/audit/off-broadway-source-coverage-state.json (first-seen ledger +
+ * `guard` record). Shows queued by a pending-fix add-show plan count as
+ * covered. When the feed is blind (fetch failed, 0 rows, or rows but none
+ * current) the gaps file is left untouched, the state records
+ * `guard: { blind: true }`, a Discord warning goes out and the exit code is 1.
+ *
+ * Usage: node scripts/check-off-broadway-source-coverage.js [--dry-run]
+ *          [--fixture=<json>] [--today=YYYY-MM-DD] [--audit-dir=<dir>] [--shows=<path>]
+ */
+
+'use strict';
+
+const USAGE = `check-off-broadway-source-coverage.js — diff TheaterMania's current
+Off-Broadway listings against shows.json and name what's missing.
+
+Usage:
+  node scripts/check-off-broadway-source-coverage.js [--dry-run]
+
+Options:
+  --dry-run            Print gaps; skip audit-file writes and alerts
+  --fixture=<json>     Use {rows, venues, genres} from this file instead of the
+                       TheaterMania API (test seam; rows are filtered to
+                       current ones against --today)
+  --today=YYYY-MM-DD   "Today" for the current-row filter (default: now)
+  --audit-dir=<dir>    Write the gaps/state files here (default data/audit)
+  --shows=<path>       Read this shows.json (default data/shows.json)
+  --pending-dir=<dir>  Pending-fix plans (default data/pending-fixes)
+  --help, -h           Show this help
+
+Exit codes: 0 = ran; 1 = TheaterMania feed failed or is blind (gaps file left
+untouched, state file records guard.blind: true).`;
+
+function argValue(argv, flag) {
+  const hit = argv.find(a => a.startsWith(flag + '='));
+  return hit ? hit.slice(flag.length + 1) : null;
+}
+
+function readJsonOr(fs, p, fallback) {
+  try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return fallback; }
+}
+
+async function main(argv = process.argv.slice(2)) {
+  if (argv.includes('--help') || argv.includes('-h')) { console.log(USAGE); return 0; }
+
+  const fs = require('fs');
+  const path = require('path');
+  const {
+    fetchTmOffBroadway, isCurrentTmRow, findTmCoverageGaps, decideTmCoverageOutcome,
+  } = require('./lib/theatermania-ob');
+  const { loadPendingAddShows } = require('./lib/pending-add-shows');
+  const { candidateKey } = require('./lib/reverse-discovery');
+  const { isNonTheaterContent, isOneNightShow } = require('./discover-new-shows');
+
+  const dryRun = argv.includes('--dry-run');
+  const fixturePath = argValue(argv, '--fixture');
+  const todayIso = argValue(argv, '--today') || new Date().toISOString().slice(0, 10);
+  const showsPath = argValue(argv, '--shows') || path.join(__dirname, '..', 'data', 'shows.json');
+  const auditDir = argValue(argv, '--audit-dir') || path.join(__dirname, '..', 'data', 'audit');
+  const pendingDir = argValue(argv, '--pending-dir') || undefined;
+  const outPath = path.join(auditDir, 'off-broadway-source-coverage-gaps.json');
+  const statePath = path.join(auditDir, 'off-broadway-source-coverage-state.json');
+  const nowIso = new Date().toISOString();
+
+  let feed;
+  try {
+    if (fixturePath) {
+      const fx = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
+      const rows = (fx.rows || []).filter(r => isCurrentTmRow(r, todayIso));
+      feed = {
+        rows,
+        rawCount: (fx.rows || []).length,
+        venuesById: new Map((fx.venues || []).map(v => [Number(v.id), v])),
+        genresById: new Map((fx.genres || []).map(g => [Number(g.id), g.name])),
+      };
+      console.log(`--fixture: ${feed.rawCount} rows (${rows.length} current as of ${todayIso}) from ${fixturePath}`);
+    } else {
+      feed = await fetchTmOffBroadway({ todayIso });
+    }
+  } catch (e) {
+    feed = { rows: [], rawCount: 0, error: e.message };
+    console.error(`ERROR: TheaterMania OB fetch failed (${e.message})`);
+  }
+
+  const outcome = decideTmCoverageOutcome({ rawCount: feed.rawCount, currentCount: feed.rows.length });
+  if (outcome.blind) {
+    const reason = feed.error || outcome.reason;
+    console.error(`::error::Off-Broadway source-coverage guard is BLIND (TheaterMania: ${reason}) — gaps file left untouched, exiting 1.`);
+    if (!dryRun) {
+      fs.mkdirSync(auditDir, { recursive: true });
+      const state = readJsonOr(fs, statePath, {});
+      const wasBlind = !!(state.guard && state.guard.blind);
+      state.guard = { blind: true, count: null, reason, at: nowIso };
+      fs.writeFileSync(statePath, JSON.stringify(state, null, 2) + '\n');
+      console.log(`Wrote ${statePath} (guard.blind: true)`);
+      // Alert on the transition only, not every 30-min run while it stays blind.
+      if (!wasBlind) {
+        const { sendAlert } = require('./lib/discord-notify');
+        await sendAlert({
+          severity: 'warning',
+          title: 'Off-Broadway source coverage guard is blind',
+          description: `TheaterMania OB listings: ${reason}. Discovery's TheaterMania source is contributing nothing until this clears.`,
+        });
+      }
+    }
+    return outcome.exitCode;
+  }
+
+  const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows;
+  const pendingShows = loadPendingAddShows(pendingDir);
+  const { gaps, parsedCount, skippedCount, gatedCount } = findTmCoverageGaps({
+    rows: feed.rows, venuesById: feed.venuesById, genresById: feed.genresById,
+    shows, pendingShows, gates: { isNonTheaterContent, isOneNightShow },
+  });
+  console.log(`TheaterMania OB: ${feed.rows.length} current rows, ${parsedCount} parsed (${skippedCount} skipped: venue/date), ${gatedCount} filtered by gates; ${pendingShows.length} show(s) queued in pending-fix plans`);
+
+  console.log(`\n${gaps.length} current Off-Broadway production(s) on TheaterMania missing from shows.json:`);
+  for (const g of gaps) console.log(`  "${g.title}" @ ${g.venue} (${g.date || 'no date'}${g.closingDate ? ` → ${g.closingDate}` : ''}) — ${g.url}`);
+  if (gaps.length === 0) console.log('  (none)');
+
+  if (dryRun) {
+    console.log('\n--dry-run: no audit-file write, no alert.');
+    return 0;
+  }
+
+  const state = readJsonOr(fs, statePath, {});
+  const fresh = gaps.filter(g => !state[candidateKey(g)]);
+  for (const g of fresh) state[candidateKey(g)] = { firstSeen: nowIso, title: g.title };
+  state.guard = { blind: false, count: gaps.length, reason: outcome.reason, at: nowIso };
+
+  fs.mkdirSync(auditDir, { recursive: true });
+  fs.writeFileSync(outPath, JSON.stringify({ generatedAt: nowIso, count: gaps.length, gaps }, null, 2) + '\n');
+  fs.writeFileSync(statePath, JSON.stringify(state, null, 2) + '\n');
+  console.log(`\nWrote ${outPath} (${gaps.length}) — ${fresh.length} new since last run`);
+
+  if (fresh.length > 0) {
+    const { sendAlert } = require('./lib/discord-notify');
+    await sendAlert({
+      severity: 'warning',
+      title: `Off-Broadway source coverage: ${fresh.length} current production(s) missing from shows.json`,
+      description: fresh.map(g =>
+        `**${g.title}** @ ${g.venue} (${g.date || 'no date'}) — TheaterMania lists it; shows.json doesn't.\n${g.url}`
+      ).join('\n\n').slice(0, 3500),
+    });
+  }
+  return 0;
+}
+
+if (require.main === module) {
+  main().then(code => process.exit(code)).catch(err => {
+    console.error(`Fatal: ${err.message}`);
+    process.exit(1);
+  });
+}
+
+module.exports = { main, USAGE };
