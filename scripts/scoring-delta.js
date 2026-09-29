@@ -563,6 +563,38 @@ function printCannotAutoVerifyBanner(rebuildLoopTouch) {
 
 // ─── Load two versions of review-guards ──────────────────────────────────────
 
+// Copy into libDir every sibling module (`require('./x')`) that the files
+// already there load, transitively: the BASE_REF version when it exists,
+// else the working-tree one. Keeps the baseline sandbox loadable as lib
+// files gain dependencies.
+function materializeSiblingRequires(libDir) {
+  const reqRe = /require\(\s*['"]\.\/([A-Za-z0-9_.-]+?)(?:\.js)?['"]\s*\)/g;
+  const queue = fs.readdirSync(libDir).filter(f => f.endsWith('.js'));
+  const seen = new Set(queue);
+  while (queue.length) {
+    const file = queue.shift();
+    const src = fs.readFileSync(path.join(libDir, file), 'utf8');
+    for (const m of src.matchAll(reqRe)) {
+      const dep = `${m[1]}.js`;
+      if (seen.has(dep)) continue;
+      seen.add(dep);
+      const dest = path.join(libDir, dep);
+      if (fs.existsSync(dest)) continue;
+      try {
+        const depSrc = execSync(`git show ${BASE_REF}:scripts/lib/${dep}`, {
+          cwd: REPO_ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
+        });
+        fs.writeFileSync(dest, depSrc);
+      } catch {
+        const wt = path.join(REPO_ROOT, 'scripts/lib', dep);
+        if (!fs.existsSync(wt)) continue;
+        fs.copyFileSync(wt, dest);
+      }
+      queue.push(dep);
+    }
+  }
+}
+
 function loadBaselineGuards() {
   // Dump HEAD's version of review-guards.js + date-utils.js to a temp dir so we
   // can require() them independently from the working-tree version.
@@ -621,6 +653,13 @@ function loadBaselineGuards() {
       );
     }
   }
+
+  // Close over every sibling require('./x') the copied files make, so a new
+  // lib dependency can't break the baseline sandbox again (BRO-39
+  // failed-fetch-policy.js, BRO-4258 title-match.js/url-slug.js: each time a
+  // guard gained a require, this list lagged and every run died on
+  // MODULE_NOT_FOUND).
+  materializeSiblingRequires(baselineLibDir);
 
   // Clear require cache and load baseline
   const baselinePath = path.join(baselineLibDir, 'review-guards.js');
