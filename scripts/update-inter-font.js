@@ -44,7 +44,11 @@ Usage:
 // and unlinks the superseded font files (see scripts/lib/cli-help.js).
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 
-const CSS_URL = 'https://fonts.googleapis.com/css2?family=Inter:wght@400..900&display=swap';
+// 100..900, matching the `font-weight: 100 900` the @font-face rules declare.
+// Google returns the same variable file for 400..900 today, but asking for a
+// narrower axis than the CSS advertises means a future change on their side
+// could quietly ship a font that cannot render the weights we claim.
+const CSS_URL = 'https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap';
 // A woff2-capable desktop UA. Google serves ttf to unrecognised agents.
 const UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
@@ -117,7 +121,17 @@ async function main() {
     if (!checkOnly && isNew) {
       fs.mkdirSync(OUT_DIR, { recursive: true });
       fs.writeFileSync(path.join(OUT_DIR, filename), buf);
-      if (current) fs.unlinkSync(path.join(OUT_DIR, current));
+      // The superseded file is deliberately LEFT IN PLACE. globals.css and
+      // layout.tsx still name it at this moment, so deleting it here would
+      // leave the tree in a state where check-font-integrity.js fails and a
+      // local build 404s — between this script finishing and a human pasting
+      // the new blocks in. Remove it in the same commit that updates the CSS.
+      if (current) {
+        console.log(
+          `[inter]   (left ${current} in place — delete it in the same commit that ` +
+            `updates globals.css/layout.tsx, not before)`
+        );
+      }
     }
 
     results.push({ subset, filename, unicodeRange, bytes: buf.length, isNew, current });
@@ -152,9 +166,30 @@ ${wrapRange(r.unicodeRange)}
 `);
   }
   const latin = results.find((r) => r.subset === 'latin');
+
+  // The metric-override fallback face describes ONE font file. If the woff2
+  // changed, those numbers are now stale and the fallback is no longer
+  // metric-matched — text will shift when the real font swaps in, and nothing
+  // reports it because the page still renders. check-font-integrity.js fails on
+  // the marker below, so the update cannot land half-done; say so here too,
+  // where the person doing the update is actually looking.
+  console.log(`[inter] ⚠ The fallback metrics in globals.css were computed for the PREVIOUS`);
+  console.log(`[inter]   file and are now stale. Recompute them against the new woff2:\n`);
+  console.log(`    node -e "
+      const fontkit = require('next/dist/compiled/@next/font/dist/fontkit');
+      const { getFallbackMetricsFromFontFile } =
+        require('next/dist/compiled/@next/font/dist/local/get-fallback-metrics-from-font-file.js');
+      const buf = require('fs').readFileSync('public/fonts/${latin.filename}');
+      const mod = fontkit.default || fontkit;
+      console.log(getFallbackMetricsFromFontFile(mod(buf), 'sans-serif'));
+    "\n`);
+  console.log(`[inter]   then update the @font-face for 'InterVariable Fallback' AND its`);
+  console.log(`[inter]   marker comment to:\n`);
+  console.log(` * metrics-for: /fonts/${latin.filename}\n`);
+
   console.log(`[inter] And in src/app/layout.tsx:\n`);
   console.log(`const INTER_LATIN_WOFF2 = '/fonts/${latin.filename}';\n`);
-  console.log('[inter] Then: npm run build && node scripts/check-font-integrity.js');
+  console.log('[inter] Then: npm run build && node scripts/lib/check-font-integrity.js');
 }
 
 main().catch((e) => {

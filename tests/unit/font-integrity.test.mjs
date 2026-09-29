@@ -1,5 +1,5 @@
 /**
- * Font wiring guard — scripts/check-font-integrity.js
+ * Font wiring guard — scripts/lib/check-font-integrity.js
  *
  * Background (2026-08-16): production served EVERY page in Times New Roman.
  * next/font/google names its class `__variable_<sha1(the CSS Google returns at
@@ -26,6 +26,7 @@ import assert from 'node:assert';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 import {
@@ -34,7 +35,7 @@ import {
   normFamily,
   parseFontFaces,
   parseTailwindSans,
-} from '../../scripts/check-font-integrity.js';
+} from '../../scripts/lib/check-font-integrity.js';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
@@ -50,6 +51,7 @@ function repoFixture({ css, tailwind, layout, fontFiles = ['fonts/i.woff2'] } = 
     'src/app/globals.css',
     css ??
       `@font-face{font-family:'InterVariable';src:url('/fonts/i.woff2') format('woff2');unicode-range:U+0000-00FF}\n` +
+        `/* metrics-for: /fonts/i.woff2 */\n` +
         `@font-face{font-family:'InterVariable Fallback';src:local('Arial');size-adjust:107.89%}\n`
   );
   write(
@@ -98,11 +100,60 @@ describe('font wiring: the 2026-08-16 incident shapes', () => {
     assert.ok(checks(dir).includes('primary-family-undefined'));
   });
 
+  test('flags a DYNAMIC next/font import too', () => {
+    // `await import('next/font/google')` reaches the same loader as a static
+    // import, so matching only `from '...'` would let the fix walk right back in.
+    const dir = repoFixture({
+      layout: `const m = await import('next/font/google');\nconst F = '/fonts/i.woff2';\n`,
+    });
+    assert.ok(checks(dir).includes('next-font-reintroduced'));
+  });
+
   test('a commented-out next/font import is not a failure', () => {
     const dir = repoFixture({
       layout: `// import { Inter } from 'next/font/google';\n/* from 'next/font/google' */\nconst F = '/fonts/i.woff2';\n`,
     });
     assert.deepEqual(checks(dir), []);
+  });
+});
+
+describe('font wiring: the filename must still describe the bytes', () => {
+  // /fonts/ is served immutable for a year, so swapping bytes under an
+  // unchanged filename serves the wrong font to returning visitors for a year,
+  // silently. Existence alone never catches that.
+  test('flags a content-hashed file whose bytes no longer match its name', () => {
+    const dir = repoFixture({
+      css: `@font-face{font-family:'InterVariable';src:url('/fonts/Inter-latin-var.deadbeef.woff2') format('woff2')}`,
+      layout: `const F = '/fonts/Inter-latin-var.deadbeef.woff2';\n`,
+      fontFiles: ['fonts/Inter-latin-var.deadbeef.woff2'],
+    });
+    assert.ok(checks(dir).includes('content-hash-mismatch'));
+  });
+
+  test('accepts a file whose name matches its real hash', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'font-hash-'));
+    const bytes = 'woff2-bytes';
+    const h = createHash('sha256').update(bytes).digest('hex').slice(0, 8);
+    const name = `Inter-latin-var.${h}.woff2`;
+    const write = (rel, content) => {
+      fs.mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true });
+      fs.writeFileSync(path.join(dir, rel), content);
+    };
+    write(`public/fonts/${name}`, bytes);
+    write(
+      'src/app/globals.css',
+      `@font-face{font-family:'InterVariable';src:url('/fonts/${name}') format('woff2')}\n`
+    );
+    write(
+      'tailwind.config.ts',
+      `export default {\n  theme: {\n    fontFamily: {\n      sans: ['InterVariable', 'Arial'],\n    },\n  },\n}\n`
+    );
+    write('src/app/layout.tsx', `const F = '/fonts/${name}';\n`);
+    assert.deepEqual(checks(dir), []);
+  });
+
+  test('a filename with no hash segment is left alone', () => {
+    assert.deepEqual(checks(repoFixture()), []);
   });
 });
 
@@ -140,6 +191,45 @@ describe('font wiring: shipped assets and the duplicated filename', () => {
     const dir = repoFixture();
     fs.rmSync(path.join(dir, 'tailwind.config.ts'));
     assert.ok(checks(dir).includes('missing-file'));
+  });
+});
+
+describe('font wiring: the metric-override face must stay anchored', () => {
+  // The four override numbers describe ONE font file. Swapping the woff2
+  // without recomputing them silently un-matches the metrics and brings back
+  // the layout shift the face exists to prevent — and nothing reports it,
+  // because the page still renders. So the overrides carry a marker naming the
+  // file they came from, and it has to keep pointing at a real @font-face src.
+  test('flags overrides whose metrics-for file is no longer used — a stale swap', () => {
+    const dir = repoFixture({
+      css:
+        `@font-face{font-family:'InterVariable';src:url('/fonts/i-NEWHASH.woff2') format('woff2')}\n` +
+        `/* metrics-for: /fonts/i-OLDHASH.woff2 */\n` +
+        `@font-face{font-family:'InterVariable Fallback';src:local('Arial');ascent-override:89.79%}\n`,
+      layout: `const F = '/fonts/i-NEWHASH.woff2';\n`,
+      fontFiles: ['fonts/i-NEWHASH.woff2'],
+    });
+    assert.ok(checks(dir).includes('metrics-stale'));
+  });
+
+  test('flags overrides with no metrics-for marker at all', () => {
+    const dir = repoFixture({
+      css:
+        `@font-face{font-family:'InterVariable';src:url('/fonts/i.woff2') format('woff2')}\n` +
+        `@font-face{font-family:'InterVariable Fallback';src:local('Arial');size-adjust:107.89%}\n`,
+    });
+    assert.ok(checks(dir).includes('metrics-unanchored'));
+  });
+
+  test('a correctly anchored marker passes', () => {
+    assert.deepEqual(checks(repoFixture()), []);
+  });
+
+  test('no overrides at all means nothing to anchor — not a failure', () => {
+    const dir = repoFixture({
+      css: `@font-face{font-family:'InterVariable';src:url('/fonts/i.woff2') format('woff2')}\n`,
+    });
+    assert.deepEqual(checks(dir), []);
   });
 });
 

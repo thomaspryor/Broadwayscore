@@ -48,6 +48,16 @@
  * layout. Overrides are the ones next/font computed for this exact file
  * (getFallbackMetricsFromFontFile, sans-serif) — kept so the fix is
  * CLS-neutral vs. what production served before it broke.
+ *
+ * These four numbers describe ONE specific font file. Swapping the woff2
+ * without recomputing them silently un-matches the metrics and reintroduces
+ * the layout shift this block exists to prevent — a failure nothing would
+ * report, because the page still renders. The marker below names the file they
+ * were computed from, and check-font-integrity.js fails the build if it stops
+ * matching the latin @font-face src. Recompute via the metrics block printed
+ * by scripts/update-inter-font.js.
+ *
+ * metrics-for: /fonts/Inter-latin-var.3100e775.woff2
  */
 @font-face {
   font-family: 'InterVariable Fallback';

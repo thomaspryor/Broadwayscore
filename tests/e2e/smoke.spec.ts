@@ -178,12 +178,14 @@ test.describe('Post-deploy smoke tests', () => {
    */
   test('pages render in a real loaded webfont, not the browser default', async ({ page }) => {
     await page.goto('/');
-    await page.evaluate(() => document.fonts.ready);
 
     const heading = page.locator('h1').first();
     await expect(heading).toBeVisible({ timeout: 15000 });
+    // Await fonts.ready AFTER the heading is up: faces requested during
+    // hydration can still be in flight if we settle the set too early.
+    await page.evaluate(() => document.fonts.ready);
 
-    const { primary, loadedFamilies } = await heading.evaluate((el) => {
+    const { primary, loadedFamilies, paintsLatin } = await heading.evaluate((el) => {
       const stack = window.getComputedStyle(el).fontFamily;
       // First entry of the stack, unquoted — what the browser paints with.
       const first = (stack.split(',')[0] || '').trim().replace(/^["']|["']$/g, '');
@@ -192,6 +194,12 @@ test.describe('Post-deploy smoke tests', () => {
         loadedFamilies: Array.from(document.fonts)
           .filter((f) => f.status === 'loaded')
           .map((f) => f.family.replace(/^["']|["']$/g, '')),
+        // The latin and latin-ext faces share ONE family name, so "the family
+        // loaded" is satisfied by either. A 404 on the latin subset — the one
+        // almost every glyph on the page needs, and the one we preload — would
+        // still pass that check whenever a single accented character pulled in
+        // latin-ext. Ask the font matcher directly about plain ASCII instead.
+        paintsLatin: document.fonts.check(`1em "${first}"`, 'Broadway'),
       };
     });
 
@@ -209,5 +217,14 @@ test.describe('Post-deploy smoke tests', () => {
         `loaded (${JSON.stringify(loadedFamilies)}) — the page is painting in a ` +
         `browser fallback, not the site's font`
     ).toContain(primary);
+
+    // ...and specifically for ordinary latin text, not just whatever subset
+    // happened to be pulled in by one accented character.
+    expect(
+      paintsLatin,
+      `"${primary}" is loaded, but the face covering plain latin text is not — the ` +
+        `main subset probably 404'd while a secondary one loaded, so most of the page ` +
+        `is painting in a fallback`
+    ).toBe(true);
   });
 });

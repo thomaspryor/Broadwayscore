@@ -40,16 +40,17 @@
  * against production after every deploy.
  *
  * USAGE
- *   node scripts/check-font-integrity.js          # human-readable
- *   node scripts/check-font-integrity.js --json
- *   node scripts/check-font-integrity.js --help
+ *   node scripts/lib/check-font-integrity.js          # human-readable
+ *   node scripts/lib/check-font-integrity.js --json
+ *   node scripts/lib/check-font-integrity.js --help
  *
  * Exits 1 on any failure. Also consumed by tests/unit/font-integrity.test.mjs.
  */
 
 const fs = require('fs');
 const path = require('path');
-const { hasHelpFlag } = require('./lib/cli-help.js');
+const crypto = require('crypto');
+const { hasHelpFlag } = require('./cli-help.js');
 
 const USAGE = `check-font-integrity.js — guard the self-hosted font wiring at the source level.
 
@@ -59,9 +60,9 @@ filename in sync between globals.css and layout.tsx. Exits 1 on failure.
 See the header comment for the 2026-08-16 Times New Roman incident.
 
 Usage:
-  node scripts/check-font-integrity.js           human-readable report
-  node scripts/check-font-integrity.js --json    machine-readable report
-  node scripts/check-font-integrity.js --help, -h  print this usage and exit
+  node scripts/lib/check-font-integrity.js           human-readable report
+  node scripts/lib/check-font-integrity.js --json    machine-readable report
+  node scripts/lib/check-font-integrity.js --help, -h  print this usage and exit
 `;
 
 const DEFAULT_PATHS = {
@@ -191,9 +192,16 @@ function analyze(paths = {}) {
 
   // 1. next/font must not come back — its class name is a hash of a live
   //    network response, which is what desynced HTML from CSS in the first place.
-  for (const file of walk(abs(p.srcDir), ['.ts', '.tsx', '.js', '.jsx'])) {
+  for (const file of walk(abs(p.srcDir), ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs'])) {
     const body = stripJsComments(fs.readFileSync(file, 'utf8'));
-    if (/from\s+['"]next\/font/.test(body) || /require\(\s*['"]next\/font/.test(body)) {
+    // Static import, require, and dynamic import() all reach the same loader,
+    // so all three have to be caught — matching only `from 'next/font'` would
+    // let `await import('next/font/google')` walk the fix straight back in.
+    if (
+      /from\s+['"]next\/font/.test(body) ||
+      /require\(\s*['"]next\/font/.test(body) ||
+      /import\(\s*['"]next\/font/.test(body)
+    ) {
       failures.push({
         check: 'next-font-reintroduced',
         detail:
@@ -262,6 +270,31 @@ function analyze(paths = {}) {
             `@font-face for "${face.family}" points at ${src}, which does not exist in ` +
             `${p.publicDir}/. Users would get a 404 and no font.`,
         });
+        continue;
+      }
+      // The filename embeds sha256(bytes).slice(0,8) — that is the contract
+      // update-inter-font.js writes. Existence alone is not enough: /fonts/ is
+      // served `immutable` for a year (vercel.json), so replacing the bytes
+      // while keeping the filename would serve the WRONG font to every
+      // returning visitor, for a year, with nothing reporting it. Verify the
+      // name still describes the bytes.
+      const named = src.match(/\.([0-9a-f]{8})\.woff2$/);
+      if (named) {
+        const actual = crypto
+          .createHash('sha256')
+          .update(fs.readFileSync(onDisk))
+          .digest('hex')
+          .slice(0, 8);
+        if (actual !== named[1]) {
+          failures.push({
+            check: 'content-hash-mismatch',
+            detail:
+              `${src} is named for content hash ${named[1]} but its bytes hash to ${actual}. ` +
+              `The file was replaced without renaming it. /fonts/ is served immutable for a ` +
+              `year, so every returning visitor would keep the stale font indefinitely. ` +
+              `Re-run scripts/update-inter-font.js, which names each file after its bytes.`,
+          });
+        }
       }
     }
   }
@@ -289,6 +322,41 @@ function analyze(paths = {}) {
           `exact file. The duplicated filename has drifted — the browser would preload a ` +
           `font it never uses (or 404).`,
       });
+    }
+  }
+
+  // 6. The metric-override fallback face describes ONE font file. Swapping the
+  //    woff2 without recomputing ascent/descent/size-adjust silently un-matches
+  //    the metrics and brings back the layout shift the face exists to prevent
+  //    — and nothing would report it, because the page still renders fine.
+  //    So the overrides carry a `metrics-for:` marker naming the file they were
+  //    computed from, and it must still be a real @font-face src.
+  //    Read from the RAW css: the marker lives in a comment, which the parsed
+  //    copy has had stripped.
+  const hasOverrides = /(?:ascent-override|size-adjust)\s*:/.test(css);
+  if (hasOverrides) {
+    const marker = cssRaw.match(/metrics-for:\s*(\S+)/);
+    if (!marker) {
+      failures.push({
+        check: 'metrics-unanchored',
+        detail:
+          `${p.globalsCss} sets ascent-override/size-adjust on a fallback face but has no ` +
+          `\`metrics-for: <font path>\` marker saying which file those numbers were ` +
+          `computed from. Without it a future font swap silently leaves stale metrics and ` +
+          `reintroduces layout shift. Add the marker in the comment above the face.`,
+      });
+    } else if (!declaredSrcs.has(marker[1])) {
+      failures.push({
+        check: 'metrics-stale',
+        detail:
+          `${p.globalsCss} says its fallback metrics were computed from ${marker[1]}, but no ` +
+          `@font-face uses that file any more — the font was updated without recomputing ` +
+          `ascent-override/descent-override/size-adjust. The fallback is no longer ` +
+          `metric-matched, so text will shift when the real font swaps in. Recompute them ` +
+          `with the metrics block printed by scripts/update-inter-font.js and update the marker.`,
+      });
+    } else {
+      notes.push(`fallback metrics anchored to: ${marker[1]}`);
     }
   }
 
