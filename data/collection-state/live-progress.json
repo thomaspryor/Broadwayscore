@@ -1,26 +1,77 @@
 {
-  "updatedAt": "2026-09-29T19:53:23.781Z",
-  "processed": 24,
-  "failed": 3,
-  "successRate": "88.9%",
+  "updatedAt": "2026-09-29T21:22:36.427Z",
+  "processed": 76,
+  "failed": 21,
+  "successRate": "78.4%",
   "tierBreakdown": {
-    "playwright": 17,
+    "playwright": 39,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 3,
-    "scrapingbee": 2,
+    "scrapingdog": 11,
+    "scrapingbee": 8,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 6
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-09-29T19:46:35.014Z",
       "event": "bb-session",
       "session": "e422b3bd",
       "url": "https://deadline.com/2026/02/suffs-pbs-great-performances-1236717508/"
+    },
+    {
+      "t": "2026-09-29T20:52:35.376Z",
+      "event": "bb-session",
+      "session": "1b15ed57",
+      "url": "https://www.nytimes.com/2026/09/28/theater/school-girls-or-the-african-mean-girl"
+    },
+    {
+      "t": "2026-09-29T20:52:35.902Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-29T20:52:53.150Z",
+      "event": "bb-session",
+      "session": "2d969c38",
+      "url": "https://www.nytimes.com/2026/09/28/theater/school-girls-or-the-african-mean-girl"
+    },
+    {
+      "t": "2026-09-29T20:52:53.630Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-29T21:07:27.806Z",
+      "event": "bb-session",
+      "session": "a412929d",
+      "url": "https://ground.news/article/hailie-deegan-wins-arca-west-race-with-last-lap-pass"
+    },
+    {
+      "t": "2026-09-29T21:09:26.045Z",
+      "event": "bb-session",
+      "session": "7805386a",
+      "url": "https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london"
+    },
+    {
+      "t": "2026-09-29T21:09:26.517Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-09-29T21:22:16.292Z",
+      "event": "bb-session",
+      "session": "60c54287",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
+    },
+    {
+      "t": "2026-09-29T21:22:27.664Z",
+      "event": "bb-session",
+      "session": "c5ed31bf",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
     }
   ]
 }
