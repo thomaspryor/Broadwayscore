@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-29T01:43:14.223Z",
+  "timestamp": "2026-09-29T02:44:58.806Z",
   "stats": {
-    "totalReviews": 44581,
-    "alreadyFlagged": 18243,
-    "dateGuardCatches": 239,
-    "directorMismatch": 1098,
-    "tvFilmSignals": 1320,
-    "londonSignals": 1212,
+    "totalReviews": 44600,
+    "alreadyFlagged": 18248,
+    "dateGuardCatches": 229,
+    "directorMismatch": 1102,
+    "tvFilmSignals": 1321,
+    "londonSignals": 1213,
     "offBroadwaySignals": 512,
     "yearMismatch": 95,
-    "noPublishDate": 3878
+    "noPublishDate": 3881
   },
   "findings": [
     {
@@ -1105,7 +1105,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 74,
+      "score": 75,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -6683,7 +6683,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-06-29",
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6697,7 +6697,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 80,
+      "score": 82,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -15299,7 +15299,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
-      "score": 79,
+      "score": 80,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
       "findings": [
@@ -15425,7 +15425,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
-      "score": 77,
+      "score": 82,
       "publishDate": "2025-12-12",
       "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283?srsltid=AfmBOopZW29rEZK9Fg8EKA2nVqf0gU1fVIrWNIjC9D0Sf-uihs3xV8FN",
       "findings": [
@@ -16512,7 +16512,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
@@ -27203,155 +27203,6 @@
       ]
     },
     {
-      "showId": "sylvia-off-west-end-2026",
-      "file": "daily-mail--patrick-marmion.json",
-      "score": 59,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
-        }
-      ]
-    },
-    {
-      "showId": "sylvia-off-west-end-2026",
-      "file": "guardian--arifa-akbar.json",
-      "score": 84,
-      "publishDate": "2023-02-15",
-      "url": "https://www.theguardian.com/stage/2023/feb/15/sylvia-pankhurst-review-old-vic-london",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "sylvia-off-west-end-2026",
-      "file": "guardian--susannah-clapp.json",
-      "score": 67,
-      "publishDate": "2023-02-15",
-      "url": "https://www.theguardian.com/stage/2023/feb/19/phaedra-simon-stone-national-theatre-janet-mcteer-review-sylvia-musica-old-vic-kate-prince-beverley-knight-standing-at-the-skys-edge-national-chris-bush-richard-hawley",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "sylvia-off-west-end-2026",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 76,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
-        }
-      ]
-    },
-    {
-      "showId": "sylvia-off-west-end-2026",
-      "file": "london-box-office--stuart-king.json",
-      "score": 75,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1364d before show (2023-02-18 vs 2026-11-13)"
-        }
-      ]
-    },
-    {
-      "showId": "sylvia-off-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "score": 55,
-      "publishDate": "2023-02-15",
-      "url": "https://www.standard.co.uk/culture/theatre/sylvia-old-vic-review-beverley-knight-kate-prince-sharon-rose-suffragette-musical-b1060425.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
-        }
-      ]
-    },
-    {
-      "showId": "sylvia-off-west-end-2026",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 59,
-      "publishDate": "2023-02-15",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/sylvia-old-vic-review-suffragettes-meet-hamilton-pantomime/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
-        }
-      ]
-    },
-    {
-      "showId": "sylvia-off-west-end-2026",
-      "file": "thestage--sam-marlowe.json",
-      "score": 63,
-      "publishDate": "2023-02-15",
-      "url": "https://www.thestage.co.uk/reviews/sylvia-review-at-the-old-vic-london-starring-beverley-knight",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
-        }
-      ]
-    },
-    {
-      "showId": "sylvia-off-west-end-2026",
-      "file": "timeout-london--alice-saville.json",
-      "score": 59,
-      "publishDate": "2023-02-15",
-      "url": "https://www.timeout.com/london/theatre/sylvia-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
-        }
-      ]
-    },
-    {
-      "showId": "sylvia-off-west-end-2026",
-      "file": "times-uk--clive-davis.json",
-      "score": 57,
-      "publishDate": "2023-02-15",
-      "url": "https://www.thetimes.co.uk/article/sylvia-review-beverley-knight-shines-in-a-stodgy-suffragette-show-2fln5l2qv",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1367d before show (2023-02-15 vs 2026-11-13)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
       "showId": "take-me-out-2022",
       "file": "medium--david-cote.json",
       "score": 78,
@@ -33658,6 +33509,29 @@
     },
     {
       "showId": "tru-off-west-end-2026",
+      "file": "plays-international--unknown.json",
+      "publishDate": "2026-09-28",
+      "url": "https://playsinternational.org.uk/tru-menier-chocolate-factory/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rob ashford\" from tru-off-broadway-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-west-end-2026",
       "file": "readaboutstuff--unknown.json",
       "score": 91,
       "publishDate": "2026-09-28",
@@ -33676,6 +33550,24 @@
       "score": 77,
       "publishDate": "2026-09-28",
       "url": "https://southlondon.co.uk/area/southwark/review-tru-at-menier-chocolate-factory/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rob ashford\" from tru-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-west-end-2026",
+      "file": "stagedtheatre--unknown.json",
+      "publishDate": "2026-09-27",
+      "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/tru-menier-chocolate-factory",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -36161,7 +36053,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 74,
+      "score": 77,
       "publishDate": "2026-09-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/a-month-in-the-country-donmar-warehouse-review",
       "findings": [
@@ -36189,7 +36081,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "theartsdispatch--the-arts-dispatch.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2026-09-13",
       "url": "https://theartsdispatch.substack.com/p/a-month-in-the-country-review-donmar",
       "findings": [
@@ -37619,7 +37511,7 @@
     {
       "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 78,
+      "score": 75,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
       "findings": [
@@ -38902,7 +38794,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-05-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-care-young-vic",
       "findings": [
@@ -40567,7 +40459,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
-      "score": 80,
+      "score": 81,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
       "findings": [
@@ -40581,7 +40473,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": 74,
+      "score": 76,
       "publishDate": "2026-08-13",
       "url": "https://playsinternational.org.uk/death-note-the-musical-barbican/",
       "findings": [
@@ -42503,7 +42395,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2026-09-16",
       "url": "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review",
       "findings": [
@@ -42517,7 +42409,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "londonlivinglarge--london-living-large.json",
-      "score": 75,
+      "score": 78,
       "publishDate": "2026-09-18",
       "url": "https://www.londonlivinglarge.com/2026/09/golden-boy-almeida-theatre-sep-8-oct-31.html",
       "findings": [
@@ -46809,7 +46701,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 78,
+      "score": 76,
       "publishDate": "2026-09-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
       "findings": [
@@ -47294,7 +47186,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "artsdesk--demetrios-matheou.json",
-      "score": 81,
+      "score": 80,
       "publishDate": null,
       "url": "http://theartsdesk.com/theatre/mass-donmar-warehouse-review-purgatorial-cat-and-mouse",
       "findings": [
@@ -52110,6 +52002,48 @@
       ]
     },
     {
+      "showId": "sylvia-west-end-2023",
+      "file": "guardian--arifa-akbar.json",
+      "score": 84,
+      "publishDate": "2023-02-15",
+      "url": "https://www.theguardian.com/stage/2023/feb/15/sylvia-pankhurst-review-old-vic-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "sylvia-west-end-2023",
+      "file": "guardian--susannah-clapp.json",
+      "score": 67,
+      "publishDate": "2023-02-15",
+      "url": "https://www.theguardian.com/stage/2023/feb/19/phaedra-simon-stone-national-theatre-janet-mcteer-review-sylvia-musica-old-vic-kate-prince-beverley-knight-standing-at-the-skys-edge-national-chris-bush-richard-hawley",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "sylvia-west-end-2023",
+      "file": "times-uk--clive-davis.json",
+      "score": 57,
+      "publishDate": "2023-02-15",
+      "url": "https://www.thetimes.co.uk/article/sylvia-review-beverley-knight-shines-in-a-stodgy-suffragette-show-2fln5l2qv",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "table-17-off-west-end-2026",
       "file": "afridiziak-theatre-news--mark-arbouine.json",
       "score": 79,
@@ -56075,6 +56009,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-standard-of-living-west-end-2026",
+      "file": "thewestendshows--thewestendshowsco-uk.json",
+      "publishDate": "2026-09-22",
+      "url": "https://www.thewestendshows.co.uk/the-standard-of-living-opens-at-theatre-royal-haymarket/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
