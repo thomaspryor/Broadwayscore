@@ -25,7 +25,11 @@
  * existing list alone so the workflow's failure alert fires.
  *
  * Usage:
- *   node scripts/refresh-nyt-critics-picks.js [--dry-run]
+ *   node scripts/refresh-nyt-critics-picks.js [--dry-run] [--max-pages=N]
+ *
+ * --max-pages=1 checks only the newest ~10 picks. The opening-night poller
+ * uses it so a pick published on opening night gets its badge in the same
+ * run (scripts/lib/nyt-pick-refresh-needed.js decides when).
  */
 
 const fs = require('fs');
@@ -142,8 +146,15 @@ function readExisting() {
   }
 }
 
+function parseMaxPages(argv) {
+  const raw = (argv.find(a => a.startsWith('--max-pages=')) || '').split('=')[1];
+  const n = parseInt(raw, 10);
+  return Number.isFinite(n) && n > 0 ? Math.min(n, MAX_PAGES) : MAX_PAGES;
+}
+
 async function main() {
   const dryRun = process.argv.includes('--dry-run');
+  const maxPages = parseMaxPages(process.argv.slice(2));
   // Proxy fetches can be slow; stop paging before the workflow timeout. A
   // partial scrape still merges additively.
   const budget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
@@ -152,7 +163,7 @@ async function main() {
   let prevSize = 0;
   let firstPageError = null;
 
-  for (let page = 1; page <= MAX_PAGES; page++) {
+  for (let page = 1; page <= maxPages; page++) {
     if (budget.exceeded()) {
       console.log(`  Time budget reached before page ${page}; stopping.`);
       break;
@@ -180,7 +191,7 @@ async function main() {
       break;
     }
 
-    if (page < MAX_PAGES) await sleep(DELAY_MS);
+    if (page < maxPages) await sleep(DELAY_MS);
   }
 
   if (_scraper && typeof _scraper.cleanup === 'function') {
@@ -222,7 +233,7 @@ async function main() {
   console.log(`Wrote ${urls.length} URLs (${added.length} new) to ${OUTPUT_PATH}`);
 }
 
-module.exports = { extractReviewUrls, looksLikeSpotlightPage, evaluateScrape, mergePicks, MAX_NEW_PER_RUN };
+module.exports = { extractReviewUrls, looksLikeSpotlightPage, evaluateScrape, mergePicks, parseMaxPages, MAX_NEW_PER_RUN, MAX_PAGES };
 
 if (require.main === module) {
   main().catch(err => {

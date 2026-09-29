@@ -84,3 +84,12 @@ test('merge keeps picks that scrolled off the spotlight window', () => {
   assert.deepEqual(added, ['https://www.nytimes.com/2026/09/23/theater/the-holes-review.html']);
   assert.equal(urls.length, 3);
 });
+
+test('parseMaxPages: default is the full cap, --max-pages=1 limits to page 1, junk falls back', () => {
+  const { parseMaxPages, MAX_PAGES } = require('./refresh-nyt-critics-picks.js');
+  assert.equal(parseMaxPages([]), MAX_PAGES);
+  assert.equal(parseMaxPages(['--max-pages=1']), 1);
+  assert.equal(parseMaxPages(['--max-pages=0']), MAX_PAGES);
+  assert.equal(parseMaxPages(['--max-pages=abc']), MAX_PAGES);
+  assert.equal(parseMaxPages(['--max-pages=999']), MAX_PAGES);
+});
