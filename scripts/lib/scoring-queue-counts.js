@@ -38,6 +38,7 @@ const { isBlockedFromRescore } = require('./rescore-lifecycle');
 const { selectScorableText } = require('./scorable-text');
 const { hasExcerpt } = require('./excerpt-fields');
 const { isInFallbackCooldown } = require('./manual-clear-fallback-cooldown');
+const { getBestTextForScoring } = require('./text-quality');
 
 /**
  * Why a file that looks unscored is not actionable work. Returned instead of a
@@ -131,14 +132,30 @@ function isActionableRescore(data, ctx) {
 }
 
 /** Phase 3 (--stale-scores). Mirrors index.ts's staleScores filter. */
+//
+// BRO-4332: this used to also exclude `ensembleData` and `rescoreCompletedAt`.
+// Every modern score carries ensembleData, so the sweep never touched an
+// ensemble score taken off an excerpt — the exact state opening night leaves
+// behind when text is collected in one CI job and scored in another whose
+// checkout predates the text commit (School Girls 2026-09-29: Guardian,
+// Tribune, Vulture, EW, TheaterMania, Theatrely all excerpt-scored with full
+// text on disk). The loop guard is now the scorer's own text choice: the file
+// is stale only if getBestTextForScoring() would hand the LLM the fullText
+// NOW, so a rescore always ends with textSource.type === 'fullText' and drops
+// out of this predicate.
 function isActionableStale(data, ctx) {
   if (!data.fullText || data.fullText.length < 1000) return false;
   if (!data.llmScore || !data.llmScore.score) return false;
-  if (data.needsRescore || data.ensembleData || data.rescoreCompletedAt) return false;
+  if (data.needsRescore === true) return false; // phase 2 owns flagged files
+  // A locked human score is what the site shows; rescoring changes nothing visible.
+  if (data.humanReviewScore != null && data.humanReviewScoreProvisional !== true) return false;
   const textSource = data.llmMetadata && data.llmMetadata.textSource;
   if (textSource && textSource.type === 'fullText') return false;
-  if (!hasExcerpt(data)) return false;
-  return commonSelectionSkipReason(data, ctx, {}) === null;
+  if (!hasExcerpt(data) && !(textSource && textSource.type === 'excerpt')) return false;
+  if (isBlockedFromRescore(data)) return false;
+  const best = getBestTextForScoring(data);
+  if (!best || best.type !== 'fullText') return false;
+  return commonSelectionSkipReason(data, ctx, { starRatingApplies: false }) === null;
 }
 
 /** Phase 4 (--retry-emergency). Mirrors index.ts's retryEmergency filter. */

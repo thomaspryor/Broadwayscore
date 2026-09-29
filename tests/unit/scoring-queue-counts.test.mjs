@@ -216,6 +216,43 @@ describe('phase 2/3/4 predicates', () => {
     );
   });
 
+  // BRO-4332: School Girls 2026-09-29 — six ensemble scores taken off the BWW
+  // excerpt while full text sat on disk. The old predicate skipped anything
+  // with ensembleData, so no sweep ever reached them.
+  test('stale: an ENSEMBLE score taken off an excerpt counts once fullText is on disk', () => {
+    const f = scoreableFile({
+      fullText: 'y'.repeat(2000),
+      llmScore: { score: 81 },
+      bwwExcerpt: 'A brisk, funny evening.',
+      ensembleData: { claudeScore: 74, openaiScore: 82, geminiScore: 88 },
+      llmMetadata: { textSource: { type: 'excerpt', status: 'excerpt-only' } },
+    });
+    assert.equal(isActionableStale(f, {}), true);
+    // Re-scored earlier (rescoreCompletedAt) but still off an excerpt: still stale.
+    assert.equal(isActionableStale({ ...f, rescoreCompletedAt: '2026-09-01T00:00:00.000Z' }, {}), true);
+  });
+
+  test('stale: a locked human score is not re-queued', () => {
+    const f = scoreableFile({
+      fullText: 'y'.repeat(2000),
+      llmScore: { score: 81 },
+      bwwExcerpt: 'A brisk, funny evening.',
+      humanReviewScore: 90,
+    });
+    assert.equal(isActionableStale(f, {}), false);
+    assert.equal(isActionableStale({ ...f, humanReviewScoreProvisional: true }, {}), true);
+  });
+
+  test('stale: not re-queued when the scorer would still pick the excerpt (no rescore loop)', () => {
+    const f = scoreableFile({
+      fullText: 'y'.repeat(2000),
+      llmScore: { score: 81 },
+      bwwExcerpt: 'A brisk, funny evening.',
+      misattributedFullText: true, // getBestTextForScoring falls back to excerpts
+    });
+    assert.equal(isActionableStale(f, {}), false);
+  });
+
   test('emergency: only un-retried singleModelEmergency files count', () => {
     const stuck = scoreableFile({ ensembleData: { singleModelEmergency: true } });
     assert.equal(isActionableEmergencyRetry(stuck, {}), true);

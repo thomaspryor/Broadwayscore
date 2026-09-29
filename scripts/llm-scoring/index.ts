@@ -1119,8 +1119,20 @@ async function main(): Promise<void> {
     // 0, Errors: 45", every one of them input_validation_failed:body_too_short
     // on text that had not changed since the previous run's identical failure.
     let unscoredBlockedSkipped = 0;
+    let staleIncluded = 0;
     filesToProcess = allFiles.filter(f => {
-      if ((f.data as any).llmScore) return false;
+      // BRO-4332: a show-scoped pass (opening-night poller / express / fast
+      // path) also takes that show's excerpt-scored reviews whose full text
+      // has since landed. Text and score are written by different CI jobs on
+      // opening night, so a review is often scored off its aggregator excerpt
+      // minutes before its body arrives; nothing else re-queues it that night.
+      if ((f.data as any).llmScore) {
+        if (options.showId && isActionableStale(f.data as any, queueCtx(f))) {
+          staleIncluded++;
+          return true;
+        }
+        return false;
+      }
       if (isBlockedFromRescore(f.data as any)) {
         unscoredBlockedSkipped++;
         return false;
@@ -1132,6 +1144,9 @@ async function main(): Promise<void> {
     });
     if (unscoredBlockedSkipped > 0) {
       console.log(`Skipping ${unscoredBlockedSkipped} unscored reviews blocked by a prior terminal text-gate failure (fullText unchanged since)\n`);
+    }
+    if (staleIncluded > 0) {
+      console.log(`Including ${staleIncluded} excerpt-scored review(s) whose full text has since landed (BRO-4332)\n`);
     }
   } else {
     filesToProcess = allFiles;
