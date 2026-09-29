@@ -2351,5 +2351,63 @@
       }
     ],
     "queuedAt": "2026-09-29T20:15:05.923Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-4196-mun0ydst",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4196-mun0ydst",
+    "description": "land.yml did not land land/job/linear-BRO-4196-mun0ydst: the unit-tests-node gate went red at 0817e8c891. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36623320088",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4196-mun0ydst"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "0817e8c891707fa8b7e45c51ed427ddeef51e11b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36623320088"
+      }
+    ],
+    "queuedAt": "2026-09-29T20:29:25.292Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4377-ob-coverage",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4377-ob-coverage",
+    "description": "land.yml did not land land/bro-4377-ob-coverage: the unit-tests-node gate went red at f67b0c6a69. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36624238664",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4377-ob-coverage"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "f67b0c6a69cc846b2c39d02e49ddac74ca167239"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36624238664"
+      }
+    ],
+    "queuedAt": "2026-09-29T20:37:42.225Z"
   }
 ]

@@ -32,6 +32,17 @@ const crypto = require('crypto');
 const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry, outletOwnsUrlDomain, reviewSlugNamesDifferentShow } = require('./lib/review-normalization');
 const { decideUnknownTwinUrlCarry, decideDuplicateTwinUrlCarry } = require('./lib/review-text-identity');
 const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
+const { parseAgreeingConflictedReview } = require('./lib/conflict-markers');
+// Pre-pass readers (sort metadata, dup-cycle siblings) must see the same
+// record the main loop keeps for a conflict-marked file, or the dedup
+// tie-break ranks it from defaults and can still drop it (review, 2026-09-25).
+function parseReviewFileText(raw) {
+  try { return JSON.parse(raw); } catch (e) {
+    const resolved = parseAgreeingConflictedReview(raw);
+    if (resolved) return resolved.data;
+    throw e;
+  }
+}
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
@@ -48,7 +59,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, hasStructuralStarScore, cvFlagVetoedInWindow } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, hasStructuralStarScore, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
@@ -87,7 +98,8 @@ const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
-const { safeWriteReview, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
+const { safeWriteReview, writeReviewOrThrow, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
+const { isPathHiddenBySparseCheckout } = require('./lib/sparse-checkout-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 const { writeShowExclusionsFile } = require('./lib/rebuild-exclusion-audit');
@@ -1875,7 +1887,7 @@ const crossShowFingerprints = new Map();
           const mergeResult = mergeUniqueReviewFields(existingData, d);
           if (mergeResult.action !== 'merged') { skippedFlaggedCount++; continue; }
           if (mergeResult.changed) {
-            safeWriteReview(expectedPath, existingData);
+            writeReviewOrThrow(expectedPath, existingData);
           }
           // Clear any sibling files that point at this file via duplicateOf —
           // otherwise the audit-duplicate-of-url-mismatch CI gate flags them
@@ -1885,6 +1897,7 @@ const crossShowFingerprints = new Map();
           mergedCount++;
         } else {
           // No named file — just rename
+          if (isPathHiddenBySparseCheckout(expectedPath)) throw new Error(`rename target ${path.basename(expectedPath)} is outside this sparse checkout — source kept`);
           fs.renameSync(filePath, expectedPath);
           renamedCount++;
         }
@@ -1941,7 +1954,7 @@ const crossShowFingerprints = new Map();
           const mergeResult = mergeUniqueReviewFields(existingData, d);
           if (mergeResult.action !== 'merged') { skippedFlaggedCount++; continue; }
           if (mergeResult.changed) {
-            safeWriteReview(expectedPath, existingData);
+            writeReviewOrThrow(expectedPath, existingData);
           }
           // Cascade-clear duplicateOf siblings before unlinking (see Pass 1).
           cascadeClearDuplicateRefs(sDir, f);
@@ -1949,6 +1962,7 @@ const crossShowFingerprints = new Map();
           mergedCount++;
         } else {
           // No correctly-named file — just rename
+          if (isPathHiddenBySparseCheckout(expectedPath)) throw new Error(`rename target ${path.basename(expectedPath)} is outside this sparse checkout — source kept`);
           fs.renameSync(filePath, expectedPath);
           renamedCount++;
         }
@@ -2270,7 +2284,7 @@ showDirs.forEach(showId => {
   const _loadDupCycleSibling = (name) => {
     if (Object.prototype.hasOwnProperty.call(_dupCycleCache, name)) return _dupCycleCache[name];
     try {
-      _dupCycleCache[name] = JSON.parse(fs.readFileSync(path.join(showDir, name), 'utf8'));
+      _dupCycleCache[name] = parseReviewFileText(fs.readFileSync(path.join(showDir, name), 'utf8'));
     } catch {
       _dupCycleCache[name] = null;
     }
@@ -2290,7 +2304,7 @@ showDirs.forEach(showId => {
     // pre-#1406 behavior for the parse-failure fallback path below.
     const meta = { isDupe: 0, isVerified: 1, hasEnsemble: 1, isOutletAsCritic: 0, hasScore: 0, isUnknown: /unknown|unnamed/i.test(f) ? 1 : 0 };
     try {
-      const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+      const d = parseReviewFileText(fs.readFileSync(path.join(showDir, f), 'utf8'));
       meta.isDupe = (d.isDuplicate || d.duplicateOf || d.duplicateTextOf) ? 1 : 0;
       meta.isVerified = d.contentVerification?.isValid ? 0 : 1;
       meta.hasEnsemble = d.ensembleData ? 0 : 1;
@@ -2409,17 +2423,32 @@ showDirs.forEach(showId => {
       const filePath = path.join(showDir, file);
       const rawContent = fs.readFileSync(filePath, 'utf8');
 
-      // Guard: detect git merge conflict markers (silent data corruption)
+      // Guard: git merge conflict markers. A bad rebase committing markers must
+      // not silently drop the review from the site (deep-heat-rivalry
+      // thestage--unknown.json, 2026-09-25): read one valid side in memory
+      // (parseAgreeingConflictedReview: only when both sides agree on every non-operational field) and list it loudly in
+      // the CORRUPTED summary every run until a person resolves it:
+      // safeWriteReview refuses to overwrite a conflict-marked file, so the
+      // rebuild never "repairs" it by persisting one side. When the sides
+      // disagree (or don't parse) the file is skipped, as before.
+      let data;
       if (/^<{7}\s|^={7}$|^>{7}\s/m.test(rawContent)) {
-        console.error(`  [CORRUPTED] ${showId}/${file}: contains git merge conflict markers — SKIPPING`);
-        logExclusion("skippedCorrupted", showId, file, null, { reason: "git merge conflict markers in file" });
-        stats.skippedCorrupted = (stats.skippedCorrupted || 0) + 1;
         if (!stats.corruptedFiles) stats.corruptedFiles = [];
-        stats.corruptedFiles.push(`${showId}/${file}`);
-        return;
+        const resolved = parseAgreeingConflictedReview(rawContent);
+        if (!resolved) {
+          console.error(`  [CORRUPTED] ${showId}/${file}: contains git merge conflict markers — SKIPPING`);
+          logExclusion("skippedCorrupted", showId, file, null, { reason: "git merge conflict markers in file" });
+          stats.skippedCorrupted = (stats.skippedCorrupted || 0) + 1;
+          stats.corruptedFiles.push(`${showId}/${file}`);
+          return;
+        }
+        console.error(`  [CONFLICT-MARKERS] ${showId}/${file}: read the "${resolved.side}" side in memory — FIX THE FILE`);
+        stats.conflictReadInMemory = (stats.conflictReadInMemory || 0) + 1;
+        stats.corruptedFiles.push(`${showId}/${file} (conflict markers; read "${resolved.side}" side in memory)`);
+        data = resolved.data;
+      } else {
+        data = JSON.parse(rawContent);
       }
-
-      const data = JSON.parse(rawContent);
 
       // Region-backfill evidence (BRO-133) — record BEFORE any skip/exclusion check
       // below so an outlet whose reviews are currently excluded still contributes
@@ -3262,6 +3291,17 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Named non-review URL shape on an unvetted SERP record (ticket/listing
+      // page, news item). Same predicate as explainExclusion, which until
+      // 2026-09-25 was the ONLY place it ran, so it never reached reviews.json.
+      // Placed here, same order as explainExclusion and before any branch
+      // below that writes flags back to disk.
+      if (isNamedNonReviewUrlRecord(data)) {
+        logExclusion("skippedNamedNonReviewUrl", showId, file, data);
+        stats.skippedNamedNonReviewUrl = (stats.skippedNamedNonReviewUrl || 0) + 1;
+        return;
+      }
+
       // Skip wrong-show reviews (review content is for a different show)
       // OVERRIDE: If this is a London show AND the review URL is from a UK/major outlet domain,
       // the wrongShow flag is often a false positive from LLM classification —
@@ -4084,7 +4124,7 @@ showDirs.forEach(showId => {
             sourceData.routedFromShowId = showId;
             sourceData.routedReason = `${yearSource}=${detectedYear} closer to ${targetShowId} (${decision.targetYear}) than ${showId} (${guard.showYear})`;
             sourceData.routedAt = new Date().toISOString();
-            safeWriteReview(targetPath, sourceData);
+            writeReviewOrThrow(targetPath, sourceData);
             targetWritten = true;
             fs.unlinkSync(sourcePath);
             console.log(`  [REROUTE] ${showId}/${file} → ${targetShowId}/${file} (${yearSource}=${detectedYear}, dist ${decision.distance})`);
@@ -6069,10 +6109,10 @@ try {
 // Print summary
 console.log('\n=== SUMMARY ===\n');
 // LOUD WARNING for corrupted files — these represent silent data loss
-if (stats.skippedCorrupted > 0) {
+if (stats.skippedCorrupted > 0 || stats.conflictReadInMemory > 0) {
   console.error(`\n${'!'.repeat(60)}`);
-  console.error(`!! CORRUPTED FILES FOUND: ${stats.skippedCorrupted} files skipped due to corruption`);
-  console.error(`!! These files have merge conflicts or invalid JSON — reviews are LOST`);
+  console.error(`!! CORRUPTED FILES FOUND: ${stats.skippedCorrupted || 0} skipped, ${stats.conflictReadInMemory || 0} conflict-marked but read in memory`);
+  console.error(`!! Skipped files are LOST from reviews.json; conflict-marked ones were kept via one side. Fix every file listed.`);
   stats.corruptedFiles.forEach(f => console.error(`!!   ${f}`));
   console.error(`${'!'.repeat(60)}\n`);
 }
@@ -6088,6 +6128,7 @@ console.log(`  Allowed (multi-critic same URL): ${stats.allowedMultiCriticUrl ||
 console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletDuplicateUrl || 0}`);
 console.log(`  Allowed (multi-critic cross-outlet URL): ${stats.allowedMultiCriticUrlCrossOutlet || 0}`);
 console.log(`  Skipped (corrupted/invalid JSON): ${stats.skippedCorrupted || 0}`);
+console.log(`  Skipped (named non-review URL): ${stats.skippedNamedNonReviewUrl || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
 console.log(`  Skipped (premature pre-opening): ${stats.skippedPrematurePreOpening || 0}`);
 if (stats.contentVerificationPromoted > 0) {

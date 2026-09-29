@@ -154,6 +154,33 @@ function shouldRetry(attempt, maxAttempts = MAX_ATTEMPTS) {
   return attempt < maxAttempts;
 }
 
+// BRO-4379: land.yml's `land` job sits in the `landing` concurrency group,
+// which keeps ONE pending run and cancels an older pending one when a newer
+// land/** push arrives. A headless job whose Land job was cancelled that way
+// used to stop at "re-run this script" and strand its work.
+const MAX_CANCEL_RETRIES = 3;
+const CANCEL_RETRY_BACKOFF_SEC = [30, 60, 120];
+
+/**
+ * Pure decision: should the landing script re-run a land.yml run whose Land
+ * job was cancelled? Yes only when the Checks job verified this tip
+ * (success), the Land job itself was cancelled, origin/<land branch> is still
+ * at `tip` (a newer push means the newer run owns the landing), and the retry
+ * budget is not spent. Fails closed on any missing/unknown input.
+ * @returns {{retry:boolean, reason:string, backoffSec:number}}
+ */
+function decideCancelledLandRetry({ landConclusion, checksConclusion, remoteTip, tip, retriesUsed, maxRetries = MAX_CANCEL_RETRIES } = {}) {
+  const no = (reason) => ({ retry: false, reason, backoffSec: 0 });
+  if (!Number.isInteger(retriesUsed) || retriesUsed < 0) return no(`invalid retriesUsed ${JSON.stringify(retriesUsed)}`);
+  if (landConclusion !== 'cancelled') return no(`Land job conclusion is ${JSON.stringify(landConclusion || null)}, not cancelled`);
+  if (checksConclusion !== 'success') return no(`Checks job conclusion is ${JSON.stringify(checksConclusion || null)}, not success`);
+  if (!tip || !remoteTip) return no('tip or remote tip unknown');
+  if (remoteTip !== tip) return no(`origin branch moved (${String(remoteTip).slice(0, 10)} != ${String(tip).slice(0, 10)}): a newer push owns the landing`);
+  if (retriesUsed >= maxRetries) return no(`retry budget spent (${retriesUsed}/${maxRetries})`);
+  const backoffSec = CANCEL_RETRY_BACKOFF_SEC[Math.min(retriesUsed, CANCEL_RETRY_BACKOFF_SEC.length - 1)];
+  return { retry: true, reason: `Land cancelled while pending, Checks green, tip unchanged — retry ${retriesUsed + 1}/${maxRetries}`, backoffSec };
+}
+
 /**
  * A branch name is passed to git as a positional ref; refuse anything that
  * could read as an option or contain whitespace/control characters. Not a
@@ -671,6 +698,8 @@ module.exports = {
   firstFailedCheck,
   classifyPushFailure,
   shouldRetry,
+  decideCancelledLandRetry,
+  MAX_CANCEL_RETRIES,
   isPlausibleBranchName,
   formatLandLine,
 };

@@ -1,0 +1,100 @@
+// BRO-4098: triage-review-gap.js must not count another production's file as
+// "ingested". Runs the real CLI against a fixture review-texts dir.
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const { isOtherProductionFile } = require('./lib/review-gap-triage.js');
+const CLI = path.join(path.dirname(fileURLToPath(import.meta.url)), 'triage-review-gap.js');
+const SHOW = 'fixture-show-west-end-2026';
+const show = { id: SHOW, title: 'Fixture Show', previewsStartDate: '2026-09-01', openingDate: '2026-09-10', market: 'west-end' };
+
+function run(files, outlet = 'Fixture Outlet') {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'triage-gap-'));
+  fs.mkdirSync(path.join(root, 'data'), { recursive: true });
+  fs.writeFileSync(path.join(root, 'data', 'shows.json'), JSON.stringify({ shows: [show] }));
+  const rt = path.join(root, 'review-texts');
+  for (const [rel, data] of Object.entries(files)) {
+    fs.mkdirSync(path.dirname(path.join(rt, rel)), { recursive: true });
+    fs.writeFileSync(path.join(rt, rel), JSON.stringify(data));
+  }
+  fs.mkdirSync(rt, { recursive: true });
+  const out = execFileSync('node', [CLI, `--show=${SHOW}`, `--outlet=${outlet}`, '--json'], {
+    cwd: root, encoding: 'utf8',
+    env: { ...process.env, REVIEW_TEXTS_DIR: rt, BSC_DATA_REPO: path.join(root, 'no-data-repo') },
+  });
+  fs.rmSync(root, { recursive: true, force: true });
+  return JSON.parse(out);
+}
+
+const base = { showId: SHOW, outletId: 'fixture-outlet', outlet: 'Fixture Outlet', criticName: 'A Critic', fullText: 'x'.repeat(2000), isFullReview: true, contentTier: 'complete' };
+
+test('only file is wrongProduction (older production) -> true-missed-discovery', () => {
+  const r = run({ [`${SHOW}/fixture-outlet--a-critic.json`]: { ...base, publishDate: '2016-05-01', wrongProduction: true } });
+  assert.equal(r.state, 'true-missed-discovery');
+  assert.equal(r.justifiesUrlResolution, true);
+  assert.equal(r.signals.reviewTexts.otherProductionPaths.length, 1);
+});
+
+test('wrongShow file dated before previews -> true-missed-discovery', () => {
+  const r = run({ [`${SHOW}/fixture-outlet--a-critic.json`]: { ...base, publishDate: '2019-01-01', wrongShow: true } });
+  assert.equal(r.state, 'true-missed-discovery');
+});
+
+test('only file is _pending dated before previewsStartDate -> true-missed-discovery', () => {
+  const r = run({ [`_pending/${SHOW}/fixture-outlet--418ce4a5.json`]: { ...base, criticName: 'Unknown', publishDate: '2018-03-22', pendingReason: 'no-byline', fullText: null, contentTier: 'stub' } });
+  assert.equal(r.state, 'true-missed-discovery');
+});
+
+test('_pending stub skipped as outside production window (no date) -> true-missed-discovery', () => {
+  const r = run({ [`_pending/${SHOW}/fixture-outlet--418ce4a5.json`]: { ...base, publishDate: null, fullText: null, contentTier: 'stub', promoteSkippedReason: "article published 2018-03-22 is outside this production's window — earlier/later production of the same title" } });
+  assert.equal(r.state, 'true-missed-discovery');
+});
+
+test('wrongProduction file dated inside the current run stays ingested-but-excluded (likely false-positive flag)', () => {
+  const r = run({ [`${SHOW}/fixture-outlet--a-critic.json`]: { ...base, publishDate: '2026-09-11', wrongProduction: true } });
+  assert.equal(r.state, 'ingested-but-excluded');
+});
+
+test('other-production file does not mask a valid current-production file', () => {
+  const r = run({
+    [`${SHOW}/fixture-outlet--old.json`]: { ...base, criticName: 'Old', publishDate: '2016-05-01', wrongProduction: true },
+    [`${SHOW}/fixture-outlet--new.json`]: { ...base, criticName: 'New', publishDate: '2026-09-11' },
+  });
+  assert.equal(r.state, 'in-pipeline-awaiting-deploy');
+});
+
+test('undated wrongProduction file stays ingested-but-excluded (unknown date is never other-production)', () => {
+  const r = run({ [`${SHOW}/fixture-outlet--a-critic.json`]: { ...base, publishDate: null, wrongProduction: true } });
+  assert.equal(r.state, 'ingested-but-excluded');
+});
+
+test('isOtherProductionFile: no previewsStartDate, priorRuns, unreadable', () => {
+  const old = { publishDate: '2016-05-01' };
+  assert.equal(isOtherProductionFile({ data: old, pending: true }, { openingDate: '2026-09-10' }, null), false);
+  assert.equal(isOtherProductionFile({ data: old, pending: true }, show, null), true);
+  const withPrior = { ...show, priorRuns: [{ openingDate: '2016-04-01', closingDate: '2016-09-01' }] };
+  assert.equal(isOtherProductionFile({ data: old, pending: true }, withPrior, null), false);
+  assert.equal(isOtherProductionFile({ data: null, pending: true }, show, null), false);
+  assert.equal(isOtherProductionFile({ data: { publishDate: '2026-09-09' }, pending: true }, { openingDate: '2026-09-10' }, null), false);
+});
+
+test('isOtherProductionFile: in-window _pending file is current', () => {
+  assert.equal(isOtherProductionFile({ data: { publishDate: '2026-09-11' }, pending: true }, show, null), false);
+  assert.equal(isOtherProductionFile({ data: null, pending: true }, show, null), false);
+});
+
+test('isOtherProductionFile: stale skip stamp loses to corrected in-window date; human clear wins', () => {
+  const stamp = "article published 2018-03-22 is outside this production's window";
+  assert.equal(isOtherProductionFile({ data: { publishDate: '2026-09-11', promoteSkippedReason: stamp }, pending: true }, show, null), false);
+  assert.equal(isOtherProductionFile({ data: { publishDate: null, promoteSkippedReason: stamp }, pending: true }, show, null), true);
+  assert.equal(isOtherProductionFile({ data: { publishDate: '2016-05-01', wrongProductionManualClear: true }, pending: true }, show, null), false);
+  const tour = { ...show, tourLegs: [{ startDate: '2026-05-01', endDate: '2026-08-01' }] };
+  assert.equal(isOtherProductionFile({ data: { publishDate: '2026-06-01' }, pending: true }, tour, null), false);
+});

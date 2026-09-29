@@ -34,6 +34,7 @@ const {
   loadOutletRegistry,
 } = require('./review-normalization');
 const { findSiblingUrlOwner } = require('./review-url-collision');
+const { isShowDirHiddenBySparseCheckout } = require('./sparse-checkout-guard');
 const { validateUrlDomain } = require('./url-discovery');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
@@ -963,6 +964,16 @@ function createOrMergeReviewFile(showId, input, options = {}) {
 
   const showDir = path.join(reviewTextsDir, showId);
 
+  // --- Guard: show directory hidden by a sparse checkout ---
+  // Nothing on disk to merge into does not mean nothing exists: in a sparse
+  // clone the show's real files are on origin, and a create here would
+  // replace them wholesale on the next commit (2026-09-25, the-children-2017
+  // WSJ review; see sparse-checkout-guard.js). Refuse instead of guessing.
+  if (isShowDirHiddenBySparseCheckout(reviewTextsDir, showId)) {
+    console.warn(`  ⛔ Refusing write: ${showId}/ is tracked but outside this sparse checkout — add it to the sparse set and re-run`);
+    return { action: 'skipped', reason: 'show-dir-outside-sparse-checkout', guardRefused: true };
+  }
+
   // --- Try to find existing file ---
   // Use the (possibly URL-refined) outletId for the filename, not the raw input.outletId
   const filename = generateReviewFilename(outletId, criticName);
@@ -1003,6 +1014,42 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       }
       return _mergeIntoExisting(filepath, data, { showId, outletId, input, fields, criticName, dryRun, onMerge });
     } catch { /* unreadable — fall through to create */ }
+  }
+
+  // --- Guard: non-review page submitted through the review form (NEW files only) ---
+  // validate-review-submission.js's LLM gate let through ticket resellers
+  // (tickpick, eventticketscenter, stuborder), venue "what's on" pages,
+  // listing pages, a DVD review and press releases; each became a review
+  // file a human later had to flag (≈60 of 1,887 submission-created files on
+  // 2026-09-25). Deliberately narrow: the CURATED named patterns plus ticket
+  // resellers only. classifyReviewUrl's broader non-review-host /
+  // non-review-path rules would have refused real scored reviews (wbur.org
+  // /news/ reviews, blogcritics.org, theaterscene.org). NEW files only, like
+  // Guard F2 below, so a merge into an existing vetted file is never blocked
+  // (the burn-this-2019 lesson noted at the named-non-review-url guard above).
+  // Human escape hatch: fields.allowNonReviewUrl.
+  if (input.source === 'submit-review-form' && input.url && fields.allowNonReviewUrl !== true) {
+    const nrp = require('./non-review-url-patterns');
+    // ugc-platform is excluded: a vocal.media "critique" submitted for
+    // the-bathroom-attendant-off-broadway-2026 is a real named critic's
+    // review (Robert M. Massimi), scored 64.
+    // newyorkcitytheatre.com sells tickets but its /reviews/NNNN pages are
+    // single reviews (burn-this-2019 Nicola Quinn). Scoped to that host and
+    // shape only: its /news/reviews/ pages are critic-quote roundups, and a
+    // generic /reviews/ exemption would admit reseller customer-review pages.
+    const named = nrp.namedNonReviewReason(input.url);
+    let reviewPath = false;
+    try {
+      const u = new URL(input.url);
+      reviewPath = /(^|\.)newyorkcitytheatre\.com$/i.test(u.hostname) && /^\/reviews\/\d+/.test(u.pathname);
+    } catch { /* unparseable: no exemption */ }
+    const submissionReason = reviewPath ? null
+      : ((named && named !== 'ugc-platform' ? named : null)
+        || (nrp.classifyReviewUrl(input.url).reason === 'ticketing-reseller' ? 'ticketing-reseller' : null));
+    if (submissionReason) {
+      console.warn(`  ⛔ Refusing submitted non-review page: ${input.url} (${submissionReason})`);
+      return { action: 'skipped', reason: `submitted-non-review-url: ${submissionReason}`, guardRefused: true };
+    }
   }
 
   // --- Guard F2: credited-person-as-critic rejection (BRO-2915) ---
@@ -1472,6 +1519,7 @@ const WRITE_GUARD_REFUSED_REASONS = new Set([
   'date_implausible',
   'cross_market_contamination',
   'flagged-filename-collision',
+  'show-dir-outside-sparse-checkout',
 ]);
 
 module.exports = { createOrMergeReviewFile, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS };

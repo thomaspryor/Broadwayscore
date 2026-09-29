@@ -1,0 +1,44 @@
+name: Land retry on cancel
+
+# BRO-4246: land.yml's Land job waits in the single-pending `landing`
+# concurrency group; a newer landing queuing behind it cancels it even though
+# Checks passed. When a Land run completes as cancelled, re-run just the
+# cancelled job (bounded by MAX_ATTEMPTS in scripts/lib/land-retry-on-cancel.js).
+# Decision logic + test: scripts/lib/land-retry-on-cancel{,.test}.
+
+on:
+  workflow_run:
+    workflows: ['Land']
+    types: [completed]
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  retry:
+    name: Retry cancelled Land
+    if: github.event.workflow_run.conclusion == 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    concurrency:
+      group: land-retry-${{ github.event.workflow_run.id }}
+      # concurrency-cancel-ok: per-run group (unique id), never contended.
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+      - name: Re-run cancelled Land job
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/land-retry-cancelled.js --run=${{ github.event.workflow_run.id }}
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Land retry-on-cancel failed'
+          description: 'run ${{ github.event.workflow_run.id }} — could not re-run the cancelled Land job'
+          severity: 'warning'

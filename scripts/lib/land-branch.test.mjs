@@ -18,7 +18,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
+  landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, decideCancelledLandRetry, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
   isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks,
   isPromisorFetchFailure,
 } = require('./land-branch.js');
@@ -120,6 +120,28 @@ test('shouldRetry is bounded by maxAttempts', () => {
   assert.equal(shouldRetry(2, 3), true);
   assert.equal(shouldRetry(3, 3), false);
   assert.equal(shouldRetry(MAX_ATTEMPTS, MAX_ATTEMPTS), false);
+});
+
+test('decideCancelledLandRetry (BRO-4379): retries only a cancelled Land with green Checks, unchanged tip, budget left', () => {
+  const base = { landConclusion: 'cancelled', checksConclusion: 'success', remoteTip: 'a'.repeat(40), tip: 'a'.repeat(40), retriesUsed: 0 };
+  assert.deepEqual(decideCancelledLandRetry(base).retry, true);
+  assert.deepEqual([0, 1, 2].map(n => decideCancelledLandRetry({ ...base, retriesUsed: n }).backoffSec), [30, 60, 120]);
+  // budget: 3 re-triggers max
+  assert.equal(decideCancelledLandRetry({ ...base, retriesUsed: 3 }).retry, false);
+  assert.equal(decideCancelledLandRetry({ ...base, retriesUsed: 5 }).retry, false);
+  assert.equal(decideCancelledLandRetry({ ...base, retriesUsed: 1, maxRetries: 1 }).retry, false);
+  // Land job not cancelled (failure/success/unknown) or Checks not green → no retry
+  for (const landConclusion of ['failure', 'success', 'skipped', '', null, undefined]) assert.equal(decideCancelledLandRetry({ ...base, landConclusion }).retry, false);
+  for (const checksConclusion of ['failure', 'cancelled', 'skipped', '', null, undefined]) assert.equal(decideCancelledLandRetry({ ...base, checksConclusion }).retry, false);
+  // a newer push moved the branch → that push's run owns the landing
+  const moved = decideCancelledLandRetry({ ...base, remoteTip: 'b'.repeat(40) });
+  assert.equal(moved.retry, false);
+  assert.match(moved.reason, /newer push/);
+  // unknown tips and bad counters fail closed
+  assert.equal(decideCancelledLandRetry({ ...base, remoteTip: '' }).retry, false);
+  assert.equal(decideCancelledLandRetry({ ...base, tip: null }).retry, false);
+  for (const retriesUsed of [undefined, -1, 1.5, '0', NaN]) assert.equal(decideCancelledLandRetry({ ...base, retriesUsed }).retry, false);
+  assert.equal(decideCancelledLandRetry().retry, false);
 });
 
 test('isPlausibleBranchName refuses option-like and malformed names', () => {
@@ -734,4 +756,12 @@ test('lands a multi-commit branch needing 3-way merges from a blobless clone, wi
     assert.match(show('m1.txt'), /^line 0 main\n[\s\S]*line 39 branch-3\n$/);
     assert.match(show('m2.txt'), /^line 0 main\n[\s\S]*line 39 branch-2\n$/);
   } finally { w.cleanup(); }
+});
+
+test('BRO-4379 wiring: the session landing script consults decideCancelledLandRetry and reruns with --failed inside a bounded loop', () => {
+  const sh = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', ['merge', 'worktree-to', 'main.sh'].join('-')), 'utf8');
+  assert.match(sh, /decideCancelledLandRetry/);
+  assert.match(sh, /gh run rerun "\$run_id" --failed/);
+  assert.match(sh, /cancel_retries/);
+  assert.doesNotMatch(sh, /gh run rerun "\$run_id"(?! --failed)/, 'a plain rerun would repeat the Checks gauntlet');
 });
