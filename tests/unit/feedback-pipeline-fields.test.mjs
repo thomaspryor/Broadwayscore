@@ -65,7 +65,7 @@ describe('feedback-pipeline-fields', () => {
     // Fields only the human-approved path (generate-remediation-plan.js ->
     // execute-approved-fix.js) may touch — never the unattended auto-fix.
     const humanOnly = {
-      'shows.json': ['status', 'openingDate', 'closingDate', 'previewsStartDate', 'creativeTeam'],
+      'shows.json': ['status', 'openingDate', 'closingDate', 'previewsStartDate', 'creativeTeam', 'images'],
       'commercial.json': ['recouped', 'recoupmentSource'],
     };
     for (const [file, fields] of Object.entries(humanOnly)) {
