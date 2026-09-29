@@ -232,6 +232,7 @@ const {
 } = require('./lib/gap-audit-checkpoint');
 const loadCheckpoint = () => loadCheckpointFile(CHECKPOINT_PATH);
 const { blastRadiusCheck } = require('./lib/coverage-gate');
+const { auditExitDecision } = require('./lib/aggregator-gap-audit-exit');
 
 // Non-review host/path patterns — canonical copy lives in
 // scripts/lib/non-review-url-patterns.js (task #907 ship-check finding:
@@ -2652,7 +2653,7 @@ async function main(argv = process.argv.slice(2)) {
   // sat parked — the workflow now makes real progress (the fix's whole
   // point) but still surfaces loudly until a human resolves or overrides the
   // specific quarantined shows.
-  const exitCode = (!dryRun && !blast.ok) ? 1 : ((failOnGap && runWithGap > 0) ? 1 : 0);
+  const { exitCode } = auditExitDecision({ dryRun, blast, failOnGap, runWithGap });
   try { await scraperCleanup(); } catch { /* best-effort */ }
   process.exit(exitCode);
 }
