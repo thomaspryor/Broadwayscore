@@ -20,40 +20,14 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help');
-const { isNextUtcDay } = require('./lib/provider-spend-core');
+const { attributionWindowVerdict } = require('./lib/provider-spend-core');
 
 const REPO = path.join(__dirname, '..');
 const PROVIDERS = ['scrapingbee', 'scrapingdog', 'brightdata'];
 const USAGE = `Usage: node scripts/check-attribution-gap-clear.js --provider=${PROVIDERS.join('|')}`;
 
-function latestPct(lines, provider) {
-  const records = lines.map((l) => { try { return JSON.parse(l); } catch { return null; } })
-    .filter((r) => r && r.day).sort((a, b) => (a.day < b.day ? -1 : a.day > b.day ? 1 : 0));
-  const last = records[records.length - 1];
-  if (!last) return { day: null, pct: null };
-  const pct = (last.attributedPct || {})[provider];
-  return { day: last.day, pct: typeof pct === 'number' ? pct : null };
-}
-
-function sortedRecords(lines) {
-  return lines.map((l) => { try { return JSON.parse(l); } catch { return null; } })
-    .filter((r) => r && r.day).sort((a, b) => (a.day < b.day ? -1 : a.day > b.day ? 1 : 0));
-}
-
-/**
- * Pure: is the gap closed? Mirrors the alert's own window (attributionGaps):
- * the last `days` recorded days must be consecutive and ALL at or above min,
- * so one noisy good day cannot close a card whose gap is still real.
- * @returns {{verdict:'clear'|'open'|'unverifiable', days:string[], pcts:(number|null)[]}}
- */
-function clearVerdict(lines, provider, { min = 0.8, days = 2 } = {}) {
-  const recent = sortedRecords(lines).slice(-days);
-  const pcts = recent.map((r) => { const p = (r.attributedPct || {})[provider]; return typeof p === 'number' ? p : null; });
-  const dayList = recent.map((r) => r.day);
-  if (pcts.some((p) => p !== null && p < min)) return { verdict: 'open', days: dayList, pcts };
-  const consecutive = recent.every((r, i) => i === 0 || isNextUtcDay(recent[i - 1].day, r.day));
-  if (recent.length < days || pcts.some((p) => p === null) || !consecutive) return { verdict: 'unverifiable', days: dayList, pcts };
-  return { verdict: 'clear', days: dayList, pcts };
+function parseRecords(lines) {
+  return lines.map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
 }
 
 function main(argv) {
@@ -69,7 +43,7 @@ function main(argv) {
   let lines = [];
   try { lines = fs.readFileSync(path.join(REPO, 'data', 'audit', 'provider-spend-daily.jsonl'), 'utf8').split('\n').filter(Boolean); } catch { /* handled below */ }
   const days = thresholds.attributionAlertDays ?? 2;
-  const v = clearVerdict(lines, provider, { min, days });
+  const v = attributionWindowVerdict(parseRecords(lines), provider, { min, days });
   const shown = v.days.map((d, i) => `${d}=${v.pcts[i] === null ? 'unmeasured' : Math.round(v.pcts[i] * 100) + '%'}`).join(', ');
   if (v.verdict === 'unverifiable') {
     console.log(`CANNOT VERIFY: need ${days} consecutive measured days of ${provider} attribution (have: ${shown || 'none'})`);
@@ -81,4 +55,4 @@ function main(argv) {
 
 if (require.main === module) process.exit(main(process.argv.slice(2)));
 
-module.exports = { latestPct, clearVerdict, main };
+module.exports = { main };
