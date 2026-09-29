@@ -1313,5 +1313,34 @@
       }
     ],
     "queuedAt": "2026-09-29T09:27:58.352Z"
+  },
+  {
+    "conditionKey": "land:land/posthog-adhoc-query",
+    "title": "Landing blocked: rebase red on land/posthog-adhoc-query",
+    "description": "land.yml did not land land/posthog-adhoc-query: the rebase gate went red at 013d77b685. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36549319034",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/posthog-adhoc-query"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "013d77b685d9de13f8d5f7dfc74a7c4f8c07342b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36549319034"
+      }
+    ],
+    "queuedAt": "2026-09-29T09:29:43.115Z"
   }
 ]
