@@ -96,17 +96,13 @@ const CHECK_OUTPUT_MAX_BYTES = 256 * 1024 * 1024;
 // defences: prefetch every blob the picks read before any local object exists,
 // and retry a rebase that still dies that way (a fresh process sees the blobs
 // the failed pass wrote, so each retry gets further).
-const PROMISOR_ERR_RE = /promisor remote|not our ref/i;
-const REBASE_CONFLICT_RE = /CONFLICT|could not apply/;
-const PROMISOR_REBASE_RETRIES = 3;
+// The classifier + retry count live in scripts/lib/promisor-fetch-failure.js
+// since BRO-4219, because push-with-retry.sh needs the same decision on the
+// same checkout shape (its CLI); re-exported below so callers and tests of
+// this module are unchanged.
+const { isPromisorFetchFailure, PROMISOR_REBASE_RETRIES } = require('./promisor-fetch-failure.js');
 const PREFETCH_TIMEOUT_MS = Math.max(GIT_NET_TIMEOUT_MS, 5 * 60 * 1000);
 const PREFETCH_MAX_PATHS = 2000;
-
-/** A rebase failure caused by a partial-clone lazy fetch, not by the patches. */
-function isPromisorFetchFailure(stderr) {
-  const text = String(stderr || '');
-  return PROMISOR_ERR_RE.test(text) && !REBASE_CONFLICT_RE.test(text);
-}
 
 // ── Pure decision helpers ───────────────────────────────────────────────────
 

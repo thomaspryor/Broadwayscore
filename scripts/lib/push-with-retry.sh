@@ -519,9 +519,76 @@ _rebase_with_captured_stderr() {
       _REBASE_REFUSAL_REASON=$(tail -c 800 "$errfile" 2>/dev/null | _redact_creds | tr '\n' ' ')
       [ -n "$_REBASE_REFUSAL_REASON" ] || _REBASE_REFUSAL_REASON="git printed no error"
     fi
+    # BRO-4219: keep the (redacted) stderr for _rebase_with_promisor_retry
+    # regardless of whether the rebase started — a partial-clone lazy-fetch
+    # failure can die either before the first pick (no state dir, would read
+    # as a refusal above) or mid-pick (state dir present, zero conflicts).
+    # Whole stderr (64K cap), NOT the 800-byte tail the refusal reason uses:
+    # the classifier must see an earlier CONFLICT line to refuse the retry.
+    _REBASE_LAST_STDERR=$(tail -c 65536 "$errfile" 2>/dev/null | _redact_creds || true)
   fi
   rm -f "$errfile" 2>/dev/null || true
   return $rc
+}
+
+# BRO-4219: retry a rebase that died because of a PARTIAL-CLONE lazy fetch.
+# The opening-night poller (like land.yml, autonomous-merge.yml and
+# check-direct-push-to-main.yml before it) checks out with `fetch-depth: 0` +
+# `filter: blob:none`: full commit graph, so every merge-base/ancestry/orphan
+# check here works exactly as on a full clone and `--is-shallow-repository`
+# is false (none of the shallow-bounding paths engage), but historical blobs
+# are fetched lazily, in batches, the first time git reads them. Mid-rebase a
+# batch can name a blob the rebase itself just wrote; GitHub answers `not our
+# ref`, the batch dies and the rebase fails with NO conflict (land-branch.js,
+# run 36351955579). Untreated, that stderr reads as a BRO-3662 pre-flight
+# refusal (no state dir, zero conflicted files) and falls through to
+# `git merge -X ours` — a topology change over a transient fetch error. A
+# fresh rebase sees the blobs the failed pass wrote, so retrying gets further
+# each time; that is what cured Land, and it is all this does. Classifier =
+# scripts/lib/promisor-fetch-failure.js's CLI (the one definition land-branch.js
+# uses — CLAUDE.md §15, no second regex here). Gated on the clone actually being
+# a promisor clone, so the ~130 ordinary callers take the unchanged path:
+# _rebase_with_captured_stderr's own result, first try, no classification
+# (the promisor check runs BEFORE any node call). Kill switch:
+# PUSH_SKIP_PROMISOR_RETRY=1 (same convention as PUSH_SKIP_CONFLICT_CHECK /
+# PUSH_SKIP_UNSHALLOW) restores the pre-BRO-4219 flow on a partial clone
+# without a code revert — the blobless checkout itself is then exactly what
+# check-direct-push-to-main.yml and autonomous-merge.yml run today.
+_is_partial_clone() {
+  [ "$(git config --get remote.origin.promisor 2>/dev/null || true)" = "true" ]
+}
+_is_promisor_fetch_failure() {  # reads $_REBASE_LAST_STDERR; exit 0 = retry
+  [ -n "${_REBASE_LAST_STDERR:-}" ] || return 1
+  if ! command -v node >/dev/null 2>&1 || [ ! -f "$SCRIPT_DIR/promisor-fetch-failure.js" ]; then
+    # Loud, not silent: on a partial clone with no classifier the rebase
+    # failure takes the pre-BRO-4219 path, and the log should say why.
+    echo "  ::warning::push-with-retry: partial clone but promisor-fetch-failure.js / node unavailable — cannot classify the rebase failure, taking the ordinary path (BRO-4219)"
+    return 1
+  fi
+  # Exit 2 (classifier usage/read error) is "not a promisor failure" too: the
+  # classifier failing must never widen the retry.
+  printf '%s' "$_REBASE_LAST_STDERR" | _timeout 30 node "$SCRIPT_DIR/promisor-fetch-failure.js" - 2>/dev/null
+}
+_REBASE_LAST_STDERR=""
+PROMISOR_REBASE_RETRIES=3
+_rebase_with_promisor_retry() {
+  local attempt=0
+  while :; do
+    _REBASE_LAST_STDERR=""
+    if _rebase_with_captured_stderr; then return 0; fi
+    _is_partial_clone || return 1
+    [ "${PUSH_SKIP_PROMISOR_RETRY:-}" != "1" ] || return 1
+    attempt=$((attempt + 1))
+    if [ "$attempt" -gt "$PROMISOR_REBASE_RETRIES" ] || ! _is_promisor_fetch_failure; then
+      return 1  # ordinary failure: _REBASE_REFUSAL_REASON / conflict paths handle it as before
+    fi
+    # Annotation carries the stderr TAIL only (GitHub truncates long ::warning
+    # lines); the classifier above saw the whole capture.
+    echo "  ::warning::push-with-retry: rebase hit a partial-clone lazy-fetch failure ($(git --version 2>/dev/null || echo 'git ?')) — retry $attempt/$PROMISOR_REBASE_RETRIES (BRO-4219): $(printf '%s' "$_REBASE_LAST_STDERR" | tail -c 800 | tr '\n' ' ')"
+    # A rebase that died mid-pick left state behind; one that died before the
+    # first pick left none — abort is a harmless no-op in that case.
+    git rebase --abort 2>/dev/null || true
+  done
 }
 
 # Best-effort failure telemetry (task #394). Appends a JSONL record when a push is
@@ -2083,7 +2150,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # the merge commit's ancestry by construction.
   if _range_has_merge_commit "$PRE_REBASE_SHA"; then
     echo "  Skipping rebase: outgoing range contains a merge commit that a plain \`git rebase\` (no --rebase-merges) would silently drop from history (BRO-3899). Going straight to the merge fallback, which preserves it via first-parent ancestry."
-  elif _rebase_with_captured_stderr; then
+  elif _rebase_with_promisor_retry; then
     rebase_ok=true
     RESOLUTION_PATH="rebase-clean(-X theirs)"
     restore_protected_fields
