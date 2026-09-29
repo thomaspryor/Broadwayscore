@@ -76,6 +76,23 @@ test('tryTbDirectUrl with a generous budget still tries every candidate and the 
   assert.ok(calls[4].endsWith('/page/world/index.html'));
 });
 
+test('a budget spent on the last candidate skips the index fallback and says so', async () => {
+  let t = 0;
+  const now = () => t;
+  const calls = [];
+  const logs = [];
+  const fetchPage = async (url) => { calls.push(url); t += 100000; return { content: '' }; };
+  const r = await tryTbDirectUrl({
+    show: { id: 'hadestown-2019', title: 'Hadestown', openingDate: '2019-04-17' },
+    year: 2019, fetchPage, logger: { log: (m) => logs.push(m) }, budgetMs: 350000, now,
+  });
+  assert.equal(r.found, false);
+  assert.equal(calls.length, 4, 'all four candidates fit the budget');
+  assert.ok(!calls.some(u => u.endsWith('/index.html')), 'index fallback must be skipped once the budget is spent');
+  assert.match(r.reason, /index fallback skipped/);
+  assert.ok(logs.some(m => /skipping the index\.html fallback/.test(m)), 'the skip is logged');
+});
+
 test('an override URL is the only candidate, budget or not', async () => {
   const calls = [];
   const fetchPage = async (url) => { calls.push(url); return { content: '' }; };
