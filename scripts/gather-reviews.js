@@ -167,17 +167,19 @@ const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json')
 const { dropCriticNamePhantoms } = require('./lib/bww-critic-name-phantoms');
 let _outletsWithDomain = null;
 // A registered outlet with a real domain (e.g. a critic's own site) is never
-// treated as a BWW critic-name phantom.
+// treated as a BWW critic-name phantom. An unreadable registry answers true
+// for everything, so no record is dropped when the protection can't be checked.
 function registeredOutletHasDomain(outletId) {
   if (!_outletsWithDomain) {
     try {
       const reg = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
       _outletsWithDomain = new Set(Object.entries(reg.outlets || {}).filter(([, o]) => o && o.domain).map(([id]) => id));
-    } catch {
-      _outletsWithDomain = new Set();
+    } catch (e) {
+      console.warn(`    [BWW RR] outlet registry unreadable (${e.message}); critic-name phantom drop disabled`);
+      _outletsWithDomain = 'unreadable';
     }
   }
-  return _outletsWithDomain.has(outletId);
+  return _outletsWithDomain === 'unreadable' || _outletsWithDomain.has(outletId);
 }
 
 const {

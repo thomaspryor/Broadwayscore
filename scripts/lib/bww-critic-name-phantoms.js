@@ -24,6 +24,9 @@ function slugifyName(name) {
     .normalize('NFKD')
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
+    // apostrophes vanish, as in review-normalization.js slugify (the producer
+    // of outletIds): "John O'Connor" -> john-oconnor
+    .replace(/['\u2018\u2019\u2032]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
 }
@@ -34,7 +37,7 @@ function hasCritic(r) {
 
 /**
  * @param {object[]} reviews - records from one roundup (not mutated except for field hand-off onto twins)
- * @param {{ hasDomain?: (outletId: string) => boolean }} [opts] - true when outletId is a registered outlet with a domain
+ * @param {{ hasDomain?: (outletId: string) => boolean }} [opts] - true when outletId is a registered outlet with a domain; answer true for everything when the registry can't be read, which disables dropping
  * @returns {{ kept: object[], dropped: Array<{ phantom: object, twin: object }> }}
  */
 function dropCriticNamePhantoms(reviews, opts = {}) {
@@ -54,7 +57,7 @@ function dropCriticNamePhantoms(reviews, opts = {}) {
       kept.push(r);
       continue;
     }
-    for (const f of ['bwwExcerpt', 'bwwThumb', 'url']) {
+    for (const f of ['bwwExcerpt', 'bwwThumb']) {
       if (!twin[f] && r[f]) twin[f] = r[f];
     }
     dropped.push({ phantom: r, twin });
