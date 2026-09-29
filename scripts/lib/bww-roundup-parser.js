@@ -101,7 +101,12 @@ function anchorNameToEntryBoundary(text, nameStart, captured) {
 // end before "Faith" and the next match would absorb "Faith Joe Dziemianowicz"
 // as one critic name. Mirrors the original two-word boundary pre-fix.
 const NAME_LOOKAHEAD = `${LEADING_INITIAL}${NAME_WORD}${MIDDLE_INITIAL}${WORD_SEP}${NAME_WORD}`;
-const OUTLET = "[A-Za-z][A-Za-z\\s&'.]+";
+// Optional leading digit-group so digit-prefixed outlet names ("1 Minute
+// Critic", "5th Estate Theatre") parse. Without it the whole entry was
+// silently dropped AND its quote was absorbed into the previous outlet's
+// quote (the "Matthew Wexler, 1 Minute Critic:" miss). Body still requires
+// letters-only, so a stray number ending the prior quote can't be misread.
+const OUTLET = "(?:[0-9]+\\s+)?[A-Za-z][A-Za-z\\s&'.]+";
 // BWW's CMS emits a stray space before the comma on some entries — the live
 // SPIES-2026 body carries "Ryan Gilbey , The Guardian:" and
 // "Holly O'Mahony , The Stage:" alongside comma-tight siblings. The old
