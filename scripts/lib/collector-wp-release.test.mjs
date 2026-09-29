@@ -61,8 +61,9 @@ describe('restoreQuarantinedText', () => {
     const d = { ...base, incompleteReason: 'wrong_content', incompleteDetail: 'Collector LLM' };
     restoreQuarantinedText(d, () => ({ contentTier: 'complete', tierReason: 'Full review text', wordCount: 500 }));
     assert.equal(d.fullText, text);
-    assert.equal('wrongFullText' in d, false);
-    assert.equal(d.wrongArticleManualClear, true);
+    // wrongFullText kept; the human article-type hatch is never set.
+    assert.equal(d.wrongFullText, text);
+    assert.equal(d.wrongArticleManualClear, undefined);
     assert.equal(d.incompleteReason, null);
     assert.equal(d.contentTier, 'complete');
   });

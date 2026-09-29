@@ -148,7 +148,7 @@ const {
   isWithinTourLeg,
   shouldPreserveExclusionFlagsOnUrlRecovery,
 } = require('./lib/wrong-production-autoclear');
-const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview, salvageConsentPrefixedStoredText } = require('./lib/consent-refetch');
+const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview, salvageConsentPrefixedStoredText, salvageSourceHash, applyVerifiedRetryOutcome } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browserbase-caps');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
@@ -5841,12 +5841,11 @@ function findReviewsToProcess() {
   // Per-run caps on retry work that must hit the network (BRO-4185): the
   // consent/garbage drain and the one-time stale-mismatch reopen. Uncapped,
   // the 2026-09-28 12:39 run spent its whole 300-min job budget on
-  // WhatsOnStage URLs timing out at 90s each and was cancelled. Drain entries
-  // that can be re-verified from stored text need no fetch and are uncapped.
+  // WhatsOnStage URLs timing out at 90s each and was cancelled. Applied AFTER
+  // sorting (below), so candidates dropped by later filters or the maxReviews
+  // slice never use a slot. Stored-text re-verifies need no fetch: uncapped.
   const DRAIN_NETWORK_PER_RUN = 15;
   const MISMATCH_REOPEN_PER_RUN = 20;
-  let drainNetworkSelected = 0;
-  let mismatchReopenSelected = 0;
   const failedPath = path.join(CONFIG.reviewTextsDir, 'failed-fetches.json');
   if (fs.existsSync(failedPath)) {
     try {
@@ -5970,11 +5969,10 @@ function findReviewsToProcess() {
           const storedSalvageable = !!salvageConsentPrefixedStoredText(data);
           if (storedSalvageable) {
             // No fetch involved: the network cooldown does not apply, and the
-            // once-per-file stamp (consentSalvageVerifiedAt) stops repeats.
+            // once-per-stored-text stamp (consentSalvageVerifiedHash) stops repeats.
             garbageRetryAllowed = true;
           } else if (garbageRetryAllowed) {
-            if (drainNetworkSelected >= DRAIN_NETWORK_PER_RUN) garbageRetryAllowed = false;
-            else drainNetworkSelected++;
+            data._networkDrain = true;
           }
           // 14-day cooldown for collector-flagged retries; a URL correction is a
           // strong signal the next fetch will succeed, so it bypasses the cooldown.
@@ -6006,8 +6004,8 @@ function findReviewsToProcess() {
           if (!hasGarbageText && textLen > 0 && hasStrippableConsentLayer(data.fullText)) {
             // Consent-prefixed text: free when the stored article can be
             // re-verified, otherwise a capped network refetch.
-            if (salvageConsentPrefixedStoredText(data)) hasGarbageText = true;
-            else if (drainNetworkSelected < DRAIN_NETWORK_PER_RUN) { drainNetworkSelected++; hasGarbageText = true; }
+            hasGarbageText = true;
+            if (!salvageConsentPrefixedStoredText(data)) data._networkDrain = true;
           }
           if (hasStrippableConsentLayer(data.fullText || '') || hasStrippableConsentLayer(data.wrongFullText || '')) data._consentLayerRetry = true;
           // Always re-try truncated/needs-rescrape reviews - they have text but it's incomplete or garbage
@@ -6046,9 +6044,7 @@ function findReviewsToProcess() {
         // Capped per run; the once-per-version stamp is written when the
         // review is actually processed (processReview), so a reopen that
         // falls past this run's review limit keeps its attempt.
-        const reopenStaleMismatch = mismatchReopenSelected < MISMATCH_REOPEN_PER_RUN
-          && shouldReopenStaleContentMismatch(fetchFailureEntry, data, URL_CONTENT_CHECK_VERSION);
-        if (reopenStaleMismatch) mismatchReopenSelected++;
+        const reopenStaleMismatch = shouldReopenStaleContentMismatch(fetchFailureEntry, data, URL_CONTENT_CHECK_VERSION);
         // A stored-text re-verify fetches nothing, so the fetch-retry
         // lifecycle (abandonment/cooldown) does not apply to it.
         const storedTextOnly = data._consentLayerRetry === true && !!salvageConsentPrefixedStoredText(data);
@@ -6182,6 +6178,7 @@ function findReviewsToProcess() {
           _wrongShowRetrying: data._wrongShowRetrying === true,
           _consentLayerRetry: data._consentLayerRetry === true,
           _mismatchReopen: reopenStaleMismatch,
+          _networkDrain: data._networkDrain === true,
           _storedSalvage: data._consentLayerRetry === true && !!salvageConsentPrefixedStoredText(data),
         });
       } catch (e) {
@@ -6207,6 +6204,18 @@ function findReviewsToProcess() {
       reviews.push(...salvage, ...rest);
       console.log(`  Stored-text re-verifies queued first: ${salvage.length}`);
     }
+  }
+  // Per-run caps, applied in priority order (see DRAIN_NETWORK_PER_RUN).
+  {
+    let drain = 0, reopen = 0, dropped = 0;
+    const kept = reviews.filter(r => {
+      if (r._networkDrain && ++drain > DRAIN_NETWORK_PER_RUN) { dropped++; return false; }
+      if (r._mismatchReopen && ++reopen > MISMATCH_REOPEN_PER_RUN) { dropped++; return false; }
+      return true;
+    });
+    if (dropped) console.log(`  Deferred ${dropped} network retries past this run's caps (drain ${DRAIN_NETWORK_PER_RUN}, reopen ${MISMATCH_REOPEN_PER_RUN})`);
+    reviews.length = 0;
+    reviews.push(...kept);
   }
 
   // Log sort stats
@@ -6526,6 +6535,17 @@ function clearFailedFetch(reviewId) {
 // ============================================================================
 
 
+// Once-per-stored-text stamp for consent-layer re-verifies (BRO-4185 A).
+function stampSalvage(review) {
+  if (!review || !review.filePath) return;
+  try {
+    const d = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+    d.consentSalvageVerifiedHash = salvageSourceHash(d);
+    d.consentSalvageVerifiedAt = new Date().toISOString();
+    fs.writeFileSync(review.filePath, JSON.stringify(d, null, 2) + '\n');
+  } catch (e) {}
+}
+
 async function processReview(review) {
   console.log(`\n${'━'.repeat(60)}`);
   console.log(`Processing: ${review.outlet} - ${review.critic}`);
@@ -6674,13 +6694,8 @@ async function processReview(review) {
       try {
         const stored = salvageConsentPrefixedStoredText(JSON.parse(fs.readFileSync(review.filePath, 'utf8')));
         if (stored) {
-          // Stamp first: updateReviewJson re-reads the file, so this persists
-          // whatever the verdict, and the file is not re-verified next run.
-          try {
-            const d = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
-            d.consentSalvageVerifiedAt = new Date().toISOString();
-            fs.writeFileSync(review.filePath, JSON.stringify(d, null, 2) + '\n');
-          } catch (e) {}
+          // Stamped only once verification has returned (stampSalvage below).
+          review._salvageUsed = true;
           result = { text: stored, method: 'stored-text-consent-stripped', html: null, attempts: null };
           console.log(`  ↺ Using stored text with the consent layer stripped (${stored.length} chars) — no refetch`);
         }
@@ -6757,6 +6772,14 @@ async function processReview(review) {
       if (!sanity.valid) {
         console.log(`  ✗ URL→CONTENT MISMATCH: ${sanity.reason}`);
         if (sanity.htmlTitle) console.log(`    HTML <title>: "${sanity.htmlTitle}"`);
+        // Stored text failing the mention check says nothing about the URL
+        // (nothing was fetched): stamp it done instead of counting a fetch
+        // failure toward abandoning the URL.
+        if (review._salvageUsed) {
+          stampSalvage(review);
+          stats.totalFailed++;
+          return { success: false, error: 'url_content_mismatch', reason: sanity.reason };
+        }
         recordFailedFetch(review, 'url_content_mismatch', {
           method: result.method,
           mismatchReason: sanity.reason,
@@ -6939,22 +6962,17 @@ async function processReview(review) {
       }
     }
 
-    // For collector-flagged wrongShow retries: clear flags if re-fetch succeeded with valid content
+    // Retry outcome for flagged reviews: release verifier-set flags on a clean
+    // verdict (with the auto-clear breadcrumbs the push-time restore honours),
+    // else start the cooldown. See applyVerifiedRetryOutcome.
     if (review._wrongShowRetrying && review.filePath) {
       try {
         const postData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
-        const cv = postData.contentVerification;
-        if (cv && cv.isValid && !cv.wrongArticle) {
-          // Re-fetch got correct content — clear wrongShow flags
-          delete postData.wrongShow;
-          delete postData.wrongShowReason;
-          delete postData.wrongShowRetryAt;
-          delete postData.wrongFullText;
-          console.log(`    ✓ wrongShow cleared — re-fetch got correct content`);
-        } else {
-          // Still wrong — update retry timestamp to enforce cooldown
-          postData.wrongShowRetryAt = new Date().toISOString();
-          console.log(`    ✗ wrongShow retry failed — still wrong content, next retry in 14 days`);
+        const outcome = applyVerifiedRetryOutcome(postData, new Date().toISOString());
+        if (outcome.clearedWrongShow) console.log(`    ✓ wrongShow cleared — retry passed content verification`);
+        if (outcome.clearedWrongProduction) console.log(`    ✓ wrongProduction cleared — retry passed content verification (right production)`);
+        if (!outcome.clearedWrongShow && !outcome.clearedWrongProduction && postData.wrongShowRetryAt) {
+          console.log(`    ✗ retry did not clear the flag — next retry in 14 days`);
         }
         delete postData._wrongShowRetrying;
         fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
@@ -6978,6 +6996,10 @@ async function processReview(review) {
         }
       } catch (e) {}
     }
+
+    // Stored-text re-verify done: stamp the final stored state so it is not
+    // re-verified until the text changes. Not stamped when verification threw.
+    if (review._salvageUsed && contentVerification) stampSalvage(review);
 
     return { success: true, method: result.method, validation };
 

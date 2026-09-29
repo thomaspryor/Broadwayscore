@@ -166,7 +166,8 @@ async function llmVerify(c) {
   if (!apiKey) {
     throw new Error('ANTHROPIC_API_KEY not set — re-run without --llm or export the key');
   }
-  const fullText = String((c.kind === 'collector-quarantined' ? c.data.wrongFullText : c.data.fullText) || '');
+  const { stripConsentLayerPrefix } = require('./lib/text-cleaning');
+  const fullText = stripConsentLayerPrefix(String((c.kind === 'collector-quarantined' ? c.data.wrongFullText : c.data.fullText) || ''));
   const excerpt = fullText.length > 4000 ? fullText.slice(0, 4000) + '\n[…truncated]' : fullText;
   const prompt = `You are auditing whether a review-text file is a real review of a SPECIFIC theatrical PRODUCTION (not just the same play in a different production).
 
@@ -194,7 +195,9 @@ Question: Is this review of THIS specific production — the one that opened ${c
 - Concert / staged-reading versions (City Center Encores, etc.) vs full production
 - Preview/opening reviews of THIS run = SAME production
 
-Reply with JSON only: {"isThisProduction": true|false, "confidence": "high"|"medium"|"low", "reason": "<one sentence>"}`;
+Also: is this an individual critic's review (an evaluation of the production), as opposed to a preview, interview, news item, feature or listing?
+
+Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "confidence": "high"|"medium"|"low", "reason": "<one sentence>"}`;
 
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -236,7 +239,11 @@ Reply with JSON only: {"isThisProduction": true|false, "confidence": "high"|"med
         // STRICTER than wrongShow sweep — require HIGH confidence for wrongProduction
         // because the false-clear cost is leaking actual wrong-production reviews
         // back into scoring (wrong-production noise is much more common than wrong-show).
-        const verdict = v.isThisProduction === true && v.confidence === 'high';
+        // Collector-quarantined candidates also need a positive review verdict:
+        // the collector quarantines previews/interviews too, and the release
+        // restores their text into scoring (ship-check P0).
+        const verdict = v.isThisProduction === true && v.confidence === 'high'
+          && (c.kind !== 'collector-quarantined' || v.isReview === true);
         decisions.push({ c, v, verdict });
         if (verdict) llmConfirmed++; else llmRejected++;
         console.log(`  ${i + 1}/${candidates.length} ${c.showId}/${c.file} → ${verdict ? 'CONFIRMED' : 'rejected'} (${v.confidence}: ${v.reason})`);
@@ -296,9 +303,11 @@ Reply with JSON only: {"isThisProduction": true|false, "confidence": "high"|"med
   const nowIso = new Date().toISOString();
   for (const d of decisions) {
     if (d.verdict || d.error || d.c.kind !== 'collector-quarantined') continue;
+    // Re-read: the scan-time copy is minutes old after the LLM calls.
     const orig = fs.readFileSync(d.c.filePath, 'utf8');
-    stampCollectorWpRejection(d.c.data, nowIso);
-    fs.writeFileSync(d.c.filePath, JSON.stringify(d.c.data, null, 2) + (orig.endsWith('\n') ? '\n' : ''));
+    const fresh = JSON.parse(orig);
+    stampCollectorWpRejection(fresh, nowIso);
+    fs.writeFileSync(d.c.filePath, JSON.stringify(fresh, null, 2) + (orig.endsWith('\n') ? '\n' : ''));
   }
 
   for (const d of toClear) {
@@ -307,11 +316,14 @@ Reply with JSON only: {"isThisProduction": true|false, "confidence": "high"|"med
     const clearNote = d.c.kind === 'collector-quarantined'
       ? `[${nowIso.slice(0, 10)} cleared collector wrongProduction — Sonnet (high-conf) confirmed the quarantined text is a review of ${d.c.show.title}; text restored — BRO-4185 C]`
       : `[${nowIso.slice(0, 10)} cleared stale wrongProduction — predicate + Sonnet (high-conf) confirmed real review of ${d.c.show.title} — Notion 34e637c5-416f-811d]`;
-    if (d.c.kind === 'collector-quarantined') restoreQuarantinedText(d.c.data, classifyContentTier);
-    clearWrongProductionFlags(d.c.data, { source: 'clear-stale-wrong-production-flags.js', reason: clearNote });
-    d.c.data.wrongProductionManualClear = true;
-    d.c.data.wrongProductionClearedNote = clearNote;
-    fs.writeFileSync(d.c.filePath, JSON.stringify(d.c.data, null, 2) + (hadTrailingNewline ? '\n' : ''));
+    // Apply to a fresh read: the scan-time copy is minutes old after the LLM calls.
+    const data = JSON.parse(orig);
+    if (data.wrongProduction !== true) continue; // cleared by someone else meanwhile
+    if (d.c.kind === 'collector-quarantined') restoreQuarantinedText(data, classifyContentTier);
+    clearWrongProductionFlags(data, { source: 'clear-stale-wrong-production-flags.js', reason: clearNote });
+    data.wrongProductionManualClear = true;
+    data.wrongProductionClearedNote = clearNote;
+    fs.writeFileSync(d.c.filePath, JSON.stringify(data, null, 2) + (hadTrailingNewline ? '\n' : ''));
     cleared++;
   }
   console.log(`\nAPPLIED — cleared ${cleared} files.`);

@@ -909,5 +909,34 @@
       }
     ],
     "queuedAt": "2026-09-29T06:26:01.240Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4287-thumb-check",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4287-thumb-check",
+    "description": "land.yml did not land land/bro-4287-thumb-check: the unit-tests-node gate went red at ca29826536. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36529071297",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4287-thumb-check"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "ca298265362001aa63fcc81191309c9c77cc3f30"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36529071297"
+      }
+    ],
+    "queuedAt": "2026-09-29T06:31:09.906Z"
   }
 ]

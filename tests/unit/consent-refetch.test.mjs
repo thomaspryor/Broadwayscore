@@ -163,9 +163,51 @@ describe('salvageConsentPrefixedStoredText', () => {
 
 describe('salvageConsentPrefixedStoredText once per file', () => {
   const { salvageConsentPrefixedStoredText } = require('../../scripts/lib/consent-refetch');
-  it('returns null once consentSalvageVerifiedAt is stamped', () => {
+  const { salvageSourceHash } = require('../../scripts/lib/consent-refetch');
+  it('returns null once the stored text it would verify is stamped, and re-opens when the text changes', () => {
     const LONG = ARTICLE + ' ' + ARTICLE;
-    assert.ok(salvageConsentPrefixedStoredText({ fullText: CONSENT_LAYER + LONG }));
-    assert.equal(salvageConsentPrefixedStoredText({ fullText: CONSENT_LAYER + LONG, consentSalvageVerifiedAt: '2026-09-28T00:00:00Z' }), null);
+    const d = { fullText: CONSENT_LAYER + LONG };
+    assert.ok(salvageConsentPrefixedStoredText(d));
+    d.consentSalvageVerifiedHash = salvageSourceHash(d);
+    assert.equal(salvageConsentPrefixedStoredText(d), null);
+    d.fullText = CONSENT_LAYER + LONG + ' More.';
+    assert.ok(salvageConsentPrefixedStoredText(d));
+  });
+});
+
+describe('applyVerifiedRetryOutcome', () => {
+  const { applyVerifiedRetryOutcome } = require('../../scripts/lib/consent-refetch');
+  const clean = { isValid: true, wrongArticle: false, wrongProduction: false, confidence: 'high' };
+  const NOW = '2026-09-29T00:00:00.000Z';
+  it('clears a verifier-set wrongShow with the auto-clear breadcrumb and keeps wrongFullText', () => {
+    const d = { wrongShow: true, wrongShowReason: 'Collector LLM: not a review', wrongFullText: 'x', contentVerification: clean, wrongShowRetryAt: 'old' };
+    const out = applyVerifiedRetryOutcome(d, NOW);
+    assert.equal(out.clearedWrongShow, true);
+    assert.equal(d.wrongShow, undefined);
+    assert.equal(d.wrongShowAutoCleared.length > 0, true);
+    assert.equal(d.wrongShowAutoClearedAt, NOW);
+    assert.equal(d.wrongFullText, 'x');
+    assert.equal(d.wrongShowRetryAt, undefined);
+  });
+  it('never clears a cross-show / human / scorer wrongShow', () => {
+    for (const reason of ['Cross-show collision', undefined, 'manual']) {
+      const d = { wrongShow: true, wrongShowReason: reason, contentVerification: clean };
+      assert.equal(applyVerifiedRetryOutcome(d, NOW).clearedWrongShow, false);
+      assert.equal(d.wrongShow, true);
+    }
+  });
+  it('clears a verifier-set wrongProduction only on a high-confidence right-production verdict', () => {
+    const d = { wrongProduction: true, wrongProductionReason: 'Collector LLM: wrong production (high)', contentVerification: clean };
+    assert.equal(applyVerifiedRetryOutcome(d, NOW).clearedWrongProduction, true);
+    assert.equal(d.wrongProduction, undefined);
+    assert.equal(d.wrongProductionAutoClearedAt, NOW);
+    const m = { wrongProduction: true, wrongProductionReason: 'Collector LLM: x', contentVerification: { ...clean, confidence: 'medium' } };
+    assert.equal(applyVerifiedRetryOutcome(m, NOW).clearedWrongProduction, false);
+  });
+  it('a failed verdict starts the cooldown and clears nothing', () => {
+    const d = { wrongShow: true, wrongShowReason: 'Collector LLM: x', contentVerification: { ...clean, isValid: false } };
+    applyVerifiedRetryOutcome(d, NOW);
+    assert.equal(d.wrongShow, true);
+    assert.equal(d.wrongShowRetryAt, NOW);
   });
 });
