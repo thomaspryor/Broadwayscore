@@ -14,7 +14,9 @@
  *
  * Env contract (all optional; a stage defaults to "nothing attempted"):
  *   GATHER_FAILED, GATHER_TOTAL
- *   COLLECT_ATTEMPTED, COLLECT_OUTCOME
+ *   COLLECT_ATTEMPTED, COLLECT_OUTCOME, COLLECT_SUMMARY_FILE (BRO-4273 marker
+ *     written by collect-review-texts.js after its final push; see
+ *     lib/collect-run-summary.js)
  *   SCORE_FAILED, SCORE_TOTAL
  *   REBUILD_ATTEMPTED, REBUILD_OUTCOME
  *   DEPLOY_ATTEMPTED, DEPLOY_DISPATCHED, DEPLOY_VERIFIED, DEPLOY_TIMED_OUT, DEPLOY_REASON
@@ -29,16 +31,20 @@ const {
   verifyDeployStage,
   verifyPipeline,
 } = require('./lib/opening-night-pipeline-stages');
+const { readCollectSummary } = require('./lib/collect-run-summary');
 
 const bool = (v) => v === 'true' || v === '1';
 const int = (v) => (v === undefined || v === '' ? 0 : parseInt(v, 10) || 0);
 
 function buildStageResults(env) {
+  const collectSummary = readCollectSummary(env.COLLECT_SUMMARY_FILE);
   return [
     verifyGatherStage({ failed: int(env.GATHER_FAILED), total: int(env.GATHER_TOTAL) }),
     verifyCollectStage({
       attempted: env.COLLECT_ATTEMPTED === undefined ? true : bool(env.COLLECT_ATTEMPTED),
       outcome: env.COLLECT_OUTCOME,
+      finished: collectSummary.finished,
+      timedOut: collectSummary.timedOut,
     }),
     verifyScoreStage({ failed: int(env.SCORE_FAILED), total: int(env.SCORE_TOTAL) }),
     verifyRebuildStage({
