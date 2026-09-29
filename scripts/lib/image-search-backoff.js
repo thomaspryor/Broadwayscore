@@ -31,15 +31,19 @@ function backoffMs(failures) {
 const OPENING_WINDOW_DAYS = 14;
 
 function isNearOpening(show, nowMs) {
-  const t = show && show.openingDate ? new Date(show.openingDate).getTime() : NaN;
-  return !Number.isNaN(t) && Math.abs(nowMs - t) <= OPENING_WINDOW_DAYS * DAY_MS;
+  // Previews start counts too: art usually appears then, and many upcoming
+  // shows have a previews date before an opening date is announced.
+  return ['openingDate', 'previewsStartDate'].some((k) => {
+    const t = show && show[k] ? new Date(show[k]).getTime() : NaN;
+    return !Number.isNaN(t) && Math.abs(nowMs - t) <= OPENING_WINDOW_DAYS * DAY_MS;
+  });
 }
 
 /**
  * Pure: should the Google Images tier be skipped for this show right now?
  * @param {{failures:number, lastAttempt:string}|undefined} entry
  * @param {number} [nowMs]
- * @param {{openingDate?:string}} [show] - within ±14 days of openingDate the gate never skips
+ * @param {{openingDate?:string, previewsStartDate?:string}} [show] - within ±14 days of either date the gate never skips
  * @returns {{skip:boolean, retryAt:string|null}}
  */
 function shouldSkipGoogleImages(entry, nowMs = Date.now(), show = null) {
