@@ -146,7 +146,7 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T02:08:44.935Z",
+      "lastSeen": "2026-09-29T02:21:24.477Z",
       "lastNotifiedAt": "2026-09-28T23:01:05.135Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
       "notifyCount": 107,
@@ -5836,7 +5836,10 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4253",
-      "silentRefires": 11
+      "silentRefires": 10,
+      "absentRunIds": [
+        "36511066143"
+      ]
     },
     "we-aggregator-go-live:ballet-shoes-west-end-2025": {
       "status": "open",
@@ -5877,7 +5880,7 @@
       "silentRefires": 6,
       "absentRunIds": [
         "36506774213",
-        "36510190751"
+        "36511066143"
       ]
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
@@ -5959,7 +5962,7 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run unit tests — \"handles accented/special characters by removing them\"",
       "firstSeen": "2026-09-29T01:25:10.594Z",
-      "lastSeen": "2026-09-29T02:08:44.933Z",
+      "lastSeen": "2026-09-29T02:21:24.473Z",
       "lastNotifiedAt": "2026-09-29T01:25:10.594Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -5972,6 +5975,60 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36506774213"
       },
       "silentRefires": 1
+    },
+    "opening-night-cv-wrongproduction-unhandled-school-girls-or-the-african-mean-girls-play-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Unhandled CV.wrongProduction on School Girls; Or, The African Mean Girls Play",
+      "firstSeen": "2026-09-29T02:02:48.503Z",
+      "lastSeen": "2026-09-29T02:02:48.503Z",
+      "lastNotifiedAt": "2026-09-29T02:02:48.503Z",
+      "lastSurfacedAt": "2026-09-29T02:02:48.503Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-publish-date-pre-opening:missing:school-girls-or-the-african-mean-girls-play-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Shipped review missing publishDate on School Girls; Or, The African Mean Girls Play",
+      "firstSeen": "2026-09-29T02:02:48.508Z",
+      "lastSeen": "2026-09-29T02:02:48.508Z",
+      "lastNotifiedAt": "2026-09-29T02:02:48.508Z",
+      "lastSurfacedAt": "2026-09-29T02:02:48.508Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-placeholder-synopsis-creation-stories-and-all-the-important-importants-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Placeholder synopsis on creation stories and all the important importants",
+      "firstSeen": "2026-09-29T02:02:52.993Z",
+      "lastSeen": "2026-09-29T02:02:52.993Z",
+      "lastNotifiedAt": "2026-09-29T02:02:52.993Z",
+      "lastSurfacedAt": "2026-09-29T02:02:52.993Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:3c53f4b8": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"verified TodayTix-gap shows carry a real Ticketmaster link\"",
+      "firstSeen": "2026-09-29T02:20:49.421Z",
+      "lastSeen": "2026-09-29T02:20:49.421Z",
+      "lastNotifiedAt": "2026-09-29T02:20:49.421Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4265",
+      "dispatch": {
+        "requestedAt": "2026-09-29T02:20:49.421Z",
+        "mode": "dispatch-at-filing",
+        "runId": "36511066143",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36511066143"
+      }
     }
   }
 }
