@@ -3,7 +3,27 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { findDuplicateUrls, findConflictingShowId } = require('./show-score-url-map.js');
+const { findDuplicateUrls, findConflictingShowId, isShowScoreNotFoundPage } = require('./show-score-url-map.js');
+
+// BRO-4358: Show Score's real 404 page, as served for a dead show URL.
+test('isShowScoreNotFoundPage: recognizes Show Score\'s real 404 page', () => {
+  const html = '<!DOCTYPE html><html><head><title>The page you were looking for doesn\'t exist (404)</title></head>'
+    + '<body><h1>404 &ndash; Not Found</h1><a href="/">show_score</a></body></html>';
+  assert.equal(isShowScoreNotFoundPage(html), true);
+});
+
+test('isShowScoreNotFoundPage: legacy markers still count', () => {
+  assert.equal(isShowScoreNotFoundPage('<h1>Page not found</h1>'), true);
+  assert.equal(isShowScoreNotFoundPage('<title>404 - Show Score</title>'), true);
+});
+
+test('isShowScoreNotFoundPage: a real show page is not a 404', () => {
+  const html = '<title>School Girls | Show Score</title><script type="application/ld+json">'
+    + '{"name":"School Girls","aggregateRating":{"ratingValue":93,"reviewCount":211}}</script>';
+  assert.equal(isShowScoreNotFoundPage(html), false);
+  assert.equal(isShowScoreNotFoundPage(''), false);
+  assert.equal(isShowScoreNotFoundPage(null), false);
+});
 
 test('findDuplicateUrls: no duplicates when every url is unique', () => {
   const result = findDuplicateUrls({

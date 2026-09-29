@@ -29,7 +29,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { fetchPage, isChallengeOrGarbage } = require('./lib/scraper');
-const { findConflictingShowId } = require('./lib/show-score-url-map');
+const { findConflictingShowId, isShowScoreNotFoundPage } = require('./lib/show-score-url-map');
 const { recordSbCall } = require('./lib/provider-telemetry');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -398,6 +398,16 @@ function generateCandidateUrls(show) {
       `${titleNoColonSlug}-broadway`,
       `${showSlug}-broadway`,
     );
+    // Show Score year-suffixes a Broadway page when the title already has an
+    // older page (School Girls: ...-broadway-2026, BRO-4358).
+    const openingYear = show.openingDate ? String(show.openingDate).slice(0, 4) : null;
+    if (openingYear && /^\d{4}$/.test(openingYear)) {
+      candidates.push(
+        `${titleSlug}-broadway-${openingYear}`,
+        `${titleNoColonSlug}-broadway-${openingYear}`,
+        `${showSlug}-broadway-${openingYear}`,
+      );
+    }
     if (titleNoThe) {
       candidates.push(`${titleNoThe}-broadway`);
     }
@@ -484,7 +494,7 @@ function isValidShowScorePage(html, url, showTitle, options = {}) {
   const { allowOffBroadway = false, allowWestEnd = false } = options;
   if (!html) return false;
   // Not a 404
-  if (html.includes('Page not found') || html.includes('404 -')) return false;
+  if (isShowScoreNotFoundPage(html)) return false;
   // Not the homepage
   if (html.includes('<title>Show Score | NYC Theatre Reviews and Tickets</title>')) return false;
   // Always reject off-off-broadway
@@ -586,6 +596,34 @@ async function discoverShowScoreUrl(show) {
     }
     await sleep(2000); // Rate limit between discovery attempts
   }
+  return null;
+}
+
+/**
+ * BRO-4358: drop a cached URL that returned Show Score's 404 page and try to
+ * find the show's current page. Returns the new URL (already cached) or null.
+ * With no replacement the show is left uncached, so the listings-discovery
+ * step of the next run gets another go at it.
+ */
+async function rediscoverAfterDeadUrl(show, deadUrl) {
+  console.log(`  Removing dead cached URL for ${show.id}: ${deadUrl}`);
+  if (urlData.shows) delete urlData.shows[show.id];
+  const url = await discoverShowScoreUrl(show);
+  if (url && url !== deadUrl) {
+    const conflictId = findConflictingShowId(urlData.shows || {}, show.id, url);
+    if (conflictId) {
+      console.log(`  [SKIP] ${url} already assigned to ${conflictId} — not reassigning to ${show.id}`);
+    } else {
+      if (!urlData.shows) urlData.shows = {};
+      urlData.shows[show.id] = url;
+      console.log(`  ✓ Replaced dead URL for ${show.id} with ${url}`);
+      if (!dryRun) saveUrlCache();
+      return url;
+    }
+  } else {
+    console.log(`  ✗ No replacement Show Score page found for ${show.title}`);
+  }
+  if (!dryRun) saveUrlCache();
   return null;
 }
 
@@ -803,7 +841,7 @@ let showFetchFailed = false;
 /**
  * Process a single show (cache-only — URL must already be in show-score-urls.json)
  */
-async function processShow(show) {
+async function processShow(show, { rediscovered = false } = {}) {
   showFetchFailed = false;
   // Multi-production guard: older productions only processed if they have their own page
   if (!isMostRecentProduction(show)) {
@@ -835,8 +873,17 @@ async function processShow(show) {
     const html = await fetchWithFallback(url);
 
     // Validate page
-    if (!html || html.includes('Page not found') || html.includes('404 -')) {
+    if (!html || isShowScoreNotFoundPage(html)) {
       console.log(`  SKIP: Show not found on Show Score`);
+      // BRO-4358: a cached URL that 404s used to be kept forever, and
+      // discovery only runs for UNCACHED shows, so a dead URL blocked
+      // rediscovery for good (School Girls: Show Score moved the page from
+      // ...-broadway to ...-broadway-2026 and the show sat with no Show Score
+      // audience score through opening night). Drop it and rediscover now.
+      if (html && !rediscovered) {
+        const replacement = await rediscoverAfterDeadUrl(show, url);
+        if (replacement) return processShow(show, { rediscovered: true });
+      }
       return null;
     }
 

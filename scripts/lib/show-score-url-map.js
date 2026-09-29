@@ -68,4 +68,19 @@ function findConflictingShowId(urlMap, showId, url) {
   return null;
 }
 
-module.exports = { findDuplicateUrls, findConflictingShowId };
+/**
+ * True when HTML is Show Score's "not found" page. Show Score serves
+ * <title>The page you were looking for doesn't exist (404)</title> with a
+ * "404 &ndash; Not Found" heading; the scraper used to look only for
+ * "Page not found" / "404 -", missed it, and treated a dead cached URL as a
+ * transient fetch failure it kept retrying forever (BRO-4358).
+ */
+function isShowScoreNotFoundPage(html) {
+  if (!html || typeof html !== 'string') return false;
+  return /doesn(?:'|&#39;|’)t exist \(404\)/i.test(html)
+    || /404\s*(?:&ndash;|–|-)\s*Not Found/i.test(html)
+    || html.includes('Page not found')
+    || html.includes('404 -');
+}
+
+module.exports = { findDuplicateUrls, findConflictingShowId, isShowScoreNotFoundPage };
