@@ -41,6 +41,10 @@ const ALLOWLIST = new Set([
   // 2026-09-20 on being handed the GitHub run URL: "Why would it be useful to
   // be at a GitHub URL? I never go there." Transactional to OWNER_EMAIL only.
   'scripts/lib/traffic-report-email.js',
+  // Reddit opening-post drafts, one email per new draft (BRO-4360). Owner
+  // sign-off 2026-09-29: "Send it as a separate email, not an existing one."
+  // Transactional to the owner only.
+  'scripts/send-reddit-post-email.js',
   // Grandfathered — not yet migrated (Sprint 2/3 targets). Remove each line as
   // it's migrated onto owner-alert-router.js.
   'scripts/sync-followers.js',

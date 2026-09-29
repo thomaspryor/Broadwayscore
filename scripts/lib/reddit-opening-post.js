@@ -406,6 +406,8 @@ const BANNED = [
   /\bpassion project\b/i, /\bnavigat/i, /\bjourney\b/i,
   /\bhey (broadway|theatre|theater|west end) (fans|folks)\b/i, /\b(I'?d|would) love to\b/i, /\bbuzzing about\b/i,
   /\bmaking waves\b/i,
+  // "The big talking point? Critics..." dramatic fragment (anti-slop rule).
+  /(^|[.!]\s+)The [a-z][a-z ]{1,30}\? [A-Z]/m,
   /\bhope this finds\b/i, /\bexcited to share\b/i,
 ];
 

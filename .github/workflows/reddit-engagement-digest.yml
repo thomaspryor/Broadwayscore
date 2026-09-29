@@ -10,8 +10,8 @@ on:
     # would just overwrite this one's snapshot before the morning email ever
     # read it, silently dropping its threads. Runs BEFORE daily-digest.yml
     # (06:30 UTC) / the loop start (07:30 UTC) so the snapshot is same-day
-    # fresh. The draft-opening-posts job (BRO-4333) feeds opening-digest.yml
-    # (11:00 UTC), which reads data/audit/reddit-post-drafts.json.
+    # fresh. The draft-opening-posts job (BRO-4333/4360) drafts Reddit posts
+    # and emails each new one on its own (~8am Berlin).
     - cron: '0 6 * * *'
 
   workflow_dispatch:
@@ -128,8 +128,8 @@ jobs:
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
 
   # BRO-4333: draft "reviews are in" Reddit posts for West End / Off-West End /
-  # Off-Broadway openings. The opening digest email (opening-digest.yml, 11:00
-  # UTC) shows them with a one-tap prefilled Reddit link. Its own job so a slow
+  # Off-Broadway openings, each emailed on its own with a one-tap prefilled
+  # Reddit link (scripts/send-reddit-post-email.js). Its own job so a slow
   # draft can't eat the engagement digest's time budget above, and a digest
   # timeout can't drop the drafts.
   draft-opening-posts:
@@ -169,6 +169,20 @@ jobs:
             ARGS="--dry-run"
           fi
           node scripts/draft-reddit-opening-posts.js $ARGS
+
+      # BRO-4360: each new draft goes out as its own email (owner ask), plus
+      # one reminder if still unposted a day later. Runs BEFORE the commit
+      # that stamps emailedAt, so a failed commit can repeat an email but
+      # never drop one.
+      - name: Email new Reddit drafts
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="--dry-run"
+          fi
+          node scripts/send-reddit-post-email.js $ARGS
 
       - name: Commit drafts
         if: always()
