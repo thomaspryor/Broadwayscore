@@ -25,7 +25,27 @@ const { decodeHtmlEntities } = require('./text-cleaning');
 const { isDeclaredTransferPair } = require('./show-duplicate-detection');
 // Shared id-base rule for Check 3 (S5-T3) — market-slug has no requires of
 // its own, so no cycle. validate-shows-prebuild.js uses the same helper.
-const { stripIdSuffix } = require('./market-slug');
+const { stripIdSuffix: stripIdSuffixUncached } = require('./market-slug');
+
+// Per-string memo for the pure normalizers the O(n²) duplicate scan calls
+// once per PAIR (validate-data.js: 3,073 shows → ~4.7M checkForDuplicate
+// steps, each re-normalizing the same 3,073 titles/ids). The inputs are a
+// few thousand distinct strings; caching them takes the scan from ~90s to a
+// few seconds (BRO-4204 audit, 2026-09-29: the S5-T1/T2/T3 per-pair work
+// pushed validate-data over the sentinel test's 4-run budget in CI). Bounded
+// so a pathological caller can't grow it without limit.
+function memoizeByString(fn, cap = 20000) {
+  const cache = new Map();
+  return function memoized(input) {
+    const key = typeof input === 'string' ? input : `\u0000${typeof input}:${String(input)}`;
+    if (cache.has(key)) return cache.get(key);
+    const value = fn(input);
+    if (cache.size >= cap) cache.clear();
+    cache.set(key, value);
+    return value;
+  };
+}
+const stripIdSuffix = memoizeByString(stripIdSuffixUncached);
 
 /**
  * Alias-table canonical for a venue string, or null when the table has no
@@ -33,7 +53,8 @@ const { stripIdSuffix } = require('./market-slug');
  * the lossy first-word key — equality semantics here need a real alias hit
  * on BOTH sides ("The New Group" ≡ "Pershing Square Signature Center").
  */
-function aliasCanonical(venue) {
+const aliasCanonical = memoizeByString(aliasCanonicalUncached);
+function aliasCanonicalUncached(venue) {
   if (!venue) return null;
   for (const { canonical, matches } of VENUE_ALIASES) {
     for (const re of matches) {
@@ -90,8 +111,8 @@ function venuesMatch(a, b) {
   // false: venuesMatch('  The New Group  ', 'Pershing Square Signature Center')
   // was false where the unpadded form was true. normalizeVenueName() trims,
   // but it runs after this early return, so it never saw these pairs.
-  a = decodeHtmlEntities(a).trim();
-  b = decodeHtmlEntities(b).trim();
+  a = decodeVenueString(a);
+  b = decodeVenueString(b);
   const aliasA = aliasCanonical(a);
   const aliasB = aliasCanonical(b);
   if (aliasA || aliasB) return aliasA !== null && aliasA === aliasB;
@@ -111,8 +132,8 @@ function venuesMatch(a, b) {
   // assertions across aggregator-candidate-extract.test.mjs and
   // canonical-venue-consumers.test.mjs pass without the local strip, and all
   // 356 distinct shows.json venues normalize identically. (BRO-2567)
-  const normA = normalizeVenueName(a);
-  const normB = normalizeVenueName(b);
+  const normA = normalizeVenueNameMemo(a);
+  const normB = normalizeVenueNameMemo(b);
   if (normA === '') return false;
   // Separator-insensitive full-name equality: "59E59 Theaters, Theater C" ≡
   // "59E59 Theaters - Theater C". Without it candidate-dedup (the venue-page
@@ -122,9 +143,14 @@ function venuesMatch(a, b) {
   return normA === normB || punctFreeVenue(normA) === punctFreeVenue(normB);
 }
 
-function punctFreeVenue(v) {
+const punctFreeVenue = memoizeByString(punctFreeVenueUncached);
+function punctFreeVenueUncached(v) {
   return String(v || '').replace(/[\s,\-–—]+/g, ' ').trim();
 }
+// venuesMatch's per-string steps, cached (the O(n²) scan calls venuesMatch
+// once per pair; decodeHtmlEntities alone was a third of validate-data's time).
+const decodeVenueString = memoizeByString((v) => decodeHtmlEntities(v).trim());
+const normalizeVenueNameMemo = memoizeByString((v) => normalizeVenueName(v));
 
 const KNOWN_DUPLICATES = {
   // Short titles that need special handling
@@ -233,7 +259,8 @@ function slugify(title) {
  * The Emporium 2026-05-03 dup landed because the prefix allowlist only
  * covered "Disney's" / "Roald Dahl's" — see memory/feedback_possessive_prefix_dedup.md.
  */
-function normalizeTitle(title) {
+const normalizeTitle = memoizeByString(normalizeTitleUncached);
+function normalizeTitleUncached(title) {
   // foldDiacritics for the same reason slugify() (above) folds: source-listing
   // titles arrive correctly accented while shows.json is inconsistent, so
   // "La Bohème" vs "La Boheme" read as two different shows to the dup scan.
@@ -341,10 +368,12 @@ function areTitlesSimilar(title1, title2) {
 /**
  * Check if a title matches any known duplicate pattern
  */
-function checkKnownDuplicates(newTitleNormalized, existingTitleNormalized) {
-  // Check if both titles belong to the same known duplicate group
+// Per-title membership in the KNOWN_DUPLICATES groups, cached: the scan used
+// to re-run every variant test for both titles on every pair.
+const knownDuplicateGroupsFor = memoizeByString((title) => {
+  const groups = [];
   for (const [key, variants] of Object.entries(KNOWN_DUPLICATES)) {
-    const matchesVariant = (title) => variants.some(v => {
+    const matches = variants.some(v => {
       if (v === title) return true;
       // Match title.includes(v) only if variant appears as a whole word/prefix
       // Prevents "six" matching "sixteen wounded" while keeping "six" matching "six the musical"
@@ -360,12 +389,20 @@ function checkKnownDuplicates(newTitleNormalized, existingTitleNormalized) {
       if (v.includes(title) && title.length >= v.length * 0.8) return true;
       return false;
     });
-
-    if (matchesVariant(newTitleNormalized) && matchesVariant(existingTitleNormalized)) {
-      return { isDuplicate: true, group: key };
-    }
+    if (matches) groups.push(key);
   }
+  return groups;
+});
 
+function checkKnownDuplicates(newTitleNormalized, existingTitleNormalized) {
+  // Both titles belong to the same known duplicate group (first group in
+  // KNOWN_DUPLICATES order wins, as before).
+  const newGroups = knownDuplicateGroupsFor(String(newTitleNormalized || ''));
+  if (newGroups.length === 0) return { isDuplicate: false, group: null };
+  const existingGroups = knownDuplicateGroupsFor(String(existingTitleNormalized || ''));
+  for (const key of newGroups) {
+    if (existingGroups.includes(key)) return { isDuplicate: true, group: key };
+  }
   return { isDuplicate: false, group: null };
 }
 
@@ -750,7 +787,8 @@ function isColonSegmentVariant(titleA, titleB) {
 // already treat it as a word separator (BRO-3191, "Electra/Persona").
 const TITLE_SEGMENT_SEPARATOR_RE = /\s*\/\s*|\s+&\s+|\s+and\s+/i;
 
-function titleSegmentKeys(title) {
+const titleSegmentKeys = memoizeByString(titleSegmentKeysUncached);
+function titleSegmentKeysUncached(title) {
   return String(title || '')
     .split(TITLE_SEGMENT_SEPARATOR_RE)
     .map(seg => colonSegmentKey(seg).replace(/^(?:the|a|an) /, ''))
@@ -771,6 +809,8 @@ function titleSegmentKeys(title) {
  * caller (Check 7c) also requires matching venues, like Check 7b.
  */
 function isTitleOrderSwap(titleA, titleB) {
+  // Cheap guard: a swap needs a separator on BOTH sides; most pairs have none.
+  if (!TITLE_SEGMENT_SEPARATOR_RE.test(String(titleA || '')) || !TITLE_SEGMENT_SEPARATOR_RE.test(String(titleB || ''))) return false;
   const a = titleSegmentKeys(titleA);
   const b = titleSegmentKeys(titleB);
   if (a.length < 2 || a.length !== b.length) return false;
