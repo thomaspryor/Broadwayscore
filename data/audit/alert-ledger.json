@@ -141,15 +141,15 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T21:49:38.405Z",
-      "lastNotifiedAt": "2026-09-29T21:49:38.405Z",
+      "lastSeen": "2026-09-29T22:06:03.019Z",
+      "lastNotifiedAt": "2026-09-29T22:06:03.019Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
-      "notifyCount": 114,
+      "notifyCount": 115,
       "cardId": null,
       "linearIdentifier": "BRO-3030"
     },
@@ -3853,7 +3853,7 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
-      "lastSeen": "2026-09-29T21:49:38.401Z",
+      "lastSeen": "2026-09-29T22:06:03.015Z",
       "lastNotifiedAt": "2026-09-29T21:10:44.551Z",
       "lastSurfacedAt": null,
       "notifyCount": 6,
@@ -3866,7 +3866,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36353075509"
       },
       "absentRunIds": [],
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
       "status": "resolved",
@@ -5876,14 +5876,14 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "lastSeen": "2026-09-29T21:49:38.396Z",
+      "lastSeen": "2026-09-29T22:06:03.009Z",
       "lastNotifiedAt": "2026-09-29T14:55:02.180Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-4255",
       "absentRunIds": [],
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "open",
@@ -6583,7 +6583,7 @@
       "silentRefires": 1
     },
     "test-yml:red:Unit Tests:7ff9b6a6": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"fewer than 50 outlets have a null domain\"",
       "firstSeen": "2026-09-29T17:52:27.963Z",
@@ -6596,8 +6596,11 @@
       "silentRefires": 8,
       "absentRunIds": [
         "36632283654",
-        "36634165435"
-      ]
+        "36634165435",
+        "36636186615"
+      ],
+      "resolvedAt": "2026-09-29T22:06:02.978Z",
+      "resolveReason": "stale-signature"
     },
     "land:land/font-selfhost-v3": {
       "status": "open",
@@ -6876,7 +6879,7 @@
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — wrongProduction/wrongShow writers must invalidate stale auto-clear breadcrumbs",
       "firstSeen": "2026-09-29T21:43:53.789Z",
-      "lastSeen": "2026-09-29T21:43:53.789Z",
+      "lastSeen": "2026-09-29T22:06:03.003Z",
       "lastNotifiedAt": "2026-09-29T21:43:53.789Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -6887,7 +6890,8 @@
         "mode": "dispatch-at-filing",
         "runId": "36633606651",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36633606651"
-      }
+      },
+      "silentRefires": 1
     },
     "land:land/bro-4380-enforce": {
       "status": "open",
