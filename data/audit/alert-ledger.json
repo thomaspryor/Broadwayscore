@@ -146,10 +146,10 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T21:24:39.355Z",
-      "lastNotifiedAt": "2026-09-29T19:39:12.553Z",
+      "lastSeen": "2026-09-29T21:27:30.466Z",
+      "lastNotifiedAt": "2026-09-29T21:27:30.466Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
-      "notifyCount": 112,
+      "notifyCount": 113,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
       "silentRefires": 11
@@ -3856,8 +3856,8 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
-      "lastSeen": "2026-09-29T21:24:38.736Z",
-      "lastNotifiedAt": "2026-09-29T21:24:38.736Z",
+      "lastSeen": "2026-09-29T21:27:30.462Z",
+      "lastNotifiedAt": "2026-09-29T21:10:44.551Z",
       "lastSurfacedAt": null,
       "notifyCount": 6,
       "cardId": null,
@@ -3868,11 +3868,8 @@
         "runId": "36353075509",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36353075509"
       },
-      "absentRunIds": [
-        "36595156888",
-        "36597393562",
-        "36605999433"
-      ]
+      "absentRunIds": [],
+      "silentRefires": 1
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
       "status": "resolved",
@@ -5884,7 +5881,7 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "lastSeen": "2026-09-29T21:24:39.351Z",
+      "lastSeen": "2026-09-29T21:27:30.457Z",
       "lastNotifiedAt": "2026-09-29T14:55:02.180Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
@@ -6602,7 +6599,7 @@
       "linearIdentifier": "BRO-4362",
       "silentRefires": 8,
       "absentRunIds": [
-        "36631466657"
+        "36631901602"
       ]
     },
     "land:land/font-selfhost-v3": {
