@@ -79,7 +79,8 @@ export VE_REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && 
 
 export VE_SKIP_CODES=""
 if [ "$stop_hook_active" = "true" ]; then
-  VE_SKIP_CODES=$(paste -sd, "$_ve_chain_file" 2>/dev/null)
+  # '|' separator: NOCHAIN keys contain commas (NOCHAIN:review,what-else).
+  VE_SKIP_CODES=$(paste -sd'|' "$_ve_chain_file" 2>/dev/null)
 fi
 result=$(python3 - "$transcript" <<'PYEOF'
 import hashlib, json, sys, os, re, shlex
@@ -91,7 +92,7 @@ import hashlib, json, sys, os, re, shlex
 # evaluation continues. Terminal verdicts go through _ve_final(), which swaps
 # an already-blocked verdict for the finish-chain result. Keep _ve_key in
 # step with the bash _ve_code computation near the block messages.
-_VE_SKIP = set(c for c in os.environ.get('VE_SKIP_CODES', '').split(',') if c)
+_VE_SKIP = set(c for c in os.environ.get('VE_SKIP_CODES', '').split('|') if c)
 
 def _ve_key(code):
     head, _, rest = code.partition(':')
