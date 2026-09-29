@@ -12,7 +12,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { buildTbCandidateUrls, tryTbDirectUrl, _internal } = require('./tb-direct-url.js');
+const { buildTbCandidateUrls, tryTbDirectUrl, verifyTbPage, _internal } = require('./tb-direct-url.js');
 const W = 'https://www.talkinbroadway.com/page/world/';
 
 test('semicolon-subtitled titles get main-title variants, dated first, ahead of the comma cut', () => {
@@ -124,6 +124,19 @@ test('budget: a blank or junk env value means unset, never a zero budget', () =>
   process.env.TB_DIRECT_URL_BUDGET_MS = ' 9000 ';
   assert.equal(_internal.tbBudgetMs(undefined), 9000);
   if (prev !== undefined) process.env.TB_DIRECT_URL_BUDGET_MS = prev; else delete process.env.TB_DIRECT_URL_BUDGET_MS;
+});
+
+test('verifyTbPage accepts a page titled with the main title only, the same cut the candidate builder uses', () => {
+  const pad = 'lorem ipsum dolor sit amet '.repeat(40);
+  const page = (title) => `<html><head><title>${title}</title></head><body><p>reviewed by Matthew Murray</p><p>September 28, 2026</p><p>${pad}</p></body></html>`;
+  const ok = verifyTbPage(page('School Girls'), { showTitle: 'School Girls; Or, The African Mean Girls Play', openingDate: '2026-09-28' });
+  assert.equal(ok.ok, true, JSON.stringify(ok));
+  const ok2 = verifyTbPage(page('Titanique'), { showTitle: 'Titanique: The Musical', openingDate: '2026-09-28' });
+  assert.equal(ok2.ok, true, JSON.stringify(ok2));
+  // The short form still has to be substantial: "Oh" must not match "Wholesome".
+  const bad = verifyTbPage(page('Wholesome Evening'), { showTitle: 'Oh: The Musical', openingDate: '2026-09-28' });
+  assert.equal(bad.ok, false);
+  assert.match(bad.reason, /title mismatch/);
 });
 
 test('buildTbCandidateUrls tolerates a missing title instead of throwing', () => {
