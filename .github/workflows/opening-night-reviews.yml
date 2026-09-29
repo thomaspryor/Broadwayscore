@@ -291,10 +291,11 @@ jobs:
                 workflow_id: 'update-reddit-sentiment.yml',
                 ref: 'main',
                 inputs: {
-                  shows: '${{ steps.find.outputs.shows }}',
-                  // Opening night is the one moment Reddit moves fast — bypass the
-                  // 20h freshness skip the orchestrator's repeat dispatches use (BRO-4215).
-                  skip_fresh_hours: '0'
+                  // Default 20h freshness skip. This list is the whole 14-day
+                  // opening window (38 shows on 2026-09-29, ~8.5K ScrapingBee
+                  // credits per run when forced with '0'). The forced refresh for
+                  // a just-opened show comes from update-show-status opened_shows.
+                  shows: '${{ steps.find.outputs.shows }}'
                 }
               });
               console.log('Triggered Reddit sentiment for: ${{ steps.find.outputs.shows }}');
