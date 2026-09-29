@@ -546,7 +546,7 @@ function selectAutoApplyClosures(candidates, showsById, todaytixMissingState, to
  */
 function findUnmonitoredOpenShows(obShows, hasReviewTexts, todayISO, graceDays = 10) {
   return (obShows || [])
-    .filter((s) => s.status === 'open' && !s.closingDate && !s.todaytixId)
+    .filter((s) => s.status === 'open' && !s.closingDate && (!s.todaytixId || s.todaytixStalenessIgnore === true))
     .filter((s) => !hasReviewTexts(s.id))
     .filter((s) => s.openingDate && daysBetween(s.openingDate, todayISO) >= graceDays)
     .map((s) => ({

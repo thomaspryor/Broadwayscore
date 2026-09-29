@@ -12,6 +12,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { findUnmonitoredOpenShows } = require('../../scripts/lib/ob-closing-detector.js');
+const { obClosingBacklogResults } = require('../../scripts/health-check.js');
 const { checkFieldChangeScope } = require('../../scripts/lib/show-field-change-guard.js');
 
 const TODAY = '2026-09-08';
@@ -54,4 +55,20 @@ test('an edit touching any other field is rejected', () => {
   const r = checkFieldChangeScope(spellbound, after);
   assert.equal(r.ok, false);
   assert.deepEqual(r.unexpected, ['venue']);
+});
+
+test('TodayTix-listed show whose staleness signal is ignored is still reported', () => {
+  const r = findUnmonitoredOpenShows([{ ...spellbound, todaytixId: 1, todaytixStalenessIgnore: true }], none, TODAY);
+  assert.equal(r.length, 1);
+});
+
+test('digest surfaces blind spots even with zero candidates', () => {
+  const report = {
+    reviewTextSweep: { candidates: [] }, todaytixStaleness: { candidates: [] },
+    unmonitoredOpenShows: findUnmonitoredOpenShows([spellbound], none, TODAY),
+  };
+  const out = obClosingBacklogResults(report);
+  assert.equal(out.length, 1);
+  assert.match(out[0].message, /spellbound-off-broadway-2026/);
+  assert.deepEqual(obClosingBacklogResults({ ...report, unmonitoredOpenShows: [] }), []);
 });
