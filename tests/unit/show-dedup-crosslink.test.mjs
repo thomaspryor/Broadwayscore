@@ -156,3 +156,30 @@ test('the transferOf/transferredTo half IS show-duplicate-detection\'s isDeclare
   assert.equal(isDeclaredTransferPair(null, b), false);
   assert.equal(isDeclaredTransferPair(t, undefined), false);
 });
+
+test('distinctFrom: concurrent sibling productions at one venue (family panto vs adults-only twin) are exempt only when one row names the other', () => {
+  // Audit S8-T3: the King's Head runs "Dick Whittington and His Cat" and
+  // "Dick Whittington: Adults Only" side by side (Nov 2026 – Jan 2027). Neither
+  // is a transfer or a prior run of the other, so transferOf/priorRuns cannot
+  // describe the pair; without a link the same-venue similar-title rule flags it.
+  const family = {
+    id: 'dick-whittington-and-his-cat-off-west-end-2026', slug: 'dick-whittington-and-his-cat-off-west-end-2026',
+    title: 'Dick Whittington and His Cat', venue: "King's Head Theatre", category: 'off-west-end', type: 'musical',
+    previewsStartDate: '2026-11-22', openingDate: '2026-11-29', closingDate: '2027-01-03', status: 'upcoming',
+  };
+  const adults = {
+    id: 'dick-whittington-adults-only-off-west-end-2026', slug: 'dick-whittington-adults-only-off-west-end-2026',
+    title: 'Dick Whittington: Adults Only', venue: "King's Head Theatre", category: 'off-west-end', type: 'musical',
+    previewsStartDate: '2026-11-26', openingDate: '2026-11-27', closingDate: '2027-01-02', status: 'upcoming',
+  };
+  const unlinked = checkForDuplicate(adults, [family]);
+  assert.equal(unlinked.isDuplicate, true, 'without a link the same-venue rule flags the pair');
+  assert.match(unlinked.reason, /Same venue/);
+
+  assert.equal(checkForDuplicate({ ...adults, distinctFrom: [family.id] }, [family]).isDuplicate, false, 'the candidate may name the existing row');
+  assert.equal(checkForDuplicate(adults, [{ ...family, distinctFrom: [adults.id] }]).isDuplicate, false, 'or the existing row may name the candidate');
+  assert.equal(checkForDuplicate({ ...adults, distinctFrom: [{ id: family.id }] }, [family]).isDuplicate, false, '{ id } objects work too');
+  assert.equal(checkForDuplicate({ ...adults, distinctFrom: ['some-other-2026'] }, [family]).isDuplicate, true, 'a dangling distinctFrom exempts nothing');
+  assert.equal(isCrossLinked({ id: 'a-2026', distinctFrom: [] }, { id: 'b-2026' }), false, 'empty list, no link');
+  assert.equal(isCrossLinked({ id: 'a-2026', distinctFrom: [undefined] }, { title: 'X' }), false, 'undefined never links a row without an id');
+});

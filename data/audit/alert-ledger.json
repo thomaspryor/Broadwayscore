@@ -146,13 +146,12 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T02:21:24.477Z",
-      "lastNotifiedAt": "2026-09-28T23:01:05.135Z",
+      "lastSeen": "2026-09-29T03:38:46.630Z",
+      "lastNotifiedAt": "2026-09-29T03:38:46.630Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
-      "notifyCount": 107,
+      "notifyCount": 108,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 6
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3847,14 +3846,14 @@
       "resolvedAt": "2026-09-22T16:48:58.111Z"
     },
     "test-yml:red:Unit Tests:0858c92a": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
-      "lastSeen": "2026-09-27T22:03:47.075Z",
-      "lastNotifiedAt": "2026-09-27T22:03:47.075Z",
+      "lastSeen": "2026-09-29T03:38:45.771Z",
+      "lastNotifiedAt": "2026-09-29T03:38:45.771Z",
       "lastSurfacedAt": null,
-      "notifyCount": 3,
+      "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-4196",
       "dispatch": {
@@ -3862,9 +3861,7 @@
         "mode": "dispatch-at-filing",
         "runId": "36353075509",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36353075509"
-      },
-      "resolvedAt": "2026-09-28T19:15:01.871Z",
-      "resolveReason": "job-green"
+      }
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
       "status": "resolved",
@@ -4741,13 +4738,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Run wrongShow auto-clear ensemble corpus scan (needs review-texts), Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-29T00:26:57.315Z",
+      "lastSeen": "2026-09-29T03:29:35.950Z",
       "lastNotifiedAt": "2026-09-28T11:41:47.830Z",
       "lastSurfacedAt": "2026-09-28T11:41:47.830Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 30
+      "silentRefires": 31
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -5839,7 +5836,8 @@
       "linearIdentifier": "BRO-4253",
       "silentRefires": 10,
       "absentRunIds": [
-        "36511066143"
+        "36511066143",
+        "36517071702"
       ]
     },
     "we-aggregator-go-live:ballet-shoes-west-end-2025": {
@@ -5868,7 +5866,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:E2E Tests:36f3f039": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
@@ -5882,7 +5880,9 @@
       "absentRunIds": [
         "36506774213",
         "36511066143"
-      ]
+      ],
+      "resolvedAt": "2026-09-29T03:38:45.758Z",
+      "resolveReason": "job-green"
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "open",
@@ -5961,7 +5961,7 @@
       "resolvedAt": "2026-09-29T01:55:46.649Z"
     },
     "test-yml:red:E2E Tests:7c6d379c": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run unit tests — \"handles accented/special characters by removing them\"",
       "firstSeen": "2026-09-29T01:25:10.594Z",
@@ -5977,7 +5977,9 @@
         "runId": "36506774213",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36506774213"
       },
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-09-29T03:38:45.762Z",
+      "resolveReason": "job-green"
     },
     "review-gap:opening-window:the-standard-of-living-west-end-2026": {
       "status": "open",
@@ -5987,6 +5989,18 @@
       "lastSeen": "2026-09-29T02:37:18.928Z",
       "lastNotifiedAt": "2026-09-29T02:37:18.928Z",
       "lastSurfacedAt": "2026-09-29T02:37:18.928Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/audit-agent-batch-4": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: lint-workflows red on land/audit-agent-batch-4",
+      "firstSeen": "2026-09-29T02:52:21.093Z",
+      "lastSeen": "2026-09-29T02:52:21.093Z",
+      "lastNotifiedAt": "2026-09-29T02:52:21.093Z",
+      "lastSurfacedAt": "2026-09-29T02:52:21.093Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

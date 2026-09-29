@@ -1,69 +1,5 @@
 [
   {
-    "startedAt": "2026-09-27T12:31:00.435Z",
-    "completedAt": "2026-09-27T12:37:38.722Z",
-    "totalReviews": 177,
-    "processed": 177,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 460855,
-      "output": 41091,
-      "total": 501946
-    },
-    "costUsd": 1.2891945,
-    "runId": "36317765471",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-27T13:04:44.002Z",
-    "completedAt": "2026-09-27T13:04:47.161Z",
-    "totalReviews": 44786,
-    "processed": 0,
-    "skipped": 44785,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 106,
-      "total": 10918
-    },
-    "costUsd": 0.02519215,
-    "runId": "36319634881",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-27T13:04:49.190Z",
-    "completedAt": "2026-09-27T13:11:41.819Z",
-    "totalReviews": 177,
-    "processed": 177,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 460855,
-      "output": 41706,
-      "total": 502561
-    },
-    "costUsd": 1.294152,
-    "runId": "36319634881",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-27T13:38:50.578Z",
-    "completedAt": "2026-09-27T13:38:55.508Z",
-    "totalReviews": 44786,
-    "processed": 0,
-    "skipped": 44785,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 111,
-      "total": 10934
-    },
-    "costUsd": 0.02526965,
-    "runId": "36321572511",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-27T13:38:57.542Z",
     "completedAt": "2026-09-27T13:45:46.106Z",
     "totalReviews": 177,
@@ -259350,6 +259286,76 @@
     },
     "costUsd": 1.2987447,
     "runId": "36510993015",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-29T03:08:14.762Z",
+    "completedAt": "2026-09-29T03:08:52.489Z",
+    "totalReviews": 45015,
+    "processed": 1,
+    "skipped": 45004,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 53228,
+      "output": 1778,
+      "total": 142149
+    },
+    "costUsd": 0.22652819999999999,
+    "runId": "36513749443",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-29T03:08:54.454Z",
+    "completedAt": "2026-09-29T03:15:32.593Z",
+    "totalReviews": 178,
+    "processed": 178,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 461995,
+      "output": 42561,
+      "total": 504556
+    },
+    "costUsd": 1.2983512000000001,
+    "runId": "36513749443",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-29T03:37:21.945Z",
+    "completedAt": "2026-09-29T03:39:25.186Z",
+    "totalReviews": 45017,
+    "processed": 16,
+    "skipped": 44991,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 137432,
+      "output": 6008,
+      "total": 350792
+    },
+    "costUsd": 0.5694606999999999,
+    "runId": "36516370856",
+    "errorDetails": [
+      {
+        "showId": "cats-the-jellicle-ball-2026",
+        "outletId": "timeout",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-29T03:39:26.672Z",
+    "completedAt": "2026-09-29T03:46:13.529Z",
+    "totalReviews": 181,
+    "processed": 181,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 473793,
+      "output": 43123,
+      "total": 516916
+    },
+    "costUsd": 1.3259984,
+    "runId": "36516370856",
     "errorDetails": []
   }
 ]

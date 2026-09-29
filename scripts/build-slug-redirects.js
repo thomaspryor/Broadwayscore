@@ -14,13 +14,27 @@
  * under the "critic:" key prefix, so /critics/<old-slug> 301s to the
  * canonical critic page through the same middleware (2026 data audit, S5-T9).
  *
+ * Name-derived pages (creative team, Broadway / West End / Off-Broadway
+ * theatres, cast — see scripts/lib/name-slug-redirects.js) get theirs
+ * DERIVED here from the same data the pages are built from: each family is
+ * replayed through the pre-S7-T3 slug rule and the current one, and every
+ * URL the diacritic fold moved 301s under its family's key prefix
+ * ("creative:", "theater:", "west-end-theater:", "off-broadway-theater:",
+ * "cast:"). The cast family reads data/cast-manifest.json, so
+ * scripts/prebuild.sh runs build-cast-manifest.js before this script; a
+ * missing manifest is an empty cast family (a checkout without cast data
+ * still builds), never a failure.
+ *
  * Output: data/slug-redirects.json (full, for inspection) and
- *         data/slug-redirects-compact.json (src/middleware.ts + data-reviews.ts)
+ *         data/slug-redirects-compact.json (src/middleware.ts + the
+ *         data-*.ts slug lookups)
  *
  * Env overrides — tests only, production callers never set them:
- *   SLUG_REDIRECTS_SHOWS_PATH  read shows from here instead of data/shows.json
- *   SLUG_REDIRECTS_OUT_DIR     write both outputs here instead of data/
- *   CRITIC_SLUG_ALIASES_PATH   alias registry path (honoured by the loader)
+ *   SLUG_REDIRECTS_SHOWS_PATH          read shows from here instead of data/shows.json
+ *   SLUG_REDIRECTS_OUT_DIR             write both outputs here instead of data/
+ *   SLUG_REDIRECTS_CAST_MANIFEST_PATH  cast manifest path instead of data/cast-manifest.json
+ *   SLUG_REDIRECTS_COMPLEXES_DIR       directory holding venue-complexes*.json instead of data/
+ *   CRITIC_SLUG_ALIASES_PATH           alias registry path (honoured by the loader)
  */
 
 const fs = require('fs');
@@ -30,10 +44,13 @@ const {
   flattenCriticSlugAliases,
   buildCriticRedirectEntries,
 } = require('./lib/critic-slug-aliases');
+const { NAME_REDIRECT_PREFIXES, buildNameSlugRedirects } = require('./lib/name-slug-redirects');
 
 const dataDir = path.join(__dirname, '..', 'data');
 const showsPath = process.env.SLUG_REDIRECTS_SHOWS_PATH || path.join(dataDir, 'shows.json');
 const outDir = process.env.SLUG_REDIRECTS_OUT_DIR || dataDir;
+const castManifestPath = process.env.SLUG_REDIRECTS_CAST_MANIFEST_PATH || path.join(dataDir, 'cast-manifest.json');
+const complexesDir = process.env.SLUG_REDIRECTS_COMPLEXES_DIR || dataDir;
 const outputPath = path.join(outDir, 'slug-redirects.json');
 const compactPath = path.join(outDir, 'slug-redirects-compact.json');
 
@@ -114,16 +131,49 @@ for (const d of droppedCriticAliases) {
   console.warn(`critic-slug alias skipped: "${d.slug}" — ${d.reason}`);
 }
 
+// Name-derived pages: retired (pre-fold) slug → live slug, per route family,
+// replayed from the same sources the pages are built from (S7-T3 follow-up).
+// The cast manifest and the curated complex files are optional inputs: a
+// checkout without them builds with that part of the map empty (and says so),
+// same stance as the critic registry above.
+function readOptionalJson(filePath, what) {
+  if (!fs.existsSync(filePath)) {
+    console.warn(`name-slug redirects: ${what} not found (${filePath}) — that family will be empty`);
+    return null;
+  }
+  return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+}
+const castManifest = readOptionalJson(castManifestPath, 'cast manifest');
+const castEntries = Array.isArray(castManifest?.entries) ? castManifest.entries : [];
+const complexSlugsOf = (fileName) => {
+  const parsed = readOptionalJson(path.join(complexesDir, fileName), fileName);
+  return parsed && parsed.complexes && typeof parsed.complexes === 'object' ? Object.keys(parsed.complexes) : [];
+};
+const { families: nameRedirects, entries: nameRedirectEntries } = buildNameSlugRedirects({
+  shows,
+  castEntries,
+  complexSlugs: {
+    offBroadway: complexSlugsOf('venue-complexes.json'),
+    westEnd: complexSlugsOf('venue-complexes-west-end.json'),
+  },
+});
+const nameRedirectCounts = Object.fromEntries(
+  Object.keys(NAME_REDIRECT_PREFIXES).map(family => [family, Object.keys(nameRedirects[family]).length])
+);
+
 // Full version (for debugging / inspection)
 const output = {
   _meta: {
-    description: 'Versionless slug → most recent production redirect map; criticRedirects = retired critic slug → canonical slug',
+    description: 'Versionless slug → most recent production redirect map; criticRedirects = retired critic slug → canonical slug; nameRedirects = per route family, pre-S7-T3 (unfolded) person/place slug → live slug',
     generatedAt: new Date().toISOString(),
     totalRedirects: Object.keys(redirects).length,
     totalCriticRedirects: Object.keys(criticRedirects).length,
+    totalNameRedirects: Object.keys(nameRedirectEntries).length,
+    nameRedirectCounts,
   },
   redirects,
   criticRedirects,
+  nameRedirects,
 };
 
 fs.writeFileSync(outputPath, JSON.stringify(output, null, 2) + '\n');
@@ -131,14 +181,19 @@ fs.writeFileSync(outputPath, JSON.stringify(output, null, 2) + '\n');
 // Compact version for middleware (minimal size for edge runtime)
 // Format: { baseName: targetSlug } — prefix target with "~" for 302 (multi-production)
 //         { "critic:<oldSlug>": canonicalSlug } — always 301 (see buildCriticRedirectEntries)
+//         { "<family>:<oldSlug>": liveSlug } — always 301, one prefix per route
+//         family (NAME_REDIRECT_PREFIXES: creative:, theater:, west-end-theater:,
+//         off-broadway-theater:, cast:)
 const compact = {};
 for (const [base, { target, permanent }] of Object.entries(redirects)) {
   compact[base] = permanent ? target : '~' + target;
 }
 Object.assign(compact, buildCriticRedirectEntries(criticRedirects));
+Object.assign(compact, nameRedirectEntries);
 fs.writeFileSync(compactPath, JSON.stringify(compact) + '\n');
 
 const multiCount = Object.values(redirects).filter(r => !r.permanent).length;
 const singleCount = Object.values(redirects).filter(r => r.permanent).length;
 const criticCount = Object.keys(criticRedirects).length;
-console.log(`Generated ${Object.keys(redirects).length} redirects (${singleCount} permanent, ${multiCount} temporary) + ${criticCount} critic aliases → ${outputPath}`);
+const nameSummary = Object.entries(nameRedirectCounts).map(([family, n]) => `${n} ${NAME_REDIRECT_PREFIXES[family]}`).join(', ');
+console.log(`Generated ${Object.keys(redirects).length} redirects (${singleCount} permanent, ${multiCount} temporary) + ${criticCount} critic aliases + ${Object.keys(nameRedirectEntries).length} name-slug redirects (${nameSummary}) → ${outputPath}`);

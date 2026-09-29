@@ -106,31 +106,48 @@ function updateStaging(mutateFn, stagingPath = STAGING_PATH) {
 }
 
 /**
- * Insert-or-update candidates by hash. Existing entries with the same hash
- * are replaced (refreshes discoveredAt + evidence); new ones are appended.
- * Routed through updateStaging so a concurrent same-host prune (the
- * promoter) and this upsert (discovery) can't lose each other's writes.
+ * Pure upsert-by-hash (BRO-4204 S8-T3 extraction, CLAUDE.md §15): the merge
+ * writeStagingCandidates has always applied, split out so the promoter's
+ * `--stage-file --dry-run` can merge hand-prepared candidates into the
+ * CURRENT staging entries in memory — evaluating exactly the union a real
+ * run would write — without touching the file. Existing entries with the
+ * same candidateHash are replaced (refreshes discoveredAt + evidence); new
+ * ones are appended; `existing` is never mutated.
+ *
+ * @param {object[]} existing entries as loadStaging returns them
+ * @param {object[]} newCandidates rows with at least {title, venue}
+ * @param {{now?: Date}} [opts]
+ * @returns {object[]} the merged entries
+ */
+function mergeCandidates(existing, newCandidates, opts = {}) {
+  const now = opts.now instanceof Date ? opts.now : new Date();
+  const byHash = new Map((Array.isArray(existing) ? existing : []).map(e => [e.candidateHash, e]));
+  for (const c of newCandidates) {
+    const h = candidateHash(c);
+    byHash.set(h, {
+      ...c,
+      // fetchSingleVenuePage's candidate shape uses `discoverySource`, not
+      // `source` — normalize here so the promoter (scripts/promote-owe-
+      // venue-candidates.js, mirroring promote-ob-venue-candidates.js,
+      // which reads c.source throughout) sees the same field name the OB
+      // staging shape already uses, instead of silently getting
+      // `undefined` for every OWE candidate.
+      source: c.source || c.discoverySource || null,
+      discoveredAt: c.discoveredAt || now.toISOString(),
+      candidateHash: h,
+    });
+  }
+  return [...byHash.values()];
+}
+
+/**
+ * Insert-or-update candidates by hash (mergeCandidates above), routed
+ * through updateStaging so a concurrent same-host prune (the promoter) and
+ * this upsert (discovery, or the promoter's --stage-file merge) can't lose
+ * each other's writes.
  */
 function writeStagingCandidates(newCandidates, stagingPath = STAGING_PATH) {
-  return updateStaging((existing) => {
-    const byHash = new Map(existing.map(e => [e.candidateHash, e]));
-    for (const c of newCandidates) {
-      const h = candidateHash(c);
-      byHash.set(h, {
-        ...c,
-        // fetchSingleVenuePage's candidate shape uses `discoverySource`, not
-        // `source` — normalize here so the promoter (scripts/promote-owe-
-        // venue-candidates.js, mirroring promote-ob-venue-candidates.js,
-        // which reads c.source throughout) sees the same field name the OB
-        // staging shape already uses, instead of silently getting
-        // `undefined` for every OWE candidate.
-        source: c.source || c.discoverySource || null,
-        discoveredAt: c.discoveredAt || new Date().toISOString(),
-        candidateHash: h,
-      });
-    }
-    return [...byHash.values()];
-  }, stagingPath);
+  return updateStaging((existing) => mergeCandidates(existing, newCandidates), stagingPath);
 }
 
 module.exports = {
@@ -139,5 +156,6 @@ module.exports = {
   loadStaging,
   writeStaging,
   updateStaging,
+  mergeCandidates,
   writeStagingCandidates,
 };

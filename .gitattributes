@@ -199,6 +199,7 @@ data/audit/bww-roundup-miss-ledger.jsonl merge=union
 data/audit/linear-archive-done.jsonl merge=union
 data/audit/ob-promotion-log.jsonl merge=union
 data/audit/we-promotion-log.jsonl merge=union
+data/audit/owe-promotion-log.jsonl merge=union
 # card-enrichment-log.jsonl (scripts/enrich-card-acceptance.js's
 # logEnrichmentWrite): write-only before/after audit trail, one entry per
 # enrichment write, appendFileSync only — confirmed no other script reads it
