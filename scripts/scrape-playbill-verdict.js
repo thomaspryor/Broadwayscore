@@ -652,6 +652,11 @@ async function scrapePlaybillVerdict() {
     if (!noDateFilter) {
       targetShows = targetShows.filter(s => new Date(s.openingDate) >= new Date('2023-01-01'));
     }
+    // The Verdict rounds up New York openings; a national tour's search can
+    // only find its Broadway article (BRO-4325, same as NYC Theatre).
+    const { kept, tours } = require('./lib/tour-family').withoutTours(targetShows);
+    if (tours.length) console.log(`Skipping national tour(s): the Verdict covers New York openings only (${tours.map(s => s.id).join(', ')})`);
+    targetShows = kept;
     console.log(`Processing ${targetShows.length} targeted show(s) via Google search...\n`);
 
     for (const show of targetShows) {

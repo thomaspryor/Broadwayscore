@@ -192,3 +192,14 @@ test('ship-check: an ambiguous row clears when the tour is no longer ambiguous',
   assert.equal(row1.ambiguous, undefined);
   assert.equal(row1.firstSeen, '2026-09-01T00:00:00Z', 'same slug keeps firstSeen');
 });
+
+test('New-York-only aggregators never take a national tour (BRO-4325: NYC Theatre filed Broadway excerpts as tour reviews)', () => {
+  const { withoutTours } = require('../../scripts/lib/tour-family.js');
+  const out = withoutTours([
+    { id: 'maybe-happy-ending-2024', category: 'broadway' },
+    { id: 'maybe-happy-ending-tour-2026', category: 'tour' },
+    { id: 'oh-mary-2024' },
+  ]);
+  assert.deepEqual(out.kept.map(s => s.id), ['maybe-happy-ending-2024', 'oh-mary-2024']);
+  assert.deepEqual(out.tours.map(s => s.id), ['maybe-happy-ending-tour-2026']);
+});
