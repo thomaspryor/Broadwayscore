@@ -1339,16 +1339,6 @@ async function main(): Promise<void> {
     ? shardedFiles.slice(0, options.limit)
     : shardedFiles;
 
-  // One stale attempt per text version, persisted BEFORE scoring so an attempt
-  // that ends on the excerpt again or fails without writing is not re-picked
-  // every cycle (BRO-4332; see isActionableStale).
-  if (!options.dryRun && staleSelected.size > 0) {
-    for (const f of finalFiles) {
-      if (!staleSelected.has(f.path)) continue;
-      markStaleRescoreAttempt(f.data as any);
-      fs.writeFileSync(f.path, JSON.stringify(f.data, null, 2) + '\n');
-    }
-  }
 
   // Summary
   console.log('=== LLM Review Scoring Pipeline ===\n');
@@ -2072,6 +2062,15 @@ async function main(): Promise<void> {
     if (batchHeldPaths.has(filePath)) {
       skipped++;
       continue;
+    }
+
+    // One stale attempt per text version, persisted just before the attempt so
+    // one that ends on the excerpt again or fails without writing is not
+    // re-picked every poll cycle (BRO-4332; see isActionableStale). A
+    // multi-show trim that saves shorter text re-arms it once, then it stops.
+    if (staleSelected.has(filePath) && !options.dryRun) {
+      markStaleRescoreAttempt(reviewFile as any);
+      fs.writeFileSync(filePath, JSON.stringify(reviewFile, null, 2) + '\n');
     }
 
     // Capture prior retry count BEFORE scoring rebuilds ensembleData (ensemble-scorer.ts:464).

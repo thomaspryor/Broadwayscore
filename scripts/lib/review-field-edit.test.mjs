@@ -30,7 +30,7 @@ test('clears a stale rejection (english-2025 NYT, BRO-4202)', () => {
 });
 
 test('refuses fields outside the allowlist (scores, text, lock)', () => {
-  for (const field of ['assignedScore', 'humanReviewScore', 'fullText', '_locked', 'url', 'approvedFixes']) {
+  for (const field of ['assignedScore', 'llmScore', 'originalScore', 'fullText', '_locked', 'approvedFixes']) {
     assert.equal(REVIEW_TEXT_EDITABLE_FIELDS.includes(field), false, field);
     const res = applyReviewFieldEdit({}, { field, oldValue: null, newValue: 1 }, stamp);
     assert.equal(res.ok, false, field);
@@ -61,4 +61,41 @@ test('resolveReviewPath keeps paths inside review-texts', () => {
   for (const bad of ['../x/y.json', 'english-2025/../../etc.json', '/abs/x.json', 'english-2025/x.txt', 'a/b/c.json', 'x.json', null]) {
     assert.equal(resolveReviewPath(root, bad), null, String(bad));
   }
+});
+
+// BRO-4275: score override, link and pull quote, each value-checked.
+test('humanReviewScore: integer 1-100 only, stamped like any other edit', () => {
+  const ok = applyReviewFieldEdit({ llmScore: { score: 81 } }, { field: 'humanReviewScore', oldValue: null, newValue: 90 }, stamp);
+  assert.equal(ok.ok, true);
+  assert.equal(ok.record.humanReviewScore, 90);
+  assert.equal(ok.record.approvedFixes.at(-1).field, 'humanReviewScore');
+  for (const bad of [0, 101, 88.5, '90', true]) {
+    assert.equal(applyReviewFieldEdit({}, { field: 'humanReviewScore', oldValue: null, newValue: bad }, stamp).ok, false, String(bad));
+  }
+  // null clears an override
+  assert.equal(applyReviewFieldEdit({ humanReviewScore: 70 }, { field: 'humanReviewScore', oldValue: 70, newValue: null }, stamp).ok, true);
+});
+
+test('humanReviewScoreProvisional must be boolean; humanReviewNote non-empty', () => {
+  assert.equal(applyReviewFieldEdit({}, { field: 'humanReviewScoreProvisional', oldValue: null, newValue: false }, stamp).ok, true);
+  assert.equal(applyReviewFieldEdit({}, { field: 'humanReviewScoreProvisional', oldValue: null, newValue: 'no' }, stamp).ok, false);
+  assert.equal(applyReviewFieldEdit({}, { field: 'humanReviewNote', oldValue: null, newValue: 'rave misread' }, stamp).ok, true);
+  assert.equal(applyReviewFieldEdit({}, { field: 'humanReviewNote', oldValue: null, newValue: '  ' }, stamp).ok, false);
+});
+
+test('url must be https', () => {
+  const rec = { url: 'https://www.theatrely.com/post/x-broadwayj' };
+  assert.equal(applyReviewFieldEdit(rec, { field: 'url', oldValue: rec.url, newValue: 'https://www.theatrely.com/post/x-broadway' }, stamp).ok, true);
+  for (const bad of ['http://x.com/a', 'javascript:alert(1)', 'https://x.com/a b', null]) {
+    assert.equal(applyReviewFieldEdit(rec, { field: 'url', oldValue: rec.url, newValue: bad }, stamp).ok, false, String(bad));
+  }
+});
+
+test('llmPullQuote must be verbatim from fullText (quote marks and spacing ignored)', () => {
+  const rec = { fullText: 'For what is clearly one of the past decade\u2019s most loved plays, this Broadway debut is a beautiful homecoming.' };
+  const ok = applyReviewFieldEdit(rec, { field: 'llmPullQuote', oldValue: null, newValue: "this Broadway debut is a  beautiful homecoming." }, stamp);
+  assert.equal(ok.ok, true);
+  assert.equal(applyReviewFieldEdit(rec, { field: 'llmPullQuote', oldValue: null, newValue: 'An invented rave that the critic never wrote.' }, stamp).ok, false);
+  assert.equal(applyReviewFieldEdit({}, { field: 'llmPullQuote', oldValue: null, newValue: 'No stored text to check this against.' }, stamp).ok, false);
+  assert.equal(applyReviewFieldEdit(rec, { field: 'llmPullQuote', oldValue: null, newValue: 'too short' }, stamp).ok, false);
 });

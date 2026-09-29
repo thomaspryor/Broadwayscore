@@ -346,10 +346,12 @@ jobs:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           echo "=== Scoring reviews (all 3 models) ==="
-          # Score only this show's unscored reviews
+          # Score this show's unscored reviews, plus (after them) any scored off
+          # an excerpt whose full text has since landed (BRO-4332)
           npx ts-node scripts/llm-scoring/index.ts \
             --show="${{ inputs.show_id }}" \
             --unscored-only \
+            --include-stale \
             --limit=30
           echo "Scoring complete."
 
