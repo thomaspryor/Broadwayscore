@@ -1248,5 +1248,34 @@
       }
     ],
     "queuedAt": "2026-09-29T09:01:37.290Z"
+  },
+  {
+    "conditionKey": "land:land/video-transcripts-fix",
+    "title": "Landing blocked: rebase red on land/video-transcripts-fix",
+    "description": "land.yml did not land land/video-transcripts-fix: the rebase gate went red at f85afba7d8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36547935179",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/video-transcripts-fix"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "f85afba7d8205146ca26a7a587021c01fb3fe798"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36547935179"
+      }
+    ],
+    "queuedAt": "2026-09-29T09:16:58.232Z"
   }
 ]
