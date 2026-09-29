@@ -1027,9 +1027,9 @@
     "queuedAt": "2026-09-29T07:08:20.824Z"
   },
   {
-    "conditionKey": "direct-push:279d6e84169f18a1410d973119ba2e3eeee70b9b",
-    "title": "Direct push to main: 279d6e8416 by thomaspryor",
-    "description": "279d6e8416 reached main WITHOUT going through land.yml (no row in data/audit/landings.jsonl). Pushed by thomaspryor (committer GitHub). Head commit: fix: reddit-digest show context was always scoreless (shape bug) and raw-meaned (#957) Direct pushes skip the delta-vs-base gates; sessions must land via scripts/merge-worktree-to-main.sh (BRO-3425). Compare: https://github.com/thomaspryor/Broadwayscore/compare/bfa4517fee5a992d4e452ca4fb83cf56dc69386d...279d6e84169f18a1410d973119ba2e3eeee70b9b Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36537525889",
+    "conditionKey": "direct-push:bfa4517fee5a992d4e452ca4fb83cf56dc69386d",
+    "title": "Direct push to main: bfa4517fee by thomaspryor",
+    "description": "bfa4517fee reached main WITHOUT going through land.yml (no row in data/audit/landings.jsonl). Pushed by thomaspryor (committer GitHub). Head commit: fix: guide-editorial rankings use canonical Critic Score, not raw mean (#956) Direct pushes skip the delta-vs-base gates; sessions must land via scripts/merge-worktree-to-main.sh (BRO-3425). Compare: https://github.com/thomaspryor/Broadwayscore/compare/8138e67157d93734b3766587dc687d69377dba98...bfa4517fee5a992d4e452ca4fb83cf56dc69386d Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36537518709",
     "severity": "warning",
     "url": null,
     "decision": false,
@@ -1038,7 +1038,7 @@
     "fields": [
       {
         "name": "sha",
-        "value": "279d6e84169f18a1410d973119ba2e3eeee70b9b"
+        "value": "bfa4517fee5a992d4e452ca4fb83cf56dc69386d"
       },
       {
         "name": "actor",
@@ -1046,9 +1046,9 @@
       },
       {
         "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36537525889"
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36537518709"
       }
     ],
-    "queuedAt": "2026-09-29T07:43:13.023Z"
+    "queuedAt": "2026-09-29T07:43:14.738Z"
   }
 ]
