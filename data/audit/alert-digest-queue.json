@@ -2018,5 +2018,110 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-29T18:16:12.572Z"
+  },
+  {
+    "conditionKey": "red-first-skip:BRO-4264",
+    "title": "Red-first dispatch skipped BRO-4264 — no job spawned (no-safe-verify)",
+    "description": "The BRO-4054 red-first pass skipped \"main test.yml red: E2E Tests / Run unit tests — \"handles accented/special characters by removing them\"\" (BRO-4264) this tick with reason \"no-safe-verify\" — no dispatch was attempted and no job was spawned. Unless this reason clears on its own (e.g. the daily cap resetting), the card will keep sitting here with nobody looking at it.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Card",
+        "value": "BRO-4264"
+      },
+      {
+        "name": "Skip reason",
+        "value": "no-safe-verify"
+      }
+    ],
+    "queuedAt": "2026-09-29T18:43:08.869Z"
+  },
+  {
+    "conditionKey": "red-first-skip:BRO-4255",
+    "title": "Red-first dispatch skipped BRO-4255 — no job spawned (no-safe-verify)",
+    "description": "The BRO-4054 red-first pass skipped \"main test.yml red: E2E Tests / Run E2E tests\" (BRO-4255) this tick with reason \"no-safe-verify\" — no dispatch was attempted and no job was spawned. Unless this reason clears on its own (e.g. the daily cap resetting), the card will keep sitting here with nobody looking at it.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Card",
+        "value": "BRO-4255"
+      },
+      {
+        "name": "Skip reason",
+        "value": "no-safe-verify"
+      }
+    ],
+    "queuedAt": "2026-09-29T18:43:08.876Z"
+  },
+  {
+    "conditionKey": "red-first-skip:BRO-4247",
+    "title": "Red-first dispatch skipped BRO-4247 — no job spawned (no-safe-verify)",
+    "description": "The BRO-4054 red-first pass skipped \"main test.yml red: E2E Tests / Run unit tests — \"broadway + west-end + off-west-end + off-broadway covers all shows (modulo hidden)\"\" (BRO-4247) this tick with reason \"no-safe-verify\" — no dispatch was attempted and no job was spawned. Unless this reason clears on its own (e.g. the daily cap resetting), the card will keep sitting here with nobody looking at it.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Card",
+        "value": "BRO-4247"
+      },
+      {
+        "name": "Skip reason",
+        "value": "no-safe-verify"
+      }
+    ],
+    "queuedAt": "2026-09-29T18:43:08.885Z"
+  },
+  {
+    "conditionKey": "red-first-skip:BRO-4362",
+    "title": "Red-first dispatch skipped BRO-4362 — no job spawned (cap-reached)",
+    "description": "The BRO-4054 red-first pass skipped \"main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"fewer than 50 outlets have a null domain\"\" (BRO-4362) this tick with reason \"cap-reached\" — no dispatch was attempted and no job was spawned. Unless this reason clears on its own (e.g. the daily cap resetting), the card will keep sitting here with nobody looking at it.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Card",
+        "value": "BRO-4362"
+      },
+      {
+        "name": "Skip reason",
+        "value": "cap-reached"
+      }
+    ],
+    "queuedAt": "2026-09-29T18:43:08.888Z"
+  },
+  {
+    "conditionKey": "red-first-skip:BRO-4166",
+    "title": "Red-first dispatch skipped BRO-4166 — no job spawned (human-gated:[object Object])",
+    "description": "The BRO-4054 red-first pass skipped \"main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"TRIPPED breaker: the Bright Data ledger row carries fallback_from \"sd-breaker\"\"\" (BRO-4166) this tick with reason \"human-gated:[object Object]\" — no dispatch was attempted and no job was spawned. Unless this reason clears on its own (e.g. the daily cap resetting), the card will keep sitting here with nobody looking at it.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Card",
+        "value": "BRO-4166"
+      },
+      {
+        "name": "Skip reason",
+        "value": "human-gated:[object Object]"
+      }
+    ],
+    "queuedAt": "2026-09-29T18:43:08.890Z"
   }
 ]
