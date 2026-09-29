@@ -16,7 +16,13 @@ function getApiKey() {
   return key;
 }
 
-async function phQuery(hogql) {
+/**
+ * Full query response ({ columns, results, types, ... }). Every fixed-query
+ * caller below knows its own column order and only wants `results`, so they
+ * keep using phQuery; scripts/posthog-adhoc-query.js needs the column names
+ * to head a table for a statement it has never seen (BRO-4327).
+ */
+async function phQueryFull(hogql) {
   const res = await fetch(`${API_BASE}/api/projects/${PROJECT_ID}/query/`, {
     method: 'POST',
     headers: {
@@ -26,7 +32,11 @@ async function phQuery(hogql) {
     body: JSON.stringify({ query: { kind: 'HogQLQuery', query: hogql } }),
   });
   if (!res.ok) throw new Error(`PostHog API ${res.status}: ${await res.text()}`);
-  const data = await res.json();
+  return res.json();
+}
+
+async function phQuery(hogql) {
+  const data = await phQueryFull(hogql);
   return data.results || [];
 }
 
@@ -207,6 +217,7 @@ async function getPromoClicks() {
 
 module.exports = {
   phQuery,
+  phQueryFull,
   REAL_USERS_WHERE,
   authCheck,
   tracked,
