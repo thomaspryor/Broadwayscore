@@ -146,10 +146,10 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T23:08:04.776Z",
-      "lastNotifiedAt": "2026-09-29T23:08:04.776Z",
+      "lastSeen": "2026-09-29T23:34:15.828Z",
+      "lastNotifiedAt": "2026-09-29T23:34:15.828Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
-      "notifyCount": 117,
+      "notifyCount": 118,
       "cardId": null,
       "linearIdentifier": "BRO-3030"
     },
@@ -6879,7 +6879,7 @@
       "linearIdentifier": "BRO-4390"
     },
     "test-yml:red:Lint Workflows:8be00113": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — wrongProduction/wrongShow writers must invalidate stale auto-clear breadcrumbs",
       "firstSeen": "2026-09-29T21:43:53.789Z",
@@ -6895,7 +6895,9 @@
         "runId": "36633606651",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36633606651"
       },
-      "silentRefires": 4
+      "silentRefires": 4,
+      "resolvedAt": "2026-09-29T23:34:15.817Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-4380-enforce": {
       "status": "open",
@@ -6954,12 +6956,13 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"preview + opening → both dates, opening marked theatermania (unconfirmed)\"",
       "firstSeen": "2026-09-29T23:08:03.730Z",
-      "lastSeen": "2026-09-29T23:08:03.730Z",
+      "lastSeen": "2026-09-29T23:34:15.825Z",
       "lastNotifiedAt": "2026-09-29T23:08:03.730Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-4397"
+      "linearIdentifier": "BRO-4397",
+      "silentRefires": 1
     }
   }
 }
