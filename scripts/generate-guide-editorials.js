@@ -28,6 +28,22 @@ const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
 const REVIEWS_FILE = path.join(ROOT, 'data', 'reviews.json');
 const CONSENSUS_FILE = path.join(ROOT, 'data', 'critic-consensus.json');
 const OUTPUT_FILE = path.join(ROOT, 'data', 'guide-editorials.json');
+const SLIM_DIR = path.join(ROOT, 'public', 'data', 'shows');
+
+// Canonical Critic Score, straight from the show's slim public file — the
+// same source scripts/lib/canonical-critic-scores.ts wraps (CLAUDE.md §3).
+// Do NOT raw-mean data/reviews.json here: it diverges from what the site
+// actually shows and is far more volatile than the tier-weighted composite —
+// this ranks/filters "Best Broadway Shows" and "Highest Rated" guide pages,
+// so a wrong number here is a wrong ranking, not just a stray notification.
+function getCriticScore(showId) {
+  try {
+    const j = JSON.parse(fs.readFileSync(path.join(SLIM_DIR, `${showId}.json`), 'utf-8'));
+    return typeof j.cs === 'number' ? j.cs : null;
+  } catch {
+    return null;
+  }
+}
 
 const MAX_FILE_SIZE = 500 * 1024; // 500KB
 const MAX_RETRIES = 3;
@@ -216,13 +232,20 @@ async function main() {
   for (const show of shows) {
     const showReviews = reviewsByShow[show.id] || [];
     if (showReviews.length > 0 && !show.criticScore) {
-      const scores = showReviews.filter(r => r.assignedScore).map(r => r.assignedScore);
-      if (scores.length > 0) {
+      const canonicalScore = getCriticScore(show.id);
+      if (canonicalScore != null) {
+        const scoredReviewCount = showReviews.filter(r => r.assignedScore).length;
         show.criticScore = {
-          score: scores.reduce((a, b) => a + b, 0) / scores.length,
-          reviewCount: scores.length,
+          score: canonicalScore,
+          reviewCount: scoredReviewCount,
         };
       }
+      // No canonical score yet (show not in public/data/shows/ or below the
+      // site's own review-count threshold) — leave criticScore unset rather
+      // than fabricate one from a raw mean. Every ranking filter below
+      // already treats `criticScore?.score ?? 0` as "not ranked", so this
+      // show is correctly excluded instead of ranked off a number the site
+      // doesn't even display.
     }
   }
 
