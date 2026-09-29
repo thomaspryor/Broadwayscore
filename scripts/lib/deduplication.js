@@ -267,6 +267,11 @@ function normalizeTitleUncached(title) {
   // Task #648.
   return foldDiacritics(title)
     .toLowerCase()
+    // "&" and "and" are one word in a title: "Romeo & Juliet" (Coliseum 2027)
+    // and "Romeo and Juliet" (Harold Pinter 2026) must reach the same-venue /
+    // year checks below as the same title, not slip past the scan as two
+    // (2026-09-29; candidate-dedup and show-matching already fold it).
+    .replace(/\s*&\s*/g, ' and ')
     // Remove common subtitles/suffixes
     .replace(/:\s*.+$/, '')           // Remove everything after colon
     .replace(/\s*-\s*.+$/, '')        // Remove everything after dash
