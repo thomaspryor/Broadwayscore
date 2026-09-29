@@ -5749,7 +5749,13 @@ function commitChanges(processed, forcePush = false) {
 
     // Stage changes
     // Note: data/review-texts/ and data/archives/ are in .gitignore (review-texts pushed to private repo)
-    execSync('git add data/collection-state/', {
+    // The provider ledger too: the checkpoint push runs push-with-retry.sh, and with
+    // scraper-spend-ledger.jsonl left unstaged its rebase refusal / reset+cherry-pick
+    // path wiped this run's provider rows (2026-09-29: Collect Review Texts made
+    // Scrapingdog calls, 0 ledger rows landed). Only that file: the rest of
+    // data/audit/ (e.g. the 23MB stage-latency.jsonl) would disqualify the API
+    // fallback and bloat every amend; the workflow's final commit stages it.
+    execSync('git add data/collection-state/ data/audit/scraper-spend-ledger.jsonl', {
       stdio: 'pipe'
     });
 
@@ -7818,7 +7824,7 @@ function exitIfStuckAfterMain(graceMs = 20000) {
   t.unref();
 }
 
-module.exports = { pushReviewTextsCheckpoint };
+module.exports = { pushReviewTextsCheckpoint, commitChanges };
 
 // Run (guarded so scripts/collect-review-texts.test.mjs can require() this
 // file for pushReviewTextsCheckpoint() without kicking off a real collection
