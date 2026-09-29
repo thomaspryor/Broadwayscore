@@ -1445,6 +1445,29 @@ function isRoundupUrl(url) {
     return { isRoundup: true, reason: 'Playbill read-the-reviews-of roundup' };
   }
 
+  // Every other Playbill roundup slug (BRO-4272). Playbill words its "The Verdict"
+  // compilations a new way almost every time: reviews-are-out-for-, reviews-are-in-for-,
+  // read-the-reviews-for-, read-reviews-for-, what-did-critics-think-of-,
+  // did-reviewers-..., how-did-critics-review-..., the-verdict-..., ...-read-the-reviews,
+  // ...-verdict. The three fixed patterns above missed ~300 corpus files, among them
+  // School Girls 2026's "reviews-are-out-for-..." article, stored as a Playbill review
+  // with no isRoundupArticle flag. Rule: one of reviews/reviewers/critics within the
+  // slug's first six words. Playbill's own criticism ("on-the-record-...") and its
+  // "playbill-theatre-week-in-review-..." column don't match (singular "review", and
+  // week-in-review is excluded explicitly). Checked against every playbill.com URL in
+  // reviews.json and review-texts: no live review matches.
+  const playbillSlug = url.match(/^(?:https?:\/\/)?(?:[a-z0-9-]+\.)*playbill\.com\/(?:news\/)?article\/([a-z0-9-]+)/i);
+  if (playbillSlug) {
+    const slug = playbillSlug[1].toLowerCase();
+    const lead = slug.replace(/^the-verdict-/, '').split('-').slice(0, 6);
+    if (!slug.includes('week-in-review')
+        && (lead.some((t) => t === 'reviews' || t === 'reviewers' || t === 'critics')
+          || /-read-the-reviews$/.test(slug)
+          || /-verdict$/.test(slug))) {
+      return { isRoundup: true, reason: 'Playbill Verdict roundup article (multi-outlet quote compilation)' };
+    }
+  }
+
   // WhatsOnStage review round-ups — /news/{slug}-review-round-up_{id}/. One
   // 902-word roundup quoting 7 critics exploded into 7 per-critic files scored
   // 100 via unicode-stars on jesus-christ-superstar-west-end-2026 (2026-07-08).

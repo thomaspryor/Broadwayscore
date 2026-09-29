@@ -26,6 +26,7 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const { findStaleCreators } = require('../lib/video-pipeline-health');
 const { preserveLlmFlags } = require('../lib/video-discovery-merge');
 
 const CREATORS_PATH = path.join(__dirname, '../../data/video-creators.json');
@@ -149,6 +150,22 @@ function main() {
     console.log(`  ${data.handle}: ${data.totalVideos} total, ${candidates} review candidates`);
   }
   console.log(`\nTotal review candidates: ${totalCandidates}`);
+
+  // A creator whose listing errors is logged and skipped above, and the run
+  // stays green. Two missed weekly scans in a row means they are silently
+  // dropping out of the pipeline (BRO-4323). Exit 3 (not 1) so the workflow
+  // still runs the later steps for everyone else and fails the job at the end.
+  // Current roster only: a leftover file for a removed creator must not alarm,
+  // and a creator whose first scan never succeeded (no file) must.
+  const stale = findStaleCreators(creators.map(c => {
+    const f = path.join(DISCOVERY_DIR, `${c.id}.json`);
+    return fs.existsSync(f) ? { ...JSON.parse(fs.readFileSync(f, 'utf8')), handle: c.id } : { handle: c.id };
+  }));
+  for (const c of stale) {
+    console.error(`::error::Video creator @${c.handle} has not been scanned successfully for ${c.ageDays ?? '?'} days (last ${c.scannedAt || 'never'})`);
+  }
+  // A single-creator dispatch (--creator=) only vouches for that creator.
+  if (stale.length && !creatorFilter) process.exit(3);
 }
 
 main();

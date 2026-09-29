@@ -863,6 +863,7 @@ tests/unit/review-write-guard.test.mjs
 tests/unit/reviews-json-single-outlet-writer.test.mjs
 tests/unit/revival-cross-reference.test.mjs
 tests/unit/roundup-digest.test.mjs
+tests/unit/roundup-gap-alert.test.mjs
 tests/unit/roundup-host-patterns.test.mjs
 tests/unit/roundup-hyperlink-reviews.test.mjs
 tests/unit/roundup-rebuild-guard.test.mjs
@@ -902,6 +903,7 @@ tests/unit/send-daily-digest.test.mjs
 tests/unit/seo-anomaly-detection.test.mjs
 tests/unit/seo-cwv-field-scope.test.mjs
 tests/unit/serp-burst-caps.test.mjs
+tests/unit/serp-burst-ledger.test.mjs
 tests/unit/serp-burst-tripwire.test.mjs
 tests/unit/serp-cache.test.mjs
 tests/unit/serp-negative-cache-policy.test.mjs
@@ -1030,6 +1032,8 @@ tests/unit/verify-all-scored.test.mjs
 tests/unit/verify-fetched-url.test.mjs
 tests/unit/verify-gate-comment-correction.test.mjs
 tests/unit/video-discovery-merge.test.mjs
+tests/unit/video-pipeline-health.test.mjs
+tests/unit/video-review-guards.test.mjs
 tests/unit/visual-qa-flag-awareness.test.mjs
 tests/unit/watchlist-delete-icon-contrast.test.mjs
 tests/unit/watchlist-grid-remove-affordance.test.mjs
