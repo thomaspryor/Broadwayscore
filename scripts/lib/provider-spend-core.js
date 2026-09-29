@@ -459,8 +459,31 @@ function attributionGaps(series, { min = 0.8, days = 2, providers = [] } = {}) {
   return gaps;
 }
 
+/**
+ * BRO-4215: has an attribution gap closed? Same window as attributionGaps:
+ * the last `days` recorded days (by date) must be consecutive, measured, and
+ * ALL >= min. Shared by check-provider-spend.js (resolveCondition) and
+ * check-attribution-gap-clear.js (the card's VERIFY), so the ledger condition
+ * and the card cannot disagree (one good day inside a gap resolving the
+ * condition would let the next bad pair file a duplicate card).
+ * @returns {{verdict:'clear'|'open'|'unverifiable', days:string[], pcts:(number|null)[]}}
+ */
+function attributionWindowVerdict(series, provider, { min = 0.8, days = 2 } = {}) {
+  const sorted = [...(series || [])].filter((r) => r && r.day)
+    .sort((a, b) => (a.day < b.day ? -1 : a.day > b.day ? 1 : 0));
+  const recent = sorted.slice(-days);
+  const pcts = recent.map((r) => { const p = (r.attributedPct || {})[provider]; return typeof p === 'number' ? p : null; });
+  const dayList = recent.map((r) => r.day);
+  const consecutive = recent.every((r, i) => i === 0 || isNextUtcDay(recent[i - 1].day, r.day));
+  if (recent.length < days || !consecutive) return { verdict: 'unverifiable', days: dayList, pcts };
+  if (pcts.some((p) => p !== null && p < min)) return { verdict: 'open', days: dayList, pcts };
+  if (pcts.some((p) => p === null)) return { verdict: 'unverifiable', days: dayList, pcts };
+  return { verdict: 'clear', days: dayList, pcts };
+}
+
 module.exports = {
   attributionGaps,
+  attributionWindowVerdict,
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot,
   utcYesterday, isNextUtcDay, aggregateLedgerByDay, bbCost,
   BB_BASE_MONTHLY_USD, BB_BASE_AMORTIZED_DAYS, BB_OVERAGE_PER_BROWSER_HOUR_USD,

@@ -53,6 +53,7 @@ function _hostOf(url) {
 // writes to a scratch path instead of polluting the real committed ledger —
 // every recordProviderCall() in a test run was writing real rows here until
 // this was added (caught while shipping task #752).
+let _testLedgerCleanup = false;
 function _ledgerPath() {
   if (process.env.SCRAPER_SPEND_LEDGER_PATH) return process.env.SCRAPER_SPEND_LEDGER_PATH;
   // BRO-4220: under `node --test` (Node sets NODE_TEST_CONTEXT in every test
@@ -62,7 +63,12 @@ function _ledgerPath() {
   // rotation, dropped real ones (1,289 in one BRO-4215 run). Real script runs
   // never have NODE_TEST_CONTEXT, so production writes are unchanged.
   if (process.env.NODE_TEST_CONTEXT) {
-    return path.join(require('os').tmpdir(), `scraper-spend-ledger.test-${process.pid}.jsonl`);
+    const p = path.join(require('os').tmpdir(), `scraper-spend-ledger.test-${process.pid}.jsonl`);
+    if (!_testLedgerCleanup) {
+      _testLedgerCleanup = true;
+      process.once('exit', () => { try { fs.unlinkSync(p); } catch (_) { /* never written */ } });
+    }
+    return p;
   }
   return LEDGER_PATH;
 }
