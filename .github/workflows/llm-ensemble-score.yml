@@ -150,9 +150,36 @@ jobs:
         uses: actions/checkout@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          # fetch-depth: 0 keeps the full commit graph so push-with-retry.sh's
+          # rebase/merge/reset path (the "Commit and push changes" step below)
+          # always has a resolvable merge-base — a depth-1 checkout is the #209
+          # parentless-root shape (see opening-night-poller.yml's Checkout).
+          #
+          # filter: blob:none (BRO-4231, same change as BRO-4273/BRO-4219 on
+          # the poller): keep that graph but stop downloading every historical
+          # blob of this repo's data/*.json rewrites. Measured on run
+          # 36523767401 (2026-09-29): this step took 24m37s of a 27-minute run
+          # whose scoring took 3 seconds, and the workflow ran 30 times in the
+          # preceding 12.5 hours (dispatched after every rebuild with unscored
+          # reviews, plus self-chained batches). The same full-graph checkout
+          # with the filter takes ~35s (poller run 36533022161, land.yml).
+          # Nothing here reads history: the job diffs the index against HEAD
+          # (`git diff --staged`) and pushes through push-with-retry.sh, which
+          # runs on this exact checkout shape in the poller, land.yml,
+          # autonomous-merge.yml and check-direct-push-to-main.yml.
           fetch-depth: 0
+          filter: blob:none
 
-
+      # BRO-4231 (copied from opening-night-poller.yml, BRO-4273): blob:none
+      # makes rebase/diff fetch missing blobs over the network, outside
+      # push-with-retry.sh's per-op timeout wrappers. Give those lazy fetches
+      # git's own low-speed abort (same 1KB/s for 45s the helper applies to
+      # fetch/push) so a stalled one fails instead of hanging until the job
+      # timeout. push-with-retry.sh retries a rebase killed that way (BRO-4219).
+      - name: Guard lazy blob fetches against stalls
+        run: |
+          git config --local http.lowSpeedLimit 1000
+          git config --local http.lowSpeedTime 45
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
