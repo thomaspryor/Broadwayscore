@@ -167,6 +167,19 @@ jobs:
           set -euo pipefail
           node scripts/video-reviews/score-video-reviews.js
 
+      # BRO-4328: check each newly scored review is about the production it is
+      # filed under (West End/tour/tryout/earlier-run videos were landing on
+      # Broadway ids). Sets wrongProduction=true, which the build skips.
+      # GPT-4o proposes, Gemini must confirm; the date rule needs no model.
+      - name: Verify productions
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -euo pipefail
+          node scripts/video-reviews/verify-productions.js
+
       # Step 7 of 8 — rebuild data/video-reviews.json from all scored transcripts.
       # This file is in the Vercel deploy trigger path — pushing it kicks a deploy.
       - name: Build video-reviews.json
