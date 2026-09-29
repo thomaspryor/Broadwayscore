@@ -138,15 +138,9 @@ async function main() {
 
   const toWrite = results.filter(r => Object.keys(r.write).length);
   const applied = [];
-  if (write && !only) {
-    // Tours take their Broadway parent's art and synopsis when they have none
-    // (tour-family.js); here too so a newly created tour has them the same day.
-    const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_PATH);
-    const snapshot = loadShows();
-    const inherited = applyTourInheritance(snapshot.shows);
-    if (inherited.length) { saveShows(snapshot); console.log(`Parent art/synopsis given to: ${inherited.join(', ')}`); }
-  }
-  if (write && toWrite.length) {
+  // One load/save under the write guard for everything this run writes, so the
+  // inheritance and the dates can't come from two different snapshots.
+  if (write && (toWrite.length || !only)) {
     const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_PATH);
     const snapshot = loadShows();
     const byId = new Map(snapshot.shows.map(s => [s.id, s]));
@@ -166,7 +160,11 @@ async function main() {
       }
       if (Object.keys(done).length) applied.push({ id: r.id, ...done });
     }
-    if (applied.length) saveShows(snapshot);
+    // Tours take their Broadway parent's art and synopsis when they have none
+    // (tour-family.js); here too so a newly created tour has them the same day.
+    const inherited = only ? [] : applyTourInheritance(snapshot.shows);
+    if (inherited.length) console.log(`Parent art/synopsis given to: ${inherited.join(', ')}`);
+    if (applied.length || inherited.length) saveShows(snapshot);
   }
 
   fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });

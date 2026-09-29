@@ -229,7 +229,8 @@ function getTourPromptContext() {
     'THIS production and is valid. Mentions of the original Broadway run, its cast, its awards or its New York',
     'reviews are normal background, not evidence of a mismatch. Mark wrong_production only if the critic is',
     'reviewing the original Broadway run in New York, a West End or UK production, a different national tour',
-    'of the same title (another year or another touring company), or a separate regional, community or school staging.',
+    'of the same title (another year or another touring company), a separate open-ended sit-down production in one city',
+    '(for example a long Chicago or Los Angeles run with its own company), or a separate regional, community or school staging.',
   ].join(' ');
 }
 
