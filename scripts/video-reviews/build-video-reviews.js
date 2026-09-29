@@ -7,10 +7,12 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('../lib/list-show-dirs');
+const { filterPublishableReviews } = require('../lib/video-review-guards');
 
 const TRANSCRIPTS_DIR = path.join(__dirname, '../../data/video-reviews-transcripts');
 const CREATORS_PATH = path.join(__dirname, '../../data/video-creators.json');
 const OUTPUT_PATH = path.join(__dirname, '../../data/video-reviews.json');
+const SHOWS_PATH = path.join(__dirname, '../../data/shows.json');
 
 function main() {
   const creators = JSON.parse(fs.readFileSync(CREATORS_PATH, 'utf8')).creators;
@@ -29,7 +31,14 @@ function main() {
     }
   };
 
+  if (!fs.existsSync(SHOWS_PATH)) {
+    console.error(`Missing ${SHOWS_PATH} (private core data); in CI run .github/actions/checkout-core-data first.`);
+    process.exit(1);
+  }
+  const knownShowIds = new Set(JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows.map(s => s.id));
+
   const showDirs = listShowDirs(TRANSCRIPTS_DIR).filter(d => d !== 'raw' && d !== 'classified');
+  const reviewsByShow = {};
 
   for (const showId of showDirs) {
     const showDir = path.join(TRANSCRIPTS_DIR, showId);
@@ -61,15 +70,20 @@ function main() {
       });
     }
 
-    // Show any show with 1+ reviews. Single-review shows still display — the
-    // VideoReviewsShelf header and profile pages show "N reviews" which is
-    // honest about sample size. Filtering to 2+ hid ~86 legit reviews because
-    // tylernabinger covers niche OB that other creators skip.
-    if (reviews.length >= 1) {
-      reviews.sort((a, b) => b.score - a.score);
-      output[showId] = reviews;
-      console.log(`${showId}: ${reviews.length} reviews — avg ${Math.round(reviews.reduce((s, r) => s + r.score, 0) / reviews.length)}`);
-    }
+    if (reviews.length) reviewsByShow[showId] = reviews;
+  }
+
+  const { kept, dropped } = filterPublishableReviews(reviewsByShow, knownShowIds);
+  for (const d of dropped) console.log(`  dropped ${d.showId} ${d.videoUrl}: ${d.reason}`);
+
+  // Show any show with 1+ reviews. Single-review shows still display — the
+  // VideoReviewsShelf header and profile pages show "N reviews" which is
+  // honest about sample size. Filtering to 2+ hid ~86 legit reviews because
+  // tylernabinger covers niche OB that other creators skip.
+  for (const [showId, reviews] of Object.entries(kept)) {
+    reviews.sort((a, b) => b.score - a.score);
+    output[showId] = reviews;
+    console.log(`${showId}: ${reviews.length} reviews — avg ${Math.round(reviews.reduce((s, r) => s + r.score, 0) / reviews.length)}`);
   }
 
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2));
