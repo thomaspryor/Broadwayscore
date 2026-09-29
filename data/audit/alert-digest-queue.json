@@ -1700,5 +1700,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-29T13:28:34.104Z"
+  },
+  {
+    "conditionKey": "time-to-publish-sla:unmeasurable",
+    "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
+    "description": "Scope: 2 opening window(s): the-standard-of-living-west-end-2026 (2026-09-29), school-girls-or-the-african-mean-girls-play-2026 (2026-09-28)\n0 review(s) still in flight.\nStage log currently starts at 2026-09-17T15:01:26.003Z.\nThis is NOT a pass — the SLA had too little to judge.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T13:35:55.370Z"
   }
 ]
