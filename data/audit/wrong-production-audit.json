@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-28T22:45:49.769Z",
+  "timestamp": "2026-09-29T01:29:48.192Z",
   "stats": {
-    "totalReviews": 44576,
-    "alreadyFlagged": 18239,
-    "dateGuardCatches": 240,
+    "totalReviews": 44581,
+    "alreadyFlagged": 18243,
+    "dateGuardCatches": 239,
     "directorMismatch": 1098,
     "tvFilmSignals": 1320,
-    "londonSignals": 1209,
+    "londonSignals": 1212,
     "offBroadwaySignals": 512,
     "yearMismatch": 95,
-    "noPublishDate": 3873
+    "noPublishDate": 3878
   },
   "findings": [
     {
@@ -1105,7 +1105,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 73,
+      "score": 74,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -6683,7 +6683,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2026-06-29",
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6697,7 +6697,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 82,
+      "score": 80,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6711,7 +6711,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2025-10-08",
       "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
       "findings": [
@@ -8896,7 +8896,7 @@
     {
       "showId": "equus-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
-      "score": 84,
+      "score": 85,
       "publishDate": "2026-05-19",
       "url": "https://www.londontheatre.co.uk/reviews/equus-review-menier-chocolate-factory",
       "findings": [
@@ -13993,6 +13993,7 @@
     {
       "showId": "human-things-off-broadway-2026",
       "file": "the-knockturnal--karen-snyder.json",
+      "score": 85,
       "publishDate": "2026-09-28",
       "url": "https://theknockturnal.com/human-things-takes-stage/",
       "findings": [
@@ -15298,7 +15299,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
-      "score": 80,
+      "score": 79,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
       "findings": [
@@ -15424,7 +15425,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
-      "score": 79,
+      "score": 77,
       "publishDate": "2025-12-12",
       "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283?srsltid=AfmBOopZW29rEZK9Fg8EKA2nVqf0gU1fVIrWNIjC9D0Sf-uihs3xV8FN",
       "findings": [
@@ -15574,7 +15575,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "plays-international--jeremy-malies.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "2025-12-15",
       "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
       "findings": [
@@ -16380,7 +16381,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2026-03-27",
       "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
       "findings": [
@@ -16511,7 +16512,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
@@ -36037,17 +36038,6 @@
       ]
     },
     {
-      "showId": "a-midsummer-nights-dream-globe-west-end-2026",
-      "file": "whatsonstage--alex-wood.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 55d before show (2026-02-27 vs 2026-04-23)"
-        }
-      ]
-    },
-    {
       "showId": "a-midsummer-nights-dream-west-end-2026",
       "file": "thereviewshub--richard-maguire.json",
       "score": 62,
@@ -37531,7 +37521,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 75,
+      "score": 78,
       "publishDate": "2026-06-28",
       "url": "https://www.londontheatre1.com/reviews/archduke-royal-court/",
       "findings": [
@@ -37629,7 +37619,7 @@
     {
       "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 78,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
       "findings": [
@@ -38912,7 +38902,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2026-05-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-care-young-vic",
       "findings": [
@@ -40577,7 +40567,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
-      "score": 82,
+      "score": 80,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
       "findings": [
@@ -40591,7 +40581,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": 77,
+      "score": 74,
       "publishDate": "2026-08-13",
       "url": "https://playsinternational.org.uk/death-note-the-musical-barbican/",
       "findings": [
@@ -41440,6 +41430,20 @@
       "score": 93,
       "publishDate": "2026-05-22",
       "url": "https://www.allthatdazzles.co.uk/post/review-end-of-the-rainbow-soho-theatre-walthamstow",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "end-of-the-rainbow-west-end-2026",
+      "file": "whatsonstage--alun-hood.json",
+      "score": 60,
+      "publishDate": "2026-05-22",
+      "url": "https://www.whatsonstage.com/news/end-of-the-rainbow-with-jinkx-monsoon-at-soho-theatre-walthamstow-review_1722318/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -42513,7 +42517,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "londonlivinglarge--london-living-large.json",
-      "score": 77,
+      "score": 75,
       "publishDate": "2026-09-18",
       "url": "https://www.londonlivinglarge.com/2026/09/golden-boy-almeida-theatre-sep-8-oct-31.html",
       "findings": [
@@ -42744,6 +42748,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "grace-pervades-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 82,
+      "publishDate": "2026-05-01",
+      "url": "https://www.whatsonstage.com/news/grace-pervades-with-ralph-fiennes-and-miranda-raison-west-end-review_1720019/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -43076,7 +43094,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 76,
+      "score": 81,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
@@ -46513,6 +46531,7 @@
     {
       "showId": "lost-in-del-valle-return-off-broadway-2026",
       "file": "theatermania--dan-rubins.json",
+      "score": 62,
       "publishDate": "2026-09-24",
       "url": "https://www.theatermania.com/news/review-lost-in-del-valle-gets-lost-in-its-own-storytelling_1854949/",
       "findings": [
@@ -46790,7 +46809,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-09-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
       "findings": [
@@ -46873,7 +46892,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "guardian--mark-lawson.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-09-11",
       "url": "https://www.theguardian.com/stage/2026/sep/12/man-to-man-review-tilda-swinton-royal-court-theatre",
       "findings": [
@@ -47303,7 +47322,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 61,
+      "score": 62,
       "publishDate": "2026-04-30",
       "url": "https://www.londontheatre.co.uk/reviews/mass-review-donmar-warehouse",
       "findings": [
@@ -47777,7 +47796,7 @@
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
       "file": "london-box-office--stuart-king.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2024-09-18",
       "url": "https://www.londonboxoffice.co.uk/news/post/moulin-rouge-review",
       "findings": [
@@ -57834,6 +57853,20 @@
       "score": 90,
       "publishDate": "2026-06-03",
       "url": "https://www.westendbestfriend.co.uk/news/review-war-horse-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "file": "whatsonstage--maygan-forbes.json",
+      "score": 100,
+      "publishDate": "2026-06-03",
+      "url": "https://www.whatsonstage.com/news/war-horse-at-the-national-theatre-review-still-a-theatrical-miracle_1722745/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
