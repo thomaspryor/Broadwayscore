@@ -139,8 +139,8 @@ function deadDispatchGuard(task, ledgerEntries, opts) {
   const refs = cap.substantive.map(d => d.workspaceRef).filter(Boolean).join(', ') || 'unknown refs';
   return `task #${task.id} has died ${cap.substantive.length}x already without finishing (dead workspaces: ${refs}). ` +
     `Blind re-dispatch won't fix a task that keeps dying — investigate first: shrink the scope, escalate with ` +
-    `--model opus, or route it through the Notion Action "Fix" pipeline (has its own capped-retry timeout ` +
-    `handling — see task #289). Re-run with --force to dispatch anyway.`;
+    `--model opus, or park it with a reason on its Linear issue (node scripts/linear-brain.js update BRO-N ` +
+    `--state Backlog --comment "..."). Re-run with --force to dispatch anyway.`;
 }
 
 // Owner-close park (task #578). The duplicate-dispatch guard only fires while
