@@ -23,8 +23,8 @@
 - [Show status before external comms](feedback_check_show_status_before_external_comms.md) — surface status/closingDate with show drafts; OB closings lag
 - [Polling + job liveness](feedback_liveness_needs_lsof_not_mtime.md) — no gh loops, never gh run watch; liveness = lsof+ledger not mtime/pgrep
 
-## 📇 Notion / brain
-- [Notion brain workflow](notion-brain-workflow.md) — IDs, schema, lifecycle; CLI only, never MCP ([[feedback_notion_cli_only.md]])
+## 📇 Board (Linear)
+- [Linear board workflow](linear-board-workflow.md) — create/claim, Outcome + close; never Notion
 - [Notion cards need context](feedback_notion_card_context.md) — paths, commands, root cause, repro; read FULL create output, avoid "rejected" ([[feedback_notion_create_verify.md]], [[feedback_notion_create_hook_false_rejection.md]])
 
 ## 🌳 Worktrees & git
