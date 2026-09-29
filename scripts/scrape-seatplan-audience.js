@@ -337,7 +337,7 @@ async function main() {
       };
 
       // Recalculate combined score
-      const showInfo = { closingDate: show.closingDate, status: show.status };
+      const showInfo = { closingDate: show.closingDate, status: show.status, category: show.category };
       const combined = calculateCombinedScore(showEntry.sources, showInfo);
       if (combined.score != null) {
         showEntry.combinedScore = combined.score;
