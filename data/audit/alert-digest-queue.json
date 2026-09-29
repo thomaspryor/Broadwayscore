@@ -2409,5 +2409,34 @@
       }
     ],
     "queuedAt": "2026-09-29T20:37:42.225Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4265-tm-gap-test-2",
+    "title": "Landing blocked: rebase red on land/bro-4265-tm-gap-test-2",
+    "description": "land.yml did not land land/bro-4265-tm-gap-test-2: the rebase gate went red at 7dddda8afa. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4265-tm-gap-test-2 @ 7dddda8afa (origin/land/bro-4265-tm-gap-test-2) → origin/main @ ed4b36a557 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ ed4b36a557: Rebasing (1/4) Rebasing (2/4) Rebasing (3/4) Rebasing (4/4) error: could not apply 7dddda8afa... STATE.md for BRO-4265 resume hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36626735338",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4265-tm-gap-test-2"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "7dddda8afa3d15733de1e87729a0cca2dff0ab48"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36626735338"
+      }
+    ],
+    "queuedAt": "2026-09-29T21:02:15.556Z"
   }
 ]
