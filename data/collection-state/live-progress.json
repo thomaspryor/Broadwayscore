@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-09-29T01:40:06.732Z",
-  "processed": 203,
-  "failed": 190,
-  "successRate": "51.7%",
+  "updatedAt": "2026-09-29T01:43:39.075Z",
+  "processed": 214,
+  "failed": 189,
+  "successRate": "53.1%",
   "tierBreakdown": {
-    "playwright": 96,
+    "playwright": 99,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 10,
     "directCookies": 3,
-    "scrapingbee": 46,
-    "brightdata": 9,
+    "scrapingbee": 49,
+    "brightdata": 13,
     "archiveToday": 0,
     "archive": 42
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-09-28T23:44:59.342Z",
-      "event": "bb-session",
-      "session": "254dc86f",
-      "url": "https://www.nytimes.com/2026/05/28/theater/the-maids-review-yerin-ha-kip-william"
-    },
     {
       "t": "2026-09-28T23:44:59.828Z",
       "event": "bb-cookie-inject",
@@ -125,6 +119,12 @@
       "t": "2026-09-29T01:37:09.093Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-29T01:42:09.241Z",
+      "event": "bb-session",
+      "session": "d48d2fb2",
+      "url": "https://deadline.com/2026/09/school-girls-or-the-african-mean-girls-play-broadwa"
     }
   ]
 }
