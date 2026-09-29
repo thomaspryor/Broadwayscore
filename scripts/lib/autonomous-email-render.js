@@ -255,6 +255,7 @@ const PLAIN_HEALTH = [
   [/^Data: tour review sweep held/, () => 'Tour reviews stuck on a Broadway page'],
   [/^Data: tour dates need a look/, () => 'A national tour could not be dated automatically'],
   [/^Data: national tours added automatically/, () => 'New national tours were added'],
+  [/^Data: tour automation stopped reporting/, () => 'A national-tour job has stopped running'],
   [/^Deploy: production freshness/, () => 'Site updates not reaching the live site'],
   // health-check.js: stale files are hidden from show pages + /trending.
   [/^Sync: social-pulse per-show freshness/, () => 'Social buzz hidden on some show pages (out of date)'],
