@@ -974,8 +974,17 @@ async function auditShow(show, opts = {}) {
     // no url — manual entries) — a BWW /shows/…/cast stub must not "cover"
     // the BWW hub URL and hide a genuine gap (The Vessel, 2026-08-05).
     const dirFilesAll = dirByHost.get(aggHost) || [];
-    const aggNorm = normalizeReviewUrl(aggUrl);
-    const exactMatches = dirFilesAll.filter(d => d.url && normalizeReviewUrl(d.url) === aggNorm);
+    // Scheme / www / trailing-slash / host-case variants are the same URL
+    // (ship-check: without this, a flagged file whose URL differed only by a
+    // trailing slash stopped vouching once hostFallbackVouchers dropped
+    // flagged files, and the listed URL was re-ingested every run).
+    const urlIdentity = (u) => normalizeReviewUrl(u)
+      .replace(/^https?:\/\//i, '')
+      .replace(/^www\./i, '')
+      .replace(/^([^/]+)/, (h) => h.toLowerCase())
+      .replace(/\/+$/, '');
+    const aggNorm = urlIdentity(aggUrl);
+    const exactMatches = dirFilesAll.filter(d => d.url && urlIdentity(d.url) === aggNorm);
     const dirFiles = exactMatches.length > 0
       ? exactMatches
       : hostFallbackVouchers(

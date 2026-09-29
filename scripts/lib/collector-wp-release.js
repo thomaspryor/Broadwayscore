@@ -63,10 +63,10 @@ function isCollectorWrongProductionCandidate(data, show, ctx = {}) {
  */
 function restoreQuarantinedText(data, classifyContentTier) {
   data.fullText = data.wrongFullText;
-  // wrongFullText is PROTECTED; its clear is honoured only with this
-  // breadcrumb (review-write-guard.js CLEAR_BREADCRUMBS).
-  data.wrongArticleManualClear = true;
-  delete data.wrongFullText;
+  // wrongFullText is left in place: its delete is honoured at push only with
+  // wrongArticleManualClear, the human "this IS a review" hatch that also
+  // turns off article-type exclusions for good (ship-check P0). A copy in
+  // wrongFullText beside a live fullText excludes nothing.
   if (data.incompleteReason === 'wrong_content') data.incompleteReason = null;
   data.incompleteDetail = null;
   if (typeof classifyContentTier === 'function') {

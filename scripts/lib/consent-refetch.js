@@ -100,10 +100,21 @@ function shouldReleaseConsentLayerNonReview(data) {
  * at 90s). Uses fullText, or the quarantined wrongFullText when fullText is
  * empty. Requires 1,500+ chars of non-garbage text after stripping.
  */
+/** Hash of the stored text a salvage would verify (see consentSalvageVerifiedHash). */
+function salvageSourceHash(data) {
+  if (!data) return null;
+  const full = typeof data.fullText === 'string' ? data.fullText : '';
+  const q = typeof data.wrongFullText === 'string' ? data.wrongFullText : '';
+  return require('crypto').createHash('md5').update(full + '\u0000' + q).digest('hex');
+}
+
 function salvageConsentPrefixedStoredText(data) {
   if (!data) return null;
-  // Once per file: a stored-text verdict stands until the text changes.
-  if (data.consentSalvageVerifiedAt) return null;
+  // Once per stored text: the stamp is the hash of the text that was verified,
+  // written only after verification returned (ship-check: a pre-verify stamp
+  // lost the salvage when a run was cancelled or the LLM call threw). Any
+  // change to the stored text re-opens it.
+  if (data.consentSalvageVerifiedHash && data.consentSalvageVerifiedHash === salvageSourceHash(data)) return null;
   const { stripConsentLayerPrefix, hasStrippableConsentLayer } = require('./text-cleaning');
   const { isGarbageContent } = require('./content-quality');
   const usable = (t) => t.length >= 1500 && !isGarbageContent(t).isGarbage && !hasStrippableConsentLayer(t);
@@ -122,7 +133,53 @@ function salvageConsentPrefixedStoredText(data) {
   return null;
 }
 
+const VERIFIER_FLAG_PREFIXES = ['Collector LLM', 'CV-promoted'];
+const isVerifierSetReason = (r) => typeof r === 'string' && VERIFIER_FLAG_PREFIXES.some(p => r.startsWith(p));
+
+/**
+ * Outcome of a retry (refetch or stored-text re-verify) on a flagged review,
+ * applied to the post-verification record. Mutates `data`.
+ *
+ * Only verifier-set flags (Collector LLM / CV-promoted) are released: a
+ * cross-show, human or scorer wrongShow is never cleared by one clean verdict
+ * (ship-check P0). Clears carry the wrongShowAutoCleared / wrongProduction-
+ * AutoCleared breadcrumbs the push-time restore honours
+ * (review-write-guard.js CLEAR_BREADCRUMBS); a bare delete was put back at
+ * push and the review refetched every run. wrongFullText is kept: its delete
+ * is only honoured with the human wrongArticleManualClear hatch.
+ */
+function applyVerifiedRetryOutcome(data, nowIso) {
+  const out = { clearedWrongShow: false, clearedWrongProduction: false };
+  if (!data) return out;
+  const cv = data.contentVerification;
+  const clean = !!cv && cv.isValid === true && cv.wrongArticle !== true;
+  if (!clean) {
+    data.wrongShowRetryAt = nowIso;
+    return out;
+  }
+  if (data.wrongShow === true && isVerifierSetReason(data.wrongShowReason)) {
+    delete data.wrongShow;
+    delete data.wrongShowReason;
+    delete data.wrongShowNote;
+    data.wrongShowAutoCleared = 'collect-review-texts: retry of this URL passed content verification';
+    data.wrongShowAutoClearedAt = nowIso;
+    out.clearedWrongShow = true;
+  }
+  if (data.wrongProduction === true && isVerifierSetReason(data.wrongProductionReason)
+      && cv.wrongProduction !== true && cv.confidence === 'high') {
+    delete data.wrongProduction;
+    delete data.wrongProductionNote;
+    data.wrongProductionAutoCleared = 'collect-review-texts: retry of this URL passed content verification (high confidence, right production)';
+    data.wrongProductionAutoClearedAt = nowIso;
+    out.clearedWrongProduction = true;
+  }
+  if (data.wrongShow !== true) delete data.wrongShowRetryAt;
+  return out;
+}
+
 module.exports = {
+  applyVerifiedRetryOutcome,
+  salvageSourceHash,
   salvageConsentPrefixedStoredText,
   shouldRetryGarbageConsentWall,
   storedTextNeedsConsentRefetch,
