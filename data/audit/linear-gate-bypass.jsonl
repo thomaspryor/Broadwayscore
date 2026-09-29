@@ -25,3 +25,4 @@
 {"at":"2026-09-28T16:51:50.999Z","identifier":"BRO-4202","gate":"done","mechanism":"force","reason":"Verified live on prod; shallow cloud clone cannot run the Done gate's commit check","targetState":"Done"}
 {"at":"2026-09-28T16:51:52.164Z","identifier":"BRO-4216","gate":"done","mechanism":"force","reason":"Verified live on prod; shallow cloud clone cannot run the Done gate's commit check","targetState":"Done"}
 {"at":"2026-09-29T05:57:02.627Z","identifier":"BRO-3140","gate":"done","mechanism":"force","reason":"verified via merge-base ancestry check + direct content grep against origin/main since gh CLI is unavailable to run the automated PR-evidence check and the PR predates this issue's filing","targetState":"Done"}
+{"at":"2026-09-29T20:54:44.932Z","identifier":"BRO-4264","gate":"done","mechanism":"force","reason":"named test deleted from the codebase; signature resolved on main 2026-09-29T03:38Z, absent from every red run since","targetState":"Done"}

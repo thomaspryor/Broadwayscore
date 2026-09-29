@@ -164,6 +164,23 @@ const OUTLETS_PATH = path.join(__dirname, 'config', 'critic-outlets.json');
 const DTLI_SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.json');
 const SHOW_SCORE_URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
 const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
+const { dropCriticNamePhantoms } = require('./lib/bww-critic-name-phantoms');
+let _outletsWithDomain = null;
+// A registered outlet with a real domain (e.g. a critic's own site) is never
+// treated as a BWW critic-name phantom. An unreadable registry answers true
+// for everything, so no record is dropped when the protection can't be checked.
+function registeredOutletHasDomain(outletId) {
+  if (!_outletsWithDomain) {
+    try {
+      const reg = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
+      _outletsWithDomain = new Set(Object.entries(reg.outlets || {}).filter(([, o]) => o && o.domain).map(([id]) => id));
+    } catch (e) {
+      console.warn(`    [BWW RR] outlet registry unreadable (${e.message}); critic-name phantom drop disabled`);
+      _outletsWithDomain = 'unreadable';
+    }
+  }
+  return _outletsWithDomain === 'unreadable' || _outletsWithDomain.has(outletId);
+}
 
 const {
   shouldQueryPerCritic: _shouldQueryPerCritic,
@@ -2798,7 +2815,13 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     console.log(`    [Method 3] domain supplement error (non-fatal): ${(e.message || '').substring(0, 100)}`);
   }
 
-  return reviews;
+  // Bare-critic-name phantoms whose headline outlet wasn't registered yet
+  // (the case BRO-3247's registered-headline fallback above can't reach).
+  const { kept, dropped } = dropCriticNamePhantoms(reviews, { hasDomain: registeredOutletHasDomain });
+  for (const { phantom, twin } of dropped) {
+    console.log(`    [BWW RR] dropped phantom outlet "${phantom.outletId}" (critic name) — same review as ${twin.outletId} / ${twin.criticName}`);
+  }
+  return kept;
 }
 
 /**

@@ -90,6 +90,13 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   'alert-router:deadman', // health-check.js: disposition='auto' has been silently failing for 7 days
   'e2e-canary:chain-broken', // e2e-canary-alert-chain.js: the real (unmocked) alert→card→dispatch chain is broken
   'alert-router:usage-limit-exceeded', // BRO-281: dispatchCard() hit Linear's USAGE_LIMIT_EXCEEDED — every 'auto' alert fails the same way until the workspace is archived/upgraded
+  // Meta (BRO-4373): the alert pipeline itself is down. The digest, the opening-night
+  // monitor and the Friday sync all run from launchd on the Mac Studio; after a
+  // reboot FileVault holds it at the login screen and all of them stop silently
+  // (4.5 days, 2026-09-25..29). Emitted from CI (check-morning-digest-sent.js)
+  // when no morning digest reached the owner by ~9:30 ET, so it works while the
+  // Mac is dead. It cannot go through the digest: the digest is what is missing.
+  'mac:morning-digest-missing',
 
   // Category (owner-approved 2026-08-03, affiliate hardening session — "it's
   // our only revenue stream, I do want it really strong"): affiliate revenue

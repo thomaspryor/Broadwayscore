@@ -141,18 +141,17 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T21:31:40.092Z",
-      "lastNotifiedAt": "2026-09-29T21:31:40.092Z",
+      "lastSeen": "2026-09-29T22:32:11.885Z",
+      "lastNotifiedAt": "2026-09-29T22:32:11.885Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
-      "notifyCount": 113,
+      "notifyCount": 116,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "resolvedAt": "2026-09-29T21:36:18.173Z"
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3149,31 +3148,29 @@
       "resolvedAt": "2026-09-28T22:26:57.009Z"
     },
     "corpus-drift:critic-outlets": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-09-29T07:25:57.930Z",
-      "lastNotifiedAt": "2026-09-28T15:26:29.676Z",
-      "lastSurfacedAt": "2026-09-28T15:26:29.676Z",
-      "notifyCount": 12,
+      "lastSeen": "2026-09-29T21:43:21.279Z",
+      "lastNotifiedAt": "2026-09-29T21:43:21.279Z",
+      "lastSurfacedAt": "2026-09-29T21:43:21.279Z",
+      "notifyCount": 13,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 8,
-      "resolvedAt": "2026-09-29T10:30:29.268Z"
+      "linearIdentifier": null
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-29T16:31:38.778Z",
+      "lastSeen": "2026-09-29T21:43:21.288Z",
       "lastNotifiedAt": "2026-09-29T15:50:02.071Z",
       "lastSurfacedAt": "2026-09-29T15:50:02.071Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3552,13 +3549,13 @@
       "disposition": "digest",
       "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
       "firstSeen": "2026-09-18T16:10:40.527Z",
-      "lastSeen": "2026-09-29T16:31:38.781Z",
+      "lastSeen": "2026-09-29T21:43:21.294Z",
       "lastNotifiedAt": "2026-09-29T15:50:02.076Z",
       "lastSurfacedAt": "2026-09-29T15:50:02.076Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-remediation-exhausted-t1-missing:america-who-hurt-you-off-broadway-2026": {
       "status": "open",
@@ -3829,13 +3826,13 @@
       "disposition": "digest",
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-09-29T16:31:38.773Z",
+      "lastSeen": "2026-09-29T21:43:21.275Z",
       "lastNotifiedAt": "2026-09-29T15:50:02.061Z",
       "lastSurfacedAt": "2026-09-29T15:50:02.061Z",
       "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -3852,11 +3849,11 @@
       "resolvedAt": "2026-09-22T16:48:58.111Z"
     },
     "test-yml:red:Unit Tests:0858c92a": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
-      "lastSeen": "2026-09-29T21:36:21.734Z",
+      "lastSeen": "2026-09-29T22:18:39.062Z",
       "lastNotifiedAt": "2026-09-29T21:10:44.551Z",
       "lastSurfacedAt": null,
       "notifyCount": 6,
@@ -3869,7 +3866,9 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36353075509"
       },
       "absentRunIds": [],
-      "silentRefires": 1
+      "silentRefires": 3,
+      "resolvedAt": "2026-09-29T22:32:11.867Z",
+      "resolveReason": "job-green"
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
       "status": "resolved",
@@ -4188,13 +4187,13 @@
       "disposition": "digest",
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-09-29T16:31:38.766Z",
+      "lastSeen": "2026-09-29T21:43:21.269Z",
       "lastNotifiedAt": "2026-09-29T15:50:02.055Z",
       "lastSurfacedAt": "2026-09-29T15:50:02.055Z",
       "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -4745,13 +4744,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Audit review contamination, Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-29T21:39:11.253Z",
+      "lastSeen": "2026-09-29T22:27:44.643Z",
       "lastNotifiedAt": "2026-09-29T12:18:28.491Z",
       "lastSurfacedAt": "2026-09-29T12:18:28.491Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 18
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -5745,13 +5744,12 @@
       "disposition": "digest",
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
-      "lastSeen": "2026-09-29T16:31:38.725Z",
-      "lastNotifiedAt": "2026-09-28T19:21:55.577Z",
-      "lastSurfacedAt": "2026-09-28T19:21:55.577Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-29T21:43:21.254Z",
+      "lastNotifiedAt": "2026-09-29T21:43:21.254Z",
+      "lastSurfacedAt": "2026-09-29T21:43:21.254Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 13
+      "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -5809,13 +5807,12 @@
       "disposition": "digest",
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-09-29T16:31:38.728Z",
-      "lastNotifiedAt": "2026-09-28T19:48:00.401Z",
-      "lastSurfacedAt": "2026-09-28T19:48:00.401Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-29T21:43:21.261Z",
+      "lastNotifiedAt": "2026-09-29T21:43:21.261Z",
+      "lastSurfacedAt": "2026-09-29T21:43:21.261Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 12
+      "linearIdentifier": null
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -5877,18 +5874,20 @@
       "linearIdentifier": null
     },
     "test-yml:red:E2E Tests:36f3f039": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "lastSeen": "2026-09-29T21:36:21.729Z",
+      "lastSeen": "2026-09-29T22:18:39.100Z",
       "lastNotifiedAt": "2026-09-29T14:55:02.180Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-4255",
       "absentRunIds": [],
-      "silentRefires": 12
+      "silentRefires": 14,
+      "resolvedAt": "2026-09-29T22:32:11.872Z",
+      "resolveReason": "job-green"
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "open",
@@ -6588,7 +6587,7 @@
       "silentRefires": 1
     },
     "test-yml:red:Unit Tests:7ff9b6a6": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"fewer than 50 outlets have a null domain\"",
       "firstSeen": "2026-09-29T17:52:27.963Z",
@@ -6600,8 +6599,12 @@
       "linearIdentifier": "BRO-4362",
       "silentRefires": 8,
       "absentRunIds": [
-        "36632726262"
-      ]
+        "36632283654",
+        "36634165435",
+        "36637503085"
+      ],
+      "resolvedAt": "2026-09-29T22:18:38.976Z",
+      "resolveReason": "stale-signature"
     },
     "land:land/font-selfhost-v3": {
       "status": "open",
@@ -6749,7 +6752,7 @@
       "linearIdentifier": null
     },
     "land:land/job/linear-BRO-4373-mun14cqh": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4373-mun14cqh",
       "firstSeen": "2026-09-29T19:42:45.972Z",
@@ -6759,7 +6762,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-09-29T21:59:52.776Z"
     },
     "scheduled-email-missing:morning-digest:2026-09-28": {
       "status": "open",
@@ -6874,17 +6878,75 @@
       "cardId": null,
       "linearIdentifier": "BRO-4390"
     },
-    "land:land/worktree-main-green-0929b": {
+    "test-yml:red:Lint Workflows:8be00113": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Lint Workflows / Audit — wrongProduction/wrongShow writers must invalidate stale auto-clear breadcrumbs",
+      "firstSeen": "2026-09-29T21:43:53.789Z",
+      "lastSeen": "2026-09-29T22:32:11.881Z",
+      "lastNotifiedAt": "2026-09-29T21:43:53.789Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4392",
+      "dispatch": {
+        "requestedAt": "2026-09-29T21:43:53.789Z",
+        "mode": "dispatch-at-filing",
+        "runId": "36633606651",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36633606651"
+      },
+      "silentRefires": 2
+    },
+    "land:land/bro-4380-enforce": {
       "status": "open",
       "disposition": "digest",
-      "title": "Landing blocked: rebase red on land/worktree-main-green-0929b",
-      "firstSeen": "2026-09-29T21:31:18.834Z",
-      "lastSeen": "2026-09-29T21:31:18.834Z",
-      "lastNotifiedAt": "2026-09-29T21:31:18.834Z",
-      "lastSurfacedAt": "2026-09-29T21:31:18.834Z",
+      "title": "Landing blocked: rebase red on land/bro-4380-enforce",
+      "firstSeen": "2026-09-29T21:47:33.892Z",
+      "lastSeen": "2026-09-29T21:47:33.892Z",
+      "lastNotifiedAt": "2026-09-29T21:47:33.892Z",
+      "lastSurfacedAt": "2026-09-29T21:47:33.892Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "land:land/job/linear-BRO-4385-mun5p7dd": {
+      "status": "resolved",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4385-mun5p7dd",
+      "firstSeen": "2026-09-29T21:47:48.321Z",
+      "lastSeen": "2026-09-29T21:47:48.321Z",
+      "lastNotifiedAt": "2026-09-29T21:47:48.321Z",
+      "lastSurfacedAt": "2026-09-29T21:47:48.321Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-29T22:22:59.584Z"
+    },
+    "land:land/bro-4154-recollect-0929": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-4154-recollect-0929",
+      "firstSeen": "2026-09-29T21:50:33.440Z",
+      "lastSeen": "2026-09-29T22:28:15.424Z",
+      "lastNotifiedAt": "2026-09-29T21:50:33.440Z",
+      "lastSurfacedAt": "2026-09-29T21:50:33.440Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "land:land/job/linear-BRO-4387-mun6krwj": {
+      "status": "resolved",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4387-mun6krwj",
+      "firstSeen": "2026-09-29T21:57:36.227Z",
+      "lastSeen": "2026-09-29T21:57:36.227Z",
+      "lastNotifiedAt": "2026-09-29T21:57:36.227Z",
+      "lastSurfacedAt": "2026-09-29T21:57:36.227Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-29T22:33:30.585Z"
     }
   }
 }
