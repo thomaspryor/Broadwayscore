@@ -47,3 +47,12 @@ test('held sweep is an error; date problems warn; created tours are reported (BR
   assert.match(rows[0].hint, /--tour=wicked-tour-2026/);
   for (const r of rows) assert.equal(classifyHealthCheck(r.name), 'visitors', r.name);
 });
+
+test('a failed running-tour discovery warns; a working one is quiet (BRO-4325)', () => {
+  const ok = tourAutomationResults({ autocreate: { generatedAt: fresh(1, EARLY), created: [], discovery: { pages: 252, checked: 171, found: 36, ambiguous: 0, error: null } } }, EARLY);
+  assert.deepEqual(ok, []);
+  const rows = tourAutomationResults({ autocreate: { generatedAt: fresh(1, EARLY), created: [], discovery: { error: 'only 12 show pages listed; the pages API may have changed' } } }, EARLY);
+  assert.deepEqual(rows.map(r => [r.name, r.status]), [['Data: running-tour discovery failed', 'warn']]);
+  assert.match(rows[0].message, /only 12 show pages/);
+  assert.equal(classifyHealthCheck(rows[0].name), 'visitors');
+});

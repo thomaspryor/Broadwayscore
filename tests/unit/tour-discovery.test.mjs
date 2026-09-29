@@ -72,7 +72,8 @@ test('two pages running the same show from different starts are ambiguous', () =
   const c = { broadwayShowId: 'jersey-boys-2005', segmentStart: '2026-09-08', tourScheduleSlug: 'jersey-boys' };
   const d = { broadwayShowId: 'jersey-boys-2005', segmentStart: '2026-09-08', tourScheduleSlug: 'jersey-boys-1' };
   const out = dedupeCandidates([a, b, c, d]);
-  assert.deepEqual(out.candidates.map(x => x.broadwayShowId), ['jersey-boys-2005'], 'the same tour on two pages is one candidate');
+  assert.deepEqual(out.candidates.map(x => [x.broadwayShowId, Boolean(x.ambiguous)]), [['hamilton-2015', true], ['jersey-boys-2005', false]],
+    'two companies are kept as one ambiguous row for the owner; the same tour on two pages is one plain candidate');
   assert.equal(out.ambiguous.length, 1);
 });
 

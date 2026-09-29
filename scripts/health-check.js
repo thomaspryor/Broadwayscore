@@ -3981,12 +3981,23 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
       hint: 'See data/audit/tour-dates.json. A page that parses to nothing usually means Tours To You changed layout or the slug differs (set tourScheduleSlug on the entry).',
     });
   }
+  // Running-tour discovery (BRO-4325) fails soft so roundups still get
+  // created; this is where a Tours To You change shows up.
+  const discovery = autocreate && autocreate.discovery;
+  if (discovery && discovery.error) {
+    out.push({
+      name: 'Data: running-tour discovery failed',
+      status: 'warn',
+      message: `Finding national tours on Tours To You failed: ${discovery.error}. New running tours won't be added until it works again.`,
+      hint: 'Run node scripts/discover-running-tours.js locally; the Tours To You pages API or page layout may have changed (scripts/lib/tour-discovery.js).',
+    });
+  }
   const created = (autocreate && autocreate.created) || [];
   if (created.length) {
     out.push({
       name: 'Data: national tours added automatically',
       status: 'warn',
-      message: `Added ${created.join(', ')} from BroadwayWorld tour roundups (dates from Tours To You + Wikipedia).`,
+      message: `Added ${created.join(', ')} from BroadwayWorld tour roundups or Tours To You schedules (dates from Tours To You + Wikipedia).`,
       hint: 'Nothing to do unless one is wrong; see data/audit/tour-autocreate.json.',
     });
   }
