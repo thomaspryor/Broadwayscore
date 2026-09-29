@@ -58,7 +58,7 @@ function verifyCollectStage({ attempted = true, outcome, finished = false, timed
       return {
         ok: true,
         degraded: true,
-        reason: `collect: finished and pushed its texts, but the step did not exit cleanly (outcome '${outcome}')`,
+        reason: `collect: finished its work, but the step did not exit cleanly (outcome '${outcome}')`,
       };
     }
     if (outcome === 'success' && timedOut > 0) {

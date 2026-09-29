@@ -19,7 +19,7 @@ while IFS= read -r -d '' f; do
   if ! printf '%s' "$staged" | python3 -c "import json,sys; json.load(sys.stdin)" 2>/dev/null; then
     echo "✗ unparseable JSON: $f" >&2; fails=1
   fi
-done < <(git diff --cached --name-only -z --diff-filter=ACM -- '*.json')
+done < <(git diff --no-renames --cached --name-only -z --diff-filter=ACM -- '*.json')
 if [ "$fails" = "1" ]; then
   echo "" >&2
   echo "🛑 Commit blocked: staged .json files contain conflict markers or invalid JSON." >&2

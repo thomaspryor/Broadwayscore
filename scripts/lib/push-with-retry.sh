@@ -647,12 +647,12 @@ assert_no_conflict_markers() {
 
   local files=""
   # Staged changes (added/copied/modified — skip deletions).
-  files=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null || true)
+  files=$(git diff --no-renames --cached --name-only --diff-filter=ACM 2>/dev/null || true)
   # Commits ahead of the remote tip (the corruption class: a marker that got
   # committed by a bad rebase and is now queued to push).
   if git rev-parse --verify --quiet "origin/$PULL_BRANCH" >/dev/null 2>&1; then
     local outgoing
-    outgoing=$(git diff --name-only --diff-filter=ACM "origin/$PULL_BRANCH"..HEAD 2>/dev/null || true)
+    outgoing=$(git diff --no-renames --name-only --diff-filter=ACM "origin/$PULL_BRANCH"..HEAD 2>/dev/null || true)
     files=$(printf '%s\n%s\n' "$files" "$outgoing")
   fi
 
@@ -1057,7 +1057,7 @@ sync_restore_base_head() {
       local f
       while IFS= read -r f; do
         [ -n "$f" ] && [ -f "$f" ] && candidate_files+=("$f")
-      done < <(git diff --name-only --diff-filter=ACM "$RESTORE_BASE_HEAD" "$current" 2>/dev/null || true)
+      done < <(git diff --no-renames --name-only --diff-filter=ACM "$RESTORE_BASE_HEAD" "$current" 2>/dev/null || true)
       if [ ${#candidate_files[@]} -gt 0 ] && ! node "$SCRIPT_DIR/conflict-markers.js" "${candidate_files[@]}" >/dev/null 2>&1; then
         echo "::warning::push-with-retry: HEAD advanced from $RESTORE_BASE_HEAD to $current but the new commit(s) contain unresolved conflict markers — NOT adopting as the restore point (BRO-259); the existing corruption guard will catch and reset it instead."
         return 0

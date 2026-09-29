@@ -20,6 +20,16 @@ import { fileURLToPath } from 'node:url';
 const here = path.dirname(fileURLToPath(import.meta.url));
 const SCRIPT = path.join(here, '..', 'check-post-rebase-survival.js');
 const PUSH_WITH_RETRY = path.join(here, 'push-with-retry.sh');
+const REPO = path.join(here, '..', '..');
+// Every guard/survival check that lists ADDED files from a diff.
+const GUARDED_FILES = [
+  SCRIPT,
+  PUSH_WITH_RETRY,
+  path.join(here, 'push-content-survival.js'),
+  path.join(REPO, '.github/actions/check-file-sizes/action.yml'),
+  path.join(REPO, 'scripts/data-repo-hooks/pre-commit'),
+  path.join(REPO, 'scripts/hooks/pre-commit'),
+];
 
 function git(cwd, ...args) {
   return execFileSync('git', args, { cwd, encoding: 'utf8' }).trim();
@@ -110,12 +120,13 @@ describe('check-post-rebase-survival', () => {
     // paired with an unrelated deletion is reported as R and silently falls
     // out of any --diff-filter that lists A (conflict-marker guards included).
     const offenders = [];
-    for (const file of [SCRIPT, PUSH_WITH_RETRY]) {
+    for (const file of GUARDED_FILES) {
       const lines = fs.readFileSync(file, 'utf8').split('\n');
       lines.forEach((line, i) => {
         if (/^\s*(#|\/\/|\*)/.test(line)) return;
-        const m = line.match(/diff-filter=([A-Z]+)/);
-        if (m && m[1].includes('A') && !/no-renames/.test(line)) offenders.push(`${path.basename(file)}:${i + 1}: ${line.trim()}`);
+        const m = line.match(/diff-filter=(\$\{|[A-Z]+)/);
+        // A dynamic filter (${...}) may include A, so it is held to the same rule.
+        if (m && (m[1] === '${' || m[1].includes('A')) && !/no-renames/.test(line)) offenders.push(`${path.basename(file)}:${i + 1}: ${line.trim()}`);
       });
     }
     assert.deepEqual(offenders, []);

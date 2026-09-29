@@ -9,7 +9,7 @@
 # 2. Reject staged poster/thumbnail/hero images with wrong aspect ratio
 #    (evita-west-end-2025 landscape-poster incident, commit a71c3defe4).
 
-BAD=$(git diff --cached --diff-filter=A --raw | grep -E "^:000000 (120000|160000)" | awk '{print $6}')
+BAD=$(git diff --no-renames --cached --diff-filter=A --raw | grep -E "^:000000 (120000|160000)" | awk '{print $6}')
 
 if [ -n "$BAD" ]; then
   echo "ERROR: Refusing to commit symlinks or gitlinks:"
@@ -47,7 +47,7 @@ fi
 #    pulling the unstaged hunk into this commit. Paths are passed explicitly
 #    to --fix so an unrelated sibling manifest with unstaged WIP on disk is
 #    never touched (second-opinion review, card #1825).
-STAGED_MANIFESTS=$(git diff --cached --name-only --diff-filter=ACM | grep -E "^tests/(unit-test-manifest(-tsx)?|e2e-unit-test-manifest)\.txt$" || true)
+STAGED_MANIFESTS=$(git diff --no-renames --cached --name-only --diff-filter=ACM | grep -E "^tests/(unit-test-manifest(-tsx)?|e2e-unit-test-manifest)\.txt$" || true)
 UNSTAGED_MANIFESTS=$(git diff --name-only | grep -E "^tests/(unit-test-manifest(-tsx)?|e2e-unit-test-manifest)\.txt$" || true)
 FIX_TARGETS=()
 if [ -n "$STAGED_MANIFESTS" ]; then

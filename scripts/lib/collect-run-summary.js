@@ -10,6 +10,10 @@
  * kill survives it; the verify step (a later step in the same job) reads it
  * no matter how the collect step ended.
  *
+ * `finished` means the review loop completed and the final checkpoint was
+ * ATTEMPTED (commitChanges swallows push errors). The poller's own "Commit
+ * collected texts" step is what durably pushes the texts.
+ *
  * Opt-in: nothing is written unless COLLECT_SUMMARY_FILE is set, so other
  * callers of the collector (bulk/backfill workflows, local runs) are
  * unaffected.
@@ -28,9 +32,12 @@ function buildCollectSummary({ processed = 0, failed = 0, timedOut = [] } = {}) 
   };
 }
 
+// Atomic (tmp + rename) so a kill mid-write can never leave a half file.
 function writeCollectSummary(filePath, summary) {
   if (!filePath) return false;
-  fs.writeFileSync(filePath, JSON.stringify(summary, null, 2) + '\n');
+  const tmp = `${filePath}.tmp-${process.pid}`;
+  fs.writeFileSync(tmp, JSON.stringify(summary, null, 2) + '\n');
+  fs.renameSync(tmp, filePath);
   return true;
 }
 
