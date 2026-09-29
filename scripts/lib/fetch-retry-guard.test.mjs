@@ -304,6 +304,22 @@ describe('getPublicationMoment / isPrePublication', () => {
     assert.equal(new Date(getPublicationMoment({ ...schoolGirls, category: 'off-west-end' })).toISOString(), '2026-09-28T21:00:00.000Z');
   });
 
+  test('local-time anchored: winter (EST/GMT) publishes one hour later in UTC', () => {
+    assert.equal(new Date(getPublicationMoment({ openingDate: '2026-12-10', category: 'broadway' })).toISOString(), '2026-12-11T02:00:00.000Z');
+    assert.equal(new Date(getPublicationMoment({ openingDate: '2026-12-10', category: 'west-end' })).toISOString(), '2026-12-10T22:00:00.000Z');
+    // DST start days (US 2026-03-08, UK 2026-03-29) already use summer time by evening.
+    assert.equal(new Date(getPublicationMoment({ openingDate: '2026-03-08', category: 'broadway' })).toISOString(), '2026-03-09T01:00:00.000Z');
+    assert.equal(new Date(getPublicationMoment({ openingDate: '2026-03-29', category: 'west-end' })).toISOString(), '2026-03-29T21:00:00.000Z');
+  });
+
+  test('winter opening: an 8pm-EST failure is capped at 9pm EST (02:00Z), not 01:00Z', () => {
+    const winter = { status: 'previews', openingDate: '2026-12-10', category: 'broadway' };
+    const u = withNow('2026-12-11T01:00:00Z', () =>
+      recordFetchAttempt(winter, {}, { failureReason: 'fetch_failed', failureCount: 1 }));
+    assert.equal(u.fetchRetryAfter, '2026-12-11T02:00:00.000Z');
+    assert.equal(u.fetchPrePubFailures, 1);
+  });
+
   test('no parseable openingDate → null / never pre-publication', () => {
     assert.equal(getPublicationMoment({ status: 'previews' }), null);
     assert.equal(getPublicationMoment({ status: 'previews', openingDate: 'TBA' }), null);

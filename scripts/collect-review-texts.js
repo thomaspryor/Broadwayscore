@@ -5872,6 +5872,10 @@ function findReviewsToProcess() {
         // budget_capped entries are excluded here as well as at write time:
         // belt-and-braces, so a ledger written before this fix still can't
         // retire a URL the breaker merely deferred.
+        // `{}`: the review file isn't loaded yet, so pre-publication
+        // failures (BRO-4281) aren't subtracted here. That can only over-skip
+        // RETRY_FAILED's already-complete-text refetch; the per-file fetchGate
+        // below sees the real tally.
         const gate = shouldRetryFetch(showsById.get(f.showId) || null, {}, entry);
         if (!gate.shouldRetry) {
           permanentSkipCount++;
@@ -6529,12 +6533,15 @@ function recordFailedFetch(review, reason, details = {}) {
     // Non-fatal
   }
 
-  if (fetchAttemptUpdates.fetchDiscoveryAbandoned || isPermanentlyFailed(entry)) {
+  if (fetchAttemptUpdates.fetchPrePubFailures) {
+    console.log(`    ⏳ Pre-publication fetch failure — cooldown until ${fetchAttemptUpdates.fetchRetryAfter} (capped at the publication moment; ${entry.failureCount} attempts, reason: ${reason})`);
+  } else if (fetchAttemptUpdates.fetchDiscoveryAbandoned || (!fetchAttemptUpdates.fetchRetryAfter && isPermanentlyFailed(entry))) {
+    // fetchRetryAfter present = recordFetchAttempt decided NOT to abandon
+    // (e.g. pre-publication failures don't count, BRO-4281), so the raw
+    // ledger count alone must not claim "permanently failed".
     console.log(`    ⚠ Permanently failed (${entry.failureCount} attempts, reason: ${reason}) — will skip on future runs`);
   } else if (!counts) {
     console.log(`    ⏸ Recorded as ${reason} (failureCount held at ${entry.failureCount}) — retried normally once the cap lifts`);
-  } else if (fetchAttemptUpdates.fetchPrePubFailures) {
-    console.log(`    ⏳ Pre-publication fetch failure — cooldown until ${fetchAttemptUpdates.fetchRetryAfter} (capped at the publication moment; ${entry.failureCount} attempts, reason: ${reason})`);
   } else if (fetchAttemptUpdates.fetchRetryAfter) {
     console.log(`    ⏳ Fetch cooldown until ${fetchAttemptUpdates.fetchRetryAfter} (${entry.failureCount} attempts, reason: ${reason})`);
   }

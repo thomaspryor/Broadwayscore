@@ -3083,13 +3083,25 @@ function classifyLifecycle(show) {
 // (15/30 min over openingDate -1d..+3d) was tried and backed out for making
 // Browserbase/SERP spend unbounded on persistently failing URLs.
 
-// Publication moment = openingDate at UTC midnight + this offset. 25h ≈ 9pm
-// ET on opening night; 21h ≈ 10pm BST.
-const PUBLICATION_OFFSET_MS = Object.freeze({
-  westEnd: 21 * 3600 * 1000,
-  default: 25 * 3600 * 1000,
+// Publication moment = 9pm New York time (Broadway/Off-Broadway and any
+// other non-UK category) or 10pm London time (West End/Off-West End) on
+// openingDate. In summer that is openingDate UTC midnight + 25h / + 21h; in
+// winter (EST/GMT) it is one hour later, so a first post-publication retry
+// isn't fired at 8pm EST, before the curtain is down.
+const PUBLICATION_LOCAL = Object.freeze({
+  westEnd: { timeZone: 'Europe/London', hour: 22 },
+  default: { timeZone: 'America/New_York', hour: 21 },
 });
 const PRE_PUBLICATION_WINDOW_MS = DAY_MS;
+
+/** UTC offset (ms, east positive) of `timeZone` at instant `ms`. */
+function _tzOffsetMs(timeZone, ms) {
+  const name = new Intl.DateTimeFormat('en-US', { timeZone, timeZoneName: 'longOffset' })
+    .formatToParts(new Date(ms)).find(p => p.type === 'timeZoneName').value; // "GMT-04:00" | "GMT"
+  const m = name.match(/GMT([+-])(\d{2}):(\d{2})/);
+  if (!m) return 0;
+  return (m[1] === '-' ? -1 : 1) * (Number(m[2]) * 3600 + Number(m[3]) * 60) * 1000;
+}
 
 /**
  * Expected moment opening-night reviews publish, as epoch ms, or null when
@@ -3106,7 +3118,11 @@ function getPublicationMoment(show) {
   if (isNaN(midnight)) return null;
   const category = show.category || '';
   const isWestEnd = category === 'west-end' || category === 'off-west-end';
-  return midnight + (isWestEnd ? PUBLICATION_OFFSET_MS.westEnd : PUBLICATION_OFFSET_MS.default);
+  const { timeZone, hour } = isWestEnd ? PUBLICATION_LOCAL.westEnd : PUBLICATION_LOCAL.default;
+  const wallClockAsUtc = midnight + hour * 3600 * 1000;
+  // DST switches happen at ~2am local, never near the evening, so the offset
+  // at the wall-clock instant read as UTC is the offset at publication.
+  return wallClockAsUtc - _tzOffsetMs(timeZone, wallClockAsUtc);
 }
 
 /**

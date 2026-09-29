@@ -187,6 +187,10 @@ function updateReviewUrl(candidate, newUrl, method) {
     metadata.textQuality = undefined;
   }
 
+  // The ledger entry for the old URL is cleared below, so its
+  // pre-publication tally (BRO-4281) must go too or the new URL starts with
+  // free failures.
+  metadata.fetchPrePubFailures = undefined;
   const updated = updateFileUrlWithInvariant(candidate.filePath, newUrl, metadata);
   if (!updated) {
     // Same canonical URL (protocol/tracking-only rewrite) or unreadable file —
@@ -199,6 +203,7 @@ function updateReviewUrl(candidate, newUrl, method) {
     data.url = newUrl;
     data.urlDiscoveredAt = metadata.urlDiscoveredAt;
     data.urlDiscoveryMethod = method;
+    delete data.fetchPrePubFailures;
     if (data.wrongProduction || data.wrongShow) {
       data._previousWrongFlags = {
         wrongProduction: data.wrongProduction,

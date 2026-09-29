@@ -95,6 +95,16 @@ function setSourceFileReason(reviewId, reason, detail) {
   }
 }
 
+/** fetchPrePubFailures tally on the review file (BRO-4281), 0 if absent/unreadable. */
+function readPrePubFailures(reviewId) {
+  try {
+    const v = JSON.parse(fs.readFileSync(path.join(REVIEW_TEXTS_DIR, reviewId), 'utf8')).fetchPrePubFailures;
+    return typeof v === 'number' && v > 0 ? Math.floor(v) : 0;
+  } catch {
+    return 0;
+  }
+}
+
 // --- Main ---
 
 if (!fs.existsSync(FAILED_FETCHES_PATH)) {
@@ -103,6 +113,16 @@ if (!fs.existsSync(FAILED_FETCHES_PATH)) {
 }
 
 const entries = JSON.parse(fs.readFileSync(FAILED_FETCHES_PATH, 'utf8'));
+// Legacy-format rows (filePath/attempts, no reviewId) crashed path.join in
+// step a. Derive reviewId the same way the collector does.
+for (const entry of entries) {
+  if (entry.reviewId) continue;
+  if (typeof entry.filePath === 'string' && entry.filePath.startsWith('data/review-texts/')) {
+    entry.reviewId = entry.filePath.slice('data/review-texts/'.length);
+  } else if (entry.showId && entry.file) {
+    entry.reviewId = `${entry.showId}/${entry.file}`;
+  }
+}
 console.log(`\nLoaded ${entries.length} entries from failed-fetches.json`);
 if (DRY_RUN) console.log('=== DRY RUN — no files will be modified ===\n');
 
@@ -122,8 +142,7 @@ const removeReasons = new Map(); // reviewId -> reason for removal
 
 // Step a: Identify orphan entries (source file doesn't exist)
 for (const entry of entries) {
-  const filePath = path.join(REVIEW_TEXTS_DIR, entry.reviewId);
-  if (!fs.existsSync(filePath)) {
+  if (!entry.reviewId || !fs.existsSync(path.join(REVIEW_TEXTS_DIR, entry.reviewId))) {
     removeReasons.set(entry.reviewId + '::' + (entry.lastFailedAt || ''), 'orphan');
     stats.orphans++;
   }
@@ -208,7 +227,13 @@ for (let i = 0; i < entries.length; i++) {
   const key = entry.reviewId + '::' + (entry.lastFailedAt || '');
   if (removeReasons.has(key) || duplicateIndices.has(i)) continue;
 
-  if (isPermanentlyFailed({ failureReason: entry.failureReason, failureCount: entry.failureCount || 1 })) {
+  // Pre-publication failures (BRO-4281, fetchPrePubFailures on the review
+  // file) don't count toward the budget. Dropping the entry on the raw count
+  // would reset the ledger while the tally survives, so the review could
+  // never reach fetchDiscoveryAbandoned (unbounded retries).
+  const prePub = readPrePubFailures(entry.reviewId);
+  const effectiveCount = Math.max(0, (entry.failureCount || 1) - prePub);
+  if (isPermanentlyFailed({ failureReason: entry.failureReason, failureCount: effectiveCount })) {
     removeReasons.set(key, 'past_threshold');
     stats.pastThreshold++;
   }
