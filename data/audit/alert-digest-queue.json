@@ -764,5 +764,34 @@
       }
     ],
     "queuedAt": "2026-09-29T05:34:10.997Z"
+  },
+  {
+    "conditionKey": "land:land/opening-night-guards-2026-09-29",
+    "title": "Landing blocked: bash-integration red on land/opening-night-guards-2026-09-29",
+    "description": "land.yml did not land land/opening-night-guards-2026-09-29: the bash-integration gate went red at f90798bd7a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36524830962",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/opening-night-guards-2026-09-29"
+      },
+      {
+        "name": "gate",
+        "value": "bash-integration"
+      },
+      {
+        "name": "tip",
+        "value": "f90798bd7a96e97db6adca8fc716e965f7e34bd1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36524830962"
+      }
+    ],
+    "queuedAt": "2026-09-29T05:37:36.859Z"
   }
 ]
