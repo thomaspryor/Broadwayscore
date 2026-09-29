@@ -567,5 +567,41 @@
       }
     ],
     "queuedAt": "2026-09-29T00:26:45.928Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-school-girls-or-the-african-mean-girls-play-2026",
+    "title": "Unhandled CV.wrongProduction on School Girls; Or, The African Mean Girls Play",
+    "description": "talkinbroadway/James Wilson (talkinbroadway--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses the show as having premiered Off — https://www.talkinbroadway.com/page/world/SchoolGirls.html",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T02:02:48.503Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:school-girls-or-the-african-mean-girls-play-2026",
+    "title": "Shipped review missing publishDate on School Girls; Or, The African Mean Girls Play",
+    "description": "cititour/Brian Scott Lipton SHIPPED with no publishDate — cannot confirm post-opening: https://cititour.com/NYC_Broadway/School-Girls/1396\ntheatrely/Joey Sims SHIPPED with no publishDate — cannot confirm post-opening: https://www.theatrely.com/post/a-fabulous-school-girls-or-the-african-mean-girls-play-finally-makes-it-to-broadway",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T02:02:48.508Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-creation-stories-and-all-the-important-importants-off-broadway-2026",
+    "title": "Placeholder synopsis on creation stories and all the important importants",
+    "description": "synopsis for creation-stories-and-all-the-important-importants-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T02:02:52.993Z"
   }
 ]
