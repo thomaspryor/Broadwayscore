@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { findDuplicateUrls, findConflictingShowId, isShowScoreNotFoundPage } = require('./show-score-url-map.js');
+const { findDuplicateUrls, findConflictingShowId, isShowScoreNotFoundPage, decideDeadUrlAction } = require('./show-score-url-map.js');
 
 // BRO-4358: Show Score's real 404 page, as served for a dead show URL.
 test('isShowScoreNotFoundPage: recognizes Show Score\'s real 404 page', () => {
@@ -12,17 +12,38 @@ test('isShowScoreNotFoundPage: recognizes Show Score\'s real 404 page', () => {
   assert.equal(isShowScoreNotFoundPage(html), true);
 });
 
-test('isShowScoreNotFoundPage: legacy markers still count', () => {
-  assert.equal(isShowScoreNotFoundPage('<h1>Page not found</h1>'), true);
-  assert.equal(isShowScoreNotFoundPage('<title>404 - Show Score</title>'), true);
+test('isShowScoreNotFoundPage: loose legacy markers do NOT count (a true result uncaches a URL)', () => {
+  assert.equal(isShowScoreNotFoundPage('<h1>Page not found</h1>'), false);
+  assert.equal(isShowScoreNotFoundPage('<p>Act 2 runs 404 - 410 minutes, joked one reviewer</p>'), false);
 });
 
-test('isShowScoreNotFoundPage: a real show page is not a 404', () => {
+test('isShowScoreNotFoundPage: a real show page is not a 404, even if its text mentions one', () => {
   const html = '<title>School Girls | Show Score</title><script type="application/ld+json">'
-    + '{"name":"School Girls","aggregateRating":{"ratingValue":93,"reviewCount":211}}</script>';
+    + '{"name":"School Girls","aggregateRating":{"ratingValue":93,"reviewCount":211}}</script>'
+    + '<p>review: this plot is a 404 &ndash; Not Found of logic</p>';
   assert.equal(isShowScoreNotFoundPage(html), false);
   assert.equal(isShowScoreNotFoundPage(''), false);
   assert.equal(isShowScoreNotFoundPage(null), false);
+});
+
+const DEAD = 'https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway';
+const LIVE = `${DEAD}-2026`;
+
+test('decideDeadUrlAction: a different valid page nobody owns replaces the dead url', () => {
+  assert.equal(decideDeadUrlAction({ deadUrl: DEAD, rediscoveredUrl: LIVE, conflictId: null, budgetLeft: 3 }), 'replace');
+});
+
+test('decideDeadUrlAction: rediscovering the SAME url means the 404 was a one-off, so keep it', () => {
+  assert.equal(decideDeadUrlAction({ deadUrl: DEAD, rediscoveredUrl: DEAD, conflictId: null, budgetLeft: 3 }), 'keep');
+});
+
+test('decideDeadUrlAction: nothing found, or only a page another show owns, drops it', () => {
+  assert.equal(decideDeadUrlAction({ deadUrl: DEAD, rediscoveredUrl: null, conflictId: null, budgetLeft: 3 }), 'drop');
+  assert.equal(decideDeadUrlAction({ deadUrl: DEAD, rediscoveredUrl: LIVE, conflictId: 'other-show', budgetLeft: 3 }), 'drop');
+});
+
+test('decideDeadUrlAction: a spent per-run budget keeps the cache untouched', () => {
+  assert.equal(decideDeadUrlAction({ deadUrl: DEAD, rediscoveredUrl: null, conflictId: null, budgetLeft: 0 }), 'keep');
 });
 
 test('findDuplicateUrls: no duplicates when every url is unique', () => {
