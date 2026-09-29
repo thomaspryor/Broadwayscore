@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-09-29T02:37:18.744Z",
+  "generatedAt": "2026-09-29T09:20:33.796Z",
   "windowDays": 1095,
-  "targets": 222,
-  "auditedThisRun": 18,
-  "carriedForward": 559,
+  "targets": 272,
+  "auditedThisRun": 10,
+  "carriedForward": 568,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 301,
-    "missingCurrentRun": 403,
+    "withGap": 303,
+    "missingCurrentRun": 418,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 766,
+    "totalFlaggedMisses": 768,
     "totalRecoverable": 4,
     "totalRecovered": 8,
-    "priorProductionCitations": 2570
+    "priorProductionCitations": 2567
   },
   "results": [
     {
@@ -30442,7 +30442,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -30452,7 +30452,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -30472,13 +30472,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 33,
+        "count": 34,
         "byReason": {
+          "non-review-host": 28,
           "aggregator-internal-nav": 2,
-          "non-review-host": 25,
-          "ticketing-reseller": 1,
           "ticketing-listing": 1,
-          "venue-production-page": 2,
+          "ticketing-reseller": 1,
           "merch-store": 1,
           "production-database-listing": 1
         }
@@ -30509,7 +30508,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-09-29T02:37:18.744Z"
+      "computedAt": "2026-09-29T09:20:33.796Z"
     },
     {
       "showId": "delirium-off-broadway-2026",
@@ -32837,10 +32836,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 28,
+        "count": 29,
         "byReason": {
-          "aggregator-internal-nav": 3,
           "non-review-host": 20,
+          "aggregator-internal-nav": 4,
           "ticketing-reseller": 4,
           "non-review-path": 1
         }
@@ -32966,7 +32965,7 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-09-29T02:37:18.744Z"
+      "computedAt": "2026-09-29T09:20:33.796Z"
     },
     {
       "showId": "electra-persona-west-end-2026",
@@ -65830,19 +65829,19 @@
         "https://www.nytimes.com/2023/04/23/arts/music/la-boheme-yannick-nezet-seguin-met-opera-review.html",
         "https://www.nytimes.com/2021/11/10/arts/music/boheme-met-opera-review.html",
         "https://thefrontrowcenter.com/2022/06/la-boheme-by-the-metropolitan-opera-at-lincoln-center-an-audience-member-chimes-in/",
+        "https://www.thestage.co.uk/reviews/la-boheme-review-wales-millennium-centre-cardiff-floris-visser",
         "https://askonasholt.com/artist/kristina-mkhitaryan/press/kristina-mkhitaryan-debuts-as-mimi-in-la-boheme-at-the-metropolitan-opera",
-        "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/",
-        "https://www.opera.hu/en/programme/2026-2027/la-boheme/hungarian-state-opera-2026-12-11-1800/",
         "https://operawire.com/metropolitan-opera-2026-27-review-la-boheme/",
-        "https://bachtrack.com/opera-event/la-boheme-metropolitan-opera-25-september-2026/436175",
+        "https://newyorkclassicalreview.com/2026/09/tenor-sub-brings-a-welcome-puccini-reunion-in-mets-opening-cast-boheme/",
+        "https://seenandheard-international.com/2026/09/an-exciting-opening-week-at-the-met-opera-and-a-la-boheme-to-match/",
         "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
         "https://www.rottentomatoes.com/m/the_metropolitan_opera_la_boheme_2025",
         "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
-        "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
-        "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/"
+        "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
+        "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
       ],
       "dirFiles": 13,
-      "dirClean": 3,
+      "dirClean": 2,
       "inReviewsJson": 2,
       "missing": [
         {
@@ -65859,15 +65858,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.opera.hu/en/programme/2026-2027/la-boheme/hungarian-state-opera-2026-12-11-1800/",
-          "host": "opera.hu",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://bachtrack.com/opera-event/la-boheme-metropolitan-opera-25-september-2026/436175",
-          "host": "bachtrack.com",
-          "knownOutletId": "bachtrack",
+          "url": "https://seenandheard-international.com/2026/09/an-exciting-opening-week-at-the-met-opera-and-a-la-boheme-to-match/",
+          "host": "seenandheard-international.com",
+          "knownOutletId": "seen-and-heard-international",
           "serpCensus": true
         },
         {
@@ -65883,24 +65876,19 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
-          "serpCensus": true
-        },
-        {
           "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
           "host": "newcriterion.com",
           "knownOutletId": "the-new-criterion",
           "serpCensus": true
-        }
-      ],
-      "dirOnly": [
+        },
         {
-          "host": "newyorkclassicalreview.com",
-          "count": 1
+          "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "serpCensus": true
         }
       ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://www.nytimes.com/2021/11/10/arts/music/boheme-met-opera-review.html",
@@ -65941,9 +65929,9 @@
           "priorRunSource": "show-score-url-year"
         },
         {
-          "url": "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/",
-          "host": "kcindependent.com",
-          "knownOutletId": null,
+          "url": "https://www.thestage.co.uk/reviews/la-boheme-review-wales-millennium-centre-cardiff-floris-visser",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -65951,9 +65939,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "kcindependent--unknown.json",
+              "file": "thestage--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/"
+              "urlInDir": "https://thestage.co.uk/reviews/la-boheme-review-wales-millennium-centre-cardiff-floris-visser"
             }
           ],
           "serpCensus": true
@@ -65991,7 +65979,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -66001,7 +65989,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -66010,7 +65998,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -66041,10 +66029,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 24,
+        "count": 27,
         "byReason": {
-          "non-review-host": 22,
-          "ticketing-reseller": 2
+          "non-review-host": 23,
+          "aggregator-internal-nav": 1,
+          "ticketing-reseller": 3
         }
       },
       "dedupedVariants": [],
@@ -66070,28 +66059,16 @@
           "reason": "⚠️  provisional outlet \"askonasholt\" (not in registry) — onboard to outlet-registry.json after revie"
         },
         {
-          "url": "https://www.opera.hu/en/programme/2026-2027/la-boheme/hungarian-state-opera-2026-12-11-1800/",
-          "host": "opera.hu",
-          "outletId": "opera",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  provisional outlet \"opera\" (not in registry) — onboard to outlet-registry.json after review.\n  ⚠"
-        },
-        {
-          "url": "https://bachtrack.com/opera-event/la-boheme-metropolitan-opera-25-september-2026/436175",
-          "host": "bachtrack.com",
-          "outletId": "bachtrack",
+          "url": "https://seenandheard-international.com/2026/09/an-exciting-opening-week-at-the-met-opera-and-a-la-boheme-to-match/",
+          "host": "seenandheard-international.com",
+          "outletId": "seen-and-heard-international",
           "provisional": false,
-          "ok": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "Fetch returned no usable HTML (got 175 chars)"
+          "reason": null
         },
         {
           "url": "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
@@ -66116,6 +66093,18 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
+        {
+          "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
+          "host": "newcriterion.com",
+          "outletId": "the-new-criterion",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
         }
       ],
       "ingestSkippedByCap": [
@@ -66123,11 +66112,6 @@
           "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
           "host": "wsj.com",
           "outletId": "wsj"
-        },
-        {
-          "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
-          "host": "newcriterion.com",
-          "outletId": "the-new-criterion"
         }
       ],
       "censusVerdict": {
@@ -66141,18 +66125,11 @@
             "url": "https://askonasholt.com/artist/kristina-mkhitaryan/press/kristina-mkhitaryan-debuts-as-mimi-in-la-boheme-at-the-metropolitan-opera"
           },
           {
-            "outletId": "opera.hu",
-            "outlet": "opera.hu",
+            "outletId": "seen-and-heard-international",
+            "outlet": "seen-and-heard-international",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.opera.hu/en/programme/2026-2027/la-boheme/hungarian-state-opera-2026-12-11-1800/"
-          },
-          {
-            "outletId": "bachtrack",
-            "outlet": "bachtrack",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://bachtrack.com/opera-event/la-boheme-metropolitan-opera-25-september-2026/436175"
+            "url": "https://seenandheard-international.com/2026/09/an-exciting-opening-week-at-the-met-opera-and-a-la-boheme-to-match/"
           },
           {
             "outletId": "operamylove.com",
@@ -66176,11 +66153,11 @@
             "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/"
           },
           {
-            "outletId": "kcindependent.com",
-            "outlet": "kcindependent.com",
+            "outletId": "thestage",
+            "outlet": "thestage",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/"
+            "url": "https://www.thestage.co.uk/reviews/la-boheme-review-wales-millennium-centre-cardiff-floris-visser"
           },
           {
             "outletId": "rottentomatoes.com",
@@ -66207,6 +66184,12 @@
             "firstSeenAt": "2026-09-28T07:54:42.859Z"
           },
           {
+            "url": "https://newyorkclassicalreview.com/2026/09/tenor-sub-brings-a-welcome-puccini-reunion-in-mets-opening-cast-boheme/",
+            "outletId": "newyorkclassicalreview.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
             "url": "https://askonasholt.com/artist/kristina-mkhitaryan/press/kristina-mkhitaryan-debuts-as-mimi-in-la-boheme-at-the-metropolitan-opera",
             "outletId": "askonasholt.com",
             "state": "GAP",
@@ -66214,18 +66197,11 @@
             "firstSeenAt": "2026-09-28T16:16:03.674Z"
           },
           {
-            "url": "https://www.opera.hu/en/programme/2026-2027/la-boheme/hungarian-state-opera-2026-12-11-1800/",
-            "outletId": "opera.hu",
+            "url": "https://seenandheard-international.com/2026/09/an-exciting-opening-week-at-the-met-opera-and-a-la-boheme-to-match/",
+            "outletId": "seen-and-heard-international",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-28T16:16:03.674Z"
-          },
-          {
-            "url": "https://bachtrack.com/opera-event/la-boheme-metropolitan-opera-25-september-2026/436175",
-            "outletId": "bachtrack",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-28T16:16:03.674Z"
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
           },
           {
             "url": "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
@@ -66242,13 +66218,6 @@
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
-            "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
-            "outletId": "wsj",
-            "state": "SUPPRESSED",
-            "reason": "ci-unfetchable",
-            "firstSeenAt": "2026-09-26T17:42:56.172Z"
-          },
-          {
             "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
             "outletId": "the-new-criterion",
             "state": "GAP",
@@ -66256,11 +66225,18 @@
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
-            "url": "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/",
-            "outletId": "kcindependent.com",
+            "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
+            "outletId": "wsj",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-09-26T17:42:56.172Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/la-boheme-review-wales-millennium-centre-cardiff-floris-visser",
+            "outletId": "thestage",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-26T17:42:56.172Z"
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
           },
           {
             "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_la_boheme_2025",
@@ -66271,10 +66247,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 1,
+        "liveCount": 2,
         "candidateCount": 10
       },
-      "computedAt": "2026-09-28T22:37:42.816Z"
+      "computedAt": "2026-09-29T09:20:33.796Z"
     },
     {
       "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
@@ -81131,34 +81107,200 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc",
+        "https://www.localwineevents.com/view/event/moonrise--a-dinner-experience-at-paradise-club/928060",
+        "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-experience-nyc"
+      ],
+      "dirFiles": 3,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-experience-nyc",
+          "host": "pulsd.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc",
+          "host": "pulsd.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "pulsd--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.localwineevents.com/view/event/moonrise--a-dinner-experience-at-paradise-club/928060",
+          "host": "localwineevents.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "localwineevents--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.localwineevents.com/view/event/moonrise--a-dinner-experience-at-paradise-club/928060"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"MOONRISE: A Theatrical Dinner Experience at Paradise Club\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"MOONRISE: A Theatrical Dinner Experience at Paradise Club\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"MOONRISE: A Theatrical Dinner Experience at Paradise Club\" review paradise",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "MOONRISE: A Theatrical Dinner Experience at Paradise Club Paradise Club review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "MOONRISE: A Theatrical Dinner Experience at Paradise Club Paradise Club review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "MOONRISE: A Theatrical Dinner Experience at Paradise Club Paradise Club review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 31,
+        "byReason": {
+          "non-review-host": 31
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-experience-nyc",
+          "host": "pulsd.com",
+          "outletId": "pulsd",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"pulsd\" (not in registry) — onboard to outlet-registry.json after review.\n  ⚠"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "pulsd.com",
+            "outlet": "pulsd.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-experience-nyc"
+          },
+          {
+            "outletId": "pulsd.com",
+            "outlet": "pulsd.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc"
+          },
+          {
+            "outletId": "localwineevents.com",
+            "outlet": "localwineevents.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.localwineevents.com/view/event/moonrise--a-dinner-experience-at-paradise-club/928060"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-experience-nyc",
+            "outletId": "pulsd.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc",
+            "outletId": "pulsd.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.localwineevents.com/view/event/moonrise--a-dinner-experience-at-paradise-club/928060",
+            "outletId": "localwineevents.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          }
+        ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 2
       },
-      "computedAt": "2026-09-29T02:37:18.744Z"
+      "computedAt": "2026-09-29T09:20:33.796Z"
     },
     {
       "showId": "mother-play-2024",
@@ -106058,32 +106200,41 @@
       "status": "open",
       "category": "broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-reviews-for-off-broadways-school-girls-or-the-african-mean-girls-play"
+        "https://playbill.com/article/reviews-are-out-for-school-girls-or-the-african-mean-girls-play-on-broadway",
+        "https://playbill.com/article/read-reviews-for-off-broadways-school-girls-or-the-african-mean-girls-play",
+        "https://www.broadwayworld.com/article/Review-Roundup-SCHOOL-GIRLS-OR-THE-AFRICAN-MEAN-GIRLS-PLAY-Opens-on-Broadway-20260928"
       ],
       "aggregatorListedUrls": [
+        "https://www.chicagotribune.com/2026/09/28/review-school-girls-african-mean-girls-broadway/",
+        "https://culturesauce.com/school-girls-african-mean-girls-play-broadway-review/",
+        "https://www.theguardian.com/stage/2026/sep/28/school-african-mean-girls-play-review",
+        "https://deadline.com/2026/09/school-girls-or-the-african-mean-girls-play-broadway-review-when-escape-is-just-a-clique-away-1237114434/",
+        "https://nystagereview.com/2026/09/28/school-girls-or-the-african-mean-girls-play-jasmine-amy-rogers-and-denee-benton-battle-it-out/",
+        "https://nystagereview.com/2026/09/28/school-girls-or-the-african-mean-girls-play-sharper-and-funnier-than-ever/",
+        "https://www.newyorktheatreguide.com/reviews/school-girls-or-the-african-mean-girls-play-broadway-review",
+        "https://www.nytimes.com/2026/09/28/theater/school-girls-or-the-african-mean-girls-play-review.html",
+        "https://www.theatrely.com/post/a-fabulous-school-girls-or-the-african-mean-girls-play-finally-makes-it-to-broadway",
+        "https://variety.com/2026/legit/reviews/school-girls-or-the-african-mean-girls-play-broadway-review-1236877325/",
         "http://www.hollywoodreporter.com/review/school-girs-african-mean-girls-play-1059084",
         "http://www.nbcnews.com/news/nbcblk/african-mean-girls-play-irreverent-take-colorism-boarding-schools-n821186",
         "http://www.vulture.com/2017/11/theater-school-girls-or-the-african-mean-girls-play.html",
         "http://www.nytimes.com/2017/11/16/theater/school-girls-or-the-african-mean-girls-play-review.html",
         "http://www.timeout.com/newyork/theater/school-girls-or-the-african-mean-girls-play",
         "http://variety.com/2017/legit/reviews/school-girls-or-the-african-mean-girls-play-review-1202612324/",
+        "https://www.theatrely.com/post/a-fabulous-school-girls-or-the-african-mean-girls-play-finally-makes-it-to-broadwayj",
+        "https://newyorktheater.me/2026/09/28/school-girls-or-the-african-mean-girls-play-broadway-review/",
+        "https://www.timeout.com/newyork/news/broadway-review-school-girls-or-the-african-mean-girls-play-092926",
+        "https://didtheylikeit.com/shows/school-girls-or-the-african-mean-girls-play/",
         "https://playbill.com/article/reviews-are-out-for-school-girls-or-the-african-mean-girls-play-on-broadway",
         "https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway-2026",
-        "https://www.theatrely.com/post/a-fabulous-school-girls-or-the-african-mean-girls-play-finally-makes-it-to-broadway",
         "https://www.sun-sentinel.com/2026/09/08/review-brevo-theatres-school-girls-or-the-african-mean-girls-play-is-a-hoot-but-also-biting-censure/",
-        "https://deadline.com/2026/09/school-girls-or-the-african-mean-girls-play-broadway-review-when-escape-is-just-a-clique-away-1237114434/",
-        "https://www.theatermania.com/news/jocelyn-bioh-to-join-cast-of-her-play-school-girls-or-the-african-mean-girls-play-for-four-performances_1854797/",
-        "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
-        "https://aroundthetownchicago.com/theatre-reviews/school-girls-or-the-african-mean-girls-play/",
         "https://exeuntnyc.com/reviews/review-school-girls-african-mean-girls-play-lucille-lortel-theatre/",
-        "https://www.theatreinchicago.com/school-girls-or-the-african-mean-girls-play/11303/",
         "https://familyaffairsandothermatters.com/school-girls-or-the-african-mean-girls-play-review/",
-        "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-queen-bee-gets-stung-11587675557",
-        "https://www.show-score.com/off-broadway-shows/school-girls-or-the-african-mean-girls-play"
+        "https://www.theatreinchicago.com/school-girls-or-the-african-mean-girls-play/11303/"
       ],
-      "dirFiles": 20,
-      "dirClean": 10,
-      "inReviewsJson": 10,
+      "dirFiles": 28,
+      "dirClean": 20,
+      "inReviewsJson": 20,
       "missing": [
         {
           "url": "http://www.hollywoodreporter.com/review/school-girs-african-mean-girls-play-1059084",
@@ -106100,42 +106251,14 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.vulture.com/2017/11/theater-school-girls-or-the-african-mean-girls-play.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/school-girls-or-the-african-mean-girls-play",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://playbill.com/article/reviews-are-out-for-school-girls-or-the-african-mean-girls-play-on-broadway",
-          "host": "playbill.com",
-          "knownOutletId": "playbill",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
+          "url": "https://didtheylikeit.com/shows/school-girls-or-the-african-mean-girls-play/",
+          "host": "didtheylikeit.com",
+          "knownOutletId": "dtli",
           "serpCensus": true
         },
         {
           "url": "https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway-2026",
           "host": "show-score.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatermania.com/news/jocelyn-bioh-to-join-cast-of-her-play-school-girls-or-the-african-mean-girls-play-for-four-performances_1854797/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
-          "host": "manhattantheatreclub.com",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -106150,18 +106273,6 @@
           "host": "familyaffairsandothermatters.com",
           "knownOutletId": null,
           "serpCensus": true
-        },
-        {
-          "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-queen-bee-gets-stung-11587675557",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.show-score.com/off-broadway-shows/school-girls-or-the-african-mean-girls-play",
-          "host": "show-score.com",
-          "knownOutletId": null,
-          "serpCensus": true
         }
       ],
       "dirOnly": [
@@ -106170,11 +106281,7 @@
           "count": 1
         },
         {
-          "host": "newyorktheater.me",
-          "count": 1
-        },
-        {
-          "host": "newyorktheatreguide.com",
+          "host": "ew.com",
           "count": 1
         },
         {
@@ -106182,7 +106289,15 @@
           "count": 1
         },
         {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
           "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
           "count": 1
         },
         {
@@ -106191,6 +106306,24 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://playbill.com/article/reviews-are-out-for-school-girls-or-the-african-mean-girls-play-on-broadway",
+          "host": "playbill.com",
+          "knownOutletId": "playbill",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "playbill--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://playbill.com/article/reviews-are-out-for-school-girls-or-the-african-mean-girls-play-on-broadway"
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://www.sun-sentinel.com/2026/09/08/review-brevo-theatres-school-girls-or-the-african-mean-girls-play-is-a-hoot-but-also-biting-censure/",
           "host": "sun-sentinel.com",
@@ -106205,24 +106338,6 @@
               "file": "south-florida-sun-sentinel--bill-hirschman.json",
               "flag": "wrongProduction",
               "urlInDir": "https://www.sun-sentinel.com/2026/09/08/review-brevo-theatres-school-girls-or-the-african-mean-girls-play-is-a-hoot-but-also-biting-censure/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://aroundthetownchicago.com/theatre-reviews/school-girls-or-the-african-mean-girls-play/",
-          "host": "aroundthetownchicago.com",
-          "knownOutletId": "around-the-town-chicago",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "around-the-town-chicago--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://aroundthetownchicago.com/theatre-reviews/school-girls-or-the-african-mean-girls-play/"
             }
           ],
           "serpCensus": true
@@ -106260,7 +106375,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 7,
             "error": null
           },
           {
@@ -106269,8 +106384,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -106280,7 +106395,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -106290,7 +106405,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -106300,7 +106415,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -106310,24 +106425,24 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 13,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 145,
+        "count": 514,
         "byReason": {
-          "aggregator-internal-nav": 80,
-          "not-http-url": 6,
-          "aggregator-section-root": 4,
-          "non-review-host": 47,
-          "ticketing-reseller": 6,
-          "ticketing-listing": 1,
+          "non-review-host": 78,
+          "roundup-page": 1,
+          "not-http-url": 70,
+          "aggregator-internal-nav": 346,
+          "aggregator-section-root": 15,
+          "ticketing-reseller": 3,
           "venue-production-page": 1
         }
       },
@@ -106350,27 +106465,21 @@
           "host": "nbcnews.com",
           "priorRun": true,
           "reason": "prior-run"
-        },
-        {
-          "url": "http://www.vulture.com/2017/11/theater-school-girls-or-the-african-mean-girls-play.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/school-girls-or-the-african-mean-girls-play",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://playbill.com/article/reviews-are-out-for-school-girls-or-the-african-mean-girls-play-on-broadway",
-          "host": "playbill.com",
-          "priorRun": true,
-          "reason": "prior-run"
         }
       ],
       "ingestResults": [
+        {
+          "url": "https://didtheylikeit.com/shows/school-girls-or-the-african-mean-girls-play/",
+          "host": "didtheylikeit.com",
+          "outletId": "dtli",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
         {
           "url": "https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway-2026",
           "host": "show-score.com",
@@ -106382,30 +106491,6 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "unknown-outlet-aggregator-host (show-score.com)"
-        },
-        {
-          "url": "https://www.theatermania.com/news/jocelyn-bioh-to-join-cast-of-her-play-school-girls-or-the-african-mean-girls-play-for-four-performances_1854797/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Refusing to ingest — https://www.theatermania.com/news/jocelyn-bioh-to-join-cast-of-her-play-school-"
-        },
-        {
-          "url": "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
-          "host": "manhattantheatreclub.com",
-          "outletId": "manhattantheatreclub",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Refusing to ingest — https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-a"
         },
         {
           "url": "https://exeuntnyc.com/reviews/review-school-girls-african-mean-girls-play-lucille-lortel-theatre/",
@@ -106432,41 +106517,23 @@
           "reason": "⚠️  provisional outlet \"familyaffairsandothermatters\" (not in registry) — onboard to outlet-registry"
         }
       ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-queen-bee-gets-stung-11587675557",
-          "host": "wsj.com",
-          "outletId": "wsj"
-        },
-        {
-          "url": "https://www.show-score.com/off-broadway-shows/school-girls-or-the-african-mean-girls-play",
-          "host": "show-score.com",
-          "outletId": null
-        }
-      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "dtli",
+            "outlet": "dtli",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://didtheylikeit.com/shows/school-girls-or-the-african-mean-girls-play/"
+          },
           {
             "outletId": "show-score.com",
             "outlet": "show-score.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway-2026"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/jocelyn-bioh-to-join-cast-of-her-play-school-girls-or-the-african-mean-girls-play-for-four-performances_1854797/"
-          },
-          {
-            "outletId": "manhattantheatreclub.com",
-            "outlet": "manhattantheatreclub.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/"
           },
           {
             "outletId": "exeunt-magazine",
@@ -106483,11 +106550,11 @@
             "url": "https://familyaffairsandothermatters.com/school-girls-or-the-african-mean-girls-play-review/"
           },
           {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
+            "outletId": "playbill",
+            "outlet": "playbill",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.show-score.com/off-broadway-shows/school-girls-or-the-african-mean-girls-play"
+            "url": "https://playbill.com/article/reviews-are-out-for-school-girls-or-the-african-mean-girls-play-on-broadway"
           },
           {
             "outletId": "south-florida-sun-sentinel",
@@ -106497,13 +106564,6 @@
             "url": "https://www.sun-sentinel.com/2026/09/08/review-brevo-theatres-school-girls-or-the-african-mean-girls-play-is-a-hoot-but-also-biting-censure/"
           },
           {
-            "outletId": "around-the-town-chicago",
-            "outlet": "around-the-town-chicago",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://aroundthetownchicago.com/theatre-reviews/school-girls-or-the-african-mean-girls-play/"
-          },
-          {
             "outletId": "theatreinchicago.com",
             "outlet": "theatreinchicago.com",
             "critic": "Unknown",
@@ -106511,33 +106571,25 @@
             "url": "https://www.theatreinchicago.com/school-girls-or-the-african-mean-girls-play/11303/"
           }
         ],
-        "suppressedMissing": [
-          {
-            "outletId": "wsj",
-            "outlet": "wsj",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-queen-bee-gets-stung-11587675557"
-          }
-        ],
+        "suppressedMissing": [],
         "candidates": [
           {
-            "url": "http://www.nytimes.com/2017/11/16/theater/school-girls-or-the-african-mean-girls-play-review.html",
-            "outletId": "nytimes.com",
+            "url": "https://www.chicagotribune.com/2026/09/28/review-school-girls-african-mean-girls-broadway/",
+            "outletId": "chicagotribune.com",
             "state": "live",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
           },
           {
-            "url": "http://variety.com/2017/legit/reviews/school-girls-or-the-african-mean-girls-play-review-1202612324/",
-            "outletId": "variety.com",
+            "url": "https://culturesauce.com/school-girls-african-mean-girls-play-broadway-review/",
+            "outletId": "culturesauce.com",
             "state": "live",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
           },
           {
-            "url": "https://www.theatrely.com/post/a-fabulous-school-girls-or-the-african-mean-girls-play-finally-makes-it-to-broadway",
-            "outletId": "theatrely.com",
+            "url": "https://www.theguardian.com/stage/2026/sep/28/school-african-mean-girls-play-review",
+            "outletId": "theguardian.com",
             "state": "live",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
           },
           {
             "url": "https://deadline.com/2026/09/school-girls-or-the-african-mean-girls-play-broadway-review-when-escape-is-just-a-clique-away-1237114434/",
@@ -106546,22 +106598,93 @@
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
           },
           {
+            "url": "https://nystagereview.com/2026/09/28/school-girls-or-the-african-mean-girls-play-jasmine-amy-rogers-and-denee-benton-battle-it-out/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/09/28/school-girls-or-the-african-mean-girls-play-sharper-and-funnier-than-ever/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/school-girls-or-the-african-mean-girls-play-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/09/28/theater/school-girls-or-the-african-mean-girls-play-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/a-fabulous-school-girls-or-the-african-mean-girls-play-finally-makes-it-to-broadway",
+            "outletId": "theatrely.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+          },
+          {
+            "url": "https://variety.com/2026/legit/reviews/school-girls-or-the-african-mean-girls-play-broadway-review-1236877325/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "http://www.vulture.com/2017/11/theater-school-girls-or-the-african-mean-girls-play.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2017/11/16/theater/school-girls-or-the-african-mean-girls-play-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/school-girls-or-the-african-mean-girls-play",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "http://variety.com/2017/legit/reviews/school-girls-or-the-african-mean-girls-play-review-1202612324/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/a-fabulous-school-girls-or-the-african-mean-girls-play-finally-makes-it-to-broadwayj",
+            "outletId": "theatrely.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/09/28/school-girls-or-the-african-mean-girls-play-broadway-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/news/broadway-review-school-girls-or-the-african-mean-girls-play-092926",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://didtheylikeit.com/shows/school-girls-or-the-african-mean-girls-play/",
+            "outletId": "dtli",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
             "url": "https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway-2026",
             "outletId": "show-score.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/jocelyn-bioh-to-join-cast-of-her-play-school-girls-or-the-african-mean-girls-play-for-four-performances_1854797/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
-          },
-          {
-            "url": "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
-            "outletId": "manhattantheatreclub.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
@@ -106581,29 +106704,15 @@
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
           },
           {
-            "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-queen-bee-gets-stung-11587675557",
-            "outletId": "wsj",
-            "state": "SUPPRESSED",
-            "reason": "ci-unfetchable",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
-          },
-          {
-            "url": "https://www.show-score.com/off-broadway-shows/school-girls-or-the-african-mean-girls-play",
-            "outletId": "show-score.com",
+            "url": "https://playbill.com/article/reviews-are-out-for-school-girls-or-the-african-mean-girls-play-on-broadway",
+            "outletId": "playbill",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
           },
           {
             "url": "https://www.sun-sentinel.com/2026/09/08/review-brevo-theatres-school-girls-or-the-african-mean-girls-play-is-a-hoot-but-also-biting-censure/",
             "outletId": "south-florida-sun-sentinel",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
-          },
-          {
-            "url": "https://aroundthetownchicago.com/theatre-reviews/school-girls-or-the-african-mean-girls-play/",
-            "outletId": "around-the-town-chicago",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
@@ -106617,10 +106726,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 4,
-        "candidateCount": 13
+        "liveCount": 12,
+        "candidateCount": 19
       },
-      "computedAt": "2026-09-29T02:37:18.744Z"
+      "computedAt": "2026-09-29T09:20:33.796Z"
     },
     {
       "showId": "schtick-a-pole-in-it-off-broadway-2026",
@@ -124686,7 +124795,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -124722,18 +124831,18 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 8,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 401,
+        "count": 400,
         "byReason": {
-          "non-review-host": 46,
-          "aggregator-internal-nav": 265,
-          "venue-production-page": 2,
+          "non-review-host": 48,
+          "roundup-page": 4,
           "not-http-url": 71,
+          "aggregator-internal-nav": 265,
           "aggregator-section-root": 11,
-          "roundup-page": 6
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
@@ -124877,7 +124986,7 @@
         "liveCount": 5,
         "candidateCount": 10
       },
-      "computedAt": "2026-09-28T22:37:42.816Z"
+      "computedAt": "2026-09-29T09:20:33.796Z"
     },
     {
       "showId": "the-hope-theory-off-broadway-2026",
@@ -128450,23 +128559,24 @@
         "https://www.britishtheatreguide.info/reviews/the-last-ship-theatre-royal-d-26042",
         "https://www.allthatdazzles.co.uk/post/review-the-last-ship-theatre-royal-drury-lane",
         "https://musicaltheatrereview.com/the-last-ship-theatre-royal-drury-lane/",
-        "https://everything-theatre.co.uk/2026/09/review-the-last-ship-theatre-royal-drury-lane/",
         "https://theatreandtonic.co.uk/blog/the-last-ship-theatre-royal-drury-lane-review",
+        "https://everything-theatre.co.uk/2026/09/review-the-last-ship-theatre-royal-drury-lane/",
         "https://www.thetimes.com/culture/theatre-dance/article/the-last-ship-review-sting-theatre-royal-london-gzlz63nsm",
-        "https://www.standard.co.uk/culture/theatre/the-last-ship-review-b1298193.html",
+        "https://ayoungishperspective.co.uk/2026/09/25/review-the-last-ship/",
         "https://matineemouse.substack.com/p/the-last-ship-review",
         "https://loureviews.blog/2026/09/24/musical-review-the-last-ship-at-theatre-royal-drury-lane/",
-        "https://ayoungishperspective.co.uk/2026/09/25/review-the-last-ship/",
         "https://lwtheatres.co.uk/whats-on/the-last-ship/",
-        "https://lwtickets.co.uk/whats-on/the-last-ship/",
         "https://theatreandartreviews.com/2026/09/24/the-last-ship-theatre-royal-drury-lane/",
-        "https://www.beyondthecurtain.co.uk/2026/09/the-last-ship-theatre-royal-drury-lane.html",
+        "https://lwtickets.co.uk/whats-on/the-last-ship/",
+        "https://zeno.fm/podcast/mickeyjotheatre/episodes/the-last-ship-starring-sting-theatre-royal-drury-lane-west-end-review/",
         "https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/",
+        "https://theartsdispatch.substack.com/p/the-last-ship-review-theatre-royal",
         "https://www.harrytheatrelife.co.uk/post/review-the-last-ship-theatre-royal-drury-lane-london",
+        "https://www.beyondthecurtain.co.uk/2026/09/the-last-ship-theatre-royal-drury-lane.html",
         "https://www.londontheatre1.com/reviews/the-last-ship-theatre-royal-drury-lane/",
-        "https://theatreweekly.com/review-the-last-ship-at-theatre-royal-drury-lane/",
         "https://www.telegraph.co.uk/theatre/what-to-see/the-last-ship-review-sting-theatre-royal-drury-lane/",
-        "https://www.whatsonstage.com/news/the-last-ship-review-sting-in-choppy-waters-in-the-west-end_1732320/"
+        "https://www.whatsonstage.com/news/the-last-ship-review-sting-in-choppy-waters-in-the-west-end_1732320/",
+        "https://www.standard.co.uk/culture/theatre/the-last-ship-review-b1298193.html"
       ],
       "dirFiles": 56,
       "dirClean": 39,
@@ -128581,9 +128691,21 @@
           "serpCensus": true
         },
         {
+          "url": "https://zeno.fm/podcast/mickeyjotheatre/episodes/the-last-ship-starring-sting-theatre-royal-drury-lane-west-end-review/",
+          "host": "zeno.fm",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
           "url": "https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/",
           "host": "theatrevibe.co.uk",
           "knownOutletId": "theatre-vibe",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theartsdispatch.substack.com/p/the-last-ship-review-theatre-royal",
+          "host": "theartsdispatch.substack.com",
+          "knownOutletId": "theartsdispatch",
           "serpCensus": true
         }
       ],
@@ -128650,6 +128772,10 @@
         },
         {
           "host": "thespyinthestalls.com",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
           "count": 1
         },
         {
@@ -128782,7 +128908,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -128792,7 +128918,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -128802,7 +128928,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -128812,7 +128938,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 7,
             "error": null
           }
         ],
@@ -128822,14 +128948,14 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 873,
+        "count": 872,
         "byReason": {
           "non-review-host": 57,
-          "aggregator-internal-nav": 679,
-          "ticketing-listing": 1,
+          "roundup-page": 2,
           "not-http-url": 121,
+          "aggregator-internal-nav": 679,
           "aggregator-section-root": 12,
-          "roundup-page": 3
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -128965,6 +129091,18 @@
           "reason": "Refusing to ingest — https://theatreandartreviews.com/2026/09/24/the-last-ship-theatre-royal-drury-l"
         },
         {
+          "url": "https://zeno.fm/podcast/mickeyjotheatre/episodes/the-last-ship-starring-sting-theatre-royal-drury-lane-west-end-review/",
+          "host": "zeno.fm",
+          "outletId": "zeno",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
           "url": "https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/",
           "host": "theatrevibe.co.uk",
           "outletId": "theatre-vibe",
@@ -128977,7 +129115,13 @@
           "reason": "❌ Refusing to ingest — collision with theatre-vibe--unknown.json\n   reason: stale-flag-on-existing-f"
         }
       ],
-      "ingestSkippedByCap": [],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://theartsdispatch.substack.com/p/the-last-ship-review-theatre-royal",
+          "host": "theartsdispatch.substack.com",
+          "outletId": "theartsdispatch"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -129003,11 +129147,25 @@
             "url": "https://theatreandartreviews.com/2026/09/24/the-last-ship-theatre-royal-drury-lane/"
           },
           {
+            "outletId": "zeno.fm",
+            "outlet": "zeno.fm",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://zeno.fm/podcast/mickeyjotheatre/episodes/the-last-ship-starring-sting-theatre-royal-drury-lane-west-end-review/"
+          },
+          {
             "outletId": "theatre-vibe",
             "outlet": "theatre-vibe",
             "critic": "Unknown",
             "stars": null,
             "url": "https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/"
+          },
+          {
+            "outletId": "theartsdispatch",
+            "outlet": "theartsdispatch",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theartsdispatch.substack.com/p/the-last-ship-review-theatre-royal"
           },
           {
             "outletId": "lwtheatres.co.uk",
@@ -129063,14 +129221,14 @@
             "firstSeenAt": "2026-09-27T22:52:36.905Z"
           },
           {
-            "url": "https://everything-theatre.co.uk/2026/09/review-the-last-ship-theatre-royal-drury-lane/",
-            "outletId": "everything-theatre.co.uk",
+            "url": "https://theatreandtonic.co.uk/blog/the-last-ship-theatre-royal-drury-lane-review",
+            "outletId": "theatreandtonic.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/the-last-ship-theatre-royal-drury-lane-review",
-            "outletId": "theatreandtonic.co.uk",
+            "url": "https://everything-theatre.co.uk/2026/09/review-the-last-ship-theatre-royal-drury-lane/",
+            "outletId": "everything-theatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
@@ -129081,10 +129239,10 @@
             "firstSeenAt": "2026-09-24T05:40:09.820Z"
           },
           {
-            "url": "https://www.standard.co.uk/culture/theatre/the-last-ship-review-b1298193.html",
-            "outletId": "standard.co.uk",
+            "url": "https://ayoungishperspective.co.uk/2026/09/25/review-the-last-ship/",
+            "outletId": "ayoungishperspective.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-09-24T23:04:09.984Z"
+            "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
             "url": "https://matineemouse.substack.com/p/the-last-ship-review",
@@ -129099,10 +129257,10 @@
             "firstSeenAt": "2026-09-27T08:57:54.805Z"
           },
           {
-            "url": "https://ayoungishperspective.co.uk/2026/09/25/review-the-last-ship/",
-            "outletId": "ayoungishperspective.co.uk",
+            "url": "https://www.harrytheatrelife.co.uk/post/review-the-last-ship-theatre-royal-drury-lane-london",
+            "outletId": "harrytheatrelife.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-09-26T17:42:56.172Z"
+            "firstSeenAt": "2026-09-27T16:31:53.708Z"
           },
           {
             "url": "https://www.beyondthecurtain.co.uk/2026/09/the-last-ship-theatre-royal-drury-lane.html",
@@ -129111,22 +129269,10 @@
             "firstSeenAt": "2026-09-27T08:57:54.805Z"
           },
           {
-            "url": "https://www.harrytheatrelife.co.uk/post/review-the-last-ship-theatre-royal-drury-lane-london",
-            "outletId": "harrytheatrelife.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-27T16:31:53.708Z"
-          },
-          {
             "url": "https://www.londontheatre1.com/reviews/the-last-ship-theatre-royal-drury-lane/",
             "outletId": "londontheatre1.com",
             "state": "live",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
-          },
-          {
-            "url": "https://theatreweekly.com/review-the-last-ship-at-theatre-royal-drury-lane/",
-            "outletId": "theatreweekly.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-28T22:37:42.816Z"
           },
           {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-last-ship-review-sting-theatre-royal-drury-lane/",
@@ -129139,6 +129285,12 @@
             "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-09-24T05:40:09.820Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/the-last-ship-review-b1298193.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-24T23:04:09.984Z"
           },
           {
             "url": "https://youtu.be/fh8lw-DJuu8",
@@ -129162,11 +129314,25 @@
             "firstSeenAt": "2026-09-27T02:05:03.576Z"
           },
           {
+            "url": "https://zeno.fm/podcast/mickeyjotheatre/episodes/the-last-ship-starring-sting-theatre-royal-drury-lane-west-end-review/",
+            "outletId": "zeno.fm",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
             "url": "https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/",
             "outletId": "theatre-vibe",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-28T22:37:42.816Z"
+          },
+          {
+            "url": "https://theartsdispatch.substack.com/p/the-last-ship-review-theatre-royal",
+            "outletId": "theartsdispatch",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
           },
           {
             "url": "https://lwtheatres.co.uk/whats-on/the-last-ship/",
@@ -129184,10 +129350,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 19,
-        "candidateCount": 25
+        "liveCount": 18,
+        "candidateCount": 26
       },
-      "computedAt": "2026-09-28T22:37:42.816Z"
+      "computedAt": "2026-09-29T09:20:33.796Z"
     },
     {
       "showId": "the-little-mermaid-the-musical-off-broadway-2026",
@@ -140324,6 +140490,623 @@
       "computedAt": "2026-09-19T01:53:26.201Z"
     },
     {
+      "showId": "three-men-in-a-boat-off-west-end-2026",
+      "title": "Three Men in a Boat",
+      "openingDate": "2026-09-23",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://everything-theatre.co.uk/2026/09/review-three-men-in-a-boat-rose-theatre/",
+        "https://theatreandtonic.co.uk/blog/three-men-in-a-boat-at-rose-theatre-review",
+        "https://www.theguardian.com/stage/2026/sep/24/three-men-in-a-boat-review-rose-theatre-kingston-upon-thames",
+        "https://www.thestage.co.uk/reviews/three-men-in-a-boat-review-rose-theatre-kingston-al-smith-christopher-haydon",
+        "https://www.whatsonstage.com/news/three-men-in-a-boat-at-rose-theatre-kingston-review_1732388/",
+        "https://musicaltheatrereview.com/three-men-in-a-boat-rose-theatre-kingston/",
+        "https://www.timeout.com/london/theatre/three-men-in-a-boat-1-review",
+        "https://timeandleisure.co.uk/things-to-do/three-men-in-a-boat-rose-theatre/",
+        "https://www.allthatdazzles.co.uk/post/review-three-men-in-a-boat-rose-theatre",
+        "https://www.curtaincallreviews.co.uk/three-men-in-a-boat",
+        "https://www.adventuresintheatreland.com/post/three-men-in-a-boat-rose-theatre",
+        "https://www.londontheatredirect.com/play/three-men-in-a-boat-tickets",
+        "https://www.essentialsurrey.co.uk/theatre-arts/theatre-reviews/three-men-in-a-boat/",
+        "https://kingston.nub.news/news/local-features/review-three-men-in-a-boat-balances-laughter-and-deep-reflection-in-kingston-production-309162",
+        "https://www.thetimes.com/culture/theatre-dance/article/three-men-in-a-boat-review-rose-theatre-kingston-qxvz6nchp",
+        "https://www.westendbestfriend.co.uk/news/review-three-men-in-a-boat-rose-theatre-kingston",
+        "https://www.uktw.co.uk/Kingston/Rose-Theatre-Kingston/Play/Three-Men-In-a-Boat/L0539480084/"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://everything-theatre.co.uk/2026/09/review-three-men-in-a-boat-rose-theatre/",
+          "host": "everything-theatre.co.uk",
+          "knownOutletId": "everything-theatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/three-men-in-a-boat-at-rose-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/sep/24/three-men-in-a-boat-review-rose-theatre-kingston-upon-thames",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/three-men-in-a-boat-review-rose-theatre-kingston-al-smith-christopher-haydon",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/three-men-in-a-boat-at-rose-theatre-kingston-review_1732388/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "serpCensus": true
+        },
+        {
+          "url": "https://musicaltheatrereview.com/three-men-in-a-boat-rose-theatre-kingston/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/three-men-in-a-boat-1-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true
+        },
+        {
+          "url": "https://timeandleisure.co.uk/things-to-do/three-men-in-a-boat-rose-theatre/",
+          "host": "timeandleisure.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-three-men-in-a-boat-rose-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.curtaincallreviews.co.uk/three-men-in-a-boat",
+          "host": "curtaincallreviews.co.uk",
+          "knownOutletId": "curtain-call-reviews",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.adventuresintheatreland.com/post/three-men-in-a-boat-rose-theatre",
+          "host": "adventuresintheatreland.com",
+          "knownOutletId": "adventuresintheatreland",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatredirect.com/play/three-men-in-a-boat-tickets",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.essentialsurrey.co.uk/theatre-arts/theatre-reviews/three-men-in-a-boat/",
+          "host": "essentialsurrey.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://kingston.nub.news/news/local-features/review-three-men-in-a-boat-balances-laughter-and-deep-reflection-in-kingston-production-309162",
+          "host": "nub.news",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/three-men-in-a-boat-review-rose-theatre-kingston-qxvz6nchp",
+          "host": "thetimes.com",
+          "knownOutletId": "times-uk",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-three-men-in-a-boat-rose-theatre-kingston",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.uktw.co.uk/Kingston/Rose-Theatre-Kingston/Play/Three-Men-In-a-Boat/L0539480084/",
+          "host": "uktw.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Three Men in a Boat\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Three Men in a Boat\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 8,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Three Men in a Boat\" review rose",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Three Men in a Boat Rose Theatre Kingston review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Three Men in a Boat Rose Theatre Kingston review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Three Men in a Boat Rose Theatre Kingston review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 17,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 13,
+        "byReason": {
+          "non-review-host": 12,
+          "roundup-page": 1
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://everything-theatre.co.uk/2026/09/review-three-men-in-a-boat-rose-theatre/",
+          "host": "everything-theatre.co.uk",
+          "outletId": "everything-theatre",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/three-men-in-a-boat-at-rose-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "outletId": "theatreandtonic",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theatreandtonic.co.uk): Scrapingdog HTTP 404: {\"messag"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/sep/24/three-men-in-a-boat-review-rose-theatre-kingston-upon-thames",
+          "host": "theguardian.com",
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/three-men-in-a-boat-review-rose-theatre-kingston-al-smith-christopher-haydon",
+          "host": "thestage.co.uk",
+          "outletId": "thestage",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/three-men-in-a-boat-at-rose-theatre-kingston-review_1732388/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://musicaltheatrereview.com/three-men-in-a-boat-rose-theatre-kingston/",
+          "host": "musicaltheatrereview.com",
+          "outletId": "musical-theatre-review"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/three-men-in-a-boat-1-review",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "https://timeandleisure.co.uk/things-to-do/three-men-in-a-boat-rose-theatre/",
+          "host": "timeandleisure.co.uk",
+          "outletId": "timeandleisure"
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-three-men-in-a-boat-rose-theatre",
+          "host": "allthatdazzles.co.uk",
+          "outletId": "all-that-dazzles-uk"
+        },
+        {
+          "url": "https://www.curtaincallreviews.co.uk/three-men-in-a-boat",
+          "host": "curtaincallreviews.co.uk",
+          "outletId": "curtain-call-reviews"
+        },
+        {
+          "url": "https://www.adventuresintheatreland.com/post/three-men-in-a-boat-rose-theatre",
+          "host": "adventuresintheatreland.com",
+          "outletId": "adventuresintheatreland"
+        },
+        {
+          "url": "https://www.londontheatredirect.com/play/three-men-in-a-boat-tickets",
+          "host": "londontheatredirect.com",
+          "outletId": "londontheatredirect"
+        },
+        {
+          "url": "https://www.essentialsurrey.co.uk/theatre-arts/theatre-reviews/three-men-in-a-boat/",
+          "host": "essentialsurrey.co.uk",
+          "outletId": "essentialsurrey"
+        },
+        {
+          "url": "https://kingston.nub.news/news/local-features/review-three-men-in-a-boat-balances-laughter-and-deep-reflection-in-kingston-production-309162",
+          "host": "nub.news",
+          "outletId": "nub"
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/three-men-in-a-boat-review-rose-theatre-kingston-qxvz6nchp",
+          "host": "thetimes.com",
+          "outletId": "times-uk"
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-three-men-in-a-boat-rose-theatre-kingston",
+          "host": "westendbestfriend.co.uk",
+          "outletId": "west-end-best-friend"
+        },
+        {
+          "url": "https://www.uktw.co.uk/Kingston/Rose-Theatre-Kingston/Play/Three-Men-In-a-Boat/L0539480084/",
+          "host": "uktw.co.uk",
+          "outletId": "uktw"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "everything-theatre",
+            "outlet": "everything-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://everything-theatre.co.uk/2026/09/review-three-men-in-a-boat-rose-theatre/"
+          },
+          {
+            "outletId": "theatreandtonic",
+            "outlet": "theatreandtonic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreandtonic.co.uk/blog/three-men-in-a-boat-at-rose-theatre-review"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2026/sep/24/three-men-in-a-boat-review-rose-theatre-kingston-upon-thames"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/three-men-in-a-boat-review-rose-theatre-kingston-al-smith-christopher-haydon"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/three-men-in-a-boat-at-rose-theatre-kingston-review_1732388/"
+          },
+          {
+            "outletId": "musical-theatre-review",
+            "outlet": "musical-theatre-review",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://musicaltheatrereview.com/three-men-in-a-boat-rose-theatre-kingston/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/three-men-in-a-boat-1-review"
+          },
+          {
+            "outletId": "timeandleisure.co.uk",
+            "outlet": "timeandleisure.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://timeandleisure.co.uk/things-to-do/three-men-in-a-boat-rose-theatre/"
+          },
+          {
+            "outletId": "all-that-dazzles-uk",
+            "outlet": "all-that-dazzles-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.allthatdazzles.co.uk/post/review-three-men-in-a-boat-rose-theatre"
+          },
+          {
+            "outletId": "curtain-call-reviews",
+            "outlet": "curtain-call-reviews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.curtaincallreviews.co.uk/three-men-in-a-boat"
+          },
+          {
+            "outletId": "adventuresintheatreland",
+            "outlet": "adventuresintheatreland",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.adventuresintheatreland.com/post/three-men-in-a-boat-rose-theatre"
+          },
+          {
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatredirect.com/play/three-men-in-a-boat-tickets"
+          },
+          {
+            "outletId": "essentialsurrey.co.uk",
+            "outlet": "essentialsurrey.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.essentialsurrey.co.uk/theatre-arts/theatre-reviews/three-men-in-a-boat/"
+          },
+          {
+            "outletId": "nub.news",
+            "outlet": "nub.news",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://kingston.nub.news/news/local-features/review-three-men-in-a-boat-balances-laughter-and-deep-reflection-in-kingston-production-309162"
+          },
+          {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/three-men-in-a-boat-review-rose-theatre-kingston-qxvz6nchp"
+          },
+          {
+            "outletId": "west-end-best-friend",
+            "outlet": "west-end-best-friend",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendbestfriend.co.uk/news/review-three-men-in-a-boat-rose-theatre-kingston"
+          },
+          {
+            "outletId": "uktw.co.uk",
+            "outlet": "uktw.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.uktw.co.uk/Kingston/Rose-Theatre-Kingston/Play/Three-Men-In-a-Boat/L0539480084/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://everything-theatre.co.uk/2026/09/review-three-men-in-a-boat-rose-theatre/",
+            "outletId": "everything-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/three-men-in-a-boat-at-rose-theatre-review",
+            "outletId": "theatreandtonic",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/sep/24/three-men-in-a-boat-review-rose-theatre-kingston-upon-thames",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/three-men-in-a-boat-review-rose-theatre-kingston-al-smith-christopher-haydon",
+            "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/three-men-in-a-boat-at-rose-theatre-kingston-review_1732388/",
+            "outletId": "whatsonstage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/three-men-in-a-boat-rose-theatre-kingston/",
+            "outletId": "musical-theatre-review",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/three-men-in-a-boat-1-review",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://timeandleisure.co.uk/things-to-do/three-men-in-a-boat-rose-theatre/",
+            "outletId": "timeandleisure.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-three-men-in-a-boat-rose-theatre",
+            "outletId": "all-that-dazzles-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.curtaincallreviews.co.uk/three-men-in-a-boat",
+            "outletId": "curtain-call-reviews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.adventuresintheatreland.com/post/three-men-in-a-boat-rose-theatre",
+            "outletId": "adventuresintheatreland",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.londontheatredirect.com/play/three-men-in-a-boat-tickets",
+            "outletId": "londontheatredirect",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.essentialsurrey.co.uk/theatre-arts/theatre-reviews/three-men-in-a-boat/",
+            "outletId": "essentialsurrey.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://kingston.nub.news/news/local-features/review-three-men-in-a-boat-balances-laughter-and-deep-reflection-in-kingston-production-309162",
+            "outletId": "nub.news",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/three-men-in-a-boat-review-rose-theatre-kingston-qxvz6nchp",
+            "outletId": "times-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-three-men-in-a-boat-rose-theatre-kingston",
+            "outletId": "west-end-best-friend",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.uktw.co.uk/Kingston/Rose-Theatre-Kingston/Play/Three-Men-In-a-Boat/L0539480084/",
+            "outletId": "uktw.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          }
+        ],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 17
+      },
+      "computedAt": "2026-09-29T09:20:33.796Z"
+    },
+    {
       "showId": "titanique-2026",
       "title": "Titanique",
       "openingDate": "2026-04-12",
@@ -143239,26 +144022,27 @@
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=GZKHRD",
         "https://www.londontheatre.co.uk/reviews/tru-review-menier-chocolate-factory",
         "https://www.thereviewshub.com/tru-menier-chocolate-factory-london/",
+        "https://playsinternational.org.uk/tru-menier-chocolate-factory/",
         "https://monstagigz.com/2026/09/19/theatre-review-tru-starring-jesse-tyler-ferguson-at-the-menier-chocolate-factory/",
         "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory",
-        "https://playsinternational.org.uk/tru-menier-chocolate-factory/",
         "https://www.theguardian.com/stage/2026/sep/28/tru-review-a-five-star-performance-of-a-three-star-script-about-the-life-of-truman-capote",
+        "https://www.whatsonstage.com/news/tru-with-jesse-tyler-ferguson-and-charlotte-damboise-at-menier-chocolate-factory-review_1732697/",
         "https://www.timeout.com/london/theatre/tru-review",
-        "https://southlondon.co.uk/area/southwark/review-tru-at-menier-chocolate-factory/",
-        "https://www.thestage.co.uk/reviews/tru-review-menier-chocolate-factory-london",
         "https://theatreweekly.com/review-tru-at-menier-chocolate-factory/",
-        "https://www.broadwayworld.com/westend/article/Review-TRU-Starring-Jesse-Tyler-Ferguson-Menier-Chocolate-Factory-20260927",
-        "https://www.aol.co.uk/articles/tru-review-five-star-performance-230117000.html",
-        "https://liamodell.com/2026/09/27/tru-review-menier-chocolate-factory-london-jesse-tyler-ferguson-charlotte-damboise-truman-capote-jay-presson-allen/",
+        "https://www.westendbestfriend.co.uk/news/review-tru-menier-chocolate-factory",
+        "https://southlondon.co.uk/area/southwark/review-tru-at-menier-chocolate-factory/",
+        "https://readaboutstuff.com/2026/09/28/review-tru-menier-chocolate-factory-london/",
+        "https://www.bestoftheatre.co.uk/tru",
         "https://stagedtheatre.co.uk/blogs/theatre-reviews/tru-menier-chocolate-factory",
-        "https://monstagigz.com/2026/09/19/theatre-review-tru-starring-jesse-tyler-ferguson-at-the-menier-chocolate-factory/comment-page-1/",
+        "https://www.timeout.com/london/theatre/tru",
         "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p",
+        "https://www.thestage.co.uk/reviews/tru-review-menier-chocolate-factory-london",
         "https://www.ft.com/content/843bd598-2633-4ffb-8b89-f4e926f26cf2",
         "https://www.telegraph.co.uk/theatre/what-to-see/tru-menier-chocolate-factory-review/"
       ],
-      "dirFiles": 29,
-      "dirClean": 17,
-      "inReviewsJson": 16,
+      "dirFiles": 31,
+      "dirClean": 19,
+      "inReviewsJson": 18,
       "missing": [
         {
           "url": "https://www.thewrap.com/creative-content/theater/tru-off-broadway-review-jesse-tyler-ferguson-truman-capote/",
@@ -143308,21 +144092,15 @@
           "knownOutletId": "theatermania"
         },
         {
-          "url": "https://playsinternational.org.uk/tru-menier-chocolate-factory/",
-          "host": "playsinternational.org.uk",
-          "knownOutletId": "plays-international",
+          "url": "https://www.whatsonstage.com/news/tru-with-jesse-tyler-ferguson-and-charlotte-damboise-at-menier-chocolate-factory-review_1732697/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
           "serpCensus": true
         },
         {
-          "url": "https://www.aol.co.uk/articles/tru-review-five-star-performance-230117000.html",
-          "host": "aol.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/tru-menier-chocolate-factory",
-          "host": "stagedtheatre.co.uk",
-          "knownOutletId": "stagedtheatre",
+          "url": "https://www.bestoftheatre.co.uk/tru",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": "bestoftheatre",
           "serpCensus": true
         },
         {
@@ -143339,19 +144117,19 @@
       ],
       "dirOnly": [
         {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
           "host": "how2london.co.uk",
           "count": 1
         },
         {
-          "host": "readaboutstuff.com",
+          "host": "liamodell.com",
           "count": 1
         },
         {
           "host": "standard.co.uk",
-          "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
           "count": 1
         }
       ],
@@ -143449,7 +144227,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -143459,7 +144237,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -143479,7 +144257,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           }
         ],
@@ -143491,13 +144269,13 @@
       "candidatesRejected": {
         "count": 392,
         "byReason": {
-          "aggregator-internal-nav": 263,
+          "non-review-host": 43,
+          "roundup-page": 5,
           "not-http-url": 66,
+          "aggregator-internal-nav": 264,
           "aggregator-section-root": 11,
-          "non-review-host": 45,
-          "non-review-path": 1,
           "ticketing-listing": 2,
-          "roundup-page": 4
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -143563,40 +144341,28 @@
           "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
         },
         {
-          "url": "https://playsinternational.org.uk/tru-menier-chocolate-factory/",
-          "host": "playsinternational.org.uk",
-          "outletId": "plays-international",
+          "url": "https://www.whatsonstage.com/news/tru-with-jesse-tyler-ferguson-and-charlotte-damboise-at-menier-chocolate-factory-review_1732697/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage",
           "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.aol.co.uk/articles/tru-review-five-star-performance-230117000.html",
-          "host": "aol.co.uk",
-          "outletId": "aol",
-          "provisional": true,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "Fetch failed: All scraping methods failed"
+          "reason": "spawnSync node ETIMEDOUT"
         },
         {
-          "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/tru-menier-chocolate-factory",
-          "host": "stagedtheatre.co.uk",
-          "outletId": "stagedtheatre",
+          "url": "https://www.bestoftheatre.co.uk/tru",
+          "host": "bestoftheatre.co.uk",
+          "outletId": "bestoftheatre",
           "provisional": false,
-          "ok": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": null
+          "reason": "❌ Refusing to ingest — collision with bestoftheatre--maria-boot.json\n   reason: stale-flag-on-existi"
         },
         {
           "url": "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p",
@@ -143623,25 +144389,18 @@
             "url": "https://www.theatermania.com/news/review-jesse-tyler-ferguson-plays-truman-capote-in-tru_1828438/"
           },
           {
-            "outletId": "plays-international",
-            "outlet": "plays-international",
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://playsinternational.org.uk/tru-menier-chocolate-factory/"
+            "url": "https://www.whatsonstage.com/news/tru-with-jesse-tyler-ferguson-and-charlotte-damboise-at-menier-chocolate-factory-review_1732697/"
           },
           {
-            "outletId": "aol.co.uk",
-            "outlet": "aol.co.uk",
+            "outletId": "bestoftheatre",
+            "outlet": "bestoftheatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.aol.co.uk/articles/tru-review-five-star-performance-230117000.html"
-          },
-          {
-            "outletId": "stagedtheatre",
-            "outlet": "stagedtheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/tru-menier-chocolate-factory"
+            "url": "https://www.bestoftheatre.co.uk/tru"
           },
           {
             "outletId": "times-uk",
@@ -143673,6 +144432,12 @@
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
           },
           {
+            "url": "https://playsinternational.org.uk/tru-menier-chocolate-factory/",
+            "outletId": "playsinternational.org.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+          },
+          {
             "url": "https://monstagigz.com/2026/09/19/theatre-review-tru-starring-jesse-tyler-ferguson-at-the-menier-chocolate-factory/",
             "outletId": "monstagigz.com",
             "state": "live",
@@ -143697,40 +144462,46 @@
             "firstSeenAt": "2026-09-28T07:54:42.859Z"
           },
           {
-            "url": "https://southlondon.co.uk/area/southwark/review-tru-at-menier-chocolate-factory/",
-            "outletId": "southlondon.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/tru-review-menier-chocolate-factory-london",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-28T07:54:42.859Z"
-          },
-          {
             "url": "https://theatreweekly.com/review-tru-at-menier-chocolate-factory/",
             "outletId": "theatreweekly.com",
             "state": "live",
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
           },
           {
-            "url": "https://www.broadwayworld.com/westend/article/Review-TRU-Starring-Jesse-Tyler-Ferguson-Menier-Chocolate-Factory-20260927",
-            "outletId": "broadwayworld.com",
+            "url": "https://www.westendbestfriend.co.uk/news/review-tru-menier-chocolate-factory",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://southlondon.co.uk/area/southwark/review-tru-at-menier-chocolate-factory/",
+            "outletId": "southlondon.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
           },
           {
-            "url": "https://liamodell.com/2026/09/27/tru-review-menier-chocolate-factory-london-jesse-tyler-ferguson-charlotte-damboise-truman-capote-jay-presson-allen/",
-            "outletId": "liamodell.com",
+            "url": "https://readaboutstuff.com/2026/09/28/review-tru-menier-chocolate-factory-london/",
+            "outletId": "readaboutstuff.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/tru-menier-chocolate-factory",
+            "outletId": "stagedtheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
           },
           {
-            "url": "https://monstagigz.com/2026/09/19/theatre-review-tru-starring-jesse-tyler-ferguson-at-the-menier-chocolate-factory/comment-page-1/",
-            "outletId": "monstagigz.com",
+            "url": "https://www.timeout.com/london/theatre/tru",
+            "outletId": "timeout.com",
             "state": "live",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/tru-review-menier-chocolate-factory-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-28T07:54:42.859Z"
           },
           {
             "url": "https://www.ft.com/content/843bd598-2633-4ffb-8b89-f4e926f26cf2",
@@ -143752,25 +144523,18 @@
             "firstSeenAt": "2026-09-26T23:29:00.474Z"
           },
           {
-            "url": "https://playsinternational.org.uk/tru-menier-chocolate-factory/",
-            "outletId": "plays-international",
+            "url": "https://www.whatsonstage.com/news/tru-with-jesse-tyler-ferguson-and-charlotte-damboise-at-menier-chocolate-factory-review_1732697/",
+            "outletId": "whatsonstage",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
           },
           {
-            "url": "https://www.aol.co.uk/articles/tru-review-five-star-performance-230117000.html",
-            "outletId": "aol.co.uk",
+            "url": "https://www.bestoftheatre.co.uk/tru",
+            "outletId": "bestoftheatre",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
-          },
-          {
-            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/tru-menier-chocolate-factory",
-            "outletId": "stagedtheatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+            "firstSeenAt": "2026-09-29T09:20:33.796Z"
           },
           {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p",
@@ -143788,10 +144552,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 13,
-        "candidateCount": 19
+        "liveCount": 15,
+        "candidateCount": 20
       },
-      "computedAt": "2026-09-29T02:37:18.744Z"
+      "computedAt": "2026-09-29T09:20:33.796Z"
     },
     {
       "showId": "truly-howard-hughes-off-broadway-2026",
@@ -150968,10 +151732,10 @@
       "candidatesRejected": {
         "count": 933,
         "byReason": {
-          "aggregator-internal-nav": 692,
+          "non-review-host": 91,
           "not-http-url": 130,
-          "aggregator-section-root": 20,
-          "non-review-host": 91
+          "aggregator-internal-nav": 692,
+          "aggregator-section-root": 20
         }
       },
       "dedupedVariants": [],
@@ -151136,7 +151900,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-29T02:37:18.744Z"
+      "computedAt": "2026-09-29T09:20:33.796Z"
     },
     {
       "showId": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
