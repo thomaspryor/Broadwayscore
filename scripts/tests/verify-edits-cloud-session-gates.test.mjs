@@ -161,7 +161,9 @@ function assertAllowed(result, message) {
 const QUALIFYING_EDIT = toolUse('Edit', { file_path: 'src/lib/scoring.ts', old_string: 'a', new_string: 'b' });
 const GIT_PUSH = toolUse('Bash', { command: 'git push -u origin some-branch' });
 const CREATE_PR = toolUse('mcp__github__create_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', title: 'x', head: 'a', base: 'main' });
-const MERGE_PR = toolUse('mcp__github__merge_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', pullNumber: 1 });
+// Real success payload of the GitHub MCP merge tool; only this counts as merged.
+const MERGE_PR = toolUse('mcp__github__merge_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', pullNumber: 1 },
+  '{"sha":"0123abc","merged":true,"message":"Pull Request successfully merged"}');
 const WRAP_UP = toolUse('Skill', { skill: 'wrap-up' });
 // A real Notion close-out call in the shape this repo actually uses (see
 // scripts/notion-brain.js's own usage header: `update <page-id> [--status
@@ -1339,6 +1341,22 @@ test('PR gate: a merge attempt the hook BLOCKED does not count as merged → BLO
   const transcript = writeTranscript(dir, [CREATE_PR, blockedMerge, LINEAR_CLOSEOUT_DONE]);
   assertBlocked(runHook(transcript, 'Merged PR #1.\n\nSAFE TO EXIT — merged.'), 'a blocked merge left the PR open');
   fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('PR gate: a merge the API or the permission layer refused does not count as merged → BLOCKED', skipNoRepoHook, () => {
+  // Real failure shapes carry no "error" word (ship-check review, BRO-4238).
+  for (const result of [
+    'failed to merge pull request: PUT https://api.github.com/repos/o/r/pulls/1/merge: 405 Pull Request is not mergeable []',
+    'failed to merge pull request: 409 Head branch was modified. Review and try the merge again.',
+    'Permission for this action was denied by the Claude Code auto mode classifier.',
+    '<tool_use_error>InputValidationError: pullNumber must be a number</tool_use_error>',
+  ]) {
+    const dir = makeTmpDir('failed-merge');
+    const failed = toolUse('mcp__github__merge_pull_request', { owner: 'someone', repo: 'other', pullNumber: 1 }, result);
+    const transcript = writeTranscript(dir, [CREATE_PR, failed, LINEAR_CLOSEOUT_DONE]);
+    assertBlocked(runHook(transcript, 'Merged PR #1.\n\nSAFE TO EXIT — merged.'), `refused merge counted as merged: ${result.slice(0, 40)}`);
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 test('PR gate: a merge that went through still counts (unchanged) → ALLOWED', skipNoRepoHook, () => {

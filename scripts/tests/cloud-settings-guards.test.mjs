@@ -32,13 +32,23 @@ const BWS = { owner: 'thomaspryor', repo: 'Broadwayscore' };
 
 for (const tool of ['create_or_update_file', 'push_files', 'delete_file']) {
   test(`github-main-guard: ${tool} to Broadwayscore main is refused, with the land route`, () => {
-    for (const branch of ['main', 'refs/heads/main']) {
+    for (const branch of ['main', 'refs/heads/main', 'heads/main', ' main ']) {
       const r = runHook('github-main-guard.sh', mcp(tool, { ...BWS, branch, path: 'x', message: 'm' }));
       assert.equal(r.status, 2, `${tool} ${branch}: ${r.stderr}`);
       assert.match(r.stderr, /land\/<name>/);
     }
   });
 }
+
+test('github-main-guard: owner/repo spelled another way still resolve to Broadwayscore', () => {
+  for (const [owner, repo] of [['ThomasPryor', 'BroadwayScore'], [' thomaspryor', 'Broadwayscore.git'], ['THOMASPRYOR', 'broadwayscore ']]) {
+    const r = runHook('github-main-guard.sh', mcp('push_files', { owner, repo, branch: 'main', files: [], message: 'm' }));
+    assert.equal(r.status, 2, `${owner}/${repo}: ${r.stderr}`);
+  }
+  // A branch that merely contains "main" is not main.
+  assert.equal(runHook('github-main-guard.sh', mcp('push_files', { ...BWS, branch: 'land/main-fix', files: [], message: 'm' })).status, 0);
+  assert.equal(runHook('github-main-guard.sh', mcp('push_files', { ...BWS, branch: 'mainline', files: [], message: 'm' })).status, 0);
+});
 
 test('github-main-guard: merging or auto-merging a Broadwayscore PR is refused', () => {
   for (const tool of ['merge_pull_request', 'enable_pr_auto_merge']) {

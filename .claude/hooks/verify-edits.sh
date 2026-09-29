@@ -692,9 +692,10 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
             elif _name == 'mcp__github__merge_pull_request':
                 # Only a merge that happened counts (BRO-4238): github-main-guard.sh
                 # now refuses Broadwayscore merges, and a refused attempt must not
-                # switch off the follow-through checks below.
-                if not re.search(r'\bBLOCKED\b|hook error|"merged"\s*:\s*false|\berror\b',
-                                 tool_results_by_id.get(_tid, '') or '', re.IGNORECASE):
+                # switch off the follow-through checks below. Positive match on the
+                # success payload ({"sha":…,"merged":true,…}): API failures read
+                # "failed to merge …: 405 …" and denials carry no "error" word.
+                if re.search(r'"merged"\s*:\s*true', tool_results_by_id.get(_tid, '') or ''):
                     _merged_pr = True
             elif _name == 'Bash' and _land_push_re.search(_inp.get('command') or ''):
                 _landed_pushed = True
