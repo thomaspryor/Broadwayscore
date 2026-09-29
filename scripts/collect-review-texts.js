@@ -5872,6 +5872,10 @@ function findReviewsToProcess() {
         // budget_capped entries are excluded here as well as at write time:
         // belt-and-braces, so a ledger written before this fix still can't
         // retire a URL the breaker merely deferred.
+        // `{}`: the review file isn't loaded yet, so pre-publication
+        // failures (BRO-4281) aren't subtracted here. That can only over-skip
+        // RETRY_FAILED's already-complete-text refetch; the per-file fetchGate
+        // below sees the real tally.
         const gate = shouldRetryFetch(showsById.get(f.showId) || null, {}, entry);
         if (!gate.shouldRetry) {
           permanentSkipCount++;
@@ -6492,20 +6496,27 @@ function recordFailedFetch(review, reason, details = {}) {
   // lifecycle-tiered fetch retry gate state (fetchRetryAfter /
   // fetchDiscoveryAbandoned — BRO-787). Both live on the same file, so one
   // read+write covers them.
+  // The on-disk file is read first so recordFetchAttempt sees its
+  // fetchPrePubFailures counter (BRO-4281), not a possibly stale in-memory copy.
+  const reviewFilePath = path.join(CONFIG.reviewTextsDir, review.reviewId);
+  let reviewData = null;
+  try {
+    if (fs.existsSync(reviewFilePath)) reviewData = JSON.parse(fs.readFileSync(reviewFilePath, 'utf8'));
+  } catch (e) {
+    reviewData = null;
+  }
   let fetchAttemptUpdates = {};
   if (counts) {
     try {
       if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
       const showMeta = _showsJsonCache.shows.find(s => s.id === review.showId) || null;
-      fetchAttemptUpdates = recordFetchAttempt(showMeta, review, entry);
+      fetchAttemptUpdates = recordFetchAttempt(showMeta, reviewData || review, entry);
     } catch (e) {
       // Non-fatal — worst case, no cooldown/abandonment is stamped this run
     }
   }
   try {
-    const reviewFilePath = path.join(CONFIG.reviewTextsDir, review.reviewId);
-    if (fs.existsSync(reviewFilePath)) {
-      const reviewData = JSON.parse(fs.readFileSync(reviewFilePath, 'utf8'));
+    if (reviewData) {
       const reasonResult = classifyIncompleteReason(reviewData, entry);
       if (reasonResult) {
         reviewData.incompleteReason = reasonResult.incompleteReason;
@@ -6522,7 +6533,12 @@ function recordFailedFetch(review, reason, details = {}) {
     // Non-fatal
   }
 
-  if (fetchAttemptUpdates.fetchDiscoveryAbandoned || isPermanentlyFailed(entry)) {
+  if (fetchAttemptUpdates.fetchPrePubFailures) {
+    console.log(`    ⏳ Pre-publication fetch failure — cooldown until ${fetchAttemptUpdates.fetchRetryAfter} (capped at the publication moment; ${entry.failureCount} attempts, reason: ${reason})`);
+  } else if (fetchAttemptUpdates.fetchDiscoveryAbandoned || (!fetchAttemptUpdates.fetchRetryAfter && isPermanentlyFailed(entry))) {
+    // fetchRetryAfter present = recordFetchAttempt decided NOT to abandon
+    // (e.g. pre-publication failures don't count, BRO-4281), so the raw
+    // ledger count alone must not claim "permanently failed".
     console.log(`    ⚠ Permanently failed (${entry.failureCount} attempts, reason: ${reason}) — will skip on future runs`);
   } else if (!counts) {
     console.log(`    ⏸ Recorded as ${reason} (failureCount held at ${entry.failureCount}) — retried normally once the cap lifts`);

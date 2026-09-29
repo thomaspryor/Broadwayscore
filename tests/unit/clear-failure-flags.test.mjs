@@ -141,6 +141,26 @@ describe('clearFailureFlags — SERP retry state', () => {
     assert.strictEqual(data.serpRetryCount, 3);
   });
 
+  it('clears serpPrePubCount together with serpRetryCount (BRO-4281)', () => {
+    const data = { url: 'https://example.com/review', serpRetryCount: 3, serpPrePubCount: 2 };
+    const cleared = clearFailureFlags(data);
+    assert.strictEqual(data.serpPrePubCount, null);
+    assert.ok(cleared.includes('serpPrePubCount'));
+    const noUrl = { serpRetryCount: 3, serpPrePubCount: 2 };
+    clearFailureFlags(noUrl);
+    assert.strictEqual(noUrl.serpPrePubCount, 2);
+  });
+
+  it('clears fetchPrePubFailures only after a successful fetch (BRO-4281)', () => {
+    const fetched = { url: 'https://example.com/review', textFetchedAt: '2026-09-29T01:05:00Z', fetchPrePubFailures: 4 };
+    const cleared = clearFailureFlags(fetched);
+    assert.strictEqual(fetched.fetchPrePubFailures, null);
+    assert.ok(cleared.includes('fetchPrePubFailures'));
+    const notFetched = { url: 'https://example.com/review', fetchPrePubFailures: 4 };
+    clearFailureFlags(notFetched);
+    assert.strictEqual(notFetched.fetchPrePubFailures, 4);
+  });
+
   it('clears serpDiscoveryAbandoned when URL + fullText present', () => {
     const data = { url: 'https://example.com/review', fullText: LONG_TEXT, serpDiscoveryAbandoned: true };
     const cleared = clearFailureFlags(data);

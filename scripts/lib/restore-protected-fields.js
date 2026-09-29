@@ -131,6 +131,11 @@ const MANUAL_FIELDS = [
   'fetchAbandonmentReason',
   'fetchAbandonmentDate',
   'fetchRetryAfter',
+  // Pre-publication retry tallies (BRO-4281) — subtracted from the retry
+  // counts before the max check; losing one on rebase charges opening-eve
+  // failures to the post-publication budget.
+  'fetchPrePubFailures',
+  'serpPrePubCount',
 ];
 
 // Nested fields under contentVerification that are manually set, mapped to the
