@@ -18,5 +18,22 @@
   "keyQuote": "I could watch this again and again and again and it boggles my mind that this isn't a one night only concert... that's how special this thing was",
   "scoredAt": "2026-04-19T08:32:32.192Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/3pX4dBrAaT8/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/3pX4dBrAaT8/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "Old Friends (West End)",
+    "reason": "The video review is about a production of 'Old Friends' in the West End, London, not the assigned Broadway production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is a review of 'Old Friends' at the Gielgud Theatre in London's West End, which is a different city and country from the assigned Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:31.790Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The video review is about a production of 'Old Friends' in the West End, London, not the assigned Broadway production in New York City."
 }

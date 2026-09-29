@@ -18,5 +18,20 @@
   "keyQuote": "this production delivers exactly what you'd expect. It's fun, silly, fast moving, full of catchy songs. If you already know you like MMA Mia, this is a great time to see it again.",
   "scoredAt": "2026-04-19T08:26:54.060Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/6ZKvAKgFI68/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/6ZKvAKgFI68/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "this isn't a reimagining or a revival. This is the same touring production that's been traveling the country as part of the 25th anniversary tour. Now making a stop back at the Winter Garden for a limited run through February 1st, 2026.",
+    "reason": "The video explicitly states that the production is a touring production making a stop in New York, not the assigned Broadway revival.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": false,
+      "reason": "The video explicitly states that the production is a touring production making a stop in New York, which is the assigned city, and not a different city or country.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:55:51.153Z"
+  }
 }

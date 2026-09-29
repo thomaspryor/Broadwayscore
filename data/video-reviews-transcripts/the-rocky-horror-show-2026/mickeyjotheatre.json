@@ -18,5 +18,22 @@
   "keyQuote": "it feels a little bit soulless... it has become one of those tours like a Blood Brothers that just goes round and round and round",
   "scoredAt": "2026-04-19T08:36:22.396Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/UnXAaESmpVw/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/UnXAaESmpVw/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "it is back in London for a couple of weeks ahead of a full UK tour it's at the Dominion theater currently starring Jason Donovan",
+    "reason": "The review is about a UK tour of The Rocky Horror Show, specifically mentioning its run at the Dominion Theatre in London, not the Broadway production.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is a review of a UK tour of The Rocky Horror Show, currently playing at the Dominion Theatre in London, which is a different country and production from the assigned Broadway show in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:58.589Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The review is about a UK tour of The Rocky Horror Show, specifically mentioning its run at the Dominion Theatre in London, not the Broadway production."
 }

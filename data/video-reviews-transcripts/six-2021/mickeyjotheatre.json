@@ -18,5 +18,22 @@
   "keyQuote": "having flown all the way there it definitely didn't disappoint",
   "scoredAt": "2026-04-19T08:32:00.446Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/8-eJMx8rUH0/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/8-eJMx8rUH0/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "Six: the Musical in Amsterdam | UK / international tour at the DeLaMar Theatre, Netherlands",
+    "reason": "The video explicitly reviews a production of 'Six' in Amsterdam, Netherlands, which is a different city from the assigned Broadway production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is reviewing a performance of 'Six: the Musical' in Amsterdam, Netherlands, which is a different city and country from the assigned Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:28.920Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The video explicitly reviews a production of 'Six' in Amsterdam, Netherlands, which is a different city from the assigned Broadway production in New York City."
 }

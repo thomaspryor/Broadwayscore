@@ -17,5 +17,15 @@
   "reasoning": "Reviewer explicitly cannot recommend the production at current prices, gives 2/5 stars, and lists multiple disappointments including the set, lead performances, and ending. Some positive notes on pre-show and supporting cast keep it from a full pan.",
   "keyQuote": "I cannot recommend this production at the prices that they are charging when the product itself is just so mediocre.",
   "scoredAt": "2026-04-19T08:20:41.990Z",
-  "scoringModel": "claude-opus-4-7"
+  "scoringModel": "claude-opus-4-7",
+  "productionCheck": {
+    "verdict": "same",
+    "confidence": "high",
+    "evidenceType": null,
+    "evidenceQuote": "",
+    "reason": "The video explicitly discusses 'cabaret at the Kit Kat Club on Broadway,' which matches the assigned production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "checkedAt": "2026-09-29T14:54:56.176Z"
+  }
 }

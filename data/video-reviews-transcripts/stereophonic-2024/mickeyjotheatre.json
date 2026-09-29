@@ -22,5 +22,22 @@
     "sonnet": 92,
     "opus": 92
   },
-  "thumbnail": "https://i.ytimg.com/vi/9-ZNmSrQoeE/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/9-ZNmSrQoeE/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "does STEREOPHONIC work in London? | ★★★★★ review of the award winning play in the West End",
+    "reason": "The video explicitly reviews the West End production of 'Stereophonic' in London, not the Broadway production in New York.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is reviewing the West End production of 'Stereophonic' in London, not the Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:32.862Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The video explicitly reviews the West End production of 'Stereophonic' in London, not the Broadway production in New York."
 }

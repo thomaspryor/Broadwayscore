@@ -17,5 +17,20 @@
   "reasoning": "Despite many nitpicks (corny moments, cut effects, too-small chandelier space, rushed rooms), the reviewer repeatedly says they were entertained, willing to forgive flaws, and raves about the leads (predicting Tony wins), sound design, and key effects. Overall a recommendation with notable caveats.",
   "keyQuote": "whatever I'm willing to forgive sins cause I'm entertained",
   "scoredAt": "2026-04-19T19:00:51.284Z",
-  "scoringModel": "claude-opus-4-7"
+  "scoringModel": "claude-opus-4-7",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "Universal Studios Florida",
+    "reason": "The transcript mentions Universal Studios Florida, indicating the performance is not in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": false,
+      "reason": "The mention of Universal Studios Florida is a comparison for music, not an indication of the performance location.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:55:53.607Z"
+  }
 }

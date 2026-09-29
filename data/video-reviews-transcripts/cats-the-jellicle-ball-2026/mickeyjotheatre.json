@@ -18,5 +18,22 @@
   "keyQuote": "one of the most brilliant features of this high concept revival reinterpretation of the show was we had an introductory animated slideshow",
   "scoredAt": "2026-04-19T08:16:44.790Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/88aF32kGJGc/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/88aF32kGJGc/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "Paramount Theater in Aurora, Illinois",
+    "reason": "The review is about a production at the Paramount Theater in Aurora, Illinois, not the assigned Broadway production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is reviewing a production at the Paramount Theater in Aurora, Illinois, which is a different city and state from the assigned Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:54:59.505Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The review is about a production at the Paramount Theater in Aurora, Illinois, not the assigned Broadway production in New York City."
 }
