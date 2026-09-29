@@ -871,6 +871,11 @@ const CORE_DATA_MERGE_REGISTRY = [
     // commit into a mixed-safety bundle (audit-push-retry-budgets.js, the
     // BRO-2435 shape) and drop it to the slow path. The merger is 2-arg and
     // fast-path-shaped, so the Git Data API fallback may run it.
+    // ROLLBACK: revert this entry AND the PUSH_RECONCILE_MERGED_JSON env on
+    // that promoter step together (ship-check adversarial review 2026-09-29):
+    // the env alone leaves a MANAGED entry with no reconcile pass; the entry
+    // alone leaves a pusher re-merging against nothing. There is no tombstone,
+    // so rows the union re-added are simply pruned again by the next run.
     apiFallbackMerge: true,
     verifiedBy: '2026-09-29 (BRO-4268): writers = update-show-status.yml "Commit and push changes" (discover-new-shows.js writeStagingCandidates; sets PUSH_RECONCILE_MERGED_JSON=1), promote-owe-venue-candidates.yml "Commit OWE promotion audit log + pruned staging" (prune; env added the same day), and land.yml for hand --stage-only merges (plain git rebase, true 3-way). Lost update reproduced from run 36514213162 vs landing 9cad7c9a.',
   },
