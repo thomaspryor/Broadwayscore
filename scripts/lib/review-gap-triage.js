@@ -20,7 +20,7 @@
  * (CLAUDE.md rule 15) — all the git/fs/network work lives in the CLI.
  */
 
-const { isWithinPriorRun } = require('./wrong-production-autoclear');
+const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
 
 /**
  * @param {object} signals
@@ -84,11 +84,16 @@ function isOtherProductionFile(file, showRecord, exclusionRule) {
   const start = _ts(showRecord && showRecord.previewsStartDate);
   const pub = _ts(data.publishDate);
   const predates = start != null && pub != null && pub < start;
-  if (predates && isWithinPriorRun(data.publishDate, showRecord.priorRuns)) return false;
+  if (predates && (isWithinPriorRun(data.publishDate, showRecord.priorRuns) || isWithinTourLeg(data.publishDate, showRecord.tourLegs))) return false;
+  // A human verdict that the content is right outranks any date heuristic.
+  if (data.wrongProductionManualClear === true || data.wrongProductionOverride === true
+    || data.humanReviewedWrongProduction === false || data.humanReviewScore != null) return false;
   if (exclusionRule === 'wrongProduction' || exclusionRule === 'wrongShow') return predates;
   if (file.pending) {
     if (predates) return true;
-    if (OUT_OF_WINDOW_REASON_RE.test(String(data.promoteSkippedReason || ''))) return true;
+    // The stamp is a stale diagnostic: a corrected in-window date beats it.
+    const inWindow = start != null && pub != null && pub >= start;
+    if (!inWindow && OUT_OF_WINDOW_REASON_RE.test(String(data.promoteSkippedReason || ''))) return true;
   }
   return false;
 }

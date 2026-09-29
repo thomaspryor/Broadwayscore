@@ -89,3 +89,12 @@ test('isOtherProductionFile: in-window _pending file is current', () => {
   assert.equal(isOtherProductionFile({ data: { publishDate: '2026-09-11' }, pending: true }, show, null), false);
   assert.equal(isOtherProductionFile({ data: null, pending: true }, show, null), false);
 });
+
+test('isOtherProductionFile: stale skip stamp loses to corrected in-window date; human clear wins', () => {
+  const stamp = "article published 2018-03-22 is outside this production's window";
+  assert.equal(isOtherProductionFile({ data: { publishDate: '2026-09-11', promoteSkippedReason: stamp }, pending: true }, show, null), false);
+  assert.equal(isOtherProductionFile({ data: { publishDate: null, promoteSkippedReason: stamp }, pending: true }, show, null), true);
+  assert.equal(isOtherProductionFile({ data: { publishDate: '2016-05-01', wrongProductionManualClear: true }, pending: true }, show, null), false);
+  const tour = { ...show, tourLegs: [{ startDate: '2026-05-01', endDate: '2026-08-01' }] };
+  assert.equal(isOtherProductionFile({ data: { publishDate: '2026-06-01' }, pending: true }, tour, null), false);
+});

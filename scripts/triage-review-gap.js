@@ -260,8 +260,11 @@ function findReviewTextFiles(outletId, showId) {
   // sync doesn't inflate candidateCount or get exclusion-checked twice.
   const seenPaths = new Set();
   const allFiles = [...localFiles, ...originFiles].filter((f) => {
-    if (seenPaths.has(f.path)) return false;
-    seenPaths.add(f.path);
+    // Key on content too: a stale local copy must not shadow a corrected origin/main
+    // copy of the same path (BRO-4098 ship-check).
+    const key = `${f.path}\0${JSON.stringify(f.data)}`;
+    if (seenPaths.has(key)) return false;
+    seenPaths.add(key);
     return true;
   });
   const originError = [...treeErrors, ...readErrors].filter(Boolean).join('; ') || null;
