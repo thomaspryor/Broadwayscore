@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-29T15:43:12.880Z",
+  "timestamp": "2026-09-29T15:52:34.754Z",
   "stats": {
-    "totalReviews": 45208,
-    "alreadyFlagged": 18372,
-    "dateGuardCatches": 233,
+    "totalReviews": 45207,
+    "alreadyFlagged": 18386,
+    "dateGuardCatches": 237,
     "directorMismatch": 1161,
     "tvFilmSignals": 1326,
     "londonSignals": 1232,
     "offBroadwaySignals": 514,
     "yearMismatch": 101,
-    "noPublishDate": 4076
+    "noPublishDate": 4057
   },
   "findings": [
     {
@@ -26535,6 +26535,20 @@
       ]
     },
     {
+      "showId": "stick-man-off-west-end-2026",
+      "file": "whatsonstage--michael-coveney.json",
+      "score": null,
+      "publishDate": "2011-08-07",
+      "url": "https://www.whatsonstage.com/news/stick-man-live-on-stage_7898/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 5597d before show (2011-08-07 vs 2026-12-03)"
+        }
+      ]
+    },
+    {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 84,
@@ -52266,6 +52280,48 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "stick-man-off-west-end-2026",
+      "file": "londonpubtheatres--paula-david.json",
+      "score": null,
+      "publishDate": "2025-12-07",
+      "url": "https://www.londonpubtheatres.com/review-stick-man-at-bloomsbury-theatre-4-dec-2025-4-jan-2026",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 361d before show (2025-12-07 vs 2026-12-03)"
+        }
+      ]
+    },
+    {
+      "showId": "stick-man-off-west-end-2026",
+      "file": "musicaltheatremusings--sarah-mcpartlan.json",
+      "score": null,
+      "publishDate": "2025-12-07",
+      "url": "https://musicaltheatremusings.co.uk/stick-man-bloomsbury-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 361d before show (2025-12-07 vs 2026-12-03)"
+        }
+      ]
+    },
+    {
+      "showId": "stick-man-off-west-end-2026",
+      "file": "plays-to-see--rivka-jacobson.json",
+      "score": null,
+      "publishDate": "2025-12-08",
+      "url": "https://playstosee.com/reviews/stick-man-children-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 360d before show (2025-12-08 vs 2026-12-03)"
         }
       ]
     },
