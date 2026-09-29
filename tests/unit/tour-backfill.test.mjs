@@ -12,9 +12,12 @@ const require = createRequire(import.meta.url);
 const { classifyTourBackfill, prepareTourMove, planTourSweep, decideTourSweep } = require('../../scripts/lib/tour-backfill.js');
 
 const tourFlag = { wrongProduction: true, wrongProductionReason: 'BWW regional/tour review (denver)', url: 'https://www.denverpost.com/x' };
+// An undated review moves only to a dated tour it was found after (BRO-4325).
+const LIVE = { tourLaunchDate: '2024-08-01' };
+const seen = { urlDiscoveredAt: '2025-01-01T00:00:00Z' };
 
 test('a tour-flagged review moves', () => {
-  assert.deepEqual(classifyTourBackfill(tourFlag), { action: 'move', reason: 'tour-review' });
+  assert.deepEqual(classifyTourBackfill({ ...tourFlag, ...seen }, LIVE), { action: 'move', reason: 'tour-review' });
 });
 
 test('files that are not tour-flagged, already routed, or unusable stay put', () => {
@@ -35,12 +38,12 @@ test('pre-Broadway tryouts and UK productions are not the North American tour', 
 // Four A Beautiful Noise tour-stop reviews (Houston, Minneapolis, Cleveland, Revue)
 // carried only this generic label; it must not read as tryout evidence.
 test('the generic "Tour/regional/pre-Broadway production" label is neither tryout nor tour evidence (BRO-4262)', () => {
-  const generic = { ...tourFlag, showId: 'shucked-2023', wrongProductionReason: 'Tour/regional/pre-Broadway production, not Broadway. Flagged by contamination safety net' };
+  const generic = { ...tourFlag, ...seen, showId: 'shucked-2023', wrongProductionReason: 'Tour/regional/pre-Broadway production, not Broadway. Flagged by contamination safety net' };
   // On its own it could be a regional stock or sit-down production: stays put.
-  assert.equal(classifyTourBackfill(generic).reason, 'no-tour-evidence');
+  assert.equal(classifyTourBackfill(generic, LIVE).reason, 'no-tour-evidence');
   // With a tour-stop URL or tour language in the text it moves, and is not read as a tryout.
-  assert.equal(classifyTourBackfill({ ...generic, url: 'https://www.broadwayworld.com/denver/article/Review-SHUCKED-at-Buell' }).action, 'move');
-  assert.equal(classifyTourBackfill({ ...generic, fullText: 'The national tour of Shucked arrived at the Fox.' }).action, 'move');
+  assert.equal(classifyTourBackfill({ ...generic, url: 'https://www.broadwayworld.com/denver/article/Review-SHUCKED-at-Buell' }, LIVE).action, 'move');
+  assert.equal(classifyTourBackfill({ ...generic, fullText: 'The national tour of Shucked arrived at the Fox.' }, LIVE).action, 'move');
 });
 
 test('dated reviews before the Broadway opening or the tour launch stay put', () => {
@@ -48,7 +51,10 @@ test('dated reviews before the Broadway opening or the tour launch stay put', ()
   assert.equal(classifyTourBackfill({ ...tourFlag, publishDate: '2022-07-01' }, ctx).reason, 'before-broadway-opening');
   assert.equal(classifyTourBackfill({ ...tourFlag, publishDate: '2023-05-01' }, ctx).reason, 'before-tour-launch');
   assert.equal(classifyTourBackfill({ ...tourFlag, publishDate: '2024-07-28' }, ctx).action, 'move'); // within a week of launch
-  assert.equal(classifyTourBackfill({ ...tourFlag }, ctx).action, 'move'); // undated: no date rule applies
+  // Undated: placed by when the pipeline first saw it (BRO-4325).
+  assert.equal(classifyTourBackfill({ ...tourFlag, urlDiscoveredAt: '2024-10-01T00:00:00Z' }, ctx).action, 'move');
+  assert.equal(classifyTourBackfill({ ...tourFlag, urlDiscoveredAt: '2023-02-09T00:00:00Z' }, ctx).reason, 'undated-before-launch');
+  assert.equal(classifyTourBackfill({ ...tourFlag }, ctx).reason, 'undated-before-launch', 'never seen: unknown, stays put');
   // Real case: a 2019 Broadway review in beetlejuice-2025 whose note says "not the 2025 tour stop".
   assert.equal(classifyTourBackfill({ ...tourFlag, publishDate: 'April 29th, 2019' }, ctx).reason, 'before-broadway-opening');
 });
@@ -88,9 +94,19 @@ test('a closed tour: dated reviews long after closing stay put; undated ones mov
   assert.equal(classifyTourBackfill({ ...tourFlag, publishDate: '2027-02-01' }, ctx).reason, 'after-tour-close');
   assert.equal(classifyTourBackfill({ ...tourFlag, firstSeenAt: '2024-03-01T00:00:00Z' }, ctx).action, 'move');
   assert.equal(classifyTourBackfill({ ...tourFlag, textFetchedAt: '2027-01-05T00:00:00Z' }, ctx).reason, 'undated-after-close');
-  assert.equal(classifyTourBackfill({ ...tourFlag }, ctx).reason, 'undated-after-close'); // never seen: unknown
-  // An open tour (no closing date) keeps taking undated reviews.
-  assert.equal(classifyTourBackfill({ ...tourFlag }, { tourLaunchDate: '2022-12-01' }).action, 'move');
+  assert.equal(classifyTourBackfill({ ...tourFlag }, ctx).reason, 'undated-before-launch'); // never seen: unknown
+  // An open tour keeps taking undated reviews found after it launched.
+  assert.equal(classifyTourBackfill({ ...tourFlag, firstSeenAt: '2026-01-01T00:00:00Z' }, { tourLaunchDate: '2022-12-01' }).action, 'move');
+});
+
+test('an undated review found before the tour launched belongs to an earlier production (BRO-4325)', () => {
+  // Real cases from the first sweep of the running tours: Waitress's 2016
+  // Broadway review (found Feb 2026) against a tour launching Sep 2026, and a
+  // Jersey Boys review from an older tour.
+  const ctx = { broadwayOpeningDate: '2016-04-24', tourLaunchDate: '2026-09-18' };
+  assert.equal(classifyTourBackfill({ ...tourFlag, urlDiscoveredAt: '2026-02-09T16:57:58Z', textFetchedAt: '2026-02-13T20:12:58Z' }, ctx).reason, 'undated-before-launch');
+  assert.equal(classifyTourBackfill({ ...tourFlag, urlDiscoveredAt: '2026-09-14T00:00:00Z' }, ctx).action, 'move', 'a week of slack for first-stop reviews');
+  assert.equal(classifyTourBackfill({ ...tourFlag, urlDiscoveredAt: '2026-09-20T00:00:00Z' }, {}).reason, 'undated-before-launch', 'a tour with no launch date takes no undated review');
 });
 
 test('two tours of one title: an undated review is ambiguous', () => {
@@ -134,7 +150,7 @@ test('two dated tours of one title: every dated review goes to exactly one', () 
 });
 
 test('decideTourSweep: one move per review URL across Broadway folders; filename collisions and URLs already on the tour stay put', () => {
-  const r = (url, extra = {}) => ({ ...tourFlag, url, ...extra });
+  const r = (url, extra = {}) => ({ ...tourFlag, ...seen, url, ...extra });
   const folders = {
     'bj-tour': [{ file: 'post--a.json', data: r('https://post.example/review-1') }],
     'bj-2019': [{ file: 'post--b.json', data: r('https://post.example/review-1/') }], // already on the tour
@@ -145,7 +161,7 @@ test('decideTourSweep: one move per review URL across Broadway folders; filename
     ],
     'bj-2025': [{ file: 'gazette--unknown.json', data: r('https://gazette.example/r') }], // same URL, other byline
   };
-  const plan = { tourId: 'bj-tour', fromIds: ['bj-2019', 'bj-2022', 'bj-2025'], ctx: {} };
+  const plan = { tourId: 'bj-tour', fromIds: ['bj-2019', 'bj-2022', 'bj-2025'], ctx: LIVE };
   const rows = decideTourSweep(plan, id => folders[id] || []);
   assert.deepEqual(rows.map(x => `${x.fromId}/${x.file}:${x.key}`), [
     'bj-2019/post--b.json:duplicate-on-tour',

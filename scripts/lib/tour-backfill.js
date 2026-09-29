@@ -97,6 +97,12 @@ function classifyTourBackfill(data, ctx = {}) {
   if (!pub) {
     // With two tours of one title an undated review can't be placed.
     if ((ctx.otherToursOfTitle || 0) > 0) return { action: 'skip', reason: 'ambiguous-tour' };
+    // Nor one the pipeline found before this tour launched: it is about an
+    // earlier production we don't track (Waitress's 2016 Broadway review,
+    // Death Becomes Her's 2024 Chicago tryout, an older Jersey Boys tour;
+    // BRO-4325). Unknown first-seen time, or an undated tour, counts as before.
+    const seen = firstSeen(data);
+    if (!launch || !seen || seen.getTime() < launch.getTime() - 7 * 86400000) return { action: 'skip', reason: 'undated-before-launch' };
     // A closed tour only takes an undated review the pipeline saw before it closed;
     // one first seen later is more likely a review of the next production.
     if (close) {
