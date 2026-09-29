@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const lib = require('./reddit-opening-post.js');
-const mail = require('../send-reddit-post-email.js');
+const mail = require('./reddit-post-email.js');
 const { classifySubject } = require('./scheduled-email-count-rules.js');
 
 function slim({ cs = 36.4, n = 10, buckets = ['Rave', 'Negative'] } = {}) {
