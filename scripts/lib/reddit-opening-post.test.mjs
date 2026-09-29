@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const lib = require('./reddit-opening-post.js');
-const digest = require('../send-opening-digest.js');
+const mail = require('../send-reddit-post-email.js');
 const { classifySubject } = require('./scheduled-email-count-rules.js');
 
 function slim({ cs = 36.4, n = 10, buckets = ['Rave', 'Negative'] } = {}) {
@@ -61,6 +61,8 @@ test('lintDraft fixes dashes, adds the link, and refuses wrong facts', () => {
   assert.ok(lib.lintDraft({ title: '36/100, #2 of 20', body: 'ok' }, { ...f, reviewCount: 20 }).ok, '#2 is not a hashtag');
   assert.ok(!lib.lintDraft({ title: '36/100', body: 'ok', suggestedReply: 'Rankings also consider audience grade.' }, f).ok, 'made-up method in reply');
   assert.ok(!lib.lintDraft({ title: '36/100', body: 'ok', personalLines: ['Would love to hear more!'] }, f).ok, 'AI tell in personal line');
+  assert.ok(!lib.lintDraft({ title: '36/100', body: 'Big night. The big talking point? Critics loved it.' }, f).ok, 'dramatic fragment');
+  assert.ok(lib.lintDraft({ title: '36/100', body: 'Anyone seen it? The reviews are mixed.' }, f).ok, 'a real question to the sub is fine');
 });
 
 test('templateDraft always passes its own lint', () => {
@@ -157,31 +159,29 @@ test('activeDrafts hides posted and stale drafts', () => {
   assert.deepEqual(lib.activeDrafts(null, now), []);
 });
 
-test('digest survives a corrupt drafts file and escapes LLM text', async () => {
-  const fs = await import('node:fs');
-  const os = await import('node:os');
-  const path = await import('node:path');
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rdraft-'));
-  const bad = path.join(dir, 'bad.json');
-  fs.writeFileSync(bad, '{not json');
-  assert.deepEqual(digest.loadRedditDrafts(bad), []);
-  assert.deepEqual(digest.loadRedditDrafts(path.join(dir, 'missing.json')), []);
-  const good = path.join(dir, 'good.json');
-  const now = Date.now();
-  fs.writeFileSync(good, JSON.stringify({ drafts: {
-    a: { status: 'ready', createdAt: new Date(now).toISOString(), title: '<script>x</script> 36/100', body: 'b', subreddit: 'TheWestEnd', submitUrl: 'https://www.reddit.com/r/TheWestEnd/submit?a=1&b=2', showTitle: 'T', score: 36, reviewCount: 9 },
-    broken: { status: 'ready', createdAt: new Date(now).toISOString() },
-  } }));
-  const drafts = digest.loadRedditDrafts(good, now);
-  assert.equal(drafts.length, 1, 'entry missing required fields is dropped');
-  const html = digest.renderRedditBlock(drafts);
-  assert.ok(!html.includes('<script>'));
+test('reddit email: one new email per complete draft, one reminder after 20h, then nothing', () => {
+  const now = Date.parse('2026-09-30T06:00:00Z');
+  const base = { status: 'ready', title: '<script>x</script> 36/100', body: 'b', subreddit: 'TheWestEnd', submitUrl: 'https://www.reddit.com/r/TheWestEnd/submit?a=1&b=2', showTitle: 'Trainspotting', score: 36, reviewCount: 9 };
+  const drafts = { drafts: {
+    fresh: { ...base, showId: 'fresh', createdAt: '2026-09-30T05:59:00Z' },
+    remind: { ...base, showId: 'remind', createdAt: '2026-09-29T06:00:00Z', emailedAt: '2026-09-29T06:01:00Z' },
+    tooSoon: { ...base, showId: 'tooSoon', createdAt: '2026-09-29T20:00:00Z', emailedAt: '2026-09-29T20:00:00Z' },
+    done: { ...base, showId: 'done', createdAt: '2026-09-28T06:00:00Z', emailedAt: '2026-09-28T06:00:00Z', reminderAt: '2026-09-29T06:00:00Z' },
+    posted: { ...base, showId: 'posted', status: 'posted', createdAt: '2026-09-30T05:00:00Z' },
+    stale: { ...base, showId: 'stale', createdAt: '2026-09-20T06:00:00Z' },
+    broken: { status: 'ready', showId: 'broken', createdAt: '2026-09-30T05:00:00Z' },
+  } };
+  const due = mail.dueEmails(drafts, now).map(x => `${x.draft.showId}:${x.kind}`).sort();
+  assert.deepEqual(due, ['fresh:new', 'remind:reminder']);
+  assert.deepEqual(mail.dueEmails(null, now), []);
+  const html = mail.buildHtml(drafts.drafts.fresh, 'new');
+  assert.ok(!html.includes('<script>'), 'LLM text is escaped');
   assert.ok(html.includes('submit?a=1&amp;b=2'));
 });
 
-test('digest subject leads with Reddit drafts and still classifies as the opening digest', () => {
-  const sections = { needsHelp: [{}], broadcastReady: [], comingUp: [], redditPosts: [{}] };
-  const subject = digest.buildSubject(sections);
-  assert.match(subject, /^1 Reddit post ready · 1 needs help · /);
-  assert.equal(classifySubject(subject).key, 'opening-digest');
+test('reddit email subjects classify as their own sender, not the opening digest', () => {
+  const d = { showTitle: 'Delirium', score: 87, subreddit: 'Broadway' };
+  assert.equal(mail.buildSubject(d, 'new'), 'Reddit post ready: Delirium (87/100) for r/Broadway');
+  assert.equal(classifySubject(mail.buildSubject(d, 'new')).key, 'reddit-post-ready');
+  assert.equal(classifySubject(mail.buildSubject(d, 'reminder')).key, 'reddit-post-ready');
 });

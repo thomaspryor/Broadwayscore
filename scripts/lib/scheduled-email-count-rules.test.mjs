@@ -30,9 +30,9 @@ test('classifySubject matches each known scheduled sender', () => {
   // must not classify either (post-fix codex review finding).
   assert.equal(classifySubject('Re: Quiet week · Jul 30'), null);
   assert.equal(classifySubject('1 needs help · 2 broadcast-ready · 1 opening today · Jul 30').key, 'opening-digest');
-  // BRO-4333: Reddit drafts lead the subject when present.
-  assert.equal(classifySubject('1 Reddit post ready · Sep 29').key, 'opening-digest');
-  assert.equal(classifySubject('2 Reddit posts ready · 1 needs help · Sep 29').key, 'opening-digest');
+  // BRO-4360: Reddit drafts are their own email.
+  assert.equal(classifySubject('Reddit post ready: Delirium (87/100) for r/Broadway').key, 'reddit-post-ready');
+  assert.equal(classifySubject('Still ready to post: Man to Man (77/100) for r/TheWestEnd').key, 'reddit-post-ready');
   assert.equal(classifySubject('r/Broadway — 2 threads for you').key, 'reddit-engagement-digest');
   assert.equal(classifySubject('[Action Required] Fantasy weekly draft ready — 2026-07-29').key, 'fantasy-weekly');
   assert.equal(classifySubject('BSC Daily: All clear (27/27 passed)').key, 'health-check-digest');
