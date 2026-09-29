@@ -17,6 +17,7 @@ import * as path from 'path';
 import { ensembleScoreFromArray, scoreToBucket } from './llm-scoring/ensemble';
 import type { ModelScore, Bucket } from './llm-scoring/types';
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { isBandAnchored } = require('./lib/band-anchored');
 
 // ========================================
 // CONFIG
@@ -71,6 +72,10 @@ function shouldSkip(data: any): string | null {
 
   // Skip if no llmScore (means scoring never completed)
   if (!data.llmScore || data.llmScore.score == null) return 'no llmScore';
+
+  // Stored model scores are pre-clamp: re-ensembling a band-anchored review
+  // would drop its critic's star/grade band (BRO-4335).
+  if (isBandAnchored(data)) return 'band-anchored';
 
   const modelScores = extractModelScores(data.ensembleData);
   if (modelScores.length < 2) return `only ${modelScores.length} model scores`;

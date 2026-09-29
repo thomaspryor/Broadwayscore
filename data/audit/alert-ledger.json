@@ -146,13 +146,13 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T08:00:22.493Z",
+      "lastSeen": "2026-09-29T10:25:25.725Z",
       "lastNotifiedAt": "2026-09-29T03:38:46.630Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
       "notifyCount": 108,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3852,7 +3852,7 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
-      "lastSeen": "2026-09-29T09:56:01.488Z",
+      "lastSeen": "2026-09-29T10:25:25.720Z",
       "lastNotifiedAt": "2026-09-29T07:36:11.543Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
@@ -3865,7 +3865,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36353075509"
       },
       "absentRunIds": [],
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
       "status": "resolved",
