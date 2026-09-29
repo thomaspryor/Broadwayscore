@@ -366,6 +366,8 @@ test('any /whats-on/ listing without "review" in the path is blocked; outlet rev
     'https://www.stratfordeast.com/whats-on/all-shows/here-there-are-blueberries',
     'https://www.skiddle.com/whats-on/London/Gillian-Lynne-Theatre/My-Neighbour-Totoro/42468204/',
     'https://www.afridiziak.com/whatson/anansi-the-spider-regents-park-open-air-theatre/',
+    // "preview" is not "review"
+    'https://www.londonmumsmagazine.com/whats-on/million-dollar-quartet-preview-your-cheat-sheet-for-a-night-of-rock-n-roll/',
   ]) assert.equal(domainFilters.isBlockedReviewUrl(u), true, u);
   for (const u of [
     'https://www.manchestereveningnews.co.uk/whats-on/theatre-news/review-mousetrap-opera-house-manchester-11534540',

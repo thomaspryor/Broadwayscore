@@ -60,3 +60,20 @@ test('mergeReviews still applies a same-show URL change', () => {
   assert.equal(merged.url, incoming.url);
   assert.equal(merged.criticName, 'Sam Marlowe');
 });
+
+test('mergeReviews allows a swap between headline slugs that name no show (ship-check on #940)', () => {
+  // "katie-holmes-..." / "aisle-review-..." slugs name a performer or column,
+  // not a show. The existing URL doesn't name this show either, so the guard
+  // has no identity to protect and must not block the merge.
+  const show = { id: 'dead-accounts-2012', title: 'Dead Accounts', category: 'broadway' };
+  const existing = {
+    showId: show.id, outletId: 'huffpost', outlet: 'HuffPost', criticName: 'Unknown',
+    url: 'https://www.huffpost.com/entry/aisle-review-katie-holmes_b_2238123',
+  };
+  const incoming = {
+    outletId: 'huffpost', outlet: 'HuffPost', criticName: 'Michael Giltz',
+    url: 'https://www.huffpost.com/entry/katie-holmes-norbert-leo-butz-review_b_2238123',
+  };
+  const merged = mergeReviews(existing, incoming, {}, { script: 'test', showId: show.id, show });
+  assert.equal(merged.url, incoming.url);
+});
