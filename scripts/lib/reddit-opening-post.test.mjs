@@ -90,6 +90,29 @@ test('applyPostedDetection marks a draft posted from the owner\'s post history',
   assert.equal(old.drafts.a.status, 'ready');
 });
 
+test('applyPostedDetection title match is whole-word and theater-sub only', () => {
+  const drafts = { drafts: { r: { showTitle: 'Rent', status: 'ready', createdAt: '2026-09-28T06:00:00Z' } } };
+  const at = Date.parse('2026-09-28T12:00:00Z') / 1000;
+  const post = (title, subreddit = 'Broadway') => ({ title, subreddit, created_utc: at });
+  assert.equal(lib.applyPostedDetection(drafts, [post('Lowest scoring show currently running')]).drafts.r.status, 'ready');
+  assert.equal(lib.applyPostedDetection(drafts, [post('Rent scores 80 with critics', 'nyc')]).drafts.r.status, 'ready');
+  assert.equal(lib.applyPostedDetection(drafts, [post('Rent scores 80 with critics')]).drafts.r.status, 'posted');
+});
+
+test('lintDraft refuses numbers and grades not in the fact sheet', () => {
+  const f = lib.buildFacts(show, slim(), [60, 70, 80, 90].map((cs, i) => ({ id: `p${i}`, cs })));
+  const bad = (title, body) => lib.lintDraft({ title, body }, f).ok === false;
+  assert.ok(bad('36/100', '22 reviews in and it scored a 36/100.'), 'wrong review count');
+  assert.ok(bad('36/100', 'Audiences give it a C+.'), 'wrong grade');
+  assert.ok(bad('36/100', 'Critic Score of 9/100.'), 'single-digit wrong score');
+  assert.ok(bad('36 percent of critics hated it, 36/100', 'x'), 'percent');
+  assert.ok(!bad(`36/100 from ${f.reviewCount} reviews, the lowest in the West End`, `Audiences are at ${f.audienceGrade}. ${f.buckets.rave} raves.`));
+  // Rank totals are allowed when the fact sheet has them.
+  const g = lib.buildFacts(show, slim({ cs: 85 }), Array.from({ length: 24 }, (_, i) => ({ id: `q${i}`, cs: 50 + i })).concat([{ id: 'top', cs: 99 }]));
+  assert.equal(g.rankPosition, 2);
+  assert.ok(lib.lintDraft({ title: `Trainspotting scores 85/100, #2 of ${g.rankOf} West End shows`, body: 'ok' }, g).ok);
+});
+
 test('applyPostedDetection matches a shortened title via the show-page link', () => {
   const drafts = { drafts: { r: { showTitle: 'The Rocky Horror Show', url: 'https://broadwayscorecard.com/show/rocky-horror-show', status: 'ready', createdAt: '2026-09-28T06:00:00Z' } } };
   const post = { title: 'Rocky Horror gets a 69', selftext: 'blah [link](http://broadwayscorecard.com/show/rocky-horror-show)', created_utc: Date.parse('2026-09-28T12:00:00Z') / 1000 };
@@ -116,6 +139,28 @@ test('activeDrafts hides posted and stale drafts', () => {
   } };
   assert.deepEqual(lib.activeDrafts(d, now).map(x => x.createdAt), ['2026-09-29T06:00:00Z']);
   assert.deepEqual(lib.activeDrafts(null, now), []);
+});
+
+test('digest survives a corrupt drafts file and escapes LLM text', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rdraft-'));
+  const bad = path.join(dir, 'bad.json');
+  fs.writeFileSync(bad, '{not json');
+  assert.deepEqual(digest.loadRedditDrafts(bad), []);
+  assert.deepEqual(digest.loadRedditDrafts(path.join(dir, 'missing.json')), []);
+  const good = path.join(dir, 'good.json');
+  const now = Date.now();
+  fs.writeFileSync(good, JSON.stringify({ drafts: {
+    a: { status: 'ready', createdAt: new Date(now).toISOString(), title: '<script>x</script> 36/100', body: 'b', subreddit: 'TheWestEnd', submitUrl: 'https://www.reddit.com/r/TheWestEnd/submit?a=1&b=2', showTitle: 'T', score: 36, reviewCount: 9 },
+    broken: { status: 'ready', createdAt: new Date(now).toISOString() },
+  } }));
+  const drafts = digest.loadRedditDrafts(good, now);
+  assert.equal(drafts.length, 1, 'entry missing required fields is dropped');
+  const html = digest.renderRedditBlock(drafts);
+  assert.ok(!html.includes('<script>'));
+  assert.ok(html.includes('submit?a=1&amp;b=2'));
 });
 
 test('digest subject leads with Reddit drafts and still classifies as the opening digest', () => {

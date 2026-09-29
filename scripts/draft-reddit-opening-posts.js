@@ -153,8 +153,8 @@ async function writeDraft(facts) {
   const call = callLLM;
   let problems = [];
   let user = lib.buildUserPrompt(facts);
-  // Two tries: the second one is told what the first got wrong.
-  for (let attempt = 1; attempt <= 2; attempt++) {
+  // Three tries: each retry is told what the last one got wrong.
+  for (let attempt = 1; attempt <= 3; attempt++) {
     try {
       const { model, text } = await call(lib.STYLE_GUIDE, user);
       const res = lib.lintDraft(parseJsonBlock(text), facts);

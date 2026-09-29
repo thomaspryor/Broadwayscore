@@ -157,6 +157,8 @@ function buildFacts(show, slim, peers, { seen = null } = {}) {
     audienceCount: audienceGrade ? auCount : null,
     consensus: slim.cn && slim.cn.t ? slim.cn.t : null,
     rankNote,
+    rankPosition: rankNote ? rank.position : null,
+    rankOf: rankNote ? rank.of : null,
     bestQuotes: best,
     worstQuotes: worst,
     loneDissenter: dissenters[0] || null,
@@ -415,14 +417,26 @@ function lintDraft(raw, facts) {
   if (draft.title.length > 300) problems.push('title over Reddit 300-char limit');
   if (!draft.body) problems.push('empty body');
 
-  const nums = (draft.title.match(/\b\d{1,3}\b/g) || []).map(Number);
-  if (!nums.includes(facts.score)) problems.push(`title does not state the score ${facts.score}`);
-  // Any other score-looking number in the title must be one we supplied.
-  const allowed = new Set([facts.score, facts.reviewCount, 100]);
-  for (const n of nums) if (!allowed.has(n) && n > 20) problems.push(`title has unsupported number ${n}`);
+  const titleNums = (draft.title.match(/\b\d{1,3}\b/g) || []).map(Number);
+  if (!titleNums.includes(facts.score)) problems.push(`title does not state the score ${facts.score}`);
 
-  const bodyNums = (draft.body.match(/\b\d{2}\/100\b/g) || []).map(x => Number(x.slice(0, 2)));
-  for (const n of bodyNums) if (n !== facts.score) problems.push(`body cites ${n}/100, fact sheet says ${facts.score}`);
+  // Every number in the post must exist somewhere in the fact sheet (score,
+  // counts, rank, quotes, venue, url). A wrong number is what gets a post
+  // torn apart, so an unsupported one sends the draft back.
+  const allowed = new Set([0, 1, 100, ...(JSON.stringify(facts).match(/\d+/g) || []).map(Number)]);
+  const noUrl = s => s.replace(/https?:\/\/\S+/g, '');
+  for (const [where, text] of [['title', draft.title], ['body', draft.body]]) {
+    for (const n of (noUrl(text).match(/\d+/g) || []).map(Number)) {
+      if (!allowed.has(n)) problems.push(`${where} has number ${n} that is not in the fact sheet`);
+    }
+    for (const m of text.match(/\b\d{1,3}\s*\/\s*100\b/g) || []) {
+      if (parseInt(m, 10) !== facts.score) problems.push(`${where} cites ${m}, fact sheet says ${facts.score}/100`);
+    }
+    if (/\d\s*(%|percent)/i.test(text)) problems.push(`${where} uses a percentage the fact sheet doesn't give`);
+    for (const g of noUrl(text).match(/(?<![A-Za-z])[A-D][+-](?![A-Za-z0-9])/g) || []) {
+      if (g !== facts.audienceGrade) problems.push(`${where} cites grade ${g}, fact sheet says ${facts.audienceGrade || 'none'}`);
+    }
+  }
 
   if (!draft.body.includes(facts.url)) {
     draft.body = `${draft.body}\n\n${facts.url}`;
@@ -473,7 +487,8 @@ function aOrAn(n) {
 }
 
 function templateDraft(facts) {
-  const hook = !facts.rankNote ? '' : facts.rankNote.startsWith('#') ? `, ${facts.rankNote}` : `, the ${facts.rankNote}`;
+  // Only the clean superlatives make a good title hook.
+  const hook = facts.rankNote && !facts.rankNote.startsWith('#') ? `, the ${facts.rankNote}` : '';
   const title = `Reviews are in for ${facts.title}: ${facts.score}/100 from critics${hook}`;
   const lines = [];
   lines.push(`${facts.title} opened ${facts.venue ? `at ${facts.venue} ` : ''}with ${aOrAn(facts.score)} ${facts.score}/100 critic score across ${facts.reviewCount} reviews. ${breakdownSentence(facts.buckets)}.`);
@@ -505,6 +520,8 @@ function oldRedditSubmitUrl(subreddit, title, body) {
   return `https://old.reddit.com/r/${subreddit}/submit?${q.toString()}`;
 }
 
+const THEATER_SUBS = new Set(['broadway', 'thewestend', 'offbroadway', 'musicals', 'theatre', 'londontheatre']);
+
 /**
  * Mark drafts posted when one of the owner's recent Reddit posts is about the
  * same show. posts: [{ title, created_utc, permalink, score, num_comments, subreddit }].
@@ -522,8 +539,11 @@ function applyPostedDetection(drafts, posts) {
     const createdSec = Date.parse(d.createdAt) / 1000 - 3 * 86400; // allow posting a bit before the draft
     const hit = (posts || []).find(p => {
       if (!p || (p.created_utc || 0) < createdSec) return false;
-      if (key && key.length >= 3 && normTitle(p.title).includes(key)) return true;
-      return !!slug && `${p.selftext || ''} ${p.url || ''}`.includes(`/show/${slug}`);
+      if (slug && `${p.selftext || ''} ${p.url || ''}`.includes(`/show/${slug}`)) return true;
+      // Title fallback: whole-word match, and only in a theater sub, so a
+      // show called "Rent" isn't cleared by a post saying "currently".
+      if (!key || key.length < 3 || !THEATER_SUBS.has(String(p.subreddit || '').toLowerCase())) return false;
+      return ` ${normTitle(p.title)} `.includes(` ${key} `);
     });
     if (hit) {
       out.drafts[id] = {

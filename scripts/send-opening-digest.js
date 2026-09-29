@@ -748,6 +748,17 @@ function renderRedditDraft(d) {
     </div>`;
 }
 
+// Optional section: a bad or missing drafts file must never stop the digest.
+function loadRedditDrafts(p = REDDIT_DRAFTS_PATH, nowMs = Date.now()) {
+  try {
+    return activeDrafts(loadJSON(p), nowMs)
+      .filter(d => d && d.title && d.body && d.subreddit && d.submitUrl);
+  } catch (e) {
+    console.warn(`Reddit drafts skipped: ${e.message}`);
+    return [];
+  }
+}
+
 function renderRedditBlock(redditPosts) {
   if (!redditPosts || !redditPosts.length) return '';
   return `
@@ -884,7 +895,7 @@ async function main() {
 
   const rows = buildRows(showList, reviewMap, audience, sent, importantSet, excludedMap);
   const sections = classifyRows(rows);
-  sections.redditPosts = activeDrafts(loadJSON(REDDIT_DRAFTS_PATH), Date.now());
+  sections.redditPosts = loadRedditDrafts();
 
   const todayHuman = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   const subject = buildSubject(sections);
@@ -932,6 +943,8 @@ module.exports = {
   MIN_AUDIENCE_REVIEWS,
   buildSubject,
   buildDigestLead,
+  loadRedditDrafts,
+  renderRedditBlock,
   computeCriticScore,
   setOutletRegistryForTest: (r) => { outletRegistry = r; },
 };
