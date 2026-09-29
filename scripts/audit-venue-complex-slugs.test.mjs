@@ -35,7 +35,7 @@ test('no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap su
 });
 
 // 2026-09-29 (BRO-4204 S8-T2): the long spelling "Joe's Pub at The Public
-// Theatre" left the corpus when its only rows (three TodayTix concert/cabaret
+// Theatre" left the corpus when its only rows (four TodayTix concert/cabaret
 // listings) were retired as non-shows, so its slug was dropped from the map —
 // the orphan check above is what guards that. The bare spelling still has a
 // live row and stays pinned here.

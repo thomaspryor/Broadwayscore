@@ -1026,8 +1026,9 @@ describe('getAllOffBroadwayComplexes / getOffBroadwayComplexBySlug — sub-venue
     const complex = getOffBroadwayComplexBySlug('the-public-theater');
     assert.ok(complex, 'the-public-theater complex should exist');
     const venues = new Set(complex!.allShows.map(s => s.venue));
-    // At least one show from each of the 3 linked venue-string variants
-    // (bare Delacorte, bare Joe's Pub, "Joe's Pub at The Public Theatre")
+    // At least one show from the linked venue-string variants (bare
+    // Delacorte, bare Joe's Pub; the "Joe's Pub at The Public Theatre"
+    // spelling left the corpus with the 2026-09-29 audit retirements)
     // must be present in allShows — proves subVenueSlugs linkage actually
     // pulls the shows in, not just that the slug string is listed.
     const hasDelacorteOrPub = Array.from(venues).some(
