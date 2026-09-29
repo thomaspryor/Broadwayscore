@@ -1702,6 +1702,20 @@ test('loop guard: partial progress on the finish chain re-blocks until every ste
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
+// second-opinion finding: the ledger was joined/split on ',' and NOCHAIN keys
+// contain commas, so "review,what-else,wrap-up" read back as a set holding
+// "NOCHAIN:review" and a review-only missing set was wrongly skipped.
+test('loop guard: running /what-else + /wrap-up but no review still re-blocks for the review', skipNoRepoHook, () => {
+  const dir = makeTmpDir('loopguard-review-last');
+  const t = writeTranscript(dir, [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE]);
+  assertBlocked(runHook(t, CLOSED), 'nothing ran');
+  writeTranscript(dir, [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE, WHAT_ELSE, WRAP_UP]);
+  const r2 = runHook(t, CLOSED, {}, true);
+  assertBlocked(r2, 'review still missing');
+  assert.match(r2.stderr, /does not count\): \/ship-check/, `got: ${r2.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
 test('loop guard: a ledger from an earlier chain is cleared at the next chain\'s first Stop', skipNoRepoHook, () => {
   const dir = makeTmpDir('loopguard-stale');
   const t = writeTranscript(dir, [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE]);
