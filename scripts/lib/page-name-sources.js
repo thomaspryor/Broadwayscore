@@ -32,8 +32,13 @@ const { getCategoriesForRole } = require('./creative-roles');
  *   creativeTeam?: Array<{ name: string, role: string }> }} ShowLike
  */
 
-/** getAllShows() drops `_devOnly` rows; getBroadwayShows() keeps category === 'broadway'. */
+/** getAllShows() drops `_devOnly` rows; getBroadwayShows() keeps only the strict Broadway category. */
 function broadwayShows(shows) {
+  // Intentionally NOT isBroadwayCategory(): this walk must produce exactly the
+  // rows src/lib/data-core.ts getBroadwayShows() → isBroadwayShow() produces
+  // (strict category === 'broadway', task #1428), or the redirect emitter and
+  // the /theater pages would disagree on which venues exist. A row with no
+  // category is not a Broadway page there, so it is not one here either.
   return shows.filter((s) => s && !s._devOnly && s.category === 'broadway');
 }
 
