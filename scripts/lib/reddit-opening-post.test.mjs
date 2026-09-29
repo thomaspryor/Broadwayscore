@@ -130,6 +130,22 @@ test('a template draft made after an LLM error is re-drafted next run', () => {
   assert.equal(pick({ ...base, status: 'posted', lintProblems: ['llm error: x'] }), 0);
 });
 
+test('pickRecentExamples takes his recent top roundup posts, newest window first', () => {
+  const now = Date.parse('2026-09-29T00:00:00Z');
+  const day = 86400;
+  const body = 'x'.repeat(200);
+  const posts = [
+    { title: 'CATS scores 88/100', selftext: body, subreddit: 'Broadway', score: 575, created_utc: now / 1000 - 170 * day },
+    { title: 'Reviews are in for Trainspotting. 36/100', selftext: body, subreddit: 'TheWestEnd', score: 95, created_utc: now / 1000 - 67 * day },
+    { title: 'Paranormal Activity scores 79/100', selftext: body, subreddit: 'Broadway', score: 15, created_utc: now / 1000 - 34 * day },
+    { title: 'What is my CQS', selftext: body, subreddit: 'WhatIsMyCQS', score: 1, created_utc: now / 1000 - 10 * day },
+    { title: 'Scores are in 70/100', selftext: 'short', subreddit: 'Broadway', score: 50, created_utc: now / 1000 - 5 * day },
+  ];
+  const ex = lib.pickRecentExamples(posts, { nowMs: now, maxAgeDays: 120 });
+  assert.deepEqual(ex.map(e => e.upvotes), [95, 15], 'old, off-topic and bodiless posts excluded; best first');
+  assert.match(lib.buildUserPrompt(lib.buildFacts(show, slim(), []), ex), /HIS MOST RECENT WELL-RECEIVED POSTS[\s\S]*Trainspotting/);
+});
+
 test('activeDrafts hides posted and stale drafts', () => {
   const now = Date.parse('2026-09-29T11:00:00Z');
   const d = { drafts: {

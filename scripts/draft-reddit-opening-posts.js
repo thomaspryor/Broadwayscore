@@ -146,13 +146,13 @@ async function callOpenAI(system, user) {
   return { model: 'gpt-4o', text: j.choices[0].message.content };
 }
 
-async function writeDraft(facts) {
+async function writeDraft(facts, examples = []) {
   if (NO_LLM || (!process.env.ANTHROPIC_API_KEY && !process.env.OPENAI_API_KEY)) {
     return { draft: lib.templateDraft(facts), source: 'template', problems: [] };
   }
   const call = callLLM;
   let problems = [];
-  let user = lib.buildUserPrompt(facts);
+  let user = lib.buildUserPrompt(facts, examples);
   // Three tries: each retry is told what the last one got wrong.
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
@@ -160,7 +160,7 @@ async function writeDraft(facts) {
       const res = lib.lintDraft(parseJsonBlock(text), facts);
       if (res.ok) return { draft: res.draft, source: model, problems: [] };
       problems = res.problems;
-      user = `${lib.buildUserPrompt(facts)}\n\nYour previous draft had these problems, fix them: ${problems.join('; ')}`;
+      user = `${lib.buildUserPrompt(facts, examples)}\n\nYour previous draft had these problems, fix them: ${problems.join('; ')}`;
     } catch (e) {
       problems = [`llm error: ${e.message}`];
     }
@@ -171,7 +171,7 @@ async function writeDraft(facts) {
 // ── Posted detection ────────────────────────────────────────────────────────
 
 async function fetchRecentOwnerPosts() {
-  const after = Math.floor(Date.now() / 1000) - 21 * 86400;
+  const after = Math.floor(Date.now() / 1000) - 365 * 86400; // a year: posted detection + voice examples
   const url = `https://arctic-shift.photon-reddit.com/api/posts/search?author=${REDDIT_USER}&after=${after}&limit=100&sort=desc`;
   try {
     const res = await fetch(url, { headers: { 'User-Agent': 'broadwayscorecard-draft-bot/1.0' }, signal: AbortSignal.timeout(30_000) });
@@ -201,13 +201,19 @@ async function main() {
     if (after > before) console.log(`  marked ${after - before} draft(s) posted`);
   }
 
+  // Freshest voice: his top roundup posts from the last 4 months, widening to
+  // a year if he's been quiet. Falls back to the static style guide examples.
+  let examples = lib.pickRecentExamples(posts || [], { maxAgeDays: 120 });
+  if (examples.length < 2) examples = lib.pickRecentExamples(posts || [], { maxAgeDays: 365 });
+  console.log(`  voice examples: ${examples.map(e => `${e.date} (${e.upvotes})`).join(', ') || 'none, using built-in'}`);
+
   const candidates = lib.selectCandidates({
     shows, slims, drafts, peersByMarket: peers, today: TODAY, seenLookup, forceShowId: FORCE_SHOW,
   });
   console.log(`${TODAY}: ${candidates.length} opening(s) to draft${FORCE_SHOW ? ` (forced ${FORCE_SHOW})` : ''}`);
 
   for (const c of candidates) {
-    const { draft, source, problems } = await writeDraft(c.facts);
+    const { draft, source, problems } = await writeDraft(c.facts, examples);
     const entry = {
       showId: c.show.id,
       showTitle: c.show.title,
