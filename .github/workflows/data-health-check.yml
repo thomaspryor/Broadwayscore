@@ -799,6 +799,15 @@ jobs:
         timeout-minutes: 2
         run: node scripts/audit-fulltext-mentions-show-lifetime.js
 
+      # BRO-4383: NOT shadow mode. A scored review whose text is a different
+      # article (2 reached the live site) is a correctness bug, so an
+      # unverified suspect (no cast/creative/venue evidence, title named <=1x,
+      # no Opus verdict in data/audit/wrong-article-verified.json) fails the step.
+      - name: wrong-article audit (fails on unverified suspects)
+        if: always()
+        timeout-minutes: 3
+        run: node scripts/audit-wrong-article.js
+
       - name: slug-mismatch lifetime sweep (shadow mode)
         if: always()
         continue-on-error: true
