@@ -1,14 +1,22 @@
 #!/usr/bin/env bash
-# PostToolUse hook: warn when whitespace-nowrap is paired with a long literal
-# text string in a flex/grid child — the FeaturedSpot overflow trap.
+# PostToolUse hook: JSX/Tailwind UI lint — warns on recurring mobile CSS traps
+# in edited tsx/jsx. Two trap classes:
 #
-# The trap: <div className="whitespace-nowrap ...">HISTORICAL ACCURACY</div>
-# inside a constrained flex/grid column. whitespace-nowrap forces single-line
-# rendering; if the column is narrower than the natural one-line width, the
-# text gets clipped (or visually overflows with overflow:hidden parent).
+# Patterns A-C (whitespace-nowrap): <div className="whitespace-nowrap ...">
+# HISTORICAL ACCURACY</div> inside a constrained flex/grid column — the
+# FeaturedSpot clip. Escape: NOWRAP_LINT_SKIP=1.
+#
+# Pattern D (iOS input zoom): <input|textarea|select> whose className sets a
+# BASE font size under 16px (text-xs, text-sm, text-[<16px] with no breakpoint
+# prefix) — iOS Safari auto-zooms on focus and the zoom sticks after blur.
+# Fixed one-off across 4 components in PR #448; this guards the class of bug.
+# Remedy idiom: text-base sm:text-sm. Escape: IOS_ZOOM_LINT_SKIP=1.
+# Known false negatives (acceptable for a warning hook — do NOT harden into a
+# block): className={clsx(...)}/template-literal values, style={{fontSize}},
+# rem arbitrary values (text-[0.875rem]), Edit new_strings that omit the tag.
 #
 # This is a WARNING (exit 0 + stderr), not a block. Like design-system-lint.sh.
-# Escape: NOWRAP_LINT_SKIP=1.
+# Escape: NOWRAP_LINT_SKIP=1 disables the whole hook.
 #
 # Self-skip if user-level master exists.
 if [ -f "$HOME/.claude/hooks/$(basename "$0")" ]; then
@@ -94,6 +102,63 @@ if echo "$content" | grep -qE '"[^"]*(whitespace-nowrap[^"]*\bflex-1|flex-1[^"]*
   triggers="${triggers}
   • whitespace-nowrap + flex-1 without min-w-0 — flex-1 children with nowrap
     text won't shrink below the text's natural width unless you add min-w-0."
+fi
+
+# Pattern D: form control (<input|textarea|select>) whose className string sets
+# a base (un-prefixed) font size under 16px — iOS Safari zooms on focus and the
+# zoom sticks. Token-based: `sm:text-sm` is fine (mobile base stays 16px), and
+# `text-base sm:text-sm` — the PR #448 remedy — must never be flagged.
+# Attr scan tolerates one nesting level of braces so `onChange={e => ...}`
+# (the `>` in `=>`) doesn't truncate the tag match.
+zoom_hits=""
+if [ "${IOS_ZOOM_LINT_SKIP:-0}" != "1" ]; then
+  zoom_hits=$(printf '%s' "$content" | python3 -c "
+import sys, re
+text = sys.stdin.read()
+# Blank out balanced {...} spans (JSX expression containers) so a '>' inside
+# a handler ('=>' at any brace depth) can't truncate the tag scan. className
+# string attributes are quoted, not braced, so they survive; className={...}
+# is a documented false negative either way.
+out, depth = [], 0
+for ch in text:
+    if ch == '{':
+        depth += 1
+    elif ch == '}' and depth > 0:
+        depth -= 1
+    elif depth == 0:
+        out.append(ch)
+    else:
+        out.append(' ' if ch not in '\n' else ch)
+text = ''.join(out)
+tag_re = re.compile(
+    r'<(input|textarea|select)\b'
+    r'((?:\"[^\"]*\"|\'[^\']*\'|[^<>\"\'])*?)'
+    r'/?>', re.S)
+cls_re = re.compile(r'className\s*=\s*\"([^\"]*)\"')
+bad = []
+for m in tag_re.finditer(text):
+    cm = cls_re.search(m.group(2))
+    if not cm:
+        continue
+    for tok in cm.group(1).split():
+        if ':' in tok:
+            continue  # breakpoint/state-prefixed sizes keep the 16px mobile base
+        if tok in ('text-xs', 'text-sm'):
+            bad.append('<%s … %s>' % (m.group(1), tok)); break
+        am = re.fullmatch(r'text-\[(\d+(?:\.\d+)?)px\]', tok)
+        if am:
+            try:
+                if float(am.group(1)) < 16:
+                    bad.append('<%s … %s>' % (m.group(1), tok)); break
+            except ValueError:
+                pass  # unparseable size: fail open
+for b in bad[:5]:
+    print(b)
+" 2>/dev/null)
+fi
+
+if [ -n "$zoom_hits" ]; then
+  printf >&2 '⚠️  iOS input-zoom lint: form control with base font under 16px in %s\n%s\n  Sub-16px <input>/<textarea>/<select> makes iOS Safari zoom on focus, and the\n  zoom sticks after blur (PR #448 bug class). Use the mobile-first idiom:\n  text-base sm:text-sm (16px on phones, original size on sm+).\n  Silence this pattern: IOS_ZOOM_LINT_SKIP=1\n' "$(basename "$file_path")" "$zoom_hits"
 fi
 
 [ -z "$triggers" ] && exit 0
