@@ -513,9 +513,14 @@ async function runAggregators(show) {
   // previewsStartDate's year in every case except a preview run spanning a
   // Dec->Jan boundary — same residual risk the codebase already accepts
   // elsewhere for previews/opening date estimates.
-  const year = show.openingDate
-    ? new Date(show.openingDate).getFullYear()
-    : (show.previewsStartDate ? new Date(show.previewsStartDate).getFullYear() : null);
+  // Validate parseability, not just truthiness — a malformed-but-truthy date
+  // string would otherwise silently produce NaN here, which then leaks into
+  // the BWW SERP query (gather-reviews.js) and tryTbDirectUrl's guessed URLs
+  // (tb-direct-url.js) as the literal string "NaN". Found in a 2026-09-29
+  // ship-check re-review of this fallback (BRO-3138 class).
+  const openingYearRaw = show.openingDate ? new Date(show.openingDate).getFullYear() : NaN;
+  const previewsYearRaw = show.previewsStartDate ? new Date(show.previewsStartDate).getFullYear() : NaN;
+  const year = !Number.isNaN(openingYearRaw) ? openingYearRaw : (!Number.isNaN(previewsYearRaw) ? previewsYearRaw : null);
   const isOffBroadway = show.category === 'off-broadway';
   const isWestEnd = isLondonMarket(show.category);
 
