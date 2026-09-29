@@ -135,6 +135,10 @@ export default function FantasyLeaderboardTable() {
     <div className="space-y-2">
       {filterBar}
 
+      <p className="text-xs text-gray-500 px-1">
+        {entries.length} {entries.length === 1 ? 'team' : 'teams'}{debouncedLeague ? ' in this league' : ''}. Tap a team to see its picks.
+      </p>
+
       {/* Header row */}
       <div className="hidden sm:grid grid-cols-[3rem_1fr_5rem_5rem_5rem_5rem_5rem] gap-2 px-4 py-2 text-xs text-gray-500 uppercase tracking-wider">
         <span>#</span>

@@ -94,7 +94,9 @@ try {
   else console.error(`Ignoring frozen prices for season ${raw._meta?.season ?? 'unknown'} (config is ${SEASON}).`);
 } catch { /* no snapshot yet */ }
 
-const draftHasOpened = new Date() >= new Date(`${DRAFT_OPENS}T00:00:00-04:00`);
+// DRAFT_OPENS is a New York calendar date (same rule as src/config/fantasy.ts isDraftOpen).
+const { nyDate } = require('./lib/fantasy-helpers');
+const draftHasOpened = nyDate(new Date().toISOString()) >= DRAFT_OPENS;
 if (refreeze && draftHasOpened && !force) {
   console.error(`REFUSED: --refreeze after the draft opened (${DRAFT_OPENS}) would reprice shows players already drafted. Re-run with --force only if no entries exist.`);
   process.exit(2);
