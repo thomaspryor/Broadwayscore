@@ -1853,6 +1853,7 @@ on:
       - 'scripts/recover-explicit-ratings.js'
       - 'scripts/deep-research-commercial.js'
       - 'scripts/sweep-we-aggregators.js'
+      - 'scripts/sweep-we-aggregators-outlet-edition.test.mjs'
       # BRO-3887: outlet-serp's --time-budget-min guard + the run-id-keyed-cache
       # hygiene rule. Without these entries a solo edit triggers ZERO CI
       # (memory/feedback_test_yml_push_path_allowlist.md).
