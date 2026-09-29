@@ -64,3 +64,17 @@ test('multi-show opening night: two concurrent Express runs each add one show, b
   const { merged } = mergeExpressRetryQueue(runBLocal, remoteAfterRunA);
   assert.deepEqual(merged.entries.map((e) => e.showId).sort(), ['show-a', 'show-b']);
 });
+
+test('BRO-4334: refetch entry sets sharing showId+queuedAt survive a merge individually', () => {
+  const mk = (h, attempted = false) => ({ kind: 'truncated-t1-refetch', showId: 'show-a', queuedAt: 't0', dueAt: `t0+${h}h`, offsetHours: h, attempted });
+  const ours = { entries: [{ showId: 'show-b', queuedAt: 't1', attempted: false }] };
+  const remote = { entries: [mk(1, true), mk(3), mk(12)] };
+  const { merged } = mergeExpressRetryQueue(ours, remote);
+  assert.equal(merged.entries.length, 4);
+  assert.deepEqual(merged.entries.filter((e) => e.kind).map((e) => [e.offsetHours, e.attempted]), [[1, true], [3, false], [12, false]]);
+  // attempted-wins still applies per refetch entry
+  const { merged: m2 } = mergeExpressRetryQueue({ entries: [mk(1), mk(3), mk(12)] }, { entries: [mk(1), mk(3, true), mk(12)] });
+  assert.deepEqual(m2.entries.map((e) => e.attempted), [false, true, false]);
+  // a legacy thin entry with the same showId+queuedAt is a different key
+  assert.notEqual(keyOf(mk(1)), keyOf({ showId: 'show-a', queuedAt: 't0' }));
+});
