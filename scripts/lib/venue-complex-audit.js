@@ -1,17 +1,16 @@
 /**
  * Shared logic for auditing data/venue-complexes*.json against real
  * shows.json venue strings. Mirrors the site's own slug pipeline exactly —
- * src/lib/data-core.ts:593 (slugify) and :758 (normalizeVenueName), copied
- * here since scripts/ can't import the TS module directly. Any drift between
- * these and data-core.ts would make this audit check the wrong thing.
+ * slugify is THE shared rule (scripts/lib/url-slug.js, which
+ * src/lib/data-core.ts re-exports; a local copy here silently lost the S7-T3
+ * diacritic fold and audited "Repertorio Español" under the wrong slug),
+ * normalizeVenueName mirrors data-core.ts buildStubTheaterIndex (now
+ * scripts/lib/page-name-sources.js stubTheaterName). Any drift between these
+ * and data-core.ts would make this audit check the wrong thing —
+ * tests/unit/data-core.test.ts asserts slugify parity on every venue string.
  */
 
-function slugify(name) {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
-}
+const { slugify } = require('./url-slug');
 
 function normalizeVenueName(venue) {
   return venue.trim().replace(/\s+/g, ' ');
