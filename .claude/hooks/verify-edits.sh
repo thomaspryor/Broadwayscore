@@ -224,7 +224,12 @@ _WORK_MCP_TOOLS = (
     'mcp__github__create_or_update_file',
 )
 
-def _is_work_tool(name, inp):
+def _is_work_tool(name, inp, tid):
+    # A call that was refused before it ran changed nothing: a session whose
+    # only edits were blocked by hooks has done no work (BRO-4238 smoke test:
+    # NOCARD fired on two blocked edits).
+    if tid in tool_refused_ids:
+        return False
     inp = inp if isinstance(inp, dict) else {}
     if name in ('Edit', 'Write', 'NotebookEdit'):
         fp = inp.get('file_path', '') or ''
@@ -375,6 +380,14 @@ tool_results_by_id = {}
 # Tool calls whose result the harness flagged is_error (non-zero exit, a
 # permission denial, an input error): they did not do what they asked.
 tool_error_ids = set()
+# The subset that never ran at all: refused by a PreToolUse hook, the
+# permission classifier, input validation, or worktree isolation. A Bash
+# "Exit code N" result DID run (a push piped into a grep that filtered every
+# line exits 1 after the push succeeded), so it stays work. Every observed
+# Edit/Write error is one of these refusals too.
+tool_refused_ids = set()
+_REFUSED_RE = re.compile(r'\s*(?:PreToolUse:|Permission for this action was denied|<tool_use_error>'
+                         r'|This session is isolated in the worktree)')
 try:
     with open(sys.argv[1]) as f:
         for line in f:
@@ -462,6 +475,8 @@ try:
                             tool_results_by_id[tid] = body
                             if c.get('is_error'):
                                 tool_error_ids.add(tid)
+                                if _REFUSED_RE.match(body or ''):
+                                    tool_refused_ids.add(tid)
 except Exception as e:
     print(f"ERROR:{e}")
     sys.exit(0)
@@ -491,6 +506,8 @@ for i in range(len(events) - 1, -1, -1):
     name, inp, _tid = payload
     if name not in ('Edit', 'Write', 'NotebookEdit'):
         continue
+    if _tid in tool_refused_ids:
+        continue   # refused before it ran: the file did not change
     fp = inp.get('file_path', '') or ''
     if not fp.endswith(CODE_EXTS):
         continue
@@ -525,7 +542,7 @@ for i in range(len(events) - 1, -1, -1):
 if os.environ.get('SESSION_STATUS_GATE_DISABLE', '0') != '1':
     try:
         did_substantial_work = total_qualifying_edits > 0 or any(
-            _kind == 'tool' and _is_work_tool(_payload[0], _payload[1])
+            _kind == 'tool' and _is_work_tool(_payload[0], _payload[1], _payload[2])
             for _kind, _payload in events
         )
         # NOTE: deliberately does NOT require `_last_msg` to be non-empty (ship-check
@@ -808,7 +825,7 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
 if os.environ.get('CARD_GATE_DISABLE', '0') != '1':
     try:
         _did_work_nc = any(
-            _kind == 'tool' and _is_work_tool(_payload[0], _payload[1])
+            _kind == 'tool' and _is_work_tool(_payload[0], _payload[1], _payload[2])
             for _kind, _payload in events
         )
         _nc_msg = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
@@ -868,7 +885,7 @@ if os.environ.get('WRAPUP_GATE_DISABLE', '0') != '1':
     try:
         _last_work_idx = None
         for _i, (_kind, _payload) in enumerate(events):
-            if _kind == 'tool' and _is_work_tool(_payload[0], _payload[1]):
+            if _kind == 'tool' and _is_work_tool(_payload[0], _payload[1], _payload[2]):
                 _last_work_idx = _i
 
         # A session that declared NO-CARD and really has no card (none filed
@@ -1087,9 +1104,9 @@ def _chain_result():
         name, inp, _tid = payload
         if name in ('Edit', 'Write', 'MultiEdit', 'NotebookEdit'):
             fp = inp.get('file_path', '') or inp.get('notebook_path', '') or ''
-            if is_trigger(fp):
+            if is_trigger(fp) and _tid not in tool_refused_ids:
                 edits.append((i, os.path.basename(fp)))
-        elif name == 'Bash' and _tid not in tool_error_ids:
+        elif name == 'Bash' and _tid not in tool_refused_ids:
             bash_cmds.append((i, inp.get('command', '') or ''))
         if name == 'Skill':
             sk = inp.get('skill') or ''
@@ -1357,8 +1374,8 @@ def _latest_ui_edit_ts(events_list):
         kind, payload = events_list[i]
         if kind != 'tool':
             continue
-        name, inp, _ = payload
-        if name not in ('Edit', 'Write', 'NotebookEdit'):
+        name, inp, _tid = payload
+        if name not in ('Edit', 'Write', 'NotebookEdit') or _tid in tool_refused_ids:
             continue
         fp = inp.get('file_path', '') or ''
         if fp and UI_PATH_RE.search(fp):
@@ -1411,8 +1428,8 @@ def _write_last_satisfied(sha, edit_marker):
 def _event_is_visual_ui_edit(idx):
     e = events[idx]
     if e[0] != 'tool': return False
-    nm, ip, _ = e[1]
-    if nm not in ('Edit', 'Write', 'NotebookEdit'): return False
+    nm, ip, _tid = e[1]
+    if nm not in ('Edit', 'Write', 'NotebookEdit') or _tid in tool_refused_ids: return False
     fp = ip.get('file_path', '') or ''
     if not (fp and UI_PATH_RE.search(fp)): return False
     return _edit_touches_visual_surface(events, idx, fp)
