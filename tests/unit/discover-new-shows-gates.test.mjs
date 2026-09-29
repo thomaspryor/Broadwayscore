@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isNonTheaterContent } = require('../../scripts/discover-new-shows.js');
+const { isNonTheaterContent, londonListingTitleRejected } = require('../../scripts/discover-new-shows.js');
 
 function gateCandidate(title) {
   return {
@@ -96,4 +96,18 @@ test('Menier linkPattern admits show slugs, rejects booking-system and utility s
   const reject = ['/tickets/series/MATNG', '/tickets/gift-vouchers', '/tickets/vouchers', '/tickets/membership', '/tickets/support-us', '/tickets/donate', '/tickets/access'];
   for (const href of admit) assert.ok(menier.linkPattern.test(href), `should admit: ${href}`);
   for (const href of reject) assert.ok(!menier.linkPattern.test(href), `should reject: ${href}`);
+});
+
+test('londonListingTitleRejected: the OLT/Theatremonkey title gate rejects concerts, NT Live screenings and prizes, keeps plays (BRO-4204 S8-T2)', () => {
+  // The Rachel Zegler concert reached shows.json on 2026-09-29 because the
+  // listing loops only ran the substring lists; NON_THEATRE_TITLE_RE lived in
+  // isNonTheaterContent(), which those loops never call.
+  for (const title of ['Rachel Zegler – Live in London', 'NT Live: All My Sons', 'Stiles + Drewe Best New Song Prize 2026', 'Hamilton in Concert', 'Bar Events']) {
+    assert.equal(londonListingTitleRejected(title), true, `${title} must be rejected`);
+  }
+  for (const title of ['Romeo & Juliet', 'Guess How Much I Love You?', 'Lost in Del Valle', 'Dick Whittington: Adults Only', 'The Lehman Trilogy']) {
+    assert.equal(londonListingTitleRejected(title), false, `${title} must be kept`);
+  }
+  assert.equal(londonListingTitleRejected(''), false);
+  assert.equal(londonListingTitleRejected(undefined), false);
 });

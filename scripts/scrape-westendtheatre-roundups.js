@@ -487,7 +487,10 @@ async function main() {
     // Match to our shows — require high confidence to prevent wrong-show contamination.
     // Medium-confidence (word-based fuzzy) matches caused 27 wrong-show archives (e.g.,
     // Mamma Mia archive had Into the Woods reviews, Matilda had Paddington).
-    const matchResult = matchTitleToShow(showTitle, allShows, { market: 'west-end' });
+    // `date`: the round-up's publish date, so a title with several West End
+    // productions (Romeo and Juliet 2026 / Romeo & Juliet 2027) resolves to the
+    // run whose window contains the post — reviews belong to the run that opened.
+    const matchResult = matchTitleToShow(showTitle, allShows, { market: 'west-end', date: postDate || undefined });
     if (!matchResult || !matchResult.show) {
       stats.skippedNoMatch++;
       if (showFilter || dryRun) console.log(`  [NO MATCH] "${showTitle}" (from: ${stripHtml(wpTitle)})`);

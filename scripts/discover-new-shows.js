@@ -285,6 +285,23 @@ const WE_EXTRA_PATTERNS = [
   // (garry-starr-classic-penguins-off-broadway-2026) — the fringe-act
   // assumption in the original comment no longer holds.
 ];
+
+/**
+ * Title-only gate for the London listing feeds (OLT, Theatremonkey) that reach
+ * shows.json without going through isNonTheaterContent(): the two substring
+ * lists those loops always applied PLUS NON_THEATRE_TITLE_RE. Until 2026-09-29
+ * the regex only ran inside isNonTheaterContent(), so "Rachel Zegler – Live in
+ * London" (@sohoplace, a real theatre) was minted as a West End play — the
+ * venue gates passed and nothing looked at the title (audit S8-T2, BRO-4204).
+ * Pure: exported for tests/unit/discover-new-shows-gates.test.mjs.
+ */
+function londonListingTitleRejected(title) {
+  const t = String(title || '').toLowerCase();
+  if (!t) return false;
+  if (NON_THEATER_PATTERNS.some(p => t.includes(p))) return true;
+  if (WE_EXTRA_PATTERNS.some(p => t.includes(p))) return true;
+  return NON_THEATRE_TITLE_RE.test(t);
+}
 // REMOVED 2026-07-31: WE_SOLO_PERFORMER_PATTERN (/^(?!(?:The|A|An) )[A-Z][a-z]+ [A-Z][a-z]+$/,
 // "FirstName LastName" ⇒ skip as a presumed solo concert). Audited against the live
 // TodayTix London catalog (282 shows): every post-category-filter hit was a real
@@ -1017,8 +1034,7 @@ async function fetchShowsFromTheatremonkey(existingShows = []) {
     const title = entry.title;
     const titleLower = title.toLowerCase();
     if (title.length < 3 || seen.has(titleLower)) continue;
-    if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
-    if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
+    if (londonListingTitleRejected(title)) continue; // substring lists + NON_THEATRE_TITLE_RE (concerts, NT Live, prizes…)
 
     // Same guards as OLT/LT: a placeholder/blob never reaches shows.json
     // (card #1060), and London paths reject non-theatre venues and
@@ -1092,8 +1108,7 @@ async function fetchShowsFromOfficialLondonTheatre() {
 
     // Apply shared filters
     const titleLower = title.toLowerCase();
-    if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
-    if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
+    if (londonListingTitleRejected(title)) continue; // substring lists + NON_THEATRE_TITLE_RE (concerts, NT Live, prizes…)
 
     // OLT's JSON-LD location can be missing/blank on a malformed entry —
     // same #994-class leak, guarded here rather than resurrected via
@@ -3323,6 +3338,7 @@ if (require.main === module) {
 // they consult so changes stay co-located.
 module.exports = {
   isNonTheaterContent,
+  londonListingTitleRejected,
   isOneNightShow,
   obFallbackFlags,
   bwayFallbackFlags,

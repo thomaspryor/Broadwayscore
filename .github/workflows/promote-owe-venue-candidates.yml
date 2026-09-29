@@ -7,18 +7,20 @@
 # a step there could have broken the existing job):
 #   1. Concurrency / commit paths: data/audit/owe-venue-candidates.json is
 #      written by discover-new-shows.js inside update-show-status.yml
-#      (concurrency group shows-json-writer) and PRUNED by this promoter.
-#      scripts/lib/core-data-merge-registry.js registers that file as
-#      single-writer/apiFallbackSafe, which push-with-retry.sh's Git Data API
-#      fallback relies on; the writer-drift regression test
-#      (scripts/lib/api-fallback-writer-drift.test.mjs) accepts a second
-#      writer only when EVERY writer shares the entry's concurrency group.
-#      A step in promote-we-aggregator.yml (group promote-we-aggregator)
-#      would either fail that gate or force the WE job into this group and
-#      queue the West End promotion behind every shows-json writer. This
-#      workflow joins `shows-json-writer` instead, so the two producers of
-#      the staging file are mutually exclusive by construction (the
-#      grosses.json shape the drift detector already accepts).
+#      (concurrency group shows-json-writer), PRUNED by this promoter, and
+#      merged into by hand --stage-only landings through land.yml. It was
+#      once registered single-writer/apiFallbackSafe on the theory that the
+#      first two writers are mutually exclusive in that group; the third
+#      writer made that false (BRO-4268, 2026-09-29: a stale Update Shows
+#      push overwrote 53 landed rows), so scripts/lib/core-data-merge-
+#      registry.js now registers it as an active union merge with
+#      apiFallbackMerge, and this workflow's commit step opts into
+#      push-with-retry.sh's reconcile pass (PUSH_RECONCILE_MERGED_JSON).
+#      The promoter's own log and state file stay apiFallbackSafe (sole
+#      writer). This workflow still joins `shows-json-writer` so it never
+#      races discovery on shows.json itself; a step inside
+#      promote-we-aggregator.yml (group promote-we-aggregator) would have
+#      queued the West End promotion behind every shows-json writer.
 #   2. Secrets: the same fetch tiers as the WE job (Bright Data /
 #      ScrapingBee / Scrapingdog) — the promoter's only network is one
 #      fetchPage() per staged venue (~12/day). No email path, so no
