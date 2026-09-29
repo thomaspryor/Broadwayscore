@@ -352,6 +352,12 @@ jobs:
       # daily. Commit right here, before any other step gets a chance to
       # trigger that fallback. Same apiFallbackSafe pattern as "Commit
       # lifetime sweep snapshots" below.
+      # The 3 alert-router files ride along (all apiFallbackMerge-registered):
+      # check-provider-spend.js routes alerts, and those writes were still
+      # unstaged when this step's own push-with-retry reset the tree, so the
+      # attribution-gap cards filed on 2026-09-29 (BRO-4354/4355) left no
+      # alert-ledger entry. The later "Commit alert router state" step still
+      # commits the rest of the job's router writes.
       - name: Commit provider spend ledger (apiFallbackSafe)
         if: always()
         env:
@@ -365,6 +371,9 @@ jobs:
           git add data/audit/provider-spend-daily.jsonl 2>/dev/null || true
           git add data/audit/provider-spend-snapshot.json 2>/dev/null || true
           git add data/audit/scraper-spend-daily-agg.jsonl 2>/dev/null || true
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No provider spend ledger changes"
           else
