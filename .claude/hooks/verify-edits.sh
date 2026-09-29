@@ -356,6 +356,9 @@ def _board_gate_enforced():
 events = []  # list of (kind, payload)
 # kinds: 'tool' payload=(name,input,tool_use_id) | 'text' payload=str | 'result' payload=(tool_use_id, text)
 tool_results_by_id = {}
+# Tool calls whose result the harness flagged is_error (non-zero exit, a
+# permission denial, an input error): they did not do what they asked.
+tool_error_ids = set()
 try:
     with open(sys.argv[1]) as f:
         for line in f:
@@ -425,6 +428,8 @@ try:
                             body = str(body)
                         if tid:
                             tool_results_by_id[tid] = body
+                            if c.get('is_error'):
+                                tool_error_ids.add(tid)
 except Exception as e:
     print(f"ERROR:{e}")
     sys.exit(0)
@@ -858,7 +863,10 @@ if os.environ.get('WRAPUP_GATE_DISABLE', '0') != '1':
                     _name2, _inp2, _tid2 = _payload2
                     if _name2 == 'Bash':
                         _status_val = _board_closeout_status(_inp2.get('command') or '')
+                        # A close-out that errored (is_error: exit !=0, denied, crashed)
+                        # left the card as it was (BRO-4238 what-else).
                         if (_status_val in _CLOSEOUT_STATES
+                                and _tid2 not in tool_error_ids
                                 and not _CLOSEOUT_REFUSED_RE.search(tool_results_by_id.get(_tid2, '') or '')):
                             _wrapup_closed_out = True
                             break
