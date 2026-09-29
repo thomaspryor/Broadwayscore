@@ -29,6 +29,7 @@ const path = require('path');
 const https = require('https');
 const { matchTitleToShow } = require('./lib/show-matching');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { londonAggregatorCandidates } = require('./lib/other-production-signal');
 const { discoverCorrectUrl } = require('./lib/url-discovery');
 const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
 
@@ -359,9 +360,13 @@ async function main() {
     console.log(`\n   Total discovered: ${stagedoorShows.length}\n`);
 
     // Match to our shows
+    const londonCandidates = londonAggregatorCandidates(ourShows);
     const matched = [];
     for (const sd of stagedoorShows) {
-      const result = matchTitleToShow(sd.title, ourShows, { market: 'west-end' });
+      // London shows only (BRO-4271): Stagedoor is a London aggregator; a
+      // same-title Broadway row must never win when the London production is
+      // missing from shows.json (the School Girls 2026 WestEndTheatre bug).
+      const result = matchTitleToShow(sd.title, londonCandidates, { market: 'west-end' });
       if (result && result.show && result.confidence === 'high') {
         matched.push({
           ...sd,

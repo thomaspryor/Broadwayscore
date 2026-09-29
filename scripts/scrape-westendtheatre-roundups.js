@@ -21,8 +21,7 @@
 const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
-const { isLondonMarket } = require('./lib/venue-classification');
-const { otherProductionSignal } = require('./lib/other-production-signal');
+const { otherProductionSignal, londonAggregatorCandidates } = require('./lib/other-production-signal');
 const {
   normalizeOutlet,
   findExistingReviewFile,
@@ -407,7 +406,7 @@ function saveReview(review) {
  * the production a WET roundup reviews.
  */
 function wetCandidateShows(allShows) {
-  return (allShows || []).filter(s => isLondonMarket(s.category));
+  return londonAggregatorCandidates(allShows);
 }
 
 /** Other-production signal for a WET post matched to `show`, or null. */

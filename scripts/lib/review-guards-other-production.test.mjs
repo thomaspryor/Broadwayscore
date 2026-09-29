@@ -215,6 +215,27 @@ test('auditIncludedReviews reports URL-proven other productions only', () => {
   assert.deepEqual(hits.map(h => [h.outletId, h.signal]), [['guardian', 'url-year']]);
 });
 
+test('londonAggregatorCandidates keeps west-end and off-west-end rows only', () => {
+  const { londonAggregatorCandidates } = require('./other-production-signal.js');
+  const rows = [SCHOOL_GIRLS, { id: 'a', category: 'west-end' }, { id: 'b', category: 'off-west-end' }, { id: 'c', category: 'off-broadway' }, { id: 'd' }];
+  assert.deepEqual(londonAggregatorCandidates(rows).map(s => s.id), ['a', 'b']);
+});
+
+test('no London-aggregator scraper matches West End titles against the unfiltered show list', () => {
+  // Cousin guard (BRO-4271): the WestEndTheatre scraper and Stagedoor both
+  // matched London roundups against ALL shows, so a same-title Broadway row
+  // won whenever the London run was missing from shows.json.
+  const files = [
+    '../scrape-westendtheatre-roundups.js', '../scrape-stagedoor-critics.js', '../scrape-thestage-roundups.js',
+    '../scrape-london-box-office-roundups.js', '../scrape-theatre-reviews.js', '../sweep-we-aggregators.js',
+  ];
+  const unfiltered = /matchTitleToShow\([^,]+,\s*(allShows|ourShows|shows|showsList)\s*,\s*\{\s*market:\s*'west-end'/;
+  for (const rel of files) {
+    const src = fs.readFileSync(new URL(rel, import.meta.url), 'utf8');
+    assert.ok(!unfiltered.test(src), `${rel} matches a West End title against the unfiltered show list`);
+  }
+});
+
 test('WET post dated before a London revival previews is another production', () => {
   const revival = { id: 'hamlet-west-end-2026', title: 'Hamlet', category: 'west-end', previewsStartDate: '2026-05-01', openingDate: '2026-05-10' };
   assert.ok(wetPostOtherProduction(revival, 'https://www.westendtheatre.com/123/reviews/hamlet-review-roundup/', '2023-06-15'));

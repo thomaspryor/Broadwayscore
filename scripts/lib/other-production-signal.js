@@ -218,6 +218,17 @@ function otherProductionSignal(review, show, opts = {}) {
   return null;
 }
 
+/**
+ * Shows a London-only aggregator (WestEndTheatre, Stagedoor, The Stage, LBO,
+ * theatre.reviews) may be matched to: London-market rows only. Matching such
+ * a roundup against every show lets a same-title Broadway row win whenever
+ * the London production is not in shows.json (BRO-4271, School Girls 2026).
+ */
+function londonAggregatorCandidates(shows) {
+  const { isLondonMarket } = require('./venue-classification');
+  return (shows || []).filter((s) => s && isLondonMarket(s.category));
+}
+
 // Signals read from the url itself, never from a stored date that may be wrong
 // or from an outlet that may legitimately cover both cities. Safe to act on at
 // ingest, before anything is written (measured 2026-09-29 over 21,054
@@ -252,6 +263,7 @@ if (require.main === module) {
 }
 
 module.exports = {
+  londonAggregatorCandidates,
   auditIncludedReviews,
   otherProductionSignal,
   URL_SIGNALS,
