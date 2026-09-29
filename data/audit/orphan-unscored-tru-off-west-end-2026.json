@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "tru-off-west-end-2026",
   "openingDate": "2026-09-27",
-  "detectedAt": "2026-09-29T02:44:46.812Z",
+  "detectedAt": "2026-09-29T03:17:14.743Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -74,23 +74,6 @@
       "eligibilityReason": null
     },
     {
-      "file": "stagedtheatre--unknown.json",
-      "outletId": "stagedtheatre",
-      "criticName": "Unknown",
-      "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/tru-menier-chocolate-factory",
-      "fullTextLen": 5390,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
-    {
       "file": "west-end-best-friend--unknown.json",
       "outletId": "west-end-best-friend",
       "criticName": "News Desk",
@@ -108,10 +91,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 6,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 5,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 5,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-09-29T02:44:46.812Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
