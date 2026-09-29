@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-29T17:15:48.187Z",
+  "timestamp": "2026-09-29T18:51:52.243Z",
   "stats": {
     "totalReviews": 45259,
-    "alreadyFlagged": 18398,
-    "dateGuardCatches": 237,
-    "directorMismatch": 1162,
-    "tvFilmSignals": 1327,
-    "londonSignals": 1233,
+    "alreadyFlagged": 18459,
+    "dateGuardCatches": 238,
+    "directorMismatch": 1168,
+    "tvFilmSignals": 1329,
+    "londonSignals": 1234,
     "offBroadwaySignals": 516,
     "yearMismatch": 101,
-    "noPublishDate": 4044
+    "noPublishDate": 3953
   },
   "findings": [
     {
@@ -869,6 +869,20 @@
       ]
     },
     {
+      "showId": "affluenza-off-west-end-2026",
+      "file": "monstagigz--unknown.json",
+      "score": 74,
+      "publishDate": "2026-09-29",
+      "url": "https://monstagigz.com/2026/09/29/theatre-review-affluenza-starring-noah-schnapp-at-riverside-studios-hammersmith/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "after-midnight-2013",
       "file": "broadwayworld--michael-dale.json",
       "score": 90,
@@ -1119,7 +1133,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 76,
+      "score": 74,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -1791,6 +1805,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"streaming service\""
+        }
+      ]
+    },
+    {
+      "showId": "and-juliet-tour-2024",
+      "file": "fort-worth-star-telegram--rick-mauch.json",
+      "score": 86,
+      "publishDate": "2025-11-13",
+      "url": "https://www.star-telegram.com/entertainment/fort-worth/article312903174.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -3738,10 +3766,10 @@
     },
     {
       "showId": "buena-vista-social-club-tour-2026",
-      "file": "broadwayworld--michael-rabice.json",
-      "score": 75,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/buffalo/article/Review-BUENA-VISTA-SOCIAL-CLUB-at-Sheas-Buffalo-Theatre-20260917",
+      "file": "buffalorising--peter-hall.json",
+      "score": 70,
+      "publishDate": "2026-09-17",
+      "url": "https://www.buffalorising.com/2026/09/no-translation-needed-buena-vista-social-club-speaks-straight-to-the-heart-of-a-muy-simpatico-audience/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -7432,6 +7460,48 @@
       ]
     },
     {
+      "showId": "death-becomes-her-tour-2026",
+      "file": "cleveland-plain-dealer--joey-morona.json",
+      "score": 87,
+      "publishDate": "2026-09-21",
+      "url": "https://www.cleveland.com/entertainment/2026/09/death-becomes-her-review-hit-musicals-tour-launch-is-a-killer-good-time-at-playhouse-square.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher gattelli\" from death-becomes-her-2024"
+        }
+      ]
+    },
+    {
+      "showId": "death-becomes-her-tour-2026",
+      "file": "clevescene--gwendolyn-kocher.json",
+      "score": 78,
+      "publishDate": "2026-09-21",
+      "url": "https://www.clevescene.com/arts/death-becomes-her-begins-a-new-life-with-tour-launch-at-playhouse-square/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher gattelli\" from death-becomes-her-2024"
+        }
+      ]
+    },
+    {
+      "showId": "death-becomes-her-tour-2026",
+      "file": "the-news-herald--mark-meszoros.json",
+      "score": 74,
+      "publishDate": "2026-09-21",
+      "url": "https://www.news-herald.com/2026/09/21/death-becomes-her-at-playhouse-square-review-a-fatally-fun-time/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher gattelli\" from death-becomes-her-2024"
+        }
+      ]
+    },
+    {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 93,
@@ -9140,7 +9210,7 @@
     {
       "showId": "equus-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
-      "score": 84,
+      "score": 83,
       "publishDate": "2026-05-19",
       "url": "https://www.londontheatre.co.uk/reviews/equus-review-menier-chocolate-factory",
       "findings": [
@@ -13737,7 +13807,7 @@
     {
       "showId": "here-comes-j-edgar-off-west-end-2026",
       "file": "londonpubtheatres--francis-beckett.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2026-07-17",
       "url": "https://www.londonpubtheatres.com/review-here-comes-j-edgar-at-kings-head-theatre-17-july-4-august-2026",
       "findings": [
@@ -16648,7 +16718,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-03-27",
       "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
       "findings": [
@@ -17205,7 +17275,7 @@
     {
       "showId": "kimberly-akimbo-off-west-end-2026",
       "file": "thestage--tom-wicker.json",
-      "score": 89,
+      "score": 87,
       "publishDate": "2026-09-10",
       "url": "https://www.thestage.co.uk/reviews/kimberly-akimbo-review-hampstead-theatre-london",
       "findings": [
@@ -20241,7 +20311,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 79,
+      "score": 77,
       "publishDate": "2026-06-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-shakespeares-globe-review",
       "findings": [
@@ -20287,7 +20357,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 89,
+      "score": 90,
       "publishDate": "2026-06-23",
       "url": "https://www.standard.co.uk/culture/theatre/much-ado-about-nothing-shakespeare-globe-2026-b1287248.html",
       "findings": [
@@ -20812,7 +20882,7 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "gay-times--chris-selman.json",
-      "score": 98,
+      "score": 99,
       "publishDate": "2022-10-24",
       "url": "https://www.gaytimes.co.uk/originals/my-sons-a-queer-but-what-can-you-do-makes-triumphant-west-end-debut-review/",
       "findings": [
@@ -20910,7 +20980,7 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "thestage--paul-vale.json",
-      "score": 93,
+      "score": 94,
       "publishDate": "February 2nd, 2023",
       "url": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-review-at-ambassadors-london-by-rob-madge",
       "findings": [
@@ -26564,6 +26634,17 @@
     },
     {
       "showId": "stick-man-off-west-end-2026",
+      "file": "london-box-office--emmie-newitt.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1002d before show (2024-03-06 vs 2026-12-03)"
+        }
+      ]
+    },
+    {
+      "showId": "stick-man-off-west-end-2026",
       "file": "whatsonstage--michael-coveney.json",
       "score": 81,
       "publishDate": "2011-08-07",
@@ -30066,6 +30147,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "broadwayworld--david-friscic.json",
+      "score": null,
+      "publishDate": "2026-05-19",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-THE-GREAT-GATSBY-at-National-Theatre-20260519",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -34229,6 +34329,24 @@
     },
     {
       "showId": "tru-off-west-end-2026",
+      "file": "financialtimes--julianna-barnaby.json",
+      "publishDate": "2026-09-28",
+      "url": "https://www.westendtheatre.com/369207/news/tru-reviews/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rob ashford\" from tru-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
       "score": 64,
       "publishDate": "2026-09-28",
@@ -37038,7 +37156,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 74,
+      "score": 75,
       "publishDate": "2026-09-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/a-month-in-the-country-donmar-warehouse-review",
       "findings": [
@@ -38384,7 +38502,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 80,
+      "score": 77,
       "publishDate": "2026-06-28",
       "url": "https://www.londontheatre1.com/reviews/archduke-royal-court/",
       "findings": [
@@ -38482,7 +38600,7 @@
     {
       "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 74,
+      "score": 75,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
       "findings": [
@@ -43422,7 +43540,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 75,
       "publishDate": "2026-09-16",
       "url": "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review",
       "findings": [
@@ -44027,7 +44145,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 77,
+      "score": 81,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
@@ -48366,7 +48484,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "2026-04-30",
       "url": "https://www.theguardian.com/stage/2026/apr/30/mass-review-donmar-warehouse-london",
       "findings": [

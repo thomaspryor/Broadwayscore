@@ -1996,30 +1996,6 @@
     "queuedAt": "2026-09-29T17:49:06.700Z"
   },
   {
-    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:school-girls-or-the-african-mean-girls-play-2026:guardian",
-    "title": "Auto-remediation gave up on school-girls-or-the-african-mean-girls-play-2026",
-    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"school-girls-or-the-african-mean-girls-play-2026\",\"outlet\":\"guardian\",\"phases\":\"0,1,2,3\"}",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-29T18:16:12.568Z"
-  },
-  {
-    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:school-girls-or-the-african-mean-girls-play-2026:timeout",
-    "title": "Auto-remediation gave up on school-girls-or-the-african-mean-girls-play-2026",
-    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"school-girls-or-the-african-mean-girls-play-2026\",\"outlet\":\"timeout\",\"phases\":\"0,1,2,3\"}",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-29T18:16:12.572Z"
-  },
-  {
     "conditionKey": "land:land/font-selfhost-v3",
     "title": "Landing blocked: rebase red on land/font-selfhost-v3",
     "description": "land.yml did not land land/font-selfhost-v3: the rebase gate went red at bccc6f3968. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36613533415",
@@ -2047,5 +2023,46 @@
       }
     ],
     "queuedAt": "2026-09-29T18:41:23.839Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:school-girls-or-the-african-mean-girls-play-2026:guardian",
+    "title": "Auto-remediation gave up on school-girls-or-the-african-mean-girls-play-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"school-girls-or-the-african-mean-girls-play-2026\",\"outlet\":\"guardian\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T18:50:07.862Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:school-girls-or-the-african-mean-girls-play-2026:timeout",
+    "title": "Auto-remediation gave up on school-girls-or-the-african-mean-girls-play-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"school-girls-or-the-african-mean-girls-play-2026\",\"outlet\":\"timeout\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T18:50:07.867Z"
+  },
+  {
+    "conditionKey": "orphan-unscored-requeue:school-girls-or-the-african-mean-girls-play-2026",
+    "title": "Orphan-unscored rescore self-heal exhausted — school-girls-or-the-african-mean-girls-play-2026",
+    "description": "1 review(s) for school-girls-or-the-african-mean-girls-play-2026 have includable text but no score. 2 automatic rescore attempts in the last 24h did not clear the marker — manual investigation needed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Attempts (last 24h)",
+        "value": "2026-09-29T16:01:09.404Z: dispatched ok\n2026-09-29T18:16:12.972Z: dispatched ok"
+      }
+    ],
+    "queuedAt": "2026-09-29T18:50:08.266Z"
   }
 ]
