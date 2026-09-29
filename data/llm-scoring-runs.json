@@ -1,21 +1,5 @@
 [
   {
-    "startedAt": "2026-09-27T13:38:50.578Z",
-    "completedAt": "2026-09-27T13:38:55.508Z",
-    "totalReviews": 44786,
-    "processed": 0,
-    "skipped": 44785,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3610,
-      "output": 111,
-      "total": 10934
-    },
-    "costUsd": 0.02526965,
-    "runId": "36321572511",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-27T13:38:57.542Z",
     "completedAt": "2026-09-27T13:45:46.106Z",
     "totalReviews": 177,
@@ -259337,19 +259321,41 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-09-29T03:44:57.624Z",
-    "completedAt": "2026-09-29T03:44:57.627Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-09-29T03:37:21.945Z",
+    "completedAt": "2026-09-29T03:39:25.186Z",
+    "totalReviews": 45017,
+    "processed": 16,
+    "skipped": 44991,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 137432,
+      "output": 6008,
+      "total": 350792
+    },
+    "costUsd": 0.5694606999999999,
+    "runId": "36516370856",
+    "errorDetails": [
+      {
+        "showId": "cats-the-jellicle-ball-2026",
+        "outletId": "timeout",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-29T03:39:26.672Z",
+    "completedAt": "2026-09-29T03:46:13.529Z",
+    "totalReviews": 181,
+    "processed": 181,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
+      "input": 473793,
+      "output": 43123,
+      "total": 516916
     },
-    "costUsd": 0,
-    "runId": "36516466646",
+    "costUsd": 1.3259984,
+    "runId": "36516370856",
     "errorDetails": []
   }
 ]
