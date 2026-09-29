@@ -74,27 +74,29 @@ export default function FantasyShowPicker({
               <span className="text-[10px] bg-gray-500/20 text-gray-400 px-1.5 py-0.5 rounded">Closed</span>
             )}
           </div>
-          <div className="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
-            <span>{showFormatTitle(selectedShow.type)}</span>
-            {selectedShow.criticScore != null && (
-              <span className="text-yellow-400">
-                {!selectedShow.eligible.criticScore && `${ELIGIBILITY_MARKERS.criticScoreLocked} `}
-                Score: {Math.round(selectedShow.criticScore)}
+          <div className="flex items-center gap-x-2 gap-y-0.5 flex-wrap text-xs text-gray-400 mt-0.5">
+            <span className="whitespace-nowrap">{showFormatTitle(selectedShow.type)}</span>
+            {!selectedShow.eligible.criticScore ? (
+              <span className="text-yellow-400 whitespace-nowrap" title="Already open: box office and awards points only">
+                {ELIGIBILITY_MARKERS.criticScoreLocked} Already open
               </span>
-            )}
-            {selectedShow.audienceGrade != null && (
-              <span className="text-yellow-400">
-                {!selectedShow.eligible.audienceGrade && `${ELIGIBILITY_MARKERS.criticScoreLocked} `}
-                Grade: {selectedShow.audienceGrade}
-              </span>
+            ) : (
+              <>
+                {selectedShow.criticScore != null && (
+                  <span className="text-yellow-400 whitespace-nowrap">Score: {Math.round(selectedShow.criticScore)}</span>
+                )}
+                {selectedShow.audienceGrade != null && (
+                  <span className="text-yellow-400 whitespace-nowrap">Grade: {selectedShow.audienceGrade}</span>
+                )}
+              </>
             )}
           </div>
         </div>
         <span className="font-bold text-emerald-400">${selectedShow.price}</span>
         <button
           onClick={() => onRemove(selectedShow.id)}
-          className="text-gray-500 hover:text-red-400 transition-colors p-1"
-          aria-label="Remove pick"
+          className="text-gray-500 hover:text-red-400 transition-colors p-2 -m-1"
+          aria-label={`Remove ${selectedShow.title}`}
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -107,10 +109,15 @@ export default function FantasyShowPicker({
   return (
     <div ref={ref} className="relative">
       <div
+        role="button"
+        tabIndex={0}
+        aria-expanded={isOpen}
+        aria-label={`Pick a show for slot ${slotIndex + 1}`}
         className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors ${
           isOpen ? 'bg-surface-overlay border-brand/50' : 'bg-surface-raised/50 border-white/10 border-dashed hover:border-white/20'
         }`}
         onClick={() => setIsOpen(true)}
+        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIsOpen(true); } }}
       >
         <span className="text-xs text-gray-500 font-mono w-5">{slotIndex + 1}</span>
         {isOpen ? (
@@ -181,22 +188,27 @@ export default function FantasyShowPicker({
                         <span className="text-[10px] bg-gray-500/20 text-gray-400 px-1.5 py-0.5 rounded shrink-0">Closed</span>
                       )}
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-400 mt-0.5">
-                      <span>{showFormatTitle(show.type)}</span>
-                      {show.criticScore != null && (
-                        <span className="text-yellow-400">
-                          {!show.eligible.criticScore && `${ELIGIBILITY_MARKERS.criticScoreLocked} `}
-                          Score: {Math.round(show.criticScore)}
+                    <div className="flex items-center gap-x-2 gap-y-0.5 flex-wrap text-xs text-gray-400 mt-0.5">
+                      <span className="whitespace-nowrap">{showFormatTitle(show.type)}</span>
+                      {!show.eligible.criticScore ? (
+                        <span className="text-yellow-400 whitespace-nowrap" title="Already open: box office and awards points only">
+                          {ELIGIBILITY_MARKERS.criticScoreLocked} Already open{show.criticScore != null ? ` · Score ${Math.round(show.criticScore)}` : ''}
                         </span>
-                      )}
-                      {show.audienceGrade != null && (
-                        <span className="text-yellow-400">
-                          {!show.eligible.audienceGrade && `${ELIGIBILITY_MARKERS.criticScoreLocked} `}
-                          Grade: {show.audienceGrade}
-                        </span>
+                      ) : (
+                        <>
+                          {show.criticScore != null && (
+                            <span className="text-yellow-400 whitespace-nowrap">Score: {Math.round(show.criticScore)}</span>
+                          )}
+                          {show.audienceGrade != null && (
+                            <span className="text-yellow-400 whitespace-nowrap">Grade: {show.audienceGrade}</span>
+                          )}
+                          {show.openingDate && (
+                            <span className="text-gray-500 whitespace-nowrap">opens {new Date(`${show.openingDate}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}</span>
+                          )}
+                        </>
                       )}
                       {!show.eligible.boxOffice && (
-                        <span className="text-gray-500">† no box office</span>
+                        <span className="text-gray-500 whitespace-nowrap">† no box office</span>
                       )}
                     </div>
                   </div>

@@ -26,12 +26,19 @@ test('DATA/wire label stays "Skippable" (iOS + fantasy contract)', () => {
   // scoring.ts getCriticLabel feeds engine.ts -> mobile-shows.json cr.l, read by the iOS app.
   assert.match(read('src/config/scoring.ts'), /score >= 55\) return 'Skippable'/,
     'scoring.ts getCriticLabel must still emit "Skippable" — renaming desyncs mobile-shows.json/iOS');
-  // The same wire label is the key in the fantasy points map.
-  assert.match(read('src/config/fantasy.ts'), /'Skippable':\s*\d/,
-    'fantasy.ts CRITIC_SCORE_POINTS must keep the "Skippable" key or 55-64 shows score undefined points');
-  // The mobile-data + fantasy-score generators emit the same wire key.
+  // The same wire label is the key in the fantasy points map. Since the
+  // 2026-27 relaunch the map lives in fantasy-season.json (one file read by
+  // the site, the API and the weekly scripts) and fantasy.ts re-exports it.
+  assert.match(read('src/config/fantasy-season.json'), /"Skippable":\s*\d/,
+    'fantasy-season.json scoring.criticScore must keep the "Skippable" key or 55-64 shows score undefined points');
+  assert.match(read('src/config/fantasy.ts'), /CRITIC_SCORE_POINTS[^\n]*seasonConfig\.scoring\.criticScore/,
+    'fantasy.ts CRITIC_SCORE_POINTS must come from fantasy-season.json (the file the guard above pins)');
+  // The mobile-data generator and the shared fantasy scorer emit the same wire key.
   assert.match(read('scripts/generate-mobile-data.js'), /score >= 55\) return 'Skippable'/);
-  assert.match(read('scripts/compute-fantasy-scores.js'), /score >= 55\) return 'Skippable'/);
+  assert.match(read('scripts/lib/fantasy-helpers.js'), /score >= 55\) return 'Skippable'/,
+    'fantasy-helpers.js criticLabelForScore must still emit "Skippable" — it keys the points map for the weekly scorer');
+  assert.match(read('scripts/compute-fantasy-scores.js'), /criticLabelForScore/,
+    'compute-fantasy-scores.js must use the shared criticLabelForScore (no local copy to drift)');
 });
 
 test('DISPLAY label is "Mixed" everywhere a human sees the 55-64 tier', () => {

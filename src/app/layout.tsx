@@ -185,6 +185,7 @@ export default function RootLayout({
                 criticPages: featureFlags.criticPages,
                 creativePages: featureFlags.creativePages,
                 castPages: featureFlags.castPages,
+                fantasyLeague: featureFlags.fantasyLeague,
               }}
             />
 

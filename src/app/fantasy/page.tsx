@@ -1,38 +1,88 @@
 import { Metadata } from 'next';
-import { getFantasySeasonInfo } from '@/lib/data-fantasy';
+import { getFantasySeasonInfo, getFantasyShowsSorted } from '@/lib/data-fantasy';
 import {
   CRITIC_SCORE_POINTS,
   AUDIENCE_GRADE_POINTS,
   BOX_OFFICE_POINTS_PER_100K,
   AWARDS_POINTS,
+  PRIZE_DESCRIPTION,
+  DRAFT_OPENS,
+  FANTASY_TONY_WINDOW,
+  draftDeadlineDate,
+  getCriticLabel,
 } from '@/config/fantasy';
 import { SCORE_BUCKETS } from '@/config/score-buckets';
 
+// Keyed by the points-table label (getCriticLabel), not the display label:
+// the 55-64 bucket displays as "Mixed" but scores as "Skippable".
 const CRITIC_TIER_RANGES: Record<string, string> = Object.fromEntries(
   SCORE_BUCKETS
     .filter((b) => b.id !== 'pending')
-    .map((b) => [b.label, `${b.minScore}–${b.maxScore}`])
+    .map((b) => [getCriticLabel(b.minScore), `${b.minScore}–${b.maxScore}`])
 );
+
+function longDate(iso: string): string {
+  return new Date(`${iso.slice(0, 10)}T12:00:00Z`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+}
+
+function shortDate(iso: string): string {
+  return new Date(`${iso.slice(0, 10)}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+}
 
 export const metadata: Metadata = {
   title: 'Broadway Fantasy League',
-  description: 'Draft 8 Broadway shows within a $100 budget. Earn points from critics, audiences, box office, and Tony Awards. Free to play, no account needed.',
+  description: 'Draft up to 8 Broadway shows on a $100 budget. Earn points from critics, audiences, box office, and the Tony Awards. Free to play, no account needed.',
   openGraph: {
     title: 'Broadway Fantasy League',
-    description: 'Draft 8 shows. $100 budget. Critics + box office + Tonys. Who picks the best season?',
+    description: 'Draft up to 8 shows. $100 budget. Critics + box office + Tonys. Who picks the best season?',
     url: 'https://broadwayscorecard.com/fantasy',
     images: [{ url: 'https://broadwayscorecard.com/og/fantasy.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Broadway Fantasy League',
-    description: 'Draft 8 shows. $100 budget. Win on Tony night.',
+    description: 'Draft up to 8 shows. $100 budget. Win on Tony night.',
     images: ['https://broadwayscorecard.com/og/fantasy.png'],
   },
 };
 
 export default function FantasyLandingPage() {
   const info = getFantasySeasonInfo();
+  const shows = getFantasyShowsSorted();
+  const alreadyOpen = shows.filter(s => !s.eligible.criticScore && s.status !== 'closed');
+  const seasonLabel = FANTASY_TONY_WINDOW.label;
+  const deadlineDate = draftDeadlineDate();
+  const allPrices = shows.map(s => s.price);
+  const obPrices = shows.filter(s => s.category === 'off-broadway').map(s => s.price);
+  const priceRange = { min: Math.min(...allPrices), max: Math.max(...allPrices) };
+  const obRange = obPrices.length ? { min: Math.min(...obPrices), max: Math.max(...obPrices) } : null;
+
+  // Worked example for "Scoring in 30 seconds", computed from the live point
+  // tables so the numbers can never drift from the rules.
+  const exampleWeeks = 20;
+  const exampleNoms = 6;
+  const exampleCritic = CRITIC_SCORE_POINTS['Critical Gold'];
+  const exampleAudience = AUDIENCE_GRADE_POINTS['A-'];
+  const exampleBoxOffice = Math.round(exampleWeeks * 10 * BOX_OFFICE_POINTS_PER_100K);
+  const exampleAwards = (exampleNoms - 1) * AWARDS_POINTS.tonyNom + AWARDS_POINTS.tonyWin + AWARDS_POINTS.tonyBestMusical;
+  const example = {
+    weeks: exampleWeeks,
+    noms: exampleNoms,
+    critic: exampleCritic,
+    audience: exampleAudience,
+    boxOffice: exampleBoxOffice,
+    awards: exampleAwards,
+    total: exampleCritic + exampleAudience + exampleBoxOffice + exampleAwards,
+  };
+
+  const calendar = [
+    { date: DRAFT_OPENS, label: 'Draft opens' },
+    { date: info.scoringStart, label: 'Scoring starts' },
+    { date: info.earlyBirdCutoff ?? info.scoringStart, label: 'Early-bird cutoff: draft by this day and your box office counts from the season start' },
+    { date: deadlineDate, label: 'Draft deadline (11:59pm ET)' },
+    { date: FANTASY_TONY_WINDOW.end, label: 'Tony eligibility cutoff' },
+    { date: info.scoringEnd, label: 'Tony Awards night (expected date): final standings' },
+  ];
 
   return (
     <div className="min-h-screen bg-surface text-white">
@@ -49,17 +99,18 @@ export default function FantasyLandingPage() {
             className="w-[160px] sm:w-[200px] h-auto drop-shadow-[0_0_20px_rgba(212,165,116,0.3)]"
           />
         </div>
+        <p className="text-xs font-semibold uppercase tracking-widest text-brand mb-3">{seasonLabel} season</p>
         <h1 className="text-4xl sm:text-5xl font-black mb-3 tracking-tight">
           <span className="text-white">Broadway</span>{' '}
           <span className="text-gradient">Fantasy League</span>
         </h1>
         <p className="text-lg sm:text-xl text-gray-300 max-w-xl mx-auto mb-3">
-          Draft {info.teamSize} shows. ${info.budget} budget.
+          Draft up to {info.teamSize} shows on a ${info.budget} budget.
           Earn points from critics, audiences, box office, and the Tony Awards.
         </p>
         <div className="mb-8">
           <span className="inline-flex items-center gap-2 bg-brand/10 border border-brand/20 rounded-full px-4 py-1.5">
-            <span className="text-brand text-sm font-bold">Winner gets $500 to spend on TodayTix</span>
+            <span className="text-brand text-sm font-bold">Winner gets {PRIZE_DESCRIPTION}</span>
           </span>
         </div>
         <div className="mb-3">
@@ -80,6 +131,37 @@ export default function FantasyLandingPage() {
         </div>
       </section>
 
+      {/* Already open */}
+      {alreadyOpen.length > 0 && (
+        <section className="max-w-3xl mx-auto px-4 py-6">
+          <div className="bg-surface-raised/50 rounded-xl p-6 border border-brand/20">
+            <h2 className="text-lg font-bold mb-2">
+              {alreadyOpen.length === 1 ? 'One show has' : `${alreadyOpen.length} shows have`} already opened
+            </h2>
+            <p className="text-sm text-gray-400 mb-3">
+              {alreadyOpen.map(s => s.title).join(' and ')} opened before the draft, so their reviews are already public.
+              They earn box office and awards points only, and their prices reflect that.
+              The same rule applies to any show that opens before you draft: you can still pick it, but critic and audience points go only to players who drafted it before opening night.
+            </p>
+            <ul className="text-sm text-gray-300 space-y-2">
+              {alreadyOpen.map(s => (
+                <li key={s.id} className="flex items-start justify-between gap-4">
+                  <span className="min-w-0">
+                    <span className="block">{s.title}</span>
+                    <span className="block text-xs text-gray-500">
+                      {s.criticScore != null && <>CriticScore {Math.round(s.criticScore)}</>}
+                      {s.criticScore != null && s.openingDate && ' · '}
+                      {s.openingDate && <>opened {shortDate(s.openingDate)}</>}
+                    </span>
+                  </span>
+                  <span className="font-mono text-emerald-400 shrink-0">${s.price}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
       {/* How It Works */}
       <section className="max-w-3xl mx-auto px-4 py-12">
         <h2 className="text-2xl font-bold mb-8 text-center">How It Works</h2>
@@ -88,7 +170,7 @@ export default function FantasyLandingPage() {
             <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-brand/15 text-brand font-bold text-lg mb-3">1</div>
             <h3 className="font-semibold mb-2 text-white">Draft</h3>
             <p className="text-sm text-gray-400">
-              Pick {info.teamSize} shows from {info.totalShows} options.
+              Pick up to {info.teamSize} of the {info.totalShows} draftable shows from this Tony season.
               Stay within your ${info.budget} budget.
               No account needed.
             </p>
@@ -98,17 +180,37 @@ export default function FantasyLandingPage() {
             <h3 className="font-semibold mb-2 text-white">Score</h3>
             <p className="text-sm text-gray-400">
               Points accumulate from four pillars:
-              critics, audiences, box office, and awards.
+              critics, audiences, box office, and awards. Standings update every Wednesday.
             </p>
           </div>
           <div className="bg-surface-raised/50 rounded-xl p-6 text-center border border-white/5 hover:border-brand/20 transition-colors">
             <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-brand/15 text-brand font-bold text-lg mb-3">3</div>
             <h3 className="font-semibold mb-2 text-white">Win</h3>
             <p className="text-sm text-gray-400">
-              Season runs through Tony Awards night.
-              Most points wins. Check the leaderboard weekly.
+              The season runs through Tony Awards night in June.
+              Most points wins.
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* Worked example */}
+      <section className="max-w-3xl mx-auto px-4 py-6">
+        <div className="bg-surface-raised/30 rounded-xl p-6 border border-white/5">
+          <h2 className="text-lg font-bold mb-2">Scoring in 30 seconds</h2>
+          <p className="text-sm text-gray-400 mb-3">
+            Say you draft a new musical before it opens. Here is how a great season adds up:
+          </p>
+          <ul className="text-sm text-gray-300 space-y-1.5">
+            <li className="flex justify-between gap-4"><span>Opens to Critical Gold reviews</span><span className="font-mono text-gray-300 shrink-0">{example.critic} pts</span></li>
+            <li className="flex justify-between gap-4"><span>Audiences give it an A-</span><span className="font-mono text-gray-300 shrink-0">{example.audience} pts</span></li>
+            <li className="flex justify-between gap-4"><span>Grosses $1M a week for {example.weeks} weeks</span><span className="font-mono text-gray-300 shrink-0">{example.boxOffice} pts</span></li>
+            <li className="flex justify-between gap-4"><span>{example.noms} Tony nominations, wins Best Musical</span><span className="font-mono text-gray-300 shrink-0">{example.awards} pts</span></li>
+            <li className="flex justify-between gap-4 border-t border-white/10 pt-1.5 font-semibold text-white"><span>Season total from one pick</span><span className="font-mono shrink-0">{example.total} pts</span></li>
+          </ul>
+          <p className="text-xs text-gray-500 mt-3">
+            A flop earns a few box office points and nothing else. That gap is the whole game.
+          </p>
         </div>
       </section>
 
@@ -140,6 +242,10 @@ export default function FantasyLandingPage() {
                 <span className="font-mono text-gray-300">{AWARDS_POINTS.outerCriticsWin} / {AWARDS_POINTS.outerCriticsNom} pts</span>
               </div>
               <div className="flex justify-between">
+                <span className="text-gray-400">Drama League Win / Nom</span>
+                <span className="font-mono text-gray-300">{AWARDS_POINTS.dramaLeagueWin} / {AWARDS_POINTS.dramaLeagueNom} pts</span>
+              </div>
+              <div className="flex justify-between">
                 <span className="text-gray-400">NYDCC Win</span>
                 <span className="font-mono text-gray-300">{AWARDS_POINTS.nydccWin} pts</span>
               </div>
@@ -152,8 +258,8 @@ export default function FantasyLandingPage() {
                 <span className="font-mono text-gray-300">{AWARDS_POINTS.obieAward} pts</span>
               </div>
             </div>
-            <p className="text-xs text-gray-600 mt-2">
-              Scoring events across 6 weeks from mid-May through Tony night in June.
+            <p className="text-xs text-gray-500 mt-2">
+              Scoring events across six weeks from early May through Tony night in June. Awards count for every player, whenever you drafted.
             </p>
           </div>
 
@@ -163,10 +269,11 @@ export default function FantasyLandingPage() {
               <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-green-400/15 text-green-400 text-sm font-bold">$</span> Box Office
             </h3>
             <p className="text-sm text-gray-400">
-              A hit musical grossing $1M/week earns about 3 pts per week.
-              Points accumulate every week through Tony Awards night.
+              A hit musical grossing $1M a week earns about 3 points every week.
+              Points accumulate from the week you draft through Tony Awards night.
+              Draft by {shortDate(info.earlyBirdCutoff ?? info.scoringStart)} and your box office counts from the season start on {shortDate(info.scoringStart)}.
             </p>
-            <p className="text-xs text-gray-600 mt-2">
+            <p className="text-xs text-gray-500 mt-2">
               Broadway shows only. Off-Broadway shows don&apos;t report grosses.
             </p>
           </div>
@@ -182,16 +289,16 @@ export default function FantasyLandingPage() {
                   <span className="text-gray-400">
                     {tier}
                     {CRITIC_TIER_RANGES[tier] && (
-                      <span className="text-gray-600 font-mono text-xs ml-1.5">{CRITIC_TIER_RANGES[tier]}</span>
+                      <span className="text-gray-500 font-mono text-xs ml-1.5">{CRITIC_TIER_RANGES[tier]}</span>
                     )}
                   </span>
                   <span className="font-mono text-gray-300 whitespace-nowrap">{pts} pts</span>
                 </div>
               ))}
             </div>
-            <p className="text-xs text-gray-600 mt-3">
+            <p className="text-xs text-gray-500 mt-3">
               Based on Broadway Scorecard&apos;s critic composite score.
-              Shows that opened before the season start don&apos;t earn critic points.
+              Counts only for shows that had not opened yet when you drafted them.
             </p>
           </div>
 
@@ -210,22 +317,29 @@ export default function FantasyLandingPage() {
                   </div>
                 ))}
             </div>
+            <p className="text-xs text-gray-500 mt-3">
+              Same rule as CriticScore: counts only for shows that opened after you drafted them.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Season Info */}
+      {/* Season calendar */}
       <section className="max-w-3xl mx-auto px-4 py-12">
-        <h2 className="text-2xl font-bold mb-6 text-center">Season Details</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Season Calendar</h2>
         <div className="bg-surface-raised/50 rounded-xl p-6">
-          <div className="grid sm:grid-cols-2 gap-4 text-sm">
-            <div>
-              <span className="text-gray-500">Season</span>
-              <p className="text-white font-medium">{info.season}</p>
-            </div>
+          <ol className="space-y-3 text-sm">
+            {calendar.map(item => (
+              <li key={item.label} className="flex gap-4">
+                <span className="w-24 shrink-0 font-mono text-brand">{shortDate(item.date)}</span>
+                <span className="text-gray-300">{item.label}</span>
+              </li>
+            ))}
+          </ol>
+          <div className="grid sm:grid-cols-3 gap-4 text-sm mt-6 pt-6 border-t border-white/5">
             <div>
               <span className="text-gray-500">Budget</span>
-              <p className="text-white font-medium">${info.budget} for {info.teamSize} shows</p>
+              <p className="text-white font-medium">${info.budget} for up to {info.teamSize} shows</p>
             </div>
             <div>
               <span className="text-gray-500">Draftable Shows</span>
@@ -233,7 +347,7 @@ export default function FantasyLandingPage() {
             </div>
             <div>
               <span className="text-gray-500">Scoring Period</span>
-              <p className="text-white font-medium">{info.scoringStart} to {info.scoringEnd}</p>
+              <p className="text-white font-medium">{shortDate(info.scoringStart)} to {longDate(info.scoringEnd)}</p>
             </div>
           </div>
         </div>
@@ -246,43 +360,51 @@ export default function FantasyLandingPage() {
           {[
             {
               q: 'What does the winner get?',
-              a: '$500 to spend on TodayTix. Highest total points on Tony Awards night wins.',
+              a: `${PRIZE_DESCRIPTION}. Highest total points after Tony Awards night wins.`,
             },
             {
               q: 'Is it free?',
-              a: 'Yes, completely free. No account needed — just enter your email to draft.',
+              a: 'Yes, completely free. No account needed. Enter your email to draft and we send you a confirmation with your picks.',
             },
             {
-              q: 'When is the draft deadline?',
-              a: 'You can draft anytime during the season. The earlier you draft, the more weeks of box office points your shows accumulate.',
+              q: 'When can I draft?',
+              a: `Any time from ${longDate(DRAFT_OPENS)} until the deadline on ${longDate(deadlineDate)} at 11:59pm ET. The earlier you draft, the more your shows can earn: box office counts from the week you draft, and critic and audience points count only for shows that had not opened yet when you picked them. Draft by ${longDate(info.earlyBirdCutoff ?? info.scoringStart)} and your box office counts from the season start.`,
+            },
+            {
+              q: 'Can I pick a show that has already opened?',
+              a: 'Yes. It earns box office and awards points for you, but not critic or audience points, because those scores were public when you drafted. Its price is set with that in mind.',
             },
             {
               q: 'Can I change my picks after submitting?',
-              a: 'No. Picks are final once submitted — one entry per email, locked in for the season. Draft carefully.',
+              a: 'No. Picks are final once submitted. One entry per email, locked in for the season. Draft carefully.',
             },
             {
               q: 'How do show prices work?',
-              a: 'Each show has a price ($5-$35) based on how likely it is to score well. Buzzy new musicals cost more. You have $100 to fill 8 slots, so you need a mix of big bets and value picks.',
+              a: `Each show has a price from $${priceRange.min} to $${priceRange.max} based on how many points it is projected to earn: its Tony prospects, its box office outlook, how many weeks it runs, and, for shows that already opened, the score it has. Prices are set when the draft opens and do not change during the season. You have $${info.budget} for up to ${info.teamSize} slots, so you need a mix of big bets and value picks. Every price comes with a one-line rationale in the Draft Guide.`,
             },
             {
-              q: 'What\'s the best strategy?',
-              a: 'Awards are worth the most points, so pick shows likely to earn Tony nominations. But don\'t ignore box office — a hit musical earning $1M/week accumulates points every week. A mix of a few premium contenders and some value sleepers usually beats going all-in on favorites.',
+              q: 'What is the best strategy?',
+              a: 'Awards are worth the most points, so pick shows likely to earn Tony nominations. Do not ignore box office: a hit musical earning $1M a week adds points every week. A few premium contenders plus some value sleepers usually beats going all-in on favorites.',
             },
             {
               q: 'What about shows that close early?',
-              a: 'They stop earning box office points, but they can still earn Tony nominations and wins. Some of the best Tony contenders closed early — a $6 show that earns a Best Musical nom is a massive value pick.',
+              a: 'They keep the points they earned and stop earning box office. They can still earn Tony nominations and wins. A cheap show that lands a Best Play nomination is a big value pick.',
             },
             {
               q: 'What about Off-Broadway shows?',
-              a: 'Priced $5-$9. They earn CriticScore and AudienceGrade points, plus Drama Desk, Outer Critics Circle, Lortel, and Obie awards. No box office and no Tony nominations.',
+              a: `${obRange ? `Priced $${obRange.min} to $${obRange.max}. ` : ''}They earn CriticScore and AudienceGrade points, plus Drama Desk, Outer Critics Circle, Lortel, and Obie awards. No box office and no Tony nominations.`,
+            },
+            {
+              q: 'What if a new show is announced after I draft?',
+              a: 'It joins the draftable list at a freshly set price so later drafters can pick it. Existing rosters do not change.',
             },
             {
               q: 'When do scores update?',
-              a: 'Weekly. Box office data updates every Tuesday, and scores are recomputed every Wednesday. You\'ll get a weekly email with the latest standings.',
+              a: 'Weekly. Box office data arrives on Tuesday and scores are recomputed every Wednesday. You get a weekly email with the latest standings.',
             },
             {
               q: 'What are leagues?',
-              a: 'Optional. Type the same league name as your friends on the draft form to create a private group. You\'ll see your league standings alongside the overall leaderboard.',
+              a: 'Optional private groups. Create a league to get an invite link, or type the same league name as your friends on the draft form. Your league standings show alongside the overall leaderboard.',
             },
             {
               q: 'How are ties broken?',
@@ -290,7 +412,7 @@ export default function FantasyLandingPage() {
             },
             {
               q: 'Where do the scores come from?',
-              a: 'CriticScore is Broadway Scorecard\'s composite of professional critic reviews. AudienceGrade comes from audience review platforms. Box office is weekly Broadway grosses. Awards are official nominations and wins from 7 major ceremonies.',
+              a: 'CriticScore is Broadway Scorecard\'s composite of professional critic reviews. AudienceGrade comes from audience review platforms. Box office is the weekly Broadway grosses report. Awards are official nominations and wins from seven ceremonies.',
             },
           ].map(({ q, a }) => (
             <div key={q} className="bg-surface-raised/30 rounded-xl p-4">
