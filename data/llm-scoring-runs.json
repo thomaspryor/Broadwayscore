@@ -1,21 +1,5 @@
 [
   {
-    "startedAt": "2026-09-28T02:02:29.113Z",
-    "completedAt": "2026-09-28T02:09:03.617Z",
-    "totalReviews": 176,
-    "processed": 176,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 456380,
-      "output": 41672,
-      "total": 498052
-    },
-    "costUsd": 1.284911,
-    "runId": "36366452732",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-28T02:36:25.491Z",
     "completedAt": "2026-09-28T02:36:28.495Z",
     "totalReviews": 44940,
@@ -237065,6 +237049,44 @@
     },
     "costUsd": 0,
     "runId": "36610858225",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-29T18:41:48.252Z",
+    "completedAt": "2026-09-29T18:42:20.160Z",
+    "totalReviews": 45687,
+    "processed": 1,
+    "skipped": 45677,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 44531,
+      "output": 1501,
+      "total": 117837
+    },
+    "costUsd": 0.19611070000000003,
+    "runId": "36610613118",
+    "errorDetails": [
+      {
+        "showId": "the-phantom-of-the-opera-west-end-1986",
+        "outletId": "theatreboard",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-29T18:42:22.288Z",
+    "completedAt": "2026-09-29T18:48:53.089Z",
+    "totalReviews": 177,
+    "processed": 177,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 462871,
+      "output": 42466,
+      "total": 505337
+    },
+    "costUsd": 1.2975146,
+    "runId": "36610613118",
     "errorDetails": []
   }
 ]
