@@ -44,7 +44,7 @@ function applyAddShow(shows, action) {
     if (!show.openingDate) return { ok: false, reason: 'add-show: crossLinkFrom needs show.openingDate' };
   }
 
-  shows.push({ ...show, discoverySource: show.discoverySource || 'manual-user-request' });
+  shows.push({ ...show, venue: sanitizeVenueForWrite(show.venue), discoverySource: show.discoverySource || 'manual-user-request' });
   if (from) {
     from.priorRuns = from.priorRuns || [];
     if (!from.priorRuns.some(r => r.id === show.id)) {

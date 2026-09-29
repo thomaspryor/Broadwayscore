@@ -36,3 +36,10 @@ test('crossLinkFrom appends priorRuns once and requires the target', () => {
 test('refuses a placeholder venue', () => {
   assert.equal(applyAddShow([], { show: { ...base(), venue: 'TBA' } }).ok, false);
 });
+test('stores the trimmed venue, same as the priorRuns link', () => {
+  const cur = { id: 'cur', slug: 'cur' };
+  const shows = [cur];
+  applyAddShow(shows, { show: { ...base(), venue: '  Playwrights Horizons ' }, crossLinkFrom: 'cur' });
+  assert.equal(shows[1].venue, 'Playwrights Horizons');
+  assert.equal(cur.priorRuns[0].venue, 'Playwrights Horizons');
+});
