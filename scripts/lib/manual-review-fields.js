@@ -211,6 +211,10 @@ function buildManualReviewFields(opts = {}) {
  *                                         incoming is the CURRENT production and stale-flag /
  *                                         date-gap collisions against prior-production files are
  *                                         suppressed (revival/returning-production carve-out).
+ * @param {object}  [opts.show]          shows.json row. When given, an existing flagged file that is
+ *                                         provably a DIFFERENT production (other-production-signal.js)
+ *                                         and would not share the incoming's filename is not a collision
+ *                                         (BRO-4271: 2023 London files squatted the 2026 Broadway slots).
  * @param {boolean} [opts.forceClearStale] Bypass the stale-flag check (--force-clear-stale-flag)
  * @param {object}  [opts.fs]              Injected fs for tests
  * @param {object}  [opts.path]            Injected path for tests
@@ -219,7 +223,8 @@ function buildManualReviewFields(opts = {}) {
 function detectIngestCollision(opts = {}) {
   const fs = opts.fs || require('fs');
   const path = opts.path || require('path');
-  const { showDir, outletId, criticName, url, publishDate, forceClearStale, openingDate } = opts;
+  const { showDir, outletId, criticName, url, publishDate, forceClearStale, show } = opts;
+  const openingDate = opts.openingDate || (show && show.openingDate);
 
   if (!showDir || !fs.existsSync(showDir)) return { ok: true };
   if (!outletId) return { ok: true };
@@ -277,6 +282,28 @@ function detectIngestCollision(opts = {}) {
     // and as a boolean by older writers (283 vs 445 in corpus), so `=== true`
     // silently missed the string majority — use the canonical predicate (#1020).
     const urlMatches = url && data.url && _normUrl(url) === _normUrl(data.url);
+
+    // OTHER-PRODUCTION CARVE-OUT (BRO-4271): an existing file that is provably
+    // about a different production (London edition url, London-only outlet, a
+    // /2023/ url on a 2026 show, a date well before previews, or flagged text
+    // naming a London house) cannot be the same review as a different-url
+    // incoming, and when the incoming lands under a different filename there
+    // is nothing to merge into. The Beaches protection still holds: a SAME
+    // filename (same critic, or both Unknown) keeps blocking, because that
+    // write would land on the flagged file.
+    // Only for files FLAGGED wrongProduction/wrongShow: findExistingReviewFile
+    // never merges into those, so the incoming cannot inherit them. An
+    // unflagged (or merely auto-cleared) older file IS a merge target (an
+    // --unknown file accepts any named critic), so it keeps blocking.
+    const flaggedWrong = data.wrongProduction === true || data.wrongShow === true;
+    if (show && !urlMatches && flaggedWrong) {
+      const incomingCriticSlug = normalizedCritic || 'unknown';
+      const sameFilename = normalizeCritic(fileCritic) === incomingCriticSlug;
+      if (!sameFilename) {
+        const { otherProductionSignal } = require('./other-production-signal');
+        if (otherProductionSignal(data, show, { useText: true })) continue;
+      }
+    }
     const hasStaleFlag = data.wrongProduction === true
       || data.wrongShow === true
       || hasClearBreadcrumbValue(data.wrongProductionAutoCleared);

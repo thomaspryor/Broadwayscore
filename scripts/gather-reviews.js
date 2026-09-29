@@ -3167,6 +3167,25 @@ function createReviewFile(showId, reviewData, options = {}) {
   // already skips wrongProduction files as merge targets (review-normalization.js:1126)
   // which is why this was invisible until now. Log it, write to the audit file,
   // and don't create the new file. Doesn't abort the batch.
+  // OTHER-PRODUCTION INGEST GATE (BRO-4271): refuse a review whose URL proves
+  // it is about a different production of the same title (the 2023 Guardian
+  // /stage/2023/ review, a timeout.com/london review on a Broadway show).
+  // URL signals only: a stored/aggregator date can be wrong (the Time Out
+  // London file carried a 2026 date) and dates are already judged downstream
+  // by the anticipatory gate, which flags rather than drops. show.priorRuns
+  // exempts declared earlier runs. Scoped to NYC/London shows.
+  {
+    const _opShow = getShowData(showId);
+    const { otherProductionSignal, showMarket, URL_SIGNALS } = require('./lib/other-production-signal');
+    if (_opShow && showMarket(_opShow)) {
+      const op = otherProductionSignal({ ...reviewData, outletId: normalizedOutletId }, _opShow, { only: URL_SIGNALS });
+      if (op) {
+        console.log(`    ✗ Skipping ${filename}: other production (${op.signal}: ${op.detail})`);
+        return 'otherProduction';
+      }
+    }
+  }
+
   if (reviewData.url) {
     // Pass openingDate so the collision guard recognises a current-production review and
     // does NOT block it against a prior-production file (revival/returning-production
@@ -3179,6 +3198,7 @@ function createReviewFile(showId, reviewData, options = {}) {
       url: reviewData.url,
       publishDate: reviewData.publishDate,
       openingDate: _collisionShow && _collisionShow.openingDate,
+      show: _collisionShow || undefined,
     });
     if (!staleCollision.ok) {
       console.log(`    ✗ Skipping ${filename}: stale-flag collision with ${staleCollision.file} (${staleCollision.reason})`);
