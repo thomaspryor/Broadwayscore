@@ -4,8 +4,9 @@
  * the `provider-spend:attribution-gap:<provider>` cards check-provider-spend.js
  * files (BRO-4215).
  *
- * Exit 0 iff the latest recorded day in data/audit/provider-spend-daily.jsonl
- * has attributedPct[provider] >= attributionAlertMin (scripts/config/
+ * Exit 0 iff each of the last attributionAlertDays consecutive recorded days in
+ * data/audit/provider-spend-daily.jsonl has attributedPct[provider] >=
+ * attributionAlertMin (same window the alert fires on) (scripts/config/
  * provider-spend-thresholds.json), i.e. the scraper-spend ledger now explains
  * most of that provider's billed spend. Read-only. See autonomous-triage-core.js's
  * SAFE_CHECK_FORMS entry for the regex that locks --provider to known names.
@@ -19,6 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help');
+const { isNextUtcDay } = require('./lib/provider-spend-core');
 
 const REPO = path.join(__dirname, '..');
 const PROVIDERS = ['scrapingbee', 'scrapingdog', 'brightdata'];
@@ -33,6 +35,27 @@ function latestPct(lines, provider) {
   return { day: last.day, pct: typeof pct === 'number' ? pct : null };
 }
 
+function sortedRecords(lines) {
+  return lines.map((l) => { try { return JSON.parse(l); } catch { return null; } })
+    .filter((r) => r && r.day).sort((a, b) => (a.day < b.day ? -1 : a.day > b.day ? 1 : 0));
+}
+
+/**
+ * Pure: is the gap closed? Mirrors the alert's own window (attributionGaps):
+ * the last `days` recorded days must be consecutive and ALL at or above min,
+ * so one noisy good day cannot close a card whose gap is still real.
+ * @returns {{verdict:'clear'|'open'|'unverifiable', days:string[], pcts:(number|null)[]}}
+ */
+function clearVerdict(lines, provider, { min = 0.8, days = 2 } = {}) {
+  const recent = sortedRecords(lines).slice(-days);
+  const pcts = recent.map((r) => { const p = (r.attributedPct || {})[provider]; return typeof p === 'number' ? p : null; });
+  const dayList = recent.map((r) => r.day);
+  if (pcts.some((p) => p !== null && p < min)) return { verdict: 'open', days: dayList, pcts };
+  const consecutive = recent.every((r, i) => i === 0 || isNextUtcDay(recent[i - 1].day, r.day));
+  if (recent.length < days || pcts.some((p) => p === null) || !consecutive) return { verdict: 'unverifiable', days: dayList, pcts };
+  return { verdict: 'clear', days: dayList, pcts };
+}
+
 function main(argv) {
   if (hasHelpFlag(argv || [])) { console.log(USAGE); return 0; }
   const arg = (argv || []).find((a) => a.startsWith('--provider='));
@@ -45,16 +68,17 @@ function main(argv) {
   const min = thresholds.attributionAlertMin ?? 0.8;
   let lines = [];
   try { lines = fs.readFileSync(path.join(REPO, 'data', 'audit', 'provider-spend-daily.jsonl'), 'utf8').split('\n').filter(Boolean); } catch { /* handled below */ }
-  const { day, pct } = latestPct(lines, provider);
-  if (pct === null) {
-    console.log(`CANNOT VERIFY: no measured ${provider} attribution in provider-spend-daily.jsonl (latest day: ${day || 'none'})`);
+  const days = thresholds.attributionAlertDays ?? 2;
+  const v = clearVerdict(lines, provider, { min, days });
+  const shown = v.days.map((d, i) => `${d}=${v.pcts[i] === null ? 'unmeasured' : Math.round(v.pcts[i] * 100) + '%'}`).join(', ');
+  if (v.verdict === 'unverifiable') {
+    console.log(`CANNOT VERIFY: need ${days} consecutive measured days of ${provider} attribution (have: ${shown || 'none'})`);
     return 3;
   }
-  const verdict = pct >= min ? 'CLEAR' : 'OPEN';
-  console.log(`${verdict}: ${provider} attributedPct ${Math.round(pct * 100)}% on ${day} (threshold ${Math.round(min * 100)}%)`);
-  return pct >= min ? 0 : 1;
+  console.log(`${v.verdict.toUpperCase()}: ${provider} attributedPct ${shown} (threshold ${Math.round(min * 100)}% on each of the last ${days} days)`);
+  return v.verdict === 'clear' ? 0 : 1;
 }
 
 if (require.main === module) process.exit(main(process.argv.slice(2)));
 
-module.exports = { latestPct, main };
+module.exports = { latestPct, clearVerdict, main };
