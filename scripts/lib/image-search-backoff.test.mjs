@@ -54,6 +54,8 @@ test('never skips within ±14 days of openingDate (art usually appears around op
   assert.equal(shouldSkipGoogleImages(entry, now, { openingDate: '2026-09-20' }).skip, false, '9 days after opening');
   assert.equal(shouldSkipGoogleImages(entry, now, { openingDate: '2026-12-01' }).skip, true, 'far from opening');
   assert.equal(shouldSkipGoogleImages(entry, now, { openingDate: null }).skip, true, 'no opening date');
+  assert.equal(shouldSkipGoogleImages(entry, now, { previewsStartDate: '2026-10-02' }).skip, false, 'previews start, no opening date yet');
+  assert.equal(shouldSkipGoogleImages(entry, now, { previewsStartDate: '2026-11-20', openingDate: '2026-12-10' }).skip, true, 'both dates far off');
   assert.equal(shouldSkipGoogleImages(entry, now, null).skip, true, 'no show passed');
 });
 

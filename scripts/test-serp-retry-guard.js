@@ -17,6 +17,7 @@ const {
   classifyLifecycle,
   shouldRetryUrlDiscovery,
   recordSerpAttempt,
+  getPublicationMoment,
   MAX_RETRIES_WRONG_CONTENT,
   COOLDOWN_MS,
 } = require('./lib/review-guards');
@@ -290,6 +291,106 @@ assert(
   `openMature cooldown \u2248 ${COOLDOWN_MS.openMature}ms (14 days)`,
   `got ${matureCooldown}ms`
 );
+
+
+// ============================================================
+// Pre-publication attempts (BRO-4281)
+// ============================================================
+console.log('\n=== pre-publication attempts (BRO-4281) ===\n');
+
+function withNow(iso, fn) {
+  const realNow = Date.now;
+  const fixed = Date.parse(iso);
+  Date.now = () => fixed;
+  try { return fn(); } finally { Date.now = realNow; }
+}
+
+// School Girls 2026-09-28: reviews published ~01:00 UTC on the 29th.
+const schoolGirls = { id: 'school-girls-2026', status: 'previews', openingDate: '2026-09-28', category: 'broadway' };
+const SG_PUB = '2026-09-29T01:00:00.000Z';
+assertEqual(new Date(getPublicationMoment(schoolGirls)).toISOString(), SG_PUB, 'publication moment = openingDate + 25h (broadway)');
+
+{
+  const u = withNow('2026-09-28T23:15:00Z', () => recordSerpAttempt(schoolGirls, { incompleteReason: 'no_url' }));
+  assertEqual(u.serpRetryAfter, SG_PUB, 'no_url at 23:15: 24h cooldown capped at the publication moment');
+  assertEqual(u.serpPrePubCount, 1, 'no_url at 23:15: serpPrePubCount = 1');
+  assertEqual(u.serpRetryCount, 1, 'no_url at 23:15: serpRetryCount still advances (cumulative)');
+}
+
+{
+  // previews max for wrong_content = 2. One earlier attempt + a pre-pub one
+  // reaches the raw cap but must not abandon.
+  const u = withNow('2026-09-28T23:15:00Z', () =>
+    recordSerpAttempt(schoolGirls, { incompleteReason: 'wrong_content', serpRetryCount: 1 }));
+  assertEqual(u.serpDiscoveryAbandoned, undefined, 'wrong_content in window at raw cap: not abandoned');
+  assertEqual(u.serpRetryAfter, SG_PUB, 'wrong_content in window: cooldown capped at publication');
+  assertEqual(u.serpPrePubCount, 1, 'wrong_content in window: serpPrePubCount = 1');
+
+  // After publication the pre-pub attempt is not charged: 2 total - 1 pre-pub = 1 < 2.
+  const gate = withNow('2026-09-29T01:00:00Z', () =>
+    shouldRetryUrlDiscovery(schoolGirls, { incompleteReason: 'wrong_content', ...u }));
+  assertEqual(gate.shouldRetry, true, 'post-publication: pre-pub attempt does not use the budget');
+  assertEqual(gate.reason, 'wrong_content_retry', 'post-publication: same reason label');
+
+  // Next post-publication attempt uses up the budget and abandons as today.
+  const next = withNow('2026-09-29T02:00:00Z', () =>
+    recordSerpAttempt(schoolGirls, { incompleteReason: 'wrong_content', ...u }));
+  assertEqual(next.serpDiscoveryAbandoned, true, 'post-publication: abandons once the post-pub budget is spent');
+  assertEqual(next.serpPrePubCount, undefined, 'post-publication: no pre-pub tally written');
+
+  const gate2 = withNow('2026-09-29T03:00:00Z', () =>
+    shouldRetryUrlDiscovery(schoolGirls, { incompleteReason: 'wrong_content', serpRetryCount: 3, serpPrePubCount: 1 }));
+  assertEqual(gate2.reason, 'max_retries_reached', 'post-publication: max_retries_reached label unchanged');
+}
+
+{
+  // More than a day before publication: unchanged (24h cooldown, abandons at cap).
+  const u = withNow('2026-09-27T23:00:00Z', () => recordSerpAttempt(schoolGirls, { incompleteReason: 'no_url' }));
+  assertEqual(u.serpRetryAfter, '2026-09-28T23:00:00.000Z', '>1 day before publication: normal 24h cooldown');
+  assertEqual(u.serpPrePubCount, undefined, '>1 day before publication: no pre-pub tally');
+  const a = withNow('2026-09-27T23:00:00Z', () =>
+    recordSerpAttempt(schoolGirls, { incompleteReason: 'wrong_content', serpRetryCount: 1 }));
+  assertEqual(a.serpDiscoveryAbandoned, true, '>1 day before publication: abandons at cap as today');
+}
+
+{
+  // Closed show: never pre-publication.
+  const closed = { ...schoolGirls, status: 'closed', closingDate: '2026-09-27' };
+  const u = withNow('2026-09-28T23:15:00Z', () => recordSerpAttempt(closed, { incompleteReason: 'no_url' }));
+  assertEqual(u.serpPrePubCount, undefined, 'closed show: no pre-pub tally');
+}
+
+{
+  // West End publishes openingDate + 21h.
+  const we = { ...schoolGirls, category: 'west-end' };
+  const u = withNow('2026-09-28T12:00:00Z', () => recordSerpAttempt(we, { incompleteReason: 'no_url' }));
+  assertEqual(u.serpRetryAfter, '2026-09-28T21:00:00.000Z', 'west-end: cooldown capped at openingDate + 21h');
+}
+
+{
+  // stale_wrong_production keeps its own namespaced tally.
+  const u = withNow('2026-09-28T23:15:00Z', () =>
+    recordSerpAttempt(schoolGirls, { incompleteReason: 'stale_wrong_production', staleWpRetryCount: 1 }));
+  assertEqual(u.staleWpPrePubCount, 1, 'stale_wrong_production: staleWpPrePubCount = 1');
+  assertEqual(u.serpPrePubCount, undefined, 'stale_wrong_production: shared serpPrePubCount untouched');
+  assertEqual(u.staleWrongProductionRecoveryAbandoned, undefined, 'stale_wrong_production in window: not abandoned');
+  assertEqual(u.staleWpRetryAfter, SG_PUB, 'stale_wrong_production in window: cooldown capped');
+}
+
+{
+  // Spend bound: a persistently-null SERP retried every time the cooldown
+  // expires over the pre-publication day gets 1 attempt (24h cooldown capped).
+  let t = Date.parse(SG_PUB) - DAY;
+  let review = { incompleteReason: 'no_url' };
+  let attempts = 0;
+  while (t < Date.parse(SG_PUB)) {
+    attempts++;
+    const u = withNow(new Date(t).toISOString(), () => recordSerpAttempt(schoolGirls, review));
+    review = { ...review, ...u };
+    t = Date.parse(u.serpRetryAfter);
+  }
+  assertEqual(attempts, 1, 'opening eve: one SERP per no_url review before publication');
+}
 
 // ============================================================
 // Tier table sanity

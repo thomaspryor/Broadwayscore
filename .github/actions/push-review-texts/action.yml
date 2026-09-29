@@ -120,6 +120,11 @@ runs:
             // Browserbase/Bright Data/ScrapingBee spend the guard exists to stop.
             'fetchRetryAfter',
             'fetchDiscoveryAbandoned',
+            // Pre-publication retry tallies (BRO-4281): subtracted from the
+            // retry counts above; cleared on success like them. Losing one on
+            // rebase would charge opening-eve failures to the post-opening budget.
+            'fetchPrePubFailures',
+            'serpPrePubCount',
             // Head-of-line rescore block state (Notion 3ad637c5-416f-8169), same
             // reasoning as the SERP fields above: clearFailureFlags() may clear
             // them on success so they are not in the guard's PROTECTED_FIELDS,

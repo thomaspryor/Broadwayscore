@@ -276,6 +276,9 @@ const PROTECTED_FIELDS = [
   // the next rebase. Durability across a REBASE (as opposed to a same-run
   // clear) still comes from push-review-texts/action.yml's ACTION_EXTRA list
   // and restore-protected-fields.js's MANUAL_FIELDS list — both include them.
+  // Same for the pre-publication tallies fetchPrePubFailures/serpPrePubCount
+  // (BRO-4281): clearFailureFlags() nulls them on success, so they live in
+  // ACTION_EXTRA + MANUAL_FIELDS, not here.
   'wrongShowRetryAt', // existing bug fix — was silently droppable on rebase
   // Manual-clear Haiku-fallback failure state (P1 352637c5-416f-81ab). A rebase
   // conflict resolver that picks the remote/longer-text side on ties would
