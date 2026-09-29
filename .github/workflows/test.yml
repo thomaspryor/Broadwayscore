@@ -2367,6 +2367,10 @@ on:
       # colocated test (runs in the scripts/lib/*.test.mjs glob step). Path-listed
       # so an edit triggers CI per feedback_test_yml_push_path_allowlist.
       - 'scripts/fantasy-weekly-email.js'
+      # Fantasy league weekly pipeline (BRO-4324): generator + scorer are exercised
+      # by tests/unit/fantasy-season-config.test.ts against their outputs.
+      - 'scripts/generate-fantasy-config.js'
+      - 'scripts/compute-fantasy-scores.js'
       - 'scripts/send-btc-results.js'
       # tests/unit-test-manifest.txt (node --test batch). The dependency
       # (scripts/lib/btc-confirmation.js) is already covered by the
