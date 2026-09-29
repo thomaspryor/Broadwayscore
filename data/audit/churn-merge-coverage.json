@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-29T07:18:33.484Z",
+    "generatedAt": "2026-09-29T07:24:41.520Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -30,7 +30,7 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 200
+      "churn": 203
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -228,7 +228,7 @@
     },
     {
       "path": "data/audit/landings.jsonl",
-      "churn": 84,
+      "churn": 85,
       "mergeAttr": "union"
     },
     {
