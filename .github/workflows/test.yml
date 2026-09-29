@@ -946,6 +946,9 @@ on:
       # Path-listed so a solo edit to the lib or its test triggers CI.
       - 'scripts/lib/detect-stale-merge-head.sh'
       - 'scripts/lib/detect-stale-merge-head.test.sh'
+      # BRO-4165: land.yml's blobless-rebase promisor retry + classification.
+      - 'scripts/lib/land-rebase.sh'
+      - 'scripts/lib/land-rebase.test.sh'
       # #458 (2026-07-30 finding, card #669): mutex-wait-vs-deadline interaction.
       # push_mutex_acquire can block for a real stretch (its own timeout defaults
       # to 900s, longer than PUSH_DEADLINE_SEC's 240s default) BEFORE the retry
@@ -4857,6 +4860,12 @@ jobs:
         # invisible to worktree-launched sessions).
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/detect-stale-merge-head.test.sh
+
+      - name: Run land-rebase test (bash integration)
+        # BRO-4165: land.yml rebase retries a partial-clone lazy-fetch failure and
+        # reports it apart from a real conflict.
+        if: always()
+        run: timeout 180 bash scripts/lib/land-rebase.test.sh
 
       - name: Run worktree-gc lock test (bash integration)
         # BRO-2607: this suite existed but was wired into nothing — no paths

@@ -142,11 +142,15 @@ jobs:
           echo "tip=$TIP" >> "$GITHUB_OUTPUT"
           echo "base=$BASE" >> "$GITHUB_OUTPUT"
           echo "branch $BRANCH @ ${TIP:0:10} → rebase onto origin/main @ ${BASE:0:10}"
-          if ! git rebase "$BASE"; then
-            git rebase --abort || true
-            echo "::error::$BRANCH does not rebase cleanly onto origin/main @ ${BASE:0:10} — resolve the conflict on the branch and push again"
-            exit 1
-          fi
+          # Run the BASE tree's copy (the land branch may predate the script)
+          # and its classifier; retries a blobless lazy-fetch failure and
+          # reports it apart from a real conflict (BRO-4165).
+          HELPER="$RUNNER_TEMP/land-rebase"; mkdir -p "$HELPER"
+          for f in land-rebase.sh promisor-fetch-failure.js; do
+            # HEAD fallback: the very landing that introduces the script.
+            git show "$BASE:scripts/lib/$f" > "$HELPER/$f" 2>/dev/null || { echo "::warning::scripts/lib/$f not readable from origin/main @ ${BASE:0:10} — using the branch's copy"; git show "HEAD:scripts/lib/$f" > "$HELPER/$f"; } || { echo "::error::scripts/lib/$f exists on neither origin/main @ ${BASE:0:10} nor the branch"; exit 1; }
+          done
+          BRANCH="$BRANCH" bash "$HELPER/land-rebase.sh" "$BASE" "$BRANCH" || exit $?
           echo "rebased=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           # A dependency change means the installed node_modules are the
           # branch's; the base gauntlet must reinstall its own (see
