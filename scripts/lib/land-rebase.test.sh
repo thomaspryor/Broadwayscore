@@ -55,20 +55,20 @@ mkrepo r1; run 0 ""
 
 echo "case 2: promisor failure twice, then success"
 mkrepo r2; run 2 "$PROM"
-[ $RC -eq 0 ] && [ "$(git rev-parse HEAD~1)" = "$BASE" ] && echo "$OUT" | grep -q 'retry 2/3' && ok "retried to success" || bad "rc=$RC $OUT"
+[ $RC -eq 0 ] && [ "$(git rev-parse HEAD~1)" = "$BASE" ] && grep -q 'retry 2/3' <<<"$OUT" && ok "retried to success" || bad "rc=$RC $OUT"
 [ ! -d .git/rebase-merge ] && ok "no rebase state left" || bad "rebase-merge left"
 
 echo "case 3: promisor failure never clears"
 mkrepo r3; run 99 "$PROM"
-[ $RC -eq 3 ] && echo "$OUT" | grep -q 'NOT a merge conflict' && ! echo "$OUT" | grep -q 'resolve the conflict' && ok "exit 3, classified as infra" || bad "rc=$RC $OUT"
+[ $RC -eq 3 ] && grep -q 'NOT a merge conflict' <<<"$OUT" && ! grep -q 'resolve the conflict' <<<"$OUT" && ok "exit 3, classified as infra" || bad "rc=$RC $OUT"
 
 echo "case 4: real conflict is not retried"
 mkrepo r4 a.txt; run 0 ""
-[ $RC -eq 1 ] && echo "$OUT" | grep -q 'resolve the conflict' && ! echo "$OUT" | grep -q 'lazy-fetch' && ok "exit 1, conflict message" || bad "rc=$RC $OUT"
+[ $RC -eq 1 ] && grep -q 'resolve the conflict' <<<"$OUT" && ! grep -q 'lazy-fetch' <<<"$OUT" && ok "exit 1, conflict message" || bad "rc=$RC $OUT"
 [ ! -d .git/rebase-merge ] && ok "aborted cleanly" || bad "rebase-merge left"
 
 echo "case 5: promisor text alongside CONFLICT stays a conflict"
 mkrepo r5; run 1 "$PROM"$'\nCONFLICT (content): Merge conflict in a.txt'
-[ $RC -eq 1 ] && echo "$OUT" | grep -q 'resolve the conflict' && ok "conflict wins" || bad "rc=$RC $OUT"
+[ $RC -eq 1 ] && grep -q 'resolve the conflict' <<<"$OUT" && ok "conflict wins" || bad "rc=$RC $OUT"
 
 [ $fail -eq 0 ] && echo "land-rebase test: OK" || { echo "land-rebase test: FAILED"; exit 1; }

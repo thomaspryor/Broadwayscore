@@ -18,5 +18,22 @@
   "keyQuote": "I think this is a pretty Sensational night at the theater and it has to be a five-star verdict",
   "scoredAt": "2026-04-19T08:33:34.345Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/X8uiKuW1y-M/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/X8uiKuW1y-M/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "Savoy Theatre | 2023 west end revival",
+    "reason": "The video is about a 2023 West End revival at the Savoy Theatre, not the assigned Broadway production.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is about the 2023 West End revival at the Savoy Theatre, which is in London, not the assigned Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:37.122Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The video is about a 2023 West End revival at the Savoy Theatre, not the assigned Broadway production."
 }

@@ -18,5 +18,20 @@
   "keyQuote": "Beetlejuice is fun. It's flashy. It's loud... It's also incredibly incoherent. The second act book makes no sense.",
   "scoredAt": "2026-04-19T08:19:49.526Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/ohsnU8HdMx4/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/ohsnU8HdMx4/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "So this is the tour of Beetlejuice that is returning to Broadway.",
+    "reason": "The video explicitly mentions a touring production of Beetlejuice returning to Broadway, indicating it is not the assigned Broadway revival production.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": false,
+      "reason": "The video explicitly states that the touring production is returning to Broadway and playing at the Palace Theatre, which aligns with the assigned production details for the Broadway revival.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:54:49.017Z"
+  }
 }

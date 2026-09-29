@@ -126,6 +126,16 @@ jobs:
       # Writes to data/video-reviews-transcripts/raw/. Skips existing files.
       - name: Collect transcripts
         id: collect
+        # BRO-4343: YouTube bot-walls yt-dlp on runner IPs; collect-transcripts.js
+        # falls back to fetchPage() (Bright Data first) for YouTube captions.
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          # fetchPage()'s cheapest tier, tried before Bright Data.
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          # 2 Bright Data requests per YouTube video; bounds a --refresh run.
+          BD_REQ_BUDGET: '400'
         run: |
           set -euo pipefail
           ARGS=()
@@ -167,6 +177,19 @@ jobs:
           set -euo pipefail
           node scripts/video-reviews/score-video-reviews.js
 
+      # BRO-4328: check each newly scored review is about the production it is
+      # filed under (West End/tour/tryout/earlier-run videos were landing on
+      # Broadway ids). Sets wrongProduction=true, which the build skips.
+      # GPT-4o proposes, Gemini must confirm; the date rule needs no model.
+      - name: Verify productions
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -euo pipefail
+          node scripts/video-reviews/verify-productions.js
+
       # Step 7 of 8 — rebuild data/video-reviews.json from all scored transcripts.
       # This file is in the Vercel deploy trigger path — pushing it kicks a deploy.
       - name: Build video-reviews.json
@@ -181,6 +204,16 @@ jobs:
         run: |
           set -euo pipefail
           node scripts/video-reviews/backfill-thumbnails.js
+
+      # The YouTube caption fallback goes through fetchPage(), which writes
+      # Bright Data rows to the tracked spend ledger. Commit them BEFORE the
+      # main commit so push-with-retry.sh never rebases over a dirty tree.
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: weekly-video-reviews
 
       # Only commit if all 8 steps succeeded. Avoids shipping inconsistent state
       # (e.g. transcripts collected but video-reviews.json not yet rebuilt).

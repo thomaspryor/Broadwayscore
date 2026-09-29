@@ -17,5 +17,20 @@
   "reasoning": "The reviewer praises the mood-setting, pacing, humor, and performances with clear enthusiasm and no significant caveats beyond acknowledging some may want a more definitive ending, which he personally didn't mind.",
   "keyQuote": "It's definitely a comedy, but humorous in an uncomfortable or unsettling way that worked really well for me.",
   "scoredAt": "2026-07-05T12:08:09.230Z",
-  "scoringModel": "claude-opus-4-7"
+  "scoringModel": "claude-opus-4-7",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "The Receptionist by Adam Bock at Second Stage",
+    "reason": "The video title mentions 'Second Stage', which is a different theater company in New York City, indicating a different production than the assigned one at The Irene Diamond Stage at the Pershing Square Signature Center.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": false,
+      "reason": "Second Stage is a theater company in New York City, not a different city, and the assigned production is also in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:57.406Z"
+  }
 }

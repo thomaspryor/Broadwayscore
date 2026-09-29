@@ -88,7 +88,7 @@ check_core_data_pairing() {
     name=$(basename "$f")
     # -Fx exact-name match (grep -qw would let vercel-demo.yml exempt a future
     # foo-vercel-demo.yml — '-' and '.' are non-word chars to grep)
-    if echo "$EXEMPT" | tr ' ' '\n' | grep -Fxq "$name"; then continue; fi
+    if grep -Fxq "$name" <<<"${EXEMPT// /$'\n'}"; then continue; fi
     # Require an actual `uses: .../push-core-data` step, not a mere text
     # mention in a comment or heredoc.
     if grep -qE '^[[:space:]]*uses:.*push-core-data' "$f"; then continue; fi
@@ -184,7 +184,7 @@ check_merge_drivers() {
   local MISSING="" DRIVERS d
   DRIVERS=$(grep -oE 'merge=[A-Za-z0-9_.-]+' .gitattributes | sed 's/^merge=//' | sort -u)
   for d in $DRIVERS; do
-    if echo "$BUILTIN" | grep -qw "$d"; then continue; fi
+    if grep -qw "$d" <<<"$BUILTIN"; then continue; fi
     # Tolerant match: `git config [--global] merge.<d>.driver ...`
     if ! grep -qE "merge\.$d\.driver" "$REG_FILE"; then
       MISSING="$MISSING $d"
@@ -225,7 +225,7 @@ check_scraping_fallback() {
   local VIOLATIONS="" f name
   for f in .github/workflows/*.yml; do
     name=$(basename "$f")
-    if echo "$EXEMPT" | grep -qw "$name"; then continue; fi
+    if grep -qw "$name" <<<"$EXEMPT"; then continue; fi
     if grep -q "SCRAPINGBEE_API_KEY" "$f" && ! grep -q "BRIGHTDATA_TOKEN" "$f"; then
       VIOLATIONS="$VIOLATIONS $name"
     fi
@@ -260,7 +260,7 @@ check_scrapingdog_pairing() {
   local VIOLATIONS="" f name
   for f in .github/workflows/*.yml; do
     name=$(basename "$f")
-    if echo "$EXEMPT" | grep -qw "$name"; then continue; fi
+    if grep -qw "$name" <<<"$EXEMPT"; then continue; fi
     if (grep -q "BRIGHTDATA_TOKEN" "$f" || grep -q "SCRAPINGBEE_API_KEY" "$f") && ! grep -q "SCRAPINGDOG_API_KEY" "$f"; then
       VIOLATIONS="$VIOLATIONS $name"
     fi
@@ -285,7 +285,7 @@ check_theatr_token() {
   local VIOLATIONS="" f name
   for f in .github/workflows/*.yml; do
     name=$(basename "$f")
-    if echo "$ALLOWED" | grep -qw "$name"; then continue; fi
+    if grep -qw "$name" <<<"$ALLOWED"; then continue; fi
     # Match actual secret usage, not comments
     if grep -E '^\s+THEATR_REFRESH_TOKEN:\s+\$\{\{' "$f" >/dev/null 2>&1; then
       VIOLATIONS="$VIOLATIONS $name"
@@ -434,7 +434,7 @@ check_alert_ledger_commit() {
   if [ "$OUT" = "__ACORN_MISSING__" ]; then
     echo "::error::acorn is unavailable — cannot resolve the routeAlert()/resolveCondition() require-graph (scripts/lib/require-graph-ast.js). Run 'npm ci' to restore it."
     FAILED=1
-  elif echo "$OUT" | grep -qF '__TOO_FEW_WORKFLOWS__:'; then
+  elif grep -qF '__TOO_FEW_WORKFLOWS__:' <<<"$OUT"; then
     echo "::error::alert-ledger-commit check found only $(echo "$OUT" | sed -n 's/^__TOO_FEW_WORKFLOWS__://p') workflow file(s) in .github/workflows (expected at least $MIN_WORKFLOWS) — refusing to report a verdict rather than silently pass on a near-empty or wrong-cwd scan."
     FAILED=1
   elif [ "$OUT" = "__CLEAN__" ]; then
@@ -530,13 +530,13 @@ check_ledger_coverage() {
     }
     if (!any) console.log('__CLEAN__');
   " 2>&1)
-  if echo "$OUT" | grep -qF '__ACORN_MISSING__'; then
+  if grep -qF '__ACORN_MISSING__' <<<"$OUT"; then
     echo "::error::ledger-coverage check could not run — acorn is not installed (run 'npm ci' first). This gate fails closed rather than silently reporting clean."
     FAILED=1
-  elif echo "$OUT" | grep -qF '__TOO_FEW_WORKFLOWS__:'; then
+  elif grep -qF '__TOO_FEW_WORKFLOWS__:' <<<"$OUT"; then
     echo "::error::ledger-coverage check found only $(echo "$OUT" | sed -n 's/^__TOO_FEW_WORKFLOWS__://p') workflow file(s) in .github/workflows (expected at least $MIN_WORKFLOWS) — refusing to report a verdict rather than silently pass on a near-empty or wrong-cwd scan."
     FAILED=1
-  elif echo "$OUT" | grep -qF '__CLEAN__' && ! echo "$OUT" | grep -qvF '__CLEAN__'; then
+  elif grep -qF '__CLEAN__' <<<"$OUT" && ! grep -qvF '__CLEAN__' <<<"$OUT"; then
     echo "All ledger-reaching (provider-telemetry record* writers, incl. via url-discovery.js serpQuery/discoverCorrectUrl and scraper.js fetchPage) workflows commit data/audit/scraper-spend-ledger.jsonl in the same job (or are documented, non-stale exemptions)"
   else
     echo "::error::Workflows reach a scraper-spend telemetry writer (provider-telemetry record*, serpQuery/discoverCorrectUrl, fetchPage) but no step stages data/audit/scraper-spend-ledger.jsonl for commit in the same job (or an exemption entry has gone stale):"
@@ -591,10 +591,10 @@ check_ledger_step_guard() {
     }
     if (!any) console.log('__CLEAN__');
   " 2>&1)
-  if echo "$OUT" | grep -qF '__TOO_FEW_WORKFLOWS__:'; then
+  if grep -qF '__TOO_FEW_WORKFLOWS__:' <<<"$OUT"; then
     echo "::error::ledger-step-guard check found only $(echo "$OUT" | sed -n 's/^__TOO_FEW_WORKFLOWS__://p') workflow file(s) in .github/workflows (expected at least $MIN_WORKFLOWS) — refusing to report a verdict rather than silently pass on a near-empty or wrong-cwd scan."
     FAILED=1
-  elif echo "$OUT" | grep -qF '__CLEAN__' && ! echo "$OUT" | grep -qvF '__CLEAN__'; then
+  elif grep -qF '__CLEAN__' <<<"$OUT" && ! grep -qvF '__CLEAN__' <<<"$OUT"; then
     echo "Every commit-scraper-spend-ledger call site has if: always() + continue-on-error: true — a ledger push race can never fail the calling job"
   else
     echo "::error::Workflow step(s) call commit-scraper-spend-ledger without both if: always() and continue-on-error: true — a routine push race on the ledger file would fail the job (BRO-2243):"
@@ -730,10 +730,10 @@ check_swallowed_audit_writers() {
     }
     if (!any) console.log('__CLEAN__');
   " 2>&1)
-  if echo "$OUT" | grep -qF '__TOO_FEW_WORKFLOWS__:'; then
+  if grep -qF '__TOO_FEW_WORKFLOWS__:' <<<"$OUT"; then
     echo "::error::swallowed-audit-writers check found only $(echo "$OUT" | sed -n 's/^__TOO_FEW_WORKFLOWS__://p') workflow file(s) in .github/workflows (expected at least $MIN_WORKFLOWS) — refusing to report a verdict rather than silently pass on a near-empty or wrong-cwd scan."
     FAILED=1
-  elif echo "$OUT" | grep -qF '__CLEAN__' && ! echo "$OUT" | grep -qvF '__CLEAN__'; then
+  elif grep -qF '__CLEAN__' <<<"$OUT" && ! grep -qvF '__CLEAN__' <<<"$OUT"; then
     echo "No workflow step swallows a data/audit/-writing script's failure via continue-on-error/|| true (or all are documented lint-allow-swallow exemptions)"
   else
     echo "::error::Workflow step(s) swallow a data/audit/-writing script's failure (continue-on-error: true or '|| true'), discarding writes with no signal anywhere:"

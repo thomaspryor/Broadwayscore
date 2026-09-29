@@ -25,6 +25,22 @@ const fs = require('fs');
 const path = require('path');
 
 const { detectTranscriptOutages, isVideoSpecificError } = require('../lib/video-pipeline-health');
+const { fetchYouTubeTranscript } = require('../lib/youtube-captions');
+
+// YouTube bot-walls yt-dlp on GitHub runner IPs (BRO-4343). When a paid
+// fetchPage() provider is configured, fall back to fetching the watch page and
+// caption track through it (Bright Data residential IPs first).
+const YOUTUBE_FETCHPAGE_FALLBACK = !!(process.env.BRIGHTDATA_TOKEN || process.env.SCRAPINGBEE_API_KEY);
+
+async function youtubeFallback(videoId) {
+  try {
+    const r = await fetchYouTubeTranscript(videoId);
+    return { transcript: r.transcript || null, publishedAt: r.publishedAt, error: null }; // '' = no captions
+  } catch (err) {
+    const msg = String(err.message || err);
+    return { transcript: null, publishedAt: null, error: (msg.startsWith('ERROR:') ? msg : `ERROR: [youtube-fetchpage] ${videoId}: ${msg}`).substring(0, 300) };
+  }
+}
 
 // Exit code for "a whole platform's extractor is broken" (BRO-4323): the
 // workflow keeps publishing what the healthy platform produced, then fails
@@ -95,7 +111,7 @@ function extractTranscript(videoId, platform, handle) {
   }
 }
 
-function main() {
+async function main() {
   const creatorFilter = process.argv.find(a => a.startsWith('--creator='))?.split('=')[1];
   const refresh = process.argv.includes('--refresh');
 
@@ -122,7 +138,16 @@ function main() {
       }
 
       process.stdout.write(`  ${video.id} "${video.title?.substring(0, 50)}..." `);
-      const transcript = extractTranscript(video.id, data.platform, data.handle);
+      let transcript = extractTranscript(video.id, data.platform, data.handle);
+      let publishedAt = null;
+      if (!transcript && data.platform === 'youtube' && YOUTUBE_FETCHPAGE_FALLBACK) {
+        const fb = await youtubeFallback(video.id);
+        transcript = fb.transcript;
+        publishedAt = fb.publishedAt;
+        // Report the fallback's outcome: a caption-less video is "no subs",
+        // not the yt-dlp bot wall we already routed around.
+        lastError = fb.error;
+      }
       const stats = byPlatform[data.platform] || (byPlatform[data.platform] = { attempted: 0, extracted: 0, errored: 0, sampleError: null });
       stats.attempted++;
       if (transcript) stats.extracted++;
@@ -138,7 +163,9 @@ function main() {
           creatorId: data.handle,
           platform: data.platform,
           title: video.title,
-          date: video.date,
+          // flat-playlist listing has no upload date for YouTube ("NA"); the
+          // watch page does.
+          date: (video.date && video.date !== 'NA') ? video.date : (publishedAt || video.date),
           duration: video.duration,
           views: video.views,
           transcript,
@@ -171,4 +198,4 @@ function main() {
   }
 }
 
-main();
+main().catch(e => { console.error(e); process.exit(1); });

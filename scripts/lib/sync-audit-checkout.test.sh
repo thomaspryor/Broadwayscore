@@ -169,9 +169,9 @@ elif [ "$head5" = "$origin_head5" ]; then
   echo "FAIL[5]: expected local commit to be preserved (not discarded), HEAD moved anyway"; fail=1
 elif ! grep -q '"reason": "diverged"' "$snap5"; then
   echo "FAIL[5]: expected reason=diverged in $snap5, got:"; cat "$snap5" 2>&1; fail=1
-elif ! echo "$out5" | grep -q "3-way merge of origin/main"; then
+elif ! grep -q "3-way merge of origin/main" <<<"$out5"; then
   echo "FAIL[5]: BRO-3393 recovery should have been ATTEMPTED here (clean tree, ahead AND behind) before refusing. Output:"; echo "$out5"; fail=1
-elif ! echo "$out5" | grep -q "merge of origin/main failed"; then
+elif ! grep -q "merge of origin/main failed" <<<"$out5"; then
   echo "FAIL[5]: expected the attempted merge to conflict and abort, leaving the refusal intact. Output:"; echo "$out5"; fail=1
 elif [ -n "$(git -C "$C5" ls-files -u)" ]; then
   echo "FAIL[5]: checkout left mid-merge with unresolved paths — the abort did not clean up"; fail=1
@@ -300,7 +300,7 @@ if [ "$rc9" -ne 0 ]; then
   echo "FAIL[9]: ahead-but-not-behind must exit 0 via ff-only 'Already up to date'. Output:"; echo "$out9"; fail=1
 elif [ -f "$snap9" ]; then
   echo "FAIL[9]: no refusal snapshot should be written, found $snap9:"; cat "$snap9"; fail=1
-elif echo "$out9" | grep -q "3-way merge of origin/main"; then
+elif grep -q "3-way merge of origin/main" <<<"$out9"; then
   echo "FAIL[9]: the merge recovery fired on a checkout that was not behind. Output:"; echo "$out9"; fail=1
 else
   echo "PASS[9]: ahead-but-not-behind short-circuits at ff-only, recovery never reached ($rc9)"
@@ -390,7 +390,7 @@ else
     echo "FAIL[12]: MERGE_HEAD survived the run — the checkout stays blocked for every session. Output:"; echo "$out12"; fail=1
   elif [ -n "$(git -C "$C12" ls-files -u)" ]; then
     echo "FAIL[12]: unmerged index entries survived the run"; fail=1
-  elif ! echo "$out12" | grep -q "merge left mid-flight"; then
+  elif ! grep -q "merge left mid-flight" <<<"$out12"; then
     echo "FAIL[12]: expected the self-heal to announce itself. Output:"; echo "$out12"; fail=1
   else
     echo "PASS[12]: a merge left mid-flight by an interrupted run is aborted and self-healed ($rc12)"

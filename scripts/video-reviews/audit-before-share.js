@@ -24,6 +24,7 @@
 const fs = require('fs');
 const path = require('path');
 const { GPT4O, CLAUDE_OPUS } = require('../lib/models');
+const { describeProduction } = require('../lib/video-production-context');
 
 const ROOT = path.resolve(__dirname, '../..');
 const REVIEWS_PATH = path.join(ROOT, 'data/video-reviews.json');
@@ -97,7 +98,7 @@ async function callOpenAI(user) {
 }
 
 async function auditOne(transcript, showTitle) {
-  const user = `Show: ${showTitle}\nCreator: ${transcript.creatorId}\nPlatform: ${transcript.platform}\nTitle: "${transcript.title || ''}"\n\nTranscript:\n---\n${transcript.transcript}\n---`;
+  const user = `Assigned production: ${showTitle}\nVideo posted: ${transcript.publishedAt || transcript.date || 'unknown'}\nCreator: ${transcript.creatorId}\nPlatform: ${transcript.platform}\nTitle: "${transcript.title || ''}"\n\nTranscript:\n---\n${transcript.transcript}\n---`;
   const text = AUDIT_PROVIDER === 'openai' ? await callOpenAI(user) : await callAnthropic(user);
   const m = text.match(/\{[\s\S]*\}/);
   if (!m) throw new Error('No JSON: ' + text.substring(0, 200));
@@ -107,7 +108,10 @@ async function auditOne(transcript, showTitle) {
 function loadShowMap() {
   const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
   const m = new Map();
-  for (const s of shows) if (s?.id) m.set(s.id, s.title);
+  // Full production context, not just the title: with titles alone the
+  // 2026-07-05 audit passed West End, tour and tryout videos filed under
+  // Broadway ids (BRO-4328).
+  for (const s of shows) if (s?.id) m.set(s.id, describeProduction(s));
   return m;
 }
 

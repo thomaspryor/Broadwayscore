@@ -18,5 +18,22 @@
   "keyQuote": "the whole thing is an incredibly haunting play and it explores the sometimes complex relationships that we have with our parents as well as just how time changes people",
   "scoredAt": "2026-04-19T08:34:42.034Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/hq-3iuzyQuk/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/hq-3iuzyQuk/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "the brand new West End play the hills of California which has just opened at London's Harold Pinter theater",
+    "reason": "The review explicitly mentions the production is in London's West End at the Harold Pinter Theatre, not the assigned Broadway production in New York.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is a review of 'The Hills of California' in London's West End at the Harold Pinter Theatre, which is a different city and venue from the assigned Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:47.373Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The review explicitly mentions the production is in London's West End at the Harold Pinter Theatre, not the assigned Broadway production in New York."
 }

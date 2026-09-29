@@ -18,5 +18,22 @@
   "keyQuote": "overall this was a very enjoyable play that I recommend you go see",
   "scoredAt": "2026-04-19T08:25:27.562Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/AmAOe0hNbus/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/AmAOe0hNbus/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "Off-Broadway Review: JOB",
+    "reason": "The video explicitly mentions an Off-Broadway production, which is different from the assigned Broadway production.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is an \"Off-Broadway Review\" and mentions previous runs at \"SoHo Playhouse\" and \"Connelly Theater,\" which are Off-Broadway venues, distinguishing it from the assigned Broadway production at the Helen Hayes Theater.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:55:40.023Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The video explicitly mentions an Off-Broadway production, which is different from the assigned Broadway production."
 }
