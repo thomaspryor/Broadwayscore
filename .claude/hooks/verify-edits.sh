@@ -834,9 +834,12 @@ if os.environ.get('WRAPUP_GATE_DISABLE', '0') != '1':
             if _kind == 'tool' and _is_work_tool(_payload[0], _payload[1]):
                 _last_work_idx = _i
 
-        # A session that declared NO-CARD (no Linear card by design) has no
-        # card to close; NOCARD accepted that, so NOWRAPUP must too.
-        _wu_no_card = bool(re.search(r'NO-CARD:\s*\S.{9,}', re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)))
+        # A session that declared NO-CARD and really has no card (none filed
+        # or claimed) has nothing to close; NOCARD accepted that, so NOWRAPUP
+        # must too. A session that DID file a card can't use NO-CARD to skip
+        # closing it (adversarial review, BRO-4274).
+        _wu_no_card = (bool(re.search(r'NO-CARD:\s*\S.{9,}', re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)))
+                       and not _session_has_card())
         if (_last_work_idx is not None and _last_msg and 'NO-VERIFY:' not in _last_msg
                 and not _wu_no_card):
             _wu_stripped = re.sub(r'```.*?```', '', _last_msg, flags=re.DOTALL)

@@ -377,6 +377,15 @@ test('BRO-4274: NO-CARD session (no card by design) + SAFE TO EXIT → not NOWRA
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
+test('BRO-4274: session that FILED a card cannot use NO-CARD to skip closing it → BLOCKED (NOWRAPUP)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-block-no-card-abuse');
+  const transcript = writeTranscript(dir, [GIT_PUSH]); // card: true — a Linear card was filed
+  const r = runHook(transcript, 'Pushed.\n\nNO-CARD: trying to skip the close-out step\n\nSAFE TO EXIT — pushed.');
+  assertBlocked(r, 'NO-CARD only excuses a session with no card; a filed card still has to be closed out');
+  assert.match(r.stderr, /linear-brain\.js update/, `expected NOWRAPUP's close-out instruction, got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
 test('wrap-up gate: NOT SAFE TO EXIT + no close-out → ALLOWED (session has not claimed full completion)', skipNoRepoHook, () => {
   const dir = makeTmpDir('wrapup-allow-notsafe');
   const transcript = writeTranscript(dir, [GIT_PUSH]);
