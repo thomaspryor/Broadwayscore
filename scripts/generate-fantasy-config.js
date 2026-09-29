@@ -27,6 +27,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isBroadwayCategory } = require('./lib/venue-classification');
+const { foldDiacritics } = require('./lib/title-match');
 const pricing = require('./lib/fantasy-pricing');
 
 const seasonConfig = require('../src/config/fantasy-season.json');
@@ -68,7 +69,9 @@ if (priorsRaw._meta?.season && priorsRaw._meta.season !== SEASON) {
 }
 const weeklyGrossPriors = priorsRaw._meta?.weeklyGrossPriors || {};
 const categorySlots = priorsRaw._meta?.categorySlots || {};
-const normTitle = t => String(t || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+// Fold diacritics BEFORE the ASCII strip (task #648): "Les Misérables" must
+// key as "lesmiserables", not shred at the accent and miss its byTitle prior.
+const normTitle = t => foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9]/g, '');
 const priorsByTitle = Object.fromEntries(Object.entries(priorsRaw.byTitle || {}).filter(([k]) => !k.startsWith('_')));
 // Priors keyed by show id, with a normalized-title fallback for shows that
 // were announced (and tiered) before they existed in shows.json.
@@ -140,7 +143,7 @@ function trailingWeeklyGross(slug, n = 4) {
 // ── Venue capacity (weekly gross ceiling) ───────────────────────────
 let theaterMeta = {};
 try { theaterMeta = JSON.parse(fs.readFileSync(path.join(dataDir, 'theater-metadata.json'), 'utf8')); } catch { /* optional */ }
-const venueNorm = s => String(s || '').toLowerCase().replace(/theatre|theater/g, '').replace(/[^a-z]/g, '');
+const venueNorm = s => foldDiacritics(String(s || '')).toLowerCase().replace(/theatre|theater/g, '').replace(/[^a-z]/g, '');
 const venueKeys = Object.keys(theaterMeta).filter(k => k !== '_meta');
 function venueCapacity(venue) {
   if (!venue) return null;
