@@ -12,14 +12,18 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import {
   CRITIC_REDIRECT_PREFIX,
+  NAME_REDIRECT_PREFIXES,
+  NAME_ROUTE_FAMILIES,
   resolveShowRedirect,
   resolveCriticRedirect,
+  resolveNameRedirect,
   resolvePathRedirect,
 } from '../../src/lib/slug-redirects';
 import { getCriticBySlug, getAllCriticSlugs } from '../../src/lib/data-reviews';
 
 const require = createRequire(import.meta.url);
 const emitter = require('../../scripts/lib/critic-slug-aliases.js') as { CRITIC_REDIRECT_PREFIX: string };
+const nameEmitter = require('../../scripts/lib/name-slug-redirects.js') as { NAME_REDIRECT_PREFIXES: Record<string, string> };
 const compact = require('../../data/slug-redirects-compact.json') as Record<string, string>;
 
 const MAP: Record<string, string> = {
@@ -27,11 +31,31 @@ const MAP: Record<string, string> = {
   cabaret: '~cabaret-2024',
   'hamilton-west-end-2017': 'hamilton-west-end',
   'critic:jose-sol-s': 'jose-solis',
+  // Name-derived families (S7-T3 follow-up): pre-fold slug → live slug.
+  'creative:no-l-coward': 'noel-coward-2',
+  'theater:caf-broadway-theatre': 'cafe-broadway-theatre',
+  'west-end-theater:no-l-coward-theatre': 'noel-coward-theatre',
+  'off-broadway-theater:repertorio-espa-ol-spanish-theatre-repertory': 'repertorio-espanol-spanish-theatre-repertory',
+  'cast:ren-ceballos': 'rene-ceballos-2',
 };
 
 describe('prefix parity', () => {
   test('the TS resolver and the JS emitter agree on the critic key prefix', () => {
     assert.equal(CRITIC_REDIRECT_PREFIX, emitter.CRITIC_REDIRECT_PREFIX);
+  });
+
+  test('the TS resolver and the JS emitter agree on every name-family key prefix', () => {
+    assert.deepEqual({ ...NAME_REDIRECT_PREFIXES }, nameEmitter.NAME_REDIRECT_PREFIXES);
+  });
+
+  test('every family has exactly one route, routes are distinct single-segment prefixes, and none is /show or /critics', () => {
+    assert.deepEqual(NAME_ROUTE_FAMILIES.map((f) => f.family).sort(), Object.keys(NAME_REDIRECT_PREFIXES).sort());
+    const routes = NAME_ROUTE_FAMILIES.map((f) => f.route);
+    assert.equal(new Set(routes).size, routes.length);
+    for (const r of routes) {
+      assert.match(r, /^\/[a-z-]+(\/[a-z-]+)?\/$/, r);
+      assert.ok(!r.startsWith('/show/') && !r.startsWith('/critics/'), r);
+    }
   });
 });
 
@@ -71,9 +95,70 @@ describe('resolveCriticRedirect', () => {
   });
 });
 
+describe('resolveNameRedirect', () => {
+  test('retired slug resolves to the live slug within its own family', () => {
+    assert.equal(resolveNameRedirect(MAP, 'creative', 'no-l-coward'), 'noel-coward-2');
+    assert.equal(resolveNameRedirect(MAP, 'theater', 'caf-broadway-theatre'), 'cafe-broadway-theatre');
+    assert.equal(resolveNameRedirect(MAP, 'westEndTheater', 'no-l-coward-theatre'), 'noel-coward-theatre');
+    assert.equal(resolveNameRedirect(MAP, 'offBroadwayTheater', 'repertorio-espa-ol-spanish-theatre-repertory'), 'repertorio-espanol-spanish-theatre-repertory');
+    assert.equal(resolveNameRedirect(MAP, 'cast', 'ren-ceballos'), 'rene-ceballos-2');
+  });
+
+  test('lookup is case-insensitive', () => {
+    assert.equal(resolveNameRedirect(MAP, 'creative', 'No-L-Coward'), 'noel-coward-2');
+  });
+
+  test('families never see each other\'s keys, nor the show/critic namespaces; unknown/empty are misses', () => {
+    assert.equal(resolveNameRedirect(MAP, 'westEndTheater', 'caf-broadway-theatre'), null, '/theater key not reachable from /west-end/theater');
+    assert.equal(resolveNameRedirect(MAP, 'theater', 'no-l-coward-theatre'), null, '/west-end/theater key not reachable from /theater');
+    assert.equal(resolveNameRedirect(MAP, 'cast', 'no-l-coward'), null);
+    assert.equal(resolveNameRedirect(MAP, 'creative', 'hamilton'), null);
+    assert.equal(resolveNameRedirect(MAP, 'creative', 'jose-sol-s'), null);
+    assert.equal(resolveNameRedirect(MAP, 'creative', 'unknown-person'), null);
+    assert.equal(resolveNameRedirect(MAP, 'creative', ''), null);
+  });
+});
+
 describe('resolvePathRedirect', () => {
   test('/show/<slug> → 301 to the target slug', () => {
     assert.deepEqual(resolvePathRedirect(MAP, '/show/hamilton'), { pathname: '/show/hamilton-2015', status: 301 });
+  });
+
+  test('name-derived routes: <route>/<retired slug> → 301 to <route>/<live slug>, trailing slash and case tolerated', () => {
+    assert.deepEqual(resolvePathRedirect(MAP, '/creative/no-l-coward'), { pathname: '/creative/noel-coward-2', status: 301 });
+    assert.deepEqual(resolvePathRedirect(MAP, '/creative/No-L-Coward/'), { pathname: '/creative/noel-coward-2', status: 301 });
+    assert.deepEqual(resolvePathRedirect(MAP, '/theater/caf-broadway-theatre'), { pathname: '/theater/cafe-broadway-theatre', status: 301 });
+    assert.deepEqual(resolvePathRedirect(MAP, '/west-end/theater/no-l-coward-theatre'), { pathname: '/west-end/theater/noel-coward-theatre', status: 301 });
+    assert.deepEqual(resolvePathRedirect(MAP, '/off-broadway/theater/repertorio-espa-ol-spanish-theatre-repertory'), {
+      pathname: '/off-broadway/theater/repertorio-espanol-spanish-theatre-repertory',
+      status: 301,
+    });
+    assert.deepEqual(resolvePathRedirect(MAP, '/cast/ren-ceballos'), { pathname: '/cast/rene-ceballos-2', status: 301 });
+  });
+
+  test('name-derived routes: a key from another family, a nested path, an index or an unknown slug falls through', () => {
+    for (const p of [
+      '/theater/no-l-coward-theatre',
+      '/west-end/theater/caf-broadway-theatre',
+      '/off-broadway/theater/no-l-coward-theatre',
+      '/cast/no-l-coward',
+      '/creative/ren-ceballos',
+      '/creative/no-l-coward/extra',
+      '/west-end/theater/no-l-coward-theatre/shows',
+      '/creative',
+      '/creative/',
+      '/theater/',
+      '/west-end/theater',
+      '/west-end/theater/',
+      '/off-broadway/theater/',
+      '/cast/',
+      '/creative/unknown-person',
+      '/cast/critic:jose-sol-s',
+      '/west-end/no-l-coward-theatre',
+      '/theaters/caf-broadway-theatre',
+    ]) {
+      assert.equal(resolvePathRedirect(MAP, p), null, p);
+    }
   });
 
   test('/show/<slug>/ (trailing slash) with a "~" entry → 302', () => {

@@ -55,15 +55,60 @@
  * refusal that is genuinely still listed simply comes back tomorrow and is
  * refused again — cheap, and never a lost candidate.
  *
+ * Evidence-backed admin path (BRO-4204 S8-T3). The venue-page rule above
+ * cannot admit the ~50 reviewed 2026 Off-West End productions the audit
+ * found missing: most had CLOSED (no venue page lists them any more) and
+ * many played venues outside VENUE_LISTING_PAGES (Arcola, King's Head,
+ * Jermyn Street, Riverside, Wilton's, ...). A venue listing is not review
+ * evidence, but a critic review IS — the owner's rule is "keep anything
+ * that gets or might get reviewed" (docs/show-inclusion-policy.md). So a
+ * staged candidate may carry
+ *   evidence: [{ kind: 'review-url' | 'coverage-url', url, outletId? }]
+ * and decideOffWestEndVenuePromotion confirms it — INSTEAD of the venue
+ * page, which is never consulted for it — when at least one evidence URL's
+ * host resolves to a registered outlet (lib/review-normalization.js
+ * resolveOutletFromUrl over data/outlet-registry.json; a venue's own site
+ * that happens to be registered as a defunct "outlet" does not count) AND
+ * fetchPage() of that URL returns a page whose text names the candidate
+ * title (pageTextContainsTitle: diacritics/punctuation-folded, whole-word).
+ * 'review-url' is a critic review of the production (any run of it);
+ * 'coverage-url' is a registered outlet's news/preview piece naming an
+ * ANNOUNCED production — admitted under the "might get reviewed" half of
+ * the rule, so the ~10 Q4-2026 productions the audit listed can be staged
+ * before their press night. The S4-T6 gates still refuse first. A fetch
+ * failure, an unfetched URL, or a fetched page that does not name the
+ * title (paywall / interstitial / wrong URL) HOLDS — never prunes — a
+ * hand-prepared candidate; only "no evidence URL resolves to a registered
+ * outlet" is a persistent refusal. Rows built this way carry
+ * discoverySource 'audit-review-evidence', provisional: true, evidenceUrls,
+ * and the dates the candidate supplies (previewsStartDate / openingDate /
+ * closingDate → status + type per buildOffWestEndVenueShowEntry; an
+ * explicit `type` on the candidate is honoured).
+ *
+ * Candidates reach staging through --stage-file: a JSON array of hand-
+ * prepared rows merged into data/audit/owe-venue-candidates.json by
+ * lib/owe-venue-staging.js's locked upsert (writeStagingCandidates →
+ * updateStaging, keyed by candidateHash) — never written directly. With
+ * --dry-run the merge happens in memory only (mergeCandidates over the
+ * current entries) so the evaluation still sees exactly the union a real
+ * run would write. --stage-only merges and exits without evaluating, for a
+ * coordinator that wants to commit the staging file and let the daily
+ * workflow drain it.
+ *
  * Flags:
  *   --dry-run            evaluate and report; write nothing (default: writes)
  *   --limit=N            cap venue-page fetches this run (default 20 — one per
  *                        distinct staged venue; there are ~12)
+ *   --evidence-limit=N   cap evidence-URL fetches this run (default
+ *                        DEFAULT_EVIDENCE_FETCH_LIMIT; one per distinct URL)
  *   --max-promote=N      cap rows written this run (default MAX_PROMOTE_PER_RUN;
  *                        the remainder is HELD in staging for the next run,
  *                        not aborted — every row here was confirmed against
  *                        the venue's own page, and the first run drains a
  *                        real 100-candidate backlog)
+ *   --stage-file=<json>  merge a JSON array of hand-prepared candidates into
+ *                        staging (in memory under --dry-run) before evaluating
+ *   --stage-only         with --stage-file: merge and exit (no fetches)
  *   --time-budget-min=N  wall-clock budget (0/omitted = unlimited)
  */
 
@@ -81,11 +126,13 @@ const {
 } = require('./lib/venue-classification');
 const { matchesRetired, loadRetiredIds } = require('./lib/retired-show-ids');
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
-const { normalizeTitle } = require('./lib/title-match');
+const { normalizeTitle, foldDiacritics } = require('./lib/title-match');
 const { urlFragmentReason } = require('./lib/url-fragment-title');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-const { loadStaging, updateStaging, STAGING_PATH } = require('./lib/owe-venue-staging');
+const { loadStaging, updateStaging, mergeCandidates, writeStagingCandidates, STAGING_PATH } = require('./lib/owe-venue-staging');
+const { resolveOutletFromUrl, loadOutletRegistry } = require('./lib/review-normalization');
+const { stripHtml } = require('./lib/article-extractor');
 
 // venue-write-guard-ok: the ONLY shows.json venue write in this file is
 // buildOffWestEndVenueShowEntry's `venue: sanitizeVenueForWrite(candidate.venue)`
@@ -104,7 +151,13 @@ Usage:
 Options:
   --dry-run            evaluate and report; write nothing
   --limit=N            cap venue-page fetches this run (default 20)
+  --evidence-limit=N   cap evidence-URL fetches this run (default 60)
   --max-promote=N      cap rows written this run; the rest stay staged (default 25)
+  --stage-file=<json>  merge a JSON array of hand-prepared candidates (title, venue,
+                       dates, evidence: [{kind:'review-url'|'coverage-url', url}]) into
+                       data/audit/owe-venue-candidates.json before evaluating; with
+                       --dry-run the merge is in memory only
+  --stage-only         with --stage-file: merge into staging and exit (no fetches)
   --time-budget-min=N  wall-clock budget in minutes (0/omitted = unlimited)
 `;
 
@@ -115,7 +168,135 @@ const PROMOTION_LOG = path.join(__dirname, '..', 'data', 'audit', 'owe-promotion
 const LAST_PROMOTION_FILE = path.join(__dirname, '..', 'data', 'audit', 'owe-last-promotion-ids.json');
 const MAX_PROMOTE_PER_RUN = 25;
 const DEFAULT_FETCH_LIMIT = 20;
+const DEFAULT_EVIDENCE_FETCH_LIMIT = 60;
 const DAY_MS = 24 * 60 * 60 * 1000;
+// S8-T3 evidence path (see the header). 'review-url' = a critic review of
+// the production; 'coverage-url' = a registered outlet's news/preview
+// naming an announced production. Both are checked the same way.
+const EVIDENCE_KINDS = new Set(['review-url', 'coverage-url']);
+const AUDIT_EVIDENCE_SOURCE = 'audit-review-evidence';
+// The `type` values shows.json rows carry (validate-market-expansion.js
+// requires one on every non-announced row); an explicit candidate.type
+// outside this set falls back to the title heuristic.
+const VALID_SHOW_TYPES = new Set(['play', 'musical', 'opera', 'special']);
+
+/**
+ * The usable evidence entries on a staged candidate: `{kind, url}` objects
+ * whose kind is one of EVIDENCE_KINDS and whose url parses as http(s).
+ * Anything else (a bare string, an unknown kind, a mailto:) is ignored, so
+ * a malformed entry can neither confirm nor refuse a candidate.
+ */
+function reviewEvidence(candidate) {
+  const raw = candidate && Array.isArray(candidate.evidence) ? candidate.evidence : [];
+  const out = [];
+  for (const e of raw) {
+    if (!e || typeof e !== 'object' || !EVIDENCE_KINDS.has(e.kind) || typeof e.url !== 'string') continue;
+    let parsed;
+    try { parsed = new URL(e.url); } catch { continue; }
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') continue;
+    out.push({ kind: e.kind, url: e.url, outletId: typeof e.outletId === 'string' ? e.outletId : null });
+  }
+  return out;
+}
+
+/**
+ * Which registered outlet an evidence URL's host belongs to, per
+ * lib/review-normalization.js's resolveOutletFromUrl (the canonical domain
+ * index with its collision rules) — or why it is not review evidence.
+ * A registry entry whose accessModel is 'defunct' is refused: the London
+ * "outlets" in that state are venues' own sites (almeida.co.uk,
+ * oldvictheatre.com) registered years ago as pseudo-outlets, and a venue
+ * page is exactly what this path must not accept as evidence.
+ *
+ * @returns {{outletId: string|null, tier: number|null, reason: string|null}}
+ */
+function resolveEvidenceOutlet(url, registry) {
+  const resolved = resolveOutletFromUrl(url);
+  const outletId = resolved && resolved.outletId ? String(resolved.outletId) : null;
+  if (!outletId) return { outletId: null, tier: null, reason: 'host is not a registered outlet (data/outlet-registry.json)' };
+  const reg = registry && registry.outlets ? registry.outlets : null;
+  const entry = reg ? reg[outletId] : null;
+  if (reg && !entry) return { outletId: null, tier: null, reason: `host resolves to "${outletId}", which is not in the registry` };
+  if (entry && entry.accessModel === 'defunct') {
+    return { outletId: null, tier: null, reason: `host resolves to "${outletId}", a defunct registry entry (a venue's own site is not review evidence)` };
+  }
+  return { outletId, tier: entry && entry.tier ? entry.tier : 3, reason: null };
+}
+
+/**
+ * Text fold for the title-in-page check: the character handling of
+ * title-match.js's normalizeTitle (diacritics, case, "&" → "and", joiners
+ * dropped, separators → space) WITHOUT its leading-"the" strip and trailing
+ * "musical" strip — applied to the needle those would turn "The Name" into
+ * "name", which matches every English page; the haystack is a whole page.
+ */
+function foldText(s) {
+  return foldDiacritics(String(s || ''))
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/['‘’"“”\-–—]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+/**
+ * Does a fetched page name the candidate title? Whole-phrase, folded on
+ * both sides (foldText), over the page's visible text (article-extractor's
+ * stripHtml drops scripts/styles/asides). A title that folds to nothing
+ * never matches.
+ */
+function pageTextContainsTitle(htmlOrText, title) {
+  const needle = foldText(title);
+  if (!needle) return false;
+  const hay = foldText(stripHtml(String(htmlOrText || '')));
+  return (' ' + hay + ' ').includes(' ' + needle + ' ');
+}
+
+/**
+ * The evidence half of decideOffWestEndVenuePromotion (called after the
+ * S4-T6 gates, only for candidates that carry usable evidence). Walks the
+ * evidence in order and confirms on the FIRST URL whose host is a
+ * registered outlet and whose fetched text names the title. Everything
+ * short of that is reported; the refusal is persistent only when NO
+ * evidence URL resolves to a registered outlet (a property of the
+ * candidate) — a fetch failure, an unfetched URL (--evidence-limit / time
+ * budget) or a page that does not name the title holds the candidate for
+ * the next run, so a paywall or a scraper block can never prune a hand-
+ * prepared row.
+ *
+ * @param {object} candidate
+ * @param {Array<{kind: string, url: string}>} evidence from reviewEvidence()
+ * @param {Map<string, {text: string|null, error: string|null}>} evidencePages keyed by url
+ * @param {object|null} registry loaded outlet-registry.json
+ */
+function decideByReviewEvidence(candidate, evidence, evidencePages, registry) {
+  const problems = [];
+  let registered = 0;
+  for (const ev of evidence) {
+    const outlet = resolveEvidenceOutlet(ev.url, registry);
+    if (!outlet.outletId) { problems.push(`${ev.url}: ${outlet.reason}`); continue; }
+    registered++;
+    const page = evidencePages.get(ev.url);
+    if (!page) { problems.push(`${ev.url}: not fetched this run (--evidence-limit / time budget)`); continue; }
+    if (page.error || typeof page.text !== 'string' || !page.text) { problems.push(`${ev.url}: fetch failed (${page.error || 'empty response'})`); continue; }
+    if (!pageTextContainsTitle(page.text, candidate.title)) {
+      problems.push(`${ev.url}: fetched, but the page text does not name "${candidate.title}" (paywall / interstitial / wrong URL?)`);
+      continue;
+    }
+    return {
+      confirmed: true,
+      persistent: false,
+      reason: `${ev.kind} ${ev.url} (registered outlet ${outlet.outletId}, T${outlet.tier}) names "${candidate.title}" on fetch`,
+      source: ev.kind,
+      page: ev.url,
+      outletId: outlet.outletId,
+    };
+  }
+  if (registered === 0) {
+    return { confirmed: false, persistent: true, reason: `none of the ${evidence.length} evidence URL(s) resolves to a registered outlet — not review evidence; ${problems.join('; ')}` };
+  }
+  return { confirmed: false, persistent: false, reason: `evidence not confirmed this run — held: ${problems.join('; ')}` };
+}
 
 // discover-new-shows.js parses process.argv at module load (its own --help
 // prints ITS usage and exits, its --dry-run/--time-budget-min consts are
@@ -180,12 +361,19 @@ function findVenueListingPage(venue, listingPages) {
  *   titles parsed from the live page (see fetchVenueListing). Missing key =
  *   not fetched this run.
  * @param {Array<object>} [ctx.listingPages] defaults to VENUE_LISTING_PAGES
+ * @param {Map<string, {text: string|null, error: string|null}>} [ctx.evidencePages]
+ *   keyed by evidence url (see fetchEvidencePages); consulted only for a
+ *   candidate that carries `evidence` (S8-T3). Missing key = not fetched.
+ * @param {object} [ctx.outletRegistry] loaded outlet-registry.json (default: the real one)
  * @param {Function} [ctx.isNonTheaterContent] defaults to discovery's gate
  * @param {Function} [ctx.shouldExcludeVenueShow] defaults to discovery's venue-page title exclusions
- * @returns {{confirmed: boolean, persistent?: boolean, reason: string, source?: string, page?: object}}
+ * @returns {{confirmed: boolean, persistent?: boolean, reason: string, source?: string, page?: object|string}}
+ *   `page` is the VENUE_LISTING_PAGES entry on the venue-page path and the
+ *   evidence URL string on the evidence path.
  */
 function decideOffWestEndVenuePromotion(candidate, ctx = {}) {
   const venueListings = ctx.venueListings instanceof Map ? ctx.venueListings : new Map();
+  const evidencePages = ctx.evidencePages instanceof Map ? ctx.evidencePages : new Map();
   const gate = typeof ctx.isNonTheaterContent === 'function' ? ctx.isNonTheaterContent : discovery().isNonTheaterContent;
   const excludeTitle = typeof ctx.shouldExcludeVenueShow === 'function' ? ctx.shouldExcludeVenueShow : discovery().shouldExcludeVenueShow;
 
@@ -220,6 +408,15 @@ function decideOffWestEndVenuePromotion(candidate, ctx = {}) {
   }
   if (gate({ name: candidate.title, venue: candidate.venue, description: candidate.description || '' }, { market: 'london' })) {
     return { confirmed: false, persistent: true, reason: `"${candidate.title}" @ ${candidate.venue} fails the London ingest gate (isNonTheaterContent: festival/panel/screening/one-off title or non-theatre venue)` };
+  }
+
+  // S8-T3 — a candidate that carries review/coverage evidence is decided on
+  // that evidence alone; the venue page is never consulted for it (the
+  // production has usually closed, or plays a venue with no listing page).
+  const evidence = reviewEvidence(candidate);
+  if (evidence.length > 0) {
+    const registry = ctx.outletRegistry !== undefined ? ctx.outletRegistry : loadOutletRegistry();
+    return decideByReviewEvidence(candidate, evidence, evidencePages, registry);
   }
 
   const page = findVenueListingPage(candidate.venue, ctx.listingPages);
@@ -266,9 +463,17 @@ function validDateOrNull(v) {
  * dates, else the current year; withMarketSuffix is idempotent) so the id
  * this row gets is the id discovery would have minted — which is what the
  * retired-id registry compares against.
+ *
+ * An evidence-backed candidate (S8-T3, reviewEvidence non-empty) is
+ * stamped discoverySource AUDIT_EVIDENCE_SOURCE with its evidenceUrls, and
+ * its dates are credited to that source rather than to a venue page; an
+ * explicit candidate.type in VALID_SHOW_TYPES overrides the title
+ * heuristic (a hand-prepared row knows "Ancient Grease" is a musical).
  */
 function buildOffWestEndVenueShowEntry(candidate, venueVocabulary, options = {}) {
   const now = options.now instanceof Date ? options.now : new Date();
+  const evidence = reviewEvidence(candidate);
+  const evidenceBacked = evidence.length > 0;
   // BRO-3863 — normalise BEFORE the slug/id are derived from the title, with
   // the same normaliser validate-data.js gates on, so a row written here can
   // never fail the gate that guards it.
@@ -304,20 +509,80 @@ function buildOffWestEndVenueShowEntry(candidate, venueVocabulary, options = {})
     // rather than write a garbage venue string.
     venue: sanitizeVenueForWrite(candidate.venue),
     openingDate,
-    openingDateSource: openingDate ? 'venue-page' : null,
+    openingDateSource: openingDate ? (evidenceBacked ? AUDIT_EVIDENCE_SOURCE : 'venue-page') : null,
     previewsStartDate,
     closingDate,
     status,
     category: 'off-west-end',
     market: marketForCategory('off-west-end'),
-    type: status === 'announced' ? null : (/\bmusical\b/i.test(normalizedTitle) ? 'musical' : 'play'),
-    discoverySource: candidate.source || candidate.discoverySource || 'venue-page',
+    type: status === 'announced'
+      ? null
+      : (VALID_SHOW_TYPES.has(candidate.type) ? candidate.type : (/\bmusical\b/i.test(normalizedTitle) ? 'musical' : 'play')),
+    discoverySource: evidenceBacked ? AUDIT_EVIDENCE_SOURCE : (candidate.source || candidate.discoverySource || 'venue-page'),
     discoveredAt: candidate.discoveredAt || now.toISOString(),
     // Provisional — no cross-source corroboration beyond the venue's own
-    // page; validate-show-venue.js --all-provisional keeps checking it, and
-    // images/cast/exact dates arrive via later enrichment.
+    // page (or, on the evidence path, beyond the outlet page named in
+    // evidenceUrls); validate-show-venue.js --all-provisional keeps checking
+    // it, and images/cast/exact dates arrive via later enrichment.
     provisional: true,
+    ...(evidenceBacked ? { evidenceUrls: [...new Set(evidence.map(e => e.url))] } : {}),
   };
+}
+
+/**
+ * Read and validate a --stage-file: a JSON array of hand-prepared candidate
+ * rows. Each row needs a non-empty `title` and `venue`; `category` defaults
+ * to 'off-west-end'; `evidence`, when present, must be an array whose
+ * entries are {kind ∈ EVIDENCE_KINDS, url: http(s)} (reviewEvidence would
+ * silently drop a malformed entry at decision time, which for a hand-
+ * prepared file is exactly the wrong failure mode — so it is refused here,
+ * naming the row). `source`/`discoverySource` default to
+ * AUDIT_EVIDENCE_SOURCE for an evidence-backed row. Throws on any problem;
+ * nothing is merged from a file with one bad row.
+ */
+function loadStageFile(file) {
+  let rows;
+  try {
+    rows = JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch (e) {
+    throw new Error(`--stage-file ${file}: ${e.message}`);
+  }
+  if (!Array.isArray(rows)) throw new Error(`--stage-file ${file}: expected a JSON array of candidate rows`);
+  const problems = [];
+  const out = rows.map((row, i) => {
+    const label = `row ${i}${row && row.title ? ` ("${row.title}")` : ''}`;
+    if (!row || typeof row !== 'object' || Array.isArray(row)) { problems.push(`${label}: not an object`); return null; }
+    if (typeof row.title !== 'string' || !row.title.trim()) problems.push(`${label}: missing title`);
+    if (typeof row.venue !== 'string' || !row.venue.trim()) problems.push(`${label}: missing venue`);
+    if (row.category !== undefined && row.category !== 'off-west-end') problems.push(`${label}: category must be off-west-end (got ${JSON.stringify(row.category)})`);
+    if (row.evidence !== undefined) {
+      if (!Array.isArray(row.evidence)) problems.push(`${label}: evidence must be an array`);
+      else {
+        row.evidence.forEach((e, j) => {
+          if (!e || typeof e !== 'object' || !EVIDENCE_KINDS.has(e.kind)) problems.push(`${label}: evidence[${j}].kind must be one of ${[...EVIDENCE_KINDS].join('|')}`);
+          let ok = false;
+          try { const u = new URL(e && e.url); ok = u.protocol === 'http:' || u.protocol === 'https:'; } catch { ok = false; }
+          if (!ok) problems.push(`${label}: evidence[${j}].url must be an http(s) URL`);
+        });
+      }
+    }
+    for (const k of ['openingDate', 'previewsStartDate', 'closingDate']) {
+      if (row[k] != null && !validDateOrNull(row[k])) problems.push(`${label}: ${k} must be YYYY-MM-DD or null (got ${JSON.stringify(row[k])})`);
+    }
+    if (row.type != null && !VALID_SHOW_TYPES.has(row.type)) problems.push(`${label}: type must be one of ${[...VALID_SHOW_TYPES].join('|')}`);
+    const evidenceBacked = Array.isArray(row.evidence) && row.evidence.length > 0;
+    return {
+      ...row,
+      title: typeof row.title === 'string' ? row.title.trim() : row.title,
+      venue: typeof row.venue === 'string' ? row.venue.trim() : row.venue,
+      category: 'off-west-end',
+      source: row.source || row.discoverySource || (evidenceBacked ? AUDIT_EVIDENCE_SOURCE : null),
+      discoverySource: row.discoverySource || row.source || (evidenceBacked ? AUDIT_EVIDENCE_SOURCE : null),
+      provisional: true,
+    };
+  });
+  if (problems.length > 0) throw new Error(`--stage-file ${file}: ${problems.length} problem(s), nothing merged:\n  ${problems.join('\n  ')}`);
+  return out;
 }
 
 /**
@@ -368,16 +633,78 @@ async function fetchVenueListing(page, opts = {}) {
 }
 
 /**
+ * Live fetch of ONE evidence URL through fetchPage() (the scraper rule),
+ * reduced to its visible text. Never throws: a failure is reported as
+ * {text: null, error} so decideByReviewEvidence holds (not prunes) the
+ * candidates that cite it.
+ */
+async function fetchEvidencePage(url, opts = {}) {
+  const fetchPage = opts.fetchPage || require('./lib/scraper').fetchPage;
+  const log = opts.log || console.log;
+  try {
+    const result = await fetchPage(url, { renderJs: false });
+    const html = result && result.content ? String(result.content) : '';
+    if (!html) return { url, text: null, error: 'empty response' };
+    const text = stripHtml(html).replace(/\s+/g, ' ').trim();
+    if (!text) return { url, text: null, error: 'no visible text' };
+    log(`  evidence ${url}: ${text.length} chars of text`);
+    return { url, text, error: null };
+  } catch (e) {
+    const msg = e && e.message ? e.message : String(e);
+    log(`  evidence ${url}: fetch failed (${msg.slice(0, 120)})`);
+    return { url, text: null, error: msg };
+  }
+}
+
+/**
+ * One fetch per distinct evidence URL whose host is a registered outlet
+ * (an unregistered host can never confirm, so it costs no fetch), bounded
+ * by --evidence-limit and the time budget. Unfetched URLs hold their
+ * candidates for the next run.
+ * @returns {Promise<Map<string, {url, text, error}>>} keyed by url
+ */
+async function fetchEvidencePages(candidates, opts = {}) {
+  const { limit = DEFAULT_EVIDENCE_FETCH_LIMIT, timeBudget = null, log = () => {} } = opts;
+  const registry = opts.outletRegistry !== undefined ? opts.outletRegistry : loadOutletRegistry();
+  const urls = [];
+  const seen = new Set();
+  for (const c of candidates) {
+    for (const ev of reviewEvidence(c)) {
+      if (seen.has(ev.url)) continue;
+      seen.add(ev.url);
+      if (resolveEvidenceOutlet(ev.url, registry).outletId) urls.push(ev.url);
+    }
+  }
+  const pages = new Map();
+  let fetches = 0;
+  for (const url of urls) {
+    if (fetches >= limit) {
+      log(`  [limit] reached --evidence-limit=${limit} evidence fetches; ${urls.length - fetches} URL(s) held until the next run`);
+      break;
+    }
+    if (timeBudget && timeBudget.exceeded()) {
+      log(`  ⏱ Time budget (${timeBudget.minutes} min) reached — remaining evidence URLs held until the next run`);
+      break;
+    }
+    fetches++;
+    pages.set(url, await fetchEvidencePage(url, opts));
+  }
+  return pages;
+}
+
+/**
  * One fetch per distinct staged venue that has a VENUE_LISTING_PAGES entry,
  * bounded by --limit and the time budget. Candidates at venues with no
  * listing page cost no fetch (decideOffWestEndVenuePromotion refuses them
- * without one).
+ * without one), and neither do evidence-backed candidates (S8-T3: decided
+ * on their evidence, the venue page is never consulted for them).
  * @returns {Promise<Map<string, object>>} keyed by page name
  */
 async function fetchVenueListings(candidates, opts = {}) {
   const { limit = DEFAULT_FETCH_LIMIT, timeBudget = null, log = () => {} } = opts;
   const pages = new Map();
   for (const c of candidates) {
+    if (reviewEvidence(c).length > 0) continue;
     const page = findVenueListingPage(c && c.venue, opts.listingPages);
     if (page && !pages.has(page.name)) pages.set(page.name, page);
   }
@@ -411,6 +738,8 @@ async function fetchVenueListings(candidates, opts = {}) {
  * @param {Set<string>} ctx.existingIds (mutated: promoted ids added)
  * @param {object} ctx.venueVocabulary from buildVenueVocabulary()
  * @param {Map<string, object>} ctx.venueListings from fetchVenueListings()
+ * @param {Map<string, object>} [ctx.evidencePages] from fetchEvidencePages() (S8-T3)
+ * @param {object} [ctx.outletRegistry] loaded outlet-registry.json (default: the real one)
  * @param {Array<object>} [ctx.retiredEntries] registry entries (default: cached on-disk list)
  * @param {Array<object>} [ctx.listingPages] default VENUE_LISTING_PAGES
  * @param {number} [ctx.maxPromote] cap on promotions this run; the rest are held
@@ -427,6 +756,8 @@ async function evaluateCandidates(candidates, ctx) {
     existingIds,
     venueVocabulary,
     venueListings = new Map(),
+    evidencePages = new Map(),
+    outletRegistry = undefined,
     retiredEntries = undefined,
     listingPages = undefined,
     maxPromote = MAX_PROMOTE_PER_RUN,
@@ -479,8 +810,9 @@ async function evaluateCandidates(candidates, ctx) {
       }
 
       // 3. Confirmation: phantom/excluded titles, the S4-T6 ingest gate, then
-      //    the venue page itself.
-      const decision = decideOffWestEndVenuePromotion(c, { venueListings, listingPages });
+      //    the venue page itself — or, for an evidence-backed candidate, the
+      //    registered-outlet page it cites (S8-T3).
+      const decision = decideOffWestEndVenuePromotion(c, { venueListings, listingPages, evidencePages, outletRegistry });
       if (!decision.confirmed) {
         if (decision.persistent) prune(c, 'skip-unconfirmed', decision.reason);
         else hold(c, 'skip-unconfirmed', decision.reason);
@@ -510,7 +842,8 @@ async function evaluateCandidates(candidates, ctx) {
         continue;
       }
 
-      promoted.push({ candidate: c, entry, confirmationReason: decision.reason, sourceUrl: decision.page ? decision.page.url : null });
+      const sourceUrl = typeof decision.page === 'string' ? decision.page : (decision.page ? decision.page.url : null);
+      promoted.push({ candidate: c, entry, confirmationReason: decision.reason, sourceUrl });
       existingIds.add(entry.id);
       existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue, category: entry.category });
       pruned.push({ candidate: c, kind: 'promote', reason: decision.reason });
@@ -533,6 +866,13 @@ function parseIntFlag(argv, name, fallback) {
   return Number.isFinite(n) && n >= 0 ? n : fallback;
 }
 
+function parseStringFlag(argv, name) {
+  const hit = argv.find(a => a.startsWith(`${name}=`));
+  if (!hit) return null;
+  const value = hit.slice(name.length + 1);
+  return value.length > 0 ? value : null;
+}
+
 /**
  * @param {string[]} [argv] CLI args (default process.argv)
  * @param {object} [io] injectable I/O for tests and offline runs:
@@ -540,14 +880,20 @@ function parseIntFlag(argv, name, fallback) {
  *   replaces the jsonl audit-log append; showsPath / stagingPath redirect
  *   the two data files, lastPromotionFile the state file the workflow
  *   summarises; retiredEntries replaces the on-disk registry.
- * @returns {Promise<{promoted: Array, held: Array, pruned: Array, dryRun: boolean, suppressedWrites: Array}|undefined>}
+ * @returns {Promise<{promoted: Array, held: Array, pruned: Array, dryRun: boolean, suppressedWrites: Array, staged?: number, stageOnly?: boolean}|undefined>}
  */
 async function main(argv = process.argv.slice(2), io = {}) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const dryRun = argv.includes('--dry-run');
   const limit = parseIntFlag(argv, '--limit', DEFAULT_FETCH_LIMIT);
+  const evidenceLimit = parseIntFlag(argv, '--evidence-limit', DEFAULT_EVIDENCE_FETCH_LIMIT);
   const maxPromote = parseIntFlag(argv, '--max-promote', MAX_PROMOTE_PER_RUN);
+  const stageFile = parseStringFlag(argv, '--stage-file');
+  const stageOnly = argv.includes('--stage-only');
   const log = io.log || ((...a) => console.log(...a));
+  if (stageOnly && !stageFile) {
+    throw new Error('--stage-only requires --stage-file=<json>');
+  }
   const timeBudget = createRunBudget(parseTimeBudgetMin(argv));
   const showsPath = io.showsPath || SHOWS_PATH;
   const stagingPath = io.stagingPath || STAGING_PATH;
@@ -559,12 +905,34 @@ async function main(argv = process.argv.slice(2), io = {}) {
   // A dry run must not touch data/ at all — the audit log included.
   const logEntryFn = io.logEntry || (dryRun ? () => {} : logEntry);
 
+  // --stage-file (S8-T3): hand-prepared candidates enter staging through the
+  // same locked upsert discovery uses (writeStagingCandidates → updateStaging,
+  // keyed by candidateHash) — never a direct write. Under --dry-run the merge
+  // is in memory (mergeCandidates over the CURRENT on-disk entries) so the
+  // evaluation below sees exactly the union a real run would have written.
+  // The file is validated in full first; one bad row merges nothing.
+  let stagedOverride = null;
+  if (stageFile) {
+    const rows = loadStageFile(path.resolve(stageFile));
+    if (dryRun) {
+      stagedOverride = mergeCandidates(loadStaging(stagingPath), rows);
+      log(`(dry-run) merged ${rows.length} candidate(s) from ${stageFile} in memory — ${stagedOverride.length} staged for evaluation; staging file untouched.`);
+    } else {
+      const next = writeStagingCandidates(rows, stagingPath);
+      log(`Merged ${rows.length} candidate(s) from ${stageFile} into ${path.relative(process.cwd(), stagingPath)} (${next.length} staged).`);
+    }
+  }
+  if (stageOnly) {
+    log(`--stage-only: ${dryRun ? 'validated the stage file; ' : ''}no evaluation this run.`);
+    return { promoted: [], held: [], pruned: [], dryRun, suppressedWrites: showsGuard.suppressedWrites, stageOnly: true, staged: stagedOverride ? stagedOverride.length : loadStaging(stagingPath).length };
+  }
+
   // Reset up front so a crash mid-run can never leave a stale file claiming
   // a prior run's promotions happened again.
   if (!dryRun) writeLastPromotionFile([], [], lastPromotionFile);
 
-  const candidates = collectCandidates({ stagingPath });
-  log(`Loaded ${candidates.length} staged Off-West End venue-page candidate(s) from ${path.relative(process.cwd(), stagingPath)}.`);
+  const candidates = collectCandidates({ stagingPath, ...(stagedOverride ? { staged: stagedOverride } : {}) });
+  log(`Loaded ${candidates.length} staged Off-West End candidate(s) from ${path.relative(process.cwd(), stagingPath)}${stagedOverride ? ' (+ stage file)' : ''}.`);
   const result = { promoted: [], held: [], pruned: [], dryRun, suppressedWrites: showsGuard.suppressedWrites };
   if (candidates.length === 0) {
     log('No staged candidates to promote.');
@@ -598,11 +966,21 @@ async function main(argv = process.argv.slice(2), io = {}) {
   if (io.fetchPage) fetchOpts.fetchPage = io.fetchPage;
   const venueListings = await fetchVenueListings(candidates, fetchOpts);
 
+  // S8-T3 — the registered-outlet pages evidence-backed candidates cite.
+  const outletRegistry = io.outletRegistry !== undefined ? io.outletRegistry : loadOutletRegistry();
+  const evidenceOpts = { limit: evidenceLimit, timeBudget, log, outletRegistry };
+  if (io.fetchPage) evidenceOpts.fetchPage = io.fetchPage;
+  const evidenceCount = candidates.filter(c => reviewEvidence(c).length > 0).length;
+  if (evidenceCount > 0) log(`Fetching evidence pages for ${evidenceCount} evidence-backed candidate(s)...`);
+  const evidencePages = await fetchEvidencePages(candidates, evidenceOpts);
+
   const { promoted, held, pruned } = await evaluateCandidates(candidates, {
     existingCandidates,
     existingIds,
     venueVocabulary,
     venueListings,
+    evidencePages,
+    outletRegistry,
     retiredEntries,
     listingPages: io.listingPages,
     maxPromote,
@@ -655,7 +1033,8 @@ async function main(argv = process.argv.slice(2), io = {}) {
 
   for (const p of promoted) showsData.shows.push(p.entry);
   try {
-    const r = showsGuard.saveShows(showsData, { reason: `promote-owe-venue-candidates: ${promoted.length} venue-page promotion(s)` });
+    const evidencePromotions = promoted.filter(p => reviewEvidence(p.candidate).length > 0).length;
+    const r = showsGuard.saveShows(showsData, { reason: `promote-owe-venue-candidates: ${promoted.length - evidencePromotions} venue-page + ${evidencePromotions} review-evidence promotion(s)` });
     log(`Wrote shows.json: ${r.lineCountBefore} → ${r.lineCountAfter} lines.`);
   } catch (e) {
     if (e instanceof AtomicWriteShrinkError) {
@@ -695,8 +1074,16 @@ if (require.main === module) {
 
 module.exports = {
   decideOffWestEndVenuePromotion,
+  decideByReviewEvidence,
   buildOffWestEndVenueShowEntry,
   collectCandidates,
+  loadStageFile,
+  reviewEvidence,
+  resolveEvidenceOutlet,
+  foldText,
+  pageTextContainsTitle,
+  fetchEvidencePage,
+  fetchEvidencePages,
   fetchVenueListing,
   fetchVenueListings,
   findVenueListingPage,
@@ -704,6 +1091,9 @@ module.exports = {
   main,
   MAX_PROMOTE_PER_RUN,
   DEFAULT_FETCH_LIMIT,
+  DEFAULT_EVIDENCE_FETCH_LIMIT,
+  EVIDENCE_KINDS,
+  AUDIT_EVIDENCE_SOURCE,
   LAST_PROMOTION_FILE,
   PROMOTION_LOG,
 };

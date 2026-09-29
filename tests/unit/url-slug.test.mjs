@@ -19,18 +19,50 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { foldDiacritics, slugify } = require('../../scripts/lib/url-slug.js');
+const { foldDiacritics, slugify, legacySlugify, assignUniqueSlugs } = require('../../scripts/lib/url-slug.js');
 const titleMatch = require('../../scripts/lib/title-match.js');
 const dedup = require('../../scripts/lib/deduplication.js');
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
 /**
- * The rule src/lib/data-core.ts slugify() applied BEFORE S7-T3 (no fold).
- * Kept here, and only here, as the spec of what a retired /critics/<slug>
- * URL looked like — it is not production code any more.
+ * The rule src/lib/data-core.ts slugify() applied BEFORE S7-T3 (no fold),
+ * written out here as the spec of what a retired person/place URL looked
+ * like. scripts/lib/url-slug.js legacySlugify() exists so
+ * scripts/build-slug-redirects.js can replay it over the live data (S7-T3
+ * follow-up); this copy is what proves that export still IS the old rule.
  */
 const legacySlug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+test('legacySlugify is the pre-S7-T3 rule: "Jose Solís" → jose-sol-s (the S5-T9 seed), no fold, otherwise identical to slugify', () => {
+  assert.equal(legacySlugify('Jose Solís'), 'jose-sol-s');
+  // Every accented letter became a hyphen run, so the fully accented spelling
+  // lost its "e" too — that is exactly why the old URLs are unrecoverable by hand.
+  assert.equal(legacySlugify('José Solís'), 'jos-sol-s');
+  assert.equal(legacySlugify('Noël Coward'), 'no-l-coward');
+  assert.equal(legacySlugify('Repertorio Español / Spanish Theatre Repertory'), 'repertorio-espa-ol-spanish-theatre-repertory');
+  for (const s of ['José Solís', 'Juan A. Ramírez', 'Nilgün Yusuf', 'Noël Coward Theatre', 'Colm Tóibín', 'Jesse Green', "Holly O'Mahony", 'Holly O’Mahony', 'A.D. Amorosi', '  The Hollywood Reporter ', '···', '']) {
+    assert.equal(legacySlugify(s), legacySlug(s), JSON.stringify(s));
+  }
+  // ASCII input: the two rules agree; accented input: only the fold differs.
+  for (const s of ['Jesse Green', 'Laura Collins-Hughes', 'Time Out New York']) assert.equal(legacySlugify(s), slugify(s), s);
+  for (const s of ['José Solís', 'Noël Coward', 'Björn Ulvaeus']) assert.notEqual(legacySlugify(s), slugify(s), s);
+  assert.equal(legacySlugify(null), '');
+  assert.equal(legacySlugify(undefined), '');
+});
+
+test('assignUniqueSlugs: index-aligned, first name keeps the slug, later collisions get -2, -3, … (data-creative.ts / data-actors.ts rule)', () => {
+  assert.deepEqual(assignUniqueSlugs(['Noel Coward', 'Noël Coward']), ['noel-coward', 'noel-coward-2']);
+  assert.deepEqual(assignUniqueSlugs(['Noël Coward', 'Noel Coward']), ['noel-coward', 'noel-coward-2'], 'order decides who owns the bare slug');
+  assert.deepEqual(assignUniqueSlugs(['A', 'a', 'A ', 'A-2']), ['a', 'a-2', 'a-3', 'a-2-2'], 'a taken numbered slug is skipped, and a name that IS a numbered slug collides on it');
+  assert.deepEqual(assignUniqueSlugs(['Jesse Green', 'Ben Brantley']), ['jesse-green', 'ben-brantley'], 'no collision → plain slugify');
+  assert.deepEqual(assignUniqueSlugs([]), []);
+  // The retired URLs are the same rule under the old slugify: unique under it,
+  // "Noël Coward" never needed a suffix before the fold.
+  assert.deepEqual(assignUniqueSlugs(['Noel Coward', 'Noël Coward'], legacySlugify), ['noel-coward', 'no-l-coward']);
+  const out = assignUniqueSlugs(['x', 'X', 'x!']);
+  assert.equal(new Set(out).size, out.length, 'all distinct');
+});
 
 test('S7-T3 acceptance: accented bylines fold to ASCII slugs', () => {
   assert.equal(slugify('José Solís'), 'jose-solis');
