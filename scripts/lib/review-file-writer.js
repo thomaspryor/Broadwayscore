@@ -1164,6 +1164,14 @@ function createOrMergeReviewFile(showId, input, options = {}) {
 function _mergeIntoExisting(filepath, existing, ctx) {
   const { showId, input, fields, criticName, dryRun, onMerge } = ctx;
   let changed = false;
+  // Self-heal: legacy/nonstandard writers occasionally leave files without a
+  // showId, which validate-data hard-errors on (allegra-west-end-2026
+  // whatsonstage file, 2026-07-14). The containing directory IS the show, so
+  // stamp it on the next merge instead of failing validation forever.
+  if (!existing.showId) {
+    existing.showId = showId;
+    changed = true;
+  }
   // Full snapshot BEFORE any merge mutation runs (BRO-4130). Handed to
   // maybeUpgradeUrl below as opts.preMergeSnapshot so applyUrlChangeInvariant
   // judges staleness against the true on-disk state, not a copy taken after
