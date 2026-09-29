@@ -39,9 +39,49 @@ function classifyGap({ reviewTextsExists, exclusionRule, inReviewsJson, inLivePr
   return 'true-missed-discovery';
 }
 
+function _ts(v) {
+  if (!v) return null;
+  const t = Date.parse(v);
+  return Number.isNaN(t) ? null : t;
+}
+
+/**
+ * BRO-4098: a review-texts file for the outlet that belongs to a DIFFERENT
+ * production of the same title (2018 Northern Stage, Chicago 2016) is not
+ * evidence the current production's review was ingested. Counting it made
+ * triage answer 'ingested-but-excluded / do NOT start URL resolution' on
+ * opening night while the real review was a genuine discovery miss.
+ *
+ * Signals (text/date only, never URL contents):
+ *   - explainExclusion says wrongProduction/wrongShow, unless the file is dated
+ *     inside the current run (a dated in-window flag is likely a false positive
+ *     worth un-flagging, so it stays ingested-but-excluded)
+ *   - a _pending file dated before the show's previewsStartDate (openingDate
+ *     if none), or one the promoter skipped as outside the production window
+ *
+ * @param {{data: object|null, pending: boolean}} file
+ * @param {object|null} showRecord
+ * @param {string|null} exclusionRule - explainExclusion() verdict for the file
+ */
+function isOtherProductionFile(file, showRecord, exclusionRule) {
+  const data = file && file.data;
+  if (!data) return false;
+  const start = _ts(showRecord && (showRecord.previewsStartDate || showRecord.openingDate));
+  const pub = _ts(data.publishDate);
+  const predates = start != null && pub != null && pub < start;
+  if (exclusionRule === 'wrongProduction' || exclusionRule === 'wrongShow') {
+    return pub == null || start == null || predates;
+  }
+  if (file.pending) {
+    if (predates) return true;
+    if (/outside this production's window/i.test(String(data.promoteSkippedReason || ''))) return true;
+  }
+  return false;
+}
+
 /** Only this state justifies starting URL-resolution work (site search, RSS, sitemap). */
 function justifiesUrlResolution(state) {
   return state === 'true-missed-discovery';
 }
 
-module.exports = { classifyGap, justifiesUrlResolution };
+module.exports = { classifyGap, justifiesUrlResolution, isOtherProductionFile };
