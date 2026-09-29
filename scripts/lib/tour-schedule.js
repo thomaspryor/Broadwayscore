@@ -247,6 +247,24 @@ function wikiNamesLaunch(prose, d) {
 }
 
 /**
+ * Wikipedia says the tour ends in the month and year of the last listed stop
+ * ("a North American tour began in September 2025 and is scheduled to end in
+ * August 2026"; Suffs, BRO-4325), in one North American sentence. Only used
+ * once that stop has passed with nothing listed after it, so a tour that
+ * extends shows later stops and a later month.
+ */
+function wikiNamesClosingMonth(wikiText, d) {
+  const when = new RegExp(`\\b${MONTHS[d.getUTCMonth()]}\\s+(\\d{1,2},\\s+)?${d.getUTCFullYear()}\\b`, 'i');
+  for (const w of tourWindows(proseOnly(wikiText), 250)) {
+    for (const s of w.split(/(?<=[.!?])\s+|\n+/)) {
+      if (/\btour/i.test(s) && /\b(clos(e|ed|es|ing)|end(ed|s|ing)?|conclud|final performance)\b/i.test(s)
+        && !FOREIGN_PRODUCTION.test(s) && when.test(s)) return true;
+    }
+  }
+  return false;
+}
+
+/**
  * Opening night in the first week of the engagement (previews first), named
  * in tour text. A week, not the whole engagement: a months-long sit-down
  * would otherwise take any date in its run.
@@ -394,6 +412,7 @@ function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = 
   const ended = seg.end.getTime() + DAY <= now.getTime();
   if (ended && !tour.closingDate) {
     if (wikiNamesClosing(wikiText, seg.end)) write.closingDate = iso(seg.end);
+    else if (wikiNamesClosingMonth(wikiText, seg.end)) write.closingDate = iso(seg.end);
     else if (stated) write.closingDate = iso(seg.end);
     else if (separateTourStarted) write.closingDate = iso(seg.end);
     else notes.push(`last listed stop ended ${iso(seg.end)} but nothing confirms the tour closed; left open`);
@@ -418,6 +437,7 @@ module.exports = {
   segmentLaunch,
   wikiNamesOpeningInside,
   wikiNamesLaunchCity,
+  wikiNamesClosingMonth,
   decideTourDates,
   statedClosedRanges,
   scheduleSlugs,

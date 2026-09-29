@@ -123,6 +123,7 @@ test('a discovered tour is decided by its segment start and built with schedule 
   assert.equal(built.entry.discoverySource, 'tour-schedule:tourstoyou');
   assert.match(built.entry.tourLaunchEvidence, /tourstoyou\.org\/shows\/hells-kitchen/);
   assert.equal(built.entry.status, 'open');
+  assert.equal(built.entry.tourScheduleSlug, 'hells-kitchen', 'the date job reads the same page, never a guess');
   assert.equal(buildTourEntry({ parent, shows: [parent], decision: d, now: NOW }).skip, 'no evidence URL (roundup or schedule)');
 });
 
