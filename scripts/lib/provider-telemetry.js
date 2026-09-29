@@ -26,7 +26,7 @@ const path = require('path');
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
 const LEDGER_PATH = path.join(REPO_ROOT, 'data', 'audit', 'scraper-spend-ledger.jsonl');
-// ~3 days at 2026-09 volume (10-15K rows/day). check-provider-spend.js reads
+// ~2-3 days at 2026-09 volume (15-20K rows/day). check-provider-spend.js reads
 // yesterday's rows ~13:00Z today, so the ledger must hold ~37h at minimum.
 const MAX_LEDGER_LINES = 45000;
 const TAG_BY_PROVIDER = {
@@ -87,7 +87,10 @@ function _ledgerPath() {
 function trimLedgerLines(lines, max = MAX_LEDGER_LINES) {
   if (lines.length <= max) return lines;
   const key = (l) => (l.startsWith('{"ts":"') ? l.slice(7, 31) : '');
-  const sorted = lines
+  // Exact-line dedupe (full record is the identity, as in
+  // merge-scraper-spend-ledger.js): the re-sort moves blocks, and a concurrent
+  // merge=union can then keep both copies of a moved block.
+  const sorted = [...new Set(lines)]
     .map((l, i) => [key(l), i, l])
     .sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : a[1] - b[1]));
   return sorted.slice(sorted.length - max).map((e) => e[2]);

@@ -48,3 +48,9 @@ test('ledger sums accept a { from, to } window as well as a UTC day', () => {
   assert.deepEqual(topCallersByCredits(rows, win, 'scrapingdog').map((t) => t.script), ['b.js', 'a.js']);
   assert.deepEqual(countCallsByProvider(rows, '2026-09-29'), { scrapingdog: 2 });
 });
+
+test('trimming drops exact duplicate rows left by a union merge of a moved block', () => {
+  const a = row('2026-09-29T10:00:00.000Z', 1);
+  const b = row('2026-09-29T11:00:00.000Z', 2);
+  assert.deepEqual(trimLedgerLines([b, a, b, a, row('2026-09-01T00:00:00.000Z', 0)], 2), [a, b]);
+});
