@@ -956,5 +956,12 @@
       "reason": "12 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
+  },
+  "youtube.com": {
+    "scrapingdog": {
+      "skip": true,
+      "reason": "BRO-4343 (hand-authored): Scrapingdog returns a YouTube watch page without ytInitialPlayerResponse (weekly-video-reviews run 36633668420: 0/63, \"no player response in watch page (scrapingdog)\"), and fetchPage accepts it (skipVerify), so Bright Data was never tried. Skip it for youtube.com so caption fetches reach Bright Data.",
+      "addedAt": "2026-09-29"
+    }
   }
 }

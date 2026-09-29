@@ -61,3 +61,52 @@ export function overBudgetMessage(
     `than deleting the assertion — that's the RSC-bloat class from #419/#962.`
   );
 }
+
+// Distinct show slugs in the flight payload. Listing routes (/, /west-end,
+// /off-broadway) serialize one record per show in their market, so their
+// bytes grow with the catalog; counting slugs lets a budget scale with that
+// growth while still catching per-show bloat (#419's shape: bytes per show
+// jumping because foreign review corpora rode along).
+const FLIGHT_SLUG_RE = /\\"slug\\":\\"([a-z0-9-]+)\\"/g;
+
+export function countFlightSlugs(html: string): number {
+  const flight = (html.match(FLIGHT_CHUNK_RE) || []).join('');
+  return new Set(Array.from(flight.matchAll(FLIGHT_SLUG_RE), (m) => m[1])).size;
+}
+
+// Past this much catalog growth the budget stops scaling and the test fails,
+// asking for a re-derivation: +50% shows on one page is worth a look even if
+// every per-show byte is honest.
+export const MAX_CATALOG_SCALE = 1.5;
+
+export interface CatalogBudget extends PageWeight {
+  // distinct flight slugs on the route when its bytes were measured; omit for
+  // fixed-content pages, whose budget is then never scaled
+  baselineItems?: number;
+}
+
+export interface ScaledBudget extends PageWeight {
+  scale: number;
+  // set when the catalog outgrew MAX_CATALOG_SCALE
+  outgrown: string | null;
+}
+
+export function scaleBudgetForCatalog(route: string, budget: CatalogBudget, items: number): ScaledBudget {
+  if (!budget.baselineItems) {
+    return { documentBytes: budget.documentBytes, rscBytes: budget.rscBytes, scale: 1, outgrown: null };
+  }
+  const ratio = items / budget.baselineItems;
+  const scale = Math.min(Math.max(1, ratio), MAX_CATALOG_SCALE);
+  const outgrown =
+    ratio > MAX_CATALOG_SCALE
+      ? `${route} now lists ${items} shows vs a baseline of ${budget.baselineItems} ` +
+        `(x${ratio.toFixed(2)} > x${MAX_CATALOG_SCALE}). Re-measure production and re-derive ` +
+        `its PAGE_WEIGHT_BUDGETS entry (bytes and baselineItems).`
+      : null;
+  return {
+    documentBytes: Math.round(budget.documentBytes * scale),
+    rscBytes: Math.round(budget.rscBytes * scale),
+    scale,
+    outgrown,
+  };
+}

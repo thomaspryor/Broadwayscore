@@ -92,6 +92,7 @@ scripts/lib/affiliate-anomaly.test.mjs
 scripts/lib/affiliate-link-contract.test.mjs
 scripts/lib/archive-cache-guard.test.mjs
 scripts/lib/audit-push-retry-budgets.test.mjs
+scripts/lib/automated-clear-not-manual.test.mjs
 scripts/lib/cast-changes-data-quality.test.mjs
 scripts/lib/check-critic-coverage.test.mjs
 scripts/lib/check-merge-history.test.mjs
@@ -594,7 +595,6 @@ tests/unit/ibdb-table-columns.test.mjs
 tests/unit/id-year-drift.test.mjs
 tests/unit/image-healing.test.mjs
 tests/unit/image-optimizer-exposure.test.mjs
-tests/unit/image-presence.test.mjs
 tests/unit/import-ledger-checkpoint.test.mjs
 tests/unit/import-ledger.test.mjs
 tests/unit/in-review-backlog.test.mjs
