@@ -57,6 +57,9 @@ fi
 # would silently read one message behind without this. The harness passes the
 # live final text separately.
 export VE_LAST_MSG=$(echo "$input" | jq -r '.last_assistant_message // empty' 2>/dev/null)
+# The repo this hook ships in (.claude/hooks/ -> repo root): the chain gate
+# loads scripts/lib/infra-review-scope.js from here.
+export VE_REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && pwd)"
 
 result=$(python3 - "$transcript" <<'PYEOF'
 import hashlib, json, sys, os, re, shlex
@@ -353,6 +356,19 @@ def _board_gate_enforced():
     _board_gate_cache.append(ok)
     return ok
 
+def _is_owner_record(r, text):
+    """The owner's own typed message: origin.kind 'human' (current CLI). Older
+    transcripts carry no origin, so fall back to "not meta, not a harness
+    notice, not a compaction summary or interrupt marker" (Mac transcript.py
+    is_real_user_msg). Consumed by the cloud chain gate only."""
+    if r.get('isMeta') or r.get('isCompactSummary'):
+        return False
+    origin = r.get('origin') if isinstance(r.get('origin'), dict) else {}
+    if origin:
+        return origin.get('kind') == 'human'
+    t = (text or '').lstrip()
+    return bool(t) and not t.startswith(('<', '[Request interrupted', 'This session is being continued'))
+
 events = []  # list of (kind, payload)
 # kinds: 'tool' payload=(name,input,tool_use_id) | 'text' payload=str | 'result' payload=(tool_use_id, text)
 tool_results_by_id = {}
@@ -407,10 +423,26 @@ try:
                 # consumers keep seeing exactly what they saw before.
                 if isinstance(content, str):
                     events.append(('user_notice', content))
+                    # The owner's own typed prompt (origin.kind 'human'; older
+                    # transcripts: no origin, not meta, not a <notice>). Stop-hook
+                    # feedback is isMeta. Consumed by the chain gate only.
+                    _origin = r.get('origin') if isinstance(r.get('origin'), dict) else {}
+                    _cmd = re.search(r'<command-name>/?([\w:-]+)</command-name>', content)
+                    if _cmd:
+                        # A slash command the owner typed (/ship-check, /what-else):
+                        # counts like the Skill call, and is not new work (Mac
+                        # finish-line-gate harvest_command).
+                        events.append(('user_command', _cmd.group(1).split(':')[-1]))
+                    elif _is_owner_record(r, content):
+                        events.append(('user_human', ''))
                     continue
                 # Tool results arrive as user messages with type=tool_result in their content.
                 # User-typed text appears as type=text — used by the visual-qa
                 # reference-attached and override-active-for-push checks.
+                _list_text = ''.join(c.get('text', '') or '' for c in content
+                                     if isinstance(c, dict) and c.get('type') == 'text')
+                if _list_text and _is_owner_record(r, _list_text):
+                    events.append(('user_human', ''))
                 for c in content:
                     if not isinstance(c, dict):
                         continue
@@ -1009,13 +1041,149 @@ def _write_verify_state(fp):
     except OSError:
         pass
 
+# ─── Cloud finish-line chain (BRO-4238 phase 2) ──────────────────────────────
+# Port of the Mac finish-line-gate's Gates 1 and 4 into the cloud Stop hook.
+# A SAFE TO EXIT claim after code edits needs (a) a review since those edits
+# and (b) an actual /what-else run for this piece of work. Before this, the
+# only review gate here fired for scripts/lib/ alone (and never for workflows,
+# which EXEMPT_SUBSTRINGS drops), so a session edited .claude/hooks/*.sh,
+# claimed SAFE TO EXIT and ran neither until the owner asked (2026-09-29).
+# /wrap-up is not re-checked here: NOWRAPUP above already requires its real
+# outcome (the Linear close-out), which the owner chose over a Skill-call check.
+# Mid-work Stops (NOT SAFE TO EXIT) are left alone. Bypass: NO-SHIP-CHECK:
+# <reason> for the review (NO-VERIFY: waives execution evidence only), and
+# NO-WHAT-ELSE: <reason> for the sweep.
+# Kill switch: CLOUD_CHAIN_GATE_DISABLE=1. Fails open on any error.
+CHAIN_TRIGGER_DIRS = ('/src/', '/scripts/', '/.claude/hooks/', '/.github/workflows/', '/supabase/')
+CHAIN_TRIGGER_EXTS = CODE_EXTS + ('.yml', '.yaml', '.sql')
+CHAIN_REVIEW_SKILLS = ('ship-check', 'code-review', 'second-opinion')
+CHAIN_FIXUP_BUDGET = 8   # edits right after a review are its fixups (Mac FIXUP_BUDGET)
+
+def _chain_result():
+    stripped = re.sub(r'```.*?```', '', _last_msg or '', flags=re.DOTALL)
+    lines = [ln.strip() for ln in stripped.strip().splitlines() if ln.strip()]
+    divider = re.compile(r'^[\-=_*~─━│┃┌┐└┘•·\s]+$')
+    while lines and divider.match(lines[-1]):
+        lines.pop()
+    if not lines or not re.match(r'^SAFE TO EXIT\b', lines[-1]):
+        return None
+    def is_trigger(fp):
+        return (fp.endswith(CHAIN_TRIGGER_EXTS) and '/node_modules/' not in fp
+                and (any(d in fp for d in CHAIN_TRIGGER_DIRS)
+                     or fp.startswith(tuple(d.lstrip('/') for d in CHAIN_TRIGGER_DIRS))))
+    edits, reviews, what_else, humans, bash_cmds = [], [], [], [], []
+    for i, (kind, payload) in enumerate(events):
+        if kind == 'user_human':
+            humans.append(i)
+            continue
+        if kind == 'user_command':
+            if payload in CHAIN_REVIEW_SKILLS:
+                reviews.append(i)
+            elif payload == 'what-else':
+                what_else.append(i)
+            continue
+        if kind != 'tool':
+            continue
+        name, inp, _tid = payload
+        if name in ('Edit', 'Write', 'MultiEdit', 'NotebookEdit'):
+            fp = inp.get('file_path', '') or inp.get('notebook_path', '') or ''
+            if is_trigger(fp):
+                edits.append((i, os.path.basename(fp)))
+        elif name == 'Bash' and _tid not in tool_error_ids:
+            bash_cmds.append((i, inp.get('command', '') or ''))
+        if name == 'Skill':
+            sk = inp.get('skill') or ''
+            if sk in CHAIN_REVIEW_SKILLS:
+                reviews.append(i)
+            elif sk == 'what-else':
+                what_else.append(i)
+        elif name == 'Bash':
+            cmd = inp.get('command', '') or ''
+            if any(p in cmd for p in SHIPCHECK_BASH_PATTERNS_EARLY):
+                reviews.append(i)
+        elif name in ('Agent', 'Task'):
+            desc = (inp.get('description') or '').lower()
+            if any(tok in desc for tok in ('review', 'ship-check', 'shipcheck', 'audit')):
+                reviews.append(i)
+    # Bash-side edits (sed -i, cat >, cp, python open(...,'w')): most of the
+    # motivating session's edits went through Bash, invisible to Edit/Write.
+    edits.extend(_bash_code_edits(bash_cmds, is_trigger))
+    edits.sort()
+    if not edits:
+        return None
+    turn_text = '\n'.join(p for k, p in events[(humans[-1] if humans else 0):] if k == 'text')
+    turn_text = re.sub(r'```.*?```', '', turn_text, flags=re.DOTALL)
+    # Review: every code edit is covered by an earlier review, except up to
+    # CHAIN_FIXUP_BUDGET fixups made before the owner's next message.
+    last_review = reviews[-1] if reviews else None
+    after = [e for e in edits if last_review is None or e[0] > last_review]
+    if after and last_review is not None:
+        next_human = next((h for h in humans if h > last_review), None)
+        fixups = [e for e in after if next_human is None or e[0] < next_human]
+        if len(fixups) == len(after) and len(after) <= CHAIN_FIXUP_BUDGET:
+            after = []
+    if after and not re.search(r'^\s*NO-SHIP-CHECK:\s*\S.{9,}', turn_text, re.M):
+        return f"UNREVIEWED_SAFE:{after[-1][1]}"
+    # /what-else: once for this piece of work (since the owner's message that
+    # started the latest edits).
+    work_start = max((h for h in humans if h < edits[-1][0]), default=-1)
+    if not any(w > work_start for w in what_else) \
+            and not re.search(r'^\s*NO-WHAT-ELSE:\s*\S.{9,}', turn_text, re.M):
+        return "NOWHATELSE"
+    return None
+
+_PY_WRITE_RE = re.compile(r"open\([^)]*,\s*['\"][wa]|\.write_text\(|\.write_bytes\(")
+_QUOTED_PATH_RE = re.compile(r"['\"]([^'\"\s]+\.\w{1,5})['\"]")
+
+def _bash_code_edits(bash_cmds, is_trigger):
+    out = []
+    for i, cmd in bash_cmds:
+        # python heredoc edits (p='x.sh'; open(p,'w')): quoted code paths in a
+        # command that writes a file.
+        if _PY_WRITE_RE.search(cmd):
+            for m in _QUOTED_PATH_RE.finditer(cmd):
+                if is_trigger(m.group(1)):
+                    out.append((i, os.path.basename(m.group(1))))
+                    break
+    shell = [(i, c) for i, c in bash_cmds if c and not _PY_WRITE_RE.search(c)]
+    scope = os.path.join(os.environ.get('VE_REPO_ROOT', '.'), 'scripts', 'lib', 'infra-review-scope.js')
+    if not shell or not os.path.isfile(scope):
+        return out
+    try:
+        import subprocess as _cs
+        js = ("const s=require(process.argv[1]);let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{"
+              "const out=JSON.parse(d).map(c=>{try{return s.bashWriteTargets(c)}catch(e){return []}});"
+              "process.stdout.write(JSON.stringify(out))})")
+        res = _cs.run(['node', '-e', js, scope], input=json.dumps([c for _, c in shell]),
+                      capture_output=True, text=True, timeout=8)
+        for (i, _c), targets in zip(shell, json.loads(res.stdout or '[]')):
+            hit = next((t for t in targets if is_trigger(t)), None)
+            if hit:
+                out.append((i, os.path.basename(hit)))
+    except Exception:
+        pass   # fail open: Edit/Write edits still count
+    return out
+
+SHIPCHECK_BASH_PATTERNS_EARLY = ('codex exec', 'api.openai.com/v1/chat/completions')
+
+def _chain_or_ok():
+    # Runs at each OK exit below, so the chain never takes the Stop hook's one
+    # block ahead of UNVERIFIED / UNSHIPCHECKED / scoring / visual-QA (the
+    # stop_hook_active guard lets the second Stop through).
+    if os.environ.get('CLOUD_CHAIN_GATE_DISABLE', '0') == '1':
+        return 'OK'
+    try:
+        return _chain_result() or 'OK'
+    except Exception:
+        return 'OK'   # fail open
+
 _verify_state = _read_verify_state()
 if _edit_fingerprint > 0 and _verify_state.get('bypassSatisfiedAt') == _edit_fingerprint:
-    print("OK")
+    print(_chain_or_ok())
     sys.exit(0)
 
 if last_edit_idx is None and not ran_audit_sweep:
-    print("OK")
+    print(_chain_or_ok())
     sys.exit(0)
 
 # Look for a QUALIFYING Bash tool_use OR a NO-VERIFY override in text after the edit.
@@ -1218,7 +1386,7 @@ if (is_ui_edit
         and _head_sha and _last_ok
         and _last_ok.get('headSha') == _head_sha
         and _last_ok.get('latestEditMarker') == _current_edit_marker):
-    print("OK")
+    print(_chain_or_ok())
     sys.exit(0)
 
 def _write_last_satisfied(sha, edit_marker):
@@ -1415,9 +1583,13 @@ scan_start = (last_edit_idx + 1) if last_edit_idx is not None else 0
 # Bug: text comes before the Edit tool call in the transcript within the same turn,
 # so scan_start (last_edit_idx+1) would never see a NO-VERIFY: written at turn start.
 # Fix: find the last user message, then scan everything after it for NO-VERIFY:.
+# The owner's messages arrive as plain strings in current transcripts
+# (user_human), not list text (user_text): anchoring on user_text alone left
+# the window at the whole session, so one NO-VERIFY: from hours earlier waived
+# every later unverified edit (BRO-4238 what-else).
 last_user_msg_idx = -1
 for i in range(len(events) - 1, -1, -1):
-    if events[i][0] == 'user_text':
+    if events[i][0] in ('user_text', 'user_human'):
         last_user_msg_idx = i
         break
 no_verify_scan_start = last_user_msg_idx + 1 if last_user_msg_idx >= 0 else 0
@@ -1475,7 +1647,7 @@ if no_verify:
     # Write the satisfied memo so subsequent turns in the same session don't re-fire.
     _write_last_satisfied(_head_sha, _current_edit_marker)
     _write_verify_state(_edit_fingerprint)
-    print("OK")
+    print(_chain_or_ok())
     sys.exit(0)
 
 if is_scoring_edit or ran_audit_sweep:
@@ -1486,7 +1658,7 @@ if is_scoring_edit or ran_audit_sweep:
     # whose only signal is the Bash mutations, blame 'audit-sweep'.
     label = basename if is_scoring_edit else 'audit-sweep'
     if scoring_verified:
-        print("OK")
+        print(_chain_or_ok())
         sys.exit(0)
     if scoring_ran_but_failed:
         print(f"SCORING_FAILED:{label}")
@@ -1582,7 +1754,7 @@ if visual_branch_relevant:
         # don't re-fire the gate, AND so a NEW uncommitted UI edit DOES
         # re-fire it.
         _write_last_satisfied(_head_sha, _current_edit_marker)
-        print("OK")
+        print(_chain_or_ok())
         sys.exit(0)
     # Only block if the CURRENT edit is a visual UI change. If we entered this
     # branch only because any_ui_edit_in_session is True (stale from an earlier
@@ -1591,11 +1763,11 @@ if visual_branch_relevant:
     if is_ui_edit:
         print(f"UNVERIFIED_VISUAL:{basename or 'ui-edit'}")
     else:
-        print("OK")
+        print(_chain_or_ok())
     sys.exit(0)
 
 if generic_verified:
-    print("OK")
+    print(_chain_or_ok())
     sys.exit(0)
 
 print(f"UNVERIFIED:{basename}")
@@ -1666,6 +1838,17 @@ fi
 if [[ "$result" == UNSHIPCHECKED:* ]]; then
   fname="${result#UNSHIPCHECKED:}"
   echo "🛑 BLOCKED: edit to \`${fname}\` (scripts/lib/ or .github/workflows/) without ship-check. Satisfy via /ship-check, codex exec, GPT-4o curl, or Agent with 'review'/'audit' in description. Bypass: NO-VERIFY: <why this can't break anything>." >&2
+  exit 2
+fi
+
+if [[ "$result" == UNREVIEWED_SAFE:* ]]; then
+  fname="${result#UNREVIEWED_SAFE:}"
+  echo "🛑 BLOCKED: SAFE TO EXIT after code edits (latest: \`${fname}\`) with no review since them. Run /ship-check (or /second-opinion for a small diff), fix what it finds, then /what-else and /wrap-up. Docs-only or pure revert: NO-SHIP-CHECK: <why no review is needed>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "NOWHATELSE" ]]; then
+  echo "🛑 BLOCKED: SAFE TO EXIT after code edits, but /what-else never ran for this work (prose does not count). Run it now, act on what it finds, then close. Truly n/a: NO-WHAT-ELSE: <reason>." >&2
   exit 2
 fi
 

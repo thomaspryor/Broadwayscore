@@ -2091,6 +2091,7 @@ on:
       - '.claude/hooks/block-resend-broadcasts.sh'
       - '.claude/hooks/lib/strip-git-commit-noise.js'
       - 'scripts/tests/cloud-settings-guards.test.mjs'
+      - 'scripts/tests/cloud-infra-review-hooks.test.mjs'
       - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'
       # verify-edits.sh heredoc-stripper here-string false negative (task
       # #1606), same shell-e2e class as merge-gate-hook.test.mjs above and

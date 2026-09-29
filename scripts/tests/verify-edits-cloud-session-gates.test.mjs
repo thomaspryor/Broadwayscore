@@ -88,7 +88,12 @@ function writeTranscript(dir, toolCalls, { card = true, userText = 'please do th
   const lines = [
     JSON.stringify({ type: 'user', message: { role: 'user', content: [{ type: 'text', text: userText }] } }),
   ];
-  for (const { _result, _notice, _attachment, _isError, ...call } of card ? [CARD_CREATE, ...toolCalls] : toolCalls) {
+  for (const { _result, _notice, _attachment, _isError, _isMeta, _extra, _userList, ...call } of card ? [CARD_CREATE, ...toolCalls] : toolCalls) {
+    if (Array.isArray(_userList)) {
+      // An owner message with list content (text + an attached image).
+      lines.push(JSON.stringify({ type: 'user', origin: { kind: 'human' }, message: { role: 'user', content: _userList } }));
+      continue;
+    }
     if (typeof _attachment === 'string') {
       // Mid-turn delivery of the same notices: an `attachment` record with
       // type 'queued_command' and the notice in `prompt` (real shape seen
@@ -103,7 +108,7 @@ function writeTranscript(dir, toolCalls, { card = true, userText = 'please do th
       // only reads list content for user_text, so a list-shaped fixture here
       // would pass in the harness and fail in production (/second-opinion
       // finding on the in-flight gate, 2026-09-28).
-      lines.push(JSON.stringify({ type: 'user', message: { role: 'user', content: _notice } }));
+      lines.push(JSON.stringify({ type: 'user', ...(_isMeta ? { isMeta: true } : {}), ...(_extra || {}), message: { role: 'user', content: _notice } }));
       continue;
     }
     lines.push(JSON.stringify({
@@ -165,6 +170,10 @@ const CREATE_PR = toolUse('mcp__github__create_pull_request', { owner: 'thomaspr
 const MERGE_PR = toolUse('mcp__github__merge_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', pullNumber: 1 },
   '{"sha":"0123abc","merged":true,"message":"Pull Request successfully merged"}');
 const WRAP_UP = toolUse('Skill', { skill: 'wrap-up' });
+// The cloud chain gate (BRO-4238 phase 2): a SAFE TO EXIT after code edits
+// needs a review and a /what-else run. "Fully clean" fixtures carry both.
+const SHIP_CHECK = toolUse('Skill', { skill: 'ship-check' });
+const WHAT_ELSE = toolUse('Skill', { skill: 'what-else' });
 // Real Linear close-out calls in the shapes this repo actually uses
 // (`linear-brain.js update BRO-N --state <name> [--comment "..."]` and, for a
 // claimed issue, `linear-session.js report --issue=BRO-N --status=<x>`). Kept
@@ -434,6 +443,8 @@ test('regression: a fully clean session (edit + verify + push + Linear close-out
   const transcript = writeTranscript(dir, [
     QUALIFYING_EDIT,
     toolUse('Bash', { command: 'npx tsc --noEmit src/lib/scoring.ts' }),
+    SHIP_CHECK,
+    WHAT_ELSE,
     GIT_PUSH,
     BOARD_CLOSEOUT_DONE,
   ]);
@@ -809,7 +820,7 @@ test('regression: existing UNVERIFIED gate still blocks an unrun code edit when 
   // and the edit is never verified by a subsequent Bash run — this must
   // still trip the PRE-EXISTING UNVERIFIED:<file> gate, proving the new
   // gates were inserted without disturbing it.
-  const transcript = writeTranscript(dir, [QUALIFYING_EDIT, BOARD_CLOSEOUT_DONE]);
+  const transcript = writeTranscript(dir, [QUALIFYING_EDIT, SHIP_CHECK, WHAT_ELSE, BOARD_CLOSEOUT_DONE]);
   const r = runHook(transcript, 'SAFE TO EXIT — done.'); // valid status line + Linear close-out done, so the NEW gates pass clean
   assertBlocked(r, 'an unverified code edit must still block on its own pre-existing gate');
   assert.match(r.stderr, /unverified edit/i, `expected the pre-existing UNVERIFIED message, got: ${r.stderr.slice(0, 300)}`);
@@ -821,6 +832,8 @@ test('regression: a fully clean session, standalone check (edit + verify + push 
   const transcript = writeTranscript(dir, [
     QUALIFYING_EDIT,
     toolUse('Bash', { command: 'npx tsc --noEmit src/lib/scoring.ts' }),
+    SHIP_CHECK,
+    WHAT_ELSE,
     GIT_PUSH,
     BOARD_CLOSEOUT_DONE,
   ]);
@@ -1044,7 +1057,7 @@ test('P0 regression: NOCARD standing down (Linear unreachable) still runs the UN
 
 test('P0 regression: NOWRAPUP standing down (Linear unreachable) still runs the UNVERIFIED gate → BLOCKED', skipNoRepoHook, () => {
   const dir = makeTmpDir('nowrapup-fallthrough');
-  const transcript = writeTranscript(dir, [QUALIFYING_EDIT, GIT_PUSH]);
+  const transcript = writeTranscript(dir, [QUALIFYING_EDIT, SHIP_CHECK, WHAT_ELSE, GIT_PUSH]);
   const r = runHook(transcript, 'Pushed.\n\nSAFE TO EXIT — pushed.', { STUB_PROBE_EXIT: '4' });
   assertBlocked(r, 'a stood-down close-out gate must not wave through an unverified edit');
   assert.match(r.stderr, /unverified edit/i, `got: ${r.stderr.slice(0, 300)}`);
@@ -1414,4 +1427,127 @@ test('PR gate: a merge that went through still counts (unchanged) → ALLOWED', 
   const transcript = writeTranscript(dir, [CREATE_PR, MERGE_PR, LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(transcript, 'Merged PR #1.\n\nSAFE TO EXIT — merged.'), 'a real merge closes the PR out');
   fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ─────────── cloud finish-line chain (BRO-4238 phase 2, 2026-09-29) ─────────
+// Port of the Mac finish-line gate's review + /what-else checks. Incident:
+// this very session edited .claude/hooks/*.sh, claimed SAFE TO EXIT, and ran
+// neither /ship-check nor /what-else until the owner asked.
+const HOOK_EDIT = toolUse('Edit', { file_path: '/home/user/Broadwayscore/.claude/hooks/github-main-guard.sh', old_string: 'a', new_string: 'b' });
+const HOOK_RUN = toolUse('Bash', { command: 'bash .claude/hooks/github-main-guard.sh < payload.json' });
+const WORKFLOW_EDIT = toolUse('Edit', { file_path: '/home/user/Broadwayscore/.github/workflows/test.yml', old_string: 'a', new_string: 'b' });
+const DOC_EDIT = toolUse('Edit', { file_path: '/home/user/Broadwayscore/.claude/CLOUD.md', old_string: 'a', new_string: 'b' });
+const OWNER = (text) => ({ _notice: text });
+const HOOK_FEEDBACK = { _notice: 'Stop hook feedback:\n🛑 BLOCKED: …', _isMeta: true };
+const CLOSED = 'Landed and verified.\n\nSAFE TO EXIT — landed, card updated.';
+
+function chain(name, calls, msg, env) {
+  const dir = makeTmpDir(name);
+  const r = runHook(writeTranscript(dir, calls), msg, env);
+  fs.rmSync(dir, { recursive: true, force: true });
+  return r;
+}
+
+test('chain: hook edit + SAFE TO EXIT with no review → BLOCKED (the incident)', skipNoRepoHook, () => {
+  const r = chain('chain-noreview', [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
+  assertBlocked(r, 'unreviewed hook edit');
+  assert.match(r.stderr, /no review since them.*github-main-guard\.sh|github-main-guard\.sh.*no review/s, `got: ${r.stderr.slice(0, 300)}`);
+});
+
+test('chain: reviewed but /what-else never ran → BLOCKED', skipNoRepoHook, () => {
+  const r = chain('chain-nowhatelse', [HOOK_EDIT, HOOK_RUN, SHIP_CHECK, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
+  assertBlocked(r, 'no what-else');
+  assert.match(r.stderr, /what-else never ran/i, `got: ${r.stderr.slice(0, 300)}`);
+});
+
+test('chain: review + what-else → ALLOWED; second-opinion counts as the review', skipNoRepoHook, () => {
+  assertAllowed(chain('chain-full', [HOOK_EDIT, HOOK_RUN, SHIP_CHECK, WHAT_ELSE, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED), 'full chain');
+  const so = toolUse('Skill', { skill: 'second-opinion' });
+  assertAllowed(chain('chain-so', [HOOK_EDIT, HOOK_RUN, so, WHAT_ELSE, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED), 'second-opinion');
+});
+
+test('chain: fixups right after the review are covered; stop-hook feedback does not end the fixup window', skipNoRepoHook, () => {
+  assertAllowed(chain('chain-fixups', [HOOK_EDIT, SHIP_CHECK, HOOK_EDIT, HOOK_FEEDBACK, HOOK_EDIT, HOOK_RUN, WHAT_ELSE, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED),
+    'two fixups after the review');
+  const many = Array(9).fill(HOOK_EDIT);
+  assertBlocked(chain('chain-fixups-over', [HOOK_EDIT, SHIP_CHECK, ...many, HOOK_RUN, WHAT_ELSE, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED),
+    'nine edits after a review is new work, not fixups');
+});
+
+test('chain: new work after the owner speaks again needs a new review and a new /what-else', skipNoRepoHook, () => {
+  const r = chain('chain-newwork', [HOOK_EDIT, SHIP_CHECK, WHAT_ELSE, OWNER('Sure do it now'), HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
+  assertBlocked(r, 'edit after a new owner message');
+  assert.match(r.stderr, /no review since them/i, `got: ${r.stderr.slice(0, 300)}`);
+  const r2 = chain('chain-newwork-reviewed', [HOOK_EDIT, SHIP_CHECK, WHAT_ELSE, OWNER('Sure do it now'), HOOK_EDIT, HOOK_RUN, SHIP_CHECK, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
+  assert.match(r2.stderr, /what-else never ran/i, `the earlier /what-else covered the earlier work only; got: ${r2.stderr.slice(0, 300)}`);
+});
+
+test('chain: workflow edits count (they used to be skipped entirely)', skipNoRepoHook, () => {
+  assertBlocked(chain('chain-workflow', [WORKFLOW_EDIT, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED), 'unreviewed workflow edit');
+});
+
+test('chain: mid-work stops, docs-only edits, bypass lines and the kill switch are not blocked', skipNoRepoHook, () => {
+  assertAllowed(chain('chain-notsafe', [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE], 'Step 1 of 3 done.\n\nNOT SAFE TO EXIT — landing still running.'), 'mid-work');
+  assertAllowed(chain('chain-docs', [DOC_EDIT, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED), 'docs only');
+  assertAllowed(chain('chain-bypass', [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE],
+    'NO-SHIP-CHECK: reverted my own change byte-for-byte, nothing new to review\nNO-WHAT-ELSE: pure revert, nothing adjacent\n\nSAFE TO EXIT — reverted.'), 'bypass lines');
+  // NO-VERIFY waives execution evidence only, never the review.
+  assertBlocked(chain('chain-noverify', [HOOK_EDIT, HOOK_RUN, WHAT_ELSE, GIT_PUSH, LINEAR_CLOSEOUT_DONE],
+    'NO-VERIFY: ran it by hand in the container\n\nSAFE TO EXIT — done.'), 'NO-VERIFY must not waive the review');
+  assertAllowed(chain('chain-killswitch', [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED, { CLOUD_CHAIN_GATE_DISABLE: '1' }), 'kill switch');
+});
+
+// ship-check review findings (2026-09-29), each reproduced before the fix.
+const COMPACTION = { _notice: 'This session is being continued from a previous conversation that ran out of context.', _extra: { isCompactSummary: true } };
+const OWNER_SLASH = (name) => ({ _notice: `<command-message>${name}</command-message>\n<command-name>/${name}</command-name>`, _extra: { origin: null } });
+
+test('chain: a compaction summary is not an owner message (fixups and /what-else survive it)', skipNoRepoHook, () => {
+  assertAllowed(chain('chain-compaction', [HOOK_EDIT, SHIP_CHECK, WHAT_ELSE, COMPACTION, HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED),
+    'compaction must not start new work');
+});
+
+test('chain: /ship-check and /what-else typed by the owner count', skipNoRepoHook, () => {
+  assertAllowed(chain('chain-slash', [HOOK_EDIT, HOOK_RUN, OWNER_SLASH('ship-check'), OWNER_SLASH('what-else'), GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED),
+    'owner-typed slash commands');
+});
+
+test('chain: an owner message with an image attached starts new work', skipNoRepoHook, () => {
+  const img = { _userList: [{ type: 'text', text: 'also fix this' }, { type: 'image', source: { type: 'base64', media_type: 'image/png', data: '' } }] };
+  assertBlocked(chain('chain-image', [HOOK_EDIT, SHIP_CHECK, WHAT_ELSE, img, HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED),
+    'edit after an image message is new work');
+});
+
+test('chain: edits made through Bash count (sed -i, cat >, python open(..., "w"))', skipNoRepoHook, () => {
+  for (const command of [
+    "sed -i 's/a/b/' .claude/hooks/github-main-guard.sh",
+    'cat > scripts/lib/new-helper.js <<EOF\nmodule.exports = 1;\nEOF',
+    "python3 - <<'EOF'\np='.claude/hooks/verify-edits.sh'\ns=open(p).read()\nopen(p,'w').write(s)\nEOF",
+  ]) {
+    assertBlocked(chain('chain-bashedit', [toolUse('Bash', { command }), HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED),
+      `unreviewed Bash edit: ${command.slice(0, 30)}`);
+  }
+  // Reading or running code is not an edit.
+  assertAllowed(chain('chain-bashread', [toolUse('Bash', { command: 'node scripts/foo.js > /tmp/out.txt && cat .claude/hooks/x.sh' }), GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED),
+    'running a script is not a code edit');
+});
+
+test('chain: runs after the older gates, so an unrun edit still reports UNVERIFIED first', skipNoRepoHook, () => {
+  const r = chain('chain-order', [QUALIFYING_EDIT, LINEAR_CLOSEOUT_DONE], 'SAFE TO EXIT — done.');
+  assertBlocked(r, 'unverified and unreviewed');
+  assert.match(r.stderr, /unverified edit/i, `the execution gate must keep its block; got: ${r.stderr.slice(0, 300)}`);
+});
+
+test('NO-VERIFY from an earlier turn does not waive a later unverified edit (owner messages are strings)', skipNoRepoHook, () => {
+  const earlier = { type: 'text', text: 'NO-VERIFY: docs-only tweak' };
+  const dir = makeTmpDir('noverify-stale');
+  const p = writeTranscript(dir, [QUALIFYING_EDIT, OWNER('now fix the scoring bug'), QUALIFYING_EDIT, SHIP_CHECK, WHAT_ELSE, LINEAR_CLOSEOUT_DONE]);
+  // Put the old NO-VERIFY text before the owner's new message.
+  const lines = fs.readFileSync(p, 'utf8').trim().split('\n');
+  const ownerIdx = lines.findIndex((l) => l.includes('now fix the scoring bug'));
+  lines.splice(ownerIdx, 0, JSON.stringify({ type: 'assistant', message: { role: 'assistant', content: [earlier] } }));
+  fs.writeFileSync(p, lines.join('\n') + '\n');
+  const r = runHook(p, 'Fixed.\n\nSAFE TO EXIT — done.');
+  fs.rmSync(dir, { recursive: true, force: true });
+  assertBlocked(r, 'a stale NO-VERIFY must not cover new work');
+  assert.match(r.stderr, /unverified edit/i, `got: ${r.stderr.slice(0, 300)}`);
 });
