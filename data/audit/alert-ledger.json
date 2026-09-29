@@ -146,12 +146,13 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T03:38:46.630Z",
+      "lastSeen": "2026-09-29T04:46:21.864Z",
       "lastNotifiedAt": "2026-09-29T03:38:46.630Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
       "notifyCount": 108,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3861,7 +3862,10 @@
         "mode": "dispatch-at-filing",
         "runId": "36353075509",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36353075509"
-      }
+      },
+      "absentRunIds": [
+        "36522185916"
+      ]
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
       "status": "resolved",
@@ -5828,17 +5832,14 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every off-Broadway venue-complex subVenueSlugs entry resolves to a real shows.json venue\"",
       "firstSeen": "2026-09-28T20:47:43.893Z",
-      "lastSeen": "2026-09-29T02:08:44.929Z",
+      "lastSeen": "2026-09-29T04:46:21.859Z",
       "lastNotifiedAt": "2026-09-28T20:47:43.893Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4253",
-      "silentRefires": 10,
-      "absentRunIds": [
-        "36511066143",
-        "36517071702"
-      ]
+      "silentRefires": 11,
+      "absentRunIds": []
     },
     "we-aggregator-go-live:ballet-shoes-west-end-2025": {
       "status": "open",
