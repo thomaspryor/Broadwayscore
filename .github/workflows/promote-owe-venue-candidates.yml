@@ -139,12 +139,21 @@ jobs:
 
       # The pruned staging file + this promoter's audit log and state file
       # live in the PUBLIC repo — push-core-data above never touches them.
-      # All three are registered in scripts/lib/core-data-merge-registry.js
-      # (group shows-json-writer) so push-with-retry.sh keeps its Git Data
-      # API fallback for this commit. Same precedent as promote-we-
+      # All three are registered in scripts/lib/core-data-merge-registry.js:
+      # the log and state file as apiFallbackSafe (sole writer, group
+      # shows-json-writer), the staging file as an active union merge with
+      # apiFallbackMerge (BRO-4268 — discovery, this prune and hand
+      # --stage-only landings all write it; a stale copy overwrote 53 landed
+      # rows on 2026-09-29). PUSH_RECONCILE_MERGED_JSON=1 makes push-with-
+      # retry.sh re-merge the staging file against the remote tip after a
+      # rebase (same as update-show-status.yml's "Commit and push changes"
+      # and scrape-new-aggregators.yml's OB prune step; audit-reconcile-
+      # coverage.js requires it). Same precedent as promote-we-
       # aggregator.yml's "Commit WE promotion audit log" step.
       - name: Commit OWE promotion audit log + pruned staging
         if: always()
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
