@@ -146,10 +146,10 @@ elif [ "$code" -eq 0 ] && [ "$injected_ok" -ne 1 ]; then
 elif [ "$code" -eq 0 ]; then
   echo "FAIL: script exited 0 despite a genuine, successfully-injected retry-merge conflict"
   fail=1
-elif ! echo "$out" | grep -q "could not merge remote changes on retry"; then
+elif ! grep -q "could not merge remote changes on retry" <<<"$out"; then
   echo "FAIL: exited non-zero but NOT via the retry-merge die() message — this case didn't exercise what it claims to."
   fail=1
-elif ! echo "$out" | grep -qE "CONFLICT|Automatic merge failed|conflict.txt"; then
+elif ! grep -qE "CONFLICT|Automatic merge failed|conflict.txt" <<<"$out"; then
   echo "FAIL: die() message did not include git's own conflict text (the bug this test guards against — output was suppressed)."
   fail=1
 else

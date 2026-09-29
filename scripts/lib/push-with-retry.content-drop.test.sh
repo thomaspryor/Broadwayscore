@@ -80,13 +80,13 @@ gitc "$TMP/runner1" commit -q -m "LOCAL-MARKER: our real fix (typechange forces 
 
 out1=$( cd "$TMP/runner1" && PUSH_FAILURE_LOG="$TMP/failures1.jsonl" bash "$PUSH_SCRIPT" 3 main 2>&1 )
 FINAL_REMOTE=$(git --git-dir="$TMP/origin1.git" show main:shared-config.txt 2>/dev/null || echo "")
-if echo "$out1" | grep -q "Auto-resolving (keep remote): shared-config.txt$"; then
+if grep -q "Auto-resolving (keep remote): shared-config.txt$" <<<"$out1"; then
   echo "FAIL[1]: default arm STILL blindly accepted remote without a content check — the task #619 vulnerability is unfixed."
   fail=1
-elif ! echo "$out1" | grep -q "Refusing to auto-accept remote for shared-config.txt"; then
+elif ! grep -q "Refusing to auto-accept remote for shared-config.txt" <<<"$out1"; then
   echo "FAIL[1]: expected the new content-safety refusal message; got none. Output:"; echo "$out1" | tail -20 | sed 's/^/    /'
   fail=1
-elif echo "$FINAL_REMOTE" | grep -q "LOCAL-MARKER"; then
+elif grep -q "LOCAL-MARKER" <<<"$FINAL_REMOTE"; then
   echo "FAIL[1]: unexpected — local marker landed on origin (typechange should be structurally unresolvable); investigate test assumptions."
   fail=1
 else
@@ -127,7 +127,7 @@ else
   echo "PASS[2a]: pre-existing check-post-rebase-survival.js (added-files only) misses the reverted-content incident, as documented"
 fi
 
-if [ "$new_guard_code" -eq 1 ] && echo "$new_guard_out" | grep -q "REVERTED"; then
+if [ "$new_guard_code" -eq 1 ] && grep -q "REVERTED" <<<"$new_guard_out"; then
   echo "PASS[2b]: new push-content-survival.js CATCHES the exact task #619 signature (content reverted to pre-edit base)"
 else
   echo "FAIL[2b]: expected new guard to fail loudly (exit 1, REVERTED). Got exit $new_guard_code:"; echo "$new_guard_out" | sed 's/^/    /'
@@ -156,7 +156,7 @@ gitc "$TMP/repro3" checkout -q main
 
 case3_out=$(cd "$TMP/repro3" && node "$CONTENT_CLI" --before-sha="$BEFORE3" --base-sha="$BASE3" --check-ref="$FINAL3" 2>&1); case3_code=$?
 
-if [ "$case3_code" -eq 1 ] && echo "$case3_out" | grep -q "REVERTED" && echo "$case3_out" | grep -q "task #833 signature"; then
+if [ "$case3_code" -eq 1 ] && grep -q "REVERTED" <<<"$case3_out" && grep -q "task #833 signature" <<<"$case3_out"; then
   echo "PASS[3]: push-content-survival.js's deep check catches the task #833 signature (ambiguous merge that silently clobbered our added lines)"
 else
   echo "FAIL[3]: expected the deep check to fail loudly (exit 1, REVERTED, task #833 signature). Got exit $case3_code:"; echo "$case3_out" | sed 's/^/    /'

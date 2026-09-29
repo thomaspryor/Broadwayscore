@@ -97,12 +97,12 @@ echo "--- stash list: $stash ---"
 if [ "$code" -eq 0 ]; then
   echo "FAIL: script exited 0 — a genuine modify/delete conflict on fileB.json should force a non-zero exit via merge_or_die/die()."
   fail=1
-elif ! echo "$out" | grep -q "CONFLICT (modify/delete)"; then
+elif ! grep -q "CONFLICT (modify/delete)" <<<"$out"; then
   # Non-zero alone isn't enough — an earlier, unrelated failure would also
   # exit non-zero without exercising the DU-conflict path this test targets.
   echo "FAIL: exited non-zero but not via the expected modify/delete conflict on fileB.json — this case didn't exercise what it claims to."
   fail=1
-elif echo "$status" | grep -qE '^(UU|AA|DU|UD|AU|UA) '; then
+elif grep -qE '^(UU|AA|DU|UD|AU|UA) ' <<<"$status"; then
   echo "FAIL: an unmerged (conflicted) index entry remains after pop_stash_safely ran — the HEAD-missing-path case was not resolved (this is the BRO-3595 bug: the checkout-HEAD failure was swallowed, leaving the path unresolved while the stash was still dropped):"
   echo "$status" | sed 's/^/    /'
   fail=1

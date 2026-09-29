@@ -102,7 +102,7 @@ echo "── case 1: clean merge, no interference (must NOT false-positive) ─�
 setup clean
 OUT="$(run_script clean)"; RC=$?
 if [ "$RC" = 0 ]; then ok "exit 0 on a clean merge"; else bad "expected exit 0, got $RC:"; echo "$OUT" | tail -20; fi
-if echo "$OUT" | grep -q "content-survival check"; then
+if grep -q "content-survival check" <<<"$OUT"; then
   ok "content-survival check actually ran (not silently skipped)"
 else
   bad "content-survival check never ran — the test would be vacuous"; echo "$OUT" | tail -20
@@ -117,7 +117,7 @@ fi
 # for the wrong reason. This fixture changes exactly one file (target.txt), so
 # the guard must report 1/1 — that pins "compared the file we actually changed",
 # which is the property the vacuous-base bug violated.
-if echo "$OUT" | grep -qE "1/1 modified file\(s\) confirmed surviving"; then
+if grep -qE "1/1 modified file\(s\) confirmed surviving" <<<"$OUT"; then
   ok "check compared exactly the 1 file this merge changed (1/1)"
 else
   bad "check did not report 1/1 — vacuous or wrong-scope base"; echo "$OUT" | grep -A2 "content-survival"
@@ -178,7 +178,7 @@ else
   bad "injection did not take (pushed=$PUSHED_OK, origin='$LIVE') — case 2 proves nothing"
 fi
 if [ "$RC" != 0 ]; then ok "script exited non-zero ($RC) on a reverted push"; else bad "script exited 0 while its content was reverted — THE BUG"; fi
-if echo "$OUT" | grep -qi "revert"; then ok "failure message names the revert"; else bad "no revert wording in output:"; echo "$OUT" | tail -20; fi
+if grep -qi "revert" <<<"$OUT"; then ok "failure message names the revert"; else bad "no revert wording in output:"; echo "$OUT" | tail -20; fi
 
 echo "── case 3: kill switch (must let the same revert through) ──"
 setup killsw
@@ -193,7 +193,7 @@ else
   bad "injection did not take — case 3 proves nothing"
 fi
 if [ "$RC" = 0 ]; then ok "kill switch suppresses the check (exit 0)"; else bad "kill switch did not suppress (exit $RC):"; echo "$OUT" | tail -20; fi
-if echo "$OUT" | grep -q "content-survival check"; then bad "check ran despite kill switch"; else ok "check skipped under kill switch"; fi
+if grep -q "content-survival check" <<<"$OUT"; then bad "check ran despite kill switch"; else ok "check skipped under kill switch"; fi
 
 echo
 echo "passed: $PASS   failed: $FAIL"
