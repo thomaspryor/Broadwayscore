@@ -662,6 +662,11 @@
       "skip": true,
       "reason": "132 failures, 0 successes",
       "addedAt": "2026-07-30"
+    },
+    "scrapingdog": {
+      "skip": true,
+      "reason": "Scrapingdog answered HTTP 400 then stealth HTTP 500 on every talkinbroadway.com fetch during the 2026-09-28 School Girls opening (poller runs 36439166445, 36493405907); each attempt cost ~45 s before Bright Data, which succeeds on this host (BRO-4217)",
+      "addedAt": "2026-09-29"
     }
   },
   "the-independent.com": {
