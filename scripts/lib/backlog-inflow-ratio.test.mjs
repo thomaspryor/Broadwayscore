@@ -318,3 +318,9 @@ test('fetchInflowCounts issues the four counts and propagates truncation', async
   assert.ok('canceledAt' in seen[2]);
   assert.ok('state' in seen[3]);
 });
+
+test('the .mjs entry point re-exports the real implementation', async () => {
+  const esm = await import('./backlog-inflow-ratio.mjs');
+  const cjs = (await import('node:module')).createRequire(import.meta.url)('./backlog-inflow-ratio.js');
+  for (const key of Object.keys(cjs)) assert.equal(esm[key], cjs[key], `${key} must be re-exported`);
+});
