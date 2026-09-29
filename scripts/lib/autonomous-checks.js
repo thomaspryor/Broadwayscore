@@ -131,6 +131,15 @@ function hasSrcChange(files) {
 // these legitimately has nothing to run; anything else must produce a check.
 const INERT_RE = /^(tests|docs|memory)\/|\.test\.m?js$/;
 
+function readTsxManifest() {
+  try {
+    const raw = fs.readFileSync(path.join(__dirname, '..', '..', 'tests', 'unit-test-manifest-tsx.txt'), 'utf8');
+    return new Set(raw.split('\n').map(l => l.trim()).filter(Boolean));
+  } catch {
+    return new Set();
+  }
+}
+
 function decideChecks(changedFiles, existsFn, opts = {}) {
   const { tier = 1, buildCheck = true } = opts;
   const files = (changedFiles || []).map(String);
@@ -150,10 +159,15 @@ function decideChecks(changedFiles, existsFn, opts = {}) {
   // batches (mirrors test.yml's own unit-test-manifest.txt vs
   // unit-test-manifest-tsx.txt split) so a diff mixing `.test.mjs` and
   // `.test.ts` colocated tests runs each under the loader that understands it.
+  // BRO-4265: a `.test.mjs` that imports TS through the `@/` alias or a `.ts`
+  // module is registered in unit-test-manifest-tsx.txt and fails under plain
+  // node with ERR_UNKNOWN_FILE_EXTENSION, so the manifest (CI's own routing)
+  // decides the loader, not the extension.
+  const tsxManifest = readTsxManifest();
   const testFiles = new Set();
   const tsxTestFiles = new Set();
   for (const f of files) {
-    if (/\.test\.mjs$/.test(f)) { testFiles.add(f); continue; }
+    if (/\.test\.mjs$/.test(f)) { (tsxManifest.has(f) ? tsxTestFiles : testFiles).add(f); continue; }
     if (/\.test\.ts$/.test(f)) { tsxTestFiles.add(f); continue; }
     // Colocated test convention: scripts/lib/x.js → scripts/lib/x.test.mjs
     // (or scripts/lib/x.ts → scripts/lib/x.test.ts, checked first — a .ts
@@ -161,7 +175,7 @@ function decideChecks(changedFiles, existsFn, opts = {}) {
     const colocatedTs = f.replace(/\.(js|mjs|ts|tsx)$/, '.test.ts');
     const colocatedMjs = f.replace(/\.(js|mjs|ts|tsx)$/, '.test.mjs');
     if (colocatedTs !== f && existsFn(colocatedTs)) tsxTestFiles.add(colocatedTs);
-    else if (colocatedMjs !== f && existsFn(colocatedMjs)) testFiles.add(colocatedMjs);
+    else if (colocatedMjs !== f && existsFn(colocatedMjs)) (tsxManifest.has(colocatedMjs) ? tsxTestFiles : testFiles).add(colocatedMjs);
   }
   if (testFiles.size) add('colocated-tests', ['node', '--test', ...[...testFiles].sort()]);
   if (tsxTestFiles.size) add('colocated-tests-tsx', ['npx', 'tsx', '--test', ...[...tsxTestFiles].sort()]);

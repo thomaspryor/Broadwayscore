@@ -411,3 +411,12 @@ test('autonomous-checks.js requires node built-ins only', () => {
     assert.ok(builtins.has(bare), `unexpected non-builtin require: ${r} (the shared runner must stay dependency-free)`);
   }
 });
+
+// BRO-4265: a .test.mjs registered in the tsx manifest must run under tsx, not
+// plain node (land gate refused a landing with ERR_UNKNOWN_FILE_EXTENSION).
+test('decideChecks routes a tsx-manifest .test.mjs to the tsx batch', () => {
+  const out = decideChecks(['scripts/tests/tm-gap-links.test.mjs'], () => true);
+  const byName = Object.fromEntries(out.map(c => [c.name, c]));
+  assert.deepEqual(byName['colocated-tests-tsx'].argv, ['npx', 'tsx', '--test', 'scripts/tests/tm-gap-links.test.mjs']);
+  assert.equal(byName['colocated-tests'], undefined);
+});
