@@ -108,6 +108,26 @@ function rankAmongPeers(showId, cs, peers) {
 }
 
 /**
+ * Rank cohort per market: open/previews shows whose score rests on at least
+ * as many reviews as a draft needs itself (MIN_REVIEWS). A thinner peer makes
+ * "#3 of 25 currently running" a claim Reddit would rightly pick apart
+ * (ship-check 2026-09-29: Delirium ranked behind a 3-review opera).
+ */
+function buildPeers(shows, slims) {
+  const out = {};
+  for (const s of shows) {
+    const m = marketOf(s);
+    if (!SUBREDDIT_BY_MARKET[m]) continue;
+    if (s.status !== 'open' && s.status !== 'previews') continue;
+    const slim = slims.get(s.id);
+    if (!slim || typeof slim.cs !== 'number') continue;
+    if ((slim.rc || (slim.rv || []).length) < MIN_REVIEWS[m]) continue;
+    (out[m] = out[m] || []).push({ id: s.id, cs: slim.cs });
+  }
+  return out;
+}
+
+/**
  * The verified fact sheet. Returns null when the slim file has no score.
  */
 function buildFacts(show, slim, peers, { seen = null } = {}) {
@@ -432,6 +452,26 @@ function stripDashes(s) {
 }
 
 /**
+ * Numbers a draft may state: the counts and ranks we computed, the critic
+ * scores behind the quotes, the opening date, and digits that appear in the
+ * show's own name, venue, consensus or quotes ("Table 17", "after 39 years").
+ * Deliberately NOT every digit in the fact sheet: that let any stray small
+ * number through (ship-check 2026-09-29).
+ */
+function allowedNumbers(facts) {
+  const nums = new Set([0, 1, 100]);
+  const add = v => { if (typeof v === 'number' && Number.isFinite(v)) nums.add(v); };
+  [facts.score, facts.reviewCount, facts.audienceCount, facts.rankPosition, facts.rankOf].forEach(add);
+  Object.values(facts.buckets || {}).forEach(add);
+  const quotes = [...(facts.bestQuotes || []), ...(facts.worstQuotes || []), facts.loneDissenter].filter(Boolean);
+  quotes.forEach(q => add(q.score));
+  if (facts.openingDate) facts.openingDate.split('-').map(Number).forEach(add);
+  const texts = [facts.title, facts.venue, facts.consensus, facts.rankNote, ...(facts.cast || []), ...quotes.map(q => q.quote)];
+  for (const t of texts) for (const d of String(t || '').match(/\d+/g) || []) add(Number(d));
+  return nums;
+}
+
+/**
  * Clean and check a draft. Returns { ok, draft, problems }. Dashes are fixed
  * in place; anything that would put a wrong fact or AI tell in front of
  * Reddit is a problem and the caller falls back to the template draft.
@@ -456,7 +496,7 @@ function lintDraft(raw, facts) {
   // Every number in the post must exist somewhere in the fact sheet (score,
   // counts, rank, quotes, venue, url). A wrong number is what gets a post
   // torn apart, so an unsupported one sends the draft back.
-  const allowed = new Set([0, 1, 100, ...(JSON.stringify(facts).match(/\d+/g) || []).map(Number)]);
+  const allowed = allowedNumbers(facts);
   const noUrl = s => s.replace(/https?:\/\/\S+/g, '');
   for (const [where, text] of [['title', draft.title], ['body', draft.body]]) {
     for (const n of (noUrl(text).match(/\d+/g) || []).map(Number)) {
@@ -609,7 +649,9 @@ module.exports = {
   marketOf,
   showUrl,
   audienceGradeLetter,
+  buildPeers,
   buildFacts,
+  allowedNumbers,
   notability,
   selectCandidates,
   makeSeenLookup,

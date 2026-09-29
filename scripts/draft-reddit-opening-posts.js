@@ -71,20 +71,6 @@ function loadSlims(shows) {
   return slims;
 }
 
-function peersByMarket(shows, slims) {
-  const out = {};
-  for (const s of shows) {
-    const m = lib.marketOf(s);
-    if (!lib.SUBREDDIT_BY_MARKET[m]) continue;
-    if (s.status !== 'open' && s.status !== 'previews') continue;
-    const slim = slims.get(s.id);
-    if (!slim || typeof slim.cs !== 'number') continue;
-    if ((slim.rc || 0) < lib.MIN_REVIEWS[m] / 2) continue;
-    (out[m] = out[m] || []).push({ id: s.id, cs: slim.cs });
-  }
-  return out;
-}
-
 // ── LLM ─────────────────────────────────────────────────────────────────────
 
 function parseJsonBlock(text, stopReason) {
@@ -207,7 +193,7 @@ async function main() {
   if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const shows = loadShows();
   const slims = loadSlims(shows);
-  const peers = peersByMarket(shows, slims);
+  const peers = lib.buildPeers(shows, slims);
   const seenLookup = lib.makeSeenLookup(loadJSON(SEEN_PATH, { shows: [] }), { sinceYear: Number(TODAY.slice(0, 4)) - 1 });
   let drafts = loadJSON(DRAFTS_PATH, null) || { _meta: {}, drafts: {} };
 
