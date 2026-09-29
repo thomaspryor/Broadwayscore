@@ -95,18 +95,23 @@ function addDaysIso(iso, days) {
  *     review-inference may overwrite it, see date-source-confidence.js).
  *   opening only → TheaterMania often fills just opening_date with the first
  *     performance, so it becomes previewsStartDate and openingDate stays null.
- *   preview after opening (bad data, e.g. a 2027 preview on a 2026 opening)
- *     → the earlier date as first performance, no press night.
+ *   preview after opening (bad data: live 2026-09-29, "Beautiful Jolie Gabor"
+ *     had a 2027-06-11 preview, a 2026-06-27 opening and a 2027-07-18
+ *     closing) → `inconsistent: true` and no dates. Either reading could be
+ *     the typo, and a wrong past date would flip the show to previews and
+ *     open review collection a year early, so the row waits for TM to fix it.
  */
 function mapTmDates(acf) {
   const preview = parseTmDate(acf && acf.preview_date);
   const opening = parseTmDate(acf && acf.opening_date);
   const closing = parseTmDate(acf && acf.closing_date);
-  if (preview && opening && preview <= opening) {
+  if (preview && opening && preview > opening) {
+    return { previewsStartDate: null, openingDate: null, openingDateSource: null, closingDate: null, inconsistent: true };
+  }
+  if (preview && opening) {
     return { previewsStartDate: preview, openingDate: opening, openingDateSource: 'theatermania', closingDate: closing };
   }
-  const firsts = [preview, opening].filter(Boolean).sort();
-  return { previewsStartDate: firsts[0] || null, openingDate: null, openingDateSource: null, closingDate: closing };
+  return { previewsStartDate: preview || opening || null, openingDate: null, openingDateSource: null, closingDate: closing };
 }
 
 /**
@@ -172,6 +177,7 @@ function parseTmOffBroadwayRow(row, { venuesById = new Map(), genresById = new M
   if (!venue) return { skip: `venue "${rawVenue || ''}" is a placeholder/blank` };
 
   const dates = mapTmDates(row.acf || {});
+  if (dates.inconsistent) return { skip: 'preview_date is after opening_date' };
   if (!dates.previewsStartDate && !dates.openingDate) return { skip: 'no dates' };
 
   const genreNames = (row.genre || []).map(id => genresById.get(Number(id))).filter(Boolean);
@@ -238,7 +244,7 @@ function findTmCoverageGaps({ rows, venuesById, genresById, shows, pendingShows 
     title: candidate.title,
     source: 'theatermania-ob',
     url: candidate.theatermaniaUrl || 'https://www.theatermania.com/shows/new-york-city-theater/off-broadway/',
-    venue: candidate.venue,
+    venue: candidate.venue, // venue-write-guard-ok: audit report row; candidate.venue already went through sanitizeVenueForWrite
     date: candidate.openingDate || candidate.previewsStartDate || null,
     closingDate: candidate.closingDate || null,
   }));

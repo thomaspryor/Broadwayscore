@@ -54,11 +54,15 @@ test('opening_date only → treated as first performance, no press night', () =>
   assert.equal(r.candidate.openingDateSource, null);
 });
 
-test('preview after opening (bad data) → earlier date as first performance only', () => {
-  const r = parse(/Jolie/);
-  assert.equal(r.candidate.previewsStartDate, '2026-06-27');
-  assert.equal(r.candidate.openingDate, null);
-  assert.equal(r.candidate.title, 'Beautiful Jolie Gabor, Her Glamorous Three Daughters, and Always the Happiness Is Life', 'trailing space trimmed');
+test('preview after opening (bad data) → row skipped, no guessed date', () => {
+  assert.match(parse(/Jolie/).skip, /preview_date is after opening_date/);
+  assert.equal(mapTmDates({ preview_date: '20270611', opening_date: '20260627' }).inconsistent, true);
+  assert.equal(mapTmDates({ preview_date: '20261107', opening_date: '20261107' }).openingDate, '2026-11-07', 'same-day preview/opening is fine');
+});
+
+test('titles are entity-decoded and trimmed', () => {
+  const r = parseTmOffBroadwayRow({ ...row(/^Fantasma$/), title: { rendered: '  The King&#8217;s Critique &amp; Co ' } }, { venuesById, genresById });
+  assert.equal(r.candidate.title, "The King's Critique & Co");
 });
 
 test('HTML entities in titles are decoded', () => {
