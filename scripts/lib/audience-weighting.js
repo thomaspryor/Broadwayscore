@@ -17,7 +17,11 @@
  *          merge-reddit-shards.js, merge-show-score-shards.js
  */
 
-const { isLondonMarket } = require('./venue-classification');
+// Inlined from venue-classification.isLondonMarket: requiring that module pulls
+// dynamic data requires into safe-form check scripts' graphs
+// (safe-form-allowlist.test.mjs). Keep the two in sync.
+const LONDON_CATEGORIES = new Set(['west-end', 'off-west-end']);
+const isLondonMarket = (category) => LONDON_CATEGORIES.has(category);
 
 const MIN_REDDIT_ITEMS = 50;
 const REDDIT_RECENCY_YEARS = 3;

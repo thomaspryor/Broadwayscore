@@ -19,3 +19,11 @@ test('broadwayCom still counts for Broadway and when category is unknown', () =>
   assert.equal(calculateCombinedScore(sources, { category: 'broadway' }).score, 80);
   assert.equal(calculateCombinedScore(sources, undefined).score, 80);
 });
+
+test('inlined London check matches venue-classification.isLondonMarket', () => {
+  const { isLondonMarket } = require('./venue-classification.js');
+  for (const category of ['west-end', 'off-west-end', 'broadway', 'off-broadway', undefined, null, '']) {
+    const r = calculateCombinedScore(sources, { category });
+    assert.equal(r.weights.broadwayCom === 0, isLondonMarket(category), String(category));
+  }
+});
