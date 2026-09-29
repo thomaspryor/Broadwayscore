@@ -240,6 +240,7 @@ const PROTECTED_FIELDS = [
   'allowTourSignal',
   'allowTourSignalReason',
   'allowFilmSignal',
+  'allowFilmSignalReason',
   'routedFromShowId',
   'urlVerified',
   // Provenance marker (BRO-121): distinguishes an automated flip-flop pin
@@ -317,6 +318,12 @@ const PROTECTED_FIELDS = [
   // ANY future, unrelated score loss on this file forever).
   'staleScoredBeforeOpening',
   'staleScoredBeforeOpeningAt',
+  // Same bug class, stale-automated-text-verdict.js: clearing a stale
+  // not_a_review/garbage_text verdict parks the score computed from the old
+  // body (llmScore/ensembleData/adjudicatedScore/assignedScore → null) and
+  // stamps these two, which the CLEAR_BREADCRUMBS entries below honor.
+  'staleTextVerdictScoreParked',
+  'staleTextVerdictScoreParkedAt',
   'needsRescore',
   // Task #1237 audit (same bug class as #97 above): apply-audit-flags.js deletes
   // fullText/assignedScore/ensembleData and sets fullTextWrongAuthor=true when a
@@ -631,6 +638,16 @@ const _freshStaleScoredBeforeOpening = (d) => {
 // never happens (file never re-collected) so the stamp can't suppress
 // restoring a later, unrelated fullText/score loss on this file indefinitely.
 const WRONG_AUTHOR_FRESH_DAYS = 3;
+// stale-automated-text-verdict.js parkTextDerivedScore(): same 3-day bridge
+// as _freshStaleScoredBeforeOpening; markRescoreComplete() retires the stamp
+// the moment the scorer writes a score for the new text.
+const _freshStaleTextVerdictScoreParked = (d) => _freshAutoClearStamp(d, {
+  flagField: 'staleTextVerdictScoreParked',
+  atField: 'staleTextVerdictScoreParkedAt',
+  days: STALE_SCORE_FRESH_DAYS,
+  flagIsString: false,
+});
+
 const _freshFullTextWrongAuthor = (d) => {
   if (!d || d.fullTextWrongAuthor !== true || !d.fullTextWrongAuthorAt) return false;
   const at = Date.parse(String(d.fullTextWrongAuthorAt));
@@ -923,10 +940,11 @@ const CLEAR_BREADCRUMBS = {
   // file, forever. 3 days comfortably covers the two same-job push-review-
   // texts calls opening-night-express.yml makes (and any immediate retry)
   // while still expiring long before it could mask a later real bug.
-  assignedScore: (d) => _freshStaleScoredBeforeOpening(d) || _freshFullTextWrongAuthor(d),
-  llmScore: _freshStaleScoredBeforeOpening,
+  assignedScore: (d) => _freshStaleScoredBeforeOpening(d) || _freshFullTextWrongAuthor(d) || _freshStaleTextVerdictScoreParked(d),
+  llmScore: (d) => _freshStaleScoredBeforeOpening(d) || _freshStaleTextVerdictScoreParked(d),
   llmMetadata: _freshStaleScoredBeforeOpening,
-  ensembleData: (d) => _freshStaleScoredBeforeOpening(d) || _freshFullTextWrongAuthor(d),
+  ensembleData: (d) => _freshStaleScoredBeforeOpening(d) || _freshFullTextWrongAuthor(d) || _freshStaleTextVerdictScoreParked(d),
+  adjudicatedScore: _freshStaleTextVerdictScoreParked,
   // apply-audit-flags.js (task #1237): deletes fullText alongside assignedScore/
   // ensembleData when a byline mismatch is detected — see PROTECTED_FIELDS
   // comment above and _freshFullTextWrongAuthor. fullText has no other

@@ -1659,6 +1659,58 @@ function wrongShowCleared(data) {
   );
 }
 
+/**
+ * True when a human has cleared the verdict an orphaned/stale `rejectedAt`
+ * most likely recorded, so the rejectedAt backstop must defer. rejectedAt
+ * survives after its rejectionReason is cleared, and it does not say WHICH
+ * verdict it stamped, so:
+ *   - a human wrongProduction clear defers it (2026-04-22, the four audit
+ *     B-class clears: giant-2026, heart-wall-we, shedevil-we, authenticator-we);
+ *   - a human wrongShow clear defers it only with evidence the rejection WAS
+ *     wrong_show (_rejectionWasWrongShow) — clearing a wrong-show verdict says
+ *     nothing about a (possibly nulled) not_a_review / wrong_production one.
+ *     stranger-things-the-first-shadow-west-end-2023/timeout-london--andrzej-
+ *     lukowski.json carried wrongShowOverride (Sonnet-confirmed real review)
+ *     and stayed excluded as 'rejectedAt' (2026-09-29).
+ * Shared by explainExclusion and rebuild-all-reviews.js's rejectedAt guard.
+ */
+/**
+ * `later` is strictly after `earlier` — both parsed with Date.parse, so mixed
+ * ISO / date-only / offset stamps compare as instants, not as strings.
+ * Unparseable or missing on either side → false. Shared by the rejectedAt
+ * re-fetch exception (here + rebuild-all-reviews.js) and
+ * stale-automated-text-verdict.js so all three agree on "fetched after".
+ */
+function isTimestampAfter(later, earlier) {
+  const a = Date.parse(later == null ? '' : String(later));
+  const b = Date.parse(earlier == null ? '' : String(earlier));
+  return Number.isFinite(a) && Number.isFinite(b) && a > b;
+}
+
+// Evidence that an orphaned rejectedAt stamped a WRONG-SHOW verdict. The
+// clear-failure-flags "Hamlet" shape (rejectionReason nulled, rejectedBy +
+// rejectionReasoning left behind) records some other verdict and must NOT be
+// deferred by a wrongShow clear. A fully stripped block (no reason, no
+// rejectedBy, no reasoning — only the stamp) is what the wrong-show clear
+// scripts leave (stranger-things WE timeout-london); a reasoning text that
+// names a wrong-show call counts too.
+function _rejectionWasWrongShow(data) {
+  if (data.rejectionReason === 'wrong_show') return true;
+  if (typeof data.rejectionReasoning === 'string' && /wrong[_ -]?show/i.test(data.rejectionReasoning)) return true;
+  return data.rejectionReason == null && data.rejectedBy == null && data.rejectionReasoning == null;
+}
+
+function rejectedAtHumanCleared(data) {
+  if (!data) return false;
+  if (
+    data.wrongProductionManualClear === true ||
+    data.wrongProductionOverride === true ||
+    data.humanReviewedWrongProduction === false
+  ) return true;
+  const wsHumanCleared = data.wrongShowManualClear === true || data.wrongShowOverride === true;
+  return wsHumanCleared && _rejectionWasWrongShow(data);
+}
+
 const WRONG_SHOW_TITLE_STOPWORDS = new Set([
   'the','a','an','of','and','or','for','to','in','on','at','with','as','by',
   'is','are','was','were','be','been','it','this','that','these','those',
@@ -4243,12 +4295,8 @@ function explainExclusion(data, show, filePath) {
   // rejected them, and wrongProductionManualClear alone couldn't override the rejectedAt
   // guard. See Notion card 34b637c5-416f-81ff-a6d6-d453e7ed537c.
   if (data.rejectedAt && typeof data.rejectedAt === 'string') {
-    const reFetched = data.textFetchedAt && typeof data.textFetchedAt === 'string' && data.textFetchedAt > data.rejectedAt;
-    const wpCleared =
-      data.wrongProductionManualClear === true ||
-      data.wrongProductionOverride === true ||
-      data.humanReviewedWrongProduction === false ||
-      isFreshWpAutoCleared(data);
+    const reFetched = isTimestampAfter(data.textFetchedAt, data.rejectedAt);
+    const wpCleared = rejectedAtHumanCleared(data) || isFreshWpAutoCleared(data);
     // Exception 3: matches the rejectionReason exception above — not_a_review + json-ld star
     // from a known star outlet clears the rejectedAt gate as well.
     const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
@@ -5098,6 +5146,8 @@ module.exports = {
   isNonReviewDemotedByFreshCV,
   cvWrongArticleManuallyCleared,
   wrongShowCleared,
+  rejectedAtHumanCleared,
+  isTimestampAfter,
   isLikelyStaleSuspectedMisattribution,
   getCriticRegistry,
   _resetCriticRegistryCache,

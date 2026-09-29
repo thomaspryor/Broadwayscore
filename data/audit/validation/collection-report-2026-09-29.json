@@ -1,134 +1,93 @@
 {
-  "runDate": "2026-09-29T19:53:54.420Z",
+  "runDate": "2026-09-29T21:23:12.322Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 50,
     "priority": "all",
-    "showFilter": "suffs-tour-2025",
+    "showFilter": "a-ghost-in-your-ear-off-west-end-2026,between-riverside-and-crazy-2022,dog-man-the-musical-west-end-2026,friends-the-musical-parody-2022,heisenberg-2016,jeezus-off-west-end-2026,the-play-that-goes-wrong-2019,the-bands-visit-2017",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 24,
-    "failed": 3,
+    "processed": 7,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "88.9%"
+    "successRate": "87.5%"
   },
   "tierBreakdown": {
-    "playwright": 17,
+    "playwright": 7,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 3,
-    "scrapingbee": 2,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 21,
-    "tier1Success": 18,
+    "tier1Attempts": 8,
+    "tier1Success": 7,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier1_9Attempts": 5,
-    "tier1_9Success": 4,
-    "tier2Attempts": 3,
-    "tier2Success": 2,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 1,
-    "totalFailed": 3,
-    "scrapingBeePageCredits": 2,
+    "tier4Attempts": 5,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "suffs-tour-2025/socal-thrills--russell-tom.json",
-    "suffs-tour-2025/deadline--unknown.json",
-    "suffs-tour-2025/new-city-stage--dennis-polkow.json",
-    "suffs-tour-2025/the-news-herald--mark-meszoros.json",
-    "suffs-tour-2025/theatermania--unknown.json",
-    "suffs-tour-2025/artsfuse--debra-cash.json",
-    "suffs-tour-2025/broadwayworld--richard-sasanow.json",
-    "suffs-tour-2025/buffalorising--gail-golden.json",
-    "suffs-tour-2025/cleveland-plain-dealer--joey-morona.json",
-    "suffs-tour-2025/clevescene--gwendolyn-kochur.json",
-    "suffs-tour-2025/gephardt-daily--nancy-van-valkenburg.json",
-    "suffs-tour-2025/kqed--janea-melido.json",
-    "suffs-tour-2025/latimes--unknown.json",
-    "suffs-tour-2025/maryland-theatre-guide--lynne-menefee.json",
-    "suffs-tour-2025/minneapolis-star-tribune--rohan-preston.json",
-    "suffs-tour-2025/pioneer-press--ross-raihala.json",
-    "suffs-tour-2025/playbill--unknown.json",
-    "suffs-tour-2025/san-francisco-chronicle--lily-janiak.json",
-    "suffs-tour-2025/seattle-times--dusty-somers.json",
-    "suffs-tour-2025/stageandcinema--unknown.json",
-    "suffs-tour-2025/the-moderate-voice--doug-bursch.json",
-    "suffs-tour-2025/the-oakland-press--gary-graff.json",
-    "suffs-tour-2025/timesofsandiego--drew-sitton.json",
-    "suffs-tour-2025/wkrn--colleen-guerry.json"
+    "dog-man-the-musical-west-end-2026/theatre-weekly--unknown.json",
+    "jeezus-off-west-end-2026/theatre-weekly--greg-stewart.json",
+    "a-ghost-in-your-ear-off-west-end-2026/theatre-weekly--greg-stewart.json",
+    "between-riverside-and-crazy-2022/stagebuddy--elyse-trevers.json",
+    "the-bands-visit-2017/stagebuddy--elyse-trevers.json",
+    "friends-the-musical-parody-2022/stagebuddy--bill-crouch.json",
+    "the-play-that-goes-wrong-2019/stagebuddy--erin-kahn.json"
   ],
   "failed": [
-    "suffs-tour-2025/broadwayworld--jay-irwin.json",
-    "suffs-tour-2025/marin-independent-journal--john-chavez.json",
-    "suffs-tour-2025/trib-live--alexis-papalia.json"
+    "heisenberg-2016/stagebuddy--tami-shaloum.json"
   ],
   "tierDetails": {
     "playwright": [
-      "suffs-tour-2025/socal-thrills--russell-tom.json",
-      "suffs-tour-2025/new-city-stage--dennis-polkow.json",
-      "suffs-tour-2025/the-news-herald--mark-meszoros.json",
-      "suffs-tour-2025/theatermania--unknown.json",
-      "suffs-tour-2025/artsfuse--debra-cash.json",
-      "suffs-tour-2025/buffalorising--gail-golden.json",
-      "suffs-tour-2025/clevescene--gwendolyn-kochur.json",
-      "suffs-tour-2025/gephardt-daily--nancy-van-valkenburg.json",
-      "suffs-tour-2025/kqed--janea-melido.json",
-      "suffs-tour-2025/maryland-theatre-guide--lynne-menefee.json",
-      "suffs-tour-2025/pioneer-press--ross-raihala.json",
-      "suffs-tour-2025/playbill--unknown.json",
-      "suffs-tour-2025/stageandcinema--unknown.json",
-      "suffs-tour-2025/the-moderate-voice--doug-bursch.json",
-      "suffs-tour-2025/the-oakland-press--gary-graff.json",
-      "suffs-tour-2025/timesofsandiego--drew-sitton.json",
-      "suffs-tour-2025/wkrn--colleen-guerry.json"
+      "dog-man-the-musical-west-end-2026/theatre-weekly--unknown.json",
+      "jeezus-off-west-end-2026/theatre-weekly--greg-stewart.json",
+      "a-ghost-in-your-ear-off-west-end-2026/theatre-weekly--greg-stewart.json",
+      "between-riverside-and-crazy-2022/stagebuddy--elyse-trevers.json",
+      "the-bands-visit-2017/stagebuddy--elyse-trevers.json",
+      "friends-the-musical-parody-2022/stagebuddy--bill-crouch.json",
+      "the-play-that-goes-wrong-2019/stagebuddy--erin-kahn.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/suffs-tour-2025/deadline--unknown.json",
-      "suffs-tour-2025/deadline--unknown.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "suffs-tour-2025/cleveland-plain-dealer--joey-morona.json",
-      "suffs-tour-2025/minneapolis-star-tribune--rohan-preston.json",
-      "suffs-tour-2025/seattle-times--dusty-somers.json"
-    ],
-    "scrapingbee": [
-      "suffs-tour-2025/broadwayworld--richard-sasanow.json",
-      "suffs-tour-2025/san-francisco-chronicle--lily-janiak.json"
-    ],
+    "scrapingdog": [],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "suffs-tour-2025/latimes--unknown.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {
-    "BroadwayWorld": {
+    "Stage Buddy": {
       "count": 1,
-      "domain": "unknown",
+      "domain": "stagebuddy.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
