@@ -33,7 +33,7 @@ chmod +x "$T/shim/git"
 # Repo: main has c1 + m1 (touches a.txt); branch forked at c1 with b1 (b.txt).
 mkrepo() {
   local d="$T/$1"; rm -rf "$d"; mkdir -p "$d"; cd "$d" || exit 1
-  git init -q -b main . && git config user.email t@t && git config user.name t
+  git init -q . && git checkout -q -b main && git config user.email t@t && git config user.name t
   echo one > a.txt && git add . && git commit -qm c1
   git checkout -qb land/x
   echo branch > "${2:-b.txt}" && git add . && git commit -qm b1
