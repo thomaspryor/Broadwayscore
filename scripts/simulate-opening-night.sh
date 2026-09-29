@@ -213,18 +213,18 @@ DRY_OUTPUT=$(node scripts/send-opening-night-broadcast.js --dry-run --market="${
 echo "$DRY_OUTPUT" | sed 's/^/  │ /'
 echo ""
 
-if echo "$DRY_OUTPUT" | grep -q "DRY RUN"; then pass "Dry run mode activated"
+if grep -q "DRY RUN" <<<"$DRY_OUTPUT"; then pass "Dry run mode activated"
 else fail "Dry run mode not detected"; fi
 
-if echo "$DRY_OUTPUT" | grep -q "Would broadcast to\|Would send to"; then pass "Email would be sent to subscribers"
-elif echo "$DRY_OUTPUT" | grep -qi "No shows are ready\|Not ready"; then fail "Show failed readiness check in broadcast script"
-elif echo "$DRY_OUTPUT" | grep -qi "No recently opened\|nothing to broadcast"; then fail "Broadcast script found no recently opened shows"
+if grep -q "Would broadcast to\|Would send to" <<<"$DRY_OUTPUT"; then pass "Email would be sent to subscribers"
+elif grep -qi "No shows are ready\|Not ready" <<<"$DRY_OUTPUT"; then fail "Show failed readiness check in broadcast script"
+elif grep -qi "No recently opened\|nothing to broadcast" <<<"$DRY_OUTPUT"; then fail "Broadcast script found no recently opened shows"
 else warn "Could not parse broadcast output — review above"; fi
 
-if echo "$DRY_OUTPUT" | grep -q "unsubscribe link: true"; then pass "Email HTML has unsubscribe link"
+if grep -q "unsubscribe link: true" <<<"$DRY_OUTPUT"; then pass "Email HTML has unsubscribe link"
 else warn "Could not verify unsubscribe link in email"; fi
 
-if echo "$DRY_OUTPUT" | grep -q "score card: true"; then pass "Email HTML has score card"
+if grep -q "score card: true" <<<"$DRY_OUTPUT"; then pass "Email HTML has score card"
 else warn "Could not verify score card in email"; fi
 
 # ─── Phase 6: Buttondown Draft Creation ────────────────────────────────
@@ -237,7 +237,7 @@ if [ -z "${BUTTONDOWN_API_KEY:-}" ]; then
   warn "To test: export BUTTONDOWN_API_KEY=your_key"
 else
   # Verify the dry-run output mentions Buttondown draft
-  if echo "$DRY_OUTPUT" | grep -q "buttondown\|draft\|Buttondown"; then
+  if grep -q "buttondown\|draft\|Buttondown" <<<"$DRY_OUTPUT"; then
     pass "Dry run references Buttondown draft (not Resend broadcast)"
     PASSED=$((PASSED + 1))
   else

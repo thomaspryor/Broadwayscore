@@ -18,5 +18,22 @@
   "keyQuote": "If you can travel somewhere to go and see Hamilton I urge you to do so you will not be disappointed it is just as good as the West End",
   "scoredAt": "2026-04-19T08:24:11.753Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/QEiMPDQUOYY/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/QEiMPDQUOYY/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "UK tour production that is currently traveling around the UK",
+    "reason": "The review explicitly discusses the UK tour of 'Hamilton', mentioning performances in Manchester and Birmingham, which are different cities from the assigned Broadway production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is a review of the 'relatively new UK tour production that is currently traveling around the UK', mentioning performances in Manchester and Birmingham, which are different cities and a different country from the assigned Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:55:27.450Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The review explicitly discusses the UK tour of 'Hamilton', mentioning performances in Manchester and Birmingham, which are different cities from the assigned Broadway production in New York City."
 }

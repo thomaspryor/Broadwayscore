@@ -18,5 +18,22 @@
   "keyQuote": "this is a five star show... it is part show it is part experience it is part like a ride almost",
   "scoredAt": "2026-04-19T08:19:32.480Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/xPkNjWvtiTs/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/xPkNjWvtiTs/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "i am so excited to be back tonight in london's west end at the adelphi theatre for an invited performance of back to the future the music",
+    "reason": "The review is explicitly about a performance in London's West End at the Adelphi Theatre, not the Broadway production in New York.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is a review of a performance in London's West End at the Adelphi Theatre, not the Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:54:46.393Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The review is explicitly about a performance in London's West End at the Adelphi Theatre, not the Broadway production in New York."
 }

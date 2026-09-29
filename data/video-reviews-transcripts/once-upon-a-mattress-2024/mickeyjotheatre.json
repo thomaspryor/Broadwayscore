@@ -18,5 +18,22 @@
   "keyQuote": "I had a lovely time enjoying this show for what it is... I was gleefully smiling the entire time and I thought it was deliciously silly",
   "scoredAt": "2026-04-19T08:29:03.494Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/qUkRgl3Q70k/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/qUkRgl3Q70k/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "concert",
+    "evidenceQuote": "this was a unique concert presentation as part of New York city center encore 30th Anniversary season",
+    "reason": "The video is about a concert version of 'Once Upon a Mattress' at New York City Center, not the Broadway revival at Hudson Theatre.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is a 'unique concert presentation as part of New York City Center Encores 30th Anniversary season' and ran from January 24th to February 4th, which is a different type of production and timeframe than the assigned Broadway revival.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:07.230Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The video is about a concert version of 'Once Upon a Mattress' at New York City Center, not the Broadway revival at Hudson Theatre."
 }

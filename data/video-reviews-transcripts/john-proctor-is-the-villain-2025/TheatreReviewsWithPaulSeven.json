@@ -18,5 +18,22 @@
   "keyQuote": "There are many reasons why I shouldn't like Kimberly Belflower's play, John Proctor is the Villain, and yet I loved it.",
   "scoredAt": "2026-04-19T08:25:39.341Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/v8_iy7JwJVI/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/v8_iy7JwJVI/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "I'm here at the Royal Court Theater to see John Proctor is the villain.",
+    "reason": "The review is about a production at the Royal Court Theater, indicating it is in London, not the assigned Broadway production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The evidence clearly states the review is for a production at the Royal Court Theater, which is in London, not the assigned Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:55:42.417Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The review is about a production at the Royal Court Theater, indicating it is in London, not the assigned Broadway production in New York City."
 }
