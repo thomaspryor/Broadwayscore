@@ -19,11 +19,133 @@
  * that Playbill hasn't picked up yet).
  */
 
-const { normalizeTitle, titleTokens, jaccard } = require('./title-match');
+const { normalizeTitle, titleTokens, jaccard, foldDiacritics } = require('./title-match');
 const { isKnownOffBroadwayVenue, OFF_BROADWAY_VENUES } = require('./venue-classification');
 const { isShoutedTitle, isExemptFromTitleCase } = require('./title-display-case');
+const { venuesMatch } = require('./deduplication');
+// venue-write-guard-ok: venue strings here feed match decisions and gate
+// shapes only; shows.json writes go through buildShowEntry's sanitizeVenueForWrite.
 
 const JACCARD_FUZZY_MATCH_THRESHOLD = 0.6;
+
+// ---------------------------------------------------------------------------
+// Junk filters for venue-page candidates (BRO-4396)
+// ---------------------------------------------------------------------------
+// A venue's own site lists more than its productions: galas, festivals,
+// readings, screenings, classes, CMS placeholders, a tour stop at another
+// theatre. These patterns reject those before ANY corroboration route can
+// confirm them, so widening what counts as evidence (TheaterMania, the
+// venue's own dated listing) does not widen what gets in. Each pattern names
+// a real row seen in data/audit/ob-venue-candidates.json.
+const VENUE_CANDIDATE_JUNK = [
+  [/\bfestival\b|(?<!mani)fest\b/i, 'festival'],                         // "Freshplay Festival 2026", "...Mixfest 2026", "FUERZAFest"; not "Manifest"
+  [/\bgala\b|\bbenefit\b|fundraiser|^miscast\s*\d*$/i, 'gala/benefit'],     // "Miscast26" (MCC's annual gala)
+  [/\bscreenings?\b|\bfilm series\b|\bcinema\b/i, 'screening'],
+  [/\b(?:staged|play|concert|public|new play) readings?\b|\breading series\b/i, 'reading'],
+  [/\btaping\b|\bwork[- ]in[- ]progress\b|\(wip\)|\bnew material\b|\bopen mic\b|\bshowcase\b|\bcomedy for \$/i, 'taping/work-in-progress/showcase'],
+  [/\bmaster ?class(?:es)?\b|\bclasses\b|\bpanel\b|\btalk ?back\b|\bin conversation\b|\bseminars?\b|\bdiscussion group\b|\bq ?& ?a\b|\bbook (?:launch|signing)\b/i, 'class/talk'],
+  [/^new portfolio item$|^project (?:one|two|three|four|five|six)\b|^untitled\b/i, 'CMS placeholder'], // Bedlam's Squarespace archive
+  [/\s@\s/, 'plays another venue'],                                        // "Watch Me Walk @ Yale Rep"
+  [/\b(?:boston|chicago|london|los angeles|philadelphia|washington)$/i, 'out-of-town engagement'], // "The Crucible Boston"
+  [/\bthe series$/i, 'series page'],
+  [/\binstallation\b|\bexhibition\b|\bpublic tours?\b/i, 'installation/exhibition'], // Park Avenue Armory's "Balkan Erotic Epic Installation"
+];
+
+/**
+ * Why a venue-page candidate is not a production, or null when it may be one.
+ * Checks the title patterns above and, when the reader captured dates, that
+ * the booking is a run and not a single night.
+ * @param {Object} candidate
+ * @returns {string|null}
+ */
+function junkCandidateReason(candidate) {
+  const title = String((candidate && candidate.title) || '');
+  for (const [re, label] of VENUE_CANDIDATE_JUNK) {
+    if (re.test(title)) return `${label}: "${title}"`;
+  }
+  const first = candidate && candidate.listingFirstDate;
+  const last = candidate && candidate.listingLastDate;
+  const count = candidate && candidate.listingPerformanceCount;
+  if (first && last && first === last && !(typeof count === 'number' && count > 1)) {
+    return `one-night event (${first})`;
+  }
+  return null;
+}
+
+// ---------------------------------------------------------------------------
+// TheaterMania as a corroborating source (BRO-4396)
+// ---------------------------------------------------------------------------
+
+function significantTokens(title) {
+  return titleTokens(title);
+}
+
+// Venue-page link readers derive a title from a URL slug, which is often a
+// truncation of the real one ("Diana Untold" for "Diana: The Untold and
+// Untrue Story"). Every candidate token appearing in the listing title, with
+// at least two of them, is the same production when the venue also agrees.
+function isTokenSubset(candTokens, entryTokens) {
+  if (candTokens.size < 2) return false;
+  for (const t of candTokens) if (!entryTokens.has(t)) return false;
+  return true;
+}
+
+// TheaterMania names a room loosely ("SoHo Playhouse" vs "Huron Club at the
+// SoHo Playhouse"); the same house either way.
+function venuesCompatible(a, b) {
+  if (!a || !b) return false;
+  if (venuesMatch(a, b)) return true;
+  const norm = v => foldVenue(v);
+  const na = norm(a); const nb = norm(b);
+  if (!na || !nb) return false;
+  const [shorter, longer] = na.length <= nb.length ? [na, nb] : [nb, na];
+  // Whole words only ("soho playhouse" in "huron club soho playhouse", not
+  // "art" in "martin"). Known residual: "Peter Jay Sharp Theater" (Playwrights
+  // Horizons) reads as compatible with "...at Symphony Space".
+  return shorter.split(' ').length >= 2 && ` ${longer} `.includes(` ${shorter} `);
+}
+
+function foldVenue(v) {
+  return foldDiacritics(String(v || '')).toLowerCase()
+    .replace(/&#0?39;|[‘’']/g, '')
+    .replace(/\btheat(?:re|er)s?\b/g, ' ')
+    .replace(/\b(?:the|at|of)\b/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
+ * Find the TheaterMania OB listing that corroborates a venue candidate: same
+ * title (exact, token-subset or jaccard >= 0.6), a compatible venue and at
+ * least one date. Unlike Playbill/Lortel, a TheaterMania match must agree on
+ * the venue: TM's Off-Broadway market is wide (hundreds of small bookings),
+ * so a title alone ("Hamlet") is not enough.
+ * @param {Object} candidate - { title, venue }
+ * @param {Object[]} entries - parseTmOffBroadwayRow().candidate rows
+ * @returns {{ entry: Object, kind: 'exact'|'subset'|'fuzzy' } | null}
+ */
+function findTheaterManiaCorroboration(candidate, entries) {
+  if (!candidate || !candidate.title || !Array.isArray(entries)) return null;
+  const want = normalizeTitle(candidate.title);
+  const wantTokens = significantTokens(candidate.title);
+  let best = null;
+  const rank = { exact: 3, subset: 2, fuzzy: 1 };
+  for (const e of entries) {
+    if (!e || !e.title) continue;
+    if (!(e.previewsStartDate || e.openingDate || e.closingDate)) continue;
+    if (!venuesCompatible(candidate.venue, e.venue)) continue;
+    let kind = null;
+    if (normalizeTitle(e.title) === want) kind = 'exact';
+    else {
+      const eTokens = significantTokens(e.title);
+      if (isTokenSubset(wantTokens, eTokens)) kind = 'subset';
+      else if (wantTokens.size > 0 && jaccard(wantTokens, eTokens) >= JACCARD_FUZZY_MATCH_THRESHOLD) kind = 'fuzzy';
+    }
+    if (kind && (!best || rank[kind] > rank[best.kind])) best = { entry: e, kind };
+  }
+  return best;
+}
 
 /**
  * @param {Object} candidate - { title, venue, discoveredAt }
@@ -48,6 +170,10 @@ function isCandidateConfirmed(candidate, sources, options = {}) {
   const want = normalizeTitle(candidate.title);
   if (!want) {
     return { confirmed: false, source: null, reason: 'title normalizes to empty string' };
+  }
+  const junk = junkCandidateReason(candidate);
+  if (junk) {
+    return { confirmed: false, source: null, reason: `not a production (${junk})` };
   }
 
   const playbill = sources?.playbillEntries || [];
@@ -96,7 +222,150 @@ function isCandidateConfirmed(candidate, sources, options = {}) {
     }
   }
 
-  return { confirmed: false, source: null, reason: `no Playbill/Lortel match for "${candidate.title}"` };
+  // Pass 3 (BRO-4396): TheaterMania's Off-Broadway listing, same title AND
+  // a compatible venue AND dated. An exact or token-subset match also hands
+  // back TM's title and dates: TM is a curated editorial listing, and a
+  // subset match is precisely the truncated-slug case where the venue-page
+  // title is the wrong one to keep. A jaccard-only match corroborates
+  // existence but never renames (the BRO-3920 rule above).
+  const tm = findTheaterManiaCorroboration(candidate, sources?.theatermaniaEntries || []);
+  if (tm) {
+    const e = tm.entry;
+    return {
+      confirmed: true,
+      source: 'theatermania',
+      reason: `matched TheaterMania OB entry "${e.title}" at "${e.venue}" (${tm.kind})`,
+      ...(tm.kind !== 'fuzzy' ? {
+        matchedTitle: e.title,
+        matchedDates: {
+          previewsStartDate: e.previewsStartDate || null,
+          openingDate: e.openingDate || null,
+          openingDateSource: e.openingDateSource || null,
+          closingDate: e.closingDate || null,
+        },
+      } : {}),
+    };
+  }
+
+  return { confirmed: false, source: null, reason: `no Playbill/Lortel/TheaterMania match for "${candidate.title}"` };
+}
+
+// ---------------------------------------------------------------------------
+// decideVenueListingPromotion (BRO-4396): the venue's own dated listing
+// ---------------------------------------------------------------------------
+// For a venue we already classify as Off-Broadway, that venue's own box
+// office listing IS the primary source: if it sells N performances of a
+// title over a date range, the production exists there. What it cannot tell
+// us is whether the row is a production at all, so this gate leans on the
+// junk filters above, on discovery's own non-theatre / one-night gates
+// (injected, so this module never loads discover-new-shows.js), and on a
+// minimum run: at least MIN_LISTING_PERFORMANCES performances when the
+// reader counts them, or at least two distinct dates when it does not.
+// Undated venue-page candidates (the slug-title link readers) never pass
+// here; they still need Playbill/Lortel/TheaterMania.
+
+// A run, not a weekend booking (ship-check, 2026-09-29): with a performance
+// count, at least 5 (SoHo's 4-show improv and kids' weekends stay out); with
+// no count, the dates must span at least 3 days (NYU Skirball's 3-night
+// visiting productions are real, reviewed runs).
+const MIN_LISTING_PERFORMANCES = 5;
+const MIN_UNCOUNTED_SPAN_DAYS = 2;
+const SPARSE_SERIES_MAX_COUNT = 8;
+const SPARSE_SERIES_MIN_GAP_DAYS = 7;
+const MAX_LISTING_LEAD_DAYS = 365;
+const VENUE_LISTING_SOURCE_PREFIX = 'venue-page:';
+
+function isIsoDay(v) {
+  if (typeof v !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(v)) return false;
+  const d = new Date(`${v}T00:00:00Z`);
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === v;
+}
+
+/**
+ * @param {Object} candidate - venue-page candidate with listingFirstDate /
+ *   listingLastDate / listingPerformanceCount from a dated reader
+ * @param {Object} [options]
+ * @param {string} [options.todayIso]
+ * @param {(venue: string) => boolean} [options.isKnownVenue]
+ * @param {{isNonTheaterContent?: Function, isOneNightShow?: Function}} [options.gates]
+ * @returns {{ confirmed: boolean, source: string|null, reason: string }}
+ */
+function decideVenueListingPromotion(candidate, options = {}) {
+  const {
+    todayIso = new Date().toISOString().slice(0, 10),
+    isKnownVenue = isKnownOffBroadwayVenue,
+    gates = {},
+  } = options;
+  const no = reason => ({ confirmed: false, source: null, reason });
+  if (!candidate || !candidate.title || !normalizeTitle(candidate.title)) return no('candidate missing title');
+  if (!String(candidate.source || '').startsWith(VENUE_LISTING_SOURCE_PREFIX)) {
+    return no(`source "${candidate.source}" is not a venue listing`);
+  }
+  const junk = junkCandidateReason(candidate);
+  if (junk) return no(`not a production (${junk})`);
+  let venueKnown;
+  try { venueKnown = !!candidate.venue && isKnownVenue(candidate.venue); } catch { venueKnown = false; }
+  if (!venueKnown) return no(`venue "${candidate.venue}" not in canonical Off-Broadway venue list`);
+
+  if (candidate.listingEvidence === 'needs-corroboration') {
+    return no('mixed-program venue: its listing alone does not show a row is a play');
+  }
+  const first = candidate.listingFirstDate;
+  const last = candidate.listingLastDate;
+  if (!isIsoDay(first) || !isIsoDay(last)) return no('venue listing has no run dates (undated reader)');
+  if (last < first) return no(`listing dates out of order (${first} > ${last})`);
+  if (last < todayIso) return no(`run already ended (${last})`);
+  const lead = (Date.parse(`${first}T00:00:00Z`) - Date.parse(`${todayIso}T00:00:00Z`)) / DAY_MS;
+  if (lead > MAX_LISTING_LEAD_DAYS) return no(`first performance ${first} is more than ${MAX_LISTING_LEAD_DAYS}d out`);
+  const count = candidate.listingPerformanceCount;
+  const spanDays = (Date.parse(`${last}T00:00:00Z`) - Date.parse(`${first}T00:00:00Z`)) / DAY_MS;
+  if (typeof count === 'number') {
+    if (count < MIN_LISTING_PERFORMANCES) return no(`only ${count} performance(s) listed — a short booking, not a run`);
+    // A handful of dates spread over weeks is a recurring night (a monthly
+    // comedy show), not a run. Rotating repertory (Repertorio Español: 20
+    // performances over six months) has the density to pass.
+    if (count < SPARSE_SERIES_MAX_COUNT && spanDays / (count - 1) >= SPARSE_SERIES_MIN_GAP_DAYS) {
+      return no(`${count} performances over ${Math.round(spanDays)} days — a recurring series, not a run`);
+    }
+  } else if (first === last) {
+    return no(`one-night event (${first})`);
+  } else if (spanDays < MIN_UNCOUNTED_SPAN_DAYS) {
+    return no(`listed ${first} to ${last} only — a short booking, not a run`);
+  }
+
+  const gateReason = discoveryGateReason({ ...candidate, listingFirstDate: first, listingLastDate: last }, gates);
+  if (gateReason) return no(gateReason);
+
+  const evidence = candidate.listingEvidence === 'editorial-listing' ? 'editorial venue listing' : "venue's own listing";
+  return {
+    confirmed: true,
+    source: 'venue-listing',
+    reason: `${evidence}: ${first} to ${last}${typeof count === 'number' ? `, ${count} performances` : ''}`,
+  };
+}
+
+/**
+ * Discovery's own non-theatre / one-night gates (injected), shared by the
+ * venue-listing and TheaterMania routes. Fails closed on a throwing gate.
+ * @returns {string|null} why the candidate fails, or null
+ */
+function discoveryGateReason(candidate, gates = {}) {
+  const gateShape = {
+    displayName: candidate.title,
+    name: candidate.title,
+    subcategories: [{ name: 'Off Broadway' }],
+    venue: { name: candidate.venue },
+    description: candidate.description || '',
+    startDate: candidate.listingFirstDate || candidate.previewsStartDate || candidate.openingDate || undefined,
+    endDate: candidate.listingLastDate || candidate.closingDate || undefined,
+  };
+  try {
+    if (gates.isNonTheaterContent && gates.isNonTheaterContent(gateShape)) return 'discovery non-theatre gate (isNonTheaterContent)';
+    if (gates.isOneNightShow && gates.isOneNightShow(gateShape)) return 'discovery one-night gate (isOneNightShow)';
+  } catch (e) {
+    return `discovery gate threw (${e.message}) — refusing to confirm`;
+  }
+  return null;
 }
 
 // ---------------------------------------------------------------------------
@@ -259,6 +528,12 @@ function preferCorroboratingTitle(candidateTitle, matchedTitle) {
 
 module.exports = {
   isCandidateConfirmed,
+  decideVenueListingPromotion,
+  discoveryGateReason,
+  junkCandidateReason,
+  findTheaterManiaCorroboration,
+  venuesCompatible,
+  MIN_LISTING_PERFORMANCES,
   decideCriticListingPromotion,
   preferCorroboratingTitle,
 };
