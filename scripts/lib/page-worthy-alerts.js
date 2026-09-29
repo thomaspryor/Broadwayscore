@@ -72,8 +72,9 @@ const PAGE_WORTHY_PREFIXES = [
   // review-count mismatch between review-texts, reviews.json and live prod is
   // a data-reconciliation gap, not "the pipeline is dead tonight" — the
   // opening-night pipeline's real dead-man signals are the on-monitor-* and
-  // broadcast:* keys above. check-opening-night-drift.yml still routes it
-  // (downgraded to the morning digest by the router), so nothing goes silent.
+  // broadcast:* keys above. check-opening-night-drift.yml now routes it with
+  // disposition:'digest' (morning digest; a drift open 14+ notifications is
+  // escalated to a Linear issue by the router), so nothing goes silent.
   //
   // renew-cookies.js (BRO-4183; owner request 2026-09-27: "if a CAPTCHA or
   // emailed code appears, stop and alert me with one link"). Fires only on a
@@ -191,8 +192,8 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // email-noise complaint). It paged the SAME condition as
   // 'test-yml:main-streak-escalation' above under a second conditionKey with
   // its own cooldown, so a red trunk produced two independent email streams.
-  // The escalation tier stays the one email; this backstop now lands in the
-  // morning digest's "trunk: RED" line (router downgrade human -> digest).
+  // Since BRO-4141 removed the escalation key too, neither emails: both reach
+  // the morning digest as error rows (router downgrade human -> digest).
 ]);
 
 function isPageWorthy(conditionKey) {

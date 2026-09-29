@@ -500,17 +500,21 @@ jobs:
           check_url() {
             local URL="$1" NAME="$2"
             for attempt in $(seq 1 12); do
-              # -L: follow same-site redirects and judge the FINAL response. Non-show
-              # types (opera, etc.) 307 from /show/<slug> to /opera/<slug> via
-              # vercel.json — without -L the dynamic recent-opening check failed every
-              # deploy for 14 days after an opera opened (cosi-fan-tutte, 2026-09-23).
-              # A redirect loop (max-redirs hit) or a redirect to a 404 still fails.
-              STATUS=$(curl -s -L --max-redirs 5 -o /dev/null -w "%{http_code}" "$URL")
-              if [ "$STATUS" = "200" ]; then
+              # -L: follow redirects and judge the FINAL response. Non-show types
+              # (opera, etc.) 307 from /show/<slug> to /opera/<slug> via vercel.json;
+              # without -L the dynamic recent-opening check failed every deploy for
+              # 14 days after an opera opened (cosi-fan-tutte, 2026-09-23). A loop
+              # (max-redirs hit) or a redirect to a 404 still fails, and so does a
+              # chain that leaves our site (e.g. a Vercel login/protection page
+              # answering 200): the final host must be broadwayscorecard.com.
+              RESULT=$(curl -s -L --max-redirs 5 --proto-redir =https -o /dev/null -w "%{http_code} %{url_effective}" "$URL")
+              STATUS="${RESULT%% *}"
+              FINAL_HOST=$(echo "${RESULT#* }" | sed -E 's#^https?://([^/:]+).*#\1#')
+              if [ "$STATUS" = "200" ] && { [ "$FINAL_HOST" = "broadwayscorecard.com" ] || [ "$FINAL_HOST" = "www.broadwayscorecard.com" ]; }; then
                 echo "${NAME} returned HTTP 200 (attempt ${attempt})"
                 return 0
               fi
-              echo "${NAME} returned HTTP ${STATUS} — retrying (attempt ${attempt}/12)"
+              echo "${NAME} returned HTTP ${STATUS} at ${FINAL_HOST} — retrying (attempt ${attempt}/12)"
               sleep 5
             done
             echo "::error::Production smoke test failed — ${NAME} never returned HTTP 200 after 60s"
