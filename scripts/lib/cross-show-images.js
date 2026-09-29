@@ -29,6 +29,24 @@ const ALLOWED_SHARED_IMAGES = {
 
 const IMAGE_PATH_RE = /^\/images\/shows\/([^/]+)\//;
 
+// Entries known broken when the gate shipped (BRO-4380). They only warn until
+// data/pending-fixes/bro-4380.json applies; then this list is emptied and every
+// offender fails validate-data. Never add to it.
+const CROSS_SHOW_IMAGES_BASELINE = new Set([
+  'all-over-1971', 'ovids-metamorphoses-1971', 'migrant-qa-panel-off-west-end-2026',
+  'new-26-feral-threads-off-west-end-2026', 'new-26-van-man-off-west-end-2026',
+  'new-26-that-last-summer-off-west-end-2026', 'new-26-xl-bully-off-west-end-2026',
+  'jasmines-demo-show-4-the-end-off-broadway-2026', 'twenty-thousand-streets-off-west-end-2026',
+  'phyl-off-broadway-2026', 'ukaff-hostile-special-qa-off-west-end-2026', 'dukes-off-broadway-2026',
+  'an-evening-of-stratford-east-singers-2026-off-west-end-2026', 'babymother-3-off-west-end-2026',
+  'kings-2-off-west-end-2026', 'keith-off-west-end-2026', 'compost-whats-left-off-west-end-2026',
+  'jest-to-impress-off-broadway-2026', 'this-road-off-west-end-2026', 'drag-tales-off-west-end-2026',
+  'julian-clary-work-in-progess-off-west-end-2026',
+  'the-talking-drum-voices-from-the-andover-estate-off-west-end-2026',
+  'lou-wall-where-are-all-the-tall-grandmas-off-west-end-2026', 'bull-off-west-end-2026',
+  'untitled-new-work-by-monica-bill-barnes-and-robbie-saenz-de-viteri-off-broadway-2026',
+]);
+
 /** Ids connected to showId through lineage links (either direction), excluding itself. */
 function lineageIds(showId, shows) {
   const adj = new Map();
@@ -60,6 +78,9 @@ function lineageIds(showId, shows) {
  */
 function crossShowImageProblems(show, shows, allowlist = ALLOWED_SHARED_IMAGES) {
   if (!show || !show.images || typeof show.images !== 'object') return [];
+  // Tours have their own, wider rule (any same-title Broadway production's
+  // art): tour-family.js tourImageProblems, enforced in validate-data.js.
+  if (show.category === 'tour') return [];
   const problems = [];
   let lineage = null;
   for (const [key, p] of Object.entries(show.images)) {
@@ -114,6 +135,7 @@ function pickOwnProductionPhotoFallback(fallbacks, showId) {
 }
 
 module.exports = {
+  CROSS_SHOW_IMAGES_BASELINE,
   pickOwnProductionPhotoFallback,
   ALLOWED_SHARED_IMAGES,
   LINEAGE_FIELDS,

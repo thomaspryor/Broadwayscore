@@ -67,6 +67,17 @@ test('last-resort fallback: never another show\'s entry, and a copy not the shar
   assert.equal(fallbacks[1].images.poster, undefined);
 });
 
+test('tours are left to tour-family.js (same-title Broadway art is allowed there)', () => {
+  const tour = { id: 'x-tour', category: 'tour', images: { thumbnail: img('x-revival-2019') } };
+  assert.deepEqual(crossShowImageProblems(tour, [tour], {}), []);
+});
+
+test('baseline lists known offenders only, never a linked production', () => {
+  const { CROSS_SHOW_IMAGES_BASELINE } = require('./cross-show-images.js');
+  assert.ok(CROSS_SHOW_IMAGES_BASELINE.has('phyl-off-broadway-2026'));
+  assert.ok(!CROSS_SHOW_IMAGES_BASELINE.has('paranormal-activity-chicago-regional-2025'));
+});
+
 test('the fetcher wires the per-show picker and the applyImages guard', async () => {
   const fs = await import('node:fs');
   const src = fs.readFileSync(new URL('../fetch-show-images-auto.js', import.meta.url), 'utf8');
