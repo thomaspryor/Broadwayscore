@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "how-shakespeare-saved-my-life-off-broadway-2026",
   "openingDate": "2026-09-27",
-  "detectedAt": "2026-09-29T16:55:35.043Z",
+  "detectedAt": "2026-09-29T16:57:36.444Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "outletId": "lighting-and-sound-america",
-      "criticName": "David Barbour",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=VQFIWO",
-      "fullTextLen": 5339,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "showify--unknown.json",
       "outletId": "showify",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
