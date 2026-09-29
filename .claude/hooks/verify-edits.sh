@@ -40,13 +40,29 @@ if [ -z "$transcript" ] || [ ! -f "$transcript" ]; then
   exit 0
 fi
 
-# INFINITE LOOP GUARD: Claude Code sets `stop_hook_active: true` on subsequent
-# Stop events when a hook has already blocked once in this turn-chain. If we
-# block again, Claude loops forever. Let it through — Claude has seen our block
-# message once; if it hasn't satisfied the gate yet, blocking again won't help.
+# LOOP GUARD, per gate (BRO-4367). Claude Code sets `stop_hook_active: true`
+# on Stop events after a hook already blocked in this turn-chain. This used to
+# exit 0 outright, so the FIRST block of any kind spent the whole chain: a
+# session blocked for a missing status line fixed that, re-claimed SAFE TO
+# EXIT and skipped review, /what-else and /wrap-up unchecked. Now each gate
+# blocks at most once per chain (the Mac finish-line gate's per-gate markers),
+# with a hard cap of VE_CHAIN_BLOCK_CAP blocks so an unsatisfiable gate can
+# never loop. Codes that blocked are listed in $_ve_chain_file (one key per
+# line; the finish chain's key is its exact missing-step set, so a shrinking
+# set re-blocks); the EXIT trap near the block messages records a key when
+# this run blocks (exit 2). Every hook runs on a chain's first Stop
+# (stop_hook_active false), so the ledger is emptied there: nothing from an
+# earlier chain survives, even when another Stop hook blocked first.
 stop_hook_active=$(echo "$input" | jq -r '.stop_hook_active // false' 2>/dev/null)
+VE_CHAIN_BLOCK_CAP=4
+_ve_chain_file="/tmp/verify-edits-chain-$(printf '%s' "$transcript" | cksum | cut -d' ' -f1)"
 if [ "$stop_hook_active" = "true" ]; then
-  exit 0
+  # Unwritable ledger: nothing could be recorded, so blocking again could loop
+  # forever. Fall back to the old let-it-through behavior.
+  { : >> "$_ve_chain_file"; } 2>/dev/null || exit 0
+  [ "$({ wc -l < "$_ve_chain_file"; } 2>/dev/null || echo 0)" -ge "$VE_CHAIN_BLOCK_CAP" ] && exit 0
+else
+  { : > "$_ve_chain_file"; } 2>/dev/null
 fi
 
 # CRITICAL (card #233, 2026-07-20): at the live Stop event the final assistant
@@ -61,8 +77,40 @@ export VE_LAST_MSG=$(echo "$input" | jq -r '.last_assistant_message // empty' 2>
 # loads scripts/lib/infra-review-scope.js from here.
 export VE_REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." 2>/dev/null && pwd)"
 
+export VE_SKIP_CODES=""
+if [ "$stop_hook_active" = "true" ]; then
+  VE_SKIP_CODES=$(paste -sd, "$_ve_chain_file" 2>/dev/null)
+fi
 result=$(python3 - "$transcript" <<'PYEOF'
 import hashlib, json, sys, os, re, shlex
+
+# Per-gate loop guard (BRO-4367): keys that already blocked in this
+# turn-chain (bash passes them in VE_SKIP_CODES) must not hide the gates
+# after them. Every early-gate call site is `if <cond>: _ve_block(code)`
+# followed by independent checks, so an already-blocked gate just returns and
+# evaluation continues. Terminal verdicts go through _ve_final(), which swaps
+# an already-blocked verdict for the finish-chain result. Keep _ve_key in
+# step with the bash _ve_code computation near the block messages.
+_VE_SKIP = set(c for c in os.environ.get('VE_SKIP_CODES', '').split(',') if c)
+
+def _ve_key(code):
+    head, _, rest = code.partition(':')
+    return head + ':' + rest.split(':', 1)[0] if head == 'NOCHAIN' else head
+
+def _ve_seen(code):
+    return _ve_key(code) in _VE_SKIP
+
+def _ve_block(code):
+    if _ve_seen(code):
+        return
+    print(code)
+    sys.exit(0)
+
+def _ve_final(code):
+    if _ve_seen(code):
+        code = _chain_or_ok()
+    print(code)
+    sys.exit(0)
 
 CODE_EXTS = ('.js', '.ts', '.tsx', '.mjs', '.cjs', '.py', '.sh', '.rb', '.go')
 # Paths that don't need execution verification.
@@ -569,11 +617,9 @@ if os.environ.get('SESSION_STATUS_GATE_DISABLE', '0') != '1':
             # DECISION NEEDED here" (ship-check adversarial review).
             _has_decision_needed = bool(re.search(r'^DECISION NEEDED:', _stripped, re.MULTILINE))
             if not _has_status_line:
-                print("NOSTATUSLINE")
-                sys.exit(0)
+                _ve_block("NOSTATUSLINE")
             if _has_decision_needed and _claims_safe:
-                print("FALSESAFE")
-                sys.exit(0)
+                _ve_block("FALSESAFE")
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
@@ -707,11 +753,10 @@ if os.environ.get('INFLIGHT_GATE_DISABLE', '0') != '1':
             for _aid_l, (_idx_l, _lab_l) in _agent_start.items():
                 if _agent_done.get(_aid_l, -1) < _idx_l:
                     _live.append('%s [%s]' % (_lab_l, _aid_l))
-            if _live:
+            if _live and not _ve_seen('INFLIGHT'):
                 sys.stderr.write('   still in flight: ' + '; '.join(_live[:8])
                                  + ('; +%d more' % (len(_live) - 8) if len(_live) > 8 else '') + '\n')
-                print("INFLIGHT")
-                sys.exit(0)
+                _ve_block("INFLIGHT")
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
@@ -779,14 +824,12 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
         _owner_scan = re.sub(r'`[^`\n]*`|"[^"\n]*"|\u201c[^\u201d\n]*\u201d', '', _stripped_owner)
         if (_msg_ok and (_opened_pr or _landed_pushed) and not _merged_pr
                 and _owner_ask(_owner_scan)):
-            print("OWNERMERGE")
-            sys.exit(0)
+            _ve_block("OWNERMERGE")
         # A land/** push is follow-through, but not proof it landed (land.yml
         # can refuse): SAFE TO EXIT additionally needs a later run check.
         if (_msg_ok and _landed_pushed and not _land_followed and not _merged_pr
                 and re.search(r'^SAFE TO EXIT\b', _stripped_owner.strip().splitlines()[-1] if _stripped_owner.strip() else '')):
-            print("LANDUNCHECKED")
-            sys.exit(0)
+            _ve_block("LANDUNCHECKED")
         if _landed_pushed:
             _merged_pr = True
         if _opened_pr and not _merged_pr and _msg_ok:
@@ -806,8 +849,7 @@ if os.environ.get('PR_FOLLOWTHROUGH_GATE_DISABLE', '0') != '1':
             # \b can never match after the colon, so it silently never matched
             # before — the bare NOT SAFE TO EXIT alternative masked that.
             if not _pr_blocker_stated(_pr_stripped):
-                print("PRUNMERGED")
-                sys.exit(0)
+                _ve_block("PRUNMERGED")
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
@@ -833,8 +875,7 @@ if os.environ.get('CARD_GATE_DISABLE', '0') != '1':
                 and not re.search(r'NO-CARD:\s*\S.{9,}', _nc_msg)
                 and not _session_has_card()
                 and _board_gate_enforced()):
-            print("NOCARD")
-            sys.exit(0)
+            _ve_block("NOCARD")
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
@@ -920,8 +961,7 @@ if os.environ.get('WRAPUP_GATE_DISABLE', '0') != '1':
                             _wrapup_closed_out = True
                             break
                 if not _wrapup_closed_out and _board_gate_enforced():
-                    print("NOWRAPUP")
-                    sys.exit(0)
+                    _ve_block("NOWRAPUP")
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
@@ -1012,7 +1052,7 @@ for _i in range(len(events) - 1, -1, -1):
     if _k == 'text':
         _txt = _p or ''
         _m = _HUMAN_TIME_ESTIMATE_RE.search(_txt)
-        if _m and 'NO-VERIFY:' not in _txt:
+        if _m and 'NO-VERIFY:' not in _txt and not _ve_seen('HUMAN_TIME_ESTIMATE'):
             print(f"HUMAN_TIME_ESTIMATE:{_m.group(1)}")
             sys.exit(0)
         break  # only the most recent assistant_text counts
@@ -1060,20 +1100,28 @@ def _write_verify_state(fp):
 
 # ─── Cloud finish-line chain (BRO-4238 phase 2) ──────────────────────────────
 # Port of the Mac finish-line-gate's Gates 1 and 4 into the cloud Stop hook.
-# A SAFE TO EXIT claim after code edits needs (a) a review since those edits
-# and (b) an actual /what-else run for this piece of work. Before this, the
-# only review gate here fired for scripts/lib/ alone (and never for workflows,
-# which EXEMPT_SUBSTRINGS drops), so a session edited .claude/hooks/*.sh,
-# claimed SAFE TO EXIT and ran neither until the owner asked (2026-09-29).
-# /wrap-up is not re-checked here: NOWRAPUP above already requires its real
-# outcome (the Linear close-out), which the owner chose over a Skill-call check.
+# A SAFE TO EXIT claim after code edits needs (a) a review since those edits,
+# (b) an actual /what-else run and (c) an actual /wrap-up run for this piece
+# of work. Before this, the only review gate here fired for scripts/lib/ alone
+# (and never for workflows, which EXEMPT_SUBSTRINGS drops), so a session
+# edited .claude/hooks/*.sh, claimed SAFE TO EXIT and ran neither until the
+# owner asked (2026-09-29).
+# Parity with the Mac gate (BRO-4367, same day: a session ran /second-opinion
+# plus an Agent "code review", did wrap-up "by hand" and passed): only Skill
+# calls or owner-typed slash commands count (an Agent description or a codex
+# call is not a review here; the older UNSHIPCHECKED gate still accepts them),
+# a session with more than CHAIN_BIG_SESSION_EDITS code edits needs /ship-check
+# or /code-review, and /wrap-up must actually run. NOWRAPUP above still
+# requires wrap-up's real outcome (the Linear close-out) on top of this.
 # Mid-work Stops (NOT SAFE TO EXIT) are left alone. Bypass: NO-SHIP-CHECK:
-# <reason> for the review (NO-VERIFY: waives execution evidence only), and
-# NO-WHAT-ELSE: <reason> for the sweep.
+# <reason> for the review (NO-VERIFY: waives execution evidence only),
+# NO-WHAT-ELSE: <reason> and NO-WRAP-UP: <reason> for the other two.
 # Kill switch: CLOUD_CHAIN_GATE_DISABLE=1. Fails open on any error.
 CHAIN_TRIGGER_DIRS = ('/src/', '/scripts/', '/.claude/hooks/', '/.github/workflows/', '/supabase/')
 CHAIN_TRIGGER_EXTS = CODE_EXTS + ('.yml', '.yaml', '.sql')
-CHAIN_REVIEW_SKILLS = ('ship-check', 'code-review', 'second-opinion')
+CHAIN_STRONG_REVIEWS = ('ship-check', 'code-review')
+CHAIN_REVIEW_SKILLS = CHAIN_STRONG_REVIEWS + ('second-opinion',)
+CHAIN_BIG_SESSION_EDITS = 15   # Mac BIG_SESSION_EDITS
 CHAIN_FIXUP_BUDGET = 8   # edits right after a review are its fixups (Mac FIXUP_BUDGET)
 
 def _chain_result():
@@ -1088,16 +1136,18 @@ def _chain_result():
         return (fp.endswith(CHAIN_TRIGGER_EXTS) and '/node_modules/' not in fp
                 and (any(d in fp for d in CHAIN_TRIGGER_DIRS)
                      or fp.startswith(tuple(d.lstrip('/') for d in CHAIN_TRIGGER_DIRS))))
-    edits, reviews, what_else, humans, bash_cmds = [], [], [], [], []
+    edits, reviews, what_else, wrap_up, humans, bash_cmds = [], [], [], [], [], []
     for i, (kind, payload) in enumerate(events):
         if kind == 'user_human':
             humans.append(i)
             continue
         if kind == 'user_command':
             if payload in CHAIN_REVIEW_SKILLS:
-                reviews.append(i)
+                reviews.append((i, payload))
             elif payload == 'what-else':
                 what_else.append(i)
+            elif payload == 'wrap-up':
+                wrap_up.append(i)
             continue
         if kind != 'tool':
             continue
@@ -1109,19 +1159,14 @@ def _chain_result():
         elif name == 'Bash' and _tid not in tool_refused_ids:
             bash_cmds.append((i, inp.get('command', '') or ''))
         if name == 'Skill':
-            sk = inp.get('skill') or ''
+            # Namespaced skills ("plugin:ship-check") normalize like typed commands.
+            sk = (inp.get('skill') or '').split(':')[-1]
             if sk in CHAIN_REVIEW_SKILLS:
-                reviews.append(i)
+                reviews.append((i, sk))
             elif sk == 'what-else':
                 what_else.append(i)
-        elif name == 'Bash':
-            cmd = inp.get('command', '') or ''
-            if any(p in cmd for p in SHIPCHECK_BASH_PATTERNS_EARLY):
-                reviews.append(i)
-        elif name in ('Agent', 'Task'):
-            desc = (inp.get('description') or '').lower()
-            if any(tok in desc for tok in ('review', 'ship-check', 'shipcheck', 'audit')):
-                reviews.append(i)
+            elif sk == 'wrap-up':
+                wrap_up.append(i)
     # Bash-side edits (sed -i, cat >, cp, python open(...,'w')): most of the
     # motivating session's edits went through Bash, invisible to Edit/Write.
     edits.extend(_bash_code_edits(bash_cmds, is_trigger))
@@ -1130,9 +1175,14 @@ def _chain_result():
         return None
     turn_text = '\n'.join(p for k, p in events[(humans[-1] if humans else 0):] if k == 'text')
     turn_text = re.sub(r'```.*?```', '', turn_text, flags=re.DOTALL)
+    missing = []
     # Review: every code edit is covered by an earlier review, except up to
-    # CHAIN_FIXUP_BUDGET fixups made before the owner's next message.
-    last_review = reviews[-1] if reviews else None
+    # CHAIN_FIXUP_BUDGET fixups made before the owner's next message. A big
+    # session (Mac BIG_SESSION_EDITS) needs a strong review; /second-opinion
+    # is for small diffs only.
+    big = len(edits) > CHAIN_BIG_SESSION_EDITS
+    usable = [i for i, sk in reviews if not big or sk in CHAIN_STRONG_REVIEWS]
+    last_review = usable[-1] if usable else None
     after = [e for e in edits if last_review is None or e[0] > last_review]
     if after and last_review is not None:
         next_human = next((h for h in humans if h > last_review), None)
@@ -1140,13 +1190,19 @@ def _chain_result():
         if len(fixups) == len(after) and len(after) <= CHAIN_FIXUP_BUDGET:
             after = []
     if after and not re.search(r'^\s*NO-SHIP-CHECK:\s*\S.{9,}', turn_text, re.M):
-        return f"UNREVIEWED_SAFE:{after[-1][1]}"
-    # /what-else: once for this piece of work (since the owner's message that
-    # started the latest edits).
+        missing.append('review-strong' if big else 'review')
+    # /what-else and /wrap-up: once for this piece of work (since the owner's
+    # message that started the latest edits). Only real invocations count.
     work_start = max((h for h in humans if h < edits[-1][0]), default=-1)
-    if not any(w > work_start for w in what_else) \
-            and not re.search(r'^\s*NO-WHAT-ELSE:\s*\S.{9,}', turn_text, re.M):
-        return "NOWHATELSE"
+    for step, seen in (('what-else', what_else), ('wrap-up', wrap_up)):
+        token = 'NO-' + step.upper()
+        if not any(w > work_start for w in seen) \
+                and not re.search(r'^\s*' + token + r':\s*\S.{9,}', turn_text, re.M):
+            missing.append(step)
+    # One combined result: the Stop hook blocks each code once per chain, so
+    # separate codes would let the second missing step through.
+    if missing:
+        return f"NOCHAIN:{','.join(missing)}:{after[-1][1] if after else edits[-1][1]}"
     return None
 
 _PY_WRITE_RE = re.compile(r"open\([^)]*,\s*['\"][wa]|\.write_text\(|\.write_bytes\(")
@@ -1181,8 +1237,6 @@ def _bash_code_edits(bash_cmds, is_trigger):
         pass   # fail open: Edit/Write edits still count
     return out
 
-SHIPCHECK_BASH_PATTERNS_EARLY = ('codex exec', 'api.openai.com/v1/chat/completions')
-
 def _chain_or_ok():
     # Runs at each OK exit below, so the chain never takes the Stop hook's one
     # block ahead of UNVERIFIED / UNSHIPCHECKED / scoring / visual-QA (the
@@ -1190,7 +1244,8 @@ def _chain_or_ok():
     if os.environ.get('CLOUD_CHAIN_GATE_DISABLE', '0') == '1':
         return 'OK'
     try:
-        return _chain_result() or 'OK'
+        r = _chain_result() or 'OK'
+        return 'OK' if _ve_seen(r) else r
     except Exception:
         return 'OK'   # fail open
 
@@ -1678,15 +1733,15 @@ if is_scoring_edit or ran_audit_sweep:
         print(_chain_or_ok())
         sys.exit(0)
     if scoring_ran_but_failed:
-        print(f"SCORING_FAILED:{label}")
+        _ve_final(f"SCORING_FAILED:{label}")
         sys.exit(0)
-    print(f"UNVERIFIED_SCORING:{label}")
+    _ve_final(f"UNVERIFIED_SCORING:{label}")
     sys.exit(0)
 
 if is_shipcheck_edit and not shipcheck_verified:
     # Edits to scripts/lib/ or .github/workflows/ need an adversarial-reviewer pass.
     # Generic tsc/test green is NOT sufficient — see header note.
-    print(f"UNSHIPCHECKED:{basename}")
+    _ve_final(f"UNSHIPCHECKED:{basename}")
     sys.exit(0)
 
 # Visual-QA branch — triggered ONLY when this session is actually doing UI
@@ -1754,17 +1809,17 @@ if visual_branch_relevant:
     # firing UNVERIFIED_VISUAL_SCHEMA on stale v1 verdicts from prior work.
     schema_gate_relevant = is_ui_edit or any_ui_edit_in_session or visual_claim_made
     if schema_gate_relevant and verdict_ok and verdict_schema != 2:
-        print(f"UNVERIFIED_VISUAL_SCHEMA:{basename or 'ui-edit'}")
+        _ve_final(f"UNVERIFIED_VISUAL_SCHEMA:{basename or 'ui-edit'}")
         sys.exit(0)
     # REF gate fires only when reference attached AND a UI edit / claim
     # made it relevant — bare attachments (a screenshot of an unrelated error)
     # must not trip this. Already guarded by visual_branch_relevant on the
     # outer block, but make the inner condition explicit for clarity.
     if reference_attached and schema_gate_relevant and verdict_ok and not verdict_has_llm:
-        print(f"UNVERIFIED_VISUAL_REF:{basename or 'ui-edit'}")
+        _ve_final(f"UNVERIFIED_VISUAL_REF:{basename or 'ui-edit'}")
         sys.exit(0)
     if visual_claim_made and not verdict_ok:
-        print(f"UNVERIFIED_VISUAL_CLAIM:{basename or 'ui-edit'}")
+        _ve_final(f"UNVERIFIED_VISUAL_CLAIM:{basename or 'ui-edit'}")
         sys.exit(0)
     if verdict_ok:
         # Record satisfied HEAD + latest UI-edit marker so delayed echoes
@@ -1778,7 +1833,7 @@ if visual_branch_relevant:
     # turn) but the current edit is text/data, don't re-fire — that's the pain
     # point for copy/prize-amount/legal-text edits after a prior UI edit.
     if is_ui_edit:
-        print(f"UNVERIFIED_VISUAL:{basename or 'ui-edit'}")
+        _ve_final(f"UNVERIFIED_VISUAL:{basename or 'ui-edit'}")
     else:
         print(_chain_or_ok())
     sys.exit(0)
@@ -1787,9 +1842,27 @@ if generic_verified:
     print(_chain_or_ok())
     sys.exit(0)
 
-print(f"UNVERIFIED:{basename}")
+_ve_final(f"UNVERIFIED:{basename}")
 PYEOF
 )
+
+# Per-gate loop guard (see LOOP GUARD above). The ledger key mirrors python's
+# _ve_key(): the code, or for the finish chain NOCHAIN:<missing steps>.
+# Backstop: a key that already blocked in this chain lets this Stop through
+# (python should already have skipped it).
+_ve_code="${result%%:*}"
+if [ "$_ve_code" = "NOCHAIN" ]; then
+  _ve_rest="${result#NOCHAIN:}"
+  _ve_code="NOCHAIN:${_ve_rest%%:*}"
+fi
+if [ "$stop_hook_active" = "true" ] && grep -qxF -- "$_ve_code" "$_ve_chain_file" 2>/dev/null; then
+  exit 0
+fi
+_ve_record_block() {
+  [ "$1" = "2" ] || return 0
+  printf '%s\n' "$_ve_code" >> "$_ve_chain_file" 2>/dev/null
+}
+trap '_ve_record_block $?' EXIT
 
 # Block messages: one-liner format (cause + fix + bypass). Full rules live in
 # .claude/skills/visual-qa/skill.md and the gate comments; the assistant reading
@@ -1858,14 +1931,23 @@ if [[ "$result" == UNSHIPCHECKED:* ]]; then
   exit 2
 fi
 
-if [[ "$result" == UNREVIEWED_SAFE:* ]]; then
-  fname="${result#UNREVIEWED_SAFE:}"
-  echo "🛑 BLOCKED: SAFE TO EXIT after code edits (latest: \`${fname}\`) with no review since them. Run /ship-check (or /second-opinion for a small diff), fix what it finds, then /what-else and /wrap-up. Docs-only or pure revert: NO-SHIP-CHECK: <why no review is needed>." >&2
-  exit 2
-fi
-
-if [[ "$result" == "NOWHATELSE" ]]; then
-  echo "🛑 BLOCKED: SAFE TO EXIT after code edits, but /what-else never ran for this work (prose does not count). Run it now, act on what it finds, then close. Truly n/a: NO-WHAT-ELSE: <reason>." >&2
+if [[ "$result" == NOCHAIN:* ]]; then
+  rest="${result#NOCHAIN:}"
+  steps="${rest%%:*}"
+  fname="${rest#*:}"
+  todo=""
+  bypass=""
+  case ",$steps," in
+    *,review-strong,*) todo="/ship-check (or /code-review; this session is too big for /second-opinion)"; bypass="NO-SHIP-CHECK: <why no review is needed>" ;;
+    *,review,*) todo="/ship-check (or /second-opinion for a small diff)"; bypass="NO-SHIP-CHECK: <why no review is needed>" ;;
+  esac
+  for s in what-else wrap-up; do
+    case ",$steps," in *,$s,*)
+      todo="${todo:+$todo, then }/$s"
+      bypass="${bypass:+$bypass / }NO-$(echo "$s" | tr 'a-z' 'A-Z'): <reason>" ;;
+    esac
+  done
+  echo "🛑 BLOCKED: SAFE TO EXIT after code edits (latest: \`${fname}\`), but the finish chain is incomplete. Still to run, as real skill calls (an Agent \"review\", a codex call or doing the steps by hand does not count): ${todo}. Fix what they find, then close. Step truly n/a: ${bypass}." >&2
   exit 2
 fi
 
@@ -1903,7 +1985,7 @@ if [[ "$result" == "INFLIGHT" ]]; then
 fi
 
 if [[ "$result" == "NOWRAPUP" ]]; then
-  echo "🛑 BLOCKED: claiming SAFE TO EXIT after real work, but this session's Linear card was never closed out after that work. Run: node scripts/linear-brain.js update BRO-N --state Done (needs a PR-EVIDENCE line citing the landed commit URL, https://github.com/thomaspryor/Broadwayscore/commit/<sha on main>, which verifies through GitHub even in a shallow cloud clone, or an Acceptance-criteria check; a refused update doesn't count). To pause, or when Done is refused: node scripts/linear-session.js report --issue=BRO-N --status=paused --summary=\"...\" (Linear has no Paused state; this sets Backlog). Invoking /wrap-up alone is not proof, and a notion-brain.js update does not count (Notion is retired). Bypass: NO-VERIFY: <reason> (or NO-CARD: <reason> if this session has no card by design)." >&2
+  echo "🛑 BLOCKED: claiming SAFE TO EXIT after real work, but this session's Linear card was never closed out after that work. Run: node scripts/linear-brain.js update BRO-N --state Done (needs a PR-EVIDENCE line citing the landed commit URL, https://github.com/thomaspryor/Broadwayscore/commit/<sha on main>, which verifies through GitHub even in a shallow cloud clone, or an Acceptance-criteria check; a refused update doesn't count). To pause, or when Done is refused: node scripts/linear-session.js report --issue=BRO-N --status=paused --summary=\"...\" (Linear has no Paused state; this sets Backlog). Invoking /wrap-up is required but not enough on its own, and a notion-brain.js update does not count (Notion is retired). Bypass: NO-VERIFY: <reason> (or NO-CARD: <reason> if this session has no card by design)." >&2
   exit 2
 fi
 

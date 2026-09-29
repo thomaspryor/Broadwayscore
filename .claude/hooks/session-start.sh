@@ -627,7 +627,7 @@ CRITICAL SESSION RULES (CLAUDE.md has full text — these 7 are the most-violate
 5. KEEP GOING: do natural follow-ups (rebuild, deploy, fix adjacent). Don't offer handoffs to "a new session".
 6. TERSE OUTPUT: short answers, no trailing recap, drop pleasantries. Output tokens cost ~5x input — verbose explanation is the single biggest token leak Claude controls. Verification evidence still required (rule 2); cut narration, keep proof.
 7. PRs: the owner NEVER reviews or merges them. Land it yourself: `git push origin HEAD:refs/heads/land/<name>`, follow the Land run, close the PR (CLOUD.md § Landing). "Waiting on review" is never a reason to leave a PR open.
-Flow: implement → /did-it-work → /ship-check → /wrap-up. Don't stop between skills unless user said stop or you hit a real blocker.
+Flow: implement → /did-it-work → /ship-check → /what-else → /wrap-up, each as a real skill call (an Agent "review" or doing wrap-up by hand does not count; the Stop hook blocks SAFE TO EXIT until they ran). Don't stop between skills unless user said stop or you hit a real blocker.
 EOF
 
 # ── Self-heal: data-repo pre-commit guards (conflict markers / invalid JSON) ──

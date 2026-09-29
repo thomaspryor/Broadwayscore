@@ -439,6 +439,33 @@ else
   echo "PASS[14]: a non-main branch mid-merge is refused before any self-heal ($rc14)"
 fi
 
+# ── case 15 (BRO-4141, adversarial-review gap): a feature branch MID-REBASE
+# is untouched. Same hazard as case 14, but via the rebase-in-progress
+# fallback (git symbolic-ref returns empty; CUR_BRANCH must come from
+# rebase-merge/head-name, not default to "main").
+O15="$TMP/origin15"; C15="$TMP/clone15"
+setup_pair "$O15" "$C15"
+git -C "$C15" checkout -q -b feature-z
+echo feature > "$C15/other.txt"; git -C "$C15" commit -qam feature-z-1
+echo feature2 > "$C15/other.txt"; git -C "$C15" commit -qam feature-z-2
+git -C "$C15" checkout -q -b side15 main
+echo side > "$C15/other.txt"; git -C "$C15" commit -qam side15
+git -C "$C15" checkout -q feature-z
+git -C "$C15" rebase side15 >/dev/null 2>&1   # conflicts, leaves rebase-merge/ (detached HEAD)
+echo "resolved-by-human" > "$C15/other.txt"
+out15=$(SYNC_TAG=case15 bash "$LIB" "$C15" 2>&1); rc15=$?
+if [ "$rc15" -eq 0 ]; then
+  echo "FAIL[15]: must refuse. Output:"; echo "$out15"; fail=1
+elif [ ! -d "$C15/.git/rebase-merge" ]; then
+  echo "FAIL[15]: the in-progress rebase on feature-z was aborted"; fail=1
+elif [ "$(cat "$C15/other.txt")" != "resolved-by-human" ]; then
+  echo "FAIL[15]: the human's conflict resolution was overwritten"; fail=1
+elif ! grep -q '"reason": "not-on-main:feature-z"' "$C15/data/audit/sync-refused-case15.json" 2>/dev/null; then
+  echo "FAIL[15]: expected a not-on-main:feature-z refusal snapshot (rebase-fallback branch name). Output:"; echo "$out15"; fail=1
+else
+  echo "PASS[15]: a non-main branch mid-rebase (detached HEAD) is refused before any self-heal ($rc15)"
+fi
+
 if [ "$fail" -ne 0 ]; then
   echo "sync-audit-checkout test: FAILED"; exit 1
 fi

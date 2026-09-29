@@ -78,8 +78,8 @@ IS_PUSH=$(echo "$PUSH_RESULT" | jq -r '.isPush // false' 2>/dev/null)
 _FIRST_CD=$(printf '%s' "$command" | grep -oE '(^|[[:space:];&|(])cd[[:space:]]+[^[:space:];&|<>)]+' | head -1 | sed 's/^[[:space:];&|(]*cd[[:space:]]*//')
 if [ -n "$_FIRST_CD" ]; then
   case "$_FIRST_CD" in
-    ~/*)  _FIRST_CD="$HOME/${_FIRST_CD#~/}" ;;
-    ~)    _FIRST_CD="$HOME" ;;
+    \~/*)  _FIRST_CD="$HOME/${_FIRST_CD#\~/}" ;;
+    \~)    _FIRST_CD="$HOME" ;;
   esac
   if [ -d "$_FIRST_CD" ]; then
     _CD_REPO=$(git -C "$_FIRST_CD" rev-parse --show-toplevel 2>/dev/null)

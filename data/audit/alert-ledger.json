@@ -146,13 +146,13 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T19:45:20.303Z",
-      "lastNotifiedAt": "2026-09-29T16:20:41.341Z",
+      "lastSeen": "2026-09-29T20:16:13.637Z",
+      "lastNotifiedAt": "2026-09-29T19:39:12.553Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
       "notifyCount": 111,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 5
+      "silentRefires": 7
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -5092,7 +5092,7 @@
       "linearIdentifier": null
     },
     "land:land/bro-4141-r3": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: rebase red on land/bro-4141-r3",
       "firstSeen": "2026-09-25T05:12:59.417Z",
@@ -5101,7 +5101,8 @@
       "lastSurfacedAt": "2026-09-29T18:54:09.071Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-29T19:51:29.974Z"
     },
     "land:land/bro-4141-r4": {
       "status": "open",
@@ -5265,10 +5266,10 @@
       "disposition": "digest",
       "title": "Opening night drift: The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
       "firstSeen": "2026-09-26T15:33:02.089Z",
-      "lastSeen": "2026-09-29T08:54:01.382Z",
-      "lastNotifiedAt": "2026-09-29T08:54:01.382Z",
-      "lastSurfacedAt": "2026-09-29T08:54:01.382Z",
-      "notifyCount": 8,
+      "lastSeen": "2026-09-29T20:10:35.762Z",
+      "lastNotifiedAt": "2026-09-29T20:10:35.762Z",
+      "lastSurfacedAt": "2026-09-29T20:10:35.762Z",
+      "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -5439,10 +5440,10 @@
       "disposition": "digest",
       "title": "Opening night drift: Tru (tru-off-west-end-2026)",
       "firstSeen": "2026-09-27T20:19:28.419Z",
-      "lastSeen": "2026-09-29T02:12:10.076Z",
-      "lastNotifiedAt": "2026-09-29T02:12:10.076Z",
-      "lastSurfacedAt": "2026-09-29T02:12:10.076Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-09-29T20:10:35.747Z",
+      "lastNotifiedAt": "2026-09-29T20:10:35.747Z",
+      "lastSurfacedAt": "2026-09-29T20:10:35.747Z",
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -5881,14 +5882,14 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "lastSeen": "2026-09-29T19:45:20.276Z",
+      "lastSeen": "2026-09-29T20:16:13.634Z",
       "lastNotifiedAt": "2026-09-29T14:55:02.180Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-4255",
       "absentRunIds": [],
-      "silentRefires": 6
+      "silentRefires": 8
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "open",
@@ -6535,13 +6536,13 @@
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/video-production-verify",
       "firstSeen": "2026-09-29T15:29:46.283Z",
-      "lastSeen": "2026-09-29T18:43:27.306Z",
+      "lastSeen": "2026-09-29T20:11:17.614Z",
       "lastNotifiedAt": "2026-09-29T15:29:46.283Z",
       "lastSurfacedAt": "2026-09-29T15:29:46.283Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-4358-ss-dead-url": {
       "status": "resolved",
@@ -6592,13 +6593,13 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"fewer than 50 outlets have a null domain\"",
       "firstSeen": "2026-09-29T17:52:27.963Z",
-      "lastSeen": "2026-09-29T19:45:20.300Z",
+      "lastSeen": "2026-09-29T20:16:13.609Z",
       "lastNotifiedAt": "2026-09-29T17:52:27.963Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4362",
-      "silentRefires": 3
+      "silentRefires": 5
     },
     "land:land/font-selfhost-v3": {
       "status": "open",
@@ -6750,12 +6751,13 @@
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4373-mun14cqh",
       "firstSeen": "2026-09-29T19:42:45.972Z",
-      "lastSeen": "2026-09-29T19:42:45.972Z",
+      "lastSeen": "2026-09-29T19:52:19.509Z",
       "lastNotifiedAt": "2026-09-29T19:42:45.972Z",
       "lastSurfacedAt": "2026-09-29T19:42:45.972Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "scheduled-email-missing:morning-digest:2026-09-28": {
       "status": "open",
@@ -6768,6 +6770,42 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4378"
+    },
+    "land:land/bro-4265-tm-gap-test": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: colocated-tests red on land/bro-4265-tm-gap-test",
+      "firstSeen": "2026-09-29T19:55:13.934Z",
+      "lastSeen": "2026-09-29T19:55:13.934Z",
+      "lastNotifiedAt": "2026-09-29T19:55:13.934Z",
+      "lastSurfacedAt": "2026-09-29T19:55:13.934Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/worktree-absence-guard-4137": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/worktree-absence-guard-4137",
+      "firstSeen": "2026-09-29T20:04:40.702Z",
+      "lastSeen": "2026-09-29T20:04:40.702Z",
+      "lastNotifiedAt": "2026-09-29T20:04:40.702Z",
+      "lastSurfacedAt": "2026-09-29T20:04:40.702Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/job/linear-BRO-4049-mun2wijz": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/job/linear-BRO-4049-mun2wijz",
+      "firstSeen": "2026-09-29T20:15:05.922Z",
+      "lastSeen": "2026-09-29T20:15:05.922Z",
+      "lastNotifiedAt": "2026-09-29T20:15:05.922Z",
+      "lastSurfacedAt": "2026-09-29T20:15:05.922Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
