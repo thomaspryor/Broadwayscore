@@ -2,7 +2,9 @@
  * posthog-query.js — Shared PostHog HogQL query helpers.
  *
  * Single source of truth for all PostHog query logic.
- * Used by posthog-weekly-insights.js and posthog-friction-analyzer.js.
+ * Used by posthog-weekly-insights.js, posthog-friction-analyzer.js,
+ * analyze-traffic-sources.js, lib/traffic-history.js and (phQueryFull +
+ * REAL_USERS_WHERE) posthog-adhoc-query.js.
  *
  * Env: POSTHOG_PERSONAL_API_KEY
  */
@@ -31,7 +33,9 @@ async function phQueryFull(hogql) {
     },
     body: JSON.stringify({ query: { kind: 'HogQLQuery', query: hogql } }),
   });
-  if (!res.ok) throw new Error(`PostHog API ${res.status}: ${await res.text()}`);
+  // Body sliced: a 504 comes back as a full HTML page, which would otherwise
+  // land verbatim in a table cell or a log line.
+  if (!res.ok) throw new Error(`PostHog API ${res.status}: ${(await res.text()).slice(0, 500)}`);
   return res.json();
 }
 

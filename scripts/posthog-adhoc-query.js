@@ -57,6 +57,22 @@ function splitStatements(text) {
     .filter(Boolean);
 }
 
+/**
+ * Rows rendered per statement. GITHUB_STEP_SUMMARY has a 1 MiB hard limit
+ * (the step fails past it), and a `LIMIT 100000` statement — the row-cap
+ * memory's own advice — would otherwise write every row to it.
+ */
+const MAX_RENDERED_ROWS = 500;
+
+/**
+ * PostHog's HogQL API silently caps GROUP BY results at ~100 rows when the
+ * statement has no LIMIT (cloud-memory/feedback_posthog_hogql_default_row_limit.md).
+ * Exactly 100 rows back from such a statement is the fingerprint.
+ */
+function looksSilentlyCapped(statement, rowCount) {
+  return rowCount === 100 && /\bGROUP\s+BY\b/i.test(statement) && !/\bLIMIT\b/i.test(statement);
+}
+
 function formatCell(value) {
   if (value === null || value === undefined) return '—';
   if (typeof value === 'number') return Number.isInteger(value) ? String(value) : value.toFixed(2);
@@ -80,11 +96,15 @@ function toMarkdownTable({ columns, results }) {
     `| ${headers.join(' | ')} |`,
     `| ${headers.map(() => '---').join(' | ')} |`,
   ];
-  for (const row of rows) {
+  for (const row of rows.slice(0, MAX_RENDERED_ROWS)) {
     const cells = Array.isArray(row) ? row : [row];
     lines.push(`| ${headers.map((_, i) => formatCell(cells[i])).join(' | ')} |`);
   }
-  return `${lines.join('\n')}\n`;
+  let out = `${lines.join('\n')}\n`;
+  if (rows.length > MAX_RENDERED_ROWS) {
+    out += `\n_Truncated: showing ${MAX_RENDERED_ROWS} of ${rows.length} rows. Add a tighter LIMIT or aggregate._\n`;
+  }
+  return out;
 }
 
 /**
@@ -102,16 +122,45 @@ function renderReport(sections, { title = 'PostHog ad-hoc query' } = {}) {
     } else {
       const n = Array.isArray(section.response?.results) ? section.response.results.length : 0;
       parts.push(`${n} row(s)\n\n${toMarkdownTable(section.response || {})}`);
+      if (looksSilentlyCapped(section.statement, n)) {
+        parts.push('⚠️ **Exactly 100 rows from a GROUP BY with no LIMIT** — HogQL silently caps at ~100. Re-run with an explicit `LIMIT` well above the real row count.\n');
+      }
     }
   });
   return `${parts.join('\n')}\n`;
 }
 
-async function runStatements(statements, query = phQueryFull) {
+/**
+ * Same transient rule as scripts/analyze-traffic-sources.js
+ * isTransientPostHogError: an HTTP status decides first (a 400 "timeout
+ * exceeded" is a HogQL execution limit and fails identically on retry).
+ */
+function isTransientError(err) {
+  const msg = String(err && err.message);
+  const m = msg.match(/PostHog API (\d{3})/);
+  if (m) { const st = +m[1]; return st >= 500 || st === 429 || st === 408; }
+  return /time-?out|ECONNRESET|fetch failed/i.test(msg);
+}
+
+/**
+ * Runs each statement in order, one retry after `retryDelayMs` on a
+ * transient PostHog error (a 504 takes ~5 min to come back, hence the
+ * workflow's 15-minute budget). A failed statement is recorded, not thrown,
+ * so the other results still render.
+ */
+async function runStatements(statements, query = phQueryFull, { retryDelayMs = 20000, sleep = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
   const sections = [];
   for (const statement of statements) {
     try {
-      const response = await query(statement);
+      let response;
+      try {
+        response = await query(statement);
+      } catch (first) {
+        if (!isTransientError(first)) throw first;
+        console.error(`retrying after transient error: ${String(first.message).split('\n')[0].slice(0, 120)}`);
+        await sleep(retryDelayMs);
+        response = await query(statement);
+      }
       sections.push({ statement, response });
     } catch (err) {
       sections.push({ statement, error: err && err.message ? err.message : String(err) });
@@ -168,7 +217,7 @@ async function main(argv = process.argv.slice(2)) {
   return 0;
 }
 
-module.exports = { splitStatements, toMarkdownTable, renderReport, runStatements };
+module.exports = { splitStatements, expandLens, toMarkdownTable, renderReport, runStatements, isTransientError, looksSilentlyCapped, MAX_RENDERED_ROWS };
 
 if (require.main === module) {
   main().then((code) => process.exit(code), (err) => {
