@@ -181,6 +181,28 @@ function decideCancelledLandRetry({ landConclusion, checksConclusion, remoteTip,
   return { retry: true, reason: `Land cancelled while pending, Checks green, tip unchanged — retry ${retriesUsed + 1}/${maxRetries}`, backoffSec };
 }
 
+// A retry-eligible cancel is re-run SERVER-side (land-retry-cancelled.yml,
+// BRO-4246); the landing script only waits for it. It used to call
+// `gh run rerun` itself 30s later, which raced the server: on 2026-09-29 the
+// server had already re-run land run 36629730821, the local rerun failed with
+// "This workflow is already running", and the script printed REFUSED
+// ("nothing reached main") for a run that was live.
+const CANCEL_GRACE_SEC = 180;
+const CANCEL_GRACE_POLL_SEC = 15;
+
+/**
+ * Pure: after a retry-eligible cancel, has the run been re-triggered?
+ * 'resume' once the run is live again or its attempt number moved past the
+ * one that was cancelled; 'wait' otherwise. Unknown status reads as 'wait'.
+ */
+function decideCancelledWait({ status, attempt, attemptBefore } = {}) {
+  const a = Number(attempt);
+  const before = Number(attemptBefore);
+  if (Number.isFinite(a) && Number.isFinite(before) && a > before) return 'resume';
+  if (status && status !== 'completed') return 'resume';
+  return 'wait';
+}
+
 /**
  * A branch name is passed to git as a positional ref; refuse anything that
  * could read as an option or contain whitespace/control characters. Not a
@@ -700,6 +722,9 @@ module.exports = {
   shouldRetry,
   decideCancelledLandRetry,
   MAX_CANCEL_RETRIES,
+  decideCancelledWait,
+  CANCEL_GRACE_SEC,
+  CANCEL_GRACE_POLL_SEC,
   isPlausibleBranchName,
   formatLandLine,
 };

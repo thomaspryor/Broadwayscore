@@ -397,7 +397,8 @@ land_via_landing_branch() {
     done
   fi
   # BRO-4379: a Land job cancelled while PENDING (superseded in the 'landing'
-  # group) is re-run in place, capped at 3, all inside ONE shared wait budget.
+  # group) is re-run in place by land-retry-cancelled.yml (server side); this
+  # script only waits for that, inside ONE shared wait budget.
   local cancel_retries=0 budget_deadline remaining_min
   budget_deadline=$(( $(date +%s) + wait_min * 60 ))
   while :; do
@@ -468,22 +469,31 @@ land_via_landing_branch() {
           const d = decideCancelledLandRetry({ landConclusion: process.env.LC, checksConclusion: process.env.CC, remoteTip: process.env.RT, tip: process.env.TIP, retriesUsed: Number(process.env.N) });
           console.log(`${d.retry ? 1 : 0}\t${d.backoffSec}\t${d.reason}`);' "$SCRIPT_DIR/lib/land-branch.js" 2>/dev/null || printf '0\t0\tdecision helper failed')
         IFS=$'\t' read -r retry_flag backoff_s why <<<"$decision"
-        if [ "$retry_flag" = "1" ] && [ $(( budget_deadline - $(date +%s) )) -gt $(( backoff_s + 60 )) ]; then
-          log "land run cancelled while pending — $why; sleeping ${backoff_s}s then 'gh run rerun --failed'"
-          sleep "$backoff_s"
-          if (cd "$push_dir" && gh run rerun "$run_id" --failed >/dev/null 2>&1); then
+        if [ "$retry_flag" = "1" ]; then
+          # Wait for the server-side re-trigger instead of racing it with our
+          # own local re-run call (which fails "already running" once the server
+          # has acted, and used to end in a false REFUSED).
+          local grace_s poll_s grace_end resumed=0 wait_verdict
+          read -r grace_s poll_s < <(node -e 'const l = require(process.argv[1]); console.log(l.CANCEL_GRACE_SEC, l.CANCEL_GRACE_POLL_SEC);' "$SCRIPT_DIR/lib/land-branch.js" 2>/dev/null || echo "180 15")
+          grace_end=$(( $(date +%s) + grace_s ))
+          [ "$grace_end" -le "$budget_deadline" ] || grace_end=$budget_deadline
+          log "land run cancelled while pending — $why; waiting up to $(( grace_end - $(date +%s) ))s for the server-side re-trigger (land-retry-cancelled.yml)"
+          while [ "$(date +%s)" -lt "$grace_end" ]; do
+            read -r st at < <(cd "$push_dir" && gh run view "$run_id" --json status,attempt --jq '[.status, (.attempt // 1 | tostring)] | join(" ")' 2>/dev/null || echo "completed 0")
+            wait_verdict=$(ST="$st" AT="$at" AB="${attempt_now:-1}" node -e 'const { decideCancelledWait } = require(process.argv[1]); console.log(decideCancelledWait({ status: process.env.ST, attempt: process.env.AT, attemptBefore: process.env.AB }));' "$SCRIPT_DIR/lib/land-branch.js" 2>/dev/null || echo wait)
+            if [ "$wait_verdict" = "resume" ]; then resumed=1; break; fi
+            sleep "$poll_s"
+          done
+          if [ "$resumed" = "1" ]; then
             cancel_retries=$(( cancel_retries + 1 ))
-            # A rerun keeps the run id; the API can briefly still say completed/cancelled.
-            # Wait for the status flip (or attempt bump) so wait-for-run.sh does not
-            # read the stale verdict and burn the retry.
-            for _w in 1 2 3 4 5 6 7 8 9 10; do
-              read -r st at < <(cd "$push_dir" && gh run view "$run_id" --json status,attempt --jq '[.status, (.attempt // 1 | tostring)] | join(" ")' 2>/dev/null || echo "completed 0")
-              if [ "$st" != "completed" ] || [ "${at:-0}" -gt "${attempt_now:-1}" ]; then break; fi
-              sleep 5
-            done
+            log "server re-triggered the Land job (attempt ${at}) — resuming the wait"
             continue
           fi
-          log "gh run rerun failed for $run_id — not retrying further"
+          if [ "$(date +%s)" -ge "$budget_deadline" ]; then
+            echo "TIMEOUT: $BRANCH — land run cancelled and the wait budget ran out before a server re-trigger${run_url:+ ($run_url)}; refs/heads/$land_name is in place — re-run this script to resume."
+            exit 2
+          fi
+          log "no server re-trigger within the grace window"
         else
           log "land run cancelled; not re-triggering: ${why}"
         fi
@@ -491,7 +501,7 @@ land_via_landing_branch() {
       echo "REFUSED: $BRANCH — land run $conclusion at gate '$gate'${run_url:+ ($run_url)}"
       echo "  alert conditionKey: land:$land_name (digest) — refs/heads/$land_name is left in place; nothing reached $DEFAULT_BRANCH."
       case "$conclusion" in
-        cancelled) echo "  cancelled = superseded in the 'landing' concurrency group (auto re-triggers used: $cancel_retries/3); re-run this script (an empty commit is fine) to land again." ;;
+        cancelled) echo "  cancelled = superseded in the 'landing' concurrency group (server re-triggers seen: $cancel_retries); re-run this script (an empty commit is fine) to land again." ;;
         *) echo "  Fix on $BRANCH, commit, and re-run this script (any push to $land_name re-runs the checks)." ;;
       esac
       exit 1
