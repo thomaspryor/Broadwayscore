@@ -30,8 +30,11 @@ esac
 [ "${LAND_ENFORCE_OFF:-0}" = "1" ] && exit 0
 [ -e "$HOME/.claude/LAND_ENFORCE_OFF" ] && exit 0
 
-owner=$(printf '%s' "$input" | jq -r '.tool_input.owner // empty' 2>/dev/null | tr '[:upper:]' '[:lower:]')
-repo=$(printf '%s' "$input" | jq -r '.tool_input.repo // empty' 2>/dev/null | tr '[:upper:]' '[:lower:]')
+# Normalize: GitHub resolves owner/repo case-insensitively, and tolerates
+# surrounding spaces and a trailing .git.
+owner=$(printf '%s' "$input" | jq -r '.tool_input.owner // empty' 2>/dev/null | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')
+repo=$(printf '%s' "$input" | jq -r '.tool_input.repo // empty' 2>/dev/null | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')
+repo=${repo%.git}
 [ "$owner/$repo" = "thomaspryor/broadwayscore" ] || exit 0
 
 case "$tool_name" in
@@ -40,9 +43,10 @@ case "$tool_name" in
     exit 2 ;;
 esac
 
-branch=$(printf '%s' "$input" | jq -r '.tool_input.branch // empty' 2>/dev/null)
+branch=$(printf '%s' "$input" | jq -r '.tool_input.branch // empty' 2>/dev/null | tr -d '[:space:]')
+branch=${branch#refs/}; branch=${branch#heads/}
 case "$branch" in
-  main|refs/heads/main)
+  main)
     echo "🛑 BLOCKED: GitHub-tool writes to thomaspryor/Broadwayscore main are refused (BRO-4238); they skip land.yml's gates. Write to a land/<name> branch instead (land.yml gates it and fast-forwards main), then follow the Land run. Emergency override: create \$HOME/.claude/LAND_ENFORCE_OFF." >&2
     exit 2 ;;
 esac
