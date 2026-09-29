@@ -1423,6 +1423,39 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
   }
 
+  // Wrong-article write guard (BRO-4383). Text ARRIVING (new or changed fullText)
+  // that never names the show and carries no cast/creative/venue evidence is a
+  // different article. Recovery writers (wayback, WSJ, SERP) validate against a
+  // slug-derived title and accept coincidental id-word pairs, so two such texts
+  // were scored live (little-bear-ridge-road NYTheater, pied-a-terre WSJ). Stamp
+  // wrongShow in place (recoverable, keeps the text for audit) rather than drop.
+  // Only titleMentions===0 fires here; the ambiguous 1-mention class is left to
+  // the daily audit-wrong-article.js LLM pass. Respects human/auto clears.
+  if (newData && typeof newData.fullText === 'string' && !newData.wrongShow && !newData._auditAllowWrongArticle) {
+    const parentDirName = path.basename(path.dirname(filePath));
+    const grandparentDirName = path.basename(path.dirname(path.dirname(filePath)));
+    if (parentDirName && !parentDirName.startsWith('_') && !parentDirName.startsWith('.') && grandparentDirName !== '_pending') {
+      const show = _getShowById(parentDirName);
+      let onDiskForArticle = null;
+      try { onDiskForArticle = JSON.parse(fs.readFileSync(filePath, 'utf-8')); } catch { /* new/unreadable file */ }
+      const textArriving = !onDiskForArticle || onDiskForArticle.fullText !== newData.fullText;
+      const humanDecided = onDiskForArticle && (onDiskForArticle._locked === true || _wrongShowCleared(onDiskForArticle) || _freshWrongShowAutoClear(onDiskForArticle));
+      if (show && textArriving && !humanDecided) {
+        const verdict = require('./wrong-article-screen').screenWrongArticle(newData.fullText, show);
+        if (verdict.applicable && verdict.suspect && verdict.titleMentions === 0) {
+          newData = {
+            ...newData,
+            wrongShow: true,
+            wrongShowReason: `Write guard (BRO-4383): fullText never names "${show.title}" and has no cast/creative/venue evidence for it — likely a different article`,
+            wrongShowAt: new Date().toISOString(),
+          };
+          invalidateWrongShowAutoClear(newData);
+          console.warn(`[review-write-guard] ${parentDirName}/${path.basename(filePath)} → auto-flagged wrongShow (incoming text never names the show)`);
+        }
+      }
+    }
+  }
+
   // Bug #25: When force=true, log protected fields that would be lost so CI logs show it.
   if (force && fs.existsSync(filePath)) {
     let existingForAudit;
