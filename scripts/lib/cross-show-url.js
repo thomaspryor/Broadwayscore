@@ -86,10 +86,23 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
     const idSlug = showId.replace(/-(?:west-end|off-west-end|off-broadway)(?:-\d{4})?$/, '').replace(/-\d{4}$/, '');
     if (idSlug.length >= 8 && urlPath.includes(idSlug)) return null;
 
-    // Normalize connectors (and/the) so "romeo-and-juliet" ≈ "romeo-juliet"
-    const stripConnectors = s => s.replace(/-(?:and|the)-/g, '-');
+    // Normalize connectors (and/the/or) so "romeo-and-juliet" ≈ "romeo-juliet" and
+    // "school-girls-or-the-african-mean-girls-play" ≈ "school-girls-african-mean-girls-play"
+    // (the URL slugs outlets build drop those connector words; BRO-4267).
+    const stripConnectors = s => s.replace(/-(?:and|the|or)(?=-)/g, '');
     const idSlugNorm = stripConnectors(idSlug);
     if (idSlugNorm !== idSlug && idSlugNorm.length >= 8 && urlPath.includes(idSlugNorm)) return null;
+    const slugNorm = stripConnectors(thisShow.slug);
+    if (slugNorm !== thisShow.slug && slugNorm.length >= 8 && urlPath.includes(slugNorm)) return null;
+
+    // Tokens of THIS show's title that can vouch for a URL when another show's title is
+    // contained in this one (see the containment carve-out below). Generic words never vouch.
+    const GENERIC_TOKENS = new Set(['and', 'the', 'or', 'a', 'an', 'of', 'in', 'on', 'at', 'to', 'for',
+      'play', 'musical', 'show', 'review', 'reviews', 'broadway', 'theater', 'theatre', 'london', 'west', 'end', 'new', 'live']);
+    const thisTokens = new Set([...thisShow.slug.split('-'), ...idSlug.split('-')]
+      .filter(t => t.length >= 4 && !GENERIC_TOKENS.has(t)));
+    // Skip common URL-path words that would false-positive on nearly every URL
+    const URL_PATH_STOPWORDS = new Set(['broadway', 'musical', 'theater', 'theatre', 'review', 'reviews', 'london', 'west-end', 'off-broadway']);
 
     // Check if URL contains a different show's slug
     for (const other of index) {
@@ -103,6 +116,17 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
       // Skip if one show's slug is a prefix of the other (e.g., "kinky-boots" vs "kinky-boots-the-musical")
       if (thisShow.slug.startsWith(other.slug) || other.slug.startsWith(thisShow.slug)) continue;
       if (idSlug.startsWith(otherIdSlug) || otherIdSlug.startsWith(idSlug)) continue;
+      // Containment: the other show's title sits INSIDE this show's title ("Mean Girls" inside
+      // "School Girls; Or, The African Mean Girls Play"), so a URL for this show naturally
+      // carries the other show's slug. Only call it a mismatch when the URL carries none of
+      // this show's own distinctive tokens. School Girls opening night 2026-09-28 lost the
+      // Guardian, Culture Sauce and Chicago Tribune reviews to this (BRO-4267).
+      const contained = thisShow.slug.includes(other.slug) || idSlug.includes(otherIdSlug) || idSlugNorm.includes(otherIdSlugNorm);
+      if (contained) {
+        const otherTokens = new Set([...other.slug.split('-'), ...otherIdSlug.split('-')]);
+        const vouching = [...thisTokens].filter(t => !otherTokens.has(t));
+        if (vouching.some(t => urlPath.includes(t))) continue;
+      }
       if (urlPath.includes(other.slug)) {
         return { matchedShowId: other.id, matchedTitle: other.title, showTitle: thisShow.title };
       }
@@ -112,8 +136,6 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
       // just "monte-cristo" wouldn't match the full slug.
       const baseTitle = (other.title || '').replace(/\s*\(.*?\)/g, '').replace(/:\s.*$/, '')
         .trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-      // Skip common URL-path words that would false-positive on nearly every URL
-      const URL_PATH_STOPWORDS = new Set(['broadway', 'musical', 'theater', 'theatre', 'review', 'reviews', 'london', 'west-end', 'off-broadway']);
       if (baseTitle.length >= 6 && !URL_PATH_STOPWORDS.has(baseTitle)
           && baseTitle !== idSlug
           && !idSlug.startsWith(baseTitle) && !baseTitle.startsWith(idSlug)
