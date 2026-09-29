@@ -20,6 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 const { tourImageProblems } = require('./lib/tour-family');
+const { findCrossShowImages, CROSS_SHOW_IMAGES_BASELINE } = require('./lib/cross-show-images');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { loadRetiredIdsSafe, checkRetiredIds } = require('./lib/validate-retired-ids');
 const { checkIdYearDrift } = require('./lib/id-year-drift');
@@ -1393,6 +1394,27 @@ function validateImageFiles(shows) {
   if (missing === 0 && upgradeable === 0) {
     ok('All local image paths resolve to files on disk');
   }
+}
+
+// ===========================================
+// CROSS-SHOW IMAGE PATHS (BRO-4380)
+// ===========================================
+// images.* under /images/shows/<another id>/ renders that show's art on this
+// page. Only linked productions (transferredTo/transferOf/tourParent/tourOf)
+// or an ALLOWED_SHARED_IMAGES entry in scripts/lib/cross-show-images.js may share.
+// Offenders in CROSS_SHOW_IMAGES_BASELINE (known when the gate shipped) warn;
+// any other offender is an error.
+
+function validateCrossShowImages(shows) {
+  info('Checking images.* paths use the show\'s own image directory...');
+  const found = findCrossShowImages(shows);
+  for (const { id, problems } of found) {
+    const report = CROSS_SHOW_IMAGES_BASELINE.has(id) ? warn : error;
+    for (const p of problems) {
+      report(`Show "${id}" images.${p.key} points at another show's art (${p.path}, owner "${p.owner}"): clear it or link/allowlist the productions in scripts/lib/cross-show-images.js`);
+    }
+  }
+  if (found.length === 0) ok('No show uses another show\'s image directory');
 }
 
 // ===========================================
@@ -5382,6 +5404,7 @@ function runValidation() {
   validateSlugs(shows);
   validateImageUrls(shows);
   validateImageFiles(shows);
+  validateCrossShowImages(shows);
   validatePlaceholderImageHashes(shows);
   validateVenueCategory(shows);
   validateTheaterAddress(shows);
