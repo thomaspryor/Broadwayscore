@@ -65,7 +65,10 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
     // hide it for good. The same roundup seen again keeps notifiedAt, so the
     // owner isn't asked twice.
     if (prev && prev.slug && c.slug && prev.slug !== c.slug) prev = undefined;
-    byId.set(c.broadwayShowId, { ...prev, ...c, firstSeen: (prev && prev.firstSeen) || now, lastSeen: now });
+    const row = { ...prev, ...c, firstSeen: (prev && prev.firstSeen) || now, lastSeen: now };
+    // A tour no longer ambiguous (one company left) is decided normally.
+    if (!c.ambiguous) delete row.ambiguous;
+    byId.set(c.broadwayShowId, row);
   }
   const out = [...byId.values()].sort((a, b) => a.broadwayShowId.localeCompare(b.broadwayShowId));
   fs.writeFileSync(file, JSON.stringify(out, null, 2) + '\n');

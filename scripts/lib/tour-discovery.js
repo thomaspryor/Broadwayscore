@@ -17,6 +17,7 @@
 
 const { foldDiacritics } = require('./title-match');
 const { parseTourSchedule, segmentTourRows, currentSegment } = require('./tour-schedule');
+const { toursOfTitle } = require('./tour-family');
 
 const SHOWS_PARENT_ID = 15096; // tourstoyou.org/shows/
 const PAGES_API = `https://tourstoyou.org/wp-json/wp/v2/pages?parent=${SHOWS_PARENT_ID}&per_page=100&_fields=slug,link`;
@@ -44,20 +45,30 @@ function slugKey(slug) {
   return titleKey(String(slug || '').replace(/-\d+$/, ''));
 }
 
+/** Keys to try for a slug, whole first: "9-to-5" is a title, not "9-to" page 5. */
+function slugKeys(slug) {
+  return [...new Set([titleKey(slug), slugKey(slug)])].filter(Boolean);
+}
+
 /**
  * The Broadway production a tour of this schedule page descends from: the
  * latest Broadway production of the title that opened before the tour's
  * first engagement. Null when no Broadway show has the title.
  */
 function parentForSlug(slug, shows, beforeIso) {
-  const key = slugKey(slug);
-  if (!key) return null;
   const before = String(beforeIso || '').slice(0, 10);
-  const matches = (shows || []).filter(s => (s.category || 'broadway') === 'broadway'
-    && s.openingDate && (!before || s.openingDate <= before)
-    && titleKeys(s.title).has(key));
-  matches.sort((a, b) => b.openingDate.localeCompare(a.openingDate));
-  return matches[0] || null;
+  const broadway = (shows || []).filter(s => (s.category || 'broadway') === 'broadway'
+    && s.openingDate && (!before || s.openingDate <= before));
+  const latest = list => list.sort((a, b) => b.openingDate.localeCompare(a.openingDate))[0] || null;
+  for (const key of slugKeys(slug)) {
+    // The whole title first: "Cats" must not become "CATS: The Jellicle Ball"
+    // just because that title's head is "Cats".
+    const exact = latest(broadway.filter(s => titleKey(s.title) === key));
+    if (exact) return exact;
+    const byHead = latest(broadway.filter(s => titleKeys(s.title).has(key)));
+    if (byHead) return byHead;
+  }
+  return null;
 }
 
 /**
@@ -73,6 +84,12 @@ function runningTourCandidate({ slug, scheduleUrl, html, shows, now = new Date()
   const segStart = seg.start.toISOString().slice(0, 10);
   const parent = parentForSlug(slug, shows, segStart);
   if (!parent) return { skip: 'no Broadway show of this title' };
+  // Already tracked: a tour of the title that covers this segment. Recording
+  // it again would replace that tour's candidate row (and its createdTourId).
+  const covering = toursOfTitle(parent.title, shows).find(t => t.openingDate
+    && (!t.closingDate || t.closingDate >= segStart)
+    && t.openingDate <= seg.end.toISOString().slice(0, 10));
+  if (covering) return { skip: `already tracked as ${covering.id}` };
   return {
     candidate: {
       broadwayShowId: parent.id,
@@ -112,4 +129,4 @@ function dedupeCandidates(candidates) {
   return { candidates: out, ambiguous };
 }
 
-module.exports = { PAGES_API, titleKey, titleKeys, slugKey, parentForSlug, runningTourCandidate, dedupeCandidates };
+module.exports = { PAGES_API, titleKey, titleKeys, slugKey, slugKeys, parentForSlug, runningTourCandidate, dedupeCandidates };
