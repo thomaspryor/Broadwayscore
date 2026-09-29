@@ -253,16 +253,17 @@ const OB_VENUE_CONFIGS = [
   // exactly this reason before being added to shows.json by hand.
   {
     name: 'Soho Playhouse',
-    // Homepage (Squarespace) links each current/upcoming booking at
-    // /see-a-show/<slug> — plain fetch works, no JS rendering needed
-    // (verified 2026-09-09, ~426KB HTML). Slugs here are short marketing
-    // slugs, not full-title slugs (e.g. "bigfoot-ripped" for "Bigfoot
-    // Ripped My Dog In Half I Saw It") — same class of imprecision as
-    // Bedlam's slug-derived titles above; cross-validation reconciles the
-    // real title, this just has to surface the candidate at all.
-    url: 'https://www.sohoplayhouse.com/',
-    strategy: 'link',
-    linkPattern: /\/see-a-show\/[a-z0-9-]+\/?$/,
+    // BRO-4396: switched from the homepage's /see-a-show/<slug> links to the
+    // OvationTix org the venue sells every booking through
+    // (ci.ovationtix.com/35583). The homepage slugs were short marketing
+    // slugs ("diana-untold", "bigfoot-ripped"), so candidates carried a
+    // truncated title and no dates and could only promote on a Playbill
+    // match that small runs never get: 16 sat in staging until BRO-4377
+    // added two by hand. OvationTix gives the full production name and every
+    // performance date (verified live 2026-09-29: 32 productions).
+    url: 'https://ci.ovationtix.com/35583',
+    strategy: 'ovationtix',
+    ovationtixClientId: 35583,
     excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
     preferPlaywright: false,
     category: 'off-broadway',
@@ -295,29 +296,56 @@ const OB_VENUE_CONFIGS = [
  * Pure: no fetch, no IO. Fixture-testable.
  */
 const { foldDiacritics } = require('./title-match');
+const {
+  parseOvationTixBundle,
+  parseTribeEvents,
+  extractDatedJsonLdEvents,
+  extractDatedCards,
+  fetchOvationTixBundle,
+  fetchTribeEvents,
+} = require('./ob-listing-platforms');
 
-function parseVenueListingHtml(venue, html) {
-  if (!html || html.length < 50) return [];
+// Strategies whose payload is JSON from a ticketing/CMS API, not a page.
+const DATED_JSON_STRATEGIES = new Set(['ovationtix', 'tribe-events']);
 
-  let titles;
+function parseVenueListingHtml(venue, html, { todayIso = new Date().toISOString().slice(0, 10) } = {}) {
+  // Dated platform readers (BRO-4396) take a JSON payload (object or string)
+  // instead of HTML; everything else is an HTML page.
+  const isJsonStrategy = DATED_JSON_STRATEGIES.has(venue.strategy);
+  if (!isJsonStrategy && (!html || typeof html !== 'string' || html.length < 50)) return [];
+  if (isJsonStrategy && !html) return [];
+
+  // rows: [{title, firstDate?, lastDate?, performanceCount?, url?}]
+  let rows;
   // `regex` strategy bypasses JSDOM entirely for sites that ship malformed
   // HTML which silently breaks the parser (MCC Theater has a `class=""`
   // typo on .c-col-card divs that makes JSDOM skip the whole subtree —
   // anchors inside become invisible to querySelectorAll).
   if (venue.strategy === 'regex') {
-    titles = extractByRegex(html, venue);
+    rows = extractByRegex(html, venue).map(title => ({ title }));
+  } else if (isJsonStrategy) {
+    let payload = html;
+    if (typeof payload === 'string') {
+      try { payload = JSON.parse(payload); } catch { return []; }
+    }
+    rows = venue.strategy === 'ovationtix'
+      ? parseOvationTixBundle(payload, { clientId: venue.ovationtixClientId })
+      : parseTribeEvents(payload);
   } else {
     const dom = new JSDOM(html);
     const doc = dom.window.document;
     switch (venue.strategy) {
       case 'link':
-        titles = extractByLink(doc, venue);
+        rows = extractByLink(doc, venue).map(title => ({ title }));
         break;
       case 'selector':
-        titles = extractBySelector(doc, venue);
+        rows = extractBySelector(doc, venue).map(title => ({ title }));
         break;
       case 'json-ld':
-        titles = extractJsonLdTheaterEvents(doc).map(e => e.name).filter(Boolean);
+        rows = extractDatedJsonLdEvents(doc);
+        break;
+      case 'dated-selector':
+        rows = extractDatedCards(doc, venue, { todayIso });
         break;
       default:
         throw new Error(`Unknown venue.strategy: ${venue.strategy} for ${venue.name}`);
@@ -326,20 +354,38 @@ function parseVenueListingHtml(venue, html) {
 
   // Apply exclusion patterns (DATA not functions) + length bounds.
   const excludePatterns = venue.excludeTitlePatterns || [];
-  const filtered = titles
-    .map(t => (t || '').replace(/\s+/g, ' ').trim())
-    .filter(t => t.length >= 2 && t.length <= 160)
-    .filter(t => !excludePatterns.some(p => p.test(t)))
-    .filter((t, i, arr) => arr.indexOf(t) === i); // dedupe within page
+  const seen = new Set();
+  const filtered = [];
+  for (const r of rows) {
+    const title = String((r && r.title) || '').replace(/\s+/g, ' ').trim();
+    if (title.length < 2 || title.length > 160) continue;
+    if (excludePatterns.some(p => p.test(title))) continue;
+    if (seen.has(title)) continue; // dedupe within page
+    // A dated row that already finished is archive, not a current booking.
+    if (r.lastDate && r.lastDate < todayIso) continue;
+    seen.add(title);
+    filtered.push({ ...r, title });
+  }
 
-  return filtered.map(title => ({
-    title,
+  return filtered.map(r => ({
+    title: r.title,
     venue: venue.name,
-    slug: foldDiacritics(title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+    slug: foldDiacritics(r.title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
     category: venue.category || 'off-broadway',
     source: `venue-page:${venue.name.toLowerCase().replace(/\s+/g, '-')}`,
     discoveredAt: new Date().toISOString(),
+    // The venue's own dates for this booking (BRO-4396). Only dated readers
+    // set them; decideVenueListingPromotion needs both to treat the listing
+    // as its own evidence.
+    ...(r.firstDate ? { listingFirstDate: r.firstDate } : {}),
+    ...(r.lastDate ? { listingLastDate: r.lastDate } : {}),
+    ...(typeof r.performanceCount === 'number' ? { listingPerformanceCount: r.performanceCount } : {}),
+    ...(r.url ? { listingUrl: absoluteUrl(r.url, venue.url) } : {}),
   }));
+}
+
+function absoluteUrl(href, base) {
+  try { return new URL(href, base).toString(); } catch { return href; }
 }
 
 // ============================================================
@@ -457,6 +503,15 @@ async function scrapeVenueListing(venue) {
   // (a) the HTML is suspiciously short (< minHtmlBytes), OR
   // (b) parsing returns 0 candidates AND we have a sentinel string that
   //     must appear in the real page (venue.htmlSentinel).
+  if (venue.strategy === 'ovationtix') {
+    const bundle = await fetchOvationTixBundle(venue.ovationtixClientId);
+    return parseVenueListingHtml(venue, bundle);
+  }
+  if (venue.strategy === 'tribe-events') {
+    const json = await fetchTribeEvents(venue.url);
+    return parseVenueListingHtml(venue, json);
+  }
+
   const maxAttempts = venue.flaky ? 3 : 1;
   const minHtmlBytes = venue.minHtmlBytes || 0;
   let html = '';

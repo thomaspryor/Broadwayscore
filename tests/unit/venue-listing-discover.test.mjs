@@ -52,14 +52,22 @@ const EXPECTED = {
   // didn't have Bigfoot listed either. Fixtures captured live 2026-09-09
   // (curl, no JS rendering needed for either page); real parse counts were
   // 13 (Soho Playhouse) and 6 (BAM).
-  'Soho Playhouse': { min: 8, max: 20, mustInclude: ['bigfoot-ripped', 'elf-lyons-the-woman-on-the-edge'] },
+  // BRO-4396: now read from the venue's OvationTix org (JSON bundle fixture,
+  // captured live 2026-09-29: 32 productions, every one dated). Full titles
+  // instead of the homepage's marketing slugs.
+  'Soho Playhouse': { min: 25, max: 45, capturedOn: '2026-09-29', mustInclude: ['bigfoot-ripped-my-dog-in-half-i-saw-it', 'diana-the-untold-and-untrue-story', 'the-very-gay-christmas-prince'], allDated: true },
   'BAM': { min: 3, max: 12, mustInclude: ['ford-hill-project'] },
 };
 
 for (const venue of OB_VENUE_CONFIGS) {
   const slug = venue.name.toLowerCase().replace(/\s+/g, '-');
-  const fixturePath = join(FIXTURE_DIR, slug + '.html');
+  // Platform readers (OvationTix, Tribe REST) replay a JSON payload.
+  const ext = ['ovationtix', 'tribe-events'].includes(venue.strategy) ? '.json' : '.html';
+  const fixturePath = join(FIXTURE_DIR, slug + ext);
   const expected = EXPECTED[venue.name];
+  // Dated readers drop bookings that already closed, so a fixture replays
+  // against the day it was captured, not today.
+  const parseOpts = expected?.capturedOn ? { todayIso: expected.capturedOn } : undefined;
 
   // P0 from /second-opinion: silent test skip if EXPECTED[venue.name] is
   // missing. assert.ok(len >= undefined) silently passes. Fail loud.
@@ -75,7 +83,7 @@ for (const venue of OB_VENUE_CONFIGS) {
       assert.fail(`fixture missing: ${fixturePath} — capture via scripts/smoke-ob-discovery.js`);
     }
     const html = readFileSync(fixturePath, 'utf8');
-    const candidates = parseVenueListingHtml(venue, html);
+    const candidates = parseVenueListingHtml(venue, html, parseOpts);
 
     assert.ok(candidates.length >= expected.min,
       `${venue.name}: got ${candidates.length} candidates, expected >=${expected.min}. Titles: ${candidates.map(c => c.title).join(', ')}`);
@@ -89,6 +97,13 @@ for (const venue of OB_VENUE_CONFIGS) {
         candidates.some(c => c.slug.includes(required)),
         `${venue.name}: expected a candidate with slug containing "${required}", got slugs: ${allSlugs}`
       );
+    }
+
+    // A dated reader must actually deliver dates: decideVenueListingPromotion
+    // treats the listing as evidence only when both ends of the run are known.
+    if (expected.allDated) {
+      const undated = candidates.filter(c => !c.listingFirstDate || !c.listingLastDate);
+      assert.deepEqual(undated.map(c => c.title), [], `${venue.name}: dated reader returned undated rows`);
     }
   });
 
