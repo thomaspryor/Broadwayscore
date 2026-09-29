@@ -205,7 +205,8 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
           const dates = p.openingDate || p.closingDate
             ? ` (${p.openingDate || 'unknown'} to ${p.closingDate || 'unknown'})`
             : '';
-          return `${p.venue ? sanitize(p.venue) : 'earlier run'}${dates}`;
+          const kind = p.note === 'tour leg' ? ' [tour leg]' : '';
+          return `${p.venue ? sanitize(p.venue) : 'earlier run'}${dates}${kind}`;
         })
         .join('; ');
       contextParts.push(`NOTE: This same production also played declared earlier runs/tour legs: ${legs}. A review qualifies as THIS production only if it matches a listed venue AND falls within that leg's date range (or reviews the current venue during the current engagement). Any other staging — including earlier stagings by the same company, even at the same venue in a different year — is wrong_production.`);

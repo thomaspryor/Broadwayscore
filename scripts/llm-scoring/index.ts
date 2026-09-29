@@ -82,6 +82,7 @@ const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
 // Shared with the cascade gate's queue counter (scripts/count-scoring-queue.js)
 // so "would this review be scoreable?" has exactly one answer — see task #652.
 const { selectScorableText } = require('../lib/scorable-text');
+const { declaredRunsForPrompt } = require('../lib/declared-runs');
 // Same predicates the cascade gate counts with — one source, so the gate can
 // never again believe there is work the scorer will not take (task #652).
 const {
@@ -318,7 +319,7 @@ function loadShowPriority(): Map<string, ShowPriorityInfo> {
         category: show.category || 'broadway',
         venue: show.venue || null,
         type: show.type || null,
-        priorRuns: Array.isArray(show.priorRuns) && show.priorRuns.length ? show.priorRuns : null,
+        priorRuns: declaredRunsForPrompt(show),
       });
     }
   } catch {

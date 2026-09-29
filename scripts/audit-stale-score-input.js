@@ -75,6 +75,7 @@ function loadShowTitles() {
         previewsStartDate: s.previewsStartDate,
         openingDate: s.openingDate,
         priorRuns: s.priorRuns,
+        tourLegs: s.tourLegs,
       });
     }
   }
