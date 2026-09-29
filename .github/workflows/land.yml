@@ -1,5 +1,7 @@
 name: Land
 # BRO-3873 step 4 live case (c2), 2026-09-21: workflow-file landing probe (PAT `workflow` scope).
+# 2026-09-29: owner granted REVIEW_TEXTS_TOKEN the `workflow` scope, so landings that edit
+# .github/workflows/** now push (before this, GitHub refused them at the final push; BRO-3425).
 
 # BRO-3873 step 3 — the landing workflow. Push a branch to `land/<anything>`
 # and this runs CI's blocking gates against that branch REBASED onto the
