@@ -358,3 +358,20 @@ test('attributionGaps (BRO-4215): flags a provider under min on every one of the
   // Providers not listed are never flagged.
   assert.deepEqual(attributionGaps(series, { ...opts, providers: ['browserbase'] }), []);
 });
+
+test('attributionWindowVerdict (BRO-4215): the whole alert window must be clear; shared by resolve + VERIFY', () => {
+  const { attributionWindowVerdict } = require('./provider-spend-core.js');
+  const rec = (day, p) => ({ day, attributedPct: { scrapingdog: p } });
+  const two = { min: 0.8, days: 2 };
+  assert.equal(attributionWindowVerdict([rec('2026-09-27', 0.43), rec('2026-09-28', 0.91)], 'scrapingdog', two).verdict, 'open', 'one good day does not close it');
+  assert.equal(attributionWindowVerdict([rec('2026-09-27', 0.85), rec('2026-09-28', 0.91)], 'scrapingdog', two).verdict, 'clear');
+  assert.equal(attributionWindowVerdict([rec('2026-09-27', 0.8), rec('2026-09-28', 0.8)], 'scrapingdog', two).verdict, 'clear', 'exactly min counts as clear');
+  assert.equal(attributionWindowVerdict([rec('2026-09-26', 0.85), rec('2026-09-28', 0.91)], 'scrapingdog', two).verdict, 'unverifiable', 'non-consecutive');
+  assert.equal(attributionWindowVerdict([rec('2026-09-26', 0.40), rec('2026-09-28', 0.91)], 'scrapingdog', two).verdict, 'unverifiable', 'gap checked before under-min');
+  assert.equal(attributionWindowVerdict([rec('2026-09-28', 0.91)], 'scrapingdog', two).verdict, 'unverifiable', 'too little history');
+  assert.equal(attributionWindowVerdict([rec('2026-09-27', null), rec('2026-09-28', 0.91)], 'scrapingdog', two).verdict, 'unverifiable', 'unmeasured day');
+  assert.equal(attributionWindowVerdict([rec('2026-09-28', 0.91), rec('2026-09-27', 0.85)], 'scrapingdog', two).verdict, 'clear', 'order irrelevant');
+  const three = { min: 0.8, days: 3 };
+  assert.equal(attributionWindowVerdict([rec('2026-09-26', 0.5), rec('2026-09-27', 0.9), rec('2026-09-28', 0.9)], 'scrapingdog', three).verdict, 'open', 'days=3 window');
+  assert.equal(attributionWindowVerdict([rec('2026-09-26', 0.9), rec('2026-09-27', 0.9), rec('2026-09-28', 0.9)], 'scrapingdog', three).verdict, 'clear');
+});

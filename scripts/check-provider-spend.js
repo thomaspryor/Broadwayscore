@@ -29,7 +29,7 @@ const {
 const {
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday, aggregateLedgerByDay,
   ledgerFreshnessHours, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,
-  attributionGaps,
+  attributionGaps, attributionWindowVerdict,
 } = require('./lib/provider-spend-core');
 const {
   countCallsByProvider, topCallers, creditsByProvider, topCallersByCredits,
@@ -291,12 +291,16 @@ async function main() {
   // Gap closed today: resolve the condition so a later regression files a fresh
   // card immediately instead of waiting out the 72h cooldown.
   {
-    const gapProviders = new Set(gaps.map((g) => g.provider));
     const { resolveCondition } = require('./lib/owner-alert-router');
     for (const provider of attributionAlertProviders) {
-      const pct = (record.attributedPct || {})[provider];
-      if (!gapProviders.has(provider) && typeof pct === 'number' && pct >= attributionAlertMin) {
-        resolveCondition(`provider-spend:attribution-gap:${provider}`, { reason: `attributedPct ${Math.round(pct * 100)}% on ${DAY}` });
+      // Same rule as the card's VERIFY (check-attribution-gap-clear.js): the whole
+      // alert window must be clear, or one good day would resolve the condition
+      // and let the next bad pair file a duplicate card.
+      const v = attributionWindowVerdict(series, provider, {
+        min: attributionAlertMin, days: thresholds.attributionAlertDays ?? 2,
+      });
+      if (v.verdict === 'clear') {
+        resolveCondition(`provider-spend:attribution-gap:${provider}`, { reason: `attributedPct ${v.pcts.map((p) => Math.round(p * 100) + '%').join(', ')} through ${DAY}` });
       }
     }
   }
