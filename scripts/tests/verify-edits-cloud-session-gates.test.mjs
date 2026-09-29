@@ -88,7 +88,7 @@ function writeTranscript(dir, toolCalls, { card = true, userText = 'please do th
   const lines = [
     JSON.stringify({ type: 'user', message: { role: 'user', content: [{ type: 'text', text: userText }] } }),
   ];
-  for (const { _result, _notice, _attachment, ...call } of card ? [CARD_CREATE, ...toolCalls] : toolCalls) {
+  for (const { _result, _notice, _attachment, _isError, ...call } of card ? [CARD_CREATE, ...toolCalls] : toolCalls) {
     if (typeof _attachment === 'string') {
       // Mid-turn delivery of the same notices: an `attachment` record with
       // type 'queued_command' and the notice in `prompt` (real shape seen
@@ -112,7 +112,7 @@ function writeTranscript(dir, toolCalls, { card = true, userText = 'please do th
     }));
     lines.push(JSON.stringify({
       type: 'user',
-      message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: call.id, content: _result ?? 'ok' }] },
+      message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: call.id, content: _result ?? 'ok', ...(_isError ? { is_error: true } : {}) }] },
     }));
   }
   fs.writeFileSync(p, lines.join('\n') + '\n');
@@ -986,6 +986,20 @@ test('NOWRAPUP: a linear-brain Done that the done-gate REFUSED is not a close-ou
   assertBlocked(r, 'the card is still open after a refused update');
   assert.match(r.stderr, /Linear card was never closed out/i, `got: ${r.stderr.slice(0, 300)}`);
   fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('NOWRAPUP: a close-out the harness flagged is_error (denied or crashed) is not a close-out → BLOCKED', skipNoRepoHook, () => {
+  for (const result of [
+    'Permission for this action was denied by the Claude Code auto mode classifier.',
+    'Exit code 1\nError: getaddrinfo EAI_AGAIN api.linear.app',
+  ]) {
+    const dir = makeTmpDir('wrapup-linear-errored');
+    const errored = { ...toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-9001 --state Done' }, result), _isError: true };
+    const transcript = writeTranscript(dir, [GIT_PUSH, errored]);
+    const r = runHook(transcript, 'Pushed and closed the card.\n\nSAFE TO EXIT — done.');
+    assertBlocked(r, `an errored close-out left the card open: ${result.slice(0, 30)}`);
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 test('NOWRAPUP: linear-session report --status=done (claimed issue) → ALLOWED', skipNoRepoHook, () => {
