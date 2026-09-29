@@ -6,7 +6,8 @@
  * Exports:
  *   computeAwardsPoints(showId, awardsData, scoringConfig) — awards.json → fantasy points
  *   fetchFantasyEntries(opts)                              — Supabase REST fetch
- *   computeLeaderboard(entries, showScores, showConfig)    — ranked standings
+ *   computeLeaderboard(entries, showScores, showConfig)    — ranked standings (per-entry rules)
+ *   scoringFromDate / isScoreLockedForEntry / entryPickPoints — per-entry scoring rules
  *   sumGrossesInRange(slug, weeks, start, end)             — realized BO grosses
  *   projectRemainingGrosses(slug, weeks, asOf, end, opts)  — BO projection forward
  *   computeExpectedAwardsPoints(showId, predictions, cfg)  — E[awards pts] from probs
@@ -233,42 +234,135 @@ async function fetchFantasyEntries(opts = {}) {
   });
 }
 
+// ── Tier mappers (one copy for every fantasy script) ───────────────
+// Mirror src/config/scoring.ts getCriticLabel and
+// src/lib/audience-grade-utils.ts getAudienceGrade; pinned by
+// tests/unit/fantasy-tier-parity.test.ts.
+
+function criticLabelForScore(score) {
+  if (score >= 83) return 'Critical Gold';
+  if (score >= 75) return 'Recommended';
+  if (score >= 65) return 'Worth Seeing';
+  if (score >= 55) return 'Skippable';
+  return 'Critical Miss';
+}
+
+function audienceGradeForScore(score) {
+  if (score == null) return null;
+  if (score >= 90) return 'A+';
+  if (score >= 88) return 'A';
+  if (score >= 83) return 'A-';
+  if (score >= 78) return 'B+';
+  if (score >= 73) return 'B';
+  if (score >= 68) return 'B-';
+  if (score >= 63) return 'C+';
+  if (score >= 58) return 'C';
+  if (score >= 53) return 'C-';
+  if (score >= 48) return 'D';
+  return 'F';
+}
+
+// ── Per-entry scoring rules ────────────────────────────────────────
+// Mirrors src/config/fantasy.ts (nyDate, scoringFromDate,
+// isScoreLockedForEntry). tests/unit/fantasy-leaderboard-parity.test.ts
+// runs both implementations on the same fixtures.
+
+const seasonConfig = require('../../src/config/fantasy-season.json');
+
+/** New York calendar date (YYYY-MM-DD) for an ISO timestamp. */
+function nyDate(iso) {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).format(new Date(iso));
+}
+
+/**
+ * The date an entry starts earning box office points: early-bird entries
+ * (drafted on or before earlyBirdCutoff, NY time) score from scoringStart;
+ * later entries score from the day they draft.
+ */
+function scoringFromDate(createdAtIso, cfg = seasonConfig) {
+  if (!createdAtIso) return cfg.scoringStart;
+  const drafted = nyDate(createdAtIso);
+  if (drafted <= cfg.earlyBirdCutoff) return cfg.scoringStart;
+  return drafted;
+}
+
+/**
+ * Critic/audience points are locked for an entry when the show had opened on
+ * or before the NY date the entry was drafted (reviews drop on opening night).
+ */
+function isScoreLockedForEntry(openingDate, createdAtIso) {
+  if (!openingDate || !createdAtIso) return false;
+  return openingDate <= nyDate(createdAtIso);
+}
+
+/**
+ * Points one entry earns from one drafted show.
+ * @returns {{ critic, audience, boxOffice, awards, total, locked }}
+ */
+function entryPickPoints(score, openingDate, createdAtIso, cfg = seasonConfig) {
+  if (!score) return { critic: 0, audience: 0, boxOffice: 0, awards: 0, total: 0, locked: false };
+  const locked = isScoreLockedForEntry(openingDate ?? score.openingDate, createdAtIso);
+  const critic = locked ? 0 : (score.criticScorePoints || 0);
+  const audience = locked ? 0 : (score.audienceGradePoints || 0);
+  const from = scoringFromDate(createdAtIso, cfg);
+  let boxOffice;
+  if (score.weeklyBoxOffice && typeof score.weeklyBoxOffice === 'object') {
+    boxOffice = 0;
+    for (const [weekEnding, pts] of Object.entries(score.weeklyBoxOffice)) {
+      if (weekEnding >= from) boxOffice += pts || 0;
+    }
+  } else {
+    // Legacy snapshot without a weekly breakdown: all-or-nothing.
+    boxOffice = from <= cfg.scoringStart ? (score.boxOfficePoints || 0) : 0;
+  }
+  boxOffice = Math.round(boxOffice * 100) / 100;
+  const awards = score.awardsPoints || 0;
+  const total = Math.round((critic + audience + boxOffice + awards) * 100) / 100;
+  return { critic, audience, boxOffice, awards, total, locked };
+}
+
 // ── Leaderboard computation ────────────────────────────────────────
 
 /**
  * Compute ranked leaderboard from entries + scores.
  * JS port of src/lib/data-fantasy.ts:computeLeaderboard().
  *
+ * Each entry is scored from the week it drafted (scoringFromDate) and earns
+ * no critic/audience points for shows that had already opened when it
+ * drafted (isScoreLockedForEntry). Awards count for every entry.
+ *
  * @param {Array} entries       — Fantasy entry objects from Supabase
  * @param {object} showScores   — showScores from fantasy-scores.json
  * @param {object} showConfig   — shows from fantasy-league.json
  * @returns {Array} Ranked leaderboard entries
  */
-function computeLeaderboard(entries, showScores, showConfig) {
+function computeLeaderboard(entries, showScores, showConfig, cfg = seasonConfig) {
   const leaderboard = entries.map(entry => {
     const picks = (entry.picks || []);
     let totalCritic = 0;
     let totalAudience = 0;
     let totalBoxOffice = 0;
     let totalAwards = 0;
+    const scoringFrom = scoringFromDate(entry.created_at, cfg);
 
     const pickDetails = picks.map(showId => {
       const show = showConfig[showId];
       const score = showScores[showId];
-      const points = score?.totalPoints ?? 0;
+      const p = entryPickPoints(score, show?.openingDate ?? score?.openingDate ?? null, entry.created_at, cfg);
 
-      if (score) {
-        totalCritic += score.criticScorePoints;
-        totalAudience += score.audienceGradePoints;
-        totalBoxOffice += score.boxOfficePoints;
-        totalAwards += score.awardsPoints;
-      }
+      totalCritic += p.critic;
+      totalAudience += p.audience;
+      totalBoxOffice += p.boxOffice;
+      totalAwards += p.awards;
 
       return {
         showId,
         showTitle: show?.title ?? showId,
         price: show?.price ?? 0,
-        points,
+        points: p.total,
+        scoreLocked: p.locked,
       };
     });
 
@@ -279,12 +373,13 @@ function computeLeaderboard(entries, showScores, showConfig) {
       displayName: entry.team_name || maskEmail(entry.email),
       email: entry.email,
       totalPoints,
+      scoringFrom,
       picks: pickDetails,
       pointBreakdown: {
-        criticScore: totalCritic,
-        audienceGrade: totalAudience,
+        criticScore: Math.round(totalCritic * 100) / 100,
+        audienceGrade: Math.round(totalAudience * 100) / 100,
         boxOffice: Math.round(totalBoxOffice * 100) / 100,
-        awards: totalAwards,
+        awards: Math.round(totalAwards * 100) / 100,
       },
     };
   });
@@ -564,6 +659,12 @@ module.exports = {
   computeLeaderboard,
   computeWeeklyMovers,
   maskEmail,
+  criticLabelForScore,
+  audienceGradeForScore,
+  nyDate,
+  scoringFromDate,
+  isScoreLockedForEntry,
+  entryPickPoints,
   sumGrossesInRange,
   projectRemainingGrosses,
   computeExpectedAwardsPoints,

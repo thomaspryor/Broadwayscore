@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-09-28T14:35:55.292Z",
-  "bannerText": "9/12 Done(14d) verified on main · 0 FAILED · 2 vacuous · 109 stuck-but-done",
+  "generatedAt": "2026-09-29T13:29:09.718Z",
+  "bannerText": "43/56 Done(14d) verified on main · 2 FAILED · 2 vacuous · 109 stuck-but-done",
   "items": [
     {
-      "title": "STUCK BRO-3044 — P1: bsc-prune will close a LIVE Codex session — every liveness check is hard-coded to claude_code",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3044/p1-bsc-prune-will-close-a-live-codex-session-every-liveness-check-is"
+      "title": "FAILED BRO-4272 — Opening night: roundup-listed reviews not auto-ingested (Culture Sauce, Guardian, Chicago Tribune added by hand)",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/roundup-parser.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4272/opening-night-roundup-listed-reviews-not-auto-ingested-culture-sauce"
     },
     {
-      "title": "STUCK BRO-3021 — 👑 OWNER — Fleet cost and waste audit (every paid line, billing-first)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3021/owner-fleet-cost-and-waste-audit-every-paid-line-billing-first"
+      "title": "FAILED BRO-4216 — Cloud sessions: land private-data fixes through CI (declarative data-fixes/ + apply workflow) instead of direct private-repo writes",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/data-fix-apply.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4216/cloud-sessions-land-private-data-fixes-through-ci-declarative-data"
     },
     {
-      "title": "STUCK BRO-2985 — LLM Ensemble Score Reviews ran 49x in 2 days for the-story-west-end-2026 with nothing to score (each commit only touches scoring-progress.json)",
+      "title": "STUCK BRO-4231 — P1: llm-ensemble-score.yml + ~21 other workflows check out full history without filter: blob:none — ensemble-score alone burns ~24 min x ~55 runs/day on checkout",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2985/llm-ensemble-score-reviews-ran-49x-in-2-days-for-the-story-west-end"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4231/p1-llm-ensemble-scoreyml-21-other-workflows-check-out-full-history"
     },
     {
-      "title": "STUCK BRO-2913 — P2: update-show-status has the same publish-after-failed-commit hole as BRO-2912, and uses the weaker != 'failure' form",
+      "title": "STUCK BRO-4183 — Auto cookie renewal for paywalled outlets (The Stage first): Mac Studio launchd + Keychain + persistent profile",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2913/p2-update-show-status-has-the-same-publish-after-failed-commit-hole-as"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4183/auto-cookie-renewal-for-paywalled-outlets-the-stage-first-mac-studio"
     },
     {
-      "title": "STUCK BRO-2912 — P1: commercial-weekly commit-gate sits BEFORE the commit, so a failed commit still pushes core data and dispatches a deploy",
+      "title": "STUCK BRO-4155 — P2: extraction returns ~100 chars for stagebuddy, interestedbystander, theatreweekly reviews",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2912/p1-commercial-weekly-commit-gate-sits-before-the-commit-so-a-failed"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4155/p2-extraction-returns-100-chars-for-stagebuddy-interestedbystander"
     },
     {
-      "title": "STUCK BRO-2907 — P1: commercial-weekly auto-apply can publish half-mutated, ungated commercial data — the strict gate is skipped by an earlier failure while the pushes are if: always()",
+      "title": "STUCK BRO-4153 — P2: timeout.com domain collision — London Time Out reviews resolve to NYC \"timeout\" outlet",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2907/p1-commercial-weekly-auto-apply-can-publish-half-mutated-ungated"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4153/p2-timeoutcom-domain-collision-london-time-out-reviews-resolve-to-nyc"
     },
     {
-      "title": "STUCK BRO-2765 — The Lonely Few still has no image after 3 self-heal attempts",
+      "title": "STUCK BRO-4152 — P1: Theatre Record still drops recoverable Daily Mail reviews (single-word titles, title-match misses, stub-text merges)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2765/the-lonely-few-still-has-no-image-after-3-self-heal-attempts"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4152/p1-theatre-record-still-drops-recoverable-daily-mail-reviews-single"
     },
     {
-      "title": "STUCK BRO-2701 — P0: validate-show-venue gate is STRUCTURALLY permanently red — 33 no-playbill-url shows can never fit the 9-min budget",
+      "title": "STUCK BRO-4140 — P1: sending a message to a tab by bare number silently hits the wrong tab (crown handoff misdelivered)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2701/p0-validate-show-venue-gate-is-structurally-permanently-red-33-no"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4140/p1-sending-a-message-to-a-tab-by-bare-number-silently-hits-the-wrong"
     }
   ],
-  "moreCount": 103
+  "moreCount": 105
 }

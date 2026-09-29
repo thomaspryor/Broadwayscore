@@ -35,6 +35,7 @@ const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
+const { applyPaywallTierOverride } = require('./lib/paywall-completeness');
 const { shouldDeferCvWrongShow } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
@@ -2493,18 +2494,33 @@ showDirs.forEach(showId => {
       // Reclassify contentTier as safety net (in case collect-review-texts missed it)
       // Also write back to source file if tier changed (prevents stale classifications)
       {
-        const tierResult = classifyContentTier(data);
+        // BRO-4334: keep a collector paywall truncation (hard-paywall partial
+        // text) instead of resetting it to 'complete' on every rebuild.
+        const tierResult = applyPaywallTierOverride(data, classifyContentTier(data));
         const oldTier = data.contentTier;
         data.contentTier = tierResult.contentTier;
         // Propagate truncationSignals so classifyIncompleteReason (called next) can
         // use them for routing (e.g., nyt_bot_stub → bot_blocked not paywall).
         if (tierResult.truncationSignals) data.truncationSignals = tierResult.truncationSignals;
+        // Mirror the write-back in memory so this rebuild's excerpt selection
+        // sees the same textStatus the next one will (ship-check P2, BRO-4334).
+        if (tierResult.paywallOverride) {
+          data.textStatus = 'truncated';
+          data.textQuality = 'truncated';
+          data.isFullReview = false;
+        }
         if (!oldTier || oldTier !== tierResult.contentTier) {
           try {
             const sourceData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
             sourceData.contentTier = tierResult.contentTier;
             sourceData.contentTierReason = tierResult.tierReason;
             sourceData.wordCount = tierResult.wordCount;
+            if (tierResult.paywallOverride) {
+              // keep legacy fields consistent with the truncated tier
+              sourceData.textStatus = 'truncated';
+              sourceData.textQuality = 'truncated';
+              sourceData.isFullReview = false;
+            }
             safeWriteReview(filePath, sourceData, { force: true });
             stats.reclassifiedTiers = (stats.reclassifiedTiers || 0) + 1;
           } catch (writeErr) {

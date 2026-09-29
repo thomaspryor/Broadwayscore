@@ -1,13 +1,20 @@
 import { Metadata } from 'next';
-import { getFantasyShowsSorted, getFantasyConfig, getShowScore } from '@/lib/data-fantasy';
+import { getFantasyShowsSorted, getFantasyConfig } from '@/lib/data-fantasy';
 import { ELIGIBILITY_MARKERS, type FantasyShow } from '@/config/fantasy';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreLabel } from '@/config/score-buckets';
 
 export const metadata: Metadata = {
   title: 'Fantasy Draft Guide',
-  description: 'Every draftable show with prices, scores, and eligibility. Your cheat sheet for the Broadway Fantasy League draft.',
+  description: 'Every draftable show with prices, the reasoning behind each price, scores, and eligibility. Your cheat sheet for the Broadway Fantasy League draft.',
 };
+
+const PREMIUM_MIN = 20;
+const MID_MIN = 12;
+
+function shortDate(iso: string): string {
+  return new Date(`${iso.slice(0, 10)}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+}
 
 function ScorePill({ score }: { score: number }) {
   const label = getScoreLabel(score); // display label ('Mixed' for 55-64); getCriticLabel is the data/wire key
@@ -26,17 +33,17 @@ function ScorePill({ score }: { score: number }) {
 }
 
 function ShowCard({ show, variant = 'default' }: { show: { id: string } & FantasyShow; variant?: 'default' | 'muted' }) {
-  const score = getShowScore(show.id);
+  const locked = !show.eligible.criticScore;
   return (
-    <div className={`flex items-center gap-3 rounded-lg p-3 transition-colors ${
+    <div className={`flex items-start gap-3 rounded-lg p-3 transition-colors ${
       variant === 'muted' ? 'bg-surface-raised/30 hover:bg-surface-raised/50' : 'bg-surface-raised/50 hover:bg-surface-raised/80'
     }`}>
-      <div className="w-12 text-center shrink-0">
+      <div className="w-12 text-center shrink-0 pt-1">
         <span className="text-lg font-bold text-emerald-400">${show.price}</span>
       </div>
       {show.image && (
         /* eslint-disable-next-line @next/next/no-img-element */
-        <img src={getOptimizedImageUrl(show.image, 'thumbnail')} alt="" className="w-10 h-10 rounded object-cover shrink-0" />
+        <img src={getOptimizedImageUrl(show.image, 'thumbnail')} alt="" className="w-10 h-10 rounded object-cover shrink-0 mt-0.5" />
       )}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
@@ -44,19 +51,30 @@ function ShowCard({ show, variant = 'default' }: { show: { id: string } & Fantas
           {show.type === 'musical' && (
             <span className="text-[10px] bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded">Musical</span>
           )}
+          {show.isRevival && (
+            <span className="text-[10px] bg-surface-overlay text-gray-300 px-1.5 py-0.5 rounded">Revival</span>
+          )}
           {show.category === 'off-broadway' && (
             <span className="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">OB</span>
           )}
           {show.status === 'closed' && (
             <span className="text-[10px] bg-gray-500/20 text-gray-400 px-1.5 py-0.5 rounded">Closed</span>
           )}
-        </div>
-        <div className="flex items-center gap-2 mt-1 flex-wrap">
-          {show.criticScore != null && <ScorePill score={show.criticScore} />}
-          {show.audienceGrade && (
-            <span className="text-xs text-gray-400">Audience: {show.audienceGrade}</span>
+          {locked && show.status !== 'closed' && (
+            <span className="text-[10px] bg-yellow-500/15 text-yellow-300 px-1.5 py-0.5 rounded">{ELIGIBILITY_MARKERS.criticScoreLocked} Already open</span>
           )}
         </div>
+        <div className="flex items-center gap-2 mt-1 flex-wrap text-xs text-gray-400">
+          {show.openingDate && <span>Opens {shortDate(show.openingDate)}</span>}
+          {show.closingDate && <span>&middot; closes {shortDate(show.closingDate)}</span>}
+          {show.criticScore != null && <ScorePill score={show.criticScore} />}
+          {show.audienceGrade && (
+            <span>Audience: {show.audienceGrade}</span>
+          )}
+        </div>
+        {show.priceNote && (
+          <p className="text-xs text-gray-500 mt-1.5 leading-snug">{show.priceNote}</p>
+        )}
       </div>
     </div>
   );
@@ -90,9 +108,9 @@ export default function FantasyGuidePage() {
   const obShows = allShows.filter(s => s.category === 'off-broadway');
 
   // Group BW shows by price tier
-  const premiumBW = bwShows.filter(s => s.price >= 17);
-  const midBW = bwShows.filter(s => s.price >= 12 && s.price < 17);
-  const valueBW = bwShows.filter(s => s.price < 12);
+  const premiumBW = bwShows.filter(s => s.price >= PREMIUM_MIN);
+  const midBW = bwShows.filter(s => s.price >= MID_MIN && s.price < PREMIUM_MIN);
+  const valueBW = bwShows.filter(s => s.price < MID_MIN);
 
   return (
     <div className="min-h-screen bg-surface text-white">
@@ -104,30 +122,28 @@ export default function FantasyGuidePage() {
           </a>
           <h1 className="text-2xl sm:text-3xl font-bold mt-2">Draft Guide</h1>
           <p className="text-gray-400 mt-1">
-            {allShows.length} draftable shows &middot; ${config._meta.budget} budget &middot; {config._meta.teamSize} picks
+            {allShows.length} draftable shows &middot; ${config._meta.budget} budget &middot; up to {config._meta.teamSize} picks
           </p>
         </div>
 
         {/* Legend */}
         <div className="bg-surface-raised/50 rounded-xl p-4 mb-8 text-sm text-gray-400 space-y-1">
-          <p><span className="text-purple-400">{ELIGIBILITY_MARKERS.offBroadway}</span> = Off-Broadway (no box office, no Tony eligibility)</p>
-          <p className="text-gray-500">Shows with critic scores display them for your research. Scores may still change.</p>
+          <p>Prices reflect projected points: Tony prospects, box office outlook, weeks left to run, and known scores. The line under each show is the reasoning.</p>
+          <p><span className="text-yellow-300">{ELIGIBILITY_MARKERS.criticScoreLocked} Already open</span> = reviews are public, so the show earns box office and awards points only.</p>
+          <p><span className="text-purple-400">OB</span> = Off-Broadway (no box office, no Tony eligibility)</p>
+          <p className="text-gray-500">Shows that open after you draft earn critic and audience points for you. Scores shown here may still change.</p>
         </div>
 
-        {/* Premium Broadway ($17+) */}
-        <TierSection title="Premium Broadway" subtitle="$17+" description="Tony contenders with box office upside" shows={premiumBW} />
+        <TierSection title="Premium Broadway" subtitle={`$${PREMIUM_MIN}+`} description="Tony frontrunners and the biggest box office" shows={premiumBW} />
 
-        {/* Mid-Range Broadway ($12-16) */}
-        <TierSection title="Mid-Range Broadway" subtitle="$12-16" description="Strong reviews or steady grosses" shows={midBW} />
+        <TierSection title="Mid-Range Broadway" subtitle={`$${MID_MIN}–${PREMIUM_MIN - 1}`} description="Credible contenders, star vehicles and limited runs" shows={midBW} />
 
-        {/* Value Broadway (under $12) */}
-        <TierSection title="Value Broadway" subtitle="Under $12" description="Closed shows or long shots — Tony noms could pay off big" shows={valueBW} />
+        <TierSection title="Value Broadway" subtitle={`Under $${MID_MIN}`} description="Long shots, special events and shows that already opened. A surprise nomination pays off big." shows={valueBW} />
 
-        {/* Off-Broadway */}
         <TierSection
           title="Off-Broadway"
-          subtitle={ELIGIBILITY_MARKERS.offBroadway}
-          description="No box office. Not Tony-eligible. Earn CriticScore, AudienceGrade, and Drama Desk / Outer Critics awards."
+          subtitle={obShows.length ? `$${Math.min(...obShows.map(s => s.price))}–${Math.max(...obShows.map(s => s.price))}` : ''}
+          description="No box office. Not Tony-eligible. Earn CriticScore, AudienceGrade, and Drama Desk, Outer Critics, Lortel and Obie awards."
           shows={obShows}
         />
 

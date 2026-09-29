@@ -13,12 +13,20 @@ export const dynamic = 'force-dynamic';
 
 const STALE_SCORES_DAYS = 3;
 
+function longDate(iso: string): string {
+  return new Date(`${iso.slice(0, 10)}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+}
+
 export default function FantasyLeaderboardPage() {
   const seasonInfo = getFantasySeasonInfo();
 
+  // Before the first in-season grosses week lands, the snapshot only carries
+  // pre-season weeks: say so instead of showing a "stale" warning in launch
+  // week or a September "scores through" date.
+  const preSeason = !seasonInfo.latestGrossesWeek || seasonInfo.latestGrossesWeek < seasonInfo.scoringStart;
   const lastScoredMs = seasonInfo.lastScored ? Date.parse(seasonInfo.lastScored) : null;
   const ageDays = lastScoredMs ? Math.floor((Date.now() - lastScoredMs) / 86_400_000) : null;
-  const isStale = ageDays != null && ageDays > STALE_SCORES_DAYS;
+  const isStale = !preSeason && ageDays != null && ageDays > STALE_SCORES_DAYS;
 
   return (
     <div className="min-h-screen bg-surface text-white">
@@ -30,7 +38,9 @@ export default function FantasyLeaderboardPage() {
           </a>
           <h1 className="text-2xl sm:text-3xl font-bold mt-2">Leaderboard</h1>
           <p className="text-gray-400 mt-1">
-            {seasonInfo.season} Season &middot; Scores through week of {seasonInfo.latestGrossesWeek || 'N/A'}
+            {seasonInfo.season} Season &middot; {preSeason
+              ? `Scoring starts ${longDate(seasonInfo.scoringStart)}; first standings post the following Wednesday`
+              : `Scores through the week ending ${longDate(seasonInfo.latestGrossesWeek)}`}
           </p>
         </div>
 
@@ -40,7 +50,7 @@ export default function FantasyLeaderboardPage() {
             className="mb-6 rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-200"
           >
             <span className="font-semibold">Scores may be stale.</span>{' '}
-            Last updated {ageDays} days ago — the weekly refresh hasn&apos;t run. Standings below will catch up once it does.
+            Last updated {ageDays} days ago. The weekly refresh hasn&apos;t run; standings below will catch up once it does.
           </div>
         )}
 
@@ -49,11 +59,11 @@ export default function FantasyLeaderboardPage() {
 
         {/* Footer */}
         <div className="mt-8 text-center space-y-2">
-          <p className="text-xs text-gray-600">
-            Points: CriticScore + AudienceGrade + Box Office + Tony Awards
+          <p className="text-xs text-gray-500">
+            Points: CriticScore + AudienceGrade + Box Office + Awards. Each team scores from the week it drafted.
           </p>
-          <p className="text-xs text-gray-600">
-            Last scored: {seasonInfo.lastScored ? new Date(seasonInfo.lastScored).toLocaleDateString() : 'N/A'}
+          <p className="text-xs text-gray-500">
+            Last scored: {seasonInfo.lastScored ? new Date(seasonInfo.lastScored).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A'}
           </p>
           <div className="flex gap-4 justify-center mt-4">
             <a

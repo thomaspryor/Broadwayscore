@@ -1,219 +1,28 @@
 {
   "_meta": {
-    "season": "2025-2026",
-    "draftDeadline": "2026-02-07T05:00:00Z",
-    "scoringStart": "2026-02-01",
-    "scoringEnd": "2026-06-15",
+    "season": "2026-2027",
+    "draftOpens": "2026-09-29",
+    "draftDeadline": "2027-04-01T03:59:59Z",
+    "scoringStart": "2026-10-05",
+    "scoringEnd": "2027-06-13",
+    "earlyBirdCutoff": "2026-10-25",
+    "tonyWindow": {
+      "label": "2026-27",
+      "start": "2026-04-27",
+      "end": "2027-04-25"
+    },
     "budget": 100,
     "teamSize": 8,
-    "generatedAt": "2026-06-10T19:05:05.918Z",
+    "generatedAt": "2026-09-29T08:54:02.945Z",
     "pricing": {
       "source": "frozen",
-      "frozenAt": "2026-04-21T00:22:26.919Z",
-      "method": "ev",
-      "k": 0.19255830237488572
+      "frozenAt": "2026-09-29T08:54:02.944Z",
+      "method": "preseason-ev",
+      "k": 0.17858431344252831
     }
   },
   "shows": {
-    "the-lost-boys-2026": {
-      "price": 26,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "The Lost Boys",
-      "type": "musical",
-      "category": "broadway",
-      "status": "open",
-      "openingDate": "2026-04-26",
-      "criticScore": 71.95,
-      "audienceGrade": "A-",
-      "slug": "the-lost-boys",
-      "image": "/images/shows/the-lost-boys-2026/thumbnail.webp"
-    },
-    "joe-turners-come-and-gone-2026": {
-      "price": 7,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Joe Turner's Come and Gone",
-      "type": "play",
-      "category": "broadway",
-      "status": "open",
-      "openingDate": "2026-04-25",
-      "criticScore": 78.65,
-      "audienceGrade": "B+",
-      "slug": "joe-turners-come-and-gone",
-      "image": "/images/shows/joe-turners-come-and-gone-2026/thumbnail.webp"
-    },
-    "the-rocky-horror-show-2026": {
-      "price": 15,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "The Rocky Horror Show",
-      "type": "musical",
-      "category": "broadway",
-      "status": "open",
-      "openingDate": "2026-04-23",
-      "criticScore": 71.4,
-      "audienceGrade": "A-",
-      "slug": "the-rocky-horror-show",
-      "image": "/images/shows/the-rocky-horror-show-2026/thumbnail.webp"
-    },
-    "beaches-2026": {
-      "price": 8,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Beaches, A New Musical",
-      "type": "musical",
-      "category": "broadway",
-      "status": "closed",
-      "openingDate": "2026-04-22",
-      "criticScore": 45.01,
-      "audienceGrade": "C+",
-      "slug": "beaches",
-      "image": "/images/shows/beaches-2026/thumbnail.webp"
-    },
-    "the-balusters-2026": {
-      "price": 11,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "The Balusters",
-      "type": "play",
-      "category": "broadway",
-      "status": "open",
-      "openingDate": "2026-04-21",
-      "criticScore": 78.49,
-      "audienceGrade": "A-",
-      "slug": "the-balusters",
-      "image": "/images/shows/the-balusters-2026/thumbnail.webp"
-    },
-    "schmigadoon-2026": {
-      "price": 22,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Schmigadoon!",
-      "type": "musical",
-      "category": "broadway",
-      "status": "open",
-      "openingDate": "2026-04-20",
-      "criticScore": 78.78,
-      "audienceGrade": "A-",
-      "slug": "schmigadoon",
-      "image": "/images/shows/schmigadoon-2026/thumbnail.webp"
-    },
-    "fallen-angels-2026": {
-      "price": 5,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Fallen Angels",
-      "type": "play",
-      "category": "broadway",
-      "status": "closed",
-      "openingDate": "2026-04-19",
-      "criticScore": 77.24,
-      "audienceGrade": "B+",
-      "slug": "fallen-angels",
-      "image": "/images/shows/fallen-angels-2026/thumbnail.webp"
-    },
-    "proof-2026": {
-      "price": 18,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Proof",
-      "type": "play",
-      "category": "broadway",
-      "status": "open",
-      "openingDate": "2026-04-16",
-      "criticScore": 70.68,
-      "audienceGrade": "A-",
-      "slug": "proof",
-      "image": "/images/shows/proof-2026/thumbnail.webp"
-    },
-    "the-fear-of-13-2026": {
-      "price": 13,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "The Fear of 13",
-      "type": "play",
-      "category": "broadway",
-      "status": "open",
-      "openingDate": "2026-04-15",
-      "criticScore": 60.55,
-      "audienceGrade": "A-",
-      "slug": "the-fear-of-13",
-      "image": "/images/shows/the-fear-of-13-2026/thumbnail.webp"
-    },
-    "titanique-2026": {
-      "price": 24,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Titanique",
-      "type": "musical",
-      "category": "broadway",
-      "status": "open",
-      "openingDate": "2026-04-12",
-      "criticScore": 77.17,
-      "audienceGrade": "A-",
-      "slug": "titanique",
-      "image": "/images/shows/titanique-2026/thumbnail.webp"
-    },
-    "death-of-a-salesman-2026": {
-      "price": 28,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Death of a Salesman",
-      "type": "play",
-      "category": "broadway",
-      "status": "open",
-      "openingDate": "2026-04-09",
-      "criticScore": 85.14,
-      "audienceGrade": "A+",
-      "slug": "death-of-a-salesman",
-      "image": "/images/shows/death-of-a-salesman-2026/thumbnail.webp"
-    },
-    "cats-the-jellicle-ball-2026": {
+    "wanted-2022": {
       "price": 23,
       "eligible": {
         "criticScore": true,
@@ -221,233 +30,20 @@
         "boxOffice": true,
         "tonys": true
       },
-      "title": "CATS: The Jellicle Ball",
+      "title": "Wanted",
       "type": "musical",
       "category": "broadway",
-      "status": "open",
-      "openingDate": "2026-04-07",
-      "criticScore": 84.05,
-      "audienceGrade": "A-",
-      "slug": "cats-the-jellicle-ball",
-      "image": "/images/shows/cats-the-jellicle-ball-2026/thumbnail.webp"
-    },
-    "becky-shaw-2026": {
-      "price": 10,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Becky Shaw",
-      "type": "play",
-      "category": "broadway",
-      "status": "open",
-      "openingDate": "2026-04-06",
-      "criticScore": 82.38,
-      "audienceGrade": "A-",
-      "slug": "becky-shaw",
-      "image": "/images/shows/becky-shaw-2026/thumbnail.webp"
-    },
-    "dog-day-afternoon-2026": {
-      "price": 11,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Dog Day Afternoon",
-      "type": "play",
-      "category": "broadway",
-      "status": "open",
-      "openingDate": "2026-03-30",
-      "criticScore": 55.83,
-      "audienceGrade": "B+",
-      "slug": "dog-day-afternoon",
-      "image": "/images/shows/dog-day-afternoon-2026/thumbnail.webp"
-    },
-    "giant-2026": {
-      "price": 29,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Giant",
-      "type": "play",
-      "category": "broadway",
-      "status": "open",
-      "openingDate": "2026-03-23",
-      "criticScore": 77.74,
-      "audienceGrade": "B+",
-      "slug": "giant",
-      "image": "/images/shows/giant-2026/thumbnail.webp"
-    },
-    "every-brilliant-thing-2026": {
-      "price": 23,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Every Brilliant Thing",
-      "type": "play",
-      "category": "broadway",
-      "status": "open",
-      "openingDate": "2026-03-12",
-      "criticScore": 78.92,
-      "audienceGrade": "A",
-      "slug": "every-brilliant-thing",
-      "image": "/images/shows/every-brilliant-thing-2026/thumbnail.webp"
-    },
-    "bug-2026": {
-      "price": 9,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Bug",
-      "type": "play",
-      "category": "broadway",
-      "status": "closed",
-      "openingDate": "2026-01-08",
-      "criticScore": 74.03,
-      "audienceGrade": "B-",
-      "slug": "bug",
-      "image": "/images/shows/bug-2026/thumbnail.webp"
-    },
-    "all-out-2025": {
-      "price": 5,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "All Out: Comedy About Ambition",
-      "type": "play",
-      "category": "broadway",
-      "status": "closed",
-      "openingDate": "2025-12-12",
+      "status": "upcoming",
+      "openingDate": "2026-11-08",
+      "closingDate": null,
+      "isRevival": false,
       "criticScore": null,
-      "audienceGrade": "C-",
-      "slug": "all-out",
-      "image": "/images/shows/all-out-2025/thumbnail.webp"
+      "audienceGrade": null,
+      "slug": "wanted",
+      "image": "/images/shows/wanted-2022/thumbnail.webp",
+      "priceNote": "Tier 3: New musical (formerly Gun & Powder, whose Signature and Paper Mill runs scored 83 and 86) with Solea Pfeiffer and Ledisi; Gold Derby calls it the homegrown show that could challenge Paddington. Open run. · projected about $830K a week · 22 scoring weeks of grosses (run length estimated)"
     },
-    "marjorie-prime-2025": {
-      "price": 9,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Marjorie Prime",
-      "type": "play",
-      "category": "broadway",
-      "status": "closed",
-      "openingDate": "2025-12-08",
-      "criticScore": 76.96,
-      "audienceGrade": "B",
-      "slug": "marjorie-prime",
-      "image": "/images/shows/marjorie-prime-2025/thumbnail.webp"
-    },
-    "two-strangers-bway-2025": {
-      "price": 34,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Two Strangers (Carry a Cake Across New York)",
-      "type": "musical",
-      "category": "broadway",
-      "status": "open",
-      "openingDate": "2025-11-20",
-      "criticScore": 76.15,
-      "audienceGrade": "A-",
-      "slug": "two-strangers",
-      "image": "/images/shows/two-strangers-bway-2025/thumbnail.webp"
-    },
-    "chess-2025": {
-      "price": 20,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Chess",
-      "type": "musical",
-      "category": "broadway",
-      "status": "open",
-      "openingDate": "2025-11-16",
-      "criticScore": 65.72,
-      "audienceGrade": "B+",
-      "slug": "chess",
-      "image": "/images/shows/chess-2025/thumbnail.webp"
-    },
-    "oedipus-2025": {
-      "price": 18,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Oedipus",
-      "type": "play",
-      "category": "broadway",
-      "status": "closed",
-      "openingDate": "2025-11-13",
-      "criticScore": 79.54,
-      "audienceGrade": "B+",
-      "slug": "oedipus",
-      "image": "/images/shows/oedipus-2025/thumbnail.webp"
-    },
-    "queen-versailles-2025": {
-      "price": 5,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "The Queen of Versailles",
-      "type": "musical",
-      "category": "broadway",
-      "status": "closed",
-      "openingDate": "2025-11-09",
-      "criticScore": 53.33,
-      "audienceGrade": "F",
-      "slug": "queen-of-versailles",
-      "image": "/images/shows/queen-versailles-2025/thumbnail.webp"
-    },
-    "little-bear-ridge-road-2025": {
-      "price": 7,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Little Bear Ridge Road",
-      "type": "play",
-      "category": "broadway",
-      "status": "closed",
-      "openingDate": "2025-10-30",
-      "criticScore": 80.73,
-      "audienceGrade": "B+",
-      "slug": "little-bear-ridge-road",
-      "image": "/images/shows/little-bear-ridge-road-2025/thumbnail.webp"
-    },
-    "liberation-2025": {
+    "galileo-2026": {
       "price": 23,
       "eligible": {
         "criticScore": true,
@@ -455,17 +51,20 @@
         "boxOffice": true,
         "tonys": true
       },
-      "title": "Liberation",
-      "type": "play",
+      "title": "Galileo",
+      "type": "musical",
       "category": "broadway",
-      "status": "closed",
-      "openingDate": "2025-10-28",
-      "criticScore": 84.38,
-      "audienceGrade": "B+",
-      "slug": "liberation",
-      "image": "/images/shows/liberation-2025/thumbnail.webp"
+      "status": "upcoming",
+      "openingDate": "2026-12-06",
+      "closingDate": null,
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "galileo",
+      "image": "/images/shows/galileo-2026/thumbnail.webp",
+      "priceNote": "Tier 3: Raúl Esparza's first Broadway musical since 2012, directed by Michael Mayer at the Shubert; the Berkeley Rep tryout scored 60. Open run. · projected about $830K a week · 22 scoring weeks of grosses (run length estimated)"
     },
-    "ragtime-2025": {
+    "dolly-an-original-musical-2026": {
       "price": 35,
       "eligible": {
         "criticScore": true,
@@ -473,179 +72,545 @@
         "boxOffice": true,
         "tonys": true
       },
-      "title": "Ragtime",
+      "title": "Dolly: A True Original Musical",
       "type": "musical",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2027-01-19",
+      "closingDate": null,
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "dolly-an-original-musical",
+      "image": "/images/shows/dolly-an-original-musical-2026/thumbnail.webp",
+      "priceNote": "Tier 4: Dolly Parton's autobiographical musical, directed by Bartlett Sher; the Nashville tryout scored 83 and Parton will sell the St. James. Awards upside is capped by the bio-jukebox format. · projected about $1.2M a week · 26 scoring weeks of grosses (run length estimated)"
+    },
+    "school-girls-or-the-african-mean-girls-play-2026": {
+      "price": 5,
+      "eligible": {
+        "criticScore": false,
+        "audienceGrade": false,
+        "boxOffice": true,
+        "tonys": true
+      },
+      "title": "School Girls; Or, The African Mean Girls Play",
+      "type": "play",
       "category": "broadway",
       "status": "open",
-      "openingDate": "2025-10-16",
-      "criticScore": 83.35,
-      "audienceGrade": "A+",
-      "slug": "ragtime",
-      "image": "/images/shows/ragtime-2025/thumbnail.webp"
+      "openingDate": "2026-09-28",
+      "closingDate": "2026-11-01",
+      "isRevival": true,
+      "criticScore": 82.21,
+      "audienceGrade": "A-",
+      "slug": "school-girls-or-the-african-mean-girls-play",
+      "image": "/images/shows/school-girls-or-the-african-mean-girls-play-2026/thumbnail.webp",
+      "priceNote": "Tier 3: MTC's revival of Jocelyn Bioh's comedy opened Sept 28 to strong reviews (82); Denée Benton and Patina Miller are the acting-nom hopes, but the run ends Nov 1 so almost no grosses are left. · CriticScore already public: no critic points · AudienceGrade already public: no audience points"
     },
-    "beetlejuice-2025": {
-      "price": 6,
+    "inter-alia-2026": {
+      "price": 18,
       "eligible": {
         "criticScore": true,
         "audienceGrade": true,
         "boxOffice": true,
         "tonys": true
       },
-      "title": "Beetlejuice",
-      "type": "musical",
+      "title": "Inter Alia",
+      "type": "play",
       "category": "broadway",
-      "status": "closed",
-      "openingDate": "2025-10-08",
+      "status": "upcoming",
+      "openingDate": "2026-12-01",
+      "closingDate": "2027-02-21",
+      "isRevival": false,
       "criticScore": null,
-      "audienceGrade": "B+",
-      "slug": "beetlejuice-2025",
-      "image": "/images/shows/beetlejuice-2025/thumbnail.webp"
+      "audienceGrade": null,
+      "slug": "inter-alia",
+      "image": "/images/shows/inter-alia-2026/thumbnail.jpg",
+      "priceNote": "Tier 4: Rosamund Pike's Olivier-winning Broadway debut in Suzie Miller's follow-up to Prima Facie; the National Theatre run scored 83 with raves for the performance and doubts about the script. Closes Feb 21. · projected about $546K a week · 14 scoring weeks of grosses"
     },
-    "punch-2025": {
-      "price": 6,
+    "celebrity-autobiography-2026": {
+      "price": 5,
       "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
+        "criticScore": false,
+        "audienceGrade": false,
         "boxOffice": true,
         "tonys": true
       },
-      "title": "Punch",
+      "title": "Celebrity Autobiography",
       "type": "play",
       "category": "broadway",
       "status": "closed",
-      "openingDate": "2025-09-29",
-      "criticScore": 73.97,
-      "audienceGrade": "B+",
-      "slug": "punch",
-      "image": "/images/shows/punch-2025/thumbnail.jpg"
+      "openingDate": "2026-05-18",
+      "closingDate": "2026-06-21",
+      "isRevival": true,
+      "criticScore": 68.22,
+      "audienceGrade": "C-",
+      "slug": "celebrity-autobiography",
+      "image": "/images/shows/celebrity-autobiography-2026/thumbnail.webp",
+      "priceNote": "Tier 1: Five-week return engagement at the Shubert that closed in June with mixed reviews (68); a pure awards long shot. · CriticScore already public: no critic points · AudienceGrade already public: no audience points"
     },
-    "waiting-for-godot-2025": {
-      "price": 5,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Waiting for Godot",
-      "type": "play",
-      "category": "broadway",
-      "status": "closed",
-      "openingDate": "2025-09-28",
-      "criticScore": 65.69,
-      "audienceGrade": "C+",
-      "slug": "waiting-for-godot-2025",
-      "image": "/images/shows/waiting-for-godot-2025/thumbnail.webp"
-    },
-    "art-2025": {
-      "price": 5,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Art",
-      "type": "play",
-      "category": "broadway",
-      "status": "closed",
-      "openingDate": "2025-09-16",
-      "criticScore": 67.49,
-      "audienceGrade": "B",
-      "slug": "art-2025",
-      "image": "/images/shows/art-2025/thumbnail.webp"
-    },
-    "mamma-mia-2025": {
-      "price": 5,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Mamma Mia!",
-      "type": "musical",
-      "category": "broadway",
-      "status": "closed",
-      "openingDate": "2025-08-14",
-      "criticScore": 70.99,
-      "audienceGrade": "B+",
-      "slug": "mamma-mia",
-      "image": "/images/shows/mamma-mia-2025/thumbnail.webp"
-    },
-    "call-me-izzy-2025": {
-      "price": 5,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Call Me Izzy",
-      "type": "play",
-      "category": "broadway",
-      "status": "closed",
-      "openingDate": "2025-06-12",
-      "criticScore": 62.66,
-      "audienceGrade": "B+",
-      "slug": "call-me-izzy",
-      "image": "/images/shows/call-me-izzy-2025/thumbnail.webp"
-    },
-    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025": {
+    "paranormal-activity-2026": {
       "price": 9,
       "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": false,
-        "tonys": false
+        "criticScore": false,
+        "audienceGrade": false,
+        "boxOffice": true,
+        "tonys": true
       },
-      "title": "The 25th Annual Putnam County Spelling Bee",
-      "type": "musical",
-      "category": "off-broadway",
+      "title": "Paranormal Activity",
+      "type": "play",
+      "category": "broadway",
       "status": "open",
-      "openingDate": "2025-11-17",
-      "criticScore": 91,
+      "openingDate": "2026-08-25",
+      "closingDate": "2027-01-03",
+      "isRevival": false,
+      "criticScore": 77.57,
       "audienceGrade": "A-",
-      "slug": "the-25th-annual-putnam-county-spelling-bee-off-broadway",
-      "image": "/images/shows/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/thumbnail.webp"
+      "slug": "paranormal-activity",
+      "image": "/images/shows/paranormal-activity-2026/thumbnail.webp",
+      "priceNote": "Tier 2: Opened Aug 25 to Recommended-range reviews (78) and sells out the August Wilson; its awards path is the design categories (sound, lighting, scenic), not Best Play. Closes Jan 3. · CriticScore already public: no critic points · AudienceGrade already public: no audience points"
     },
-    "what-happened-was-off-broadway-2026": {
-      "price": 12,
+    "other-desert-cities-2026": {
+      "price": 24,
       "eligible": {
         "criticScore": true,
         "audienceGrade": true,
-        "boxOffice": false,
-        "tonys": false
+        "boxOffice": true,
+        "tonys": true
       },
-      "title": "What Happened Was",
+      "title": "Other Desert Cities",
       "type": "play",
-      "category": "off-broadway",
-      "status": "open",
-      "openingDate": "2026-04-14",
-      "criticScore": 84.32,
-      "audienceGrade": "B",
-      "slug": "what-happened-was-off-broadway",
-      "image": "/images/shows/what-happened-was-off-broadway-2026/thumbnail.webp"
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2026-10-18",
+      "closingDate": "2027-01-17",
+      "isRevival": true,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "other-desert-cities",
+      "image": "/images/shows/other-desert-cities-2026/thumbnail.webp",
+      "priceNote": "Tier 5: Julia Louis-Dreyfus, Ed Harris, Allison Janney, Joe Keery and Lily Rabe in Jon Robin Baitz's Pulitzer finalist; the starriest play of the fall and a Best Revival favorite. 16 weeks, closes Jan 17. · projected about $1.1M a week · 14 scoring weeks of grosses"
     },
-    "burnout-paradise-off-broadway-2026": {
+    "evita-2026": {
+      "price": 34,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": true
+      },
+      "title": "Evita",
+      "type": "musical",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2027-03-25",
+      "closingDate": null,
+      "isRevival": true,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "evita",
+      "image": "/images/shows/evita-2026/thumbnail.webp",
+      "priceNote": "Tier 5: Rachel Zegler's Olivier-winning turn in Jamie Lloyd's Palladium production (scored 82 in London) transfers to the Winter Garden; the consensus Best Revival of a Musical frontrunner. · projected about $1.7M a week · 15 scoring weeks of grosses"
+    },
+    "the-fantasticks-2026": {
+      "price": 15,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": true
+      },
+      "title": "The Fantasticks",
+      "type": "musical",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2026-11-16",
+      "closingDate": "2027-02-07",
+      "isRevival": true,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "the-fantasticks",
+      "image": "/images/shows/the-fantasticks-2026/thumbnail.jpg",
+      "priceNote": "Tier 2: First Broadway production of the world's longest-running musical, reimagined by Christopher Gattelli at the 597-seat Hayes with Ruthie Ann Miles; a thin revival field is its main path. Closes Feb 7. · projected about $681K a week · 15 scoring weeks of grosses"
+    },
+    "gloria-2026": {
+      "price": 14,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": true
+      },
+      "title": "Gloria",
+      "type": "play",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2027-04-05",
+      "closingDate": null,
+      "isRevival": true,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "gloria",
+      "image": "/images/shows/gloria-2026/thumbnail.jpg",
+      "priceNote": "Tier 3: Branden Jacobs-Jenkins's Pulitzer-finalist office thriller at the Hayes, directed by Evan Cabnet; no cast announced yet. · projected about $681K a week · 12 scoring weeks of grosses (run length estimated)"
+    },
+    "billy-crystal-860-2026": {
       "price": 10,
       "eligible": {
         "criticScore": true,
         "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": false
+      },
+      "title": "Billy Crystal 860",
+      "type": "play",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2026-10-21",
+      "closingDate": "2027-01-02",
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "billy-crystal-860",
+      "image": "/images/shows/billy-crystal-860-2026/thumbnail.webp",
+      "priceNote": "Tier 3: Billy Crystal's solo show at the Imperial, directed by Scott Ellis: a near-certain sellout, but solo shows are not Best Play contenders. 14 weeks, closes Jan 2. · projected about $683K a week · 12 scoring weeks of grosses"
+    },
+    "paddington-the-musical-2026": {
+      "price": 29,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": true
+      },
+      "title": "Paddington The Musical",
+      "type": "musical",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2027-04-18",
+      "closingDate": null,
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "paddington-the-musical",
+      "image": "/images/shows/paddington-the-musical-2026/thumbnail.webp",
+      "priceNote": "Tier 5: Seven Olivier wins including Best New Musical; the Savoy production scored 89 in London and Gold Derby calls it the de facto Best Musical frontrunner. Open run at the Hirschfeld. · projected about $1.2M a week · 10 scoring weeks of grosses"
+    },
+    "awake-and-sing-2026": {
+      "price": 11,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": true
+      },
+      "title": "Awake and Sing!",
+      "type": "play",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2027-01-07",
+      "closingDate": null,
+      "isRevival": true,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "awake-and-sing",
+      "image": "/images/shows/awake-and-sing-2026/thumbnail.webp",
+      "priceNote": "Tier 2: Danny Burstein, Jessica Hecht and Micaela Diamond in MTC's Odets revival; a strong cast, but an eight-week engagement ending Feb 7 in a crowded revival year. · projected about $740K a week · 8 scoring weeks of grosses"
+    },
+    "a-few-good-men-2026": {
+      "price": 17,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": true
+      },
+      "title": "A Few Good Men",
+      "type": "play",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2026-10-29",
+      "closingDate": "2027-01-10",
+      "isRevival": true,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "a-few-good-men",
+      "image": "/images/shows/a-few-good-men-2026/thumbnail.webp",
+      "priceNote": "Tier 3: Bradley Whitford and Tom Blyth in the first Broadway revival of Aaron Sorkin's courtroom drama, directed by Michael Arden at Lincoln Center's Beaumont. 13 weeks, closes Jan 10. · projected about $1.0M a week · 13 scoring weeks of grosses"
+    },
+    "the-sound-of-music-2027": {
+      "price": 25,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": true
+      },
+      "title": "The Sound of Music",
+      "type": "musical",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2027-04-15",
+      "closingDate": null,
+      "isRevival": true,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "the-sound-of-music",
+      "image": "/images/shows/the-sound-of-music-2027/thumbnail.webp",
+      "priceNote": "Tier 4: Lincoln Center Theater revival directed by Lear deBessonet with Jasmine Amy Rogers as Maria; LCT's Rodgers & Hammerstein revivals have won Best Revival before. Runs through July. · projected about $1.2M a week · 11 scoring weeks of grosses (run length estimated)"
+    },
+    "the-imaginary-invalid-2026": {
+      "price": 9,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": true
+      },
+      "title": "The Imaginary Invalid",
+      "type": "play",
+      "category": "broadway",
+      "status": "previews",
+      "openingDate": "2026-10-22",
+      "closingDate": "2026-11-22",
+      "isRevival": true,
+      "criticScore": null,
+      "audienceGrade": "B",
+      "slug": "the-imaginary-invalid",
+      "image": "/images/shows/the-imaginary-invalid-2026/thumbnail.webp",
+      "priceNote": "Tier 2: Bill Irwin adapts and stars in Roundabout's Molière, with Rachel Bloom's Broadway debut; closes Nov 22, five months before nominations. · projected about $740K a week · 6 scoring weeks of grosses"
+    },
+    "purple-rain-2026": {
+      "price": 22,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": true
+      },
+      "title": "Purple Rain",
+      "type": "musical",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2027-04-12",
+      "closingDate": null,
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "purple-rain",
+      "image": "/images/shows/purple-rain-2026/thumbnail.jpg",
+      "priceNote": "Tier 3: Prince's film on stage at the Majestic after a mixed Minneapolis tryout; a new director (Saheem Ali) and book writer came aboard for Broadway. The catalog guarantees grosses. · projected about $1.2M a week · 13 scoring weeks of grosses (run length estimated)"
+    },
+    "much-ado-about-nothing-2026": {
+      "price": 20,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": true
+      },
+      "title": "Much Ado About Nothing",
+      "type": "play",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2026-11-19",
+      "closingDate": "2027-01-10",
+      "isRevival": true,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "much-ado-about-nothing",
+      "image": "/images/shows/much-ado-about-nothing-2026/thumbnail.webp",
+      "priceNote": "Tier 4: Tom Hiddleston and Hayley Atwell in Jamie Lloyd's Olivier-nominated Drury Lane production, already close to sold out at the Winter Garden. Strictly 10 weeks, closes Jan 10. · projected about $1.3M a week · 10 scoring weeks of grosses"
+    },
+    "mix-and-master-2027": {
+      "price": 12,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": true
+      },
+      "title": "Mix and Master",
+      "type": "play",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2027-01-27",
+      "closingDate": "2027-02-28",
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "mix-and-master",
+      "image": "/images/shows/mix-and-master-2027/thumbnail.jpg",
+      "priceNote": "Tier 3: World premiere from Dominique Morisseau with Kara Young and Ruben Santiago-Hudson, directed by Kamilah Forbes at Roundabout; eight weeks, closes Feb 28. · projected about $455K a week · 7 scoring weeks of grosses"
+    },
+    "the-full-monty-2027": {
+      "price": 14,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": true
+      },
+      "title": "The Full Monty",
+      "type": "musical",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2027-04-25",
+      "closingDate": "2027-06-20",
+      "isRevival": true,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "the-full-monty",
+      "image": "/images/shows/the-full-monty-2027/thumbnail.jpg",
+      "priceNote": "Tier 2: Roundabout's revival of the Yazbek and McNally musical opens on the eligibility cutoff day with no cast announced; limited run through June 20. · projected about $844K a week · 10 scoring weeks of grosses"
+    },
+    "here-there-are-blueberries-2026": {
+      "price": 12,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": true
+      },
+      "title": "Here There Are Blueberries",
+      "type": "play",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2026-11-09",
+      "closingDate": "2027-01-10",
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "here-there-are-blueberries",
+      "image": "/images/shows/here-there-are-blueberries-2026/thumbnail.webp",
+      "priceNote": "Tier 3: Tectonic Theater Project's Pulitzer-finalist docudrama, a Lortel winner Off-Broadway; its London run scored 72. Ten-week run at the Barrymore through Jan 10. · projected about $455K a week · 9 scoring weeks of grosses"
+    },
+    "small-mouth-sounds-2027": {
+      "price": 23,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": true
+      },
+      "title": "Small Mouth Sounds",
+      "type": "play",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2027-03-18",
+      "closingDate": null,
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "small-mouth-sounds",
+      "image": "/images/shows/small-mouth-sounds-2027/thumbnail.webp",
+      "priceNote": "Tier 5: Julia Roberts, Paul Rudd, Sarah Paulson, Martin Freeman and Greta Lee in Bess Wohl's silent-retreat comedy, directed by Joe Mantello: the season's biggest star package. · projected about $683K a week · 16 scoring weeks of grosses (run length estimated)"
+    },
+    "downstate-2026": {
+      "price": 17,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": true
+      },
+      "title": "Downstate",
+      "type": "play",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2026-11-15",
+      "closingDate": null,
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "downstate",
+      "image": "/images/shows/downstate-2026/thumbnail.webp",
+      "priceNote": "Tier 4: Bruce Norris's NY Drama Critics' Circle Best Play winner, directed by Joe Mantello with K. Todd Freeman and Francis Guinan; the best-reviewed play text of the fall. 12 weeks, closes Jan 10. · projected about $546K a week · 12 scoring weeks of grosses"
+    },
+    "now-you-see-me-live-2026": {
+      "price": 5,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": false
+      },
+      "title": "Now You See Me Live",
+      "type": "play",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2026-11-11",
+      "closingDate": "2027-01-03",
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "now-you-see-me-live",
+      "image": "/images/shows/now-you-see-me-live-2026/thumbnail.jpg",
+      "priceNote": "Tier 1: Holiday magic spectacle spun off the film franchise; the London run scored 72. Box office only, eight weeks through Jan 3. · projected about $455K a week · 7 scoring weeks of grosses"
+    },
+    "blue-man-group-a-new-holiday-surprise-2026": {
+      "price": 5,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": false
+      },
+      "title": "Blue Man Group “A New Holiday Surprise”",
+      "type": "play",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2026-11-17",
+      "closingDate": "2027-01-03",
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "blue-man-group-a-new-holiday-surprise",
+      "image": "/images/shows/blue-man-group-a-new-holiday-surprise-2026/thumbnail.webp",
+      "priceNote": "Tier 1: Holiday special at the Lunt-Fontanne; box office only, closes Jan 3. · projected about $319K a week · 7 scoring weeks of grosses"
+    },
+    "damn-yankees-2027": {
+      "price": 26,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": true,
+        "tonys": true
+      },
+      "title": "Damn Yankees",
+      "type": "musical",
+      "category": "broadway",
+      "status": "upcoming",
+      "openingDate": "2027-04-20",
+      "closingDate": null,
+      "isRevival": true,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "damn-yankees",
+      "image": "/images/shows/damn-yankees-2027/thumbnail.jpg",
+      "priceNote": "Tier 4: Neil Patrick Harris and Julianne Hough in Sergio Trujillo's rewritten revival, which swept the Helen Hayes Awards at Arena Stage. Open run at the Marquis. · projected about $1.5M a week · 11 scoring weeks of grosses (run length estimated)"
+    },
+    "imitation-of-life-off-broadway-2026": {
+      "price": 8,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
         "boxOffice": false,
         "tonys": false
       },
-      "title": "Burnout Paradise",
-      "type": "play",
+      "title": "Imitation of Life",
+      "type": "musical",
       "category": "off-broadway",
-      "status": "open",
-      "openingDate": "2026-03-05",
-      "criticScore": 78.59,
-      "audienceGrade": "A",
-      "slug": "burnout-paradise-off-broadway",
-      "image": "/images/shows/burnout-paradise-off-broadway-2026/thumbnail.jpg"
+      "status": "upcoming",
+      "openingDate": "2026-12-03",
+      "closingDate": null,
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "imitation-of-life-off-broadway",
+      "image": "/images/shows/imitation-of-life-off-broadway-2026/thumbnail.jpg",
+      "priceNote": "Tier 5: Lynn Nottage and John Legend's new musical at The Shed with Adrienne Warren and Jessica Vosk, directed by Whitney White; the Off-Broadway musical to beat."
     },
-    "amaze-magic-off-broadway-2025": {
+    "kramerfauci-st-anns-off-broadway-2026": {
       "price": 7,
       "eligible": {
         "criticScore": true,
@@ -653,143 +618,83 @@
         "boxOffice": false,
         "tonys": false
       },
-      "title": "AMAZE Magic",
+      "title": "Kramer/Fauci",
       "type": "play",
       "category": "off-broadway",
-      "status": "open",
-      "openingDate": "2025-07-20",
-      "criticScore": 77.33,
+      "status": "previews",
+      "openingDate": "2026-10-04",
+      "closingDate": "2026-10-24",
+      "isRevival": false,
+      "criticScore": null,
       "audienceGrade": "A-",
-      "slug": "amaze-magic-off-broadway",
-      "image": "/images/shows/amaze-magic-off-broadway-2025/thumbnail.webp"
+      "slug": "kramerfauci-st-anns",
+      "image": "/images/shows/kramerfauci-off-broadway-2026/thumbnail.webp",
+      "priceNote": "Tier 4: Daniel Fish (Oklahoma!) stages the 1993 Larry Kramer and Anthony Fauci confrontation at St. Ann's Warehouse with Will Brill and Thomas Jay Ryan."
     },
-    "heathers-the-musical-off-broadway-2025": {
-      "price": 9,
+    "the-curious-case-of-benjamin-button-off-broadway-2026": {
+      "price": 7,
       "eligible": {
         "criticScore": true,
         "audienceGrade": true,
         "boxOffice": false,
         "tonys": false
       },
-      "title": "Heathers The Musical",
+      "title": "The Curious Case of Benjamin Button",
       "type": "musical",
       "category": "off-broadway",
-      "status": "open",
-      "openingDate": "2025-06-30",
-      "criticScore": 76.79,
-      "audienceGrade": "A+",
-      "slug": "heathers-the-musical-off-broadway",
-      "image": "/images/shows/heathers-the-musical-off-broadway-2025/thumbnail.webp"
-    },
-    "kenrex-off-broadway-2026": {
-      "price": 10,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": false,
-        "tonys": false
-      },
-      "title": "KENREX",
-      "type": "play",
-      "category": "off-broadway",
-      "status": "open",
-      "openingDate": "2026-04-26",
-      "criticScore": 75.81,
-      "audienceGrade": "A-",
-      "slug": "kenrex-off-broadway",
-      "image": "/images/shows/kenrex-off-broadway-2026/thumbnail.webp"
-    },
-    "my-joy-is-heavy-off-broadway-2025": {
-      "price": 6,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": false,
-        "tonys": false
-      },
-      "title": "My Joy Is Heavy",
-      "type": "musical",
-      "category": "off-broadway",
-      "status": "open",
-      "openingDate": "2026-03-17",
-      "criticScore": 75.73,
-      "audienceGrade": "B",
-      "slug": "my-joy-is-heavy-off-broadway",
-      "image": "/images/shows/my-joy-is-heavy-off-broadway-2025/thumbnail.webp"
-    },
-    "morgan-bassichis-can-i-be-frank-off-broadway-2026": {
-      "price": 8,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": false,
-        "tonys": false
-      },
-      "title": "Morgan Bassichis: Can I Be Frank?",
-      "type": "play",
-      "category": "off-broadway",
-      "status": "open",
-      "openingDate": "2025-08-04",
-      "criticScore": 73.02,
+      "status": "upcoming",
+      "openingDate": "2026-10-21",
+      "closingDate": "2026-11-15",
+      "isRevival": false,
+      "criticScore": null,
       "audienceGrade": null,
-      "slug": "morgan-bassichis-can-i-be-frank-off-broadway",
-      "image": "/images/shows/morgan-bassichis-can-i-be-frank-off-broadway-2026/thumbnail.webp"
+      "slug": "the-curious-case-of-benjamin-button-off-broadway",
+      "image": "/images/shows/the-curious-case-of-benjamin-button-off-broadway-2026/thumbnail.webp",
+      "priceNote": "Tier 4: The Olivier-winning London musical lands at the Public."
     },
-    "masquerade-off-broadway-2025": {
-      "price": 8,
+    "msblackforpresident-off-broadway-2026": {
+      "price": 7,
       "eligible": {
         "criticScore": true,
         "audienceGrade": true,
         "boxOffice": false,
         "tonys": false
       },
-      "title": "Masquerade",
-      "type": "musical",
-      "category": "off-broadway",
-      "status": "open",
-      "openingDate": "2025-09-29",
-      "criticScore": 70.68,
-      "audienceGrade": "A+",
-      "slug": "masquerade-off-broadway",
-      "image": "/images/shows/masquerade-off-broadway-2025/thumbnail.webp"
-    },
-    "rheology-off-broadway-2026": {
-      "price": 10,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": false,
-        "tonys": false
-      },
-      "title": "Rheology",
+      "title": "Ms. Blakk for President",
       "type": "play",
       "category": "off-broadway",
-      "status": "closed",
-      "openingDate": "2026-04-14",
-      "criticScore": 82.36,
-      "audienceGrade": "B+",
-      "slug": "rheology-off-broadway",
-      "image": "/images/shows/rheology-off-broadway-2026/thumbnail.webp"
+      "status": "upcoming",
+      "openingDate": "2026-11-01",
+      "closingDate": "2026-12-13",
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "msblackforpresident",
+      "image": "/images/shows/msblackforpresident-off-broadway-2026/thumbnail.jpg",
+      "priceNote": "Tier 4: Tarell Alvin McCraney and Tina Landau's new play at the Vineyard with Wayne Brady."
     },
-    "caroline-off-broadway-2026": {
-      "price": 10,
+    "seven-guitars-off-broadway-2026": {
+      "price": 7,
       "eligible": {
         "criticScore": true,
         "audienceGrade": true,
         "boxOffice": false,
         "tonys": false
       },
-      "title": "Caroline",
+      "title": "Seven Guitars",
       "type": "play",
       "category": "off-broadway",
-      "status": "closed",
-      "openingDate": "2025-10-01",
-      "criticScore": 81.68,
-      "audienceGrade": "A-",
-      "slug": "caroline",
-      "image": null
+      "status": "upcoming",
+      "openingDate": "2026-11-23",
+      "closingDate": null,
+      "isRevival": true,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "seven-guitars-off-broadway",
+      "image": "/images/shows/seven-guitars-off-broadway-2026/thumbnail.webp",
+      "priceNote": "Tier 4: August Wilson at Lincoln Center's Newhouse, directed by Ruben Santiago-Hudson with John Douglas Thompson and Russell Hornsby."
     },
-    "innocence-off-broadway-2026": {
+    "creation-stories-and-all-the-important-importants-off-broadway-2026": {
       "price": 6,
       "eligible": {
         "criticScore": true,
@@ -797,17 +702,356 @@
         "boxOffice": false,
         "tonys": false
       },
-      "title": "Innocence",
-      "type": "opera",
+      "title": "creation stories and all the important importants",
+      "type": "play",
       "category": "off-broadway",
-      "status": "closed",
-      "openingDate": "2026-04-06",
-      "criticScore": 81.6,
-      "audienceGrade": "A",
-      "slug": "innocence-off-broadway",
-      "image": "/images/shows/innocence-off-broadway-2026/thumbnail.webp"
+      "status": "previews",
+      "openingDate": "2026-10-01",
+      "closingDate": null,
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "creation-stories-and-all-the-important-importants-off-broadway",
+      "image": "/images/shows/creation-stories-and-all-the-important-importants-off-broadway-2026/thumbnail.webp",
+      "priceNote": "Tier 3: New play at LCT3's Claire Tow Theater."
     },
-    "you-got-older-off-broadway-2026": {
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026": {
+      "price": 6,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "The Hairy Ape",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "previews",
+      "openingDate": "2026-10-04",
+      "closingDate": "2026-11-15",
+      "isRevival": true,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "the-hairy-ape-irish-repertory-theatre-off-broadway",
+      "image": "/images/shows/the-hairy-ape-irish-repertory-theatre-off-broadway-2026/thumbnail.jpg",
+      "priceNote": "Tier 3: O'Neill revival at Irish Rep."
+    },
+    "good-time-charlie-off-broadway-2026": {
+      "price": 6,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "Good Time Charlie",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "previews",
+      "openingDate": "2026-10-09",
+      "closingDate": "2026-10-25",
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "good-time-charlie-off-broadway",
+      "image": "/images/shows/good-time-charlie-off-broadway-2026/thumbnail.webp",
+      "priceNote": "Tier 3: New play at the Public's Martinson Hall."
+    },
+    "anon-a-tempest-at-our-kitchen-table-off-broadway-2026": {
+      "price": 6,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "ANON – a tempest at our kitchen table",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "previews",
+      "openingDate": "2026-10-14",
+      "closingDate": "2026-11-01",
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "anon-a-tempest-at-our-kitchen-table-off-broadway",
+      "image": "/images/shows/anon-a-tempest-at-our-kitchen-table-off-broadway-2026/thumbnail.jpg",
+      "priceNote": "Tier 3: Anne Washburn at MCC, directed by Anne Kauffman, with Jeremy Shamos."
+    },
+    "sea-wall-off-broadway-2026": {
+      "price": 6,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "Sea Wall",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "upcoming",
+      "openingDate": "2026-10-16",
+      "closingDate": "2026-10-30",
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "sea-wall-off-broadway",
+      "image": "/images/shows/sea-wall-off-broadway-2026/thumbnail.webp",
+      "priceNote": "Tier 3: Simon Stephens's monologue at Studio Seaview."
+    },
+    "king-of-the-yees-off-broadway-2026": {
+      "price": 6,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "King of the Yees",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "upcoming",
+      "openingDate": "2026-10-20",
+      "closingDate": "2026-11-22",
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "king-of-the-yees",
+      "image": "/images/shows/king-of-the-yees-off-broadway-2026/thumbnail.jpg",
+      "priceNote": "Tier 3: Lauren Yee's comedy at Signature with Kelly Marie Tran and Francis Jue."
+    },
+    "i-became-we-off-broadway-2026": {
+      "price": 6,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "I Became We",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "upcoming",
+      "openingDate": "2026-10-27",
+      "closingDate": "2026-11-15",
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "i-became-we-off-broadway",
+      "image": "/images/shows/i-became-we-off-broadway-2026/thumbnail.jpg",
+      "priceNote": "Tier 3: New play at Atlantic Theater Company."
+    },
+    "the-heart-off-broadway-2026": {
+      "price": 6,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "The Heart",
+      "type": "musical",
+      "category": "off-broadway",
+      "status": "upcoming",
+      "openingDate": "2026-10-29",
+      "closingDate": "2026-12-06",
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "the-heart-off-broadway",
+      "image": "/images/shows/the-heart-off-broadway-2026/thumbnail.webp",
+      "priceNote": "Tier 3: New musical at Roundabout directed by Christopher Ashley with Joaquina Kalukango."
+    },
+    "clifford-odets-waiting-for-lefty-off-broadway-2026": {
+      "price": 6,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "Clifford Odets’ Waiting for Lefty",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "upcoming",
+      "openingDate": "2026-11-02",
+      "closingDate": "2026-11-22",
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "clifford-odets-waiting-for-lefty-off-broadway",
+      "image": "/images/shows/clifford-odets-waiting-for-lefty-off-broadway-2026/thumbnail.jpg",
+      "priceNote": "Tier 3: Classic Stage revival directed by Steven Pasquale with Conrad Ricamora."
+    },
+    "well-see-off-broadway-2026": {
+      "price": 6,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "We'll See",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "upcoming",
+      "openingDate": "2026-11-03",
+      "closingDate": "2026-11-22",
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "well-see-off-broadway",
+      "image": "/images/shows/well-see-off-broadway-2026/thumbnail.jpg",
+      "priceNote": "Tier 3: New play at the Public."
+    },
+    "the-unbelievers-off-broadway-2026": {
+      "price": 6,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "The Unbelievers",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "upcoming",
+      "openingDate": "2026-11-05",
+      "closingDate": null,
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "the-unbelievers-off-broadway",
+      "image": "/images/shows/the-unbelievers-off-broadway-2026/thumbnail.webp",
+      "priceNote": "Tier 3: Nick Payne's American premiere at MTC with Lauren Ambrose and Tom Riley."
+    },
+    "the-verge-off-broadway-2026": {
+      "price": 6,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "The Verge",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "upcoming",
+      "openingDate": "2026-11-05",
+      "closingDate": "2026-11-22",
+      "isRevival": true,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "the-verge-off-broadway",
+      "image": "/images/shows/the-verge-off-broadway-2026/thumbnail.webp",
+      "priceNote": "Tier 3: Revival at the Public's LuEsther Hall."
+    },
+    "the-visitors-off-broadway-2026": {
+      "price": 6,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "The Visitors",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "upcoming",
+      "openingDate": "2026-11-09",
+      "closingDate": null,
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "the-visitors-off-broadway",
+      "image": "/images/shows/the-visitors-off-broadway-2026/thumbnail.jpg",
+      "priceNote": "Tier 3: Bryna Turner world premiere at Second Stage with Celia Keenan-Bolger."
+    },
+    "la-distance-bam-off-broadway-2026": {
+      "price": 6,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "La Distance",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "previews",
+      "openingDate": "2026-11-18",
+      "closingDate": null,
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "la-distance-bam-off-broadway",
+      "image": "/images/shows/la-distance-bam-off-broadway-2026/thumbnail.webp",
+      "priceNote": "Tier 3: Tiago Rodrigues at BAM's Harvey Theater."
+    },
+    "the-ripple-the-wave-that-carried-me-home-off-broadway-2026": {
+      "price": 6,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "the ripple, the wave that carried me home",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "upcoming",
+      "openingDate": "2026-11-18",
+      "closingDate": null,
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "the-ripple-the-wave-that-carried-me-home-off-broadway",
+      "image": "/images/shows/the-ripple-the-wave-that-carried-me-home-off-broadway-2026/thumbnail.jpg",
+      "priceNote": "Tier 3: Christina Anderson's play at Playwrights Horizons with Crystal Lucas-Perry."
+    },
+    "spring-awakening-off-broadway-2026": {
+      "price": 6,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "Spring Awakening",
+      "type": "musical",
+      "category": "off-broadway",
+      "status": "upcoming",
+      "openingDate": "2026-12-17",
+      "closingDate": null,
+      "isRevival": true,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "spring-awakening-off-broadway",
+      "image": "/images/shows/spring-awakening-off-broadway-2026/thumbnail.jpg",
+      "priceNote": "Tier 3: Commercial revival at Studio Seaview opening in December."
+    },
+    "miles-for-mary-off-broadway-2026": {
+      "price": 6,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "Miles for Mary",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "upcoming",
+      "openingDate": "2027-02-23",
+      "closingDate": "2027-03-21",
+      "isRevival": false,
+      "criticScore": null,
+      "audienceGrade": null,
+      "slug": "miles-for-mary",
+      "image": "/images/shows/miles-for-mary-off-broadway-2026/thumbnail.jpg",
+      "priceNote": "Tier 3: The Mad Ones' comedy returns at the Signature Center in February."
+    },
+    "slam-frank-off-broadway-2026": {
       "price": 5,
       "eligible": {
         "criticScore": true,
@@ -815,33 +1059,39 @@
         "boxOffice": false,
         "tonys": false
       },
-      "title": "You Got Older",
-      "type": "play",
+      "title": "Slam Frank",
+      "type": "musical",
       "category": "off-broadway",
-      "status": "closed",
-      "openingDate": "2026-02-23",
-      "criticScore": 81.31,
+      "status": "previews",
+      "openingDate": "2026-10-04",
+      "closingDate": "2026-11-30",
+      "isRevival": false,
+      "criticScore": null,
       "audienceGrade": "B",
-      "slug": "you-got-older-off-broadway",
-      "image": "/images/shows/you-got-older-off-broadway-2026/thumbnail.webp"
+      "slug": "slam-frank-off-broadway",
+      "image": "/images/shows/slam-frank-off-broadway-2026/thumbnail.jpg",
+      "priceNote": "Tier 2: Commercial musical parody at the Orpheum."
     },
-    "going-bacharach-the-songs-of-an-icon-off-broadway-2026": {
-      "price": 10,
+    "a-ghost-in-your-ear-off-broadway-2026": {
+      "price": 5,
       "eligible": {
         "criticScore": true,
         "audienceGrade": true,
         "boxOffice": false,
         "tonys": false
       },
-      "title": "Going Bacharach: The Songs of an Icon",
+      "title": "A Ghost In Your Ear",
       "type": "play",
       "category": "off-broadway",
-      "status": "closed",
-      "openingDate": "2026-01-08",
-      "criticScore": 80.98,
+      "status": "upcoming",
+      "openingDate": "2026-10-09",
+      "closingDate": "2026-11-15",
+      "isRevival": false,
+      "criticScore": null,
       "audienceGrade": null,
-      "slug": "going-bacharach-the-songs-of-an-icon-off-broadway",
-      "image": "/images/shows/going-bacharach-the-songs-of-an-icon-off-broadway-2026/thumbnail.webp"
+      "slug": "a-ghost-in-your-ear-off-broadway",
+      "image": "/images/shows/a-ghost-in-your-ear-off-broadway-2026/thumbnail.webp",
+      "priceNote": "Tier 2: Audible's Minetta Lane production."
     }
   },
   "scoring": {

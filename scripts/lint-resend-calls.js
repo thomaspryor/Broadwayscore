@@ -82,6 +82,11 @@ const ALLOWLIST = new Set([
   '.github/workflows/process-review-submission.yml',
   '.github/workflows/auto-fix-feedback-bug.yml',
   'src/app/api/beat-the-critics/send-picks/route.ts',
+  // Player-facing transactional email (draft confirmation with roster, scoring-from
+  // date and locked picks), same class as beat-the-critics/send-picks above. Not an
+  // owner alert, so owner-alert-router.js is the wrong path. Added with the 2026-27
+  // Fantasy League relaunch (BRO-4324); the owner is told in the launch report.
+  'src/app/api/fantasy/draft/route.ts',
 ]);
 
 const SCAN_DIRS = ['scripts', '.github/workflows', 'src'];

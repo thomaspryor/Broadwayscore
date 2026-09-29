@@ -1,10 +1,16 @@
 {
-  "updatedAt": "2026-09-28T14:43:05.459Z",
-  "scanned": 2124,
-  "showsWithViolations": 43,
-  "totalViolations": 43,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-09-29T13:35:37.238Z",
+  "scanned": 2178,
+  "showsWithViolations": 48,
+  "totalViolations": 48,
+  "newSinceLastRun": 5,
+  "newViolationKeys": [
+    "how-shakespeare-saved-my-life-off-broadway-2026",
+    "christmas-carol-goes-wrong-west-end-2026",
+    "school-pictures-off-broadway-2026",
+    "lost-in-del-valle-return-off-broadway-2026",
+    "beetlejuice-tour-2026"
+  ],
   "violationKeys": [
     "the-lost-boys-2026",
     "schmigadoon-2026",
@@ -36,6 +42,7 @@
     "death-note-the-musical-west-end-2026",
     "a-month-in-the-country-west-end-2026",
     "the-story-west-end-2026",
+    "how-shakespeare-saved-my-life-off-broadway-2026",
     "paranormal-activity-2026",
     "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
     "la-boheme-off-broadway-2026",
@@ -45,10 +52,14 @@
     "the-smile-of-her-off-west-end-2026",
     "disruption-off-broadway-2026",
     "darkling-off-west-end-2026",
+    "christmas-carol-goes-wrong-west-end-2026",
     "pre-existing-condition-off-broadway-2026",
     "tru-off-west-end-2026",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
-    "becoming-hamlet-off-broadway-2026"
+    "becoming-hamlet-off-broadway-2026",
+    "school-pictures-off-broadway-2026",
+    "lost-in-del-valle-return-off-broadway-2026",
+    "beetlejuice-tour-2026"
   ],
   "hits": [
     {
@@ -271,7 +282,7 @@
       "showId": "man-to-man-west-end-2026",
       "title": "Man to Man",
       "openingDate": "2026-09-11",
-      "message": "man-to-man-west-end-2026 review text mentions \"revival\" 57x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "man-to-man-west-end-2026 review text mentions \"revival\" 56x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -317,6 +328,15 @@
       "title": "The Story",
       "openingDate": "2026-09-03",
       "message": "the-story-west-end-2026 review text mentions \"revival\" 25x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "how-shakespeare-saved-my-life-off-broadway-2026",
+      "title": "How Shakespeare Saved My Life",
+      "openingDate": "2026-09-27",
+      "message": "how-shakespeare-saved-my-life-off-broadway-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -403,6 +423,15 @@
       ]
     },
     {
+      "showId": "christmas-carol-goes-wrong-west-end-2026",
+      "title": "Christmas Carol Goes Wrong",
+      "openingDate": null,
+      "message": "christmas-carol-goes-wrong-west-end-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
       "showId": "pre-existing-condition-off-broadway-2026",
       "title": "Pre-Existing Condition",
       "openingDate": "2026-09-14",
@@ -434,6 +463,33 @@
       "title": "Becoming Hamlet",
       "openingDate": "2026-09-11",
       "message": "becoming-hamlet-off-broadway-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "school-pictures-off-broadway-2026",
+      "title": "School Pictures",
+      "openingDate": "2026-10-18",
+      "message": "school-pictures-off-broadway-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "lost-in-del-valle-return-off-broadway-2026",
+      "title": "Lost in Del Valle",
+      "openingDate": "2026-09-23",
+      "message": "lost-in-del-valle-return-off-broadway-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "beetlejuice-tour-2026",
+      "title": "Beetlejuice",
+      "openingDate": "2026-02-13",
+      "message": "beetlejuice-tour-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

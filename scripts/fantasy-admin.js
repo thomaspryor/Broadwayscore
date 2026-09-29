@@ -195,7 +195,7 @@ async function cmdWinner() {
 
   console.log(`\n  Broadway Fantasy League — Season Winner${winners.length > 1 ? 's (tied)' : ''}`);
   console.log(`  Season: ${leagueData._meta.season}`);
-  console.log(`  Prize:  $500 TodayTix voucher`);
+  console.log(`  Prize:  ${require('../src/config/fantasy-season.json').prize}`);
   console.log(`  ${'─'.repeat(70)}`);
 
   for (const w of winners) {

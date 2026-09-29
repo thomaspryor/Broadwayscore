@@ -112,12 +112,12 @@ export default function FantasyLeaderboardTable() {
           {emailNotFound ? (
             <>
               <p className="text-gray-400 text-lg mb-2">No team found for that email</p>
-              <p className="text-gray-600 text-sm">Check the address you drafted with and try again.</p>
+              <p className="text-gray-500 text-sm">Check the address you drafted with and try again.</p>
             </>
           ) : (
             <>
               <p className="text-gray-400 text-lg mb-2">No entries yet</p>
-              <p className="text-gray-600 text-sm mb-6">Be the first to draft a team!</p>
+              <p className="text-gray-500 text-sm mb-6">Be the first to draft a team!</p>
               <a
                 href="/fantasy/draft"
                 className="px-6 py-2.5 bg-brand text-white font-semibold rounded-lg hover:bg-brand-hover transition-colors"
@@ -135,6 +135,10 @@ export default function FantasyLeaderboardTable() {
     <div className="space-y-2">
       {filterBar}
 
+      <p className="text-xs text-gray-500 px-1">
+        {entries.length} {entries.length === 1 ? 'team' : 'teams'}{debouncedLeague ? ' in this league' : ''}. Tap a team to see its picks.
+      </p>
+
       {/* Header row */}
       <div className="hidden sm:grid grid-cols-[3rem_1fr_5rem_5rem_5rem_5rem_5rem] gap-2 px-4 py-2 text-xs text-gray-500 uppercase tracking-wider">
         <span>#</span>
@@ -147,7 +151,7 @@ export default function FantasyLeaderboardTable() {
       </div>
 
       {entries.map((entry, idx) => (
-        <div key={`${entry.rank}-${entry.displayName}`}>
+        <div key={entry.id ?? `${entry.rank}-${entry.displayName}-${idx}`}>
           {/* Main row */}
           <button
             className={`w-full grid grid-cols-[3rem_1fr_auto] sm:grid-cols-[3rem_1fr_5rem_5rem_5rem_5rem_5rem] gap-2 items-center px-4 py-3 rounded-lg transition-colors text-left ${
@@ -192,24 +196,32 @@ export default function FantasyLeaderboardTable() {
             <div className="ml-12 mr-4 mb-2 mt-1 bg-surface-raised/50 rounded-lg p-3 space-y-1.5">
               <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Picks</p>
               {entry.picks.map((pick, i) => (
-                <div key={pick.showId} className="flex items-center justify-between text-sm">
+                <div key={pick.showId} className="flex items-center justify-between text-sm gap-3">
                   <span className="text-gray-300">
-                    <span className="text-gray-600 mr-2">{i + 1}.</span>
+                    <span className="text-gray-500 mr-2">{i + 1}.</span>
                     {pick.showTitle}
-                    <span className="text-gray-600 ml-2">(${pick.price})</span>
+                    <span className="text-gray-500 ml-2">(${pick.price})</span>
+                    {pick.scoreLocked && (
+                      <span className="text-gray-500 ml-2 text-xs">drafted after opening</span>
+                    )}
                   </span>
-                  <span className={`font-mono ${pick.points > 0 ? 'text-emerald-400' : 'text-gray-600'}`}>
+                  <span className={`font-mono ${pick.points > 0 ? 'text-emerald-400' : 'text-gray-500'}`}>
                     {pick.points.toFixed(1)}
                   </span>
                 </div>
               ))}
+              {entry.scoringFrom && (
+                <p className="text-xs text-gray-500 pt-1">
+                  Box office counted from the week of {new Date(`${entry.scoringFrom}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}.
+                </p>
+              )}
             </div>
           )}
         </div>
       ))}
 
       {error && (
-        <p className="text-center text-xs text-gray-600 mt-4">{error}</p>
+        <p className="text-center text-xs text-gray-500 mt-4">{error}</p>
       )}
     </div>
   );

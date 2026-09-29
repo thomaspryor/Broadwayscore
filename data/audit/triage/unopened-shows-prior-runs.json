@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-28T14:42:59.664Z",
+  "generatedAt": "2026-09-29T13:35:28.622Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3059,
-  "flaggedShows": 47,
+  "scannedShows": 3143,
+  "flaggedShows": 48,
   "flaggedFiles": 187,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
@@ -10,8 +10,8 @@
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 28,
-    "needs-human-review": 19
+    "likely-contamination": 27,
+    "needs-human-review": 21
   },
   "shows": [
     {
@@ -276,7 +276,7 @@
       "title": "A Christmas Carol",
       "market": "west-end",
       "status": "upcoming",
-      "venue": "Old Vic",
+      "venue": "The Old Vic",
       "previewsStartDate": "2026-11-12",
       "openingDate": "2026-11-24",
       "verdict": "likely-contamination",
@@ -689,6 +689,187 @@
       ]
     },
     {
+      "showId": "medea-off-broadway-2026",
+      "title": "Medea",
+      "market": "broadway",
+      "status": "upcoming",
+      "venue": "Metropolitan Opera House",
+      "previewsStartDate": "2026-10-30",
+      "openingDate": "2026-10-30",
+      "verdict": "likely-contamination",
+      "reasoning": "12/12 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 12,
+        "distinctYears": [
+          2014,
+          2023,
+          2025
+        ],
+        "spanDays": 3984,
+        "flaggedCount": 12,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "broadwayworld--clementine-scott.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "broadwayworld",
+          "criticName": "Clementine Scott",
+          "publishDate": "2025-06-20",
+          "url": "https://www.broadwayworld.com/westend/article/Review-MEDEA-Coronet-Theatre-20250620",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "express-uk--neil-norman.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "express-uk",
+          "criticName": "Neil Norman",
+          "publishDate": "2014-07-24",
+          "url": "https://www.express.co.uk/entertainment/theatre/491278/Greek-tragedy-Medea-at-the-National-Theatre",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "guardian--arifa-akbar.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "guardian",
+          "criticName": "Arifa Akbar",
+          "publishDate": "2023-02-18",
+          "url": "https://www.theguardian.com/stage/2023/feb/18/medea-review-sohoplace-london",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "guardian--susannah-clapp.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "guardian",
+          "criticName": "Susannah Clapp",
+          "publishDate": "2023-02-18",
+          "url": "https://www.theguardian.com/stage/2023/feb/26/the-week-in-theatre-grenfell-system-failure-medea-trouble-in-butetown-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "i-paper--fiona-mountford.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "i-paper",
+          "criticName": "Fiona Mountford",
+          "publishDate": "2023-02-18",
+          "url": "https://inews.co.uk/culture/arts/medea-soho-place-review-sophie-okonedo-blisteringly-brilliant-revenge-tragedy-2159926",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "independent--alice-saville.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "independent",
+          "criticName": "Alice Saville",
+          "publishDate": "2023-02-18",
+          "url": "https://www.independent.co.uk/independentpremium/culture/medea-review-sophie-okonedo-b2285262.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "standard--nick-curtis.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "standard",
+          "criticName": "Nick Curtis",
+          "publishDate": "2023-02-18",
+          "url": "https://www.standard.co.uk/culture/theatre/medea-sohoplace-review-sophie-okonedo-ben-daniels-must-see-b1061181.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "telegraph--dominic-cavendish.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "telegraph",
+          "criticName": "Dominic Cavendish",
+          "publishDate": "2023-02-18",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/medea-sohoplace-review-sophie-okonedo-gives-mythic-otherworldly/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thestage--dave-fargnoli.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "thestage",
+          "criticName": "Dave Fargnoli",
+          "publishDate": "2025-06-20",
+          "url": "https://www.thestage.co.uk/reviews/medea-review-coronet-theatre-london-satoshi-miyagi-euripides",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thestage--sam-marlowe.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "thestage",
+          "criticName": "Sam Marlowe",
+          "publishDate": "2023-02-18",
+          "url": "https://www.thestage.co.uk/reviews/medea-review-the-byre-theatre-st-andrews",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "times-uk--clive-davis.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "times-uk",
+          "criticName": "Clive Davis",
+          "publishDate": "2023-02-18",
+          "url": "https://www.thetimes.co.uk/article/6d29aa7c-aed6-11ed-91ef-347dcf6a25f6",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "times-uk--quentin-letts.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "times-uk",
+          "criticName": "Quentin Letts",
+          "publishDate": "2023-02-18",
+          "url": "https://www.thetimes.co.uk/article/21e2de6c-b21e-11ed-93c1-9f4b65bf4405",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "orlando-off-west-end-2026",
       "title": "Orlando: A Pornobiography",
       "market": "west-end",
@@ -855,6 +1036,161 @@
       ]
     },
     {
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "title": "The Curious Case of Benjamin Button",
+      "market": "broadway",
+      "status": "upcoming",
+      "venue": "The Public Theater/Newman Theater",
+      "previewsStartDate": "2026-10-08",
+      "openingDate": "2026-10-21",
+      "verdict": "likely-contamination",
+      "reasoning": "10/10 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 10,
+        "distinctYears": [
+          2023,
+          2024,
+          2025
+        ],
+        "spanDays": 754,
+        "flaggedCount": 10,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "express-uk--stefan-kyriazis.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "express-uk",
+          "criticName": "Stefan Kyriazis",
+          "publishDate": "2023-06-09",
+          "url": null,
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "i-paper--fiona-mountford.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "i-paper",
+          "criticName": "Fiona Mountford",
+          "publishDate": "2024-11-07",
+          "url": "https://inews.co.uk/culture/arts/curious-case-benjamin-button-review-3367517?srsltid=AfmBOorCBUpnvr97IzWXACSX7ChWV4iDPQQ3fgkkrfpLD54N5loKOyhT",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "london-theatre--marianka-swain.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-theatre",
+          "criticName": "Marianka Swain",
+          "publishDate": "2024-11-07",
+          "url": "https://www.londontheatre.co.uk/reviews/the-curious-case-of-benjamin-button-review-ambassadors-theatre",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "standard--nick-curtis.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "standard",
+          "criticName": "Nick Curtis",
+          "publishDate": "2024-11-07",
+          "url": "https://www.standard.co.uk/culture/theatre/the-curious-case-of-benjamin-button-ambassadors-theatre-review-brad-pitt-b1192173.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "telegraph--tim-robey.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "telegraph",
+          "criticName": "Tim Robey",
+          "publishDate": "2024-11-07",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-curious-case-of-benjamin-button-review/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thestage--holly-omahony.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "thestage",
+          "criticName": "Holly O'Mahony",
+          "publishDate": "2024-11-07",
+          "url": "https://www.thestage.co.uk/reviews/the-curious-case-of-benjamin-button-review-at-ambassadors-theatre-london-by-jethro-compton-and-f-scott-fitzgerald",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thestage--tim-bano.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "thestage",
+          "criticName": "Tim Bano",
+          "publishDate": "2023-06-09",
+          "url": "https://www.thestage.co.uk/reviews/the-curious-case-of-benjamin-button-review-southwark-playhouse-elephant-jamie-parker-f-scott-fitzgerald",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "timeout-london--andrzej-lukowski.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "timeout-london",
+          "criticName": "Andrzej Lukowski",
+          "publishDate": "2025-07-02",
+          "url": "https://www.timeout.com/london/theatre/the-curious-case-of-benjamin-button-review-1",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "times-uk--clive-davis.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "times-uk",
+          "criticName": "Clive Davis",
+          "publishDate": "2024-11-07",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-curious-case-of-benjamin-button-review-ambassadors-theatre-london-z6wsggv77",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "times-uk--quentin-letts.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "times-uk",
+          "criticName": "Quentin Letts",
+          "publishDate": "2023-06-09",
+          "url": "https://www.thetimes.co.uk/article/7f74ad3c-0497-11ee-a1e5-6222cf71d60e",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "the-seagull-globe-off-west-end-2026",
       "title": "The Seagull",
       "market": "west-end",
@@ -863,15 +1199,15 @@
       "previewsStartDate": "2027-01-15",
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "11/11 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "reasoning": "10/10 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
-        "count": 11,
+        "count": 10,
         "distinctYears": [
           2022,
           2025
         ],
-        "spanDays": 1198,
-        "flaggedCount": 11,
+        "spanDays": 975,
+        "flaggedCount": 10,
         "venueMentionCount": 0
       },
       "suggestedPriorRun": null,
@@ -981,19 +1317,6 @@
           "evaluationError": null
         },
         {
-          "file": "thestage--sam-marlowe.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Sam Marlowe",
-          "publishDate": "2025-10-16",
-          "url": "https://www.thestage.co.uk/reviews/the-seagull-review-royal-lyceum-theatre-edinburgh-caroline-quentin",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
           "file": "timeout-london--andrzej-lukowski.json",
           "readmissionRisk": "durably-excluded",
           "beforeReason": "wrongProduction",
@@ -1022,321 +1345,13 @@
       ]
     },
     {
-      "showId": "medea-off-broadway-2026",
-      "title": "Medea",
-      "market": "broadway",
-      "status": "upcoming",
-      "venue": "Metropolitan Opera House",
-      "previewsStartDate": "2026-10-30",
-      "openingDate": "2026-10-30",
-      "verdict": "likely-contamination",
-      "reasoning": "10/10 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 10,
-        "distinctYears": [
-          2014,
-          2023
-        ],
-        "spanDays": 3131,
-        "flaggedCount": 10,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "express-uk--neil-norman.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "express-uk",
-          "criticName": "Neil Norman",
-          "publishDate": "2014-07-24",
-          "url": "https://www.express.co.uk/entertainment/theatre/491278/Greek-tragedy-Medea-at-the-National-Theatre",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "guardian--arifa-akbar.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Arifa Akbar",
-          "publishDate": "2023-02-18",
-          "url": "https://www.theguardian.com/stage/2023/feb/18/medea-review-sohoplace-london",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "guardian--susannah-clapp.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Susannah Clapp",
-          "publishDate": "2023-02-18",
-          "url": "https://www.theguardian.com/stage/2023/feb/26/the-week-in-theatre-grenfell-system-failure-medea-trouble-in-butetown-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "i-paper--fiona-mountford.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "i-paper",
-          "criticName": "Fiona Mountford",
-          "publishDate": "2023-02-18",
-          "url": "https://inews.co.uk/culture/arts/medea-soho-place-review-sophie-okonedo-blisteringly-brilliant-revenge-tragedy-2159926",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "independent--alice-saville.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "independent",
-          "criticName": "Alice Saville",
-          "publishDate": "2023-02-18",
-          "url": "https://www.independent.co.uk/independentpremium/culture/medea-review-sophie-okonedo-b2285262.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--nick-curtis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "Nick Curtis",
-          "publishDate": "2023-02-18",
-          "url": "https://www.standard.co.uk/culture/theatre/medea-sohoplace-review-sophie-okonedo-ben-daniels-must-see-b1061181.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--dominic-cavendish.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Dominic Cavendish",
-          "publishDate": "2023-02-18",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/medea-sohoplace-review-sophie-okonedo-gives-mythic-otherworldly/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--sam-marlowe.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Sam Marlowe",
-          "publishDate": "2023-02-18",
-          "url": "https://www.thestage.co.uk/reviews/medea-review-the-byre-theatre-st-andrews",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--clive-davis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Clive Davis",
-          "publishDate": "2023-02-18",
-          "url": "https://www.thetimes.co.uk/article/6d29aa7c-aed6-11ed-91ef-347dcf6a25f6",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--quentin-letts.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Quentin Letts",
-          "publishDate": "2023-02-18",
-          "url": "https://www.thetimes.co.uk/article/21e2de6c-b21e-11ed-93c1-9f4b65bf4405",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "christmas-carol-goes-wrong-west-end-2026",
-      "title": "Christmas Carol Goes Wrong",
-      "market": "west-end",
-      "status": "upcoming",
-      "venue": "Wyndham's Theatre",
-      "previewsStartDate": "2026-12-18",
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "9/10 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 10,
-        "distinctYears": [
-          2017,
-          2025
-        ],
-        "spanDays": 2907,
-        "flaggedCount": 9,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "guardian--chris-wiegand.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Chris Wiegand",
-          "publishDate": "2025-12-15",
-          "url": "https://www.theguardian.com/stage/2025/dec/15/christmas-carol-goes-wrong-review-apollo-mischief-theatre",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--stuart-king.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Stuart King",
-          "publishDate": "2025-12-16",
-          "url": "https://www.londonboxoffice.co.uk/news/post/christmas-carol-goes-wrong-apollo-theatre-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--unknown.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Stuart King",
-          "publishDate": "2025-12-16",
-          "url": "https://www.londonboxoffice.co.uk/news/post/christmas-carol-goes-wrong-apollo-theatre-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-theatre-reviews--the-anonymous-reviewer.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-theatre-reviews",
-          "criticName": "The anonymous reviewer",
-          "publishDate": "2025-12-15",
-          "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=26427",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--nick-curtis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "Nick Curtis",
-          "publishDate": "2025-12-15",
-          "url": "https://www.standard.co.uk/culture/theatre/christmas-carol-goes-wrong-apollo-theatre-review-b1262590.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--shehrazade-zafar-arif.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Shehrazade Zafar-Arif",
-          "publishDate": "2025-12-14",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/christmas-carol-goes-wrong-mischief-review/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--holly-o.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "preWindowDate",
-          "outletId": "thestage",
-          "criticName": "Holly O'",
-          "publishDate": "2017-12-31",
-          "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-goes-wrong-review-on-bbc1--wonderfully-warped",
-          "wrongProduction": false,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "timeout-london--anya-ryan.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "timeout-london",
-          "criticName": "Anna Ryan",
-          "publishDate": "2025-12-15",
-          "url": "https://www.timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--clive-davis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Clive Davis",
-          "publishDate": "2025-12-14",
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/christmas-carol-goes-wrong-review-apollo-shaftsbury-lbgtdhfk3",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "whatsonstage--alun-hood.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongShow",
-          "afterReason": "wrongShow",
-          "outletId": "whatsonstage",
-          "criticName": "Alun Hood",
-          "publishDate": "2025-12-14",
-          "url": "https://www.whatsonstage.com/news/christmas-carol-goes-wrong-review-an-eber-knees-up-in-the-west-end_1706553/",
-          "wrongProduction": false,
-          "wrongShow": true,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "the-unbelievers-off-broadway-2026",
       "title": "The Unbelievers",
       "market": "broadway",
       "status": "upcoming",
       "venue": "New York City Center",
       "previewsStartDate": "2026-10-13",
-      "openingDate": "2026-10-13",
+      "openingDate": "2026-11-05",
       "verdict": "likely-contamination",
       "reasoning": "7/7 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
@@ -1561,6 +1576,120 @@
       ]
     },
     {
+      "showId": "a-christmas-carol-off-broadway-2026",
+      "title": "A Christmas Carol",
+      "market": "broadway",
+      "status": "upcoming",
+      "venue": "Perelman Performing Arts Center (PAC NYC)",
+      "previewsStartDate": "2026-11-20",
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "7/7 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 7,
+        "distinctYears": [
+          2025
+        ],
+        "spanDays": 2,
+        "flaggedCount": 7,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "artsdesk--rachel-halliburton.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "artsdesk",
+          "criticName": "Rachel Halliburton",
+          "publishDate": "2025-11-28",
+          "url": null,
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "broadwayworld--aliya-al-hassan.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "broadwayworld",
+          "criticName": "Aliya Al-Hassan",
+          "publishDate": "2025-11-26",
+          "url": "https://www.broadwayworld.com/westend/article/BWW-Review-A-CHRISTMAS-CAROL-Middle-Temple-Hall-20171224",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "london-theatre--anya-ryan.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-theatre",
+          "criticName": "Anya Ryan",
+          "publishDate": "2025-11-26",
+          "url": null,
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "standard--india-block.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "standard",
+          "criticName": "India Block",
+          "publishDate": "2025-11-26",
+          "url": null,
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "theatre-weekly--greg-stewart.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "theatre-weekly",
+          "criticName": "Greg Stewart",
+          "publishDate": "2025-11-26",
+          "url": "https://theatreweekly.com/review-fitzrovia-radio-hours-a-christmas-carol/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thereviewshub--dan-english.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "thereviewshub",
+          "criticName": "Dan English",
+          "publishDate": "2025-11-26",
+          "url": null,
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "times-uk--dominic-maxwell.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "times-uk",
+          "criticName": "Dominic Maxwell",
+          "publishDate": "2025-11-26",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/christmas-carol-review-old-vic-2gv5gqs7k",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "a-view-from-the-bridge-off-broadway-2026",
       "title": "A View from the Bridge",
       "market": "broadway",
@@ -1756,183 +1885,6 @@
           "criticName": "Elyse Trevers",
           "publishDate": "2025-06-03",
           "url": "https://stagebuddy.com/theater/theater-review/the-imaginary-invalid",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "school-girls-or-the-african-mean-girls-play-2026",
-      "title": "School Girls; Or, The African Mean Girls Play",
-      "market": "broadway",
-      "status": "previews",
-      "venue": "Samuel J. Friedman Theatre",
-      "previewsStartDate": "2026-09-08",
-      "openingDate": "2026-09-28",
-      "verdict": "likely-contamination",
-      "reasoning": "5/5 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 5,
-        "distinctYears": [
-          2023
-        ],
-        "spanDays": 0,
-        "flaggedCount": 5,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "guardian--miriam-gillinson.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Miriam Gillinson",
-          "publishDate": "2023-06-15",
-          "url": "https://www.theguardian.com/stage/2023/jun/18/school-girls-or-the-african-mean-girls-play-review-lyric-hammersmith",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "independent--culture-staff.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "independent",
-          "criticName": "Culture Staff",
-          "publishDate": "2023-06-15",
-          "url": "https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--farah-najib.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "Farah Najib",
-          "publishDate": "2023-06-15",
-          "url": "https://www.standard.co.uk/culture/theatre/school-girls-or-the-african-mean-girls-play-lyric-hammersmith-review-b1087967.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--unknown.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Unknown",
-          "publishDate": "2023-06-15",
-          "url": "https://www.thestage.co.uk/reviews/school-girls-or-the-african-mean-girls-play-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--rachel-halliburton.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Rachel Halliburton",
-          "publishDate": "2023-06-15",
-          "url": "https://www.thetimes.co.uk/article/school-girls-or-the-africa-mean-girls-play-review-c26fjdvzq",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
-      "title": "The Curious Case of Benjamin Button",
-      "market": "broadway",
-      "status": "upcoming",
-      "venue": "The Public Theater/Newman Theater",
-      "previewsStartDate": "2026-10-08",
-      "openingDate": "2026-10-21",
-      "verdict": "likely-contamination",
-      "reasoning": "5/5 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 5,
-        "distinctYears": [
-          2023,
-          2024
-        ],
-        "spanDays": 517,
-        "flaggedCount": 5,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "express-uk--stefan-kyriazis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "express-uk",
-          "criticName": "Stefan Kyriazis",
-          "publishDate": "2023-06-09",
-          "url": null,
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "i-paper--fiona-mountford.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "i-paper",
-          "criticName": "Fiona Mountford",
-          "publishDate": "2024-11-07",
-          "url": "https://inews.co.uk/culture/arts/curious-case-benjamin-button-review-3367517?srsltid=AfmBOorCBUpnvr97IzWXACSX7ChWV4iDPQQ3fgkkrfpLD54N5loKOyhT",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--nick-curtis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "Nick Curtis",
-          "publishDate": "2024-11-07",
-          "url": "https://www.standard.co.uk/culture/theatre/the-curious-case-of-benjamin-button-ambassadors-theatre-review-brad-pitt-b1192173.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--tim-bano.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Tim Bano",
-          "publishDate": "2023-06-09",
-          "url": "https://www.thestage.co.uk/reviews/the-curious-case-of-benjamin-button-review-southwark-playhouse-elephant-jamie-parker-f-scott-fitzgerald",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--quentin-letts.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Quentin Letts",
-          "publishDate": "2023-06-09",
-          "url": "https://www.thetimes.co.uk/article/7f74ad3c-0497-11ee-a1e5-6222cf71d60e",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -2248,7 +2200,7 @@
       "title": "Here There Are Blueberries",
       "market": "broadway",
       "status": "upcoming",
-      "venue": "Barrymore Theatre",
+      "venue": "Ethel Barrymore Theatre",
       "previewsStartDate": "2026-11-02",
       "openingDate": "2026-11-09",
       "verdict": "likely-contamination",
@@ -3147,6 +3099,78 @@
           "publishDate": "2025-01-14",
           "url": "https://www.londonboxoffice.co.uk/news/post/firebird-kings-head-review",
           "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "gloria-2026",
+      "title": "Gloria",
+      "market": "broadway",
+      "status": "upcoming",
+      "venue": "Hayes Theater",
+      "previewsStartDate": "2027-03-17",
+      "openingDate": "2027-04-05",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Hayes Theater\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2015
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "billboard--david-rooney.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "billboard",
+          "criticName": "David Rooney",
+          "publishDate": "2015-11-06",
+          "url": "https://www.billboard.com/articles/review/6753841/on-your-feet-theater-review-gloria-estefan",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "one-day-the-musical-west-end-2026",
+      "title": "One Day – The Musical",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": "2026-11-17",
+      "openingDate": null,
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Garrick Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2026
+        ],
+        "spanDays": 0,
+        "flaggedCount": 0,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--shehrazade-zafar-arif.json",
+          "readmissionRisk": "still-excluded-after-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": "nonReview",
+          "outletId": "london-box-office",
+          "criticName": "Shehrazade Zafar-Arif",
+          "publishDate": "2026-06-18",
+          "url": "https://www.londonboxoffice.co.uk/news/post/one-day-the-musical-to-transfer-to-west-end",
+          "wrongProduction": false,
           "wrongShow": false,
           "evaluationError": null
         }

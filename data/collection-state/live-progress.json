@@ -1,135 +1,86 @@
 {
-  "updatedAt": "2026-09-29T11:12:26.352Z",
-  "processed": 438,
-  "failed": 299,
-  "successRate": "59.4%",
+  "updatedAt": "2026-09-29T17:08:15.990Z",
+  "processed": 106,
+  "failed": 44,
+  "successRate": "70.7%",
   "tierBreakdown": {
-    "playwright": 224,
+    "playwright": 66,
     "amp": 0,
-    "browserbase": 30,
-    "directCookies": 4,
-    "scrapingdog": 4,
-    "scrapingbee": 76,
-    "brightdata": 27,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingdog": 8,
+    "scrapingbee": 10,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 84
+    "archive": 22
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
-      "t": "2026-09-29T04:08:17.661Z",
+      "t": "2026-09-29T16:33:56.324Z",
       "event": "bb-session",
-      "session": "8b83302d",
+      "session": "37a748da",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-09-29T16:33:56.818Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-29T16:44:17.083Z",
+      "event": "bb-session",
+      "session": "8199e549",
+      "url": "https://www.nytimes.com/2026/06/15/theater/jessie-buckley-romeo-and-juliet-strea"
+    },
+    {
+      "t": "2026-09-29T16:44:17.563Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-29T16:44:34.784Z",
+      "event": "bb-session",
+      "session": "03973af8",
+      "url": "https://www.nytimes.com/2026/06/15/theater/jessie-buckley-romeo-and-juliet-strea"
+    },
+    {
+      "t": "2026-09-29T16:44:35.282Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-29T17:02:53.895Z",
+      "event": "bb-session",
+      "session": "93d15446",
       "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
     },
     {
-      "t": "2026-09-29T04:08:18.257Z",
+      "t": "2026-09-29T17:02:54.361Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-09-29T04:10:54.038Z",
+      "t": "2026-09-29T17:06:02.272Z",
       "event": "bb-session",
-      "session": "14ecb71b",
-      "url": "https://www.nytimes.com/2025/07/20/theater/dolly-parton-musical-nashville.html"
+      "session": "cc88fccc",
+      "url": "https://www.nytimes.com/2024/11/18/theater/shit-meets-fan-review.html"
     },
     {
-      "t": "2026-09-29T04:10:54.549Z",
+      "t": "2026-09-29T17:06:02.830Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-09-29T04:11:13.411Z",
+      "t": "2026-09-29T17:06:21.313Z",
       "event": "bb-session",
-      "session": "1c49b346",
-      "url": "https://www.nytimes.com/2025/07/20/theater/dolly-parton-musical-nashville.html"
+      "session": "d42d7bbf",
+      "url": "https://www.nytimes.com/2024/11/18/theater/shit-meets-fan-review.html"
     },
     {
-      "t": "2026-09-29T04:11:13.898Z",
+      "t": "2026-09-29T17:06:21.775Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-29T04:16:56.702Z",
-      "event": "bb-session",
-      "session": "68f1e900",
-      "url": "https://deadline.com/2025/08/two-strangers-carry-a-cake-across-new-york-broadway"
-    },
-    {
-      "t": "2026-09-29T04:21:17.703Z",
-      "event": "bb-session",
-      "session": "d7742a02",
-      "url": "https://www.wsj.com/articles/john-proctor-is-the-villain-review-reconceiving-the"
-    },
-    {
-      "t": "2026-09-29T04:21:18.219Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-29T07:50:37.379Z",
-      "event": "bb-session",
-      "session": "b4418ee5",
-      "url": "https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh"
-    },
-    {
-      "t": "2026-09-29T07:50:38.352Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-09-29T07:51:17.309Z",
-      "event": "bb-session",
-      "session": "f0c47867",
-      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
-    },
-    {
-      "t": "2026-09-29T07:51:37.331Z",
-      "event": "bb-session",
-      "session": "a3ff1975",
-      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
-    },
-    {
-      "t": "2026-09-29T07:52:55.102Z",
-      "event": "bb-session",
-      "session": "d6e3c650",
-      "url": "https://www.gigantic.com/the-seven-deadly-sins-the-human-voice-2026-09-12-19-30-"
-    },
-    {
-      "t": "2026-09-29T07:53:14.902Z",
-      "event": "bb-session",
-      "session": "32ec8a2d",
-      "url": "https://www.gigantic.com/the-seven-deadly-sins-the-human-voice-2026-09-12-19-30-"
-    },
-    {
-      "t": "2026-09-29T07:53:41.765Z",
-      "event": "bb-session",
-      "session": "96924386",
-      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
-    },
-    {
-      "t": "2026-09-29T07:53:53.305Z",
-      "event": "bb-session",
-      "session": "f305775b",
-      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
-    },
-    {
-      "t": "2026-09-29T07:54:53.510Z",
-      "event": "bb-session",
-      "session": "7eaae9e9",
-      "url": "https://parade.com/news/neil-patrick-harris-returns-to-broadway-in-revival-of-a-"
-    },
-    {
-      "t": "2026-09-29T07:55:12.604Z",
-      "event": "bb-session",
-      "session": "9ff602ea",
-      "url": "https://parade.com/news/neil-patrick-harris-returns-to-broadway-in-revival-of-a-"
-    },
-    {
-      "t": "2026-09-29T07:58:22.041Z",
-      "event": "bb-session",
-      "session": "43899a92",
-      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
     }
   ]
 }

@@ -86,7 +86,7 @@ export const featureFlags = {
   get showPageRedesign() { return has('showPageRedesign'); },
   get showtimes() { return true; }, // launched — flag retained for cleanup
   get theaterScorecard() { return true; }, // launched — flag retained for cleanup
-  get fantasyLeague() { return has('fantasyLeague'); },
+  get fantasyLeague() { return true; }, // launched 2026-09-29 (BRO-4324, 2026-27 season) — flag retained for cleanup
   get videoReviews() { return has('videoReviews'); },
   get homepageExplainer() { return true; }, // launched — flag retained for cleanup
   get awardScoreV2() { return true; }, // launched 2026-05-17 — flag retained for cleanup

@@ -29,7 +29,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { fetchPage, isChallengeOrGarbage } = require('./lib/scraper');
-const { findConflictingShowId } = require('./lib/show-score-url-map');
+const { findConflictingShowId, isShowScoreNotFoundPage, decideDeadUrlAction } = require('./lib/show-score-url-map');
 const { recordSbCall } = require('./lib/provider-telemetry');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -145,6 +145,8 @@ const showScoreData = JSON.parse(fs.readFileSync(showScorePath, 'utf8'));
 // Max new URL discoveries per run to avoid rate-limit avalanche
 // In shard mode (bulk backfill), raise cap significantly
 const MAX_DISCOVERIES = shardMode ? 100 : 10;
+// BRO-4358: cap on dead-cached-URL rediscoveries per run (see rediscoverAfterDeadUrl).
+let deadUrlRediscoveriesLeft = 3;
 // Cooldown before retrying discovery for a show (7 days, disabled in shard mode)
 const DISCOVERY_COOLDOWN_MS = shardMode ? 0 : 7 * 24 * 60 * 60 * 1000;
 
@@ -398,6 +400,18 @@ function generateCandidateUrls(show) {
       `${titleNoColonSlug}-broadway`,
       `${showSlug}-broadway`,
     );
+    // Show Score year-suffixes a Broadway page when the title already has an
+    // older page (School Girls: ...-broadway-2026, BRO-4358).
+    const years = [show.openingDate, show.previewsStartDate]
+      .map(d => (d ? String(d).slice(0, 4) : ''))
+      .filter(y => /^\d{4}$/.test(y));
+    for (const year of new Set(years)) {
+      candidates.push(
+        `${titleSlug}-broadway-${year}`,
+        `${titleNoColonSlug}-broadway-${year}`,
+        `${showSlug}-broadway-${year}`,
+      );
+    }
     if (titleNoThe) {
       candidates.push(`${titleNoThe}-broadway`);
     }
@@ -484,7 +498,7 @@ function isValidShowScorePage(html, url, showTitle, options = {}) {
   const { allowOffBroadway = false, allowWestEnd = false } = options;
   if (!html) return false;
   // Not a 404
-  if (html.includes('Page not found') || html.includes('404 -')) return false;
+  if (isShowScoreNotFoundPage(html) || html.includes('Page not found') || html.includes('404 -')) return false;
   // Not the homepage
   if (html.includes('<title>Show Score | NYC Theatre Reviews and Tickets</title>')) return false;
   // Always reject off-off-broadway
@@ -549,17 +563,18 @@ async function discoverShowScoreUrl(show) {
 
   for (const url of candidates) {
     // For older productions, skip URLs already claimed by any other show
-    if (newestUrl) {
-      if (url === newestUrl) {
-        if (verbose) console.log(`  Skip: ${url} (same as newest production)`);
-        continue;
-      }
-      // Also skip if another show already has this URL cached (prevents 3+ production dupes)
-      const existingOwner = Object.entries(urlData.shows || {}).find(([id, u]) => u === url && id !== show.id);
-      if (existingOwner) {
-        if (verbose) console.log(`  Skip: ${url} (already cached for ${existingOwner[0]})`);
-        continue;
-      }
+    if (newestUrl && url === newestUrl) {
+      if (verbose) console.log(`  Skip: ${url} (same as newest production)`);
+      continue;
+    }
+    // Skip URLs another show already has cached, for every production: a
+    // revival's plain "-broadway" slug is often the older production's page,
+    // and matching it first would hide the revival's "-broadway-<year>" page
+    // behind a conflict (BRO-4358; also prevents 3+ production dupes).
+    const existingOwner = Object.entries(urlData.shows || {}).find(([id, u]) => u === url && id !== show.id);
+    if (existingOwner) {
+      if (verbose) console.log(`  Skip: ${url} (already cached for ${existingOwner[0]})`);
+      continue;
     }
     try {
       if (verbose) console.log(`  Trying: ${url}`);
@@ -587,6 +602,52 @@ async function discoverShowScoreUrl(show) {
     await sleep(2000); // Rate limit between discovery attempts
   }
   return null;
+}
+
+/**
+ * BRO-4358: drop a cached URL that returned Show Score's 404 page and try to
+ * find the show's current page. Returns the URL to scrape now (a replacement,
+ * or the same URL when it loaded fine on the retry; already cached) or null.
+ * With no replacement the show is left uncached, so the listings-discovery
+ * step of the next run gets another go at it.
+ */
+async function rediscoverAfterDeadUrl(show, deadUrl) {
+  // Capped per run: a sitewide Show Score change would otherwise send every
+  // cached show through ~10 candidate fetches (billed even on 404) and could
+  // strip the whole cache in one run.
+  if (!(deadUrlRediscoveriesLeft > 0)) {
+    console.log(`  Dead URL for ${show.id} left in place: rediscovery budget for this run is spent`);
+    // Not a clean "no data" result: don't stamp it fresh, so the next run
+    // retries it instead of waiting out --skip-fresh-hours.
+    showFetchFailed = true;
+    return null;
+  }
+  deadUrlRediscoveriesLeft--;
+  if (!urlData._discoveryAttempts) urlData._discoveryAttempts = {};
+  urlData._discoveryAttempts[show.id] = new Date().toISOString();
+
+  // Uncache first so discovery doesn't treat the dead URL as owned by this show.
+  const shows = urlData.shows || (urlData.shows = {});
+  delete shows[show.id];
+  const url = await discoverShowScoreUrl(show);
+  const conflictId = url ? findConflictingShowId(shows, show.id, url) : null;
+  const action = decideDeadUrlAction({ deadUrl, rediscoveredUrl: url, conflictId, budgetLeft: 1 });
+
+  let result = null;
+  if (action === 'keep') {
+    shows[show.id] = deadUrl;
+    result = deadUrl; // caller re-scrapes it this run
+    console.log(`  Kept ${deadUrl}: it loaded fine on the retry`);
+  } else if (action === 'replace') {
+    shows[show.id] = url;
+    result = url;
+    console.log(`  ✓ Replaced dead URL for ${show.id}: ${deadUrl} → ${url}`);
+  } else {
+    if (conflictId) console.log(`  [SKIP] ${url} already assigned to ${conflictId}`);
+    console.log(`  ✗ Removed dead URL for ${show.id} (${deadUrl}); no replacement found`);
+  }
+  if (!dryRun) saveUrlCache();
+  return result;
 }
 
 /**
@@ -803,7 +864,7 @@ let showFetchFailed = false;
 /**
  * Process a single show (cache-only — URL must already be in show-score-urls.json)
  */
-async function processShow(show) {
+async function processShow(show, { rediscovered = false } = {}) {
   showFetchFailed = false;
   // Multi-production guard: older productions only processed if they have their own page
   if (!isMostRecentProduction(show)) {
@@ -835,6 +896,20 @@ async function processShow(show) {
     const html = await fetchWithFallback(url);
 
     // Validate page
+    // BRO-4358: a cached URL that 404s used to be kept forever, because this
+    // check never matched Show Score's real 404 page and discovery only runs
+    // for UNCACHED shows (School Girls: the page moved from ...-broadway to
+    // ...-broadway-2026 and the show had no Show Score audience score through
+    // opening night). Show Score's own 404 template → rediscover now.
+    if (isShowScoreNotFoundPage(html)) {
+      console.log(`  SKIP: Show not found on Show Score`);
+      if (!rediscovered) {
+        const replacement = await rediscoverAfterDeadUrl(show, url);
+        if (replacement) return processShow(show, { rediscovered: true });
+      }
+      return null;
+    }
+    // Looser legacy markers: skip only, never uncache on them.
     if (!html || html.includes('Page not found') || html.includes('404 -')) {
       console.log(`  SKIP: Show not found on Show Score`);
       return null;
